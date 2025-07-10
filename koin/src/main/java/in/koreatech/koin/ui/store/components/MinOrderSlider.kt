@@ -25,7 +25,7 @@ fun MinOrderSlider(
 ) {
     var sliderPosition by remember(selectedIndex) { mutableFloatStateOf(selectedIndex.toFloat()) }
 
-    Column(modifier = modifier){
+    Column(modifier = modifier) {
         Slider(
             value = sliderPosition,
             onValueChange = {

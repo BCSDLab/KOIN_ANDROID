@@ -1,7 +1,10 @@
 package `in`.koreatech.koin.domain.model.store
 
 enum class IconType {
-    HOME, NEARBY, ORDER_HISTORY, DEFAULT
+    HOME,
+    NEARBY,
+    ORDER_HISTORY,
+    DEFAULT
 }
 
 data class BottomNavItem(

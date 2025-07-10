@@ -19,7 +19,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
@@ -44,12 +43,12 @@ fun BottomFloatingButton(
             Text(
                 text = text,
                 color = RebrandKoinTheme.colors.neutral0,
-                style = RebrandKoinTheme.typography.medium14,
+                style = RebrandKoinTheme.typography.medium14
             )
             Text(
                 text = stringResource(R.string.menu_detail_option_price, price),
                 color = RebrandKoinTheme.colors.neutral0,
-                style = RebrandKoinTheme.typography.bold18,
+                style = RebrandKoinTheme.typography.bold18
             )
         }
     }

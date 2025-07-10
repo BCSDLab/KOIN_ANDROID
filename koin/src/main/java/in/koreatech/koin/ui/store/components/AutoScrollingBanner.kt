@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -33,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -60,8 +58,8 @@ fun AutoScrollingBanner(
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp
     val pageWidthRatio = 0.9f
-    val pageWidth = remember (screenWidth, pageWidthRatio) { (screenWidth * pageWidthRatio).dp }
-    val sidePeek = remember (screenWidth, pageWidthRatio) { (((1f - pageWidthRatio) / 2f) * screenWidth).dp }
+    val pageWidth = remember(screenWidth, pageWidthRatio) { (screenWidth * pageWidthRatio).dp }
+    val sidePeek = remember(screenWidth, pageWidthRatio) { (((1f - pageWidthRatio) / 2f) * screenWidth).dp }
 
     val loopedBannerList = remember(storeEvents) {
         if (storeEvents.size > 1) {

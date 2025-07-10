@@ -58,10 +58,11 @@ fun OptionView(option: MenuOption) {
                 }
             }
             OptionGuideChip(
-                label = if (option.selectCount > 1)
+                label = if (option.selectCount > 1) {
                     stringResource(R.string.menu_detail_option_select_count, option.selectCount)
-                else
-                    stringResource(R.string.menu_detail_option_required),
+                } else {
+                    stringResource(R.string.menu_detail_option_required)
+                },
                 modifier = Modifier,
                 backgroundColor = RebrandKoinTheme.colors.neutral0,
                 contentColor = RebrandKoinTheme.colors.primary300,

@@ -7,7 +7,7 @@ fun iconNameToDrawableRes(iconName: IconType): Int {
     return iconName.toDrawableRes()
 }
 
-fun IconType.toDrawableRes() : Int = when (this) {
+fun IconType.toDrawableRes(): Int = when (this) {
     IconType.HOME -> R.drawable.ic_home
     IconType.NEARBY -> R.drawable.ic_pin
     IconType.ORDER_HISTORY -> R.drawable.ic_hamburger_menu
