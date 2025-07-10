@@ -7,7 +7,10 @@ import javax.inject.Inject
 class GetClubsUseCase @Inject constructor(
     private val clubRepository: ClubRepository
 ) {
-    suspend operator fun invoke(categoryId: Int?, sortType: String): Result<Clubs> {
+    suspend operator fun invoke(
+        categoryId: Int? = null,
+        sortType: String = "NONE"
+    ): Result<Clubs> {
         return clubRepository.getClubs(categoryId, sortType)
     }
 }
