@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -30,6 +31,7 @@ fun KoinUserWithButtonItem(
     onValueChange: (String) -> Unit = { },
     onButtonAction: () -> Unit = { },
     hint: String = "",
+    isFieldRequired: Boolean = false,
     enabled: Boolean = true,
     readOnly: Boolean = false,
     buttonEnabled: Boolean = true,
@@ -41,10 +43,22 @@ fun KoinUserWithButtonItem(
     visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
     Column(modifier = modifier) {
-        Text(
-            text = title,
-            style = KoinTheme.typography.regular16
-        )
+        Row {
+            Text(
+                text = title,
+                style = KoinTheme.typography.regular16
+            )
+
+            Spacer(modifier = Modifier.width(6.dp))
+
+            if (isFieldRequired) {
+                Text(
+                    text = "*",
+                    style = KoinTheme.typography.regular16,
+                    color = Color(0xFFC82A2A) // Color code not defined in the design system
+                )
+            }
+        }
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
