@@ -20,11 +20,12 @@ fun MinOrderSlider(
     minOrderOptions: List<String>,
     minOrderValues: List<Int>,
     selectedIndex: Int,
-    onSelectedIndexChange: (Int) -> Unit
+    modifier: Modifier = Modifier,
+    onSelectedIndexChange: (Int) -> Unit = {}
 ) {
     var sliderPosition by remember(selectedIndex) { mutableFloatStateOf(selectedIndex.toFloat()) }
 
-    Column {
+    Column(modifier = modifier){
         Slider(
             value = sliderPosition,
             onValueChange = {

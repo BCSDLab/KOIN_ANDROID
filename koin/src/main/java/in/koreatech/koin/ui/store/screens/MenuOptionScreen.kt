@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -65,15 +66,19 @@ fun MenuOptionScreen() {
     )
     var quantity by remember { mutableIntStateOf(1) }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color(0xFFF8F8FA))
-    ) {
+    Scaffold(
+        bottomBar = {
+            BottomFloatingLayout(
+                text = "장바구니 추가",
+                price = menuPrice * quantity,
+                onClick = {}
+            )
+        }
+    ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 80.dp),
+                .padding(innerPadding),
             contentPadding = PaddingValues(top = 0.dp, bottom = 0.dp)
         ) {
             item {
@@ -95,28 +100,16 @@ fun MenuOptionScreen() {
                     Spacer(modifier = Modifier.weight(1f))
                     QuantitySelectorSection(
                         value = quantity,
-                        onIncrement = { quantity++ },
-                        onDecrement = { if (quantity > 1) quantity-- },
-                        modifier = Modifier,
                         borderColor = RebrandKoinTheme.colors.primary500,
-                        contentColor = RebrandKoinTheme.colors.primary500
+                        contentColor = RebrandKoinTheme.colors.primary500,
+                        onIncrement = { quantity++ },
+                        onDecrement = { if (quantity > 1) quantity-- }
                     )
                 }
             }
             item {
                 Spacer(Modifier.height(16.dp))
             }
-        }
-        Box(
-            Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-        ) {
-            BottomFloatingLayout(
-                text = "장바구니 추가",
-                price = menuPrice * quantity,
-                onClick = {}
-            )
         }
     }
 }

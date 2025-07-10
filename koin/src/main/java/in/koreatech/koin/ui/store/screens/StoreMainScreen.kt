@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import `in`.koreatech.koin.domain.model.store.BottomNavItem
+import `in`.koreatech.koin.domain.model.store.IconType
 import `in`.koreatech.koin.ui.store.components.BottomNavigationBar
 import `in`.koreatech.koin.ui.store.viewmodel.StoreViewModel
 
@@ -27,9 +28,9 @@ fun StoreMainScreen(
     val context = LocalContext.current
 
     val items = listOf(
-        BottomNavItem("홈", "home", "home"),
-        BottomNavItem("주변 상점", "nearby", "nearby"),
-        BottomNavItem("주문 내역", "orderHistory", "orderHistory")
+        BottomNavItem("홈", "home", IconType.HOME),
+        BottomNavItem("주변 상점", "nearby", IconType.NEARBY),
+        BottomNavItem("주문 내역", "orderHistory", IconType.ORDER_HISTORY)
     )
 
     BackHandler {
@@ -59,8 +60,7 @@ fun StoreMainScreen(
                         categoryId = categoryId,
                         viewModel = storeViewModel,
                         onNavigationClick = {
-                            val popped = navController.popBackStack()
-                            if (!popped) {
+                            if (!navController.popBackStack()) {
                                 (context as? ComponentActivity)?.finish()
                             }
                         },

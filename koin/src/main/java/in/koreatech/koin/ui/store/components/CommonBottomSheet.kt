@@ -34,7 +34,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 @Composable
 fun CommonBottomSheet(
     title: String,
-    onClose: () -> Unit,
+    onClose: () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit
 ) {
     ModalBottomSheet(

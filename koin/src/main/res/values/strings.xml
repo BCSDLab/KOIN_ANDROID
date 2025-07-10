@@ -223,6 +223,12 @@
     <string name="store_eun">%1$s은 준비 중 입니다.</string>
     <string name="store_update_at">%1$s 업데이트</string>
     <string name="store_account_copy">계좌번호 복사 완료!</string>
+    <string name="store_search_hint">검색어를 입력해주세요.</string>
+    <string name="store_min_order">최소주문금액</string>
+    <string name="store_min_order_limit">최소주문금액 %1$d원 이하</string>
+    <string name="menu_detail_option_required">필수</string>
+    <string name="menu_detail_option_select_count">%1$d가지 선택</string>
+    <string name="menu_detail_option_price">%1$d원</string>
 
     <!-- version update -->
     <string name="version_update_message_required">필수 업데이트가 있습니다.\n업데이트 하시겠습니까?</string>

@@ -124,7 +124,7 @@ fun HomeScreen(
                         .padding(end = 24.dp)
                         .size(28.dp)
                         .noRippleClickable { onCartClick() },
-                    painter = painterResource(id = R.drawable.shopping_cart),
+                    painter = painterResource(id = R.drawable.ic_shopping_cart),
                     contentDescription = "장바구니"
                 )
             },

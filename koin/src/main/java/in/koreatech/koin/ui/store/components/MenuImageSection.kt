@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.store.components
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,14 +15,15 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.R
 
 @Composable
-fun MenuImageSection(imageResInt: Int) {
+fun MenuImageSection(
+    @DrawableRes imageResInt: Int
+) {
     Image(
         painter = painterResource(id = imageResInt),
         contentDescription = "메뉴 이미지",
         modifier = Modifier
             .fillMaxWidth()
-            .height(250.dp)
-            .clip(RoundedCornerShape(0.dp)),
+            .height(250.dp),
         contentScale = ContentScale.Fit
     )
 }

@@ -150,7 +150,7 @@ dependencies {
     implementation(libs.firebase.crashlytics)
 
     implementation(libs.compose.lifecycle)
-    implementation("androidx.compose.runtime:runtime-livedata:1.5.10")
+    implementation(libs.androidx.runtime.livedata)
     implementation(libs.kotlinxCollectionsImmutable)
 
     implementation(platform(libs.compose.bom))

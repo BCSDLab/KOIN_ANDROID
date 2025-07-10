@@ -17,16 +17,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 @Composable
 fun SearchBarFake(
     modifier: Modifier = Modifier,
-    hint: String = "검색어를 입력해주세요.",
+    hint: String = stringResource(R.string.store_search_hint),
     onClick: () -> Unit
 ) {
     Box(
@@ -54,8 +54,7 @@ fun SearchBarFake(
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = hint,
-                style = KoinTheme.typography.regular14.copy(color = KoinTheme.colors.neutral400),
-                fontSize = 14.sp
+                style = KoinTheme.typography.regular14.copy(color = KoinTheme.colors.neutral400)
             )
         }
     }

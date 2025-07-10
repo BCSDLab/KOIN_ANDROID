@@ -20,20 +20,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 fun FilterToggleButton(
     checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
     iconRes: Int,
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onCheckedChange: (Boolean) -> Unit = {}
 ) {
     val shape = RoundedCornerShape(24.dp)
-    val backgroundColor = if (checked) RebrandKoinTheme.colors.primary500 else KoinTheme.colors.neutral0
-    val contentColor = if (checked) KoinTheme.colors.neutral0 else KoinTheme.colors.neutral400
+    val backgroundColor = if (checked) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral0
+    val contentColor = if (checked) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.neutral400
 
     Box(
         modifier = modifier
@@ -70,7 +69,7 @@ fun FilterToggleButton(
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
                     text = text,
-                    style = KoinTheme.typography.bold14,
+                    style = RebrandKoinTheme.typography.bold14,
                     color = contentColor
                 )
             }
@@ -86,8 +85,9 @@ fun FilterToggleButton(
 fun FilterToggleButtonPreview() {
     FilterToggleButton(
         false,
-        onCheckedChange = {},
-        iconRes = R.drawable.motorcycle,
-        text = "test"
+        iconRes = R.drawable.ic_motorcycle,
+        text = "test",
+        modifier = Modifier,
+        onCheckedChange = {}
     )
 }

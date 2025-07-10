@@ -74,8 +74,8 @@ fun Chip(
 fun CategoryChips(
     categories: List<StoreCategories>,
     selectedIndex: Int,
-    onCategorySelected: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onCategorySelected: (Int) -> Unit = {}
 ) {
     if (categories.isEmpty()) return
     LazyRow(

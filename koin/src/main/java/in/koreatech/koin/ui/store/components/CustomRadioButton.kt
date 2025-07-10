@@ -13,18 +13,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 fun CustomRadioButton(
     selected: Boolean,
-    onClick: () -> Unit
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     val contentColor = RebrandKoinTheme.colors.primary500
-    val borderColor = if (selected) RebrandKoinTheme.colors.primary500 else KoinTheme.colors.neutral500
+    val borderColor = if (selected) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral500
     Box(
-        modifier = Modifier
+        modifier = modifier
             .size(20.dp)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
@@ -53,10 +53,12 @@ fun CustomRadioButtonPreview() {
     ) {
         CustomRadioButton(
             true,
+            modifier = Modifier,
             onClick = {}
         )
         CustomRadioButton(
             false,
+            modifier = Modifier,
             onClick = {}
         )
     }

@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.R
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,13 +32,7 @@ fun StoreTopAppBar(
     actions:
     @Composable()
     (RowScope.() -> Unit) = {},
-    colors: TopAppBarColors =
-        TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = Color.White,
-            navigationIconContentColor = Color.Black,
-            titleContentColor = Color.Black,
-            actionIconContentColor = Color.Black
-        )
+    colors: TopAppBarColors = StoreTopAppBarDefaults.colors()
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -53,12 +48,28 @@ fun StoreTopAppBar(
                     .padding(start = 24.dp)
                     .size(24.dp)
                     .noRippleClickable { onNavigationIconClick() },
-                painter = painterResource(R.drawable.arrow_back_ios_new),
+                painter = painterResource(R.drawable.ic_arrow_back_ios_new),
                 contentDescription = stringResource(R.string.navigate_up_content_description)
             )
         },
         actions = actions,
         colors = colors
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+object StoreTopAppBarDefaults {
+    @Composable
+    fun colors(
+        containerColor: Color = RebrandKoinTheme.colors.neutral0,
+        navigationIconContentColor: Color = RebrandKoinTheme.colors.neutral800,
+        titleContentColor: Color = RebrandKoinTheme.colors.neutral800,
+        actionIconContentColor: Color = RebrandKoinTheme.colors.neutral0
+    ) = TopAppBarDefaults.centerAlignedTopAppBarColors(
+        containerColor = containerColor,
+        navigationIconContentColor = navigationIconContentColor,
+        titleContentColor = titleContentColor,
+        actionIconContentColor = actionIconContentColor
     )
 }
 

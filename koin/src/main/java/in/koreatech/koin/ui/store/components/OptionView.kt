@@ -9,32 +9,32 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 fun OptionView(option: MenuOption) {
     Column(
         modifier = Modifier
-            .border(width = 1.dp, color = RebrandKoinTheme.colors.neutral300, shape = RoundedCornerShape(12.dp))
-            .background(color = RebrandKoinTheme.colors.neutral0, shape = RoundedCornerShape(12.dp))
+            .border(width = 1.dp, color = RebrandKoinTheme.colors.neutral300, shape = RebrandKoinTheme.shapes.medium)
+            .background(color = RebrandKoinTheme.colors.neutral0, shape = RebrandKoinTheme.shapes.medium)
             .padding(horizontal = 24.dp, vertical = 16.dp)
     ) {
         Row(
@@ -46,21 +46,22 @@ fun OptionView(option: MenuOption) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = option.name,
-                    style = KoinTheme.typography.bold18,
-                    fontSize = 18.sp,
-                    color = KoinTheme.colors.neutral800
+                    style = RebrandKoinTheme.typography.bold18,
+                    color = RebrandKoinTheme.colors.neutral800
                 )
                 if (option.description.isNotEmpty()) {
                     Text(
                         text = option.description,
-                        style = KoinTheme.typography.regular12,
-                        fontSize = 12.sp,
-                        color = KoinTheme.colors.neutral500
+                        style = RebrandKoinTheme.typography.regular12,
+                        color = RebrandKoinTheme.colors.neutral500
                     )
                 }
             }
             OptionGuideChip(
-                label = if (option.selectCount > 1) "${option.selectCount}가지 선택" else "필수",
+                label = if (option.selectCount > 1)
+                    stringResource(R.string.menu_detail_option_select_count, option.selectCount)
+                else
+                    stringResource(R.string.menu_detail_option_required),
                 modifier = Modifier,
                 backgroundColor = RebrandKoinTheme.colors.neutral0,
                 contentColor = RebrandKoinTheme.colors.primary300,
@@ -75,7 +76,7 @@ fun OptionView(option: MenuOption) {
         ) {
             when (option.selectionType) {
                 SelectionType.RADIO -> {
-                    var selectedIndex by remember { mutableStateOf(0) }
+                    var selectedIndex by remember { mutableIntStateOf(0) }
                     option.items.forEachIndexed { idx, item ->
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -89,14 +90,14 @@ fun OptionView(option: MenuOption) {
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = item.name,
-                                style = KoinTheme.typography.regular16,
+                                style = RebrandKoinTheme.typography.regular16,
                                 color = RebrandKoinTheme.colors.neutral800,
                                 fontSize = 16.sp,
                                 modifier = Modifier.weight(1f)
                             )
                             Text(
-                                text = "${item.price}원",
-                                style = KoinTheme.typography.bold16,
+                                text = stringResource(R.string.menu_detail_option_price, item.price),
+                                style = RebrandKoinTheme.typography.bold16,
                                 color = RebrandKoinTheme.colors.neutral800,
                                 fontSize = 16.sp
                             )
@@ -123,14 +124,14 @@ fun OptionView(option: MenuOption) {
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = item.name,
-                                style = KoinTheme.typography.regular16,
+                                style = RebrandKoinTheme.typography.regular16,
                                 color = RebrandKoinTheme.colors.neutral800,
                                 fontSize = 16.sp,
                                 modifier = Modifier.weight(1f)
                             )
                             Text(
-                                text = "+${item.price}원",
-                                style = KoinTheme.typography.bold16,
+                                text = "+${stringResource(R.string.menu_detail_option_price, item.price)}",
+                                style = RebrandKoinTheme.typography.bold16,
                                 color = RebrandKoinTheme.colors.neutral800,
                                 fontSize = 16.sp
                             )

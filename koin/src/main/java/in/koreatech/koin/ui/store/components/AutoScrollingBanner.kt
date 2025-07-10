@@ -42,6 +42,7 @@ import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -50,18 +51,17 @@ import kotlinx.coroutines.launch
 fun AutoScrollingBanner(
     storeEvents: List<StoreEvent>,
     modifier: Modifier = Modifier,
+//    autoScrollEnabled: Boolean,
+//    onAutoScrollEnabledChange: (Boolean) -> Unit = {},
     autoScrollMillis: Long = 4000,
     resumeDelayMillis: Long = 2000,
     onItemClick: (StoreEvent) -> Unit = {}
 ) {
-    val realItemCount = storeEvents.size
-
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp
     val pageWidthRatio = 0.9f
-    val pageWidth = (screenWidth * pageWidthRatio).dp
-
-    val sidePeek = (((1f - pageWidthRatio) / 2f) * screenWidth).dp
+    val pageWidth = remember (screenWidth, pageWidthRatio) { (screenWidth * pageWidthRatio).dp }
+    val sidePeek = remember (screenWidth, pageWidthRatio) { (((1f - pageWidthRatio) / 2f) * screenWidth).dp }
 
     val loopedBannerList = remember(storeEvents) {
         if (storeEvents.size > 1) {
@@ -81,7 +81,7 @@ fun AutoScrollingBanner(
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(pagerState.settledPage, autoScrollEnabled) {
-        if (realItemCount > 1 && autoScrollEnabled) {
+        if (storeEvents.size > 1 && autoScrollEnabled) {
             delay(autoScrollMillis)
             if (!pagerState.isScrollInProgress) {
                 val nextPage = pagerState.currentPage + 1
@@ -97,21 +97,19 @@ fun AutoScrollingBanner(
         }
     }
 
-    LaunchedEffect(pagerState.currentPage, realItemCount) {
-        if (realItemCount > 1) {
+    LaunchedEffect(pagerState.currentPage, storeEvents.size) {
+        if (storeEvents.size > 1) {
             when (pagerState.currentPage) {
-                0 -> pagerState.scrollToPage(realItemCount)
-                realItemCount + 1 -> pagerState.scrollToPage(1)
+                0 -> pagerState.scrollToPage(storeEvents.size)
+                storeEvents.size + 1 -> pagerState.scrollToPage(1)
             }
         }
     }
 
-    val bannerHeight = 100.dp
-
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(bannerHeight)
+            .height(100.dp)
             .wrapContentSize(Alignment.Center)
     ) {
         HorizontalPager(
@@ -121,14 +119,14 @@ fun AutoScrollingBanner(
             modifier = Modifier
                 .width(screenWidth.dp)
                 .align(Alignment.Center)
-                .height(bannerHeight)
+                .height(100.dp)
         ) { page ->
             val event = loopedBannerList[page]
             Box(
                 Modifier
                     .width(pageWidth)
-                    .height(bannerHeight)
-                    .clip(RoundedCornerShape(16.dp))
+                    .height(100.dp)
+                    .clip(RebrandKoinTheme.shapes.medium)
                     .clickable { onItemClick(event) }
             ) {
                 AsyncImage(
@@ -141,10 +139,10 @@ fun AutoScrollingBanner(
                 )
                 Text(
                     text = event.shopName,
-                    color = KoinTheme.colors.neutral0,
+                    color = RebrandKoinTheme.colors.neutral0,
                     modifier = Modifier
                         .align(Alignment.BottomStart)
-                        .background(Color.Black.copy(alpha = 0.4f))
+                        .background(RebrandKoinTheme.colors.neutral800.copy(alpha = 0.4f))
                         .padding(8.dp)
                 )
             }
@@ -164,13 +162,13 @@ fun AutoScrollingBanner(
                     .size(36.dp)
                     .clip(CircleShape)
                     .background(KoinTheme.colors.neutral0.copy(alpha = 0.7f))
-                    .clickable(enabled = realItemCount > 1) {
+                    .clickable(enabled = storeEvents.size > 1) {
                         autoScrollEnabled = false
                         lastInteractionTime = System.currentTimeMillis()
                         coroutineScope.launch {
                             val prevPage =
                                 if (pagerState.currentPage == 0) {
-                                    realItemCount
+                                    storeEvents.size
                                 } else {
                                     pagerState.currentPage - 1
                                 }
@@ -187,12 +185,12 @@ fun AutoScrollingBanner(
                     .size(36.dp)
                     .clip(CircleShape)
                     .background(KoinTheme.colors.neutral0.copy(alpha = 0.7f))
-                    .clickable(enabled = realItemCount > 1) {
+                    .clickable(enabled = storeEvents.size > 1) {
                         autoScrollEnabled = false
                         lastInteractionTime = System.currentTimeMillis()
                         coroutineScope.launch {
                             val nextPage =
-                                if (pagerState.currentPage == realItemCount + 1) {
+                                if (pagerState.currentPage == storeEvents.size + 1) {
                                     1
                                 } else {
                                     pagerState.currentPage + 1

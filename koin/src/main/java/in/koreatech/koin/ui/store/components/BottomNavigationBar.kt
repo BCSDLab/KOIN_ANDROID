@@ -34,7 +34,7 @@ fun BottomNavigationBar(
 ) {
     Surface(
         modifier = modifier,
-        color = KoinTheme.colors.neutral0,
+        color = RebrandKoinTheme.colors.neutral0,
         shadowElevation = 8.dp
     ) {
         Row(
@@ -67,12 +67,12 @@ fun BottomNavigationBar(
                         tint = if (currentDestination?.hierarchy?.any { it.route == item.route } == true) {
                             RebrandKoinTheme.colors.primary500
                         } else {
-                            KoinTheme.colors.neutral300
+                            RebrandKoinTheme.colors.neutral300
                         }
                     )
                     Text(
                         item.label,
-                        style = KoinTheme.typography.bold12,
+                        style = RebrandKoinTheme.typography.bold12,
                         fontSize = 12.sp,
                         color = if (currentDestination?.hierarchy?.any { it.route == item.route } == true) {
                             RebrandKoinTheme.colors.neutral800

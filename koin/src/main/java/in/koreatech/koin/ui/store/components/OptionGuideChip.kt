@@ -26,13 +26,13 @@ fun OptionGuideChip(
         modifier = modifier,
         color = backgroundColor,
         contentColor = contentColor,
-        shape = RoundedCornerShape(999.dp),
+        shape = RoundedCornerShape(percent = 50),
         border = BorderStroke(1.dp, borderColor)
     ) {
         Text(
             text = label,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
-            style = KoinTheme.typography.bold12,
+            style = RebrandKoinTheme.typography.bold12,
             color = textColor
         )
     }
@@ -44,7 +44,7 @@ fun OptionGuideChipPreview() {
     OptionGuideChip(
         label = "필수",
         modifier = Modifier,
-        backgroundColor = KoinTheme.colors.neutral0,
+        backgroundColor = RebrandKoinTheme.colors.neutral0,
         contentColor = RebrandKoinTheme.colors.primary300,
         borderColor = RebrandKoinTheme.colors.primary300,
         textColor = RebrandKoinTheme.colors.primary300

@@ -19,12 +19,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.ui.store.defaults.StoreSearchBarDefaults
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,20 +47,20 @@ fun SearchBar(
             .shadow(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(16.dp),
-                ambientColor = KoinTheme.colors.neutral400,
-                spotColor = KoinTheme.colors.neutral500
+                ambientColor = RebrandKoinTheme.colors.neutral400,
+                spotColor = RebrandKoinTheme.colors.neutral500
             )
-            .background(KoinTheme.colors.neutral0, shape = RoundedCornerShape(16.dp))
+            .background(RebrandKoinTheme.colors.neutral0, shape = RoundedCornerShape(16.dp))
             .height(40.dp),
-        textStyle = KoinTheme.typography.regular14,
+        textStyle = RebrandKoinTheme.typography.regular14,
         decorationBox = { innerTextField ->
             TextFieldDefaults.DecorationBox(
                 value = query,
                 innerTextField = innerTextField,
                 placeholder = {
                     Text(
-                        text = "검색어를 입력해주세요.",
-                        style = KoinTheme.typography.regular14.copy(color = KoinTheme.colors.neutral400),
+                        text = stringResource(R.string.store_search_hint),
+                        style = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral500),
                         fontSize = 14.sp
                     )
                 },
@@ -66,7 +68,7 @@ fun SearchBar(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_search),
                         contentDescription = "검색",
-                        tint = KoinTheme.colors.neutral500
+                        tint = RebrandKoinTheme.colors.neutral500
                     )
                 },
                 singleLine = true,
@@ -74,17 +76,10 @@ fun SearchBar(
                 interactionSource = remember { MutableInteractionSource() },
                 contentPadding = PaddingValues(start = 12.dp, top = 8.dp, bottom = 8.dp),
                 visualTransformation = VisualTransformation.None,
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = KoinTheme.colors.neutral0,
-                    unfocusedContainerColor = KoinTheme.colors.neutral0,
-                    disabledContainerColor = KoinTheme.colors.neutral0,
-                    errorContainerColor = KoinTheme.colors.neutral0
-                )
+                colors = StoreSearchBarDefaults.colors()
             )
         },
-        keyboardOptions = KeyboardOptions.Default.copy(
-            imeAction = ImeAction.Search
-        ),
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(
             onSearch = {
                 focusManager.clearFocus()

@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,7 +34,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -48,25 +46,25 @@ fun StoreCard(
     store: Store,
     imageUrl: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit = {}
 ) {
     val (statusText, showOverlay) = getStoreStatus(store.open)
 
-    Box {
-        Card(
-            modifier = modifier
-                .fillMaxWidth()
-                .clickable(onClick = onClick)
-                .border(
-                    width = 0.5.dp,
-                    color = RebrandKoinTheme.colors.neutral200,
-                    shape = RoundedCornerShape(8.dp)
-                ),
-            shape = RoundedCornerShape(8.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = RebrandKoinTheme.colors.neutral0
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .border(
+                width = 0.5.dp,
+                color = RebrandKoinTheme.colors.neutral200,
+                shape = RebrandKoinTheme.shapes.small
             )
-        ) {
+            .background(
+                color = RebrandKoinTheme.colors.neutral0,
+                shape = RebrandKoinTheme.shapes.small
+            )
+    ) {
+        Card {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -100,7 +98,6 @@ fun StoreCard(
                     Text(
                         text = store.name,
                         style = RebrandKoinTheme.typography.bold16.copy(
-                            fontSize = 16.sp,
                             color = KoinTheme.colors.neutral800
                         ),
                         maxLines = 1,

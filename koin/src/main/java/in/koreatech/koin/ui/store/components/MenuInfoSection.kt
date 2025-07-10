@@ -5,9 +5,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
@@ -20,20 +21,17 @@ fun MenuInfoSection(
     Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp)) {
         Text(
             text = menuName,
-            style = KoinTheme.typography.bold20,
-            fontSize = 20.sp
+            style = RebrandKoinTheme.typography.bold20,
         )
         Text(
-            text = "${price}원",
-            style = KoinTheme.typography.bold20,
-            fontSize = 20.sp,
+            text = stringResource(R.string.menu_detail_option_price, price),
+            style = RebrandKoinTheme.typography.bold20,
             color = RebrandKoinTheme.colors.primary500
         )
         Text(
             text = detail,
-            style = KoinTheme.typography.regular12,
-            fontSize = 12.sp,
-            color = KoinTheme.colors.neutral500
+            style = RebrandKoinTheme.typography.regular12,
+            color = RebrandKoinTheme.colors.neutral500
         )
     }
 }

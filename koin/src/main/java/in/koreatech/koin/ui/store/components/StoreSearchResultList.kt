@@ -43,8 +43,7 @@ fun SearchResultItem(
         Text(
             text = item.keyword,
             modifier = Modifier.weight(1f),
-            style = KoinTheme.typography.regular14.copy(color = KoinTheme.colors.neutral500),
-            fontSize = 14.sp
+            style = KoinTheme.typography.regular14.copy(color = KoinTheme.colors.neutral500)
         )
 
         if (item.shopId != null) {

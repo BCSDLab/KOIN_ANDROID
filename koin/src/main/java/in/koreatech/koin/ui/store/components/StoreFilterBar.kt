@@ -27,12 +27,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.store.StoreSorter
+import `in`.koreatech.koin.ui.store.contract.StoreActivityContract.Companion.MIN_ORDER_OPTIONS
 import `in`.koreatech.koin.ui.store.viewmodel.StoreViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,7 +53,7 @@ fun StoreFilterBar(
     val currentSorter = viewModel.storeSorter.observeAsState(StoreSorter.NONE).value
     val currentSortIndex = sortValues.indexOf(currentSorter).takeIf { it >= 0 } ?: 0
 
-    val minOrderOptions = listOf("5,000", "10,000", "15,000", "20,000", "전체")
+    val minOrderOptions = MIN_ORDER_OPTIONS
     val (minOrderIndex, setMinOrderIndex) = remember { mutableIntStateOf(4) }
 
     val isOperating = viewModel.isOperating.observeAsState(false).value
@@ -60,9 +62,9 @@ fun StoreFilterBar(
     val (isFreeDeliveryTip, setIsFreeDeliveryTip) = remember { mutableStateOf(false) }
 
     val minOrderButtonText = if (minOrderIndex == 4) {
-        "최소주문금액"
+        stringResource(id = R.string.store_min_order)
     } else {
-        "최소주문금액 ${minOrderOptions[minOrderIndex]}원 이하"
+        stringResource(id = R.string.store_min_order_limit, minOrderOptions[minOrderIndex])
     }
 
     Row(
@@ -91,7 +93,7 @@ fun StoreFilterBar(
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    sortOptions.getOrElse(currentSortIndex) { "기본순" },
+                    text = sortOptions.getOrElse(currentSortIndex) { "기본순" },
                     fontSize = 14.sp,
                     style = KoinTheme.typography.bold14,
                     color = RebrandKoinTheme.colors.primary500
@@ -115,29 +117,29 @@ fun StoreFilterBar(
         ) {
             FilterToggleButton(
                 checked = isOperating,
+                iconRes = R.drawable.ic_mdi_food,
+                text = "영업중",
                 onCheckedChange = {
                     viewModel.filterStoreIsOpen(!isOperating)
-                },
-                iconRes = R.drawable.mdi_food,
-                text = "영업중"
+                }
             )
             FilterToggleButton(
                 checked = isDelivery,
-                onCheckedChange = { viewModel.filterStoreIsDelivery(!isDelivery) },
-                iconRes = R.drawable.motorcycle,
-                text = "배달 가능"
+                iconRes = R.drawable.ic_motorcycle,
+                text = "배달 가능",
+                onCheckedChange = { viewModel.filterStoreIsDelivery(!isDelivery) }
             )
             FilterToggleButton(
                 checked = isTakeout,
-                onCheckedChange = { setIsTakeout(!isTakeout) },
-                iconRes = R.drawable.packing,
-                text = "포장 가능"
+                iconRes = R.drawable.ic_packing,
+                text = "포장 가능",
+                onCheckedChange = { setIsTakeout(!isTakeout) }
             )
             FilterToggleButton(
                 checked = isFreeDeliveryTip,
-                onCheckedChange = { setIsFreeDeliveryTip(!isFreeDeliveryTip) },
-                iconRes = R.drawable.free_tag,
-                text = "배달팁 무료"
+                iconRes = R.drawable.ic_free_tag,
+                text = "배달팁 무료",
+                onCheckedChange = { setIsFreeDeliveryTip(!isFreeDeliveryTip) }
             )
             OutlinedButton(
                 onClick = { setShowMinOrderSheet(true) },
