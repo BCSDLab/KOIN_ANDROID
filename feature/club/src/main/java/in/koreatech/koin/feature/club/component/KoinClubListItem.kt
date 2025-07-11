@@ -45,7 +45,7 @@ fun KoinClubListItem(
             .border(width = 1.dp, color = KoinTheme.colors.primary300, shape = KoinTheme.shapes.small)
             .clip(KoinTheme.shapes.small)
             .clickable { onClick(id) }
-            .padding(vertical = 8.dp, horizontal = 16.dp),
+            .padding(vertical = 16.dp, horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column {
@@ -54,7 +54,7 @@ fun KoinClubListItem(
             ) {
                 Text(
                     text = name,
-                    style = KoinTheme.typography.bold20
+                    style = KoinTheme.typography.bold16
                 )
 
                 Spacer(modifier = Modifier.width(4.dp))
@@ -65,9 +65,11 @@ fun KoinClubListItem(
                 )
             }
 
+            Spacer(modifier = Modifier.height(8.dp))
+
             Text(
                 text = category,
-                style = KoinTheme.typography.regular14,
+                style = KoinTheme.typography.regular12,
                 color = KoinTheme.colors.neutral600
             )
 
@@ -99,7 +101,7 @@ fun KoinClubListItem(
         SubcomposeAsyncImage(
             model = logoUrl,
             contentDescription = null,
-            modifier = modifier.size(100.dp),
+            modifier = Modifier.size(100.dp),
             loading = {
                 CircularProgressIndicator()
             }
