@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -58,6 +57,7 @@ import `in`.koreatech.koin.feature.club.component.KoinClubBasicTextField
 import `in`.koreatech.koin.feature.club.component.KoinClubDatePickerDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubDateSelectBox
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialog
+import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
 import `in`.koreatech.koin.feature.club.utils.pickMedia
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -200,12 +200,7 @@ fun ClubRecruitCreateScreenImpl(
             descriptionColor = KoinTheme.colors.neutral600,
             positiveButtonText = stringResource(R.string.club_recruit_create_cancel_dialog_positive),
             negativeButtonText = stringResource(R.string.club_recruit_create_cancel_dialog_negative),
-            positiveButtonColors = ButtonColors(
-                containerColor = KoinTheme.colors.danger500,
-                contentColor = KoinTheme.colors.neutral0,
-                disabledContainerColor = KoinTheme.colors.neutral300,
-                disabledContentColor = KoinTheme.colors.neutral600
-            ),
+            positiveButtonColors = KoinClubExtraSmallDialogDanger.positiveButtonColors,
             onPositive = {
                 dismissCreateCancelDialog()
                 createRecruitmentCancel()

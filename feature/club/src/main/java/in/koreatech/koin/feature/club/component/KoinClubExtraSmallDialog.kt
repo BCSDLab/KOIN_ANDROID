@@ -35,10 +35,10 @@ fun KoinClubExtraSmallDialog(
     title: String,
     description: String,
     modifier: Modifier = Modifier,
-    titleColor: Color = KoinTheme.colors.neutral800,
-    descriptionColor: Color = KoinTheme.colors.neutral800,
-    titleStyle: TextStyle = KoinTheme.typography.medium18,
-    descriptionStyle: TextStyle = KoinTheme.typography.regular14,
+    titleColor: Color = KoinClubExtraSmallDialogDefaults.textColor,
+    descriptionColor: Color = KoinClubExtraSmallDialogDefaults.textColor,
+    titleStyle: TextStyle = KoinClubExtraSmallDialogDefaults.titleStyle,
+    descriptionStyle: TextStyle = KoinClubExtraSmallDialogDefaults.descriptionStyle,
     positiveButtonText: String = stringResource(id = R.string.club_dialog_ok),
     negativeButtonText: String = stringResource(id = R.string.club_dialog_cancel),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
@@ -103,27 +103,17 @@ fun KoinClubExtraSmallDialog(
     modifier: Modifier = Modifier,
     title: String = "",
     description: String = "",
-    titleColor: Color = KoinTheme.colors.neutral800,
-    descriptionColor: Color = KoinTheme.colors.neutral800,
-    onPositive: () -> Unit = {},
-    onNegative: () -> Unit = {},
-    onDismiss: () -> Unit = {},
-    titleStyle: TextStyle = KoinTheme.typography.medium18,
-    descriptionStyle: TextStyle = KoinTheme.typography.regular14,
+    titleColor: Color = KoinClubExtraSmallDialogDefaults.textColor,
+    descriptionColor: Color = KoinClubExtraSmallDialogDefaults.textColor,
+    titleStyle: TextStyle = KoinClubExtraSmallDialogDefaults.titleStyle,
+    descriptionStyle: TextStyle = KoinClubExtraSmallDialogDefaults.descriptionStyle,
     positiveButtonText: String = stringResource(id = R.string.club_dialog_ok),
     negativeButtonText: String = stringResource(id = R.string.club_dialog_cancel),
-    positiveButtonColors: ButtonColors = ButtonColors(
-        containerColor = KoinTheme.colors.primary500,
-        contentColor = KoinTheme.colors.neutral0,
-        disabledContainerColor = KoinTheme.colors.neutral300,
-        disabledContentColor = KoinTheme.colors.neutral600
-    ),
-    negativeButtonColors: ButtonColors = ButtonColors(
-        containerColor = KoinTheme.colors.neutral0,
-        contentColor = KoinTheme.colors.neutral500,
-        disabledContainerColor = KoinTheme.colors.neutral400,
-        disabledContentColor = KoinTheme.colors.neutral500
-    )
+    positiveButtonColors: ButtonColors = KoinClubExtraSmallDialogDefaults.positiveButtonColors,
+    negativeButtonColors: ButtonColors = KoinClubExtraSmallDialogDefaults.negativeButtonColors,
+    onPositive: () -> Unit = {},
+    onNegative: () -> Unit = {},
+    onDismiss: () -> Unit = {}
 ) {
     BasicAlertDialog(
         modifier =
@@ -177,4 +167,31 @@ fun KoinClubExtraSmallDialog(
             }
         }
     }
+}
+
+object KoinClubExtraSmallDialogDefaults {
+    val textColor @Composable get() = KoinTheme.colors.neutral800
+    val titleStyle @Composable get() = KoinTheme.typography.medium18
+    val descriptionStyle @Composable get() = KoinTheme.typography.regular14
+    val positiveButtonColors @Composable get() = ButtonColors(
+        containerColor = KoinTheme.colors.primary500,
+        contentColor = KoinTheme.colors.neutral0,
+        disabledContainerColor = KoinTheme.colors.neutral300,
+        disabledContentColor = KoinTheme.colors.neutral600
+    )
+    val negativeButtonColors @Composable get() = ButtonColors(
+        containerColor = KoinTheme.colors.neutral0,
+        contentColor = KoinTheme.colors.neutral500,
+        disabledContainerColor = KoinTheme.colors.neutral400,
+        disabledContentColor = KoinTheme.colors.neutral500
+    )
+}
+
+object KoinClubExtraSmallDialogDanger {
+    val positiveButtonColors @Composable get() = ButtonColors(
+        containerColor = KoinTheme.colors.danger500,
+        contentColor = KoinTheme.colors.neutral0,
+        disabledContainerColor = KoinTheme.colors.neutral300,
+        disabledContentColor = KoinTheme.colors.neutral600
+    )
 }
