@@ -2,7 +2,7 @@ package `in`.koreatech.koin.data.response.store
 
 import com.google.gson.annotations.SerializedName
 
-data class ShopMenusResponse(
+data class LegacyShopMenusResponse(
     @SerializedName("id") val id: Int,
     @SerializedName("name") val name: String,
     @SerializedName("is_hidden") val isHidden: Boolean,
