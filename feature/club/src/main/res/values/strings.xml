@@ -40,6 +40,10 @@
     <string name="detail_recruit_end">모집이 마감되었어요.\n모집알림을 켜 알림을 받아보세요.</string>
     <string name="detail_recruit_create">모집 생성하기</string>
     <string name="detail_recruit_deadline_header">모집 기한</string>
+    <string name="detail_recruit_modify">모집 수정</string>
+    <string name="detail_recruit_delete">모집 삭제</string>
+    <string name="detail_recruit_delete_dialog_positive">삭제하기</string>
+    <string name="detail_recruit_delete_dialog_negative">취소하기</string>
 
     <string name="detail_error_empty_text_field">필수 입력란입니다.</string>
     <string name="detail_error_unauthorized">올바르지 않은 인증 정보입니다.</string>

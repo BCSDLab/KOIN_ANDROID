@@ -131,9 +131,7 @@ class ClubDetailViewModel @Inject constructor(
     }
 
     private fun loadClubRecruitment() = intent {
-        reduce {
-            state.copy(isLoading = true, showRecruitProgressBar = true)
-        }
+        reduce { state.copy(isLoading = true, showRecruitProgressBar = true) }
         getClubRecruitmentUseCase(state.clubId).onSuccess {
             reduce {
                 state.copy(
@@ -154,6 +152,19 @@ class ClubDetailViewModel @Inject constructor(
                 else -> throw e
             }
         }
+    }
+
+    fun deleteRecruitment() = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true, showRecruitProgressBar = true) }
+    }
+
+    fun showRecruitDeleteDialog() = intent {
+        reduce { state.copy(showRecruitDeleteDialog = true) }
+    }
+
+    fun dismissRecruitDeleteDialog() = intent {
+        reduce { state.copy(showRecruitDeleteDialog = false) }
     }
 
     fun showAddQnaDialog() = intent {

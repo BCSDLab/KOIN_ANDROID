@@ -83,6 +83,8 @@ import `in`.koreatech.koin.feature.club.BuildConfig
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
 import `in`.koreatech.koin.feature.club.component.DetailLoginDialog
+import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialog
+import `in`.koreatech.koin.feature.club.component.getKoinClubCancelButtonColor
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_CATEGORY
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_DESCRIPTION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_GOOGLE_FORM
@@ -291,6 +293,22 @@ fun ClubDetail(
                     .size(400)
                     .build(),
                 onDismiss = { viewModel.dismissImageDialog() }
+            )
+        }
+
+        if (state.showRecruitDeleteDialog) {
+            KoinClubExtraSmallDialog(
+                description = "모집을 삭제하시겠어요?\n모집이 삭제되며 되돌릴 수 없어요.",
+                descriptionStyle = KoinTheme.typography.medium15,
+                descriptionColor = KoinTheme.colors.neutral600,
+                positiveButtonText = stringResource(R.string.detail_recruit_delete_dialog_positive),
+                negativeButtonText = stringResource(R.string.detail_recruit_delete_dialog_negative),
+                positiveButtonColors = getKoinClubCancelButtonColor(),
+                onPositive = {
+                    viewModel.dismissRecruitDeleteDialog()
+                },
+                onNegative = viewModel::dismissRecruitDeleteDialog,
+                onDismiss = viewModel::dismissRecruitDeleteDialog
             )
         }
 
@@ -620,6 +638,7 @@ fun ClubDetail(
                                 showProgressBar = state.showRecruitProgressBar,
                                 onImageClick = viewModel::showImageDialog,
                                 onRecruitCreateClick = { onRecruitCreateClick(state.clubId) },
+                                showRecruitDeleteDialog = viewModel::showRecruitDeleteDialog,
                                 isManager = state.clubDetails?.manager ?: false
                             )
                         }

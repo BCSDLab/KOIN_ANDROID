@@ -178,3 +178,11 @@ fun KoinClubExtraSmallDialog(
         }
     }
 }
+
+@Composable
+internal fun getKoinClubCancelButtonColor() = ButtonColors(
+    containerColor = KoinTheme.colors.danger500,
+    contentColor = KoinTheme.colors.neutral0,
+    disabledContainerColor = KoinTheme.colors.neutral300,
+    disabledContentColor = KoinTheme.colors.neutral600
+)
