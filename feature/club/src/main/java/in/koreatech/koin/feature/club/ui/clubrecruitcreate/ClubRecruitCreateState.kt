@@ -1,8 +1,8 @@
 package `in`.koreatech.koin.feature.club.ui.clubrecruitcreate
 
 import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ClubRecruitCreateState(

@@ -34,6 +34,7 @@ sealed class KoinClubException : KoinErrorException() {
     class QnaNotFoundException : KoinClubException()
     class AlreadyNotLikedException : KoinClubException()
     class ClubRecruitNotFoundException : KoinClubException()
+
     /*
      * Exceptions for 409 Conflict
      */

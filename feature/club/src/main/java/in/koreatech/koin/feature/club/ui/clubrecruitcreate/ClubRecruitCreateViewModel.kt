@@ -1,24 +1,21 @@
 package `in`.koreatech.koin.feature.club.ui.clubrecruitcreate
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.club.CreateClubRecruitmentUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetClubPreSignedUrlUseCase
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
-import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @HiltViewModel
 class ClubRecruitCreateViewModel @Inject constructor(

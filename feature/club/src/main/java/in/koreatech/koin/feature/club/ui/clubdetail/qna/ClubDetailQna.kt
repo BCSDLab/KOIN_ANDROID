@@ -49,8 +49,7 @@ fun ClubDetailQna(
                         .align(Alignment.Center)
                 )
             }
-        }
-        else {
+        } else {
             Column(
                 modifier = modifier
                     .padding(

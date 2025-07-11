@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.repository
 
-import android.util.Log
 import `in`.koreatech.koin.data.mapper.toClubCategories
 import `in`.koreatech.koin.data.mapper.toClubDetails
 import `in`.koreatech.koin.data.mapper.toClubHot

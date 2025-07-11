@@ -59,10 +59,10 @@ import `in`.koreatech.koin.feature.club.component.KoinClubDatePickerDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubDateSelectBox
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialog
 import `in`.koreatech.koin.feature.club.utils.pickMedia
-import org.orbitmvi.orbit.compose.collectAsState
-import org.orbitmvi.orbit.compose.collectSideEffect
 import java.time.DayOfWeek
 import java.time.LocalDate
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
@@ -163,8 +163,7 @@ fun ClubRecruitCreateScreenImpl(
             onPositive = {
                 if (isStartDateSelected) {
                     setRecruitStartDate(it)
-                }
-                else {
+                } else {
                     setRecruitEndDate(it)
                 }
                 dismissDatePickerDialog()
@@ -334,7 +333,7 @@ fun ClubRecruitCreateScreenImpl(
                 color = KoinTheme.colors.neutral500
             )
         }
-        Column (
+        Column(
             verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically)
         ) {
             Text(
@@ -353,7 +352,7 @@ fun ClubRecruitCreateScreenImpl(
                 hint = stringResource(R.string.club_recruit_create_recruit_description_hint)
             )
         }
-        Row (
+        Row(
             modifier = Modifier
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.End
@@ -393,7 +392,7 @@ fun handleSideEffect(
 }
 
 private fun getDayOfWeek(dayOfWeek: DayOfWeek): String =
-    when(dayOfWeek) {
+    when (dayOfWeek) {
         DayOfWeek.MONDAY -> "월"
         DayOfWeek.TUESDAY -> "화"
         DayOfWeek.WEDNESDAY -> "수"

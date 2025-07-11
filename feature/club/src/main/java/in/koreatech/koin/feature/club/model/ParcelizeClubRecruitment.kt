@@ -26,7 +26,7 @@ fun ClubRecruitment?.toParcelizeClubRecruitment(): ParcelizeClubRecruitment? {
         endDate = endDate ?: "",
         imageUrl = imageUrl,
         content = content ?: "",
-        isManager = isManager,
+        isManager = isManager
     )
 }
 

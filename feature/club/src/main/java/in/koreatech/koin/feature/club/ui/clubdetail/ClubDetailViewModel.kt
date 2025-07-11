@@ -146,7 +146,7 @@ class ClubDetailViewModel @Inject constructor(
             reduce { state.copy(isLoading = false, showRecruitProgressBar = false) }
             when (e) {
                 is KoinClubException.WrongInputDataException -> {
-                    //TODO
+                    // TODO
                 }
                 is KoinClubException.ClubRecruitNotFoundException -> {
                     reduce { state.copy(clubRecruitment = null) }

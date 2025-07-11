@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.BasicAlertDialog

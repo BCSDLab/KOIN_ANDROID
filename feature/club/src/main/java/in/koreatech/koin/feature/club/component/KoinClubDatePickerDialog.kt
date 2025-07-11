@@ -1,20 +1,16 @@
 package `in`.koreatech.koin.feature.club.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -36,13 +32,13 @@ fun KoinClubDatePickerDialog(
     datePickerState: DatePickerState = rememberDatePickerState(),
     onDismiss: () -> Unit = {},
     onPositive: (LocalDate) -> Unit = {},
-    onNegative: () -> Unit = {},
+    onNegative: () -> Unit = {}
 ) {
     BasicAlertDialog(
         modifier = modifier,
         onDismissRequest = onDismiss
     ) {
-        Column (
+        Column(
             modifier = Modifier
                 .background(
                     color = KoinTheme.colors.neutral0,
@@ -59,7 +55,7 @@ fun KoinClubDatePickerDialog(
                     containerColor = KoinTheme.colors.neutral0
                 )
             )
-            Row (
+            Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {

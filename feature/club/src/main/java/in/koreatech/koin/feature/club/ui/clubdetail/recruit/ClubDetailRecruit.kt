@@ -55,9 +55,8 @@ fun ClubDetailRecruit(
                         .align(Alignment.Center)
                 )
             }
-        }
-        else {
-            Column (
+        } else {
+            Column(
                 modifier = modifier
                     .fillMaxSize()
                     .padding(
@@ -67,8 +66,8 @@ fun ClubDetailRecruit(
                     ),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                if( recruitment == null || recruitment.status == RecruitmentStatus.NONE) {
-                    if(!isManager) {
+                if (recruitment == null || recruitment.status == RecruitmentStatus.NONE) {
+                    if (!isManager) {
                         Spacer(Modifier.height(200.dp))
                         Text(
                             modifier = Modifier.fillMaxWidth(),
@@ -77,9 +76,8 @@ fun ClubDetailRecruit(
                             color = KoinTheme.colors.neutral500,
                             textAlign = TextAlign.Center
                         )
-                    }
-                    else {
-                        Row (
+                    } else {
+                        Row(
                             modifier = Modifier.fillMaxWidth(),
                             Arrangement.End
                         ) {
@@ -90,8 +88,7 @@ fun ClubDetailRecruit(
                             )
                         }
                     }
-                }
-                else {
+                } else {
                     Column {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
@@ -100,7 +97,7 @@ fun ClubDetailRecruit(
                             color = KoinTheme.colors.primary600
                         )
                         Spacer(Modifier.height(8.dp))
-                        Row (
+                        Row(
                             horizontalArrangement = Arrangement
                                 .spacedBy(8.dp),
                             verticalAlignment = Alignment.CenterVertically
@@ -130,8 +127,8 @@ fun ClubDetailRecruit(
                                         color = backgroungColor,
                                         shape = KoinTheme.shapes.extraLarge
                                     )
-                                    .padding(start = 8.dp, top = 4.dp, end = 8.dp, bottom = 4.dp)   ,
-                                verticalAlignment = Alignment.CenterVertically,
+                                    .padding(start = 8.dp, top = 4.dp, end = 8.dp, bottom = 4.dp),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
                                     text = innerText,
@@ -151,7 +148,7 @@ fun ClubDetailRecruit(
                             }
                         }
                     }
-                    if(!recruitment.imageUrl.isNullOrBlank()) {
+                    if (!recruitment.imageUrl.isNullOrBlank()) {
                         SubcomposeAsyncImage(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -195,7 +192,7 @@ fun ClubDetailRecruit(
 @Preview
 @Composable
 fun ClubDetailRecruitNone() {
-    ClubDetailRecruit (
+    ClubDetailRecruit(
         recruitment = ParcelizeClubRecruitment(
             id = 0,
             status = RecruitmentStatus.NONE,
@@ -213,7 +210,7 @@ fun ClubDetailRecruitNone() {
 @Preview
 @Composable
 fun ClubDetailRecruitNoneManager() {
-    ClubDetailRecruit (
+    ClubDetailRecruit(
         recruitment = ParcelizeClubRecruitment(
             id = 0,
             status = RecruitmentStatus.NONE,
@@ -232,7 +229,7 @@ fun ClubDetailRecruitNoneManager() {
 @Preview
 @Composable
 fun ClubDetailRecruitDday() {
-    ClubDetailRecruit (
+    ClubDetailRecruit(
         recruitment = ParcelizeClubRecruitment(
             id = 0,
             status = RecruitmentStatus.RECRUITING,
@@ -250,7 +247,7 @@ fun ClubDetailRecruitDday() {
 @Preview
 @Composable
 fun ClubDetailRecruitNoImage() {
-    ClubDetailRecruit (
+    ClubDetailRecruit(
         recruitment = ParcelizeClubRecruitment(
             id = 0,
             status = RecruitmentStatus.RECRUITING,

@@ -3,7 +3,7 @@ package `in`.koreatech.koin.domain.usecase.club
 import `in`.koreatech.koin.domain.repository.ClubRepository
 import javax.inject.Inject
 
-class CreateClubRecruitmentUseCase  @Inject constructor(
+class CreateClubRecruitmentUseCase @Inject constructor(
     private val clubRepository: ClubRepository
 ) {
     suspend operator fun invoke(
