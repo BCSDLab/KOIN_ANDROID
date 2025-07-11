@@ -139,8 +139,17 @@
     <string name="club_recruit_create_cancel_dialog_description">생성을 취소하시겠어요?\n작성하신 내용은 모두 사라져요.</string>
     <string name="club_recruit_create_cancel_dialog_positive">취소하기</string>
     <string name="club_recruit_create_cancel_dialog_negative">게속 생성</string>
-
     <string name="club_recruit_create_error_create_failure">모집 생성에 실패했습니다.</string>
+
+    <string name="club_recruit_modify_request_dialog_description">작성하신 내용으로\n수정하시겠어요?</string>
+    <string name="club_recruit_modify_request_dialog_positive">수정하기</string>
+    <string name="club_recruit_modify_request_dialog_negative">취소하기</string>
+    <string name="club_recruit_modify_cancel_dialog_description">"수정을 취소하시겠어요?\n작성하신 내용은 모두 사라져요."</string>
+    <string name="club_recruit_modify_cancel_dialog_positive">취소하기</string>
+    <string name="club_recruit_modify_cancel_dialog_negative">계속 편집</string>
+    <string name="club_recruit_modify_cancel">수정 취소</string>
+    <string name="club_recruit_modify_request">수정 하기</string>
+    <string name="club_recruit_modify_error_load">기존 모집 정보를 불러오지 못했습니다.</string>
 
     <string name="club_recruit_dday">D-%1$d</string>
     <string name="club_recruit_always">상시 모집</string>

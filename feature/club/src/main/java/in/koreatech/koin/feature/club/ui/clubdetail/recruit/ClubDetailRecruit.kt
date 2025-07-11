@@ -112,14 +112,14 @@ fun ClubDetailRecruit(
                                     FilledButton(
                                         text = stringResource(R.string.detail_recruit_delete),
                                         textStyle = KoinTheme.typography.medium14,
-                                        onClick = showRecruitDeleteDialog, //TODO
+                                        onClick = showRecruitDeleteDialog,
                                         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp),
                                         colors = getKoinClubCancelButtonColor()
                                     )
                                     FilledButton(
                                         text = stringResource(R.string.detail_recruit_modify),
                                         textStyle = KoinTheme.typography.medium14,
-                                        onClick = onRecruitModifyClick, //TODO
+                                        onClick = onRecruitModifyClick,
                                         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp)
                                     )
                                 }

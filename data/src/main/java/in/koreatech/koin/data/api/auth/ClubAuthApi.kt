@@ -77,4 +77,10 @@ interface ClubAuthApi {
     suspend fun deleteClubRecruitment(
         @Path("clubId") clubId: Int,
     ): Response<Unit>
+
+    @PUT(URLConstant.CLUBS.CLUBID.RECRUITMENT.RECRUITMENT)
+    suspend fun modifyClubRecruitment(
+        @Path("clubId") clubId: Int,
+        @Body request: ClubRecruitmentRequest
+    ): Response<Unit>
 }

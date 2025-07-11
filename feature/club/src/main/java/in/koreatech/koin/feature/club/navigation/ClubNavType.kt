@@ -6,4 +6,5 @@ sealed class ClubNavType(val route: String) {
     data object ClubCreate : ClubNavType("club_create")
     data object ClubModify : ClubNavType("club_modify")
     data object ClubRecruitCreate : ClubNavType("club_recruit_create")
+    data object ClubRecruitModify : ClubNavType("club_recruit_modify")
 }

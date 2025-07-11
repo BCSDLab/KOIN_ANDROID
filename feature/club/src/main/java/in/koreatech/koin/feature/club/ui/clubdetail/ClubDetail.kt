@@ -114,6 +114,7 @@ fun ClubDetail(
     onTopbarBackClick: () -> Unit = {},
     onModifyClick: (Int) -> Unit = {},
     onRecruitCreateClick: (Int) -> Unit = {},
+    onRecruitModifyClick: (Int) -> Unit = {},
     resetClubModifiedState: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
@@ -640,6 +641,7 @@ fun ClubDetail(
                                 onImageClick = viewModel::showImageDialog,
                                 onRecruitCreateClick = { onRecruitCreateClick(state.clubId) },
                                 showRecruitDeleteDialog = viewModel::showRecruitDeleteDialog,
+                                onRecruitModifyClick = { onRecruitModifyClick(state.clubId) },
                                 isManager = state.clubDetails?.manager ?: false
                             )
                         }
