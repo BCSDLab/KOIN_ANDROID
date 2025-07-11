@@ -20,7 +20,7 @@ data class ShopResponse(
     @SerializedName("open_status") val openStatus: String
 ) {
     data class OrderStoreShopsOpenResponse(
-        @SerializedName("day_of_week") val dayOfWeek: Int,
+        @SerializedName("day_of_week") val dayOfWeek: String,
         @SerializedName("closed") val closed: Boolean,
         @SerializedName("open_time") val openTime: String,
         @SerializedName("close_time") val closeTime: String
