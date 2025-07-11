@@ -19,7 +19,9 @@ interface ClubAuthApi {
     @GET(URLConstant.CLUBS.CLUBS)
     suspend fun getClubs(
         @Query("categoryId") id: Int?,
-        @Query("sortType") sortType: String?
+        @Query("sortType") sortType: String?,
+        @Query("isRecruiting") isRecruiting: Boolean,
+        @Query("query") query: String
     ): ClubsResponse
 
     @GET(URLConstant.CLUBS.CLUBID.CLUBID)

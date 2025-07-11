@@ -37,7 +37,11 @@ fun ClubsResponse.toClubs() = Clubs(
             likes = it.likes,
             imageUrl = it.imageUrl,
             isLiked = it.isLiked,
-            isLikeHidden = it.isLikeHidden
+            isLikeHidden = it.isLikeHidden,
+            recruitmentInfo = Clubs.ClubItemRecruitmentInfo(
+                status = it.recruitmentInfo.status,
+                dDay = it.recruitmentInfo.dDay
+            )
         )
     }
 )

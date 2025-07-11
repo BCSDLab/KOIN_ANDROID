@@ -17,9 +17,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -52,10 +53,12 @@ import `in`.koreatech.koin.feature.club.component.KoinClubCategoryItem
 import `in`.koreatech.koin.feature.club.component.KoinClubDropdown
 import `in`.koreatech.koin.feature.club.component.KoinClubListItem
 import `in`.koreatech.koin.feature.club.component.KoinClubMessageDialog
+import `in`.koreatech.koin.feature.club.component.KoinClubSwitch
 import `in`.koreatech.koin.feature.club.model.ClubSort
 import `in`.koreatech.koin.feature.club.model.ParcelizeClubItem
 import `in`.koreatech.koin.feature.club.model.clubCategories
 import `in`.koreatech.koin.feature.club.model.clubSortType
+import `in`.koreatech.koin.feature.club.model.clubSortTypeWithRecruitment
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.snackbar.DetailSnackBar
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.compose.collectAsState
@@ -130,6 +133,7 @@ fun ClubListScreen(
             shouldShowClubCreateDialog = uiState.shouldShowClubCreateDialog,
             shouldShowLoginDialog = uiState.shouldShowLoginDialog,
             isAnonymous = uiState.isAnonymous,
+            isRecruiting = uiState.isRecruiting,
             modifier = Modifier.padding(innerPadding),
             onCategoryChange = { categoryId ->
                 viewModel.updateCategoryId(categoryId)
@@ -153,6 +157,9 @@ fun ClubListScreen(
             onLikeClick = { clubId ->
                 viewModel.changeClubLike(clubId)
             },
+            onRecruitmentChange = { isRecruiting ->
+                viewModel.updateRecruiting(isRecruiting)
+            },
             navigateToLogin = {
                 Intent(Intent.ACTION_VIEW, LOGIN_ACTIVITY_URL.toUri()).let {
                     context.startActivity(it)
@@ -173,6 +180,7 @@ fun ClubListScreenImpl(
     shouldShowClubCreateDialog: Boolean,
     shouldShowLoginDialog: Boolean,
     isAnonymous: Boolean,
+    isRecruiting: Boolean,
     modifier: Modifier = Modifier,
     onCategoryChange: (Int?) -> Unit = { },
     onSortTypeChange: (ClubSort) -> Unit = { },
@@ -181,6 +189,7 @@ fun ClubListScreenImpl(
     onShowClubCreateDialogChange: (Boolean) -> Unit = { },
     onShowLoginDialogChange: (Boolean) -> Unit = { _ -> },
     onLikeClick: (Int) -> Unit = { _ -> },
+    onRecruitmentChange: (Boolean) -> Unit = { _ -> },
     navigateToClubDetail: (Int) -> Unit = { _ -> },
     navigateToLogin: () -> Unit = { }
 ) {
@@ -288,7 +297,7 @@ fun ClubListScreenImpl(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp, bottom = 4.dp),
+                    .padding(top = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -302,16 +311,40 @@ fun ClubListScreenImpl(
                 KoinClubDropdown(
                     text = stringResource(sortType.stringRes),
                     isDropdownExpanded = isDropdownExpanded,
-                    items = clubSortType.map { stringResource(it.stringRes) }.toPersistentList(),
+                    items = (if (isRecruiting) clubSortTypeWithRecruitment else clubSortType).map { stringResource(it.stringRes) }.toPersistentList(),
                     onDropdownExpandChange = onDropdownExpandChange,
                     onItemSelected = { index ->
-                        onSortTypeChange(clubSortType[index])
+                        onSortTypeChange((if (isRecruiting) clubSortTypeWithRecruitment else clubSortType)[index])
                     }
                 )
             }
         }
 
-        items(clubList) {
+        item {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Spacer(modifier = Modifier.weight(1f))
+
+                Text(
+                    text = stringResource(R.string.club_list_recruiting),
+                    style = KoinTheme.typography.regular14,
+                    color = KoinTheme.colors.neutral800
+                )
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                KoinClubSwitch(
+                    checked = isRecruiting,
+                    onCheckedChange = onRecruitmentChange
+                )
+            }
+        }
+
+        itemsIndexed(clubList) { index, it ->
             KoinClubListItem(
                 id = it.id,
                 name = it.name,
@@ -320,7 +353,11 @@ fun ClubListScreenImpl(
                 logoUrl = it.imageUrl,
                 isLiked = it.isLiked,
                 isLikeHidden = it.isLikeHidden,
-                modifier = Modifier.padding(vertical = 12.dp),
+                recruitmentInfo = it.recruitmentInfo,
+                modifier = Modifier.padding(
+                    top = if (index == 0) 0.dp else 12.dp,
+                    bottom = if (index == clubList.lastIndex) 12.dp else 0.dp
+                ),
                 onClick = { id ->
                     EventLogger.logCampusClickEvent(
                         AnalyticsConstant.Label.Club.MAIN_SELECT_CLUB,
@@ -369,10 +406,11 @@ fun ClubListScreenPreview() {
         isLoading = false,
         clubList = emptyList(),
         selectedCategoryId = 1,
-        sortType = ClubSort.NONE,
+        sortType = ClubSort.CREATED_AT_ASC,
         isDropdownExpanded = false,
         shouldShowClubCreateDialog = false,
         shouldShowLoginDialog = false,
-        isAnonymous = true
+        isAnonymous = true,
+        isRecruiting = false
     )
 }
