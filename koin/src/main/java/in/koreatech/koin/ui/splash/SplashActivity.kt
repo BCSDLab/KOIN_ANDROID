@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -35,7 +36,6 @@ import `in`.koreatech.koin.util.ext.observeLiveData
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
-import androidx.core.net.toUri
 
 @AndroidEntryPoint
 class SplashActivity : ActivityBase() {
@@ -67,7 +67,7 @@ class SplashActivity : ActivityBase() {
         setContentView(R.layout.activity_start)
 
         prefs = getSharedPreferences("info_required_once", MODE_PRIVATE)
-        isShownBefore = prefs.getInt("isShownBefore", -1)   // -1:보여지지 않음, other:보여줌
+        isShownBefore = prefs.getInt("isShownBefore", -1) // -1:보여지지 않음, other:보여줌
         splashViewModel.setIsShownBefore(isShownBefore)
 
         initView()
@@ -175,7 +175,7 @@ class SplashActivity : ActivityBase() {
         }
     }
 
-    private fun gotoArticleActivityOrDelay(modal:Boolean = false) {
+    private fun gotoArticleActivityOrDelay(modal: Boolean = false) {
         val path = intent.data?.path?.split("/")?.getOrNull(2)
         lifecycleScope.launch {
             delay()
@@ -200,7 +200,7 @@ class SplashActivity : ActivityBase() {
         }
     }
 
-    private fun gotoMainActivityOrDelay(modal:Boolean = false) {
+    private fun gotoMainActivityOrDelay(modal: Boolean = false) {
         val targetId = intent.getIntExtra(EXTRA_ID, -1)
         val targetBoardId = intent.getIntExtra(EXTRA_BOARD_ID, -1)
         val targetArticleId = intent.getIntExtra(EXTRA_ARTICLE_ID, -1)

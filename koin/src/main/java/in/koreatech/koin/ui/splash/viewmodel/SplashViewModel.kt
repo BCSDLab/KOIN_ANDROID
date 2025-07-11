@@ -35,8 +35,8 @@ class SplashViewModel @Inject constructor(
     private val _tokenState = SingleLiveEvent<TokenState>()
     val tokenState: LiveData<TokenState> get() = _tokenState
 
-    var isShownBefore:Int = -1
-    var isInfoRequired:Boolean = false
+    var isShownBefore: Int = -1
+    var isInfoRequired: Boolean = false
 
     fun getIsInfoRequired(): Boolean {
         return isInfoRequired
@@ -64,7 +64,7 @@ class SplashViewModel @Inject constructor(
     private fun checkToken() {
         viewModelScope.launchIgnoreCancellation {
             if (isTokenSavedInDeviceUseCase()) {
-                if(isShownBefore != 1) {
+                if (isShownBefore != 1) {
                     getUserInfoUseCase()
                         .onSuccess { user ->
                             when (user) {

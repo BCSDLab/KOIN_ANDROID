@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,18 +25,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.R
-import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
-import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
-import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
-import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButtonColors
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
-
+import `in`.koreatech.koin.core.designsystem.R
+import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
+import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 /**
  * 긍정, 부정 버튼이 있는 다이얼로그
@@ -64,15 +60,14 @@ fun ConfirmDialog(
 //    cancellable: Boolean = true,
 ) {
     BasicAlertDialog(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .background(
-                    color = KoinTheme.colors.neutral0,
-                    shape = KoinTheme.shapes.extraSmall
-                )
-                .padding(horizontal = 32.dp, vertical = 24.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(
+                color = KoinTheme.colors.neutral0,
+                shape = KoinTheme.shapes.extraSmall
+            )
+            .padding(horizontal = 32.dp, vertical = 24.dp),
         onDismissRequest = { onNegative() }
     ) {
         Column(
@@ -124,15 +119,14 @@ fun ConfirmDialog(
 //    cancellable: Boolean = true,
 ) {
     BasicAlertDialog(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .background(
-                    color = KoinTheme.colors.neutral0,
-                    shape = KoinTheme.shapes.extraSmall
-                )
-                .padding(horizontal = 32.dp, vertical = 24.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(
+                color = KoinTheme.colors.neutral0,
+                shape = KoinTheme.shapes.extraSmall
+            )
+            .padding(horizontal = 32.dp, vertical = 24.dp),
         onDismissRequest = { onNegative() }
     ) {
         Column(
@@ -188,15 +182,14 @@ fun ConfirmDialog(
     )
 
     BasicAlertDialog(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .background(
-                    color = KoinTheme.colors.neutral0,
-                    shape = KoinTheme.shapes.extraSmall
-                )
-                .padding(horizontal = 32.dp, vertical = 24.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(
+                color = KoinTheme.colors.neutral0,
+                shape = KoinTheme.shapes.extraSmall
+            )
+            .padding(horizontal = 32.dp, vertical = 24.dp),
         onDismissRequest = { onNegative() }
     ) {
         Column(
@@ -264,15 +257,14 @@ fun ConfirmDialog(
     )
 
     BasicAlertDialog(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .background(
-                    color = KoinTheme.colors.neutral0,
-                    shape = KoinTheme.shapes.extraSmall
-                )
-                .padding(horizontal = 32.dp, vertical = 24.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(
+                color = KoinTheme.colors.neutral0,
+                shape = KoinTheme.shapes.extraSmall
+            )
+            .padding(horizontal = 32.dp, vertical = 24.dp),
         onDismissRequest = { onNegative() }
     ) {
         Column(
@@ -311,10 +303,9 @@ private fun ConfirmDialogPreviewWithLottie() {
         ConfirmDialog(
             title = "다이얼로그 제목",
             description = "이러쿵 저러쿵 이러쿵 저러쿵 이러쿵 저러쿵 이러쿵 저러쿵 ",
-            descriptionStyle =
-                KoinTheme.typography.regular14.copy(
-                    color = KoinTheme.colors.neutral500
-                ),
+            descriptionStyle = KoinTheme.typography.regular14.copy(
+                color = KoinTheme.colors.neutral500
+            ),
             onPositive = {},
             onNegative = {},
             lottieRes = R.raw.new_koin_lottie
@@ -329,10 +320,9 @@ private fun ConfirmDialogPreview() {
         ChoiceDialog(
             title = "다이얼로그 제목",
             description = "이러쿵 저러쿵 이러쿵 저러쿵 이러쿵 저러쿵 이러쿵 저러쿵 ",
-            descriptionStyle =
-                KoinTheme.typography.regular14.copy(
-                    color = KoinTheme.colors.neutral500
-                ),
+            descriptionStyle = KoinTheme.typography.regular14.copy(
+                color = KoinTheme.colors.neutral500
+            ),
             onPositive = {},
             onNegative = {}
         )
@@ -346,35 +336,33 @@ private fun ConfirmDialogComposableTextPreview() {
         ChoiceDialog(
             title = {
                 Text(
-                    text =
-                        buildAnnotatedString {
-                            withStyle(KoinTheme.typography.medium16.toSpanStyle()) {
-                                append("이렇게 ")
-                            }
-                            withStyle(KoinTheme.typography.bold16.toSpanStyle()) {
-                                append("강조하는")
-                            }
-                            withStyle(KoinTheme.typography.medium16.toSpanStyle()) {
-                                append(" 제목은 컴포저블로")
-                            }
-                        },
+                    text = buildAnnotatedString {
+                        withStyle(KoinTheme.typography.medium16.toSpanStyle()) {
+                            append("이렇게 ")
+                        }
+                        withStyle(KoinTheme.typography.bold16.toSpanStyle()) {
+                            append("강조하는")
+                        }
+                        withStyle(KoinTheme.typography.medium16.toSpanStyle()) {
+                            append(" 제목은 컴포저블로")
+                        }
+                    },
                     textAlign = TextAlign.Center
                 )
             },
             description = {
                 Text(
-                    text =
-                        buildAnnotatedString {
-                            withStyle(KoinTheme.typography.regular16.toSpanStyle()) {
-                                append("설명하는 부분도 ")
-                            }
-                            withStyle(KoinTheme.typography.medium16.copy(color = KoinTheme.colors.danger700).toSpanStyle()) {
-                                append("이렇게 강조하는")
-                            }
-                            withStyle(KoinTheme.typography.regular16.toSpanStyle()) {
-                                append(" 컴포저블로 추가할 수 있습니다")
-                            }
-                        },
+                    text = buildAnnotatedString {
+                        withStyle(KoinTheme.typography.regular16.toSpanStyle()) {
+                            append("설명하는 부분도 ")
+                        }
+                        withStyle(KoinTheme.typography.medium16.copy(color = KoinTheme.colors.danger700).toSpanStyle()) {
+                            append("이렇게 강조하는")
+                        }
+                        withStyle(KoinTheme.typography.regular16.toSpanStyle()) {
+                            append(" 컴포저블로 추가할 수 있습니다")
+                        }
+                    },
                     textAlign = TextAlign.Center
                 )
             },

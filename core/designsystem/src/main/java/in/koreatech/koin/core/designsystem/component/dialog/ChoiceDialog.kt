@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,18 +25,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
 import `in`.koreatech.koin.core.designsystem.R
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButtonColors
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.rememberLottieComposition
-
 
 /**
  * 긍정, 부정 버튼이 있는 다이얼로그
@@ -68,8 +66,7 @@ fun ChoiceDialog(
 //    cancellable: Boolean = true,
 ) {
     BasicAlertDialog(
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .background(
@@ -138,15 +135,14 @@ fun ChoiceDialog(
 //    cancellable: Boolean = true,
 ) {
     BasicAlertDialog(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .background(
-                    color = KoinTheme.colors.neutral0,
-                    shape = KoinTheme.shapes.extraSmall
-                )
-                .padding(horizontal = 32.dp, vertical = 24.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(
+                color = KoinTheme.colors.neutral0,
+                shape = KoinTheme.shapes.extraSmall
+            )
+            .padding(horizontal = 32.dp, vertical = 24.dp),
         onDismissRequest = { onNegative() }
     ) {
         Column(
@@ -210,17 +206,15 @@ fun ChoiceDialog(
     val composition by rememberLottieComposition(
         LottieCompositionSpec.RawRes(lottieRes)
     )
-
     BasicAlertDialog(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .background(
-                    color = KoinTheme.colors.neutral0,
-                    shape = KoinTheme.shapes.extraSmall
-                )
-                .padding(horizontal = 32.dp, vertical = 24.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(
+                color = KoinTheme.colors.neutral0,
+                shape = KoinTheme.shapes.extraSmall
+            )
+            .padding(horizontal = 32.dp, vertical = 24.dp),
         onDismissRequest = { onNegative() }
     ) {
         Column(
@@ -296,15 +290,14 @@ fun ChoiceDialog(
     )
 
     BasicAlertDialog(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .background(
-                    color = KoinTheme.colors.neutral0,
-                    shape = KoinTheme.shapes.extraSmall
-                )
-                .padding(horizontal = 32.dp, vertical = 24.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(
+                color = KoinTheme.colors.neutral0,
+                shape = KoinTheme.shapes.extraSmall
+            )
+            .padding(horizontal = 32.dp, vertical = 24.dp),
         onDismissRequest = { onNegative() }
     ) {
         Column(
@@ -349,10 +342,9 @@ private fun ChoiceDialogPreviewWithLottie() {
         ChoiceDialog(
             title = "다이얼로그 제목",
             description = "이러쿵 저러쿵 이러쿵 저러쿵 이러쿵 저러쿵 이러쿵 저러쿵 ",
-            descriptionStyle =
-                KoinTheme.typography.regular14.copy(
-                    color = KoinTheme.colors.neutral500
-                ),
+            descriptionStyle = KoinTheme.typography.regular14.copy(
+                color = KoinTheme.colors.neutral500
+            ),
             onPositive = {},
             onNegative = {},
             lottieRes = R.raw.new_koin_lottie
@@ -367,8 +359,7 @@ private fun ChoiceDialogPreview() {
         ChoiceDialog(
             title = "다이얼로그 제목",
             description = "이러쿵 저러쿵 이러쿵 저러쿵 이러쿵 저러쿵 이러쿵 저러쿵 ",
-            descriptionStyle =
-            KoinTheme.typography.regular14.copy(
+            descriptionStyle = KoinTheme.typography.regular14.copy(
                 color = KoinTheme.colors.neutral500
             ),
             onPositive = {},

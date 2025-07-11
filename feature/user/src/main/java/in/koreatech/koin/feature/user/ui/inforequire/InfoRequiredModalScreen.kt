@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.user.ui.inforequire
 
-import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -16,7 +15,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.feature.user.ui.userinfo.UserInfoActivity
 
 @Composable
 fun InfoRequiredModalScreen(
@@ -29,14 +27,14 @@ fun InfoRequiredModalScreen(
 ) {
     Box(
         modifier = Modifier
-        .fillMaxSize()
-        .background(Color(0f, 0f, 0f, 0.7f)) // 배경 70% 검정 투명
-        .clickable(
-            indication = null,
-            interactionSource = remember { MutableInteractionSource() }
-        ) {
-            onNegative()
-        },
+            .fillMaxSize()
+            .background(Color(0f, 0f, 0f, 0.7f)) // 배경 70% 검정 투명
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) {
+                onNegative()
+            },
         contentAlignment = Alignment.Center
     ) {
         Box(
@@ -44,7 +42,7 @@ fun InfoRequiredModalScreen(
                 .clickable(enabled = false) {} // 배경 클릭 막기
         ) {
             ChoiceDialog(
-                title= title,
+                title = title,
                 description = description,
                 descriptionStyle = descriptionStyle,
                 onPositive = onPositive,
@@ -63,10 +61,10 @@ fun ChoiceDialogPreview() {
             title = "아직 입력되지 않은 정보가 있어요",
             description = "필수 정보를 입력하시면 더 많은 기능을 이용하실 수 있어요.\n지금 입력하시겠어요?",
             descriptionStyle =
-                KoinTheme.typography.regular12.copy(
-                    textAlign = TextAlign.Center,
-                    color = KoinTheme.colors.neutral500
-                ),
+            KoinTheme.typography.regular12.copy(
+                textAlign = TextAlign.Center,
+                color = KoinTheme.colors.neutral500
+            ),
             onPositive = {},
             onNegative = {}
         )

@@ -5,7 +5,6 @@ import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -39,7 +38,7 @@ class SignInActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         prefs = getSharedPreferences("info_required", MODE_PRIVATE)
-        isShownBefore = prefs.getInt("isShownBefore", -1)    // -1:보여지지 않음, 0:보여줬는데 정보 수정 안함, 1:정보수정 완료
+        isShownBefore = prefs.getInt("isShownBefore", -1) // -1:보여지지 않음, 0:보여줬는데 정보 수정 안함, 1:정보수정 완료
         viewModel.setIsShownBefore(isShownBefore)
 
         try {
@@ -77,8 +76,7 @@ class SignInActivity : ComponentActivity() {
                     startActivity(Intent(this, InfoRequiredFullActivity::class.java))
                     finish()
                     return
-                }
-                else if (isShownBefore == 0) {
+                } else if (isShownBefore == 0) {
                     modal = true
                 }
             }

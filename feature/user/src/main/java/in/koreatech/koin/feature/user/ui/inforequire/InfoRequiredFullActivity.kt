@@ -5,21 +5,18 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
+import androidx.core.content.edit
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.feature.user.R
 import `in`.koreatech.koin.feature.user.ui.userinfo.UserInfoActivity
-import androidx.core.content.edit
 
-class InfoRequiredFullActivity: ComponentActivity() {
+class InfoRequiredFullActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         val prefs = getSharedPreferences("info_required", Context.MODE_PRIVATE)
         prefs.edit { putInt("isShownBefore", 0) }
-
-        super.onCreate(savedInstanceState)
         enableEdgeToEdgeWithLightStatusBar()
         setContent {
             KoinTheme {
@@ -32,7 +29,7 @@ class InfoRequiredFullActivity: ComponentActivity() {
                         val intent = Intent(this@InfoRequiredFullActivity, UserInfoActivity::class.java)
                         startActivity(intent)
                         finish()
-                    },
+                    }
                 )
             }
         }
