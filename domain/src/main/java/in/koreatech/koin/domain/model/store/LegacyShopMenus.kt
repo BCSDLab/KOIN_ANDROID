@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.domain.model.store
 
-data class ShopMenus(
+data class LegacyShopMenus(
     val id: Int,
     val name: String,
     val isHidden: Boolean,

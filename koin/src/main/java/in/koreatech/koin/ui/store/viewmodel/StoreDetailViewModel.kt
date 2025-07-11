@@ -9,7 +9,7 @@ import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.model.store.ReviewFilterEnum
 import `in`.koreatech.koin.domain.model.store.ShopEvent
-import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
 import `in`.koreatech.koin.domain.model.store.StoreMenu
@@ -27,7 +27,6 @@ import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
 import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.domain.util.onFailure
-import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.ui.splash.state.TokenState
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -49,8 +48,8 @@ class StoreDetailViewModel @Inject constructor(
     private val _store = MutableLiveData<StoreWithMenu>()
     val categories: LiveData<StoreMenu> get() = _categories
     private var _categories = MutableLiveData<StoreMenu>()
-    val storeMenu: LiveData<List<ShopMenus>> get() = _storeMenu
-    private val _storeMenu = MutableLiveData<List<ShopMenus>>()
+    val storeMenu: LiveData<List<LegacyShopMenus>> get() = _storeMenu
+    private val _storeMenu = MutableLiveData<List<LegacyShopMenus>>()
     val storeEvent: LiveData<List<ShopEvent>> get() = _storeEvent
     private val _storeEvent = MutableLiveData<List<ShopEvent>>()
 

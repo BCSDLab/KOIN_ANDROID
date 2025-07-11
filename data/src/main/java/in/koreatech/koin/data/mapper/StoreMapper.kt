@@ -31,7 +31,7 @@ import `in`.koreatech.koin.domain.model.store.BenefitCategory
 import `in`.koreatech.koin.domain.model.store.BenefitCategoryList
 import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.model.store.ShopEvents
-import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 import `in`.koreatech.koin.domain.model.store.ShopSearchRelated
 import `in`.koreatech.koin.domain.model.store.ShopSearchRelatedList
 import `in`.koreatech.koin.domain.model.store.Store
@@ -146,7 +146,7 @@ fun StoreMenuCategoriesResponse.toStoreMenuCategories() =
     )
 
 fun LegacyShopMenusResponse.toShopMenus() =
-    ShopMenus(
+    LegacyShopMenus(
         id = id,
         name = name,
         isHidden = isHidden,
@@ -158,7 +158,7 @@ fun LegacyShopMenusResponse.toShopMenus() =
     )
 
 fun ShopMenuOptionsResponse.toShopMenuOptions() =
-    ShopMenus.ShopMenuOptions(
+    LegacyShopMenus.ShopMenuOptions(
         option = option ?: "",
         price = price
     )
