@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -125,7 +126,9 @@ fun UserInfoEditScreen(
     ) { contentPadding ->
         if (uiState.isLoading) {
             Box(
-                modifier = Modifier.padding(contentPadding).fillMaxSize(),
+                modifier = Modifier
+                    .padding(contentPadding)
+                    .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()
@@ -263,7 +266,8 @@ fun GeneralUserInfo(
             title = stringResource(R.string.user_info_general_user_info_login_id),
             value = loginId,
             onValueChange = onLoginIdChange,
-            readOnly = true
+            readOnly = true,
+            isFieldRequired = true
         )
 
         Box(
@@ -279,7 +283,8 @@ fun GeneralUserInfo(
         KoinUserBasicItem(
             title = stringResource(R.string.user_info_general_user_info_name),
             value = name,
-            onValueChange = onNameChange
+            onValueChange = onNameChange,
+            isFieldRequired = true
         )
 
         Box(
@@ -373,10 +378,20 @@ fun GeneralUserInfo(
             }
         }
 
-        Text(
-            text = stringResource(R.string.user_info_general_user_info_gender),
-            style = KoinTheme.typography.regular16
-        )
+        Row {
+            Text(
+                text = stringResource(R.string.user_info_general_user_info_gender),
+                style = KoinTheme.typography.regular16
+            )
+
+            Spacer(modifier = Modifier.width(6.dp))
+
+            Text(
+                text = "*",
+                style = KoinTheme.typography.regular16,
+                color = Color(0xFFC82A2A) // Color code not defined in the design system
+            )
+        }
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -406,7 +421,8 @@ fun StudentUserInfo(
         KoinUserBasicItem(
             title = stringResource(R.string.user_info_student_info_student_number),
             value = studentNumber,
-            onValueChange = onStudentNumberChange
+            onValueChange = onStudentNumberChange,
+            isFieldRequired = true
         )
 
         Box(
@@ -421,6 +437,23 @@ fun StudentUserInfo(
                 )
             }
         }
+
+        Row {
+            Text(
+                text = stringResource(R.string.user_info_student_info_major),
+                style = KoinTheme.typography.regular16
+            )
+
+            Spacer(modifier = Modifier.width(6.dp))
+
+            Text(
+                text = "*",
+                style = KoinTheme.typography.regular16,
+                color = Color(0xFFC82A2A) // Color code not defined in the design system
+            )
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
 
         KoinUserDropdown(
             text = major,
@@ -514,7 +547,8 @@ fun UserInfoPhoneNumber(
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Done
         ),
-        visualTransformation = KRPhoneNumberVisualTransformation()
+        visualTransformation = KRPhoneNumberVisualTransformation(),
+        isFieldRequired = true
     )
 
     Box(modifier = Modifier.height(32.dp)) {
@@ -562,7 +596,8 @@ fun UserInfoPhoneNumber(
             VerificationMethodState.NotFound,
             VerificationMethodState.None,
             VerificationMethodState.Available,
-            is VerificationMethodState.Failed -> {}
+            is VerificationMethodState.Failed -> {
+            }
         }
     }
 }
@@ -636,7 +671,7 @@ fun UserInfoVerificationCodeVerification(
     }
 
     when (verificationCodeState) {
-        VerificationCodeState.None -> { }
+        VerificationCodeState.None -> {}
         VerificationCodeState.Valid -> {
             KoinUserTextFieldAlert(
                 text = stringResource(R.string.user_info_code_correct),
@@ -650,6 +685,7 @@ fun UserInfoVerificationCodeVerification(
                 state = KoinUserTextFieldAlertState.Warning
             )
         }
+
         VerificationCodeState.Expired -> {
             KoinUserTextFieldAlert(
                 text = stringResource(R.string.user_info_code_timeout),
@@ -677,18 +713,22 @@ fun handleSideEffect(
         UserInfoEditSideEffect.InvalidDataError -> {
             Toast.makeText(context, R.string.user_info_invalid_data_error, Toast.LENGTH_SHORT).show()
         }
+
         UserInfoEditSideEffect.NicknameOrEmailConflictError -> {
             // API sent 409 when either nickname or email is already in use.
             // Since we allow the user to press the save button only after the nickname conflict check passes,
             // we assume the conflict is due to the email.
             Toast.makeText(context, R.string.user_info_email_conflict_error, Toast.LENGTH_SHORT).show()
         }
+
         UserInfoEditSideEffect.PhoneNumberValidateRequiredError -> {
             Toast.makeText(context, R.string.user_info_phone_number_validate_required_error, Toast.LENGTH_SHORT).show()
         }
+
         UserInfoEditSideEffect.UnknownError -> {
             Toast.makeText(context, R.string.user_info_unknown_error, Toast.LENGTH_SHORT).show()
         }
+
         UserInfoEditSideEffect.UnknownUserError -> {
             Toast.makeText(context, R.string.user_info_user_not_found_error, Toast.LENGTH_SHORT).show()
         }
@@ -696,6 +736,7 @@ fun handleSideEffect(
         UserInfoEditSideEffect.WithdrawalError -> {
             Toast.makeText(context, R.string.user_info_withdraw_error, Toast.LENGTH_SHORT).show()
         }
+
         UserInfoEditSideEffect.WithdrawalSuccess -> {
             Toast.makeText(context, R.string.user_info_withdraw_success, Toast.LENGTH_SHORT).show()
             Intent(Intent.ACTION_VIEW).apply {
