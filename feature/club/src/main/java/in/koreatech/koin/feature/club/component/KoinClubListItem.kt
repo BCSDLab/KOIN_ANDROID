@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
+import `in`.koreatech.koin.feature.club.model.ParcelizeClubItem
 
 @Composable
 fun KoinClubListItem(
@@ -34,6 +35,7 @@ fun KoinClubListItem(
     logoUrl: String,
     isLiked: Boolean,
     isLikeHidden: Boolean,
+    recruitmentInfo: ParcelizeClubItem.ParcelizeClubItemRecruitmentInfo,
     modifier: Modifier = Modifier,
     onClick: (Int) -> Unit = {},
     onLikeClick: (Int) -> Unit = {}
@@ -47,10 +49,21 @@ fun KoinClubListItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column {
-            Text(
-                text = name,
-                style = KoinTheme.typography.bold20
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = name,
+                    style = KoinTheme.typography.bold20
+                )
+
+                Spacer(modifier = Modifier.width(4.dp))
+
+                KoinClubRecruitmentLabel(
+                    labelType = recruitmentInfo.status,
+                    dDay = recruitmentInfo.dDay
+                )
+            }
 
             Text(
                 text = category,
@@ -106,7 +119,11 @@ fun KoinClubListItemPreview() {
                 likes = 100,
                 logoUrl = "https://example.com/logo.png",
                 isLiked = false,
-                isLikeHidden = false
+                isLikeHidden = false,
+                recruitmentInfo = ParcelizeClubItem.ParcelizeClubItemRecruitmentInfo(
+                    status = KoinClubRecruitmentLabelType.RECRUITING,
+                    dDay = 5
+                )
             )
         }
     }

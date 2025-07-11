@@ -339,6 +339,7 @@ fun ClubListScreenImpl(
                 logoUrl = it.imageUrl,
                 isLiked = it.isLiked,
                 isLikeHidden = it.isLikeHidden,
+                recruitmentInfo = it.recruitmentInfo,
                 modifier = Modifier.padding(vertical = 12.dp),
                 onClick = { id ->
                     EventLogger.logCampusClickEvent(
