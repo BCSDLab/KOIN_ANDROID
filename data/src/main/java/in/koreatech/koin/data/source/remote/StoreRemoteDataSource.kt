@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.source.remote
 
 import `in`.koreatech.koin.data.api.StoreApi
+import `in`.koreatech.koin.data.api.auth.StoreAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.mapper.toReportContent
 import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
@@ -22,6 +23,7 @@ import javax.inject.Inject
 
 class StoreRemoteDataSource @Inject constructor(
     private val storeApi: StoreApi,
+    private val storeAuthApi: StoreAuthApi,
     private val userAuthApi: UserAuthApi
 ) {
     suspend fun getStoreItems(): List<StoreItemResponse> {
