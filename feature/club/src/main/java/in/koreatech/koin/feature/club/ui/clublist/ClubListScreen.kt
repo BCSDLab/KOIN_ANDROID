@@ -17,9 +17,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -320,8 +322,21 @@ fun ClubListScreenImpl(
         }
 
         item {
-            Row {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Spacer(modifier = Modifier.weight(1f))
+
+                Text(
+                    text = stringResource(R.string.club_list_recruiting),
+                    style = KoinTheme.typography.regular14,
+                    color = KoinTheme.colors.neutral800
+                )
+
+                Spacer(modifier = Modifier.width(12.dp))
 
                 KoinClubSwitch(
                     checked = isRecruiting,
@@ -330,7 +345,7 @@ fun ClubListScreenImpl(
             }
         }
 
-        items(clubList) {
+        itemsIndexed(clubList) { index, it ->
             KoinClubListItem(
                 id = it.id,
                 name = it.name,
@@ -340,7 +355,10 @@ fun ClubListScreenImpl(
                 isLiked = it.isLiked,
                 isLikeHidden = it.isLikeHidden,
                 recruitmentInfo = it.recruitmentInfo,
-                modifier = Modifier.padding(vertical = 12.dp),
+                modifier = Modifier.padding(
+                    top = if (index == 0) 0.dp else 12.dp,
+                    bottom = if (index == clubList.lastIndex) 12.dp else 0.dp
+                ),
                 onClick = { id ->
                     EventLogger.logCampusClickEvent(
                         AnalyticsConstant.Label.Club.MAIN_SELECT_CLUB,

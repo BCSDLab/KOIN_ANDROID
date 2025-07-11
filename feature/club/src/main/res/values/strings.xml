@@ -72,6 +72,7 @@
     <string name="club_list_dislike_failed">좋아요 취소에 실패했습니다.</string>
     <string name="club_list_fetch_failed">동아리 목록을 불러오는데 실패했습니다.</string>
     <string name="club_list_count">총 %1$d개의 동아리가 있습니다.</string>
+    <string name="club_list_recruiting">모집 중인 동아리</string>
     <string name="club_list_label_none"></string>
     <string name="club_list_label_recruiting">D-%1$d</string>
     <string name="club_list_label_recruiting_finished">마감</string>
