@@ -84,7 +84,7 @@ import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
 import `in`.koreatech.koin.feature.club.component.DetailLoginDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialog
-import `in`.koreatech.koin.feature.club.component.getKoinClubCancelButtonColor
+import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_CATEGORY
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_DESCRIPTION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_GOOGLE_FORM
@@ -304,7 +304,7 @@ fun ClubDetail(
                 descriptionColor = KoinTheme.colors.neutral600,
                 positiveButtonText = stringResource(R.string.detail_recruit_delete_dialog_positive),
                 negativeButtonText = stringResource(R.string.detail_recruit_delete_dialog_negative),
-                positiveButtonColors = getKoinClubCancelButtonColor(),
+                positiveButtonColors = KoinClubExtraSmallDialogDanger.positiveButtonColors,
                 onPositive = {
                     viewModel.dismissRecruitDeleteDialog()
                     viewModel.deleteRecruitment()
