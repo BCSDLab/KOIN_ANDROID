@@ -1,10 +1,17 @@
 package `in`.koreatech.koin.feature.user.ui.signin
 
+import android.content.Context
+import android.util.Log
+import androidx.activity.ComponentActivity.MODE_PRIVATE
+import androidx.core.content.edit
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.model.user.UserType
 import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
@@ -15,12 +22,16 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val userLoginUseCase: UserLoginUseCase
+    private val userLoginUseCase: UserLoginUseCase,
+    private val getUserInfoUseCase: GetUserInfoUseCase
 ) : ViewModel(), ContainerHost<SignInState, SignInSideEffect> {
     override val container = container<SignInState, SignInSideEffect>(SignInState())
+    private var isInfoRequired: Int = 0     // -1 : 정보 완벽함, 0: 로그인 안함, 1 : 정보 없음
+    private var isShownBefore: Int = -1
 
     fun setLoginId(loginId: String) {
         blockingIntent {
@@ -46,14 +57,47 @@ class SignInViewModel @Inject constructor(
         }
     }
 
+    fun getIsInfoRequired(): Int {
+        return isInfoRequired
+    }
+
+    fun setIsShownBefore(shown: Int) {
+        isShownBefore = shown
+    }
+
     fun signIn() = intent {
         userLoginUseCase(state.loginId, state.password).onSuccess {
-            postSideEffect(SignInSideEffect.SignInSuccess)
             EventLogger.logClickEvent(
                 EventAction.USER,
                 AnalyticsConstant.Label.LOGIN,
                 "로그인 완료"
             )
+            if(isShownBefore != 1) {
+                isInfoRequired = -1
+                getUserInfoUseCase()
+                    .onSuccess { user ->
+                        when (user) {
+                            is User.Anonymous -> {
+                            }
+
+                            is User.Student -> {
+                                if (user.name == null || user.phoneNumber == null || user.major == null || user.studentNumber == null) {
+                                    isInfoRequired = 1
+                                }
+                            }
+
+                            is User.General -> {
+                            }
+                        }
+                    }.onFailure {
+                        intent {
+                            reduce {
+                                state.copy(loginError = SignInState.LoginError(true, it.message))
+                            }
+                        }
+                    }
+            }
+            postSideEffect(SignInSideEffect.SignInSuccess)
         }.onFailure {
             EventLogger.logClickEvent(
                 EventAction.USER,

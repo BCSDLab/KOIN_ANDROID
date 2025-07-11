@@ -46,14 +46,12 @@ import com.airbnb.lottie.compose.rememberLottieComposition
  * @param onNegative 부정 버튼 클릭시 동작할 함수
  * @param titleStyle 제목 텍스트 스타일
  * @param descriptionStyle 설명 텍스트 스타일
- * @param negativeButtonText 부정 버튼 텍스트
  * @param positiveButtonText 긍정 버튼 텍스트
  * @param positiveButtonColors 긍정 버튼 색상
- * @param negativeButtonColors 부정 버튼 색상
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChoiceDialog(
+fun ConfirmDialog(
     title: String,
     description: String,
     onPositive: () -> Unit,
@@ -62,21 +60,19 @@ fun ChoiceDialog(
     titleStyle: TextStyle = KoinTheme.typography.medium18,
     descriptionStyle: TextStyle = KoinTheme.typography.regular14,
     positiveButtonText: String = stringResource(id = R.string.common_confirmation),
-    negativeButtonText: String = stringResource(id = R.string.common_cancellation),
-    positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
-    negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral
+    positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary
 //    cancellable: Boolean = true,
 ) {
     BasicAlertDialog(
         modifier =
-        modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .background(
-                color = KoinTheme.colors.neutral0,
-                shape = KoinTheme.shapes.extraSmall
-            )
-            .padding(horizontal = 32.dp, vertical = 24.dp),
+            modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .background(
+                    color = KoinTheme.colors.neutral0,
+                    shape = KoinTheme.shapes.extraSmall
+                )
+                .padding(horizontal = 32.dp, vertical = 24.dp),
         onDismissRequest = { onNegative() }
     ) {
         Column(
@@ -95,12 +91,6 @@ fun ChoiceDialog(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                OutlinedBoxButton(
-                    modifier = Modifier.weight(1.0F),
-                    text = negativeButtonText,
-                    onClick = onNegative,
-                    colors = negativeButtonColors
-                )
                 FilledButton(
                     modifier = Modifier.weight(1.0F),
                     text = positiveButtonText,
@@ -118,23 +108,19 @@ fun ChoiceDialog(
  * @param description 제목에 대한 설명 컴포저블
  * @param onPositive 긍정 버튼 클릭시 동작할 함수
  * @param onNegative 부정 버튼 클릭시 동작할 함수
- * @param negativeButtonText 부정 버튼 텍스트
  * @param positiveButtonText 긍정 버튼 텍스트
  * @param positiveButtonColors 긍정 버튼 색상
- * @param negativeButtonColors 부정 버튼 색상
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChoiceDialog(
+fun ConfirmDialog(
     title: @Composable () -> Unit,
     description: @Composable () -> Unit,
     onPositive: () -> Unit,
     onNegative: () -> Unit,
     modifier: Modifier = Modifier,
     positiveButtonText: String = stringResource(id = R.string.common_confirmation),
-    negativeButtonText: String = stringResource(id = R.string.common_cancellation),
-    positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
-    negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral
+    positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary
 //    cancellable: Boolean = true,
 ) {
     BasicAlertDialog(
@@ -159,12 +145,6 @@ fun ChoiceDialog(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                OutlinedBoxButton(
-                    modifier = Modifier.weight(1.0F),
-                    text = negativeButtonText,
-                    onClick = onNegative,
-                    colors = negativeButtonColors
-                )
                 FilledButton(
                     modifier = Modifier.weight(1.0F),
                     text = positiveButtonText,
@@ -184,15 +164,13 @@ fun ChoiceDialog(
  * @param onNegative 부정 버튼 클릭시 동작할 함수
  * @param titleStyle 제목 텍스트 스타일
  * @param descriptionStyle 설명 텍스트 스타일
- * @param negativeButtonText 부정 버튼 텍스트
  * @param positiveButtonText 긍정 버튼 텍스트
  * @param positiveButtonColors 긍정 버튼 색상
- * @param negativeButtonColors 부정 버튼 색상
  * @param lottieRes lottie 파일(json)
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChoiceDialog(
+fun ConfirmDialog(
     title: String,
     description: String,
     onPositive: () -> Unit,
@@ -201,9 +179,7 @@ fun ChoiceDialog(
     titleStyle: TextStyle = KoinTheme.typography.medium18,
     descriptionStyle: TextStyle = KoinTheme.typography.regular14,
     positiveButtonText: String = stringResource(id = R.string.common_confirmation),
-    negativeButtonText: String = stringResource(id = R.string.common_cancellation),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
-    negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral,
     @RawRes lottieRes: Int
 //    cancellable: Boolean = true,
 ) {
@@ -247,12 +223,6 @@ fun ChoiceDialog(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                OutlinedBoxButton(
-                    modifier = Modifier.weight(1.0F),
-                    text = negativeButtonText,
-                    onClick = onNegative,
-                    colors = negativeButtonColors
-                )
                 FilledButton(
                     modifier = Modifier.weight(1.0F),
                     text = positiveButtonText,
@@ -266,28 +236,26 @@ fun ChoiceDialog(
 
 /**
  * 긍정, 부정 버튼과 lottie가 있는 다이얼로그
- * @param title 다이얼로그 제목 컴포저블
- * @param description 제목에 대한 설명 컴포저블
+ * @param title 다이얼로그 제목 텍스트
+ * @param description 제목에 대한 설명 텍스트
  * @param onPositive 긍정 버튼 클릭시 동작할 함수
  * @param onNegative 부정 버튼 클릭시 동작할 함수
- * @param negativeButtonText 부정 버튼 텍스트
+ * @param titleStyle 제목 텍스트 스타일
+ * @param descriptionStyle 설명 텍스트 스타일
  * @param positiveButtonText 긍정 버튼 텍스트
  * @param positiveButtonColors 긍정 버튼 색상
- * @param negativeButtonColors 부정 버튼 색상
  * @param lottieRes lottie 파일(json)
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChoiceDialog(
+fun ConfirmDialog(
     title: @Composable () -> Unit,
     description: @Composable () -> Unit,
     onPositive: () -> Unit,
     onNegative: () -> Unit,
     modifier: Modifier = Modifier,
     positiveButtonText: String = stringResource(id = R.string.common_confirmation),
-    negativeButtonText: String = stringResource(id = R.string.common_cancellation),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
-    negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral,
     @RawRes lottieRes: Int
 //    cancellable: Boolean = true,
 ) {
@@ -325,12 +293,6 @@ fun ChoiceDialog(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                OutlinedBoxButton(
-                    modifier = Modifier.weight(1.0F),
-                    text = negativeButtonText,
-                    onClick = onNegative,
-                    colors = negativeButtonColors
-                )
                 FilledButton(
                     modifier = Modifier.weight(1.0F),
                     text = positiveButtonText,
@@ -344,9 +306,9 @@ fun ChoiceDialog(
 
 @Preview
 @Composable
-private fun ChoiceDialogPreviewWithLottie() {
+private fun ConfirmDialogPreviewWithLottie() {
     KoinTheme {
-        ChoiceDialog(
+        ConfirmDialog(
             title = "다이얼로그 제목",
             description = "이러쿵 저러쿵 이러쿵 저러쿵 이러쿵 저러쿵 이러쿵 저러쿵 ",
             descriptionStyle =
@@ -362,15 +324,15 @@ private fun ChoiceDialogPreviewWithLottie() {
 
 @Preview
 @Composable
-private fun ChoiceDialogPreview() {
+private fun ConfirmDialogPreview() {
     KoinTheme {
         ChoiceDialog(
             title = "다이얼로그 제목",
             description = "이러쿵 저러쿵 이러쿵 저러쿵 이러쿵 저러쿵 이러쿵 저러쿵 ",
             descriptionStyle =
-            KoinTheme.typography.regular14.copy(
-                color = KoinTheme.colors.neutral500
-            ),
+                KoinTheme.typography.regular14.copy(
+                    color = KoinTheme.colors.neutral500
+                ),
             onPositive = {},
             onNegative = {}
         )
@@ -379,40 +341,40 @@ private fun ChoiceDialogPreview() {
 
 @Preview
 @Composable
-private fun ChoiceDialogComposableTextPreview() {
+private fun ConfirmDialogComposableTextPreview() {
     KoinTheme {
         ChoiceDialog(
             title = {
                 Text(
                     text =
-                    buildAnnotatedString {
-                        withStyle(KoinTheme.typography.medium16.toSpanStyle()) {
-                            append("이렇게 ")
-                        }
-                        withStyle(KoinTheme.typography.bold16.toSpanStyle()) {
-                            append("강조하는")
-                        }
-                        withStyle(KoinTheme.typography.medium16.toSpanStyle()) {
-                            append(" 제목은 컴포저블로")
-                        }
-                    },
+                        buildAnnotatedString {
+                            withStyle(KoinTheme.typography.medium16.toSpanStyle()) {
+                                append("이렇게 ")
+                            }
+                            withStyle(KoinTheme.typography.bold16.toSpanStyle()) {
+                                append("강조하는")
+                            }
+                            withStyle(KoinTheme.typography.medium16.toSpanStyle()) {
+                                append(" 제목은 컴포저블로")
+                            }
+                        },
                     textAlign = TextAlign.Center
                 )
             },
             description = {
                 Text(
                     text =
-                    buildAnnotatedString {
-                        withStyle(KoinTheme.typography.regular16.toSpanStyle()) {
-                            append("설명하는 부분도 ")
-                        }
-                        withStyle(KoinTheme.typography.medium16.copy(color = KoinTheme.colors.danger700).toSpanStyle()) {
-                            append("이렇게 강조하는")
-                        }
-                        withStyle(KoinTheme.typography.regular16.toSpanStyle()) {
-                            append(" 컴포저블로 추가할 수 있습니다")
-                        }
-                    },
+                        buildAnnotatedString {
+                            withStyle(KoinTheme.typography.regular16.toSpanStyle()) {
+                                append("설명하는 부분도 ")
+                            }
+                            withStyle(KoinTheme.typography.medium16.copy(color = KoinTheme.colors.danger700).toSpanStyle()) {
+                                append("이렇게 강조하는")
+                            }
+                            withStyle(KoinTheme.typography.regular16.toSpanStyle()) {
+                                append(" 컴포저블로 추가할 수 있습니다")
+                            }
+                        },
                     textAlign = TextAlign.Center
                 )
             },

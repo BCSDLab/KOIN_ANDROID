@@ -22,6 +22,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.lottie.compose.v660)
     implementation(project(":core"))
     implementation(project(":domain"))
     implementation(project(":core:onboarding"))

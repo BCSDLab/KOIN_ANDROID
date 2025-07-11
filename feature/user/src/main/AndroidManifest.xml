@@ -72,6 +72,39 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.inforequire.InfoRequiredFullActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="inforequiredfull"
+                    android:pathPrefix="/activity"
+                    android:scheme="koin" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.inforequire.InfoRequiredModalActivity"
+            android:theme="@style/Theme.TransparentActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="inforequiredmodal"
+                    android:pathPrefix="/activity"
+                    android:scheme="koin" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ui.changepassword.ChangePasswordActivity"
             android:exported="false"
             android:label="비밀번호 변경"

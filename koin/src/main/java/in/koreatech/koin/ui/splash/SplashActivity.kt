@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.ui.splash
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -27,12 +28,14 @@ import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.forceupdate.ForceUpdateActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
+import `in`.koreatech.koin.ui.splash.state.TokenState
 import `in`.koreatech.koin.ui.splash.viewmodel.SplashViewModel
 import `in`.koreatech.koin.util.FirebasePerformanceUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
+import androidx.core.net.toUri
 
 @AndroidEntryPoint
 class SplashActivity : ActivityBase() {
@@ -56,9 +59,16 @@ class SplashActivity : ActivityBase() {
     private val splashViewModel by viewModels<SplashViewModel>()
     private val createdTime = System.currentTimeMillis()
 
+    private lateinit var prefs: SharedPreferences
+    private var isShownBefore = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
+
+        prefs = getSharedPreferences("info_required_once", MODE_PRIVATE)
+        isShownBefore = prefs.getInt("isShownBefore", -1)   // -1:보여지지 않음, other:보여줌
+        splashViewModel.setIsShownBefore(isShownBefore)
 
         initView()
         initObserve()
@@ -90,8 +100,8 @@ class SplashActivity : ActivityBase() {
             ToastUtil.getInstance().makeShort(R.string.version_check_failed)
         }
 
-        observeLiveData(tokenState) {
-            handleIntentOrLaunch()
+        observeLiveData(tokenState) { state ->
+            handleIntentOrLaunch(state)
         }
     }
 
@@ -138,19 +148,34 @@ class SplashActivity : ActivityBase() {
         }
     }
 
-    private fun handleIntentOrLaunch() {
+    private fun handleIntentOrLaunch(state: TokenState) {
+        var modal = false
+        if (splashViewModel.getIsInfoRequired() && isShownBefore != 1) {
+            modal = true
+        }
+
         val uriPrefix = intent.data?.path?.split("/")?.getOrNull(1)
         when (uriPrefix) {
             "articles" -> {
-                gotoArticleActivityOrDelay()
+                gotoArticleActivityOrDelay(modal)
             }
             else -> {
-                gotoMainActivityOrDelay()
+                gotoMainActivityOrDelay(modal)
             }
         }
     }
 
-    private fun gotoArticleActivityOrDelay() {
+    private fun gotoInfoRequiredActivity() {
+        lifecycleScope.launch {
+            delay()
+            startActivity(Intent(Intent.ACTION_VIEW, "koin://inforequiredfull/activity".toUri()))
+            overridePendingTransition(R.anim.fade, R.anim.hold)
+            finish()
+            firebasePerformanceUtil.stop()
+        }
+    }
+
+    private fun gotoArticleActivityOrDelay(modal:Boolean = false) {
         val path = intent.data?.path?.split("/")?.getOrNull(2)
         lifecycleScope.launch {
             delay()
@@ -167,12 +192,15 @@ class SplashActivity : ActivityBase() {
                 }
             startActivity(intent)
             overridePendingTransition(R.anim.fade, R.anim.hold)
+            if (modal) {
+                gotoInfoRequiredActivity()
+            }
             finish()
             firebasePerformanceUtil.stop()
         }
     }
 
-    private fun gotoMainActivityOrDelay() {
+    private fun gotoMainActivityOrDelay(modal:Boolean = false) {
         val targetId = intent.getIntExtra(EXTRA_ID, -1)
         val targetBoardId = intent.getIntExtra(EXTRA_BOARD_ID, -1)
         val targetArticleId = intent.getIntExtra(EXTRA_ARTICLE_ID, -1)
@@ -198,6 +226,9 @@ class SplashActivity : ActivityBase() {
 
             startActivity(intent)
             overridePendingTransition(R.anim.fade, R.anim.hold)
+            if (modal) {
+                gotoInfoRequiredActivity()
+            }
             finish()
             firebasePerformanceUtil.stop()
         }
