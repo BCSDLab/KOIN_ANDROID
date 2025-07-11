@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.api
 
+import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.response.bus.BusNoticeResponse
 import `in`.koreatech.koin.data.response.bus.BusSearchResultWrapperResponse
 import `in`.koreatech.koin.data.response.bus.CityTimetableResponse
@@ -11,29 +12,29 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface BusApi {
-    @GET("bus/notice")
+    @GET(URLConstant.BUS.NOTICE)
     suspend fun fetchBusNotice(): BusNoticeResponse
 
-    @GET("bus/timetable/shuttle/{id}")
+    @GET(URLConstant.BUS.TIMETABLE.SHUTTLE_ID)
     suspend fun fetchShuttleTimetable(
         @Path("id") id: String
     ): ShuttleTimetableResponse
 
-    @GET("bus/courses/shuttle")
+    @GET(URLConstant.BUS.SHUTTLE)
     suspend fun fetchShuttleCourses(): ShuttleCoursesResponse
 
-    @GET("bus/timetable/v2?bus_type=EXPRESS&region=null")
+    @GET(URLConstant.BUS.TIMETABLE.EXPRESS)
     suspend fun fetchExpressTimetable(
         @Query("direction") direction: String
     ): ExpressTimetableResponse
 
-    @GET("bus/timetable/city")
+    @GET(URLConstant.BUS.TIMETABLE.CITY)
     suspend fun fetchCityTimetable(
         @Query("bus_number") busNumber: Int,
         @Query("direction") direction: String
     ): CityTimetableResponse
 
-    @GET("bus/route")
+    @GET(URLConstant.BUS.ROUTE)
     suspend fun fetchBusSearchResult(
         @Query("date") date: String,
         @Query("time") time: String,

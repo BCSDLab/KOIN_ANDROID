@@ -15,9 +15,8 @@ enum class KoinTeam {
 
 enum class Developer(val githubName: String, val team: Set<KoinTeam>, val isMentor: Boolean = false) {
     YUNJAENA("yunjaena", setOf(), true),
-    SKDUD0629("skdud0629", setOf(KoinTeam.BUSINESS)),
     JAEYOUNG290("JaeYoung290", setOf(KoinTeam.BUSINESS)),
-    KONGWOOJIN("kongwoojin", setOf(KoinTeam.CAMPUS, KoinTeam.USER)),
+    KONGWOOJIN("kongwoojin", setOf(KoinTeam.BUSINESS, KoinTeam.CAMPUS, KoinTeam.USER)),
     KYM_P("KYM-P", setOf(KoinTeam.CAMPUS)),
     JUSANG3057("jusang3057", setOf(KoinTeam.USER))
 }
@@ -31,11 +30,10 @@ enum class Developer(val githubName: String, val team: Set<KoinTeam>, val isMent
  * don't add mentor here
  */
 val reviewerPair = listOf(
-    Developer.SKDUD0629 to Developer.KYM_P,
     Developer.JAEYOUNG290 to Developer.KONGWOOJIN,
     Developer.KONGWOOJIN to Developer.JAEYOUNG290,
     Developer.KYM_P to Developer.JUSANG3057,
-    Developer.JUSANG3057 to Developer.SKDUD0629,
+    Developer.JUSANG3057 to Developer.KYM_P,
 )
 
 /**
@@ -45,11 +43,12 @@ val titleRegex = Regex("(?<=\\[)(user|campus|business)(?=\\])")
 
 /**
  * Export the reviewer name to GitHub Actions output.
- * @param name The name of the reviewer.
+ * @param firstReviewer The name of the reviewer.
+ * @param secondReviewer The name of the second reviewer (optional).
  */
-fun exportReviewer(name: String) {
+fun exportReviewer(firstReviewer: String, secondReviewer: String = "") {
     val githubOutput = System.getenv("GITHUB_OUTPUT")
-    File(githubOutput).appendText("reviewer=$name\n")
+    File(githubOutput).appendText("reviewer1=$firstReviewer\n, reviewer2=$secondReviewer\n")
 }
 
 /**
@@ -67,7 +66,7 @@ fun exportMentor(name: String) {
  */
 fun pickPairedReviewer(developer: Developer) {
     val reviewer = reviewerPair.first { it.first == developer }.second
-    exportReviewer(reviewer.githubName)
+    exportReviewer(reviewer.githubName, "")
 }
 
 /**
@@ -75,12 +74,19 @@ fun pickPairedReviewer(developer: Developer) {
  * The developer and reviewer should not be in the same team.
  */
 fun pickRandomReviewer(prOwnerTeam: KoinTeam?, developer: Developer) {
-    val otherTeamDevelopers = Developer.entries
+    val sameTeamDevelopers = Developer.entries
         .filter { it != developer }
         .filter { !it.isMentor }
+        .filter { it.team.contains(prOwnerTeam) }
+    val randomReviewerFromSameTeam = sameTeamDevelopers.random()
+
+    val otherTeamDevelopers = Developer.entries
+        .filter { it != developer }
+        .filter { it != randomReviewerFromSameTeam }
+        .filter { !it.isMentor }
         .filter { !it.team.contains(prOwnerTeam) }
-    val randomReviewer = otherTeamDevelopers.random()
-    exportReviewer(randomReviewer.githubName)
+    val randomReviewerFromOtherTeam = otherTeamDevelopers.random()
+    exportReviewer(randomReviewerFromOtherTeam.githubName, randomReviewerFromSameTeam.githubName)
 }
 
 /**

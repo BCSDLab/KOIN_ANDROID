@@ -7,7 +7,7 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
+        android:clipToPadding="false"
         tools:ignore="MissingPrefix">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -75,6 +75,8 @@
                         android:fillViewport="true">
 
                         <LinearLayout
+                            android:id="@+id/linear_layout_main"
+                            android:clipToPadding="false"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="24dp"
