@@ -55,6 +55,8 @@
     <string name="detail_error_qna_not_found">해당 Q&amp;A를 찾을 수 없습니다.</string>
     <string name="detail_error_already_liked">이미 좋아요 상태입니다.</string>
     <string name="detail_error_already_not_liked">이미 좋아요 상태가 아닙니다.</string>
+    <string name="detail_error_delete_recruit">모집이 삭제되지 않았습니다.</string>
+    <string name="detail_error_load_recruit">모집을 불러오지 못했습니다.</string>
 
     <string name="club_main_activity_widget_title">동아리 조회</string>
     <string name="club_main_widget_category_performance">공연</string>
@@ -139,7 +141,6 @@
     <string name="club_recruit_create_cancel_dialog_negative">게속 생성</string>
 
     <string name="club_recruit_create_error_create_failure">모집 생성에 실패했습니다.</string>
-    <string name="club_recruit_create_sucess">모집 생성에 성공했습니다.</string>
 
     <string name="club_recruit_dday">D-%1$d</string>
     <string name="club_recruit_always">상시 모집</string>

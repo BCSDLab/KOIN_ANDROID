@@ -380,8 +380,7 @@ fun handleSideEffect(
         is ClubRecruitCreateSideEffect.ClubImageUploadFailure -> context.let {
             Toast.makeText(it, it.getString(R.string.club_image_upload_failed), Toast.LENGTH_SHORT).show()
         }
-        is ClubRecruitCreateSideEffect.RecruitCreateSuccess -> context.let {
-            Toast.makeText(it, it.getString(R.string.club_recruit_create_sucess), Toast.LENGTH_SHORT).show()
+        is ClubRecruitCreateSideEffect.RecruitCreateSuccess -> {
             onCreateSuccess()
         }
         is ClubRecruitCreateSideEffect.RecruitCreateFailure -> context.let {

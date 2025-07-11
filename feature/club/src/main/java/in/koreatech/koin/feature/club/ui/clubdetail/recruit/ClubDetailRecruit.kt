@@ -275,7 +275,7 @@ private fun ClubDetailRecruitDday() {
 
 @Preview
 @Composable
-private fun ClubDetailRecruitNoImage() {
+private fun ClubDetailRecruitNoImageManger() {
     ClubDetailRecruit(
         recruitment = ParcelizeClubRecruitment(
             id = 0,

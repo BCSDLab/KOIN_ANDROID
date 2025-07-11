@@ -146,7 +146,7 @@ class ClubDetailViewModel @Inject constructor(
             reduce { state.copy(isLoading = false, showRecruitProgressBar = false) }
             when (e) {
                 is KoinClubException.WrongInputDataException -> {
-                    // TODO
+                    postSideEffect(ClubDetailSideEffect.LoadClubRecruitmentError)
                 }
                 is KoinClubException.ClubRecruitNotFoundException -> {
                     reduce { state.copy(clubRecruitment = null) }
@@ -159,7 +159,20 @@ class ClubDetailViewModel @Inject constructor(
     fun deleteRecruitment() = intent {
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true, showRecruitProgressBar = true) }
-
+        deleteClubRecruitmentUseCase(state.clubId).onSuccess {
+            reduce { state.copy(isLoading = false, showRecruitProgressBar = false) }
+            loadClubRecruitment()
+        }.onFailure { e ->
+            reduce { state.copy(isLoading = false, showRecruitProgressBar = false) }
+            when (e) {
+                is KoinClubException.WrongInputDataException,
+                is KoinClubException.ClubRecruitNotFoundException -> {
+                    postSideEffect(ClubDetailSideEffect.DeleteClubRecruitmentError)
+                    reduce { state.copy(clubRecruitment = null) }
+                }
+                else -> throw e
+            }
+        }
     }
 
     fun showRecruitDeleteDialog() = intent {

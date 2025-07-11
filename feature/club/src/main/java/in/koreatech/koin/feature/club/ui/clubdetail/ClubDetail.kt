@@ -306,6 +306,7 @@ fun ClubDetail(
                 positiveButtonColors = getKoinClubCancelButtonColor(),
                 onPositive = {
                     viewModel.dismissRecruitDeleteDialog()
+                    viewModel.deleteRecruitment()
                 },
                 onNegative = viewModel::dismissRecruitDeleteDialog,
                 onDismiss = viewModel::dismissRecruitDeleteDialog
@@ -707,6 +708,12 @@ suspend fun handleSideEffect(
             ToastUtil.getInstance().makeShort(sideEffect.messageResId)
         }
         is ClubDetailSideEffect.AlreadyNotLikedError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.DeleteClubRecruitmentError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.LoadClubRecruitmentError -> {
             ToastUtil.getInstance().makeShort(sideEffect.messageResId)
         }
     }

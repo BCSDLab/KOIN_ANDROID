@@ -26,4 +26,10 @@ sealed class ClubDetailSideEffect {
     object AlreadyNotLikedError : ClubDetailSideEffect() {
         val messageResId = R.string.detail_error_already_not_liked
     }
+    object DeleteClubRecruitmentError : ClubDetailSideEffect() {
+        val messageResId = R.string.detail_error_delete_recruit
+    }
+    object LoadClubRecruitmentError : ClubDetailSideEffect() {
+        val messageResId = R.string.detail_error_load_recruit
+    }
 }
