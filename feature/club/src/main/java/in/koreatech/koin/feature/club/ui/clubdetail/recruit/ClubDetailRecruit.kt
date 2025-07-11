@@ -191,7 +191,7 @@ fun ClubDetailRecruit(
 
 @Preview
 @Composable
-fun ClubDetailRecruitNone() {
+private fun ClubDetailRecruitNone() {
     ClubDetailRecruit(
         recruitment = ParcelizeClubRecruitment(
             id = 0,
@@ -209,7 +209,7 @@ fun ClubDetailRecruitNone() {
 
 @Preview
 @Composable
-fun ClubDetailRecruitNoneManager() {
+private fun ClubDetailRecruitNoneManager() {
     ClubDetailRecruit(
         recruitment = ParcelizeClubRecruitment(
             id = 0,
@@ -228,7 +228,7 @@ fun ClubDetailRecruitNoneManager() {
 
 @Preview
 @Composable
-fun ClubDetailRecruitDday() {
+private fun ClubDetailRecruitDday() {
     ClubDetailRecruit(
         recruitment = ParcelizeClubRecruitment(
             id = 0,
@@ -246,7 +246,7 @@ fun ClubDetailRecruitDday() {
 
 @Preview
 @Composable
-fun ClubDetailRecruitNoImage() {
+private fun ClubDetailRecruitNoImage() {
     ClubDetailRecruit(
         recruitment = ParcelizeClubRecruitment(
             id = 0,

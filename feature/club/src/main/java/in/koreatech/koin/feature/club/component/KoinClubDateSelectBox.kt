@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,13 +28,13 @@ fun KoinClubDateSelectBox(
         modifier = modifier
             .shadow(
                 elevation = 4.dp,
-                spotColor = Color(0x0A000000),
-                ambientColor = Color(0x0A000000)
+                spotColor = KoinTheme.colors.neutral800.copy(alpha = 0.04f),
+                ambientColor = KoinTheme.colors.neutral800.copy(alpha = 0.04f)
             )
             .shadow(
                 elevation = 1.dp,
-                spotColor = Color(0x05000000),
-                ambientColor = Color(0x05000000)
+                spotColor = KoinTheme.colors.neutral800.copy(alpha = 0.02f),
+                ambientColor = KoinTheme.colors.neutral800.copy(alpha = 0.02f)
             )
             .border(
                 width = 1.dp,
@@ -60,6 +59,6 @@ fun KoinClubDateSelectBox(
 
 @Preview
 @Composable
-fun KoinClubDateSelectBoxPreview() {
+private fun KoinClubDateSelectBoxPreview() {
     KoinClubDateSelectBox("2025년\n12월 30일 (화)")
 }
