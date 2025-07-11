@@ -60,6 +60,10 @@ class ClubRecruitCreateViewModel @Inject constructor(
         }
     }
 
+    fun postNavigateUp() = intent {
+        postSideEffect(ClubRecruitCreateSideEffect.NavigateUp)
+    }
+
     fun showCreateCancelDialog() = intent {
         reduce { state.copy(showCreateCancelDialog = true) }
     }

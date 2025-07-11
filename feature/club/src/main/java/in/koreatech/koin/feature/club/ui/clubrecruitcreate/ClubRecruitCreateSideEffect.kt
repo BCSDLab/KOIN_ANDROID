@@ -4,4 +4,5 @@ sealed class ClubRecruitCreateSideEffect {
     data object RecruitCreateSuccess : ClubRecruitCreateSideEffect()
     data object RecruitCreateFailure : ClubRecruitCreateSideEffect()
     data object ClubImageUploadFailure : ClubRecruitCreateSideEffect()
+    data object NavigateUp : ClubRecruitCreateSideEffect()
 }

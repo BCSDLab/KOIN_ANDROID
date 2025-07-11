@@ -78,7 +78,7 @@ fun ClubRecruitCreateScreen(
     val uiState by viewModel.collectAsState()
 
     viewModel.collectSideEffect { sideEffect ->
-        handleSideEffect(sideEffect, context, onRecruitCreated)
+        handleSideEffect(sideEffect, context, onRecruitCreated, onNavigateUp)
     }
 
     Scaffold(
@@ -114,7 +114,7 @@ fun ClubRecruitCreateScreen(
             recruitAlways = uiState.recruitAlways,
             changeRecruitAlways = viewModel::changeRecruitAlways,
             createRecruitment = viewModel::createClubRecruitment,
-            createRecruitmentCancel = onNavigateUp,
+            createRecruitmentCancel = viewModel::postNavigateUp,
             showCreateRequestDialogState = uiState.showCreateRequestDialog,
             showCreateRequestDialog = viewModel::showCreateRequestDialog,
             dismissCreateRequestDialog = viewModel::dismissCreateRequestDialog,
@@ -371,7 +371,8 @@ fun ClubRecruitCreateScreenImpl(
 fun handleSideEffect(
     sideEffect: ClubRecruitCreateSideEffect,
     context: Context,
-    onCreateSuccess: () -> Unit = {}
+    onCreateSuccess: () -> Unit = {},
+    onNavigateUp: () -> Unit = {}
 ) {
     when (sideEffect) {
         is ClubRecruitCreateSideEffect.ClubImageUploadFailure -> context.let {
@@ -383,6 +384,9 @@ fun handleSideEffect(
         }
         is ClubRecruitCreateSideEffect.RecruitCreateFailure -> context.let {
             Toast.makeText(it, it.getString(R.string.club_recruit_create_error_create_failure), Toast.LENGTH_SHORT).show()
+        }
+        is ClubRecruitCreateSideEffect.NavigateUp -> {
+            onNavigateUp()
         }
     }
 }
