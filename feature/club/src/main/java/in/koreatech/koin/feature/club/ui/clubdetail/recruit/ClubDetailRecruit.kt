@@ -39,11 +39,11 @@ fun ClubDetailRecruit(
     recruitment: ParcelizeClubRecruitment?,
     modifier: Modifier = Modifier,
     showProgressBar: Boolean = false,
+    isManager: Boolean = false,
     onImageClick: (String) -> Unit = {},
     onRecruitCreateClick: () -> Unit = {},
     onRecruitModifyClick: () -> Unit = {},
-    showRecruitDeleteDialog: () -> Unit = {},
-    isManager: Boolean = false
+    showRecruitDeleteDialog: () -> Unit = {}
 ) {
     val context = LocalContext.current
     Box {

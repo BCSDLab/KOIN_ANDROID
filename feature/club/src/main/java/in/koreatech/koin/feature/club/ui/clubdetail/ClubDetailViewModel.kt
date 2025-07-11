@@ -10,6 +10,7 @@ import `in`.koreatech.koin.domain.error.club.KoinClubException
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.club.CancelClubLikeUseCase
 import `in`.koreatech.koin.domain.usecase.club.DeleteClubQnaUseCase
+import `in`.koreatech.koin.domain.usecase.club.DeleteClubRecruitmentUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubDetailsUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubQnasUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubRecruitmentUseCase
@@ -44,7 +45,8 @@ class ClubDetailViewModel @Inject constructor(
     private val postClubQnaUseCase: PostClubQnaUseCase,
     private val setClubEmpowermentUseCase: SetClubEmpowermentUseCase,
     private val setClubLikeUseCase: SetClubLikeUseCase,
-    private val getClubRecruitmentUseCase: GetClubRecruitmentUseCase
+    private val getClubRecruitmentUseCase: GetClubRecruitmentUseCase,
+    private val deleteClubRecruitmentUseCase: DeleteClubRecruitmentUseCase
 ) : ViewModel(), ContainerHost<ClubDetailState, ClubDetailSideEffect> {
     override val container = container<ClubDetailState, ClubDetailSideEffect>(
         initialState = ClubDetailState(),

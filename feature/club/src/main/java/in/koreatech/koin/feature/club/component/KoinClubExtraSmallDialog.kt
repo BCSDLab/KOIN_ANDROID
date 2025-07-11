@@ -45,7 +45,7 @@ fun KoinClubExtraSmallDialog(
     negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Primary,
     onPositive: () -> Unit = {},
     onNegative: () -> Unit = {},
-    onDismiss: () -> Unit = {},
+    onDismiss: () -> Unit = {}
 ) {
     BasicAlertDialog(
         modifier =
