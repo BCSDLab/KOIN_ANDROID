@@ -5,6 +5,7 @@ import `in`.koreatech.koin.data.request.club.ClubCreateRequest
 import `in`.koreatech.koin.data.request.club.ClubEmpowermentRequest
 import `in`.koreatech.koin.data.request.club.ClubModifyRequest
 import `in`.koreatech.koin.data.request.club.ClubQnaRequest
+import `in`.koreatech.koin.data.request.club.ClubRecruitmentRequest
 import `in`.koreatech.koin.data.response.club.ClubDetailsResponse
 import `in`.koreatech.koin.data.response.club.ClubsResponse
 import retrofit2.http.Body
@@ -63,5 +64,11 @@ interface ClubAuthApi {
     @DELETE(URLConstant.CLUBS.CLUBID.LIKE.CANCEL)
     suspend fun cancelClubLike(
         @Path("clubId") clubId: Int
+    )
+
+    @POST(URLConstant.CLUBS.CLUBID.RECRUITMENT.RECRUITMENT)
+    suspend fun createClubRecruitment(
+        @Path("clubId") clubId: Int,
+        @Body request: ClubRecruitmentRequest
     )
 }
