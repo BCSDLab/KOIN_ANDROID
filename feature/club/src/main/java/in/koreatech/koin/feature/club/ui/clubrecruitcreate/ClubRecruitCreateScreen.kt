@@ -58,6 +58,7 @@ import `in`.koreatech.koin.feature.club.component.KoinClubDatePickerDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubDateSelectBox
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialog
 import `in`.koreatech.koin.feature.club.component.getKoinClubCancelButtonColor
+import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
 import `in`.koreatech.koin.feature.club.utils.pickMedia
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -200,7 +201,7 @@ fun ClubRecruitCreateScreenImpl(
             descriptionColor = KoinTheme.colors.neutral600,
             positiveButtonText = stringResource(R.string.club_recruit_create_cancel_dialog_positive),
             negativeButtonText = stringResource(R.string.club_recruit_create_cancel_dialog_negative),
-            positiveButtonColors = getKoinClubCancelButtonColor(),
+            positiveButtonColors = KoinClubExtraSmallDialogDanger.positiveButtonColors,
             onPositive = {
                 dismissCreateCancelDialog()
                 createRecruitmentCancel()
