@@ -75,7 +75,7 @@ interface ClubAuthApi {
 
     @DELETE(URLConstant.CLUBS.CLUBID.RECRUITMENT.RECRUITMENT)
     suspend fun deleteClubRecruitment(
-        @Path("clubId") clubId: Int,
+        @Path("clubId") clubId: Int
     ): Response<Unit>
 
     @PUT(URLConstant.CLUBS.CLUBID.RECRUITMENT.RECRUITMENT)

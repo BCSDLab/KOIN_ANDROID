@@ -66,5 +66,4 @@ class ClubRemoteDataSource @Inject constructor(
         clubId: Int,
         request: ClubRecruitmentRequest
     ) = clubAuthApi.modifyClubRecruitment(clubId, request)
-
 }

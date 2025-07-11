@@ -93,7 +93,7 @@ fun ClubDetailRecruit(
                     }
                 } else {
                     Column {
-                        Row (
+                        Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
@@ -104,7 +104,7 @@ fun ClubDetailRecruit(
                                 color = KoinTheme.colors.primary600
                             )
                             if (isManager) {
-                                Row (
+                                Row(
                                     horizontalArrangement = Arrangement
                                         .spacedBy(8.dp),
                                     verticalAlignment = Alignment.CenterVertically

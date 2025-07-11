@@ -62,10 +62,10 @@ import `in`.koreatech.koin.feature.club.component.KoinClubDateSelectBox
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialog
 import `in`.koreatech.koin.feature.club.component.getKoinClubCancelButtonColor
 import `in`.koreatech.koin.feature.club.utils.pickMedia
-import org.orbitmvi.orbit.compose.collectAsState
-import org.orbitmvi.orbit.compose.collectSideEffect
 import java.time.DayOfWeek
 import java.time.LocalDate
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -146,7 +146,7 @@ fun ClubRecruitCreateScreenImpl(
     modifyRecruitmentCancel: () -> Unit = {},
     updateModifyRequestDialog: (Boolean) -> Unit = {},
     updateModifyCancelDialog: (Boolean) -> Unit = {},
-    onImageDeleteClick: () -> Unit = {},
+    onImageDeleteClick: () -> Unit = {}
 ) {
     val context = LocalContext.current
 
@@ -324,7 +324,7 @@ fun ClubRecruitCreateScreenImpl(
                                 }
                             }
                         )
-                        Image (
+                        Image(
                             painter = painterResource(R.drawable.icon_qna_delete),
                             contentDescription = "",
                             modifier = Modifier
@@ -404,7 +404,7 @@ fun handleSideEffect(
         is ClubRecruitModifySideEffect.NavigateUp -> {
             onNavigateUp()
         }
-        is ClubRecruitModifySideEffect.LoadClubRecruitmentError ->  context.let {
+        is ClubRecruitModifySideEffect.LoadClubRecruitmentError -> context.let {
             Toast.makeText(it, it.getString(R.string.club_recruit_modify_error_load), Toast.LENGTH_SHORT).show()
             onNavigateUp()
         }
