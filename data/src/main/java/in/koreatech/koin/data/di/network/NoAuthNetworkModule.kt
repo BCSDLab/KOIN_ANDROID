@@ -18,19 +18,20 @@ import `in`.koreatech.koin.data.api.CoopShopApi
 import `in`.koreatech.koin.data.api.DeptApi
 import `in`.koreatech.koin.data.api.DiningApi
 import `in`.koreatech.koin.data.api.LandApi
+import `in`.koreatech.koin.data.api.OrderShopApi
 import `in`.koreatech.koin.data.api.OwnerApi
 import `in`.koreatech.koin.data.api.StoreApi
 import `in`.koreatech.koin.data.api.TimetableApi
 import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.VersionApi
 import `in`.koreatech.koin.data.util.EmptyStringToNullAdapter
-import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -179,5 +180,13 @@ object NoAuthNetworkModule {
         @NoAuth retrofit: Retrofit
     ): ClubApi {
         return retrofit.create(ClubApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOrderShopApi(
+        @NoAuth retrofit: Retrofit
+    ): OrderShopApi {
+        return retrofit.create(OrderShopApi::class.java)
     }
 }
