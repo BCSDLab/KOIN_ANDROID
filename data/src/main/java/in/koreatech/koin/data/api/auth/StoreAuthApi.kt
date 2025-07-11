@@ -3,7 +3,7 @@ package `in`.koreatech.koin.data.api.auth
 import `in`.koreatech.koin.data.request.store.CartAddRequest
 import `in`.koreatech.koin.data.request.store.CartItemRequest
 import `in`.koreatech.koin.data.response.store.CartItemEditResponse
-import `in`.koreatech.koin.data.response.store.CartPaymentSummary
+import `in`.koreatech.koin.data.response.store.CartPaymentSummaryResponse
 import `in`.koreatech.koin.data.response.store.CartResponse
 import `in`.koreatech.koin.data.response.store.CartSummaryResponse
 import retrofit2.Response
@@ -47,7 +47,7 @@ interface StoreAuthApi {
     @GET("/cart/payment/summary")
     suspend fun getCartPaymentSummary(
         @Query("type") type: String
-    ): CartPaymentSummary
+    ): CartPaymentSummaryResponse
 
     @GET("cart/item/{cartMenuItemId}/edit")
     suspend fun getCartItemEdit(
