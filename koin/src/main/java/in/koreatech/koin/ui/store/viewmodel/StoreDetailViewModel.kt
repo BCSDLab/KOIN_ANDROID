@@ -7,9 +7,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
+import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 import `in`.koreatech.koin.domain.model.store.ReviewFilterEnum
 import `in`.koreatech.koin.domain.model.store.ShopEvent
-import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
 import `in`.koreatech.koin.domain.model.store.StoreMenu

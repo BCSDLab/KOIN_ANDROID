@@ -29,9 +29,9 @@ import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuInfo
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 import `in`.koreatech.koin.domain.model.store.BenefitCategory
 import `in`.koreatech.koin.domain.model.store.BenefitCategoryList
+import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.model.store.ShopEvents
-import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 import `in`.koreatech.koin.domain.model.store.ShopSearchRelated
 import `in`.koreatech.koin.domain.model.store.ShopSearchRelatedList
 import `in`.koreatech.koin.domain.model.store.Store
