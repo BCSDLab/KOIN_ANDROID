@@ -42,7 +42,7 @@ class ClubRecruitCreateViewModel @Inject constructor(
     fun createClubRecruitment(
         content: String
     ) = intent {
-        if(state.isLoading) return@intent
+        if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
         val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         createClubRecruitmentUseCase(
@@ -105,7 +105,7 @@ class ClubRecruitCreateViewModel @Inject constructor(
         fileName: String,
         imageUri: Uri
     ) = intent {
-        if(state.isLoading) return@intent
+        if (state.isLoading) return@intent
         reduce {
             state.copy(isLoading = true)
         }

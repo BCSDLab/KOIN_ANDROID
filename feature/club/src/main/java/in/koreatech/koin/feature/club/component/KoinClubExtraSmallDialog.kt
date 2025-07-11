@@ -32,20 +32,20 @@ import `in`.koreatech.koin.feature.club.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KoinClubExtraSmallDialog(
+    title: String,
+    description: String,
     modifier: Modifier = Modifier,
-    title: String = "",
-    description: String = "",
     titleColor: Color = KoinTheme.colors.neutral800,
     descriptionColor: Color = KoinTheme.colors.neutral800,
-    onPositive: () -> Unit = {},
-    onNegative: () -> Unit = {},
-    onDismiss: () -> Unit = {},
     titleStyle: TextStyle = KoinTheme.typography.medium18,
     descriptionStyle: TextStyle = KoinTheme.typography.regular14,
     positiveButtonText: String = stringResource(id = R.string.club_dialog_ok),
     negativeButtonText: String = stringResource(id = R.string.club_dialog_cancel),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
-    negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Primary
+    negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Primary,
+    onPositive: () -> Unit = {},
+    onNegative: () -> Unit = {},
+    onDismiss: () -> Unit = {},
 ) {
     BasicAlertDialog(
         modifier =

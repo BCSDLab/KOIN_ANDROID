@@ -45,7 +45,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
@@ -66,13 +65,12 @@ import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
 fun ClubRecruitCreateScreen(
     modifier: Modifier = Modifier,
+    viewModel: ClubRecruitCreateViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit = {},
-    onRecruitCreated: () -> Unit = {},
-    viewModel: ClubRecruitCreateViewModel = hiltViewModel()
+    onRecruitCreated: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val uiState by viewModel.collectAsState()
@@ -105,10 +103,10 @@ fun ClubRecruitCreateScreen(
                 )
             },
             showDatePickerDialogState = uiState.showDatePickerDialog,
-            showDatePickerDialog = viewModel::showDatePickerDialog,
-            dismissDatePickerDialog = viewModel::dismissDatePickerDialog,
             recruitStartDate = uiState.recruitStartDate,
             recruitEndDate = uiState.recruitEndDate,
+            showDatePickerDialog = viewModel::showDatePickerDialog,
+            dismissDatePickerDialog = viewModel::dismissDatePickerDialog,
             setRecruitStartDate = viewModel::setRecruitStartDate,
             setRecruitEndDate = viewModel::setRecruitEndDate,
             recruitAlways = uiState.recruitAlways,
@@ -128,24 +126,24 @@ fun ClubRecruitCreateScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClubRecruitCreateScreenImpl(
+    recruitStartDate: LocalDate,
+    recruitEndDate: LocalDate,
     modifier: Modifier = Modifier,
     imageUrl: String = "",
-    uploadImage: (fileSize: Long, fileType: String, fileName: String, fileUri: Uri) -> Unit = { _, _, _, _ -> },
     showDatePickerDialogState: Boolean = false,
+    recruitAlways: Boolean = false,
+    showCreateRequestDialogState: Boolean = false,
+    showCreateCancelDialogState: Boolean = false,
+    uploadImage: (fileSize: Long, fileType: String, fileName: String, fileUri: Uri) -> Unit = { _, _, _, _ -> },
     showDatePickerDialog: () -> Unit = {},
     dismissDatePickerDialog: () -> Unit = {},
-    recruitStartDate: LocalDate = LocalDate.now(),
-    recruitEndDate: LocalDate = LocalDate.now().plusDays(1),
     setRecruitStartDate: (LocalDate) -> Unit = {},
     setRecruitEndDate: (LocalDate) -> Unit = {},
-    recruitAlways: Boolean = false,
     changeRecruitAlways: () -> Unit = {},
     createRecruitment: (String) -> Unit = {},
     createRecruitmentCancel: () -> Unit = {},
-    showCreateRequestDialogState: Boolean = false,
     showCreateRequestDialog: () -> Unit = {},
     dismissCreateRequestDialog: () -> Unit = {},
-    showCreateCancelDialogState: Boolean = false,
     showCreateCancelDialog: () -> Unit = {},
     dismissCreateCancelDialog: () -> Unit = {}
 ) {
@@ -158,6 +156,9 @@ fun ClubRecruitCreateScreenImpl(
         onResult = uploadImage
     )
     var recruitDescriptionText by remember { mutableStateOf("") }
+
+    val textFieldMinLines = 2
+    val textFieldMaxLength = 255
 
     if (showDatePickerDialogState) {
         KoinClubDatePickerDialog(
@@ -176,6 +177,7 @@ fun ClubRecruitCreateScreenImpl(
 
     if (showCreateRequestDialogState) {
         KoinClubExtraSmallDialog(
+            title = "",
             description = stringResource(R.string.club_recruit_create_request_dialog_description),
             descriptionStyle = KoinTheme.typography.medium15,
             descriptionColor = KoinTheme.colors.neutral600,
@@ -343,8 +345,8 @@ fun ClubRecruitCreateScreenImpl(
                 onValueChange = { recruitDescriptionText = it },
                 modifier = Modifier
                     .fillMaxWidth(),
-                minLines = 2,
-                maxLength = 255,
+                minLines = textFieldMinLines,
+                maxLength = textFieldMaxLength,
                 hint = stringResource(R.string.club_recruit_create_recruit_description_hint)
             )
         }

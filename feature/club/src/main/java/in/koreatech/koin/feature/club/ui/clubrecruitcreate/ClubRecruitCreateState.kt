@@ -11,7 +11,7 @@ data class ClubRecruitCreateState(
     val recruitImageUrl: String = "",
     val showDatePickerDialog: Boolean = false,
     val recruitStartDate: LocalDate = LocalDate.now(),
-    val recruitEndDate: LocalDate = LocalDate.now(),
+    val recruitEndDate: LocalDate = recruitStartDate.plusDays(1),
     val recruitAlways: Boolean = false,
     val showCreateRequestDialog: Boolean = false,
     val showCreateCancelDialog: Boolean = false

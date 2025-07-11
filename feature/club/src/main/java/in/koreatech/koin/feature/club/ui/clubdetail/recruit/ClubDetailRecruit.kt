@@ -86,7 +86,6 @@ fun ClubDetailRecruit(
                         ) {
                             FilledButton(
                                 text = stringResource(R.string.detail_recruit_create),
-                                textStyle = KoinTheme.typography.medium14,
                                 onClick = { onRecruitCreateClick() },
                                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 5.dp)
                             )
@@ -221,7 +220,7 @@ fun ClubDetailRecruit(
 
 @Preview
 @Composable
-fun ClubDetailRecruitNone() {
+private fun ClubDetailRecruitNone() {
     ClubDetailRecruit(
         recruitment = ParcelizeClubRecruitment(
             id = 0,
@@ -239,7 +238,7 @@ fun ClubDetailRecruitNone() {
 
 @Preview
 @Composable
-fun ClubDetailRecruitNoneManager() {
+private fun ClubDetailRecruitNoneManager() {
     ClubDetailRecruit(
         recruitment = ParcelizeClubRecruitment(
             id = 0,
@@ -258,7 +257,7 @@ fun ClubDetailRecruitNoneManager() {
 
 @Preview
 @Composable
-fun ClubDetailRecruitDday() {
+private fun ClubDetailRecruitDday() {
     ClubDetailRecruit(
         recruitment = ParcelizeClubRecruitment(
             id = 0,
@@ -276,7 +275,7 @@ fun ClubDetailRecruitDday() {
 
 @Preview
 @Composable
-fun ClubDetailRecruitNoImageManager() {
+private fun ClubDetailRecruitNoImage() {
     ClubDetailRecruit(
         recruitment = ParcelizeClubRecruitment(
             id = 0,

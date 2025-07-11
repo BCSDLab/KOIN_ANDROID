@@ -110,11 +110,11 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun ClubDetail(
     isClubModified: Boolean = false,
     initialPage: Int = 0,
+    viewModel: ClubDetailViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {},
     onModifyClick: (Int) -> Unit = {},
     onRecruitCreateClick: (Int) -> Unit = {},
-    resetClubModifiedState: () -> Unit = {},
-    viewModel: ClubDetailViewModel = hiltViewModel()
+    resetClubModifiedState: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
 
