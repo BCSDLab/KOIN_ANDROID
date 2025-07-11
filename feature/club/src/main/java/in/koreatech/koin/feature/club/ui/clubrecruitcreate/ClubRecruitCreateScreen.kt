@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.feature.club.ui.clubrecruitcreate
 
+import android.content.Context
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -20,6 +22,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,25 +47,38 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
+import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.KoinClubBasicTextField
+import `in`.koreatech.koin.feature.club.component.KoinClubDatePickerDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubDateSelectBox
+import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialog
 import `in`.koreatech.koin.feature.club.utils.pickMedia
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
+import java.time.DayOfWeek
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun ClubRecruitCreateScreen(
     modifier: Modifier = Modifier,
-    onTopbarBackClick: () -> Unit = {}
-    // viewModel: ClubRecruitCreateViewModel = hiltViewModel()
+    onNavigateUp: () -> Unit = {},
+    onRecruitCreated: () -> Unit = {},
+    viewModel: ClubRecruitCreateViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    // val uiState by viewModel.collectAsState()
+    val uiState by viewModel.collectAsState()
+
+    viewModel.collectSideEffect { sideEffect ->
+        handleSideEffect(sideEffect, context, onRecruitCreated)
+    }
 
     Scaffold(
         modifier = modifier.imePadding(),
@@ -68,40 +86,140 @@ fun ClubRecruitCreateScreen(
         topBar = {
             KoinTopAppBar(
                 title = stringResource(R.string.club_recruit_create_title),
-                onNavigationIconClick = onTopbarBackClick
+                onNavigationIconClick = onNavigateUp
             )
         },
-        // Let's try to draw content behind the system bars
         contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { contentPadding ->
         ClubRecruitCreateScreenImpl(
             modifier = Modifier
-                .padding(contentPadding)
+                .padding(contentPadding),
+            imageUrl = uiState.recruitImageUrl,
+            uploadImage = { fileSize, fileType, fileName, fileUri ->
+                viewModel.getPreSignedUrl(
+                    fileSize = fileSize,
+                    fileType = fileType,
+                    fileName = fileName,
+                    imageUri = fileUri
+                )
+            },
+            showDatePickerDialogState = uiState.showDatePickerDialog,
+            showDatePickerDialog = viewModel::showDatePickerDialog,
+            dismissDatePickerDialog = viewModel::dismissDatePickerDialog,
+            recruitStartDate = uiState.recruitStartDate,
+            recruitEndDate = uiState.recruitEndDate,
+            setRecruitStartDate = viewModel::setRecruitStartDate,
+            setRecruitEndDate = viewModel::setRecruitEndDate,
+            recruitAlways = uiState.recruitAlways,
+            changeRecruitAlways = viewModel::changeRecruitAlways,
+            createRecruitment = viewModel::createClubRecruitment,
+            createRecruitmentCancel = onNavigateUp,
+            showCreateRequestDialogState = uiState.showCreateRequestDialog,
+            showCreateRequestDialog = viewModel::showCreateRequestDialog,
+            dismissCreateRequestDialog = viewModel::dismissCreateRequestDialog,
+            showCreateCancelDialogState = uiState.showCreateCancelDialog,
+            showCreateCancelDialog = viewModel::showCreateCancelDialog,
+            dismissCreateCancelDialog = viewModel::dismissCreateCancelDialog
         )
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClubRecruitCreateScreenImpl(
     modifier: Modifier = Modifier,
     imageUrl: String = "",
     uploadImage: (fileSize: Long, fileType: String, fileName: String, fileUri: Uri) -> Unit = { _, _, _, _ -> },
+    showDatePickerDialogState: Boolean = false,
+    showDatePickerDialog: () -> Unit = {},
+    dismissDatePickerDialog: () -> Unit = {},
+    recruitStartDate: LocalDate = LocalDate.now(),
+    recruitEndDate: LocalDate = LocalDate.now().plusDays(1),
+    setRecruitStartDate: (LocalDate) -> Unit = {},
+    setRecruitEndDate: (LocalDate) -> Unit = {},
+    recruitAlways: Boolean = false,
+    changeRecruitAlways: () -> Unit = {},
+    createRecruitment: (String) -> Unit = {},
+    createRecruitmentCancel: () -> Unit = {},
+    showCreateRequestDialogState: Boolean = false,
+    showCreateRequestDialog: () -> Unit = {},
+    dismissCreateRequestDialog: () -> Unit = {},
+    showCreateCancelDialogState: Boolean = false,
+    showCreateCancelDialog: () -> Unit = {},
+    dismissCreateCancelDialog: () -> Unit = {}
 ) {
-    val permanentRecruit = remember { mutableStateOf(false) }
     val context = LocalContext.current
+
+    var isStartDateSelected by remember { mutableStateOf(true) }
 
     val pickMedia = pickMedia(
         context = context,
         onResult = uploadImage
     )
-    var descriptionText by remember { mutableStateOf("") }
+    var recruitDescriptionText by remember { mutableStateOf("") }
+
+    if (showDatePickerDialogState) {
+        KoinClubDatePickerDialog(
+            onPositive = {
+                if (isStartDateSelected) {
+                    setRecruitStartDate(it)
+                }
+                else {
+                    setRecruitEndDate(it)
+                }
+                dismissDatePickerDialog()
+            },
+            onDismiss = dismissDatePickerDialog,
+            onNegative = dismissDatePickerDialog
+        )
+    }
+
+    if (showCreateRequestDialogState) {
+        KoinClubExtraSmallDialog(
+            description = stringResource(R.string.club_recruit_create_request_dialog_description),
+            descriptionStyle = KoinTheme.typography.medium15,
+            descriptionColor = KoinTheme.colors.neutral600,
+            positiveButtonText = stringResource(R.string.club_recruit_create_request_dialog_positive),
+            negativeButtonText = stringResource(R.string.club_recruit_create_request_dialog_negative),
+            positiveButtonColors = FilledButtonColors.Primary,
+            onPositive = {
+                dismissCreateRequestDialog()
+                createRecruitment(recruitDescriptionText)
+            },
+            onNegative = dismissCreateRequestDialog,
+            onDismiss = dismissCreateRequestDialog
+        )
+    }
+
+    if (showCreateCancelDialogState) {
+        KoinClubExtraSmallDialog(
+            description = stringResource(R.string.club_recruit_create_cancel_dialog_description),
+            descriptionStyle = KoinTheme.typography.medium15,
+            descriptionColor = KoinTheme.colors.neutral600,
+            positiveButtonText = stringResource(R.string.club_recruit_create_cancel_dialog_positive),
+            negativeButtonText = stringResource(R.string.club_recruit_create_cancel_dialog_negative),
+            positiveButtonColors = ButtonColors(
+                containerColor = KoinTheme.colors.danger500,
+                contentColor = KoinTheme.colors.neutral0,
+                disabledContainerColor = KoinTheme.colors.neutral300,
+                disabledContentColor = KoinTheme.colors.neutral600
+            ),
+            onPositive = {
+                dismissCreateCancelDialog()
+                createRecruitmentCancel()
+            },
+            onNegative = dismissCreateCancelDialog,
+            onDismiss = dismissCreateCancelDialog
+        )
+    }
 
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(
                 horizontal = 24.dp
-            ),
+            )
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
     ) {
         Column(
@@ -113,40 +231,60 @@ fun ClubRecruitCreateScreenImpl(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "모집 기한",
+                    text = stringResource(R.string.club_recruit_create_date_text),
                     style = KoinTheme.typography.medium18
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "상시 모집",
+                        text = stringResource(R.string.club_recruit_create_always_recruit_text),
                         style = KoinTheme.typography.medium18
                     )
                     Checkbox(
-                        checked = permanentRecruit.value,
-                        onCheckedChange = { permanentRecruit.value = it }
+                        checked = recruitAlways,
+                        onCheckedChange = { changeRecruitAlways() }
                     )
                 }
             }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                KoinClubDateSelectBox(
-                    text = "2025년\n12월 30일 (화)",
-                    onClick = { }
-                )
-                Text(
-                    text = "~",
-                    style = KoinTheme.typography.bold20,
-                    textAlign = TextAlign.Center
-                )
-                KoinClubDateSelectBox(
-                    text = "2026년\n12월 30일 (목)",
-                    onClick = { }
-                )
+            if (!recruitAlways) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    KoinClubDateSelectBox(
+                        text = stringResource(
+                            R.string.club_recruit_create_date_format,
+                            recruitStartDate.year,
+                            recruitStartDate.monthValue,
+                            recruitStartDate.dayOfMonth,
+                            getDayOfWeek(recruitStartDate.dayOfWeek)
+                        ),
+                        onClick = {
+                            isStartDateSelected = true
+                            showDatePickerDialog()
+                        }
+                    )
+                    Text(
+                        text = "~",
+                        style = KoinTheme.typography.bold20,
+                        textAlign = TextAlign.Center
+                    )
+                    KoinClubDateSelectBox(
+                        text = stringResource(
+                            R.string.club_recruit_create_date_format,
+                            recruitEndDate.year,
+                            recruitEndDate.monthValue,
+                            recruitEndDate.dayOfMonth,
+                            getDayOfWeek(recruitEndDate.dayOfWeek)
+                        ),
+                        onClick = {
+                            isStartDateSelected = false
+                            showDatePickerDialog()
+                        }
+                    )
+                }
             }
         }
         Column {
@@ -191,7 +329,7 @@ fun ClubRecruitCreateScreenImpl(
                 )
             }
             Text(
-                text = "4:5 비율로 업로드 해주세요.\n사진을 클릭하여 수정할 수 있습니다.",
+                text = stringResource(R.string.club_recruit_create_image_intro),
                 style = KoinTheme.typography.regular12,
                 color = KoinTheme.colors.neutral500
             )
@@ -202,17 +340,17 @@ fun ClubRecruitCreateScreenImpl(
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = "상세 설명",
+                text = stringResource(R.string.club_recruit_create_recruit_description),
                 style = KoinTheme.typography.medium18
             )
             KoinClubBasicTextField(
-                value = descriptionText,
-                onValueChange = { descriptionText = it },
+                value = recruitDescriptionText,
+                onValueChange = { recruitDescriptionText = it },
                 modifier = Modifier
                     .fillMaxWidth(),
                 minLines = 2,
                 maxLength = 255,
-                hint = "상세 내용을 적어주세요."
+                hint = stringResource(R.string.club_recruit_create_recruit_description_hint)
             )
         }
         Row (
@@ -221,24 +359,46 @@ fun ClubRecruitCreateScreenImpl(
             horizontalArrangement = Arrangement.End
         ) {
             FilledButton(
-                text = "생성 취소",
-                onClick = { }, //TODO create cancel
+                text = stringResource(R.string.club_recruit_create_cancel),
+                onClick = showCreateCancelDialog,
                 contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp)
             )
             Spacer(Modifier.width(8.dp))
             FilledButton(
-                text = "생성 하기",
-                onClick = { }, //TODO create
+                text = stringResource(R.string.club_recruit_create_request),
+                onClick = showCreateRequestDialog,
                 contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp)
             )
         }
     }
 }
 
-@Preview
-@Composable
-fun ClubRecruitCreateScreenImplPreview() {
-    ClubRecruitCreateScreenImpl(
-        modifier = Modifier.background(KoinTheme.colors.neutral0)
-    )
+fun handleSideEffect(
+    sideEffect: ClubRecruitCreateSideEffect,
+    context: Context,
+    onCreateSuccess: () -> Unit = {}
+) {
+    when (sideEffect) {
+        is ClubRecruitCreateSideEffect.ClubImageUploadFailure -> context.let {
+            Toast.makeText(it, it.getString(R.string.club_image_upload_failed), Toast.LENGTH_SHORT).show()
+        }
+        is ClubRecruitCreateSideEffect.RecruitCreateSuccess -> context.let {
+            Toast.makeText(it, it.getString(R.string.club_recruit_create_sucess), Toast.LENGTH_SHORT).show()
+            onCreateSuccess()
+        }
+        is ClubRecruitCreateSideEffect.RecruitCreateFailure -> context.let {
+            Toast.makeText(it, it.getString(R.string.club_recruit_create_error_create_failure), Toast.LENGTH_SHORT).show()
+        }
+    }
 }
+
+private fun getDayOfWeek(dayOfWeek: DayOfWeek): String =
+    when(dayOfWeek) {
+        DayOfWeek.MONDAY -> "월"
+        DayOfWeek.TUESDAY -> "화"
+        DayOfWeek.WEDNESDAY -> "수"
+        DayOfWeek.THURSDAY -> "목"
+        DayOfWeek.FRIDAY -> "금"
+        DayOfWeek.SATURDAY -> "토"
+        DayOfWeek.SUNDAY -> "일"
+    }

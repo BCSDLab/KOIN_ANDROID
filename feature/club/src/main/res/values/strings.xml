@@ -37,6 +37,9 @@
     <string name="detail_dialog_empowerment_hint">아이디를 입력해주세요.</string>
     <string name="detail_detail_intro_in_development">아직 준비중입니다.</string>
     <string name="detail_hotStatus_club_intro">🎉%1$d월 %2$d째주 인기 동아리 🎉</string>
+    <string name="detail_recruit_end">모집이 마감되었어요.\n모집알림을 켜 알림을 받아보세요.</string>
+    <string name="detail_recruit_create">모집 생성하기</string>
+    <string name="detail_recruit_deadline_header">모집 기한</string>
 
     <string name="detail_error_empty_text_field">필수 입력란입니다.</string>
     <string name="detail_error_unauthorized">올바르지 않은 인증 정보입니다.</string>
@@ -116,8 +119,31 @@
 
     <string name="club_recruit_create_title">동아리 모집 생성</string>
     <string name="club_recruit_create_logo_description">클릭하여 사진을\n업로드해주세요.</string>
+    <string name="club_recruit_create_date_text">모집 기한</string>
+    <string name="club_recruit_create_date_format">%1$d년\n%2$d월 %3$d일 (%4$s)</string>
+    <string name="club_recruit_create_always_recruit_text">상시 모집</string>
+    <string name="club_recruit_create_image_intro">4:5 비율로 업로드 해주세요.\n사진을 클릭하여 수정할 수 있습니다.</string>
+    <string name="club_recruit_create_recruit_description">상세 설명</string>
+    <string name="club_recruit_create_recruit_description_hint">상세 내용을 적어주세요.</string>
+    <string name="club_recruit_create_cancel">생성 취소</string>
+    <string name="club_recruit_create_request">생성 하기</string>
+    <string name="club_recruit_create_request_dialog_description">작성하신 내용으로\n생성하시겠어요?</string>
+    <string name="club_recruit_create_request_dialog_positive">생성하기</string>
+    <string name="club_recruit_create_request_dialog_negative">취소하기</string>
+    <string name="club_recruit_create_cancel_dialog_description">생성을 취소하시겠어요?\n작성하신 내용은 모두 사라져요.</string>
+    <string name="club_recruit_create_cancel_dialog_positive">취소하기</string>
+    <string name="club_recruit_create_cancel_dialog_negative">게속 생성</string>
 
+    <string name="club_recruit_create_error_create_failure">모집 생성에 실패했습니다.</string>
+    <string name="club_recruit_create_sucess">모집 생성에 성공했습니다.</string>
+
+    <string name="club_recruit_dday">D-%1$d</string>
+    <string name="club_recruit_always">상시 모집</string>
+    <string name="club_recruit_closed">마감</string>
+    <string name="club_recruit_before">모집 전</string>
+    <string name="club_recruit_period">%1$s 부터 %2$s 까지</string>
 
     <string name="club_image_upload_failed">이미지 업로드에 실패했습니다.</string>
     <string name="club_dialog_ok">확인</string>
+    <string name="club_dialog_cancel">취소</string>
 </resources>

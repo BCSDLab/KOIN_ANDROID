@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.club.ui.clubdetail
 import android.os.Parcelable
 import `in`.koreatech.koin.feature.club.model.ParcelizeClubDetails
 import `in`.koreatech.koin.feature.club.model.ParcelizeClubQnasInfo
+import `in`.koreatech.koin.feature.club.model.ParcelizeClubRecruitment
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -14,9 +15,12 @@ data class ClubDetailState(
     val clubDetails: ParcelizeClubDetails? = null,
     val clubQnasInfo: ParcelizeClubQnasInfo? = null,
     val showQnasProgressBar: Boolean = false,
+    val showRecruitProgressBar: Boolean = false,
     val showLoginDialog: Boolean = false,
     val showAddQnaDialog: Boolean = false,
     val showEmpowermentDialog: Boolean = false,
     val showImageDialog: Boolean = false,
-    val textFieldErrorMessageResId: Int? = null
+    val imageDialogUrl: String = "",
+    val textFieldErrorMessageResId: Int? = null,
+    val clubRecruitment: ParcelizeClubRecruitment? = null
 ) : Parcelable

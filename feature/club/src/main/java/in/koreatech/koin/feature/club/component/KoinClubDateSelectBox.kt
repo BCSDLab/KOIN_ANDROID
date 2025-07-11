@@ -21,7 +21,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 fun KoinClubDateSelectBox(
     text: String,
     modifier: Modifier = Modifier,
-    textStyle: TextStyle = KoinTheme.typography.medium18,
+    textStyle: TextStyle = KoinTheme.typography.medium16,
     textAlign: TextAlign = TextAlign.Center,
     onClick: () -> Unit = {}
 ) {

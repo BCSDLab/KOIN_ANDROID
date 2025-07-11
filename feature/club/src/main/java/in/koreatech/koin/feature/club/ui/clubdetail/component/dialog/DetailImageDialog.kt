@@ -33,7 +33,7 @@ fun DetailImageDialog(
     ) {
         SubcomposeAsyncImage(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxWidth(),
             model = imageModel,
             contentDescription = "Club Image",
             contentScale = ContentScale.FillWidth,

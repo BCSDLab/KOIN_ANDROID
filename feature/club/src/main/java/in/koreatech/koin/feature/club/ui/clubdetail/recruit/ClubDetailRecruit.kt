@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -26,17 +27,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
+import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.model.ParcelizeClubRecruitment
-import `in`.koreatech.koin.feature.club.type.RecruitmentType
+import `in`.koreatech.koin.feature.club.model.RecruitmentStatus
 
 @Composable
 fun ClubDetailRecruit(
     recruitment: ParcelizeClubRecruitment?,
     modifier: Modifier = Modifier,
     showProgressBar: Boolean = false,
-    onImageClick: (String) -> Unit = { },
+    onImageClick: (String) -> Unit = {},
+    onRecruitCreateClick: () -> Unit = {},
     isManager: Boolean = false
 ) {
     val context = LocalContext.current
@@ -64,22 +67,37 @@ fun ClubDetailRecruit(
                     ),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                if( recruitment == null || recruitment.status == RecruitmentType.NONE.value) {
-                    Spacer(Modifier.height(200.dp))
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = "모집이 마감되었어요.\n모집알림을 켜 알림을 받아보세요.",
-                        style = KoinTheme.typography.medium18,
-                        color = KoinTheme.colors.neutral500,
-                        textAlign = TextAlign.Center
-                    )
+                if( recruitment == null || recruitment.status == RecruitmentStatus.NONE) {
+                    if(!isManager) {
+                        Spacer(Modifier.height(200.dp))
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.detail_recruit_end),
+                            style = KoinTheme.typography.medium18,
+                            color = KoinTheme.colors.neutral500,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                    else {
+                        Row (
+                            modifier = Modifier.fillMaxWidth(),
+                            Arrangement.End
+                        ) {
+                            FilledButton(
+                                text = stringResource(R.string.detail_recruit_create),
+                                onClick = { onRecruitCreateClick() },
+                                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 5.dp)
+                            )
+                        }
+                    }
                 }
                 else {
                     Column {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = "모집 기한",
-                            style = KoinTheme.typography.medium16
+                            text = stringResource(R.string.detail_recruit_deadline_header),
+                            style = KoinTheme.typography.medium16,
+                            color = KoinTheme.colors.primary600
                         )
                         Spacer(Modifier.height(8.dp))
                         Row (
@@ -87,24 +105,50 @@ fun ClubDetailRecruit(
                                 .spacedBy(8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            var backgroungColor = KoinTheme.colors.primary400
+                            var innerText = ""
+                            when (recruitment.status) {
+                                RecruitmentStatus.RECRUITING -> {
+                                    innerText = stringResource(R.string.club_recruit_dday, recruitment.dday ?: -1)
+                                }
+                                RecruitmentStatus.ALWAYS -> {
+                                    backgroungColor = KoinTheme.colors.primary500
+                                    innerText = stringResource(R.string.club_recruit_always)
+                                }
+                                RecruitmentStatus.CLOSED -> {
+                                    backgroungColor = KoinTheme.colors.primary700
+                                    innerText = stringResource(R.string.club_recruit_closed)
+                                }
+                                RecruitmentStatus.BEFORE -> {
+                                    innerText = stringResource(R.string.club_recruit_before)
+                                }
+                                else -> {}
+                            }
                             Row(
                                 modifier = Modifier
                                     .background(
-                                        color = KoinTheme.colors.primary400,
+                                        color = backgroungColor,
                                         shape = KoinTheme.shapes.extraLarge
                                     )
                                     .padding(start = 8.dp, top = 4.dp, end = 8.dp, bottom = 4.dp)   ,
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Text(
-                                    text = "D-$1%d",
+                                    text = innerText,
+                                    style = KoinTheme.typography.medium14,
                                     color = KoinTheme.colors.neutral0
                                 )
                             }
-                            Text(
-                                text = "$1%s 부터 $2%s 까지",
-                                style = KoinTheme.typography.medium16
-                            )
+                            if (recruitment.status != RecruitmentStatus.ALWAYS) {
+                                Text(
+                                    text = stringResource(
+                                        R.string.club_recruit_period,
+                                        recruitment.startDate,
+                                        recruitment.endDate
+                                    ),
+                                    style = KoinTheme.typography.medium15
+                                )
+                            }
                         }
                     }
                     if(!recruitment.imageUrl.isNullOrBlank()) {
@@ -150,11 +194,11 @@ fun ClubDetailRecruit(
 
 @Preview
 @Composable
-fun ClubDetailRecruitScreenNone() {
+fun ClubDetailRecruitNone() {
     ClubDetailRecruit (
         recruitment = ParcelizeClubRecruitment(
             id = 0,
-            status = "NONE",
+            status = RecruitmentStatus.NONE,
             dday = null,
             startDate = "",
             endDate = "",
@@ -168,11 +212,30 @@ fun ClubDetailRecruitScreenNone() {
 
 @Preview
 @Composable
-fun ClubDetailRecruitScreenDday() {
+fun ClubDetailRecruitNoneManager() {
     ClubDetailRecruit (
         recruitment = ParcelizeClubRecruitment(
             id = 0,
-            status = "RECRUITING",
+            status = RecruitmentStatus.NONE,
+            dday = null,
+            startDate = "",
+            endDate = "",
+            imageUrl = null,
+            content = "",
+            isManager = false
+        ),
+        isManager = true,
+        modifier = Modifier.background(color = KoinTheme.colors.neutral0)
+    )
+}
+
+@Preview
+@Composable
+fun ClubDetailRecruitDday() {
+    ClubDetailRecruit (
+        recruitment = ParcelizeClubRecruitment(
+            id = 0,
+            status = RecruitmentStatus.RECRUITING,
             dday = 4,
             startDate = "2025.07.04",
             endDate = "2025.07.13",
@@ -186,11 +249,11 @@ fun ClubDetailRecruitScreenDday() {
 
 @Preview
 @Composable
-fun ClubDetailRecruitScreenNoImage() {
+fun ClubDetailRecruitNoImage() {
     ClubDetailRecruit (
         recruitment = ParcelizeClubRecruitment(
             id = 0,
-            status = "RECRUITING",
+            status = RecruitmentStatus.RECRUITING,
             dday = 4,
             startDate = "2025.07.04",
             endDate = "2025.07.13",
