@@ -90,4 +90,8 @@ interface ClubRepository {
         imageUrl: String,
         content: String
     ): Result<Unit>
+
+    suspend fun deleteClubRecruitment(
+        clubId: Int
+    ): Result<Unit>
 }

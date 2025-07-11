@@ -157,6 +157,7 @@ class ClubDetailViewModel @Inject constructor(
     fun deleteRecruitment() = intent {
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true, showRecruitProgressBar = true) }
+
     }
 
     fun showRecruitDeleteDialog() = intent {
