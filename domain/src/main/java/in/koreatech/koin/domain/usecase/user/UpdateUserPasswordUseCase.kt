@@ -9,9 +9,5 @@ class UpdateUserPasswordUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         password: String
-    ): Result<Unit> {
-        return runCatching {
-            userRepository.updateUserPassword(password.toSHA256())
-        }
-    }
+    ): Result<Unit> = userRepository.updateUserPassword(password.toSHA256())
 }

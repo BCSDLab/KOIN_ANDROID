@@ -219,8 +219,10 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun updateUserPassword(
         hashedPassword: String
-    ) {
-        userRemoteDataSource.updateUserPassword(hashedPassword) // TODO: Handle error after error code PR is completed.
+    ): Result<Unit> {
+        return runCatching {
+            userRemoteDataSource.updateUserPassword(hashedPassword) // TODO: Handle error after error code PR is completed.
+        }
     }
 
     override suspend fun requestSmsVerification(phoneNumber: String): Result<CodeCount> {

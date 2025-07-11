@@ -43,7 +43,7 @@ interface UserRepository {
 
     suspend fun updateUserPassword(
         hashedPassword: String
-    )
+    ): Result<Unit>
 
     suspend fun updateABTestToken()
 
