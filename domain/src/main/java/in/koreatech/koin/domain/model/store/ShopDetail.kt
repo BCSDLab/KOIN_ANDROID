@@ -7,7 +7,7 @@ data class ShopDetail(
     val address: String,
     val openTime: String?,
     val closeTime: String?,
-    val closedDays: List<String>,
+    val closedDays: List<Int>,
     val phone: String,
     val introduction: String?,
     val notice: String?,
