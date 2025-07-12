@@ -24,4 +24,5 @@
     <string name="option_price">%1$s : %2$d원\n</string>
 
     <string name="store_search_hint">검색어를 입력해주세요.</string>
+    <string name="menu_detail_option_price">%1$d원</string>
 </resources>
