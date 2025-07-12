@@ -3,10 +3,16 @@ package `in`.koreatech.koin.feature.store.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopOriginInfoUseCase
+import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopSummaryUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetShopMenusUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuUseCase
 import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
+import `in`.koreatech.koin.feature.store.model.MenuCategoryModel
+import `in`.koreatech.koin.feature.store.model.toMenuCategoryModel
+import `in`.koreatech.koin.feature.store.model.toStoreIndoModel
+import `in`.koreatech.koin.feature.store.model.toStoreInfoModel
 import `in`.koreatech.koin.feature.store.view.StoreDetailSideEffect
 import `in`.koreatech.koin.feature.store.view.StoreDetailState
 import javax.inject.Inject
@@ -19,6 +25,8 @@ import org.orbitmvi.orbit.viewmodel.container
 @HiltViewModel
 class StoreDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val getOrderShopOriginInfoUseCase: GetOrderShopOriginInfoUseCase,
+    private val getOrderShopSummaryUseCase: GetOrderShopSummaryUseCase,
     private val getStoreWithMenuUseCase: GetStoreWithMenuUseCase,
     private val getShopMenusUseCase: GetShopMenusUseCase,
     private val getStoreReviewUseCase: GetStoreReviewUseCase,
