@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.model.ShopInfoModel
 
 @Composable
 fun OriginInfoChips() {
@@ -58,14 +59,14 @@ fun OriginInfoChips() {
 }
 
 @Composable
-fun AvailableChips(storeInfo: StoreWithMenu) {
+fun AvailableChips(storeInfo: ShopInfoModel) {
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         if (storeInfo.isCardOk) {
             AvailableChip(
                 text = stringResource(R.string.card_available)
             )
         }
-        if (storeInfo.isDeliveryOk) {
+        if (storeInfo.isDeliveryAvailable) {
             AvailableChip(
                 text = stringResource(R.string.delivery_available)
             )

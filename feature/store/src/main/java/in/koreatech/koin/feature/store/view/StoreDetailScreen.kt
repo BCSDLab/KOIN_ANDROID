@@ -99,7 +99,6 @@ fun StoreDetailScreen(
                     StoreDetailInfo(
                         storeInfo = uiState.store,
                         storeReview = uiState.storeReview,
-                        availableDelivery = uiState.availableDelivery,
                         navigateToReview = { navigateToReview() },
                         navigateToDetailInfo = { navigateToDetailInfo() }
                     )
@@ -119,15 +118,15 @@ fun StoreDetailScreen(
                             state = rememberState
                         )
                         CoroutineScope(coroutineScope.coroutineContext).launch {
-                            rememberState.listState.scrollToItem(uiState.categories.indexOfFirst { it.storeMenuCategories.id == categoryId } + 2, -stickyHeaderHeight)
+                            rememberState.listState.scrollToItem(uiState.categories.indexOfFirst { it.menuGroupId == categoryId } + 2, -stickyHeaderHeight)
                         }
                     }
                 )
             }
             uiState.categories.forEach { category ->
                 menuListSection(
-                    category = category.storeMenuCategories.name ?: "",
-                    menus = category.storeMenuCategories.menus ?: emptyList()
+                    category = category.menuGroupName,
+                    menus = category.menus,
                 )
             }
         }

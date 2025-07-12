@@ -21,17 +21,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.domain.model.store.StoreReview
-import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.AvailableChips
 import `in`.koreatech.koin.feature.store.component.OriginInfoChips
 import `in`.koreatech.koin.feature.store.component.StoreDetailInfoCard
+import `in`.koreatech.koin.feature.store.model.ShopInfoModel
 
 @Composable
 fun StoreDetailInfo(
-    storeInfo: StoreWithMenu,
+    storeInfo: ShopInfoModel,
     storeReview: StoreReview,
-    availableDelivery: Boolean = false,
     navigateToReview: () -> Unit = {},
     navigateToDetailInfo: () -> Unit = {}
 ) {
@@ -67,6 +66,6 @@ fun StoreDetailInfo(
         Spacer(modifier = Modifier.height(12.dp))
         AvailableChips(storeInfo)
         Spacer(modifier = Modifier.height(16.dp))
-        StoreDetailInfoCard(storeInfo,availableDelivery, navigateToDetailInfo, )
+        StoreDetailInfoCard(storeInfo, navigateToDetailInfo)
     }
 }

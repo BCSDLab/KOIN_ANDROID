@@ -31,24 +31,23 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.model.ShopInfoModel
 
 @Composable
 fun StoreDetailInfoCard(
-    storeInfo: StoreWithMenu,
-    availableDelivery: Boolean = false,
+    storeInfo: ShopInfoModel,
     navigateToDetailInfo: () -> Unit = {}
 ) {
     Row(modifier = Modifier.fillMaxWidth()) {
         DeliveryInfoCard(
             modifier = Modifier.weight(1f),
             storeInfo = storeInfo,
-            availableDelivery = availableDelivery,
             navigateToDetailInfo = navigateToDetailInfo
         )
         Spacer(modifier = Modifier.width(8.dp))
         NoticeCard(
             modifier = Modifier.weight(1f),
-            description = storeInfo.description,
+            description = "",//TODO:원산지 정보 모델 따로 만들어서 다시 해줄 예정
             navigateToDetailInfo = navigateToDetailInfo
         )
     }
@@ -57,8 +56,7 @@ fun StoreDetailInfoCard(
 @Composable
 fun DeliveryInfoCard(
     modifier: Modifier = Modifier,
-    storeInfo: StoreWithMenu,
-    availableDelivery: Boolean = false,
+    storeInfo: ShopInfoModel,
     navigateToDetailInfo: () -> Unit = {}
 ) {
     Surface(
@@ -70,7 +68,7 @@ fun DeliveryInfoCard(
         shadowElevation = 1.dp,
         color = KoinTheme.colors.neutral0
     ) {
-        if( !availableDelivery ) {
+        if( !storeInfo.isDeliveryAvailable ) {
             Text(
                 modifier = Modifier.fillMaxWidth().padding(12.dp),
                 lineHeight = 17.sp,
@@ -90,12 +88,12 @@ fun DeliveryInfoCard(
                 Row {
                     Text(text = stringResource(R.string.minimum_order), fontSize = 12.sp, lineHeight = 18.sp)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "TODO: 최소주문", fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
+                    Text(text = stringResource(R.string.price_with_won,storeInfo.minimumOrderAmount?:0), fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
                 }
                 Row {
                     Text(text = stringResource(R.string.delivery_fee), fontSize = 12.sp, lineHeight = 18.sp)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(storeInfo.deliveryPrice.toString() + "원", fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
+                    Text(stringResource(R.string.price_with_won,storeInfo.minimumDeliveryTip?:""), fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
                 }
             }
             Icon(painter = painterResource(id = R.drawable.ic_delivery_arrow_right), contentDescription = null, modifier = Modifier.size(10.dp))

@@ -34,11 +34,22 @@ class StoreDetailViewModel @Inject constructor(
             checkToken()
         }
 
+    private fun fetchOrderableStore(id: Int) = intent {
+        getOrderShopSummaryUseCase(id).also { result ->
+            reduce {
+                state.copy(
+                    store = result.toStoreIndoModel(),
+                    isLoading = false
+                )
+            }
+        }
+    }
+
     private fun fetchStore(id: Int) = intent {
         getStoreWithMenuUseCase(id).also { result ->
             reduce {
                 state.copy(
-                    store = result,
+                    store = result.toStoreInfoModel(),
                     isLoading = false
                 )
             }
@@ -49,9 +60,11 @@ class StoreDetailViewModel @Inject constructor(
         getShopMenusUseCase(id).also { shop ->
             reduce {
                 state.copy(
-                    categories = shop.menuCategories?.map { storeMenuCategories ->
-                        StoreDetailState.MenuCategory(
-                            storeMenuCategories = storeMenuCategories,
+                    categories = shop.menuCategories ?.map { storeMenuCategories ->
+                        MenuCategoryModel(
+                            menuGroupId = storeMenuCategories.toMenuCategoryModel().menuGroupId,
+                            menuGroupName = storeMenuCategories.toMenuCategoryModel().menuGroupName,
+                            menus = storeMenuCategories.toMenuCategoryModel().menus,
                             isChecked = shop.menuCategories?.indexOf(storeMenuCategories) == 0
                         )
                     } ?: emptyList()
@@ -94,7 +107,7 @@ class StoreDetailViewModel @Inject constructor(
         reduce {
             state.copy(
                 categories = state.categories.map {
-                    if (it.storeMenuCategories.id == categoryId) {
+                    if (it.menuGroupId == categoryId) {
                         it.copy(isChecked = true)
                     } else {
                         it.copy(isChecked = false)
@@ -106,5 +119,6 @@ class StoreDetailViewModel @Inject constructor(
 
     companion object {
         const val STORE_ID = "storeId"
+        const val ORDERABLE_STORE_ID = "orderableStoreId"
     }
 }
