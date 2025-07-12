@@ -188,6 +188,8 @@ fun ClubRecruitCreateScreenImpl(
             descriptionColor = KoinTheme.colors.neutral600,
             positiveButtonText = stringResource(R.string.club_recruit_modify_request_dialog_positive),
             negativeButtonText = stringResource(R.string.club_recruit_modify_request_dialog_negative),
+            titleTextAlign = TextAlign.Center,
+            descriptionTextAlign = TextAlign.Center,
             positiveButtonColors = FilledButtonColors.Primary,
             onPositive = {
                 updateModifyRequestDialog(false)
@@ -205,6 +207,8 @@ fun ClubRecruitCreateScreenImpl(
             descriptionColor = KoinTheme.colors.neutral600,
             positiveButtonText = stringResource(R.string.club_recruit_modify_cancel_dialog_positive),
             negativeButtonText = stringResource(R.string.club_recruit_modify_cancel_dialog_negative),
+            titleTextAlign = TextAlign.Center,
+            descriptionTextAlign = TextAlign.Center,
             positiveButtonColors = KoinClubExtraSmallDialogDanger.positiveButtonColors(),
             onPositive = {
                 updateModifyCancelDialog(false)
