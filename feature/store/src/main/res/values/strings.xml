@@ -22,4 +22,6 @@
     <string name="review_count"> · 리뷰 %1$d개</string>
     <string name="price_with_won">%1$d원</string>
     <string name="option_price">%1$s : %2$d원\n</string>
+
+    <string name="store_search_hint">검색어를 입력해주세요.</string>
 </resources>
