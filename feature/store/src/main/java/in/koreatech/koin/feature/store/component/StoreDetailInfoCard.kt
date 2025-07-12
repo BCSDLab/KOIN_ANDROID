@@ -32,10 +32,12 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.model.ShopInfoModel
+import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
 
 @Composable
 fun StoreDetailInfoCard(
     storeInfo: ShopInfoModel,
+    storeDescriptionModel: StoreDescriptionModel? = null,
     navigateToDetailInfo: () -> Unit = {}
 ) {
     Row(modifier = Modifier.fillMaxWidth()) {
@@ -47,7 +49,7 @@ fun StoreDetailInfoCard(
         Spacer(modifier = Modifier.width(8.dp))
         NoticeCard(
             modifier = Modifier.weight(1f),
-            description = "",//TODO:원산지 정보 모델 따로 만들어서 다시 해줄 예정
+            description = storeDescriptionModel?.description ?: stringResource(R.string.store_detail_notice_empty),
             navigateToDetailInfo = navigateToDetailInfo
         )
     }

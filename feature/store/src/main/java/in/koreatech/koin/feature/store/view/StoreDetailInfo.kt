@@ -26,11 +26,13 @@ import `in`.koreatech.koin.feature.store.component.AvailableChips
 import `in`.koreatech.koin.feature.store.component.OriginInfoChips
 import `in`.koreatech.koin.feature.store.component.StoreDetailInfoCard
 import `in`.koreatech.koin.feature.store.model.ShopInfoModel
+import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
 
 @Composable
 fun StoreDetailInfo(
     storeInfo: ShopInfoModel,
     storeReview: StoreReview,
+    storeDescriptionModel: StoreDescriptionModel,
     navigateToReview: () -> Unit = {},
     navigateToDetailInfo: () -> Unit = {}
 ) {
@@ -66,6 +68,6 @@ fun StoreDetailInfo(
         Spacer(modifier = Modifier.height(12.dp))
         AvailableChips(storeInfo)
         Spacer(modifier = Modifier.height(16.dp))
-        StoreDetailInfoCard(storeInfo, navigateToDetailInfo)
+        StoreDetailInfoCard(storeInfo, storeDescriptionModel, navigateToDetailInfo)
     }
 }

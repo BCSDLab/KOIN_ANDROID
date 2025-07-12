@@ -6,9 +6,11 @@ import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
 import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.feature.store.model.MenuCategoryModel
 import `in`.koreatech.koin.feature.store.model.ShopInfoModel
+import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
 
 data class StoreDetailState(
     val store: ShopInfoModel = ShopInfoModel.empty(),
+    val shopDescription: StoreDescriptionModel = StoreDescriptionModel.empty(),
     val orderableStore: OrderShop = OrderShop.empty(),
     val categories: List<MenuCategoryModel> = emptyList(),
     val storeMenu: List<ShopMenus> = emptyList(),

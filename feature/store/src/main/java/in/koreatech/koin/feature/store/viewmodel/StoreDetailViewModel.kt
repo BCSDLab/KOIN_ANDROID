@@ -11,6 +11,7 @@ import `in`.koreatech.koin.domain.usecase.store.GetStoreReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuUseCase
 import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
 import `in`.koreatech.koin.feature.store.model.MenuCategoryModel
+import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
 import `in`.koreatech.koin.feature.store.model.toMenuCategoryModel
 import `in`.koreatech.koin.feature.store.model.toStoreIndoModel
 import `in`.koreatech.koin.feature.store.model.toStoreInfoModel
@@ -43,6 +44,20 @@ class StoreDetailViewModel @Inject constructor(
             checkToken()
         }
 
+    private fun fetchOrderStoreNotice(id: Int) = intent {
+        getOrderShopOriginInfoUseCase(id).also { result ->
+            reduce {
+                state.copy(
+                    shopDescription = StoreDescriptionModel(
+                        id = id,
+                        storeName = result.name,
+                        description = result.introduction,
+                    )
+                )
+            }
+        }
+    }
+
     private fun fetchOrderableStore(id: Int) = intent {
         getOrderShopSummaryUseCase(id).also { result ->
             reduce {
@@ -72,7 +87,12 @@ class StoreDetailViewModel @Inject constructor(
             reduce {
                 state.copy(
                     store = result.toStoreInfoModel(),
-                    isLoading = false
+                    isLoading = false,
+                    shopDescription = StoreDescriptionModel(
+                        id = id,
+                        storeName = result.name,
+                        description = result.description
+                    ),
                 )
             }
         }

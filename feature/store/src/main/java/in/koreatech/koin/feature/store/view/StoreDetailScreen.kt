@@ -99,6 +99,7 @@ fun StoreDetailScreen(
                     StoreDetailInfo(
                         storeInfo = uiState.store,
                         storeReview = uiState.storeReview,
+                        storeDescriptionModel = uiState.shopDescription,
                         navigateToReview = { navigateToReview() },
                         navigateToDetailInfo = { navigateToDetailInfo() }
                     )
