@@ -8,8 +8,8 @@ class GetOrderableShopsUseCase @Inject constructor(
     private val storeRepository: StoreRepository
 ) {
     suspend operator fun invoke(
-        sorter: String = "",
-        filter: String = "",
+        sorter: String? = null,
+        filter: String? = null,
         minimumOrderAmount: Int? = null
     ): Result<List<Shop>> = storeRepository.getOrderableShops(sorter, filter, minimumOrderAmount)
 }

@@ -534,7 +534,7 @@ fun CartAdd.toCartAddRequest() = CartAddRequest(
     orderableShopId = orderableShopId,
     orderableShopMenuId = orderableShopMenuId,
     orderableShopMenuPriceId = orderableShopMenuPriceId,
-    orderableShopMenuOptionIds = orderableShopMenuOptionIds.map { option ->
+    orderableShopMenuOptionIds = orderableShopMenuOptionIds?.map { option ->
         CartAddRequest.CartAddOptionRequest(
             optionGroupId = option.optionGroupId,
             optionId = option.optionId
