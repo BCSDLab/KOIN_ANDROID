@@ -522,7 +522,7 @@ fun ShopMenusGroupResponse.toShopMenusGroup() = ShopMenusGroup(
 
 fun CartItem.toCartItemRequest() = CartItemRequest(
     orderableShopMenuPriceId = orderableShopMenuPriceId,
-    options = options.map { option ->
+    options = options?.map { option ->
         CartItemRequest.CartItemOptionRequest(
             optionGroupId = option.optionGroupId,
             optionId = option.optionId
