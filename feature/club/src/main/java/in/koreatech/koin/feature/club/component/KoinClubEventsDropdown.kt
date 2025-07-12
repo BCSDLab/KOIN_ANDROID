@@ -32,7 +32,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 /**
  * Same component at LostAndFound module's Dropdown
- * except icon id, icon tint color, DropdownMenu Modifier
+ * except DropdownMenu Modifier, Column item's horizontal padding 12.dp to 22.dp
  */
 @Composable
 fun KoinClubEventsDropdown(
@@ -70,14 +70,12 @@ fun KoinClubEventsDropdown(
         Spacer(modifier = Modifier.width(4.dp))
         Icon(
             modifier = Modifier.rotate(rotateDegree),
-            painter = painterResource(id = R.drawable.ic_club_dropdown_arrow),
-            tint = KoinTheme.colors.primary600,
+            painter = painterResource(id = R.drawable.ic_club_events_dropdown_arrow),
             contentDescription = ""
         )
     }
 
     DropdownMenu(
-        modifier = Modifier,
         expanded = isDropdownExpanded,
         onDismissRequest = { onDropdownExpandChange(false) },
         containerColor = Color.Transparent,
@@ -106,7 +104,7 @@ fun KoinClubEventsDropdown(
                                 onItemSelected(index)
                                 onDropdownExpandChange(false)
                             }
-                            .padding(vertical = 8.dp, horizontal = 12.dp),
+                            .padding(vertical = 8.dp, horizontal = 22.dp),
                         maxLines = 1
                     )
                 }

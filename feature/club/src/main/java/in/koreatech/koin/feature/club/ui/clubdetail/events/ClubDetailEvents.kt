@@ -57,7 +57,7 @@ fun ClubDetailEvents(
                     KoinClubEventsDropdown(
                         title = "행사 진행중",
                         isDropdownExpanded = isDropdownExpanded,
-                        items = persistentListOf("최신 등록순", "행사 예정", "종료 행사"),
+                        items = persistentListOf("행사 진행중", "최신 등록순", "행사 예정", "종료 행사"),
                         onDropdownExpandChange = onDropdownExpandChange
                     )
                 }
