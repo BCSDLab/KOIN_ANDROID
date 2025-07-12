@@ -9,5 +9,11 @@ class UpdateCartItemQuantityUseCase @Inject constructor(
     suspend operator fun invoke(
         cartMenuItemId: Int,
         quantity: Int
-    ): Result<Unit> = storeRepository.updateCartItemQuantity(cartMenuItemId, quantity)
+    ): Result<Unit> {
+        if (cartMenuItemId < 1) {
+            throw IllegalArgumentException("cartMenuItemId must be greater than 0")
+        }
+
+        return storeRepository.updateCartItemQuantity(cartMenuItemId, quantity)
+    }
 }
