@@ -183,6 +183,7 @@ object KoinClubExtraSmallDialogDefaults {
     val titleStyle @Composable get() = KoinTheme.typography.medium18
     val descriptionStyle @Composable get() = KoinTheme.typography.regular14
     val textAlign @Composable get() = TextAlign.Start
+
     @Composable
     fun positiveButtonColors(
         containerColor: Color = KoinTheme.colors.primary500,
