@@ -56,6 +56,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -305,6 +306,8 @@ fun ClubDetail(
                 positiveButtonText = stringResource(R.string.detail_recruit_delete_dialog_positive),
                 negativeButtonText = stringResource(R.string.detail_recruit_delete_dialog_negative),
                 positiveButtonColors = KoinClubExtraSmallDialogDanger.positiveButtonColors(),
+                titleTextAlign = TextAlign.Center,
+                descriptionTextAlign = TextAlign.Center,
                 onPositive = {
                     viewModel.dismissRecruitDeleteDialog()
                     viewModel.deleteRecruitment()
