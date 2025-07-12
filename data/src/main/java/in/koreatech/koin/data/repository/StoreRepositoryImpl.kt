@@ -220,21 +220,21 @@ class StoreRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getOrderableShopDelivery(storeId: Int): Result<ShopDeliveryAvailable> {
+    override suspend fun getOrderableShopDelivery(shopId: Int): Result<ShopDeliveryAvailable> {
         return runCatching {
-            storeRemoteDataSource.getOrderableShopDelivery(storeId).toShopDeliveryAvailable()
+            storeRemoteDataSource.getOrderableShopDelivery(shopId).toShopDeliveryAvailable()
         }
     }
 
-    override suspend fun getOrderableShopMenus(storeId: Int): Result<List<ShopMenus>> {
+    override suspend fun getOrderableShopMenus(shopId: Int): Result<List<ShopMenus>> {
         return runCatching {
-            storeRemoteDataSource.getOrderableShopMenus(storeId).map { it.toShopMenus() }
+            storeRemoteDataSource.getOrderableShopMenus(shopId).map { it.toShopMenus() }
         }
     }
 
-    override suspend fun getOrderableShopMenu(storeId: Int, menuId: Int): Result<ShopMenu> {
+    override suspend fun getOrderableShopMenu(shopId: Int, menuId: Int): Result<ShopMenu> {
         return runCatching {
-            storeRemoteDataSource.getOrderableShopMenu(storeId, menuId).toShopMenu()
+            storeRemoteDataSource.getOrderableShopMenu(shopId, menuId).toShopMenu()
         }
     }
 

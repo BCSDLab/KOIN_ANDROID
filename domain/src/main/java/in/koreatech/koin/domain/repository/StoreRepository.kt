@@ -90,12 +90,12 @@ interface StoreRepository {
 
     suspend fun getOrderableShopDetail(shopId: Int): Result<ShopDetail>
 
-    suspend fun getOrderableShopDelivery(storeId: Int): Result<ShopDeliveryAvailable>
+    suspend fun getOrderableShopDelivery(shopId: Int): Result<ShopDeliveryAvailable>
 
-    suspend fun getOrderableShopMenus(storeId: Int): Result<List<ShopMenus>>
+    suspend fun getOrderableShopMenus(shopId: Int): Result<List<ShopMenus>>
 
     suspend fun getOrderableShopMenu(
-        storeId: Int,
+        shopId: Int,
         menuId: Int
     ): Result<ShopMenu>
 
