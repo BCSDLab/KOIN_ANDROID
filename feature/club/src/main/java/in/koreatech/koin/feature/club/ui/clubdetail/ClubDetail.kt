@@ -98,6 +98,7 @@ import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.D
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogEmpowermentContent
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.snackbar.DetailSnackBar
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.tabrow.DetailTabRow
+import `in`.koreatech.koin.feature.club.ui.clubdetail.events.ClubDetailEvents
 import `in`.koreatech.koin.feature.club.ui.clubdetail.intro.ClubDetailIntro
 import `in`.koreatech.koin.feature.club.ui.clubdetail.qna.ClubDetailQna
 import `in`.koreatech.koin.feature.club.ui.clubdetail.recruit.ClubDetailRecruit
@@ -646,6 +647,10 @@ fun ClubDetail(
                             )
                         }
                         DetailTabType.EVENT.strResId -> {
+                            ClubDetailEvents(
+                                isDropdownExpanded = state.isEventsDropdownExpanded,
+                                onDropdownExpandChange = viewModel::updateEventsDropdownExpanded
+                            )
                         }
                         DetailTabType.QNA.strResId -> {
                             ClubDetailQna(

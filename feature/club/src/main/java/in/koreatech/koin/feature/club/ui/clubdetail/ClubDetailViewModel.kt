@@ -335,6 +335,10 @@ class ClubDetailViewModel @Inject constructor(
         dismissLoginDialog()
     }
 
+    fun updateEventsDropdownExpanded(bool : Boolean) = intent {
+        reduce { state.copy(isEventsDropdownExpanded = bool) }
+    }
+
     fun showEmpowermentDialog() = intent {
         reduce { state.copy(showEmpowermentDialog = true) }
     }

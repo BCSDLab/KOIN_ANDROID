@@ -23,5 +23,6 @@ data class ClubDetailState(
     val imageDialogUrl: String = "",
     val textFieldErrorMessageResId: Int? = null,
     val clubRecruitment: ParcelizeClubRecruitment? = null,
-    val showRecruitDeleteDialog: Boolean = false
+    val showRecruitDeleteDialog: Boolean = false,
+    val isEventsDropdownExpanded: Boolean = false
 ) : Parcelable
