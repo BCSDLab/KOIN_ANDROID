@@ -200,7 +200,7 @@ fun ClubRecruitCreateScreenImpl(
             descriptionColor = KoinTheme.colors.neutral600,
             positiveButtonText = stringResource(R.string.club_recruit_create_cancel_dialog_positive),
             negativeButtonText = stringResource(R.string.club_recruit_create_cancel_dialog_negative),
-            positiveButtonColors = KoinClubExtraSmallDialogDanger.positiveButtonColors,
+            positiveButtonColors = KoinClubExtraSmallDialogDanger.positiveButtonColors(),
             onPositive = {
                 dismissCreateCancelDialog()
                 createRecruitmentCancel()
