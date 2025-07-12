@@ -301,7 +301,7 @@ fun ClubDetail(
 
         if (state.showRecruitDeleteDialog) {
             KoinClubExtraSmallDialog(
-                description = "모집을 삭제하시겠어요?\n모집이 삭제되며 되돌릴 수 없어요.",
+                description = stringResource(R.string.detail_recruit_delete_dialog_description),
                 descriptionStyle = KoinTheme.typography.medium15,
                 descriptionColor = KoinTheme.colors.neutral600,
                 positiveButtonText = stringResource(R.string.detail_recruit_delete_dialog_positive),
@@ -724,6 +724,9 @@ suspend fun handleSideEffect(
             ToastUtil.getInstance().makeShort(sideEffect.messageResId)
         }
         is ClubDetailSideEffect.LoadClubRecruitmentError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.UnknownError -> {
             ToastUtil.getInstance().makeShort(sideEffect.messageResId)
         }
     }

@@ -42,6 +42,7 @@
     <string name="detail_recruit_deadline_header">모집 기한</string>
     <string name="detail_recruit_modify">모집 수정</string>
     <string name="detail_recruit_delete">모집 삭제</string>
+    <string name="detail_recruit_delete_dialog_description">모집을 삭제하시겠어요?\n모집이 삭제되며 되돌릴 수 없어요.</string>
     <string name="detail_recruit_delete_dialog_positive">삭제하기</string>
     <string name="detail_recruit_delete_dialog_negative">취소하기</string>
 
@@ -57,6 +58,7 @@
     <string name="detail_error_already_not_liked">이미 좋아요 상태가 아닙니다.</string>
     <string name="detail_error_delete_recruit">모집이 삭제되지 않았습니다.</string>
     <string name="detail_error_load_recruit">모집을 불러오지 못했습니다.</string>
+    <string name="detail_error_unkown">알 수 없는 오류가 발생했습니다.</string>
 
     <string name="club_main_activity_widget_title">동아리 조회</string>
     <string name="club_main_widget_category_performance">공연</string>

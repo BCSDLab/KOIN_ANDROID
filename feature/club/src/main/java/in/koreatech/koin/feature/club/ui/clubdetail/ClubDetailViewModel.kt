@@ -170,7 +170,10 @@ class ClubDetailViewModel @Inject constructor(
                     postSideEffect(ClubDetailSideEffect.DeleteClubRecruitmentError)
                     reduce { state.copy(clubRecruitment = null) }
                 }
-                else -> throw e
+                else -> {
+                    postSideEffect(ClubDetailSideEffect.UnknownError)
+                    reduce { state.copy(clubRecruitment = null) }
+                }
             }
         }
     }
@@ -222,7 +225,9 @@ class ClubDetailViewModel @Inject constructor(
                     is KoinClubException.NotClubManagerException -> {
                         postSideEffect(ClubDetailSideEffect.NotClubManagerError)
                     }
-                    else -> throw e
+                    else -> {
+                        postSideEffect(ClubDetailSideEffect.UnknownError)
+                    }
                 }
             }
         }
@@ -252,7 +257,9 @@ class ClubDetailViewModel @Inject constructor(
                     is KoinClubException.NotClubManagerException -> {
                         postSideEffect(ClubDetailSideEffect.NotClubManagerError)
                     }
-                    else -> throw e
+                    else -> {
+                        postSideEffect(ClubDetailSideEffect.UnknownError)
+                    }
                 }
             }
         }
@@ -276,7 +283,9 @@ class ClubDetailViewModel @Inject constructor(
                     is KoinClubException.DeletePermissionDeniedException -> {
                         postSideEffect(ClubDetailSideEffect.DeletePermissionDeniedError)
                     }
-                    else -> throw e
+                    else -> {
+                        postSideEffect(ClubDetailSideEffect.UnknownError)
+                    }
                 }
             }
         }
@@ -309,7 +318,9 @@ class ClubDetailViewModel @Inject constructor(
                         is KoinClubException.AlreadyNotLikedException -> {
                             postSideEffect(ClubDetailSideEffect.AlreadyNotLikedError)
                         }
-                        else -> throw e
+                        else -> {
+                            postSideEffect(ClubDetailSideEffect.UnknownError)
+                        }
                     }
                 }
             } else {
@@ -326,7 +337,9 @@ class ClubDetailViewModel @Inject constructor(
                         is KoinClubException.AlreadyLikedException -> {
                             postSideEffect(ClubDetailSideEffect.AlreadyLikedError)
                         }
-                        else -> throw e
+                        else -> {
+                            postSideEffect(ClubDetailSideEffect.UnknownError)
+                        }
                     }
                 }
             }
