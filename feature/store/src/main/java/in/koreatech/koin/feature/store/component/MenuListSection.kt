@@ -85,14 +85,12 @@ fun MenuItem(
     Row(modifier = Modifier.padding(16.dp)) {
         Column(modifier = Modifier.weight(1f)) {
             Text(text = menu.name, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
-            if (menu.description != null) {
-                Text(
-                    modifier = Modifier.padding(top = 4.dp),
-                    text = menu.description ?: "",
-                    fontSize = 12.sp,
-                    color = KoinTheme.colors.neutral500
-                )
-            }
+            Text(
+                modifier = Modifier.padding(top = 4.dp),
+                text = menu.description ?: "",
+                fontSize = 12.sp,
+                color = KoinTheme.colors.neutral500
+            )
             OptionPriceText(
                 shopMenus = menu
             )
@@ -122,7 +120,7 @@ private fun OptionPriceText(
     ) {
         if (shopMenus.isSingle) {
             Text(
-                text = stringResource(R.string.price_with_won, shopMenus.prices.getOrNull(0) ?: 0),
+                text = stringResource(R.string.price_with_won, shopMenus.singlePrice ?: 0),
                 style = KoinTheme.typography.bold14
             )
         } else {

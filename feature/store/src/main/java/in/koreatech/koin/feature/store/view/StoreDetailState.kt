@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.store.view
 import `in`.koreatech.koin.domain.model.ordershop.OrderShop
 import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
-import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.feature.store.model.MenuCategoryModel
 import `in`.koreatech.koin.feature.store.model.ShopInfoModel

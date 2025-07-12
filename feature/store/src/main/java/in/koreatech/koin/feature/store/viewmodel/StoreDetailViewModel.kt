@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.store.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopMenuUseCase
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopOriginInfoUseCase
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopSummaryUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetShopMenusUseCase
@@ -15,18 +16,19 @@ import `in`.koreatech.koin.feature.store.model.toStoreIndoModel
 import `in`.koreatech.koin.feature.store.model.toStoreInfoModel
 import `in`.koreatech.koin.feature.store.view.StoreDetailSideEffect
 import `in`.koreatech.koin.feature.store.view.StoreDetailState
-import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import javax.inject.Inject
 
 @HiltViewModel
 class StoreDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getOrderShopOriginInfoUseCase: GetOrderShopOriginInfoUseCase,
     private val getOrderShopSummaryUseCase: GetOrderShopSummaryUseCase,
+    private val getOrderShopMenuUseCase: GetOrderShopMenuUseCase,
     private val getStoreWithMenuUseCase: GetStoreWithMenuUseCase,
     private val getShopMenusUseCase: GetShopMenusUseCase,
     private val getStoreReviewUseCase: GetStoreReviewUseCase,
@@ -37,7 +39,6 @@ class StoreDetailViewModel @Inject constructor(
             val storeId = savedStateHandle.get<Int>(STORE_ID)
             checkNotNull(storeId)
             fetchStore(storeId)
-            fetchMenus(storeId)
             fetchReview(storeId)
             checkToken()
         }
@@ -48,6 +49,19 @@ class StoreDetailViewModel @Inject constructor(
                 state.copy(
                     store = result.toStoreIndoModel(),
                     isLoading = false
+                )
+            }
+        }
+        fetchOrderableStoreMenu(id)
+    }
+
+    private fun fetchOrderableStoreMenu(id: Int) = intent {
+        getOrderShopMenuUseCase(id).also { result ->
+            reduce {
+                state.copy(
+                    categories = result.map {
+                        it.toMenuCategoryModel()
+                    }
                 )
             }
         }
@@ -62,13 +76,14 @@ class StoreDetailViewModel @Inject constructor(
                 )
             }
         }
+        fetchMenus(id)
     }
 
     private fun fetchMenus(id: Int) = intent {
         getShopMenusUseCase(id).also { shop ->
             reduce {
                 state.copy(
-                    categories = shop.menuCategories ?.map { storeMenuCategories ->
+                    categories = shop.menuCategories?.map { storeMenuCategories ->
                         MenuCategoryModel(
                             menuGroupId = storeMenuCategories.toMenuCategoryModel().menuGroupId,
                             menuGroupName = storeMenuCategories.toMenuCategoryModel().menuGroupName,
