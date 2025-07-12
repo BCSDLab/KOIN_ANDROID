@@ -304,7 +304,7 @@ fun ClubDetail(
                 descriptionColor = KoinTheme.colors.neutral600,
                 positiveButtonText = stringResource(R.string.detail_recruit_delete_dialog_positive),
                 negativeButtonText = stringResource(R.string.detail_recruit_delete_dialog_negative),
-                positiveButtonColors = KoinClubExtraSmallDialogDanger.positiveButtonColors,
+                positiveButtonColors = KoinClubExtraSmallDialogDanger.positiveButtonColors(),
                 onPositive = {
                     viewModel.dismissRecruitDeleteDialog()
                     viewModel.deleteRecruitment()
