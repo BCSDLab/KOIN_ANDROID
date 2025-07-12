@@ -109,8 +109,8 @@ fun KoinClubExtraSmallDialog(
     descriptionStyle: TextStyle = KoinClubExtraSmallDialogDefaults.descriptionStyle,
     positiveButtonText: String = stringResource(id = R.string.club_dialog_ok),
     negativeButtonText: String = stringResource(id = R.string.club_dialog_cancel),
-    positiveButtonColors: ButtonColors = KoinClubExtraSmallDialogDefaults.positiveButtonColors,
-    negativeButtonColors: ButtonColors = KoinClubExtraSmallDialogDefaults.negativeButtonColors,
+    positiveButtonColors: ButtonColors = KoinClubExtraSmallDialogDefaults.positiveButtonColors(),
+    negativeButtonColors: ButtonColors = KoinClubExtraSmallDialogDefaults.negativeButtonColors(),
     onPositive: () -> Unit = {},
     onNegative: () -> Unit = {},
     onDismiss: () -> Unit = {}
@@ -173,22 +173,37 @@ object KoinClubExtraSmallDialogDefaults {
     val textColor @Composable get() = KoinTheme.colors.neutral800
     val titleStyle @Composable get() = KoinTheme.typography.medium18
     val descriptionStyle @Composable get() = KoinTheme.typography.regular14
-    val positiveButtonColors @Composable get() = ButtonColors(
-        containerColor = KoinTheme.colors.primary500,
-        contentColor = KoinTheme.colors.neutral0,
-        disabledContainerColor = KoinTheme.colors.neutral300,
-        disabledContentColor = KoinTheme.colors.neutral600
+
+    @Composable
+    fun positiveButtonColors(
+        containerColor: Color = KoinTheme.colors.primary500,
+        contentColor: Color = KoinTheme.colors.neutral0,
+        disabledContainerColor: Color = KoinTheme.colors.neutral300,
+        disabledContentColor: Color = KoinTheme.colors.neutral600
+    ) = ButtonColors(
+        containerColor = containerColor,
+        contentColor = contentColor,
+        disabledContainerColor = disabledContainerColor,
+        disabledContentColor = disabledContentColor
     )
-    val negativeButtonColors @Composable get() = ButtonColors(
-        containerColor = KoinTheme.colors.neutral0,
-        contentColor = KoinTheme.colors.neutral500,
-        disabledContainerColor = KoinTheme.colors.neutral400,
-        disabledContentColor = KoinTheme.colors.neutral500
+
+    @Composable
+    fun negativeButtonColors(
+        containerColor: Color = KoinTheme.colors.neutral0,
+        contentColor: Color = KoinTheme.colors.neutral500,
+        disabledContainerColor: Color = KoinTheme.colors.neutral400,
+        disabledContentColor: Color = KoinTheme.colors.neutral500
+    ) = ButtonColors(
+        containerColor = containerColor,
+        contentColor = contentColor,
+        disabledContainerColor = disabledContainerColor,
+        disabledContentColor = disabledContentColor
     )
 }
 
 object KoinClubExtraSmallDialogDanger {
-    val positiveButtonColors @Composable get() = ButtonColors(
+    @Composable
+    fun positiveButtonColors() = KoinClubExtraSmallDialogDefaults.positiveButtonColors(
         containerColor = KoinTheme.colors.danger500,
         contentColor = KoinTheme.colors.neutral0,
         disabledContainerColor = KoinTheme.colors.neutral300,
