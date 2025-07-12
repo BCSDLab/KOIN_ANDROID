@@ -433,9 +433,9 @@ class StoreRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCartItems(): Result<Cart> {
+    override suspend fun getCartItems(type: String): Result<Cart> {
         return runCatching {
-            storeRemoteDataSource.getCartItems().toCart()
+            storeRemoteDataSource.getCartItems(type).toCart()
         }.onFailure { e ->
             return Result.failure(
                 when (e) {

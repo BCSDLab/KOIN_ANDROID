@@ -113,7 +113,7 @@ interface StoreRepository {
 
     suspend fun addCartItem(cartAdd: CartAdd): Result<Unit>
 
-    suspend fun getCartItems(): Result<Cart>
+    suspend fun getCartItems(type: String): Result<Cart>
 
     suspend fun validateCartItems(): Result<Unit>
 
