@@ -23,23 +23,16 @@ import `in`.koreatech.koin.feature.signin.ui.SignInScreen
 import `in`.koreatech.koin.feature.user.DEEPLINK_ARTICLE
 import `in`.koreatech.koin.feature.user.DEEPLINK_MAIN
 import `in`.koreatech.koin.feature.user.DEEPLINK_TIMETABLE
-import `in`.koreatech.koin.feature.user.ui.inforequire.InfoRequiredFullActivity
-import `in`.koreatech.koin.feature.user.ui.inforequire.InfoRequiredModalActivity
+import `in`.koreatech.koin.feature.user.ui.inforequire.InfoRequiredActivity
 
 @AndroidEntryPoint
 class SignInActivity : ComponentActivity() {
 
-    private lateinit var prefs: SharedPreferences
     private val viewModel: SignInViewModel by viewModels()
-    private var isShownBefore: Int = -1
     private var modal: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        prefs = getSharedPreferences("info_required", MODE_PRIVATE)
-        isShownBefore = prefs.getInt("isShownBefore", -1) // -1:보여지지 않음, 0:보여줬는데 정보 수정 안함, 1:정보수정 완료
-        viewModel.setIsShownBefore(isShownBefore)
 
         try {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -66,18 +59,16 @@ class SignInActivity : ComponentActivity() {
     }
 
     private fun goToNextRoute() {
-        when (viewModel.getIsInfoRequired()) {
-            -1 -> {
-                prefs.edit { putInt("isShownBefore", 1) }
-            }
-            1 -> {
-                if (isShownBefore == -1) {
-                    // info Required 메시지 본 적 없음
-                    startActivity(Intent(this, InfoRequiredFullActivity::class.java))
+        if (viewModel.isInfoRequired){
+            when (viewModel.infoRequiredShown) {
+                true -> {
+                    modal = true
+                }
+
+                false -> {
+                    startActivity(Intent(this, InfoRequiredActivity::class.java).putExtra(InfoRequiredActivity.EXTRA_IS_FULL, true))
                     finish()
                     return
-                } else if (isShownBefore == 0) {
-                    modal = true
                 }
             }
         }
@@ -93,20 +84,12 @@ class SignInActivity : ComponentActivity() {
                         data = link.toUri()
                     }
                 startActivity(intent)
-                if (modal) {
-                    startActivity(Intent(this, InfoRequiredModalActivity::class.java))
-                }
-                finish()
             } catch (e: Exception) {
                 Intent(Intent.ACTION_VIEW).apply {
                     data = DEEPLINK_MAIN.toUri()
                 }.let {
                     startActivity(it)
                 }
-                if (modal) {
-                    startActivity(Intent(this, InfoRequiredModalActivity::class.java))
-                }
-                finish()
             }
         } else {
             if (handleTimetableIntent()) {
@@ -116,11 +99,6 @@ class SignInActivity : ComponentActivity() {
                 }.let {
                     startActivity(it)
                 }
-                if (modal) {
-                    startActivity(Intent(this, InfoRequiredModalActivity::class.java))
-                }
-                finish()
-                return
             } else if (handleArticleIntent()) {
                 val bundle = intent.getBundleExtra(BUNDLE_EXTRA_KEY)
                 val startBoard = bundle?.getInt(START_BOARD, 4)
@@ -136,23 +114,20 @@ class SignInActivity : ComponentActivity() {
                         putExtra("modal", modal)
                     }
                 )
-                if (modal) {
-                    startActivity(Intent(this, InfoRequiredModalActivity::class.java))
+            } else {
+                Intent(Intent.ACTION_VIEW).apply {
+                    data = DEEPLINK_MAIN.toUri()
+                    putExtra("modal", modal)
+                }.let {
+                    startActivity(it)
                 }
-                finish()
-                return
             }
-            Intent(Intent.ACTION_VIEW).apply {
-                data = DEEPLINK_MAIN.toUri()
-                putExtra("modal", modal)
-            }.let {
-                startActivity(it)
-            }
-            if (modal) {
-                startActivity(Intent(this, InfoRequiredModalActivity::class.java))
-            }
-            finish()
         }
+
+        if (modal) {
+            startActivity(Intent(this, InfoRequiredActivity::class.java).putExtra(InfoRequiredActivity.EXTRA_IS_FULL, false))
+        }
+        finish()
     }
 
     private fun handleTimetableIntent(): Boolean {

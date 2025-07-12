@@ -34,6 +34,7 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButtonColors
+import `in`.koreatech.koin.core.designsystem.component.lottie.NewKoinLottie
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 /**
@@ -54,8 +55,8 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 fun ChoiceDialog(
     title: String,
     description: String,
-    onPositive: () -> Unit,
-    onNegative: () -> Unit,
+    onPositive: () -> Unit = {},
+    onNegative: () -> Unit = {},
     modifier: Modifier = Modifier,
     titleStyle: TextStyle = KoinTheme.typography.medium18,
     descriptionStyle: TextStyle = KoinTheme.typography.regular14,
@@ -63,7 +64,6 @@ fun ChoiceDialog(
     negativeButtonText: String = stringResource(id = R.string.common_cancellation),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
     negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral
-//    cancellable: Boolean = true,
 ) {
     BasicAlertDialog(
         modifier = modifier
@@ -125,14 +125,13 @@ fun ChoiceDialog(
 fun ChoiceDialog(
     title: @Composable () -> Unit,
     description: @Composable () -> Unit,
-    onPositive: () -> Unit,
-    onNegative: () -> Unit,
+    onPositive: () -> Unit = {},
+    onNegative: () -> Unit = {},
     modifier: Modifier = Modifier,
     positiveButtonText: String = stringResource(id = R.string.common_confirmation),
     negativeButtonText: String = stringResource(id = R.string.common_cancellation),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
     negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral
-//    cancellable: Boolean = true,
 ) {
     BasicAlertDialog(
         modifier = modifier
@@ -191,8 +190,8 @@ fun ChoiceDialog(
 fun ChoiceDialog(
     title: String,
     description: String,
-    onPositive: () -> Unit,
-    onNegative: () -> Unit,
+    onPositive: () -> Unit = {},
+    onNegative: () -> Unit = {},
     modifier: Modifier = Modifier,
     titleStyle: TextStyle = KoinTheme.typography.medium18,
     descriptionStyle: TextStyle = KoinTheme.typography.regular14,
@@ -200,12 +199,8 @@ fun ChoiceDialog(
     negativeButtonText: String = stringResource(id = R.string.common_cancellation),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
     negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral,
-    @RawRes lottieRes: Int
-//    cancellable: Boolean = true,
+    lottieCompose: @Composable (() -> Unit)? = { NewKoinLottie(Modifier.width(150.dp).height(120.dp)) }
 ) {
-    val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(lottieRes)
-    )
     BasicAlertDialog(
         modifier = modifier
             .fillMaxWidth()
@@ -220,13 +215,7 @@ fun ChoiceDialog(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LottieAnimation(
-                composition = composition,
-                iterations = LottieConstants.IterateForever,
-                modifier = Modifier
-                    .width(150.dp)
-                    .height(120.dp)
-            )
+            lottieCompose?.invoke()
             Spacer(modifier = Modifier.height(24.dp))
             Text(
                 text = title,
@@ -275,20 +264,15 @@ fun ChoiceDialog(
 fun ChoiceDialog(
     title: @Composable () -> Unit,
     description: @Composable () -> Unit,
-    onPositive: () -> Unit,
-    onNegative: () -> Unit,
+    onPositive: () -> Unit = {},
+    onNegative: () -> Unit = {},
     modifier: Modifier = Modifier,
     positiveButtonText: String = stringResource(id = R.string.common_confirmation),
     negativeButtonText: String = stringResource(id = R.string.common_cancellation),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
     negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral,
-    @RawRes lottieRes: Int
-//    cancellable: Boolean = true,
+    lottieCompose: @Composable (() -> Unit)? = { NewKoinLottie(Modifier.width(150.dp).height(120.dp)) }
 ) {
-    val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(lottieRes)
-    )
-
     BasicAlertDialog(
         modifier = modifier
             .fillMaxWidth()
@@ -303,13 +287,7 @@ fun ChoiceDialog(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LottieAnimation(
-                composition = composition,
-                iterations = LottieConstants.IterateForever,
-                modifier = Modifier
-                    .width(150.dp)
-                    .height(120.dp)
-            )
+            lottieCompose?.invoke()
             Spacer(modifier = Modifier.height(24.dp))
             title()
             Spacer(modifier = Modifier.height(8.dp))
@@ -347,7 +325,7 @@ private fun ChoiceDialogPreviewWithLottie() {
             ),
             onPositive = {},
             onNegative = {},
-            lottieRes = R.raw.new_koin_lottie
+            lottieCompose = { NewKoinLottie(Modifier.width(150.dp).height(120.dp)) }
         )
     }
 }

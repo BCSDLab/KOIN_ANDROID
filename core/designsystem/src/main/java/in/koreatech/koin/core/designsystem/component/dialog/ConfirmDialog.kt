@@ -32,6 +32,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import `in`.koreatech.koin.core.designsystem.R
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
+import `in`.koreatech.koin.core.designsystem.component.lottie.NewKoinLottie
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 /**
@@ -57,7 +58,6 @@ fun ConfirmDialog(
     descriptionStyle: TextStyle = KoinTheme.typography.regular14,
     positiveButtonText: String = stringResource(id = R.string.common_confirmation),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary
-//    cancellable: Boolean = true,
 ) {
     BasicAlertDialog(
         modifier = modifier
@@ -83,9 +83,7 @@ fun ConfirmDialog(
                 style = descriptionStyle
             )
             Spacer(modifier = Modifier.height(24.dp))
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
+            Row {
                 FilledButton(
                     modifier = Modifier.weight(1.0F),
                     text = positiveButtonText,
@@ -116,7 +114,6 @@ fun ConfirmDialog(
     modifier: Modifier = Modifier,
     positiveButtonText: String = stringResource(id = R.string.common_confirmation),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary
-//    cancellable: Boolean = true,
 ) {
     BasicAlertDialog(
         modifier = modifier
@@ -136,9 +133,7 @@ fun ConfirmDialog(
             Spacer(modifier = Modifier.height(8.dp))
             description()
             Spacer(modifier = Modifier.height(24.dp))
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
+            Row {
                 FilledButton(
                     modifier = Modifier.weight(1.0F),
                     text = positiveButtonText,
@@ -174,13 +169,8 @@ fun ConfirmDialog(
     descriptionStyle: TextStyle = KoinTheme.typography.regular14,
     positiveButtonText: String = stringResource(id = R.string.common_confirmation),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
-    @RawRes lottieRes: Int
-//    cancellable: Boolean = true,
+    lottieCompose: @Composable (() -> Unit)? = { NewKoinLottie(Modifier.width(150.dp).height(120.dp)) }
 ) {
-    val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(lottieRes)
-    )
-
     BasicAlertDialog(
         modifier = modifier
             .fillMaxWidth()
@@ -195,13 +185,7 @@ fun ConfirmDialog(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LottieAnimation(
-                composition = composition,
-                iterations = LottieConstants.IterateForever,
-                modifier = Modifier
-                    .width(150.dp)
-                    .height(120.dp)
-            )
+            lottieCompose?.invoke()
             Spacer(modifier = Modifier.height(24.dp))
             Text(
                 text = title,
@@ -213,9 +197,7 @@ fun ConfirmDialog(
                 style = descriptionStyle
             )
             Spacer(modifier = Modifier.height(24.dp))
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
+            Row {
                 FilledButton(
                     modifier = Modifier.weight(1.0F),
                     text = positiveButtonText,
@@ -249,13 +231,8 @@ fun ConfirmDialog(
     modifier: Modifier = Modifier,
     positiveButtonText: String = stringResource(id = R.string.common_confirmation),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
-    @RawRes lottieRes: Int
-//    cancellable: Boolean = true,
+    lottieCompose: @Composable (() -> Unit)? = { NewKoinLottie(Modifier.width(150.dp).height(120.dp)) }
 ) {
-    val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(lottieRes)
-    )
-
     BasicAlertDialog(
         modifier = modifier
             .fillMaxWidth()
@@ -270,21 +247,13 @@ fun ConfirmDialog(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LottieAnimation(
-                composition = composition,
-                iterations = LottieConstants.IterateForever,
-                modifier = Modifier
-                    .width(150.dp)
-                    .height(120.dp)
-            )
+            lottieCompose?.invoke()
             Spacer(modifier = Modifier.height(24.dp))
             title()
             Spacer(modifier = Modifier.height(8.dp))
             description()
             Spacer(modifier = Modifier.height(24.dp))
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
+            Row {
                 FilledButton(
                     modifier = Modifier.weight(1.0F),
                     text = positiveButtonText,
@@ -308,7 +277,7 @@ private fun ConfirmDialogPreviewWithLottie() {
             ),
             onPositive = {},
             onNegative = {},
-            lottieRes = R.raw.new_koin_lottie
+            lottieCompose = { NewKoinLottie(Modifier.width(150.dp).height(120.dp)) }
         )
     }
 }

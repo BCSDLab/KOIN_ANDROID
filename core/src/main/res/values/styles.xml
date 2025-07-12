@@ -39,6 +39,16 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+    <style name="KAPTheme.Transparent.NoActionBar.Modal" parent="KAPTheme.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.7</item>
+    </style>
+
     <style name="LicenseCustomActionbar" parent="Widget.AppCompat.ActionBar">
         <item name="displayOptions">showCustom</item>
         <item name="background">?attr/colorPrimary</item>

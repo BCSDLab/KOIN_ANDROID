@@ -31,7 +31,9 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
+import `in`.koreatech.koin.core.designsystem.component.lottie.NewKoinLottie
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.user.R
 
 /**
@@ -44,19 +46,14 @@ import `in`.koreatech.koin.feature.user.R
  */
 @Composable
 fun InfoRequiredFullScreen(
-    @RawRes lottieRes: Int,
     buttonText: String,
     titleText: String,
     descriptionText: String,
     modifier: Modifier = Modifier,
     onPositive: () -> Unit
 ) {
-    val insets = WindowInsets.navigationBars.asPaddingValues()
-    val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(lottieRes)
-    )
     val buttonColors = ButtonColors(
-        containerColor = KoinTheme.colors.main500,
+        containerColor = RebrandKoinTheme.colors.primary500,
         contentColor = KoinTheme.colors.neutral0,
         disabledContainerColor = KoinTheme.colors.neutral300,
         disabledContentColor = KoinTheme.colors.neutral600
@@ -75,9 +72,7 @@ fun InfoRequiredFullScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LottieAnimation(
-                composition = composition,
-                iterations = LottieConstants.IterateForever,
+            NewKoinLottie(
                 modifier = Modifier
                     .width(240.dp)
                     .height(140.dp)
@@ -108,12 +103,11 @@ fun InfoRequiredFullScreen(
                     start = 24.dp,
                     end = 24.dp,
                     top = 16.dp,
-                    bottom = insets.calculateBottomPadding() + 16.dp
+                    bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding() + 16.dp
                 )
-                .fillMaxWidth()
-                .height(46.dp),
+                .fillMaxWidth(),
             colors = buttonColors,
-            shape = RoundedCornerShape(8.dp),
+            shape = KoinTheme.shapes.small,
             text = buttonText
         )
     }
@@ -124,7 +118,6 @@ fun InfoRequiredFullScreen(
 fun MainScreenPreview() {
     MaterialTheme {
         InfoRequiredFullScreen(
-            lottieRes = R.raw.new_koin_lottie,
             buttonText = "정보 입력하러 가기",
             titleText = "새로워진 코인, 준비 완료!",
             descriptionText = "몇 가지 정보만 더 입력해 주시면\n더 편하고 똑똑하게 이용하실 수 있어요!",

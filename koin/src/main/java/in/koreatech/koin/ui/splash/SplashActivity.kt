@@ -26,6 +26,7 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.SystemBarsUtils
 import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
+import `in`.koreatech.koin.feature.user.ui.inforequire.InfoRequiredActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.forceupdate.ForceUpdateActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
@@ -59,16 +60,9 @@ class SplashActivity : ActivityBase() {
     private val splashViewModel by viewModels<SplashViewModel>()
     private val createdTime = System.currentTimeMillis()
 
-    private lateinit var prefs: SharedPreferences
-    private var isShownBefore = -1
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
-
-        prefs = getSharedPreferences("info_required_once", MODE_PRIVATE)
-        isShownBefore = prefs.getInt("isShownBefore", -1) // -1:보여지지 않음, other:보여줌
-        splashViewModel.setIsShownBefore(isShownBefore)
 
         initView()
         initObserve()
@@ -149,26 +143,20 @@ class SplashActivity : ActivityBase() {
     }
 
     private fun handleIntentOrLaunch(state: TokenState) {
-        var modal = false
-        if (splashViewModel.getIsInfoRequired() && isShownBefore != 1) {
-            modal = true
-        }
-
         val uriPrefix = intent.data?.path?.split("/")?.getOrNull(1)
         when (uriPrefix) {
             "articles" -> {
-                gotoArticleActivityOrDelay(modal)
+                gotoArticleActivityOrDelay(splashViewModel.isInfoRequired && !splashViewModel.infoRequiredShown)
             }
             else -> {
-                gotoMainActivityOrDelay(modal)
+                gotoMainActivityOrDelay(splashViewModel.isInfoRequired && !splashViewModel.infoRequiredShown)
             }
         }
     }
 
     private fun gotoInfoRequiredActivity() {
         lifecycleScope.launch {
-            delay()
-            startActivity(Intent(Intent.ACTION_VIEW, "koin://inforequiredfull/activity".toUri()))
+            startActivity(Intent(Intent.ACTION_VIEW, "koin://inforequired/activity".toUri()).putExtra(InfoRequiredActivity.EXTRA_IS_FULL, true))
             overridePendingTransition(R.anim.fade, R.anim.hold)
             finish()
             firebasePerformanceUtil.stop()

@@ -22,7 +22,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.lottie.compose.v660)
     implementation(project(":core"))
     implementation(project(":domain"))
     implementation(project(":core:onboarding"))
@@ -32,6 +31,7 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
+    implementation(libs.lottie.compose)
 
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose.m3)

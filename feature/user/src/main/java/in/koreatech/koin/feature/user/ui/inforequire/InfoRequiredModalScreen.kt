@@ -20,15 +20,14 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 fun InfoRequiredModalScreen(
     title: String,
     description: String,
-    onPositive: () -> Unit,
-    onNegative: () -> Unit,
+    onPositive: () -> Unit = {},
+    onNegative: () -> Unit = {},
     descriptionStyle: TextStyle,
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0f, 0f, 0f, 0.7f)) // 배경 70% 검정 투명
             .clickable(
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() }

@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.ui.main.activity
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -169,7 +168,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         viewModel.updateDining()
     }
 
-    @SuppressLint("RestrictedApi")
     private fun initView() = with(binding) {
         viewModel.checkKeywordNotiContent()
         initArticleBannerABTest()
