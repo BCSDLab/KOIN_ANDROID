@@ -4,6 +4,7 @@ import `in`.koreatech.koin.domain.model.club.ClubCategories
 import `in`.koreatech.koin.domain.model.club.ClubDetails
 import `in`.koreatech.koin.domain.model.club.ClubHot
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
+import `in`.koreatech.koin.domain.model.club.ClubRecruitment
 import `in`.koreatech.koin.domain.model.club.Clubs
 
 interface ClubRepository {
@@ -77,5 +78,18 @@ interface ClubRepository {
 
     suspend fun cancelClubLike(
         clubId: Int
+    ): Result<Unit>
+
+    suspend fun getClubRecruitment(
+        clubId: Int
+    ): Result<ClubRecruitment>
+
+    suspend fun createClubRecruitment(
+        clubId: Int,
+        startDate: String?,
+        endDate: String?,
+        isAlwaysRecruiting: Boolean,
+        imageUrl: String,
+        content: String
     ): Result<Unit>
 }

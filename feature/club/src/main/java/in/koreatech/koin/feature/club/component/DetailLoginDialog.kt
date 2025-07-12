@@ -40,7 +40,7 @@ fun DetailLoginDialog(
     positiveButtonText: String = stringResource(id = R.string.detail_dialog_login_positive),
     negativeButtonText: String = stringResource(id = R.string.common_cancellation),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
-    negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Primary
+    negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral
 ) {
     BasicAlertDialog(
         modifier =

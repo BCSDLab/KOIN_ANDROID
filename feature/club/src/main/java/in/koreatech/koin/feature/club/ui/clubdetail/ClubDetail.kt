@@ -59,7 +59,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
@@ -99,6 +98,7 @@ import `in`.koreatech.koin.feature.club.ui.clubdetail.component.snackbar.DetailS
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.tabrow.DetailTabRow
 import `in`.koreatech.koin.feature.club.ui.clubdetail.intro.ClubDetailIntro
 import `in`.koreatech.koin.feature.club.ui.clubdetail.qna.ClubDetailQna
+import `in`.koreatech.koin.feature.club.ui.clubdetail.recruit.ClubDetailRecruit
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -108,10 +108,11 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun ClubDetail(
     isClubModified: Boolean = false,
     initialPage: Int = 0,
+    viewModel: ClubDetailViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {},
     onModifyClick: (Int) -> Unit = {},
-    resetClubModifiedState: () -> Unit = {},
-    viewModel: ClubDetailViewModel = hiltViewModel()
+    onRecruitCreateClick: (Int) -> Unit = {},
+    resetClubModifiedState: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
 
@@ -286,7 +287,7 @@ fun ClubDetail(
         if (state.showImageDialog) {
             DetailImageDialog(
                 imageModel = ImageRequest.Builder(context)
-                    .data(state.clubDetails?.imageUrl)
+                    .data(state.imageDialogUrl)
                     .size(400)
                     .build(),
                 onDismiss = { viewModel.dismissImageDialog() }
@@ -308,7 +309,7 @@ fun ClubDetail(
                     modifier = Modifier
                         .size(200.dp)
                         .clickable {
-                            viewModel.showImageDialog()
+                            viewModel.showImageDialog(state.clubDetails?.imageUrl ?: "")
                         },
                     model = ImageRequest.Builder(context)
                         .data(state.clubDetails?.imageUrl)
@@ -614,42 +615,35 @@ fun ClubDetail(
                             )
                         }
                         DetailTabType.RECRUIT.strResId -> {
+                            ClubDetailRecruit(
+                                recruitment = state.clubRecruitment,
+                                showProgressBar = state.showRecruitProgressBar,
+                                onImageClick = viewModel::showImageDialog,
+                                onRecruitCreateClick = { onRecruitCreateClick(state.clubId) },
+                                isManager = state.clubDetails?.manager ?: false
+                            )
                         }
                         DetailTabType.EVENT.strResId -> {
                         }
                         DetailTabType.QNA.strResId -> {
-                            Box {
-                                if (state.showQnasProgressBar) {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .zIndex(1f)
-                                    ) {
-                                        CircularProgressIndicator(
-                                            modifier = Modifier
-                                                .size(100.dp)
-                                                .align(Alignment.Center)
-                                        )
-                                    }
+                            ClubDetailQna(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .verticalScroll(qnaScrollState, enabled = isQnaScrollable.value),
+                                qnaList = qnaList,
+                                isManager = state.clubDetails?.manager ?: false,
+                                userId = state.userId,
+                                showProgressBar = state.showQnasProgressBar,
+                                onAddQnaClick = {
+                                    viewModel.showAddQnaDialog()
+                                },
+                                onDeleteQnaClick = { qnaId ->
+                                    viewModel.deleteClubQna(qnaId)
+                                },
+                                onAddAnswerClick = { qnaId, content ->
+                                    viewModel.addClubQnaAnswer(qnaId, content)
                                 }
-                                ClubDetailQna(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .verticalScroll(qnaScrollState, enabled = isQnaScrollable.value),
-                                    qnaList = qnaList,
-                                    isManager = state.clubDetails?.manager ?: false,
-                                    userId = state.userId,
-                                    onAddQnaClick = {
-                                        viewModel.showAddQnaDialog()
-                                    },
-                                    onDeleteQnaClick = { qnaId ->
-                                        viewModel.deleteClubQna(qnaId)
-                                    },
-                                    onAddAnswerClick = { qnaId, content ->
-                                        viewModel.addClubQnaAnswer(qnaId, content)
-                                    }
-                                )
-                            }
+                            )
                         }
                     }
                 }

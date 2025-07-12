@@ -12,6 +12,7 @@ import `in`.koreatech.koin.domain.usecase.club.CancelClubLikeUseCase
 import `in`.koreatech.koin.domain.usecase.club.DeleteClubQnaUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubDetailsUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubQnasUseCase
+import `in`.koreatech.koin.domain.usecase.club.GetClubRecruitmentUseCase
 import `in`.koreatech.koin.domain.usecase.club.PostClubQnaUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubEmpowermentUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubLikeUseCase
@@ -19,6 +20,7 @@ import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubDetails
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubQnasInfo
+import `in`.koreatech.koin.feature.club.model.toParcelizeClubRecruitment
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
@@ -41,7 +43,8 @@ class ClubDetailViewModel @Inject constructor(
     private val cancelClubLikeUseCase: CancelClubLikeUseCase,
     private val postClubQnaUseCase: PostClubQnaUseCase,
     private val setClubEmpowermentUseCase: SetClubEmpowermentUseCase,
-    private val setClubLikeUseCase: SetClubLikeUseCase
+    private val setClubLikeUseCase: SetClubLikeUseCase,
+    private val getClubRecruitmentUseCase: GetClubRecruitmentUseCase
 ) : ViewModel(), ContainerHost<ClubDetailState, ClubDetailSideEffect> {
     override val container = container<ClubDetailState, ClubDetailSideEffect>(
         initialState = ClubDetailState(),
@@ -70,6 +73,7 @@ class ClubDetailViewModel @Inject constructor(
         if (state.isLoading) return@intent
         loadClubDetails()
         loadClubQnas()
+        loadClubRecruitment()
     }
 
     private fun getUserIdCollect() = intent {
@@ -122,6 +126,32 @@ class ClubDetailViewModel @Inject constructor(
                         showQnasProgressBar = false
                     )
                 }
+            }
+        }
+    }
+
+    private fun loadClubRecruitment() = intent {
+        reduce {
+            state.copy(isLoading = true, showRecruitProgressBar = true)
+        }
+        getClubRecruitmentUseCase(state.clubId).onSuccess {
+            reduce {
+                state.copy(
+                    clubRecruitment = it.toParcelizeClubRecruitment(),
+                    isLoading = false,
+                    showRecruitProgressBar = false
+                )
+            }
+        }.onFailure { e ->
+            reduce { state.copy(isLoading = false, showRecruitProgressBar = false) }
+            when (e) {
+                is KoinClubException.WrongInputDataException -> {
+                    // TODO
+                }
+                is KoinClubException.ClubRecruitNotFoundException -> {
+                    reduce { state.copy(clubRecruitment = null) }
+                }
+                else -> throw e
             }
         }
     }
@@ -332,8 +362,8 @@ class ClubDetailViewModel @Inject constructor(
         postSideEffect(ClubDetailSideEffect.OpenUrl(url))
     }
 
-    fun showImageDialog() = intent {
-        reduce { state.copy(showImageDialog = true) }
+    fun showImageDialog(url: String) = intent {
+        reduce { state.copy(showImageDialog = true, imageDialogUrl = url) }
     }
 
     fun dismissImageDialog() = intent {

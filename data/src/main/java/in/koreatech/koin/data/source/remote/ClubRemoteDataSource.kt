@@ -6,6 +6,7 @@ import `in`.koreatech.koin.data.request.club.ClubCreateRequest
 import `in`.koreatech.koin.data.request.club.ClubEmpowermentRequest
 import `in`.koreatech.koin.data.request.club.ClubModifyRequest
 import `in`.koreatech.koin.data.request.club.ClubQnaRequest
+import `in`.koreatech.koin.data.request.club.ClubRecruitmentRequest
 import javax.inject.Inject
 
 class ClubRemoteDataSource @Inject constructor(
@@ -53,4 +54,11 @@ class ClubRemoteDataSource @Inject constructor(
     ) = clubAuthApi.deleteClubQna(clubId, qnaId)
 
     suspend fun cancelClubLike(clubId: Int) = clubAuthApi.cancelClubLike(clubId)
+
+    suspend fun getClubRecruitment(clubId: Int) = clubApi.getClubRecruitment(clubId)
+
+    suspend fun createClubRecruitment(
+        clubId: Int,
+        request: ClubRecruitmentRequest
+    ) = clubAuthApi.createClubRecruitment(clubId, request)
 }
