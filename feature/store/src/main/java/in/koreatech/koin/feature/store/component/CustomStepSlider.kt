@@ -55,7 +55,7 @@ fun CustomStepSlider(
         },
         track = { sliderState ->
             val fraction = (sliderState.value - sliderState.valueRange.start) /
-                    (sliderState.valueRange.endInclusive - sliderState.valueRange.start)
+                (sliderState.valueRange.endInclusive - sliderState.valueRange.start)
             Box(
                 Modifier
                     .fillMaxWidth()
@@ -92,7 +92,7 @@ fun CustomStepSliderPreview() {
     ) {
         CustomStepSlider(
             value = 1f,
-            optionCount = 5,
+            optionCount = 5
         )
     }
 }
