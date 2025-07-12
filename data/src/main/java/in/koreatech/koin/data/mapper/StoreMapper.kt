@@ -86,14 +86,14 @@ fun StoreItemResponse.toStore(): Store =
         averageRate = averageRate ?: 0.0,
         reviewCount = reviewCount ?: 0,
         open =
-            open?.filter { it.dayOfWeek == localDayOfWeekName }?.map {
-                Store.OpenData(
-                    dayOfWeek = it.dayOfWeek ?: "",
-                    closed = it.closed ?: false,
-                    openTime = it.openTime ?: "",
-                    closeTime = it.closeTime ?: ""
-                )
-            }.orEmpty().getOrElse(0) { Store.OpenData(localDayOfWeekName, false, "00:00", "00:00") },
+        open?.filter { it.dayOfWeek == localDayOfWeekName }?.map {
+            Store.OpenData(
+                dayOfWeek = it.dayOfWeek ?: "",
+                closed = it.closed ?: false,
+                openTime = it.openTime ?: "",
+                closeTime = it.closeTime ?: ""
+            )
+        }.orEmpty().getOrElse(0) { Store.OpenData(localDayOfWeekName, false, "00:00", "00:00") },
         categoryIds = categoryIds,
         benefitDetails = benefitDetails ?: benefitDetail?.toStringArray() ?: emptyList()
     )
@@ -131,14 +131,14 @@ fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu =
         updateAt = updateAt,
         isEvent = isEvent ?: false,
         open =
-            open?.filter { it.dayOfWeek == localDayOfWeekName }?.map {
-                Store.OpenData(
-                    dayOfWeek = it.dayOfWeek ?: "",
-                    closed = it.closed ?: false,
-                    openTime = it.openTime ?: "",
-                    closeTime = it.closeTime ?: ""
-                )
-            }.orEmpty().getOrElse(0) { Store.OpenData(localDayOfWeekName, false, "00:00", "00,00") },
+        open?.filter { it.dayOfWeek == localDayOfWeekName }?.map {
+            Store.OpenData(
+                dayOfWeek = it.dayOfWeek ?: "",
+                closed = it.closed ?: false,
+                openTime = it.openTime ?: "",
+                closeTime = it.closeTime ?: ""
+            )
+        }.orEmpty().getOrElse(0) { Store.OpenData(localDayOfWeekName, false, "00:00", "00,00") },
         imageUrls = imageUrls ?: emptyList(),
         shopCategories = shopCategories?.map { it.toCategory() }.orEmpty(),
         menuCategories = menuCategories?.map { it.toCategory() }.orEmpty(),
@@ -358,13 +358,13 @@ fun BenefitCategoryListResponse.toStoreBenefitCategory(): BenefitCategoryList =
 fun ShopRelatedListResponse.toShopSearchRelatedList(): ShopSearchRelatedList =
     ShopSearchRelatedList(
         keywords =
-            keywords.map {
-                ShopSearchRelated(
-                    keyword = it.keyword ?: "",
-                    shopIds = it.shopIds ?: emptyList(),
-                    shopId = it.shopId
-                )
-            }
+        keywords.map {
+            ShopSearchRelated(
+                keyword = it.keyword ?: "",
+                shopIds = it.shopIds ?: emptyList(),
+                shopId = it.shopId
+            )
+        }
     )
 
 fun OwnerGetStoreResponse.toOwnerGetStore(): OwnerGetStore =
@@ -454,7 +454,7 @@ fun ShopDetailResponse.toShopDetail() = ShopDetail(
 
 fun ShopDeliveryAvailableResponse.toShopDeliveryAvailable() = ShopDeliveryAvailable(
     campusDelivery = campusDelivery,
-    offCampusDelivery = offCampusDelivery,
+    offCampusDelivery = offCampusDelivery
 )
 
 fun ShopMenusResponse.toShopMenus() = ShopMenus(
