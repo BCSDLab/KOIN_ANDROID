@@ -1,7 +1,20 @@
 package `in`.koreatech.koin.data.repository
 
+import `in`.koreatech.koin.data.mapper.toCart
+import `in`.koreatech.koin.data.mapper.toCartAddRequest
+import `in`.koreatech.koin.data.mapper.toCartItemEdit
+import `in`.koreatech.koin.data.mapper.toCartItemRequest
+import `in`.koreatech.koin.data.mapper.toCartPaymentSummary
+import `in`.koreatech.koin.data.mapper.toCartSummary
 import `in`.koreatech.koin.data.mapper.toCategory
+import `in`.koreatech.koin.data.mapper.toShop
+import `in`.koreatech.koin.data.mapper.toShopDeliveryAvailable
+import `in`.koreatech.koin.data.mapper.toShopDetail
+import `in`.koreatech.koin.data.mapper.toShopMenu
+import `in`.koreatech.koin.data.mapper.toShopMenus
+import `in`.koreatech.koin.data.mapper.toShopMenusGroup
 import `in`.koreatech.koin.data.mapper.toShopSearchRelatedList
+import `in`.koreatech.koin.data.mapper.toShopSummary
 import `in`.koreatech.koin.data.mapper.toStore
 import `in`.koreatech.koin.data.mapper.toStoreBenefitCategory
 import `in`.koreatech.koin.data.mapper.toStoreCategories
@@ -14,9 +27,22 @@ import `in`.koreatech.koin.data.request.user.ReviewRequest
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import `in`.koreatech.koin.domain.model.store.BenefitCategoryList
+import `in`.koreatech.koin.domain.model.store.Cart
+import `in`.koreatech.koin.domain.model.store.CartAdd
+import `in`.koreatech.koin.domain.model.store.CartItem
+import `in`.koreatech.koin.domain.model.store.CartItemEdit
+import `in`.koreatech.koin.domain.model.store.CartPaymentSummary
+import `in`.koreatech.koin.domain.model.store.CartSummary
 import `in`.koreatech.koin.domain.model.store.Review
+import `in`.koreatech.koin.domain.model.store.Shop
+import `in`.koreatech.koin.domain.model.store.ShopDeliveryAvailable
+import `in`.koreatech.koin.domain.model.store.ShopDetail
 import `in`.koreatech.koin.domain.model.store.ShopEvents
+import `in`.koreatech.koin.domain.model.store.ShopMenu
+import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.domain.model.store.ShopMenusGroup
 import `in`.koreatech.koin.domain.model.store.ShopSearchRelatedList
+import `in`.koreatech.koin.domain.model.store.ShopSummary
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreBenefit
 import `in`.koreatech.koin.domain.model.store.StoreCategories
@@ -174,5 +200,107 @@ class StoreRepositoryImpl @Inject constructor(
 
     override suspend fun getShopSearchRelatedList(query: String): ShopSearchRelatedList {
         return storeRemoteDataSource.getShopSearchRelated(query).toShopSearchRelatedList()
+    }
+
+    override suspend fun getOrderableShops(sorter: String, filter: String, minimumOrderAmount: Int?): Result<List<Shop>> {
+        return runCatching {
+            storeRemoteDataSource.getOrderableShops(sorter, filter, minimumOrderAmount).map { it.toShop() }
+        }
+    }
+
+    override suspend fun getOrderableShopSummary(shopId: Int): Result<ShopSummary> {
+        return runCatching {
+            storeRemoteDataSource.getOrderableShopSummary(shopId).toShopSummary()
+        }
+    }
+
+    override suspend fun getOrderableShopDetail(shopId: Int): Result<ShopDetail> {
+        return runCatching {
+            storeRemoteDataSource.getOrderableShopDetail(shopId).toShopDetail()
+        }
+    }
+
+    override suspend fun getOrderableShopDelivery(storeId: Int): Result<ShopDeliveryAvailable> {
+        return runCatching {
+            storeRemoteDataSource.getOrderableShopDelivery(storeId).toShopDeliveryAvailable()
+        }
+    }
+
+    override suspend fun getOrderableShopMenus(storeId: Int): Result<List<ShopMenus>> {
+        return runCatching {
+            storeRemoteDataSource.getOrderableShopMenus(storeId).map { it.toShopMenus() }
+        }
+    }
+
+    override suspend fun getOrderableShopMenu(storeId: Int, menuId: Int): Result<ShopMenu> {
+        return runCatching {
+            storeRemoteDataSource.getOrderableShopMenu(storeId, menuId).toShopMenu()
+        }
+    }
+
+    override suspend fun getOrderableShopMenuGroups(shopId: Int): Result<List<ShopMenusGroup>> {
+        return runCatching {
+            storeRemoteDataSource.getOrderableShopMenuGroups(shopId).map { it.toShopMenusGroup() }
+        }
+    }
+
+    override suspend fun updateCartItem(cartMenuItemId: Int, cartItem: CartItem): Result<Unit> {
+        return runCatching {
+            storeRemoteDataSource.updateCartItem(cartMenuItemId, cartItem.toCartItemRequest())
+        }
+    }
+
+    override suspend fun updateCartItemQuantity(cartMenuItemId: Int, quantity: Int): Result<Unit> {
+        return runCatching {
+            storeRemoteDataSource.updateCartItemQuantity(cartMenuItemId, quantity)
+        }
+    }
+
+    override suspend fun addCartItem(cartAdd: CartAdd): Result<Unit> {
+        return runCatching {
+            storeRemoteDataSource.addCartItem(cartAdd.toCartAddRequest())
+        }
+    }
+
+    override suspend fun getCartItems(): Result<Cart> {
+        return runCatching {
+            storeRemoteDataSource.getCartItems().toCart()
+        }
+    }
+
+    override suspend fun validateCartItems(): Result<Unit> {
+        return runCatching {
+            storeRemoteDataSource.validateCartItems()
+        }
+    }
+
+    override suspend fun getCartSummary(orderableShopId: Int): Result<CartSummary> {
+        return runCatching {
+            storeRemoteDataSource.getCartSummary(orderableShopId).toCartSummary()
+        }
+    }
+
+    override suspend fun getCartPaymentSummary(type: String): Result<CartPaymentSummary> {
+        return runCatching {
+            storeRemoteDataSource.getCartPaymentSummary(type).toCartPaymentSummary()
+        }
+    }
+
+    override suspend fun getCartItemEdit(cartMenuItemId: Int): Result<CartItemEdit> {
+        return runCatching {
+            storeRemoteDataSource.getCartItemEdit(cartMenuItemId).toCartItemEdit()
+        }
+    }
+
+    override suspend fun resetCart(): Result<Unit> {
+        return runCatching {
+            storeRemoteDataSource.resetCart()
+        }
+    }
+
+    override suspend fun deleteCartItem(cartMenuItemId: Int): Result<Unit> {
+        return runCatching {
+            storeRemoteDataSource.deleteCartItem(cartMenuItemId)
+        }
     }
 }
