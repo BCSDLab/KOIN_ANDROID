@@ -64,7 +64,10 @@ fun LazyListScope.menuListSection(
             ) {
                 Column {
                     menus.forEachIndexed { index, menu ->
-                        MenuItem(menu = menu)
+                        MenuItem(
+                            modifier = Modifier.padding(16.dp),
+                            menu = menu
+                        )
                         if (index != menus.lastIndex) {
                             Divider(
                                 color = KoinTheme.colors.neutral300,
@@ -80,9 +83,10 @@ fun LazyListScope.menuListSection(
 
 @Composable
 fun MenuItem(
+    modifier: Modifier = Modifier,
     menu: MenuModel
 ) {
-    Row(modifier = Modifier.padding(16.dp)) {
+    Row(modifier = modifier) {
         Column(modifier = Modifier.weight(1f)) {
             Text(text = menu.name, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
             Text(
