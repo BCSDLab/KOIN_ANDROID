@@ -30,7 +30,7 @@ import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
-import `in`.koreatech.koin.feature.club.component.getKoinClubCancelButtonColor
+import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
 import `in`.koreatech.koin.feature.club.model.ParcelizeClubRecruitment
 import `in`.koreatech.koin.feature.club.model.RecruitmentStatus
 
@@ -114,7 +114,7 @@ fun ClubDetailRecruit(
                                         textStyle = KoinTheme.typography.medium14,
                                         onClick = showRecruitDeleteDialog,
                                         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp),
-                                        colors = getKoinClubCancelButtonColor()
+                                        colors = KoinClubExtraSmallDialogDanger.positiveButtonColors()
                                     )
                                     FilledButton(
                                         text = stringResource(R.string.detail_recruit_modify),
