@@ -1,10 +1,8 @@
 package `in`.koreatech.koin.data.di.repository
 
-import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.IoDispatcher
 import `in`.koreatech.koin.data.repository.ArticleRepositoryImpl
@@ -15,7 +13,6 @@ import `in`.koreatech.koin.data.repository.CoopShopRepositoryImpl
 import `in`.koreatech.koin.data.repository.DeptRepositoryImpl
 import `in`.koreatech.koin.data.repository.DiningRepositoryImpl
 import `in`.koreatech.koin.data.repository.LandRepositoryImpl
-import `in`.koreatech.koin.data.repository.ModalRepositoryImpl
 import `in`.koreatech.koin.data.repository.NotificationRepositoryImpl
 import `in`.koreatech.koin.data.repository.OwnerChangePasswordRepositoryImpl
 import `in`.koreatech.koin.data.repository.OwnerRegisterRepositoryImpl
@@ -60,7 +57,6 @@ import `in`.koreatech.koin.domain.repository.CoopShopRepository
 import `in`.koreatech.koin.domain.repository.DeptRepository
 import `in`.koreatech.koin.domain.repository.DiningRepository
 import `in`.koreatech.koin.domain.repository.LandRepository
-import `in`.koreatech.koin.domain.repository.ModalRepository
 import `in`.koreatech.koin.domain.repository.NotificationRepository
 import `in`.koreatech.koin.domain.repository.OwnerChangePasswordRepository
 import `in`.koreatech.koin.domain.repository.OwnerRegisterRepository
@@ -254,13 +250,5 @@ object RepositoryModule {
         return ClubRepositoryImpl(
             clubRemoteDataSource
         )
-    }
-
-    @Provides
-    @Singleton
-    fun provideModalRepository(
-        @ApplicationContext context: Context
-    ): ModalRepository {
-        return ModalRepositoryImpl(context)
     }
 }

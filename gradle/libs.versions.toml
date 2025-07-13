@@ -211,7 +211,6 @@ krossbow-stomp-core = { group = "org.hildan.krossbow", name = "krossbow-stomp-co
 krossbow-websocket-okhttp = { group = "org.hildan.krossbow", name = "krossbow-websocket-okhttp", version.ref = "krossbow" }
 krossbow-stomp-kxserialization = { group = "org.hildan.krossbow", name = "krossbow-stomp-kxserialization", version.ref = "krossbow" }
 krossbow-stomp-kxserialization-json = { group = "org.hildan.krossbow", name = "krossbow-stomp-kxserialization-json", version.ref = "krossbow" }
-play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocationVersion" }
 
 [plugins]
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }

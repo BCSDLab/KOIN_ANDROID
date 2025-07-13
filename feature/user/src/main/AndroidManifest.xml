@@ -73,6 +73,7 @@
         </activity>
         <activity
             android:name=".ui.inforequire.InfoRequiredActivity"
+            android:theme="@style/KAPTheme.Transparent.NoActionBar"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>

@@ -5,9 +5,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.repository.ModalRepository
-import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
@@ -21,18 +18,10 @@ import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val userLoginUseCase: UserLoginUseCase,
-    private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val modalRepository: ModalRepository
+    private val userLoginUseCase: UserLoginUseCase
 ) : ViewModel(), ContainerHost<SignInState, SignInSideEffect> {
     override val container = container<SignInState, SignInSideEffect>(SignInState())
-    var isInfoRequired: Boolean = false
-    var infoRequiredShown: Boolean = false
-
-    fun updateModalInfo() {
-        isInfoRequired = modalRepository.getIsInfoRequired()
-        infoRequiredShown = modalRepository.getInfoRequiredShown()
-    }
+    var isSignIn: Boolean = false
 
     fun setLoginId(loginId: String) {
         blockingIntent {
@@ -65,34 +54,7 @@ class SignInViewModel @Inject constructor(
                 AnalyticsConstant.Label.LOGIN,
                 "로그인 완료"
             )
-            if (isInfoRequired) {
-                getUserInfoUseCase()
-                    .onSuccess { user ->
-                        when (user) {
-                            is User.Student -> {
-                                if (user.name != null && user.phoneNumber != null && user.major != null && user.studentNumber != null) {
-                                    modalRepository.setIsInfoRequired(false)
-                                    isInfoRequired = false
-                                }
-                            }
-
-                            is User.General -> {
-                                modalRepository.setIsInfoRequired(false)
-                                isInfoRequired = false
-                            }
-
-                            is User.Anonymous -> {
-
-                            }
-                        }
-                    }.onFailure {
-                        intent {
-                            reduce {
-                                state.copy(loginError = SignInState.LoginError(true, it.message))
-                            }
-                        }
-                    }
-            }
+            isSignIn = true
             postSideEffect(SignInSideEffect.SignInSuccess)
         }.onFailure {
             EventLogger.logClickEvent(

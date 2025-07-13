@@ -1,20 +1,16 @@
 package `in`.koreatech.koin.feature.user.ui.inforequire
 
-import androidx.annotation.RawRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,7 +27,6 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
-import `in`.koreatech.koin.core.designsystem.component.lottie.NewKoinLottie
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.user.R
@@ -59,9 +54,14 @@ fun InfoRequiredFullScreen(
         disabledContentColor = KoinTheme.colors.neutral600
     )
 
+    val composition by rememberLottieComposition(
+        LottieCompositionSpec.RawRes(R.raw.new_koin_lottie)
+    )
+
     Box(
         modifier = modifier
             .fillMaxSize()
+            .navigationBarsPadding()
             .background(Color.White)
     ) {
         // 중앙 콘텐츠
@@ -72,7 +72,9 @@ fun InfoRequiredFullScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            NewKoinLottie(
+            LottieAnimation(
+                composition = composition,
+                iterations = LottieConstants.IterateForever,
                 modifier = Modifier
                     .width(240.dp)
                     .height(140.dp)
@@ -103,7 +105,7 @@ fun InfoRequiredFullScreen(
                     start = 24.dp,
                     end = 24.dp,
                     top = 16.dp,
-                    bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding() + 16.dp
+                    bottom = 16.dp
                 )
                 .fillMaxWidth(),
             colors = buttonColors,

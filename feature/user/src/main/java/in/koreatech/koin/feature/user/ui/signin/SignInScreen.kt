@@ -72,7 +72,6 @@ fun SignInScreen(
             nextRoute = nextRoute
         )
     }
-    viewModel.updateModalInfo()
 
     SignInScreenImpl(
         loginId = uiState.loginId,

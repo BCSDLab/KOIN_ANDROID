@@ -3,25 +3,16 @@ package `in`.koreatech.koin.feature.user.ui.inforequire
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.repository.ModalRepository
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 
 @HiltViewModel
-class InfoRequiredViewModel @Inject constructor(
-    private val modalRepository: ModalRepository
-) : ViewModel() {
+class InfoRequiredViewModel @Inject constructor() : ViewModel() {
 
-    private val _event = MutableSharedFlow<UiEvent>()
-    val event = _event.asSharedFlow()
-
-    fun onStart(isFull: Boolean) {
-        if (isFull) {
-            modalRepository.setInfoRequiredShown(true)
-        }
-    }
+    private val _event = Channel<UiEvent>(Channel.BUFFERED)
+    val event = _event.receiveAsFlow()
 
     fun onPositiveClick() {
         emit(UiEvent.NavigateToUserInfo)
@@ -33,7 +24,7 @@ class InfoRequiredViewModel @Inject constructor(
 
     private fun emit(event: UiEvent) {
         viewModelScope.launch {
-            _event.emit(event)
+            _event.send(event)
         }
     }
 

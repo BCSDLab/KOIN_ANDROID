@@ -1,18 +1,16 @@
 package `in`.koreatech.koin.ui.splash
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
-import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
+import com.amar.library.BuildConfig
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.UpdateAvailability
 import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.navigation.Navigator
@@ -23,10 +21,10 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_NAV_TYPE
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
+import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.SystemBarsUtils
 import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
-import `in`.koreatech.koin.feature.user.ui.inforequire.InfoRequiredActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.forceupdate.ForceUpdateActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
@@ -50,6 +48,9 @@ class SplashActivity : ActivityBase() {
 
     @Inject
     lateinit var navigator: Navigator
+
+    @Inject
+    lateinit var onboardingManager: OnboardingManager
 
     override val screenTitle = SplashActivity.screenTitle
 
@@ -146,24 +147,23 @@ class SplashActivity : ActivityBase() {
         val uriPrefix = intent.data?.path?.split("/")?.getOrNull(1)
         when (uriPrefix) {
             "articles" -> {
-                gotoArticleActivityOrDelay(splashViewModel.isInfoRequired && !splashViewModel.infoRequiredShown)
+                gotoArticleActivityOrDelay(state)
             }
             else -> {
-                gotoMainActivityOrDelay(splashViewModel.isInfoRequired && !splashViewModel.infoRequiredShown)
+                gotoMainActivityOrDelay(state)
             }
         }
     }
 
     private fun gotoInfoRequiredActivity() {
         lifecycleScope.launch {
-            startActivity(Intent(Intent.ACTION_VIEW, "koin://inforequired/activity".toUri()).putExtra(InfoRequiredActivity.EXTRA_IS_FULL, true))
-            overridePendingTransition(R.anim.fade, R.anim.hold)
-            finish()
-            firebasePerformanceUtil.stop()
+            with(onboardingManager) {
+                showModalIfNeeded(false)
+            }
         }
     }
 
-    private fun gotoArticleActivityOrDelay(modal: Boolean = false) {
+    private fun gotoArticleActivityOrDelay(state: TokenState) {
         val path = intent.data?.path?.split("/")?.getOrNull(2)
         lifecycleScope.launch {
             delay()
@@ -180,7 +180,7 @@ class SplashActivity : ActivityBase() {
                 }
             startActivity(intent)
             overridePendingTransition(R.anim.fade, R.anim.hold)
-            if (modal) {
+            if (state == TokenState.Valid) {
                 gotoInfoRequiredActivity()
             }
             finish()
@@ -188,7 +188,7 @@ class SplashActivity : ActivityBase() {
         }
     }
 
-    private fun gotoMainActivityOrDelay(modal: Boolean = false) {
+    private fun gotoMainActivityOrDelay(state: TokenState) {
         val targetId = intent.getIntExtra(EXTRA_ID, -1)
         val targetBoardId = intent.getIntExtra(EXTRA_BOARD_ID, -1)
         val targetArticleId = intent.getIntExtra(EXTRA_ARTICLE_ID, -1)
@@ -214,7 +214,7 @@ class SplashActivity : ActivityBase() {
 
             startActivity(intent)
             overridePendingTransition(R.anim.fade, R.anim.hold)
-            if (modal) {
+            if (state == TokenState.Valid) {
                 gotoInfoRequiredActivity()
             }
             finish()

@@ -9,7 +9,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -30,7 +29,6 @@ class InfoRequiredActivity : ComponentActivity() {
         enableEdgeToEdgeWithLightStatusBar()
 
         val isFull = intent.getBooleanExtra(EXTRA_IS_FULL, false)
-        viewModel.onStart(isFull)
 
         observeEvent()
 
@@ -49,10 +47,6 @@ class InfoRequiredActivity : ComponentActivity() {
                     InfoRequiredModalScreen(
                         title = stringResource(R.string.info_required_modal_title),
                         description = stringResource(R.string.info_required_modal_description),
-                        descriptionStyle = KoinTheme.typography.regular12.copy(
-                            textAlign = TextAlign.Center,
-                            color = KoinTheme.colors.neutral500
-                        ),
                         onPositive = {
                             viewModel.onPositiveClick()
                         },

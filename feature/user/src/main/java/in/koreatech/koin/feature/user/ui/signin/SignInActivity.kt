@@ -2,7 +2,6 @@ package `in`.koreatech.koin.feature.user.ui.signin
 
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
-import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,23 +12,27 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import androidx.core.content.edit
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
+import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.feature.signin.ui.SignInScreen
 import `in`.koreatech.koin.feature.user.DEEPLINK_ARTICLE
 import `in`.koreatech.koin.feature.user.DEEPLINK_MAIN
 import `in`.koreatech.koin.feature.user.DEEPLINK_TIMETABLE
-import `in`.koreatech.koin.feature.user.ui.inforequire.InfoRequiredActivity
+import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SignInActivity : ComponentActivity() {
 
+    @Inject
+    lateinit var onboardingManager: OnboardingManager
+
     private val viewModel: SignInViewModel by viewModels()
-    private var modal: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +54,8 @@ class SignInActivity : ComponentActivity() {
                             .consumeWindowInsets(innerPadding),
                         nextRoute = {
                             goToNextRoute()
-                        }
+                        },
+                        viewModel = viewModel
                     )
                 }
             }
@@ -59,20 +63,6 @@ class SignInActivity : ComponentActivity() {
     }
 
     private fun goToNextRoute() {
-        if (viewModel.isInfoRequired){
-            when (viewModel.infoRequiredShown) {
-                true -> {
-                    modal = true
-                }
-
-                false -> {
-                    startActivity(Intent(this, InfoRequiredActivity::class.java).putExtra(InfoRequiredActivity.EXTRA_IS_FULL, true))
-                    finish()
-                    return
-                }
-            }
-        }
-
         val uri = intent.data
         val link = uri?.getQueryParameter("link")
 
@@ -95,7 +85,6 @@ class SignInActivity : ComponentActivity() {
             if (handleTimetableIntent()) {
                 Intent(Intent.ACTION_VIEW).apply {
                     data = DEEPLINK_TIMETABLE.toUri()
-                    putExtra("modal", modal)
                 }.let {
                     startActivity(it)
                 }
@@ -111,21 +100,23 @@ class SignInActivity : ComponentActivity() {
                                 START_BOARD to startBoard
                             )
                         )
-                        putExtra("modal", modal)
                     }
                 )
             } else {
                 Intent(Intent.ACTION_VIEW).apply {
                     data = DEEPLINK_MAIN.toUri()
-                    putExtra("modal", modal)
                 }.let {
                     startActivity(it)
                 }
             }
         }
 
-        if (modal) {
-            startActivity(Intent(this, InfoRequiredActivity::class.java).putExtra(InfoRequiredActivity.EXTRA_IS_FULL, false))
+        if (viewModel.isSignIn) {
+            lifecycleScope.launch {
+                with(onboardingManager) {
+                    showModalIfNeeded()
+                }
+            }
         }
         finish()
     }
