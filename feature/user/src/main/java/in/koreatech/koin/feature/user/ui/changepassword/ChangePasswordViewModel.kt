@@ -130,7 +130,7 @@ class ChangePasswordViewModel @Inject constructor(
 
     fun changeUserPassword() {
         viewModelScope.launch {
-            updateUserPasswordUseCase(_userInfo.value, enteredNewPwd.value)
+            updateUserPasswordUseCase(enteredNewPwd.value)
                 .onSuccess {
                     _isPasswordChangeSuccess.emit(true)
                 }

@@ -42,9 +42,8 @@ interface UserRepository {
     suspend fun verifyPassword(hashedPassword: String)
 
     suspend fun updateUserPassword(
-        user: User,
         hashedPassword: String
-    )
+    ): Result<Unit>
 
     suspend fun updateABTestToken()
 

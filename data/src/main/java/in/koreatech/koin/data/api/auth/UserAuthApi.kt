@@ -5,6 +5,7 @@ import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
 import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
 import `in`.koreatech.koin.data.request.user.GeneralUserRequest
+import `in`.koreatech.koin.data.request.user.NewPasswordRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.ReviewRequest
 import `in`.koreatech.koin.data.request.user.StudentUserRequest
@@ -41,6 +42,11 @@ interface UserAuthApi {
     suspend fun putGeneralUser(
         @Body generalUserRequest: GeneralUserRequest
     ): GeneralUserResponse
+
+    @PUT(URLConstant.USERS.PASSWORD_CHANGE)
+    suspend fun updateUserPassword(
+        @Body newPasswordRequest: NewPasswordRequest
+    )
 
     @DELETE(URLConstant.USER.USER)
     suspend fun deleteUser(): Response<Unit?>

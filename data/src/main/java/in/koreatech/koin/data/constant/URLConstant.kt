@@ -105,6 +105,8 @@ object URLConstant {
         const val PASSWORD_RESET_BY_EMAIL: String = "$USERS/password/reset/email"
         const val PASSWORD_RESET_BY_SMS: String = "$USERS/password/reset/sms"
 
+        const val PASSWORD_CHANGE = "$USERS/password"
+
         const val ID_MATCH_EMAIL: String = "$USERS/id/match/email"
         const val ID_MATCH_PHONE: String = "$USERS/id/match/phone"
 
