@@ -14,7 +14,7 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.databinding.FragmentStoreDetailMenuBinding
-import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter
@@ -77,7 +77,7 @@ class StoreDetailMenuFragment : Fragment() {
         observeLiveData(viewModel.storeMenu) {
             viewModel.categories.value?.menuCategories?.forEachIndexed { index, category ->
 
-                val list = mutableListOf<ShopMenus>()
+                val list = mutableListOf<LegacyShopMenus>()
                 viewModel.storeMenu.value?.let {
                     category.menus?.forEachIndexed { menuIndex, shopMenus ->
                         if (shopMenus.isSingle && shopMenus.singlePrice != null) {
@@ -87,7 +87,7 @@ class StoreDetailMenuFragment : Fragment() {
 
                             shopMenus.optionPrices?.forEachIndexed { optionIndex, shopMenuOptions ->
                                 list.add(
-                                    ShopMenus(
+                                    LegacyShopMenus(
                                         id = shopMenus.id,
                                         name = shopMenus.name + "-" + shopMenuOptions.option,
                                         isHidden = shopMenus.isHidden,

@@ -30,12 +30,12 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 import `in`.koreatech.koin.feature.store.R
 
 fun LazyListScope.menuListSection(
     category: String,
-    menus: List<ShopMenus>
+    menus: List<LegacyShopMenus>
 ) {
     if (menus.isEmpty()) return
 
@@ -80,7 +80,7 @@ fun LazyListScope.menuListSection(
 
 @Composable
 fun MenuItem(
-    menu: ShopMenus
+    menu: LegacyShopMenus
 ) {
     Row(modifier = Modifier.padding(16.dp)) {
         Column(modifier = Modifier.weight(1f)) {
@@ -118,7 +118,7 @@ fun MenuItem(
 
 @Composable
 private fun OptionPriceText(
-    shopMenus: ShopMenus
+    shopMenus: LegacyShopMenus
 ) {
     Column(
         modifier = Modifier.padding(top = 4.dp)
@@ -147,16 +147,16 @@ private fun MenuListSectionPreview() {
             menuListSection(
                 category = "추천메뉴",
                 menus = listOf(
-                    ShopMenus(
+                    LegacyShopMenus(
                         name = "막국수",
                         description = "막국수 + 족발",
                         isSingle = false,
                         singlePrice = 10000,
                         optionPrices =
                         listOf(
-                            ShopMenus.ShopMenuOptions("소", 10000),
-                            ShopMenus.ShopMenuOptions("중", 20000),
-                            ShopMenus.ShopMenuOptions("대", 30000)
+                            LegacyShopMenus.ShopMenuOptions("소", 10000),
+                            LegacyShopMenus.ShopMenuOptions("중", 20000),
+                            LegacyShopMenus.ShopMenuOptions("대", 30000)
                         ),
                         isHidden = false,
                         imageUrls = listOf(

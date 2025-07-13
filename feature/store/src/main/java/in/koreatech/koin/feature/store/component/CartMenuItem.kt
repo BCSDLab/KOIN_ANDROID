@@ -21,11 +21,11 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 
 @Composable
 fun CartMenuItem(
-    menu: ShopMenus
+    menu: LegacyShopMenus
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         Row {
@@ -72,7 +72,7 @@ fun CartMenuItem(
 private fun ShoppingCartItem() {
     KoinTheme {
         CartMenuItem(
-            menu = ShopMenus(
+            menu = LegacyShopMenus(
                 id = 1,
                 name = "맛있는 메뉴",
                 description = "이 메뉴는 정말 맛있습니다.",
@@ -80,8 +80,8 @@ private fun ShoppingCartItem() {
                 isHidden = false,
                 isSingle = false,
                 optionPrices = listOf(
-                    ShopMenus.ShopMenuOptions(option = "123123", price = 123213),
-                    ShopMenus.ShopMenuOptions(option = "3232", price = 321312213)
+                    LegacyShopMenus.ShopMenuOptions(option = "123123", price = 123213),
+                    LegacyShopMenus.ShopMenuOptions(option = "3232", price = 321312213)
                 ),
                 singlePrice = 10000
             )

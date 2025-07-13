@@ -50,7 +50,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
-import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.CartMenuItem
 import `in`.koreatech.koin.feature.store.component.PaymentSummaryCard
@@ -151,12 +151,12 @@ fun ShoppingCartContent(
                 Column {
                     repeat(3) { // 장바구니에 담긴 메뉴 수
                         CartMenuItem(
-                            menu = ShopMenus(
+                            menu = LegacyShopMenus(
                                 name = "족발 + 막국 저녁 set",
                                 description = "가격 : 25000원\n사이즈 : 소\n음료:콜라 500ml",
                                 imageUrls = listOf("https://example.com/image.jpg"),
                                 optionPrices = listOf(
-                                    ShopMenus.ShopMenuOptions("옵션2", 2000)
+                                    LegacyShopMenus.ShopMenuOptions("옵션2", 2000)
                                 ),
                                 isSingle = true,
                                 singlePrice = 10000,
