@@ -16,6 +16,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -323,6 +326,15 @@ abstract class KoinNavigationDrawerActivity :
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+
+        ViewCompat.setOnApplyWindowInsetsListener(leftNavigationView) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(
+                top = systemBars.top,
+                bottom = systemBars.bottom
+            )
+            WindowInsetsCompat.CONSUMED
+        }
 
         leftNavigationView.layoutParams =
             leftNavigationView.layoutParams.apply { width = windowWidth }

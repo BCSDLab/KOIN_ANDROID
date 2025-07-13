@@ -36,6 +36,13 @@
             android:name=".ui.error.InspectionActivity"
             android:launchMode="singleTask"
             android:exported="false" />
+
+        <activity
+            android:name=".storev2.StoreDetailActivity"
+            android:theme="@style/KAPTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true"/>
+
         <activity
             android:name=".ui.timetablev2.TimetableActivity"
             android:exported="false"
@@ -141,7 +148,7 @@
         </receiver>
 
         <meta-data
-            android:name="com.naver.maps.map.CLIENT_ID"
+            android:name="com.naver.maps.map.NCP_KEY_ID"
             android:value="${naverMapKey}" />
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"

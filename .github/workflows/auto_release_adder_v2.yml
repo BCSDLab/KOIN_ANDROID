@@ -1,0 +1,259 @@
+name: "Auto Release Adder"
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - production
+jobs:
+  auto_release_adder:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout The PR
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: production
+
+      - name: Get Version From PR
+        id: get_version
+        run: kotlinc -script .github/scripts/auto_release_adder.kts "${{ github.event.pull_request.body }}"
+
+      - name: Show Fail Log
+        if: ${{ steps.create_release_body.outputs.release_version == 'NO_VERSION' }}
+        run: |
+          if [ "${{ steps.create_release_body.outputs.release_version }}" == "NO_VERSION" ]; then
+           echo "Fail: Could not found the version code "
+          fi
+          exit 1
+      - name: Authenticate GitHub CLI
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+
+      - name: Get Latest Release Tag
+        id: latest_tag
+        run: |
+          TAG=$(gh release list --limit 1 --json tagName --jq '.[0].tagName')
+          echo "LATEST_TAG : $TAG"
+          echo "LATEST_TAG=$TAG" >> $GITHUB_ENV
+
+      - name: Get Commit Date of Latest Tag
+        id: tag_date
+        run: |
+          RELEASE_DATE=$(gh release view "$LATEST_TAG" --json createdAt --jq .createdAt)
+          echo "RELEASE_DATE : $RELEASE_DATE"
+          echo "RELEASE_DATE=$RELEASE_DATE" >> $GITHUB_ENV
+
+      - name: Get PR Numbers
+        id: pr_numbers
+        run: |
+          # 이전 RELEASE NOTE 부터 현재 까지의 PR
+          NOW_PR_NUMBERS=$(gh pr list \
+          --state merged \
+          --search "created:>=${{ env.RELEASE_DATE }}" \
+          --limit 200 \
+          --json number \
+          --jq '[.[].number] | join(",")')
+          echo "NOW_PR_NUMBERS : $NOW_PR_NUMBERS"
+          echo "NOW_PR_NUMBERS=$NOW_PR_NUMBERS" >> $GITHUB_ENV
+          
+          # 이전 RELEASE NOTE 이전의 not in production TAG 가 있는 PR
+          BEFORE_TAG="not in production"
+          echo "BEFORE_TAG=$BEFORE_TAG" >> $GITHUB_ENV
+          BEFORE_PR_NUMBERS=$(gh pr list \
+          --state merged \
+          --label "$BEFORE_TAG" \
+          --search "created:<${{ env.RELEASE_DATE }}" \
+          --limit 400 \
+          --json number \
+          --jq '[.[].number] | join(",")')
+          echo "BEFORE_PR_NUMBERS : $BEFORE_PR_NUMBERS"
+          echo "BEFORE_PR_NUMBERS=$BEFORE_PR_NUMBERS" >> $GITHUB_ENV
+
+      - name: Check In Production PR
+        id: check_in_production
+        env:
+          BEFORE_TAG: ${{ env.BEFORE_TAG }}
+          NOW_PR_NUMBERS: ${{ env.NOW_PR_NUMBERS }}
+          BEFORE_PR_NUMBERS: ${{ env.BEFORE_PR_NUMBERS }}
+        run: |
+          # PRODUCTION 에 포함된 PR 들
+          IN_PRODUCTION_PRS=""
+          
+          # 이전 RELEASE NOTE 부터 현재 까지의 PR 들이 PRODUCTION 에 포함 되어 있는지 검사
+          IFS=',' read -r -a PR_ARRAY <<< "$NOW_PR_NUMBERS"
+          for pr_number in "${PR_ARRAY[@]}"; do
+            # 해당 PR 에 맨 마지막 commit sha 추출
+            git fetch origin pull/$pr_number/head:pr-$pr_number
+            commit_sha=$(git log pr-$pr_number --pretty=format:"%H" -n 1)
+            # 해당 commit sha 가 production 에 포함 되어 있는지 검사
+            echo "PR #${pr_number} - commit_sha : ${commit_sha}"
+            if git merge-base --is-ancestor $commit_sha origin/production; then
+              # 있으면 IN_PRODUCTION_PRS 에 포함
+              IN_PRODUCTION_PRS+="${pr_number},"
+            else
+              # 없으면 not in production TAG 추가
+              gh pr edit $pr_number --add-label "$BEFORE_TAG"
+            fi
+          done
+          
+          # not in production TAG 가 있는 PR 들이 PRODUCTION 에 포함 되어 있는지 검사
+          IFS=',' read -r -a PR_ARRAY <<< "$BEFORE_PR_NUMBERS"
+          for pr_number in "${PR_ARRAY[@]}"; do
+            commit_sha=$(gh pr view $pr_number --json commits --jq '.commits[-1].oid')
+            if git merge-base --is-ancestor $commit_sha origin/production; then
+              # 있으면 IN_PRODUCTION_PRS 에 포함 + not in production TAG 제거
+              IN_PRODUCTION_PRS+="${pr_number},"
+              gh pr edit $pr_number --remove-label "$BEFORE_TAG"
+            fi
+          done
+          
+          echo "IN_PRODUCTION_PRS : $IN_PRODUCTION_PRS"
+          echo "IN_PRODUCTION_PRS=$IN_PRODUCTION_PRS" >> $GITHUB_ENV
+
+      - name: Create body
+        id: create_body
+        env:
+          IN_PRODUCTION_PRS: ${{ env.IN_PRODUCTION_PRS }}
+        run: |
+          # 실제 release note 몸체 데이터
+          BODY=""
+          
+          # 팀별 TITLE (작성용)
+          CAMPUS_TITLE="## Campus \\n"
+          BUSINESS_TITLE="## Business \\n"
+          USER_TITLE="## User \\n"
+          KOIN_PROJECT_TITLE="## Koin Project 전반 \\n"
+          
+          # 팀별 TAG (감지용)
+          CAMPUS_TAG="campus"
+          BUSINESS_TAG="business"
+          USER_TAG="user"
+          KOIN_PROJECT_TAG="koin project"
+          
+          # 작업별 TITLE (작성용)
+          FEATURE_TITLE="### 신규 기능 개발 \\n"
+          FIX_TITLE="### 버그 수정 \\n"
+          REFACTOR_TITLE="### 리팩토링 \\n"
+          CHORE_TITLE="### 자잘한 작업 \\n"
+          
+          # 작업별 TAG (감지용)
+          FEATURE_TAG="feature"
+          FIX_TAG="fix"
+          REFACTOR_TAG="refactor"
+          CHORE_TAG="chore"
+          
+          declare -A TEAM_TITLE_GROUPS
+          TEAM_TITLE_GROUPS["$CAMPUS_TAG"]="$CAMPUS_TITLE"
+          TEAM_TITLE_GROUPS["$BUSINESS_TAG"]="$BUSINESS_TITLE"
+          TEAM_TITLE_GROUPS["$USER_TAG"]="$USER_TITLE"
+          TEAM_TITLE_GROUPS["$KOIN_PROJECT_TAG"]="$KOIN_PROJECT_TITLE"
+          
+          declare -A JOB_TITLE_GROUPS
+          JOB_TITLE_GROUPS["$FEATURE_TAG"]="$FEATURE_TITLE"
+          JOB_TITLE_GROUPS["$FIX_TAG"]="$FIX_TITLE"
+          JOB_TITLE_GROUPS["$REFACTOR_TAG"]="$REFACTOR_TITLE"
+          JOB_TITLE_GROUPS["$CHORE_TAG"]="$CHORE_TITLE"
+          
+          declare -A TAG_GROUPS
+          TEAM_TAG_GROUP=("$CAMPUS_TAG" "$BUSINESS_TAG" "$USER_TAG" "$KOIN_PROJECT_TAG")
+          JOB_TAG_GROUP=("$FEATURE_TAG" "$FIX_TAG" "$REFACTOR_TAG" "$CHORE_TAG")
+          
+          # IN_PRODUCTION_PRS 를 TAG 별로 구분
+          group_prs() {
+            echo "Log - group_prs START"
+            IFS=',' read -r -a PR_ARRAY <<< "$IN_PRODUCTION_PRS"
+            for pr_number in "${PR_ARRAY[@]}"; do
+              mapfile -t labels < <(gh pr view $pr_number --json labels --jq '.labels[].name')
+              team_tag=""
+              job_tag=""
+              for label in "${labels[@]}"; do
+                for team in "${TEAM_TAG_GROUP[@]}"; do
+                  if [[ "$label" == "$team" ]]; then
+                    team_tag="$team"
+                  fi
+                done
+                for job in "${JOB_TAG_GROUP[@]}"; do
+                  if [[ "$label" == "$job" ]]; then
+                    job_tag="$job"
+                  fi
+                done
+              done
+              if [[ -n "$team_tag" && -n "$job_tag" ]]; then
+                key="${team_tag}_${job_tag}"
+                TAG_GROUPS["$key"]+="${pr_number},"
+                echo "TAG_GROUPS[${key}] : ${TAG_GROUPS["${key}"]}"
+              else
+                echo "PR #${pr_number} : Label conditions are not correct. - ${team_tag}_${job_tag}"
+              fi
+            done
+            echo "Log - group_prs END"
+          }
+          
+          # 구분된 PR 들로 BODY 작성
+          create_body() {
+            echo "Log - create_body START"
+            for team in "${TEAM_TAG_GROUP[@]}"; do
+              team_body=""
+              for job in "${JOB_TAG_GROUP[@]}"; do
+                job_body=""
+                echo "CHECK TAG_GROUPS[${team}_${job}] : ${TAG_GROUPS["${team}_${job}"]}"
+                if [[ -n TAG_GROUPS["$team_$job"] ]]; then
+                  IFS=',' read -r -a PR_ARRAY <<< "${TAG_GROUPS["${team}_${job}"]}"
+                  for pr_number in "${PR_ARRAY[@]}"; do
+                    echo "SEARCH PR #${pr_number}"
+                    title=$(gh pr view $pr_number --json title --jq '.title')
+                    author=$(gh pr view $pr_number --json author --jq '.author.login')
+                    job_body+="- ${title} #${pr_number} @${author}\\n"
+                  done
+                  if [[ -n "$job_body" ]]; then {
+                    job_title="${JOB_TITLE_GROUPS["$job"]}"
+                    job_body="${job_title}${job_body}"
+                  }
+                  fi
+                fi
+                team_body+="${job_body}"
+              done
+              if [[ -n "$team_body" ]]; then
+                team_title="${TEAM_TITLE_GROUPS["$team"]}"
+                team_body="${team_title}${team_body}"
+                echo "TEAM_BODY - ${team} : ${team_body}"
+              fi
+              BODY+="${team_body}"
+            done
+            echo "Log - create_body END"
+          }
+          
+          # PR 분류
+          group_prs
+          
+          # 분류된 PR 로 BODY 작성
+          create_body
+          
+          # 내용을 OUTPUT에 저장 (해당 BODY 가 최종본)
+          echo "BODY : $BODY"
+          echo "BODY=$BODY" >> $GITHUB_ENV
+
+      - name: Create Release
+        env:
+          BODY: ${{ env.BODY }}
+        run: |
+          tag="${{ steps.get_version.outputs.release_version }}"
+          title="$tag"
+          body="$BODY"
+          echo "Version: $tag"
+          echo "Body: $body"
+          curl -L \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/${{ github.repository }}/releases \
+            -d "{
+              \"tag_name\": \"$tag\",
+              \"target_commitish\": \"production\",
+              \"name\": \"$title\",
+              \"body\": \"$body\",
+              \"draft\": false,
+              \"prerelease\": false,
+              \"generate_release_notes\": false
+            }"

@@ -65,7 +65,7 @@ class OwnerShopRepositoryImpl @Inject constructor(
                 description = storeDetailInfo.description,
                 imageUrls = storeDetailInfo.imageUrls ?: emptyList(),
                 name = storeDetailInfo.name,
-                open = storeDetailInfo.operatingTime.toMyStoreDayOffResponse(),
+                open = storeDetailInfo.operatingTime?.toMyStoreDayOffResponse(),
                 payBank = storeDetailInfo.isBankOk,
                 payCard = storeDetailInfo.isCardOk,
                 phone = storeDetailInfo.phone.toPhoneNumber()

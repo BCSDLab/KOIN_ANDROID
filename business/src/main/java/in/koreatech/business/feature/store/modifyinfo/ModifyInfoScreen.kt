@@ -223,10 +223,10 @@ fun ModifyInfoScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Column {
-                            val closedStores = state.storeInfo.operatingTime.filter { it.closed }
-                            val openStores = state.storeInfo.operatingTime.filter { !it.closed }
+                            val closedStores = state.storeInfo.operatingTime?.filter { it.closed }
+                            val openStores = state.storeInfo.operatingTime?.filter { !it.closed }
 
-                            openStores.forEach { item ->
+                            openStores?.forEach { item ->
                                 val dayOfWeekIndex = dayOfWeekToIndex(item.dayOfWeek)
                                 val dayOfWeekKorean =
                                     if (dayOfWeekIndex != -1) {
@@ -247,7 +247,7 @@ fun ModifyInfoScreen(
                                 )
                             }
                             Row {
-                                closedStores.forEach { item ->
+                                closedStores?.forEach { item ->
                                     val dayOfWeekIndex = dayOfWeekToIndex(item.dayOfWeek)
                                     val dayOfWeekKorean =
                                         if (dayOfWeekIndex != -1) {
@@ -261,7 +261,7 @@ fun ModifyInfoScreen(
                                         text = "$dayOfWeekKorean "
                                     )
                                 }
-                                if (closedStores.isNotEmpty()) {
+                                if (closedStores?.isNotEmpty() == true) {
                                     Text(
                                         text = stringResource(R.string.closed_day),
                                         color = Color.Red

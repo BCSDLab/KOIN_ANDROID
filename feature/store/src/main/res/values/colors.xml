@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="store_detail_background">#FFF8F8FA</color>
+    <color name="store_detail_chip">#FFB611F5</color>
+    <color name="store_detail_chip_text">#FFBC7DFF</color>
+    <color name="shopping_cart_button_text">#FFCC00FF</color>
+    <color name="shopping_cart_button_background">#FFB000F0</color>
+
+    <color name="star">#FFFFC107</color>
+
+</resources>

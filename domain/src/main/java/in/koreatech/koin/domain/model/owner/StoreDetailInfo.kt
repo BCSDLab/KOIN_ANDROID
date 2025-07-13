@@ -11,7 +11,7 @@ data class StoreDetailInfo(
     val description: String,
     val imageUrls: List<String>,
     val name: String,
-    val operatingTime: List<OperatingTime>,
+    val operatingTime: List<OperatingTime>?,
     val isBankOk: Boolean,
     val isCardOk: Boolean,
     val phone: String,
