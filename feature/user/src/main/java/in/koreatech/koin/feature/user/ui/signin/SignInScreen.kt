@@ -61,7 +61,8 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun SignInScreen(
     modifier: Modifier = Modifier,
-    nextRoute: () -> Unit = { },
+    nextRouteTure: () -> Unit = { },
+    nextRouteSignin: () -> Unit = { },
     viewModel: SignInViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.collectAsState()
@@ -69,7 +70,7 @@ fun SignInScreen(
     viewModel.collectSideEffect {
         handleSideEffect(
             sideEffect = it,
-            nextRoute = nextRoute
+            nextRoute = nextRouteSignin
         )
     }
 
@@ -91,7 +92,7 @@ fun SignInScreen(
         signIn = {
             viewModel.signIn()
         },
-        nextRoute = nextRoute
+        nextRoute = nextRouteTure
     )
 }
 

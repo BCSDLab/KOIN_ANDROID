@@ -10,7 +10,6 @@ import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.model.version.Version
 import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
 import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
-import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.domain.usecase.version.GetVersionInformationUseCase
 import `in`.koreatech.koin.domain.usecase.version.UpdateLatestVersionUseCase
 import `in`.koreatech.koin.ui.splash.state.TokenState
@@ -20,8 +19,7 @@ import javax.inject.Inject
 class SplashViewModel @Inject constructor(
     private val getVersionInformationUseCase: GetVersionInformationUseCase,
     private val updateLatestVersionUseCase: UpdateLatestVersionUseCase,
-    private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase,
-    getUserInfoUseCase: GetUserInfoUseCase
+    private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase
 ) : BaseViewModel() {
     private val _version = MutableLiveData<Version>()
     val version: LiveData<Version> get() = _version

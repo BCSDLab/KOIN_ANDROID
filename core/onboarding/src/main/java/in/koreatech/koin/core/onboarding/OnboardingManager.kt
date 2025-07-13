@@ -1,11 +1,9 @@
 package `in`.koreatech.koin.core.onboarding
 
 import android.content.Context
-import android.content.Intent
 import android.view.View
 import androidx.annotation.FloatRange
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.net.toUri
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -23,8 +21,10 @@ import `in`.koreatech.koin.domain.repository.OnboardingRepository
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.domain.util.onSuccess
 import javax.inject.Inject
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class OnboardingManager @Inject internal constructor(
     private val onboardingRepository: OnboardingRepository,
@@ -108,41 +108,41 @@ class OnboardingManager @Inject internal constructor(
     }
 
     fun LifecycleOwner.showModalIfNeeded(
-        ifFailed: Boolean = true
+        actionTrue: () -> Unit = {},
+        actionFalse: () -> Unit = {}
     ) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                val shouldShow = onboardingRepository.getShouldOnboarding(INFO_REQUIRED_SHOULD_SHOW)
-                if (shouldShow) {
-                    getUserInfoUseCase()
-                        .onSuccess { user ->
-                            when (user) {
-                                is User.Student -> {
-                                    if (user.name == null || user.phoneNumber == null || user.major == null || user.studentNumber == null) {
-                                        val check = onboardingRepository.getShouldOnboarding(INFO_REQUIRED_CHECK)
-                                        onboardingRepository.updateShouldOnboarding(INFO_REQUIRED_CHECK, false)
-                                        val intent = Intent(Intent.ACTION_VIEW, "koin://inforequired/activity".toUri())
-                                            .putExtra("extra_is_full", check)
-                                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                withContext(NonCancellable) {
+                    val shouldShow = onboardingRepository.getShouldOnboarding(INFO_REQUIRED_SHOULD_SHOW)
+                    if (shouldShow) {
+                        getUserInfoUseCase()
+                            .onSuccess { user ->
+                                when (user) {
+                                    is User.Student -> {
+                                        if (user.name == null || user.phoneNumber == null || user.major == null || user.studentNumber == null) {
+                                            val check = onboardingRepository.getShouldOnboarding(INFO_REQUIRED_CHECK)
+                                            onboardingRepository.updateShouldOnboarding(INFO_REQUIRED_CHECK, false)
 
-                                        if (check) {
-                                            context.startActivity(intent)
-                                        } else if (ifFailed) {
-                                            context.startActivity(intent)
+                                            if (check) {
+                                                actionTrue()
+                                            } else {
+                                                actionFalse()
+                                            }
+                                        } else {
+                                            onboardingRepository.updateShouldOnboarding(INFO_REQUIRED_SHOULD_SHOW, false)
                                         }
-                                    } else {
+                                    }
+
+                                    is User.General -> {
                                         onboardingRepository.updateShouldOnboarding(INFO_REQUIRED_SHOULD_SHOW, false)
                                     }
-                                }
 
-                                is User.General -> {
-                                    onboardingRepository.updateShouldOnboarding(INFO_REQUIRED_SHOULD_SHOW, false)
-                                }
-
-                                User.Anonymous -> {
+                                    is User.Anonymous -> {
+                                    }
                                 }
                             }
-                        }
+                    }
                 }
             }
         }

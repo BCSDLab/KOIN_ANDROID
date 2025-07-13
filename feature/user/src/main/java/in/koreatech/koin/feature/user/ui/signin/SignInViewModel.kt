@@ -21,7 +21,6 @@ class SignInViewModel @Inject constructor(
     private val userLoginUseCase: UserLoginUseCase
 ) : ViewModel(), ContainerHost<SignInState, SignInSideEffect> {
     override val container = container<SignInState, SignInSideEffect>(SignInState())
-    var isSignIn: Boolean = false
 
     fun setLoginId(loginId: String) {
         blockingIntent {
@@ -54,7 +53,6 @@ class SignInViewModel @Inject constructor(
                 AnalyticsConstant.Label.LOGIN,
                 "로그인 완료"
             )
-            isSignIn = true
             postSideEffect(SignInSideEffect.SignInSuccess)
         }.onFailure {
             EventLogger.logClickEvent(

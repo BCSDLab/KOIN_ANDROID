@@ -1,8 +1,11 @@
 package `in`.koreatech.koin.feature.user.ui.signin
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.content.pm.ActivityInfo
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -52,8 +55,11 @@ class SignInActivity : ComponentActivity() {
                         modifier = Modifier
                             .padding(innerPadding)
                             .consumeWindowInsets(innerPadding),
-                        nextRoute = {
-                            goToNextRoute()
+                        nextRouteTure = {
+                            goToNextRoute(false)
+                        },
+                        nextRouteSignin = {
+                            goToNextRoute(true)
                         },
                         viewModel = viewModel
                     )
@@ -62,7 +68,7 @@ class SignInActivity : ComponentActivity() {
         }
     }
 
-    private fun goToNextRoute() {
+    private fun goToNextRoute(isSignIn: Boolean) {
         val uri = intent.data
         val link = uri?.getQueryParameter("link")
 
@@ -111,14 +117,34 @@ class SignInActivity : ComponentActivity() {
             }
         }
 
-        if (viewModel.isSignIn) {
+        if (isSignIn) {
             lifecycleScope.launch {
                 with(onboardingManager) {
-                    showModalIfNeeded()
+                    showModalIfNeeded(
+                        actionTrue = { launchInfoRequiredActivity(true) },
+                        actionFalse = { launchInfoRequiredActivity(false) }
+                    )
                 }
             }
         }
         finish()
+    }
+
+    private fun launchInfoRequiredActivity(check: Boolean) {
+        val intent = Intent(Intent.ACTION_VIEW, INFO_REQUIRED_URI.toUri())
+            .putExtra(EXTRA_IS_FULL, check)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        this@SignInActivity.startActivity(intent)
+        finishWithTransition()
+    }
+
+    @SuppressLint("WrongConstant")
+    private fun finishWithTransition() {
+        if (Build.VERSION.SDK_INT >= 34) {
+            overrideActivityTransition(Activity.OVERRIDE_TRANSITION_OPEN, 0, 0)
+        } else {
+            overridePendingTransition(0, 0)
+        }
     }
 
     private fun handleTimetableIntent(): Boolean {
@@ -132,6 +158,8 @@ class SignInActivity : ComponentActivity() {
     }
 
     companion object {
+        private const val INFO_REQUIRED_URI = "koin://inforequired/activity"
+        private const val EXTRA_IS_FULL = "extra_is_full"
         const val BUNDLE_EXTRA_KEY = "BUNDLE_EXTRA_KEY"
         const val NAV_TIMETABLE = "timetable"
         const val NAV_ARTICLE = "article"

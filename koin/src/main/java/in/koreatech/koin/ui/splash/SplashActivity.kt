@@ -1,10 +1,14 @@
 package `in`.koreatech.koin.ui.splash
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import com.amar.library.BuildConfig
@@ -39,6 +43,8 @@ import kotlinx.coroutines.yield
 @AndroidEntryPoint
 class SplashActivity : ActivityBase() {
     companion object {
+        private const val INFO_REQUIRED_URI = "koin://inforequired/activity"
+        private const val EXTRA_IS_FULL = "extra_is_full"
         private const val screenTitle = "스플래시"
         private const val koinStart = "koin_start"
         const val version = "version"
@@ -158,8 +164,27 @@ class SplashActivity : ActivityBase() {
     private fun gotoInfoRequiredActivity() {
         lifecycleScope.launch {
             with(onboardingManager) {
-                showModalIfNeeded(false)
+                showModalIfNeeded(
+                    actionTrue = { launchInfoRequiredActivity(true) }
+                )
             }
+        }
+    }
+
+    private fun launchInfoRequiredActivity(check: Boolean) {
+        val intent = Intent(Intent.ACTION_VIEW, INFO_REQUIRED_URI.toUri())
+            .putExtra(EXTRA_IS_FULL, check)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        this@SplashActivity.startActivity(intent)
+        finishWithTransition()
+    }
+
+    @SuppressLint("WrongConstant")
+    private fun finishWithTransition() {
+        if (Build.VERSION.SDK_INT >= 34) {
+            overrideActivityTransition(Activity.OVERRIDE_TRANSITION_OPEN, 0, 0)
+        } else {
+            overridePendingTransition(0, 0)
         }
     }
 
