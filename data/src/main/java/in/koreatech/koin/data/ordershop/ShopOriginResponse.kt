@@ -27,14 +27,15 @@ data class ShopOriginResponse(
     @SerializedName("owner_info")
     val ownerInfoResponse: OwnerInfoResponse,
     @SerializedName("origins")
-    val origins: List<String>
+    val origins: List<Origin>
 ){
     data class DeliveryTip(
-        @SerializedName("order_price")
-        val orderPrice: Int,
-
-        @SerializedName("delivery_tip")
-        val deliveryTip: Int
+        @SerializedName("from_amount")
+        val fromAmount: Int,
+        @SerializedName("to_amount")
+        val toAmount: Int,
+        @SerializedName("fee")
+        val fee: Int
     )
     data class OwnerInfoResponse(
         @SerializedName("name")
@@ -48,5 +49,12 @@ data class ShopOriginResponse(
 
         @SerializedName("company_registration_number")
         val companyRegistrationNumber: String?
+    )
+
+    data class Origin(
+        @SerializedName("ingredients")
+        val ingredients: String,
+        @SerializedName("origin")
+        val origin: String
     )
 }

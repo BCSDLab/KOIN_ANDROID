@@ -13,11 +13,12 @@ data class OrderShop(
     val notice: String?,
     val deliveryTips: List<DeliveryTip>,
     val ownerInfo: OwnerInfo,
-    val origins: List<String>
+    val origins: List<Origin>
 ) {
     data class DeliveryTip(
-        val orderPrice: Int,
-        val deliveryTip: Int
+        val fromAmount: Int,
+        val toAmount: Int,
+        val feel: Int
     )
 
     data class OwnerInfo(
@@ -25,6 +26,11 @@ data class OrderShop(
         val shopName: String?,
         val address: String?,
         val companyRegistrationNumber: String?
+    )
+
+    data class Origin(
+        val ingredients: String,
+        val origin: String
     )
 
     companion object {

@@ -71,12 +71,53 @@ data class StoreDescriptionModel(
     val id: Int,
     val storeName: String,
     val description: String?,
+    val notice: String?,
+    val deliveryTips: List<DeliveryTipModel>?,
+    val origins: OriginModel?,
+    val ownerInfo: OwnerInfoModel?,
 ) {
     companion object {
         fun empty() = StoreDescriptionModel(
             id = 0,
             storeName = "",
-            description = null
+            description = null,
+            notice = null,
+            deliveryTips = null,
+            origins = OriginModel.empty(),
+            ownerInfo = OwnerInfoModel.empty()
+        )
+    }
+}
+data class DeliveryTipModel(
+    val fromAmount: Int?,
+    val toAmount: Int?,
+    val fee: Int?,
+)
+
+data class OwnerInfoModel(
+    val name: String,
+    val shopName: String,
+    val address: String,
+    val companyRegistrationNumber : String,
+) {
+    companion object {
+        fun empty() = OwnerInfoModel(
+            name = "",
+            shopName = "",
+            address = "",
+            companyRegistrationNumber = "",
+        )
+    }
+}
+
+data class OriginModel(
+    val ingredients: String,
+    val origin: String,
+) {
+    companion object {
+        fun empty() = OriginModel(
+            ingredients = "",
+            origin = ""
         )
     }
 }

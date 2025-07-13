@@ -6,8 +6,8 @@ import `in`.koreatech.koin.data.ordershop.OrderShopResponse
 import `in`.koreatech.koin.data.ordershop.ShopOriginResponse
 import `in`.koreatech.koin.domain.model.ordershop.OrderMenu
 import `in`.koreatech.koin.domain.model.ordershop.OrderMenuList
-import `in`.koreatech.koin.domain.model.ordershop.OrderShopSummary
 import `in`.koreatech.koin.domain.model.ordershop.OrderShop
+import `in`.koreatech.koin.domain.model.ordershop.OrderShopSummary
 
 
 fun OrderMenuListResponse.toOrderMenuList() = OrderMenuList(
@@ -58,14 +58,19 @@ fun ShopOriginResponse.toShopOrigin() = OrderShop(
     phone = phone,
     introduction = introduction ?: "",
     notice = notice ?: "",
-    deliveryTips = deliveryTips.map { OrderShop.DeliveryTip(it.orderPrice, it.deliveryTip) },
-    ownerInfo =  ownerInfoResponse.toOwnerInfo(),
-    origins = origins
-    )
+    deliveryTips = deliveryTips.map { OrderShop.DeliveryTip(it.toAmount, it.fromAmount, it.fee) },
+    ownerInfo = ownerInfoResponse.toOwnerInfo(),
+    origins = origins.map { it.toOrigin() }
+)
 
 fun ShopOriginResponse.OwnerInfoResponse.toOwnerInfo() = OrderShop.OwnerInfo(
     name = name,
     shopName = shopName,
     address = address,
     companyRegistrationNumber = companyRegistrationNumber
+)
+
+fun ShopOriginResponse.Origin.toOrigin() = OrderShop.Origin(
+    ingredients = ingredients,
+    origin = origin
 )

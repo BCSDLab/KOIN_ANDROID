@@ -52,6 +52,26 @@ class StoreDetailViewModel @Inject constructor(
                         id = id,
                         storeName = result.name,
                         description = result.introduction,
+                        notice = result.notice,
+                        deliveryTips = result.deliveryTips.map { tips ->
+                            DeliveryTipModel(
+                                fromAmount = tips.fromAmount,
+                                toAmount = tips.toAmount,
+                                fee = tips.feel
+                            )
+                        },
+                        origins = result.origins.map { origin ->
+                            OriginModel(
+                                ingredients = origin.ingredients,
+                                origin = origin.origin
+                            )
+                        }.firstOrNull() ?: OriginModel.empty(),
+                        ownerInfo = OwnerInfoModel(
+                            result.ownerInfo.name ?: "",
+                            result.ownerInfo.shopName ?: "",
+                            result.address,
+                            result.ownerInfo.companyRegistrationNumber ?: ""
+                        )
                     )
                 )
             }
@@ -68,6 +88,7 @@ class StoreDetailViewModel @Inject constructor(
             }
         }
         fetchOrderableStoreMenu(id)
+        fetchOrderStoreNotice(id)
     }
 
     private fun fetchOrderableStoreMenu(id: Int) = intent {
@@ -91,7 +112,15 @@ class StoreDetailViewModel @Inject constructor(
                     shopDescription = StoreDescriptionModel(
                         id = id,
                         storeName = result.name,
-                        description = result.description
+                        description = result.description,
+                        notice = null,
+                        deliveryTips =  DeliveryTipModel(
+                            fromAmount = 0,
+                            toAmount = null,
+                            fee = result.deliveryPrice
+                        ).let { listOf(it) },
+                        origins = null,
+                        ownerInfo = null
                     ),
                 )
             }
