@@ -58,6 +58,9 @@ fun WebApp(
         },
         update = {
             it.loadUrl(url)
+        },
+        onRelease = {
+            webView = null
         }
     )
 
