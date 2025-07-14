@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.feature.store.R
 
@@ -39,7 +40,7 @@ fun ShoppingCartScreen(
                 onNavigationIconClick = onBackClick,
                 actions = {
                     Text(
-                        color = Color(0xFFB611F5),
+                        color = RebrandKoinTheme.colors.primary500,
                         fontWeight = SemiBold,
                         text = stringResource(R.string.delete_all),
                         modifier = Modifier
