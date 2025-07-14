@@ -112,7 +112,8 @@ fun ClubDetailEvents(
                     stateText = stringResource(it.status.strRes),
                     dateText = "${it.startDateTime.toStringForm()} ~ ${it.endDateTime.toStringForm()}",
                     eventIntroText = it.introduce,
-                    stateColor = KoinTheme.colors.primary400
+                    stateColor = KoinTheme.colors.primary400,
+                    isDisable = it.status == EventStatus.ENDED
                 )
             }
         }
