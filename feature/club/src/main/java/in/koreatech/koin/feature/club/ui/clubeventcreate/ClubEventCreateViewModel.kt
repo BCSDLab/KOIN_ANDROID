@@ -115,17 +115,13 @@ class ClubEventCreateViewModel @Inject constructor(
         reduce { state.copy(eventEndDateTime = newDate) }
     }
 
-    /**
-     * to remain user select sequence
-     * use suspend function
-     */
-    suspend fun getPreSignedUrl(
+    fun getPreSignedUrl(
         fileSize: Long,
         fileType: String,
         fileName: String,
         imageUri: Uri
-    ) {
-        intent { reduce { state.copy(isLoading = true) } }
+    ) = blockingIntent {
+        reduce { state.copy(isLoading = true) }
         getClubPreSignedUrlUseCase(
             fileSize,
             fileType,
@@ -139,41 +135,33 @@ class ClubEventCreateViewModel @Inject constructor(
                 imageUri = imageUri
             )
         }.onFailure {
-            intent {
-                reduce { state.copy(isLoading = false) }
-                postSideEffect(ClubEventCreateSideEffect.ClubImageUploadFailure)
-            }
+            reduce { state.copy(isLoading = false) }
+            postSideEffect(ClubEventCreateSideEffect.ClubImageUploadFailure)
         }
     }
 
-    private suspend fun uploadImage(
+    private fun uploadImage(
         preSignedUrl: String,
         fileUrl: String,
         mediaType: String,
         mediaSize: Long,
         imageUri: Uri
-    ) {
+    ) = blockingIntent {
         uploadFilesUseCase(
             preSignedUrl,
             mediaType,
             mediaSize,
             imageUri.toString()
         ).onSuccess {
-            intent {
-                reduce {
-                    state.copy(
-                        eventImageUrls = state.eventImageUrls.toPersistentList().add(fileUrl),
-                        isLoading = false
-                    )
-                }
+            reduce {
+                state.copy(
+                    eventImageUrls = state.eventImageUrls.toPersistentList().add(fileUrl),
+                    isLoading = false
+                )
             }
         }.onFailure {
-            intent {
-                reduce {
-                    state.copy(isLoading = false)
-                }
-                postSideEffect(ClubEventCreateSideEffect.ClubImageUploadFailure)
-            }
+            reduce { state.copy(isLoading = false) }
+            postSideEffect(ClubEventCreateSideEffect.ClubImageUploadFailure)
         }
     }
 }
