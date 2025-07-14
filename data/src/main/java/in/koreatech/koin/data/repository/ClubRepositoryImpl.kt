@@ -2,12 +2,14 @@ package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.mapper.toClubCategories
 import `in`.koreatech.koin.data.mapper.toClubDetails
+import `in`.koreatech.koin.data.mapper.toClubEvent
 import `in`.koreatech.koin.data.mapper.toClubHot
 import `in`.koreatech.koin.data.mapper.toClubQnasInfo
 import `in`.koreatech.koin.data.mapper.toClubRecruitment
 import `in`.koreatech.koin.data.mapper.toClubs
 import `in`.koreatech.koin.data.request.club.ClubCreateRequest
 import `in`.koreatech.koin.data.request.club.ClubEmpowermentRequest
+import `in`.koreatech.koin.data.request.club.ClubEventRequest
 import `in`.koreatech.koin.data.request.club.ClubModifyRequest
 import `in`.koreatech.koin.data.request.club.ClubQnaRequest
 import `in`.koreatech.koin.data.request.club.ClubRecruitmentRequest
@@ -17,6 +19,7 @@ import `in`.koreatech.koin.data.util.toKoinUnknownErrorException
 import `in`.koreatech.koin.domain.error.club.KoinClubException
 import `in`.koreatech.koin.domain.model.club.ClubCategories
 import `in`.koreatech.koin.domain.model.club.ClubDetails
+import `in`.koreatech.koin.domain.model.club.ClubEvent
 import `in`.koreatech.koin.domain.model.club.ClubHot
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.domain.model.club.ClubRecruitment
@@ -396,6 +399,70 @@ class ClubRepositoryImpl @Inject constructor(
                         when (exception.code()) {
                             400 -> KoinClubException.WrongInputDataException()
                             404 -> KoinClubException.ClubRecruitNotFoundException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+                    else -> exception
+                }
+            )
+        }
+    }
+
+    override suspend fun getClubEvents(
+        clubId: Int,
+        eventType: String
+    ): Result<List<ClubEvent>> {
+        return runCatching {
+            clubRemoteDataSource.getClubEvents(clubId, eventType).map { it.toClubEvent() }
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            400 -> KoinClubException.WrongInputDataException()
+                            404 -> KoinClubException.ClubEventNotFoundException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+                    else -> exception
+                }
+            )
+        }
+    }
+
+    override suspend fun createClubEvent(
+        clubId: Int,
+        name: String,
+        imageUrls: List<String>,
+        startDate: String,
+        endDate: String,
+        introduce: String,
+        content: String?
+    ): Result<Unit> {
+        return runCatching {
+            val response = clubRemoteDataSource.createClubEvent(
+                clubId,
+                ClubEventRequest(
+                    name,
+                    imageUrls,
+                    startDate,
+                    endDate,
+                    introduce,
+                    content
+                )
+            )
+            if (response.isSuccessful) {
+                Unit
+            } else {
+                throw HttpException(response)
+            }
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            400 -> KoinClubException.WrongInputDataException()
+                            404 -> KoinClubException.ClubNotFoundException()
                             else -> exception.getErrorResponse().toKoinUnknownErrorException()
                         }
                     }

@@ -203,6 +203,10 @@ object URLConstant {
             object RECRUITMENT {
                 const val RECRUITMENT = "$CLUBID/recruitment"
             }
+            object EVENT {
+                const val EVENTS = "$CLUBID/events"
+                const val EVENT = "$CLUBID/event"
+            }
         }
         const val EMPOWERMENT = "$CLUBS/empowerment"
     }

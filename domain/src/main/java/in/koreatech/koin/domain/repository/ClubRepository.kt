@@ -2,6 +2,7 @@ package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.club.ClubCategories
 import `in`.koreatech.koin.domain.model.club.ClubDetails
+import `in`.koreatech.koin.domain.model.club.ClubEvent
 import `in`.koreatech.koin.domain.model.club.ClubHot
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.domain.model.club.ClubRecruitment
@@ -102,5 +103,20 @@ interface ClubRepository {
         isAlwaysRecruiting: Boolean,
         imageUrl: String,
         content: String
+    ): Result<Unit>
+
+    suspend fun getClubEvents(
+        clubId: Int,
+        eventType: String
+    ): Result<List<ClubEvent>>
+
+    suspend fun createClubEvent(
+        clubId: Int,
+        name: String,
+        imageUrls: List<String>,
+        startDate: String,
+        endDate: String,
+        introduce: String,
+        content: String?
     ): Result<Unit>
 }
