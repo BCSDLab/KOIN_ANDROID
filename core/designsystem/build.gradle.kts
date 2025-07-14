@@ -18,7 +18,6 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(libs.lottie.compose)
 
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose.m3)
