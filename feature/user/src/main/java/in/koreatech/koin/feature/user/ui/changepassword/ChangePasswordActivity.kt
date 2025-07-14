@@ -11,6 +11,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.feature.user.R
@@ -87,6 +90,11 @@ class ChangePasswordActivity : ActivityBase() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isPasswordChangeSuccess.collect { isSuccessful ->
                     if (isSuccessful) {
+                        EventLogger.logClickEvent(
+                            EventAction.USER,
+                            AnalyticsConstant.Label.USER_INFO,
+                            "정보수정 완료"
+                        )
                         setResult(ChangePasswordContract.RESULT_PASSWORD_CHANGED)
                         finish()
                     } else {

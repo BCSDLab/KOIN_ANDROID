@@ -241,11 +241,6 @@ private fun SignUpGeneralUserInfoInitialStep(
                 enabled = loginId.isNotEmpty() && isLoginIdAvailable != true && isLoginIdValid,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {
-                    EventLogger.logClickEvent(
-                        EventAction.USER,
-                        AnalyticsConstant.Label.CREATE_ACCOUNT,
-                        "아이디생성"
-                    )
                     checkLoginIdAvailable()
                 }
             )
@@ -359,11 +354,6 @@ private fun SignUpGeneralUserInfoNickNameEmailStep(
                 enabled = nickname.isNotEmpty() && nickname.isNicknameFormat() && isNicknameAvailable != true,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {
-                    EventLogger.logClickEvent(
-                        EventAction.USER,
-                        AnalyticsConstant.Label.CREATE_ACCOUNT,
-                        "닉네임생성"
-                    )
                     checkNicknameDuplicate()
                 }
             )

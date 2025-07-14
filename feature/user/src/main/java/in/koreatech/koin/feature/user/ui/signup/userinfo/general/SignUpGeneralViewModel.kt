@@ -3,6 +3,9 @@ package `in`.koreatech.koin.feature.user.ui.signup.userinfo.general
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.error.user.KoinUserException
 import `in`.koreatech.koin.domain.usecase.signup.CheckEmailDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.CheckLoginIdDuplicateUseCase
@@ -86,6 +89,11 @@ class SignUpGeneralViewModel @Inject constructor(
             reduce {
                 state.copy(isNicknameAvailable = true)
             }
+            EventLogger.logClickEvent(
+                EventAction.USER,
+                AnalyticsConstant.Label.CREATE_ACCOUNT,
+                "닉네임생성"
+            )
         }.onFailure {
             reduce {
                 state.copy(isNicknameAvailable = false)
@@ -106,6 +114,11 @@ class SignUpGeneralViewModel @Inject constructor(
             reduce {
                 state.copy(isLoginIdAvailable = true, isLoginIdValid = true)
             }
+            EventLogger.logClickEvent(
+                EventAction.USER,
+                AnalyticsConstant.Label.CREATE_ACCOUNT,
+                "아이디생성"
+            )
         }.onFailure {
             when (it) {
                 is KoinUserException.LoginIdInvalidException -> {
