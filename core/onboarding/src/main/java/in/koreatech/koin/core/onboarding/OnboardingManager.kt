@@ -16,13 +16,19 @@ import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.IconForm
 import com.skydoves.balloon.IconGravity
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.OnboardingRepository
+import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
+import `in`.koreatech.koin.domain.util.onSuccess
 import javax.inject.Inject
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class OnboardingManager @Inject internal constructor(
     private val onboardingRepository: OnboardingRepository,
+    private val getUserInfoUseCase: GetUserInfoUseCase,
     private val context: Context
 ) {
     private lateinit var tooltip: Balloon
@@ -61,6 +67,7 @@ class OnboardingManager @Inject internal constructor(
      *
      * Fragment에서 사용할 때는 viewLifecycleOwner를 사용해야 함 !
      */
+
     fun LifecycleOwner.showOnboardingTooltipIfNeeded(
         type: OnboardingType,
         view: View,
@@ -95,6 +102,47 @@ class OnboardingManager @Inject internal constructor(
                 if (shouldShow) {
                     action()
                     onboardingRepository.updateShouldOnboarding(type.name, false)
+                }
+            }
+        }
+    }
+
+    fun LifecycleOwner.showModalIfNeeded(
+        actionTrue: () -> Unit = {},
+        actionFalse: () -> Unit = {}
+    ) {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                withContext(NonCancellable) {
+                    val shouldShow = onboardingRepository.getShouldOnboarding(INFO_REQUIRED_SHOULD_SHOW)
+                    if (shouldShow) {
+                        getUserInfoUseCase()
+                            .onSuccess { user ->
+                                when (user) {
+                                    is User.Student -> {
+                                        if (user.name == null || user.phoneNumber == null || user.major == null || user.studentNumber == null) {
+                                            val check = onboardingRepository.getShouldOnboarding(INFO_REQUIRED_CHECK)
+                                            onboardingRepository.updateShouldOnboarding(INFO_REQUIRED_CHECK, false)
+
+                                            if (check) {
+                                                actionTrue()
+                                            } else {
+                                                actionFalse()
+                                            }
+                                        } else {
+                                            onboardingRepository.updateShouldOnboarding(INFO_REQUIRED_SHOULD_SHOW, false)
+                                        }
+                                    }
+
+                                    is User.General -> {
+                                        onboardingRepository.updateShouldOnboarding(INFO_REQUIRED_SHOULD_SHOW, false)
+                                    }
+
+                                    is User.Anonymous -> {
+                                    }
+                                }
+                            }
+                    }
                 }
             }
         }
@@ -168,5 +216,10 @@ class OnboardingManager @Inject internal constructor(
             ArrowDirection.LEFT -> showAlignRight(view)
             ArrowDirection.RIGHT -> showAlignLeft(view)
         }
+    }
+
+    companion object {
+        private const val INFO_REQUIRED_SHOULD_SHOW = "INFO_REQUIRED_SHOULD_SHOW"
+        private const val INFO_REQUIRED_CHECK = "INFO_REQUIRED_CHECK"
     }
 }

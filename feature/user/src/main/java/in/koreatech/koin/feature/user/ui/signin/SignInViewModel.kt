@@ -48,12 +48,12 @@ class SignInViewModel @Inject constructor(
 
     fun signIn() = intent {
         userLoginUseCase(state.loginId, state.password).onSuccess {
-            postSideEffect(SignInSideEffect.SignInSuccess)
             EventLogger.logClickEvent(
                 EventAction.USER,
                 AnalyticsConstant.Label.LOGIN,
                 "로그인 완료"
             )
+            postSideEffect(SignInSideEffect.SignInSuccess)
         }.onFailure {
             EventLogger.logClickEvent(
                 EventAction.USER,
