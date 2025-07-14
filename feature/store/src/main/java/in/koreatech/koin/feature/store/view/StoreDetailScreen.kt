@@ -51,6 +51,7 @@ import `in`.koreatech.koin.feature.store.state.collapseToolbar
 import `in`.koreatech.koin.feature.store.state.currentToolbarHeightDp
 import `in`.koreatech.koin.feature.store.state.progress
 import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
+import `in`.koreatech.koin.feature.store.viewmodel.ShoppingCartViewModel
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
 import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineScope
@@ -61,6 +62,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun StoreDetailScreen(
     viewModel: StoreDetailViewModel = hiltViewModel(),
+    shoppingCartViewModel: ShoppingCartViewModel = hiltViewModel(),
     pagerState: PagerState,
     navigateToCart: () -> Unit = {},
     navigateToBack: () -> Unit = {},
@@ -68,6 +70,7 @@ fun StoreDetailScreen(
     navigateToReview: () -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
+    val cartState by shoppingCartViewModel.collectAsState()
 
     val rememberState = rememberCollapsingToolbarState()
     val progress = rememberState.progress()
@@ -179,7 +182,7 @@ fun StoreDetailScreen(
                         .background(Color.Magenta, CircleShape)
                 ) {
                     Text(
-                        text = "3", // TODO: API 연동 후 장바구니 수량 표시
+                        text = cartState.cart.items.size.toString(),
                         fontSize = 10.sp,
                         lineHeight = 11.sp,
                         color = KoinTheme.colors.neutral0,
