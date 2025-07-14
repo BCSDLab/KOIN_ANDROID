@@ -38,11 +38,11 @@ fun ClubEvent.toParcelizeClubEvent(): ParcelizeClubEvent {
 enum class EventStatus(
     @StringRes val strRes: Int
 ) {
+    UNKNOWN(R.string.club_event_unknown),
     SOON(R.string.club_event_soon),
     ONGOING(R.string.club_event_ongoing),
     UPCOMING(R.string.club_event_upcoming),
-    ENDED(R.string.club_event_ended),
-    UNKNOWN(R.string.club_event_unknown)
+    ENDED(R.string.club_event_ended)
 }
 
 fun String.toEventStatus() = when (this) {
