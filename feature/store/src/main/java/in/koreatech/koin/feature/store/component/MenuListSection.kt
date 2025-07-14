@@ -64,7 +64,7 @@ fun LazyListScope.menuListSection(
                     menus.forEachIndexed { index, menu ->
                         MenuItem(
                             modifier = Modifier
-                                .padding(horizontal = 16.dp),
+                                .padding(16.dp),
                             menu = menu)
                         if (index != menus.lastIndex) {
                             Divider(

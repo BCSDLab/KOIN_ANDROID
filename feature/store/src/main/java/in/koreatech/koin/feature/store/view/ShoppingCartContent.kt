@@ -223,6 +223,8 @@ fun ShoppingCartContent(
                 Column {
                     cart.items.forEachIndexed { index, cartItem ->
                         CartMenuItem(
+                            modifier = Modifier
+                                .padding(16.dp),
                             menu = cartItem,
                             navigateToMenu = {},
                             onChangeQuantity = { menuId, quantity ->

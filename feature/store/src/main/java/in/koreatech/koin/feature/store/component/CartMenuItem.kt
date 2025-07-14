@@ -37,7 +37,7 @@ fun CartMenuItem(
     onChangeQuantity: (Int, Int) -> Unit = { _, _ -> },
     onDeleteMenuItem: (Int) -> Unit = { }
 ) {
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column(modifier = modifier) {
         Row {
             Column(modifier = Modifier.weight(1f)) {
                 Text(modifier = Modifier.padding(vertical = 8.dp), text = menu.name, fontWeight = SemiBold, fontSize = 18.sp)
