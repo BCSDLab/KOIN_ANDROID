@@ -1,5 +1,6 @@
 <resources>
     <!--장바구니-->
+    <string name="order">주문하러가기</string>
     <string name="check_payment_amount">결제금액을 확인해주세요</string>
     <string name="menu_amount">메뉴 금액</string>
     <string name="delivery_amount">배달 금액</string>
