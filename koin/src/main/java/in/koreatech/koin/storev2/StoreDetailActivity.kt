@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.storev2
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.core.view.WindowCompat
@@ -16,7 +17,7 @@ class StoreDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityStoreDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        enableEdgeToEdge()
         window.statusBarColor = android.graphics.Color.TRANSPARENT
         initComposeView()
     }
