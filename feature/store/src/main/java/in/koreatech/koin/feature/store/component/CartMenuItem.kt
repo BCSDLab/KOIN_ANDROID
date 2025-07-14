@@ -26,7 +26,6 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.cart.CartItem
 import `in`.koreatech.koin.domain.model.cart.CartItemOption
 import `in`.koreatech.koin.domain.model.cart.CartItemPrice
-import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 import `in`.koreatech.koin.feature.store.R
 
 @Composable
@@ -106,14 +105,14 @@ private fun ShoppingCartItem() {
                 quantity = 2,
                 menuThumbnailImageUrl = "https://example.com/image.jpg",
                 options = listOf(
-                    CartItemOption(optionGroupName = "테스트", optionName = "샷 추가", optionPrice = 500),
+                    CartItemOption(optionGroupName = "테스트", optionName = "샷 추가", optionPrice = 500)
                 ),
-               price = CartItemPrice(
-                   name = "아메리카노",
-                   price = 4500,
-               ),
-               isModified = false
-            ),
+                price = CartItemPrice(
+                    name = "아메리카노",
+                    price = 4500
+                ),
+                isModified = false
+            )
         )
     }
 }

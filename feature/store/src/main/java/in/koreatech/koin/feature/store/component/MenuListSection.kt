@@ -35,7 +35,7 @@ import `in`.koreatech.koin.feature.store.R
 fun LazyListScope.menuListSection(
     category: String,
     menus: List<LegacyShopMenus>,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     if (menus.isEmpty()) return
 
@@ -65,7 +65,8 @@ fun LazyListScope.menuListSection(
                         MenuItem(
                             modifier = Modifier
                                 .padding(16.dp),
-                            menu = menu)
+                            menu = menu
+                        )
                         if (index != menus.lastIndex) {
                             Divider(
                                 color = KoinTheme.colors.neutral300,
@@ -82,7 +83,7 @@ fun LazyListScope.menuListSection(
 @Composable
 fun MenuItem(
     menu: LegacyShopMenus,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier) {
         Column(modifier = Modifier.weight(1f)) {
