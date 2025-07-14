@@ -137,7 +137,7 @@ fun StoreDetailScreen(
                     menus = category.storeMenuCategories.menus ?: emptyList(),
                     modifier = Modifier
                         .padding(horizontal = 24.dp)
-                        .navigationBarsPadding(),
+                        .navigationBarsPadding()
                 )
             }
         }

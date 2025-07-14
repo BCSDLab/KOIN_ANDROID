@@ -35,7 +35,7 @@ import `in`.koreatech.koin.feature.store.R
 fun LazyListScope.menuListSection(
     category: String,
     menus: List<ShopMenus>,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     if (menus.isEmpty()) return
 

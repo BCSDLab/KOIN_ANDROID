@@ -286,7 +286,7 @@ fun ShoppingCartContent(
 
 @Composable
 fun ShoppingCartEmptyContent(
-    modifier: Modifier= Modifier,
+    modifier: Modifier = Modifier,
     navigateToStoreDetail: () -> Unit = { }
 ) {
     Column(
