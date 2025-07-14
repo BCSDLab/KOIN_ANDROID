@@ -30,8 +30,8 @@ import `in`.koreatech.koin.feature.store.R
 
 @Composable
 fun QuantityOptionButton(
-    modifier: Modifier = Modifier,
     quantity: Int,
+    modifier: Modifier = Modifier,
     onOptionClick: () -> Unit = {},
     onMinusClick: () -> Unit = {},
     onPlusClick: () -> Unit = {},

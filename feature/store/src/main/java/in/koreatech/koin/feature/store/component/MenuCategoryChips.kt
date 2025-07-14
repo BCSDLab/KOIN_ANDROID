@@ -69,8 +69,8 @@ fun MenuCategoryChips(
 
 @Composable
 fun MenuCategoryChip(
-    modifier: Modifier = Modifier,
     menuCategory: MenuCategory,
+    modifier: Modifier = Modifier,
     onCategoryClicked: (Int) -> Unit = {}
 ) {
     val borderColor = if (menuCategory.isChecked) colorResource(id = R.color.store_detail_chip) else Color.Transparent

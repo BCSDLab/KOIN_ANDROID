@@ -133,11 +133,11 @@ fun StoreDetailScreen(
             }
             uiState.categories.forEach { category ->
                 menuListSection(
+                    category = category.storeMenuCategories.name ?: "",
+                    menus = category.storeMenuCategories.menus ?: emptyList(),
                     modifier = Modifier
                         .padding(horizontal = 24.dp)
                         .navigationBarsPadding(),
-                    category = category.storeMenuCategories.name ?: "",
-                    menus = category.storeMenuCategories.menus ?: emptyList()
                 )
             }
         }

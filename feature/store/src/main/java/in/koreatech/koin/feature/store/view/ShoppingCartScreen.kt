@@ -29,7 +29,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 fun ShoppingCartScreen(
     viewModel: ShoppingCartViewModel = hiltViewModel(),
     isOperating: Boolean = true,
-    navigateToStoreDetail: () -> Unit
+    navigateToStoreDetail: () -> Unit = { }
 ) {
     val uiState by viewModel.collectAsState()
 

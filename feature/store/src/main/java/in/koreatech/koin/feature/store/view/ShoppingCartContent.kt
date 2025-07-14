@@ -59,8 +59,8 @@ import `in`.koreatech.koin.feature.store.component.PaymentSummaryCard
 
 @Composable
 fun ShoppingCartContent(
-    modifier: Modifier,
     cart: Cart,
+    modifier: Modifier = Modifier,
     cartType: CartType = CartType.DELIVERY,
     isOperating: Boolean = true,
     dialogVisibility: Boolean = false,
@@ -286,7 +286,7 @@ fun ShoppingCartContent(
 
 @Composable
 fun ShoppingCartEmptyContent(
-    modifier: Modifier,
+    modifier: Modifier= Modifier,
     navigateToStoreDetail: () -> Unit = { }
 ) {
     Column(
