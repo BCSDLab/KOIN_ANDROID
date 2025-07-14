@@ -5,6 +5,7 @@ import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
 import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.feature.store.model.MenuCategoryModel
+import `in`.koreatech.koin.feature.store.model.OwnerInfoModel
 import `in`.koreatech.koin.feature.store.model.ShopInfoModel
 import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
 
@@ -20,3 +21,11 @@ data class StoreDetailState(
     val isLogin: Boolean = false,
     val isLoading: Boolean = true
 )
+fun OwnerInfoModel?.hasAnyInfo(): Boolean {
+    return this?.let {
+        it.name != null ||
+                it.shopName != null ||
+                it.address != null ||
+                it.companyRegistrationNumber != null
+    } ?: false
+}
