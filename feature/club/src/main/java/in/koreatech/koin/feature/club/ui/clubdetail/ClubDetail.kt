@@ -56,6 +56,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -83,6 +84,8 @@ import `in`.koreatech.koin.feature.club.BuildConfig
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
 import `in`.koreatech.koin.feature.club.component.DetailLoginDialog
+import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialog
+import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_CATEGORY
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_DESCRIPTION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_GOOGLE_FORM
@@ -112,6 +115,7 @@ fun ClubDetail(
     onTopbarBackClick: () -> Unit = {},
     onModifyClick: (Int) -> Unit = {},
     onRecruitCreateClick: (Int) -> Unit = {},
+    onRecruitModifyClick: (Int) -> Unit = {},
     resetClubModifiedState: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
@@ -291,6 +295,25 @@ fun ClubDetail(
                     .size(400)
                     .build(),
                 onDismiss = { viewModel.dismissImageDialog() }
+            )
+        }
+
+        if (state.showRecruitDeleteDialog) {
+            KoinClubExtraSmallDialog(
+                description = stringResource(R.string.detail_recruit_delete_dialog_description),
+                descriptionStyle = KoinTheme.typography.medium15,
+                descriptionColor = KoinTheme.colors.neutral600,
+                positiveButtonText = stringResource(R.string.detail_recruit_delete_dialog_positive),
+                negativeButtonText = stringResource(R.string.detail_recruit_delete_dialog_negative),
+                positiveButtonColors = KoinClubExtraSmallDialogDanger.positiveButtonColors(),
+                titleTextAlign = TextAlign.Center,
+                descriptionTextAlign = TextAlign.Center,
+                onPositive = {
+                    viewModel.dismissRecruitDeleteDialog()
+                    viewModel.deleteRecruitment()
+                },
+                onNegative = viewModel::dismissRecruitDeleteDialog,
+                onDismiss = viewModel::dismissRecruitDeleteDialog
             )
         }
 
@@ -620,6 +643,8 @@ fun ClubDetail(
                                 showProgressBar = state.showRecruitProgressBar,
                                 onImageClick = viewModel::showImageDialog,
                                 onRecruitCreateClick = { onRecruitCreateClick(state.clubId) },
+                                showRecruitDeleteDialog = viewModel::showRecruitDeleteDialog,
+                                onRecruitModifyClick = { onRecruitModifyClick(state.clubId) },
                                 isManager = state.clubDetails?.manager ?: false
                             )
                         }
@@ -688,6 +713,15 @@ suspend fun handleSideEffect(
             ToastUtil.getInstance().makeShort(sideEffect.messageResId)
         }
         is ClubDetailSideEffect.AlreadyNotLikedError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.DeleteClubRecruitmentError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.LoadClubRecruitmentError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.UnknownError -> {
             ToastUtil.getInstance().makeShort(sideEffect.messageResId)
         }
     }

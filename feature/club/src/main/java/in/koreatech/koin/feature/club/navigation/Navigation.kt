@@ -14,6 +14,7 @@ import `in`.koreatech.koin.feature.club.ui.clubdetail.ClubDetail
 import `in`.koreatech.koin.feature.club.ui.clublist.ClubListScreen
 import `in`.koreatech.koin.feature.club.ui.clubmodify.ClubModifyScreen
 import `in`.koreatech.koin.feature.club.ui.clubrecruitcreate.ClubRecruitCreateScreen
+import `in`.koreatech.koin.feature.club.ui.clubrecruitmodify.ClubRecruitModifyScreen
 
 fun NavGraphBuilder.koinClubGraph(
     navController: NavController
@@ -62,6 +63,9 @@ fun NavGraphBuilder.koinClubGraph(
             },
             onRecruitCreateClick = { clubId ->
                 navController.navigate("${ClubNavType.ClubRecruitCreate.route}/$clubId")
+            },
+            onRecruitModifyClick = { clubId ->
+                navController.navigate("${ClubNavType.ClubRecruitModify.route}/$clubId")
             },
             resetClubModifiedState = {
                 it.savedStateHandle[IS_CLUB_MODIFIED] = false
@@ -125,6 +129,26 @@ fun NavGraphBuilder.koinClubGraph(
             }
         )
     }
+
+    composable(
+        route = "${ClubNavType.ClubRecruitModify.route}/{$CLUB_ID}",
+        arguments = listOf(
+            navArgument(CLUB_ID) { type = NavType.IntType }
+        )
+    ) {
+        ClubRecruitModifyScreen(
+            onNavigateUp = {
+                navController.navigateUp()
+            },
+            onRecruitModified = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(
+                    IS_CLUB_RECRUIT_MODIFIED,
+                    true
+                )
+                navController.navigateUp()
+            }
+        )
+    }
 }
 
 const val CLUB_ID = "clubId"
@@ -132,3 +156,4 @@ const val CATEGORY_ID = "categoryId"
 const val IS_CLUB_CREATED = "isClubCreated"
 const val IS_CLUB_MODIFIED = "isClubModified"
 const val IS_CLUB_RECRUIT_CREATED = "isClubRecruitCreated"
+const val IS_CLUB_RECRUIT_MODIFIED = "isClubRecruitModified"

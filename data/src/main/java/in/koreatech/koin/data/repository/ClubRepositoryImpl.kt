@@ -345,4 +345,68 @@ class ClubRepositoryImpl @Inject constructor(
             )
         }
     }
+
+    override suspend fun deleteClubRecruitment(clubId: Int): Result<Unit> {
+        return runCatching {
+            val response = clubRemoteDataSource.deleteClubRecruitment(clubId)
+            if (response.isSuccessful) {
+                Unit
+            } else {
+                throw HttpException(response)
+            }
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            400 -> KoinClubException.WrongInputDataException()
+                            404 -> KoinClubException.ClubRecruitNotFoundException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+                    else -> exception
+                }
+            )
+        }
+    }
+
+    override suspend fun modifyClubRecruitment(
+        clubId: Int,
+        startDate: String?,
+        endDate: String?,
+        isAlwaysRecruiting: Boolean,
+        imageUrl: String,
+        content: String
+    ): Result<Unit> {
+        return runCatching {
+            val response = clubRemoteDataSource.modifyClubRecruitment(
+                clubId,
+                ClubRecruitmentRequest(
+                    startDate,
+                    endDate,
+                    isAlwaysRecruiting,
+                    imageUrl,
+                    content
+                )
+            )
+            if (response.isSuccessful) {
+                Unit
+            } else {
+                throw HttpException(response)
+            }
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            400 -> KoinClubException.WrongInputDataException()
+                            404 -> KoinClubException.ClubRecruitNotFoundException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+                    else -> exception
+                }
+            )
+        }
+    }
 }

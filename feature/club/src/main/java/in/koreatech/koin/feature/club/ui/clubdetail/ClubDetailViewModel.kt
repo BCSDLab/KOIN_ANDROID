@@ -10,6 +10,7 @@ import `in`.koreatech.koin.domain.error.club.KoinClubException
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.club.CancelClubLikeUseCase
 import `in`.koreatech.koin.domain.usecase.club.DeleteClubQnaUseCase
+import `in`.koreatech.koin.domain.usecase.club.DeleteClubRecruitmentUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubDetailsUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubQnasUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubRecruitmentUseCase
@@ -44,7 +45,8 @@ class ClubDetailViewModel @Inject constructor(
     private val postClubQnaUseCase: PostClubQnaUseCase,
     private val setClubEmpowermentUseCase: SetClubEmpowermentUseCase,
     private val setClubLikeUseCase: SetClubLikeUseCase,
-    private val getClubRecruitmentUseCase: GetClubRecruitmentUseCase
+    private val getClubRecruitmentUseCase: GetClubRecruitmentUseCase,
+    private val deleteClubRecruitmentUseCase: DeleteClubRecruitmentUseCase
 ) : ViewModel(), ContainerHost<ClubDetailState, ClubDetailSideEffect> {
     override val container = container<ClubDetailState, ClubDetailSideEffect>(
         initialState = ClubDetailState(),
@@ -131,9 +133,7 @@ class ClubDetailViewModel @Inject constructor(
     }
 
     private fun loadClubRecruitment() = intent {
-        reduce {
-            state.copy(isLoading = true, showRecruitProgressBar = true)
-        }
+        reduce { state.copy(isLoading = true, showRecruitProgressBar = true) }
         getClubRecruitmentUseCase(state.clubId).onSuccess {
             reduce {
                 state.copy(
@@ -146,7 +146,7 @@ class ClubDetailViewModel @Inject constructor(
             reduce { state.copy(isLoading = false, showRecruitProgressBar = false) }
             when (e) {
                 is KoinClubException.WrongInputDataException -> {
-                    // TODO
+                    postSideEffect(ClubDetailSideEffect.LoadClubRecruitmentError)
                 }
                 is KoinClubException.ClubRecruitNotFoundException -> {
                     reduce { state.copy(clubRecruitment = null) }
@@ -154,6 +154,36 @@ class ClubDetailViewModel @Inject constructor(
                 else -> throw e
             }
         }
+    }
+
+    fun deleteRecruitment() = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true, showRecruitProgressBar = true) }
+        deleteClubRecruitmentUseCase(state.clubId).onSuccess {
+            reduce { state.copy(isLoading = false, showRecruitProgressBar = false) }
+            loadClubRecruitment()
+        }.onFailure { e ->
+            reduce { state.copy(isLoading = false, showRecruitProgressBar = false) }
+            when (e) {
+                is KoinClubException.WrongInputDataException,
+                is KoinClubException.ClubRecruitNotFoundException -> {
+                    postSideEffect(ClubDetailSideEffect.DeleteClubRecruitmentError)
+                    reduce { state.copy(clubRecruitment = null) }
+                }
+                else -> {
+                    postSideEffect(ClubDetailSideEffect.UnknownError)
+                    reduce { state.copy(clubRecruitment = null) }
+                }
+            }
+        }
+    }
+
+    fun showRecruitDeleteDialog() = intent {
+        reduce { state.copy(showRecruitDeleteDialog = true) }
+    }
+
+    fun dismissRecruitDeleteDialog() = intent {
+        reduce { state.copy(showRecruitDeleteDialog = false) }
     }
 
     fun showAddQnaDialog() = intent {
@@ -195,7 +225,9 @@ class ClubDetailViewModel @Inject constructor(
                     is KoinClubException.NotClubManagerException -> {
                         postSideEffect(ClubDetailSideEffect.NotClubManagerError)
                     }
-                    else -> throw e
+                    else -> {
+                        postSideEffect(ClubDetailSideEffect.UnknownError)
+                    }
                 }
             }
         }
@@ -225,7 +257,9 @@ class ClubDetailViewModel @Inject constructor(
                     is KoinClubException.NotClubManagerException -> {
                         postSideEffect(ClubDetailSideEffect.NotClubManagerError)
                     }
-                    else -> throw e
+                    else -> {
+                        postSideEffect(ClubDetailSideEffect.UnknownError)
+                    }
                 }
             }
         }
@@ -249,7 +283,9 @@ class ClubDetailViewModel @Inject constructor(
                     is KoinClubException.DeletePermissionDeniedException -> {
                         postSideEffect(ClubDetailSideEffect.DeletePermissionDeniedError)
                     }
-                    else -> throw e
+                    else -> {
+                        postSideEffect(ClubDetailSideEffect.UnknownError)
+                    }
                 }
             }
         }
@@ -282,7 +318,9 @@ class ClubDetailViewModel @Inject constructor(
                         is KoinClubException.AlreadyNotLikedException -> {
                             postSideEffect(ClubDetailSideEffect.AlreadyNotLikedError)
                         }
-                        else -> throw e
+                        else -> {
+                            postSideEffect(ClubDetailSideEffect.UnknownError)
+                        }
                     }
                 }
             } else {
@@ -299,7 +337,9 @@ class ClubDetailViewModel @Inject constructor(
                         is KoinClubException.AlreadyLikedException -> {
                             postSideEffect(ClubDetailSideEffect.AlreadyLikedError)
                         }
-                        else -> throw e
+                        else -> {
+                            postSideEffect(ClubDetailSideEffect.UnknownError)
+                        }
                     }
                 }
             }

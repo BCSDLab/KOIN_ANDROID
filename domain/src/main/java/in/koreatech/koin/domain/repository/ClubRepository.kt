@@ -92,4 +92,17 @@ interface ClubRepository {
         imageUrl: String,
         content: String
     ): Result<Unit>
+
+    suspend fun deleteClubRecruitment(
+        clubId: Int
+    ): Result<Unit>
+
+    suspend fun modifyClubRecruitment(
+        clubId: Int,
+        startDate: String?,
+        endDate: String?,
+        isAlwaysRecruiting: Boolean,
+        imageUrl: String,
+        content: String
+    ): Result<Unit>
 }

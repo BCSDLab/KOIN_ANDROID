@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
@@ -39,6 +40,8 @@ fun KoinClubExtraSmallDialog(
     descriptionColor: Color = KoinClubExtraSmallDialogDefaults.textColor,
     titleStyle: TextStyle = KoinClubExtraSmallDialogDefaults.titleStyle,
     descriptionStyle: TextStyle = KoinClubExtraSmallDialogDefaults.descriptionStyle,
+    titleTextAlign: TextAlign = KoinClubExtraSmallDialogDefaults.textAlign,
+    descriptionTextAlign: TextAlign = KoinClubExtraSmallDialogDefaults.textAlign,
     positiveButtonText: String = stringResource(id = R.string.club_dialog_ok),
     negativeButtonText: String = stringResource(id = R.string.club_dialog_cancel),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
@@ -66,13 +69,15 @@ fun KoinClubExtraSmallDialog(
                 Text(
                     text = title,
                     style = titleStyle,
-                    color = titleColor
+                    color = titleColor,
+                    textAlign = titleTextAlign
                 )
             }
             Text(
                 text = description,
                 style = descriptionStyle,
-                color = descriptionColor
+                color = descriptionColor,
+                textAlign = descriptionTextAlign
             )
             Spacer(modifier = Modifier.height(24.dp))
             Row(
@@ -107,6 +112,8 @@ fun KoinClubExtraSmallDialog(
     descriptionColor: Color = KoinClubExtraSmallDialogDefaults.textColor,
     titleStyle: TextStyle = KoinClubExtraSmallDialogDefaults.titleStyle,
     descriptionStyle: TextStyle = KoinClubExtraSmallDialogDefaults.descriptionStyle,
+    titleTextAlign: TextAlign = KoinClubExtraSmallDialogDefaults.textAlign,
+    descriptionTextAlign: TextAlign = KoinClubExtraSmallDialogDefaults.textAlign,
     positiveButtonText: String = stringResource(id = R.string.club_dialog_ok),
     negativeButtonText: String = stringResource(id = R.string.club_dialog_cancel),
     positiveButtonColors: ButtonColors = KoinClubExtraSmallDialogDefaults.positiveButtonColors(),
@@ -134,13 +141,15 @@ fun KoinClubExtraSmallDialog(
                 Text(
                     text = title,
                     style = titleStyle,
-                    color = titleColor
+                    color = titleColor,
+                    textAlign = titleTextAlign
                 )
             }
             Text(
                 text = description,
                 style = descriptionStyle,
-                color = descriptionColor
+                color = descriptionColor,
+                textAlign = descriptionTextAlign
             )
             Spacer(modifier = Modifier.height(24.dp))
             Row(
@@ -173,6 +182,7 @@ object KoinClubExtraSmallDialogDefaults {
     val textColor @Composable get() = KoinTheme.colors.neutral800
     val titleStyle @Composable get() = KoinTheme.typography.medium18
     val descriptionStyle @Composable get() = KoinTheme.typography.regular14
+    val textAlign @Composable get() = TextAlign.Start
 
     @Composable
     fun positiveButtonColors(

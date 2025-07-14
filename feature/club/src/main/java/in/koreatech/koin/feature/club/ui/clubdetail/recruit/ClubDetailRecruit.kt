@@ -30,6 +30,7 @@ import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
+import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
 import `in`.koreatech.koin.feature.club.model.ParcelizeClubRecruitment
 import `in`.koreatech.koin.feature.club.model.RecruitmentStatus
 
@@ -40,7 +41,9 @@ fun ClubDetailRecruit(
     showProgressBar: Boolean = false,
     isManager: Boolean = false,
     onImageClick: (String) -> Unit = {},
-    onRecruitCreateClick: () -> Unit = {}
+    onRecruitCreateClick: () -> Unit = {},
+    onRecruitModifyClick: () -> Unit = {},
+    showRecruitDeleteDialog: () -> Unit = {}
 ) {
     val context = LocalContext.current
     Box {
@@ -90,12 +93,38 @@ fun ClubDetailRecruit(
                     }
                 } else {
                     Column {
-                        Text(
+                        Row(
                             modifier = Modifier.fillMaxWidth(),
-                            text = stringResource(R.string.detail_recruit_deadline_header),
-                            style = KoinTheme.typography.medium16,
-                            color = KoinTheme.colors.primary600
-                        )
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = stringResource(R.string.detail_recruit_deadline_header),
+                                style = KoinTheme.typography.medium16,
+                                color = KoinTheme.colors.primary600
+                            )
+                            if (isManager) {
+                                Row(
+                                    horizontalArrangement = Arrangement
+                                        .spacedBy(8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    FilledButton(
+                                        text = stringResource(R.string.detail_recruit_delete),
+                                        textStyle = KoinTheme.typography.medium14,
+                                        onClick = showRecruitDeleteDialog,
+                                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp),
+                                        colors = KoinClubExtraSmallDialogDanger.positiveButtonColors()
+                                    )
+                                    FilledButton(
+                                        text = stringResource(R.string.detail_recruit_modify),
+                                        textStyle = KoinTheme.typography.medium14,
+                                        onClick = onRecruitModifyClick,
+                                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp)
+                                    )
+                                }
+                            }
+                        }
                         Spacer(Modifier.height(8.dp))
                         Row(
                             horizontalArrangement = Arrangement
@@ -246,7 +275,7 @@ private fun ClubDetailRecruitDday() {
 
 @Preview
 @Composable
-private fun ClubDetailRecruitNoImage() {
+private fun ClubDetailRecruitNoImageManger() {
     ClubDetailRecruit(
         recruitment = ParcelizeClubRecruitment(
             id = 0,
@@ -258,6 +287,7 @@ private fun ClubDetailRecruitNoImage() {
             content = "BCSD LAB 모집",
             isManager = false
         ),
+        isManager = true,
         modifier = Modifier.background(color = KoinTheme.colors.neutral0)
     )
 }

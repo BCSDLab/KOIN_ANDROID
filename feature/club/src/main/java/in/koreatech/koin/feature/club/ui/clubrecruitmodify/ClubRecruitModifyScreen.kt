@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.club.ui.clubrecruitcreate
+package `in`.koreatech.koin.feature.club.ui.clubrecruitmodify
 
 import android.content.Context
 import android.net.Uri
@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -31,6 +32,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -66,17 +69,17 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ClubRecruitCreateScreen(
+fun ClubRecruitModifyScreen(
     modifier: Modifier = Modifier,
-    viewModel: ClubRecruitCreateViewModel = hiltViewModel(),
+    viewModel: ClubRecruitModifyViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit = {},
-    onRecruitCreated: () -> Unit = {}
+    onRecruitModified: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val uiState by viewModel.collectAsState()
 
     viewModel.collectSideEffect { sideEffect ->
-        handleSideEffect(sideEffect, context, onRecruitCreated, onNavigateUp)
+        handleSideEffect(sideEffect, context, onRecruitModified, onNavigateUp)
     }
 
     Scaffold(
@@ -85,12 +88,13 @@ fun ClubRecruitCreateScreen(
         topBar = {
             KoinTopAppBar(
                 title = stringResource(R.string.club_recruit_create_title),
-                onNavigationIconClick = { viewModel.showCreateCancelDialog() }
+                onNavigationIconClick = { viewModel.updateModifyCancelDialog(true) }
             )
         },
         contentWindowInsets = WindowInsets.systemBars
     ) { contentPadding ->
         ClubRecruitCreateScreenImpl(
+            content = uiState.content,
             modifier = Modifier
                 .padding(contentPadding),
             imageUrl = uiState.recruitImageUrl,
@@ -105,20 +109,18 @@ fun ClubRecruitCreateScreen(
             showDatePickerDialogState = uiState.showDatePickerDialog,
             recruitStartDate = uiState.recruitStartDate,
             recruitEndDate = uiState.recruitEndDate,
-            showDatePickerDialog = viewModel::showDatePickerDialog,
-            dismissDatePickerDialog = viewModel::dismissDatePickerDialog,
+            updateDatePickerDialog = viewModel::updateDatePickerDialog,
             setRecruitStartDate = viewModel::setRecruitStartDate,
             setRecruitEndDate = viewModel::setRecruitEndDate,
             recruitAlways = uiState.recruitAlways,
             changeRecruitAlways = viewModel::changeRecruitAlways,
-            createRecruitment = viewModel::createClubRecruitment,
-            createRecruitmentCancel = viewModel::postNavigateUp,
-            showCreateRequestDialogState = uiState.showCreateRequestDialog,
-            showCreateRequestDialog = viewModel::showCreateRequestDialog,
-            dismissCreateRequestDialog = viewModel::dismissCreateRequestDialog,
-            showCreateCancelDialogState = uiState.showCreateCancelDialog,
-            showCreateCancelDialog = viewModel::showCreateCancelDialog,
-            dismissCreateCancelDialog = viewModel::dismissCreateCancelDialog
+            modifyRecruitment = viewModel::modifyClubRecruitment,
+            modifyRecruitmentCancel = viewModel::postNavigateUp,
+            showModifyRequestDialogState = uiState.showModifyRequestDialog,
+            updateModifyRequestDialog = viewModel::updateModifyRequestDialog,
+            showModifyCancelDialogState = uiState.showModifyCancelDialog,
+            updateModifyCancelDialog = viewModel::updateModifyCancelDialog,
+            onImageDeleteClick = viewModel::deleteImageUrl
         )
     }
 }
@@ -126,26 +128,25 @@ fun ClubRecruitCreateScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClubRecruitCreateScreenImpl(
+    content: String,
     recruitStartDate: LocalDate,
     recruitEndDate: LocalDate,
     modifier: Modifier = Modifier,
     imageUrl: String = "",
     showDatePickerDialogState: Boolean = false,
     recruitAlways: Boolean = false,
-    showCreateRequestDialogState: Boolean = false,
-    showCreateCancelDialogState: Boolean = false,
+    showModifyRequestDialogState: Boolean = false,
+    showModifyCancelDialogState: Boolean = false,
     uploadImage: (fileSize: Long, fileType: String, fileName: String, fileUri: Uri) -> Unit = { _, _, _, _ -> },
-    showDatePickerDialog: () -> Unit = {},
-    dismissDatePickerDialog: () -> Unit = {},
+    updateDatePickerDialog: (Boolean) -> Unit = {},
     setRecruitStartDate: (LocalDate) -> Unit = {},
     setRecruitEndDate: (LocalDate) -> Unit = {},
     changeRecruitAlways: () -> Unit = {},
-    createRecruitment: (String) -> Unit = {},
-    createRecruitmentCancel: () -> Unit = {},
-    showCreateRequestDialog: () -> Unit = {},
-    dismissCreateRequestDialog: () -> Unit = {},
-    showCreateCancelDialog: () -> Unit = {},
-    dismissCreateCancelDialog: () -> Unit = {}
+    modifyRecruitment: (String) -> Unit = {},
+    modifyRecruitmentCancel: () -> Unit = {},
+    updateModifyRequestDialog: (Boolean) -> Unit = {},
+    updateModifyCancelDialog: (Boolean) -> Unit = {},
+    onImageDeleteClick: () -> Unit = {}
 ) {
     val context = LocalContext.current
 
@@ -156,6 +157,10 @@ fun ClubRecruitCreateScreenImpl(
         onResult = uploadImage
     )
     var recruitDescriptionText by remember { mutableStateOf("") }
+
+    LaunchedEffect(content) {
+        recruitDescriptionText = content
+    }
 
     val textFieldMinLines = 2
     val textFieldMaxLength = 255
@@ -168,49 +173,49 @@ fun ClubRecruitCreateScreenImpl(
                 } else {
                     setRecruitEndDate(it)
                 }
-                dismissDatePickerDialog()
+                updateDatePickerDialog(false)
             },
-            onDismiss = dismissDatePickerDialog,
-            onNegative = dismissDatePickerDialog
+            onDismiss = { updateDatePickerDialog(false) },
+            onNegative = { updateDatePickerDialog(false) }
         )
     }
 
-    if (showCreateRequestDialogState) {
+    if (showModifyRequestDialogState) {
         KoinClubExtraSmallDialog(
             title = "",
-            description = stringResource(R.string.club_recruit_create_request_dialog_description),
+            description = stringResource(R.string.club_recruit_modify_request_dialog_description),
             descriptionStyle = KoinTheme.typography.medium15,
             descriptionColor = KoinTheme.colors.neutral600,
-            positiveButtonText = stringResource(R.string.club_recruit_create_request_dialog_positive),
-            negativeButtonText = stringResource(R.string.club_recruit_create_request_dialog_negative),
+            positiveButtonText = stringResource(R.string.club_recruit_modify_request_dialog_positive),
+            negativeButtonText = stringResource(R.string.club_recruit_modify_request_dialog_negative),
             titleTextAlign = TextAlign.Center,
             descriptionTextAlign = TextAlign.Center,
             positiveButtonColors = FilledButtonColors.Primary,
             onPositive = {
-                dismissCreateRequestDialog()
-                createRecruitment(recruitDescriptionText)
+                updateModifyRequestDialog(false)
+                modifyRecruitment(recruitDescriptionText)
             },
-            onNegative = dismissCreateRequestDialog,
-            onDismiss = dismissCreateRequestDialog
+            onNegative = { updateModifyRequestDialog(false) },
+            onDismiss = { updateModifyRequestDialog(false) }
         )
     }
 
-    if (showCreateCancelDialogState) {
+    if (showModifyCancelDialogState) {
         KoinClubExtraSmallDialog(
-            description = stringResource(R.string.club_recruit_create_cancel_dialog_description),
+            description = stringResource(R.string.club_recruit_modify_cancel_dialog_description),
             descriptionStyle = KoinTheme.typography.medium15,
             descriptionColor = KoinTheme.colors.neutral600,
-            positiveButtonText = stringResource(R.string.club_recruit_create_cancel_dialog_positive),
-            negativeButtonText = stringResource(R.string.club_recruit_create_cancel_dialog_negative),
+            positiveButtonText = stringResource(R.string.club_recruit_modify_cancel_dialog_positive),
+            negativeButtonText = stringResource(R.string.club_recruit_modify_cancel_dialog_negative),
             titleTextAlign = TextAlign.Center,
             descriptionTextAlign = TextAlign.Center,
             positiveButtonColors = KoinClubExtraSmallDialogDanger.positiveButtonColors(),
             onPositive = {
-                dismissCreateCancelDialog()
-                createRecruitmentCancel()
+                updateModifyCancelDialog(false)
+                modifyRecruitmentCancel()
             },
-            onNegative = dismissCreateCancelDialog,
-            onDismiss = dismissCreateCancelDialog
+            onNegative = { updateModifyCancelDialog(false) },
+            onDismiss = { updateModifyCancelDialog(false) }
         )
     }
 
@@ -264,7 +269,7 @@ fun ClubRecruitCreateScreenImpl(
                         ),
                         onClick = {
                             isStartDateSelected = true
-                            showDatePickerDialog()
+                            updateDatePickerDialog(true)
                         }
                     )
                     Text(
@@ -282,7 +287,7 @@ fun ClubRecruitCreateScreenImpl(
                         ),
                         onClick = {
                             isStartDateSelected = false
-                            showDatePickerDialog()
+                            updateDatePickerDialog(true)
                         }
                     )
                 }
@@ -309,19 +314,29 @@ fun ClubRecruitCreateScreenImpl(
                         contentDescription = null
                     )
                 } else {
-                    SubcomposeAsyncImage(
-                        model = imageUrl,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        loading = {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator()
+                    Box {
+                        SubcomposeAsyncImage(
+                            model = imageUrl,
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            loading = {
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    CircularProgressIndicator()
+                                }
                             }
-                        }
-                    )
+                        )
+                        Image(
+                            painter = painterResource(R.drawable.icon_qna_delete),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .size(20.dp)
+                                .align(Alignment.TopEnd)
+                                .clickable { onImageDeleteClick() }
+                        )
+                    }
                 }
                 Text(
                     text = stringResource(R.string.club_recruit_create_logo_description),
@@ -360,14 +375,14 @@ fun ClubRecruitCreateScreenImpl(
             horizontalArrangement = Arrangement.End
         ) {
             FilledButton(
-                text = stringResource(R.string.club_recruit_create_cancel),
-                onClick = showCreateCancelDialog,
+                text = stringResource(R.string.club_recruit_modify_cancel),
+                onClick = { updateModifyCancelDialog(true) },
                 contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp)
             )
             Spacer(Modifier.width(8.dp))
             FilledButton(
-                text = stringResource(R.string.club_recruit_create_request),
-                onClick = showCreateRequestDialog,
+                text = stringResource(R.string.club_recruit_modify_request),
+                onClick = { updateModifyRequestDialog(true) },
                 contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp)
             )
         }
@@ -375,22 +390,26 @@ fun ClubRecruitCreateScreenImpl(
 }
 
 fun handleSideEffect(
-    sideEffect: ClubRecruitCreateSideEffect,
+    sideEffect: ClubRecruitModifySideEffect,
     context: Context,
     onCreateSuccess: () -> Unit = {},
     onNavigateUp: () -> Unit = {}
 ) {
     when (sideEffect) {
-        is ClubRecruitCreateSideEffect.ClubImageUploadFailure -> context.let {
+        is ClubRecruitModifySideEffect.ClubImageUploadFailure -> context.let {
             Toast.makeText(it, it.getString(R.string.club_image_upload_failed), Toast.LENGTH_SHORT).show()
         }
-        is ClubRecruitCreateSideEffect.RecruitCreateSuccess -> {
+        is ClubRecruitModifySideEffect.RecruitModifySuccess -> {
             onCreateSuccess()
         }
-        is ClubRecruitCreateSideEffect.RecruitCreateFailure -> context.let {
+        is ClubRecruitModifySideEffect.RecruitModifyFailure -> context.let {
             Toast.makeText(it, it.getString(R.string.club_recruit_create_error_create_failure), Toast.LENGTH_SHORT).show()
         }
-        is ClubRecruitCreateSideEffect.NavigateUp -> {
+        is ClubRecruitModifySideEffect.NavigateUp -> {
+            onNavigateUp()
+        }
+        is ClubRecruitModifySideEffect.LoadClubRecruitmentError -> context.let {
+            Toast.makeText(it, it.getString(R.string.club_recruit_modify_error_load), Toast.LENGTH_SHORT).show()
             onNavigateUp()
         }
     }
