@@ -28,6 +28,8 @@ data class ClubDetailState(
     val clubRecruitment: ParcelizeClubRecruitment? = null,
     val showRecruitDeleteDialog: Boolean = false,
     val isEventsDropdownExpanded: Boolean = false,
+    val clubEventSelected: Boolean = false,
+    val selectedEventIndex: Int = -1,
     val clubEventSearchType: EventSearchType = EventSearchType.RECENT,
     val clubEvents: List<ParcelizeClubEvent> = immutableListOf(),
     val showEventsProgressBar: Boolean = false

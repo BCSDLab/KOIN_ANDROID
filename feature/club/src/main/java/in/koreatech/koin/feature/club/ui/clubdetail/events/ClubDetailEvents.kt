@@ -45,7 +45,8 @@ fun ClubDetailEvents(
     isManager: Boolean = false,
     onDropdownExpandChange: (Boolean) -> Unit = {},
     onDropdownItemSelected: (Int) -> Unit = {},
-    onEventCreateClick: () -> Unit = {}
+    onEventCreateClick: () -> Unit = {},
+    onEventClick: (Int) -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -105,15 +106,19 @@ fun ClubDetailEvents(
                     textAlign = TextAlign.Center
                 )
             }
-            clubEvents.forEach {
+            clubEvents.forEachIndexed { index, event ->
                 DetailEventBox(
-                    eventName = it.name,
-                    imageUrl = it.imageUrls.firstOrNull() ?: "",
-                    stateText = stringResource(it.status.strRes),
-                    dateText = "${it.startDateTime.toStringForm()} ~ ${it.endDateTime.toStringForm()}",
-                    eventIntroText = it.introduce,
+                    eventId = event.id,
+                    eventName = event.name,
+                    imageUrl = event.imageUrls.firstOrNull() ?: "",
+                    stateText = stringResource(event.status.strRes),
+                    dateText = "${event.startDateTime.toStringForm()} ~ ${event.endDateTime.toStringForm()}",
+                    eventIntroText = event.introduce,
                     stateColor = KoinTheme.colors.primary400,
-                    isDisable = it.status == EventStatus.ENDED
+                    isDisable = event.status == EventStatus.ENDED,
+                    onClick = {
+                        onEventClick(index)
+                    }
                 )
             }
         }

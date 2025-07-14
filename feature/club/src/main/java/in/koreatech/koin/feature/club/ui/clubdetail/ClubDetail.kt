@@ -100,6 +100,7 @@ import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.D
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogEmpowermentContent
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.snackbar.DetailSnackBar
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.tabrow.DetailTabRow
+import `in`.koreatech.koin.feature.club.ui.clubdetail.events.ClubDetailEventInfo
 import `in`.koreatech.koin.feature.club.ui.clubdetail.events.ClubDetailEvents
 import `in`.koreatech.koin.feature.club.ui.clubdetail.intro.ClubDetailIntro
 import `in`.koreatech.koin.feature.club.ui.clubdetail.qna.ClubDetailQna
@@ -652,19 +653,28 @@ fun ClubDetail(
                             )
                         }
                         DetailTabType.EVENT.strResId -> {
-                            ClubDetailEvents(
-                                isDropdownExpanded = state.isEventsDropdownExpanded,
-                                clubEvents = state.clubEvents,
-                                onDropdownExpandChange = viewModel::updateEventsDropdownExpanded,
-                                showProgressBar = state.showEventsProgressBar,
-                                dropdownTitle = stringResource(state.clubEventSearchType.strRes),
-                                dropdownList = eventSearchTypeList,
-                                isManager = state.clubDetails?.manager ?: false,
-                                onDropdownItemSelected = { index ->
-                                    viewModel.updateClubEventSearchType(eventSearchTypeList[index])
-                                },
-                                onEventCreateClick = { onEventCreateClick(state.clubId) }
-                            )
+                            if (state.clubEventSelected && state.selectedEventIndex != -1) {
+                                ClubDetailEventInfo(
+                                    clubEvent = state.clubEvents[state.selectedEventIndex],
+                                    onBackPressed = viewModel::deselectEvent,
+                                    isManager = state.clubDetails?.manager ?: false
+                                )
+                            } else {
+                                ClubDetailEvents(
+                                    isDropdownExpanded = state.isEventsDropdownExpanded,
+                                    clubEvents = state.clubEvents,
+                                    onDropdownExpandChange = viewModel::updateEventsDropdownExpanded,
+                                    showProgressBar = state.showEventsProgressBar,
+                                    dropdownTitle = stringResource(state.clubEventSearchType.strRes),
+                                    dropdownList = eventSearchTypeList,
+                                    isManager = state.clubDetails?.manager ?: false,
+                                    onDropdownItemSelected = { index ->
+                                        viewModel.updateClubEventSearchType(eventSearchTypeList[index])
+                                    },
+                                    onEventCreateClick = { onEventCreateClick(state.clubId) },
+                                    onEventClick = viewModel::selectEvent
+                                )
+                            }
                         }
                         DetailTabType.QNA.strResId -> {
                             ClubDetailQna(

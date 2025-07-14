@@ -20,6 +20,7 @@ import `in`.koreatech.koin.domain.usecase.club.SetClubEmpowermentUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubLikeUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.club.R
+import `in`.koreatech.koin.feature.club.model.ParcelizeClubEvent
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubDetails
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubEvent
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubQnasInfo
@@ -185,6 +186,14 @@ class ClubDetailViewModel @Inject constructor(
                 else -> throw e
             }
         }
+    }
+
+    fun selectEvent(index: Int) = intent {
+        reduce { state.copy(selectedEventIndex = index, clubEventSelected = true) }
+    }
+
+    fun deselectEvent() = intent {
+        reduce { state.copy(selectedEventIndex = -1, clubEventSelected = false) }
     }
 
     fun deleteRecruitment() = intent {

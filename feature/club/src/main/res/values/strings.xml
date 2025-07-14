@@ -54,6 +54,10 @@
     <string name="detail_events_sort_type_ended">종료 행사</string>
     <string name="detail_events_create">행사 생성하기</string>
 
+    <string name="detail_event_info_delete">행사 생성하기</string>
+    <string name="detail_event_info_introduce">행사 내용 : %1$s</string>
+    <string name="detail_event_info_content">상세 내용 : %1$s</string>
+
     <string name="detail_error_empty_text_field">필수 입력란입니다.</string>
     <string name="detail_error_unauthorized">올바르지 않은 인증 정보입니다.</string>
     <string name="detail_error_already_manager">이미 관리자 입니다.</string>
@@ -170,6 +174,7 @@
     <string name="club_event_create_error_create_failure">행사 생성에 실패했습니다.</string>
     <string name="club_event_create_cancel">생성 취소</string>
     <string name="club_event_create_request">생성 하기</string>
+    <string name="club_event_period">%1$s 부터 %2$s 까지</string>
 
     <string name="club_recruit_dday">D-%1$d</string>
     <string name="club_recruit_always">상시 모집</string>
