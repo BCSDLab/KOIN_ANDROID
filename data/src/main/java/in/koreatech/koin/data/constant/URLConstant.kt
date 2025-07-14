@@ -13,9 +13,24 @@ object URLConstant {
     const val OWNER_URL_STAGE = "https://owner.stage.koreatech.in/"
     const val OWNER_URL_PRODUCTION = "https://owner.koreatech.in/"
 
-    const val VERSION = "version"
-    const val LAND = "lands"
-    const val COOPSHOP = "coopshop"
+    object VERSION {
+        const val VERSION = "version"
+        const val TYPE = "$VERSION/{type}"
+    }
+    object LAND {
+        const val LAND = "lands"
+        object PATH {
+            const val ID = "{id}"
+        }
+        const val ID = "$LAND/${PATH.ID}"
+    }
+    object COOPSHOP {
+        const val COOPSHOP = "coopshop"
+        object PATH {
+            const val COOPSHOPID = "{coopShopId}"
+        }
+        const val COOPSHOPID = "$COOPSHOP/${PATH.COOPSHOPID}"
+    }
 
     object DINING {
         const val DINING = "dining"
@@ -37,28 +52,51 @@ object URLConstant {
         const val SHOPS_V2 = "/v2/shops"
         const val EVENTS = "$SHOPS/events"
         const val CATERGORIES = "$SHOPS/categories"
-        const val NOTIFICATION = "$SHOPS/${PATH.SHOPID}/call-notification"
-        object REVIEWS {
-            const val ID_REVIEWS = "$SHOPS/${PATH.ID}/reviews"
-            const val REVIEWS = "$SHOPS/${PATH.SHOPID}/reviews"
-            const val REVIEWID = "$REVIEWS/${PATH.REVIEWID}"
-            const val REPORTS = "$REVIEWS/${PATH.REVIEWID}/reports"
+        object ID {
+            const val ID = "$SHOPS/${PATH.ID}"
+            const val MENUS = "$ID/menus"
+            const val EVENTS = "$ID/events"
+            const val REVIEWS = "$ID/reviews"
         }
+        object SHOPID {
+            const val SHOPID = "$SHOPS/${PATH.SHOPID}"
+            const val NOTIFICATION = "$SHOPID}/call-notification"
+            object MENUS {
+                const val CATEGORIES = "$SHOPID/menus/categories"
+            }
+            object REVIEWS {
+                const val REVIEWS = "$SHOPID/reviews"
+                object REVIEWID {
+                    const val REVIEWID = "$REVIEWS/${PATH.REVIEWID}"
+                    const val REPORTS = "$REVIEWID/reports"
+                }
+            }
+        }
+        const val QUERY = "/$SHOPS/search/related/{query}"
         object OWNERSHOPS {
             const val OWNERSHOPS = "owner/shops"
-            const val ID = "$OWNERSHOPS/${PATH.ID}"
-            const val SHOPID = "$OWNERSHOPS/${PATH.SHOPID}"
+            object ID {
+                const val ID = "$OWNERSHOPS/${PATH.ID}"
+                const val MENUS = "$ID/menus"
+                const val EVENT = "$ID/event"
+            }
+            object SHOPID {
+                const val SHOPID = "$OWNERSHOPS/${PATH.SHOPID}"
+                object EVENT {
+                    const val EVENT = "$SHOPID/event"
+                    const val EVENTID = "$SHOPID/events/{eventId}"
+                }
+            }
             object MENUS {
                 const val MENUS = "$OWNERSHOPS/menus"
-                const val ID_MENUS = "$OWNERSHOPS/${PATH.ID}/menus"
                 const val MENUID = "$MENUS/${PATH.MENUID}"
             }
-            object EVENT {
-                const val EVENT = "$OWNERSHOPS/${PATH.SHOPID}/event"
-                const val EVENTID = "$OWNERSHOPS/${PATH.SHOPID}/events/{eventId}"
-                const val ID_EVENT = "$OWNERSHOPS/${PATH.ID}/event"
-            }
         }
+    }
+    object BENEFIT {
+        const val BENEFIT = "benefit"
+        const val SHOPS = "$BENEFIT/{id}/shops"
+        const val CATEGORIES = "$BENEFIT/categories"
     }
 
     object USER {
@@ -73,9 +111,13 @@ object URLConstant {
         const val AUTH: String = "$USER/auth"
         const val EMAIL = "email"
         const val PW = "password"
-        const val NOTIFICATION = "/notification"
-        const val SUBSCRIBE = "$NOTIFICATION/subscribe"
-        const val DETAIL = "$NOTIFICATION/subscribe/detail"
+        object NOTIFICATION {
+            const val NOTIFICATION = "/notification"
+            object SUBSCRIBE {
+                const val SUBSCRIBE = "$NOTIFICATION/subscribe"
+                const val DETAIL = "$SUBSCRIBE/detail"
+            }
+        }
         object CHECK {
             const val CHECK = "$USER/check"
             const val NICKNAME: String = "$CHECK/nickname"
@@ -125,6 +167,7 @@ object URLConstant {
         const val SMS = "$OWNERS/$VERIFICATION/sms"
         const val SHOPS = "$OWNER/shops"
         const val EXISTS_ACCOUNT = "$OWNERS/exists/account"
+        const val COMPANYNUMBER = "$OWNERS/exists/company-number"
     }
 
     object DEPT {
@@ -147,12 +190,17 @@ object URLConstant {
         }
         const val CATEGORIES = "$CLUBS/categories"
         const val HOT = "$CLUBS/hot"
-        const val QNA = "$CLUBS/${PATH.CLUBID}/qna"
-        const val DELETE_QNA = "$QNA/{qnaId}"
-        const val DETAILS = "$CLUBS/${PATH.CLUBID}"
-        const val MODIFY = "$CLUBS/${PATH.CLUBID}"
-        const val LIKE = "$CLUBS/${PATH.CLUBID}/like"
-        const val CANCEL_LIKE = "$LIKE/cancel"
+        object CLUBID {
+            const val CLUBID = "$CLUBS/${PATH.CLUBID}"
+            object QNA {
+                const val QNA = "$CLUBID/qna"
+                const val QNAID = "$QNA/{qnaId}"
+            }
+            object LIKE {
+                const val LIKE = "$CLUBID/like"
+                const val CANCEL = "$LIKE/cancel"
+            }
+        }
         const val EMPOWERMENT = "$CLUBS/empowerment"
     }
 
@@ -160,6 +208,12 @@ object URLConstant {
         const val ARTICLES = "articles"
         object PATH {
             const val ID = "{id}"
+        }
+        const val ID = "$ARTICLES/${PATH.ID}"
+        const val SEARCH = "$ARTICLES/search"
+        object HOT {
+            const val HOT = "$ARTICLES/hot"
+            const val KEYWORD = "$HOT/keyword"
         }
         object KEYWORD {
             const val KEYWORD = "$ARTICLES/keyword"
@@ -171,6 +225,7 @@ object URLConstant {
             const val LOSTITEM = "$ARTICLES/lost-item"
             const val ID = "$LOSTITEM/${PATH.ID}"
             const val REPORTS = "$LOSTITEM/${PATH.ID}/reports"
+            const val SEARCH = "$LOSTITEM/search"
         }
     }
 
@@ -180,10 +235,14 @@ object URLConstant {
             const val ARTICLEID = "{articleId}"
             const val CHATROOMID = "{chat_room_id}"
         }
-        const val ARTICLEID = "$CHATROOM/${PATH.ARTICLEID}"
-        const val ARTICLEID_ROOMID = "$CHATROOM/${PATH.ARTICLEID}/${PATH.CHATROOMID}"
-        const val MESSAGES = "$CHATROOM/${PATH.ARTICLEID}/${PATH.CHATROOMID}/messages"
-        const val BLOCK = "$CHATROOM/${PATH.ARTICLEID}/${PATH.CHATROOMID}/block"
+        object ARTICLEID {
+            const val ARTICLEID = "$CHATROOM/${PATH.ARTICLEID}"
+            object ROOMID {
+                const val ROOMID = "$CHATROOM/${PATH.ARTICLEID}/${PATH.CHATROOMID}"
+                const val MESSAGES = "$CHATROOM/${PATH.ARTICLEID}/${PATH.CHATROOMID}/messages"
+                const val BLOCK = "$CHATROOM/${PATH.ARTICLEID}/${PATH.CHATROOMID}/block"
+            }
+        }
     }
 
     object TIMETABLE {
@@ -212,7 +271,10 @@ object URLConstant {
         }
         object V3 {
             const val V3 = "v3"
-            const val CHECK = "/$V3/semesters/check"
+            object SEMESTERS {
+                const val SEMESTERS = "/$V3/semesters"
+                const val CHECK = "$SEMESTERS/check"
+            }
             object FRAME {
                 const val FRAME = "/$V3/$TIMETABLE/frame"
                 const val FRAMES = "/$V3/$TIMETABLE/frames"
@@ -227,9 +289,39 @@ object URLConstant {
         }
     }
 
+    object BANNER {
+        object PATH {
+            const val CATEGORYID = "{categoryId}"
+        }
+        const val CATEGORYID = "banners/${PATH.CATEGORYID}"
+        const val CATEGORYS = "banner-categories"
+    }
+
+    object BUS {
+        const val BUS = "bus"
+        object PATH {
+            const val ID = "{id}"
+        }
+        const val NOTICE = "$BUS/notice"
+        const val SHUTTLE = "$BUS/courses/shuttle"
+        const val ROUTE = "$BUS/route"
+        object TIMETABLE {
+            const val TIMETABLE = "$BUS/timetable"
+            const val SHUTTLE_ID = "$TIMETABLE/shuttle/${PATH.ID}"
+            const val EXPRESS = "$TIMETABLE/v2?bus_type=EXPRESS&region=null"
+            const val CITY = "$TIMETABLE/city"
+        }
+    }
+    object LECTURES {
+        const val LECTURES = "/lectures"
+        const val V3_LECTURES = "/v3/lectures"
+    }
+
     object ABTEST {
         const val ABTEST = "abtest"
-        const val UPDATE = "$ABTEST/assign/token"
-        const val ASSIGN = "$ABTEST/assign"
+        object ASSIGN {
+            const val ASSIGN = "$ABTEST/assign"
+            const val TOKEN = "$ASSIGN/token"
+        }
     }
 }

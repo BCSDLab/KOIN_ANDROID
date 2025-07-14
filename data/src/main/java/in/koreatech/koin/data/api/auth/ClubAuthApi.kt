@@ -22,7 +22,7 @@ interface ClubAuthApi {
         @Query("sortType") sortType: String?
     ): ClubsResponse
 
-    @GET(URLConstant.CLUBS.DETAILS)
+    @GET(URLConstant.CLUBS.CLUBID.CLUBID)
     suspend fun getClubDetails(
         @Path("clubId") clubId: Int
     ): ClubDetailsResponse
@@ -32,7 +32,7 @@ interface ClubAuthApi {
         @Body request: ClubCreateRequest
     )
 
-    @PUT(URLConstant.CLUBS.MODIFY)
+    @PUT(URLConstant.CLUBS.CLUBID.CLUBID)
     suspend fun modifyClub(
         @Path("clubId") clubId: Int,
         @Body request: ClubModifyRequest
@@ -43,24 +43,24 @@ interface ClubAuthApi {
         @Body request: ClubEmpowermentRequest
     )
 
-    @PUT(URLConstant.CLUBS.LIKE)
+    @PUT(URLConstant.CLUBS.CLUBID.LIKE.LIKE)
     suspend fun setClubLike(
         @Path("clubId") clubId: Int
     )
 
-    @POST(URLConstant.CLUBS.QNA)
+    @POST(URLConstant.CLUBS.CLUBID.QNA.QNA)
     suspend fun postClubQna(
         @Path("clubId") clubId: Int,
         @Body request: ClubQnaRequest
     )
 
-    @DELETE(URLConstant.CLUBS.DELETE_QNA)
+    @DELETE(URLConstant.CLUBS.CLUBID.QNA.QNAID)
     suspend fun deleteClubQna(
         @Path("clubId") clubId: Int,
         @Path("qnaId") qnaId: Int
     )
 
-    @DELETE(URLConstant.CLUBS.CANCEL_LIKE)
+    @DELETE(URLConstant.CLUBS.CLUBID.LIKE.CANCEL)
     suspend fun cancelClubLike(
         @Path("clubId") clubId: Int
     )

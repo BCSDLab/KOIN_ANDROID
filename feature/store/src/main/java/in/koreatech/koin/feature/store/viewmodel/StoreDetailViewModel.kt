@@ -26,7 +26,7 @@ class StoreDetailViewModel @Inject constructor(
 ) : ViewModel(), ContainerHost<StoreDetailState, StoreDetailSideEffect> {
     override val container =
         container<StoreDetailState, StoreDetailSideEffect>(StoreDetailState()) {
-            val storeId = savedStateHandle.get<Int>(STORE_ID)
+            val storeId = 11
             checkNotNull(storeId)
             fetchStore(storeId)
             fetchMenus(storeId)

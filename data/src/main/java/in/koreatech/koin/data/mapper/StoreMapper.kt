@@ -1,11 +1,24 @@
 package `in`.koreatech.koin.data.mapper
 
+import `in`.koreatech.koin.data.request.store.CartAddRequest
+import `in`.koreatech.koin.data.request.store.CartItemRequest
 import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
 import `in`.koreatech.koin.data.response.owner.OwnerGetStoreResponse
 import `in`.koreatech.koin.data.response.store.BenefitCategoryListResponse
+import `in`.koreatech.koin.data.response.store.CartItemEditResponse
+import `in`.koreatech.koin.data.response.store.CartPaymentSummaryResponse
+import `in`.koreatech.koin.data.response.store.CartResponse
+import `in`.koreatech.koin.data.response.store.CartSummaryResponse
+import `in`.koreatech.koin.data.response.store.LegacyShopMenusResponse
+import `in`.koreatech.koin.data.response.store.ShopDeliveryAvailableResponse
+import `in`.koreatech.koin.data.response.store.ShopDetailResponse
 import `in`.koreatech.koin.data.response.store.ShopMenuOptionsResponse
+import `in`.koreatech.koin.data.response.store.ShopMenuResponse
+import `in`.koreatech.koin.data.response.store.ShopMenusGroupResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
 import `in`.koreatech.koin.data.response.store.ShopRelatedListResponse
+import `in`.koreatech.koin.data.response.store.ShopResponse
+import `in`.koreatech.koin.data.response.store.ShopSummaryResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
 import `in`.koreatech.koin.data.response.store.StoreDayOffResponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
@@ -29,11 +42,24 @@ import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuInfo
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 import `in`.koreatech.koin.domain.model.store.BenefitCategory
 import `in`.koreatech.koin.domain.model.store.BenefitCategoryList
+import `in`.koreatech.koin.domain.model.store.Cart
+import `in`.koreatech.koin.domain.model.store.CartAdd
+import `in`.koreatech.koin.domain.model.store.CartItem
+import `in`.koreatech.koin.domain.model.store.CartItemEdit
+import `in`.koreatech.koin.domain.model.store.CartPaymentSummary
+import `in`.koreatech.koin.domain.model.store.CartSummary
+import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
+import `in`.koreatech.koin.domain.model.store.Shop
+import `in`.koreatech.koin.domain.model.store.ShopDeliveryAvailable
+import `in`.koreatech.koin.domain.model.store.ShopDetail
 import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.model.store.ShopEvents
+import `in`.koreatech.koin.domain.model.store.ShopMenu
 import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.domain.model.store.ShopMenusGroup
 import `in`.koreatech.koin.domain.model.store.ShopSearchRelated
 import `in`.koreatech.koin.domain.model.store.ShopSearchRelatedList
+import `in`.koreatech.koin.domain.model.store.ShopSummary
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.model.store.StoreEvent
@@ -44,6 +70,7 @@ import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.domain.model.store.StoreReviewContent
 import `in`.koreatech.koin.domain.model.store.StoreReviewStatistics
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
+import `in`.koreatech.koin.domain.util.DateFormatUtil
 import `in`.koreatech.koin.domain.util.ext.localDayOfWeekName
 
 fun StoreItemResponse.toStore(): Store =
@@ -145,8 +172,8 @@ fun StoreMenuCategoriesResponse.toStoreMenuCategories() =
         menus = menus?.map { it.toShopMenus() }.orEmpty()
     )
 
-fun ShopMenusResponse.toShopMenus() =
-    ShopMenus(
+fun LegacyShopMenusResponse.toShopMenus() =
+    LegacyShopMenus(
         id = id,
         name = name,
         isHidden = isHidden,
@@ -158,7 +185,7 @@ fun ShopMenusResponse.toShopMenus() =
     )
 
 fun ShopMenuOptionsResponse.toShopMenuOptions() =
-    ShopMenus.ShopMenuOptions(
+    LegacyShopMenus.ShopMenuOptions(
         option = option ?: "",
         price = price
     )
@@ -346,3 +373,253 @@ fun OwnerGetStoreResponse.toOwnerGetStore(): OwnerGetStore =
         name = name ?: "",
         isEvent = isEvent ?: false
     )
+
+fun ShopResponse.toShop() = Shop(
+    shopId = shopId,
+    orderableShopId = orderableShopId,
+    name = name,
+    isDeliveryAvailable = isDeliveryAvailable,
+    isTakeoutAvailable = isTakeoutAvailable,
+    minimumOrderAmount = minimumOrderAmount,
+    ratingAverage = ratingAverage,
+    reviewCount = reviewCount,
+    minimumDeliveryTip = minimumDeliveryTip,
+    maximumDeliveryTip = maximumDeliveryTip,
+    isOpen = isOpen,
+    categoryIds = categoryIds,
+    imageUrls = imageUrls,
+    open = open.map {
+        Shop.OrderStoreShopsOpen(
+            dayOfWeek = DateFormatUtil.dayOfWeekToIndex(it.dayOfWeek),
+            closed = it.closed,
+            openTime = it.openTime,
+            closeTime = it.closeTime
+        )
+    },
+    openStatus = openStatus
+)
+
+fun ShopSummaryResponse.toShopSummary() = ShopSummary(
+    shopId = shopId,
+    orderableShopId = orderableShopId,
+    name = name,
+    isDeliveryAvailable = isDeliveryAvailable,
+    isTakeoutAvailable = isTakeoutAvailable,
+    minimumOrderAmount = minimumOrderAmount,
+    ratingAverage = ratingAverage,
+    reviewCount = reviewCount,
+    minimumDeliveryTip = minimumDeliveryTip,
+    maximumDeliveryTip = maximumDeliveryTip,
+    isOpen = isOpen,
+    categoryIds = categoryIds,
+    images = images.map {
+        ShopSummary.ShopSummaryImage(
+            imageUrl = it.imageUrl,
+            isThumbnail = it.isThumbnail
+        )
+    }
+)
+
+fun ShopDetailResponse.toShopDetail() = ShopDetail(
+    shopId = shopId,
+    orderableShopId = orderableShopId,
+    name = name,
+    address = address,
+    openTime = openTime,
+    closeTime = closeTime,
+    closedDays = closedDays.map { DateFormatUtil.dayOfWeekToIndex(it) },
+    phone = phone,
+    introduction = introduction,
+    notice = notice,
+    deliveryTips = deliveryTips.map {
+        ShopDetail.ShopDetailDeliveryTips(
+            fromAmount = it.fromAmount,
+            toAmount = it.toAmount,
+            fee = it.fee
+        )
+    },
+    ownerInfo = ShopDetail.ShopDetailOwnerInfo(
+        name = ownerInfo.name,
+        shopName = ownerInfo.shopName,
+        address = ownerInfo.address,
+        companyRegistrationNumber = ownerInfo.companyRegistrationNumber
+    ),
+    origins = origins.map {
+        ShopDetail.ShopDetailOrigins(
+            ingredient = it.ingredient,
+            origin = it.origin
+        )
+    }
+)
+
+fun ShopDeliveryAvailableResponse.toShopDeliveryAvailable() = ShopDeliveryAvailable(
+    campusDelivery = campusDelivery,
+    offCampusDelivery = offCampusDelivery
+)
+
+fun ShopMenusResponse.toShopMenus() = ShopMenus(
+    menuGroupId = menuGroupId,
+    menuGroupName = menuGroupName,
+    menus = menus.map { menu ->
+        ShopMenus.ShopMenu(
+            id = menu.id,
+            name = menu.name,
+            description = menu.description,
+            thumbnailImage = menu.thumbnailImage,
+            isSoldOut = menu.isSoldOut,
+            prices = menu.prices.map { price ->
+                ShopMenus.ShopMenu.ShopMenuPrice(
+                    id = price.id,
+                    name = price.name,
+                    price = price.price
+                )
+            }
+        )
+    }
+)
+
+fun ShopMenuResponse.toShopMenu() = ShopMenu(
+    id = id,
+    name = name,
+    description = description,
+    images = images,
+    isSoldOut = isSoldOut,
+    prices = prices.map { price ->
+        ShopMenu.ShopMenuPrice(
+            id = price.id,
+            name = price.name,
+            price = price.price
+        )
+    },
+    optionGroups = optionGroups.map { optionGroup ->
+        ShopMenu.ShopMenuOptionGroup(
+            id = optionGroup.id,
+            name = optionGroup.name,
+            description = optionGroup.description,
+            isRequired = optionGroup.isRequired,
+            minSelect = optionGroup.minSelect,
+            maxSelect = optionGroup.maxSelect,
+            options = optionGroup.options.map { option ->
+                ShopMenu.ShopMenuOptionGroup.ShopMenuOption(
+                    id = option.id,
+                    name = option.name,
+                    price = option.price
+                )
+            }
+        )
+    }
+)
+
+fun ShopMenusGroupResponse.toShopMenusGroup() = ShopMenusGroup(
+    count = count,
+    menuGroups = menuGroups.map { menuGroup ->
+        ShopMenusGroup.ShopMenuGroup(
+            id = menuGroup.id,
+            name = menuGroup.name
+        )
+    }
+)
+
+fun CartItem.toCartItemRequest() = CartItemRequest(
+    orderableShopMenuPriceId = orderableShopMenuPriceId,
+    options = options?.map { option ->
+        CartItemRequest.CartItemOptionRequest(
+            optionGroupId = option.optionGroupId,
+            optionId = option.optionId
+        )
+    }
+)
+
+fun CartAdd.toCartAddRequest() = CartAddRequest(
+    orderableShopId = orderableShopId,
+    orderableShopMenuId = orderableShopMenuId,
+    orderableShopMenuPriceId = orderableShopMenuPriceId,
+    orderableShopMenuOptionIds = orderableShopMenuOptionIds?.map { option ->
+        CartAddRequest.CartAddOptionRequest(
+            optionGroupId = option.optionGroupId,
+            optionId = option.optionId
+        )
+    }
+)
+
+fun CartResponse.toCart() = Cart(
+    shopName = shopName,
+    shopThumbnailImageUrl = shopThumbnailImageUrl,
+    orderableShopId = orderableShopId,
+    isDeliveryAvailable = isDeliveryAvailable,
+    isTakeoutAvailable = isTakeoutAvailable,
+    shopMinimumOrderAmount = shopMinimumOrderAmount,
+    items = items.map {
+        Cart.CartItem(
+            cartMenuItemId = it.cartMenuItemId,
+            orderableShopMenuId = it.orderableShopMenuId,
+            name = it.name,
+            menuThumbnailImageUrl = it.menuThumbnailImageUrl,
+            quantity = it.quantity,
+            totalAmount = it.totalAmount,
+            price = Cart.CartItem.CartPrice(
+                name = it.price.name,
+                price = it.price.price
+            ),
+            options = it.options.map { option ->
+                Cart.CartItem.CartOption(
+                    optionGroupName = option.optionGroupName,
+                    optionName = option.optionName,
+                    optionPrice = option.optionPrice
+                )
+            },
+            isModified = it.isModified
+        )
+    },
+    itemsAmount = itemsAmount,
+    deliveryFee = deliveryFee,
+    totalAmount = totalAmount,
+    finalPaymentAmount = finalPaymentAmount
+)
+
+fun CartSummaryResponse.toCartSummary() = CartSummary(
+    orderableShopId = orderableShopId,
+    shopMinimumOrderAmount = shopMinimumOrderAmount,
+    cartItemsAmount = cartItemsAmount,
+    isAvailable = isAvailable
+)
+
+fun CartPaymentSummaryResponse.toCartPaymentSummary() = CartPaymentSummary(
+    itemTotalAmount = itemTotalAmount,
+    deliveryFee = deliveryFee,
+    totalAmount = totalAmount,
+    finalPaymentAmount = finalPaymentAmount
+)
+
+fun CartItemEditResponse.toCartItemEdit() = CartItemEdit(
+    id = id,
+    name = name,
+    description = description,
+    images = images,
+    prices = prices.map { price ->
+        CartItemEdit.CartItemEditPrice(
+            id = price.id,
+            name = price.name,
+            price = price.price,
+            isSelected = price.isSelected
+        )
+    },
+    optionGroups = optionGroups.map { optionGroup ->
+        CartItemEdit.CartItemEditOptionGroup(
+            id = optionGroup.id,
+            name = optionGroup.name,
+            description = optionGroup.description,
+            isRequired = optionGroup.isRequired,
+            minSelect = optionGroup.minSelect,
+            maxSelect = optionGroup.maxSelect,
+            options = optionGroup.options.map { option ->
+                CartItemEdit.CartItemEditOptionGroup.CartItemEditOption(
+                    id = option.id,
+                    name = option.name,
+                    price = option.price,
+                    isSelected = option.isSelected
+                )
+            }
+        )
+    }
+)

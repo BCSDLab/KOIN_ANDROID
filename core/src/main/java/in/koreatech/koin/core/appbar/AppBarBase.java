@@ -6,10 +6,14 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 
 import androidx.annotation.AttrRes;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.appbar.AppBarLayout;
 
 import android.view.View;
+import android.view.WindowInsets;
 import android.widget.TextView;
 
 import android.util.AttributeSet;
@@ -65,6 +69,7 @@ public class AppBarBase extends AppBarLayout {
     public void init() {
         View view = inflate(getContext(), R.layout.base_appbar_dark, null);
         addView(view);
+
         background = findViewById(R.id.base_appbar_dark);
         leftButton = findViewById(R.id.base_appbar_dark_left_button);
         rightButton = findViewById(R.id.base_appbar_dark_right_button);
@@ -72,6 +77,16 @@ public class AppBarBase extends AppBarLayout {
         title.setTypeface(textFont);
         leftButton.setTypeface(textFont);
         rightButton.setTypeface(textFont);
+
+        ViewCompat.setOnApplyWindowInsetsListener(
+                background,
+                (v, insets) -> {
+                    Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                    v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
+
+                    return WindowInsetsCompat.CONSUMED;
+                }
+        );
     }
 
     public void getAttribute(AttributeSet attrs, Context context) {

@@ -24,7 +24,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TimetableAuthApi {
-    @GET(URLConstant.TIMETABLE.V3.CHECK)
+    @GET(URLConstant.TIMETABLE.V3.SEMESTERS.CHECK)
     suspend fun getUserSemesters(): UserSemestersResponse
 
     @Deprecated("use getLecturesByTimetableFrameId instead")
@@ -91,12 +91,12 @@ interface TimetableAuthApi {
 
     // 프레임 생성
     @Deprecated("use createFrame instead")
-    @POST(URLConstant.TIMETABLE.V2.FRAME.ID)
+    @POST(URLConstant.TIMETABLE.V2.FRAME.FRAME)
     suspend fun postTimetableFrame(
         @Body frame: TimetableFrameCreateQueryRequest
     ): TimetableFrameResponse
 
-    @POST(URLConstant.TIMETABLE.V3.FRAME.ID)
+    @POST(URLConstant.TIMETABLE.V3.FRAME.FRAME)
     suspend fun createFrame(
         @Query("year") year: Int,
         @Query("term") term: String

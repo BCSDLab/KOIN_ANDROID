@@ -92,6 +92,7 @@ fun StoreDetailScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
+                .navigationBarsPadding()
                 .padding(
                     top = currentToolbarHeightDp + CustomClosingToolbarScreenDefaults.windowInsets
                         .asPaddingValues()
@@ -137,7 +138,6 @@ fun StoreDetailScreen(
                     menus = category.storeMenuCategories.menus ?: emptyList(),
                     modifier = Modifier
                         .padding(horizontal = 24.dp)
-                        .navigationBarsPadding()
                 )
             }
         }

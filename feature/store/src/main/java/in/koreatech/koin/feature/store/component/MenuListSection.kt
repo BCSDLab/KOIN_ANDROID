@@ -29,13 +29,13 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 import `in`.koreatech.koin.feature.store.R
 
 fun LazyListScope.menuListSection(
     category: String,
-    menus: List<ShopMenus>,
-    modifier: Modifier = Modifier
+    menus: List<LegacyShopMenus>,
+    modifier: Modifier = Modifier,
 ) {
     if (menus.isEmpty()) return
 
@@ -62,7 +62,10 @@ fun LazyListScope.menuListSection(
             ) {
                 Column {
                     menus.forEachIndexed { index, menu ->
-                        MenuItem(menu = menu)
+                        MenuItem(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp),
+                            menu = menu)
                         if (index != menus.lastIndex) {
                             Divider(
                                 color = KoinTheme.colors.neutral300,
@@ -78,9 +81,10 @@ fun LazyListScope.menuListSection(
 
 @Composable
 fun MenuItem(
-    menu: ShopMenus
+    menu: LegacyShopMenus,
+    modifier: Modifier = Modifier,
 ) {
-    Row(modifier = Modifier.padding(16.dp)) {
+    Row(modifier = modifier) {
         Column(modifier = Modifier.weight(1f)) {
             Text(text = menu.name, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
             if (menu.description != null) {
@@ -118,7 +122,7 @@ fun MenuItem(
 @Composable
 private fun OptionPriceText(
     modifier: Modifier = Modifier,
-    shopMenus: ShopMenus
+    shopMenus: LegacyShopMenus
 ) {
     Column(
         modifier = modifier
@@ -148,16 +152,16 @@ private fun MenuListSectionPreview() {
                 modifier = Modifier.fillMaxWidth(),
                 category = "추천메뉴",
                 menus = listOf(
-                    ShopMenus(
+                    LegacyShopMenus(
                         name = "막국수",
                         description = "막국수 + 족발",
                         isSingle = false,
                         singlePrice = 10000,
                         optionPrices =
                         listOf(
-                            ShopMenus.ShopMenuOptions("소", 10000),
-                            ShopMenus.ShopMenuOptions("중", 20000),
-                            ShopMenus.ShopMenuOptions("대", 30000)
+                            LegacyShopMenus.ShopMenuOptions("소", 10000),
+                            LegacyShopMenus.ShopMenuOptions("중", 20000),
+                            LegacyShopMenus.ShopMenuOptions("대", 30000)
                         ),
                         isHidden = false,
                         imageUrls = listOf(

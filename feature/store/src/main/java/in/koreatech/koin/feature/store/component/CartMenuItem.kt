@@ -26,11 +26,13 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.cart.CartItem
 import `in`.koreatech.koin.domain.model.cart.CartItemOption
 import `in`.koreatech.koin.domain.model.cart.CartItemPrice
+import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 import `in`.koreatech.koin.feature.store.R
 
 @Composable
 fun CartMenuItem(
     menu: CartItem,
+    modifier: Modifier = Modifier,
     navigateToMenu: (Int) -> Unit = { },
     onChangeQuantity: (Int, Int) -> Unit = { _, _ -> },
     onDeleteMenuItem: (Int) -> Unit = { }
@@ -100,19 +102,18 @@ private fun ShoppingCartItem() {
             menu = CartItem(
                 cartMenuItemId = 1,
                 name = "아메리카노",
+                totalAmount = 4500,
+                quantity = 2,
                 menuThumbnailImageUrl = "https://example.com/image.jpg",
-                quantity = 1,
-                totalAmount = 27000,
-                price = CartItemPrice(
-                    name = "아메리카노",
-                    price = 27000
-                ),
                 options = listOf(
-                    CartItemOption("으아아", optionName = "매운맛", optionPrice = 500),
-                    CartItemOption("으아아", optionName = "치즈추가", optionPrice = 1000)
+                    CartItemOption(optionGroupName = "테스트", optionName = "샷 추가", optionPrice = 500),
                 ),
-                isModified = false
-            )
+               price = CartItemPrice(
+                   name = "아메리카노",
+                   price = 4500,
+               ),
+               isModified = false
+            ),
         )
     }
 }
