@@ -34,8 +34,8 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.domain.util.ext.isNicknameFormat
 import `in`.koreatech.koin.domain.util.ext.isNotValidGeneralEmail
+import `in`.koreatech.koin.domain.util.ext.isValidNickname
 import `in`.koreatech.koin.feature.user.NICKNAME_MAX_LENGTH
 import `in`.koreatech.koin.feature.user.R
 import `in`.koreatech.koin.feature.user.component.KoinUserBasicTextField
@@ -351,7 +351,7 @@ private fun SignUpGeneralUserInfoNickNameEmailStep(
                 modifier = Modifier.widthIn(min = 86.dp),
                 text = stringResource(R.string.sign_up_user_info_nickname_check_duplicate),
                 textStyle = KoinTheme.typography.regular10,
-                enabled = nickname.isNotEmpty() && nickname.isNicknameFormat() && isNicknameAvailable != true,
+                enabled = nickname.isNotEmpty() && nickname.isValidNickname() && isNicknameAvailable != true,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {
                     checkNicknameDuplicate()
@@ -360,7 +360,7 @@ private fun SignUpGeneralUserInfoNickNameEmailStep(
         }
     }
 
-    if (nickname.isNotEmpty() && !nickname.isNicknameFormat()) {
+    if (nickname.isNotEmpty() && !nickname.isValidNickname()) {
         KoinUserTextFieldAlert(
             text = stringResource(R.string.sign_up_user_info_nickname_wrong_format),
             state = KoinUserTextFieldAlertState.Warning

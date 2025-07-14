@@ -6,11 +6,13 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.business.di.userAgent.InspectionInterceptor
 import `in`.koreatech.business.di.userAgent.UserAgentInterceptor
 import `in`.koreatech.business.di.userAgent.UserAgentProvider
 import `in`.koreatech.business.util.OwnerTokenAuthenticator
 import `in`.koreatech.business.util.RefreshTokenInterceptor
 import `in`.koreatech.koin.core.qualifier.Auth
+import `in`.koreatech.koin.core.qualifier.Inspection
 import `in`.koreatech.koin.core.qualifier.OwnerAuth
 import `in`.koreatech.koin.core.qualifier.OwnerUserAgent
 import `in`.koreatech.koin.core.qualifier.PreSignedUrl
@@ -43,6 +45,13 @@ object AuthNetworkModule {
     fun provideUserAgentInterceptor(
         userAgentProvider: UserAgentProvider
     ): Interceptor = UserAgentInterceptor(userAgentProvider)
+
+    @Provides
+    @Singleton
+    @Inspection
+    fun provideInspectionInterceptor(
+        @ApplicationContext context: Context
+    ): Interceptor = InspectionInterceptor(context)
 
     @Auth
     @Provides

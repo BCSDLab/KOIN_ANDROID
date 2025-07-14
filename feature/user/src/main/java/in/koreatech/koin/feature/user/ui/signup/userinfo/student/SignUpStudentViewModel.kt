@@ -12,7 +12,7 @@ import `in`.koreatech.koin.domain.usecase.signup.CheckEmailDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.CheckLoginIdDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.CheckNicknameDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.PostStudentRegisterUseCase
-import `in`.koreatech.koin.domain.util.ext.isLoginIdFormat
+import `in`.koreatech.koin.domain.util.ext.isValidLoginId
 import `in`.koreatech.koin.feature.user.KOREATECH_EMAIL_DOMAIN
 import `in`.koreatech.koin.feature.user.ui.signup.navigation.GENDER
 import `in`.koreatech.koin.feature.user.ui.signup.navigation.NAME
@@ -69,7 +69,7 @@ class SignUpStudentViewModel @Inject constructor(
     fun setLoginId(loginId: String) {
         blockingIntent {
             reduce {
-                state.copy(loginId = loginId, isLoginIdValid = loginId.isLoginIdFormat(), isLoginIdAvailable = null)
+                state.copy(loginId = loginId, isLoginIdValid = loginId.isValidLoginId(), isLoginIdAvailable = null)
             }
         }
     }

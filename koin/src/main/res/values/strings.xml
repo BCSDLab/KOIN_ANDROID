@@ -656,4 +656,7 @@
     <string name="notification_chat_description">쪽지가 도착하면 알림을 받습니다.</string>
     <string name="board">게시판</string>
     <string name="write_review_error">한 상점에 하루에 한 번만 리뷰를 남길 수 있습니다.</string>
+    <string name="inspection_title">개발 중인 페이지입니다</string>
+    <string name="inspection_content">죄송합니다. 현재 개발 중인 페이지입니다.\n최대한 빠르게 오픈하도록 하겠습니다.</string>
+    <string name="go_to_main">메인 화면 바로가기</string>
 </resources>

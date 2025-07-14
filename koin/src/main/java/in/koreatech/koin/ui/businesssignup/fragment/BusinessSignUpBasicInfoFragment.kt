@@ -137,13 +137,13 @@ class BusinessSignUpBasicInfoFragment : BaseFragment() {
 
         observeLiveData(businessSignupContinuationState) { state ->
             when (state) {
-                SignupContinuationState.EmailIsNotValidate -> {
+                SignupContinuationState.EmailInvalid -> {
                     SnackbarUtil.makeShortSnackbar(
                         binding.root,
                         getString(R.string.signup_error_check_email)
                     )
                 }
-                SignupContinuationState.PasswordIsNotValidate -> {
+                SignupContinuationState.PasswordInvalid -> {
                     SnackbarUtil.makeShortSnackbar(
                         binding.root,
                         getString(R.string.signup_error_check_password)
@@ -155,7 +155,7 @@ class BusinessSignUpBasicInfoFragment : BaseFragment() {
                         getString(R.string.signup_error_check_password_match)
                     )
                 }
-                SignupContinuationState.RequestedEmailValidation -> {
+                SignupContinuationState.EmailValidationRequested -> {
                     val email = binding.signupEdittextId.text.toString()
 
                     val password = binding.signupEdittextPw.text.toString()
@@ -171,13 +171,13 @@ class BusinessSignUpBasicInfoFragment : BaseFragment() {
 
                     businessSignupBaseViewModel.setFragmentTag("verificationFragment")
                 }
-                SignupContinuationState.NotAgreedKoinTerms -> {
+                SignupContinuationState.KoinTermsNotAgreed -> {
                     SnackbarUtil.makeShortSnackbar(
                         binding.root,
                         getString(R.string.signup_error_check_koin_terms)
                     )
                 }
-                SignupContinuationState.NotAgreedPrivacyTerms -> {
+                SignupContinuationState.PrivacyTermsNotAgreed -> {
                     SnackbarUtil.makeShortSnackbar(
                         binding.root,
                         getString(R.string.signup_error_check_privacy_terms)

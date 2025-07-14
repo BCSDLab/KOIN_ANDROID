@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.Auth
+import `in`.koreatech.koin.core.qualifier.Inspection
 import `in`.koreatech.koin.core.qualifier.OwnerAuth
 import `in`.koreatech.koin.core.qualifier.OwnerUserAgent
 import `in`.koreatech.koin.core.qualifier.PreSignedUrl
@@ -52,6 +53,13 @@ object AuthNetworkModule {
         userAgentProvider: UserAgentProvider
     ): Interceptor = UserAgentInterceptor(userAgentProvider)
 
+    @Provides
+    @Singleton
+    @Inspection
+    fun provideInspectionInterceptor(
+        @ApplicationContext context: Context
+    ): Interceptor = InspectionInterceptor(context)
+
     @Auth
     @Provides
     @Singleton
@@ -92,6 +100,7 @@ object AuthNetworkModule {
     @Singleton
     fun provideAuthOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
+        @Inspection inspectionInterceptor: Interceptor,
         @UserAgent userAgentInterceptor: Interceptor,
         @Auth authInterceptor: Interceptor,
         @Refresh refreshInterceptor: Authenticator
@@ -102,6 +111,7 @@ object AuthNetworkModule {
             writeTimeout(15, TimeUnit.SECONDS)
             addInterceptor(httpLoggingInterceptor)
             addInterceptor(authInterceptor)
+            addInterceptor(inspectionInterceptor)
             authenticator(refreshInterceptor)
             addInterceptor(userAgentInterceptor)
         }.build()
@@ -202,13 +212,15 @@ object OwnerAuthNetworkModule {
         httpLoggingInterceptor: HttpLoggingInterceptor,
         @OwnerUserAgent userAgentInterceptor: Interceptor,
         @OwnerAuth ownerAuthInterceptor: Interceptor,
-        @OwnerAuth tokenAuthenticator: OwnerTokenAuthenticator
+        @OwnerAuth tokenAuthenticator: OwnerTokenAuthenticator,
+        @Inspection inspectionInterceptor: Interceptor
     ): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(10, TimeUnit.SECONDS)
             readTimeout(30, TimeUnit.SECONDS)
             writeTimeout(15, TimeUnit.SECONDS)
             addInterceptor(httpLoggingInterceptor)
+            addInterceptor(inspectionInterceptor)
             addInterceptor(ownerAuthInterceptor)
             authenticator(tokenAuthenticator)
             addInterceptor(userAgentInterceptor)

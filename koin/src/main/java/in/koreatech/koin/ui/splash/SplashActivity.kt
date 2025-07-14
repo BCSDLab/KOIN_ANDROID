@@ -6,9 +6,14 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.activity.viewModels
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.lifecycleScope
 import com.amar.library.BuildConfig
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -16,6 +21,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.NavigatorType
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
@@ -26,7 +32,6 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_NAV_TYPE
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.toast.ToastUtil
-import `in`.koreatech.koin.core.util.SystemBarsUtils
 import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.forceupdate.ForceUpdateActivity
@@ -67,6 +72,7 @@ class SplashActivity : ActivityBase() {
     private val createdTime = System.currentTimeMillis()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdgeWithLightStatusBar()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
 
@@ -78,8 +84,16 @@ class SplashActivity : ActivityBase() {
     private fun initView() {
         splashViewModel.checkUpdate()
         firebasePerformanceUtil.start()
-        SystemBarsUtils(this).apply {
-            setImmersiveMode(window)
+        val constraintLayoutSplashRoot = findViewById<ConstraintLayout>(R.id.constraint_layout_splash_root)
+        ViewCompat.setOnApplyWindowInsetsListener(constraintLayoutSplashRoot) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            view.updateLayoutParams<MarginLayoutParams> {
+                topMargin = systemBars.top
+                bottomMargin = systemBars.bottom
+            }
+
+            WindowInsetsCompat.CONSUMED
         }
     }
 

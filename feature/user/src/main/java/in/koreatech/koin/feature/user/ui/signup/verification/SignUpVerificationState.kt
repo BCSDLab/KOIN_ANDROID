@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.feature.user.ui.signup.verification
 
 import `in`.koreatech.koin.domain.model.user.Gender
-import `in`.koreatech.koin.domain.util.ext.isNameFormat
+import `in`.koreatech.koin.domain.util.ext.isValidName
 import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 
@@ -16,7 +16,7 @@ data class SignUpVerificationState(
 )
 
 val SignUpVerificationState.isNameValid: Boolean
-    get() = name.isNameFormat()
+    get() = name.isValidName()
 
 val SignUpVerificationState.currentStep: SignUpVerificationStep
     get() = when {

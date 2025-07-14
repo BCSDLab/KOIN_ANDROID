@@ -7,7 +7,6 @@ import `in`.koreatech.koin.data.request.club.ClubModifyRequest
 import `in`.koreatech.koin.data.request.club.ClubQnaRequest
 import `in`.koreatech.koin.data.response.club.ClubDetailsResponse
 import `in`.koreatech.koin.data.response.club.ClubsResponse
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -23,7 +22,7 @@ interface ClubAuthApi {
         @Query("sortType") sortType: String?
     ): ClubsResponse
 
-    @GET("clubs/{clubId}")
+    @GET(URLConstant.CLUBS.CLUBID.CLUBID)
     suspend fun getClubDetails(
         @Path("clubId") clubId: Int
     ): ClubDetailsResponse
@@ -31,38 +30,38 @@ interface ClubAuthApi {
     @POST(URLConstant.CLUBS.CLUBS)
     suspend fun createClub(
         @Body request: ClubCreateRequest
-    ): Response<Unit>
+    )
 
-    @PUT("${URLConstant.CLUBS.CLUBS}/{clubId}")
+    @PUT(URLConstant.CLUBS.CLUBID.CLUBID)
     suspend fun modifyClub(
         @Path("clubId") clubId: Int,
         @Body request: ClubModifyRequest
-    ): Response<Unit>
+    )
 
-    @PUT("clubs/empowerment")
+    @PUT(URLConstant.CLUBS.EMPOWERMENT)
     suspend fun setClubEmpowerment(
         @Body request: ClubEmpowermentRequest
-    ): Response<Unit>
+    )
 
-    @PUT("clubs/{clubId}/like")
+    @PUT(URLConstant.CLUBS.CLUBID.LIKE.LIKE)
     suspend fun setClubLike(
         @Path("clubId") clubId: Int
-    ): Response<Unit>
+    )
 
-    @POST("clubs/{clubId}/qna")
+    @POST(URLConstant.CLUBS.CLUBID.QNA.QNA)
     suspend fun postClubQna(
         @Path("clubId") clubId: Int,
         @Body request: ClubQnaRequest
-    ): Response<Unit>
+    )
 
-    @DELETE("clubs/{clubId}/qna/{qnaId}")
+    @DELETE(URLConstant.CLUBS.CLUBID.QNA.QNAID)
     suspend fun deleteClubQna(
         @Path("clubId") clubId: Int,
         @Path("qnaId") qnaId: Int
-    ): Response<Unit>
+    )
 
-    @DELETE("clubs/{clubId}/like/cancel")
+    @DELETE(URLConstant.CLUBS.CLUBID.LIKE.CANCEL)
     suspend fun cancelClubLike(
         @Path("clubId") clubId: Int
-    ): Response<Unit>
+    )
 }

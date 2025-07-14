@@ -14,7 +14,6 @@ import `in`.koreatech.koin.data.response.timetable.v3.toSemester
 import `in`.koreatech.koin.data.response.timetable.v3.toSemesters
 import `in`.koreatech.koin.data.source.datastore.TimetableDataStore
 import `in`.koreatech.koin.data.source.remote.TimetableRemoteDataSource
-import `in`.koreatech.koin.data.util.getErrorResponse
 import `in`.koreatech.koin.domain.model.timetable.Semester
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameCreateQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameQuery
@@ -188,7 +187,7 @@ class TimetableRepositoryImpl @Inject constructor(
                 ).toTimetableFrame()
         }.recoverCatching {
             if (it is HttpException) {
-                throw Exception(it.getErrorResponse().message ?: "")
+                throw Exception()
             } else {
                 throw it
             }

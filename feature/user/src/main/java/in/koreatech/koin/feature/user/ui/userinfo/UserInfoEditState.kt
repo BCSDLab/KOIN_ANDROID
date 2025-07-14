@@ -1,10 +1,10 @@
 package `in`.koreatech.koin.feature.user.ui.userinfo
 
 import `in`.koreatech.koin.domain.model.user.UserType
-import `in`.koreatech.koin.domain.util.ext.isNameFormat
-import `in`.koreatech.koin.domain.util.ext.isNicknameFormat
 import `in`.koreatech.koin.domain.util.ext.isValidEmail
 import `in`.koreatech.koin.domain.util.ext.isValidGeneralEmail
+import `in`.koreatech.koin.domain.util.ext.isValidName
+import `in`.koreatech.koin.domain.util.ext.isValidNickname
 import `in`.koreatech.koin.domain.util.ext.isValidStudentId
 import `in`.koreatech.koin.feature.user.model.NicknameState
 import `in`.koreatech.koin.feature.user.model.VerificationCodeState
@@ -38,13 +38,13 @@ val UserInfoEditState.isNicknameChanged: Boolean
     }
 
 val UserInfoEditState.isNameValid: Boolean
-    get() = userState.name.isNameFormat()
+    get() = userState.name.isValidName()
 
 val UserInfoEditState.isEmailValid: Boolean
     get() = (userState.email.isNotEmpty() && (userState.email.isValidEmail() || userState.email.isValidGeneralEmail())) || userState.email.isEmpty()
 
 val UserInfoEditState.isNicknameValid
-    get() = ((userState.nickname.isNotEmpty() && userState.nickname.isNicknameFormat()) || userState.nickname.isEmpty())
+    get() = ((userState.nickname.isNotEmpty() && userState.nickname.isValidNickname()) || userState.nickname.isEmpty())
 
 val UserInfoEditState.isStudentNumberValid
     get() = when (userType) {

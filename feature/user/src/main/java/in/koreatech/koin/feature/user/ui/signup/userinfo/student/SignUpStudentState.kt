@@ -2,7 +2,7 @@ package `in`.koreatech.koin.feature.user.ui.signup.userinfo.student
 
 import android.os.Parcelable
 import `in`.koreatech.koin.domain.util.ext.containsKorean
-import `in`.koreatech.koin.domain.util.ext.isNicknameFormat
+import `in`.koreatech.koin.domain.util.ext.isValidNickname
 import `in`.koreatech.koin.domain.util.ext.isValidPassword
 import `in`.koreatech.koin.domain.util.ext.isValidStudentId
 import kotlinx.parcelize.Parcelize
@@ -44,7 +44,7 @@ val SignUpStudentState.currentStep: SignUpStudentStep
     }
 
 private val SignUpStudentState.isNicknameValid
-    get() = (nickname.isNotEmpty() && nickname.isNicknameFormat() && isNicknameAvailable == true) || nickname.isEmpty()
+    get() = (nickname.isNotEmpty() && nickname.isValidNickname() && isNicknameAvailable == true) || nickname.isEmpty()
 
 private val SignUpStudentState.isStudentNumberValid
     get() = studentNumber.isNotEmpty() && studentNumber.isValidStudentId

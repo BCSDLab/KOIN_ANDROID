@@ -51,12 +51,12 @@ interface UserApi {
         @Body idRequest: IdRequest
     )
 
-    @GET(URLConstant.USER.CHECKNICKNAME)
+    @GET(URLConstant.USER.CHECK.NICKNAME)
     suspend fun checkNickname(
         @Query("nickname") nickname: String
     )
 
-    @GET(URLConstant.USER.CHECKEMAIL)
+    @GET(URLConstant.USER.CHECK.EMAIL)
     suspend fun checkEmail(
         @Query("address") email: String
     )
@@ -66,12 +66,12 @@ interface UserApi {
         @Body refreshRequest: RefreshRequest
     ): Response<RefreshResponse>
 
-    @GET(URLConstant.USER.CHECKPHONE)
+    @GET(URLConstant.USER.CHECK.PHONE)
     suspend fun checkPhoneNumberDuplicate(
         @Query("phone") phone: String
     )
 
-    @GET(URLConstant.USER.CHECKNICKNAME_V2)
+    @GET(URLConstant.USER.CHECK.NICKNAME_V2)
     suspend fun checkNicknameV2(
         @Query("nickname") nickname: String
     )
