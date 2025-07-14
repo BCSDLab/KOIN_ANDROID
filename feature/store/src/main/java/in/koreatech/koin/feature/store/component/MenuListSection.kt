@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.store.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -88,30 +89,36 @@ fun MenuItem(
     Row(modifier = modifier) {
         Column(modifier = Modifier.weight(1f)) {
             Text(text = menu.name, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
-            Text(
-                modifier = Modifier.padding(top = 4.dp),
-                text = menu.description ?: "",
-                fontSize = 12.sp,
-                color = KoinTheme.colors.neutral500
-            )
+            if (menu.description?.isNotEmpty() == true) {
+                Text(
+                    modifier = Modifier.padding(top = 4.dp),
+                    text = menu.description,
+                    fontSize = 12.sp,
+                    color = KoinTheme.colors.neutral500
+                )
+            }
+
             OptionPriceText(
                 modifier = Modifier.padding(top = 4.dp),
                 menu = menu
             )
         }
         Spacer(modifier = Modifier.width(16.dp))
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(menu.thumbnailImage)
-                .crossfade(true)
-                .build(),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .align(Alignment.Bottom)
-                .size(88.dp)
-                .clip(KoinTheme.shapes.small)
-        )
+        menu.thumbnailImage
+            ?.firstOrNull()?.let { url ->
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(url)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .align(Alignment.Bottom)
+                        .size(88.dp)
+                        .clip(KoinTheme.shapes.small)
+                )
+            }
     }
 }
 
@@ -151,8 +158,8 @@ private fun MenuListSectionPreview() {
                     MenuModel(
                         id = 1,
                         name = "아메리카노",
-                        description = "진한 커피의 맛을 느껴보세요.",
-                        thumbnailImage = "https://example.com/americano.jpg",
+                        description = null,
+                        thumbnailImage = null,
                         isSoldOut = false,
                         prices = listOf(
                         ),

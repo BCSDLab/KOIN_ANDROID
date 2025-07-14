@@ -14,8 +14,8 @@ data class MenuCategoryModel(
 data class MenuModel(
     val id: Int,
     val name: String,
-    val description: String,
-    val thumbnailImage: String,
+    val description: String?,
+    val thumbnailImage: String?,
     val isSoldOut: Boolean,
     val prices: List<MenuPriceModel>,
     val isSingle: Boolean, // 단일 메뉴인지 여부

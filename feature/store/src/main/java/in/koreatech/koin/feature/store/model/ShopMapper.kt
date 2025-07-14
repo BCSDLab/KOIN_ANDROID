@@ -55,8 +55,8 @@ fun StoreMenuCategories.toMenuCategoryModel(): MenuCategoryModel { // 기존 상
             MenuModel(
                 id = menu.id,
                 name = menu.name,
-                description = menu.description ?: "",
-                thumbnailImage = menu.imageUrls?.firstOrNull() ?: "",
+                description = menu.description,
+                thumbnailImage = menu.imageUrls?.firstOrNull(),
                 isSoldOut = false,
                 prices = menu.optionPrices?.map { price ->
                     MenuPriceModel(
