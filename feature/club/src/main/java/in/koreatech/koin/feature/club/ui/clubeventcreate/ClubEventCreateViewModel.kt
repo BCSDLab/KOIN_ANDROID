@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.club.ui.clubeventcreate
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -50,18 +49,6 @@ class ClubEventCreateViewModel @Inject constructor(
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
         val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-        Log.e(
-            "MYLOG",
-            """
-            ${state.clubId}
-            $state.eventImageUrls
-            $name
-            ${state.eventStartDateTime.format(dateFormatter)}
-            ${state.eventEndDateTime.format(dateFormatter)}
-            $introduce
-            $content
-            """.trimIndent()
-        )
         createClubEventUseCase(
             clubId = state.clubId,
             name = name,
@@ -74,7 +61,6 @@ class ClubEventCreateViewModel @Inject constructor(
             reduce { state.copy(isLoading = false) }
             postSideEffect(ClubEventCreateSideEffect.EventCreateSuccess)
         }.onFailure { e ->
-            Log.e("MYLOG", "$e")
             reduce { state.copy(isLoading = false) }
             postSideEffect(ClubEventCreateSideEffect.EventCreateFailure)
         }
@@ -114,7 +100,6 @@ class ClubEventCreateViewModel @Inject constructor(
 
     fun setEventStartTime(time: LocalTime) = intent {
         val newDate = state.eventStartDateTime.withHour(time.hour).withMinute(time.minute)
-        Log.e("MYLOG", "$newDate")
         if (state.eventEndDateTime <= newDate) {
             reduce { state.copy(eventEndDateTime = newDate.plusHours(1)) }
         }
