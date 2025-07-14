@@ -82,12 +82,6 @@ fun DetailEventBox(
                         }
                     }
                 )
-            } else {
-                Box(
-                    modifier = Modifier
-                        .width(100.dp)
-                        .aspectRatio(5f / 4f)
-                )
             }
             Column {
                 Row(
