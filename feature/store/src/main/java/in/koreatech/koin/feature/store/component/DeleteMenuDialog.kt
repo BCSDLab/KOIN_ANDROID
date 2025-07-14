@@ -15,7 +15,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,7 +51,7 @@ fun DeleteCartDialog(
             ) {
                 Text(
                     text = dialogMessage.orEmpty(),
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = RebrandKoinTheme.typography.medium16,
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(24.dp))
