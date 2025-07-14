@@ -16,7 +16,6 @@
     <string name="delete_all">전체삭제</string>
 
     <!--상점 상세-->
-    <string name="store_info_and_origin">가게정보·원산지</string>
     <string name="minimum_order">최소주문</string>
     <string name="delivery_fee">배달금액</string>
     <string name="review_count"> · 리뷰 %1$d개</string>
@@ -24,4 +23,19 @@
     <string name="option_price">%1$s : %2$d원\n</string>
     <string name="delivery_not_available">코인 주문이\n불가능한 매장이에요.</string>
     <string name="store_detail_notice_empty">등록된 공지가\n없습니다.</string>
+
+    <!--가게 정보 및 원산지-->
+    <string name="store_info_and_origin">가게정보·원산지</string>
+    <string name="store_info">가게 알림</string>
+    <string name="owner_name">대표자명</string>
+    <string name="fee_range">%1$d ~ %2$d원 미만</string>
+    <string name="fee_range_start">%1$d원부터</string>
+    <string name="business_info">사업자 정보</string>
+    <string name="total_delivery_tip_by_order_amount">주문금액별 총 배달팁</string>
+    <string name="business_address">사업자 주소</string>
+    <string name="business_registration_number">사업자 등록 번호</string>
+    <string name="trade_name">상호명</string>
+    <string name="no_registered_information">등록된 정보가 없습니다.</string>
+    <string name="origin_marking">원산지 표기</string>
+
 </resources>
