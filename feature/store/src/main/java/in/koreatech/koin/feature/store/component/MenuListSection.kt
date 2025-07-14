@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -35,15 +34,14 @@ import `in`.koreatech.koin.feature.store.model.MenuModel
 
 fun LazyListScope.menuListSection(
     category: String,
-    menus: List<MenuModel>
+    menus: List<MenuModel>,
+    modifier: Modifier = Modifier
 ) {
     if (menus.isEmpty()) return
 
     item {
         Column(
-            modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .navigationBarsPadding()
+            modifier = modifier
         ) {
             Text(
                 text = category,
@@ -65,7 +63,8 @@ fun LazyListScope.menuListSection(
                 Column {
                     menus.forEachIndexed { index, menu ->
                         MenuItem(
-                            modifier = Modifier.padding(16.dp),
+                            modifier = Modifier
+                                .padding(16.dp),
                             menu = menu
                         )
                         if (index != menus.lastIndex) {
@@ -83,8 +82,8 @@ fun LazyListScope.menuListSection(
 
 @Composable
 fun MenuItem(
-    modifier: Modifier = Modifier,
-    menu: MenuModel
+    menu: MenuModel,
+    modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier) {
         Column(modifier = Modifier.weight(1f)) {
@@ -96,7 +95,8 @@ fun MenuItem(
                 color = KoinTheme.colors.neutral500
             )
             OptionPriceText(
-                shopMenus = menu
+                modifier = Modifier.padding(top = 4.dp),
+                menu = menu
             )
         }
         Spacer(modifier = Modifier.width(16.dp))
@@ -117,18 +117,19 @@ fun MenuItem(
 
 @Composable
 private fun OptionPriceText(
-    shopMenus: MenuModel
+    modifier: Modifier = Modifier,
+    menu: MenuModel
 ) {
     Column(
-        modifier = Modifier.padding(top = 4.dp)
+        modifier = modifier
     ) {
-        if (shopMenus.isSingle) {
+        if (menu.isSingle) {
             Text(
-                text = stringResource(R.string.price_with_won, shopMenus.singlePrice ?: 0),
+                text = stringResource(R.string.price_with_won, menu.singlePrice ?: 0),
                 style = KoinTheme.typography.bold14
             )
         } else {
-            val options = shopMenus.prices.fold("") { acc, menu ->
+            val options = menu.prices.fold("") { acc, menu ->
                 acc + stringResource(R.string.option_price, menu.name ?: "", menu.price ?: 0)
             }.trim()
             Text(text = options, fontSize = 14.sp, fontWeight = FontWeight.Bold)
@@ -144,6 +145,7 @@ private fun MenuListSectionPreview() {
             contentPadding = PaddingValues(16.dp)
         ) {
             menuListSection(
+                modifier = Modifier.fillMaxWidth(),
                 category = "추천메뉴",
                 menus = listOf(
                     MenuModel(

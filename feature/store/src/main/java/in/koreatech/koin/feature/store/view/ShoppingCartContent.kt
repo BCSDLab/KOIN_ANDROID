@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,8 +19,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.ButtonDefaults.buttonElevation
@@ -29,10 +30,6 @@ import androidx.compose.material3.CardDefaults.cardElevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,29 +37,53 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
-import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.domain.model.cart.Cart
+import `in`.koreatech.koin.domain.model.cart.CartType
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.CartMenuItem
+import `in`.koreatech.koin.feature.store.component.DeleteCartDialog
 import `in`.koreatech.koin.feature.store.component.PaymentSummaryCard
 
 @Composable
 fun ShoppingCartContent(
-    modifier: Modifier,
-    storeInfo: StoreDetailInfo
+    cart: Cart,
+    modifier: Modifier = Modifier,
+    cartType: CartType = CartType.DELIVERY,
+    isOperating: Boolean = true,
+    dialogVisibility: Boolean = false,
+    navigateToStoreDetail: () -> Unit = { },
+    onOrderModeChanged: (CartType) -> Unit = { },
+    onChangeQuantity: (Int, Int) -> Unit = { _, _ -> },
+    onResetMenu: () -> Unit = { },
+    deleteCartMenuItem: (Int) -> Unit = { },
+    setDialogVisibility: (Boolean) -> Unit = { }
 ) {
-    val tabs = listOf(R.string.delivery, R.string.pickup)
-    var selectedTab by remember { mutableStateOf(R.string.delivery) }
     val lazyColumnState = rememberLazyListState()
+
+    if (dialogVisibility) {
+        DeleteCartDialog(
+            onConfirm = {
+                onResetMenu()
+            },
+            onDismiss = {
+                setDialogVisibility(false)
+            },
+            dialogMessage = if (!isOperating) stringResource(R.string.store_is_not_operating_dialog_message) else stringResource(R.string.delete_menu_dialog_message)
+        )
+    }
     LazyColumn(
         state = lazyColumnState,
         modifier = modifier
@@ -86,27 +107,76 @@ fun ShoppingCartContent(
                         )
                     }
                     .padding(2.dp)
-                    .background(KoinTheme.colors.neutral0, shape = RoundedCornerShape(10.dp))
+                    .background(RebrandKoinTheme.colors.neutral0, shape = RebrandKoinTheme.shapes.medium)
             ) {
-                tabs.forEach { tab ->
-                    val isSelected = tab == selectedTab
-                    Button(
-                        onClick = { selectedTab = tab },
-                        modifier = Modifier
-                            .heightIn(52.dp)
-                            .weight(1f)
-                            .padding(4.dp),
-                        shape = RoundedCornerShape(13.dp),
-                        colors = buttonColors(
-                            containerColor = if (isSelected) colorResource(R.color.shopping_cart_button_background) else KoinTheme.colors.neutral0,
-                            contentColor = if (isSelected) KoinTheme.colors.neutral0 else KoinTheme.colors.neutral500
+                Button(
+                    modifier = Modifier
+                        .heightIn(52.dp)
+                        .weight(1f)
+                        .padding(4.dp),
+                    onClick = {
+                        onOrderModeChanged(
+                            CartType.DELIVERY
                         )
-                    ) {
-                        Text(
-                            style = KoinTheme.typography.medium16,
-                            text = stringResource(id = tab)
+                    },
+                    enabled = cart.isDeliveryAvailable,
+                    shape = RebrandKoinTheme.shapes.medium,
+                    colors = buttonColors(
+                        containerColor = if (cartType == CartType.DELIVERY) colorResource(R.color.shopping_cart_button_background) else KoinTheme.colors.neutral0,
+                        contentColor = if (cartType == CartType.DELIVERY) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.neutral500,
+                        disabledContainerColor = RebrandKoinTheme.colors.neutral0
+                    )
+                ) {
+                    Text(
+                        style = KoinTheme.typography.medium16,
+                        text = stringResource(id = R.string.delivery)
+                    )
+                }
+                Button(
+                    modifier = Modifier
+                        .heightIn(52.dp)
+                        .weight(1f)
+                        .padding(4.dp),
+                    onClick = {
+                        onOrderModeChanged(
+                            CartType.TAKE_OUT
                         )
-                    }
+                    },
+                    enabled = cart.isTakeoutAvailable,
+                    shape = RebrandKoinTheme.shapes.medium,
+                    colors = buttonColors(
+                        containerColor = if (cartType == CartType.TAKE_OUT) colorResource(R.color.shopping_cart_button_background) else RebrandKoinTheme.colors.neutral0,
+                        contentColor = if (cartType == CartType.TAKE_OUT) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.neutral500,
+                        disabledContainerColor = RebrandKoinTheme.colors.neutral0
+                    )
+                ) {
+                    Text(
+                        style = RebrandKoinTheme.typography.medium16,
+                        text = stringResource(id = R.string.pickup)
+                    )
+                }
+            }
+            if (!(cart.isDeliveryAvailable && cart.isTakeoutAvailable)) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_info),
+                        contentDescription = null,
+                        tint = RebrandKoinTheme.colors.primary500
+                    )
+                    Text(
+                        text = stringResource(
+                            R.string.order_only_notice,
+                            if (cart.isDeliveryAvailable) stringResource(R.string.delivery) else stringResource(R.string.pickup)
+                        ),
+                        style = RebrandKoinTheme.typography.regular13,
+                        color = RebrandKoinTheme.colors.primary500
+                    )
                 }
             }
         }
@@ -116,22 +186,24 @@ fun ShoppingCartContent(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { /* TODO: navigate */ }
+                    .padding(vertical = 12.dp, horizontal = 4.dp)
+                    .clickable { navigateToStoreDetail() }
             ) {
                 Image(
-                    painter = rememberAsyncImagePainter(storeInfo.imageUrls.firstOrNull()),
+                    painter = rememberAsyncImagePainter(cart.shopThumbnailImageUrl),
                     contentDescription = "",
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .size(48.dp)
+                        .size(30.dp)
                         .clip(RoundedCornerShape(8.dp))
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    text = storeInfo.name,
+                    text = cart.shopName ?: "",
                     fontWeight = FontWeight.Medium
                 )
                 Icon(
-                    imageVector = Icons.Default.KeyboardArrowRight,
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                     contentDescription = "",
                     tint = Color.Gray
                 )
@@ -142,29 +214,27 @@ fun ShoppingCartContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 40.dp),
-                shape = RoundedCornerShape(12.dp),
+                shape = RebrandKoinTheme.shapes.medium,
                 elevation = cardElevation(0.5.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = KoinTheme.colors.neutral0
                 )
             ) {
                 Column {
-                    repeat(3) { // 장바구니에 담긴 메뉴 수
+                    cart.items.forEachIndexed { index, cartItem ->
                         CartMenuItem(
-                            menu = ShopMenus(
-                                name = "족발 + 막국 저녁 set",
-                                description = "가격 : 25000원\n사이즈 : 소\n음료:콜라 500ml",
-                                imageUrls = listOf("https://example.com/image.jpg"),
-                                optionPrices = listOf(
-                                    ShopMenus.ShopMenuOptions("옵션2", 2000)
-                                ),
-                                isSingle = true,
-                                singlePrice = 10000,
-                                isHidden = false,
-                                id = 1
-                            )
+                            modifier = Modifier
+                                .padding(16.dp),
+                            menu = cartItem,
+                            navigateToMenu = {},
+                            onChangeQuantity = { menuId, quantity ->
+                                onChangeQuantity(menuId, quantity)
+                            },
+                            onDeleteMenuItem = { menuId ->
+                                deleteCartMenuItem(menuId)
+                            }
                         )
-                        if (it != 2) {
+                        if (index != cart.items.size - 1) {
                             Divider(
                                 color = KoinTheme.colors.neutral300,
                                 thickness = 2.dp
@@ -176,7 +246,7 @@ fun ShoppingCartContent(
         }
         item {
             Button(
-                onClick = { },
+                onClick = { navigateToStoreDetail() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .drawBehind {
@@ -186,7 +256,7 @@ fun ShoppingCartContent(
                             cornerRadius = CornerRadius(10.dp.toPx(), 10.dp.toPx())
                         )
                     },
-                shape = KoinTheme.shapes.extraSmall,
+                shape = KoinTheme.shapes.small,
                 colors = buttonColors(
                     containerColor = KoinTheme.colors.neutral0,
                     contentColor = colorResource(R.color.shopping_cart_button_text)
@@ -202,13 +272,24 @@ fun ShoppingCartContent(
                 }
             }
         }
-        item { PaymentSummaryCard() }
+        item {
+            PaymentSummaryCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 20.dp),
+                itemAmount = cart.itemsAmount,
+                deliveryFee = cart.deliveryFee,
+                totalAmount = cart.totalAmount,
+                finalPaymentAmount = cart.finalPaymentAmount
+            )
+        }
     }
 }
 
 @Composable
 fun ShoppingCartEmptyContent(
-    modifier: Modifier
+    modifier: Modifier = Modifier,
+    navigateToStoreDetail: () -> Unit = { }
 ) {
     Column(
         modifier = modifier
@@ -223,11 +304,15 @@ fun ShoppingCartEmptyContent(
             painter = painterResource(id = R.drawable.img_cart),
             contentDescription = null
         )
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = stringResource(R.string.shopping_cart_is_empty)
+            text = stringResource(R.string.shopping_cart_is_empty),
+            style = KoinTheme.typography.bold16
         )
         Button(
-            onClick = {},
+            onClick = {
+                navigateToStoreDetail()
+            },
             modifier = Modifier
                 .padding(top = 20.dp),
             colors = buttonColors(
@@ -264,5 +349,11 @@ private fun ShoppingCartContentPreview() {
                 .fillMaxSize()
                 .padding(16.dp)
         )
+        /*   ShoppingCartContent(
+               modifier = Modifier
+                   .fillMaxSize()
+                   .padding(16.dp),
+               cart = Cart.Empty,
+           )*/
     }
 }

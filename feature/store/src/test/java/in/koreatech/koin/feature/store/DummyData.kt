@@ -1,12 +1,12 @@
 package `in`.koreatech.koin.feature.store
 
-import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 
 val dummyShopMenus = listOf(
-    ShopMenus(
+    LegacyShopMenus(
         id = 1,
         name = "김치찌개",
         isSingle = true,

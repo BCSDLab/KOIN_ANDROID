@@ -7,10 +7,10 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface LandApi {
-    @GET(URLConstant.LAND)
+    @GET(URLConstant.LAND.LAND)
     suspend fun getLandList(): LandsResponse
 
-    @GET("${URLConstant.LAND}/{id}")
+    @GET(URLConstant.LAND.ID)
     suspend fun getLandDetail(
         @Path("id") id: Int
     ): LandDetailResponse
