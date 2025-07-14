@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import okhttp3.internal.immutableListOf
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -378,7 +379,7 @@ class ClubDetailViewModel @Inject constructor(
         dismissLoginDialog()
     }
 
-    fun updateEventsDropdownExpanded(bool: Boolean) = intent {
+    fun updateEventsDropdownExpanded(bool: Boolean) = blockingIntent {
         reduce { state.copy(isEventsDropdownExpanded = bool) }
     }
 
@@ -444,7 +445,7 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(showImageDialog = false) }
     }
 
-    fun updateClubEventSearchType(eventSearchType: EventSearchType) = intent {
+    fun updateClubEventSearchType(eventSearchType: EventSearchType) = blockingIntent {
         reduce { state.copy(clubEventSearchType = eventSearchType) }
         loadClubEvents()
     }

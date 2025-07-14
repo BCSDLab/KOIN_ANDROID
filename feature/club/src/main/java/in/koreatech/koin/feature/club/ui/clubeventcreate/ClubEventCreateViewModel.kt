@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -66,19 +67,19 @@ class ClubEventCreateViewModel @Inject constructor(
         }
     }
 
-    fun updateCreateRequestDialog(bool: Boolean) = intent {
+    fun updateCreateRequestDialog(bool: Boolean) = blockingIntent {
         reduce { state.copy(showCreateRequestDialog = bool) }
     }
 
-    fun updateCreateCancelDialog(bool: Boolean) = intent {
+    fun updateCreateCancelDialog(bool: Boolean) = blockingIntent {
         reduce { state.copy(showCreateCancelDialog = bool) }
     }
 
-    fun updateDatePickerDialog(bool: Boolean) = intent {
+    fun updateDatePickerDialog(bool: Boolean) = blockingIntent {
         reduce { state.copy(showDatePickerDialog = bool) }
     }
 
-    fun updateTimePickerDialog(bool: Boolean) = intent {
+    fun updateTimePickerDialog(bool: Boolean) = blockingIntent {
         reduce { state.copy(showTimePickerDialog = bool) }
     }
 
