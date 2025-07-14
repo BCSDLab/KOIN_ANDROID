@@ -48,11 +48,9 @@ fun ShoppingCartScreen(
                         text = stringResource(R.string.delete_all),
                         modifier = Modifier
                             .padding(end = 10.dp)
-                            .noRippleClickable {
-                                if (uiState.cart.items.isEmpty()) {
-                                    return@noRippleClickable
-                                }
-                                viewModel.setShowDeleteDialog(true)
+                            .let {
+                                if (uiState.cart.items.isEmpty()) it
+                                else it.noRippleClickable { viewModel.setShowDeleteDialog(true) }
                             }
                     )
                 }
