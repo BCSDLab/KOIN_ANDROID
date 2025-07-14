@@ -10,7 +10,10 @@ import `in`.koreatech.koin.domain.usecase.store.GetShopMenusUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuUseCase
 import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
+import `in`.koreatech.koin.feature.store.model.DeliveryTipModel
 import `in`.koreatech.koin.feature.store.model.MenuCategoryModel
+import `in`.koreatech.koin.feature.store.model.OriginModel
+import `in`.koreatech.koin.feature.store.model.OwnerInfoModel
 import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
 import `in`.koreatech.koin.feature.store.model.toMenuCategoryModel
 import `in`.koreatech.koin.feature.store.model.toStoreIndoModel
@@ -61,11 +64,13 @@ class StoreDetailViewModel @Inject constructor(
                             )
                         },
                         origins = result.origins.map { origin ->
-                            OriginModel(
-                                ingredients = origin.ingredients,
-                                origin = origin.origin
+                            listOf(
+                                OriginModel(
+                                    ingredients = origin.ingredients,
+                                    origin = origin.origin
+                                )
                             )
-                        }.firstOrNull() ?: OriginModel.empty(),
+                        }.firstOrNull() ?: listOf(OriginModel.empty()),
                         ownerInfo = OwnerInfoModel(
                             result.ownerInfo.name ?: "",
                             result.ownerInfo.shopName ?: "",
@@ -114,7 +119,7 @@ class StoreDetailViewModel @Inject constructor(
                         storeName = result.name,
                         description = result.description,
                         notice = null,
-                        deliveryTips =  DeliveryTipModel(
+                        deliveryTips = DeliveryTipModel(
                             fromAmount = 0,
                             toAmount = null,
                             fee = result.deliveryPrice

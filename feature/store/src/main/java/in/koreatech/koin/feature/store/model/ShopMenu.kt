@@ -73,7 +73,7 @@ data class StoreDescriptionModel(
     val description: String?,
     val notice: String?,
     val deliveryTips: List<DeliveryTipModel>?,
-    val origins: OriginModel?,
+    val origins: List<OriginModel>?,
     val ownerInfo: OwnerInfoModel?,
 ) {
     companion object {
@@ -83,7 +83,7 @@ data class StoreDescriptionModel(
             description = null,
             notice = null,
             deliveryTips = null,
-            origins = OriginModel.empty(),
+            origins = listOf(OriginModel.empty()),
             ownerInfo = OwnerInfoModel.empty()
         )
     }
@@ -95,10 +95,10 @@ data class DeliveryTipModel(
 )
 
 data class OwnerInfoModel(
-    val name: String,
-    val shopName: String,
-    val address: String,
-    val companyRegistrationNumber : String,
+    val name: String?,
+    val shopName: String?,
+    val address: String?,
+    val companyRegistrationNumber : String?,
 ) {
     companion object {
         fun empty() = OwnerInfoModel(
