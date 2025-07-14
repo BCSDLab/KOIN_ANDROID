@@ -179,7 +179,6 @@ class SplashActivity : ActivityBase() {
         finishWithTransition()
     }
 
-    @SuppressLint("WrongConstant")
     private fun finishWithTransition() {
         if (Build.VERSION.SDK_INT >= 34) {
             overrideActivityTransition(Activity.OVERRIDE_TRANSITION_OPEN, 0, 0)
