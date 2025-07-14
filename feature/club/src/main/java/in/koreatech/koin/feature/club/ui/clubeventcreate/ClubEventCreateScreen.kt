@@ -52,7 +52,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
@@ -148,7 +147,7 @@ fun ClubEventCreateScreenImpl(
     setEventEndTime: (LocalTime) -> Unit = {},
     createEvent: (String, String, String) -> Unit = { _, _, _ -> },
     createEventCancel: () -> Unit = {},
-    uploadImage: (fileSize: Long, fileType: String, fileName: String, fileUri: Uri) -> Unit = {_,_,_,_ -> },
+    uploadImage: (fileSize: Long, fileType: String, fileName: String, fileUri: Uri) -> Unit = { _, _, _, _ -> },
     onImageDeleteClick: (Int) -> Unit = {}
 ) {
     val context = LocalContext.current
