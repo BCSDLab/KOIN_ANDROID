@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.user.ui.signin
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
