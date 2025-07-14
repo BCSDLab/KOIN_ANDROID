@@ -36,14 +36,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.model.DeliveryTipModel
 import `in`.koreatech.koin.feature.store.model.OwnerInfoModel
 import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
 import `in`.koreatech.koin.feature.store.view.hasAnyInfo
-import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
-import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,7 +48,7 @@ fun ShopOriginInfoScreen(
     cartItemNumber: Int = 0,
     shopDescription: StoreDescriptionModel,
     onBackClick: () -> Unit,
-    navigateToShoppingCart: () -> Unit = {},
+    navigateToShoppingCart: () -> Unit = {}
 ) {
     Scaffold(
         topBar = {
@@ -74,10 +71,10 @@ fun ShopOriginInfoScreen(
                             Icon(
                                 modifier = Modifier.size(25.dp),
                                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_shopping_cart),
-                                contentDescription = null,
+                                contentDescription = null
                             )
                         }
-                        if (cartItemNumber > 0)
+                        if (cartItemNumber > 0) {
                             Box(
                                 modifier = Modifier
                                     .offset(x = (-6).dp, y = (6).dp)
@@ -91,6 +88,7 @@ fun ShopOriginInfoScreen(
                                     color = Color.White
                                 )
                             }
+                        }
                     }
                 }
             )
@@ -106,7 +104,7 @@ fun ShopOriginInfoScreen(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = stringResource(R.string.store_info),
                 fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.Bold
             )
             Text(text = shopDescription.notice ?: stringResource(R.string.no_registered_information), fontSize = 14.sp)
             Spacer(Modifier.height(24.dp))
@@ -114,7 +112,7 @@ fun ShopOriginInfoScreen(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = stringResource(R.string.total_delivery_tip_by_order_amount),
                 fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.Bold
             )
             DeliveryFeeTable(
                 modifier = Modifier.fillMaxWidth(),
@@ -125,7 +123,7 @@ fun ShopOriginInfoScreen(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = stringResource(R.string.business_info),
                 fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.Bold
             )
             if (shopDescription.ownerInfo.hasAnyInfo()) {
                 Row {
@@ -157,7 +155,7 @@ fun ShopOriginInfoScreen(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = stringResource(R.string.origin_marking),
                 fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.Bold
             )
             Text(
                 text = shopDescription.origins?.joinToString(separator = ", ") {
@@ -182,11 +180,11 @@ fun DeliveryFeeTable(
             DeliveryFeeRow(
                 modifier = Modifier.fillMaxWidth(),
                 label = if (fee.toAmount != null) {
-                    stringResource(id=R.string.fee_range, fee.fromAmount ?: 0, fee.toAmount)
+                    stringResource(id = R.string.fee_range, fee.fromAmount ?: 0, fee.toAmount)
                 } else {
-                    stringResource(id=R.string.fee_range_start, fee.fromAmount ?: 0)
+                    stringResource(id = R.string.fee_range_start, fee.fromAmount ?: 0)
                 },
-                value =  stringResource(id=R.string.price_with_won,fee.fee.toString())
+                value = stringResource(id = R.string.price_with_won, fee.fee.toString())
             )
             HorizontalDivider(color = Color.LightGray)
         }
@@ -196,7 +194,8 @@ fun DeliveryFeeTable(
 @Composable
 fun DeliveryFeeRow(
     modifier: Modifier = Modifier,
-    label: String, value: String
+    label: String,
+    value: String
 ) {
     Row(
         modifier = modifier

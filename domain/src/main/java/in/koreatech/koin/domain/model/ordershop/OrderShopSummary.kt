@@ -13,5 +13,5 @@ data class OrderShopSummary(
     val reviewCount: Int,
     val minimumDeliveryTip: Int,
     val maximumDeliveryTip: Int,
-    val images: List<String>,
+    val images: List<String>
 )

@@ -28,12 +28,12 @@ data class OrderShopResponse(
     @SerializedName("maximum_delivery_tip")
     val maximumDeliveryTip: Int,
     @SerializedName("images")
-    val images: List<image>,
-){
-    data class image(
+    val ShopImages: List<ShopImage>
+) {
+    data class ShopImage(
         @SerializedName("image_url")
         val imageUrl: String,
         @SerializedName("is_thumbnail")
-        val isThumbnail: Boolean,
+        val isThumbnail: Boolean
     )
 }

@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.store.component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -161,8 +160,7 @@ private fun MenuListSectionPreview() {
                         description = null,
                         thumbnailImage = null,
                         isSoldOut = false,
-                        prices = listOf(
-                        ),
+                        prices = listOf(),
                         isSingle = true
                     ),
                     MenuModel(
@@ -171,8 +169,7 @@ private fun MenuListSectionPreview() {
                         description = "부드러운 ��유와 커피의 조화.",
                         thumbnailImage = "https://example.com/cafelatte.jpg",
                         isSoldOut = false,
-                        prices = listOf(
-                        ),
+                        prices = listOf(),
                         isSingle = true
                     )
                 )

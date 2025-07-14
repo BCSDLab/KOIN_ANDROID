@@ -137,7 +137,7 @@ fun StoreDetailScreen(
                 menuListSection(
                     category = category.menuGroupName,
                     menus = category.menus,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
                 )
             }
         }

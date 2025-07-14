@@ -6,11 +6,11 @@ data class OrderMenu(
     val description: String,
     val thumbnailImage: String,
     val isSoldOut: Boolean,
-    val prices : List<Price>,
-){
+    val prices: List<Price>
+) {
     data class Price(
         val id: Int,
         val name: String?, // null인 경우 단일메뉴
-        val price: Int,
+        val price: Int
     )
 }

@@ -36,7 +36,7 @@ fun OrderBottomBar(
     isOrderEnabled: Boolean,
     orderableMessage: String,
     modifier: Modifier = Modifier,
-    navigateToCart: () -> Unit = {},
+    navigateToCart: () -> Unit = {}
 ) {
     Surface(
         tonalElevation = 2.dp,
@@ -58,12 +58,12 @@ fun OrderBottomBar(
                 Text(
                     text = stringResource(R.string.price_with_won, totalPrice),
                     style = RebrandKoinTheme.typography.bold18,
-                    color = RebrandKoinTheme.colors.neutral800,
+                    color = RebrandKoinTheme.colors.neutral800
                 )
                 Text(
                     text = orderableMessage,
                     style = RebrandKoinTheme.typography.medium14,
-                    color = RebrandKoinTheme.colors.neutral500,
+                    color = RebrandKoinTheme.colors.neutral500
                 )
             }
 
@@ -78,8 +78,8 @@ fun OrderBottomBar(
                     containerColor = RebrandKoinTheme.colors.primary500,
                     contentColor = RebrandKoinTheme.colors.neutral0,
                     disabledContainerColor = RebrandKoinTheme.colors.neutral400,
-                    disabledContentColor = RebrandKoinTheme.colors.neutral0,
-                ),
+                    disabledContentColor = RebrandKoinTheme.colors.neutral0
+                )
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_coin),
@@ -103,7 +103,7 @@ fun OrderBottomBarPreview() {
             OrderBottomBar(
                 totalPrice = 29500,
                 isOrderEnabled = false,
-                orderableMessage = "최소 주문 금액은 20,000",
+                orderableMessage = "최소 주문 금액은 20,000"
             )
         }
     }

@@ -8,11 +8,11 @@ data class OrderMenuResponse(
     @SerializedName("description") val description: String?,
     @SerializedName("thumbnail_image") val thumbnailImage: String?,
     @SerializedName("is_sold_out") val isSoldOut: Boolean,
-    @SerializedName("prices") val prices: List<Price>,
-){
+    @SerializedName("prices") val prices: List<Price>
+) {
     data class Price(
         @SerializedName("id") val priceId: Int,
-        @SerializedName("name") val priceName: String?, //null인 경우 단일메뉴
-        @SerializedName("price") val price: Int,
+        @SerializedName("name") val priceName: String?, // null인 경우 단일메뉴
+        @SerializedName("price") val price: Int
     )
 }

@@ -5,11 +5,10 @@ import `in`.koreatech.koin.domain.model.ordershop.OrderShopSummary
 import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 
-
 /**
  * 가게 정보 모델을 UI 모델로 변환하는 확장 함수들
  */
-fun StoreWithMenu.toStoreInfoModel(): ShopInfoModel { //기존 상점 정보 모델을 ShopInfoModel로 변환
+fun StoreWithMenu.toStoreInfoModel(): ShopInfoModel { // 기존 상점 정보 모델을 ShopInfoModel로 변환
     return ShopInfoModel(
         shopId = uid,
         orderableShopId = null,

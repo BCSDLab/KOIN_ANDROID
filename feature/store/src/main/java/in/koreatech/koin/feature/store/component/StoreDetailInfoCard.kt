@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
-import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.model.ShopInfoModel
 import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
@@ -71,7 +70,7 @@ fun DeliveryInfoCard(
         shadowElevation = 1.dp,
         color = KoinTheme.colors.neutral0
     ) {
-        if( !storeInfo.isDeliveryAvailable ) {
+        if (!storeInfo.isDeliveryAvailable) {
             Text(
                 modifier = Modifier.fillMaxWidth().padding(12.dp),
                 lineHeight = 17.sp,
@@ -91,12 +90,12 @@ fun DeliveryInfoCard(
                 Row {
                     Text(text = stringResource(R.string.minimum_order), fontSize = 12.sp, lineHeight = 18.sp)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = stringResource(R.string.price_with_won,storeInfo.minimumOrderAmount?:0), fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
+                    Text(text = stringResource(R.string.price_with_won, storeInfo.minimumOrderAmount ?: 0), fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
                 }
                 Row {
                     Text(text = stringResource(R.string.delivery_fee), fontSize = 12.sp, lineHeight = 18.sp)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(stringResource(R.string.price_with_won,storeInfo.minimumDeliveryTip?:0), fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
+                    Text(stringResource(R.string.price_with_won, storeInfo.minimumDeliveryTip ?: 0), fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
                 }
             }
             Icon(painter = painterResource(id = R.drawable.ic_delivery_arrow_right), contentDescription = null, modifier = Modifier.size(10.dp))

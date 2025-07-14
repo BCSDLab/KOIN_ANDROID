@@ -8,7 +8,7 @@ data class MenuCategoryModel(
     val menuGroupId: Int,
     val menuGroupName: String,
     val menus: List<MenuModel>,
-    val isChecked: Boolean = false,
+    val isChecked: Boolean = false
 )
 
 data class MenuModel(
@@ -28,7 +28,6 @@ data class MenuPriceModel(
     val price: Int?
 )
 
-
 /**
  * 상점 정보 모델
  */
@@ -44,7 +43,7 @@ data class ShopInfoModel(
     val isTakeoutAvailable: Boolean,
     val minimumOrderAmount: Int?,
     val minimumDeliveryTip: Int?,
-    val maximumDeliveryTip: Int?,
+    val maximumDeliveryTip: Int?
 ) {
     companion object {
         fun empty() = ShopInfoModel(
@@ -74,7 +73,7 @@ data class StoreDescriptionModel(
     val notice: String?,
     val deliveryTips: List<DeliveryTipModel>?,
     val origins: List<OriginModel>?,
-    val ownerInfo: OwnerInfoModel?,
+    val ownerInfo: OwnerInfoModel?
 ) {
     companion object {
         fun empty() = StoreDescriptionModel(
@@ -91,28 +90,28 @@ data class StoreDescriptionModel(
 data class DeliveryTipModel(
     val fromAmount: Int?,
     val toAmount: Int?,
-    val fee: Int?,
+    val fee: Int?
 )
 
 data class OwnerInfoModel(
     val name: String?,
     val shopName: String?,
     val address: String?,
-    val companyRegistrationNumber : String?,
+    val companyRegistrationNumber: String?
 ) {
     companion object {
         fun empty() = OwnerInfoModel(
             name = "",
             shopName = "",
             address = "",
-            companyRegistrationNumber = "",
+            companyRegistrationNumber = ""
         )
     }
 }
 
 data class OriginModel(
     val ingredients: String,
-    val origin: String,
+    val origin: String
 ) {
     companion object {
         fun empty() = OriginModel(

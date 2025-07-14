@@ -53,7 +53,6 @@ import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.UploadUrlRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.VersionRemoteDataSource
-import `in`.koreatech.koin.domain.model.ordershop.OrderShop
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.repository.BannerRepository
 import `in`.koreatech.koin.domain.repository.CartRepository

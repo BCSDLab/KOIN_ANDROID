@@ -24,8 +24,8 @@ data class StoreDetailState(
 fun OwnerInfoModel?.hasAnyInfo(): Boolean {
     return this?.let {
         it.name != null ||
-                it.shopName != null ||
-                it.address != null ||
-                it.companyRegistrationNumber != null
+            it.shopName != null ||
+            it.address != null ||
+            it.companyRegistrationNumber != null
     } ?: false
 }

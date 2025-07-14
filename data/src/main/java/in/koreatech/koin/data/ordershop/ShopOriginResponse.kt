@@ -28,7 +28,7 @@ data class ShopOriginResponse(
     val ownerInfoResponse: OwnerInfoResponse,
     @SerializedName("origins")
     val origins: List<Origin>
-){
+) {
     data class DeliveryTip(
         @SerializedName("from_amount")
         val fromAmount: Int,

@@ -20,12 +20,12 @@ import `in`.koreatech.koin.feature.store.model.toStoreIndoModel
 import `in`.koreatech.koin.feature.store.model.toStoreInfoModel
 import `in`.koreatech.koin.feature.store.view.StoreDetailSideEffect
 import `in`.koreatech.koin.feature.store.view.StoreDetailState
+import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import javax.inject.Inject
 
 @HiltViewModel
 class StoreDetailViewModel @Inject constructor(
@@ -40,7 +40,7 @@ class StoreDetailViewModel @Inject constructor(
 ) : ViewModel(), ContainerHost<StoreDetailState, StoreDetailSideEffect> {
     override val container =
         container<StoreDetailState, StoreDetailSideEffect>(StoreDetailState()) {
-            val storeId = savedStateHandle.get<Int>(STORE_ID)
+            val storeId = 11 // savedStateHandle.get<Int>(STORE_ID)
             val orderableStoreId = savedStateHandle.get<Int>(ORDERABLE_STORE_ID)
             checkNotNull(storeId)
 
@@ -132,7 +132,7 @@ class StoreDetailViewModel @Inject constructor(
                         ).let { listOf(it) },
                         origins = null,
                         ownerInfo = null
-                    ),
+                    )
                 )
             }
         }

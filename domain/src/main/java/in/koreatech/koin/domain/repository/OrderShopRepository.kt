@@ -1,8 +1,8 @@
 package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.ordershop.OrderMenuList
-import `in`.koreatech.koin.domain.model.ordershop.OrderShopSummary
 import `in`.koreatech.koin.domain.model.ordershop.OrderShop
+import `in`.koreatech.koin.domain.model.ordershop.OrderShopSummary
 
 interface OrderShopRepository {
     suspend fun getOrderableShopMenus(orderableShopId: Int): List<OrderMenuList>

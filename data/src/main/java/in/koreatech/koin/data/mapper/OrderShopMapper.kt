@@ -9,7 +9,6 @@ import `in`.koreatech.koin.domain.model.ordershop.OrderMenuList
 import `in`.koreatech.koin.domain.model.ordershop.OrderShop
 import `in`.koreatech.koin.domain.model.ordershop.OrderShopSummary
 
-
 fun OrderMenuListResponse.toOrderMenuList() = OrderMenuList(
     menuGroupId = menuGroupId,
     menuGroupName = menuGroupName,
@@ -44,7 +43,7 @@ fun OrderShopResponse.toOrderShop() = OrderShopSummary(
     reviewCount = reviewCount,
     minimumDeliveryTip = minimumDeliveryTip,
     maximumDeliveryTip = maximumDeliveryTip,
-    images = images.map { it.imageUrl }
+    images = ShopImages.map { it.imageUrl }
 )
 
 fun ShopOriginResponse.toShopOrigin() = OrderShop(
