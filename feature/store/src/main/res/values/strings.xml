@@ -9,11 +9,17 @@
     <string name="shopping_cart">장바구니</string>
     <string name="add_more">더 담으러 가기</string>
     <string name="plus">+</string>
-    <string name="shopping_cart_is_empty">장바구니가 비었어요.</string>
+    <string name="shopping_cart_is_empty">장바구니가 비었어요</string>
     <string name="add_menu">메뉴 추가</string>
     <string name="pickup">포장</string>
     <string name="delivery">배달</string>
     <string name="delete_all">전체삭제</string>
+    <string name="yes">예</string>
+    <string name="no">아니요</string>
+    <string name="delete_menu_dialog_message">정말로 담았던 메뉴들을\n전체 삭제하시겠어요?</string>
+    <string name="store_is_not_operating_dialog_message">영업시간이 아니라서 주문할 수 없어요.\n담았던 메뉴는 삭제할까요?</string>
+    <string name="order_only_notice">이 가게는 %1$s만 가능해요</string>
+
 
     <!--상점 상세-->
     <string name="store_info_and_origin">가게정보·원산지</string>

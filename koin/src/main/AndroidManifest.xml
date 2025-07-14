@@ -44,6 +44,13 @@
             android:exported="true"/>
 
         <activity
+            android:name=".storev2.ShoppingCartActivity"
+            android:theme="@style/KAPTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true"/>
+
+
+        <activity
             android:name=".ui.timetablev2.TimetableActivity"
             android:exported="false"
             android:theme="@style/KAPTheme.NoActionBar"

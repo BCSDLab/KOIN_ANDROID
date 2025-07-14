@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -35,15 +34,14 @@ import `in`.koreatech.koin.feature.store.R
 
 fun LazyListScope.menuListSection(
     category: String,
-    menus: List<LegacyShopMenus>
+    menus: List<LegacyShopMenus>,
+    modifier: Modifier = Modifier
 ) {
     if (menus.isEmpty()) return
 
     item {
         Column(
-            modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .navigationBarsPadding()
+            modifier = modifier
         ) {
             Text(
                 text = category,
@@ -64,7 +62,11 @@ fun LazyListScope.menuListSection(
             ) {
                 Column {
                     menus.forEachIndexed { index, menu ->
-                        MenuItem(menu = menu)
+                        MenuItem(
+                            modifier = Modifier
+                                .padding(16.dp),
+                            menu = menu
+                        )
                         if (index != menus.lastIndex) {
                             Divider(
                                 color = KoinTheme.colors.neutral300,
@@ -80,9 +82,10 @@ fun LazyListScope.menuListSection(
 
 @Composable
 fun MenuItem(
-    menu: LegacyShopMenus
+    menu: LegacyShopMenus,
+    modifier: Modifier = Modifier
 ) {
-    Row(modifier = Modifier.padding(16.dp)) {
+    Row(modifier = modifier) {
         Column(modifier = Modifier.weight(1f)) {
             Text(text = menu.name, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
             if (menu.description != null) {
@@ -94,6 +97,7 @@ fun MenuItem(
                 )
             }
             OptionPriceText(
+                modifier = Modifier.padding(top = 4.dp),
                 shopMenus = menu
             )
         }
@@ -118,10 +122,11 @@ fun MenuItem(
 
 @Composable
 private fun OptionPriceText(
+    modifier: Modifier = Modifier,
     shopMenus: LegacyShopMenus
 ) {
     Column(
-        modifier = Modifier.padding(top = 4.dp)
+        modifier = modifier
     ) {
         if (shopMenus.isSingle) {
             Text(
@@ -145,6 +150,7 @@ private fun MenuListSectionPreview() {
             contentPadding = PaddingValues(16.dp)
         ) {
             menuListSection(
+                modifier = Modifier.fillMaxWidth(),
                 category = "추천메뉴",
                 menus = listOf(
                     LegacyShopMenus(
