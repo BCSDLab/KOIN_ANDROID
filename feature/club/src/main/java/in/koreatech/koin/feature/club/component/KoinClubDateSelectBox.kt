@@ -49,7 +49,7 @@ fun KoinClubDateSelectBox(
             )
             .clip(shape = KoinTheme.shapes.small)
             .clickable { onClick() }
-            .padding(start = 8.dp, top = 4.dp, end = 8.dp, bottom = 4.dp),
+            .padding(vertical = 4.dp, horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
