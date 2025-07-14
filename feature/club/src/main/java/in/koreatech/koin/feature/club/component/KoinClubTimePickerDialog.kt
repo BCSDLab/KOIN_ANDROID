@@ -74,13 +74,6 @@ fun KoinClubTimePickerDialog(
             }
     }
 
-    LaunchedEffect(minutesPickerState) {
-        snapshotFlow { minutesPickerState.selectedItem }
-            .collect { item ->
-                Timber.e("item :$item")
-            }
-    }
-
     BasicAlertDialog(
         onDismissRequest = onDismiss,
         modifier = modifier
@@ -169,8 +162,7 @@ fun KoinClubTimePickerDialog(
                     OutlinedButton(
                         modifier =
                         Modifier
-                            .height(48.dp)
-                            .weight(1.0F),
+                            .weight(1.0f),
                         colors =
                         ButtonColors(
                             containerColor = KoinTheme.colors.neutral0,
@@ -178,8 +170,8 @@ fun KoinClubTimePickerDialog(
                             disabledContainerColor = KoinTheme.colors.neutral400,
                             disabledContentColor = KoinTheme.colors.neutral500
                         ),
+                        contentPadding = PaddingValues(vertical = 12.dp, horizontal = 12.dp),
                         shape = MaterialTheme.shapes.extraSmall,
-                        contentPadding = PaddingValues(0.dp),
                         border = BorderStroke(1.dp, KoinTheme.colors.neutral500),
                         onClick = onNegative
                     ) {
@@ -192,9 +184,9 @@ fun KoinClubTimePickerDialog(
                     FilledButton(
                         modifier =
                         Modifier
-                            .height(48.dp)
-                            .weight(1.0F),
+                            .weight(1.0f),
                         text = stringResource(id = R.string.common_confirmation),
+                        contentPadding = PaddingValues(vertical = 12.dp, horizontal = 12.dp),
                         onClick = {
                             onPositive(
                                 LocalTime.of(
