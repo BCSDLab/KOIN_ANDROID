@@ -65,7 +65,7 @@ import `in`.koreatech.koin.feature.club.component.KoinClubDateSelectBox
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
 import `in`.koreatech.koin.feature.club.component.KoinClubTimePickerDialog
-import `in`.koreatech.koin.feature.club.component.getDayOfWeek
+import `in`.koreatech.koin.feature.club.utils.getDayOfWeek
 import `in`.koreatech.koin.feature.club.utils.pickMultipleMedia
 import java.time.LocalDate
 import java.time.LocalDateTime

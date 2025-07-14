@@ -23,7 +23,6 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
-import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -87,17 +86,6 @@ fun KoinClubDatePickerDialog(
         }
     }
 }
-
-fun getDayOfWeek(dayOfWeek: DayOfWeek): String =
-    when (dayOfWeek) {
-        DayOfWeek.MONDAY -> "월"
-        DayOfWeek.TUESDAY -> "화"
-        DayOfWeek.WEDNESDAY -> "수"
-        DayOfWeek.THURSDAY -> "목"
-        DayOfWeek.FRIDAY -> "금"
-        DayOfWeek.SATURDAY -> "토"
-        DayOfWeek.SUNDAY -> "일"
-    }
 
 fun LocalDate.toMillis(): Long =
     this.atStartOfDay(ZoneId.of("UTC")).toInstant().toEpochMilli()
