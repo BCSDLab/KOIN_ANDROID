@@ -15,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,7 +33,9 @@ import kotlinx.collections.immutable.persistentListOf
 
 /**
  * Same component at LostAndFound module's Dropdown
- * except DropdownMenu Modifier, Column item's horizontal padding 12.dp to 22.dp
+ * except DropdownMenu Modifier,
+ * Column item's horizontal padding 12.dp to 22.dp,
+ * title Box { Text() } form, longestText
  */
 @Composable
 fun KoinClubEventsDropdown(
@@ -61,12 +64,24 @@ fun KoinClubEventsDropdown(
             .padding(start = 12.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = title,
-            style = KoinTheme.typography.medium14.copy(fontWeight = FontWeight.SemiBold),
-            color = KoinTheme.colors.primary600,
-            maxLines = 1
-        )
+        val longestText = remember(items) { items.maxByOrNull { it.length } ?: "" }
+        Box(
+            contentAlignment = Alignment.Center
+        ) {
+            // feat title size to menu size
+            Text(
+                text = longestText,
+                style = KoinTheme.typography.medium14.copy(fontWeight = FontWeight.SemiBold),
+                color = KoinTheme.colors.info200, // invisible
+                maxLines = 1
+            )
+            Text(
+                text = title,
+                style = KoinTheme.typography.medium14.copy(fontWeight = FontWeight.SemiBold),
+                color = KoinTheme.colors.primary600,
+                maxLines = 1
+            )
+        }
         Spacer(modifier = Modifier.width(4.dp))
         Icon(
             modifier = Modifier.rotate(rotateDegree),
@@ -119,6 +134,6 @@ private fun KoinClubEventsDropdownPreview() {
     KoinClubEventsDropdown(
         title = "행사 진행 중",
         isDropdownExpanded = false,
-        items = persistentListOf("최신 등록순", "행사 예정", "종료 행사")
+        items = persistentListOf("행사 진행 중", "최신 등록순", "행사 예정", "종료 행사")
     )
 }

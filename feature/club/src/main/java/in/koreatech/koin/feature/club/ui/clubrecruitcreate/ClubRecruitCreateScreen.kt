@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -42,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -58,8 +60,8 @@ import `in`.koreatech.koin.feature.club.component.KoinClubDatePickerDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubDateSelectBox
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
+import `in`.koreatech.koin.feature.club.component.getDayOfWeek
 import `in`.koreatech.koin.feature.club.utils.pickMedia
-import java.time.DayOfWeek
 import java.time.LocalDate
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -118,7 +120,8 @@ fun ClubRecruitCreateScreen(
             dismissCreateRequestDialog = viewModel::dismissCreateRequestDialog,
             showCreateCancelDialogState = uiState.showCreateCancelDialog,
             showCreateCancelDialog = viewModel::showCreateCancelDialog,
-            dismissCreateCancelDialog = viewModel::dismissCreateCancelDialog
+            dismissCreateCancelDialog = viewModel::dismissCreateCancelDialog,
+            onImageDeleteClick = viewModel::deleteImageUrl
         )
     }
 }
@@ -145,7 +148,8 @@ fun ClubRecruitCreateScreenImpl(
     showCreateRequestDialog: () -> Unit = {},
     dismissCreateRequestDialog: () -> Unit = {},
     showCreateCancelDialog: () -> Unit = {},
-    dismissCreateCancelDialog: () -> Unit = {}
+    dismissCreateCancelDialog: () -> Unit = {},
+    onImageDeleteClick: () -> Unit = {}
 ) {
     val context = LocalContext.current
 
@@ -162,6 +166,11 @@ fun ClubRecruitCreateScreenImpl(
 
     if (showDatePickerDialogState) {
         KoinClubDatePickerDialog(
+            defaultDate = if (isStartDateSelected) {
+                recruitStartDate
+            } else {
+                recruitEndDate
+            },
             onPositive = {
                 if (isStartDateSelected) {
                     setRecruitStartDate(it)
@@ -256,7 +265,7 @@ fun ClubRecruitCreateScreenImpl(
                 ) {
                     KoinClubDateSelectBox(
                         text = stringResource(
-                            R.string.club_recruit_create_date_format,
+                            R.string.club_date_picker_format,
                             recruitStartDate.year,
                             recruitStartDate.monthValue,
                             recruitStartDate.dayOfMonth,
@@ -274,7 +283,7 @@ fun ClubRecruitCreateScreenImpl(
                     )
                     KoinClubDateSelectBox(
                         text = stringResource(
-                            R.string.club_recruit_create_date_format,
+                            R.string.club_date_picker_format,
                             recruitEndDate.year,
                             recruitEndDate.monthValue,
                             recruitEndDate.dayOfMonth,
@@ -309,19 +318,34 @@ fun ClubRecruitCreateScreenImpl(
                         contentDescription = null
                     )
                 } else {
-                    SubcomposeAsyncImage(
-                        model = imageUrl,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        loading = {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator()
+                    Box {
+                        SubcomposeAsyncImage(
+                            model = imageUrl,
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            loading = {
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    CircularProgressIndicator()
+                                }
                             }
-                        }
-                    )
+                        )
+                        Image(
+                            painter = painterResource(R.drawable.icon_qna_delete),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .size(20.dp)
+                                .align(Alignment.TopEnd)
+                                .clickable { onImageDeleteClick() }
+                                .background(
+                                    color = KoinTheme.colors.neutral0.copy(alpha = 0.5f),
+                                    shape = KoinTheme.shapes.extraLarge
+                                )
+                                .padding(vertical = 2.dp, horizontal = 2.dp)
+                        )
+                    }
                 }
                 Text(
                     text = stringResource(R.string.club_recruit_create_logo_description),
@@ -395,14 +419,3 @@ fun handleSideEffect(
         }
     }
 }
-
-private fun getDayOfWeek(dayOfWeek: DayOfWeek): String =
-    when (dayOfWeek) {
-        DayOfWeek.MONDAY -> "월"
-        DayOfWeek.TUESDAY -> "화"
-        DayOfWeek.WEDNESDAY -> "수"
-        DayOfWeek.THURSDAY -> "목"
-        DayOfWeek.FRIDAY -> "금"
-        DayOfWeek.SATURDAY -> "토"
-        DayOfWeek.SUNDAY -> "일"
-    }

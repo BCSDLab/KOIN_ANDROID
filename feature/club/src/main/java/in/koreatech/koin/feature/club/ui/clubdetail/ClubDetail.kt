@@ -94,6 +94,7 @@ import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_LOCATION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_OPEN_CHAT
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_PHONE_NUMBER
 import `in`.koreatech.koin.feature.club.type.DetailTabType
+import `in`.koreatech.koin.feature.club.type.eventSearchTypeList
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.DetailImageDialog
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogAddQnaContent
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogEmpowermentContent
@@ -117,6 +118,7 @@ fun ClubDetail(
     onModifyClick: (Int) -> Unit = {},
     onRecruitCreateClick: (Int) -> Unit = {},
     onRecruitModifyClick: (Int) -> Unit = {},
+    onEventCreateClick: (Int) -> Unit = {},
     resetClubModifiedState: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
@@ -652,7 +654,16 @@ fun ClubDetail(
                         DetailTabType.EVENT.strResId -> {
                             ClubDetailEvents(
                                 isDropdownExpanded = state.isEventsDropdownExpanded,
-                                onDropdownExpandChange = viewModel::updateEventsDropdownExpanded
+                                clubEvents = state.clubEvents,
+                                onDropdownExpandChange = viewModel::updateEventsDropdownExpanded,
+                                showProgressBar = state.showEventsProgressBar,
+                                dropdownTitle = stringResource(state.clubEventSearchType.strRes),
+                                dropdownList = eventSearchTypeList,
+                                isManager = state.clubDetails?.manager ?: false,
+                                onDropdownItemSelected = { index ->
+                                    viewModel.updateClubEventSearchType(eventSearchTypeList[index])
+                                },
+                                onEventCreateClick = { onEventCreateClick(state.clubId) }
                             )
                         }
                         DetailTabType.QNA.strResId -> {
@@ -724,6 +735,9 @@ suspend fun handleSideEffect(
             ToastUtil.getInstance().makeShort(sideEffect.messageResId)
         }
         is ClubDetailSideEffect.LoadClubRecruitmentError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.LoadClubEventError -> {
             ToastUtil.getInstance().makeShort(sideEffect.messageResId)
         }
         is ClubDetailSideEffect.UnknownError -> {

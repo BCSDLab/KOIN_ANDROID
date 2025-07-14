@@ -12,6 +12,7 @@ import `in`.koreatech.koin.domain.usecase.club.CancelClubLikeUseCase
 import `in`.koreatech.koin.domain.usecase.club.DeleteClubQnaUseCase
 import `in`.koreatech.koin.domain.usecase.club.DeleteClubRecruitmentUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubDetailsUseCase
+import `in`.koreatech.koin.domain.usecase.club.GetClubEventsUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubQnasUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubRecruitmentUseCase
 import `in`.koreatech.koin.domain.usecase.club.PostClubQnaUseCase
@@ -20,14 +21,17 @@ import `in`.koreatech.koin.domain.usecase.club.SetClubLikeUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubDetails
+import `in`.koreatech.koin.feature.club.model.toParcelizeClubEvent
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubQnasInfo
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubRecruitment
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
+import `in`.koreatech.koin.feature.club.type.EventSearchType
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import okhttp3.internal.immutableListOf
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
@@ -46,7 +50,8 @@ class ClubDetailViewModel @Inject constructor(
     private val setClubEmpowermentUseCase: SetClubEmpowermentUseCase,
     private val setClubLikeUseCase: SetClubLikeUseCase,
     private val getClubRecruitmentUseCase: GetClubRecruitmentUseCase,
-    private val deleteClubRecruitmentUseCase: DeleteClubRecruitmentUseCase
+    private val deleteClubRecruitmentUseCase: DeleteClubRecruitmentUseCase,
+    private val getClubEventsUseCase: GetClubEventsUseCase
 ) : ViewModel(), ContainerHost<ClubDetailState, ClubDetailSideEffect> {
     override val container = container<ClubDetailState, ClubDetailSideEffect>(
         initialState = ClubDetailState(),
@@ -76,6 +81,7 @@ class ClubDetailViewModel @Inject constructor(
         loadClubDetails()
         loadClubQnas()
         loadClubRecruitment()
+        loadClubEvents()
     }
 
     private fun getUserIdCollect() = intent {
@@ -150,6 +156,30 @@ class ClubDetailViewModel @Inject constructor(
                 }
                 is KoinClubException.ClubRecruitNotFoundException -> {
                     reduce { state.copy(clubRecruitment = null) }
+                }
+                else -> throw e
+            }
+        }
+    }
+
+    private fun loadClubEvents() = intent {
+        reduce { state.copy(isLoading = true, showEventsProgressBar = true) }
+        getClubEventsUseCase(state.clubId, state.clubEventSearchType.value).onSuccess {
+            reduce {
+                state.copy(
+                    clubEvents = it.map { it.toParcelizeClubEvent() },
+                    isLoading = false,
+                    showEventsProgressBar = false
+                )
+            }
+        }.onFailure { e ->
+            reduce { state.copy(isLoading = false, showEventsProgressBar = false) }
+            when (e) {
+                is KoinClubException.WrongInputDataException -> {
+                    postSideEffect(ClubDetailSideEffect.LoadClubRecruitmentError)
+                }
+                is KoinClubException.ClubEventNotFoundException -> {
+                    reduce { state.copy(clubEvents = immutableListOf()) }
                 }
                 else -> throw e
             }
@@ -348,7 +378,7 @@ class ClubDetailViewModel @Inject constructor(
         dismissLoginDialog()
     }
 
-    fun updateEventsDropdownExpanded(bool : Boolean) = intent {
+    fun updateEventsDropdownExpanded(bool: Boolean) = intent {
         reduce { state.copy(isEventsDropdownExpanded = bool) }
     }
 
@@ -412,5 +442,10 @@ class ClubDetailViewModel @Inject constructor(
 
     fun dismissImageDialog() = intent {
         reduce { state.copy(showImageDialog = false) }
+    }
+
+    fun updateClubEventSearchType(eventSearchType: EventSearchType) = intent {
+        reduce { state.copy(clubEventSearchType = eventSearchType) }
+        loadClubEvents()
     }
 }
