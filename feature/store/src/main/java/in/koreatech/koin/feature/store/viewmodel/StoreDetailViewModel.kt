@@ -41,8 +41,14 @@ class StoreDetailViewModel @Inject constructor(
     override val container =
         container<StoreDetailState, StoreDetailSideEffect>(StoreDetailState()) {
             val storeId = savedStateHandle.get<Int>(STORE_ID)
+            val orderableStoreId = savedStateHandle.get<Int>(ORDERABLE_STORE_ID)
             checkNotNull(storeId)
-            fetchStore(storeId)
+
+            if (orderableStoreId == null) {
+                fetchStore(storeId)
+            } else {
+                fetchOrderableStore(orderableStoreId)
+            }
             fetchReview(storeId)
             checkToken()
         }
