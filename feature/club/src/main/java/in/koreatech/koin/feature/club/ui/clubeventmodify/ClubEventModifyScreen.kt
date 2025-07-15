@@ -96,7 +96,7 @@ fun ClubEventModifyScreen(
         containerColor = KoinTheme.colors.neutral0,
         topBar = {
             KoinTopAppBar(
-                title = stringResource(R.string.club_event_create_title),
+                title = stringResource(R.string.club_event_modify_title),
                 onNavigationIconClick = { viewModel.updateCreateCancelDialog(true) }
             )
         },
@@ -125,6 +125,7 @@ fun ClubEventModifyScreen(
             updateEventName = viewModel::updateEventName,
             updateEventIntroduce = viewModel::updateEventIntroduce,
             updateEventContent = viewModel::updateEventContent,
+            updateEventLoading = viewModel::updateEventLoading,
             setEventStartDate = viewModel::setEventStartDate,
             setEventEndDate = viewModel::setEventEndDate,
             setEventStartTime = viewModel::setEventStartTime,
@@ -157,6 +158,7 @@ fun ClubEventCreateScreenImpl(
     updateEventName: (String) -> Unit = {},
     updateEventIntroduce: (String) -> Unit = {},
     updateEventContent: (String) -> Unit = {},
+    updateEventLoading: (Boolean) -> Unit = {},
     setEventStartDate: (LocalDate) -> Unit = {},
     setEventEndDate: (LocalDate) -> Unit = {},
     setEventStartTime: (LocalTime) -> Unit = {},
@@ -207,7 +209,7 @@ fun ClubEventCreateScreenImpl(
 
     if (showTimePickerDialogState) {
         KoinClubTimePickerDialog(
-            title = "시간을 선택해주세요.",
+            title = stringResource(R.string.club_time_picker_title),
             isStartTime = isStartDateSelected,
             defaultTime = if (isStartDateSelected) {
                 eventStartDateTime.toLocalTime()
@@ -230,11 +232,11 @@ fun ClubEventCreateScreenImpl(
     if (showModifyRequestDialogState) {
         KoinClubExtraSmallDialog(
             title = "",
-            description = stringResource(R.string.club_recruit_create_request_dialog_description),
+            description = stringResource(R.string.club_event_modify_request_dialog_description),
             descriptionStyle = KoinTheme.typography.medium15,
             descriptionColor = KoinTheme.colors.neutral600,
-            positiveButtonText = stringResource(R.string.club_recruit_create_request_dialog_positive),
-            negativeButtonText = stringResource(R.string.club_recruit_create_request_dialog_negative),
+            positiveButtonText = stringResource(R.string.club_event_modify_request_dialog_positive),
+            negativeButtonText = stringResource(R.string.club_event_modify_request_dialog_negative),
             titleTextAlign = TextAlign.Center,
             descriptionTextAlign = TextAlign.Center,
             positiveButtonColors = FilledButtonColors.Primary,
@@ -249,11 +251,11 @@ fun ClubEventCreateScreenImpl(
 
     if (showModifyCancelDialogState) {
         KoinClubExtraSmallDialog(
-            description = stringResource(R.string.club_recruit_create_cancel_dialog_description),
+            description = stringResource(R.string.club_event_modify_cancel_dialog_description),
             descriptionStyle = KoinTheme.typography.medium15,
             descriptionColor = KoinTheme.colors.neutral600,
-            positiveButtonText = stringResource(R.string.club_recruit_create_cancel_dialog_positive),
-            negativeButtonText = stringResource(R.string.club_recruit_create_cancel_dialog_negative),
+            positiveButtonText = stringResource(R.string.club_event_modify_cancel_dialog_positive),
+            negativeButtonText = stringResource(R.string.club_event_modify_cancel_dialog_negative),
             titleTextAlign = TextAlign.Center,
             descriptionTextAlign = TextAlign.Center,
             positiveButtonColors = KoinClubExtraSmallDialogDanger.positiveButtonColors(),
@@ -298,6 +300,7 @@ fun ClubEventCreateScreenImpl(
                     .border(1.dp, Color.Unspecified, KoinTheme.shapes.extraLarge)
                     .background(KoinTheme.colors.neutral200)
                     .clickable {
+                        updateEventLoading(true)
                         pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                     },
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -404,7 +407,7 @@ fun ClubEventCreateScreenImpl(
                     KoinClubDateSelectBox(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(
-                            R.string.club_date_picker_time_format,
+                            R.string.club_time_picker_format,
                             eventStartDateTime.hour,
                             eventStartDateTime.minute
                         ),
@@ -439,7 +442,7 @@ fun ClubEventCreateScreenImpl(
                     KoinClubDateSelectBox(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(
-                            R.string.club_date_picker_time_format,
+                            R.string.club_time_picker_format,
                             eventEndDateTime.hour,
                             eventEndDateTime.minute
                         ),
