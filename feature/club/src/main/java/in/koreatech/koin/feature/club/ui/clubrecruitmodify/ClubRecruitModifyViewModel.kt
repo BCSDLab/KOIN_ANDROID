@@ -38,7 +38,7 @@ class ClubRecruitModifyViewModel @Inject constructor(
     }
 
     private fun loadClubRecruitment() = intent {
-        reduce { state.copy(isLoading = true) }
+        reduce { state.copy(isLoading = true, isRecruitLoading = true) }
         getClubRecruitmentUseCase(state.clubId).onSuccess {
             val clubRecruitment = it.toParcelizeClubRecruitment()
             val dateFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
@@ -46,6 +46,7 @@ class ClubRecruitModifyViewModel @Inject constructor(
                 reduce {
                     state.copy(
                         isLoading = false,
+                        isRecruitLoading = false,
                         recruitImageUrl = it.imageUrl ?: "",
                         recruitStartDate = if (it.startDate.isNotEmpty()) LocalDate.parse(it.startDate, dateFormatter) else state.recruitStartDate,
                         recruitEndDate = if (it.startDate.isNotEmpty()) LocalDate.parse(it.endDate, dateFormatter) else state.recruitEndDate,
@@ -55,7 +56,7 @@ class ClubRecruitModifyViewModel @Inject constructor(
                 }
             }
         }.onFailure { e ->
-            reduce { state.copy(isLoading = false) }
+            reduce { state.copy(isLoading = false, isRecruitLoading = false) }
             when (e) {
                 is KoinClubException.WrongInputDataException,
                 is KoinClubException.ClubRecruitNotFoundException -> {

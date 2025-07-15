@@ -9,6 +9,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ClubEventModifyState(
     val isLoading: Boolean = false,
+    val isEventLoading: Boolean = false,
     val clubId: Int = -1,
     val eventId: Int = -1,
     val eventName: String= "",

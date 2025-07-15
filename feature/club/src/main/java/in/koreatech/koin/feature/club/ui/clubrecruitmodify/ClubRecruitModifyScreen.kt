@@ -49,6 +49,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
@@ -98,6 +99,7 @@ fun ClubRecruitModifyScreen(
             modifier = Modifier
                 .padding(contentPadding),
             imageUrl = uiState.recruitImageUrl,
+            isLoading = uiState.isRecruitLoading,
             uploadImage = { fileSize, fileType, fileName, fileUri ->
                 viewModel.getPreSignedUrl(
                     fileSize = fileSize,
@@ -133,6 +135,7 @@ fun ClubRecruitCreateScreenImpl(
     recruitEndDate: LocalDate,
     modifier: Modifier = Modifier,
     imageUrl: String = "",
+    isLoading: Boolean = false,
     showDatePickerDialogState: Boolean = false,
     recruitAlways: Boolean = false,
     showModifyRequestDialogState: Boolean = false,
@@ -222,6 +225,17 @@ fun ClubRecruitCreateScreenImpl(
             onNegative = { updateModifyCancelDialog(false) },
             onDismiss = { updateModifyCancelDialog(false) }
         )
+    }
+
+    if (isLoading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .zIndex(1f),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
     }
 
     Column(

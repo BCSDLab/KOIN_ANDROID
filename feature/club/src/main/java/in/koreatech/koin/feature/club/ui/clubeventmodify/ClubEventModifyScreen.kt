@@ -53,6 +53,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
@@ -111,6 +112,7 @@ fun ClubEventModifyScreen(
             eventEndDateTime = uiState.eventEndDateTime,
             imageUrls = uiState.eventImageUrls,
             uploadImage = viewModel::getPreSignedUrl,
+            isLoading = uiState.isEventLoading,
             onImageDeleteClick = viewModel::deleteImageUrl,
             showModifyCancelDialogState = uiState.showModifyCancelDialog,
             showModifyRequestDialogState = uiState.showModifyRequestDialog,
@@ -143,6 +145,7 @@ fun ClubEventCreateScreenImpl(
     eventEndDateTime: LocalDateTime,
     modifier: Modifier = Modifier,
     imageUrls: List<String> = persistentListOf(),
+    isLoading: Boolean = false,
     showModifyCancelDialogState: Boolean = false,
     showModifyRequestDialogState: Boolean = false,
     showDatePickerDialogState: Boolean = false,
@@ -261,6 +264,17 @@ fun ClubEventCreateScreenImpl(
             onNegative = { updateModifyCancelDialog(false) },
             onDismiss = { updateModifyCancelDialog(false) }
         )
+    }
+
+    if (isLoading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .zIndex(1f),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
     }
 
     Column(

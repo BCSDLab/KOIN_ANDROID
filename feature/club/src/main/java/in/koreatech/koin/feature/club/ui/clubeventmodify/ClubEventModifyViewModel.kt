@@ -43,7 +43,7 @@ class ClubEventModifyViewModel @Inject constructor(
     }
 
     private fun loadClubEvent() = intent {
-        reduce { state.copy(isLoading = true) }
+        reduce { state.copy(isLoading = true, isEventLoading = true) }
         getClubEventUseCase(state.clubId, state.eventId).onSuccess {
             reduce {
                 state.copy(
@@ -53,11 +53,12 @@ class ClubEventModifyViewModel @Inject constructor(
                     eventImageUrls = it.imageUrls,
                     eventStartDateTime = it.startDate.toLocalDateTime(),
                     eventEndDateTime = it.endDate.toLocalDateTime(),
-                    isLoading = false
+                    isLoading = false,
+                    isEventLoading = false
                 )
             }
         }.onFailure {
-            reduce { state.copy(isLoading = false) }
+            reduce { state.copy(isLoading = false, isEventLoading = true) }
             postSideEffect(ClubEventModifySideEffect.LoadClubEventError)
         }
     }

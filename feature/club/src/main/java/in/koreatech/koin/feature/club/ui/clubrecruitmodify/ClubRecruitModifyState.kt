@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ClubRecruitModifyState(
     val isLoading: Boolean = false,
+    val isRecruitLoading: Boolean = false,
     val clubId: Int = -1,
     val recruitImageUrl: String = "",
     val showDatePickerDialog: Boolean = false,
