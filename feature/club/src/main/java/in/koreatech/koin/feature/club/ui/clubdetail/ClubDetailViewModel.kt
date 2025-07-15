@@ -412,6 +412,10 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(isEventsDropdownExpanded = bool) }
     }
 
+    fun updateEventsDeleteDialog(bool: Boolean) = blockingIntent {
+        reduce { state.copy(showEventDeleteDialog = bool) }
+    }
+
     fun showEmpowermentDialog() = intent {
         reduce { state.copy(showEmpowermentDialog = true) }
     }

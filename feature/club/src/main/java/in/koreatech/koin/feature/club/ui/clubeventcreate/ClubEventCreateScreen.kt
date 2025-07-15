@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.club.ui.clubeventcreate
 import android.content.Context
 import android.net.Uri
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -52,7 +53,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
@@ -88,6 +88,10 @@ fun ClubEventCreateScreen(
 
     viewModel.collectSideEffect { sideEffect ->
         handleSideEffect(sideEffect, context, onEventCreated, onNavigateUp)
+    }
+
+    BackHandler {
+        viewModel.updateCreateCancelDialog(true)
     }
 
     Scaffold(

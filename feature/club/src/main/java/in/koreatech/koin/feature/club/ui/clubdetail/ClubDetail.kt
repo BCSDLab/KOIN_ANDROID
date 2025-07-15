@@ -322,6 +322,25 @@ fun ClubDetail(
             )
         }
 
+        if (state.showEventDeleteDialog) {
+            KoinClubExtraSmallDialog(
+                description = stringResource(R.string.detail_event_delete_dialog_description),
+                descriptionStyle = KoinTheme.typography.medium15,
+                descriptionColor = KoinTheme.colors.neutral600,
+                positiveButtonText = stringResource(R.string.detail_event_delete_dialog_positive),
+                negativeButtonText = stringResource(R.string.detail_event_delete_dialog_negative),
+                positiveButtonColors = KoinClubExtraSmallDialogDanger.positiveButtonColors(),
+                titleTextAlign = TextAlign.Center,
+                descriptionTextAlign = TextAlign.Center,
+                onPositive = {
+                    viewModel.updateEventsDeleteDialog(false)
+                    viewModel.deleteClubEvent(state.clubEvents[state.selectedEventIndex].id)
+                },
+                onNegative = { viewModel.updateEventsDeleteDialog(false) },
+                onDismiss = { viewModel.updateEventsDeleteDialog(false) }
+            )
+        }
+
         LazyColumn(
             modifier = Modifier
                 .padding(contentPadding)
@@ -659,7 +678,9 @@ fun ClubDetail(
                                 ClubDetailEventInfo(
                                     clubEvent = selectedEvent,
                                     onBackPressed = viewModel::deselectEvent,
-                                    onEventDeleteClick = { viewModel.deleteClubEvent(selectedEvent.id) },
+                                    onEventDeleteClick = {
+                                        viewModel.updateEventsDeleteDialog(true)
+                                    },
                                     onEventModifyClick = { onEventModifyClick(state.clubId, selectedEvent.id) },
                                     isManager = state.clubDetails?.manager ?: false
                                 )
