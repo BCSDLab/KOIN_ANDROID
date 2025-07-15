@@ -45,7 +45,7 @@ fun KoinClubBasicTextField(
     modifier: Modifier = Modifier,
     hint: String = "",
     textStyle: TextStyle = KoinTheme.typography.regular14,
-    borderColor: Color = KoinTheme.colors.primary300,
+    borderColor: Color = KoinTheme.colors.neutral100,
     backgroundColor: Color = KoinTheme.colors.neutral100,
     enabled: Boolean = true,
     readOnly: Boolean = false,
