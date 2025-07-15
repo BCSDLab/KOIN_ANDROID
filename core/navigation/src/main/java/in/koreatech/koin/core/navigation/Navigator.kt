@@ -54,4 +54,10 @@ interface Navigator {
         targetChatId: Pair<String, Any?> = Pair("", 0),
         type: Pair<String, Any?> = Pair("", "")
     ): Intent
+
+    fun navigateToClubRecruitment(
+        context: Context,
+        targetClubId: Pair<String, Any?> = Pair("", 0),
+        type: Pair<String, Any?> = Pair("", "")
+    ): Intent
 }

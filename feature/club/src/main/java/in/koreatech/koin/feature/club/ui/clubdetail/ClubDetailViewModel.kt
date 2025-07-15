@@ -19,6 +19,8 @@ import `in`.koreatech.koin.domain.usecase.club.GetClubRecruitmentUseCase
 import `in`.koreatech.koin.domain.usecase.club.PostClubQnaUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubEmpowermentUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubLikeUseCase
+import `in`.koreatech.koin.domain.usecase.club.SubscribeClubRecruitmentUseCase
+import `in`.koreatech.koin.domain.usecase.club.UnsubscribeClubRecruitmentUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.model.ParcelizeClubEvent
@@ -55,7 +57,9 @@ class ClubDetailViewModel @Inject constructor(
     private val getClubRecruitmentUseCase: GetClubRecruitmentUseCase,
     private val deleteClubRecruitmentUseCase: DeleteClubRecruitmentUseCase,
     private val getClubEventsUseCase: GetClubEventsUseCase,
-    private val deleteClubEventUseCase: DeleteClubEventUseCase
+    private val deleteClubEventUseCase: DeleteClubEventUseCase,
+    private val subscribeClubRecruitmentUseCase: SubscribeClubRecruitmentUseCase,
+    private val unsubscribeClubRecruitmentUseCase: UnsubscribeClubRecruitmentUseCase
 ) : ViewModel(), ContainerHost<ClubDetailState, ClubDetailSideEffect> {
     override val container = container<ClubDetailState, ClubDetailSideEffect>(
         initialState = ClubDetailState(),
@@ -406,6 +410,30 @@ class ClubDetailViewModel @Inject constructor(
         }
         loadClubDetails()
         dismissLoginDialog()
+    }
+
+    fun changeClubRecruitmentSubscribe() = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true) }
+        state.clubDetails?.let {
+            if (it.isRecruitSubscribed) {
+                unsubscribeClubRecruitmentUseCase(clubId = state.clubId).onSuccess {
+                }.onFailure {
+                    postSideEffect(ClubDetailSideEffect.UnknownError)
+                }
+            } else {
+                subscribeClubRecruitmentUseCase(clubId = state.clubId).onSuccess {
+                }.onFailure {
+                    postSideEffect(ClubDetailSideEffect.UnknownError)
+                }
+            }
+        }
+        loadClubDetails()
+        dismissLoginDialog()
+    }
+
+    fun updateRecruitSubscribeDialog(bool: Boolean) = blockingIntent {
+        reduce { state.copy(showRecruitSubscribeDialog = bool) }
     }
 
     fun updateEventsDropdownExpanded(bool: Boolean) = blockingIntent {

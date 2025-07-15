@@ -4,6 +4,7 @@ import android.app.ActivityManager
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.core.content.getSystemService
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.activity.ActivityBase
@@ -16,6 +17,7 @@ import `in`.koreatech.koin.core.navigation.SchemeType
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_CLUB_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_NAV_TYPE
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
@@ -73,6 +75,8 @@ class SchemeActivity : ActivityBase() {
             Timber.e("url : $url")
             Timber.e("url to host : ${url?.toHost()}")
 
+            Log.e("MYLOG", "url : $url")
+            Log.e("MYLOG", "url to host : ${url?.toHost()}")
             /**
              * koin://shop
              * url?.toHost = shop
@@ -147,6 +151,19 @@ class SchemeActivity : ActivityBase() {
                                     targetChatId = Pair(
                                         EXTRA_CHAT_ROOM_ID,
                                         getChatRoomIdFromUrl(url)
+                                    ),
+                                    type = Pair(EXTRA_TYPE, host)
+                                )
+                            navigateToActivity(intent)
+                        }
+
+                        SchemeType.CLUB_RECRUIT.type -> {
+                            val intent =
+                                navigator.navigateToClubRecruitment(
+                                    context = this,
+                                    targetClubId = Pair(
+                                        EXTRA_CLUB_ID,
+                                        getIdFromUrl(url)
                                     ),
                                     type = Pair(EXTRA_TYPE, host)
                                 )

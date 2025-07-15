@@ -564,4 +564,54 @@ class ClubRepositoryImpl @Inject constructor(
             )
         }
     }
+
+    override suspend fun subscribeClubRecruitment(clubId: Int): Result<Unit> {
+        return runCatching {
+            val response = clubRemoteDataSource.subscribeClubRecruitment(clubId)
+            if (response.isSuccessful) {
+                Unit
+            } else {
+                throw HttpException(response)
+            }
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            400 -> KoinClubException.WrongInputDataException()
+                            403 -> KoinClubException.NotAllowedUserException()
+                            404 -> KoinClubException.ClubNotFoundException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+                    else -> exception
+                }
+            )
+        }
+    }
+
+    override suspend fun unsubscribeClubRecruitment(clubId: Int): Result<Unit> {
+        return runCatching {
+            val response = clubRemoteDataSource.unsubscribeClubRecruitment(clubId)
+            if (response.isSuccessful) {
+                Unit
+            } else {
+                throw HttpException(response)
+            }
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            400 -> KoinClubException.WrongInputDataException()
+                            403 -> KoinClubException.NotAllowedUserException()
+                            404 -> KoinClubException.ClubNotFoundException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+                    else -> exception
+                }
+            )
+        }
+    }
 }

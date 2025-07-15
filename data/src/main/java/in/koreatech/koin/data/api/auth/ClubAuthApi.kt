@@ -103,4 +103,14 @@ interface ClubAuthApi {
         @Path("clubId") clubId: Int,
         @Path("eventId") eventId: Int
     ): Response<Unit>
+
+    @POST(URLConstant.CLUBS.CLUBID.RECRUITMENT.NOTIFICATION)
+    suspend fun subscribeClubRecruitment(
+        @Path("clubId") clubId: Int
+    ): Response<Unit>
+
+    @DELETE(URLConstant.CLUBS.CLUBID.RECRUITMENT.NOTIFICATION)
+    suspend fun unsubscribeClubRecruitment(
+        @Path("clubId") clubId: Int
+    ): Response<Unit>
 }

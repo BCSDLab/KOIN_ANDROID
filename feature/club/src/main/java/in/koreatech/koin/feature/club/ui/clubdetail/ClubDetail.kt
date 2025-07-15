@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.club.ui.clubdetail
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -66,6 +67,7 @@ import coil.request.ImageRequest
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
+import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -113,6 +115,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun ClubDetail(
     isClubModified: Boolean = false,
+    isRecruitEvent: Boolean = false,
     initialPage: Int = 0,
     viewModel: ClubDetailViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {},
@@ -166,6 +169,13 @@ fun ClubDetail(
                 duration = SnackbarDuration.Short
             )
             resetClubModifiedState()
+        }
+    }
+
+    LaunchedEffect(isRecruitEvent) {
+        if (isRecruitEvent) {
+            pagerState.animateScrollToPage(1)
+            listState.animateScrollToItem(2)
         }
     }
 
@@ -338,6 +348,27 @@ fun ClubDetail(
                 },
                 onNegative = { viewModel.updateEventsDeleteDialog(false) },
                 onDismiss = { viewModel.updateEventsDeleteDialog(false) }
+            )
+        }
+
+        if (state.showRecruitSubscribeDialog) {
+            val isSubscribed = state.clubDetails?.isRecruitSubscribed ?: false
+            KoinClubExtraSmallDialog(
+                title = "",
+                description = stringResource(if (isSubscribed) R.string.detail_dialog_recruit_unsubscribe_text else R.string.detail_dialog_recruit_subscribe_text),
+                descriptionStyle = KoinTheme.typography.medium15,
+                descriptionColor = KoinTheme.colors.neutral600,
+                positiveButtonText = stringResource(if (isSubscribed) R.string.detail_dialog_recruit_unsubscribe_positive else R.string.detail_dialog_recruit_subscribe_positive),
+                negativeButtonText = stringResource(if (isSubscribed) R.string.detail_dialog_recruit_unsubscribe_negative else R.string.detail_dialog_recruit_subscribe_negative),
+                titleTextAlign = TextAlign.Center,
+                descriptionTextAlign = TextAlign.Center,
+                positiveButtonColors = FilledButtonColors.Primary,
+                onPositive = {
+                    viewModel.updateRecruitSubscribeDialog(false)
+                    viewModel.changeClubRecruitmentSubscribe()
+                },
+                onNegative = { viewModel.updateRecruitSubscribeDialog(false) },
+                onDismiss = { viewModel.updateRecruitSubscribeDialog(false) }
             )
         }
 
@@ -560,7 +591,7 @@ fun ClubDetail(
                                 }
                             }
                         }
-                        if (state.clubDetails?.manager == false) {
+                        if (state.clubDetails?.manager == false || true) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
@@ -580,7 +611,9 @@ fun ClubDetail(
                                     modifier = Modifier
                                         .size(24.dp)
                                         .padding(end = 4.dp)
-                                        .clickable { } // TODO club notification
+                                        .clickable {
+                                            viewModel.updateRecruitSubscribeDialog(true)
+                                        }
                                 )
                             }
                         }

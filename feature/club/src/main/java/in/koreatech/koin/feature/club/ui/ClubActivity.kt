@@ -17,9 +17,13 @@ import `in`.koreatech.koin.feature.club.navigation.CATEGORY_ID
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
 import `in`.koreatech.koin.feature.club.navigation.ClubNavType
 import `in`.koreatech.koin.feature.club.navigation.koinClubGraph
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @AndroidEntryPoint
 class ClubActivity : ComponentActivity() {
+
+    val EXTRA_CLUB_ID = "extra_club_id"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdgeWithLightStatusBar()
@@ -34,6 +38,12 @@ class ClubActivity : ComponentActivity() {
                 intent.getIntExtra(CLUB_ID, -1).let {
                     if (it != -1) {
                         startDestination = "${ClubNavType.ClubDetail.route}/$it"
+                    }
+                }
+
+                intent.getIntExtra(EXTRA_CLUB_ID, -1).let {
+                    if (it != -1) {
+                        startDestination = "${ClubNavType.ClubDetail.route}/$it?recruitEvent=true"
                     }
                 }
 

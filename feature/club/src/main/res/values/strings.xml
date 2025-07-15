@@ -35,6 +35,12 @@
     <string name="detail_dialog_empowerment_old_id">현 권한자 아이디:&#160;</string>
     <string name="detail_dialog_empowerment_new_id">향후 권한자 아이디</string>
     <string name="detail_dialog_empowerment_hint">아이디를 입력해주세요.</string>
+    <string name="detail_dialog_recruit_subscribe_text">모집 알림을 받으시겠습니까?</string>
+    <string name="detail_dialog_recruit_subscribe_positive">알림 받기</string>
+    <string name="detail_dialog_recruit_subscribe_negative">취소하기</string>
+    <string name="detail_dialog_recruit_unsubscribe_text">모집 알림을 취소하시겠습니까?</string>
+    <string name="detail_dialog_recruit_unsubscribe_positive">알림 취소</string>
+    <string name="detail_dialog_recruit_unsubscribe_negative">취소하기</string>
     <string name="detail_detail_intro_in_development">아직 준비중입니다.</string>
     <string name="detail_hotStatus_club_intro">🎉%1$d월 %2$d째주 인기 동아리 🎉</string>
 

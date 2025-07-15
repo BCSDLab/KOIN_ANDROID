@@ -93,4 +93,12 @@ class ClubRemoteDataSource @Inject constructor(
         clubId: Int,
         eventId: Int,
     ) = clubAuthApi.deleteClubEvent(clubId, eventId)
+
+    suspend fun subscribeClubRecruitment(
+        clubId: Int
+    ) = clubAuthApi.subscribeClubRecruitment(clubId)
+
+    suspend fun unsubscribeClubRecruitment(
+        clubId: Int
+    ) = clubAuthApi.unsubscribeClubRecruitment(clubId)
 }

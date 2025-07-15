@@ -19,7 +19,7 @@ import `in`.koreatech.koin.feature.club.ui.clubrecruitcreate.ClubRecruitCreateSc
 import `in`.koreatech.koin.feature.club.ui.clubrecruitmodify.ClubRecruitModifyScreen
 
 fun NavGraphBuilder.koinClubGraph(
-    navController: NavController
+    navController: NavController,
 ) {
     composable(
         route = "${ClubNavType.ClubList.route}/{$CATEGORY_ID}",
@@ -45,16 +45,24 @@ fun NavGraphBuilder.koinClubGraph(
     }
 
     composable(
-        route = "${ClubNavType.ClubDetail.route}/{$CLUB_ID}",
+        route = "${ClubNavType.ClubDetail.route}/{$CLUB_ID}?recruitEvent={$RECRUIT_EVENT}",
         arguments = listOf(
-            navArgument(CLUB_ID) { type = NavType.IntType }
+            navArgument(CLUB_ID) { type = NavType.IntType },
+            navArgument(RECRUIT_EVENT) {
+                type = NavType.BoolType
+                defaultValue = false
+            }
         )
     ) {
         val isClubModified by it.savedStateHandle.getStateFlow(IS_CLUB_MODIFIED, initialValue = false).collectAsStateWithLifecycle()
+
+        val isRecruitEvent = it.arguments?.getBoolean(RECRUIT_EVENT) ?: false
+
         val context = LocalContext.current
 
         ClubDetail(
             isClubModified = isClubModified,
+            isRecruitEvent = isRecruitEvent,
             onTopbarBackClick = {
                 if (!navController.popBackStack()) {
                     (context as? Activity)?.finish()
@@ -129,10 +137,6 @@ fun NavGraphBuilder.koinClubGraph(
                 navController.navigateUp()
             },
             onRecruitCreated = {
-                navController.previousBackStackEntry?.savedStateHandle?.set(
-                    IS_CLUB_RECRUIT_CREATED,
-                    true
-                )
                 navController.navigateUp()
             }
         )
@@ -149,10 +153,6 @@ fun NavGraphBuilder.koinClubGraph(
                 navController.navigateUp()
             },
             onRecruitModified = {
-                navController.previousBackStackEntry?.savedStateHandle?.set(
-                    IS_CLUB_RECRUIT_MODIFIED,
-                    true
-                )
                 navController.navigateUp()
             }
         )
@@ -169,10 +169,6 @@ fun NavGraphBuilder.koinClubGraph(
                 navController.navigateUp()
             },
             onEventCreated = {
-                navController.previousBackStackEntry?.savedStateHandle?.set(
-                    IS_CLUB_EVENT_CREATED,
-                    true
-                )
                 navController.navigateUp()
             }
         )
@@ -190,10 +186,6 @@ fun NavGraphBuilder.koinClubGraph(
                 navController.navigateUp()
             },
             onEventModified = {
-                navController.previousBackStackEntry?.savedStateHandle?.set(
-                    IS_CLUB_RECRUIT_MODIFIED,
-                    true
-                )
                 navController.navigateUp()
             }
         )
@@ -205,7 +197,4 @@ const val EVENT_ID = "eventId"
 const val CATEGORY_ID = "categoryId"
 const val IS_CLUB_CREATED = "isClubCreated"
 const val IS_CLUB_MODIFIED = "isClubModified"
-const val IS_CLUB_RECRUIT_CREATED = "isClubRecruitCreated"
-const val IS_CLUB_RECRUIT_MODIFIED = "isClubRecruitModified"
-const val IS_CLUB_EVENT_CREATED = "isClubRecruitModified"
-const val IS_CLUB_EVENT_MODIFIED = "isClubRecruitModified"
+const val RECRUIT_EVENT = "recruitEvent"
