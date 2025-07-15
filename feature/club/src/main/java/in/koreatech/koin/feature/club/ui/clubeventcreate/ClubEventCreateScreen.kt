@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -65,6 +66,7 @@ import `in`.koreatech.koin.feature.club.component.KoinClubDatePickerDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubDateSelectBox
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
+import `in`.koreatech.koin.feature.club.component.KoinClubTextFieldAlert
 import `in`.koreatech.koin.feature.club.component.KoinClubTimePickerDialog
 import `in`.koreatech.koin.feature.club.utils.getDayOfWeek
 import `in`.koreatech.koin.feature.club.utils.pickMultipleMedia
@@ -151,6 +153,8 @@ fun ClubEventCreateScreenImpl(
     showCreateRequestDialogState: Boolean = false,
     showDatePickerDialogState: Boolean = false,
     showTimePickerDialogState: Boolean = false,
+    eventNameRequired: Boolean = false,
+    eventIntroduceRequired: Boolean = false,
     updateCreateCancelDialog: (Boolean) -> Unit = {},
     updateCreateRequestDialog: (Boolean) -> Unit = {},
     updateDatePickerDialog: (Boolean) -> Unit = {},
@@ -342,23 +346,32 @@ fun ClubEventCreateScreenImpl(
             style = KoinTheme.typography.regular12,
             color = KoinTheme.colors.neutral500
         )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            Text(
-                text = "행사 이름:",
-                style = KoinTheme.typography.medium18
-            )
-            KoinClubBasicTextField(
-                value = eventName,
-                onValueChange = { updateEventName(it) },
-                modifier = Modifier
-                    .weight(1f),
-                minLines = textFieldMinLines,
-                maxLength = textFieldMaxLength,
-                hint = stringResource(R.string.club_event_create_name_hint)
-            )
+        Column {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.club_recruit_create_name),
+                    style = KoinTheme.typography.medium18
+                )
+                KoinClubBasicTextField(
+                    value = eventName,
+                    onValueChange = { updateEventName(it) },
+                    modifier = Modifier
+                        .weight(1f),
+                    minLines = textFieldMinLines,
+                    maxLength = textFieldMaxLength,
+                    hint = stringResource(R.string.club_event_create_name_hint)
+                )
+            }
+            if (eventNameRequired) {
+                Spacer(modifier = Modifier.height(4.dp))
+
+                KoinClubTextFieldAlert(
+                    text = stringResource(R.string.club_create_warning_required)
+                )
+            }
         }
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -366,7 +379,7 @@ fun ClubEventCreateScreenImpl(
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = "행사 기간",
+                text = stringResource(R.string.club_recruit_create_period),
                 style = KoinTheme.typography.medium18
             )
             Row(
@@ -441,15 +454,14 @@ fun ClubEventCreateScreenImpl(
                 }
             }
         }
-        Column(
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
+        Column {
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = "행사 내용",
+                text = stringResource(R.string.club_recruit_create_introduce),
                 style = KoinTheme.typography.medium18
             )
+            Spacer(modifier = Modifier.height(12.dp))
             KoinClubBasicTextField(
                 value = eventIntroduce,
                 onValueChange = { updateEventIntroduce(it) },
@@ -459,6 +471,13 @@ fun ClubEventCreateScreenImpl(
                 maxLength = introTextFieldMaxLength,
                 hint = stringResource(R.string.club_event_create_intro_hint)
             )
+            if (eventIntroduceRequired) {
+                Spacer(modifier = Modifier.height(4.dp))
+
+                KoinClubTextFieldAlert(
+                    text = stringResource(R.string.club_create_warning_required)
+                )
+            }
         }
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -466,7 +485,7 @@ fun ClubEventCreateScreenImpl(
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = "상세 내용",
+                text = stringResource(R.string.club_recruit_create_recruit_description),
                 style = KoinTheme.typography.medium18
             )
             KoinClubBasicTextField(

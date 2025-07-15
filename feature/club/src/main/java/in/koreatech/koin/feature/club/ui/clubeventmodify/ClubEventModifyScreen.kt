@@ -361,7 +361,7 @@ fun ClubEventCreateScreenImpl(
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
-                text = "행사 이름:",
+                text = stringResource(R.string.club_recruit_create_name),
                 style = KoinTheme.typography.medium18
             )
             KoinClubBasicTextField(
@@ -380,7 +380,7 @@ fun ClubEventCreateScreenImpl(
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = "행사 기간",
+                text = stringResource(R.string.club_recruit_create_period),
                 style = KoinTheme.typography.medium18
             )
             Row(
@@ -461,7 +461,7 @@ fun ClubEventCreateScreenImpl(
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = "행사 내용",
+                text = stringResource(R.string.club_recruit_create_introduce),
                 style = KoinTheme.typography.medium18
             )
             KoinClubBasicTextField(
@@ -480,7 +480,7 @@ fun ClubEventCreateScreenImpl(
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = "상세 내용",
+                text = stringResource(R.string.club_recruit_create_recruit_description),
                 style = KoinTheme.typography.medium18
             )
             KoinClubBasicTextField(

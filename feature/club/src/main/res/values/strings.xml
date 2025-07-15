@@ -155,6 +155,9 @@
     <string name="club_recruit_create_date_text">모집 기한</string>
     <string name="club_recruit_create_always_recruit_text">상시 모집</string>
     <string name="club_recruit_create_image_intro">4:5 비율로 업로드 해주세요.\n사진을 클릭하여 수정할 수 있습니다.</string>
+    <string name="club_recruit_create_name">행사 이름:</string>
+    <string name="club_recruit_create_period">행사 기간</string>
+    <string name="club_recruit_create_introduce">행사 내용</string>
     <string name="club_recruit_create_recruit_description">상세 내용</string>
     <string name="club_recruit_create_recruit_description_hint">상세 내용을 적어주세요.</string>
     <string name="club_recruit_create_cancel">생성 취소</string>
