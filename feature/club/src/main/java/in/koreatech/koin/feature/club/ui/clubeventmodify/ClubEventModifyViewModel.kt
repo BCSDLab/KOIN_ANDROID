@@ -195,12 +195,17 @@ class ClubEventModifyViewModel @Inject constructor(
             reduce {
                 state.copy(
                     eventImageUrls = state.eventImageUrls.toPersistentList().add(fileUrl),
-                    isLoading = false
+                    isLoading = false,
+                    isEventLoading = false
                 )
             }
         }.onFailure {
-            reduce { state.copy(isLoading = false) }
+            reduce { state.copy(isLoading = false, isEventLoading = false) }
             postSideEffect(ClubEventModifySideEffect.ClubImageUploadFailure)
         }
+    }
+
+    fun updateEventLoading(bool: Boolean) = blockingIntent {
+        reduce { state.copy(isEventLoading = bool) }
     }
 }

@@ -9,6 +9,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ClubEventCreateState(
     val isLoading: Boolean = false,
+    val isImageLoading: Boolean = false,
     val clubId: Int = -1,
     val eventImageUrls: List<String> = persistentListOf(),
     val eventStartDateTime: LocalDateTime = LocalDateTime.now().withMinute(0).withSecond(0),
