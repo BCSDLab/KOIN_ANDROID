@@ -35,6 +35,9 @@ sealed class ClubDetailSideEffect {
     data object LoadClubEventError : ClubDetailSideEffect() {
         val messageResId = R.string.detail_error_load_events
     }
+    data object DeleteClubEventError : ClubDetailSideEffect() {
+        val messageResId = R.string.detail_error_delete_event
+    }
     data object UnknownError : ClubDetailSideEffect() {
         val messageResId = R.string.detail_error_unkown
     }

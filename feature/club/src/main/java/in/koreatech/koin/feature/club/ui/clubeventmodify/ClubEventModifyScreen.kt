@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.club.ui.clubeventcreate
+package `in`.koreatech.koin.feature.club.ui.clubeventmodify
 
 import android.content.Context
 import android.net.Uri
@@ -35,6 +35,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -76,17 +77,17 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ClubEventCreateScreen(
+fun ClubEventModifyScreen(
     modifier: Modifier = Modifier,
-    viewModel: ClubEventCreateViewModel = hiltViewModel(),
+    viewModel: ClubEventModifyViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit = {},
-    onEventCreated: () -> Unit = {}
+    onEventModified: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val uiState by viewModel.collectAsState()
 
     viewModel.collectSideEffect { sideEffect ->
-        handleSideEffect(sideEffect, context, onEventCreated, onNavigateUp)
+        handleSideEffect(sideEffect, context, onEventModified, onNavigateUp)
     }
 
     Scaffold(
@@ -103,25 +104,31 @@ fun ClubEventCreateScreen(
         ClubEventCreateScreenImpl(
             modifier = Modifier
                 .padding(contentPadding),
+            eventName = uiState.eventName,
+            eventIntroduce = uiState.eventIntroduce,
+            eventContent = uiState.eventContent,
             eventStartDateTime = uiState.eventStartDateTime,
             eventEndDateTime = uiState.eventEndDateTime,
             imageUrls = uiState.eventImageUrls,
             uploadImage = viewModel::getPreSignedUrl,
             onImageDeleteClick = viewModel::deleteImageUrl,
-            showCreateCancelDialogState = uiState.showCreateCancelDialog,
-            showCreateRequestDialogState = uiState.showCreateRequestDialog,
+            showModifyCancelDialogState = uiState.showModifyCancelDialog,
+            showModifyRequestDialogState = uiState.showModifyRequestDialog,
             showDatePickerDialogState = uiState.showDatePickerDialog,
             showTimePickerDialogState = uiState.showTimePickerDialog,
-            updateCreateCancelDialog = viewModel::updateCreateCancelDialog,
-            updateCreateRequestDialog = viewModel::updateCreateRequestDialog,
+            updateModifyCancelDialog = viewModel::updateCreateCancelDialog,
+            updateModifyRequestDialog = viewModel::updateCreateRequestDialog,
             updateDatePickerDialog = viewModel::updateDatePickerDialog,
             updateTimePickerDialog = viewModel::updateTimePickerDialog,
+            updateEventName = viewModel::updateEventName,
+            updateEventIntroduce = viewModel::updateEventIntroduce,
+            updateEventContent = viewModel::updateEventContent,
             setEventStartDate = viewModel::setEventStartDate,
             setEventEndDate = viewModel::setEventEndDate,
             setEventStartTime = viewModel::setEventStartTime,
             setEventEndTime = viewModel::setEventEndTime,
-            createEvent = viewModel::createClubEvent,
-            createEventCancel = viewModel::postNavigateUp
+            modifyEvent = viewModel::modifyClubEvent,
+            modifyEventCancel = viewModel::postNavigateUp
         )
     }
 }
@@ -129,24 +136,30 @@ fun ClubEventCreateScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClubEventCreateScreenImpl(
+    eventName: String,
+    eventIntroduce: String,
+    eventContent: String,
     eventStartDateTime: LocalDateTime,
     eventEndDateTime: LocalDateTime,
     modifier: Modifier = Modifier,
     imageUrls: List<String> = persistentListOf(),
-    showCreateCancelDialogState: Boolean = false,
-    showCreateRequestDialogState: Boolean = false,
+    showModifyCancelDialogState: Boolean = false,
+    showModifyRequestDialogState: Boolean = false,
     showDatePickerDialogState: Boolean = false,
     showTimePickerDialogState: Boolean = false,
-    updateCreateCancelDialog: (Boolean) -> Unit = {},
-    updateCreateRequestDialog: (Boolean) -> Unit = {},
+    updateModifyCancelDialog: (Boolean) -> Unit = {},
+    updateModifyRequestDialog: (Boolean) -> Unit = {},
     updateDatePickerDialog: (Boolean) -> Unit = {},
     updateTimePickerDialog: (Boolean) -> Unit = {},
+    updateEventName: (String) -> Unit = {},
+    updateEventIntroduce: (String) -> Unit = {},
+    updateEventContent: (String) -> Unit = {},
     setEventStartDate: (LocalDate) -> Unit = {},
     setEventEndDate: (LocalDate) -> Unit = {},
     setEventStartTime: (LocalTime) -> Unit = {},
     setEventEndTime: (LocalTime) -> Unit = {},
-    createEvent: (String, String, String) -> Unit = { _, _, _ -> },
-    createEventCancel: () -> Unit = {},
+    modifyEvent: () -> Unit = {},
+    modifyEventCancel: () -> Unit = {},
     uploadImage: (fileSize: Long, fileType: String, fileName: String, fileUri: Uri) -> Unit = { _, _, _, _ -> },
     onImageDeleteClick: (Int) -> Unit = {}
 ) {
@@ -166,9 +179,6 @@ fun ClubEventCreateScreenImpl(
         maxItems = maxImageItems - imageUrls.size,
         onResult = uploadImage
     )
-    var eventNameText by remember { mutableStateOf("") }
-    var eventIntroText by remember { mutableStateOf("") }
-    var eventContentText by remember { mutableStateOf("") }
 
     val pagerState = rememberPagerState(pageCount = { imageUrls.size + 1 })
 
@@ -214,7 +224,7 @@ fun ClubEventCreateScreenImpl(
         )
     }
 
-    if (showCreateRequestDialogState) {
+    if (showModifyRequestDialogState) {
         KoinClubExtraSmallDialog(
             title = "",
             description = stringResource(R.string.club_recruit_create_request_dialog_description),
@@ -226,15 +236,15 @@ fun ClubEventCreateScreenImpl(
             descriptionTextAlign = TextAlign.Center,
             positiveButtonColors = FilledButtonColors.Primary,
             onPositive = {
-                updateCreateRequestDialog(false)
-                createEvent(eventNameText, eventIntroText, eventContentText)
+                updateModifyRequestDialog(false)
+                modifyEvent()
             },
-            onNegative = { updateCreateRequestDialog(false) },
-            onDismiss = { updateCreateRequestDialog(false) }
+            onNegative = { updateModifyRequestDialog(false) },
+            onDismiss = { updateModifyRequestDialog(false) }
         )
     }
 
-    if (showCreateCancelDialogState) {
+    if (showModifyCancelDialogState) {
         KoinClubExtraSmallDialog(
             description = stringResource(R.string.club_recruit_create_cancel_dialog_description),
             descriptionStyle = KoinTheme.typography.medium15,
@@ -245,11 +255,11 @@ fun ClubEventCreateScreenImpl(
             descriptionTextAlign = TextAlign.Center,
             positiveButtonColors = KoinClubExtraSmallDialogDanger.positiveButtonColors(),
             onPositive = {
-                updateCreateCancelDialog(false)
-                createEventCancel()
+                updateModifyCancelDialog(false)
+                modifyEventCancel()
             },
-            onNegative = { updateCreateCancelDialog(false) },
-            onDismiss = { updateCreateCancelDialog(false) }
+            onNegative = { updateModifyCancelDialog(false) },
+            onDismiss = { updateModifyCancelDialog(false) }
         )
     }
 
@@ -337,8 +347,8 @@ fun ClubEventCreateScreenImpl(
                 style = KoinTheme.typography.medium18
             )
             KoinClubBasicTextField(
-                value = eventNameText,
-                onValueChange = { eventNameText = it },
+                value = eventName,
+                onValueChange = { updateEventName(it) },
                 modifier = Modifier
                     .weight(1f),
                 minLines = textFieldMinLines,
@@ -437,8 +447,8 @@ fun ClubEventCreateScreenImpl(
                 style = KoinTheme.typography.medium18
             )
             KoinClubBasicTextField(
-                value = eventIntroText,
-                onValueChange = { eventIntroText = it },
+                value = eventIntroduce,
+                onValueChange = { updateEventIntroduce(it) },
                 modifier = Modifier
                     .fillMaxWidth(),
                 minLines = textFieldMinLines,
@@ -456,8 +466,8 @@ fun ClubEventCreateScreenImpl(
                 style = KoinTheme.typography.medium18
             )
             KoinClubBasicTextField(
-                value = eventContentText,
-                onValueChange = { eventContentText = it },
+                value = eventContent,
+                onValueChange = { updateEventContent(it) },
                 modifier = Modifier
                     .fillMaxWidth(),
                 minLines = contentTextFieldMaxLines,
@@ -471,14 +481,14 @@ fun ClubEventCreateScreenImpl(
             horizontalArrangement = Arrangement.End
         ) {
             FilledButton(
-                text = stringResource(R.string.club_event_create_cancel),
-                onClick = { updateCreateCancelDialog(true) },
+                text = stringResource(R.string.club_event_modify_cancel),
+                onClick = { updateModifyCancelDialog(true) },
                 contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp)
             )
             Spacer(Modifier.width(8.dp))
             FilledButton(
-                text = stringResource(R.string.club_event_create_request),
-                onClick = { updateCreateRequestDialog(true) },
+                text = stringResource(R.string.club_event_modify_request),
+                onClick = { updateModifyRequestDialog(true) },
                 contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp)
             )
         }
@@ -486,22 +496,26 @@ fun ClubEventCreateScreenImpl(
 }
 
 fun handleSideEffect(
-    sideEffect: ClubEventCreateSideEffect,
+    sideEffect: ClubEventModifySideEffect,
     context: Context,
     onCreateSuccess: () -> Unit = {},
     onNavigateUp: () -> Unit = {}
 ) {
     when (sideEffect) {
-        is ClubEventCreateSideEffect.ClubImageUploadFailure -> context.let {
+        is ClubEventModifySideEffect.ClubImageUploadFailure -> context.let {
             Toast.makeText(it, it.getString(R.string.club_image_upload_failed), Toast.LENGTH_SHORT).show()
         }
-        is ClubEventCreateSideEffect.EventCreateSuccess -> {
+        is ClubEventModifySideEffect.EventCreateSuccess -> {
             onCreateSuccess()
         }
-        is ClubEventCreateSideEffect.EventCreateFailure -> context.let {
-            Toast.makeText(it, it.getString(R.string.club_event_create_error_create_failure), Toast.LENGTH_SHORT).show()
+        is ClubEventModifySideEffect.EventCreateFailure -> context.let {
+            Toast.makeText(it, it.getString(R.string.club_event_modify_error_failure), Toast.LENGTH_SHORT).show()
         }
-        is ClubEventCreateSideEffect.NavigateUp -> {
+        is ClubEventModifySideEffect.LoadClubEventError -> context.let {
+            Toast.makeText(it, it.getString(R.string.club_event_modify_error_load), Toast.LENGTH_SHORT).show()
+            onNavigateUp()
+        }
+        is ClubEventModifySideEffect.NavigateUp -> {
             onNavigateUp()
         }
     }
@@ -511,6 +525,9 @@ fun handleSideEffect(
 @Composable
 private fun ClubEventCreateScreenImplPreview() {
     ClubEventCreateScreenImpl(
+        eventName = "이름",
+        eventIntroduce = "설명",
+        eventContent = "세부 설명",
         eventStartDateTime = LocalDateTime.now().withMinute(0).withSecond(0),
         eventEndDateTime = LocalDateTime.now().plusDays(1)
     )

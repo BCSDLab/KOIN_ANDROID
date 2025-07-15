@@ -120,6 +120,7 @@ fun ClubDetail(
     onRecruitCreateClick: (Int) -> Unit = {},
     onRecruitModifyClick: (Int) -> Unit = {},
     onEventCreateClick: (Int) -> Unit = {},
+    onEventModifyClick: (Int, Int) -> Unit = {_,_ -> },
     resetClubModifiedState: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
@@ -654,9 +655,12 @@ fun ClubDetail(
                         }
                         DetailTabType.EVENT.strResId -> {
                             if (state.clubEventSelected && state.selectedEventIndex != -1) {
+                                val selectedEvent = state.clubEvents[state.selectedEventIndex]
                                 ClubDetailEventInfo(
-                                    clubEvent = state.clubEvents[state.selectedEventIndex],
+                                    clubEvent = selectedEvent,
                                     onBackPressed = viewModel::deselectEvent,
+                                    onEventDeleteClick = { viewModel.deleteClubEvent(selectedEvent.id) },
+                                    onEventModifyClick = { onEventModifyClick(state.clubId, selectedEvent.id) },
                                     isManager = state.clubDetails?.manager ?: false
                                 )
                             } else {
@@ -748,6 +752,9 @@ suspend fun handleSideEffect(
             ToastUtil.getInstance().makeShort(sideEffect.messageResId)
         }
         is ClubDetailSideEffect.LoadClubEventError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.DeleteClubEventError -> {
             ToastUtil.getInstance().makeShort(sideEffect.messageResId)
         }
         is ClubDetailSideEffect.UnknownError -> {
