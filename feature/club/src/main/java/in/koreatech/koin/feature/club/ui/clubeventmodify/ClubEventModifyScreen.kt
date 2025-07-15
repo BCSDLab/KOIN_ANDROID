@@ -536,6 +536,12 @@ fun handleSideEffect(
         is ClubEventModifySideEffect.NavigateUp -> {
             onNavigateUp()
         }
+        is ClubEventModifySideEffect.EventNameError -> context.let {
+            Toast.makeText(it, it.getString(R.string.club_event_create_error_name), Toast.LENGTH_SHORT).show()
+        }
+        is ClubEventModifySideEffect.EventIntroError -> context.let {
+            Toast.makeText(it, it.getString(R.string.club_event_create_error_intro), Toast.LENGTH_SHORT).show()
+        }
     }
 }
 

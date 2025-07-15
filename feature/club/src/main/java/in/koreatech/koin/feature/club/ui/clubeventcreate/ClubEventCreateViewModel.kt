@@ -42,22 +42,18 @@ class ClubEventCreateViewModel @Inject constructor(
         postSideEffect(ClubEventCreateSideEffect.NavigateUp)
     }
 
-    fun createClubEvent(
-        name: String,
-        introduce: String,
-        content: String
-    ) = intent {
+    fun createClubEvent() = intent {
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
         val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
         createClubEventUseCase(
             clubId = state.clubId,
-            name = name,
+            name = state.eventName,
             imageUrls = state.eventImageUrls,
             startDate = state.eventStartDateTime.format(dateFormatter),
             endDate = state.eventEndDateTime.format(dateFormatter),
-            introduce = introduce,
-            content = content
+            introduce = state.eventIntroduce,
+            content = state.eventContent
         ).onSuccess {
             reduce { state.copy(isLoading = false) }
             postSideEffect(ClubEventCreateSideEffect.EventCreateSuccess)
@@ -67,8 +63,32 @@ class ClubEventCreateViewModel @Inject constructor(
         }
     }
 
+    fun updateEventName(value: String) = blockingIntent {
+        reduce { state.copy(eventName = value) }
+    }
+
+    fun updateEventIntroduce(value: String) = blockingIntent {
+        reduce { state.copy(eventIntroduce = value) }
+    }
+
+    fun updateEventContent(value: String) = blockingIntent {
+        reduce { state.copy(eventContent = value) }
+    }
+
     fun updateCreateRequestDialog(bool: Boolean) = blockingIntent {
-        reduce { state.copy(showCreateRequestDialog = bool) }
+        if (bool) {
+            postRequiredError()
+        } else {
+            reduce { state.copy(showCreateRequestDialog = false) }
+        }
+    }
+
+    private fun postRequiredError() = intent {
+        when {
+            state.eventName.isBlank() -> postSideEffect(ClubEventCreateSideEffect.EventNameError)
+            state.eventIntroduce.isBlank() -> postSideEffect(ClubEventCreateSideEffect.EventIntroError)
+            else -> reduce { state.copy(showCreateRequestDialog = true) }
+        }
     }
 
     fun updateCreateCancelDialog(bool: Boolean) = blockingIntent {

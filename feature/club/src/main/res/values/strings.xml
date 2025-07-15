@@ -176,6 +176,8 @@
     <string name="club_event_create_intro_hint">행사내용을 적어주세요. (최대 70자)</string>
     <string name="club_event_create_content_hint">상세 내용을 적어주세요.</string>
     <string name="club_event_create_error_create_failure">행사 생성에 실패했습니다.</string>
+    <string name="club_event_create_error_name">행사 이름은 필수 값입니다.</string>
+    <string name="club_event_create_error_intro">행사 내용은 필수 값입니다.</string>
     <string name="club_event_create_cancel">생성 취소</string>
     <string name="club_event_create_request">생성 하기</string>
     <string name="club_event_period">%1$s 부터 %2$s 까지</string>

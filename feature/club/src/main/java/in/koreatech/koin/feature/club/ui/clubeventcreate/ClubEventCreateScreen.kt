@@ -108,6 +108,9 @@ fun ClubEventCreateScreen(
         ClubEventCreateScreenImpl(
             modifier = Modifier
                 .padding(contentPadding),
+            eventName = uiState.eventName,
+            eventIntroduce = uiState.eventIntroduce,
+            eventContent = uiState.eventContent,
             eventStartDateTime = uiState.eventStartDateTime,
             eventEndDateTime = uiState.eventEndDateTime,
             imageUrls = uiState.eventImageUrls,
@@ -121,6 +124,9 @@ fun ClubEventCreateScreen(
             updateCreateRequestDialog = viewModel::updateCreateRequestDialog,
             updateDatePickerDialog = viewModel::updateDatePickerDialog,
             updateTimePickerDialog = viewModel::updateTimePickerDialog,
+            updateEventName = viewModel::updateEventName,
+            updateEventIntroduce = viewModel::updateEventIntroduce,
+            updateEventContent = viewModel::updateEventContent,
             setEventStartDate = viewModel::setEventStartDate,
             setEventEndDate = viewModel::setEventEndDate,
             setEventStartTime = viewModel::setEventStartTime,
@@ -134,6 +140,9 @@ fun ClubEventCreateScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClubEventCreateScreenImpl(
+    eventName: String,
+    eventIntroduce: String,
+    eventContent: String,
     eventStartDateTime: LocalDateTime,
     eventEndDateTime: LocalDateTime,
     modifier: Modifier = Modifier,
@@ -146,11 +155,14 @@ fun ClubEventCreateScreenImpl(
     updateCreateRequestDialog: (Boolean) -> Unit = {},
     updateDatePickerDialog: (Boolean) -> Unit = {},
     updateTimePickerDialog: (Boolean) -> Unit = {},
+    updateEventName: (String) -> Unit = {},
+    updateEventIntroduce: (String) -> Unit = {},
+    updateEventContent: (String) -> Unit = {},
     setEventStartDate: (LocalDate) -> Unit = {},
     setEventEndDate: (LocalDate) -> Unit = {},
     setEventStartTime: (LocalTime) -> Unit = {},
     setEventEndTime: (LocalTime) -> Unit = {},
-    createEvent: (String, String, String) -> Unit = { _, _, _ -> },
+    createEvent: () -> Unit = {},
     createEventCancel: () -> Unit = {},
     uploadImage: (fileSize: Long, fileType: String, fileName: String, fileUri: Uri) -> Unit = { _, _, _, _ -> },
     onImageDeleteClick: (Int) -> Unit = {}
@@ -171,9 +183,6 @@ fun ClubEventCreateScreenImpl(
         maxItems = maxImageItems - imageUrls.size,
         onResult = uploadImage
     )
-    var eventNameText by remember { mutableStateOf("") }
-    var eventIntroText by remember { mutableStateOf("") }
-    var eventContentText by remember { mutableStateOf("") }
 
     val pagerState = rememberPagerState(pageCount = { imageUrls.size + 1 })
 
@@ -232,7 +241,7 @@ fun ClubEventCreateScreenImpl(
             positiveButtonColors = FilledButtonColors.Primary,
             onPositive = {
                 updateCreateRequestDialog(false)
-                createEvent(eventNameText, eventIntroText, eventContentText)
+                createEvent()
             },
             onNegative = { updateCreateRequestDialog(false) },
             onDismiss = { updateCreateRequestDialog(false) }
@@ -342,8 +351,8 @@ fun ClubEventCreateScreenImpl(
                 style = KoinTheme.typography.medium18
             )
             KoinClubBasicTextField(
-                value = eventNameText,
-                onValueChange = { eventNameText = it },
+                value = eventName,
+                onValueChange = { updateEventName(it) },
                 modifier = Modifier
                     .weight(1f),
                 minLines = textFieldMinLines,
@@ -442,8 +451,8 @@ fun ClubEventCreateScreenImpl(
                 style = KoinTheme.typography.medium18
             )
             KoinClubBasicTextField(
-                value = eventIntroText,
-                onValueChange = { eventIntroText = it },
+                value = eventIntroduce,
+                onValueChange = { updateEventIntroduce(it) },
                 modifier = Modifier
                     .fillMaxWidth(),
                 minLines = textFieldMinLines,
@@ -461,8 +470,8 @@ fun ClubEventCreateScreenImpl(
                 style = KoinTheme.typography.medium18
             )
             KoinClubBasicTextField(
-                value = eventContentText,
-                onValueChange = { eventContentText = it },
+                value = eventContent,
+                onValueChange = { updateEventContent(it) },
                 modifier = Modifier
                     .fillMaxWidth(),
                 minLines = contentTextFieldMaxLines,
@@ -509,6 +518,12 @@ fun handleSideEffect(
         is ClubEventCreateSideEffect.NavigateUp -> {
             onNavigateUp()
         }
+        is ClubEventCreateSideEffect.EventNameError -> context.let {
+            Toast.makeText(it, it.getString(R.string.club_event_create_error_name), Toast.LENGTH_SHORT).show()
+        }
+        is ClubEventCreateSideEffect.EventIntroError -> context.let {
+            Toast.makeText(it, it.getString(R.string.club_event_create_error_intro), Toast.LENGTH_SHORT).show()
+        }
     }
 }
 
@@ -516,6 +531,9 @@ fun handleSideEffect(
 @Composable
 private fun ClubEventCreateScreenImplPreview() {
     ClubEventCreateScreenImpl(
+        eventName = "",
+        eventIntroduce = "",
+        eventContent = "",
         eventStartDateTime = LocalDateTime.now().withMinute(0).withSecond(0),
         eventEndDateTime = LocalDateTime.now().plusDays(1)
     )

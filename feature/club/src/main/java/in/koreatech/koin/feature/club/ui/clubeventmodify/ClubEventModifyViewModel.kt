@@ -154,7 +154,19 @@ class ClubEventModifyViewModel @Inject constructor(
     }
 
     fun updateModifyRequestDialog(bool: Boolean) = blockingIntent {
-        reduce { state.copy(showModifyRequestDialog = bool) }
+        if (bool) {
+            postRequiredError()
+        } else {
+            reduce { state.copy(showModifyRequestDialog = false) }
+        }
+    }
+
+    private fun postRequiredError() = intent {
+        when {
+            state.eventName.isBlank() -> postSideEffect(ClubEventModifySideEffect.EventNameError)
+            state.eventIntroduce.isBlank() -> postSideEffect(ClubEventModifySideEffect.EventIntroError)
+            else -> reduce { state.copy(showModifyRequestDialog = true) }
+        }
     }
 
     fun updateModifyCancelDialog(bool: Boolean) = blockingIntent {
