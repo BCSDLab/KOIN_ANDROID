@@ -5,6 +5,7 @@ sealed class SignupContinuationState {
     object PhoneNumberDuplicated : SignupContinuationState() // 전화번호 중복
     object EmailDuplicated : SignupContinuationState() // 이메일 중복
     object NicknameDuplicated : SignupContinuationState() // 닉네임 중복
+
     object BusinessNumberDuplicated : SignupContinuationState() // 사업자 번호 중복
 
     // 사용 가능 상태

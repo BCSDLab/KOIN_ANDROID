@@ -19,6 +19,8 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
+import `in`.koreatech.koin.core.dialog.AlertModalDialog
+import `in`.koreatech.koin.core.dialog.AlertModalDialogData
 import `in`.koreatech.koin.core.permission.checkNotificationPermission
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.util.setAppBarButtonClickedListener
@@ -35,6 +37,30 @@ class NotificationActivity : ActivityBase() {
     override val screenTitle: String = "알림"
     private val binding by dataBinding<ActivityNotificationBinding>(R.layout.activity_notification)
     private val viewModel: NotificationViewModel by viewModels()
+
+    private val permissionModal: AlertModalDialog by lazy {
+        AlertModalDialog(
+            this,
+            AlertModalDialogData(
+                title = R.string.notification_permission_dialog_title,
+                message = R.string.notification_permission_dialog_message,
+                positiveButtonText = R.string.notification_permission_dialog_positive,
+                negativeButtonText = R.string.notification_permission_dialog_negative
+            ),
+            onPositiveButtonClicked = {
+                intentAppSettings()
+                it.dismiss()
+            },
+            onNegativeButtonClicked = {
+                if (!checkNotificationPermission()) {
+                    permissionDenied()
+                } else {
+                    permissionGranted()
+                }
+                it.dismiss()
+            }
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdgeWithDarkStatusBar()
@@ -81,6 +107,7 @@ class NotificationActivity : ActivityBase() {
         viewModel.getPermissionInfo()
         with(binding) {
             textViewNotificationSetting.isVisible = false
+            notificationMarketing.isChecked = true
             notificationDiningSoldOut.isEnabled = true
             notificationShopEvent.isEnabled = true
             notificationReviewPrompt.isEnabled = true
@@ -92,6 +119,7 @@ class NotificationActivity : ActivityBase() {
         updateDiningSoldOutVisibility(false)
         with(binding) {
             textViewNotificationSetting.isVisible = true
+            notificationMarketing.isChecked = false
             notificationDiningSoldOut.disableAll()
             notificationShopEvent.disableAll()
             notificationReviewPrompt.disableAll()
@@ -142,6 +170,14 @@ class NotificationActivity : ActivityBase() {
 
                                     SubscribesType.LOST_ITEM_CHAT ->
                                         with(binding.notificationChat) {
+                                            if (isChecked != it.isPermit) {
+                                                fakeChecked = it.isPermit
+                                                isChecked = it.isPermit
+                                            }
+                                        }
+
+                                    SubscribesType.MARKETING ->
+                                        with(binding.notificationMarketing) {
                                             if (isChecked != it.isPermit) {
                                                 fakeChecked = it.isPermit
                                                 isChecked = it.isPermit
@@ -200,6 +236,14 @@ class NotificationActivity : ActivityBase() {
     }
 
     private fun subscribeNotification() {
+        binding.notificationMarketing.setOnSwitchClickListener { isChecked ->
+            if (checkNotificationPermission()) {
+                handleSubscription(isChecked, SubscribesType.MARKETING)
+            } else {
+                permissionModal.show()
+            }
+        }
+
         binding.notificationDiningSoldOut.setOnSwitchClickListener { isChecked ->
             EventLogger.logClickEvent(
                 EventAction.CAMPUS,
