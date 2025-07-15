@@ -372,6 +372,27 @@ fun ClubDetail(
             )
         }
 
+        if (state.showEventSubscribeDialog) {
+            val isSubscribed = state.clubEvents[state.selectedEventIndex].isSubscribed
+            KoinClubExtraSmallDialog(
+                title = "",
+                description = stringResource(if (isSubscribed) R.string.detail_dialog_event_unsubscribe_text else R.string.detail_dialog_event_subscribe_text),
+                descriptionStyle = KoinTheme.typography.medium15,
+                descriptionColor = KoinTheme.colors.neutral600,
+                positiveButtonText = stringResource(if (isSubscribed) R.string.detail_dialog_recruit_unsubscribe_positive else R.string.detail_dialog_recruit_subscribe_positive),
+                negativeButtonText = stringResource(if (isSubscribed) R.string.detail_dialog_recruit_unsubscribe_negative else R.string.detail_dialog_recruit_subscribe_negative),
+                titleTextAlign = TextAlign.Center,
+                descriptionTextAlign = TextAlign.Center,
+                positiveButtonColors = FilledButtonColors.Primary,
+                onPositive = {
+                    viewModel.updateEventSubscribeDialog(false)
+                    viewModel.changeClubEventSubscribe()
+                },
+                onNegative = { viewModel.updateEventSubscribeDialog(false) },
+                onDismiss = { viewModel.updateEventSubscribeDialog(false) }
+            )
+        }
+
         LazyColumn(
             modifier = Modifier
                 .padding(contentPadding)
@@ -591,7 +612,7 @@ fun ClubDetail(
                                 }
                             }
                         }
-                        if (state.clubDetails?.manager == false || true) {
+                        if (state.clubDetails?.manager == false) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
@@ -612,7 +633,9 @@ fun ClubDetail(
                                         .size(24.dp)
                                         .padding(end = 4.dp)
                                         .clickable {
-                                            viewModel.updateRecruitSubscribeDialog(true)
+                                            state.userId?.let {
+                                                viewModel.updateRecruitSubscribeDialog(true)
+                                            } ?: viewModel.showLoginDialog()
                                         }
                                 )
                             }
@@ -715,6 +738,11 @@ fun ClubDetail(
                                         viewModel.updateEventsDeleteDialog(true)
                                     },
                                     onEventModifyClick = { onEventModifyClick(state.clubId, selectedEvent.id) },
+                                    onNotificationClick = {
+                                        state.userId?.let {
+                                            viewModel.updateEventSubscribeDialog(true)
+                                        } ?: viewModel.showLoginDialog()
+                                    },
                                     isManager = state.clubDetails?.manager ?: false
                                 )
                             } else {

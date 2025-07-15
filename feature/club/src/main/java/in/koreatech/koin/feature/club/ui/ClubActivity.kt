@@ -17,7 +17,6 @@ import `in`.koreatech.koin.feature.club.navigation.CATEGORY_ID
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
 import `in`.koreatech.koin.feature.club.navigation.ClubNavType
 import `in`.koreatech.koin.feature.club.navigation.koinClubGraph
-import kotlinx.coroutines.flow.MutableStateFlow
 
 @AndroidEntryPoint
 class ClubActivity : ComponentActivity() {

@@ -41,6 +41,8 @@
     <string name="detail_dialog_recruit_unsubscribe_text">모집 알림을 취소하시겠습니까?</string>
     <string name="detail_dialog_recruit_unsubscribe_positive">알림 취소</string>
     <string name="detail_dialog_recruit_unsubscribe_negative">취소하기</string>
+    <string name="detail_dialog_event_subscribe_text">행사 알림을 받으시겠습니까?</string>
+    <string name="detail_dialog_event_unsubscribe_text">행사 알림을 취소하시겠습니까?</string>
     <string name="detail_detail_intro_in_development">아직 준비중입니다.</string>
     <string name="detail_hotStatus_club_intro">🎉%1$d월 %2$d째주 인기 동아리 🎉</string>
 
@@ -178,8 +180,8 @@
     <string name="club_event_create_title">동아리 행사 생성</string>
     <string name="club_event_create_logo_description">클릭하여 사진을\n업로드해주세요.\n스와이프 하여 사진을\n추가할 수 있습니다.</string>
     <string name="club_event_create_image_intro">5:4 비율로 업로드 해주세요. \n사진을 클릭하여 수정할 수 있습니다.</string>
-    <string name="club_event_create_name_hint">행사 명을 적어주세요.</string>
-    <string name="club_event_create_intro_hint">행사내용을 적어주세요. (최대 70자)</string>
+    <string name="club_event_create_name_hint">행사 이름을 적어주세요.(필수)</string>
+    <string name="club_event_create_intro_hint">행사내용을 적어주세요. (최대 70자)(필수)</string>
     <string name="club_event_create_content_hint">상세 내용을 적어주세요.</string>
     <string name="club_event_create_error_create_failure">행사 생성에 실패했습니다.</string>
     <string name="club_event_create_error_name">행사 이름은 필수 값입니다.</string>
@@ -214,7 +216,7 @@
 
     <string name="club_date_picker_format">%1$d년\n%2$d월 %3$d일 (%4$s)</string>
     <string name="club_time_picker_format">%1$02d:%2$02d</string>
-    <string name="club_time_picker_title">%1$02d:%2$02d</string>
+    <string name="club_time_picker_title">시간을 선택해주세요.</string>
 
     <string name="club_image_upload_failed">이미지 업로드에 실패했습니다.</string>
     <string name="club_dialog_ok">확인</string>

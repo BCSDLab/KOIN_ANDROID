@@ -53,6 +53,7 @@ fun ClubDetailEventInfo(
     isManager: Boolean = false,
     onEventModifyClick: () -> Unit = {},
     onEventDeleteClick: () -> Unit = {},
+    onNotificationClick: () -> Unit ={},
     onBackPressed: () -> Unit = {}
 ) {
     BackHandler {
@@ -100,23 +101,46 @@ fun ClubDetailEventInfo(
                 }
             }
         }
-        Text (
-            text = clubEvent.name,
-            style = KoinTheme.typography.bold20,
-            color = KoinTheme.colors.primary600,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-        Text (
-            text = stringResource(
-                R.string.club_event_period,
-                clubEvent.startDateTime.toStringForm(),
-                clubEvent.endDateTime.toStringForm()
-            ),
-            style = KoinTheme.typography.medium15,
-            color = KoinTheme.colors.neutral600,
-            maxLines = 1
-        )
+        Column {
+            Text (
+                text = clubEvent.name,
+                style = KoinTheme.typography.bold20,
+                color = KoinTheme.colors.primary600,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text (
+                text = stringResource(
+                    R.string.club_event_period,
+                    clubEvent.startDateTime.toStringForm(),
+                    clubEvent.endDateTime.toStringForm()
+                ),
+                style = KoinTheme.typography.medium15,
+                color = KoinTheme.colors.neutral600,
+                maxLines = 1
+            )
+        }
+        Row (
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text (
+                text = "행사 알림"
+            )
+            Image(
+                painter = if (clubEvent.isSubscribed) {
+                    painterResource(R.drawable.icon_notification_true)
+                } else {
+                    painterResource(R.drawable.icon_notification_false)
+                },
+                contentDescription = "Notification Icon",
+                modifier = Modifier
+                    .size(24.dp)
+                    .padding(end = 4.dp)
+                    .clickable {
+                        onNotificationClick()
+                    }
+            )
+        }
         if(clubEvent.imageUrls.isNotEmpty()) {
             Column (
                 modifier = Modifier.fillMaxWidth(),

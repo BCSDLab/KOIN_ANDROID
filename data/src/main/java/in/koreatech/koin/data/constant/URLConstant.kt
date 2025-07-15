@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.data.constant
 
+import `in`.koreatech.koin.data.constant.URLConstant.CLUBS.CLUBID.RECRUITMENT.RECRUITMENT
+
 /**
  * KOIN API URL
  */
@@ -207,7 +209,10 @@ object URLConstant {
             object EVENT {
                 const val EVENTS = "$CLUBID/events"
                 const val EVENT = "$CLUBID/event"
-                const val EVENTID = "$EVENT/{eventId}"
+                object EVENTID {
+                    const val EVENTID = "$EVENT/{eventId}"
+                    const val NOTIFICATION = "${EVENTID}/notification"
+                }
             }
         }
         const val EMPOWERMENT = "$CLUBS/empowerment"

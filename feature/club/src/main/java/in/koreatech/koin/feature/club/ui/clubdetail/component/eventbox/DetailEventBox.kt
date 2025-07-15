@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.club.ui.clubdetail.component.eventbox
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -7,18 +8,22 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,10 +31,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import coil.compose.SubcomposeAsyncImage
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.feature.club.R
 
 @Composable
 fun DetailEventBox(
-    eventId: Int,
     eventName: String,
     stateText: String,
     dateText: String,
@@ -38,6 +43,7 @@ fun DetailEventBox(
     modifier: Modifier = Modifier,
     imageUrl: String = "",
     isDisable: Boolean = false,
+    isUpcoming: Boolean = false,
     onClick: () -> Unit = {}
 ) {
     Box(
@@ -109,14 +115,17 @@ fun DetailEventBox(
                             color = KoinTheme.colors.neutral0,
                             maxLines = 1
                         )
+                        if (isUpcoming) {
+                            Spacer(Modifier.width(8.dp))
+                            Image(
+                                modifier = Modifier.size(15.dp),
+                                imageVector = ImageVector.vectorResource(R.drawable.ic_club_event_bell),
+                                contentDescription = null
+                            )
+                        }
                     }
                 }
                 Row {
-                    Text(
-                        text = "진행 날짜: ",
-                        style = KoinTheme.typography.regular12,
-                        color = KoinTheme.colors.neutral600
-                    )
                     Text(
                         text = dateText,
                         style = KoinTheme.typography.regular12,
@@ -147,7 +156,6 @@ fun DetailEventBox(
 @Composable
 fun DetailEventBoxPreview() {
     DetailEventBox(
-        eventId = 1,
         eventName = "2025년 제22회 깔끔한 행사 명 선발 대회",
         stateText = "곧 행사 진행",
         dateText = "2025.07.20 09:00 ~ 2025.07.21 09:00",
@@ -160,12 +168,11 @@ fun DetailEventBoxPreview() {
 @Composable
 fun DetailEventBoxDisablePreview() {
     DetailEventBox(
-        eventId = 1,
         eventName = "2025년 제22회 깔끔한 행사 명 선발 대회",
         stateText = "마감된 행사",
         dateText = "2025.07.20 09:00 ~ 2025.07.21 09:00",
         eventIntroText = "2025년 제22회 깔끔한 행사 명 선발 대회 소개입니다.",
-        stateColor = KoinTheme.colors.primary400,
+        stateColor = KoinTheme.colors.primary500,
         isDisable = true
     )
 }

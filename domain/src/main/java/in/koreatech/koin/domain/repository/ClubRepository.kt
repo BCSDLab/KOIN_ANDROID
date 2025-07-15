@@ -148,4 +148,14 @@ interface ClubRepository {
     suspend fun unsubscribeClubRecruitment(
         clubId: Int
     ): Result<Unit>
+
+    suspend fun subscribeClubEvent(
+        clubId: Int,
+        eventId: Int
+    ): Result<Unit>
+
+    suspend fun unsubscribeClubEvent(
+        clubId: Int,
+        eventId: Int
+    ): Result<Unit>
 }

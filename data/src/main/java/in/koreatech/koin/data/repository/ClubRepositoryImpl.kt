@@ -614,4 +614,60 @@ class ClubRepositoryImpl @Inject constructor(
             )
         }
     }
+
+    override suspend fun subscribeClubEvent(
+        clubId: Int,
+        eventId: Int
+    ): Result<Unit> {
+        return runCatching {
+            val response = clubRemoteDataSource.subscribeClubEvent(clubId, eventId)
+            if (response.isSuccessful) {
+                Unit
+            } else {
+                throw HttpException(response)
+            }
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            400 -> KoinClubException.WrongInputDataException()
+                            403 -> KoinClubException.NotAllowedUserException()
+                            404 -> KoinClubException.ClubEventNotFoundException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+                    else -> exception
+                }
+            )
+        }
+    }
+
+    override suspend fun unsubscribeClubEvent(
+        clubId: Int,
+        eventId: Int
+    ): Result<Unit> {
+        return runCatching {
+            val response = clubRemoteDataSource.unsubscribeClubEvent(clubId, eventId)
+            if (response.isSuccessful) {
+                Unit
+            } else {
+                throw HttpException(response)
+            }
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            400 -> KoinClubException.WrongInputDataException()
+                            403 -> KoinClubException.NotAllowedUserException()
+                            404 -> KoinClubException.ClubEventNotFoundException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+                    else -> exception
+                }
+            )
+        }
+    }
 }

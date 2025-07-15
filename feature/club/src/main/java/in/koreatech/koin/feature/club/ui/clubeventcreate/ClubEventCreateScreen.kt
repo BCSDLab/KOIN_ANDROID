@@ -208,7 +208,7 @@ fun ClubEventCreateScreenImpl(
 
     if (showTimePickerDialogState) {
         KoinClubTimePickerDialog(
-            title = "시간을 선택해주세요.",
+            title = stringResource(R.string.club_time_picker_title),
             isStartTime = isStartDateSelected,
             defaultTime = if (isStartDateSelected) {
                 eventStartDateTime.toLocalTime()

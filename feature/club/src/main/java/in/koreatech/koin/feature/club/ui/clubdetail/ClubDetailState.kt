@@ -34,5 +34,6 @@ data class ClubDetailState(
     val clubEventSearchType: EventSearchType = EventSearchType.RECENT,
     val clubEvents: List<ParcelizeClubEvent> = immutableListOf(),
     val showEventsProgressBar: Boolean = false,
-    val showRecruitSubscribeDialog: Boolean = false
+    val showRecruitSubscribeDialog: Boolean = false,
+    val showEventSubscribeDialog: Boolean = false
 ) : Parcelable
