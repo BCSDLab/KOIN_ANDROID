@@ -206,6 +206,7 @@ object URLConstant {
             object EVENT {
                 const val EVENTS = "$CLUBID/events"
                 const val EVENT = "$CLUBID/event"
+                const val EVENTID = "$EVENT/{eventId}"
             }
         }
         const val EMPOWERMENT = "$CLUBS/empowerment"

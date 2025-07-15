@@ -11,5 +11,5 @@ data class ClubEventResponse(
     @SerializedName("introduce") val introduce: String,
     @SerializedName("content") val content: String?,
     @SerializedName("status") val status: String,
-    @SerializedName("is_subscribed") val isSubscribed: Boolean
+    @SerializedName("is_subscribed") val isSubscribed: Boolean?
 )

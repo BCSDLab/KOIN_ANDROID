@@ -9,5 +9,5 @@ data class ClubEvent(
     val introduce: String,
     val content: String?,
     val status: String,
-    val isSubscribed: Boolean
+    val isSubscribed: Boolean?
 )

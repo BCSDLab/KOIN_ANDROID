@@ -77,4 +77,20 @@ class ClubRemoteDataSource @Inject constructor(
         clubId: Int,
         request: ClubEventRequest
     ) = clubAuthApi.createClubEvent(clubId, request)
+
+    suspend fun getClubEvent(
+        clubId: Int,
+        eventId: Int
+    ) = clubApi.getClubEvent(clubId, eventId)
+
+    suspend fun modifyClubEvent(
+        clubId: Int,
+        eventId: Int,
+        request: ClubEventRequest
+    ) = clubAuthApi.modifyClubEvent(clubId, eventId, request)
+
+    suspend fun deleteClubEvent(
+        clubId: Int,
+        eventId: Int,
+    ) = clubAuthApi.deleteClubEvent(clubId, eventId)
 }
