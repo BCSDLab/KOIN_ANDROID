@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.mapper
 
 import `in`.koreatech.koin.data.response.club.ClubCategoriesResponse
 import `in`.koreatech.koin.data.response.club.ClubDetailsResponse
+import `in`.koreatech.koin.data.response.club.ClubEventResponse
 import `in`.koreatech.koin.data.response.club.ClubHotResponse
 import `in`.koreatech.koin.data.response.club.ClubQnasResponse
 import `in`.koreatech.koin.data.response.club.ClubQnasResponse.QnaResponse
@@ -9,6 +10,7 @@ import `in`.koreatech.koin.data.response.club.ClubRecruitmentResponse
 import `in`.koreatech.koin.data.response.club.ClubsResponse
 import `in`.koreatech.koin.domain.model.club.ClubCategories
 import `in`.koreatech.koin.domain.model.club.ClubDetails
+import `in`.koreatech.koin.domain.model.club.ClubEvent
 import `in`.koreatech.koin.domain.model.club.ClubHot
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo.Qna
@@ -108,4 +110,16 @@ fun ClubRecruitmentResponse.toClubRecruitment() = ClubRecruitment(
     imageUrl,
     content,
     isManager
+)
+
+fun ClubEventResponse.toClubEvent() = ClubEvent(
+    id,
+    name,
+    imageUrls,
+    startDate,
+    endDate,
+    introduce,
+    content,
+    status,
+    isSubscribed
 )

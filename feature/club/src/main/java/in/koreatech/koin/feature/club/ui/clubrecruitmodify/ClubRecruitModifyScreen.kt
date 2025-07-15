@@ -61,8 +61,8 @@ import `in`.koreatech.koin.feature.club.component.KoinClubDatePickerDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubDateSelectBox
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
+import `in`.koreatech.koin.feature.club.utils.getDayOfWeek
 import `in`.koreatech.koin.feature.club.utils.pickMedia
-import java.time.DayOfWeek
 import java.time.LocalDate
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -167,6 +167,11 @@ fun ClubRecruitCreateScreenImpl(
 
     if (showDatePickerDialogState) {
         KoinClubDatePickerDialog(
+            defaultDate = if (isStartDateSelected) {
+                recruitStartDate
+            } else {
+                recruitEndDate
+            },
             onPositive = {
                 if (isStartDateSelected) {
                     setRecruitStartDate(it)
@@ -261,7 +266,7 @@ fun ClubRecruitCreateScreenImpl(
                 ) {
                     KoinClubDateSelectBox(
                         text = stringResource(
-                            R.string.club_recruit_create_date_format,
+                            R.string.club_date_picker_format,
                             recruitStartDate.year,
                             recruitStartDate.monthValue,
                             recruitStartDate.dayOfMonth,
@@ -279,7 +284,7 @@ fun ClubRecruitCreateScreenImpl(
                     )
                     KoinClubDateSelectBox(
                         text = stringResource(
-                            R.string.club_recruit_create_date_format,
+                            R.string.club_date_picker_format,
                             recruitEndDate.year,
                             recruitEndDate.monthValue,
                             recruitEndDate.dayOfMonth,
@@ -335,6 +340,11 @@ fun ClubRecruitCreateScreenImpl(
                                 .size(20.dp)
                                 .align(Alignment.TopEnd)
                                 .clickable { onImageDeleteClick() }
+                                .background(
+                                    color = KoinTheme.colors.neutral0.copy(alpha = 0.5f),
+                                    shape = KoinTheme.shapes.extraLarge
+                                )
+                                .padding(vertical = 2.dp, horizontal = 2.dp)
                         )
                     }
                 }
@@ -414,14 +424,3 @@ fun handleSideEffect(
         }
     }
 }
-
-private fun getDayOfWeek(dayOfWeek: DayOfWeek): String =
-    when (dayOfWeek) {
-        DayOfWeek.MONDAY -> "월"
-        DayOfWeek.TUESDAY -> "화"
-        DayOfWeek.WEDNESDAY -> "수"
-        DayOfWeek.THURSDAY -> "목"
-        DayOfWeek.FRIDAY -> "금"
-        DayOfWeek.SATURDAY -> "토"
-        DayOfWeek.SUNDAY -> "일"
-    }

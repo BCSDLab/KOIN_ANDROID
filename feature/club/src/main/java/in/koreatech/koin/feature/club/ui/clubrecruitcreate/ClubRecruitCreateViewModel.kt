@@ -31,6 +31,10 @@ class ClubRecruitCreateViewModel @Inject constructor(
         intent { reduce { state.copy(clubId = clubId) } }
     }
 
+    fun deleteImageUrl() = intent {
+        reduce { state.copy(recruitImageUrl = "") }
+    }
+
     fun showCreateRequestDialog() = intent {
         reduce { state.copy(showCreateRequestDialog = true) }
     }

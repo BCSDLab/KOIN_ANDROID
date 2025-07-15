@@ -31,12 +31,12 @@ fun ClubRecruitment?.toParcelizeClubRecruitment(): ParcelizeClubRecruitment? {
 }
 
 enum class RecruitmentStatus {
+    UNKNOWN,
     NONE,
     BEFORE,
     RECRUITING,
     CLOSED,
-    ALWAYS,
-    UNKNOWN
+    ALWAYS
 }
 
 fun String.toRecruitmentStatus() = when (this) {

@@ -4,6 +4,7 @@ import `in`.koreatech.koin.data.api.ClubApi
 import `in`.koreatech.koin.data.api.auth.ClubAuthApi
 import `in`.koreatech.koin.data.request.club.ClubCreateRequest
 import `in`.koreatech.koin.data.request.club.ClubEmpowermentRequest
+import `in`.koreatech.koin.data.request.club.ClubEventRequest
 import `in`.koreatech.koin.data.request.club.ClubModifyRequest
 import `in`.koreatech.koin.data.request.club.ClubQnaRequest
 import `in`.koreatech.koin.data.request.club.ClubRecruitmentRequest
@@ -68,4 +69,14 @@ class ClubRemoteDataSource @Inject constructor(
         clubId: Int,
         request: ClubRecruitmentRequest
     ) = clubAuthApi.modifyClubRecruitment(clubId, request)
+
+    suspend fun getClubEvents(
+        clubId: Int,
+        eventType: String
+    ) = clubApi.getClubEvents(clubId, eventType)
+
+    suspend fun createClubEvent(
+        clubId: Int,
+        request: ClubEventRequest
+    ) = clubAuthApi.createClubEvent(clubId, request)
 }

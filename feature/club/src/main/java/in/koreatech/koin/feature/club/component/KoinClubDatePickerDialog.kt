@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
@@ -28,14 +30,15 @@ import java.time.ZoneId
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KoinClubDatePickerDialog(
+    defaultDate: LocalDate,
     modifier: Modifier = Modifier,
-    datePickerState: DatePickerState = rememberDatePickerState(),
+    datePickerState: DatePickerState = rememberDatePickerState(initialSelectedDateMillis = defaultDate.toMillis()),
     onDismiss: () -> Unit = {},
     onPositive: (LocalDate) -> Unit = {},
     onNegative: () -> Unit = {}
 ) {
     BasicAlertDialog(
-        modifier = modifier,
+        modifier = modifier.wrapContentWidth(unbounded = true).width(380.dp),
         onDismissRequest = onDismiss
     ) {
         Column(
@@ -50,6 +53,7 @@ fun KoinClubDatePickerDialog(
                 )
         ) {
             DatePicker(
+                modifier = Modifier.fillMaxWidth(),
                 state = datePickerState,
                 colors = DatePickerDefaults.colors(
                     containerColor = KoinTheme.colors.neutral0
@@ -83,11 +87,16 @@ fun KoinClubDatePickerDialog(
     }
 }
 
+fun LocalDate.toMillis(): Long =
+    this.atStartOfDay(ZoneId.of("UTC")).toInstant().toEpochMilli()
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun KoinClubDatePickerDialogPreView() {
     KoinTheme {
-        KoinClubDatePickerDialog()
+        KoinClubDatePickerDialog(
+            defaultDate = LocalDate.now()
+        )
     }
 }
