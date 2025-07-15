@@ -37,11 +37,40 @@ class ClubRecruitModifyViewModel @Inject constructor(
         loadClubRecruitment()
     }
 
-    var beforeContent = ""
-    var beforeImageUrl = ""
-    var beforeStartDate = LocalDate.now()
-    var beforeEndDate = beforeStartDate.plusDays(1)
-    var beforeAlways = false
+    object BeforeRecruitState {
+        private lateinit var content: String
+        private lateinit var imageUrl: String
+        private lateinit var startDate: LocalDate
+        private lateinit var endDate: LocalDate
+        private var always: Boolean = false
+
+        operator fun invoke(
+            content: String,
+            imageUrl: String,
+            startDate: LocalDate,
+            endDate: LocalDate,
+            always: Boolean
+        ) {
+            this.content = content
+            this.imageUrl = imageUrl
+            this.startDate = startDate
+            this.endDate = endDate
+            this.always = always
+        }
+        fun isDifference(
+            content: String,
+            imageUrl: String,
+            startDate: LocalDate,
+            endDate: LocalDate,
+            always: Boolean
+        ) = (
+                this.content != content ||
+                this.imageUrl != imageUrl ||
+                this.startDate != startDate ||
+                this.endDate != endDate ||
+                this.always != always
+        )
+    }
 
     private fun loadClubRecruitment() = intent {
         reduce { state.copy(isLoading = true, isRecruitLoading = true) }
@@ -60,11 +89,13 @@ class ClubRecruitModifyViewModel @Inject constructor(
                         recruitContent = it.content
                     )
                 }
-                beforeContent = state.recruitContent
-                beforeImageUrl = state.recruitImageUrl
-                beforeStartDate = state.recruitStartDate
-                beforeEndDate = state.recruitEndDate
-                beforeAlways = state.recruitAlways
+                BeforeRecruitState(
+                    state.recruitContent,
+                    state.recruitImageUrl,
+                    state.recruitStartDate,
+                    state.recruitEndDate,
+                    state.recruitAlways,
+                )
             }
         }.onFailure { e ->
             reduce { state.copy(isLoading = false, isRecruitLoading = false) }
@@ -93,18 +124,19 @@ class ClubRecruitModifyViewModel @Inject constructor(
     fun updateModifyCancelDialog(bool: Boolean) = intent {
         if(bool) {
             if (
-                beforeContent != state.recruitContent ||
-                beforeImageUrl != state.recruitImageUrl ||
-                beforeStartDate != state.recruitStartDate ||
-                beforeEndDate != state.recruitEndDate ||
-                beforeAlways != state.recruitAlways
-                ) {
-                reduce { state.copy(showModifyCancelDialog = bool) }
+                BeforeRecruitState.isDifference(
+                    state.recruitContent,
+                    state.recruitImageUrl,
+                    state.recruitStartDate,
+                    state.recruitEndDate,
+                    state.recruitAlways,
+                )) {
+                reduce { state.copy(showModifyCancelDialog = true) }
             } else {
                 postNavigateUp()
             }
         } else {
-            reduce { state.copy(showModifyCancelDialog = bool) }
+            reduce { state.copy(showModifyCancelDialog = false) }
         }
     }
 

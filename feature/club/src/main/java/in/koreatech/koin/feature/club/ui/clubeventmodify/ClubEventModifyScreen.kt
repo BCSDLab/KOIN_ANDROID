@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.club.ui.clubeventmodify
 import android.content.Context
 import android.net.Uri
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -35,7 +36,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -91,13 +91,17 @@ fun ClubEventModifyScreen(
         handleSideEffect(sideEffect, context, onEventModified, onNavigateUp)
     }
 
+    BackHandler {
+        viewModel.updateModifyCancelDialog(true)
+    }
+
     Scaffold(
         modifier = modifier.imePadding(),
         containerColor = KoinTheme.colors.neutral0,
         topBar = {
             KoinTopAppBar(
                 title = stringResource(R.string.club_event_modify_title),
-                onNavigationIconClick = { viewModel.updateCreateCancelDialog(true) }
+                onNavigationIconClick = { viewModel.updateModifyCancelDialog(true) }
             )
         },
         contentWindowInsets = WindowInsets.systemBars
@@ -118,14 +122,13 @@ fun ClubEventModifyScreen(
             showModifyRequestDialogState = uiState.showModifyRequestDialog,
             showDatePickerDialogState = uiState.showDatePickerDialog,
             showTimePickerDialogState = uiState.showTimePickerDialog,
-            updateModifyCancelDialog = viewModel::updateCreateCancelDialog,
-            updateModifyRequestDialog = viewModel::updateCreateRequestDialog,
+            updateModifyCancelDialog = viewModel::updateModifyCancelDialog,
+            updateModifyRequestDialog = viewModel::updateModifyRequestDialog,
             updateDatePickerDialog = viewModel::updateDatePickerDialog,
             updateTimePickerDialog = viewModel::updateTimePickerDialog,
             updateEventName = viewModel::updateEventName,
             updateEventIntroduce = viewModel::updateEventIntroduce,
             updateEventContent = viewModel::updateEventContent,
-            updateEventLoading = viewModel::updateEventLoading,
             setEventStartDate = viewModel::setEventStartDate,
             setEventEndDate = viewModel::setEventEndDate,
             setEventStartTime = viewModel::setEventStartTime,
@@ -158,7 +161,6 @@ fun ClubEventCreateScreenImpl(
     updateEventName: (String) -> Unit = {},
     updateEventIntroduce: (String) -> Unit = {},
     updateEventContent: (String) -> Unit = {},
-    updateEventLoading: (Boolean) -> Unit = {},
     setEventStartDate: (LocalDate) -> Unit = {},
     setEventEndDate: (LocalDate) -> Unit = {},
     setEventStartTime: (LocalTime) -> Unit = {},
@@ -300,7 +302,6 @@ fun ClubEventCreateScreenImpl(
                     .border(1.dp, Color.Unspecified, KoinTheme.shapes.extraLarge)
                     .background(KoinTheme.colors.neutral200)
                     .clickable {
-                        updateEventLoading(true)
                         pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                     },
                 horizontalAlignment = Alignment.CenterHorizontally,

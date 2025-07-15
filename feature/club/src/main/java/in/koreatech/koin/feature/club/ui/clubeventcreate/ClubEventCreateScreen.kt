@@ -107,7 +107,6 @@ fun ClubEventCreateScreen(
             eventStartDateTime = uiState.eventStartDateTime,
             eventEndDateTime = uiState.eventEndDateTime,
             imageUrls = uiState.eventImageUrls,
-            isLoading = uiState.isImageLoading,
             uploadImage = viewModel::getPreSignedUrl,
             onImageDeleteClick = viewModel::deleteImageUrl,
             showCreateCancelDialogState = uiState.showCreateCancelDialog,
@@ -118,7 +117,6 @@ fun ClubEventCreateScreen(
             updateCreateRequestDialog = viewModel::updateCreateRequestDialog,
             updateDatePickerDialog = viewModel::updateDatePickerDialog,
             updateTimePickerDialog = viewModel::updateTimePickerDialog,
-            updateImageLoading = viewModel::updateImageLoading,
             setEventStartDate = viewModel::setEventStartDate,
             setEventEndDate = viewModel::setEventEndDate,
             setEventStartTime = viewModel::setEventStartTime,
@@ -136,7 +134,6 @@ fun ClubEventCreateScreenImpl(
     eventEndDateTime: LocalDateTime,
     modifier: Modifier = Modifier,
     imageUrls: List<String> = persistentListOf(),
-    isLoading: Boolean = false,
     showCreateCancelDialogState: Boolean = false,
     showCreateRequestDialogState: Boolean = false,
     showDatePickerDialogState: Boolean = false,
@@ -145,7 +142,6 @@ fun ClubEventCreateScreenImpl(
     updateCreateRequestDialog: (Boolean) -> Unit = {},
     updateDatePickerDialog: (Boolean) -> Unit = {},
     updateTimePickerDialog: (Boolean) -> Unit = {},
-    updateImageLoading: (Boolean) -> Unit = {},
     setEventStartDate: (LocalDate) -> Unit = {},
     setEventEndDate: (LocalDate) -> Unit = {},
     setEventStartTime: (LocalTime) -> Unit = {},
@@ -258,17 +254,6 @@ fun ClubEventCreateScreenImpl(
         )
     }
 
-    if (isLoading) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .zIndex(1f),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
-    }
-
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -290,7 +275,6 @@ fun ClubEventCreateScreenImpl(
                     .border(1.dp, Color.Unspecified, KoinTheme.shapes.extraLarge)
                     .background(KoinTheme.colors.neutral200)
                     .clickable {
-                        updateImageLoading(true)
                         pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                     },
                 horizontalAlignment = Alignment.CenterHorizontally,
