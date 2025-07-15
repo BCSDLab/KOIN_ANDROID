@@ -91,6 +91,6 @@ class ClubRemoteDataSource @Inject constructor(
 
     suspend fun deleteClubEvent(
         clubId: Int,
-        eventId: Int,
+        eventId: Int
     ) = clubAuthApi.deleteClubEvent(clubId, eventId)
 }

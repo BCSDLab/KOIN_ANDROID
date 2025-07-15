@@ -502,8 +502,8 @@ class ClubRepositoryImpl @Inject constructor(
         startDate: String,
         endDate: String,
         introduce: String,
-        content: String?)
-    : Result<Unit> {
+        content: String?
+    ): Result<Unit> {
         return runCatching {
             val response = clubRemoteDataSource.modifyClubEvent(
                 clubId,

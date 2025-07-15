@@ -4,7 +4,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,8 +42,8 @@ import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
 import `in`.koreatech.koin.feature.club.model.EventStatus
 import `in`.koreatech.koin.feature.club.model.ParcelizeClubEvent
 import `in`.koreatech.koin.feature.club.model.toStringForm
-import okhttp3.internal.immutableListOf
 import java.time.LocalDateTime
+import okhttp3.internal.immutableListOf
 
 @Composable
 fun ClubDetailEventInfo(
@@ -68,7 +67,7 @@ fun ClubDetailEventInfo(
             ),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Row (
+        Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
@@ -100,14 +99,14 @@ fun ClubDetailEventInfo(
                 }
             }
         }
-        Text (
+        Text(
             text = clubEvent.name,
             style = KoinTheme.typography.bold20,
             color = KoinTheme.colors.primary600,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
-        Text (
+        Text(
             text = stringResource(
                 R.string.club_event_period,
                 clubEvent.startDateTime.toStringForm(),
@@ -117,8 +116,8 @@ fun ClubDetailEventInfo(
             color = KoinTheme.colors.neutral600,
             maxLines = 1
         )
-        if(clubEvent.imageUrls.isNotEmpty()) {
-            Column (
+        if (clubEvent.imageUrls.isNotEmpty()) {
+            Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
@@ -184,11 +183,11 @@ fun ClubDetailEventInfo(
                 }
             }
         }
-        Text (
+        Text(
             text = stringResource(R.string.detail_event_info_introduce, clubEvent.introduce),
             style = KoinTheme.typography.regular15
         )
-        Text (
+        Text(
             text = stringResource(R.string.detail_event_info_content, clubEvent.content),
             style = KoinTheme.typography.regular15
         )

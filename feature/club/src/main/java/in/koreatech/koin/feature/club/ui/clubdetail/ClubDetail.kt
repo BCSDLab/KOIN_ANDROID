@@ -120,7 +120,7 @@ fun ClubDetail(
     onRecruitCreateClick: (Int) -> Unit = {},
     onRecruitModifyClick: (Int) -> Unit = {},
     onEventCreateClick: (Int) -> Unit = {},
-    onEventModifyClick: (Int, Int) -> Unit = {_,_ -> },
+    onEventModifyClick: (Int, Int) -> Unit = { _, _ -> },
     resetClubModifiedState: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()

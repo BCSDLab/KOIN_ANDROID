@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.club.ui.clubeventmodify
 
 import android.os.Parcelable
-import `in`.koreatech.koin.feature.club.model.EventStatus
 import java.time.LocalDateTime
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.parcelize.Parcelize
@@ -12,7 +11,7 @@ data class ClubEventModifyState(
     val isEventLoading: Boolean = false,
     val clubId: Int = -1,
     val eventId: Int = -1,
-    val eventName: String= "",
+    val eventName: String = "",
     val eventIntroduce: String = "",
     val eventContent: String = "",
     val eventImageUrls: List<String> = persistentListOf(),
