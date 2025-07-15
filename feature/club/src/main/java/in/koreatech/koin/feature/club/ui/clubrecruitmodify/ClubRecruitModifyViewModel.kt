@@ -37,6 +37,12 @@ class ClubRecruitModifyViewModel @Inject constructor(
         loadClubRecruitment()
     }
 
+    var beforeContent = ""
+    var beforeImageUrl = ""
+    var beforeStartDate = LocalDate.now()
+    var beforeEndDate = beforeStartDate.plusDays(1)
+    var beforeAlways = false
+
     private fun loadClubRecruitment() = intent {
         reduce { state.copy(isLoading = true, isRecruitLoading = true) }
         getClubRecruitmentUseCase(state.clubId).onSuccess {
@@ -51,9 +57,14 @@ class ClubRecruitModifyViewModel @Inject constructor(
                         recruitStartDate = if (it.startDate.isNotEmpty()) LocalDate.parse(it.startDate, dateFormatter) else state.recruitStartDate,
                         recruitEndDate = if (it.startDate.isNotEmpty()) LocalDate.parse(it.endDate, dateFormatter) else state.recruitEndDate,
                         recruitAlways = it.status == RecruitmentStatus.ALWAYS,
-                        content = it.content
+                        recruitContent = it.content
                     )
                 }
+                beforeContent = state.recruitContent
+                beforeImageUrl = state.recruitImageUrl
+                beforeStartDate = state.recruitStartDate
+                beforeEndDate = state.recruitEndDate
+                beforeAlways = state.recruitAlways
             }
         }.onFailure { e ->
             reduce { state.copy(isLoading = false, isRecruitLoading = false) }
@@ -80,11 +91,29 @@ class ClubRecruitModifyViewModel @Inject constructor(
     }
 
     fun updateModifyCancelDialog(bool: Boolean) = intent {
-        reduce { state.copy(showModifyCancelDialog = bool) }
+        if(bool) {
+            if (
+                beforeContent != state.recruitContent ||
+                beforeImageUrl != state.recruitImageUrl ||
+                beforeStartDate != state.recruitStartDate ||
+                beforeEndDate != state.recruitEndDate ||
+                beforeAlways != state.recruitAlways
+                ) {
+                reduce { state.copy(showModifyCancelDialog = bool) }
+            } else {
+                postNavigateUp()
+            }
+        } else {
+            reduce { state.copy(showModifyCancelDialog = bool) }
+        }
     }
 
     fun updateDatePickerDialog(bool: Boolean) = intent {
         reduce { state.copy(showDatePickerDialog = bool) }
+    }
+
+    fun updateRecruitContent(value: String) = intent {
+        reduce { state.copy(recruitContent = value) }
     }
 
     fun setRecruitStartDate(date: LocalDate) = intent {
@@ -105,9 +134,7 @@ class ClubRecruitModifyViewModel @Inject constructor(
         reduce { state.copy(recruitAlways = !state.recruitAlways) }
     }
 
-    fun modifyClubRecruitment(
-        content: String
-    ) = intent {
+    fun modifyClubRecruitment() = intent {
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
         val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
@@ -117,7 +144,7 @@ class ClubRecruitModifyViewModel @Inject constructor(
             endDate = if (!state.recruitAlways) state.recruitEndDate.format(dateFormatter) else null,
             isAlwaysRecruiting = state.recruitAlways,
             imageUrl = state.recruitImageUrl,
-            content = content
+            content = state.recruitContent
         ).onSuccess {
             reduce { state.copy(isLoading = false) }
             postSideEffect(ClubRecruitModifySideEffect.RecruitModifySuccess)

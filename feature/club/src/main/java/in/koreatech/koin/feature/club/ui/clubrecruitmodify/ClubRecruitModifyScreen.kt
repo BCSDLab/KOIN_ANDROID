@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.club.ui.clubrecruitmodify
 import android.content.Context
 import android.net.Uri
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -32,7 +33,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -83,6 +83,10 @@ fun ClubRecruitModifyScreen(
         handleSideEffect(sideEffect, context, onRecruitModified, onNavigateUp)
     }
 
+    BackHandler {
+        viewModel.updateModifyCancelDialog(true)
+    }
+
     Scaffold(
         modifier = modifier.imePadding(),
         containerColor = KoinTheme.colors.neutral0,
@@ -95,7 +99,7 @@ fun ClubRecruitModifyScreen(
         contentWindowInsets = WindowInsets.systemBars
     ) { contentPadding ->
         ClubRecruitCreateScreenImpl(
-            content = uiState.content,
+            recruitContent = uiState.recruitContent,
             modifier = Modifier
                 .padding(contentPadding),
             imageUrl = uiState.recruitImageUrl,
@@ -122,6 +126,7 @@ fun ClubRecruitModifyScreen(
             updateModifyRequestDialog = viewModel::updateModifyRequestDialog,
             showModifyCancelDialogState = uiState.showModifyCancelDialog,
             updateModifyCancelDialog = viewModel::updateModifyCancelDialog,
+            updateRecruitContent = viewModel::updateRecruitContent,
             onImageDeleteClick = viewModel::deleteImageUrl
         )
     }
@@ -130,7 +135,7 @@ fun ClubRecruitModifyScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClubRecruitCreateScreenImpl(
-    content: String,
+    recruitContent: String,
     recruitStartDate: LocalDate,
     recruitEndDate: LocalDate,
     modifier: Modifier = Modifier,
@@ -145,10 +150,11 @@ fun ClubRecruitCreateScreenImpl(
     setRecruitStartDate: (LocalDate) -> Unit = {},
     setRecruitEndDate: (LocalDate) -> Unit = {},
     changeRecruitAlways: () -> Unit = {},
-    modifyRecruitment: (String) -> Unit = {},
+    modifyRecruitment: () -> Unit = {},
     modifyRecruitmentCancel: () -> Unit = {},
     updateModifyRequestDialog: (Boolean) -> Unit = {},
     updateModifyCancelDialog: (Boolean) -> Unit = {},
+    updateRecruitContent: (String) -> Unit = {},
     onImageDeleteClick: () -> Unit = {}
 ) {
     val context = LocalContext.current
@@ -159,11 +165,6 @@ fun ClubRecruitCreateScreenImpl(
         context = context,
         onResult = uploadImage
     )
-    var recruitDescriptionText by remember { mutableStateOf("") }
-
-    LaunchedEffect(content) {
-        recruitDescriptionText = content
-    }
 
     val textFieldMinLines = 2
     val textFieldMaxLength = 255
@@ -201,7 +202,7 @@ fun ClubRecruitCreateScreenImpl(
             positiveButtonColors = FilledButtonColors.Primary,
             onPositive = {
                 updateModifyRequestDialog(false)
-                modifyRecruitment(recruitDescriptionText)
+                modifyRecruitment()
             },
             onNegative = { updateModifyRequestDialog(false) },
             onDismiss = { updateModifyRequestDialog(false) }
@@ -384,8 +385,8 @@ fun ClubRecruitCreateScreenImpl(
                 style = KoinTheme.typography.medium18
             )
             KoinClubBasicTextField(
-                value = recruitDescriptionText,
-                onValueChange = { recruitDescriptionText = it },
+                value = recruitContent,
+                onValueChange = { updateRecruitContent(it) },
                 modifier = Modifier
                     .fillMaxWidth(),
                 minLines = textFieldMinLines,
