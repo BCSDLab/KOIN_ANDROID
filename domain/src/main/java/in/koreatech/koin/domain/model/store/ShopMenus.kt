@@ -1,17 +1,22 @@
 package `in`.koreatech.koin.domain.model.store
 
 data class ShopMenus(
-    val id: Int,
-    val name: String,
-    val isHidden: Boolean,
-    val isSingle: Boolean,
-    val singlePrice: Int?,
-    val optionPrices: List<ShopMenuOptions>?,
-    val description: String?,
-    val imageUrls: List<String>?
+    val menuGroupId: Int,
+    val menuGroupName: String,
+    val menus: List<ShopMenu>
 ) {
-    data class ShopMenuOptions(
-        val option: String,
-        val price: Int?
-    )
+    data class ShopMenu(
+        val id: Int,
+        val name: String,
+        val description: String,
+        val thumbnailImage: String,
+        val isSoldOut: Boolean,
+        val prices: List<ShopMenuPrice>
+    ) {
+        data class ShopMenuPrice(
+            val id: Int,
+            val name: String?,
+            val price: Int
+        )
+    }
 }

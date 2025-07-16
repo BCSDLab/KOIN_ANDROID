@@ -31,7 +31,7 @@ import `in`.koreatech.business.ui.theme.ColorCategory
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 
 @Composable
@@ -85,7 +85,7 @@ fun MenuCategories(item: StoreMenuCategories) {
 fun MenuItemFactor(
     modifier: Modifier = Modifier,
     onMenuClicked: (Int) -> Unit = {},
-    item: ShopMenus
+    item: LegacyShopMenus
 ) {
     Column(
         modifier =
@@ -184,7 +184,7 @@ fun MenuItemFactor(
 @Composable
 fun PreviewMenuItemFactor(modifier: Modifier = Modifier) {
     val item =
-        ShopMenus(
+        LegacyShopMenus(
             id = 2795,
             name = "qweqwe",
             isHidden = false,
@@ -192,8 +192,8 @@ fun PreviewMenuItemFactor(modifier: Modifier = Modifier) {
             singlePrice = null,
             optionPrices =
             listOf(
-                ShopMenus.ShopMenuOptions(option = "123123", price = 123213),
-                ShopMenus.ShopMenuOptions(option = "3232", price = 321312213)
+                LegacyShopMenus.ShopMenuOptions(option = "123123", price = 123213),
+                LegacyShopMenus.ShopMenuOptions(option = "3232", price = 321312213)
             ),
             description = "saadafgsdrtddffewrsfdsfwerewrs",
             imageUrls =

@@ -7,7 +7,6 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -35,6 +34,7 @@ import `in`.koreatech.koin.feature.store.view.StoreDetailState.MenuCategory
 
 @Composable
 fun MenuCategoryChips(
+    modifier: Modifier = Modifier,
     menuCategories: List<MenuCategory>,
     onCategoryClicked: (Int, Int) -> Unit = { categoryId, height -> }
 ) {
@@ -42,9 +42,7 @@ fun MenuCategoryChips(
     val menuCategoryHeight = remember { mutableStateOf(0) }
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = 66.dp)
+        modifier = modifier
             .onSizeChanged { size: IntSize ->
                 menuCategoryHeight.value = size.height
             }

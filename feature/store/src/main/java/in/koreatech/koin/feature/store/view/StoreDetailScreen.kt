@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -90,6 +92,7 @@ fun StoreDetailScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
+                .navigationBarsPadding()
                 .padding(
                     top = currentToolbarHeightDp + CustomClosingToolbarScreenDefaults.windowInsets
                         .asPaddingValues()
@@ -114,7 +117,10 @@ fun StoreDetailScreen(
             }
             stickyHeader {
                 MenuCategoryChips(
-                    uiState.categories,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 66.dp),
+                    menuCategories = uiState.categories,
                     onCategoryClicked = { categoryId, stickyHeaderHeight ->
                         viewModel.clickMenuCategory(categoryId)
                         rememberState.collapseToolbar(
@@ -129,7 +135,9 @@ fun StoreDetailScreen(
             uiState.categories.forEach { category ->
                 menuListSection(
                     category = category.storeMenuCategories.name ?: "",
-                    menus = category.storeMenuCategories.menus ?: emptyList()
+                    menus = category.storeMenuCategories.menus ?: emptyList(),
+                    modifier = Modifier
+                        .padding(horizontal = 24.dp)
                 )
             }
         }

@@ -1,11 +1,9 @@
 package `in`.koreatech.koin.feature.store.component
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -28,15 +26,15 @@ import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.feature.store.R
 
 @Composable
-fun OriginInfoChips() {
+fun OriginInfoChips(
+    modifier: Modifier = Modifier
+) {
     Surface(
+        modifier = modifier,
         shape = RoundedCornerShape(50),
         border = BorderStroke(0.5.dp, Color(0xFFE0E0E0)),
         color = Color.White,
-        shadowElevation = 1.dp,
-        modifier = Modifier
-            .defaultMinSize(minHeight = 28.dp)
-            .clickable { }
+        shadowElevation = 1.dp
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

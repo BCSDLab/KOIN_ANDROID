@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -32,10 +31,11 @@ import `in`.koreatech.koin.feature.store.R
 
 @Composable
 fun StoreDetailInfoCard(
+    modifier: Modifier = Modifier,
     storeInfo: StoreWithMenu,
     navigateToDetailInfo: () -> Unit = {}
 ) {
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Row(modifier = modifier) {
         DeliveryInfoCard(
             modifier = Modifier.weight(1f),
             storeInfo,
@@ -79,7 +79,7 @@ fun DeliveryInfoCard(
                 Row {
                     Text(text = stringResource(R.string.delivery_fee), fontSize = 12.sp, lineHeight = 18.sp)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(storeInfo.deliveryPrice.toString() + "원", fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
+                    Text(stringResource(id = R.string.price_with_won, storeInfo.deliveryPrice), fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
                 }
             }
             Icon(painter = painterResource(id = R.drawable.ic_delivery_arrow_right), contentDescription = null, modifier = Modifier.size(10.dp))

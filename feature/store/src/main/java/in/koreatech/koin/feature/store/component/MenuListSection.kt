@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -30,20 +29,19 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 import `in`.koreatech.koin.feature.store.R
 
 fun LazyListScope.menuListSection(
     category: String,
-    menus: List<ShopMenus>
+    menus: List<LegacyShopMenus>,
+    modifier: Modifier = Modifier
 ) {
     if (menus.isEmpty()) return
 
     item {
         Column(
-            modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .navigationBarsPadding()
+            modifier = modifier
         ) {
             Text(
                 text = category,
@@ -64,7 +62,11 @@ fun LazyListScope.menuListSection(
             ) {
                 Column {
                     menus.forEachIndexed { index, menu ->
-                        MenuItem(menu = menu)
+                        MenuItem(
+                            modifier = Modifier
+                                .padding(16.dp),
+                            menu = menu
+                        )
                         if (index != menus.lastIndex) {
                             Divider(
                                 color = KoinTheme.colors.neutral300,
@@ -80,9 +82,10 @@ fun LazyListScope.menuListSection(
 
 @Composable
 fun MenuItem(
-    menu: ShopMenus
+    menu: LegacyShopMenus,
+    modifier: Modifier = Modifier
 ) {
-    Row(modifier = Modifier.padding(16.dp)) {
+    Row(modifier = modifier) {
         Column(modifier = Modifier.weight(1f)) {
             Text(text = menu.name, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
             if (menu.description != null) {
@@ -94,6 +97,7 @@ fun MenuItem(
                 )
             }
             OptionPriceText(
+                modifier = Modifier.padding(top = 4.dp),
                 shopMenus = menu
             )
         }
@@ -118,10 +122,11 @@ fun MenuItem(
 
 @Composable
 private fun OptionPriceText(
-    shopMenus: ShopMenus
+    modifier: Modifier = Modifier,
+    shopMenus: LegacyShopMenus
 ) {
     Column(
-        modifier = Modifier.padding(top = 4.dp)
+        modifier = modifier
     ) {
         if (shopMenus.isSingle) {
             Text(
@@ -145,18 +150,19 @@ private fun MenuListSectionPreview() {
             contentPadding = PaddingValues(16.dp)
         ) {
             menuListSection(
+                modifier = Modifier.fillMaxWidth(),
                 category = "추천메뉴",
                 menus = listOf(
-                    ShopMenus(
+                    LegacyShopMenus(
                         name = "막국수",
                         description = "막국수 + 족발",
                         isSingle = false,
                         singlePrice = 10000,
                         optionPrices =
                         listOf(
-                            ShopMenus.ShopMenuOptions("소", 10000),
-                            ShopMenus.ShopMenuOptions("중", 20000),
-                            ShopMenus.ShopMenuOptions("대", 30000)
+                            LegacyShopMenus.ShopMenuOptions("소", 10000),
+                            LegacyShopMenus.ShopMenuOptions("중", 20000),
+                            LegacyShopMenus.ShopMenuOptions("대", 30000)
                         ),
                         isHidden = false,
                         imageUrls = listOf(

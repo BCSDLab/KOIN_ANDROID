@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -61,11 +62,19 @@ fun StoreDetailInfo(
                 Text(text = stringResource(R.string.review_count, storeReview.totalCount), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                 Icon(painter = painterResource(R.drawable.ic_right_arrow), contentDescription = null, modifier = Modifier.size(9.dp))
             }
-            OriginInfoChips()
+            OriginInfoChips(
+                modifier = Modifier
+                    .defaultMinSize(minHeight = 28.dp)
+                    .clickable { }
+            )
         }
         Spacer(modifier = Modifier.height(12.dp))
         AvailableChips(storeInfo)
         Spacer(modifier = Modifier.height(16.dp))
-        StoreDetailInfoCard(storeInfo, navigateToDetailInfo)
+        StoreDetailInfoCard(
+            modifier = Modifier.fillMaxWidth(),
+            storeInfo = storeInfo,
+            navigateToDetailInfo = navigateToDetailInfo
+        )
     }
 }
