@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.club.navigation
 
 import android.app.Activity
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -45,12 +46,16 @@ fun NavGraphBuilder.koinClubGraph(
     }
 
     composable(
-        route = "${ClubNavType.ClubDetail.route}/{$CLUB_ID}?recruitEvent={$RECRUIT_EVENT}",
+        route = "${ClubNavType.ClubDetail.route}/{$CLUB_ID}?recruitEvent={$RECRUIT_EVENT}&eventId={$EVENT_ID}",
         arguments = listOf(
             navArgument(CLUB_ID) { type = NavType.IntType },
             navArgument(RECRUIT_EVENT) {
                 type = NavType.BoolType
                 defaultValue = false
+            },
+            navArgument(EVENT_ID) {
+                type = NavType.IntType
+                defaultValue = -1
             }
         )
     ) {
@@ -58,11 +63,13 @@ fun NavGraphBuilder.koinClubGraph(
 
         val isRecruitEvent = it.arguments?.getBoolean(RECRUIT_EVENT) ?: false
 
+        var eventId = it.arguments?.getInt(EVENT_ID) ?: -1
         val context = LocalContext.current
 
         ClubDetail(
             isClubModified = isClubModified,
             isRecruitEvent = isRecruitEvent,
+            norificationEventId = eventId,
             onTopbarBackClick = {
                 if (!navController.popBackStack()) {
                     (context as? Activity)?.finish()
@@ -85,6 +92,9 @@ fun NavGraphBuilder.koinClubGraph(
             },
             resetClubModifiedState = {
                 it.savedStateHandle[IS_CLUB_MODIFIED] = false
+            },
+            resetNorificationEventId = {
+                eventId = -1
             }
         )
     }
@@ -198,3 +208,5 @@ const val CATEGORY_ID = "categoryId"
 const val IS_CLUB_CREATED = "isClubCreated"
 const val IS_CLUB_MODIFIED = "isClubModified"
 const val RECRUIT_EVENT = "recruitEvent"
+const val EXTRA_CLUB_ID = "extra_club_id"
+const val EXTRA_EVENT_ID = "extra_event_id"

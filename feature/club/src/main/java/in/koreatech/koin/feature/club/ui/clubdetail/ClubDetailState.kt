@@ -35,5 +35,6 @@ data class ClubDetailState(
     val clubEvents: List<ParcelizeClubEvent> = immutableListOf(),
     val showEventsProgressBar: Boolean = false,
     val showRecruitSubscribeDialog: Boolean = false,
-    val showEventSubscribeDialog: Boolean = false
+    val showEventSubscribeDialog: Boolean = false,
+    val clubEventLoaded: Boolean = false
 ) : Parcelable

@@ -116,6 +116,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun ClubDetail(
     isClubModified: Boolean = false,
     isRecruitEvent: Boolean = false,
+    norificationEventId: Int = -1,
     initialPage: Int = 0,
     viewModel: ClubDetailViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {},
@@ -124,7 +125,8 @@ fun ClubDetail(
     onRecruitModifyClick: (Int) -> Unit = {},
     onEventCreateClick: (Int) -> Unit = {},
     onEventModifyClick: (Int, Int) -> Unit = {_,_ -> },
-    resetClubModifiedState: () -> Unit = {}
+    resetClubModifiedState: () -> Unit = {},
+    resetNorificationEventId: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
 
@@ -176,6 +178,18 @@ fun ClubDetail(
         if (isRecruitEvent) {
             pagerState.animateScrollToPage(1)
             listState.animateScrollToItem(2)
+        }
+    }
+
+    LaunchedEffect(state.clubEventLoaded) {
+        if (norificationEventId != -1) {
+            val eventIndex = state.clubEvents.indexOfFirst { it.id == norificationEventId }
+            if (eventIndex != -1) {
+                viewModel.selectEvent(eventIndex)
+                pagerState.animateScrollToPage(2)
+                listState.animateScrollToItem(2)
+                resetNorificationEventId()
+            }
         }
     }
 

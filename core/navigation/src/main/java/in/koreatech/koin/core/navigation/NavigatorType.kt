@@ -14,5 +14,6 @@ enum class SchemeType(
     DINING("dining"),
     ARTICLE("keyword"),
     CHAT("chat"),
-    CLUB_RECRUIT("CLUB-recruitment")
+    CLUB_RECRUIT("CLUB-recruitment"),
+    CLUB("club")
 }

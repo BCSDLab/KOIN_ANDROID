@@ -2,6 +2,7 @@ package `in`.koreatech.koin.navigation
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.buildIntent
@@ -117,6 +118,17 @@ class NavigatorImpl @Inject constructor() : Navigator {
         type: Pair<String, Any?>
     ): Intent {
         val intent = context.buildIntent<ClubActivity>(targetClubId, type)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        return intent
+    }
+
+    override fun navigateToClub(
+        context: Context,
+        targetClubId: Pair<String, Any?>,
+        targetEventId: Pair<String, Any?>,
+        type: Pair<String, Any?>
+    ): Intent {
+        val intent = context.buildIntent<ClubActivity>(targetClubId, targetEventId, type)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         return intent
     }

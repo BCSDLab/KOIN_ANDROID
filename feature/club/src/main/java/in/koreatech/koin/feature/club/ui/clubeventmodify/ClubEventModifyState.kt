@@ -23,5 +23,6 @@ data class ClubEventModifyState(
     val showModifyCancelDialog: Boolean = false,
     val showModifyRequestDialog: Boolean = false,
     val showDatePickerDialog: Boolean = false,
-    val showTimePickerDialog: Boolean = false
+    val showTimePickerDialog: Boolean = false,
+    val maxImageLimit: Int = 7,
 ) : Parcelable

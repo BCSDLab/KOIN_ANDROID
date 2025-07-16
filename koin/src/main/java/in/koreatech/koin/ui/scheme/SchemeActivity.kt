@@ -18,6 +18,7 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_CLUB_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_EVENT_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_NAV_TYPE
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
@@ -75,8 +76,6 @@ class SchemeActivity : ActivityBase() {
             Timber.e("url : $url")
             Timber.e("url to host : ${url?.toHost()}")
 
-            Log.e("MYLOG", "url : $url")
-            Log.e("MYLOG", "url to host : ${url?.toHost()}")
             /**
              * koin://shop
              * url?.toHost = shop
@@ -170,6 +169,23 @@ class SchemeActivity : ActivityBase() {
                             navigateToActivity(intent)
                         }
 
+                        SchemeType.CLUB.type -> {
+                            val intent =
+                                navigator.navigateToClub(
+                                    context = this,
+                                    targetClubId = Pair(
+                                        EXTRA_CLUB_ID,
+                                        getClubIdFromUrl(url)
+                                    ),
+                                    targetEventId = Pair(
+                                        EXTRA_EVENT_ID,
+                                        getEventIdFromUrl(url)
+                                    ),
+                                    type = Pair(EXTRA_TYPE, host)
+                                )
+                            navigateToActivity(intent)
+                        }
+
                         else -> {
                             val intent = navigator.navigateToMain(context = this)
                             navigateToActivity(intent)
@@ -203,6 +219,14 @@ class SchemeActivity : ActivityBase() {
 
     private fun getKeywordFromUrl(url: String): String {
         return Uri.parse(url).getQueryParameter("keyword") ?: ""
+    }
+
+    private fun getClubIdFromUrl(url: String): Int {
+        return Uri.parse(url).getQueryParameter("clubId")?.toIntOrNull() ?: -1
+    }
+
+    private fun getEventIdFromUrl(url: String): Int {
+        return Uri.parse(url).getQueryParameter("eventId")?.toIntOrNull() ?: -1
     }
 
     private fun navigateToActivity(intent: Intent) {

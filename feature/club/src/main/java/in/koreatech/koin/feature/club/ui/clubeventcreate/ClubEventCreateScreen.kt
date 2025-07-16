@@ -120,6 +120,7 @@ fun ClubEventCreateScreen(
             uploadImage = viewModel::getPreSignedUrl,
             onMaxImageError = viewModel::postMaxImageLimitError,
             onImageDeleteClick = viewModel::deleteImageUrl,
+            maxImageLimit = uiState.maxImageLimit,
             isLoading = uiState.isLoading,
             showCreateCancelDialogState = uiState.showCreateCancelDialog,
             showCreateRequestDialogState = uiState.showCreateRequestDialog,
@@ -154,6 +155,7 @@ fun ClubEventCreateScreenImpl(
     eventEndDateTime: LocalDateTime,
     modifier: Modifier = Modifier,
     imageUrls: List<String> = persistentListOf(),
+    maxImageLimit: Int = 7,
     isLoading: Boolean = false,
     showCreateCancelDialogState: Boolean = false,
     showCreateRequestDialogState: Boolean = false,
@@ -187,11 +189,9 @@ fun ClubEventCreateScreenImpl(
     val introTextFieldMaxLength = 70
     val contentTextFieldMaxLines = 2
 
-    val maxImageItems = 7
-
     val pickMultipleMedia = pickMultipleMedia(
         context = context,
-        maxItems = maxOf(maxImageItems - imageUrls.size, 2),
+        maxItems = maxOf(maxImageLimit - imageUrls.size, 2),
         onResult = uploadImage
     )
 
@@ -200,7 +200,7 @@ fun ClubEventCreateScreenImpl(
         onResult = uploadImage
     )
 
-    val pagerState = rememberPagerState(pageCount = { minOf(imageUrls.size + 1, maxImageItems) })
+    val pagerState = rememberPagerState(pageCount = { minOf(imageUrls.size + 1, maxImageLimit) })
 
     if (showDatePickerDialogState) {
         KoinClubDatePickerDialog(
@@ -305,10 +305,10 @@ fun ClubEventCreateScreenImpl(
                     .background(KoinTheme.colors.neutral200)
                     .clickable(!isLoading) {
                         when {
-                            maxImageItems - imageUrls.size >= 2 -> {
+                            maxImageLimit - imageUrls.size >= 2 -> {
                                 pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                             }
-                            maxImageItems - imageUrls.size == 1 -> {
+                            maxImageLimit - imageUrls.size == 1 -> {
                                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                             }
                             else -> { onMaxImageError() }

@@ -60,4 +60,11 @@ interface Navigator {
         targetClubId: Pair<String, Any?> = Pair("", 0),
         type: Pair<String, Any?> = Pair("", "")
     ): Intent
+
+    fun navigateToClub(
+        context: Context,
+        targetClubId: Pair<String, Any?> = Pair("", 0),
+        targetEventId: Pair<String, Any?> = Pair("", 0),
+        type: Pair<String, Any?> = Pair("", "")
+    ): Intent
 }

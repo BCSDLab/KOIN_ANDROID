@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.club.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.getValue
@@ -16,12 +17,12 @@ import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatu
 import `in`.koreatech.koin.feature.club.navigation.CATEGORY_ID
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
 import `in`.koreatech.koin.feature.club.navigation.ClubNavType
+import `in`.koreatech.koin.feature.club.navigation.EXTRA_CLUB_ID
+import `in`.koreatech.koin.feature.club.navigation.EXTRA_EVENT_ID
 import `in`.koreatech.koin.feature.club.navigation.koinClubGraph
 
 @AndroidEntryPoint
 class ClubActivity : ComponentActivity() {
-
-    val EXTRA_CLUB_ID = "extra_club_id"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +43,12 @@ class ClubActivity : ComponentActivity() {
 
                 intent.getIntExtra(EXTRA_CLUB_ID, -1).let {
                     if (it != -1) {
-                        startDestination = "${ClubNavType.ClubDetail.route}/$it?recruitEvent=true"
+                        val eventId = intent.getIntExtra(EXTRA_EVENT_ID, -1)
+                        startDestination = if (eventId != -1) {
+                            "${ClubNavType.ClubDetail.route}/$it?eventId=$eventId"
+                        } else {
+                            "${ClubNavType.ClubDetail.route}/$it?recruitEvent=true"
+                        }
                     }
                 }
 

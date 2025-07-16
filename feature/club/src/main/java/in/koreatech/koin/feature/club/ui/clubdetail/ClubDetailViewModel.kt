@@ -181,7 +181,8 @@ class ClubDetailViewModel @Inject constructor(
                 state.copy(
                     clubEvents = it.map { it.toParcelizeClubEvent() },
                     isLoading = false,
-                    showEventsProgressBar = false
+                    showEventsProgressBar = false,
+                    clubEventLoaded = true
                 )
             }
         }.onFailure { e ->
