@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,10 +21,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.model.ParcelizeClubQnasInfo
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.qnabox.DetailQnaBox
@@ -80,6 +85,16 @@ fun ClubDetailQna(
                             )
                         }
                     }
+                }
+                if(qnaList.isNullOrEmpty()) {
+                    Spacer(Modifier.height(200.dp))
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.detail_qnas_empty),
+                        style = KoinTheme.typography.medium18,
+                        color = KoinTheme.colors.neutral500,
+                        textAlign = TextAlign.Center
+                    )
                 }
                 qnaList?.forEach {
                     var addAnswerText by remember { mutableStateOf("") }

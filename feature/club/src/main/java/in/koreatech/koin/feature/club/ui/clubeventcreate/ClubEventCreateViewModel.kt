@@ -77,17 +77,25 @@ class ClubEventCreateViewModel @Inject constructor(
 
     fun updateCreateRequestDialog(bool: Boolean) = blockingIntent {
         if (bool) {
-            postRequiredError()
+            checkRequiredField()
         } else {
             reduce { state.copy(showCreateRequestDialog = false) }
         }
     }
 
-    private fun postRequiredError() = intent {
-        when {
-            state.eventName.isBlank() -> postSideEffect(ClubEventCreateSideEffect.EventNameError)
-            state.eventIntroduce.isBlank() -> postSideEffect(ClubEventCreateSideEffect.EventIntroError)
-            else -> reduce { state.copy(showCreateRequestDialog = true) }
+    private fun checkRequiredField() = intent {
+        if (state.eventName.isBlank()) {
+            reduce { state.copy(eventNameRequired = true) }
+        } else {
+            reduce { state.copy(eventNameRequired = false) }
+        }
+        if (state.eventIntroduce.isBlank()) {
+            reduce { state.copy(eventIntroduceRequired = true) }
+        } else {
+            reduce { state.copy(eventIntroduceRequired = false) }
+        }
+        if(!state.eventNameRequired && !state.eventIntroduceRequired) {
+            reduce { state.copy(showCreateRequestDialog = true) }
         }
     }
 

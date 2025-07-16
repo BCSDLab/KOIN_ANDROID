@@ -122,6 +122,8 @@ fun ClubEventCreateScreen(
             showCreateRequestDialogState = uiState.showCreateRequestDialog,
             showDatePickerDialogState = uiState.showDatePickerDialog,
             showTimePickerDialogState = uiState.showTimePickerDialog,
+            eventNameRequired = uiState.eventNameRequired,
+            eventIntroduceRequired = uiState.eventIntroduceRequired,
             updateCreateCancelDialog = viewModel::updateCreateCancelDialog,
             updateCreateRequestDialog = viewModel::updateCreateRequestDialog,
             updateDatePickerDialog = viewModel::updateDatePickerDialog,
@@ -362,6 +364,7 @@ fun ClubEventCreateScreenImpl(
                         .weight(1f),
                     minLines = textFieldMinLines,
                     maxLength = textFieldMaxLength,
+                    borderColor = if (eventNameRequired) KoinTheme.colors.sub500 else KoinTheme.colors.neutral100,
                     hint = stringResource(R.string.club_event_create_name_hint)
                 )
             }
@@ -469,6 +472,7 @@ fun ClubEventCreateScreenImpl(
                     .fillMaxWidth(),
                 minLines = textFieldMinLines,
                 maxLength = introTextFieldMaxLength,
+                borderColor = if (eventIntroduceRequired) KoinTheme.colors.sub500 else KoinTheme.colors.neutral100,
                 hint = stringResource(R.string.club_event_create_intro_hint)
             )
             if (eventIntroduceRequired) {

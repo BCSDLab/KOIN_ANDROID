@@ -86,14 +86,14 @@ fun ClubDetailEventInfo(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     FilledButton(
-                        text = "행사 삭제",
+                        text = stringResource(R.string.detail_dialog_event_delete),
                         textStyle = KoinTheme.typography.medium14,
                         onClick = onEventDeleteClick,
                         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp),
                         colors = KoinClubExtraSmallDialogDanger.positiveButtonColors()
                     )
                     FilledButton(
-                        text = "행사 수정",
+                        text = stringResource(R.string.detail_dialog_event_modify),
                         textStyle = KoinTheme.typography.medium14,
                         onClick = onEventModifyClick,
                         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp)
@@ -124,7 +124,7 @@ fun ClubDetailEventInfo(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text (
-                text = "행사 알림"
+                text = stringResource(R.string.detail_dialog_event_notification)
             )
             Image(
                 painter = if (clubEvent.isSubscribed) {
@@ -212,10 +212,12 @@ fun ClubDetailEventInfo(
             text = stringResource(R.string.detail_event_info_introduce, clubEvent.introduce),
             style = KoinTheme.typography.regular15
         )
-        Text (
-            text = stringResource(R.string.detail_event_info_content, clubEvent.content),
-            style = KoinTheme.typography.regular15
-        )
+        if (clubEvent.content.isNotBlank()) {
+            Text (
+                text = stringResource(R.string.detail_event_info_content, clubEvent.content),
+                style = KoinTheme.typography.regular15
+            )
+        }
     }
 }
 

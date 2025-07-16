@@ -18,6 +18,8 @@ data class ClubEventModifyState(
     val eventImageUrls: List<String> = persistentListOf(),
     val eventStartDateTime: LocalDateTime = LocalDateTime.now().withMinute(0).withSecond(0),
     val eventEndDateTime: LocalDateTime = eventStartDateTime.plusDays(1),
+    val eventNameRequired: Boolean = false,
+    val eventIntroduceRequired: Boolean = false,
     val showModifyCancelDialog: Boolean = false,
     val showModifyRequestDialog: Boolean = false,
     val showDatePickerDialog: Boolean = false,
