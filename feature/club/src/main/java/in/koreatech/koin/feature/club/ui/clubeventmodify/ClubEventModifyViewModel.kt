@@ -82,6 +82,8 @@ class ClubEventModifyViewModel @Inject constructor(
         )
     }
 
+    private val maxImageItems = 7
+
     private fun loadClubEvent() = intent {
         reduce { state.copy(isLoading = true, isEventLoading = true) }
         getClubEventUseCase(state.clubId, state.eventId).onSuccess {
@@ -139,6 +141,10 @@ class ClubEventModifyViewModel @Inject constructor(
 
     fun postNavigateUp() = intent {
         postSideEffect(ClubEventModifySideEffect.NavigateUp)
+    }
+
+    fun postMaxImageLimitError() = intent {
+        postSideEffect(ClubEventModifySideEffect.MaxImageLimit)
     }
 
     fun updateEventName(value: String) = blockingIntent {
@@ -276,7 +282,11 @@ class ClubEventModifyViewModel @Inject constructor(
         ).onSuccess {
             reduce {
                 state.copy(
-                    eventImageUrls = state.eventImageUrls.toPersistentList().add(fileUrl),
+                    eventImageUrls = if ( state.eventImageUrls.size < maxImageItems) {
+                        state.eventImageUrls.toPersistentList().add(fileUrl)
+                    } else {
+                        state.eventImageUrls
+                    },
                     isLoading = false
                 )
             }

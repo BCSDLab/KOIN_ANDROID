@@ -70,6 +70,7 @@ import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
 import `in`.koreatech.koin.feature.club.component.KoinClubTextFieldAlert
 import `in`.koreatech.koin.feature.club.component.KoinClubTimePickerDialog
 import `in`.koreatech.koin.feature.club.utils.getDayOfWeek
+import `in`.koreatech.koin.feature.club.utils.pickMedia
 import `in`.koreatech.koin.feature.club.utils.pickMultipleMedia
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -118,6 +119,7 @@ fun ClubEventModifyScreen(
             eventEndDateTime = uiState.eventEndDateTime,
             imageUrls = uiState.eventImageUrls,
             uploadImage = viewModel::getPreSignedUrl,
+            onMaxImageError = viewModel::postMaxImageLimitError,
             isLoading = uiState.isEventLoading,
             onImageDeleteClick = viewModel::deleteImageUrl,
             showModifyCancelDialogState = uiState.showModifyCancelDialog,
@@ -174,6 +176,7 @@ fun ClubEventCreateScreenImpl(
     modifyEvent: () -> Unit = {},
     modifyEventCancel: () -> Unit = {},
     uploadImage: (fileSize: Long, fileType: String, fileName: String, fileUri: Uri) -> Unit = { _, _, _, _ -> },
+    onMaxImageError: () -> Unit = {},
     onImageDeleteClick: (Int) -> Unit = {}
 ) {
     val context = LocalContext.current
@@ -185,15 +188,20 @@ fun ClubEventCreateScreenImpl(
     val introTextFieldMaxLength = 70
     val contentTextFieldMaxLines = 2
 
-    val maxImageItems = 44
+    val maxImageItems = 7
 
     val pickMultipleMedia = pickMultipleMedia(
         context = context,
-        maxItems = maxImageItems - imageUrls.size,
+        maxItems = maxOf(maxImageItems - imageUrls.size, 2),
         onResult = uploadImage
     )
 
-    val pagerState = rememberPagerState(pageCount = { imageUrls.size + 1 })
+    val pickMedia = pickMedia(
+        context = context,
+        onResult = uploadImage
+    )
+
+    val pagerState = rememberPagerState(pageCount = { minOf(imageUrls.size + 1, maxImageItems) })
 
     if (showDatePickerDialogState) {
         KoinClubDatePickerDialog(
@@ -307,8 +315,16 @@ fun ClubEventCreateScreenImpl(
                     .clip(KoinTheme.shapes.extraLarge)
                     .border(1.dp, Color.Unspecified, KoinTheme.shapes.extraLarge)
                     .background(KoinTheme.colors.neutral200)
-                    .clickable {
-                        pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    .clickable(!isLoading) {
+                        when {
+                            maxImageItems - imageUrls.size >= 2 -> {
+                                pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                            }
+                            maxImageItems - imageUrls.size == 1 -> {
+                                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                            }
+                            else -> { onMaxImageError() }
+                        }
                     },
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -559,11 +575,8 @@ fun handleSideEffect(
         is ClubEventModifySideEffect.NavigateUp -> {
             onNavigateUp()
         }
-        is ClubEventModifySideEffect.EventNameError -> context.let {
-            Toast.makeText(it, it.getString(R.string.club_event_create_error_name), Toast.LENGTH_SHORT).show()
-        }
-        is ClubEventModifySideEffect.EventIntroError -> context.let {
-            Toast.makeText(it, it.getString(R.string.club_event_create_error_intro), Toast.LENGTH_SHORT).show()
+        is ClubEventModifySideEffect.MaxImageLimit -> context.let {
+            Toast.makeText(it, it.getString(R.string.club_event_max_image_error), Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -191,8 +191,6 @@
     <string name="club_event_create_intro_hint">행사내용을 적어주세요. (최대 70자)(필수)</string>
     <string name="club_event_create_content_hint">상세 내용을 적어주세요.</string>
     <string name="club_event_create_error_create_failure">행사 생성에 실패했습니다.</string>
-    <string name="club_event_create_error_name">행사 이름은 필수 값입니다.</string>
-    <string name="club_event_create_error_intro">행사 내용은 필수 값입니다.</string>
     <string name="club_event_create_cancel">생성 취소</string>
     <string name="club_event_create_request">생성 하기</string>
     <string name="club_event_period">%1$s 부터 %2$s 까지</string>
@@ -220,6 +218,7 @@
     <string name="club_event_upcoming">행사 예정</string>
     <string name="club_event_ended">종료된 행사</string>
     <string name="club_event_unknown">알 수 없음</string>
+    <string name="club_event_max_image_error">더이상 추가할 수 없습니다.</string>
 
     <string name="club_date_picker_format">%1$d년\n%2$d월 %3$d일 (%4$s)</string>
     <string name="club_time_picker_format">%1$02d:%2$02d</string>
