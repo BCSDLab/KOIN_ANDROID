@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.timetable.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -119,7 +120,7 @@ class SemesterViewModel @Inject constructor(
                 } else {
                     getAllFramesUseCase()
                         .catch { Timber.d("Fail to getAllFramesUseCase on initialScreenState| message: ${it.message}") }
-                        .map { it.mapKeys { it.key.toSemesterModel() } }
+                        .map { it.mapKeys { it.key.toSemesterModel() }.toSortedMap() }
                         .first()
                 }
             emit(
