@@ -21,9 +21,19 @@ class UserLoginUseCase @Inject constructor(
             val authToken = userRepository.getToken(email, password.toSHA256())
             tokenRepository.saveAccessToken(authToken.token)
             tokenRepository.saveRefreshToken(authToken.refreshToken)
-            userRepository.fetchUserInfo(
-                authToken.userType ?: UserType.STUDENT.name
-            ) // Set default userType to STUDENT if login success
+            when (UserType.valueOf(authToken.userType!!)) {
+                UserType.COUNCIL, UserType.STUDENT -> {
+                    userRepository.fetchStudentUserInfo()
+                }
+
+                UserType.GENERAL -> {
+                    userRepository.fetchGeneralUserInfo()
+                }
+
+                UserType.ANONYMOUS -> {
+                    // Do nothing
+                }
+            }
             Unit to null
         } catch (throwable: Throwable) {
             null to userErrorHandler.handleGetTokenError(throwable)

@@ -81,6 +81,8 @@ class ClubDetailViewModel @Inject constructor(
                 is User.Student -> {
                     reduce { state.copy(userId = user.id, userLoginId = user.email?.removeSuffix("@koreatech.ac.kr")) }
                 }
+
+                is User.General -> TODO("Handle general user later")
             }
         }
     }

@@ -82,13 +82,24 @@ class ChatRoomViewModel @Inject constructor(
                 Timber.e(it)
             }.collectLatest {
                 intent {
-                    if (it is User.Student) {
-                        reduce {
-                            state.copy(
-                                isLoading = true,
-                                userNickName = it.nickname ?: it.anonymousNickname ?: ""
-                            )
+                    when (it) {
+                        is User.Student -> {
+                            reduce {
+                                state.copy(
+                                    isLoading = true,
+                                    userNickName = it.nickname ?: it.anonymousNickname ?: ""
+                                )
+                            }
                         }
+                        is User.General -> {
+                            reduce {
+                                state.copy(
+                                    isLoading = true,
+                                    userNickName = it.nickname ?: it.anonymousNickname ?: ""
+                                )
+                            }
+                        }
+                        is User.Anonymous -> throw IllegalAccessException()
                     }
                 }
             }
