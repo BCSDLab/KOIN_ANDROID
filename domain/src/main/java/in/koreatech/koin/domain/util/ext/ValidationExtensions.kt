@@ -1,8 +1,5 @@
 package `in`.koreatech.koin.domain.util.ext
 
-import `in`.koreatech.koin.domain.constant.GOOGLE_FORM_URL
-import `in`.koreatech.koin.domain.constant.INSTAGRAM_URL
-import `in`.koreatech.koin.domain.constant.OPEN_CHAT_URL
 import `in`.koreatech.koin.domain.util.regex.EmailUtil
 import `in`.koreatech.koin.domain.util.regex.PasswordUtil
 import java.util.Calendar
