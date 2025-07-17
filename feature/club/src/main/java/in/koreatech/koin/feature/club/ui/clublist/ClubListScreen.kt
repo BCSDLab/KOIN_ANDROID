@@ -109,7 +109,6 @@ fun ClubListScreen(
     LaunchedEffect(Unit) {
         snapshotFlow { uiState.searchKeyword }
             .debounce(300L)
-            .filter { it.isNotEmpty() }
             .collectLatest {
                 viewModel.getClubs()
             }
