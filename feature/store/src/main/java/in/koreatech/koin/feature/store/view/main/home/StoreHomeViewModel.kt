@@ -55,6 +55,12 @@ class StoreHomeViewModel @Inject constructor(
                     isLoading = false
                 )
             }
+        }.onFailure {
+            reduce {
+                state.copy(
+                    isLoading = false
+                )
+            }
         }
     }
 
