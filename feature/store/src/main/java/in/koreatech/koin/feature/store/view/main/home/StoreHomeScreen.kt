@@ -53,7 +53,6 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreMinimumPriceChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreOrderChip
 import `in`.koreatech.koin.feature.store.component.MinOrderSliderBottomSheet
 import `in`.koreatech.koin.feature.store.component.SearchBar
-import `in`.koreatech.koin.feature.store.component.SearchBarFake
 import `in`.koreatech.koin.feature.store.component.SortBottomSheet
 import `in`.koreatech.koin.feature.store.enums.MinimumPriceOption
 import `in`.koreatech.koin.feature.store.enums.OrderOption
@@ -193,7 +192,6 @@ private fun StoreHomeScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
              */
-
 
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
