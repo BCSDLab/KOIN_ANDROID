@@ -98,7 +98,7 @@ class ClubEventCreateViewModel @Inject constructor(
         } else {
             reduce { state.copy(eventIntroduceRequired = false) }
         }
-        if(!state.eventNameRequired && !state.eventIntroduceRequired) {
+        if (!state.eventNameRequired && !state.eventIntroduceRequired) {
             reduce { state.copy(showCreateRequestDialog = true) }
         }
     }
@@ -187,7 +187,7 @@ class ClubEventCreateViewModel @Inject constructor(
         ).onSuccess {
             reduce {
                 state.copy(
-                    eventImageUrls = if ( state.eventImageUrls.size < state.maxImageLimit) {
+                    eventImageUrls = if (state.eventImageUrls.size < state.maxImageLimit) {
                         state.eventImageUrls.toPersistentList().add(fileUrl)
                     } else {
                         state.eventImageUrls

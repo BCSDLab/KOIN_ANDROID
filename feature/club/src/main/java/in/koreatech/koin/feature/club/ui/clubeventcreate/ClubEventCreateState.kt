@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
 data class ClubEventCreateState(
     val isLoading: Boolean = false,
     val clubId: Int = -1,
-    val eventName: String= "",
+    val eventName: String = "",
     val eventIntroduce: String = "",
     val eventContent: String = "",
     val eventImageUrls: List<String> = persistentListOf(),
@@ -24,5 +24,5 @@ data class ClubEventCreateState(
     val showCreateRequestDialog: Boolean = false,
     val showDatePickerDialog: Boolean = false,
     val showTimePickerDialog: Boolean = false,
-    val maxImageLimit: Int = 7,
+    val maxImageLimit: Int = 7
 ) : Parcelable

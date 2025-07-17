@@ -64,12 +64,12 @@ class ClubRecruitModifyViewModel @Inject constructor(
             endDate: LocalDate,
             always: Boolean
         ) = (
-                this.content != content ||
+            this.content != content ||
                 this.imageUrl != imageUrl ||
                 this.startDate != startDate ||
                 this.endDate != endDate ||
                 this.always != always
-        )
+            )
     }
 
     private fun loadClubRecruitment() = intent {
@@ -94,7 +94,7 @@ class ClubRecruitModifyViewModel @Inject constructor(
                     state.recruitImageUrl,
                     state.recruitStartDate,
                     state.recruitEndDate,
-                    state.recruitAlways,
+                    state.recruitAlways
                 )
             }
         }.onFailure { e ->
@@ -122,15 +122,16 @@ class ClubRecruitModifyViewModel @Inject constructor(
     }
 
     fun updateModifyCancelDialog(bool: Boolean) = intent {
-        if(bool) {
+        if (bool) {
             if (
                 BeforeRecruitState.isDifference(
                     state.recruitContent,
                     state.recruitImageUrl,
                     state.recruitStartDate,
                     state.recruitEndDate,
-                    state.recruitAlways,
-                )) {
+                    state.recruitAlways
+                )
+            ) {
                 reduce { state.copy(showModifyCancelDialog = true) }
             } else {
                 postNavigateUp()

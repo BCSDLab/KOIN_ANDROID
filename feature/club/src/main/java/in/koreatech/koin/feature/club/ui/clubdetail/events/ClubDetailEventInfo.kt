@@ -43,8 +43,8 @@ import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
 import `in`.koreatech.koin.feature.club.model.EventStatus
 import `in`.koreatech.koin.feature.club.model.ParcelizeClubEvent
 import `in`.koreatech.koin.feature.club.model.toStringForm
-import okhttp3.internal.immutableListOf
 import java.time.LocalDateTime
+import okhttp3.internal.immutableListOf
 
 @Composable
 fun ClubDetailEventInfo(
@@ -53,7 +53,7 @@ fun ClubDetailEventInfo(
     isManager: Boolean = false,
     onEventModifyClick: () -> Unit = {},
     onEventDeleteClick: () -> Unit = {},
-    onNotificationClick: () -> Unit ={},
+    onNotificationClick: () -> Unit = {},
     onBackPressed: () -> Unit = {}
 ) {
     BackHandler {
@@ -69,7 +69,7 @@ fun ClubDetailEventInfo(
             ),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Row (
+        Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
@@ -102,14 +102,14 @@ fun ClubDetailEventInfo(
             }
         }
         Column {
-            Text (
+            Text(
                 text = clubEvent.name,
                 style = KoinTheme.typography.bold20,
                 color = KoinTheme.colors.primary600,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-            Text (
+            Text(
                 text = stringResource(
                     R.string.club_event_period,
                     clubEvent.startDateTime.toStringForm(),
@@ -123,11 +123,11 @@ fun ClubDetailEventInfo(
         if (
             clubEvent.status == EventStatus.UPCOMING ||
             clubEvent.status == EventStatus.SOON
-            ) {
-            Row (
+        ) {
+            Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Text (
+                Text(
                     text = stringResource(R.string.detail_dialog_event_notification)
                 )
                 Image(
@@ -146,8 +146,8 @@ fun ClubDetailEventInfo(
                 )
             }
         }
-        if(clubEvent.imageUrls.isNotEmpty()) {
-            Column (
+        if (clubEvent.imageUrls.isNotEmpty()) {
+            Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
@@ -213,12 +213,12 @@ fun ClubDetailEventInfo(
                 }
             }
         }
-        Text (
+        Text(
             text = stringResource(R.string.detail_event_info_introduce, clubEvent.introduce),
             style = KoinTheme.typography.regular15
         )
         if (clubEvent.content.isNotBlank()) {
-            Text (
+            Text(
                 text = stringResource(R.string.detail_event_info_content, clubEvent.content),
                 style = KoinTheme.typography.regular15
             )

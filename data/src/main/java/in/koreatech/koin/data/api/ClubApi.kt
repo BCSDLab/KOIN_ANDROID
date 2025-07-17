@@ -8,7 +8,6 @@ import `in`.koreatech.koin.data.response.club.ClubQnasResponse
 import `in`.koreatech.koin.data.response.club.ClubRecruitmentResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface ClubApi {
     @GET(URLConstant.CLUBS.CATEGORIES)

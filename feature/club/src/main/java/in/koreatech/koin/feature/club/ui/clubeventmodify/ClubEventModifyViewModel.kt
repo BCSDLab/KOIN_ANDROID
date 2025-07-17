@@ -12,7 +12,9 @@ import `in`.koreatech.koin.feature.club.model.toLocalDateTime
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
 import `in`.koreatech.koin.feature.club.navigation.EVENT_ID
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.ContainerHost
@@ -21,8 +23,6 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 @HiltViewModel
 class ClubEventModifyViewModel @Inject constructor(
@@ -73,13 +73,13 @@ class ClubEventModifyViewModel @Inject constructor(
             startDateTime: LocalDateTime,
             endDateTime: LocalDateTime
         ) = (
-                this.name != name ||
+            this.name != name ||
                 this.introduce != introduce ||
                 this.content != content ||
                 this.imageUrls != imageUrls ||
                 this.startDateTime != startDateTime ||
                 this.endDateTime != endDateTime
-        )
+            )
     }
 
     private fun loadClubEvent() = intent {
@@ -176,13 +176,13 @@ class ClubEventModifyViewModel @Inject constructor(
         } else {
             reduce { state.copy(eventIntroduceRequired = false) }
         }
-        if(!state.eventNameRequired && !state.eventIntroduceRequired) {
+        if (!state.eventNameRequired && !state.eventIntroduceRequired) {
             reduce { state.copy(showModifyRequestDialog = true) }
         }
     }
 
     fun updateModifyCancelDialog(bool: Boolean) = blockingIntent {
-        if(bool) {
+        if (bool) {
             if (BeforeEventState.isDifference(
                     state.eventName,
                     state.eventIntroduce,
@@ -190,7 +190,8 @@ class ClubEventModifyViewModel @Inject constructor(
                     state.eventImageUrls,
                     state.eventStartDateTime,
                     state.eventEndDateTime
-            )) {
+                )
+            ) {
                 reduce { state.copy(showModifyCancelDialog = true) }
             } else {
                 postNavigateUp()
@@ -280,7 +281,7 @@ class ClubEventModifyViewModel @Inject constructor(
         ).onSuccess {
             reduce {
                 state.copy(
-                    eventImageUrls = if ( state.eventImageUrls.size < state.maxImageLimit) {
+                    eventImageUrls = if (state.eventImageUrls.size < state.maxImageLimit) {
                         state.eventImageUrls.toPersistentList().add(fileUrl)
                     } else {
                         state.eventImageUrls

@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.club.ui.clubdetail
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -124,7 +123,7 @@ fun ClubDetail(
     onRecruitCreateClick: (Int) -> Unit = {},
     onRecruitModifyClick: (Int) -> Unit = {},
     onEventCreateClick: (Int) -> Unit = {},
-    onEventModifyClick: (Int, Int) -> Unit = {_,_ -> },
+    onEventModifyClick: (Int, Int) -> Unit = { _, _ -> },
     resetClubModifiedState: () -> Unit = {},
     resetNorificationEventId: () -> Unit = {}
 ) {

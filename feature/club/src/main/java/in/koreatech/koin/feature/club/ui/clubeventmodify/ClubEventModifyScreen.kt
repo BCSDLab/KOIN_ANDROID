@@ -323,7 +323,9 @@ fun ClubEventCreateScreenImpl(
                             maxImageLimit - imageUrls.size == 1 -> {
                                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                             }
-                            else -> { onMaxImageError() }
+                            else -> {
+                                onMaxImageError()
+                            }
                         }
                     },
                 horizontalAlignment = Alignment.CenterHorizontally,

@@ -1,7 +1,5 @@
 package `in`.koreatech.koin.feature.club.ui.clubeventmodify
 
-import `in`.koreatech.koin.feature.club.ui.clubeventcreate.ClubEventCreateSideEffect
-
 sealed class ClubEventModifySideEffect {
     data object EventCreateSuccess : ClubEventModifySideEffect()
     data object EventCreateFailure : ClubEventModifySideEffect()

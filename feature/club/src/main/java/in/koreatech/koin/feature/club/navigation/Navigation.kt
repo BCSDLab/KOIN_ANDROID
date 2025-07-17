@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.club.navigation
 
 import android.app.Activity
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -20,7 +19,7 @@ import `in`.koreatech.koin.feature.club.ui.clubrecruitcreate.ClubRecruitCreateSc
 import `in`.koreatech.koin.feature.club.ui.clubrecruitmodify.ClubRecruitModifyScreen
 
 fun NavGraphBuilder.koinClubGraph(
-    navController: NavController,
+    navController: NavController
 ) {
     composable(
         route = "${ClubNavType.ClubList.route}/{$CATEGORY_ID}",

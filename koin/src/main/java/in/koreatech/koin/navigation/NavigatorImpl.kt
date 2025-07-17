@@ -2,7 +2,6 @@ package `in`.koreatech.koin.navigation
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.buildIntent

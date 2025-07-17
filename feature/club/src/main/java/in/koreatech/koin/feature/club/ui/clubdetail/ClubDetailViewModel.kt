@@ -25,7 +25,6 @@ import `in`.koreatech.koin.domain.usecase.club.UnsubscribeClubEventUseCase
 import `in`.koreatech.koin.domain.usecase.club.UnsubscribeClubRecruitmentUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.club.R
-import `in`.koreatech.koin.feature.club.model.ParcelizeClubEvent
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubDetails
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubEvent
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubQnasInfo

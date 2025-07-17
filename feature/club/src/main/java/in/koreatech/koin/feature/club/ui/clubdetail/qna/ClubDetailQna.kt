@@ -86,7 +86,7 @@ fun ClubDetailQna(
                         }
                     }
                 }
-                if(qnaList.isNullOrEmpty()) {
+                if (qnaList.isNullOrEmpty()) {
                     Spacer(Modifier.height(200.dp))
                     Text(
                         modifier = Modifier.fillMaxWidth(),
