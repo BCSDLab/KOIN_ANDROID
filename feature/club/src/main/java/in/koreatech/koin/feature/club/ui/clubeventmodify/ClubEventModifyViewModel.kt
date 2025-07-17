@@ -42,7 +42,7 @@ class ClubEventModifyViewModel @Inject constructor(
         loadClubEvent()
     }
 
-    companion object BeforeEventState {
+    object BeforeEventState {
         private lateinit var name: String
         private lateinit var introduce: String
         private lateinit var content: String
