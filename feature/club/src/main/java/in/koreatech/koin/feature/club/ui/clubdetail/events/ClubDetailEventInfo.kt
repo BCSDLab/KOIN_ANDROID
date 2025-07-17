@@ -120,26 +120,31 @@ fun ClubDetailEventInfo(
                 maxLines = 1
             )
         }
-        Row (
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Text (
-                text = stringResource(R.string.detail_dialog_event_notification)
-            )
-            Image(
-                painter = if (clubEvent.isSubscribed) {
-                    painterResource(R.drawable.icon_notification_true)
-                } else {
-                    painterResource(R.drawable.icon_notification_false)
-                },
-                contentDescription = "Notification Icon",
-                modifier = Modifier
-                    .size(24.dp)
-                    .padding(end = 4.dp)
-                    .clickable {
-                        onNotificationClick()
-                    }
-            )
+        if (
+            clubEvent.status == EventStatus.UPCOMING ||
+            clubEvent.status == EventStatus.SOON
+            ) {
+            Row (
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text (
+                    text = stringResource(R.string.detail_dialog_event_notification)
+                )
+                Image(
+                    painter = if (clubEvent.isSubscribed) {
+                        painterResource(R.drawable.icon_notification_true)
+                    } else {
+                        painterResource(R.drawable.icon_notification_false)
+                    },
+                    contentDescription = "Notification Icon",
+                    modifier = Modifier
+                        .size(24.dp)
+                        .padding(end = 4.dp)
+                        .clickable {
+                            onNotificationClick()
+                        }
+                )
+            }
         }
         if(clubEvent.imageUrls.isNotEmpty()) {
             Column (
