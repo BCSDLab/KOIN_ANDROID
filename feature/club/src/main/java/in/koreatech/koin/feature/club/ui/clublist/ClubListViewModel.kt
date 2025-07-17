@@ -62,6 +62,12 @@ class ClubListViewModel @Inject constructor(
         }
     }
 
+    fun updateSearchKeyword(keyword: String) = blockingIntent {
+        reduce {
+            state.copy(searchKeyword = keyword)
+        }
+    }
+
     fun updateCategoryId(categoryId: Int?) = intent {
         reduce {
             state.copy(categoryId = categoryId)

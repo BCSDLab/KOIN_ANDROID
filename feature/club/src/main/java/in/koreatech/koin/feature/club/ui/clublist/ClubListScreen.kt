@@ -31,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -52,12 +53,16 @@ import `in`.koreatech.koin.feature.club.component.KoinClubCategoryItem
 import `in`.koreatech.koin.feature.club.component.KoinClubDropdown
 import `in`.koreatech.koin.feature.club.component.KoinClubListItem
 import `in`.koreatech.koin.feature.club.component.KoinClubMessageDialog
+import `in`.koreatech.koin.feature.club.component.KoinClubSearchBar
 import `in`.koreatech.koin.feature.club.model.ClubSort
 import `in`.koreatech.koin.feature.club.model.ParcelizeClubItem
 import `in`.koreatech.koin.feature.club.model.clubCategories
 import `in`.koreatech.koin.feature.club.model.clubSortType
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.snackbar.DetailSnackBar
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filter
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -92,6 +97,14 @@ fun ClubListScreen(
             )
             resetClubCreatedState()
         }
+    }
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { uiState.searchKeyword }
+            .debounce(300L)
+            .filter { it.isNotEmpty() }
+            .collectLatest {
+            }
     }
 
     Scaffold(
@@ -130,7 +143,11 @@ fun ClubListScreen(
             shouldShowClubCreateDialog = uiState.shouldShowClubCreateDialog,
             shouldShowLoginDialog = uiState.shouldShowLoginDialog,
             isAnonymous = uiState.isAnonymous,
+            searchKeyword = uiState.searchKeyword,
             modifier = Modifier.padding(innerPadding),
+            onSearchKeywordChange = {
+                viewModel.updateSearchKeyword(it)
+            },
             onCategoryChange = { categoryId ->
                 viewModel.updateCategoryId(categoryId)
             },
@@ -173,7 +190,9 @@ fun ClubListScreenImpl(
     shouldShowClubCreateDialog: Boolean,
     shouldShowLoginDialog: Boolean,
     isAnonymous: Boolean,
+    searchKeyword: String,
     modifier: Modifier = Modifier,
+    onSearchKeywordChange: (String) -> Unit = { },
     onCategoryChange: (Int?) -> Unit = { },
     onSortTypeChange: (ClubSort) -> Unit = { },
     onDropdownExpandChange: (Boolean) -> Unit = { },
@@ -285,6 +304,15 @@ fun ClubListScreenImpl(
         }
 
         item {
+            KoinClubSearchBar(
+                modifier = Modifier.padding(top = 16.dp),
+                value = searchKeyword,
+                hint = stringResource(R.string.club_list_search_hint),
+                onValueChange = onSearchKeywordChange
+            )
+        }
+
+        item {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -373,6 +401,7 @@ fun ClubListScreenPreview() {
         isDropdownExpanded = false,
         shouldShowClubCreateDialog = false,
         shouldShowLoginDialog = false,
-        isAnonymous = true
+        isAnonymous = true,
+        searchKeyword = ""
     )
 }
