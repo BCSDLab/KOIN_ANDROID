@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
@@ -52,7 +53,9 @@ fun ClubDetailIntro(
         ) {
             Text(
                 text = stringResource(R.string.detail_detail_intro_in_development),
-                style = KoinTheme.typography.bold20
+                style = KoinTheme.typography.medium18,
+                color = KoinTheme.colors.neutral500,
+                textAlign = TextAlign.Center
             )
         }
     }

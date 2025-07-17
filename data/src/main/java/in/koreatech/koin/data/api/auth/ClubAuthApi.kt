@@ -3,10 +3,13 @@ package `in`.koreatech.koin.data.api.auth
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.club.ClubCreateRequest
 import `in`.koreatech.koin.data.request.club.ClubEmpowermentRequest
+import `in`.koreatech.koin.data.request.club.ClubEventRequest
 import `in`.koreatech.koin.data.request.club.ClubModifyRequest
 import `in`.koreatech.koin.data.request.club.ClubQnaRequest
+import `in`.koreatech.koin.data.request.club.ClubRecruitmentRequest
 import `in`.koreatech.koin.data.response.club.ClubDetailsResponse
 import `in`.koreatech.koin.data.response.club.ClubsResponse
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -19,7 +22,9 @@ interface ClubAuthApi {
     @GET(URLConstant.CLUBS.CLUBS)
     suspend fun getClubs(
         @Query("categoryId") id: Int?,
-        @Query("sortType") sortType: String?
+        @Query("sortType") sortType: String?,
+        @Query("isRecruiting") isRecruiting: Boolean,
+        @Query("query") query: String
     ): ClubsResponse
 
     @GET(URLConstant.CLUBS.CLUBID.CLUBID)
@@ -64,4 +69,27 @@ interface ClubAuthApi {
     suspend fun cancelClubLike(
         @Path("clubId") clubId: Int
     )
+
+    @POST(URLConstant.CLUBS.CLUBID.RECRUITMENT.RECRUITMENT)
+    suspend fun createClubRecruitment(
+        @Path("clubId") clubId: Int,
+        @Body request: ClubRecruitmentRequest
+    )
+
+    @DELETE(URLConstant.CLUBS.CLUBID.RECRUITMENT.RECRUITMENT)
+    suspend fun deleteClubRecruitment(
+        @Path("clubId") clubId: Int
+    ): Response<Unit>
+
+    @PUT(URLConstant.CLUBS.CLUBID.RECRUITMENT.RECRUITMENT)
+    suspend fun modifyClubRecruitment(
+        @Path("clubId") clubId: Int,
+        @Body request: ClubRecruitmentRequest
+    ): Response<Unit>
+
+    @POST(URLConstant.CLUBS.CLUBID.EVENT.EVENT)
+    suspend fun createClubEvent(
+        @Path("clubId") clubId: Int,
+        @Body request: ClubEventRequest
+    ): Response<Unit>
 }

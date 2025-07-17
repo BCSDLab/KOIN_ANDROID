@@ -200,6 +200,13 @@ object URLConstant {
                 const val LIKE = "$CLUBID/like"
                 const val CANCEL = "$LIKE/cancel"
             }
+            object RECRUITMENT {
+                const val RECRUITMENT = "$CLUBID/recruitment"
+            }
+            object EVENT {
+                const val EVENTS = "$CLUBID/events"
+                const val EVENT = "$CLUBID/event"
+            }
         }
         const val EMPOWERMENT = "$CLUBS/empowerment"
     }

@@ -56,10 +56,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
@@ -84,6 +84,8 @@ import `in`.koreatech.koin.feature.club.BuildConfig
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
 import `in`.koreatech.koin.feature.club.component.DetailLoginDialog
+import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialog
+import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_CATEGORY
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_DESCRIPTION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_GOOGLE_FORM
@@ -92,13 +94,16 @@ import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_LOCATION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_OPEN_CHAT
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_PHONE_NUMBER
 import `in`.koreatech.koin.feature.club.type.DetailTabType
+import `in`.koreatech.koin.feature.club.type.eventSearchTypeList
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.DetailImageDialog
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogAddQnaContent
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogEmpowermentContent
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.snackbar.DetailSnackBar
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.tabrow.DetailTabRow
+import `in`.koreatech.koin.feature.club.ui.clubdetail.events.ClubDetailEvents
 import `in`.koreatech.koin.feature.club.ui.clubdetail.intro.ClubDetailIntro
 import `in`.koreatech.koin.feature.club.ui.clubdetail.qna.ClubDetailQna
+import `in`.koreatech.koin.feature.club.ui.clubdetail.recruit.ClubDetailRecruit
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -108,10 +113,13 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun ClubDetail(
     isClubModified: Boolean = false,
     initialPage: Int = 0,
+    viewModel: ClubDetailViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {},
     onModifyClick: (Int) -> Unit = {},
-    resetClubModifiedState: () -> Unit = {},
-    viewModel: ClubDetailViewModel = hiltViewModel()
+    onRecruitCreateClick: (Int) -> Unit = {},
+    onRecruitModifyClick: (Int) -> Unit = {},
+    onEventCreateClick: (Int) -> Unit = {},
+    resetClubModifiedState: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
 
@@ -286,10 +294,29 @@ fun ClubDetail(
         if (state.showImageDialog) {
             DetailImageDialog(
                 imageModel = ImageRequest.Builder(context)
-                    .data(state.clubDetails?.imageUrl)
+                    .data(state.imageDialogUrl)
                     .size(400)
                     .build(),
                 onDismiss = { viewModel.dismissImageDialog() }
+            )
+        }
+
+        if (state.showRecruitDeleteDialog) {
+            KoinClubExtraSmallDialog(
+                description = stringResource(R.string.detail_recruit_delete_dialog_description),
+                descriptionStyle = KoinTheme.typography.medium15,
+                descriptionColor = KoinTheme.colors.neutral600,
+                positiveButtonText = stringResource(R.string.detail_recruit_delete_dialog_positive),
+                negativeButtonText = stringResource(R.string.detail_recruit_delete_dialog_negative),
+                positiveButtonColors = KoinClubExtraSmallDialogDanger.positiveButtonColors(),
+                titleTextAlign = TextAlign.Center,
+                descriptionTextAlign = TextAlign.Center,
+                onPositive = {
+                    viewModel.dismissRecruitDeleteDialog()
+                    viewModel.deleteRecruitment()
+                },
+                onNegative = viewModel::dismissRecruitDeleteDialog,
+                onDismiss = viewModel::dismissRecruitDeleteDialog
             )
         }
 
@@ -308,7 +335,7 @@ fun ClubDetail(
                     modifier = Modifier
                         .size(200.dp)
                         .clickable {
-                            viewModel.showImageDialog()
+                            viewModel.showImageDialog(state.clubDetails?.imageUrl ?: "")
                         },
                     model = ImageRequest.Builder(context)
                         .data(state.clubDetails?.imageUrl)
@@ -614,42 +641,50 @@ fun ClubDetail(
                             )
                         }
                         DetailTabType.RECRUIT.strResId -> {
+                            ClubDetailRecruit(
+                                recruitment = state.clubRecruitment,
+                                showProgressBar = state.showRecruitProgressBar,
+                                onImageClick = viewModel::showImageDialog,
+                                onRecruitCreateClick = { onRecruitCreateClick(state.clubId) },
+                                showRecruitDeleteDialog = viewModel::showRecruitDeleteDialog,
+                                onRecruitModifyClick = { onRecruitModifyClick(state.clubId) },
+                                isManager = state.clubDetails?.manager ?: false
+                            )
                         }
                         DetailTabType.EVENT.strResId -> {
+                            ClubDetailEvents(
+                                isDropdownExpanded = state.isEventsDropdownExpanded,
+                                clubEvents = state.clubEvents,
+                                onDropdownExpandChange = viewModel::updateEventsDropdownExpanded,
+                                showProgressBar = state.showEventsProgressBar,
+                                dropdownTitle = stringResource(state.clubEventSearchType.strRes),
+                                dropdownList = eventSearchTypeList,
+                                isManager = state.clubDetails?.manager ?: false,
+                                onDropdownItemSelected = { index ->
+                                    viewModel.updateClubEventSearchType(eventSearchTypeList[index])
+                                },
+                                onEventCreateClick = { onEventCreateClick(state.clubId) }
+                            )
                         }
                         DetailTabType.QNA.strResId -> {
-                            Box {
-                                if (state.showQnasProgressBar) {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .zIndex(1f)
-                                    ) {
-                                        CircularProgressIndicator(
-                                            modifier = Modifier
-                                                .size(100.dp)
-                                                .align(Alignment.Center)
-                                        )
-                                    }
+                            ClubDetailQna(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .verticalScroll(qnaScrollState, enabled = isQnaScrollable.value),
+                                qnaList = qnaList,
+                                isManager = state.clubDetails?.manager ?: false,
+                                userId = state.userId,
+                                showProgressBar = state.showQnasProgressBar,
+                                onAddQnaClick = {
+                                    viewModel.showAddQnaDialog()
+                                },
+                                onDeleteQnaClick = { qnaId ->
+                                    viewModel.deleteClubQna(qnaId)
+                                },
+                                onAddAnswerClick = { qnaId, content ->
+                                    viewModel.addClubQnaAnswer(qnaId, content)
                                 }
-                                ClubDetailQna(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .verticalScroll(qnaScrollState, enabled = isQnaScrollable.value),
-                                    qnaList = qnaList,
-                                    isManager = state.clubDetails?.manager ?: false,
-                                    userId = state.userId,
-                                    onAddQnaClick = {
-                                        viewModel.showAddQnaDialog()
-                                    },
-                                    onDeleteQnaClick = { qnaId ->
-                                        viewModel.deleteClubQna(qnaId)
-                                    },
-                                    onAddAnswerClick = { qnaId, content ->
-                                        viewModel.addClubQnaAnswer(qnaId, content)
-                                    }
-                                )
-                            }
+                            )
                         }
                     }
                 }
@@ -694,6 +729,18 @@ suspend fun handleSideEffect(
             ToastUtil.getInstance().makeShort(sideEffect.messageResId)
         }
         is ClubDetailSideEffect.AlreadyNotLikedError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.DeleteClubRecruitmentError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.LoadClubRecruitmentError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.LoadClubEventError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.UnknownError -> {
             ToastUtil.getInstance().makeShort(sideEffect.messageResId)
         }
     }

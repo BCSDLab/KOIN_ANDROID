@@ -109,7 +109,8 @@ class ClubListViewModel @Inject constructor(
             }
             getClubsUseCase(
                 categoryId = state.categoryId,
-                sortType = state.sortType.name
+                sortType = state.sortType.name,
+                isRecruiting = state.isRecruiting
             ).onSuccess { clubs ->
                 reduce {
                     state.copy(clubs = clubs.toParcelizeClubItems(), isLoading = false)
@@ -189,5 +190,15 @@ class ClubListViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun updateRecruiting(isRecruiting: Boolean) = intent {
+        reduce {
+            state.copy(
+                isRecruiting = isRecruiting,
+                sortType = if (isRecruiting) ClubSort.RECRUITMENT_UPDATED_DESC else ClubSort.CREATED_AT_ASC // Reset sort type
+            )
+        }
+        postSideEffect(ClubListSideEffect.RefreshClubs)
     }
 }
