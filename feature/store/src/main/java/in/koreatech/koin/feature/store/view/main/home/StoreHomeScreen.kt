@@ -184,6 +184,7 @@ private fun StoreHomeScreen(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
+            /*
             SearchBarFake(
                 modifier = Modifier.padding(horizontal = 24.dp)
             ) {
@@ -191,6 +192,8 @@ private fun StoreHomeScreen(
             }
 
             Spacer(modifier = Modifier.height(16.dp))
+             */
+
 
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
