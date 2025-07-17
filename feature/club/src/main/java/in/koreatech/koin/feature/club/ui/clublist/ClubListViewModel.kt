@@ -110,7 +110,8 @@ class ClubListViewModel @Inject constructor(
             getClubsUseCase(
                 categoryId = state.categoryId,
                 sortType = state.sortType.name,
-                isRecruiting = state.isRecruiting
+                isRecruiting = state.isRecruiting,
+                query = state.searchKeyword
             ).onSuccess { clubs ->
                 reduce {
                     state.copy(clubs = clubs.toParcelizeClubItems(), isLoading = false)

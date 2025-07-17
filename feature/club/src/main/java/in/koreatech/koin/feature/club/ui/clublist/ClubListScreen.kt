@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -62,6 +65,7 @@ import `in`.koreatech.koin.feature.club.model.clubCategories
 import `in`.koreatech.koin.feature.club.model.clubSortType
 import `in`.koreatech.koin.feature.club.model.clubSortTypeWithRecruitment
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.snackbar.DetailSnackBar
+import `in`.koreatech.koin.feature.club.utils.ellipsize
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
@@ -107,6 +111,7 @@ fun ClubListScreen(
             .debounce(300L)
             .filter { it.isNotEmpty() }
             .collectLatest {
+                viewModel.getClubs()
             }
     }
 
@@ -254,7 +259,9 @@ fun ClubListScreenImpl(
     }
 
     LazyColumn(
-        modifier = modifier.padding(horizontal = 24.dp)
+        modifier = modifier
+            .padding(horizontal = 24.dp)
+            .fillMaxSize()
     ) {
         item {
             Row(
@@ -372,40 +379,88 @@ fun ClubListScreenImpl(
             }
         }
 
-        itemsIndexed(clubList) { index, it ->
-            KoinClubListItem(
-                id = it.id,
-                name = it.name,
-                category = it.category,
-                likes = it.likes,
-                logoUrl = it.imageUrl,
-                isLiked = it.isLiked,
-                isLikeHidden = it.isLikeHidden,
-                recruitmentInfo = it.recruitmentInfo,
-                modifier = Modifier.padding(
-                    top = if (index == 0) 0.dp else 12.dp,
-                    bottom = if (index == clubList.lastIndex) 12.dp else 0.dp
-                ),
-                onClick = { id ->
-                    EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.Club.MAIN_SELECT_CLUB,
-                        it.name
-                    )
-                    navigateToClubDetail(id)
-                },
-                onLikeClick = { id ->
-                    if (isAnonymous) {
-                        onShowLoginDialogChange(true)
-                        return@KoinClubListItem
-                    }
-                    onLikeClick(id)
-                }
-            )
-        }
+        clubItems(
+            clubList = clubList,
+            isAnonymous = isAnonymous,
+            isRecruiting = isRecruiting,
+            searchKeyword = searchKeyword,
+            navigateToClubDetail = navigateToClubDetail,
+            onShowLoginDialogChange = onShowLoginDialogChange,
+            onLikeClick = onLikeClick
+        )
 
         item {
             Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
         }
+    }
+}
+
+inline fun LazyListScope.clubItems(
+    clubList: List<ParcelizeClubItem>,
+    isAnonymous: Boolean,
+    isRecruiting: Boolean = false,
+    searchKeyword: String = "",
+    crossinline navigateToClubDetail: (Int) -> Unit = { _ -> },
+    crossinline onShowLoginDialogChange: (Boolean) -> Unit = { _ -> },
+    crossinline onLikeClick: (Int) -> Unit = { _ -> }
+) = if (searchKeyword.isNotEmpty() && clubList.isEmpty()) {
+    item {
+        Box(
+            modifier = Modifier.aspectRatio(1f),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = stringResource(R.string.club_list_search_not_found, searchKeyword.ellipsize()),
+                style = KoinTheme.typography.regular18,
+                color = KoinTheme.colors.neutral500,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+} else if (isRecruiting && clubList.isEmpty()) {
+    item {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = stringResource(R.string.club_list_recruiting_not_found),
+                style = KoinTheme.typography.regular18,
+                color = KoinTheme.colors.neutral500,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+} else {
+    itemsIndexed(clubList) { index, it ->
+        KoinClubListItem(
+            id = it.id,
+            name = it.name,
+            category = it.category,
+            likes = it.likes,
+            logoUrl = it.imageUrl,
+            isLiked = it.isLiked,
+            isLikeHidden = it.isLikeHidden,
+            recruitmentInfo = it.recruitmentInfo,
+            modifier = Modifier.padding(
+                top = if (index == 0) 0.dp else 12.dp,
+                bottom = if (index == clubList.lastIndex) 12.dp else 0.dp
+            ),
+            onClick = { id ->
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.Club.MAIN_SELECT_CLUB,
+                    it.name
+                )
+                navigateToClubDetail(id)
+            },
+            onLikeClick = { id ->
+                if (isAnonymous) {
+                    onShowLoginDialogChange(true)
+                    return@KoinClubListItem
+                }
+                onLikeClick(id)
+            }
+        )
     }
 }
 
