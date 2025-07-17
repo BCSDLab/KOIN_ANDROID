@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -114,9 +115,10 @@ fun StoreHomeScreen(
             },
             actions = {
                 Image(
-                    modifier = Modifier.noRippleClickable {
-                        navigateToCart()
-                    },
+                    modifier = Modifier
+                        .padding(end = 10.dp)
+                        .size(24.dp)
+                        .noRippleClickable { navigateToCart() },
                     painter = painterResource(R.drawable.ic_shopping_cart),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(Color(0xFF1C1B1F))
@@ -416,8 +418,16 @@ private fun StoreHomeScreenPreview() {
                 )
             ),
             storeCategories = listOf(
-                LocalStoreCategories(id = 0, name = "Category 1", imageUrl = "https://example.com/category1.jpg"),
-                LocalStoreCategories(id = 1, name = "Category 2", imageUrl = "https://example.com/category2.jpg")
+                LocalStoreCategories(
+                    id = 0,
+                    name = "Category 1",
+                    imageUrl = "https://example.com/category1.jpg"
+                ),
+                LocalStoreCategories(
+                    id = 1,
+                    name = "Category 2",
+                    imageUrl = "https://example.com/category2.jpg"
+                )
             ),
             selectedOrderOption = OrderOption.NONE,
             selectedStoreFilter = listOf(StoreFilter.IS_OPEN),
