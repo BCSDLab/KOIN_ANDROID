@@ -103,8 +103,7 @@ fun ClubEventModifyScreen(
                 title = stringResource(R.string.club_event_modify_title),
                 onNavigationIconClick = { viewModel.updateModifyCancelDialog(true) }
             )
-        },
-        contentWindowInsets = WindowInsets.systemBars
+        }
     ) { contentPadding ->
         ClubEventCreateScreenImpl(
             modifier = Modifier
