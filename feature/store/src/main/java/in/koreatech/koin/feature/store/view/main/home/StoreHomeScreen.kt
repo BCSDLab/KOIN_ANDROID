@@ -22,7 +22,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.Text
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
@@ -277,13 +277,13 @@ private fun StoreHomeScreen(
 
                             Spacer(modifier = Modifier.height(16.dp))
 
-                            Text(
+                            BasicText(
                                 text = stringResource(R.string.store_list_empty),
                                 style = RebrandKoinTheme.typography.bold18.copy(
                                     color = RebrandKoinTheme.colors.primary500
                                 )
                             )
-                            Text(
+                            BasicText(
                                 text = stringResource(R.string.store_list_empty_description),
                                 style = RebrandKoinTheme.typography.regular14.copy(
                                     color = RebrandKoinTheme.colors.neutral600
