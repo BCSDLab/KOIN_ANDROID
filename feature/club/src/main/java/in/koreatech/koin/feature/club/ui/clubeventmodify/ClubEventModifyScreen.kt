@@ -69,6 +69,7 @@ import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
 import `in`.koreatech.koin.feature.club.component.KoinClubTextFieldAlert
 import `in`.koreatech.koin.feature.club.component.KoinClubTimePickerDialog
+import `in`.koreatech.koin.feature.club.ui.clubeventmodify.ClubEventModifyViewModel.Companion.MAX_IMAGE_LIMIT
 import `in`.koreatech.koin.feature.club.utils.getDayOfWeek
 import `in`.koreatech.koin.feature.club.utils.pickMedia
 import `in`.koreatech.koin.feature.club.utils.pickMultipleMedia
@@ -120,7 +121,7 @@ fun ClubEventModifyScreen(
             imageUrls = uiState.eventImageUrls,
             uploadImage = viewModel::getPreSignedUrl,
             onMaxImageError = viewModel::postMaxImageLimitError,
-            maxImageLimit = uiState.maxImageLimit,
+            maxImageLimit = MAX_IMAGE_LIMIT,
             isLoading = uiState.isEventLoading,
             onImageDeleteClick = viewModel::deleteImageUrl,
             showModifyCancelDialogState = uiState.showModifyCancelDialog,

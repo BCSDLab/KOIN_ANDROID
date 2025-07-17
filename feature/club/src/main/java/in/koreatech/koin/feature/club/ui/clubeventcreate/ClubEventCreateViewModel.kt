@@ -34,6 +34,10 @@ class ClubEventCreateViewModel @Inject constructor(
         intent { reduce { state.copy(clubId = clubId) } }
     }
 
+    companion object {
+        const val MAX_IMAGE_LIMIT = 7
+    }
+
     fun deleteImageUrl(index: Int) = intent {
         reduce { state.copy(eventImageUrls = state.eventImageUrls.toPersistentList().removeAt(index)) }
     }
@@ -187,7 +191,7 @@ class ClubEventCreateViewModel @Inject constructor(
         ).onSuccess {
             reduce {
                 state.copy(
-                    eventImageUrls = if (state.eventImageUrls.size < state.maxImageLimit) {
+                    eventImageUrls = if (state.eventImageUrls.size < MAX_IMAGE_LIMIT) {
                         state.eventImageUrls.toPersistentList().add(fileUrl)
                     } else {
                         state.eventImageUrls

@@ -42,6 +42,10 @@ class ClubEventModifyViewModel @Inject constructor(
         loadClubEvent()
     }
 
+    companion object {
+        const val MAX_IMAGE_LIMIT = 7
+    }
+
     object BeforeEventState {
         private lateinit var name: String
         private lateinit var introduce: String
@@ -281,7 +285,7 @@ class ClubEventModifyViewModel @Inject constructor(
         ).onSuccess {
             reduce {
                 state.copy(
-                    eventImageUrls = if (state.eventImageUrls.size < state.maxImageLimit) {
+                    eventImageUrls = if (state.eventImageUrls.size < MAX_IMAGE_LIMIT) {
                         state.eventImageUrls.toPersistentList().add(fileUrl)
                     } else {
                         state.eventImageUrls
