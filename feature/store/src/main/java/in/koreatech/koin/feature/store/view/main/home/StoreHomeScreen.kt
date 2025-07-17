@@ -33,6 +33,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -44,6 +45,7 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreCard
@@ -53,7 +55,6 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreMinimumPriceChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreOrderChip
 import `in`.koreatech.koin.feature.store.component.MinOrderSliderBottomSheet
 import `in`.koreatech.koin.feature.store.component.SearchBar
-import `in`.koreatech.koin.feature.store.component.SearchBarFake
 import `in`.koreatech.koin.feature.store.component.SortBottomSheet
 import `in`.koreatech.koin.feature.store.enums.MinimumPriceOption
 import `in`.koreatech.koin.feature.store.enums.OrderOption
@@ -71,6 +72,8 @@ fun StoreHomeScreen(
     modifier: Modifier = Modifier,
     categoryId: Int = 1,
     viewModel: StoreHomeViewModel = hiltViewModel(),
+    navigateToDetail: (Int) -> Unit = { },
+    navigateToCart: () -> Unit = { },
     onBackPressed: () -> Unit = { }
 ) {
     val uiState by viewModel.collectAsState()
@@ -110,6 +113,14 @@ fun StoreHomeScreen(
                 }
             },
             actions = {
+                Image(
+                    modifier = Modifier.noRippleClickable {
+                        navigateToCart()
+                    },
+                    painter = painterResource(R.drawable.ic_shopping_cart),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(Color(0xFF1C1B1F))
+                )
             },
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                 containerColor = Color(0XFFF2F2F2)
@@ -133,6 +144,7 @@ fun StoreHomeScreen(
                 selectedStoreFilter = uiState.selectedStoreFilter,
                 selectedMinimumPriceOption = uiState.selectedMinimumPriceOption,
                 showMinimumPriceOptions = uiState.showMinimumPriceOptions,
+                navigateToDetail = navigateToDetail,
                 onShowSearchChange = viewModel::onShowSearchChange,
                 onCategoryChange = viewModel::onCategoryChange,
                 onShowOrderOptionsChange = viewModel::onShowOrderOptionsChange,
@@ -157,6 +169,7 @@ private fun StoreHomeScreen(
     showOrderOptions: Boolean,
     showMinimumPriceOptions: Boolean,
     modifier: Modifier = Modifier,
+    navigateToDetail: (Int) -> Unit = { },
     onShowSearchChange: (Boolean) -> Unit = { },
     onCategoryChange: (Int) -> Unit = { },
     onShowOrderOptionsChange: (Boolean) -> Unit = { },
@@ -304,7 +317,9 @@ private fun StoreHomeScreen(
                             storeDeliveryFee = it.minimumDeliveryTip.toString(),
                             storeImageUrl = it.imageUrls.firstOrNull() ?: "",
                             isOpen = it.isOpen
-                        )
+                        ) {
+                            navigateToDetail(it.shopId)
+                        }
                     }
                 }
             }
