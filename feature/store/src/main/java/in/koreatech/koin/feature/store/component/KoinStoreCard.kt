@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.store.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,7 +47,8 @@ fun KoinStoreCard(
     storeImageUrl: String,
     modifier: Modifier = Modifier,
     isOpen: Boolean = true,
-    filterBadgeList: List<FilterBadge> = emptyList()
+    filterBadgeList: List<FilterBadge> = emptyList(),
+    onClick: () -> Unit = { }
 ) {
     Box(
         modifier = modifier
@@ -54,6 +56,7 @@ fun KoinStoreCard(
             .width(IntrinsicSize.Max)
             .clip(RebrandKoinTheme.shapes.small)
             .background(RebrandKoinTheme.colors.neutral0, shape = RebrandKoinTheme.shapes.small)
+            .clickable { onClick() }
     ) {
         if (!isOpen) {
             Box(
