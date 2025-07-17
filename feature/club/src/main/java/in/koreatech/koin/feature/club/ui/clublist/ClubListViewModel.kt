@@ -62,6 +62,12 @@ class ClubListViewModel @Inject constructor(
         }
     }
 
+    fun updateSearchKeyword(keyword: String) = blockingIntent {
+        reduce {
+            state.copy(searchKeyword = keyword)
+        }
+    }
+
     fun updateCategoryId(categoryId: Int?) = intent {
         reduce {
             state.copy(categoryId = categoryId)
@@ -104,7 +110,8 @@ class ClubListViewModel @Inject constructor(
             getClubsUseCase(
                 categoryId = state.categoryId,
                 sortType = state.sortType.name,
-                isRecruiting = state.isRecruiting
+                isRecruiting = state.isRecruiting,
+                query = state.searchKeyword
             ).onSuccess { clubs ->
                 reduce {
                     state.copy(clubs = clubs.toParcelizeClubItems(), isLoading = false)
