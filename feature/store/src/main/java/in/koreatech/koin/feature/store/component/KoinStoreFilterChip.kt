@@ -8,12 +8,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.ColorFilter
@@ -48,7 +48,8 @@ fun KoinStoreFilterChip(
                     )
                 }
             )
-            .background(if (isSelected) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral0, shape = CircleShape)
+            .clip(RoundedCornerShape(24.dp))
+            .background(if (isSelected) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral0, shape = RoundedCornerShape(24.dp))
             .clickable { onClick() }
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically

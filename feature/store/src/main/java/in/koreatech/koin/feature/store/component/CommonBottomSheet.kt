@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -39,7 +40,8 @@ fun CommonBottomSheet(
 ) {
     ModalBottomSheet(
         onDismissRequest = onClose,
-        dragHandle = null
+        dragHandle = null,
+        containerColor = Color(0xFFE1E1E1)
     ) {
         Column(
             modifier = Modifier
