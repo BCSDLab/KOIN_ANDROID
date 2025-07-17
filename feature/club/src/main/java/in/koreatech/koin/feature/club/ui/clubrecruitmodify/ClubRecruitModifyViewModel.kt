@@ -37,7 +37,7 @@ class ClubRecruitModifyViewModel @Inject constructor(
         loadClubRecruitment()
     }
 
-    object BeforeRecruitState {
+    companion object BeforeRecruitState {
         private lateinit var content: String
         private lateinit var imageUrl: String
         private lateinit var startDate: LocalDate
