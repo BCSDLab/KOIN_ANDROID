@@ -9,7 +9,7 @@ class GetOrderableShopsUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         sorter: String? = null,
-        filter: String? = null,
+        filter: List<String>? = null,
         minimumOrderAmount: Int? = null
     ): Result<List<Shop>> = storeRepository.getOrderableShops(sorter, filter, minimumOrderAmount)
 }

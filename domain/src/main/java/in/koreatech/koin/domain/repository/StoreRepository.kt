@@ -82,7 +82,7 @@ interface StoreRepository {
 
     suspend fun getOrderableShops(
         sorter: String?,
-        filter: String?,
+        filter: List<String>?,
         minimumOrderAmount: Int?
     ): Result<List<Shop>>
 
