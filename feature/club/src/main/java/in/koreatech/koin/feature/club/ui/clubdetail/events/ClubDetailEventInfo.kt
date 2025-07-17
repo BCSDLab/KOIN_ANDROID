@@ -196,7 +196,7 @@ fun ClubDetailEventInfo(
 
 @Preview(showBackground = true)
 @Composable
-fun ClubDetailEventInfoManagerPreview() {
+private fun ClubDetailEventInfoManagerPreview() {
     ClubDetailEventInfo(
         ParcelizeClubEvent(
             id = 1,
