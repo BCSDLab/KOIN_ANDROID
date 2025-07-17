@@ -1,7 +1,5 @@
 package `in`.koreatech.koin.data.constant
 
-import `in`.koreatech.koin.data.constant.URLConstant.CLUBS.CLUBID.RECRUITMENT.RECRUITMENT
-
 /**
  * KOIN API URL
  */
