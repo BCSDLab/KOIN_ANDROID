@@ -17,6 +17,7 @@ data class ClubDetailState(
     val clubId: Int = -1,
     val clubDetails: ParcelizeClubDetails? = null,
     val clubQnasInfo: ParcelizeClubQnasInfo? = null,
+    val showDetailProgressBar: Boolean = false,
     val showQnasProgressBar: Boolean = false,
     val showRecruitProgressBar: Boolean = false,
     val showLoginDialog: Boolean = false,
