@@ -150,6 +150,12 @@ fun ClubDetail(
 
     val listState = rememberLazyListState()
 
+    val recruitScrollState = rememberScrollState()
+    val isRecruitScrollable = remember { derivedStateOf { !listState.canScrollForward || recruitScrollState.value != 0 } }
+
+    val eventsScrollState = rememberScrollState()
+    val isEventsScrollable = remember { derivedStateOf { !listState.canScrollForward || eventsScrollState.value != 0 } }
+
     val qnaScrollState = rememberScrollState()
     val isQnaScrollable = remember { derivedStateOf { !listState.canScrollForward || qnaScrollState.value != 0 } }
 
@@ -732,6 +738,9 @@ fun ClubDetail(
                         }
                         DetailTabType.RECRUIT.strResId -> {
                             ClubDetailRecruit(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .verticalScroll(recruitScrollState, enabled = isRecruitScrollable.value),
                                 recruitment = state.clubRecruitment,
                                 showProgressBar = state.showRecruitProgressBar,
                                 onImageClick = viewModel::showImageDialog,
@@ -744,7 +753,12 @@ fun ClubDetail(
                         DetailTabType.EVENT.strResId -> {
                             if (state.clubEventSelected && state.selectedEventIndex != -1) {
                                 val selectedEvent = state.clubEvents[state.selectedEventIndex]
+                                val eventInfoScrollState = rememberScrollState()
+                                val isEventInfoScrollable = remember { derivedStateOf { !listState.canScrollForward || eventInfoScrollState.value != 0 } }
                                 ClubDetailEventInfo(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .verticalScroll(eventInfoScrollState, enabled = isEventInfoScrollable.value),
                                     clubEvent = selectedEvent,
                                     onBackPressed = viewModel::deselectEvent,
                                     onEventDeleteClick = {
@@ -760,6 +774,9 @@ fun ClubDetail(
                                 )
                             } else {
                                 ClubDetailEvents(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .verticalScroll(eventsScrollState, enabled = isEventsScrollable.value),
                                     isDropdownExpanded = state.isEventsDropdownExpanded,
                                     clubEvents = state.clubEvents,
                                     onDropdownExpandChange = viewModel::updateEventsDropdownExpanded,
