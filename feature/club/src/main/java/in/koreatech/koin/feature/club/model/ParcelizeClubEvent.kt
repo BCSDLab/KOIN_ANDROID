@@ -59,6 +59,6 @@ fun String.toLocalDateTime(): LocalDateTime {
 }
 
 fun LocalDateTime.toStringForm(): String {
-    val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd'.' HH:mm")
+    val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd. HH:mm")
     return this.format(dateTimeFormatter)
 }
