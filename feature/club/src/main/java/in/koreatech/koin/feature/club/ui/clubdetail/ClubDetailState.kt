@@ -31,7 +31,7 @@ data class ClubDetailState(
     val showEventDeleteDialog: Boolean = false,
     val clubEventSelected: Boolean = false,
     val selectedEventIndex: Int = -1,
-    val clubEventSearchType: EventSearchType = EventSearchType.RECENT,
+    val clubEventSearchType: EventSearchType = EventSearchType.ONGOING,
     val clubEvents: List<ParcelizeClubEvent> = immutableListOf(),
     val showEventsProgressBar: Boolean = false,
     val showRecruitSubscribeDialog: Boolean = false,

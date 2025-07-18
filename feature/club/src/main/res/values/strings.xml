@@ -60,8 +60,8 @@
     <string name="detail_recruit_delete_dialog_negative">취소하기</string>
 
     <string name="detail_events_empty">해당되는 행사가 없어요.</string>
-    <string name="detail_events_sort_type_recent">행사 진행중</string>
-    <string name="detail_events_sort_type_ongoing">최신 등록순</string>
+    <string name="detail_events_sort_type_recent">최신 등록순</string>
+    <string name="detail_events_sort_type_ongoing">행사 진행중</string>
     <string name="detail_events_sort_type_upcoming">행사 예정</string>
     <string name="detail_events_sort_type_ended">종료 행사</string>
     <string name="detail_events_create">행사 생성하기</string>
