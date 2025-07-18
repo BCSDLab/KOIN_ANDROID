@@ -107,14 +107,21 @@ fun ClubDetailEvents(
                 )
             }
             clubEvents.forEachIndexed { index, event ->
+                val stateColor = when (event.status) {
+                    EventStatus.SOON -> KoinTheme.colors.primary400
+                    EventStatus.ONGOING -> KoinTheme.colors.primary300
+                    EventStatus.UPCOMING -> KoinTheme.colors.primary500
+                    EventStatus.ENDED -> KoinTheme.colors.primary500
+                    else -> KoinTheme.colors.primary400
+                }
                 DetailEventBox(
-                    eventId = event.id,
                     eventName = event.name,
                     imageUrl = event.imageUrls.firstOrNull() ?: "",
                     stateText = stringResource(event.status.strRes),
                     dateText = "${event.startDateTime.toStringForm()} ~ ${event.endDateTime.toStringForm()}",
                     eventIntroText = event.introduce,
-                    stateColor = KoinTheme.colors.primary400,
+                    stateColor = stateColor,
+                    isUpcoming = event.status == EventStatus.UPCOMING,
                     isDisable = event.status == EventStatus.ENDED,
                     onClick = {
                         onEventClick(index)

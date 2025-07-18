@@ -23,6 +23,7 @@ sealed class KoinClubException : KoinErrorException() {
      * Exceptions for 403 Forbidden
      */
     class NotClubManagerException : KoinClubException()
+    class NotAllowedUserException : KoinClubException()
     class DeletePermissionDeniedException : KoinClubException()
 
     /*

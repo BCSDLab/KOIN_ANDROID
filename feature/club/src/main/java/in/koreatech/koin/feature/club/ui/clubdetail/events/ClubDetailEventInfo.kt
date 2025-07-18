@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,6 +53,7 @@ fun ClubDetailEventInfo(
     isManager: Boolean = false,
     onEventModifyClick: () -> Unit = {},
     onEventDeleteClick: () -> Unit = {},
+    onNotificationClick: () -> Unit = {},
     onBackPressed: () -> Unit = {}
 ) {
     BackHandler {
@@ -84,14 +86,14 @@ fun ClubDetailEventInfo(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     FilledButton(
-                        text = "행사 삭제",
+                        text = stringResource(R.string.detail_dialog_event_delete),
                         textStyle = KoinTheme.typography.medium14,
                         onClick = onEventDeleteClick,
                         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp),
                         colors = KoinClubExtraSmallDialogDanger.positiveButtonColors()
                     )
                     FilledButton(
-                        text = "행사 수정",
+                        text = stringResource(R.string.detail_dialog_event_modify),
                         textStyle = KoinTheme.typography.medium14,
                         onClick = onEventModifyClick,
                         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp)
@@ -99,23 +101,51 @@ fun ClubDetailEventInfo(
                 }
             }
         }
-        Text(
-            text = clubEvent.name,
-            style = KoinTheme.typography.bold20,
-            color = KoinTheme.colors.primary600,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-        Text(
-            text = stringResource(
-                R.string.club_event_period,
-                clubEvent.startDateTime.toStringForm(),
-                clubEvent.endDateTime.toStringForm()
-            ),
-            style = KoinTheme.typography.medium15,
-            color = KoinTheme.colors.neutral600,
-            maxLines = 1
-        )
+        Column {
+            Text(
+                text = clubEvent.name,
+                style = KoinTheme.typography.bold20,
+                color = KoinTheme.colors.primary600,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                text = stringResource(
+                    R.string.club_event_period,
+                    clubEvent.startDateTime.toStringForm(),
+                    clubEvent.endDateTime.toStringForm()
+                ),
+                style = KoinTheme.typography.medium15,
+                color = KoinTheme.colors.neutral600,
+                maxLines = 1
+            )
+        }
+        if (
+            clubEvent.status == EventStatus.UPCOMING ||
+            clubEvent.status == EventStatus.SOON
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.detail_dialog_event_notification)
+                )
+                Image(
+                    painter = if (clubEvent.isSubscribed) {
+                        painterResource(R.drawable.icon_notification_true)
+                    } else {
+                        painterResource(R.drawable.icon_notification_false)
+                    },
+                    contentDescription = "Notification Icon",
+                    modifier = Modifier
+                        .size(24.dp)
+                        .padding(end = 4.dp)
+                        .clickable {
+                            onNotificationClick()
+                        }
+                )
+            }
+        }
         if (clubEvent.imageUrls.isNotEmpty()) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -187,16 +217,18 @@ fun ClubDetailEventInfo(
             text = stringResource(R.string.detail_event_info_introduce, clubEvent.introduce),
             style = KoinTheme.typography.regular15
         )
-        Text(
-            text = stringResource(R.string.detail_event_info_content, clubEvent.content),
-            style = KoinTheme.typography.regular15
-        )
+        if (clubEvent.content.isNotBlank()) {
+            Text(
+                text = stringResource(R.string.detail_event_info_content, clubEvent.content),
+                style = KoinTheme.typography.regular15
+            )
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun ClubDetailEventInfoManagerPreview() {
+fun ClubDetailEventInfoManagerPreview() {
     ClubDetailEventInfo(
         ParcelizeClubEvent(
             id = 1,

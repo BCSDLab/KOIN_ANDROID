@@ -66,6 +66,7 @@ import coil.request.ImageRequest
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
+import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -113,6 +114,8 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun ClubDetail(
     isClubModified: Boolean = false,
+    isRecruitEvent: Boolean = false,
+    norificationEventId: Int = -1,
     initialPage: Int = 0,
     viewModel: ClubDetailViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {},
@@ -121,7 +124,8 @@ fun ClubDetail(
     onRecruitModifyClick: (Int) -> Unit = {},
     onEventCreateClick: (Int) -> Unit = {},
     onEventModifyClick: (Int, Int) -> Unit = { _, _ -> },
-    resetClubModifiedState: () -> Unit = {}
+    resetClubModifiedState: () -> Unit = {},
+    resetNorificationEventId: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
 
@@ -166,6 +170,25 @@ fun ClubDetail(
                 duration = SnackbarDuration.Short
             )
             resetClubModifiedState()
+        }
+    }
+
+    LaunchedEffect(isRecruitEvent) {
+        if (isRecruitEvent) {
+            pagerState.animateScrollToPage(1)
+            listState.animateScrollToItem(2)
+        }
+    }
+
+    LaunchedEffect(state.clubEventLoaded) {
+        if (norificationEventId != -1) {
+            val eventIndex = state.clubEvents.indexOfFirst { it.id == norificationEventId }
+            if (eventIndex != -1) {
+                viewModel.selectEvent(eventIndex)
+                pagerState.animateScrollToPage(2)
+                listState.animateScrollToItem(2)
+                resetNorificationEventId()
+            }
         }
     }
 
@@ -338,6 +361,48 @@ fun ClubDetail(
                 },
                 onNegative = { viewModel.updateEventsDeleteDialog(false) },
                 onDismiss = { viewModel.updateEventsDeleteDialog(false) }
+            )
+        }
+
+        if (state.showRecruitSubscribeDialog) {
+            val isSubscribed = state.clubDetails?.isRecruitSubscribed ?: false
+            KoinClubExtraSmallDialog(
+                title = "",
+                description = stringResource(if (isSubscribed) R.string.detail_dialog_recruit_unsubscribe_text else R.string.detail_dialog_recruit_subscribe_text),
+                descriptionStyle = KoinTheme.typography.medium15,
+                descriptionColor = KoinTheme.colors.neutral600,
+                positiveButtonText = stringResource(if (isSubscribed) R.string.detail_dialog_recruit_unsubscribe_positive else R.string.detail_dialog_recruit_subscribe_positive),
+                negativeButtonText = stringResource(if (isSubscribed) R.string.detail_dialog_recruit_unsubscribe_negative else R.string.detail_dialog_recruit_subscribe_negative),
+                titleTextAlign = TextAlign.Center,
+                descriptionTextAlign = TextAlign.Center,
+                positiveButtonColors = FilledButtonColors.Primary,
+                onPositive = {
+                    viewModel.updateRecruitSubscribeDialog(false)
+                    viewModel.changeClubRecruitmentSubscribe()
+                },
+                onNegative = { viewModel.updateRecruitSubscribeDialog(false) },
+                onDismiss = { viewModel.updateRecruitSubscribeDialog(false) }
+            )
+        }
+
+        if (state.showEventSubscribeDialog) {
+            val isSubscribed = state.clubEvents[state.selectedEventIndex].isSubscribed
+            KoinClubExtraSmallDialog(
+                title = "",
+                description = stringResource(if (isSubscribed) R.string.detail_dialog_event_unsubscribe_text else R.string.detail_dialog_event_subscribe_text),
+                descriptionStyle = KoinTheme.typography.medium15,
+                descriptionColor = KoinTheme.colors.neutral600,
+                positiveButtonText = stringResource(if (isSubscribed) R.string.detail_dialog_recruit_unsubscribe_positive else R.string.detail_dialog_recruit_subscribe_positive),
+                negativeButtonText = stringResource(if (isSubscribed) R.string.detail_dialog_recruit_unsubscribe_negative else R.string.detail_dialog_recruit_subscribe_negative),
+                titleTextAlign = TextAlign.Center,
+                descriptionTextAlign = TextAlign.Center,
+                positiveButtonColors = FilledButtonColors.Primary,
+                onPositive = {
+                    viewModel.updateEventSubscribeDialog(false)
+                    viewModel.changeClubEventSubscribe()
+                },
+                onNegative = { viewModel.updateEventSubscribeDialog(false) },
+                onDismiss = { viewModel.updateEventSubscribeDialog(false) }
             )
         }
 
@@ -580,7 +645,11 @@ fun ClubDetail(
                                     modifier = Modifier
                                         .size(24.dp)
                                         .padding(end = 4.dp)
-                                        .clickable { } // TODO club notification
+                                        .clickable {
+                                            state.userId?.let {
+                                                viewModel.updateRecruitSubscribeDialog(true)
+                                            } ?: viewModel.showLoginDialog()
+                                        }
                                 )
                             }
                         }
@@ -682,6 +751,11 @@ fun ClubDetail(
                                         viewModel.updateEventsDeleteDialog(true)
                                     },
                                     onEventModifyClick = { onEventModifyClick(state.clubId, selectedEvent.id) },
+                                    onNotificationClick = {
+                                        state.userId?.let {
+                                            viewModel.updateEventSubscribeDialog(true)
+                                        } ?: viewModel.showLoginDialog()
+                                    },
                                     isManager = state.clubDetails?.manager ?: false
                                 )
                             } else {

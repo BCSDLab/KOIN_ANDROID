@@ -18,6 +18,8 @@ data class ClubEventCreateState(
     val eventEndDateTime: LocalDateTime = eventStartDateTime.plusDays(1),
     val eventStatus: EventStatus = EventStatus.SOON,
     val isEventSubscribed: Boolean = false,
+    val eventNameRequired: Boolean = false,
+    val eventIntroduceRequired: Boolean = false,
     val showCreateCancelDialog: Boolean = false,
     val showCreateRequestDialog: Boolean = false,
     val showDatePickerDialog: Boolean = false,

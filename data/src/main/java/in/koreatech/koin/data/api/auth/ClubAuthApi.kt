@@ -8,6 +8,7 @@ import `in`.koreatech.koin.data.request.club.ClubModifyRequest
 import `in`.koreatech.koin.data.request.club.ClubQnaRequest
 import `in`.koreatech.koin.data.request.club.ClubRecruitmentRequest
 import `in`.koreatech.koin.data.response.club.ClubDetailsResponse
+import `in`.koreatech.koin.data.response.club.ClubEventResponse
 import `in`.koreatech.koin.data.response.club.ClubsResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -87,21 +88,49 @@ interface ClubAuthApi {
         @Body request: ClubRecruitmentRequest
     ): Response<Unit>
 
+    @GET(URLConstant.CLUBS.CLUBID.EVENT.EVENTS)
+    suspend fun getClubEvents(
+        @Path("clubId") clubId: Int,
+        @Query("eventType") eventType: String
+    ): List<ClubEventResponse>
+
     @POST(URLConstant.CLUBS.CLUBID.EVENT.EVENT)
     suspend fun createClubEvent(
         @Path("clubId") clubId: Int,
         @Body request: ClubEventRequest
     ): Response<Unit>
 
-    @PUT(URLConstant.CLUBS.CLUBID.EVENT.EVENTID)
+    @PUT(URLConstant.CLUBS.CLUBID.EVENT.EVENTID.EVENTID)
     suspend fun modifyClubEvent(
         @Path("clubId") clubId: Int,
         @Path("eventId") eventId: Int,
         @Body request: ClubEventRequest
     ): Response<Unit>
 
-    @DELETE(URLConstant.CLUBS.CLUBID.EVENT.EVENTID)
+    @DELETE(URLConstant.CLUBS.CLUBID.EVENT.EVENTID.EVENTID)
     suspend fun deleteClubEvent(
+        @Path("clubId") clubId: Int,
+        @Path("eventId") eventId: Int
+    ): Response<Unit>
+
+    @POST(URLConstant.CLUBS.CLUBID.RECRUITMENT.NOTIFICATION)
+    suspend fun subscribeClubRecruitment(
+        @Path("clubId") clubId: Int
+    ): Response<Unit>
+
+    @DELETE(URLConstant.CLUBS.CLUBID.RECRUITMENT.NOTIFICATION)
+    suspend fun unsubscribeClubRecruitment(
+        @Path("clubId") clubId: Int
+    ): Response<Unit>
+
+    @POST(URLConstant.CLUBS.CLUBID.EVENT.EVENTID.NOTIFICATION)
+    suspend fun subscribeClubEvent(
+        @Path("clubId") clubId: Int,
+        @Path("eventId") eventId: Int
+    ): Response<Unit>
+
+    @DELETE(URLConstant.CLUBS.CLUBID.EVENT.EVENTID.NOTIFICATION)
+    suspend fun unsubscribeClubEvent(
         @Path("clubId") clubId: Int,
         @Path("eventId") eventId: Int
     ): Response<Unit>

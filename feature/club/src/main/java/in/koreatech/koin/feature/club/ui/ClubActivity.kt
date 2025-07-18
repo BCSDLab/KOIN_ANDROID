@@ -16,10 +16,13 @@ import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatu
 import `in`.koreatech.koin.feature.club.navigation.CATEGORY_ID
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
 import `in`.koreatech.koin.feature.club.navigation.ClubNavType
+import `in`.koreatech.koin.feature.club.navigation.EXTRA_CLUB_ID
+import `in`.koreatech.koin.feature.club.navigation.EXTRA_EVENT_ID
 import `in`.koreatech.koin.feature.club.navigation.koinClubGraph
 
 @AndroidEntryPoint
 class ClubActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdgeWithLightStatusBar()
@@ -34,6 +37,17 @@ class ClubActivity : ComponentActivity() {
                 intent.getIntExtra(CLUB_ID, -1).let {
                     if (it != -1) {
                         startDestination = "${ClubNavType.ClubDetail.route}/$it"
+                    }
+                }
+
+                intent.getIntExtra(EXTRA_CLUB_ID, -1).let {
+                    if (it != -1) {
+                        val eventId = intent.getIntExtra(EXTRA_EVENT_ID, -1)
+                        startDestination = if (eventId != -1) {
+                            "${ClubNavType.ClubDetail.route}/$it?eventId=$eventId"
+                        } else {
+                            "${ClubNavType.ClubDetail.route}/$it?recruitEvent=true"
+                        }
                     }
                 }
 

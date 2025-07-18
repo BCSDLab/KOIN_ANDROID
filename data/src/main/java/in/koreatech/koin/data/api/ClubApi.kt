@@ -8,7 +8,6 @@ import `in`.koreatech.koin.data.response.club.ClubQnasResponse
 import `in`.koreatech.koin.data.response.club.ClubRecruitmentResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface ClubApi {
     @GET(URLConstant.CLUBS.CATEGORIES)
@@ -27,13 +26,7 @@ interface ClubApi {
         @Path("clubId") clubId: Int
     ): ClubRecruitmentResponse
 
-    @GET(URLConstant.CLUBS.CLUBID.EVENT.EVENTS)
-    suspend fun getClubEvents(
-        @Path("clubId") clubId: Int,
-        @Query("eventType") eventType: String
-    ): List<ClubEventResponse>
-
-    @GET(URLConstant.CLUBS.CLUBID.EVENT.EVENTID)
+    @GET(URLConstant.CLUBS.CLUBID.EVENT.EVENTID.EVENTID)
     suspend fun getClubEvent(
         @Path("clubId") clubId: Int,
         @Path("eventId") eventId: Int

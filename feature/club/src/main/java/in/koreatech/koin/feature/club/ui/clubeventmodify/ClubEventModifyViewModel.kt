@@ -42,6 +42,10 @@ class ClubEventModifyViewModel @Inject constructor(
         loadClubEvent()
     }
 
+    companion object {
+        const val MAX_IMAGE_LIMIT = 7
+    }
+
     object BeforeEventState {
         private lateinit var name: String
         private lateinit var introduce: String
@@ -141,6 +145,10 @@ class ClubEventModifyViewModel @Inject constructor(
         postSideEffect(ClubEventModifySideEffect.NavigateUp)
     }
 
+    fun postMaxImageLimitError() = intent {
+        postSideEffect(ClubEventModifySideEffect.MaxImageLimit)
+    }
+
     fun updateEventName(value: String) = blockingIntent {
         reduce { state.copy(eventName = value) }
     }
@@ -155,17 +163,25 @@ class ClubEventModifyViewModel @Inject constructor(
 
     fun updateModifyRequestDialog(bool: Boolean) = blockingIntent {
         if (bool) {
-            postRequiredError()
+            checkRequiredField()
         } else {
             reduce { state.copy(showModifyRequestDialog = false) }
         }
     }
 
-    private fun postRequiredError() = intent {
-        when {
-            state.eventName.isBlank() -> postSideEffect(ClubEventModifySideEffect.EventNameError)
-            state.eventIntroduce.isBlank() -> postSideEffect(ClubEventModifySideEffect.EventIntroError)
-            else -> reduce { state.copy(showModifyRequestDialog = true) }
+    private fun checkRequiredField() = intent {
+        if (state.eventName.isBlank()) {
+            reduce { state.copy(eventNameRequired = true) }
+        } else {
+            reduce { state.copy(eventNameRequired = false) }
+        }
+        if (state.eventIntroduce.isBlank()) {
+            reduce { state.copy(eventIntroduceRequired = true) }
+        } else {
+            reduce { state.copy(eventIntroduceRequired = false) }
+        }
+        if (!state.eventNameRequired && !state.eventIntroduceRequired) {
+            reduce { state.copy(showModifyRequestDialog = true) }
         }
     }
 
@@ -269,7 +285,11 @@ class ClubEventModifyViewModel @Inject constructor(
         ).onSuccess {
             reduce {
                 state.copy(
-                    eventImageUrls = state.eventImageUrls.toPersistentList().add(fileUrl),
+                    eventImageUrls = if (state.eventImageUrls.size < MAX_IMAGE_LIMIT) {
+                        state.eventImageUrls.toPersistentList().add(fileUrl)
+                    } else {
+                        state.eventImageUrls
+                    },
                     isLoading = false
                 )
             }

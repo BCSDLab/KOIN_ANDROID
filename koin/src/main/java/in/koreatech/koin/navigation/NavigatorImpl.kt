@@ -6,6 +6,7 @@ import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.buildIntent
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
+import `in`.koreatech.koin.feature.club.ui.ClubActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
@@ -106,6 +107,27 @@ class NavigatorImpl @Inject constructor() : Navigator {
         type: Pair<String, Any?>
     ): Intent {
         val intent = context.buildIntent<ChatRoomActivity>(targetArticleId, targetChatId, type)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        return intent
+    }
+
+    override fun navigateToClubRecruitment(
+        context: Context,
+        targetClubId: Pair<String, Any?>,
+        type: Pair<String, Any?>
+    ): Intent {
+        val intent = context.buildIntent<ClubActivity>(targetClubId, type)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        return intent
+    }
+
+    override fun navigateToClub(
+        context: Context,
+        targetClubId: Pair<String, Any?>,
+        targetEventId: Pair<String, Any?>,
+        type: Pair<String, Any?>
+    ): Intent {
+        val intent = context.buildIntent<ClubActivity>(targetClubId, targetEventId, type)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         return intent
     }

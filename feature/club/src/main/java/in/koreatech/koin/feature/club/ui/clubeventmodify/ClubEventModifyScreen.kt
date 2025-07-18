@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -64,8 +65,11 @@ import `in`.koreatech.koin.feature.club.component.KoinClubDatePickerDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubDateSelectBox
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
+import `in`.koreatech.koin.feature.club.component.KoinClubTextFieldAlert
 import `in`.koreatech.koin.feature.club.component.KoinClubTimePickerDialog
+import `in`.koreatech.koin.feature.club.ui.clubeventmodify.ClubEventModifyViewModel.Companion.MAX_IMAGE_LIMIT
 import `in`.koreatech.koin.feature.club.utils.getDayOfWeek
+import `in`.koreatech.koin.feature.club.utils.pickMedia
 import `in`.koreatech.koin.feature.club.utils.pickMultipleMedia
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -113,12 +117,16 @@ fun ClubEventModifyScreen(
             eventEndDateTime = uiState.eventEndDateTime,
             imageUrls = uiState.eventImageUrls,
             uploadImage = viewModel::getPreSignedUrl,
+            onMaxImageError = viewModel::postMaxImageLimitError,
+            maxImageLimit = MAX_IMAGE_LIMIT,
             isLoading = uiState.isEventLoading,
             onImageDeleteClick = viewModel::deleteImageUrl,
             showModifyCancelDialogState = uiState.showModifyCancelDialog,
             showModifyRequestDialogState = uiState.showModifyRequestDialog,
             showDatePickerDialogState = uiState.showDatePickerDialog,
             showTimePickerDialogState = uiState.showTimePickerDialog,
+            eventNameRequired = uiState.eventNameRequired,
+            eventIntroduceRequired = uiState.eventIntroduceRequired,
             updateModifyCancelDialog = viewModel::updateModifyCancelDialog,
             updateModifyRequestDialog = viewModel::updateModifyRequestDialog,
             updateDatePickerDialog = viewModel::updateDatePickerDialog,
@@ -146,11 +154,14 @@ fun ClubEventCreateScreenImpl(
     eventEndDateTime: LocalDateTime,
     modifier: Modifier = Modifier,
     imageUrls: List<String> = persistentListOf(),
+    maxImageLimit: Int = 7,
     isLoading: Boolean = false,
     showModifyCancelDialogState: Boolean = false,
     showModifyRequestDialogState: Boolean = false,
     showDatePickerDialogState: Boolean = false,
     showTimePickerDialogState: Boolean = false,
+    eventNameRequired: Boolean = false,
+    eventIntroduceRequired: Boolean = false,
     updateModifyCancelDialog: (Boolean) -> Unit = {},
     updateModifyRequestDialog: (Boolean) -> Unit = {},
     updateDatePickerDialog: (Boolean) -> Unit = {},
@@ -165,6 +176,7 @@ fun ClubEventCreateScreenImpl(
     modifyEvent: () -> Unit = {},
     modifyEventCancel: () -> Unit = {},
     uploadImage: (fileSize: Long, fileType: String, fileName: String, fileUri: Uri) -> Unit = { _, _, _, _ -> },
+    onMaxImageError: () -> Unit = {},
     onImageDeleteClick: (Int) -> Unit = {}
 ) {
     val context = LocalContext.current
@@ -176,15 +188,18 @@ fun ClubEventCreateScreenImpl(
     val introTextFieldMaxLength = 70
     val contentTextFieldMaxLines = 2
 
-    val maxImageItems = 44
-
     val pickMultipleMedia = pickMultipleMedia(
         context = context,
-        maxItems = maxImageItems - imageUrls.size,
+        maxItems = maxOf(maxImageLimit - imageUrls.size, 2),
         onResult = uploadImage
     )
 
-    val pagerState = rememberPagerState(pageCount = { imageUrls.size + 1 })
+    val pickMedia = pickMedia(
+        context = context,
+        onResult = uploadImage
+    )
+
+    val pagerState = rememberPagerState(pageCount = { minOf(imageUrls.size + 1, maxImageLimit) })
 
     if (showDatePickerDialogState) {
         KoinClubDatePickerDialog(
@@ -298,8 +313,18 @@ fun ClubEventCreateScreenImpl(
                     .clip(KoinTheme.shapes.extraLarge)
                     .border(1.dp, Color.Unspecified, KoinTheme.shapes.extraLarge)
                     .background(KoinTheme.colors.neutral200)
-                    .clickable {
-                        pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    .clickable(!isLoading) {
+                        when {
+                            maxImageLimit - imageUrls.size >= 2 -> {
+                                pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                            }
+                            maxImageLimit - imageUrls.size == 1 -> {
+                                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                            }
+                            else -> {
+                                onMaxImageError()
+                            }
+                        }
                     },
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -353,23 +378,33 @@ fun ClubEventCreateScreenImpl(
             style = KoinTheme.typography.regular12,
             color = KoinTheme.colors.neutral500
         )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            Text(
-                text = "행사 이름:",
-                style = KoinTheme.typography.medium18
-            )
-            KoinClubBasicTextField(
-                value = eventName,
-                onValueChange = { updateEventName(it) },
-                modifier = Modifier
-                    .weight(1f),
-                minLines = textFieldMinLines,
-                maxLength = textFieldMaxLength,
-                hint = stringResource(R.string.club_event_create_name_hint)
-            )
+        Column {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.club_recruit_create_name),
+                    style = KoinTheme.typography.medium18
+                )
+                KoinClubBasicTextField(
+                    value = eventName,
+                    onValueChange = { updateEventName(it) },
+                    modifier = Modifier
+                        .weight(1f),
+                    minLines = textFieldMinLines,
+                    maxLength = textFieldMaxLength,
+                    borderColor = if (eventNameRequired) KoinTheme.colors.sub500 else KoinTheme.colors.neutral100,
+                    hint = stringResource(R.string.club_event_create_name_hint)
+                )
+            }
+            if (eventNameRequired) {
+                Spacer(modifier = Modifier.height(4.dp))
+
+                KoinClubTextFieldAlert(
+                    text = stringResource(R.string.club_create_warning_required)
+                )
+            }
         }
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -377,7 +412,7 @@ fun ClubEventCreateScreenImpl(
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = "행사 기간",
+                text = stringResource(R.string.club_recruit_create_period),
                 style = KoinTheme.typography.medium18
             )
             Row(
@@ -452,15 +487,14 @@ fun ClubEventCreateScreenImpl(
                 }
             }
         }
-        Column(
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
+        Column {
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = "행사 내용",
+                text = stringResource(R.string.club_recruit_create_introduce),
                 style = KoinTheme.typography.medium18
             )
+            Spacer(modifier = Modifier.height(12.dp))
             KoinClubBasicTextField(
                 value = eventIntroduce,
                 onValueChange = { updateEventIntroduce(it) },
@@ -468,8 +502,16 @@ fun ClubEventCreateScreenImpl(
                     .fillMaxWidth(),
                 minLines = textFieldMinLines,
                 maxLength = introTextFieldMaxLength,
+                borderColor = if (eventIntroduceRequired) KoinTheme.colors.sub500 else KoinTheme.colors.neutral100,
                 hint = stringResource(R.string.club_event_create_intro_hint)
             )
+            if (eventIntroduceRequired) {
+                Spacer(modifier = Modifier.height(4.dp))
+
+                KoinClubTextFieldAlert(
+                    text = stringResource(R.string.club_create_warning_required)
+                )
+            }
         }
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -477,7 +519,7 @@ fun ClubEventCreateScreenImpl(
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = "상세 내용",
+                text = stringResource(R.string.club_recruit_create_recruit_description),
                 style = KoinTheme.typography.medium18
             )
             KoinClubBasicTextField(
@@ -533,11 +575,8 @@ fun handleSideEffect(
         is ClubEventModifySideEffect.NavigateUp -> {
             onNavigateUp()
         }
-        is ClubEventModifySideEffect.EventNameError -> context.let {
-            Toast.makeText(it, it.getString(R.string.club_event_create_error_name), Toast.LENGTH_SHORT).show()
-        }
-        is ClubEventModifySideEffect.EventIntroError -> context.let {
-            Toast.makeText(it, it.getString(R.string.club_event_create_error_intro), Toast.LENGTH_SHORT).show()
+        is ClubEventModifySideEffect.MaxImageLimit -> context.let {
+            Toast.makeText(it, it.getString(R.string.club_event_max_image_error), Toast.LENGTH_SHORT).show()
         }
     }
 }
