@@ -220,7 +220,7 @@
     <string name="club_recruit_dday">D-%1$d</string>
     <string name="club_recruit_always">상시 모집</string>
     <string name="club_recruit_closed">마감</string>
-    <string name="club_recruit_before">모집 전</string>
+    <string name="club_recruit_before">모집 예정</string>
     <string name="club_recruit_period">%1$s 부터 %2$s 까지</string>
 
     <string name="club_event_soon">곧 행사 진행</string>
