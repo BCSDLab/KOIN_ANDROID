@@ -37,8 +37,43 @@ class ClubRecruitModifyViewModel @Inject constructor(
         loadClubRecruitment()
     }
 
+    object BeforeRecruitState {
+        private lateinit var content: String
+        private lateinit var imageUrl: String
+        private lateinit var startDate: LocalDate
+        private lateinit var endDate: LocalDate
+        private var always: Boolean = false
+
+        operator fun invoke(
+            content: String,
+            imageUrl: String,
+            startDate: LocalDate,
+            endDate: LocalDate,
+            always: Boolean
+        ) {
+            this.content = content
+            this.imageUrl = imageUrl
+            this.startDate = startDate
+            this.endDate = endDate
+            this.always = always
+        }
+        fun isDifference(
+            content: String,
+            imageUrl: String,
+            startDate: LocalDate,
+            endDate: LocalDate,
+            always: Boolean
+        ) = (
+            this.content != content ||
+                this.imageUrl != imageUrl ||
+                this.startDate != startDate ||
+                this.endDate != endDate ||
+                this.always != always
+            )
+    }
+
     private fun loadClubRecruitment() = intent {
-        reduce { state.copy(isLoading = true) }
+        reduce { state.copy(isLoading = true, isRecruitLoading = true) }
         getClubRecruitmentUseCase(state.clubId).onSuccess {
             val clubRecruitment = it.toParcelizeClubRecruitment()
             val dateFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
@@ -46,16 +81,24 @@ class ClubRecruitModifyViewModel @Inject constructor(
                 reduce {
                     state.copy(
                         isLoading = false,
+                        isRecruitLoading = false,
                         recruitImageUrl = it.imageUrl ?: "",
                         recruitStartDate = if (it.startDate.isNotEmpty()) LocalDate.parse(it.startDate, dateFormatter) else state.recruitStartDate,
                         recruitEndDate = if (it.startDate.isNotEmpty()) LocalDate.parse(it.endDate, dateFormatter) else state.recruitEndDate,
                         recruitAlways = it.status == RecruitmentStatus.ALWAYS,
-                        content = it.content
+                        recruitContent = it.content
                     )
                 }
+                BeforeRecruitState(
+                    state.recruitContent,
+                    state.recruitImageUrl,
+                    state.recruitStartDate,
+                    state.recruitEndDate,
+                    state.recruitAlways
+                )
             }
         }.onFailure { e ->
-            reduce { state.copy(isLoading = false) }
+            reduce { state.copy(isLoading = false, isRecruitLoading = false) }
             when (e) {
                 is KoinClubException.WrongInputDataException,
                 is KoinClubException.ClubRecruitNotFoundException -> {
@@ -79,11 +122,31 @@ class ClubRecruitModifyViewModel @Inject constructor(
     }
 
     fun updateModifyCancelDialog(bool: Boolean) = intent {
-        reduce { state.copy(showModifyCancelDialog = bool) }
+        if (bool) {
+            if (
+                BeforeRecruitState.isDifference(
+                    state.recruitContent,
+                    state.recruitImageUrl,
+                    state.recruitStartDate,
+                    state.recruitEndDate,
+                    state.recruitAlways
+                )
+            ) {
+                reduce { state.copy(showModifyCancelDialog = true) }
+            } else {
+                postNavigateUp()
+            }
+        } else {
+            reduce { state.copy(showModifyCancelDialog = false) }
+        }
     }
 
     fun updateDatePickerDialog(bool: Boolean) = intent {
         reduce { state.copy(showDatePickerDialog = bool) }
+    }
+
+    fun updateRecruitContent(value: String) = intent {
+        reduce { state.copy(recruitContent = value) }
     }
 
     fun setRecruitStartDate(date: LocalDate) = intent {
@@ -104,9 +167,7 @@ class ClubRecruitModifyViewModel @Inject constructor(
         reduce { state.copy(recruitAlways = !state.recruitAlways) }
     }
 
-    fun modifyClubRecruitment(
-        content: String
-    ) = intent {
+    fun modifyClubRecruitment() = intent {
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
         val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
@@ -116,7 +177,7 @@ class ClubRecruitModifyViewModel @Inject constructor(
             endDate = if (!state.recruitAlways) state.recruitEndDate.format(dateFormatter) else null,
             isAlwaysRecruiting = state.recruitAlways,
             imageUrl = state.recruitImageUrl,
-            content = content
+            content = state.recruitContent
         ).onSuccess {
             reduce { state.copy(isLoading = false) }
             postSideEffect(ClubRecruitModifySideEffect.RecruitModifySuccess)

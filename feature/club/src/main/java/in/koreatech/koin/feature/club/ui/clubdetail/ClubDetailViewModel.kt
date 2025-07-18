@@ -9,6 +9,7 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.error.club.KoinClubException
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.club.CancelClubLikeUseCase
+import `in`.koreatech.koin.domain.usecase.club.DeleteClubEventUseCase
 import `in`.koreatech.koin.domain.usecase.club.DeleteClubQnaUseCase
 import `in`.koreatech.koin.domain.usecase.club.DeleteClubRecruitmentUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubDetailsUseCase
@@ -52,7 +53,8 @@ class ClubDetailViewModel @Inject constructor(
     private val setClubLikeUseCase: SetClubLikeUseCase,
     private val getClubRecruitmentUseCase: GetClubRecruitmentUseCase,
     private val deleteClubRecruitmentUseCase: DeleteClubRecruitmentUseCase,
-    private val getClubEventsUseCase: GetClubEventsUseCase
+    private val getClubEventsUseCase: GetClubEventsUseCase,
+    private val deleteClubEventUseCase: DeleteClubEventUseCase
 ) : ViewModel(), ContainerHost<ClubDetailState, ClubDetailSideEffect> {
     override val container = container<ClubDetailState, ClubDetailSideEffect>(
         initialState = ClubDetailState(),
@@ -185,6 +187,32 @@ class ClubDetailViewModel @Inject constructor(
                 else -> throw e
             }
         }
+    }
+
+    fun deleteClubEvent(eventId: Int) = intent {
+        reduce { state.copy(isLoading = true, showEventsProgressBar = true) }
+        deleteClubEventUseCase(state.clubId, eventId).onSuccess {
+            reduce {
+                state.copy(
+                    isLoading = false,
+                    showEventsProgressBar = false,
+                    selectedEventIndex = -1,
+                    clubEventSelected = false
+                )
+            }
+            loadClubEvents()
+        }.onFailure {
+            reduce { state.copy(isLoading = false, showEventsProgressBar = false) }
+            postSideEffect(ClubDetailSideEffect.DeleteClubEventError)
+        }
+    }
+
+    fun selectEvent(index: Int) = intent {
+        reduce { state.copy(selectedEventIndex = index, clubEventSelected = true) }
+    }
+
+    fun deselectEvent() = intent {
+        reduce { state.copy(selectedEventIndex = -1, clubEventSelected = false) }
     }
 
     fun deleteRecruitment() = intent {
@@ -381,6 +409,10 @@ class ClubDetailViewModel @Inject constructor(
 
     fun updateEventsDropdownExpanded(bool: Boolean) = blockingIntent {
         reduce { state.copy(isEventsDropdownExpanded = bool) }
+    }
+
+    fun updateEventsDeleteDialog(bool: Boolean) = blockingIntent {
+        reduce { state.copy(showEventDeleteDialog = bool) }
     }
 
     fun showEmpowermentDialog() = intent {

@@ -31,7 +31,7 @@ fun ClubEvent.toParcelizeClubEvent(): ParcelizeClubEvent {
         introduce = introduce,
         content = content ?: "",
         status = status.toEventStatus(),
-        isSubscribed = isSubscribed
+        isSubscribed = isSubscribed ?: false
     )
 }
 

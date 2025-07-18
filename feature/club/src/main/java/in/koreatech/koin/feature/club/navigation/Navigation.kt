@@ -12,6 +12,7 @@ import androidx.navigation.navArgument
 import `in`.koreatech.koin.feature.club.ui.clubcreate.ClubCreateScreen
 import `in`.koreatech.koin.feature.club.ui.clubdetail.ClubDetail
 import `in`.koreatech.koin.feature.club.ui.clubeventcreate.ClubEventCreateScreen
+import `in`.koreatech.koin.feature.club.ui.clubeventmodify.ClubEventModifyScreen
 import `in`.koreatech.koin.feature.club.ui.clublist.ClubListScreen
 import `in`.koreatech.koin.feature.club.ui.clubmodify.ClubModifyScreen
 import `in`.koreatech.koin.feature.club.ui.clubrecruitcreate.ClubRecruitCreateScreen
@@ -70,6 +71,9 @@ fun NavGraphBuilder.koinClubGraph(
             },
             onEventCreateClick = { clubId ->
                 navController.navigate("${ClubNavType.ClubEventCreate.route}/$clubId")
+            },
+            onEventModifyClick = { clubId, eventId ->
+                navController.navigate("${ClubNavType.ClubEventModify.route}/$clubId/$eventId")
             },
             resetClubModifiedState = {
                 it.savedStateHandle[IS_CLUB_MODIFIED] = false
@@ -166,6 +170,27 @@ fun NavGraphBuilder.koinClubGraph(
             },
             onEventCreated = {
                 navController.previousBackStackEntry?.savedStateHandle?.set(
+                    IS_CLUB_EVENT_CREATED,
+                    true
+                )
+                navController.navigateUp()
+            }
+        )
+    }
+
+    composable(
+        route = "${ClubNavType.ClubEventModify.route}/{$CLUB_ID}/{$EVENT_ID}",
+        arguments = listOf(
+            navArgument(CLUB_ID) { type = NavType.IntType },
+            navArgument(EVENT_ID) { type = NavType.IntType }
+        )
+    ) {
+        ClubEventModifyScreen(
+            onNavigateUp = {
+                navController.navigateUp()
+            },
+            onEventModified = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(
                     IS_CLUB_RECRUIT_MODIFIED,
                     true
                 )
@@ -176,9 +201,11 @@ fun NavGraphBuilder.koinClubGraph(
 }
 
 const val CLUB_ID = "clubId"
+const val EVENT_ID = "eventId"
 const val CATEGORY_ID = "categoryId"
 const val IS_CLUB_CREATED = "isClubCreated"
 const val IS_CLUB_MODIFIED = "isClubModified"
 const val IS_CLUB_RECRUIT_CREATED = "isClubRecruitCreated"
 const val IS_CLUB_RECRUIT_MODIFIED = "isClubRecruitModified"
+const val IS_CLUB_EVENT_CREATED = "isClubRecruitModified"
 const val IS_CLUB_EVENT_MODIFIED = "isClubRecruitModified"

@@ -1,14 +1,18 @@
-package `in`.koreatech.koin.feature.club.ui.clubeventcreate
+package `in`.koreatech.koin.feature.club.ui.clubeventmodify
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
-import `in`.koreatech.koin.domain.usecase.club.CreateClubEventUseCase
+import `in`.koreatech.koin.domain.usecase.club.GetClubEventUseCase
+import `in`.koreatech.koin.domain.usecase.club.ModifyClubEventUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetClubPreSignedUrlUseCase
+import `in`.koreatech.koin.feature.club.model.toLocalDateTime
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
+import `in`.koreatech.koin.feature.club.navigation.EVENT_ID
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -21,33 +25,99 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
-class ClubEventCreateViewModel @Inject constructor(
+class ClubEventModifyViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getClubPreSignedUrlUseCase: GetClubPreSignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase,
-    private val createClubEventUseCase: CreateClubEventUseCase
-) : ViewModel(), ContainerHost<ClubEventCreateState, ClubEventCreateSideEffect> {
+    private val getClubEventUseCase: GetClubEventUseCase,
+    private val modifyClubEventUseCase: ModifyClubEventUseCase
+) : ViewModel(), ContainerHost<ClubEventModifyState, ClubEventModifySideEffect> {
 
-    override val container = container<ClubEventCreateState, ClubEventCreateSideEffect>(ClubEventCreateState(), savedStateHandle) {
+    override val container = container<ClubEventModifyState, ClubEventModifySideEffect>(ClubEventModifyState(), savedStateHandle) {
         val clubId = savedStateHandle.get<Int>(CLUB_ID)
+        val eventId = savedStateHandle.get<Int>(EVENT_ID)
         checkNotNull(clubId)
-        intent { reduce { state.copy(clubId = clubId) } }
+        checkNotNull(eventId)
+        intent { reduce { state.copy(clubId = clubId, eventId = eventId) } }
+        loadClubEvent()
     }
 
-    fun deleteImageUrl(index: Int) = intent {
-        reduce { state.copy(eventImageUrls = state.eventImageUrls.toPersistentList().removeAt(index)) }
+    object BeforeEventState {
+        private lateinit var name: String
+        private lateinit var introduce: String
+        private lateinit var content: String
+        private lateinit var imageUrls: List<String>
+        private lateinit var startDateTime: LocalDateTime
+        private lateinit var endDateTime: LocalDateTime
+
+        operator fun invoke(
+            name: String,
+            introduce: String,
+            content: String,
+            imageUrls: List<String>,
+            startDateTime: LocalDateTime,
+            endDateTime: LocalDateTime
+        ) {
+            this.name = name
+            this.introduce = introduce
+            this.content = content
+            this.imageUrls = imageUrls
+            this.startDateTime = startDateTime
+            this.endDateTime = endDateTime
+        }
+        fun isDifference(
+            name: String,
+            introduce: String,
+            content: String,
+            imageUrls: List<String>,
+            startDateTime: LocalDateTime,
+            endDateTime: LocalDateTime
+        ) = (
+            this.name != name ||
+                this.introduce != introduce ||
+                this.content != content ||
+                this.imageUrls != imageUrls ||
+                this.startDateTime != startDateTime ||
+                this.endDateTime != endDateTime
+            )
     }
 
-    fun postNavigateUp() = intent {
-        postSideEffect(ClubEventCreateSideEffect.NavigateUp)
+    private fun loadClubEvent() = intent {
+        reduce { state.copy(isLoading = true, isEventLoading = true) }
+        getClubEventUseCase(state.clubId, state.eventId).onSuccess {
+            reduce {
+                state.copy(
+                    eventName = it.name,
+                    eventIntroduce = it.introduce,
+                    eventContent = it.content ?: "",
+                    eventImageUrls = it.imageUrls,
+                    eventStartDateTime = it.startDate.toLocalDateTime(),
+                    eventEndDateTime = it.endDate.toLocalDateTime(),
+                    isLoading = false,
+                    isEventLoading = false
+                )
+            }
+            BeforeEventState(
+                state.eventName,
+                state.eventIntroduce,
+                state.eventContent,
+                state.eventImageUrls,
+                state.eventStartDateTime,
+                state.eventEndDateTime
+            )
+        }.onFailure {
+            reduce { state.copy(isLoading = false, isEventLoading = true) }
+            postSideEffect(ClubEventModifySideEffect.LoadClubEventError)
+        }
     }
 
-    fun createClubEvent() = intent {
+    fun modifyClubEvent() = intent {
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
         val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-        createClubEventUseCase(
+        modifyClubEventUseCase(
             clubId = state.clubId,
+            eventId = state.eventId,
             name = state.eventName,
             imageUrls = state.eventImageUrls,
             startDate = state.eventStartDateTime.format(dateFormatter),
@@ -56,11 +126,19 @@ class ClubEventCreateViewModel @Inject constructor(
             content = state.eventContent
         ).onSuccess {
             reduce { state.copy(isLoading = false) }
-            postSideEffect(ClubEventCreateSideEffect.EventCreateSuccess)
+            postSideEffect(ClubEventModifySideEffect.EventCreateSuccess)
         }.onFailure { e ->
             reduce { state.copy(isLoading = false) }
-            postSideEffect(ClubEventCreateSideEffect.EventCreateFailure)
+            postSideEffect(ClubEventModifySideEffect.EventCreateFailure)
         }
+    }
+
+    fun deleteImageUrl(index: Int) = intent {
+        reduce { state.copy(eventImageUrls = state.eventImageUrls.toPersistentList().removeAt(index)) }
+    }
+
+    fun postNavigateUp() = intent {
+        postSideEffect(ClubEventModifySideEffect.NavigateUp)
     }
 
     fun updateEventName(value: String) = blockingIntent {
@@ -75,24 +153,40 @@ class ClubEventCreateViewModel @Inject constructor(
         reduce { state.copy(eventContent = value) }
     }
 
-    fun updateCreateRequestDialog(bool: Boolean) = blockingIntent {
+    fun updateModifyRequestDialog(bool: Boolean) = blockingIntent {
         if (bool) {
             postRequiredError()
         } else {
-            reduce { state.copy(showCreateRequestDialog = false) }
+            reduce { state.copy(showModifyRequestDialog = false) }
         }
     }
 
     private fun postRequiredError() = intent {
         when {
-            state.eventName.isBlank() -> postSideEffect(ClubEventCreateSideEffect.EventNameError)
-            state.eventIntroduce.isBlank() -> postSideEffect(ClubEventCreateSideEffect.EventIntroError)
-            else -> reduce { state.copy(showCreateRequestDialog = true) }
+            state.eventName.isBlank() -> postSideEffect(ClubEventModifySideEffect.EventNameError)
+            state.eventIntroduce.isBlank() -> postSideEffect(ClubEventModifySideEffect.EventIntroError)
+            else -> reduce { state.copy(showModifyRequestDialog = true) }
         }
     }
 
-    fun updateCreateCancelDialog(bool: Boolean) = blockingIntent {
-        reduce { state.copy(showCreateCancelDialog = bool) }
+    fun updateModifyCancelDialog(bool: Boolean) = blockingIntent {
+        if (bool) {
+            if (BeforeEventState.isDifference(
+                    state.eventName,
+                    state.eventIntroduce,
+                    state.eventContent,
+                    state.eventImageUrls,
+                    state.eventStartDateTime,
+                    state.eventEndDateTime
+                )
+            ) {
+                reduce { state.copy(showModifyCancelDialog = true) }
+            } else {
+                postNavigateUp()
+            }
+        } else {
+            reduce { state.copy(showModifyCancelDialog = false) }
+        }
     }
 
     fun updateDatePickerDialog(bool: Boolean) = blockingIntent {
@@ -156,7 +250,7 @@ class ClubEventCreateViewModel @Inject constructor(
             )
         }.onFailure {
             reduce { state.copy(isLoading = false) }
-            postSideEffect(ClubEventCreateSideEffect.ClubImageUploadFailure)
+            postSideEffect(ClubEventModifySideEffect.ClubImageUploadFailure)
         }
     }
 
@@ -181,7 +275,7 @@ class ClubEventCreateViewModel @Inject constructor(
             }
         }.onFailure {
             reduce { state.copy(isLoading = false) }
-            postSideEffect(ClubEventCreateSideEffect.ClubImageUploadFailure)
+            postSideEffect(ClubEventModifySideEffect.ClubImageUploadFailure)
         }
     }
 }

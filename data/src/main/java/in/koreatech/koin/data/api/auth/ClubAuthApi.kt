@@ -92,4 +92,17 @@ interface ClubAuthApi {
         @Path("clubId") clubId: Int,
         @Body request: ClubEventRequest
     ): Response<Unit>
+
+    @PUT(URLConstant.CLUBS.CLUBID.EVENT.EVENTID)
+    suspend fun modifyClubEvent(
+        @Path("clubId") clubId: Int,
+        @Path("eventId") eventId: Int,
+        @Body request: ClubEventRequest
+    ): Response<Unit>
+
+    @DELETE(URLConstant.CLUBS.CLUBID.EVENT.EVENTID)
+    suspend fun deleteClubEvent(
+        @Path("clubId") clubId: Int,
+        @Path("eventId") eventId: Int
+    ): Response<Unit>
 }

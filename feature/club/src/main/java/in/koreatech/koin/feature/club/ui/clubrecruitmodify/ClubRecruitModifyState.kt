@@ -7,13 +7,14 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ClubRecruitModifyState(
     val isLoading: Boolean = false,
+    val isRecruitLoading: Boolean = false,
     val clubId: Int = -1,
     val recruitImageUrl: String = "",
     val showDatePickerDialog: Boolean = false,
     val recruitStartDate: LocalDate = LocalDate.now(),
     val recruitEndDate: LocalDate = recruitStartDate.plusDays(1),
     val recruitAlways: Boolean = false,
-    val content: String = "",
+    val recruitContent: String = "",
     val showModifyRequestDialog: Boolean = false,
     val showModifyCancelDialog: Boolean = false
 ) : Parcelable

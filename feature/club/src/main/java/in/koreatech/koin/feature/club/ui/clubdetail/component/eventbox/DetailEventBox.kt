@@ -29,6 +29,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 @Composable
 fun DetailEventBox(
+    eventId: Int,
     eventName: String,
     stateText: String,
     dateText: String,
@@ -146,6 +147,7 @@ fun DetailEventBox(
 @Composable
 fun DetailEventBoxPreview() {
     DetailEventBox(
+        eventId = 1,
         eventName = "2025년 제22회 깔끔한 행사 명 선발 대회",
         stateText = "곧 행사 진행",
         dateText = "2025.07.20 09:00 ~ 2025.07.21 09:00",
@@ -158,6 +160,7 @@ fun DetailEventBoxPreview() {
 @Composable
 fun DetailEventBoxDisablePreview() {
     DetailEventBox(
+        eventId = 1,
         eventName = "2025년 제22회 깔끔한 행사 명 선발 대회",
         stateText = "마감된 행사",
         dateText = "2025.07.20 09:00 ~ 2025.07.21 09:00",

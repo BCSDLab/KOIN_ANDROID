@@ -32,4 +32,10 @@ interface ClubApi {
         @Path("clubId") clubId: Int,
         @Query("eventType") eventType: String
     ): List<ClubEventResponse>
+
+    @GET(URLConstant.CLUBS.CLUBID.EVENT.EVENTID)
+    suspend fun getClubEvent(
+        @Path("clubId") clubId: Int,
+        @Path("eventId") eventId: Int
+    ): ClubEventResponse
 }

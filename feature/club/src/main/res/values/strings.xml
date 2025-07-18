@@ -54,6 +54,13 @@
     <string name="detail_events_sort_type_ended">종료 행사</string>
     <string name="detail_events_create">행사 생성하기</string>
 
+    <string name="detail_event_info_delete">행사 생성하기</string>
+    <string name="detail_event_info_introduce">행사 내용 : %1$s</string>
+    <string name="detail_event_info_content">상세 내용 : %1$s</string>
+    <string name="detail_event_delete_dialog_description">행사를 삭제하시겠어요?\n행사가 삭제되며 되돌릴 수 없어요.</string>
+    <string name="detail_event_delete_dialog_positive">삭제하기</string>
+    <string name="detail_event_delete_dialog_negative">취소하기</string>
+
     <string name="detail_error_empty_text_field">필수 입력란입니다.</string>
     <string name="detail_error_unauthorized">올바르지 않은 인증 정보입니다.</string>
     <string name="detail_error_already_manager">이미 관리자 입니다.</string>
@@ -67,6 +74,7 @@
     <string name="detail_error_delete_recruit">모집이 삭제되지 않았습니다.</string>
     <string name="detail_error_load_recruit">모집을 불러오지 못했습니다.</string>
     <string name="detail_error_load_events">행사를 불러오지 못했습니다.</string>
+    <string name="detail_error_delete_event">행사가 삭제되지 않았습니다.</string>
     <string name="detail_error_unkown">알 수 없는 오류가 발생했습니다.</string>
 
     <string name="club_main_activity_widget_title">동아리 조회</string>
@@ -178,8 +186,23 @@
     <string name="club_event_create_intro_hint">행사내용을 적어주세요. (최대 70자)</string>
     <string name="club_event_create_content_hint">상세 내용을 적어주세요.</string>
     <string name="club_event_create_error_create_failure">행사 생성에 실패했습니다.</string>
+    <string name="club_event_create_error_name">행사 이름은 필수 값입니다.</string>
+    <string name="club_event_create_error_intro">행사 내용은 필수 값입니다.</string>
     <string name="club_event_create_cancel">생성 취소</string>
     <string name="club_event_create_request">생성 하기</string>
+    <string name="club_event_period">%1$s 부터 %2$s 까지</string>
+
+    <string name="club_event_modify_title">동아리 행사 수정</string>
+    <string name="club_event_modify_request_dialog_description">작성하신 내용으로\n수정하시겠어요?</string>
+    <string name="club_event_modify_request_dialog_positive">수정하기</string>
+    <string name="club_event_modify_request_dialog_negative">취소하기</string>
+    <string name="club_event_modify_cancel_dialog_description">"수정을 취소하시겠어요?\n작성하신 내용은 모두 사라져요."</string>
+    <string name="club_event_modify_cancel_dialog_positive">취소하기</string>
+    <string name="club_event_modify_cancel_dialog_negative">계속 편집</string>
+    <string name="club_event_modify_cancel">수정 취소</string>
+    <string name="club_event_modify_request">수정 하기</string>
+    <string name="club_event_modify_error_load">기존 행사 정보를 불러오지 못했습니다.</string>
+    <string name="club_event_modify_error_failure">행사 수정에 실패했습니다.</string>
 
     <string name="club_recruit_dday">D-%1$d</string>
     <string name="club_recruit_always">상시 모집</string>
@@ -194,7 +217,8 @@
     <string name="club_event_unknown">알 수 없음</string>
 
     <string name="club_date_picker_format">%1$d년\n%2$d월 %3$d일 (%4$s)</string>
-    <string name="club_date_picker_time_format">%1$02d:%2$02d</string>
+    <string name="club_time_picker_format">%1$02d:%2$02d</string>
+    <string name="club_time_picker_title">%1$02d:%2$02d</string>
 
     <string name="club_image_upload_failed">이미지 업로드에 실패했습니다.</string>
     <string name="club_dialog_ok">확인</string>

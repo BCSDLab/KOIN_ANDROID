@@ -100,6 +100,7 @@ import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.D
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogEmpowermentContent
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.snackbar.DetailSnackBar
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.tabrow.DetailTabRow
+import `in`.koreatech.koin.feature.club.ui.clubdetail.events.ClubDetailEventInfo
 import `in`.koreatech.koin.feature.club.ui.clubdetail.events.ClubDetailEvents
 import `in`.koreatech.koin.feature.club.ui.clubdetail.intro.ClubDetailIntro
 import `in`.koreatech.koin.feature.club.ui.clubdetail.qna.ClubDetailQna
@@ -119,6 +120,7 @@ fun ClubDetail(
     onRecruitCreateClick: (Int) -> Unit = {},
     onRecruitModifyClick: (Int) -> Unit = {},
     onEventCreateClick: (Int) -> Unit = {},
+    onEventModifyClick: (Int, Int) -> Unit = { _, _ -> },
     resetClubModifiedState: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
@@ -317,6 +319,25 @@ fun ClubDetail(
                 },
                 onNegative = viewModel::dismissRecruitDeleteDialog,
                 onDismiss = viewModel::dismissRecruitDeleteDialog
+            )
+        }
+
+        if (state.showEventDeleteDialog) {
+            KoinClubExtraSmallDialog(
+                description = stringResource(R.string.detail_event_delete_dialog_description),
+                descriptionStyle = KoinTheme.typography.medium15,
+                descriptionColor = KoinTheme.colors.neutral600,
+                positiveButtonText = stringResource(R.string.detail_event_delete_dialog_positive),
+                negativeButtonText = stringResource(R.string.detail_event_delete_dialog_negative),
+                positiveButtonColors = KoinClubExtraSmallDialogDanger.positiveButtonColors(),
+                titleTextAlign = TextAlign.Center,
+                descriptionTextAlign = TextAlign.Center,
+                onPositive = {
+                    viewModel.updateEventsDeleteDialog(false)
+                    viewModel.deleteClubEvent(state.clubEvents[state.selectedEventIndex].id)
+                },
+                onNegative = { viewModel.updateEventsDeleteDialog(false) },
+                onDismiss = { viewModel.updateEventsDeleteDialog(false) }
             )
         }
 
@@ -652,19 +673,33 @@ fun ClubDetail(
                             )
                         }
                         DetailTabType.EVENT.strResId -> {
-                            ClubDetailEvents(
-                                isDropdownExpanded = state.isEventsDropdownExpanded,
-                                clubEvents = state.clubEvents,
-                                onDropdownExpandChange = viewModel::updateEventsDropdownExpanded,
-                                showProgressBar = state.showEventsProgressBar,
-                                dropdownTitle = stringResource(state.clubEventSearchType.strRes),
-                                dropdownList = eventSearchTypeList,
-                                isManager = state.clubDetails?.manager ?: false,
-                                onDropdownItemSelected = { index ->
-                                    viewModel.updateClubEventSearchType(eventSearchTypeList[index])
-                                },
-                                onEventCreateClick = { onEventCreateClick(state.clubId) }
-                            )
+                            if (state.clubEventSelected && state.selectedEventIndex != -1) {
+                                val selectedEvent = state.clubEvents[state.selectedEventIndex]
+                                ClubDetailEventInfo(
+                                    clubEvent = selectedEvent,
+                                    onBackPressed = viewModel::deselectEvent,
+                                    onEventDeleteClick = {
+                                        viewModel.updateEventsDeleteDialog(true)
+                                    },
+                                    onEventModifyClick = { onEventModifyClick(state.clubId, selectedEvent.id) },
+                                    isManager = state.clubDetails?.manager ?: false
+                                )
+                            } else {
+                                ClubDetailEvents(
+                                    isDropdownExpanded = state.isEventsDropdownExpanded,
+                                    clubEvents = state.clubEvents,
+                                    onDropdownExpandChange = viewModel::updateEventsDropdownExpanded,
+                                    showProgressBar = state.showEventsProgressBar,
+                                    dropdownTitle = stringResource(state.clubEventSearchType.strRes),
+                                    dropdownList = eventSearchTypeList,
+                                    isManager = state.clubDetails?.manager ?: false,
+                                    onDropdownItemSelected = { index ->
+                                        viewModel.updateClubEventSearchType(eventSearchTypeList[index])
+                                    },
+                                    onEventCreateClick = { onEventCreateClick(state.clubId) },
+                                    onEventClick = viewModel::selectEvent
+                                )
+                            }
                         }
                         DetailTabType.QNA.strResId -> {
                             ClubDetailQna(
@@ -738,6 +773,9 @@ suspend fun handleSideEffect(
             ToastUtil.getInstance().makeShort(sideEffect.messageResId)
         }
         is ClubDetailSideEffect.LoadClubEventError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.DeleteClubEventError -> {
             ToastUtil.getInstance().makeShort(sideEffect.messageResId)
         }
         is ClubDetailSideEffect.UnknownError -> {

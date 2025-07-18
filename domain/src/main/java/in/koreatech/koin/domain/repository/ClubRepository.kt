@@ -121,4 +121,25 @@ interface ClubRepository {
         introduce: String,
         content: String?
     ): Result<Unit>
+
+    suspend fun getClubEvent(
+        clubId: Int,
+        eventId: Int
+    ): Result<ClubEvent>
+
+    suspend fun modifyClubEvent(
+        clubId: Int,
+        eventId: Int,
+        name: String,
+        imageUrls: List<String>,
+        startDate: String,
+        endDate: String,
+        introduce: String,
+        content: String?
+    ): Result<Unit>
+
+    suspend fun deleteClubEvent(
+        clubId: Int,
+        eventId: Int
+    ): Result<Unit>
 }
