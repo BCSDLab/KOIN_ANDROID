@@ -43,6 +43,7 @@ import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
 import `in`.koreatech.koin.feature.club.model.EventStatus
 import `in`.koreatech.koin.feature.club.model.ParcelizeClubEvent
 import `in`.koreatech.koin.feature.club.model.toStringForm
+import okhttp3.internal.immutableListOf
 import java.time.LocalDateTime
 import okhttp3.internal.immutableListOf
 

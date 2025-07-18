@@ -43,9 +43,14 @@ class ClubRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getClubs(categoryId: Int?, sortType: String?): Result<Clubs> {
+    override suspend fun getClubs(
+        categoryId: Int?,
+        sortType: String,
+        isRecruiting: Boolean,
+        query: String
+    ): Result<Clubs> {
         return runCatching {
-            clubRemoteDataSource.getClubs(categoryId, sortType).toClubs()
+            clubRemoteDataSource.getClubs(categoryId, sortType, isRecruiting, query).toClubs()
         }.onFailure { exception ->
             return Result.failure(
                 when (exception) {
