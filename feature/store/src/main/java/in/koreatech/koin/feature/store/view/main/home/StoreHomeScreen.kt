@@ -209,7 +209,6 @@ private fun StoreHomeScreen(
             Spacer(modifier = Modifier.height(16.dp))
              */
 
-
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(24.dp),
