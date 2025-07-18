@@ -574,7 +574,7 @@ fun ClubDetail(
                             intro.second?.let {
                                 when (intro.first) {
                                     DETAIL_DESCRIPTION -> {
-                                        outputText = "${stringResource(intro.first.strResId)}$it"
+                                        outputText = stringResource(intro.first.strResId, it)
                                         onClick = { showMore.value = !showMore.value }
                                     }
                                     DETAIL_INSTAGRAM -> {
