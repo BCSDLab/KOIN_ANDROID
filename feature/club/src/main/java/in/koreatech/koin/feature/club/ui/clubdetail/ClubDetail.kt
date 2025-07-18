@@ -383,6 +383,14 @@ fun ClubDetail(
                 descriptionTextAlign = TextAlign.Center,
                 positiveButtonColors = FilledButtonColors.Primary,
                 onPositive = {
+                    EventLogger.logCampusClickEvent(
+                        if (isSubscribed) {
+                            AnalyticsConstant.Label.Club.CLUB_RECRUITMENT_CANCEL
+                        } else {
+                            AnalyticsConstant.Label.Club.CLUB_RECRUITMENT_ACCEPT
+                        },
+                        state.clubDetails?.name ?: "알 수 없는 동아리"
+                    )
                     viewModel.updateRecruitSubscribeDialog(false)
                     viewModel.changeClubRecruitmentSubscribe()
                 },
@@ -652,6 +660,10 @@ fun ClubDetail(
                                         .size(24.dp)
                                         .padding(end = 4.dp)
                                         .clickable {
+                                            EventLogger.logCampusClickEvent(
+                                                AnalyticsConstant.Label.Club.CLUB_RECRUITMENT_NOTI,
+                                                state.clubDetails?.name ?: "알 수 없는 동아리"
+                                            )
                                             state.userId?.let {
                                                 viewModel.updateRecruitSubscribeDialog(true)
                                             } ?: viewModel.showLoginDialog()
