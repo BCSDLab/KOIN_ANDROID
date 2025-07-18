@@ -94,6 +94,14 @@ class SchemeActivity : ActivityBase() {
                                 EXTRA_CHAT_ROOM_ID,
                                 getChatRoomIdFromUrl(url ?: "")
                             ),
+                            targetClubId = Pair(
+                                EXTRA_CLUB_ID,
+                                getClubIdFromUrl(url ?: "")
+                            ),
+                            targetEventId = Pair(
+                                EXTRA_EVENT_ID,
+                                getEventIdFromUrl(url ?: "")
+                            ),
                             type = Pair(EXTRA_TYPE, url?.toHost()),
                             navType = Pair(EXTRA_NAV_TYPE, NavigatorType.MAIN.type)
                         )

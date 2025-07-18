@@ -10,6 +10,8 @@ interface Navigator {
         targetBoardId: Pair<String, Any?> = Pair("", 0),
         targetArticleId: Pair<String, Any?> = Pair("", 0),
         targetChatId: Pair<String, Any?> = Pair("", 0),
+        targetClubId: Pair<String, Any?> = Pair("", 0),
+        targetEventId: Pair<String, Any?> = Pair("", 0),
         type: Pair<String, Any?> = Pair("", ""),
         navType: Pair<String, Any?> = Pair("", "")
     ): Intent
@@ -20,6 +22,8 @@ interface Navigator {
         targetBoardId: Pair<String, Any?> = Pair("", 0),
         targetArticleId: Pair<String, Any?> = Pair("", 0),
         targetChatId: Pair<String, Any?> = Pair("", 0),
+        targetClubId: Pair<String, Any?> = Pair("", 0),
+        targetEventId: Pair<String, Any?> = Pair("", 0),
         type: Pair<String, Any?> = Pair("", "")
     ): Intent
 
