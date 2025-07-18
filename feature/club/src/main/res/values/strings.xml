@@ -203,7 +203,7 @@
     <string name="club_event_create_error_create_failure">행사 생성에 실패했습니다.</string>
     <string name="club_event_create_cancel">생성 취소</string>
     <string name="club_event_create_request">생성 하기</string>
-    <string name="club_event_period">%1$s 부터 %2$s 까지</string>
+    <string name="club_event_period">%1$s. 부터 %2$s. 까지</string>
 
     <string name="club_event_modify_title">동아리 행사 수정</string>
     <string name="club_event_modify_request_dialog_description">작성하신 내용으로\n수정하시겠어요?</string>
@@ -221,7 +221,7 @@
     <string name="club_recruit_always">상시 모집</string>
     <string name="club_recruit_closed">마감</string>
     <string name="club_recruit_before">모집 예정</string>
-    <string name="club_recruit_period">%1$s 부터 %2$s 까지</string>
+    <string name="club_recruit_period">%1$s. 부터 %2$s. 까지</string>
 
     <string name="club_event_soon">곧 행사 진행</string>
     <string name="club_event_ongoing">행사 진행 중</string>
@@ -229,6 +229,8 @@
     <string name="club_event_ended">종료된 행사</string>
     <string name="club_event_unknown">알 수 없음</string>
     <string name="club_event_max_image_error">더이상 추가할 수 없습니다.</string>
+
+    <string name="club_event_intro_header">행사 소개:&#160;</string>
 
     <string name="club_date_picker_format">%1$d년\n%2$d월 %3$d일 (%4$s)</string>
     <string name="club_time_picker_format">%1$02d:%2$02d</string>
