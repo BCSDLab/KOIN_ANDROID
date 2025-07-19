@@ -208,10 +208,10 @@ class StoreRepositoryImpl @Inject constructor(
 
     override suspend fun getOrderableShops(): Result<List<Shop>> {
         return runCatching {
-            storeLocalDataSource.getCachedShops() ?: storeRemoteDataSource.getOrderableShops().map {
-                it.toShop()
-            }.also {
+            storeLocalDataSource.getCachedShops()?.map { it.toShop() } ?: storeRemoteDataSource.getOrderableShops().also {
                 storeLocalDataSource.setCachedShops(it)
+            }.map {
+                it.toShop()
             }
         }.onFailure { e ->
             return Result.failure(
@@ -231,10 +231,10 @@ class StoreRepositoryImpl @Inject constructor(
 
     override suspend fun getNearbyShops(): Result<List<Shop>> {
         return runCatching {
-            storeLocalDataSource.getCachedNearbyShops() ?: storeRemoteDataSource.getNearbyShops().shops.map {
-                it.toShop()
-            }.also {
+            storeLocalDataSource.getCachedNearbyShops()?.map { it.toShop() } ?: storeRemoteDataSource.getNearbyShops().shops.also {
                 storeLocalDataSource.setCachedNearbyShops(it)
+            }.map {
+                it.toShop()
             }
         }.onFailure { e ->
             return Result.failure(

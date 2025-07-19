@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.store.model
 
 import android.os.Parcelable
+import `in`.koreatech.koin.domain.model.store.OpenStatus
 import `in`.koreatech.koin.domain.model.store.Shop
 import `in`.koreatech.koin.feature.store.enums.FilterBadge
 import kotlinx.parcelize.Parcelize
@@ -20,7 +21,7 @@ data class LocalShop(
     val categoryIds: List<Int>,
     val imageUrls: List<String>,
     val open: List<LocalOrderStoreShopsOpen>,
-    val openStatus: String
+    val openStatus: OpenStatus
 ) : Parcelable {
     @Parcelize
     data class LocalOrderStoreShopsOpen(

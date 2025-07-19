@@ -16,7 +16,7 @@ data class Shop(
     val categoryIds: List<Int>,
     val imageUrls: List<String>,
     val open: List<OrderStoreShopsOpen>,
-    val openStatus: String
+    val openStatus: OpenStatus
 ) {
     data class OrderStoreShopsOpen(
         val dayOfWeek: Int,

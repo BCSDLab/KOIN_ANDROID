@@ -49,6 +49,7 @@ import `in`.koreatech.koin.domain.model.store.CartItemEdit
 import `in`.koreatech.koin.domain.model.store.CartPaymentSummary
 import `in`.koreatech.koin.domain.model.store.CartSummary
 import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
+import `in`.koreatech.koin.domain.model.store.OpenStatus
 import `in`.koreatech.koin.domain.model.store.Shop
 import `in`.koreatech.koin.domain.model.store.ShopDeliveryAvailable
 import `in`.koreatech.koin.domain.model.store.ShopDetail
@@ -377,70 +378,92 @@ fun OwnerGetStoreResponse.toOwnerGetStore(): OwnerGetStore =
         isEvent = isEvent ?: false
     )
 
-fun ShopResponse.toShop() = Shop(
-    shopId = shopId,
-    orderableShopId = orderableShopId,
-    name = name,
-    isDeliveryAvailable = isDeliveryAvailable,
-    isTakeoutAvailable = isTakeoutAvailable,
-    serviceEvent = serviceEvent,
-    minimumOrderAmount = minimumOrderAmount,
-    ratingAverage = ratingAverage,
-    reviewCount = reviewCount,
-    minimumDeliveryTip = minimumDeliveryTip,
-    maximumDeliveryTip = maximumDeliveryTip,
-    isOpen = isOpen,
-    categoryIds = categoryIds,
-    imageUrls = imageUrls,
-    open = open.map {
-        Shop.OrderStoreShopsOpen(
-            dayOfWeek = DateFormatUtil.dayOfWeekToIndex(it.dayOfWeek),
-            closed = it.closed,
-            openTime = it.openTime,
-            closeTime = it.closeTime
-        )
-    },
-    openStatus = openStatus
-)
+fun ShopResponse.toShop(): Shop {
+    val convertedOpenStatus = open.filter { it.dayOfWeek == localDayOfWeekName }[0].toOpenStatus()
 
-fun StoreItemResponse.toShop() = Shop(
-    shopId = uid ?: 0,
-    orderableShopId = 0, // Legacy store API does not have orderableShopId
-    name = name ?: "",
-    isDeliveryAvailable = isDeliveryOk ?: false,
-    isTakeoutAvailable = isBankOk ?: false,
-    serviceEvent = isEvent ?: false,
-    minimumOrderAmount = 0, // Legacy store API does not have minimumOrderAmount
-    ratingAverage = averageRate,
-    reviewCount = reviewCount,
-    minimumDeliveryTip = 0, // Legacy store API does not have minimumDeliveryTip
-    maximumDeliveryTip = 0, // Legacy store API does not have maximumDeliveryTip
-    isOpen = isOpen ?: false,
-    categoryIds = categoryIds,
-    imageUrls = emptyList(),
-    open = open?.map {
-        Shop.OrderStoreShopsOpen(
-            dayOfWeek = DateFormatUtil.dayOfWeekToIndex(it.dayOfWeek ?: ""),
-            closed = it.closed ?: false,
-            openTime = it.openTime ?: "00:00",
-            closeTime = it.closeTime ?: "00:00"
-        )
-    }.orEmpty(),
-    openStatus = open?.filter { it.dayOfWeek == localDayOfWeekName }?.getOrNull(0)?.toOpenStatus() ?: "CLOSED"
-)
+    return Shop(
+        shopId = shopId,
+        orderableShopId = orderableShopId,
+        name = name,
+        isDeliveryAvailable = isDeliveryAvailable,
+        isTakeoutAvailable = isTakeoutAvailable,
+        serviceEvent = serviceEvent,
+        minimumOrderAmount = minimumOrderAmount,
+        ratingAverage = ratingAverage,
+        reviewCount = reviewCount,
+        minimumDeliveryTip = minimumDeliveryTip,
+        maximumDeliveryTip = maximumDeliveryTip,
+        isOpen = convertedOpenStatus == OpenStatus.OPERATING,
+        categoryIds = categoryIds,
+        imageUrls = imageUrls,
+        open = open.map {
+            Shop.OrderStoreShopsOpen(
+                dayOfWeek = DateFormatUtil.dayOfWeekToIndex(it.dayOfWeek),
+                closed = it.closed,
+                openTime = it.openTime,
+                closeTime = it.closeTime
+            )
+        },
+        openStatus = convertedOpenStatus
+    )
+}
 
-fun StoreItemResponse.OpenResponseDTO.toOpenStatus(): String {
+fun StoreItemResponse.toShop(): Shop {
+    val convertedOpenStatus = open?.filter { it.dayOfWeek == localDayOfWeekName }?.getOrNull(0)?.toOpenStatus() ?: OpenStatus.CLOSED
+    return Shop(
+        shopId = uid ?: 0,
+        orderableShopId = 0, // Legacy store API does not have orderableShopId
+        name = name ?: "",
+        isDeliveryAvailable = isDeliveryOk ?: false,
+        isTakeoutAvailable = isBankOk ?: false,
+        serviceEvent = isEvent ?: false,
+        minimumOrderAmount = 0, // Legacy store API does not have minimumOrderAmount
+        ratingAverage = averageRate,
+        reviewCount = reviewCount,
+        minimumDeliveryTip = 0, // Legacy store API does not have minimumDeliveryTip
+        maximumDeliveryTip = 0, // Legacy store API does not have maximumDeliveryTip
+        isOpen = convertedOpenStatus == OpenStatus.OPERATING,
+        categoryIds = categoryIds,
+        imageUrls = emptyList(),
+        open = open?.map {
+            Shop.OrderStoreShopsOpen(
+                dayOfWeek = DateFormatUtil.dayOfWeekToIndex(it.dayOfWeek ?: ""),
+                closed = it.closed ?: false,
+                openTime = it.openTime ?: "00:00",
+                closeTime = it.closeTime ?: "00:00"
+            )
+        }.orEmpty(),
+        openStatus = convertedOpenStatus
+    )
+}
+
+fun StoreItemResponse.OpenResponseDTO.toOpenStatus(): OpenStatus {
     return if (closed == true) {
         val closeTime = LocalTime.parse(closeTime)
         val currentTime = LocalTime.parse(localTimeNow.HHMM)
 
         if (closeTime.isBefore(currentTime)) {
-            "CLOSED"
+            OpenStatus.CLOSED
         } else {
-            "PREPARING"
+            OpenStatus.PREPARING
         }
     } else {
-        "OPERATING"
+        OpenStatus.OPERATING
+    }
+}
+
+fun ShopResponse.OrderStoreShopsOpenResponse.toOpenStatus(): OpenStatus {
+    return if (closed) {
+        val closeTime = LocalTime.parse(closeTime)
+        val currentTime = LocalTime.parse(localTimeNow.HHMM)
+
+        if (closeTime.isBefore(currentTime)) {
+            OpenStatus.CLOSED
+        } else {
+            OpenStatus.PREPARING
+        }
+    } else {
+        OpenStatus.OPERATING
     }
 }
 
