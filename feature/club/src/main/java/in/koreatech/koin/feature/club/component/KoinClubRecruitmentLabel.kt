@@ -25,8 +25,8 @@ fun KoinClubRecruitmentLabel(
         modifier = Modifier
             .background(
                 color = when (labelType) {
-                    KoinClubRecruitmentLabelType.RECRUITING -> KoinTheme.colors.primary500
-                    KoinClubRecruitmentLabelType.RECRUITMENT_ALWAYS -> KoinTheme.colors.primary400
+                    KoinClubRecruitmentLabelType.RECRUITING -> KoinTheme.colors.primary400
+                    KoinClubRecruitmentLabelType.RECRUITMENT_ALWAYS -> KoinTheme.colors.primary500
                     KoinClubRecruitmentLabelType.RECRUITMENT_FINISHED -> KoinTheme.colors.primary700
                     KoinClubRecruitmentLabelType.NONE -> Color.Unspecified
                 },
