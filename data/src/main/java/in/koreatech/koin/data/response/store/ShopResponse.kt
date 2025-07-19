@@ -9,7 +9,7 @@ data class ShopResponse(
     @SerializedName("is_delivery_available") val isDeliveryAvailable: Boolean,
     @SerializedName("is_takeout_available") val isTakeoutAvailable: Boolean,
     @SerializedName("minimum_order_amount") val minimumOrderAmount: Int,
-    @SerializedName("rating_average") val ratingAverage: Int,
+    @SerializedName("rating_average") val ratingAverage: Double,
     @SerializedName("review_count") val reviewCount: Int,
     @SerializedName("minimum_delivery_tip") val minimumDeliveryTip: Int,
     @SerializedName("maximum_delivery_tip") val maximumDeliveryTip: Int,
