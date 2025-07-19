@@ -156,7 +156,7 @@ fun KoinStoreCard(
                             Box(
                                 modifier = Modifier
                                     .background(Color(0xFFF2F2F2), shape = CircleShape)
-                                    .padding(horizontal = 10.dp, vertical = 2.dp)
+                                    .padding(horizontal = 10.dp, vertical = 4.dp)
                             ) {
                                 BasicText(
                                     text = stringResource(badge.stringResId),
