@@ -2,9 +2,14 @@ package `in`.koreatech.koin.feature.lostandfound.ui.write.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -19,11 +24,22 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 
+object WriteArticleDoneButtonDefaults {
+    val windowInsets: WindowInsets
+        @Composable
+        get() =
+            WindowInsets.systemBars.only(
+                WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
+            )
+}
+
 @Composable
 fun WriteArticleDoneButton(
     modifier: Modifier = Modifier,
+    windowInsets: WindowInsets = WriteArticleDoneButtonDefaults.windowInsets,
     onClick: () -> Unit = {}
 ) = Column(
+    modifier = Modifier.padding(windowInsets.asPaddingValues()),
     horizontalAlignment = Alignment.CenterHorizontally
 ) {
     HorizontalDivider(

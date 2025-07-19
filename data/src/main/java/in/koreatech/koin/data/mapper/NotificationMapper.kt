@@ -36,6 +36,7 @@ fun String.toSubscribesType(): SubscribesType =
         Subscribes.ARTICLE_KEYWORD -> SubscribesType.ARTICLE_KEYWORD
         Subscribes.REVIEW_PROMPT -> SubscribesType.REVIEW_PROMPT
         Subscribes.LOST_ITEM_CHAT -> SubscribesType.LOST_ITEM_CHAT
+        Subscribes.MARKETING -> SubscribesType.MARKETING
         else -> SubscribesType.NOTHING
     }
 

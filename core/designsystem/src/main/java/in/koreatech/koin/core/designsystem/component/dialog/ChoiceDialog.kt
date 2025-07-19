@@ -13,6 +13,7 @@ import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -47,8 +48,8 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 fun ChoiceDialog(
     title: String,
     description: String,
-    onPositive: () -> Unit,
-    onNegative: () -> Unit,
+    onPositive: () -> Unit = {},
+    onNegative: () -> Unit = {},
     modifier: Modifier = Modifier,
     titleStyle: TextStyle = KoinTheme.typography.medium18,
     descriptionStyle: TextStyle = KoinTheme.typography.regular14,
@@ -56,11 +57,9 @@ fun ChoiceDialog(
     negativeButtonText: String = stringResource(id = R.string.common_cancellation),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
     negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral
-//    cancellable: Boolean = true,
 ) {
     BasicAlertDialog(
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .background(
@@ -119,18 +118,16 @@ fun ChoiceDialog(
 fun ChoiceDialog(
     title: @Composable () -> Unit,
     description: @Composable () -> Unit,
-    onPositive: () -> Unit,
-    onNegative: () -> Unit,
+    onPositive: () -> Unit = {},
+    onNegative: () -> Unit = {},
     modifier: Modifier = Modifier,
     positiveButtonText: String = stringResource(id = R.string.common_confirmation),
     negativeButtonText: String = stringResource(id = R.string.common_cancellation),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
     negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral
-//    cancellable: Boolean = true,
 ) {
     BasicAlertDialog(
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .background(
@@ -174,8 +171,7 @@ private fun ChoiceDialogPreview() {
         ChoiceDialog(
             title = "다이얼로그 제목",
             description = "이러쿵 저러쿵 이러쿵 저러쿵 이러쿵 저러쿵 이러쿵 저러쿵 ",
-            descriptionStyle =
-            KoinTheme.typography.regular14.copy(
+            descriptionStyle = KoinTheme.typography.regular14.copy(
                 color = KoinTheme.colors.neutral500
             ),
             onPositive = {},

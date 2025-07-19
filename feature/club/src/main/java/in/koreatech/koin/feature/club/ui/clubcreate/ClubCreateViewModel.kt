@@ -49,6 +49,8 @@ class ClubCreateViewModel @Inject constructor(
                         }
                     }
                 }
+
+                is User.General -> TODO("Handle general user later")
             }
         }
     }

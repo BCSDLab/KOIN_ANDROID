@@ -7,6 +7,8 @@ sealed class MenuState {
 
     data object Setting : MenuState()
 
+    data object SignUp : MenuState()
+
     data object LoginOrLogout : MenuState()
 
     data object Store : MenuState()

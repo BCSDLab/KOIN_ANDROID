@@ -31,14 +31,14 @@ android {
 }
 
 dependencies {
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation(libs.androidx.datastore.preferences)
 
     // Dependency - AndroidX Jetpack
-    api(libs.appcompat)
+    api(libs.androidx.appcompat)
     api(libs.androidx.recyclerview)
     api(libs.androidx.cardview)
     api(libs.material)
-    api(libs.lifecycle.runtime.ktx)
+    api(libs.androidx.lifecycle.runtime.ktx)
     api(libs.androidx.lifecycle.viewmodel.ktx)
     api(libs.androidx.lifecycle.livedata.ktx)
     api(libs.androidx.activity.ktx)
@@ -61,9 +61,11 @@ dependencies {
     // Dependency - leakcanary
     debugImplementation(libs.leakcanary.android)
 
-    // Dependency - glide
+    // Dependency - glide & coil
     implementation(libs.glide)
     ksp(libs.glide.ksp)
+    implementation(libs.coil)
+    implementation(libs.coil.gif)
 
     // Dependency - sticky scroll view
     api(libs.stickyScrollView)

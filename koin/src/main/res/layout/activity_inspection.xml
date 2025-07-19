@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp"
+    android:background="@android:color/white">
+
+    <ImageView
+        android:id="@+id/imgWarning"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:src="@drawable/ic_club_warning_alert"
+        android:layout_marginBottom="24dp"
+        app:tint="@color/gray7" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/inspection_title"
+        android:textColor="@color/primary_500"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:id="@+id/tvSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/inspection_content"
+        android:textColor="@color/gray7"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:layout_marginBottom="24dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnGotoMain"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_height="58dp"
+        android:text="@string/go_to_main"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/primary_500" />
+
+</LinearLayout>

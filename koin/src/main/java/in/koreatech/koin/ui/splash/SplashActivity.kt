@@ -1,18 +1,27 @@
 package `in`.koreatech.koin.ui.splash
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.activity.viewModels
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.net.toUri
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.lifecycleScope
+import com.amar.library.BuildConfig
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.UpdateAvailability
 import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.NavigatorType
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
@@ -21,12 +30,13 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_NAV_TYPE
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
+import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.toast.ToastUtil
-import `in`.koreatech.koin.core.util.SystemBarsUtils
 import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.forceupdate.ForceUpdateActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
+import `in`.koreatech.koin.ui.splash.state.TokenState
 import `in`.koreatech.koin.ui.splash.viewmodel.SplashViewModel
 import `in`.koreatech.koin.util.FirebasePerformanceUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
@@ -37,6 +47,8 @@ import kotlinx.coroutines.yield
 @AndroidEntryPoint
 class SplashActivity : ActivityBase() {
     companion object {
+        private const val INFO_REQUIRED_URI = "koin://inforequired/activity"
+        private const val EXTRA_IS_FULL = "extra_is_full"
         private const val screenTitle = "스플래시"
         private const val koinStart = "koin_start"
         const val version = "version"
@@ -46,6 +58,9 @@ class SplashActivity : ActivityBase() {
 
     @Inject
     lateinit var navigator: Navigator
+
+    @Inject
+    lateinit var onboardingManager: OnboardingManager
 
     override val screenTitle = SplashActivity.screenTitle
 
@@ -57,6 +72,7 @@ class SplashActivity : ActivityBase() {
     private val createdTime = System.currentTimeMillis()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdgeWithLightStatusBar()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
 
@@ -68,8 +84,16 @@ class SplashActivity : ActivityBase() {
     private fun initView() {
         splashViewModel.checkUpdate()
         firebasePerformanceUtil.start()
-        SystemBarsUtils(this).apply {
-            setImmersiveMode(window)
+        val constraintLayoutSplashRoot = findViewById<ConstraintLayout>(R.id.constraint_layout_splash_root)
+        ViewCompat.setOnApplyWindowInsetsListener(constraintLayoutSplashRoot) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            view.updateLayoutParams<MarginLayoutParams> {
+                topMargin = systemBars.top
+                bottomMargin = systemBars.bottom
+            }
+
+            WindowInsetsCompat.CONSUMED
         }
     }
 
@@ -90,8 +114,8 @@ class SplashActivity : ActivityBase() {
             ToastUtil.getInstance().makeShort(R.string.version_check_failed)
         }
 
-        observeLiveData(tokenState) {
-            handleIntentOrLaunch()
+        observeLiveData(tokenState) { state ->
+            handleIntentOrLaunch(state)
         }
     }
 
@@ -138,19 +162,45 @@ class SplashActivity : ActivityBase() {
         }
     }
 
-    private fun handleIntentOrLaunch() {
+    private fun handleIntentOrLaunch(state: TokenState) {
         val uriPrefix = intent.data?.path?.split("/")?.getOrNull(1)
         when (uriPrefix) {
             "articles" -> {
-                gotoArticleActivityOrDelay()
+                gotoArticleActivityOrDelay(state)
             }
             else -> {
-                gotoMainActivityOrDelay()
+                gotoMainActivityOrDelay(state)
             }
         }
     }
 
-    private fun gotoArticleActivityOrDelay() {
+    private fun gotoInfoRequiredActivity() {
+        lifecycleScope.launch {
+            with(onboardingManager) {
+                showModalIfNeeded(
+                    actionTrue = { launchInfoRequiredActivity(true) }
+                )
+            }
+        }
+    }
+
+    private fun launchInfoRequiredActivity(check: Boolean) {
+        val intent = Intent(Intent.ACTION_VIEW, INFO_REQUIRED_URI.toUri())
+            .putExtra(EXTRA_IS_FULL, check)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        this@SplashActivity.startActivity(intent)
+        finishWithTransition()
+    }
+
+    private fun finishWithTransition() {
+        if (Build.VERSION.SDK_INT >= 34) {
+            overrideActivityTransition(Activity.OVERRIDE_TRANSITION_OPEN, 0, 0)
+        } else {
+            overridePendingTransition(0, 0)
+        }
+    }
+
+    private fun gotoArticleActivityOrDelay(state: TokenState) {
         val path = intent.data?.path?.split("/")?.getOrNull(2)
         lifecycleScope.launch {
             delay()
@@ -167,12 +217,15 @@ class SplashActivity : ActivityBase() {
                 }
             startActivity(intent)
             overridePendingTransition(R.anim.fade, R.anim.hold)
+            if (state == TokenState.Valid) {
+                gotoInfoRequiredActivity()
+            }
             finish()
             firebasePerformanceUtil.stop()
         }
     }
 
-    private fun gotoMainActivityOrDelay() {
+    private fun gotoMainActivityOrDelay(state: TokenState) {
         val targetId = intent.getIntExtra(EXTRA_ID, -1)
         val targetBoardId = intent.getIntExtra(EXTRA_BOARD_ID, -1)
         val targetArticleId = intent.getIntExtra(EXTRA_ARTICLE_ID, -1)
@@ -198,6 +251,9 @@ class SplashActivity : ActivityBase() {
 
             startActivity(intent)
             overridePendingTransition(R.anim.fade, R.anim.hold)
+            if (state == TokenState.Valid) {
+                gotoInfoRequiredActivity()
+            }
             finish()
             firebasePerformanceUtil.stop()
         }

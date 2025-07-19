@@ -17,6 +17,7 @@ data class Subscribes(
         const val ARTICLE_KEYWORD = "ARTICLE_KEYWORD"
         const val REVIEW_PROMPT = "REVIEW_PROMPT"
         const val LOST_ITEM_CHAT = "LOST_ITEM_CHAT"
+        const val MARKETING = "MARKETING"
     }
 }
 
@@ -38,7 +39,8 @@ enum class SubscribesType {
     NOTHING,
     ARTICLE_KEYWORD,
     REVIEW_PROMPT,
-    LOST_ITEM_CHAT
+    LOST_ITEM_CHAT,
+    MARKETING
 }
 
 enum class SubscribesDetailType {

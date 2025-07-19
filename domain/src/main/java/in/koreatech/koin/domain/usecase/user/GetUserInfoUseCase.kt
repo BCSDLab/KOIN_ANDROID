@@ -34,6 +34,8 @@ class GetUserInfoUseCase @Inject constructor(
                     } catch (t: Throwable) {
                         user to deptErrorHandler.getDeptNameFromDeptCodeError(t)
                     }
+                } else if (user is User.General) {
+                    return user to null
                 }
             } catch (t: Throwable) {
                 null to userErrorHandler.handleGetUserInfoError(t)

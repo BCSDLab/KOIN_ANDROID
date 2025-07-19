@@ -57,6 +57,7 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.util.KRPhoneNumberVisualTransformation
 import `in`.koreatech.koin.feature.club.CLUB_DESCRIPTION_MAX_LENGTH
 import `in`.koreatech.koin.feature.club.CLUB_NAME_MAX_LENGTH
 import `in`.koreatech.koin.feature.club.CLUB_ROLE_MAX_LENGTH
@@ -70,7 +71,6 @@ import `in`.koreatech.koin.feature.club.component.KoinClubInputGrid
 import `in`.koreatech.koin.feature.club.component.KoinClubTextFieldAlert
 import `in`.koreatech.koin.feature.club.model.ClubCategories
 import `in`.koreatech.koin.feature.club.model.clubCategories
-import `in`.koreatech.koin.feature.club.utils.KRPhoneNumberVisualTransformation
 import `in`.koreatech.koin.feature.club.utils.pickMedia
 import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.compose.collectAsState

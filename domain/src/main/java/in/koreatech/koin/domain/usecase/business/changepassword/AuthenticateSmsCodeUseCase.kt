@@ -18,7 +18,7 @@ class AuthenticateSmsCodeUseCase @Inject constructor(
                 ownerChangePasswordRepository.authenticateSmsCode(
                     phoneNumber = phoneNumber,
                     authCode = authCode
-                ).map { ChangePasswordContinuationState.GotoChangePasswordScreen }
+                ).map { ChangePasswordContinuationState.ChangePasswordScreenNavigated }
         }
     }
 }

@@ -11,6 +11,7 @@
             android:id="@+id/nested_scroll_view_article_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:clipToPadding="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
