@@ -6,6 +6,7 @@ data class Shop(
     val name: String,
     val isDeliveryAvailable: Boolean,
     val isTakeoutAvailable: Boolean,
+    val serviceEvent: Boolean,
     val minimumOrderAmount: Int,
     val ratingAverage: Double,
     val reviewCount: Int,
