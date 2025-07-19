@@ -418,7 +418,7 @@ inline fun LazyListScope.clubItems(
 } else if (isRecruiting && clubList.isEmpty()) {
     item {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.aspectRatio(1f),
             contentAlignment = Alignment.Center
         ) {
             Text(
