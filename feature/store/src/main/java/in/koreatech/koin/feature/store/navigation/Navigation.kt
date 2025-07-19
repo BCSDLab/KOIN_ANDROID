@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import `in`.koreatech.koin.feature.store.view.ShoppingCartScreen
 import `in`.koreatech.koin.feature.store.view.StoreDetailScreen
 import `in`.koreatech.koin.feature.store.view.main.home.StoreHomeScreen
+import `in`.koreatech.koin.feature.store.view.main.nearby.StoreNearbyScreen
 
 fun NavGraphBuilder.koinStoreGraph(
     navController: NavController,
@@ -79,6 +80,19 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
     composable(
         route = StoreMainNavType.StoreMainNearby.route
     ) {
+        StoreNearbyScreen(
+            categoryId = categoryId,
+            navigateToDetail = { storeId ->
+                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId")
+            },
+            navigateToCart = {
+                navController.navigate(StoreNavType.StoreCart.route)
+            }
+        ) {
+            if (!navController.navigateUp()) {
+                finish()
+            }
+        }
     }
 
     composable(

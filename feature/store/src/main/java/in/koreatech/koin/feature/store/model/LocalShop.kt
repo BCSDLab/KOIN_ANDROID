@@ -2,7 +2,12 @@ package `in`.koreatech.koin.feature.store.model
 
 import android.os.Parcelable
 import `in`.koreatech.koin.domain.model.store.Shop
+import `in`.koreatech.koin.domain.model.store.Store
+import `in`.koreatech.koin.domain.util.DateFormatUtil
+import `in`.koreatech.koin.domain.util.ext.HHMM
+import `in`.koreatech.koin.domain.util.ext.localTimeNow
 import `in`.koreatech.koin.feature.store.enums.FilterBadge
+import java.time.LocalTime
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -57,6 +62,50 @@ internal fun Shop.toLocalShop(): LocalShop {
 internal fun Shop.OrderStoreShopsOpen.toLocalOrderStoreShopsOpen(): LocalShop.LocalOrderStoreShopsOpen {
     return LocalShop.LocalOrderStoreShopsOpen(
         dayOfWeek = dayOfWeek,
+        closed = closed,
+        openTime = openTime,
+        closeTime = closeTime
+    )
+}
+
+internal fun Store.toLocalShop(): LocalShop {
+    return LocalShop(
+        shopId = uid,
+        orderableShopId = uid,
+        name = name,
+        filterBadgeList = emptyList(),
+        minimumOrderAmount = 0,
+        ratingAverage = averageRate,
+        reviewCount = reviewCount,
+        minimumDeliveryTip = 0,
+        maximumDeliveryTip = 0,
+        isOpen = isOpen,
+        categoryIds = categoryIds,
+        imageUrls = emptyList(),
+        open = listOf(open.toLocalOrderStoreShopsOpen()),
+        openStatus = open.toOpenStatus()
+    )
+}
+
+// Old Api doesn't return open status, so we need to calculate it manually
+internal fun Store.OpenData.toOpenStatus(): String {
+    return if (closed) {
+        val closeTime = LocalTime.parse(closeTime)
+        val currentTime = LocalTime.parse(localTimeNow.HHMM)
+
+        if (closeTime.isBefore(currentTime)) {
+            "CLOSED"
+        } else {
+            "PREPARING"
+        }
+    } else {
+        "OPERATING"
+    }
+}
+
+internal fun Store.OpenData.toLocalOrderStoreShopsOpen(): LocalShop.LocalOrderStoreShopsOpen {
+    return LocalShop.LocalOrderStoreShopsOpen(
+        dayOfWeek = DateFormatUtil.dayOfWeekToIndex(dayOfWeek),
         closed = closed,
         openTime = openTime,
         closeTime = closeTime
