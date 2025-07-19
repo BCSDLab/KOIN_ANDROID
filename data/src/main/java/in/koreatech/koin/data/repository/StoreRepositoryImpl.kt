@@ -204,9 +204,31 @@ class StoreRepositoryImpl @Inject constructor(
         return storeRemoteDataSource.getShopSearchRelated(query).toShopSearchRelatedList()
     }
 
-    override suspend fun getOrderableShops(sorter: String?, filter: List<String>?, minimumOrderAmount: Int?): Result<List<Shop>> {
+    override suspend fun getOrderableShops(sorter: StoreSorter, filter: List<String>?, minimumOrderAmount: Int?): Result<List<Shop>> {
         return runCatching {
-            storeRemoteDataSource.getOrderableShops(sorter, filter, minimumOrderAmount).map { it.toShop() }
+            storeRemoteDataSource.getOrderableShops(sorter.name, filter, minimumOrderAmount).map { it.toShop() }
+        }.onFailure { e ->
+            return Result.failure(
+                when (e) {
+                    is HttpException -> {
+                        when (e.code()) {
+                            404 -> KoinStoreException.ShopNotFoundException()
+                            else -> e.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> e
+                }
+            )
+        }
+    }
+
+    override suspend fun getNearbyShops(sorter: StoreSorter, isOperating: Boolean): Result<List<Shop>> {
+        return runCatching {
+            storeRemoteDataSource.getNearbyShops(
+                sorter = sorter.name,
+                filter = listOfNotNull(if (isOperating) "OPEN" else null)
+            ).shops.map { it.toShop() }
         }.onFailure { e ->
             return Result.failure(
                 when (e) {

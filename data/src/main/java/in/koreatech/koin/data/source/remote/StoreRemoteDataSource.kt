@@ -29,6 +29,7 @@ import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
+import `in`.koreatech.koin.data.response.store.StoreResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
 import `in`.koreatech.koin.domain.model.store.StoreReport
 import `in`.koreatech.koin.domain.model.store.StoreSorter
@@ -158,6 +159,14 @@ class StoreRemoteDataSource @Inject constructor(
         minimumOrderAmount: Int?
     ): List<ShopResponse> {
         return storeApi.getOrderableShops(sorter, filter, minimumOrderAmount)
+    }
+
+    suspend fun getNearbyShops(
+        sorter: String = StoreSorter.NONE.name,
+        filter: List<String>? = null,
+        query: String? = null
+    ): StoreResponse {
+        return storeApi.getNearbyShops(sorter, filter, query)
     }
 
     suspend fun getOrderableShopSummary(shopId: Int): ShopSummaryResponse {

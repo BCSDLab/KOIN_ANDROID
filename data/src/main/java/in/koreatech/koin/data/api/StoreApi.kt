@@ -101,6 +101,13 @@ interface StoreApi {
         @Query("minimum_order_amount") minimumOrderAmount: Int?
     ): List<ShopResponse>
 
+    @GET(URLConstant.SHOPS.SHOPS_V2)
+    suspend fun getNearbyShops(
+        @Query("sorter") sorter: String,
+        @Query("filter") filter: List<String>?,
+        @Query("query") query: String?
+    ): StoreResponse
+
     @GET("/order/shop/{orderableShopId}/summary")
     suspend fun getOrderableShopSummary(
         @Path("orderableShopId") shopId: Int

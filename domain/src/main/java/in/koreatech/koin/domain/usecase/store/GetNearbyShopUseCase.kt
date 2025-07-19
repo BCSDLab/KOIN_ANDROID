@@ -5,17 +5,16 @@ import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.domain.repository.StoreRepository
 import javax.inject.Inject
 
-class GetOrderableShopsUseCase @Inject constructor(
+class GetNearbyShopUseCase @Inject constructor(
     private val storeRepository: StoreRepository
 ) {
     suspend operator fun invoke(
         sorter: StoreSorter = StoreSorter.NONE,
-        filter: List<String>? = null,
-        minimumOrderAmount: Int? = null,
+        isOperating: Boolean = true,
         categoryId: Int = 1
     ): Result<List<Shop>> {
         return runCatching {
-            storeRepository.getOrderableShops(sorter, filter, minimumOrderAmount).getOrThrow().filter { it.categoryIds.contains(categoryId) }
+            storeRepository.getNearbyShops(sorter, isOperating).getOrThrow().filter { it.categoryIds.contains(categoryId) }
         }.onFailure {
             return Result.failure(it)
         }

@@ -81,9 +81,14 @@ interface StoreRepository {
     suspend fun getShopSearchRelatedList(query: String): ShopSearchRelatedList
 
     suspend fun getOrderableShops(
-        sorter: String?,
+        sorter: StoreSorter = StoreSorter.NONE,
         filter: List<String>?,
         minimumOrderAmount: Int?
+    ): Result<List<Shop>>
+
+    suspend fun getNearbyShops(
+        sorter: StoreSorter = StoreSorter.NONE,
+        isOperating: Boolean = true
     ): Result<List<Shop>>
 
     suspend fun getOrderableShopSummary(shopId: Int): Result<ShopSummary>

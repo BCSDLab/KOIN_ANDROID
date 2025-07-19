@@ -71,7 +71,10 @@ import `in`.koreatech.koin.domain.model.store.StoreReviewContent
 import `in`.koreatech.koin.domain.model.store.StoreReviewStatistics
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.domain.util.DateFormatUtil
+import `in`.koreatech.koin.domain.util.ext.HHMM
 import `in`.koreatech.koin.domain.util.ext.localDayOfWeekName
+import `in`.koreatech.koin.domain.util.ext.localTimeNow
+import java.time.LocalTime
 
 fun StoreItemResponse.toStore(): Store =
     Store(
@@ -399,6 +402,47 @@ fun ShopResponse.toShop() = Shop(
     },
     openStatus = openStatus
 )
+
+fun StoreItemResponse.toShop() = Shop(
+    shopId = uid ?: 0,
+    orderableShopId = 0, // Legacy store API does not have orderableShopId
+    name = name ?: "",
+    isDeliveryAvailable = isDeliveryOk ?: false,
+    isTakeoutAvailable = isBankOk ?: false,
+    serviceEvent = isEvent ?: false,
+    minimumOrderAmount = 0, // Legacy store API does not have minimumOrderAmount
+    ratingAverage = averageRate,
+    reviewCount = reviewCount,
+    minimumDeliveryTip = 0, // Legacy store API does not have minimumDeliveryTip
+    maximumDeliveryTip = 0, // Legacy store API does not have maximumDeliveryTip
+    isOpen = isOpen ?: false,
+    categoryIds = categoryIds,
+    imageUrls = emptyList(),
+    open = open?.map {
+        Shop.OrderStoreShopsOpen(
+            dayOfWeek = DateFormatUtil.dayOfWeekToIndex(it.dayOfWeek ?: ""),
+            closed = it.closed ?: false,
+            openTime = it.openTime ?: "00:00",
+            closeTime = it.closeTime ?: "00:00"
+        )
+    }.orEmpty(),
+    openStatus = open?.filter { it.dayOfWeek == localDayOfWeekName }?.getOrNull(0)?.toOpenStatus() ?: "CLOSED"
+)
+
+fun StoreItemResponse.OpenResponseDTO.toOpenStatus(): String {
+    return if (closed == true) {
+        val closeTime = LocalTime.parse(closeTime)
+        val currentTime = LocalTime.parse(localTimeNow.HHMM)
+
+        if (closeTime.isBefore(currentTime)) {
+            "CLOSED"
+        } else {
+            "PREPARING"
+        }
+    } else {
+        "OPERATING"
+    }
+}
 
 fun ShopSummaryResponse.toShopSummary() = ShopSummary(
     shopId = shopId,
