@@ -2,9 +2,8 @@ package `in`.koreatech.koin.feature.store.view.main.nearby
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.model.store.StoreCategories
+import `in`.koreatech.koin.domain.usecase.store.GetNearbyShopUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
-import `in`.koreatech.koin.domain.usecase.store.GetStoresUseCase
 import `in`.koreatech.koin.feature.store.enums.MinimumPriceOption
 import `in`.koreatech.koin.feature.store.enums.OrderOption
 import `in`.koreatech.koin.feature.store.enums.StoreFilter
@@ -21,7 +20,7 @@ import org.orbitmvi.orbit.viewmodel.container
 @HiltViewModel
 class StoreNearbyViewModel @Inject constructor(
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
-    private val getStoresUseCase: GetStoresUseCase
+    private val getNearbyShopUseCase: GetNearbyShopUseCase
 ) : ViewModel(), ContainerHost<StoreNearbyState, StoreNearbySideEffect> {
     override val container = container<StoreNearbyState, StoreNearbySideEffect>(StoreNearbyState())
 
@@ -43,14 +42,20 @@ class StoreNearbyViewModel @Inject constructor(
                 isLoading = true
             )
         }
-        getStoresUseCase(
-            category = StoreCategories(state.categoryId, "", ""),
-            storeSorter = state.selectedOrderOption.toStoreSorter(),
+        getNearbyShopUseCase(
+            categoryId = state.categoryId,
+            sorter = state.selectedOrderOption.toStoreSorter(),
             isOperating = StoreFilter.IS_OPEN in state.selectedStoreFilter
-        ).let {
+        ).onSuccess {
             reduce {
                 state.copy(
                     orderableShops = it.map { it.toLocalShop() },
+                    isLoading = false
+                )
+            }
+        }.onFailure {
+            reduce {
+                state.copy(
                     isLoading = false
                 )
             }
