@@ -319,7 +319,7 @@ private fun StoreHomeScreen(
                             storeDeliveryFee = it.minimumDeliveryTip.toString(),
                             storeImageUrl = it.imageUrls.firstOrNull() ?: "",
                             isOpen = it.isOpen,
-                            filterBadgeList = it.filterBadgeList,
+                            filterBadgeList = it.filterBadgeList
                         ) {
                             navigateToDetail(it.shopId)
                         }
