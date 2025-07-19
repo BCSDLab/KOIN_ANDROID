@@ -24,6 +24,7 @@ import `in`.koreatech.koin.data.mapper.toStoreMenu
 import `in`.koreatech.koin.data.mapper.toStoreReview
 import `in`.koreatech.koin.data.mapper.toStoreWithMenu
 import `in`.koreatech.koin.data.request.user.ReviewRequest
+import `in`.koreatech.koin.data.source.local.StoreLocalDataSource
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
 import `in`.koreatech.koin.data.util.getErrorResponse
 import `in`.koreatech.koin.data.util.toKoinUnknownErrorException
@@ -60,11 +61,11 @@ import javax.inject.Inject
 import retrofit2.HttpException
 
 class StoreRepositoryImpl @Inject constructor(
-    private val storeRemoteDataSource: StoreRemoteDataSource
+    private val storeRemoteDataSource: StoreRemoteDataSource,
+    private val storeLocalDataSource: StoreLocalDataSource
 ) : StoreRepository {
     private var stores: List<Store>? = null
     private var storeEvents: List<StoreEvent>? = null
-    private var storeCategories: List<StoreCategories>? = null
 
     override suspend fun getStores(
         storeSorter: StoreSorter?,
@@ -98,12 +99,13 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getStoreCategories(): List<StoreCategories> {
-        if (storeCategories == null) {
-            storeCategories =
-                storeRemoteDataSource.getStoreCategories().map { it.toStoreCategories() }
+        return storeLocalDataSource.getCachedStoreCategories().let { cachedCategories ->
+            cachedCategories?.map { it.toStoreCategories() } ?: run {
+                storeRemoteDataSource.getStoreCategories().also {
+                    storeLocalDataSource.setCachedStoreCategories(it)
+                }.map { it.toStoreCategories() }
+            }
         }
-
-        return storeCategories!!
     }
 
     override suspend fun getStoreWithMenu(storeId: Int): StoreWithMenu {
