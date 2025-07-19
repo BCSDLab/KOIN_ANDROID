@@ -124,7 +124,6 @@ fun MinOrderSliderBottomSheet(
     selectedIndex: Int,
     options: List<String>,
     onSelected: (Int) -> Unit,
-    onApply: () -> Unit,
     onClose: () -> Unit
 ) {
     CommonBottomSheet(
@@ -166,7 +165,6 @@ fun MinOrderSliderBottomSheet(
         Button(
             onClick = {
                 onSelected(sliderValue.toInt())
-                onApply()
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = RebrandKoinTheme.colors.primary500)

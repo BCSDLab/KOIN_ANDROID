@@ -47,4 +47,31 @@
     <string name="filter_badge_pickup_available">픽업 서비스</string>
     <string name="filter_badge_delivery_available">배달비 무료</string>
     <string name="filter_badge_service">서비스 증정</string>
+
+    <string name="store_navigation_bar_home">홈</string>
+    <string name="store_navigation_bar_nearby">주변상점</string>
+    <string name="store_navigation_bar_order_history">주문내역</string>
+
+    <string name="store_title_home_order">주문</string>
+    <string name="store_title_home_search">검색</string>
+
+    <string name="store_order_option_none">기본순</string>
+    <string name="store_order_option_review_count_desc">리뷰순</string>
+    <string name="store_order_option_rating_desc">별점 높은 순</string>
+
+    <string name="store_filter_is_open">영업중</string>
+    <string name="store_filter_delivery_available">배달가능</string>
+    <string name="store_filter_takeout_available">포장가능</string>
+    <string name="store_filter_free_delivery_tip">배달팁무료</string>
+
+    <string name="store_min_price_filter_5000">5,000</string>
+    <string name="store_min_price_filter_10000">10,000</string>
+    <string name="store_min_price_filter_15000">15,000</string>
+    <string name="store_min_price_filter_20000">20,000</string>
+    <string name="store_min_price_filter_all">전체</string>
+    <string name="store_min_price_filter_text">최소주문금액</string>
+    <string name="store_min_price_filter_text_with_price">최소주문금액 %,d원 이하</string>
+
+    <string name="store_list_empty">이용 가능한 가게가 없어요</string>
+    <string name="store_list_empty_description">조건을 변경하고 다시 검색해주세요</string>
 </resources>

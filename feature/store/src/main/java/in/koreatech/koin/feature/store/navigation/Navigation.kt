@@ -40,6 +40,13 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
     composable(
         route = StoreMainNavType.StoreMainHome.route
     ) {
+        StoreHomeScreen(
+            categoryId = categoryId
+        ) {
+            if (!navController.navigateUp()) {
+                finish()
+            }
+        }
     }
 
     composable(
