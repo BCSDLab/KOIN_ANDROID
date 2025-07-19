@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.store.model
 
 import android.os.Parcelable
 import `in`.koreatech.koin.domain.model.store.Shop
+import `in`.koreatech.koin.feature.store.enums.FilterBadge
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -9,8 +10,7 @@ data class LocalShop(
     val shopId: Int,
     val orderableShopId: Int,
     val name: String,
-    val isDeliveryAvailable: Boolean,
-    val isTakeoutAvailable: Boolean,
+    val filterBadgeList: List<FilterBadge>,
     val minimumOrderAmount: Int,
     val ratingAverage: Double,
     val reviewCount: Int,
@@ -36,8 +36,11 @@ internal fun Shop.toLocalShop(): LocalShop {
         shopId = shopId,
         orderableShopId = orderableShopId,
         name = name,
-        isDeliveryAvailable = isDeliveryAvailable,
-        isTakeoutAvailable = isTakeoutAvailable,
+        filterBadgeList = listOfNotNull(
+            if (isTakeoutAvailable) FilterBadge.PICKUP_AVAILABLE else null,
+            if (isDeliveryAvailable) FilterBadge.DELIVERY_AVAILABLE else null,
+            if (serviceEvent) FilterBadge.SERVICE else null
+        ),
         minimumOrderAmount = minimumOrderAmount,
         ratingAverage = ratingAverage,
         reviewCount = reviewCount,
