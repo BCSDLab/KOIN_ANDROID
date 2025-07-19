@@ -1,5 +1,5 @@
 [versions]
-androidGradle = "8.4.1"
+androidGradle = "8.5.1"
 androidxActivity = "1.9.3"
 androidxAppcompat = "1.7.1"
 androidxCardview = "1.0.0"
