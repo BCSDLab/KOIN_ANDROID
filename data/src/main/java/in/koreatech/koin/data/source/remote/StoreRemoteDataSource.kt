@@ -154,9 +154,9 @@ class StoreRemoteDataSource @Inject constructor(
     }
 
     suspend fun getOrderableShops(
-        sorter: String?,
-        filter: List<String>?,
-        minimumOrderAmount: Int?
+        sorter: String? = StoreSorter.NONE.name,
+        filter: List<String>? = null,
+        minimumOrderAmount: Int? = null
     ): List<ShopResponse> {
         return storeApi.getOrderableShops(sorter, filter, minimumOrderAmount)
     }

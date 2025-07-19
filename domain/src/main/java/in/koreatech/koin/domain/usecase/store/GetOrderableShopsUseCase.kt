@@ -15,9 +15,46 @@ class GetOrderableShopsUseCase @Inject constructor(
         categoryId: Int = 1
     ): Result<List<Shop>> {
         return runCatching {
-            storeRepository.getOrderableShops(sorter, filter, minimumOrderAmount).getOrThrow().filter { it.categoryIds.contains(categoryId) }
+            storeRepository.getOrderableShops().getOrThrow()
+                .filter { it.categoryIds.contains(categoryId) }
+                .filter { it.minimumOrderAmount <= (minimumOrderAmount ?: Int.MAX_VALUE) }
+                .filterByStoreFilter(filter)
+                .orderByStoreSorter(sorter)
         }.onFailure {
             return Result.failure(it)
+        }
+    }
+}
+
+private fun List<Shop>.orderByStoreSorter(
+    storeSorter: StoreSorter
+): List<Shop> {
+    return when (storeSorter) {
+        StoreSorter.NONE -> this
+        StoreSorter.COUNT -> sortedByDescending { it.reviewCount }
+        StoreSorter.RATING -> sortedByDescending { it.ratingAverage }
+    }
+}
+
+private fun List<Shop>.filterByStoreFilter(
+    filter: List<String>?
+): List<Shop> {
+    return if (filter.isNullOrEmpty()) {
+        this
+    } else {
+        val isOpen = filter.contains("IS_OPEN")
+        val isDeliveryAvailable = filter.contains("DELIVERY_AVAILABLE")
+        val isTakeoutAvailable = filter.contains("TAKEOUT_AVAILABLE")
+        val isFreeDeliveryTip = filter.contains("FREE_DELIVERY_TIP")
+
+        this.filter {
+            if (isOpen) it.isOpen else true
+        }.filter {
+            if (isDeliveryAvailable) it.isDeliveryAvailable else true
+        }.filter {
+            if (isTakeoutAvailable) it.isTakeoutAvailable else true
+        }.filter {
+            if (isFreeDeliveryTip) it.maximumDeliveryTip == 0 else true
         }
     }
 }

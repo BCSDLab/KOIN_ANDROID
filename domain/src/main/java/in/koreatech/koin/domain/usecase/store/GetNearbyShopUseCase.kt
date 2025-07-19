@@ -14,9 +14,22 @@ class GetNearbyShopUseCase @Inject constructor(
         categoryId: Int = 1
     ): Result<List<Shop>> {
         return runCatching {
-            storeRepository.getNearbyShops(sorter, isOperating).getOrThrow().filter { it.categoryIds.contains(categoryId) }
+            storeRepository.getNearbyShops(sorter, isOperating).getOrThrow()
+                .filter { it.categoryIds.contains(categoryId) }
+                .filter { if (isOperating) it.isOpen else true }
+                .orderByStoreSorter(sorter)
         }.onFailure {
             return Result.failure(it)
         }
+    }
+}
+
+private fun List<Shop>.orderByStoreSorter(
+    storeSorter: StoreSorter
+): List<Shop> {
+    return when (storeSorter) {
+        StoreSorter.NONE -> this
+        StoreSorter.COUNT -> sortedByDescending { it.reviewCount }
+        StoreSorter.RATING -> sortedByDescending { it.ratingAverage }
     }
 }

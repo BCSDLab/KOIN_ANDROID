@@ -206,9 +206,13 @@ class StoreRepositoryImpl @Inject constructor(
         return storeRemoteDataSource.getShopSearchRelated(query).toShopSearchRelatedList()
     }
 
-    override suspend fun getOrderableShops(sorter: StoreSorter, filter: List<String>?, minimumOrderAmount: Int?): Result<List<Shop>> {
+    override suspend fun getOrderableShops(): Result<List<Shop>> {
         return runCatching {
-            storeRemoteDataSource.getOrderableShops(sorter.name, filter, minimumOrderAmount).map { it.toShop() }
+            storeLocalDataSource.getCachedShops() ?: storeRemoteDataSource.getOrderableShops().map {
+                it.toShop()
+            }.also {
+                storeLocalDataSource.setCachedShops(it)
+            }
         }.onFailure { e ->
             return Result.failure(
                 when (e) {
@@ -227,10 +231,11 @@ class StoreRepositoryImpl @Inject constructor(
 
     override suspend fun getNearbyShops(sorter: StoreSorter, isOperating: Boolean): Result<List<Shop>> {
         return runCatching {
-            storeRemoteDataSource.getNearbyShops(
-                sorter = sorter.name,
-                filter = listOfNotNull(if (isOperating) "OPEN" else null)
-            ).shops.map { it.toShop() }
+            storeLocalDataSource.getCachedNearbyShops() ?: storeRemoteDataSource.getNearbyShops().shops.map {
+                it.toShop()
+            }.also {
+                storeLocalDataSource.setCachedNearbyShops(it)
+            }
         }.onFailure { e ->
             return Result.failure(
                 when (e) {
