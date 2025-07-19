@@ -82,10 +82,7 @@ interface StoreRepository {
 
     suspend fun getOrderableShops(): Result<List<Shop>>
 
-    suspend fun getNearbyShops(
-        sorter: StoreSorter = StoreSorter.NONE,
-        isOperating: Boolean = true
-    ): Result<List<Shop>>
+    suspend fun getNearbyShops(): Result<List<Shop>>
 
     suspend fun getOrderableShopSummary(shopId: Int): Result<ShopSummary>
 
