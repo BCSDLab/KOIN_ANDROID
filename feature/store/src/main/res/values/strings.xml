@@ -28,4 +28,23 @@
     <string name="review_count"> · 리뷰 %1$d개</string>
     <string name="price_with_won">%1$d원</string>
     <string name="option_price">%1$s : %2$d원\n</string>
+
+    <string name="store_search_hint">검색어를 입력해주세요.</string>
+    <string name="menu_detail_option_price">%1$d원</string>
+
+    <string name="store_review_count">( 리뷰 %1$d개 )</string>
+    <string name="store_delivery_fee">배달비 %1$s원</string>
+    <string name="store_closed">영업이 종료된 가게에요!</string>
+
+    <string name="store_bottom_sheet_sort_title">가게 정렬</string>
+    <string name="store_bottom_sheet_min_order_title">최소주문금액</string>
+    <string name="store_bottom_sheet_apply">적용하기</string>
+    <string name="store_bottom_sheet_close">닫기</string>
+
+    <string name="store_quantity_minus">감소</string>
+    <string name="store_quantity_plus">증가</string>
+
+    <string name="filter_badge_pickup_available">픽업 서비스</string>
+    <string name="filter_badge_delivery_available">배달비 무료</string>
+    <string name="filter_badge_service">서비스 증정</string>
 </resources>
