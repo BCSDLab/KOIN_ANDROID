@@ -57,6 +57,7 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreOrderChip
 import `in`.koreatech.koin.feature.store.component.MinOrderSliderBottomSheet
 import `in`.koreatech.koin.feature.store.component.SearchBar
 import `in`.koreatech.koin.feature.store.component.SortBottomSheet
+import `in`.koreatech.koin.feature.store.enums.FilterBadge
 import `in`.koreatech.koin.feature.store.enums.MinimumPriceOption
 import `in`.koreatech.koin.feature.store.enums.OrderOption
 import `in`.koreatech.koin.feature.store.enums.StoreFilter
@@ -317,7 +318,8 @@ private fun StoreHomeScreen(
                             storeReviewCount = it.reviewCount,
                             storeDeliveryFee = it.minimumDeliveryTip.toString(),
                             storeImageUrl = it.imageUrls.firstOrNull() ?: "",
-                            isOpen = it.isOpen
+                            isOpen = it.isOpen,
+                            filterBadgeList = it.filterBadgeList,
                         ) {
                             navigateToDetail(it.shopId)
                         }
@@ -395,8 +397,11 @@ private fun StoreHomeScreenPreview() {
                     shopId = 1,
                     orderableShopId = 1,
                     name = "Sample Store",
-                    isDeliveryAvailable = true,
-                    isTakeoutAvailable = true,
+                    filterBadgeList = listOf(
+                        FilterBadge.PICKUP_AVAILABLE,
+                        FilterBadge.DELIVERY_AVAILABLE,
+                        FilterBadge.SERVICE
+                    ),
                     minimumOrderAmount = 1000,
                     ratingAverage = 4.0,
                     reviewCount = 50,
