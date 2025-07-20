@@ -379,7 +379,7 @@ fun OwnerGetStoreResponse.toOwnerGetStore(): OwnerGetStore =
     )
 
 fun ShopResponse.toShop(): Shop {
-    val convertedOpenStatus = open.filter { it.dayOfWeek == localDayOfWeekName }[0].toOpenStatus()
+    val convertedOpenStatus = open.first { it.dayOfWeek == localDayOfWeekName }.toOpenStatus()
 
     return Shop(
         shopId = shopId,
@@ -409,7 +409,7 @@ fun ShopResponse.toShop(): Shop {
 }
 
 fun StoreItemResponse.toShop(): Shop {
-    val convertedOpenStatus = open?.filter { it.dayOfWeek == localDayOfWeekName }?.getOrNull(0)?.toOpenStatus() ?: OpenStatus.CLOSED
+    val convertedOpenStatus = open?.firstOrNull { it.dayOfWeek == localDayOfWeekName }?.toOpenStatus() ?: OpenStatus.CLOSED
     return Shop(
         shopId = uid ?: 0,
         orderableShopId = 0, // Legacy store API does not have orderableShopId
