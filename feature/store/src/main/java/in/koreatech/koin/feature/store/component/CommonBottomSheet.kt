@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
@@ -61,7 +62,7 @@ fun CommonBottomSheet(
                 )
                 Icon(
                     painter = painterResource(id = R.drawable.ic_close),
-                    contentDescription = "닫기",
+                    contentDescription = stringResource(R.string.store_bottom_sheet_close),
                     tint = RebrandKoinTheme.colors.neutral800,
                     modifier = Modifier
                         .size(24.dp)
@@ -91,7 +92,7 @@ fun SortBottomSheet(
     onSelect: (Int) -> Unit,
     onClose: () -> Unit
 ) {
-    CommonBottomSheet(title = "가게 정렬", onClose = onClose) {
+    CommonBottomSheet(title = stringResource(R.string.store_bottom_sheet_sort_title), onClose = onClose) {
         options.forEachIndexed { idx, label ->
             Row(
                 Modifier
@@ -126,7 +127,7 @@ fun MinOrderSliderBottomSheet(
     onClose: () -> Unit
 ) {
     CommonBottomSheet(
-        title = "최소주문금액",
+        title = stringResource(R.string.store_bottom_sheet_min_order_title),
         onClose = onClose
     ) {
         var sliderValue by remember { mutableFloatStateOf(selectedIndex.toFloat()) }
@@ -168,7 +169,7 @@ fun MinOrderSliderBottomSheet(
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = RebrandKoinTheme.colors.primary500)
         ) {
-            Text("적용하기", color = RebrandKoinTheme.colors.neutral0)
+            Text(stringResource(R.string.store_bottom_sheet_apply), color = RebrandKoinTheme.colors.neutral0)
         }
     }
 }
