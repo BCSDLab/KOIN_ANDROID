@@ -89,8 +89,7 @@ fun StoreItemResponse.toStore(): Store =
         isOpen = isOpen ?: false,
         averageRate = averageRate ?: 0.0,
         reviewCount = reviewCount ?: 0,
-        open =
-        open?.filter { it.dayOfWeek == localDayOfWeekName }?.map {
+        open = open?.filter { it.dayOfWeek == localDayOfWeekName }?.map {
             Store.OpenData(
                 dayOfWeek = it.dayOfWeek ?: "",
                 closed = it.closed ?: false,
@@ -134,8 +133,7 @@ fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu =
         isBankOk = isBankOk ?: false,
         updateAt = updateAt,
         isEvent = isEvent ?: false,
-        open =
-        open?.filter { it.dayOfWeek == localDayOfWeekName }?.map {
+        open = open?.filter { it.dayOfWeek == localDayOfWeekName }?.map {
             Store.OpenData(
                 dayOfWeek = it.dayOfWeek ?: "",
                 closed = it.closed ?: false,
@@ -361,8 +359,7 @@ fun BenefitCategoryListResponse.toStoreBenefitCategory(): BenefitCategoryList =
 
 fun ShopRelatedListResponse.toShopSearchRelatedList(): ShopSearchRelatedList =
     ShopSearchRelatedList(
-        keywords =
-        keywords.map {
+        keywords = keywords.map {
             ShopSearchRelated(
                 keyword = it.keyword ?: "",
                 shopIds = it.shopIds ?: emptyList(),
