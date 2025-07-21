@@ -35,8 +35,8 @@ import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
 
 @Composable
 fun StoreDetailInfoCard(
-    modifier: Modifier = Modifier,
     storeInfo: ShopInfoModel,
+    modifier: Modifier = Modifier,
     storeDescriptionModel: StoreDescriptionModel? = null,
     navigateToDetailInfo: () -> Unit = {}
 ) {
