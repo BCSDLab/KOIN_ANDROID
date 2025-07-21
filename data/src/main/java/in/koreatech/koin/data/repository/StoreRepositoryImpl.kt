@@ -24,6 +24,7 @@ import `in`.koreatech.koin.data.mapper.toStoreMenu
 import `in`.koreatech.koin.data.mapper.toStoreReview
 import `in`.koreatech.koin.data.mapper.toStoreWithMenu
 import `in`.koreatech.koin.data.request.user.ReviewRequest
+import `in`.koreatech.koin.data.source.local.StoreLocalDataSource
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
 import `in`.koreatech.koin.data.util.getErrorResponse
 import `in`.koreatech.koin.data.util.toKoinUnknownErrorException
@@ -60,11 +61,11 @@ import javax.inject.Inject
 import retrofit2.HttpException
 
 class StoreRepositoryImpl @Inject constructor(
-    private val storeRemoteDataSource: StoreRemoteDataSource
+    private val storeRemoteDataSource: StoreRemoteDataSource,
+    private val storeLocalDataSource: StoreLocalDataSource
 ) : StoreRepository {
     private var stores: List<Store>? = null
     private var storeEvents: List<StoreEvent>? = null
-    private var storeCategories: List<StoreCategories>? = null
 
     override suspend fun getStores(
         storeSorter: StoreSorter?,
@@ -98,12 +99,13 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getStoreCategories(): List<StoreCategories> {
-        if (storeCategories == null) {
-            storeCategories =
-                storeRemoteDataSource.getStoreCategories().map { it.toStoreCategories() }
+        return storeLocalDataSource.getCachedStoreCategories().let { cachedCategories ->
+            cachedCategories?.map { it.toStoreCategories() } ?: run {
+                storeRemoteDataSource.getStoreCategories().also {
+                    storeLocalDataSource.setCachedStoreCategories(it)
+                }.map { it.toStoreCategories() }
+            }
         }
-
-        return storeCategories!!
     }
 
     override suspend fun getStoreWithMenu(storeId: Int): StoreWithMenu {
@@ -204,9 +206,36 @@ class StoreRepositoryImpl @Inject constructor(
         return storeRemoteDataSource.getShopSearchRelated(query).toShopSearchRelatedList()
     }
 
-    override suspend fun getOrderableShops(sorter: String?, filter: List<String>?, minimumOrderAmount: Int?): Result<List<Shop>> {
+    override suspend fun getOrderableShops(): Result<List<Shop>> {
         return runCatching {
-            storeRemoteDataSource.getOrderableShops(sorter, filter, minimumOrderAmount).map { it.toShop() }
+            storeLocalDataSource.getCachedShops()?.map { it.toShop() } ?: storeRemoteDataSource.getOrderableShops().also {
+                storeLocalDataSource.setCachedShops(it)
+            }.map {
+                it.toShop()
+            }
+        }.onFailure { e ->
+            return Result.failure(
+                when (e) {
+                    is HttpException -> {
+                        when (e.code()) {
+                            404 -> KoinStoreException.ShopNotFoundException()
+                            else -> e.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> e
+                }
+            )
+        }
+    }
+
+    override suspend fun getNearbyShops(): Result<List<Shop>> {
+        return runCatching {
+            storeLocalDataSource.getCachedNearbyShops()?.map { it.toShop() } ?: storeRemoteDataSource.getNearbyShops().shops.also {
+                storeLocalDataSource.setCachedNearbyShops(it)
+            }.map {
+                it.toShop()
+            }
         }.onFailure { e ->
             return Result.failure(
                 when (e) {

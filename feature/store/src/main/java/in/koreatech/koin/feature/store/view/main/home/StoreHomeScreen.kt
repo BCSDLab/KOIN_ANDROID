@@ -48,6 +48,7 @@ import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.domain.model.store.OpenStatus
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreCard
 import `in`.koreatech.koin.feature.store.component.KoinStoreCategoryItem
@@ -418,7 +419,7 @@ private fun StoreHomeScreenPreview() {
                             closeTime = "21:00"
                         )
                     ),
-                    openStatus = "OPEN"
+                    openStatus = OpenStatus.OPERATING
                 )
             ),
             storeCategories = listOf(

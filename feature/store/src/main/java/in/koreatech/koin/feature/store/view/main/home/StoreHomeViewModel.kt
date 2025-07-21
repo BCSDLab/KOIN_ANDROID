@@ -7,6 +7,7 @@ import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import `in`.koreatech.koin.feature.store.enums.MinimumPriceOption
 import `in`.koreatech.koin.feature.store.enums.OrderOption
 import `in`.koreatech.koin.feature.store.enums.StoreFilter
+import `in`.koreatech.koin.feature.store.enums.toStoreSorter
 import `in`.koreatech.koin.feature.store.model.toLocalShop
 import `in`.koreatech.koin.feature.store.model.toLocalStoreCategories
 import javax.inject.Inject
@@ -42,7 +43,7 @@ class StoreHomeViewModel @Inject constructor(
             )
         }
         getOrderableShopsUseCase(
-            sorter = state.selectedOrderOption.name,
+            sorter = state.selectedOrderOption.toStoreSorter(),
             filter = state.selectedStoreFilter.map { it.name },
             categoryId = state.categoryId,
             minimumOrderAmount = state.selectedMinimumPriceOption.price
