@@ -44,6 +44,7 @@
     <string name="detail_error_qna_not_found">해당 Q&amp;A를 찾을 수 없습니다.</string>
     <string name="detail_error_already_liked">이미 좋아요 상태입니다.</string>
     <string name="detail_error_already_not_liked">이미 좋아요 상태가 아닙니다.</string>
+    <string name="detail_error_incorrect_link">올바른 링크 형식이 아닙니다.</string>
 
     <string name="club_main_activity_widget_title">동아리 조회</string>
     <string name="club_main_widget_category_performance">공연</string>

@@ -7,6 +7,7 @@ import `in`.koreatech.koin.data.request.club.ClubModifyRequest
 import `in`.koreatech.koin.data.request.club.ClubQnaRequest
 import `in`.koreatech.koin.data.response.club.ClubDetailsResponse
 import `in`.koreatech.koin.data.response.club.ClubsResponse
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -58,7 +59,7 @@ interface ClubAuthApi {
     suspend fun deleteClubQna(
         @Path("clubId") clubId: Int,
         @Path("qnaId") qnaId: Int
-    )
+    ): Response<Unit>
 
     @DELETE(URLConstant.CLUBS.CLUBID.LIKE.CANCEL)
     suspend fun cancelClubLike(

@@ -4,15 +4,18 @@ import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
 import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
+import `in`.koreatech.koin.data.request.user.GeneralUserRequest
+import `in`.koreatech.koin.data.request.user.NewPasswordRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.ReviewRequest
-import `in`.koreatech.koin.data.request.user.UserRequest
+import `in`.koreatech.koin.data.request.user.StudentUserRequest
 import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfoResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
+import `in`.koreatech.koin.data.response.user.GeneralUserResponse
+import `in`.koreatech.koin.data.response.user.StudentUserResponse
 import `in`.koreatech.koin.data.response.user.UserInfoEditResponse
-import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -25,12 +28,25 @@ import retrofit2.http.Query
 
 interface UserAuthApi {
     @GET(URLConstant.USER.ME)
-    suspend fun getUser(): UserResponse
+    suspend fun getStudentUser(): StudentUserResponse
 
-    @PUT(URLConstant.USER.ME)
-    suspend fun putUser(
-        @Body userRequest: UserRequest
-    ): UserResponse
+    @GET(URLConstant.USERS.GENERAL.ME)
+    suspend fun getGeneralUser(): GeneralUserResponse
+
+    @PUT(URLConstant.USERS.STUDENTS.ME)
+    suspend fun putStudentUser(
+        @Body studentUserRequest: StudentUserRequest
+    ): StudentUserResponse
+
+    @PUT(URLConstant.USERS.GENERAL.ME)
+    suspend fun putGeneralUser(
+        @Body generalUserRequest: GeneralUserRequest
+    ): GeneralUserResponse
+
+    @PUT(URLConstant.USERS.PASSWORD_CHANGE)
+    suspend fun updateUserPassword(
+        @Body newPasswordRequest: NewPasswordRequest
+    )
 
     @DELETE(URLConstant.USER.USER)
     suspend fun deleteUser(): Response<Unit?>

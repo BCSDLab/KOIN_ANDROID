@@ -52,9 +52,21 @@
 
         <activity
             android:name=".ui.timetablev2.TimetableActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/KAPTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="keyword" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="timetable"
+                    android:pathPrefix="/activity"
+                    android:scheme="koin" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.timetablev2.TimetableSemesterActivity"
@@ -127,8 +139,21 @@
             android:exported="false" />
         <activity
             android:name=".ui.main.activity.MainActivity"
+            android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
+            android:theme="@style/KAPTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+            <data
+                android:host="main"
+                android:pathPrefix="/activity"
+                android:scheme="koin" />
+            </intent-filter>
+        </activity>
 
         <receiver
             android:name=".ui.dining.appwidget.DiningAppWidget"
@@ -203,30 +228,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.login.LoginActivity"
-            android:exported="true"
-            android:theme="@style/KAPTheme.NoActionBar.WhiteStatus">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="login"
-                    android:pathPrefix="/login"
-                    android:scheme="koin" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.signup.SignupActivity"
-            android:exported="false"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.forgotpassword.ForgotPasswordActivity"
-            android:exported="false"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
             android:name=".ui.store.activity.StoreActivity"
             android:exported="false"
             android:label="@string/app_name"
@@ -263,16 +264,6 @@
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.userinfo.UserInfoActivity"
-            android:exported="false"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.userinfo.UserInfoEditActivity"
-            android:exported="false"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
             android:name=".ui.store.activity.StoreDetailActivity"
             android:exported="false"
             android:label="@string/app_name"
@@ -300,24 +291,9 @@
             android:label="코인 커뮤니티"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.signup.SignupWithDetailInfoActivity"
-            android:exported="false"
-            android:label="회원가입 디테일 정보"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.signup.SignUpCompleteActivity"
-            android:exported="false"
-            android:label="회원가입 완료"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
             android:name=".ui.setting.SettingActivity"
             android:exported="false"
             android:label="설정"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.changepassword.ChangePasswordActivity"
-            android:exported="false"
-            android:label="비밀번호 변경"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.term.TermActivity"

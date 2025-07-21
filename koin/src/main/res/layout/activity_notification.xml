@@ -51,6 +51,16 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
+                        <in.koreatech.koin.core.view.notificaiton.NotificationHeader
+                            android:id="@+id/notification_marketing"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:description="@string/notification_marketing_term_switch_description"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_notification_setting"
+                            app:text="@string/notification_marketing_term_switch" />
+
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/text_view_dining"
                             android:layout_width="0dp"
@@ -63,7 +73,7 @@
                             android:textColor="@color/neutral_600"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/text_view_notification_setting" />
+                            app:layout_constraintTop_toBottomOf="@id/notification_marketing" />
 
                         <in.koreatech.koin.core.view.notificaiton.NotificationHeader
                             android:id="@+id/notification_dining_sold_out"

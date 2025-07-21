@@ -28,21 +28,50 @@
     <string name="review_count"> · 리뷰 %1$d개</string>
     <string name="price_with_won">%1$d원</string>
     <string name="option_price">%1$s : %2$d원\n</string>
-    <string name="delivery_not_available">코인 주문이\n불가능한 매장이에요.</string>
-    <string name="store_detail_notice_empty">등록된 공지가\n없습니다.</string>
 
-    <!--가게 정보 및 원산지-->
-    <string name="store_info_and_origin">가게정보·원산지</string>
-    <string name="store_info">가게 알림</string>
-    <string name="owner_name">대표자명</string>
-    <string name="fee_range">%1$d ~ %2$d원 미만</string>
-    <string name="fee_range_start">%1$d원부터</string>
-    <string name="business_info">사업자 정보</string>
-    <string name="total_delivery_tip_by_order_amount">주문금액별 총 배달팁</string>
-    <string name="business_address">사업자 주소</string>
-    <string name="business_registration_number">사업자 등록 번호</string>
-    <string name="trade_name">상호명</string>
-    <string name="no_registered_information">등록된 정보가 없습니다.</string>
-    <string name="origin_marking">원산지 표기</string>
+    <string name="store_search_hint">검색어를 입력해주세요.</string>
+    <string name="menu_detail_option_price">%1$d원</string>
 
+    <string name="store_review_count">( 리뷰 %1$d개 )</string>
+    <string name="store_delivery_fee">배달비 %1$s원</string>
+    <string name="store_closed">영업이 종료된 가게에요!</string>
+
+    <string name="store_bottom_sheet_sort_title">가게 정렬</string>
+    <string name="store_bottom_sheet_min_order_title">최소주문금액</string>
+    <string name="store_bottom_sheet_apply">적용하기</string>
+    <string name="store_bottom_sheet_close">닫기</string>
+
+    <string name="store_quantity_minus">감소</string>
+    <string name="store_quantity_plus">증가</string>
+
+    <string name="filter_badge_pickup_available">픽업 서비스</string>
+    <string name="filter_badge_delivery_available">배달비 무료</string>
+    <string name="filter_badge_service">서비스 증정</string>
+
+    <string name="store_navigation_bar_home">홈</string>
+    <string name="store_navigation_bar_nearby">주변상점</string>
+    <string name="store_navigation_bar_order_history">주문내역</string>
+
+    <string name="store_title_home_order">주문</string>
+    <string name="store_title_home_search">검색</string>
+
+    <string name="store_order_option_none">기본순</string>
+    <string name="store_order_option_review_count_desc">리뷰순</string>
+    <string name="store_order_option_rating_desc">별점 높은 순</string>
+
+    <string name="store_filter_is_open">영업중</string>
+    <string name="store_filter_delivery_available">배달가능</string>
+    <string name="store_filter_takeout_available">포장가능</string>
+    <string name="store_filter_free_delivery_tip">배달팁무료</string>
+
+    <string name="store_min_price_filter_5000">5,000</string>
+    <string name="store_min_price_filter_10000">10,000</string>
+    <string name="store_min_price_filter_15000">15,000</string>
+    <string name="store_min_price_filter_20000">20,000</string>
+    <string name="store_min_price_filter_all">전체</string>
+    <string name="store_min_price_filter_text">최소주문금액</string>
+    <string name="store_min_price_filter_text_with_price">최소주문금액 %,d원 이하</string>
+
+    <string name="store_list_empty">이용 가능한 가게가 없어요</string>
+    <string name="store_list_empty_description">조건을 변경하고 다시 검색해주세요</string>
 </resources>

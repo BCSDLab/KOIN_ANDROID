@@ -37,7 +37,7 @@ class ArticleRepositoryImpl @Inject constructor(
     val user =
         userRepository.getUserInfoFlow().distinctUntilChanged()
             .onEach { user ->
-                if (user.isStudent) {
+                if (user.isStudent || user.isGeneral) {
                     _myKeywords.emit(articleRemoteDataSource.fetchMyKeyword().keywords)
                 } else {
                     _myKeywords.emit(
@@ -136,7 +136,7 @@ class ArticleRepositoryImpl @Inject constructor(
 
     override fun saveKeyword(keyword: String): Flow<Unit> {
         return flow {
-            if (user.value.isStudent) {
+            if (user.value.isStudent || user.value.isGeneral) {
                 emit(articleRemoteDataSource.saveKeyword(keyword))
             } else {
                 articleLocalDataSource.saveKeyword(keyword)
@@ -154,7 +154,7 @@ class ArticleRepositoryImpl @Inject constructor(
 
     override fun deleteKeyword(keyword: String): Flow<Unit> {
         return flow {
-            if (user.value.isStudent) {
+            if (user.value.isStudent || user.value.isGeneral) {
                 emit(articleRemoteDataSource.deleteKeyword(myKeywords.value.first { it.keyword == keyword }.id))
             } else {
                 emit(articleLocalDataSource.deleteKeyword(keyword))

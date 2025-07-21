@@ -205,7 +205,7 @@ class StoreRepositoryImpl @Inject constructor(
         return storeRemoteDataSource.getShopSearchRelated(query).toShopSearchRelatedList()
     }
 
-    override suspend fun getOrderableShops(sorter: String?, filter: String?, minimumOrderAmount: Int?): Result<List<Shop>> {
+    override suspend fun getOrderableShops(sorter: String?, filter: List<String>?, minimumOrderAmount: Int?): Result<List<Shop>> {
         return runCatching {
             storeRemoteDataSource.getOrderableShops(sorter, filter, minimumOrderAmount).map { it.toShop() }
         }.onFailure { e ->

@@ -1,8 +1,5 @@
 package `in`.koreatech.koin.domain.util.ext
 
-import `in`.koreatech.koin.domain.constant.GOOGLE_FORM_URL
-import `in`.koreatech.koin.domain.constant.INSTAGRAM_URL
-import `in`.koreatech.koin.domain.constant.OPEN_CHAT_URL
 import `in`.koreatech.koin.domain.util.regex.EmailUtil
 import `in`.koreatech.koin.domain.util.regex.PasswordUtil
 import java.util.Calendar
@@ -10,6 +7,10 @@ import java.util.Calendar
 fun String.isValidEmail(): Boolean = EmailUtil().isEmailValidate(this)
 
 fun String.isBusinessValidEmail(): Boolean = EmailUtil().isBusinessEmailValidate(this)
+
+fun String.isValidGeneralEmail(): Boolean = this.isBusinessValidEmail() // Business email and general email use same regex
+
+fun String.isNotValidGeneralEmail() = !isValidGeneralEmail()
 
 fun String.isValidPassword() = PasswordUtil().isPasswordValidate(this)
 
@@ -19,11 +20,15 @@ fun String.isNotBusinessValidEmail() = !isBusinessValidEmail()
 
 fun String.isNotValidPassword() = !isValidPassword()
 
-fun String.isValidInstagramUrl(): Boolean = this.startsWith(INSTAGRAM_URL)
+fun String.isValidUrlScheme(): Boolean = this.matches(Regex("^https?://.*"))
 
-fun String.isValidGoogleFormUrl(): Boolean = this.startsWith(GOOGLE_FORM_URL)
+fun String.isValidLoginId(): Boolean = this.matches(Regex("""^[a-z0-9_.-]+${'$'}""")) && this.length in 5..13
 
-fun String.isValidOpenChatUrl(): Boolean = this.startsWith(OPEN_CHAT_URL)
+fun String.isValidInstagramUrl(): Boolean = this.matches(Regex("^https?://(www\\.|l\\.)?instagram\\.com/[a-zA-Z0-9]+.*"))
+
+fun String.isValidGoogleFormUrl(): Boolean = this.matches(Regex("^https?://(docs\\.google\\.com/forms|forms\\.gle)/[a-zA-Z0-9]+.*"))
+
+fun String.isValidOpenChatUrl(): Boolean = this.matches(Regex("^https?://open\\.kakao\\.com/[a-zA-Z0-9]+.*"))
 
 val String.isValidStudentId: Boolean
     get() {
@@ -41,3 +46,5 @@ val String.isValidPhoneNumber: Boolean get() =
 fun String.isValidName(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$"""))
 
 fun String.isValidNickname(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ가-힣a-zA-Z0-9]+${'$'}"""))
+
+fun String.containsKorean(): Boolean = Regex("""[ㄱ-ㅎㅏ-ㅣ가-힣]""").containsMatchIn(this)

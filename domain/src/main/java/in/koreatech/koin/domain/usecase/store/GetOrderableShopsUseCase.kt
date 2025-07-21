@@ -9,7 +9,14 @@ class GetOrderableShopsUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         sorter: String? = null,
-        filter: String? = null,
-        minimumOrderAmount: Int? = null
-    ): Result<List<Shop>> = storeRepository.getOrderableShops(sorter, filter, minimumOrderAmount)
+        filter: List<String>? = null,
+        minimumOrderAmount: Int? = null,
+        categoryId: Int = 1
+    ): Result<List<Shop>> {
+        return runCatching {
+            storeRepository.getOrderableShops(sorter, filter, minimumOrderAmount).getOrThrow().filter { it.categoryIds.contains(categoryId) }
+        }.onFailure {
+            return Result.failure(it)
+        }
+    }
 }

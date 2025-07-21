@@ -24,7 +24,7 @@ class SettingViewModel @Inject constructor(
 
     private val _userInfo: MutableStateFlow<User> = MutableStateFlow(User.Anonymous)
 
-    val isStudent: Boolean get() = _userInfo.value.isStudent
+    val isLoggedIn: Boolean get() = _userInfo.value.isStudent || _userInfo.value.isGeneral
 
     init {
         fetchVersion()
