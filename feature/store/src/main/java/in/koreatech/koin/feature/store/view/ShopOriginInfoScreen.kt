@@ -24,10 +24,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -36,6 +34,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.model.DeliveryTipModel
 import `in`.koreatech.koin.feature.store.model.OwnerInfoModel
@@ -79,13 +79,13 @@ fun ShopOriginInfoScreen(
                                 modifier = Modifier
                                     .offset(x = (-6).dp, y = (6).dp)
                                     .size(16.dp)
-                                    .background(Color.Magenta, CircleShape),
+                                    .background(RebrandKoinTheme.colors.primary500, CircleShape),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
                                     text = cartItemNumber.toString(),
                                     fontSize = 10.sp,
-                                    color = Color.White
+                                    color = KoinTheme.colors.neutral0
                                 )
                             }
                         }
@@ -174,7 +174,7 @@ fun DeliveryFeeTable(
 ) {
     Column(
         modifier = modifier
-            .border(1.dp, Color.LightGray)
+            .border(1.dp, RebrandKoinTheme.colors.neutral400)
     ) {
         deliveryFees.forEach { fee ->
             DeliveryFeeRow(
@@ -186,7 +186,7 @@ fun DeliveryFeeTable(
                 },
                 value = stringResource(id = R.string.price_with_won, fee.fee ?: 0)
             )
-            HorizontalDivider(color = Color.LightGray)
+            HorizontalDivider(color = RebrandKoinTheme.colors.neutral400)
         }
     }
 }
