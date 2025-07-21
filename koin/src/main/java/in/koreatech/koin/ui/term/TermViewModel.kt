@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.signup.GetKoinTermUseCase
+import `in`.koreatech.koin.domain.usecase.signup.GetMarketingTermUseCase
 import `in`.koreatech.koin.domain.usecase.signup.GetPrivacyTermUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +15,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class TermViewModel @Inject constructor(
     private val getKoinTermUseCase: GetKoinTermUseCase,
-    private val getPrivacyTermUseCase: GetPrivacyTermUseCase
+    private val getPrivacyTermUseCase: GetPrivacyTermUseCase,
+    private val getMarketingTermUseCase: GetMarketingTermUseCase
 ) : ViewModel() {
     private val _term: MutableStateFlow<TermState> = MutableStateFlow(TermState.Init)
     val term: StateFlow<TermState> get() = _term.asStateFlow()
@@ -34,6 +36,18 @@ class TermViewModel @Inject constructor(
     fun loadPrivacyTerm() {
         viewModelScope.launch {
             getPrivacyTermUseCase()
+                .onSuccess {
+                    _term.value = TermState.Success(it)
+                }
+                .onFailure {
+                    _term.value = TermState.Failure(it.message ?: "")
+                }
+        }
+    }
+
+    fun loadMarketingTerm() {
+        viewModelScope.launch {
+            getMarketingTermUseCase()
                 .onSuccess {
                     _term.value = TermState.Success(it)
                 }

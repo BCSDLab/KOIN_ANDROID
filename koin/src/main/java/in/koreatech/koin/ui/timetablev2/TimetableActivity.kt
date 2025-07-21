@@ -46,7 +46,7 @@ import `in`.koreatech.koin.feature.timetable.view.dialog.ScheduleDuplicationDial
 import `in`.koreatech.koin.feature.timetable.view.dialog.SelectDepartmentDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.TimetableTimePickerDialog
 import `in`.koreatech.koin.feature.timetable.viewmodel.TimetableViewModel
-import `in`.koreatech.koin.ui.login.LoginActivity
+import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import kotlinx.coroutines.launch
@@ -407,7 +407,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
     }
 
     private fun startToLoginActivity() {
-        Intent(this, LoginActivity::class.java).apply {
+        Intent(this, SignInActivity::class.java).apply {
             putExtra(BUNDLE_LOGIN_EXTRA_KEY, bundleOf(NAV_TIMETABLE to true))
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             finish()

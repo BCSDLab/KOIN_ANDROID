@@ -11,7 +11,8 @@ import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
 import `in`.koreatech.koin.data.mapper.toInt
 import `in`.koreatech.koin.data.mapper.toUser
-import `in`.koreatech.koin.data.response.user.UserResponse
+import `in`.koreatech.koin.data.response.user.GeneralUserResponse
+import `in`.koreatech.koin.data.response.user.StudentUserResponse
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserType
 import javax.inject.Inject
@@ -32,13 +33,34 @@ class UserLocalDataSource @Inject constructor(
         userDataStore.data.map { pref ->
             try {
                 if (pref[PREF_KEY_IS_LOGIN] == true) {
-                    return@map Gson().fromJson(pref[PREF_KEY_USER_INFO], UserResponse::class.java)
-                        .toUser(pref[PREF_KEY_USER_TYPE] ?: UserType.STUDENT.name) // Set default userType to STUDENT if logged in
+                    if (pref[PREF_KEY_USER_TYPE] == UserType.STUDENT.name || pref[PREF_KEY_USER_TYPE] == UserType.COUNCIL.name) {
+                        return@map try {
+                            Gson().fromJson(pref[PREF_KEY_USER_INFO], StudentUserResponse::class.java).toUser()
+                        } catch (e: NullPointerException) {
+                            // If user logged in on old version, loginId can be null
+                            // So return null that make repository to fetch user info from server
+                            null
+                        }
+                    } else if (pref[PREF_KEY_USER_TYPE] == UserType.GENERAL.name) {
+                        return@map Gson().fromJson(pref[PREF_KEY_USER_INFO], GeneralUserResponse::class.java).toUser()
+                    } else {
+                        return@map User.Anonymous
+                    }
                 } else {
                     return@map User.Anonymous
                 }
             } catch (e: Exception) {
                 return@map null
+            }
+        }
+
+    val userType: Flow<UserType?> =
+        userDataStore.data.map { pref ->
+            when (pref[PREF_KEY_USER_TYPE]) {
+                UserType.STUDENT.name -> UserType.STUDENT
+                UserType.COUNCIL.name -> UserType.COUNCIL
+                UserType.GENERAL.name -> UserType.GENERAL
+                else -> null
             }
         }
 
@@ -52,29 +74,60 @@ class UserLocalDataSource @Inject constructor(
     suspend fun updateUserInfo(user: User) {
         userDataStore.edit { pref ->
             pref[PREF_KEY_USER_INFO] =
-                if (user is User.Student) {
-                    Gson().toJson(
-                        UserResponse(
-                            id = user.id,
-                            anonymousNickname = user.anonymousNickname,
-                            email = user.email,
-                            gender = user.gender.toInt(),
-                            major = user.major,
-                            name = user.name ?: "",
-                            nickname = user.nickname,
-                            phoneNumber = user.phoneNumber,
-                            studentNumber = user.studentNumber
+                when (user) {
+                    is User.Student -> {
+                        Gson().toJson(
+                            StudentUserResponse(
+                                id = user.id,
+                                anonymousNickname = user.anonymousNickname,
+                                email = user.email,
+                                gender = user.gender.toInt(),
+                                major = user.major,
+                                name = user.name ?: "",
+                                nickname = user.nickname,
+                                phoneNumber = user.phoneNumber,
+                                studentNumber = user.studentNumber,
+                                userType = user.userType,
+                                loginId = user.loginId
+                            )
                         )
-                    )
-                } else {
-                    ""
+                    }
+
+                    is User.General -> {
+                        Gson().toJson(
+                            GeneralUserResponse(
+                                id = user.id,
+                                anonymousNickname = user.anonymousNickname,
+                                email = user.email,
+                                gender = user.gender.toInt()!!,
+                                name = user.name,
+                                nickname = user.nickname,
+                                phoneNumber = user.phoneNumber,
+                                userType = user.userType,
+                                loginId = user.loginId
+
+                            )
+                        )
+                    }
+
+                    else -> {
+                        ""
+                    }
                 }
 
             pref[PREF_KEY_USER_TYPE] =
-                if (user is User.Student) {
-                    user.userType
-                } else {
-                    ""
+                when (user) {
+                    is User.Student -> {
+                        user.userType
+                    }
+
+                    is User.General -> {
+                        user.userType
+                    }
+
+                    else -> {
+                        ""
+                    }
                 }
         }
     }
