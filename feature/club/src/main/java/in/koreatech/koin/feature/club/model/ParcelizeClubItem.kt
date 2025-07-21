@@ -45,6 +45,7 @@ private fun Clubs.ClubItemRecruitmentInfo.toParcelizeClubItemRecruitmentInfo(): 
             "RECRUITING" -> KoinClubRecruitmentLabelType.RECRUITING
             "ALWAYS" -> KoinClubRecruitmentLabelType.RECRUITMENT_ALWAYS
             "CLOSED" -> KoinClubRecruitmentLabelType.RECRUITMENT_FINISHED
+            "BEFORE" -> KoinClubRecruitmentLabelType.BEFORE
             else -> KoinClubRecruitmentLabelType.NONE
         },
         dDay = this.dDay
