@@ -29,6 +29,7 @@ fun KoinClubRecruitmentLabel(
                     KoinClubRecruitmentLabelType.RECRUITMENT_ALWAYS -> KoinTheme.colors.primary500
                     KoinClubRecruitmentLabelType.RECRUITMENT_FINISHED -> KoinTheme.colors.primary700
                     KoinClubRecruitmentLabelType.NONE -> Color.Unspecified
+                    KoinClubRecruitmentLabelType.BEFORE -> KoinTheme.colors.primary600
                 },
                 shape = KoinTheme.shapes.extraLarge
             )
@@ -63,6 +64,7 @@ enum class KoinClubRecruitmentLabelType(
     @StringRes val labesRes: Int
 ) {
     NONE(R.string.club_list_label_none),
+    BEFORE(R.string.club_list_label_recruiting_before),
     RECRUITING(R.string.club_list_label_recruiting),
     RECRUITMENT_ALWAYS(R.string.club_list_label_recruiting_always),
     RECRUITMENT_FINISHED(R.string.club_list_label_recruiting_finished)

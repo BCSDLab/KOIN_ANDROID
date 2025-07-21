@@ -116,6 +116,7 @@
     <string name="club_list_recruiting">모집 중인 동아리</string>
     <string name="club_list_label_none"></string>
     <string name="club_list_label_recruiting">D-%1$d</string>
+    <string name="club_list_label_recruiting_before">모집 예정</string>
     <string name="club_list_label_recruiting_finished">마감</string>
     <string name="club_list_label_recruiting_always">상시 모집</string>
     <string name="club_list_recruiting_not_found">모집중인 동아리가 존재하지 않아요.</string>
