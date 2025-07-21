@@ -83,7 +83,7 @@ fun pickRandomReviewer(prOwnerTeam: KoinTeam?, developer: Developer) {
         .filter { it != developer }
         .filter { it.shouldPick }
         .filter { !it.isMentor }
-        .filter { it.team.contains(prOwnerTeam) }
+        .filter { if (prOwnerTeam != null) it.team.contains(prOwnerTeam) else true }
     val randomReviewerFromSameTeam = sameTeamDevelopers.random()
 
     val otherTeamDevelopers = Developer.entries
@@ -91,7 +91,7 @@ fun pickRandomReviewer(prOwnerTeam: KoinTeam?, developer: Developer) {
         .filter { it.shouldPick }
         .filter { it != randomReviewerFromSameTeam }
         .filter { !it.isMentor }
-        .filter { !it.team.contains(prOwnerTeam) }
+        .filter { if (prOwnerTeam != null) it.team.contains(prOwnerTeam) else true }
     val randomReviewerFromOtherTeam = otherTeamDevelopers.random()
     exportReviewer(randomReviewerFromOtherTeam.githubName, randomReviewerFromSameTeam.githubName)
 }
