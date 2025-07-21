@@ -1,5 +1,6 @@
 <resources>
     <!--장바구니-->
+    <string name="order">주문하러가기</string>
     <string name="check_payment_amount">결제금액을 확인해주세요</string>
     <string name="menu_amount">메뉴 금액</string>
     <string name="delivery_amount">배달 금액</string>
@@ -22,7 +23,6 @@
 
 
     <!--상점 상세-->
-    <string name="store_info_and_origin">가게정보·원산지</string>
     <string name="minimum_order">최소주문</string>
     <string name="delivery_fee">배달금액</string>
     <string name="review_count"> · 리뷰 %1$d개</string>

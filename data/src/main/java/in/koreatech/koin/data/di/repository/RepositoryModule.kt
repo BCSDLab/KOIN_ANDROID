@@ -15,6 +15,7 @@ import `in`.koreatech.koin.data.repository.DeptRepositoryImpl
 import `in`.koreatech.koin.data.repository.DiningRepositoryImpl
 import `in`.koreatech.koin.data.repository.LandRepositoryImpl
 import `in`.koreatech.koin.data.repository.NotificationRepositoryImpl
+import `in`.koreatech.koin.data.repository.OrderShopRepositoryImpl
 import `in`.koreatech.koin.data.repository.OwnerChangePasswordRepositoryImpl
 import `in`.koreatech.koin.data.repository.OwnerRegisterRepositoryImpl
 import `in`.koreatech.koin.data.repository.OwnerShopRepositoryImpl
@@ -45,6 +46,7 @@ import `in`.koreatech.koin.data.source.remote.DeptRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.DiningRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.LandRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.NotificationRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.OrderShopRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.PreSignedUrlRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
@@ -61,6 +63,7 @@ import `in`.koreatech.koin.domain.repository.DeptRepository
 import `in`.koreatech.koin.domain.repository.DiningRepository
 import `in`.koreatech.koin.domain.repository.LandRepository
 import `in`.koreatech.koin.domain.repository.NotificationRepository
+import `in`.koreatech.koin.domain.repository.OrderShopRepository
 import `in`.koreatech.koin.domain.repository.OwnerChangePasswordRepository
 import `in`.koreatech.koin.domain.repository.OwnerRegisterRepository
 import `in`.koreatech.koin.domain.repository.OwnerShopRepository
@@ -262,6 +265,16 @@ object RepositoryModule {
     ): CartRepository {
         return CartRepositoryImpl(
             cartRemoteDataSource
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideOrderShopRepository(
+        orderShopRemoteDataSource: OrderShopRemoteDataSource
+    ): OrderShopRepository {
+        return OrderShopRepositoryImpl(
+            orderShopRemoteDataSource
         )
     }
 }

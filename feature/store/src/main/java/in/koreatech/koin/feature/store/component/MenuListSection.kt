@@ -29,12 +29,12 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.model.MenuModel
 
 fun LazyListScope.menuListSection(
     category: String,
-    menus: List<LegacyShopMenus>,
+    menus: List<MenuModel>,
     modifier: Modifier = Modifier
 ) {
     if (menus.isEmpty()) return
@@ -82,27 +82,28 @@ fun LazyListScope.menuListSection(
 
 @Composable
 fun MenuItem(
-    menu: LegacyShopMenus,
+    menu: MenuModel,
     modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier) {
         Column(modifier = Modifier.weight(1f)) {
             Text(text = menu.name, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
-            if (menu.description != null) {
+            if (menu.description?.isNotEmpty() == true) {
                 Text(
                     modifier = Modifier.padding(top = 4.dp),
-                    text = menu.description ?: "",
+                    text = menu.description,
                     fontSize = 12.sp,
                     color = KoinTheme.colors.neutral500
                 )
             }
+
             OptionPriceText(
                 modifier = Modifier.padding(top = 4.dp),
-                shopMenus = menu
+                menu = menu
             )
         }
         Spacer(modifier = Modifier.width(16.dp))
-        menu.imageUrls
+        menu.thumbnailImage
             ?.firstOrNull()?.let { url ->
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
@@ -123,21 +124,21 @@ fun MenuItem(
 @Composable
 private fun OptionPriceText(
     modifier: Modifier = Modifier,
-    shopMenus: LegacyShopMenus
+    menu: MenuModel
 ) {
     Column(
         modifier = modifier
     ) {
-        if (shopMenus.isSingle) {
+        if (menu.isSingle) {
             Text(
-                text = stringResource(R.string.price_with_won, shopMenus.singlePrice ?: ""),
+                text = stringResource(R.string.price_with_won, menu.singlePrice ?: 0),
                 style = KoinTheme.typography.bold14
             )
-        } else if (shopMenus.optionPrices?.isNotEmpty() == true) {
-            val options = shopMenus.optionPrices?.fold("") { acc, menu ->
-                acc + stringResource(R.string.option_price, menu.option, menu.price ?: "")
-            }?.trim()
-            Text(text = options ?: "", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+        } else {
+            val options = menu.prices.fold("") { acc, menu ->
+                acc + stringResource(R.string.option_price, menu.name ?: "", menu.price ?: 0)
+            }.trim()
+            Text(text = options, fontSize = 14.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -153,22 +154,23 @@ private fun MenuListSectionPreview() {
                 modifier = Modifier.fillMaxWidth(),
                 category = "추천메뉴",
                 menus = listOf(
-                    LegacyShopMenus(
-                        name = "막국수",
-                        description = "막국수 + 족발",
-                        isSingle = false,
-                        singlePrice = 10000,
-                        optionPrices =
-                        listOf(
-                            LegacyShopMenus.ShopMenuOptions("소", 10000),
-                            LegacyShopMenus.ShopMenuOptions("중", 20000),
-                            LegacyShopMenus.ShopMenuOptions("대", 30000)
-                        ),
-                        isHidden = false,
-                        imageUrls = listOf(
-                            "https://example.com/image1.jpg"
-                        ),
-                        id = 1
+                    MenuModel(
+                        id = 1,
+                        name = "아메리카노",
+                        description = null,
+                        thumbnailImage = null,
+                        isSoldOut = false,
+                        prices = listOf(),
+                        isSingle = true
+                    ),
+                    MenuModel(
+                        id = 2,
+                        name = "카페라떼",
+                        description = "부드러운 ��유와 커피의 조화.",
+                        thumbnailImage = "https://example.com/cafelatte.jpg",
+                        isSoldOut = false,
+                        prices = listOf(),
+                        isSingle = true
                     )
                 )
             )

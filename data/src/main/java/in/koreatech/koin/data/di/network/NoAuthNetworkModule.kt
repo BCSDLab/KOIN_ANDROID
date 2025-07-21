@@ -18,6 +18,7 @@ import `in`.koreatech.koin.data.api.CoopShopApi
 import `in`.koreatech.koin.data.api.DeptApi
 import `in`.koreatech.koin.data.api.DiningApi
 import `in`.koreatech.koin.data.api.LandApi
+import `in`.koreatech.koin.data.api.OrderShopApi
 import `in`.koreatech.koin.data.api.OwnerApi
 import `in`.koreatech.koin.data.api.StoreApi
 import `in`.koreatech.koin.data.api.TimetableApi
@@ -179,5 +180,13 @@ object NoAuthNetworkModule {
         @NoAuth retrofit: Retrofit
     ): ClubApi {
         return retrofit.create(ClubApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOrderShopApi(
+        @NoAuth retrofit: Retrofit
+    ): OrderShopApi {
+        return retrofit.create(OrderShopApi::class.java)
     }
 }

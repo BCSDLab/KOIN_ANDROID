@@ -51,6 +51,7 @@ import `in`.koreatech.koin.feature.store.state.collapseToolbar
 import `in`.koreatech.koin.feature.store.state.currentToolbarHeightDp
 import `in`.koreatech.koin.feature.store.state.progress
 import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
+import `in`.koreatech.koin.feature.store.viewmodel.ShoppingCartViewModel
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
 import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineScope
@@ -61,6 +62,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun StoreDetailScreen(
     viewModel: StoreDetailViewModel = hiltViewModel(),
+    shoppingCartViewModel: ShoppingCartViewModel = hiltViewModel(),
     pagerState: PagerState,
     navigateToCart: () -> Unit = {},
     navigateToBack: () -> Unit = {},
@@ -68,11 +70,9 @@ fun StoreDetailScreen(
     navigateToReview: () -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
+    val cartState by shoppingCartViewModel.collectAsState()
 
-    val rememberState = rememberCollapsingToolbarState(
-        toolbarMinHeight = 40.dp,
-        toolbarMaxHeight = 300.dp
-    )
+    val rememberState = rememberCollapsingToolbarState()
     val progress = rememberState.progress()
     val overlayAlpha = (progress).coerceIn(0f, 1f)
     val nestedScrollConnection = storeCollapsingToolbarConnection(
@@ -105,6 +105,7 @@ fun StoreDetailScreen(
                     StoreDetailInfo(
                         storeInfo = uiState.store,
                         storeReview = uiState.storeReview,
+                        storeDescriptionModel = uiState.shopDescription,
                         navigateToReview = { navigateToReview() },
                         navigateToDetailInfo = { navigateToDetailInfo() }
                     )
@@ -127,17 +128,16 @@ fun StoreDetailScreen(
                             state = rememberState
                         )
                         CoroutineScope(coroutineScope.coroutineContext).launch {
-                            rememberState.listState.scrollToItem(uiState.categories.indexOfFirst { it.storeMenuCategories.id == categoryId } + 2, -stickyHeaderHeight)
+                            rememberState.listState.scrollToItem(uiState.categories.indexOfFirst { it.menuGroupId == categoryId } + 2, -stickyHeaderHeight)
                         }
                     }
                 )
             }
             uiState.categories.forEach { category ->
                 menuListSection(
-                    category = category.storeMenuCategories.name ?: "",
-                    menus = category.storeMenuCategories.menus ?: emptyList(),
-                    modifier = Modifier
-                        .padding(horizontal = 24.dp)
+                    category = category.menuGroupName,
+                    menus = category.menus,
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
                 )
             }
         }
@@ -182,7 +182,7 @@ fun StoreDetailScreen(
                         .background(Color.Magenta, CircleShape)
                 ) {
                     Text(
-                        text = "3", // TODO: API 연동 후 장바구니 수량 표시
+                        text = cartState.cart.items.size.toString(),
                         fontSize = 10.sp,
                         lineHeight = 11.sp,
                         color = KoinTheme.colors.neutral0,

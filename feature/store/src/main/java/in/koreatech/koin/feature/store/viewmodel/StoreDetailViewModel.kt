@@ -3,10 +3,21 @@ package `in`.koreatech.koin.feature.store.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopMenuUseCase
+import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopOriginInfoUseCase
+import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopSummaryUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetShopMenusUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuUseCase
 import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
+import `in`.koreatech.koin.feature.store.model.DeliveryTipModel
+import `in`.koreatech.koin.feature.store.model.MenuCategoryModel
+import `in`.koreatech.koin.feature.store.model.OriginModel
+import `in`.koreatech.koin.feature.store.model.OwnerInfoModel
+import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
+import `in`.koreatech.koin.feature.store.model.toMenuCategoryModel
+import `in`.koreatech.koin.feature.store.model.toStoreIndoModel
+import `in`.koreatech.koin.feature.store.model.toStoreInfoModel
 import `in`.koreatech.koin.feature.store.view.StoreDetailSideEffect
 import `in`.koreatech.koin.feature.store.view.StoreDetailState
 import javax.inject.Inject
@@ -19,6 +30,9 @@ import org.orbitmvi.orbit.viewmodel.container
 @HiltViewModel
 class StoreDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val getOrderShopOriginInfoUseCase: GetOrderShopOriginInfoUseCase,
+    private val getOrderShopSummaryUseCase: GetOrderShopSummaryUseCase,
+    private val getOrderShopMenuUseCase: GetOrderShopMenuUseCase,
     private val getStoreWithMenuUseCase: GetStoreWithMenuUseCase,
     private val getShopMenusUseCase: GetShopMenusUseCase,
     private val getStoreReviewUseCase: GetStoreReviewUseCase,
@@ -27,22 +41,102 @@ class StoreDetailViewModel @Inject constructor(
     override val container =
         container<StoreDetailState, StoreDetailSideEffect>(StoreDetailState()) {
             val storeId = savedStateHandle.get<Int>(STORE_ID)
+            val orderableStoreId = savedStateHandle.get<Int>(ORDERABLE_STORE_ID)
             checkNotNull(storeId)
-            fetchStore(storeId)
-            fetchMenus(storeId)
+
+            if (orderableStoreId == null) {
+                fetchStore(storeId)
+            } else {
+                fetchOrderableStore(orderableStoreId)
+            }
             fetchReview(storeId)
             checkToken()
         }
+
+    private fun fetchOrderStoreNotice(id: Int) = intent {
+        getOrderShopOriginInfoUseCase(id).also { result ->
+            reduce {
+                state.copy(
+                    shopDescription = StoreDescriptionModel(
+                        id = id,
+                        storeName = result.name,
+                        description = result.introduction,
+                        notice = result.notice,
+                        deliveryTips = result.deliveryTips.map { tips ->
+                            DeliveryTipModel(
+                                fromAmount = tips.fromAmount,
+                                toAmount = tips.toAmount,
+                                fee = tips.feel
+                            )
+                        },
+                        origins = result.origins.map { origin ->
+                            listOf(
+                                OriginModel(
+                                    ingredients = origin.ingredients,
+                                    origin = origin.origin
+                                )
+                            )
+                        }.firstOrNull() ?: listOf(OriginModel.empty()),
+                        ownerInfo = OwnerInfoModel(
+                            result.ownerInfo.name ?: "",
+                            result.ownerInfo.shopName ?: "",
+                            result.address,
+                            result.ownerInfo.companyRegistrationNumber ?: ""
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun fetchOrderableStore(id: Int) = intent {
+        getOrderShopSummaryUseCase(id).also { result ->
+            reduce {
+                state.copy(
+                    store = result.toStoreIndoModel(),
+                    isLoading = false
+                )
+            }
+        }
+        fetchOrderableStoreMenu(id)
+        fetchOrderStoreNotice(id)
+    }
+
+    private fun fetchOrderableStoreMenu(id: Int) = intent {
+        getOrderShopMenuUseCase(id).also { result ->
+            reduce {
+                state.copy(
+                    categories = result.map {
+                        it.toMenuCategoryModel()
+                    }
+                )
+            }
+        }
+    }
 
     private fun fetchStore(id: Int) = intent {
         getStoreWithMenuUseCase(id).also { result ->
             reduce {
                 state.copy(
-                    store = result,
-                    isLoading = false
+                    store = result.toStoreInfoModel(),
+                    isLoading = false,
+                    shopDescription = StoreDescriptionModel(
+                        id = id,
+                        storeName = result.name,
+                        description = result.description,
+                        notice = null,
+                        deliveryTips = DeliveryTipModel(
+                            fromAmount = 0,
+                            toAmount = null,
+                            fee = result.deliveryPrice
+                        ).let { listOf(it) },
+                        origins = null,
+                        ownerInfo = null
+                    )
                 )
             }
         }
+        fetchMenus(id)
     }
 
     private fun fetchMenus(id: Int) = intent {
@@ -50,8 +144,10 @@ class StoreDetailViewModel @Inject constructor(
             reduce {
                 state.copy(
                     categories = shop.menuCategories?.map { storeMenuCategories ->
-                        StoreDetailState.MenuCategory(
-                            storeMenuCategories = storeMenuCategories,
+                        MenuCategoryModel(
+                            menuGroupId = storeMenuCategories.toMenuCategoryModel().menuGroupId,
+                            menuGroupName = storeMenuCategories.toMenuCategoryModel().menuGroupName,
+                            menus = storeMenuCategories.toMenuCategoryModel().menus,
                             isChecked = shop.menuCategories?.indexOf(storeMenuCategories) == 0
                         )
                     } ?: emptyList()
@@ -94,7 +190,7 @@ class StoreDetailViewModel @Inject constructor(
         reduce {
             state.copy(
                 categories = state.categories.map {
-                    if (it.storeMenuCategories.id == categoryId) {
+                    if (it.menuGroupId == categoryId) {
                         it.copy(isChecked = true)
                     } else {
                         it.copy(isChecked = false)
@@ -106,5 +202,6 @@ class StoreDetailViewModel @Inject constructor(
 
     companion object {
         const val STORE_ID = "storeId"
+        const val ORDERABLE_STORE_ID = "orderableStoreId"
     }
 }

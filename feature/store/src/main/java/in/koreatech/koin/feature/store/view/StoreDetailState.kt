@@ -1,26 +1,31 @@
 package `in`.koreatech.koin.feature.store.view
 
-import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
+import `in`.koreatech.koin.domain.model.ordershop.OrderShop
+import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
-import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 import `in`.koreatech.koin.domain.model.store.StoreReview
-import `in`.koreatech.koin.domain.model.store.StoreWithMenu
+import `in`.koreatech.koin.feature.store.model.MenuCategoryModel
+import `in`.koreatech.koin.feature.store.model.OwnerInfoModel
+import `in`.koreatech.koin.feature.store.model.ShopInfoModel
+import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
 
 data class StoreDetailState(
-    val store: StoreWithMenu = StoreWithMenu.empty(),
-    val categories: List<MenuCategory> = emptyList(),
-    val storeMenu: List<LegacyShopMenus> = emptyList(),
+    val store: ShopInfoModel = ShopInfoModel.empty(),
+    val shopDescription: StoreDescriptionModel = StoreDescriptionModel.empty(),
+    val orderableStore: OrderShop = OrderShop.empty(),
+    val categories: List<MenuCategoryModel> = emptyList(),
+    val storeMenu: List<ShopMenus> = emptyList(),
     val storeReview: StoreReview = StoreReview.empty(),
     val scrollUp: StoreDetailScrollType = StoreDetailScrollType.NONE,
+    val availableDelivery: Boolean = false,
     val isLogin: Boolean = false,
     val isLoading: Boolean = true
-) {
-    data class MenuCategory(
-        val storeMenuCategories: StoreMenuCategories = StoreMenuCategories(
-            id = 0,
-            name = null,
-            menus = emptyList()
-        ),
-        val isChecked: Boolean = false
-    )
+)
+fun OwnerInfoModel?.hasAnyInfo(): Boolean {
+    return this?.let {
+        it.name != null ||
+            it.shopName != null ||
+            it.address != null ||
+            it.companyRegistrationNumber != null
+    } ?: false
 }

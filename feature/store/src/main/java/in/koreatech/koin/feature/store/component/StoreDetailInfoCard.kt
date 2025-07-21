@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,29 +23,33 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.domain.model.store.StoreWithMenu
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.model.ShopInfoModel
+import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
 
 @Composable
 fun StoreDetailInfoCard(
+    storeInfo: ShopInfoModel,
     modifier: Modifier = Modifier,
-    storeInfo: StoreWithMenu,
+    storeDescriptionModel: StoreDescriptionModel? = null,
     navigateToDetailInfo: () -> Unit = {}
 ) {
     Row(modifier = modifier) {
         DeliveryInfoCard(
             modifier = Modifier.weight(1f),
-            storeInfo,
+            storeInfo = storeInfo,
             navigateToDetailInfo = navigateToDetailInfo
         )
         Spacer(modifier = Modifier.width(8.dp))
         NoticeCard(
             modifier = Modifier.weight(1f),
-            description = storeInfo.description,
+            description = storeDescriptionModel?.description ?: stringResource(R.string.store_detail_notice_empty),
             navigateToDetailInfo = navigateToDetailInfo
         )
     }
@@ -53,7 +58,7 @@ fun StoreDetailInfoCard(
 @Composable
 fun DeliveryInfoCard(
     modifier: Modifier = Modifier,
-    storeInfo: StoreWithMenu,
+    storeInfo: ShopInfoModel,
     navigateToDetailInfo: () -> Unit = {}
 ) {
     Surface(
@@ -65,6 +70,17 @@ fun DeliveryInfoCard(
         shadowElevation = 1.dp,
         color = KoinTheme.colors.neutral0
     ) {
+        if (!storeInfo.isDeliveryAvailable) {
+            Text(
+                modifier = Modifier.fillMaxWidth().padding(12.dp),
+                lineHeight = 17.sp,
+                text = stringResource(R.string.delivery_not_available),
+                fontSize = 14.sp,
+                color = RebrandKoinTheme.colors.neutral400,
+                textAlign = TextAlign.Center
+            )
+            return@Surface
+        }
         Row(
             modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -74,12 +90,12 @@ fun DeliveryInfoCard(
                 Row {
                     Text(text = stringResource(R.string.minimum_order), fontSize = 12.sp, lineHeight = 18.sp)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "TODO: 최소주문", fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
+                    Text(text = stringResource(R.string.price_with_won, storeInfo.minimumOrderAmount ?: 0), fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
                 }
                 Row {
                     Text(text = stringResource(R.string.delivery_fee), fontSize = 12.sp, lineHeight = 18.sp)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(stringResource(id = R.string.price_with_won, storeInfo.deliveryPrice), fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
+                    Text(stringResource(R.string.price_with_won, storeInfo.minimumDeliveryTip ?: 0), fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
                 }
             }
             Icon(painter = painterResource(id = R.drawable.ic_delivery_arrow_right), contentDescription = null, modifier = Modifier.size(10.dp))
