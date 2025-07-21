@@ -94,7 +94,7 @@ fun OrderBottomBar(
 
 @Preview(showBackground = true)
 @Composable
-fun OrderBottomBarPreview() {
+private fun OrderBottomBarPreview() {
     KoinTheme {
         Column(
             modifier = Modifier.fillMaxSize()

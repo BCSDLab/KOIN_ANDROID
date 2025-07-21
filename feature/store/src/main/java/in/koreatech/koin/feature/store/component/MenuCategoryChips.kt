@@ -100,7 +100,7 @@ fun MenuCategoryChip(
 
 @Preview
 @Composable
-fun MenuCategoryChipPreview() {
+private fun MenuCategoryChipPreview() {
     Column(modifier = Modifier.background(Color.White)) {
         MenuCategoryChip(
             menuCategory = MenuCategoryModel(
