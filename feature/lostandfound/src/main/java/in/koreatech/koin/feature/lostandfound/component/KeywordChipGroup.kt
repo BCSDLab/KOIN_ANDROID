@@ -112,8 +112,7 @@ internal fun LostAndFoundTextChipScrollGroup(
     chipColors: TextChipColors = TextChipDefaults.chipColors()
 ) {
     Row(
-        modifier =
-        modifier
+        modifier = modifier
             .horizontalScroll(rememberScrollState())
             .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
             .drawWithContent {
