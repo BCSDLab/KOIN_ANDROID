@@ -7,15 +7,15 @@ enum class EventSearchType(
     val value: String,
     @StringRes val strRes: Int
 ) {
-    RECENT("RECENT", R.string.detail_events_sort_type_recent),
     ONGOING("ONGOING", R.string.detail_events_sort_type_ongoing),
+    RECENT("RECENT", R.string.detail_events_sort_type_recent),
     UPCOMING("UPCOMING", R.string.detail_events_sort_type_upcoming),
     ENDED("ENDED", R.string.detail_events_sort_type_ended)
 }
 
 val eventSearchTypeList = listOf(
-    EventSearchType.RECENT,
     EventSearchType.ONGOING,
+    EventSearchType.RECENT,
     EventSearchType.UPCOMING,
     EventSearchType.ENDED
 )

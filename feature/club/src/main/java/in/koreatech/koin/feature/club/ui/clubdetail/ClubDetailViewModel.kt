@@ -111,17 +111,18 @@ class ClubDetailViewModel @Inject constructor(
     private fun loadClubDetails() = viewModelScope.launch {
         intent {
             reduce {
-                state.copy(isLoading = true)
+                state.copy(isLoading = true, showDetailProgressBar = true)
             }
             getClubDetailsUseCase(state.clubId).onSuccess {
                 reduce {
                     state.copy(
                         clubDetails = it.toParcelizeClubDetails(),
-                        isLoading = false
+                        isLoading = false,
+                        showDetailProgressBar = false
                     )
                 }
             }.onFailure { e ->
-                reduce { state.copy(isLoading = false) }
+                reduce { state.copy(isLoading = false, showDetailProgressBar = false) }
                 when (e) {
                     is KoinClubException.ClubNotFoundException -> {
                         postSideEffect(ClubDetailSideEffect.ClubNotFoundError)

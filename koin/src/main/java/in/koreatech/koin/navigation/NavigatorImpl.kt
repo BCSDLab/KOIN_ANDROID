@@ -21,6 +21,8 @@ class NavigatorImpl @Inject constructor() : Navigator {
         targetBoardId: Pair<String, Any?>,
         targetArticleId: Pair<String, Any?>,
         targetChatId: Pair<String, Any?>,
+        targetClubId: Pair<String, Any?>,
+        targetEventId: Pair<String, Any?>,
         type: Pair<String, Any?>,
         navType: Pair<String, Any?>
     ): Intent {
@@ -29,6 +31,8 @@ class NavigatorImpl @Inject constructor() : Navigator {
             targetBoardId,
             targetArticleId,
             targetChatId,
+            targetClubId,
+            targetEventId,
             type,
             navType
         )
@@ -42,6 +46,8 @@ class NavigatorImpl @Inject constructor() : Navigator {
         targetBoardId: Pair<String, Any?>,
         targetArticleId: Pair<String, Any?>,
         targetChatId: Pair<String, Any?>,
+        targetClubId: Pair<String, Any?>,
+        targetEventId: Pair<String, Any?>,
         type: Pair<String, Any?>
     ): Intent {
         val intent = context.buildIntent<MainActivity>(
@@ -49,6 +55,8 @@ class NavigatorImpl @Inject constructor() : Navigator {
             targetBoardId,
             targetArticleId,
             targetChatId,
+            targetClubId,
+            targetEventId,
             type
         )
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP

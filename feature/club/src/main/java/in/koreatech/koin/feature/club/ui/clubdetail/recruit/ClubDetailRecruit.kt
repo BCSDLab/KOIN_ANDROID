@@ -146,6 +146,7 @@ fun ClubDetailRecruit(
                                     innerText = stringResource(R.string.club_recruit_closed)
                                 }
                                 RecruitmentStatus.BEFORE -> {
+                                    backgroungColor = KoinTheme.colors.primary600
                                     innerText = stringResource(R.string.club_recruit_before)
                                 }
                                 else -> {}

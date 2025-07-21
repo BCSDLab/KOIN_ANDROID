@@ -150,6 +150,12 @@ fun ClubDetail(
 
     val listState = rememberLazyListState()
 
+    val recruitScrollState = rememberScrollState()
+    val isRecruitScrollable = remember { derivedStateOf { !listState.canScrollForward || recruitScrollState.value != 0 } }
+
+    val eventsScrollState = rememberScrollState()
+    val isEventsScrollable = remember { derivedStateOf { !listState.canScrollForward || eventsScrollState.value != 0 } }
+
     val qnaScrollState = rememberScrollState()
     val isQnaScrollable = remember { derivedStateOf { !listState.canScrollForward || qnaScrollState.value != 0 } }
 
@@ -377,6 +383,14 @@ fun ClubDetail(
                 descriptionTextAlign = TextAlign.Center,
                 positiveButtonColors = FilledButtonColors.Primary,
                 onPositive = {
+                    EventLogger.logCampusClickEvent(
+                        if (isSubscribed) {
+                            AnalyticsConstant.Label.Club.CLUB_RECRUITMENT_CANCEL
+                        } else {
+                            AnalyticsConstant.Label.Club.CLUB_RECRUITMENT_ACCEPT
+                        },
+                        state.clubDetails?.name ?: "알 수 없는 동아리"
+                    )
                     viewModel.updateRecruitSubscribeDialog(false)
                     viewModel.changeClubRecruitmentSubscribe()
                 },
@@ -568,7 +582,7 @@ fun ClubDetail(
                             intro.second?.let {
                                 when (intro.first) {
                                     DETAIL_DESCRIPTION -> {
-                                        outputText = "${stringResource(intro.first.strResId)}$it"
+                                        outputText = stringResource(intro.first.strResId, it)
                                         onClick = { showMore.value = !showMore.value }
                                     }
                                     DETAIL_INSTAGRAM -> {
@@ -646,6 +660,10 @@ fun ClubDetail(
                                         .size(24.dp)
                                         .padding(end = 4.dp)
                                         .clickable {
+                                            EventLogger.logCampusClickEvent(
+                                                AnalyticsConstant.Label.Club.CLUB_RECRUITMENT_NOTI,
+                                                state.clubDetails?.name ?: "알 수 없는 동아리"
+                                            )
                                             state.userId?.let {
                                                 viewModel.updateRecruitSubscribeDialog(true)
                                             } ?: viewModel.showLoginDialog()
@@ -732,6 +750,9 @@ fun ClubDetail(
                         }
                         DetailTabType.RECRUIT.strResId -> {
                             ClubDetailRecruit(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .verticalScroll(recruitScrollState, enabled = isRecruitScrollable.value),
                                 recruitment = state.clubRecruitment,
                                 showProgressBar = state.showRecruitProgressBar,
                                 onImageClick = viewModel::showImageDialog,
@@ -744,7 +765,12 @@ fun ClubDetail(
                         DetailTabType.EVENT.strResId -> {
                             if (state.clubEventSelected && state.selectedEventIndex != -1) {
                                 val selectedEvent = state.clubEvents[state.selectedEventIndex]
+                                val eventInfoScrollState = rememberScrollState()
+                                val isEventInfoScrollable = remember { derivedStateOf { !listState.canScrollForward || eventInfoScrollState.value != 0 } }
                                 ClubDetailEventInfo(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .verticalScroll(eventInfoScrollState, enabled = isEventInfoScrollable.value),
                                     clubEvent = selectedEvent,
                                     onBackPressed = viewModel::deselectEvent,
                                     onEventDeleteClick = {
@@ -760,6 +786,9 @@ fun ClubDetail(
                                 )
                             } else {
                                 ClubDetailEvents(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .verticalScroll(eventsScrollState, enabled = isEventsScrollable.value),
                                     isDropdownExpanded = state.isEventsDropdownExpanded,
                                     clubEvents = state.clubEvents,
                                     onDropdownExpandChange = viewModel::updateEventsDropdownExpanded,

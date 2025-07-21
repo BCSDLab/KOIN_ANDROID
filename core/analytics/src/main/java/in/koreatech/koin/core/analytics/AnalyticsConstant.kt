@@ -151,6 +151,9 @@ object AnalyticsConstant {
             const val CLUB_TAB_SELECT = "club_tab_select"
             const val CLUB_INTRODUCTION_LIKE = "club_introduction_like"
             const val CLUB_INTRODUCTION_LIKE_CANCEL = "club_introduction_like_cancel"
+            const val CLUB_RECRUITMENT_NOTI = "club_recruitment_noti"
+            const val CLUB_RECRUITMENT_ACCEPT = "club_recruitment_accept"
+            const val CLUB_RECRUITMENT_CANCEL = "club_recruitment_cancel"
         }
     }
 
