@@ -40,7 +40,7 @@ class StoreDetailViewModel @Inject constructor(
 ) : ViewModel(), ContainerHost<StoreDetailState, StoreDetailSideEffect> {
     override val container =
         container<StoreDetailState, StoreDetailSideEffect>(StoreDetailState()) {
-            val storeId = 11 // savedStateHandle.get<Int>(STORE_ID)
+            val storeId = savedStateHandle.get<Int>(STORE_ID)
             val orderableStoreId = savedStateHandle.get<Int>(ORDERABLE_STORE_ID)
             checkNotNull(storeId)
 

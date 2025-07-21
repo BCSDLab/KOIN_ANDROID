@@ -184,7 +184,7 @@ fun DeliveryFeeTable(
                 } else {
                     stringResource(id = R.string.fee_range_start, fee.fromAmount ?: 0)
                 },
-                value = stringResource(id = R.string.price_with_won, fee.fee.toString())
+                value = stringResource(id = R.string.price_with_won, fee.fee ?: 0)
             )
             HorizontalDivider(color = Color.LightGray)
         }
@@ -209,7 +209,7 @@ fun DeliveryFeeRow(
 
 @Preview(showBackground = true)
 @Composable
-fun ShopOriginInfoScreenPreview() {
+private fun ShopOriginInfoScreenPreview() {
     ShopOriginInfoScreen(
         onBackClick = {},
         navigateToShoppingCart = {},
