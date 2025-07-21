@@ -103,7 +103,7 @@ fun StoreNearbyScreen(
             title = if (uiState.showSearch) {
                 stringResource(R.string.store_title_home_search)
             } else {
-                stringResource(R.string.store_title_home_order)
+                stringResource(R.string.store_title_home_nearby)
             },
             onNavigationIconClick = {
                 if (uiState.showSearch) {

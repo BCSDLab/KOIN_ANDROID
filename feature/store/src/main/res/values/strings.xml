@@ -53,6 +53,7 @@
     <string name="store_navigation_bar_order_history">주문내역</string>
 
     <string name="store_title_home_order">주문</string>
+    <string name="store_title_home_nearby">주변상점</string>
     <string name="store_title_home_search">검색</string>
 
     <string name="store_order_option_none">기본순</string>
