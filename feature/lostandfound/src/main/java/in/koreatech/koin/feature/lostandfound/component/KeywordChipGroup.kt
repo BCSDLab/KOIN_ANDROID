@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -157,8 +159,8 @@ internal fun LostAndFoundTextChipScrollGroup(
 @Composable
 fun LostAndFoundTextChip(
     title: String,
-    textStyle: TextStyle = KoinTheme.typography.medium14,
     modifier: Modifier = Modifier,
+    textStyle: TextStyle = KoinTheme.typography.medium14,
     isSelected: Boolean = false,
     shape: Shape = RoundedCornerShape(50),
     showClickRipple: Boolean = true,
@@ -166,30 +168,33 @@ fun LostAndFoundTextChip(
     chipColors: TextChipColors = TextChipDefaults.chipColors(),
     onSelect: () -> Unit = {}
 ) {
-    Box(
-        modifier =
-        modifier
-            .clip(shape)
-            .then(
-                if (showClickRipple) {
-                    Modifier.clickable {
-                        onSelect()
-                    }
-                } else {
-                    Modifier.noRippleClickable {
-                        onSelect()
-                    }
-                }
-            )
-            .background(if (isSelected) chipColors.selectedContainerColor else chipColors.unselectedContainerColor)
-            .padding(contentPadding),
-        contentAlignment = Alignment.Center
+    CompositionLocalProvider(
+        LocalTextStyle provides textStyle
     ) {
-        Text(
-            text = title,
-            style = textStyle,
-            color = if (isSelected) chipColors.selectedContentColor else chipColors.unselectedContentColor
-        )
+        Box(
+            modifier = modifier
+                .clip(shape)
+                .then(
+                    if (showClickRipple) {
+                        Modifier.clickable {
+                            onSelect()
+                        }
+                    } else {
+                        Modifier.noRippleClickable {
+                            onSelect()
+                        }
+                    }
+                )
+                .background(if (isSelected) chipColors.selectedContainerColor else chipColors.unselectedContainerColor)
+                .padding(contentPadding),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = title,
+                style = LocalTextStyle.current,
+                color = if (isSelected) chipColors.selectedContentColor else chipColors.unselectedContentColor
+            )
+        }
     }
 }
 
