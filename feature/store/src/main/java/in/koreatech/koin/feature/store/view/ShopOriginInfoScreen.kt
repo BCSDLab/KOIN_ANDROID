@@ -170,7 +170,7 @@ fun ShopOriginInfoScreen(
 @Composable
 fun DeliveryFeeTable(
     deliveryFees: List<DeliveryTipModel>,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
