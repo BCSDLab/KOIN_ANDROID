@@ -44,7 +44,7 @@
     <string name="store_quantity_minus">감소</string>
     <string name="store_quantity_plus">증가</string>
 
-    <string name="filter_badge_pickup_available">픽업 서비스</string>
+    <string name="filter_badge_pickup_available">픽업가능</string>
     <string name="filter_badge_delivery_available">배달비 무료</string>
     <string name="filter_badge_service">서비스 증정</string>
 

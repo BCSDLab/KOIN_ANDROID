@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.view.main.home
+package `in`.koreatech.koin.feature.store.view.main.nearby
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -52,7 +52,6 @@ import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreCard
 import `in`.koreatech.koin.feature.store.component.KoinStoreCategoryItem
 import `in`.koreatech.koin.feature.store.component.KoinStoreFilterChip
-import `in`.koreatech.koin.feature.store.component.KoinStoreMinimumPriceChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreOrderChip
 import `in`.koreatech.koin.feature.store.component.MinOrderSliderBottomSheet
 import `in`.koreatech.koin.feature.store.component.SearchBar
@@ -62,7 +61,6 @@ import `in`.koreatech.koin.feature.store.enums.MinimumPriceOption
 import `in`.koreatech.koin.feature.store.enums.OrderOption
 import `in`.koreatech.koin.feature.store.enums.StoreFilter
 import `in`.koreatech.koin.feature.store.enums.minimumPriceOptions
-import `in`.koreatech.koin.feature.store.enums.storeFilters
 import `in`.koreatech.koin.feature.store.model.LocalShop
 import `in`.koreatech.koin.feature.store.model.LocalStoreCategories
 import kotlinx.coroutines.flow.combine
@@ -70,10 +68,10 @@ import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StoreHomeScreen(
+fun StoreNearbyScreen(
     modifier: Modifier = Modifier,
     categoryId: Int = 1,
-    viewModel: StoreHomeViewModel = hiltViewModel(),
+    viewModel: StoreNearbyViewModel = hiltViewModel(),
     navigateToDetail: (Int) -> Unit = { },
     navigateToCart: () -> Unit = { },
     onBackPressed: () -> Unit = { }
@@ -252,7 +250,7 @@ private fun StoreHomeScreen(
 
                 Spacer(modifier = Modifier.width(8.dp))
 
-                storeFilters.forEach {
+                StoreFilter.IS_OPEN.let {
                     KoinStoreFilterChip(
                         modifier = Modifier.fillMaxHeight(),
                         text = stringResource(it.stringResId),
@@ -263,12 +261,6 @@ private fun StoreHomeScreen(
                         }
                     )
                 }
-
-                KoinStoreMinimumPriceChip(
-                    modifier = Modifier.fillMaxHeight(),
-                    minimumPrice = selectedMinimumPriceOption.price,
-                    onClick = { onShowMinimumPriceOptionsChange(true) }
-                )
 
                 Spacer(modifier = Modifier.width(16.dp))
             }

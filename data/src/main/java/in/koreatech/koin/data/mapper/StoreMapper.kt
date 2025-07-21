@@ -380,6 +380,7 @@ fun ShopResponse.toShop() = Shop(
     name = name,
     isDeliveryAvailable = isDeliveryAvailable,
     isTakeoutAvailable = isTakeoutAvailable,
+    serviceEvent = serviceEvent,
     minimumOrderAmount = minimumOrderAmount,
     ratingAverage = ratingAverage,
     reviewCount = reviewCount,

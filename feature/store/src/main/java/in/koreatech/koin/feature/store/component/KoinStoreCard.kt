@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.store.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.CircularProgressIndicator
@@ -149,6 +151,7 @@ fun KoinStoreCard(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Row(
+                        modifier = Modifier.horizontalScroll(rememberScrollState()),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
@@ -156,7 +159,7 @@ fun KoinStoreCard(
                             Box(
                                 modifier = Modifier
                                     .background(Color(0xFFF2F2F2), shape = CircleShape)
-                                    .padding(horizontal = 10.dp, vertical = 2.dp)
+                                    .padding(horizontal = 10.dp, vertical = 4.dp)
                             ) {
                                 BasicText(
                                     text = stringResource(badge.stringResId),
