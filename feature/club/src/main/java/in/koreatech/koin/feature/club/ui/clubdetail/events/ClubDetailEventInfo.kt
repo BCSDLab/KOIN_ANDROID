@@ -10,12 +10,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -28,12 +31,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -102,13 +108,48 @@ fun ClubDetailEventInfo(
             }
         }
         Column {
-            Text(
-                text = clubEvent.name,
-                style = KoinTheme.typography.bold20,
-                color = KoinTheme.colors.primary600,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
+            Row (
+                modifier = Modifier.wrapContentWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    modifier = Modifier.weight(1f, fill = false),
+                    text = clubEvent.name,
+                    style = KoinTheme.typography.bold20,
+                    color = KoinTheme.colors.primary600,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                val stateColor = when (clubEvent.status) {
+                    EventStatus.SOON -> KoinTheme.colors.primary400
+                    EventStatus.ONGOING -> KoinTheme.colors.primary300
+                    EventStatus.UPCOMING -> KoinTheme.colors.primary500
+                    EventStatus.ENDED -> KoinTheme.colors.primary500
+                    else -> KoinTheme.colors.primary400
+                }
+                Row(
+                    modifier = Modifier
+                        .background(color = stateColor, shape = KoinTheme.shapes.extraLarge)
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(clubEvent.status.strRes),
+                        style = KoinTheme.typography.regular10.copy(fontSize = 11.sp),
+                        color = KoinTheme.colors.neutral0,
+                        maxLines = 1
+                    )
+                    if (clubEvent.status == EventStatus.UPCOMING) {
+                        Spacer(Modifier.width(8.dp))
+                        Image(
+                            modifier = Modifier.size(15.dp),
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_club_event_bell),
+                            contentDescription = null
+                        )
+                    }
+                }
+            }
             Text(
                 text = stringResource(
                     R.string.club_event_period,
