@@ -177,7 +177,6 @@ private fun KoinStoreBannerItem(
             )
         }
 
-
         Row(
             modifier = Modifier
                 .padding(vertical = 12.dp, horizontal = 20.dp)
@@ -186,11 +185,11 @@ private fun KoinStoreBannerItem(
         ) {
             Image(
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_store_banner_left),
-                contentDescription = null,
+                contentDescription = null
             )
 
             Text(
-                text = "${currentIndex}/${totalIndex}",
+                text = "$currentIndex/$totalIndex",
                 style = KoinTheme.typography.regular10.copy(
                     color = RebrandKoinTheme.colors.neutral0
                 )
@@ -198,7 +197,7 @@ private fun KoinStoreBannerItem(
 
             Image(
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_store_banner_right),
-                contentDescription = null,
+                contentDescription = null
             )
         }
     }
@@ -303,7 +302,6 @@ fun koinStoreBannerItemColors(
             chipTextColor = Color(0xFF3A3A3A)
         )
     }
-
 }
 
 @Immutable
@@ -340,7 +338,7 @@ private fun KoinStoreBannerPreview() {
                     category = BannerCategory.CHINESE
                 )
             ),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
