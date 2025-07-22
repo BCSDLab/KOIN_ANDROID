@@ -55,7 +55,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
-import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
@@ -253,13 +252,11 @@ fun ClubEventCreateScreenImpl(
             negativeButtonText = stringResource(R.string.club_recruit_create_request_dialog_negative),
             titleTextAlign = TextAlign.Center,
             descriptionTextAlign = TextAlign.Center,
-            positiveButtonColors = FilledButtonColors.Primary,
             onPositive = {
                 updateCreateRequestDialog(false)
                 createEvent()
             },
-            onNegative = { updateCreateRequestDialog(false) },
-            onDismiss = { updateCreateRequestDialog(false) }
+            onNegative = { updateCreateRequestDialog(false) }
         )
     }
 
@@ -277,8 +274,7 @@ fun ClubEventCreateScreenImpl(
                 updateCreateCancelDialog(false)
                 createEventCancel()
             },
-            onNegative = { updateCreateCancelDialog(false) },
-            onDismiss = { updateCreateCancelDialog(false) }
+            onNegative = { updateCreateCancelDialog(false) }
         )
     }
 

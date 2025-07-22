@@ -24,83 +24,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
-import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
-import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButtonColors
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun KoinClubExtraSmallDialog(
-    title: String,
-    description: String,
-    modifier: Modifier = Modifier,
-    titleColor: Color = KoinClubExtraSmallDialogDefaults.textColor,
-    descriptionColor: Color = KoinClubExtraSmallDialogDefaults.textColor,
-    titleStyle: TextStyle = KoinClubExtraSmallDialogDefaults.titleStyle,
-    descriptionStyle: TextStyle = KoinClubExtraSmallDialogDefaults.descriptionStyle,
-    titleTextAlign: TextAlign = KoinClubExtraSmallDialogDefaults.textAlign,
-    descriptionTextAlign: TextAlign = KoinClubExtraSmallDialogDefaults.textAlign,
-    positiveButtonText: String = stringResource(id = R.string.club_dialog_ok),
-    negativeButtonText: String = stringResource(id = R.string.club_dialog_cancel),
-    positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
-    negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Primary,
-    onPositive: () -> Unit = {},
-    onNegative: () -> Unit = {},
-    onDismiss: () -> Unit = {}
-) {
-    BasicAlertDialog(
-        modifier =
-        modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .background(
-                color = KoinTheme.colors.neutral0,
-                shape = KoinTheme.shapes.extraSmall
-            )
-            .padding(horizontal = 32.dp, vertical = 24.dp),
-        onDismissRequest = { onDismiss() }
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (title.isNotEmpty()) {
-                Text(
-                    text = title,
-                    style = titleStyle,
-                    color = titleColor,
-                    textAlign = titleTextAlign
-                )
-            }
-            Text(
-                text = description,
-                style = descriptionStyle,
-                color = descriptionColor,
-                textAlign = descriptionTextAlign
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                OutlinedBoxButton(
-                    modifier = Modifier.weight(1.0F),
-                    text = negativeButtonText,
-                    onClick = onNegative,
-                    colors = negativeButtonColors,
-                    contentPadding = PaddingValues(vertical = 12.dp)
-                )
-                FilledButton(
-                    modifier = Modifier.weight(1.0F),
-                    text = positiveButtonText,
-                    onClick = onPositive,
-                    colors = positiveButtonColors,
-                    contentPadding = PaddingValues(vertical = 12.dp)
-                )
-            }
-        }
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -120,7 +46,7 @@ fun KoinClubExtraSmallDialog(
     negativeButtonColors: ButtonColors = KoinClubExtraSmallDialogDefaults.negativeButtonColors(),
     onPositive: () -> Unit = {},
     onNegative: () -> Unit = {},
-    onDismiss: () -> Unit = {}
+    onDismiss: () -> Unit = onNegative
 ) {
     BasicAlertDialog(
         modifier =
@@ -185,35 +111,25 @@ object KoinClubExtraSmallDialogDefaults {
     val textAlign @Composable get() = TextAlign.Start
 
     @Composable
-    fun positiveButtonColors(
-        containerColor: Color = KoinTheme.colors.primary500,
-        contentColor: Color = KoinTheme.colors.neutral0,
-        disabledContainerColor: Color = KoinTheme.colors.neutral300,
-        disabledContentColor: Color = KoinTheme.colors.neutral600
-    ) = ButtonColors(
-        containerColor = containerColor,
-        contentColor = contentColor,
-        disabledContainerColor = disabledContainerColor,
-        disabledContentColor = disabledContentColor
+    fun positiveButtonColors() = ButtonColors(
+        containerColor = KoinTheme.colors.primary500,
+        contentColor = KoinTheme.colors.neutral0,
+        disabledContainerColor = KoinTheme.colors.neutral300,
+        disabledContentColor = KoinTheme.colors.neutral600
     )
 
     @Composable
-    fun negativeButtonColors(
-        containerColor: Color = KoinTheme.colors.neutral0,
-        contentColor: Color = KoinTheme.colors.neutral500,
-        disabledContainerColor: Color = KoinTheme.colors.neutral400,
-        disabledContentColor: Color = KoinTheme.colors.neutral500
-    ) = ButtonColors(
-        containerColor = containerColor,
-        contentColor = contentColor,
-        disabledContainerColor = disabledContainerColor,
-        disabledContentColor = disabledContentColor
+    fun negativeButtonColors() = ButtonColors(
+        containerColor = KoinTheme.colors.neutral0,
+        contentColor = KoinTheme.colors.neutral500,
+        disabledContainerColor = KoinTheme.colors.neutral400,
+        disabledContentColor = KoinTheme.colors.neutral500
     )
 }
 
 object KoinClubExtraSmallDialogDanger {
     @Composable
-    fun positiveButtonColors() = KoinClubExtraSmallDialogDefaults.positiveButtonColors(
+    fun positiveButtonColors() = ButtonColors(
         containerColor = KoinTheme.colors.danger500,
         contentColor = KoinTheme.colors.neutral0,
         disabledContainerColor = KoinTheme.colors.neutral300,

@@ -51,7 +51,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
-import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
@@ -194,13 +193,11 @@ fun ClubRecruitCreateScreenImpl(
             negativeButtonText = stringResource(R.string.club_recruit_create_request_dialog_negative),
             titleTextAlign = TextAlign.Center,
             descriptionTextAlign = TextAlign.Center,
-            positiveButtonColors = FilledButtonColors.Primary,
             onPositive = {
                 dismissCreateRequestDialog()
                 createRecruitment(recruitDescriptionText)
             },
-            onNegative = dismissCreateRequestDialog,
-            onDismiss = dismissCreateRequestDialog
+            onNegative = dismissCreateRequestDialog
         )
     }
 
@@ -218,8 +215,7 @@ fun ClubRecruitCreateScreenImpl(
                 dismissCreateCancelDialog()
                 createRecruitmentCancel()
             },
-            onNegative = dismissCreateCancelDialog,
-            onDismiss = dismissCreateCancelDialog
+            onNegative = dismissCreateCancelDialog
         )
     }
 

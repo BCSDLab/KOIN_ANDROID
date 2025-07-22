@@ -108,7 +108,7 @@ fun ClubDetailEventInfo(
             }
         }
         Column {
-            Row (
+            Row(
                 modifier = Modifier.wrapContentWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
