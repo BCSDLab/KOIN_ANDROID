@@ -186,7 +186,7 @@ fun ClubEventCreateScreenImpl(
     val textFieldMinLines = 1
     val nameTextFieldMaxLength = 30
     val introTextFieldMaxLength = 70
-    val contentTextFieldMaxLength = 255
+    val contentTextFieldMaxLength = 1500
     val contentTextFieldMaxLines = 2
 
     val pickMultipleMedia = pickMultipleMedia(

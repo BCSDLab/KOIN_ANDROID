@@ -167,7 +167,7 @@ fun ClubRecruitCreateScreenImpl(
     )
 
     val textFieldMinLines = 2
-    val textFieldMaxLength = 255
+    val textFieldMaxLength = 1500
 
     if (showDatePickerDialogState) {
         KoinClubDatePickerDialog(
