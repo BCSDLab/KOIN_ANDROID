@@ -109,6 +109,6 @@ internal class StorePaymentWebViewClient(private val tokens: Tokens) : KoinWebAp
         super.onPageFinished(view, url)
 
         view?.evaluateJavascript("localStorage.removeItem('refresh-token-storage');", null)
-        view?.evaluateJavascript("localStorage.setItem('refresh-token-storage','{\"state\":{\"refreshToken\":\"${tokens.refreshToken}\",\"userType\":\"${tokens.userType}\"},\"version\":0}');", null);
+        view?.evaluateJavascript("localStorage.setItem('refresh-token-storage','{\"state\":{\"refreshToken\":\"${tokens.refreshToken}\",\"userType\":\"${tokens.userType}\"},\"version\":0}');", null)
     }
 }

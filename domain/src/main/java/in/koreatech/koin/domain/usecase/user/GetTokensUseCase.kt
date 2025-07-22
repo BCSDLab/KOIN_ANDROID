@@ -10,7 +10,7 @@ import javax.inject.Inject
 class GetTokensUseCase @Inject constructor(
     private val tokenRepository: TokenRepository,
     private val userRepository: UserRepository
-    ) {
+) {
     suspend operator fun invoke(): AuthToken {
         val accessToken = tokenRepository.getAccessToken() ?: ""
         val refreshToken = tokenRepository.getRefreshToken() ?: ""
