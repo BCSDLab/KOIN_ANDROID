@@ -17,5 +17,7 @@ data class ClubListState(
     val shouldShowLoginDialog: Boolean = false,
     val clubs: List<ParcelizeClubItem> = emptyList(),
     val searchKeyword: String = "",
-    val isAnonymous: Boolean = true
+    val suggestions: List<String> = emptyList(),
+    val isAnonymous: Boolean = true,
+    val shouldExpandSearchBar: Boolean = false
 ) : Parcelable
