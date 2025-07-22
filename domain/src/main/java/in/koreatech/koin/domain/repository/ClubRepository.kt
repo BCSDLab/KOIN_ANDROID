@@ -6,6 +6,7 @@ import `in`.koreatech.koin.domain.model.club.ClubEvent
 import `in`.koreatech.koin.domain.model.club.ClubHot
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.domain.model.club.ClubRecruitment
+import `in`.koreatech.koin.domain.model.club.ClubSearch
 import `in`.koreatech.koin.domain.model.club.Clubs
 
 interface ClubRepository {
@@ -126,6 +127,10 @@ interface ClubRepository {
         clubId: Int,
         eventId: Int
     ): Result<ClubEvent>
+
+    suspend fun searchClubs(
+        query: String
+    ): Result<ClubSearch>
 
     suspend fun modifyClubEvent(
         clubId: Int,

@@ -7,6 +7,7 @@ import `in`.koreatech.koin.data.response.club.ClubHotResponse
 import `in`.koreatech.koin.data.response.club.ClubQnasResponse
 import `in`.koreatech.koin.data.response.club.ClubQnasResponse.QnaResponse
 import `in`.koreatech.koin.data.response.club.ClubRecruitmentResponse
+import `in`.koreatech.koin.data.response.club.ClubSearchResponse
 import `in`.koreatech.koin.data.response.club.ClubsResponse
 import `in`.koreatech.koin.domain.model.club.ClubCategories
 import `in`.koreatech.koin.domain.model.club.ClubDetails
@@ -15,6 +16,7 @@ import `in`.koreatech.koin.domain.model.club.ClubHot
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo.Qna
 import `in`.koreatech.koin.domain.model.club.ClubRecruitment
+import `in`.koreatech.koin.domain.model.club.ClubSearch
 import `in`.koreatech.koin.domain.model.club.Clubs
 
 fun ClubCategoriesResponse.toClubCategories() = ClubCategories(
@@ -122,4 +124,13 @@ fun ClubEventResponse.toClubEvent() = ClubEvent(
     content,
     status,
     isSubscribed
+)
+
+fun ClubSearchResponse.toClubSearch() = ClubSearch(
+    keywords = keywords.map { it.toClubSearchItem() }
+)
+
+fun ClubSearchResponse.ClubSearchItemResponse.toClubSearchItem() = ClubSearch.ClubSearchItem(
+    clubId = clubId,
+    clubName = clubName
 )
