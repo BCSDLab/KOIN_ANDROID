@@ -85,7 +85,11 @@ fun KoinStoreCard(
                     .crossfade(true)
                     .build(),
                 loading = {
-                    CircularProgressIndicator()
+                    Box(
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
                 },
                 contentScale = ContentScale.Fit,
                 contentDescription = null,
