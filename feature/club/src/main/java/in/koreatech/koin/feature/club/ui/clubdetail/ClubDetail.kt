@@ -66,7 +66,6 @@ import coil.request.ImageRequest
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
-import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -86,7 +85,6 @@ import `in`.koreatech.koin.domain.util.ext.toInstagramUrl
 import `in`.koreatech.koin.feature.club.BuildConfig
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
-import `in`.koreatech.koin.feature.club.component.DetailLoginDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_CATEGORY
@@ -263,9 +261,10 @@ fun ClubDetail(
         }
 
         if (state.showLoginDialog) {
-            DetailLoginDialog(
+            KoinClubExtraSmallDialog(
                 title = stringResource(R.string.detail_dialog_login_title),
                 description = stringResource(R.string.detail_dialog_login_description),
+                positiveButtonText = stringResource(id = R.string.detail_dialog_login_positive),
                 onPositive = {
                     viewModel.dismissLoginDialog()
                     viewModel.openUrl(LOGIN_ACTIVITY_URL)
@@ -348,8 +347,7 @@ fun ClubDetail(
                     viewModel.dismissRecruitDeleteDialog()
                     viewModel.deleteRecruitment()
                 },
-                onNegative = viewModel::dismissRecruitDeleteDialog,
-                onDismiss = viewModel::dismissRecruitDeleteDialog
+                onNegative = viewModel::dismissRecruitDeleteDialog
             )
         }
 
@@ -367,8 +365,7 @@ fun ClubDetail(
                     viewModel.updateEventsDeleteDialog(false)
                     viewModel.deleteClubEvent(state.clubEvents[state.selectedEventIndex].id)
                 },
-                onNegative = { viewModel.updateEventsDeleteDialog(false) },
-                onDismiss = { viewModel.updateEventsDeleteDialog(false) }
+                onNegative = { viewModel.updateEventsDeleteDialog(false) }
             )
         }
 
@@ -383,7 +380,6 @@ fun ClubDetail(
                 negativeButtonText = stringResource(if (isSubscribed) R.string.detail_dialog_recruit_unsubscribe_negative else R.string.detail_dialog_recruit_subscribe_negative),
                 titleTextAlign = TextAlign.Center,
                 descriptionTextAlign = TextAlign.Center,
-                positiveButtonColors = FilledButtonColors.Primary,
                 onPositive = {
                     EventLogger.logCampusClickEvent(
                         if (isSubscribed) {
@@ -396,8 +392,7 @@ fun ClubDetail(
                     viewModel.updateRecruitSubscribeDialog(false)
                     viewModel.changeClubRecruitmentSubscribe()
                 },
-                onNegative = { viewModel.updateRecruitSubscribeDialog(false) },
-                onDismiss = { viewModel.updateRecruitSubscribeDialog(false) }
+                onNegative = { viewModel.updateRecruitSubscribeDialog(false) }
             )
         }
 
@@ -412,13 +407,11 @@ fun ClubDetail(
                 negativeButtonText = stringResource(if (isSubscribed) R.string.detail_dialog_recruit_unsubscribe_negative else R.string.detail_dialog_recruit_subscribe_negative),
                 titleTextAlign = TextAlign.Center,
                 descriptionTextAlign = TextAlign.Center,
-                positiveButtonColors = FilledButtonColors.Primary,
                 onPositive = {
                     viewModel.updateEventSubscribeDialog(false)
                     viewModel.changeClubEventSubscribe()
                 },
-                onNegative = { viewModel.updateEventSubscribeDialog(false) },
-                onDismiss = { viewModel.updateEventSubscribeDialog(false) }
+                onNegative = { viewModel.updateEventSubscribeDialog(false) }
             )
         }
 

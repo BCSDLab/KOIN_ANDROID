@@ -53,9 +53,9 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.constant.LOGIN_ACTIVITY_URL
 import `in`.koreatech.koin.feature.club.R
-import `in`.koreatech.koin.feature.club.component.DetailLoginDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubCategoryItem
 import `in`.koreatech.koin.feature.club.component.KoinClubDropdown
+import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubListItem
 import `in`.koreatech.koin.feature.club.component.KoinClubMessageDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubSearchBar
@@ -246,9 +246,10 @@ fun ClubListScreenImpl(
     }
 
     if (shouldShowLoginDialog) {
-        DetailLoginDialog(
+        KoinClubExtraSmallDialog(
             title = stringResource(R.string.detail_dialog_login_title),
             description = stringResource(R.string.detail_dialog_login_description),
+            positiveButtonText = stringResource(id = R.string.detail_dialog_login_positive),
             onPositive = {
                 navigateToLogin()
                 onShowLoginDialogChange(false)
