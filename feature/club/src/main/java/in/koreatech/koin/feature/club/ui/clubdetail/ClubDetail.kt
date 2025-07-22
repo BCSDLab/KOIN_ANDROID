@@ -598,7 +598,7 @@ fun ClubDetail(
                                         val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
                                         linkUrl = if (url.isValidGoogleFormUrl()) url else ""
                                         onClick = { viewModel.openUrl(linkUrl) }
-                                        outputText = it.removeUrlScheme()
+                                        outputText = it.removeUrlScheme().let { text -> if (text.length <= 22) text else "${text.take(22)}..." }
                                         icon = R.drawable.icon_club_copy
                                         onIconClick = { clipboard.setText(AnnotatedString(linkUrl)) }
                                     }
