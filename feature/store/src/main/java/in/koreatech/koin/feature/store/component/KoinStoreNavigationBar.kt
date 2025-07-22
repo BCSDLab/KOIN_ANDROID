@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.store.component
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
@@ -31,6 +33,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 @Composable
 fun KoinStoreNavigationBar(
     modifier: Modifier = Modifier,
+    backgroundColor: Color = RebrandKoinTheme.colors.neutral0,
     windowInsets: WindowInsets = WindowInsets.systemBars.only(
         WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
     ),
@@ -39,6 +42,7 @@ fun KoinStoreNavigationBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .background(backgroundColor)
             .windowInsetsPadding(windowInsets)
             .consumeWindowInsets(windowInsets)
             .selectableGroup(),
