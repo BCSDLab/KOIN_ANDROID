@@ -183,8 +183,9 @@ fun ClubEventCreateScreenImpl(
     var isStartDateSelected by remember { mutableStateOf(true) }
 
     val textFieldMinLines = 1
-    val textFieldMaxLength = 255
+    val nameTextFieldMaxLength = 30
     val introTextFieldMaxLength = 70
+    val contentTextFieldMaxLength = 255
     val contentTextFieldMaxLines = 2
 
     val pickMultipleMedia = pickMultipleMedia(
@@ -381,7 +382,7 @@ fun ClubEventCreateScreenImpl(
                     modifier = Modifier
                         .weight(1f),
                     minLines = textFieldMinLines,
-                    maxLength = textFieldMaxLength,
+                    maxLength = nameTextFieldMaxLength,
                     borderColor = if (eventNameRequired) KoinTheme.colors.sub500 else KoinTheme.colors.neutral100,
                     hint = stringResource(R.string.club_event_create_name_hint)
                 )
@@ -516,7 +517,7 @@ fun ClubEventCreateScreenImpl(
                 modifier = Modifier
                     .fillMaxWidth(),
                 minLines = contentTextFieldMaxLines,
-                maxLength = textFieldMaxLength,
+                maxLength = contentTextFieldMaxLength,
                 hint = stringResource(R.string.club_event_create_content_hint)
             )
         }
