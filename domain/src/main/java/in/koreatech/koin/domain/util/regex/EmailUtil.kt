@@ -21,7 +21,7 @@ class EmailUtil {
 }
 
 fun String.isOwnerEmailValid(): Boolean {
-    val emailRegex = "^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$"
+    val emailRegex = """^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+${'$'}"""
     return this.matches(emailRegex.toRegex())
 }
 

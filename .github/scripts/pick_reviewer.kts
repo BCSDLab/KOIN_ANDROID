@@ -39,7 +39,7 @@ val reviewerPair = listOf(
 /**
  * Regex to extract the team from the pull request title.
  */
-val titleRegex = Regex("(?<=\\[)(user|campus|business)(?=\\])")
+val titleRegex = Regex("""(?<=\[)(user|campus|business)(?=\])""")
 
 /**
  * Export the reviewer name to GitHub Actions output.

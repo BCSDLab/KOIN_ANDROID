@@ -26,6 +26,6 @@ fun Int.formatTime(): String {
     return String.format("%02d:%02d", minute, second)
 }
 
-fun String.formatPhoneNumber(): String = this.replace(Regex("(\\d{3})-?(\\d{4})-?(\\d{4})"), "$1-$2-$3")
+fun String.formatPhoneNumber(): String = this.replace(Regex("""(010)-?(\d{4})-?(\d{4})"""), "$1-$2-$3")
 
-fun String.formatBusinessNumber(): String = this.replace(Regex("(\\d{3})(\\d{2})(\\d{5})"), "$1-$2-$3")
+fun String.formatBusinessNumber(): String = this.replace(Regex("""(\d{3})(\d{2})(\d{5})"""), "$1-$2-$3")

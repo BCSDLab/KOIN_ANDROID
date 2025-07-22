@@ -20,15 +20,15 @@ fun String.isNotBusinessValidEmail() = !isBusinessValidEmail()
 
 fun String.isNotValidPassword() = !isValidPassword()
 
-fun String.isValidUrlScheme(): Boolean = this.matches(Regex("^https?://.*"))
+fun String.isValidUrlScheme(): Boolean = this.matches(Regex("""^https?://.*"""))
 
 fun String.isValidLoginId(): Boolean = this.matches(Regex("""^[a-z0-9_.-]+${'$'}""")) && this.length in 5..13
 
-fun String.isValidInstagramUrl(): Boolean = this.matches(Regex("^https?://(www\\.|l\\.)?instagram\\.com/[a-zA-Z0-9]+.*"))
+fun String.isValidInstagramUrl(): Boolean = this.matches(Regex("""^https?://(www\.|l\.)?instagram\.com/[a-zA-Z0-9].*"""))
 
-fun String.isValidGoogleFormUrl(): Boolean = this.matches(Regex("^https?://(docs\\.google\\.com/forms|forms\\.gle)/[a-zA-Z0-9]+.*"))
+fun String.isValidGoogleFormUrl(): Boolean = this.matches(Regex("""^https?://(docs\.google\.com/forms|forms\.gle)/[a-zA-Z0-9].*"""))
 
-fun String.isValidOpenChatUrl(): Boolean = this.matches(Regex("^https?://open\\.kakao\\.com/[a-zA-Z0-9]+.*"))
+fun String.isValidOpenChatUrl(): Boolean = this.matches(Regex("""^https?://open\.kakao\.com/[a-zA-Z0-9].*"""))
 
 val String.isValidStudentId: Boolean
     get() {
@@ -41,7 +41,7 @@ val String.isValidStudentId: Boolean
     }
 
 val String.isValidPhoneNumber: Boolean get() =
-    this.trim().matches(Regex("""^(01[016789]{1})-?([0-9]{3,4})-?([0-9]{4})$"""))
+    this.trim().matches(Regex("""^(010)-?(\d{4})-?(\d{4})$"""))
 
 fun String.isValidName(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$"""))
 
