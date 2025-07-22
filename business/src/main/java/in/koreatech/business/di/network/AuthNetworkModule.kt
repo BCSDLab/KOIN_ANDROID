@@ -127,7 +127,6 @@ object AuthNetworkModule {
     fun provideStoreAuthApi(@Auth retrofit: Retrofit): StoreAuthApi {
         return retrofit.create(StoreAuthApi::class.java)
     }
-
 }
 
 @Module
