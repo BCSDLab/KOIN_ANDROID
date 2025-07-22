@@ -22,6 +22,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.CircularProgressIndicator
@@ -183,6 +184,13 @@ private fun StoreHomeScreen(
     onShowMinimumPriceOptionsChange: (Boolean) -> Unit = { }
 ) {
     val context = LocalContext.current
+    val categoryListState = rememberLazyListState()
+
+    LaunchedEffect(categoryId) {
+        if (categoryId != -1) {
+            categoryListState.scrollToItem(storeCategories.map { it.id }.indexOf(categoryId))
+        }
+    }
 
     Box(
         modifier = modifier.fillMaxSize()
@@ -213,6 +221,7 @@ private fun StoreHomeScreen(
 
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
+                state = categoryListState,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 contentPadding = PaddingValues(horizontal = 24.dp)
@@ -223,10 +232,10 @@ private fun StoreHomeScreen(
                         categoryIcon = rememberAsyncImagePainter(
                             model = category.imageUrl
                         ),
-                        isSelected = index + 1 == categoryId,
+                        isSelected = storeCategories[index].id == categoryId,
                         onClick = {
-                            if (index + 1 == categoryId) return@KoinStoreCategoryItem
-                            onCategoryChange(index + 1) // Category IDs start from 1
+                            if (storeCategories[index].id == categoryId) return@KoinStoreCategoryItem
+                            onCategoryChange(storeCategories[index].id) // Category IDs start from 1
                         }
                     )
                 }
