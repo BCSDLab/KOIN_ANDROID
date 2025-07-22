@@ -579,6 +579,7 @@ fun ClubDetail(
                             var icon = -1
                             var onClick = {}
                             var onIconClick = {}
+                            val clipboard = LocalClipboardManager.current
                             intro.second?.let {
                                 when (intro.first) {
                                     DETAIL_DESCRIPTION -> {
@@ -590,13 +591,20 @@ fun ClubDetail(
                                         onClick = { viewModel.openUrl(linkUrl) }
                                         outputText = it.formatInstagramLinkForm()
                                     }
-                                    DETAIL_GOOGLE_FORM -> outputText = it.removePrefix(HTTPS_URL)
-                                    DETAIL_OPEN_CHAT -> outputText = it.removePrefix(HTTPS_URL)
+                                    DETAIL_GOOGLE_FORM -> {
+                                        outputText = it.removePrefix(HTTPS_URL)
+                                        icon = R.drawable.icon_club_copy
+                                        onIconClick = { clipboard.setText(AnnotatedString(it)) }
+                                    }
+                                    DETAIL_OPEN_CHAT -> {
+                                        outputText = it.removePrefix(HTTPS_URL)
+                                        icon = R.drawable.icon_club_copy
+                                        onIconClick = { clipboard.setText(AnnotatedString(it)) }
+                                    }
                                     DETAIL_PHONE_NUMBER -> {
                                         outputText = if (it.isValidPhoneNumber) it.formatPhoneNumber() else it
-                                        icon = R.drawable.icon_phonenumber_copy
-                                        val clipboard = LocalClipboardManager.current
-                                        onIconClick = { clipboard.setText(AnnotatedString(outputText)) }
+                                        icon = R.drawable.icon_club_copy
+                                        onIconClick = { clipboard.setText(AnnotatedString(it)) }
                                     }
                                     else -> outputText = it
                                 }
