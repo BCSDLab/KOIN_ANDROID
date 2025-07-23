@@ -85,6 +85,8 @@ class ClubRemoteDataSource @Inject constructor(
         eventId: Int
     ) = clubApi.getClubEvent(clubId, eventId)
 
+    suspend fun searchClubs(query: String) = clubApi.searchClubs(query)
+
     suspend fun modifyClubEvent(
         clubId: Int,
         eventId: Int,

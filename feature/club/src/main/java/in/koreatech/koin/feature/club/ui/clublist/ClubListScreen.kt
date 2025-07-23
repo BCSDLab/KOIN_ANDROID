@@ -110,7 +110,7 @@ fun ClubListScreen(
         snapshotFlow { uiState.searchKeyword }
             .debounce(300L)
             .collectLatest {
-                viewModel.getClubs()
+                viewModel.getSuggestion()
             }
     }
 
@@ -151,6 +151,8 @@ fun ClubListScreen(
             shouldShowLoginDialog = uiState.shouldShowLoginDialog,
             isAnonymous = uiState.isAnonymous,
             searchKeyword = uiState.searchKeyword,
+            searchSuggestions = uiState.suggestions,
+            shouldExpandSearchBar = uiState.shouldExpandSearchBar,
             isRecruiting = uiState.isRecruiting,
             modifier = Modifier.padding(innerPadding),
             onSearchKeywordChange = {
@@ -171,6 +173,8 @@ fun ClubListScreen(
             onShowClubCreateDialogChange = { shouldShow ->
                 viewModel.updateShowClubCreateDialog(shouldShow)
             },
+            onSearch = viewModel::searchClubs,
+            onExpandedSearchBarChange = viewModel::updateSearchBarExpand,
             navigateToClubDetail = navigateToClubDetail,
             onShowLoginDialogChange = { shouldShow ->
                 viewModel.updateShowLoginDialog(shouldShow)
@@ -202,6 +206,8 @@ fun ClubListScreenImpl(
     shouldShowLoginDialog: Boolean,
     isAnonymous: Boolean,
     searchKeyword: String,
+    searchSuggestions: List<String>,
+    shouldExpandSearchBar: Boolean,
     isRecruiting: Boolean,
     modifier: Modifier = Modifier,
     onSearchKeywordChange: (String) -> Unit = { },
@@ -213,6 +219,8 @@ fun ClubListScreenImpl(
     onShowLoginDialogChange: (Boolean) -> Unit = { _ -> },
     onLikeClick: (Int) -> Unit = { _ -> },
     onRecruitmentChange: (Boolean) -> Unit = { _ -> },
+    onSearch: (String) -> Unit = { },
+    onExpandedSearchBarChange: (Boolean) -> Unit = { _ -> },
     navigateToClubDetail: (Int) -> Unit = { _ -> },
     navigateToLogin: () -> Unit = { }
 ) {
@@ -322,9 +330,15 @@ fun ClubListScreenImpl(
         item {
             KoinClubSearchBar(
                 modifier = Modifier.padding(top = 16.dp),
+                suggestions = searchSuggestions,
+                expanded = shouldExpandSearchBar,
                 value = searchKeyword,
                 hint = stringResource(R.string.club_list_search_hint),
-                onValueChange = onSearchKeywordChange
+                onValueChange = onSearchKeywordChange,
+                onDismiss = {
+                    onExpandedSearchBarChange(false)
+                },
+                onSearch = onSearch
             )
         }
 
@@ -495,6 +509,8 @@ fun ClubListScreenPreview() {
         shouldShowLoginDialog = false,
         isAnonymous = true,
         searchKeyword = "",
-        isRecruiting = false
+        searchSuggestions = emptyList(),
+        isRecruiting = false,
+        shouldExpandSearchBar = false
     )
 }

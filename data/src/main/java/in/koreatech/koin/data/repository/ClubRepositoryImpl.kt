@@ -6,6 +6,7 @@ import `in`.koreatech.koin.data.mapper.toClubEvent
 import `in`.koreatech.koin.data.mapper.toClubHot
 import `in`.koreatech.koin.data.mapper.toClubQnasInfo
 import `in`.koreatech.koin.data.mapper.toClubRecruitment
+import `in`.koreatech.koin.data.mapper.toClubSearch
 import `in`.koreatech.koin.data.mapper.toClubs
 import `in`.koreatech.koin.data.request.club.ClubCreateRequest
 import `in`.koreatech.koin.data.request.club.ClubEmpowermentRequest
@@ -23,6 +24,7 @@ import `in`.koreatech.koin.domain.model.club.ClubEvent
 import `in`.koreatech.koin.domain.model.club.ClubHot
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.domain.model.club.ClubRecruitment
+import `in`.koreatech.koin.domain.model.club.ClubSearch
 import `in`.koreatech.koin.domain.model.club.Clubs
 import `in`.koreatech.koin.domain.repository.ClubRepository
 import javax.inject.Inject
@@ -493,6 +495,25 @@ class ClubRepositoryImpl @Inject constructor(
                             else -> exception.getErrorResponse().toKoinUnknownErrorException()
                         }
                     }
+                    else -> exception
+                }
+            )
+        }
+    }
+
+    override suspend fun searchClubs(query: String): Result<ClubSearch> {
+        return runCatching {
+            clubRemoteDataSource.searchClubs(query).toClubSearch()
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            404 -> KoinClubException.ClubNotFoundException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
                     else -> exception
                 }
             )

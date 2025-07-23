@@ -190,6 +190,7 @@ object URLConstant {
         }
         const val CATEGORIES = "$CLUBS/categories"
         const val HOT = "$CLUBS/hot"
+        const val SEARCH = "$CLUBS/search/related"
         object CLUBID {
             const val CLUBID = "$CLUBS/${PATH.CLUBID}"
             object QNA {

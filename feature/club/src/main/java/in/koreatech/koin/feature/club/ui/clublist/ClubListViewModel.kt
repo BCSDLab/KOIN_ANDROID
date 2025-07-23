@@ -8,6 +8,7 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.usecase.club.CancelClubLikeUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubsUseCase
+import `in`.koreatech.koin.domain.usecase.club.SearchClubsUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubLikeUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.feature.club.model.ClubSort
@@ -28,7 +29,8 @@ class ClubListViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val getClubsUseCase: GetClubsUseCase,
     private val setClubLikeUseCase: SetClubLikeUseCase,
-    private val cancelClubLikeUseCase: CancelClubLikeUseCase
+    private val cancelClubLikeUseCase: CancelClubLikeUseCase,
+    private val searchClubsUseCase: SearchClubsUseCase
 ) : ViewModel(), ContainerHost<ClubListState, ClubListSideEffect> {
     override val container =
         container<ClubListState, ClubListSideEffect>(ClubListState(), savedStateHandle) {
@@ -64,7 +66,7 @@ class ClubListViewModel @Inject constructor(
 
     fun updateSearchKeyword(keyword: String) = blockingIntent {
         reduce {
-            state.copy(searchKeyword = keyword)
+            state.copy(searchKeyword = keyword, shouldExpandSearchBar = true)
         }
     }
 
@@ -121,6 +123,36 @@ class ClubListViewModel @Inject constructor(
                     state.copy(isLoading = false)
                 }
                 postSideEffect(ClubListSideEffect.ClubsFetchFailed)
+            }
+        }
+    }
+
+    fun searchClubs(searchKeyword: String) = intent {
+        reduce {
+            state.copy(suggestions = emptyList(), shouldExpandSearchBar = false, searchKeyword = searchKeyword)
+        }
+        getClubs()
+    }
+
+    fun getSuggestion() = intent {
+        searchClubsUseCase(state.searchKeyword).onSuccess {
+            reduce {
+                state.copy(suggestions = it.keywords.map { it.clubName })
+            }
+        }.onFailure {
+            reduce {
+                state.copy(suggestions = emptyList())
+            }
+        }
+    }
+
+    fun updateSearchBarExpand(shouldExpand: Boolean) = intent {
+        reduce {
+            state.copy(shouldExpandSearchBar = shouldExpand)
+        }
+        if (!shouldExpand) {
+            reduce {
+                state.copy(searchKeyword = "", suggestions = emptyList())
             }
         }
     }
