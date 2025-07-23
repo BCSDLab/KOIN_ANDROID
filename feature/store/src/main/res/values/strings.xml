@@ -98,4 +98,6 @@
     <string name="store_banner_chip_text">코인전용</string>
     <string name="store_banner_title">에서</string>
     <string name="store_banner_subtitle">코인 전용 할인혜택 받기!</string>
+
+    <string name="store_main_widget">주문</string>
 </resources>

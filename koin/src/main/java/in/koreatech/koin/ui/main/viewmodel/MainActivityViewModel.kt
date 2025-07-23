@@ -130,8 +130,8 @@ class MainActivityViewModel @Inject constructor(
     private val _selectedType = MutableLiveData(DiningUtil.getCurrentType())
     val selectedType: LiveData<DiningType> get() = _selectedType
 
-    private val _storeCategories = MutableLiveData<List<StoreCategories>>(emptyList())
-    val storeCategories: LiveData<List<StoreCategories>> get() = _storeCategories
+    private val _storeCategories = MutableStateFlow<List<StoreCategories>>(emptyList())
+    val storeCategories: StateFlow<List<StoreCategories>> get() = _storeCategories
 
     private val _isBannerRefusal = MutableStateFlow<Boolean?>(null)
     val isBannerRefusal: StateFlow<Boolean?> get() = _isBannerRefusal
@@ -143,6 +143,7 @@ class MainActivityViewModel @Inject constructor(
         checkBannerRefusal()
         updateDining()
         getClubHot()
+        getStoreCategories()
     }
 
     fun postABTestAssign(title: String) = viewModelScope.launchWithLoading {
@@ -183,10 +184,9 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun getStoreCategories(storeCategory: StoreCategories) {
+    fun getStoreCategories() {
         viewModelScope.launchWithLoading {
-            val categoryList = getStoreCategoriesUseCase().drop(1).toMutableList()
-            categoryList.add(0, storeCategory)
+            val categoryList = getStoreCategoriesUseCase()
             _storeCategories.value = categoryList
         }
     }
