@@ -188,7 +188,7 @@ private fun StoreHomeScreen(
 
     LaunchedEffect(categoryId) {
         if (categoryId != -1) {
-            categoryListState.scrollToItem(storeCategories.map { it.id }.indexOf(categoryId))
+            categoryListState.animateScrollToItem(storeCategories.map { it.id }.indexOf(categoryId))
         }
     }
 
