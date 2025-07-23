@@ -1,26 +1,20 @@
 package `in`.koreatech.koin.feature.store.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopMenuUseCase
-import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopOriginInfoUseCase
-import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopSummaryUseCase
-import `in`.koreatech.koin.domain.usecase.store.GetShopMenusUseCase
-import `in`.koreatech.koin.domain.usecase.store.GetStoreReviewUseCase
-import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuUseCase
-import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
-import `in`.koreatech.koin.feature.store.model.DeliveryTipModel
-import `in`.koreatech.koin.feature.store.model.MenuCategoryModel
-import `in`.koreatech.koin.feature.store.model.OriginModel
-import `in`.koreatech.koin.feature.store.model.OwnerInfoModel
-import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
-import `in`.koreatech.koin.feature.store.model.toMenuCategoryModel
-import `in`.koreatech.koin.feature.store.model.toStoreIndoModel
-import `in`.koreatech.koin.feature.store.model.toStoreInfoModel
-import `in`.koreatech.koin.feature.store.view.StoreDetailSideEffect
-import `in`.koreatech.koin.feature.store.view.StoreDetailState
+import `in`.koreatech.koin.domain.model.menu.AddMenuType
+import `in`.koreatech.koin.domain.model.store.AddCartItemOption
+import `in`.koreatech.koin.domain.model.store.CartAdd
+import `in`.koreatech.koin.domain.model.store.CartItem
+import `in`.koreatech.koin.domain.usecase.store.AddCartItemUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetCartItemEditUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetOrderableShopMenuUseCase
+import `in`.koreatech.koin.domain.usecase.store.UpdateCartItemUseCase
+import `in`.koreatech.koin.feature.store.view.menu.AddMenuState
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
@@ -28,127 +22,185 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddMenuViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
-    private val getOrderShopOriginInfoUseCase: GetOrderShopOriginInfoUseCase,
-    private val getOrderShopSummaryUseCase: GetOrderShopSummaryUseCase,
-    private val getOrderShopMenuUseCase: GetOrderShopMenuUseCase,
-    private val getStoreWithMenuUseCase: GetStoreWithMenuUseCase,
-    private val getShopMenusUseCase: GetShopMenusUseCase,
-    private val getStoreReviewUseCase: GetStoreReviewUseCase,
-    private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase
-) : ViewModel(), ContainerHost<StoreDetailState, StoreDetailSideEffect> {
+    private val savedStateHandle: SavedStateHandle,
+    private val getCartItemEditUseCase: GetCartItemEditUseCase,
+    private val updateCartItemUseCase: UpdateCartItemUseCase,
+    private val addCartItemUseCase: AddCartItemUseCase,
+    private val getOrderableShopMenuUseCase: GetOrderableShopMenuUseCase
+) : ViewModel(), ContainerHost<AddMenuState, Unit> {
     override val container =
-        container<StoreDetailState, StoreDetailSideEffect>(StoreDetailState()) {
-            val cartMenuId = 11// savedStateHandle.get<Int>(STORE_ID)
+        container<AddMenuState, Unit>(AddMenuState()) {
+            val cartMenuId = savedStateHandle.get<Int>(ORDERABLE_STORE_ID)
             val orderableStoreId = savedStateHandle.get<Int>(CART_MENU_ID)
+            val addMenuMode = savedStateHandle.get<AddMenuType>(KEY_ADD_MENU_MODE) ?: AddMenuType.ADD
             checkNotNull(cartMenuId)
 
+            when (addMenuMode) {
+                AddMenuType.EDIT -> getCartItemEdit(cartMenuId)
+                AddMenuType.ADD -> getOrderableShopMenu(orderableStoreId ?: 0, cartMenuId)
+                else -> {}
+            }
         }
 
-    private fun fetchOrderStoreNotice(id: Int) = intent {
-        getOrderShopOriginInfoUseCase(id).also { result ->
+    private fun getOrderableShopMenu(shopId: Int, menuId: Int) = intent {//장바구니에 추가할 메뉴 조회 api
+        getOrderableShopMenuUseCase(shopId, menuId).onSuccess { shopMenu ->
             reduce {
                 state.copy(
-                    shopDescription = StoreDescriptionModel(
-                        id = id,
-                        storeName = result.name,
-                        description = result.introduction,
-                        notice = result.notice,
-                        deliveryTips = result.deliveryTips.map { tips ->
-                            DeliveryTipModel(
-                                fromAmount = tips.fromAmount,
-                                toAmount = tips.toAmount,
-                                fee = tips.feel
-                            )
-                        },
-                        origins = result.origins.map { origin ->
-                            listOf(
-                                OriginModel(
-                                    ingredients = origin.ingredients,
-                                    origin = origin.origin
-                                )
-                            )
-                        }.firstOrNull() ?: listOf(OriginModel.empty()),
-                        ownerInfo = OwnerInfoModel(
-                            result.ownerInfo.name ?: "",
-                            result.ownerInfo.shopName ?: "",
-                            result.address,
-                            result.ownerInfo.companyRegistrationNumber ?: ""
+                    cartItemEdit = shopMenu,
+                    totalPrice = shopMenu.prices.sumOf { it.price } +
+                            shopMenu.optionGroups.sumOf { optionGroup ->
+                                optionGroup.options.filter { it.isSelected }.sumOf { it.price }
+                            },
+                )
+            }
+        }.onFailure {
+            reduce {
+                state.copy(
+                    cartItemEdit = null,
+                )
+            }
+        }
+    }
+
+    private fun getCartItemEdit(cartMenuItemId: Int) = intent {//장바구니 옵션 변경용 메뉴 조회 api
+        getCartItemEditUseCase(cartMenuItemId).onSuccess { cartItemEdit ->
+            reduce {
+                state.copy(
+                    cartItemEdit = cartItemEdit,
+                    totalPrice = cartItemEdit.prices.sumOf { it.price } +
+                            cartItemEdit.optionGroups.sumOf { optionGroup ->
+                                optionGroup.options.filter { it.isSelected }.sumOf { it.price }
+                            },
+                )
+            }
+        }.onFailure {
+            reduce {
+                state.copy(
+                    cartItemEdit = null,
+                )
+            }
+        }
+    }
+
+    fun onAddMenuClick() {
+        when (CART_MENU_ID) {
+            AddMenuType.EDIT.name -> updateCartItem()
+            AddMenuType.ADD.name -> addCartItem()
+            else -> {}
+        }
+    }
+
+
+    private fun updateCartItem() = intent {//장바구니 옵션 변경 api
+        updateCartItemUseCase(
+            cartMenuItemId = state.cartItemEdit?.id ?: 0,
+            cartItem = CartItem(
+                orderableShopMenuPriceId = state.priceId,
+                options = state.cartItemEdit?.optionGroups?.flatMap { optionGroup ->
+                    optionGroup.options.filter { it.isSelected }.map { option ->
+                        AddCartItemOption(
+                            optionGroupId = optionGroup.id,
+                            optionId = option.id
                         )
-                    )
-                )
-            }
-        }
-    }
-
-    private fun fetchOrderableStore(id: Int) = intent {
-        getOrderShopSummaryUseCase(id).also { result ->
-            reduce {
-                state.copy(
-                    store = result.toStoreIndoModel(),
-                    isLoading = false
-                )
-            }
-        }
-        fetchOrderableStoreMenu(id)
-        fetchOrderStoreNotice(id)
-    }
-
-    private fun fetchOrderableStoreMenu(id: Int) = intent {
-        getOrderShopMenuUseCase(id).also { result ->
-            reduce {
-                state.copy(
-                    categories = result.map {
-                        it.toMenuCategoryModel()
                     }
+                } ?: emptyList()
+            )
+
+        ).onFailure {
+            reduce {
+                state.copy(
+                    cartItem = null,
                 )
             }
         }
     }
 
-    private fun fetchStore(id: Int) = intent {
-        getStoreWithMenuUseCase(id).also { result ->
-            reduce {
-                state.copy(
-                    store = result.toStoreInfoModel(),
-                    isLoading = false,
-                    shopDescription = StoreDescriptionModel(
-                        id = id,
-                        storeName = result.name,
-                        description = result.description,
-                        notice = null,
-                        deliveryTips = DeliveryTipModel(
-                            fromAmount = 0,
-                            toAmount = null,
-                            fee = result.deliveryPrice
-                        ).let { listOf(it) },
-                        origins = null,
-                        ownerInfo = null
-                    )
-                )
-            }
-        }
-        fetchMenus(id)
-    }
-
-    private fun fetchMenus(id: Int) = intent {
-        getShopMenusUseCase(id).also { shop ->
-            reduce {
-                state.copy(
-                    categories = shop.menuCategories?.map { storeMenuCategories ->
-                        MenuCategoryModel(
-                            menuGroupId = storeMenuCategories.toMenuCategoryModel().menuGroupId,
-                            menuGroupName = storeMenuCategories.toMenuCategoryModel().menuGroupName,
-                            menus = storeMenuCategories.toMenuCategoryModel().menus,
-                            isChecked = shop.menuCategories?.indexOf(storeMenuCategories) == 0
+    private fun addCartItem() = intent {//장바구니 옵션 변경 api
+        val orderableShopId = savedStateHandle.get<Int>(CART_MENU_ID) ?: 0
+        addCartItemUseCase(
+            cartAdd = CartAdd(
+                orderableShopId = orderableShopId,
+                orderableShopMenuId = state.cartItemEdit?.id ?: 0,
+                orderableShopMenuPriceId = state.priceId,
+                orderableShopMenuOptionIds = state.cartItemEdit?.optionGroups?.flatMap { optionGroup ->
+                    optionGroup.options.filter { it.isSelected }.map { option ->
+                        AddCartItemOption(
+                            optionGroupId = optionGroup.id,
+                            optionId = option.id
                         )
-                    } ?: emptyList()
+                    }
+                } ?: emptyList()
+            )
+        ).onFailure {
+            reduce {
+                state.copy(
+                    cartAdd = null,
                 )
             }
+        }
+    }
+
+    fun changeCartPriceEdit(priceId: Int) = blockingIntent {
+        reduce {
+            val updatedCartItemEdit = state.cartItemEdit?.copy(
+                prices = state.cartItemEdit?.prices?.map { price ->
+                    if (price.id == priceId) {
+                        price.copy(isSelected = !price.isSelected)
+                    } else {
+                        price.copy(isSelected = false)
+                    }
+                } ?: emptyList(),
+            )
+
+            val newTotalPrice = (updatedCartItemEdit?.prices?.find { it.isSelected }?.price ?: 0) +
+                    (updatedCartItemEdit?.optionGroups?.sumOf { optionGroup ->
+                        optionGroup.options.filter { it.isSelected }.sumOf { it.price }
+                    } ?: 0)
+
+            state.copy(
+                cartItemEdit = updatedCartItemEdit,
+                totalPrice = newTotalPrice
+            )
+        }
+    }
+
+    fun changeCartOptionEdit(optionGroupId: Int, optionId: Int) = blockingIntent {
+        reduce {
+            val updatedCartItemEdit = state.cartItemEdit?.copy(
+                optionGroups = state.cartItemEdit?.optionGroups?.map { optionGroup ->
+                    if (optionGroup.id == optionGroupId) {
+                        optionGroup.copy(
+                            options = optionGroup.options.map { option ->
+                                if (option.id == optionId) {
+                                    option.copy(isSelected = !option.isSelected)
+                                } else {
+                                    option
+                                }
+                            }
+                        )
+                    } else {
+                        optionGroup
+                    }
+                } ?: emptyList(),
+                prices = state.cartItemEdit?.prices ?: emptyList()
+            )
+
+            val newTotalPrice = (updatedCartItemEdit?.prices?.filter { it.isSelected }?.sumOf { it.price } ?: 0) +
+                    (updatedCartItemEdit?.optionGroups?.sumOf { optionGroup ->
+                        optionGroup.options.filter { it.isSelected }.sumOf { it.price }
+                    } ?: 0)
+
+            state.copy(
+                cartItemEdit = updatedCartItemEdit,
+                totalPrice = newTotalPrice
+            )
         }
     }
 
     companion object {
         const val CART_MENU_ID = "cartMenuId"
+        const val ORDERABLE_STORE_ID = "orderableStoreId"
+        const val KEY_ADD_MENU_MODE = "addMenuMode"
+
     }
 }
