@@ -9,6 +9,7 @@ import `in`.koreatech.koin.data.response.store.ShopMenusGroupResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
 import `in`.koreatech.koin.data.response.store.ShopRelatedListResponse
 import `in`.koreatech.koin.data.response.store.ShopResponse
+import `in`.koreatech.koin.data.response.store.OrderableShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopSummaryResponse
 import `in`.koreatech.koin.data.response.store.StoreBenefitResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesResponse
@@ -138,4 +139,9 @@ interface StoreApi {
     suspend fun getOrderableShopMenuGroups(
         @Path("orderableShopId") shopId: Int
     ): List<ShopMenusGroupResponse>
+
+    @GET("/order/shop/search/{keyword}/related")
+    suspend fun getOrderableShopSearchRelated(
+        @Path("keyword") keyword: String
+    ): OrderableShopSearchRelatedResponse
 }

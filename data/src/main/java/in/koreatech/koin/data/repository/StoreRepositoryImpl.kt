@@ -7,6 +7,7 @@ import `in`.koreatech.koin.data.mapper.toCartItemRequest
 import `in`.koreatech.koin.data.mapper.toCartPaymentSummary
 import `in`.koreatech.koin.data.mapper.toCartSummary
 import `in`.koreatech.koin.data.mapper.toCategory
+import `in`.koreatech.koin.data.mapper.toOrderableShopSearchRelated
 import `in`.koreatech.koin.data.mapper.toShop
 import `in`.koreatech.koin.data.mapper.toShopDeliveryAvailable
 import `in`.koreatech.koin.data.mapper.toShopDetail
@@ -37,6 +38,7 @@ import `in`.koreatech.koin.domain.model.store.CartItem
 import `in`.koreatech.koin.domain.model.store.CartItemEdit
 import `in`.koreatech.koin.domain.model.store.CartPaymentSummary
 import `in`.koreatech.koin.domain.model.store.CartSummary
+import `in`.koreatech.koin.domain.model.store.OrderableShopSearchRelated
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.model.store.Shop
 import `in`.koreatech.koin.domain.model.store.ShopDeliveryAvailable
@@ -358,6 +360,22 @@ class StoreRepositoryImpl @Inject constructor(
                             404 -> KoinStoreException.ShopNotFoundException()
                             else -> e.getErrorResponse().toKoinUnknownErrorException()
                         }
+                    }
+
+                    else -> e
+                }
+            )
+        }
+    }
+
+    override suspend fun getOrderableShopSearchRelated(query: String): Result<OrderableShopSearchRelated> {
+        return runCatching {
+            storeRemoteDataSource.getOrderableShopSearchRelated(query).toOrderableShopSearchRelated()
+        }.onFailure { e ->
+            return Result.failure(
+                when (e) {
+                    is HttpException -> {
+                        e.getErrorResponse().toKoinUnknownErrorException()
                     }
 
                     else -> e

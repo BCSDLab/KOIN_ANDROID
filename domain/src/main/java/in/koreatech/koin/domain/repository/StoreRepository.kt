@@ -8,6 +8,7 @@ import `in`.koreatech.koin.domain.model.store.CartItem
 import `in`.koreatech.koin.domain.model.store.CartItemEdit
 import `in`.koreatech.koin.domain.model.store.CartPaymentSummary
 import `in`.koreatech.koin.domain.model.store.CartSummary
+import `in`.koreatech.koin.domain.model.store.OrderableShopSearchRelated
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.model.store.Shop
 import `in`.koreatech.koin.domain.model.store.ShopDeliveryAvailable
@@ -98,6 +99,10 @@ interface StoreRepository {
     ): Result<ShopMenu>
 
     suspend fun getOrderableShopMenuGroups(shopId: Int): Result<List<ShopMenusGroup>>
+
+    suspend fun getOrderableShopSearchRelated(
+        query: String
+    ): Result<OrderableShopSearchRelated>
 
     suspend fun updateCartItem(
         cartMenuItemId: Int,
