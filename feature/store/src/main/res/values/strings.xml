@@ -95,5 +95,9 @@
     <string name="store_list_empty">이용 가능한 가게가 없어요</string>
     <string name="store_list_empty_description">조건을 변경하고 다시 검색해주세요</string>
 
+    <string name="store_banner_chip_text">코인전용</string>
+    <string name="store_banner_title">에서</string>
+    <string name="store_banner_subtitle">코인 전용 할인혜택 받기!</string>
+
     <string name="store_main_widget">주문</string>
 </resources>
