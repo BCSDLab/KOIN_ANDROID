@@ -48,6 +48,8 @@
     <!--메뉴 선택 -->
     <string name="option_select">%1$d개 선택</string>
     <string name="plus_won">+%1$d원</string>
+    <string name="price_option">가격</string>
+    <string name="essential">필수</string>
 
 
 
