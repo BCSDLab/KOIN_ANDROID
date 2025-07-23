@@ -11,6 +11,7 @@ import `in`.koreatech.koin.feature.store.view.ShoppingCartScreen
 import `in`.koreatech.koin.feature.store.view.StoreDetailScreen
 import `in`.koreatech.koin.feature.store.view.main.home.StoreHomeScreen
 import `in`.koreatech.koin.feature.store.view.main.nearby.StoreNearbyScreen
+import `in`.koreatech.koin.feature.store.view.search.StoreSearchScreen
 
 fun NavGraphBuilder.koinStoreGraph(
     navController: NavController,
@@ -52,6 +53,19 @@ fun NavGraphBuilder.koinStoreGraph(
             }
         }
     }
+
+    composable(
+        route = StoreNavType.StoreSearch.route
+    ) {
+        StoreSearchScreen(
+            navigateToDetail = {},
+            onBackPressed = {
+                if (!navController.navigateUp()) {
+                    finish()
+                }
+            }
+        )
+    }
 }
 
 internal fun NavGraphBuilder.koinStoreMainGraph(
@@ -69,6 +83,9 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
             },
             navigateToCart = {
                 navController.navigate(StoreNavType.StoreCart.route)
+            },
+            navigateToSearch = {
+                navController.navigate(StoreNavType.StoreSearch.route)
             }
         ) {
             if (!navController.navigateUp()) {

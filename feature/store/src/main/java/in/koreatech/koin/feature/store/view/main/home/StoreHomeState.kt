@@ -9,8 +9,6 @@ import `in`.koreatech.koin.feature.store.model.LocalStoreCategories
 data class StoreHomeState(
     val isLoading: Boolean = true,
     val categoryId: Int = -1,
-    val showSearch: Boolean = false,
-    val query: String = "",
     val storeCategories: List<LocalStoreCategories> = listOf(),
     val orderableShops: List<LocalShop> = listOf(),
     val showOrderOptions: Boolean = false,

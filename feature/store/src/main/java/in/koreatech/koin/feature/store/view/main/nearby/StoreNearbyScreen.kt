@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.store.view.main.nearby
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -55,7 +54,7 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreCategoryItem
 import `in`.koreatech.koin.feature.store.component.KoinStoreFilterChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreOrderChip
 import `in`.koreatech.koin.feature.store.component.MinOrderSliderBottomSheet
-import `in`.koreatech.koin.feature.store.component.SearchBar
+import `in`.koreatech.koin.feature.store.component.SearchBarFake
 import `in`.koreatech.koin.feature.store.component.SortBottomSheet
 import `in`.koreatech.koin.feature.store.enums.FilterBadge
 import `in`.koreatech.koin.feature.store.enums.MinimumPriceOption
@@ -75,6 +74,7 @@ fun StoreNearbyScreen(
     viewModel: StoreNearbyViewModel = hiltViewModel(),
     navigateToDetail: (Int) -> Unit = { },
     navigateToCart: () -> Unit = { },
+    navigateToSearch: () -> Unit = { },
     onBackPressed: () -> Unit = { }
 ) {
     val uiState by viewModel.collectAsState()
@@ -101,17 +101,9 @@ fun StoreNearbyScreen(
             .fillMaxSize()
     ) {
         KoinTopAppBar(
-            title = if (uiState.showSearch) {
-                stringResource(R.string.store_title_home_search)
-            } else {
-                stringResource(R.string.store_title_home_nearby)
-            },
+            title = stringResource(R.string.store_title_home_nearby),
             onNavigationIconClick = {
-                if (uiState.showSearch) {
-                    viewModel.onShowSearchChange(false)
-                } else {
-                    onBackPressed()
-                }
+                onBackPressed()
             },
             actions = {
                 Image(
@@ -129,33 +121,25 @@ fun StoreNearbyScreen(
             )
         )
 
-        if (uiState.showSearch) {
-            StoreHomeSearchScreen(
-                query = uiState.query,
-                onQueryChange = viewModel::onQueryChange,
-                onSearch = viewModel::onSearch
-            )
-        } else {
-            StoreHomeScreen(
-                isLoading = uiState.isLoading,
-                showOrderOptions = uiState.showOrderOptions,
-                storeList = uiState.orderableShops,
-                categoryId = uiState.categoryId,
-                storeCategories = uiState.storeCategories,
-                selectedOrderOption = uiState.selectedOrderOption,
-                selectedStoreFilter = uiState.selectedStoreFilter,
-                selectedMinimumPriceOption = uiState.selectedMinimumPriceOption,
-                showMinimumPriceOptions = uiState.showMinimumPriceOptions,
-                navigateToDetail = navigateToDetail,
-                onShowSearchChange = viewModel::onShowSearchChange,
-                onCategoryChange = viewModel::onCategoryChange,
-                onShowOrderOptionsChange = viewModel::onShowOrderOptionsChange,
-                onSelectedOrderOptionChange = viewModel::onSelectedOrderOptionChange,
-                onSelectedStoreFilterChange = viewModel::onSelectedStoreFilterChange,
-                onShowMinimumPriceOptionsChange = viewModel::onShowMinimumPriceOptionsChange,
-                onSelectedMinimumPriceOptionChange = viewModel::onSelectedMinimumPriceOptionChange
-            )
-        }
+        StoreHomeScreen(
+            isLoading = uiState.isLoading,
+            showOrderOptions = uiState.showOrderOptions,
+            storeList = uiState.orderableShops,
+            categoryId = uiState.categoryId,
+            storeCategories = uiState.storeCategories,
+            selectedOrderOption = uiState.selectedOrderOption,
+            selectedStoreFilter = uiState.selectedStoreFilter,
+            selectedMinimumPriceOption = uiState.selectedMinimumPriceOption,
+            showMinimumPriceOptions = uiState.showMinimumPriceOptions,
+            navigateToDetail = navigateToDetail,
+            navigateToSearch = navigateToSearch,
+            onCategoryChange = viewModel::onCategoryChange,
+            onShowOrderOptionsChange = viewModel::onShowOrderOptionsChange,
+            onSelectedOrderOptionChange = viewModel::onSelectedOrderOptionChange,
+            onSelectedStoreFilterChange = viewModel::onSelectedStoreFilterChange,
+            onShowMinimumPriceOptionsChange = viewModel::onShowMinimumPriceOptionsChange,
+            onSelectedMinimumPriceOptionChange = viewModel::onSelectedMinimumPriceOptionChange
+        )
     }
 }
 
@@ -172,7 +156,7 @@ private fun StoreHomeScreen(
     showMinimumPriceOptions: Boolean,
     modifier: Modifier = Modifier,
     navigateToDetail: (Int) -> Unit = { },
-    onShowSearchChange: (Boolean) -> Unit = { },
+    navigateToSearch: () -> Unit = { },
     onCategoryChange: (Int) -> Unit = { },
     onShowOrderOptionsChange: (Boolean) -> Unit = { },
     onSelectedOrderOptionChange: (OrderOption) -> Unit = { },
@@ -199,15 +183,11 @@ private fun StoreHomeScreen(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            /*
             SearchBarFake(
                 modifier = Modifier.padding(horizontal = 24.dp)
             ) {
-                onShowSearchChange(true)
+                navigateToSearch()
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
-             */
 
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
@@ -348,32 +328,6 @@ private fun StoreHomeScreen(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun StoreHomeSearchScreen(
-    query: String,
-    modifier: Modifier = Modifier,
-    onQueryChange: (String) -> Unit = {},
-    onSearch: () -> Unit = { }
-) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(RebrandKoinTheme.colors.neutral800.copy(alpha = 0.7f))
-    ) {
-        SearchBar(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(RebrandKoinTheme.colors.neutral0)
-                .padding(horizontal = 24.dp),
-            query = query,
-            onQueryChange = onQueryChange,
-            onSearch = onSearch
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
