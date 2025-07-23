@@ -107,6 +107,9 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
             },
             navigateToCart = {
                 navController.navigate(StoreNavType.StoreCart.route)
+            },
+            navigateToSearch = {
+                navController.navigate(StoreNavType.StoreSearch.route)
             }
         ) {
             if (!navController.navigateUp()) {
