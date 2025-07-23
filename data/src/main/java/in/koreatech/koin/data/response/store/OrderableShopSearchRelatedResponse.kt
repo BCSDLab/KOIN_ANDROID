@@ -18,5 +18,6 @@ data class OrderableShopSearchRelatedResponse(
     data class OrderableShopSearchMenuNameResult(
         @SerializedName("orderable_shop_id") val orderableShopId: Int,
         @SerializedName("orderable_shop_name") val orderableShopName: String,
-        @SerializedName("menu_name") val menuName: String    )
+        @SerializedName("menu_name") val menuName: String
+    )
 }

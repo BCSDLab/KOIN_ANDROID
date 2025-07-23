@@ -8,6 +8,6 @@ class GetOrderableShopSearchRelatedUseCase @Inject constructor(
     private val storeRepository: StoreRepository
 ) {
     suspend operator fun invoke(
-        query: String,
+        query: String
     ): Result<OrderableShopSearchRelated> = storeRepository.getOrderableShopSearchRelated(query)
 }

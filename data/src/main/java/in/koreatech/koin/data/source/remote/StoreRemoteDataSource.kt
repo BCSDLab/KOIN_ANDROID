@@ -13,6 +13,7 @@ import `in`.koreatech.koin.data.response.store.CartItemEditResponse
 import `in`.koreatech.koin.data.response.store.CartPaymentSummaryResponse
 import `in`.koreatech.koin.data.response.store.CartResponse
 import `in`.koreatech.koin.data.response.store.CartSummaryResponse
+import `in`.koreatech.koin.data.response.store.OrderableShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopDeliveryAvailableResponse
 import `in`.koreatech.koin.data.response.store.ShopDetailResponse
 import `in`.koreatech.koin.data.response.store.ShopMenuResponse
@@ -20,7 +21,6 @@ import `in`.koreatech.koin.data.response.store.ShopMenusGroupResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
 import `in`.koreatech.koin.data.response.store.ShopRelatedListResponse
 import `in`.koreatech.koin.data.response.store.ShopResponse
-import `in`.koreatech.koin.data.response.store.OrderableShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopSummaryResponse
 import `in`.koreatech.koin.data.response.store.StoreBenefitResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
