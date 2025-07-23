@@ -18,19 +18,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.store.CartItemEdit.CartItemEditOptionGroup
+import `in`.koreatech.koin.domain.model.store.CartItemEdit.CartItemEditPrice
 import `in`.koreatech.koin.feature.store.R
 
 @Composable
 fun MenuOptionCard(
     shopMenuOption: CartItemEditOptionGroup,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onChangeOption: (Int, Int) -> Unit = { _, _ -> },
 ) {
     Surface(
         shape = RebrandKoinTheme.shapes.medium,
@@ -55,7 +56,6 @@ fun MenuOptionCard(
                 Text(text = shopMenuOption.name, style = RebrandKoinTheme.typography.bold18)
 
                 shopMenuOption.let { optionGroup ->
-                    if (optionGroup.minSelect == 0) return@let
                     Box(
                         modifier = Modifier
                             .border(
@@ -74,39 +74,43 @@ fun MenuOptionCard(
                         )
                     }
                 }
-
             }
             Text(
-                modifier = Modifier.padding(4.dp),
+                modifier = Modifier.padding(vertical = 4.dp),
                 text = shopMenuOption.description,
                 style = RebrandKoinTheme.typography.regular12,
             )
 
-            shopMenuOption.options.forEach { (_, label, price, isSelected) ->
+            shopMenuOption.options.forEach { (optionId, label, price, isSelected) ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 10.dp)
                         .clickable {
-                            //TODO: 선택 기능
+                            onChangeOption(
+                                shopMenuOption.id,
+                                optionId
+                            )
                         }
+                        .padding(vertical = 10.dp)
                 ) {
                     CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
                         Checkbox(
                             checked = isSelected,
                             onCheckedChange = {
-                                //TODO: 선택기능
+                                onChangeOption(
+                                    shopMenuOption.id,
+                                    optionId
+                                )
                             },
                             colors = CheckboxDefaults.colors(
-                                checkedColor = Color(0xFF9B30FF),
-                                uncheckedColor = Color.Gray
+                                checkedColor = RebrandKoinTheme.colors.primary500,
+                                uncheckedColor = RebrandKoinTheme.colors.neutral500
                             )
                         )
                     }
-
                     Text(
-                        text = label,
+                        text = label ?: "",
                         style = RebrandKoinTheme.typography.regular14,
                         modifier = Modifier
                             .weight(1f)
@@ -125,6 +129,101 @@ fun MenuOptionCard(
     }
 }
 
+
+@Composable
+fun MenuPriceOptionCard(
+    prices: List<CartItemEditPrice>,
+    modifier: Modifier = Modifier,
+    onChangeOption: (Int) -> Unit = { _ -> },
+) {
+    Surface(
+        shape = RebrandKoinTheme.shapes.medium,
+        tonalElevation = 2.dp,
+        modifier = modifier
+            .padding(vertical = 10.dp)
+            .fillMaxWidth()
+            .border(
+                width = 1.dp,
+                color = RebrandKoinTheme.colors.neutral300,
+                shape = RebrandKoinTheme.shapes.medium
+            ),
+
+        color = RebrandKoinTheme.colors.neutral0
+    ) {
+        Column(modifier = Modifier.padding(20.dp)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = stringResource(R.string.price_option), style = RebrandKoinTheme.typography.bold18)
+
+                Box(
+                    modifier = Modifier
+                        .border(
+                            width = 1.dp,
+                            color = colorResource(R.color.menu_option_chip),
+                            shape = RebrandKoinTheme.shapes.large
+                        )
+                        .background(color = RebrandKoinTheme.colors.neutral0, shape = RebrandKoinTheme.shapes.large)
+                        .padding(horizontal = 12.dp, vertical = 4.dp)
+
+                ) {
+                    Text(
+                        text = stringResource(R.string.essential),
+                        color = colorResource(R.color.menu_option_chip),
+                        style = RebrandKoinTheme.typography.regular12,
+                    )
+                }
+            }
+
+            prices.forEach { (id, name, price, isSelected) ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            onChangeOption(
+                                id,
+                            )
+                        }
+                        .padding(vertical = 10.dp)
+                ) {
+                    CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
+                        Checkbox(
+                            checked = isSelected,
+                            onCheckedChange = {
+                                onChangeOption(
+                                    id
+                                )
+                            },
+                            colors = CheckboxDefaults.colors(
+                                checkedColor = RebrandKoinTheme.colors.primary500,
+                                uncheckedColor = RebrandKoinTheme.colors.neutral500
+                            )
+                        )
+                    }
+                    Text(
+                        text = name ?: "",
+                        style = RebrandKoinTheme.typography.regular14,
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 8.dp)
+                    )
+
+                    if (price > 0) {
+                        Text(
+                            text = stringResource(R.string.plus_won, price),
+                            style = RebrandKoinTheme.typography.bold14,
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 @Preview
 @Composable
 private fun MenuOptionCardPreview() {
@@ -139,19 +238,19 @@ private fun MenuOptionCardPreview() {
                 minSelect = 1,
                 maxSelect = 2,
                 options = listOf(
-                    CartItemEditOptionGroup.CartItemEditOption(
+                    CartItemEditPrice(
                         id = 101,
                         name = "매운맛",
                         price = 4500,
                         isSelected = true
                     ),
-                    CartItemEditOptionGroup.CartItemEditOption(
+                    CartItemEditPrice(
                         id = 102,
                         name = "맛있는맛",
                         price = 0,
                         isSelected = false
                     ),
-                    CartItemEditOptionGroup.CartItemEditOption(
+                    CartItemEditPrice(
                         id = 103,
                         name = "더 맛있는맛",
                         price = 3500,
@@ -167,13 +266,13 @@ private fun MenuOptionCardPreview() {
                 minSelect = 1,
                 maxSelect = 1,
                 options = listOf(
-                    CartItemEditOptionGroup.CartItemEditOption(
+                    CartItemEditPrice(
                         id = 201,
                         name = "치즈볼",
                         price = 3000,
                         isSelected = false
                     ),
-                    CartItemEditOptionGroup.CartItemEditOption(
+                    CartItemEditPrice(
                         id = 202,
                         name = "타코야끼",
                         price = 4000,
@@ -183,18 +282,6 @@ private fun MenuOptionCardPreview() {
             )
         )
 
-        MenuOptionCard(
-            fakeCartItemEditOptionGroups.firstOrNull() ?: CartItemEditOptionGroup(
-                id = 0,
-                name = "옵션 없음",
-                description = "옵션이 없습니다.",
-                isRequired = false,
-                minSelect = 0,
-                maxSelect = 0,
-                options = emptyList()
-            )
-
-        )
 
     }
 }
