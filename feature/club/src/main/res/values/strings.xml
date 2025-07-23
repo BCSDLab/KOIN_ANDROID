@@ -89,7 +89,7 @@
     <string name="detail_error_delete_event">행사가 삭제되지 않았습니다.</string>
     <string name="detail_error_unkown">알 수 없는 오류가 발생했습니다.</string>
 
-    <string name="club_main_activity_widget_title">동아리 조회</string>
+    <string name="club_main_activity_widget_title">동아리</string>
     <string name="club_main_widget_category_performance">공연</string>
     <string name="club_main_widget_category_sports">운동</string>
     <string name="club_main_widget_category_religious">종교</string>
