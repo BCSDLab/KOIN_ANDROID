@@ -16,10 +16,15 @@ data class ShopResponse(
     @SerializedName("maximum_delivery_tip") val maximumDeliveryTip: Int,
     @SerializedName("is_open") val isOpen: Boolean,
     @SerializedName("category_ids") val categoryIds: List<Int>,
-    @SerializedName("image_urls") val imageUrls: List<String>,
+    @SerializedName("images") val images: List<ShopImagesResponse>,
     @SerializedName("open") val open: List<OrderStoreShopsOpenResponse>,
     @SerializedName("open_status") val openStatus: String
 ) {
+    data class ShopImagesResponse(
+        @SerializedName("image_url") val imageUrl: String,
+        @SerializedName("is_thumbnail") val isThumbnail: Boolean
+    )
+
     data class OrderStoreShopsOpenResponse(
         @SerializedName("day_of_week") val dayOfWeek: String,
         @SerializedName("closed") val closed: Boolean,

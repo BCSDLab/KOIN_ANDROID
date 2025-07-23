@@ -14,7 +14,7 @@ data class Shop(
     val maximumDeliveryTip: Int,
     val isOpen: Boolean,
     val categoryIds: List<Int>,
-    val imageUrls: List<String>,
+    val images: List<ShopImageUrls>,
     val open: List<OrderStoreShopsOpen>,
     val openStatus: OpenStatus
 ) {
@@ -23,5 +23,10 @@ data class Shop(
         val closed: Boolean,
         val openTime: String,
         val closeTime: String
+    )
+
+    data class ShopImageUrls(
+        val imageUrl: String,
+        val isThumbnail: Boolean
     )
 }

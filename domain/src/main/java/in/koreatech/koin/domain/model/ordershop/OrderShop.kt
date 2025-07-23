@@ -29,7 +29,7 @@ data class OrderShop(
     )
 
     data class Origin(
-        val ingredients: String,
+        val ingredient: String,
         val origin: String
     )
 

@@ -5,7 +5,6 @@ data class ShopMenu(
     val name: String,
     val description: String,
     val images: List<String>,
-    val isSoldOut: Boolean,
     val prices: List<ShopMenuPrice>,
     val optionGroups: List<ShopMenuOptionGroup>
 ) {

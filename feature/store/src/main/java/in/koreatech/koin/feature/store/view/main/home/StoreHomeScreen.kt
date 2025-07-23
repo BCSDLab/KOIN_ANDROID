@@ -327,11 +327,11 @@ private fun StoreHomeScreen(
                             storeAverageRating = it.ratingAverage.toString(),
                             storeReviewCount = it.reviewCount,
                             storeDeliveryFee = it.minimumDeliveryTip.toString(),
-                            storeImageUrl = it.imageUrls.firstOrNull() ?: "",
+                            storeImageUrl = it.thumbnail,
                             isOpen = it.isOpen,
                             filterBadgeList = it.filterBadgeList
                         ) {
-                            navigateToDetail(it.shopId)
+                            navigateToDetail(it.orderableShopId)
                         }
                     }
                 }
@@ -419,7 +419,7 @@ private fun StoreHomeScreenPreview() {
                     maximumDeliveryTip = 500,
                     isOpen = true,
                     categoryIds = listOf(0, 1),
-                    imageUrls = listOf("https://example.com/store.jpg"),
+                    images = listOf("https://example.com/store.jpg"),
                     open = listOf(
                         LocalShop.LocalOrderStoreShopsOpen(
                             dayOfWeek = 1,
@@ -428,6 +428,7 @@ private fun StoreHomeScreenPreview() {
                             closeTime = "21:00"
                         )
                     ),
+                    thumbnail = "https://example.com/store_thumbnail.jpg",
                     openStatus = OpenStatus.OPERATING
                 )
             ),

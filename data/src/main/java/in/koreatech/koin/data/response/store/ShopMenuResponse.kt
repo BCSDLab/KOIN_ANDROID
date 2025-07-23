@@ -5,9 +5,8 @@ import com.google.gson.annotations.SerializedName
 data class ShopMenuResponse(
     @SerializedName("id") val id: Int,
     @SerializedName("name") val name: String,
-    @SerializedName("description") val description: String,
+    @SerializedName("description") val description: String?,
     @SerializedName("images") val images: List<String>,
-    @SerializedName("is_sold_out") val isSoldOut: Boolean,
     @SerializedName("prices") val prices: List<ShopMenuPriceResponse>,
     @SerializedName("option_groups") val optionGroups: List<ShopMenuOptionGroupResponse>
 ) {
