@@ -33,8 +33,8 @@ fun AddMenuBottomCard(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(color=RebrandKoinTheme.colors.neutral0, shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
-            .padding( top=10.dp, bottom = 20.dp)
+            .background(color = RebrandKoinTheme.colors.neutral0, shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
+            .padding(top = 10.dp, bottom = 20.dp)
             .border(
                 width = 1.dp,
                 color = RebrandKoinTheme.colors.neutral200,
@@ -66,7 +66,7 @@ fun AddMenuBottomCard(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(R.string.price_with_won, price),
-                    style = RebrandKoinTheme.typography.bold18,
+                    style = RebrandKoinTheme.typography.bold18
                 )
             }
         }

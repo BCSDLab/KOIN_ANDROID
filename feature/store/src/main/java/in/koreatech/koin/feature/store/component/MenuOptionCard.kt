@@ -31,7 +31,7 @@ import `in`.koreatech.koin.feature.store.R
 fun MenuOptionCard(
     shopMenuOption: CartItemEditOptionGroup,
     modifier: Modifier = Modifier,
-    onChangeOption: (Int, Int) -> Unit = { _, _ -> },
+    onChangeOption: (Int, Int) -> Unit = { _, _ -> }
 ) {
     Surface(
         shape = RebrandKoinTheme.shapes.medium,
@@ -70,7 +70,7 @@ fun MenuOptionCard(
                         Text(
                             text = stringResource(R.string.option_select, optionGroup.maxSelect),
                             color = colorResource(R.color.menu_option_chip),
-                            style = RebrandKoinTheme.typography.regular12,
+                            style = RebrandKoinTheme.typography.regular12
                         )
                     }
                 }
@@ -78,7 +78,7 @@ fun MenuOptionCard(
             Text(
                 modifier = Modifier.padding(vertical = 4.dp),
                 text = shopMenuOption.description,
-                style = RebrandKoinTheme.typography.regular12,
+                style = RebrandKoinTheme.typography.regular12
             )
 
             shopMenuOption.options.forEach { (optionId, label, price, isSelected) ->
@@ -120,7 +120,7 @@ fun MenuOptionCard(
                     if (price > 0) {
                         Text(
                             text = stringResource(R.string.plus_won, price),
-                            style = RebrandKoinTheme.typography.bold14,
+                            style = RebrandKoinTheme.typography.bold14
                         )
                     }
                 }
@@ -129,12 +129,11 @@ fun MenuOptionCard(
     }
 }
 
-
 @Composable
 fun MenuPriceOptionCard(
     prices: List<CartItemEditPrice>,
     modifier: Modifier = Modifier,
-    onChangeOption: (Int) -> Unit = { _ -> },
+    onChangeOption: (Int) -> Unit = { _ -> }
 ) {
     Surface(
         shape = RebrandKoinTheme.shapes.medium,
@@ -172,7 +171,7 @@ fun MenuPriceOptionCard(
                     Text(
                         text = stringResource(R.string.essential),
                         color = colorResource(R.color.menu_option_chip),
-                        style = RebrandKoinTheme.typography.regular12,
+                        style = RebrandKoinTheme.typography.regular12
                     )
                 }
             }
@@ -184,7 +183,7 @@ fun MenuPriceOptionCard(
                         .fillMaxWidth()
                         .clickable {
                             onChangeOption(
-                                id,
+                                id
                             )
                         }
                         .padding(vertical = 10.dp)
@@ -214,7 +213,7 @@ fun MenuPriceOptionCard(
                     if (price > 0) {
                         Text(
                             text = stringResource(R.string.plus_won, price),
-                            style = RebrandKoinTheme.typography.bold14,
+                            style = RebrandKoinTheme.typography.bold14
                         )
                     }
                 }
@@ -223,11 +222,9 @@ fun MenuPriceOptionCard(
     }
 }
 
-
 @Preview
 @Composable
 private fun MenuOptionCardPreview() {
-
     RebrandKoinTheme {
         val fakeCartItemEditOptionGroups = listOf(
             CartItemEditOptionGroup(
@@ -281,7 +278,5 @@ private fun MenuOptionCardPreview() {
                 )
             )
         )
-
-
     }
 }

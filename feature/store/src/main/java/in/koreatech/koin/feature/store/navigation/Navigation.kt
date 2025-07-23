@@ -161,7 +161,6 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
             }
         )
     }
-
 }
 
 const val CART_MENU_ID = "cartMenuId"

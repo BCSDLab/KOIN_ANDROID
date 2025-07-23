@@ -89,6 +89,6 @@ fun StoreDetailInfoPreview() {
     StoreDetailInfo(
         storeInfo = ShopInfoModel.empty(),
         storeReview = StoreReview.empty(),
-        storeDescriptionModel = StoreDescriptionModel.empty(),
+        storeDescriptionModel = StoreDescriptionModel.empty()
     )
 }

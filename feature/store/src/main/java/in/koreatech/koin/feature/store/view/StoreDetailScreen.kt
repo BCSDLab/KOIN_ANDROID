@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.TabRowDefaults.Divider
@@ -39,7 +38,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.feature.store.util.CustomClosingToolbarScreenDefaults
@@ -52,7 +50,6 @@ import `in`.koreatech.koin.feature.store.state.collapseToolbar
 import `in`.koreatech.koin.feature.store.state.currentToolbarHeightDp
 import `in`.koreatech.koin.feature.store.state.progress
 import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
-import `in`.koreatech.koin.feature.store.viewmodel.ShoppingCartViewModel
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
 import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineScope
@@ -67,7 +64,7 @@ fun StoreDetailScreen(
     navigateToBack: () -> Unit = {},
     navigateToDetailInfo: () -> Unit = {},
     navigateToReview: () -> Unit = {},
-    navigateToMenuInfo:(menuId: Int) -> Unit = {}
+    navigateToMenuInfo: (menuId: Int) -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
     val pagerState = rememberPagerState(0, 0f) { 1 }
@@ -183,7 +180,6 @@ fun StoreDetailScreen(
                         .size(16.dp)
                         .background(Color.Magenta, CircleShape)
                 ) {
-
                 }
             }
         }

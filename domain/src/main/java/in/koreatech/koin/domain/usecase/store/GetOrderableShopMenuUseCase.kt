@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.domain.usecase.store
 
 import `in`.koreatech.koin.domain.model.store.CartItemEdit
-import `in`.koreatech.koin.domain.model.store.ShopMenu
 import `in`.koreatech.koin.domain.repository.StoreRepository
 import javax.inject.Inject
 

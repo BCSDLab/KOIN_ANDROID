@@ -51,41 +51,41 @@ class AddMenuViewModel @Inject constructor(
             }
         }
 
-    private fun getOrderableShopMenu(shopId: Int, menuId: Int) = intent {//장바구니에 추가할 메뉴 조회 api
+    private fun getOrderableShopMenu(shopId: Int, menuId: Int) = intent { // 장바구니에 추가할 메뉴 조회 api
         getOrderableShopMenuUseCase(shopId, menuId).onSuccess { shopMenu ->
             reduce {
                 state.copy(
                     cartItemEdit = shopMenu,
                     totalPrice = shopMenu.prices.sumOf { it.price } +
-                            shopMenu.optionGroups.sumOf { optionGroup ->
-                                optionGroup.options.filter { it.isSelected }.sumOf { it.price }
-                            },
+                        shopMenu.optionGroups.sumOf { optionGroup ->
+                            optionGroup.options.filter { it.isSelected }.sumOf { it.price }
+                        }
                 )
             }
         }.onFailure {
             reduce {
                 state.copy(
-                    cartItemEdit = null,
+                    cartItemEdit = null
                 )
             }
         }
     }
 
-    private fun getCartItemEdit(cartMenuItemId: Int) = intent {//장바구니 옵션 변경용 메뉴 조회 api
+    private fun getCartItemEdit(cartMenuItemId: Int) = intent { // 장바구니 옵션 변경용 메뉴 조회 api
         getCartItemEditUseCase(cartMenuItemId).onSuccess { cartItemEdit ->
             reduce {
                 state.copy(
                     cartItemEdit = cartItemEdit,
                     totalPrice = cartItemEdit.prices.sumOf { it.price } +
-                            cartItemEdit.optionGroups.sumOf { optionGroup ->
-                                optionGroup.options.filter { it.isSelected }.sumOf { it.price }
-                            },
+                        cartItemEdit.optionGroups.sumOf { optionGroup ->
+                            optionGroup.options.filter { it.isSelected }.sumOf { it.price }
+                        }
                 )
             }
         }.onFailure {
             reduce {
                 state.copy(
-                    cartItemEdit = null,
+                    cartItemEdit = null
                 )
             }
         }
@@ -95,8 +95,7 @@ class AddMenuViewModel @Inject constructor(
         addCartItem()
     }
 
-
-    private fun updateCartItem() = intent {//장바구니 옵션 변경 api
+    private fun updateCartItem() = intent { // 장바구니 옵션 변경 api
         updateCartItemUseCase(
             cartMenuItemId = state.cartItemEdit?.id ?: 0,
             cartItem = CartItem(
@@ -114,13 +113,13 @@ class AddMenuViewModel @Inject constructor(
         ).onFailure {
             reduce {
                 state.copy(
-                    cartItem = null,
+                    cartItem = null
                 )
             }
         }
     }
 
-    private fun addCartItem() = intent {//장바구니 옵션 변경 api
+    private fun addCartItem() = intent { // 장바구니 옵션 변경 api
         addCartItemUseCase(
             cartAdd = CartAdd(
                 orderableShopId = state.orderableShopId,
@@ -139,7 +138,7 @@ class AddMenuViewModel @Inject constructor(
             Timber.d("AddMenuViewModel addCartItem error: $it")
             reduce {
                 state.copy(
-                    cartAdd = null,
+                    cartAdd = null
                 )
             }
         }
@@ -154,13 +153,15 @@ class AddMenuViewModel @Inject constructor(
                     } else {
                         price.copy(isSelected = false)
                     }
-                } ?: emptyList(),
+                } ?: emptyList()
             )
 
             val newTotalPrice = (updatedCartItemEdit?.prices?.find { it.isSelected }?.price ?: 0) +
-                    (updatedCartItemEdit?.optionGroups?.sumOf { optionGroup ->
+                (
+                    updatedCartItemEdit?.optionGroups?.sumOf { optionGroup ->
                         optionGroup.options.filter { it.isSelected }.sumOf { it.price }
-                    } ?: 0)
+                    } ?: 0
+                    )
 
             state.copy(
                 orderableShopMenuPriceId = priceId,
@@ -191,9 +192,11 @@ class AddMenuViewModel @Inject constructor(
             )
 
             val newTotalPrice = (updatedCartItemEdit?.prices?.filter { it.isSelected }?.sumOf { it.price } ?: 0) +
-                    (updatedCartItemEdit?.optionGroups?.sumOf { optionGroup ->
+                (
+                    updatedCartItemEdit?.optionGroups?.sumOf { optionGroup ->
                         optionGroup.options.filter { it.isSelected }.sumOf { it.price }
-                    } ?: 0)
+                    } ?: 0
+                    )
 
             state.copy(
                 cartItemEdit = updatedCartItemEdit,
@@ -206,6 +209,5 @@ class AddMenuViewModel @Inject constructor(
         const val CART_MENU_ID = "cartMenuId"
         const val ORDERABLE_STORE_ID = "orderableStoreId"
         const val KEY_ADD_MENU_MODE = "addMenuMode"
-
     }
 }

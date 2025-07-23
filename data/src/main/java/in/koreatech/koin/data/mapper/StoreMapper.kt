@@ -544,7 +544,7 @@ fun ShopMenusResponse.toShopMenus() = ShopMenus(
     }
 )
 
-fun ShopMenu.toAddMenu()= CartItemEdit(
+fun ShopMenu.toAddMenu() = CartItemEdit(
     id = id,
     name = name,
     description = description,
@@ -576,8 +576,6 @@ fun ShopMenu.toAddMenu()= CartItemEdit(
         )
     }
 )
-
-
 
 fun ShopMenuResponse.toShopMenu() = ShopMenu(
     id = id,

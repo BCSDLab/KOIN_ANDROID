@@ -48,14 +48,14 @@ import `in`.koreatech.koin.feature.store.state.currentToolbarHeightDp
 import `in`.koreatech.koin.feature.store.state.progress
 import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
 import `in`.koreatech.koin.feature.store.viewmodel.AddMenuViewModel
-import org.orbitmvi.orbit.compose.collectAsState
 import kotlin.math.roundToInt
+import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun AddMenuScreen(
     viewModel: AddMenuViewModel = hiltViewModel(),
     navigateToCart: () -> Unit = {},
-    navigateToBack: () -> Unit = {},
+    navigateToBack: () -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
 
@@ -73,7 +73,7 @@ fun AddMenuScreen(
         bottomBar = {
             AddMenuBottomCard(
                 price = uiState.totalPrice,
-                onClick = { viewModel.onAddMenuClick() },
+                onClick = { viewModel.onAddMenuClick() }
             )
         }
     ) { innerPadding ->
@@ -122,7 +122,6 @@ fun AddMenuScreen(
                             viewModel.changeCartPriceEdit(priceId)
                         }
                     )
-
                 }
                 item {
                     uiState.cartItemEdit?.optionGroups?.forEach { optionGroup ->
@@ -204,9 +203,8 @@ fun AddMenuScreen(
                 painter = painterResource(id = R.drawable.ic_delivery),
                 contentDescription = null,
                 alpha = 1 - overlayAlpha,
-                alignment = Alignment.Center,
+                alignment = Alignment.Center
             )
         }
     }
 }
-
