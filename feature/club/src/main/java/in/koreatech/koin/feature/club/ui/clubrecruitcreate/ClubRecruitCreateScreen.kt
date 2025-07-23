@@ -53,6 +53,8 @@ import coil.compose.SubcomposeAsyncImage
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.feature.club.CONTENT_MAX_LENGTH
+import `in`.koreatech.koin.feature.club.CONTENT_MIN_LINES
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.KoinClubBasicTextField
 import `in`.koreatech.koin.feature.club.component.KoinClubDatePickerDialog
@@ -159,9 +161,6 @@ fun ClubRecruitCreateScreenImpl(
         onResult = uploadImage
     )
     var recruitDescriptionText by remember { mutableStateOf("") }
-
-    val textFieldMinLines = 2
-    val textFieldMaxLength = 1500
 
     if (showDatePickerDialogState) {
         KoinClubDatePickerDialog(
@@ -369,8 +368,8 @@ fun ClubRecruitCreateScreenImpl(
                 onValueChange = { recruitDescriptionText = it },
                 modifier = Modifier
                     .fillMaxWidth(),
-                minLines = textFieldMinLines,
-                maxLength = textFieldMaxLength,
+                minLines = CONTENT_MIN_LINES,
+                maxLength = CONTENT_MAX_LENGTH,
                 hint = stringResource(R.string.club_recruit_create_recruit_description_hint)
             )
         }

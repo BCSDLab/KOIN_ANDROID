@@ -58,6 +58,10 @@ import coil.compose.SubcomposeAsyncImage
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.feature.club.CONTENT_MAX_LENGTH
+import `in`.koreatech.koin.feature.club.CONTENT_MIN_LINES
+import `in`.koreatech.koin.feature.club.EVENT_INTRO_MAX_LENGTH
+import `in`.koreatech.koin.feature.club.EVENT_NAME_MAX_LENGTH
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.KoinClubBasicTextField
 import `in`.koreatech.koin.feature.club.component.KoinClubDatePickerDialog
@@ -181,12 +185,6 @@ fun ClubEventCreateScreenImpl(
     val context = LocalContext.current
 
     var isStartDateSelected by remember { mutableStateOf(true) }
-
-    val textFieldMinLines = 1
-    val nameTextFieldMaxLength = 30
-    val introTextFieldMaxLength = 70
-    val contentTextFieldMaxLength = 1500
-    val contentTextFieldMaxLines = 2
 
     val pickMultipleMedia = pickMultipleMedia(
         context = context,
@@ -389,8 +387,7 @@ fun ClubEventCreateScreenImpl(
                     onValueChange = { updateEventName(it) },
                     modifier = Modifier
                         .weight(1f),
-                    minLines = textFieldMinLines,
-                    maxLength = nameTextFieldMaxLength,
+                    maxLength = EVENT_NAME_MAX_LENGTH,
                     borderColor = if (eventNameRequired) KoinTheme.colors.sub500 else KoinTheme.colors.neutral100,
                     hint = stringResource(R.string.club_event_create_name_hint)
                 )
@@ -497,8 +494,7 @@ fun ClubEventCreateScreenImpl(
                 onValueChange = { updateEventIntroduce(it) },
                 modifier = Modifier
                     .fillMaxWidth(),
-                minLines = textFieldMinLines,
-                maxLength = introTextFieldMaxLength,
+                maxLength = EVENT_INTRO_MAX_LENGTH,
                 borderColor = if (eventIntroduceRequired) KoinTheme.colors.sub500 else KoinTheme.colors.neutral100,
                 hint = stringResource(R.string.club_event_create_intro_hint)
             )
@@ -524,8 +520,8 @@ fun ClubEventCreateScreenImpl(
                 onValueChange = { updateEventContent(it) },
                 modifier = Modifier
                     .fillMaxWidth(),
-                minLines = contentTextFieldMaxLines,
-                maxLength = contentTextFieldMaxLength,
+                minLines = CONTENT_MIN_LINES,
+                maxLength = CONTENT_MAX_LENGTH,
                 hint = stringResource(R.string.club_event_create_content_hint)
             )
         }
