@@ -121,7 +121,7 @@ fun StoreNearbyScreen(
             )
         )
 
-        StoreHomeScreen(
+        StoreNearbyScreen(
             isLoading = uiState.isLoading,
             showOrderOptions = uiState.showOrderOptions,
             storeList = uiState.orderableShops,
@@ -144,7 +144,7 @@ fun StoreNearbyScreen(
 }
 
 @Composable
-private fun StoreHomeScreen(
+private fun StoreNearbyScreen(
     isLoading: Boolean,
     categoryId: Int,
     storeList: List<LocalShop>,
@@ -333,9 +333,9 @@ private fun StoreHomeScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun StoreHomeScreenPreview() {
+private fun StoreNearbyScreenPreview() {
     RebrandKoinTheme {
-        StoreHomeScreen(
+        StoreNearbyScreen(
             isLoading = false,
             showOrderOptions = false,
             categoryId = 0,
