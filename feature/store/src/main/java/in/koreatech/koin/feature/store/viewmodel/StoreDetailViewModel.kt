@@ -41,13 +41,13 @@ class StoreDetailViewModel @Inject constructor(
     override val container =
         container<StoreDetailState, StoreDetailSideEffect>(StoreDetailState()) {
             val storeId = savedStateHandle.get<Int>(STORE_ID)
-            val orderableStoreId = savedStateHandle.get<Int>(ORDERABLE_STORE_ID)
+            val isOrderableShop = savedStateHandle.get<Boolean>("isOrderableShop") ?: true
             checkNotNull(storeId)
 
-            if (orderableStoreId == null) {
-                fetchStore(storeId)
+            if (isOrderableShop) {
+                fetchOrderableStore(storeId)
             } else {
-                fetchOrderableStore(orderableStoreId)
+                fetchStore(storeId)
             }
             fetchReview(storeId)
             checkToken()
@@ -72,7 +72,7 @@ class StoreDetailViewModel @Inject constructor(
                         origins = result.origins.map { origin ->
                             listOf(
                                 OriginModel(
-                                    ingredients = origin.ingredients,
+                                    ingredients = origin.ingredient,
                                     origin = origin.origin
                                 )
                             )
@@ -202,6 +202,5 @@ class StoreDetailViewModel @Inject constructor(
 
     companion object {
         const val STORE_ID = "storeId"
-        const val ORDERABLE_STORE_ID = "orderableStoreId"
     }
 }

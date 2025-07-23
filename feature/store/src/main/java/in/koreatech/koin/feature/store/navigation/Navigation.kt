@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.store.navigation
 
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -11,6 +10,7 @@ import `in`.koreatech.koin.feature.store.view.ShoppingCartScreen
 import `in`.koreatech.koin.feature.store.view.StoreDetailScreen
 import `in`.koreatech.koin.feature.store.view.main.home.StoreHomeScreen
 import `in`.koreatech.koin.feature.store.view.main.nearby.StoreNearbyScreen
+import `in`.koreatech.koin.feature.store.view.menu.AddMenuScreen
 
 fun NavGraphBuilder.koinStoreGraph(
     navController: NavController,
@@ -65,7 +65,7 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
         StoreHomeScreen(
             categoryId = categoryId,
             navigateToDetail = { storeId ->
-                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId")
+                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId/${true}")
             },
             navigateToCart = {
                 navController.navigate(StoreNavType.StoreCart.route)
@@ -83,7 +83,7 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
         StoreNearbyScreen(
             categoryId = categoryId,
             navigateToDetail = { storeId ->
-                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId")
+                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId/${false}")
             },
             navigateToCart = {
                 navController.navigate(StoreNavType.StoreCart.route)
@@ -106,17 +106,19 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
     finish: () -> Unit = { }
 ) {
     composable(
-        route = "${StoreDetailNavType.StoreDetailMain.route}/{storeId}",
+        route = "${StoreDetailNavType.StoreDetailMain.route}/{storeId}/{isOrderableShop}",
         arguments = listOf(
             navArgument("storeId") {
                 type = NavType.IntType
+            },
+            navArgument("isOrderableShop") {
+                type = NavType.BoolType
+                defaultValue = true
             }
         )
     ) {
-        val pagerState = rememberPagerState(0, 0f) { 1 }
-
+        val storeId = it.arguments?.getInt("storeId") ?: 0
         StoreDetailScreen(
-            pagerState = pagerState,
             navigateToBack = {
                 if (!navController.navigateUp()) {
                     finish()
@@ -130,6 +132,9 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
             },
             navigateToReview = {
                 // Navigate to review screen if implemented
+            },
+            navigateToMenuInfo = { menuId ->
+                navController.navigate("${StoreDetailNavType.StoreDetailMenu.route}/$storeId/$menuId")
             }
         )
     }
@@ -138,4 +143,27 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
         route = StoreDetailNavType.StoreDetailInfo.route
     ) {
     }
+
+    composable(
+        route = "${StoreDetailNavType.StoreDetailMenu.route}/{$ORDERABLE_STORE_ID}/{$CART_MENU_ID}",
+        arguments = listOf(
+            navArgument(ORDERABLE_STORE_ID) {
+                type = NavType.IntType
+            },
+            navArgument(CART_MENU_ID) {
+                type = NavType.IntType
+            }
+        )
+    ) {
+        AddMenuScreen(
+            navigateToCart = {
+                navController.navigate(StoreNavType.StoreCart.route)
+            }
+        )
+    }
+
 }
+
+const val CART_MENU_ID = "cartMenuId"
+const val ORDERABLE_STORE_ID = "orderableStoreId"
+const val KEY_ADD_MENU_MODE = "addMenuMode"

@@ -19,6 +19,7 @@ sealed class StoreMainNavType(val route: String) {
 sealed class StoreDetailNavType(val route: String) {
     data object StoreDetailMain : StoreDetailNavType("store_detail_main")
     data object StoreDetailInfo : StoreDetailNavType("store_detail_info")
+    data object StoreDetailMenu : StoreDetailNavType("store_detail_menu")
 }
 
 data class NavigationBarItem(

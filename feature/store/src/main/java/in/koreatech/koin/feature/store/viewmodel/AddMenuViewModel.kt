@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.store.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,12 +12,13 @@ import `in`.koreatech.koin.domain.usecase.store.GetCartItemEditUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetOrderableShopMenuUseCase
 import `in`.koreatech.koin.domain.usecase.store.UpdateCartItemUseCase
 import `in`.koreatech.koin.feature.store.view.menu.AddMenuState
+import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import javax.inject.Inject
+import timber.log.Timber
 
 @HiltViewModel
 class AddMenuViewModel @Inject constructor(
@@ -30,14 +30,23 @@ class AddMenuViewModel @Inject constructor(
 ) : ViewModel(), ContainerHost<AddMenuState, Unit> {
     override val container =
         container<AddMenuState, Unit>(AddMenuState()) {
-            val cartMenuId = savedStateHandle.get<Int>(ORDERABLE_STORE_ID)
-            val orderableStoreId = savedStateHandle.get<Int>(CART_MENU_ID)
-            val addMenuMode = savedStateHandle.get<AddMenuType>(KEY_ADD_MENU_MODE) ?: AddMenuType.ADD
-            checkNotNull(cartMenuId)
+            val orderableStoreId = savedStateHandle.get<Int>(ORDERABLE_STORE_ID)
+            val orderableShopMenuId = savedStateHandle.get<Int>(CART_MENU_ID)
+            val addMenuMode = AddMenuType.valueOf(savedStateHandle.get<String>(KEY_ADD_MENU_MODE) ?: AddMenuType.ADD.name)
+
+            checkNotNull(orderableShopMenuId)
+            checkNotNull(orderableStoreId)
+
+            reduce {
+                state.copy(
+                    orderableShopId = orderableStoreId,
+                    orderableShopMenuId = orderableShopMenuId
+                )
+            }
 
             when (addMenuMode) {
-                AddMenuType.EDIT -> getCartItemEdit(cartMenuId)
-                AddMenuType.ADD -> getOrderableShopMenu(orderableStoreId ?: 0, cartMenuId)
+                AddMenuType.EDIT -> getCartItemEdit(orderableShopMenuId)
+                AddMenuType.ADD -> getOrderableShopMenu(orderableStoreId, orderableShopMenuId)
                 else -> {}
             }
         }
@@ -82,12 +91,8 @@ class AddMenuViewModel @Inject constructor(
         }
     }
 
-    fun onAddMenuClick() {
-        when (CART_MENU_ID) {
-            AddMenuType.EDIT.name -> updateCartItem()
-            AddMenuType.ADD.name -> addCartItem()
-            else -> {}
-        }
+    fun onAddMenuClick() = intent {
+        addCartItem()
     }
 
 
@@ -95,7 +100,7 @@ class AddMenuViewModel @Inject constructor(
         updateCartItemUseCase(
             cartMenuItemId = state.cartItemEdit?.id ?: 0,
             cartItem = CartItem(
-                orderableShopMenuPriceId = state.priceId,
+                orderableShopMenuPriceId = state.orderableShopMenuPriceId,
                 options = state.cartItemEdit?.optionGroups?.flatMap { optionGroup ->
                     optionGroup.options.filter { it.isSelected }.map { option ->
                         AddCartItemOption(
@@ -116,12 +121,11 @@ class AddMenuViewModel @Inject constructor(
     }
 
     private fun addCartItem() = intent {//장바구니 옵션 변경 api
-        val orderableShopId = savedStateHandle.get<Int>(CART_MENU_ID) ?: 0
         addCartItemUseCase(
             cartAdd = CartAdd(
-                orderableShopId = orderableShopId,
+                orderableShopId = state.orderableShopId,
                 orderableShopMenuId = state.cartItemEdit?.id ?: 0,
-                orderableShopMenuPriceId = state.priceId,
+                orderableShopMenuPriceId = state.orderableShopMenuPriceId,
                 orderableShopMenuOptionIds = state.cartItemEdit?.optionGroups?.flatMap { optionGroup ->
                     optionGroup.options.filter { it.isSelected }.map { option ->
                         AddCartItemOption(
@@ -129,9 +133,10 @@ class AddMenuViewModel @Inject constructor(
                             optionId = option.id
                         )
                     }
-                } ?: emptyList()
+                }
             )
         ).onFailure {
+            Timber.d("AddMenuViewModel addCartItem error: $it")
             reduce {
                 state.copy(
                     cartAdd = null,
@@ -158,7 +163,7 @@ class AddMenuViewModel @Inject constructor(
                     } ?: 0)
 
             state.copy(
-                cartItemEdit = updatedCartItemEdit,
+                orderableShopMenuPriceId = priceId,
                 totalPrice = newTotalPrice
             )
         }
