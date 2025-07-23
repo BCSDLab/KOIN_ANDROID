@@ -162,12 +162,12 @@ fun KoinClubSearchBar(
                 suggestions.forEach {
                     Row(
                         modifier = Modifier
-                            .padding(8.dp)
                             .fillMaxWidth()
                             .clickable {
                                 onSearch(it)
                                 focusManager.clearFocus()
                             }
+                            .padding(8.dp)
                     ) {
                         BasicText(
                             text = it,
