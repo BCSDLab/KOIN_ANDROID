@@ -22,13 +22,6 @@ data class CartItemEdit(
         val isRequired: Boolean,
         val minSelect: Int,
         val maxSelect: Int,
-        val options: List<CartItemEditOption>
-    ) {
-        data class CartItemEditOption(
-            val id: Int,
-            val name: String,
-            val price: Int,
-            val isSelected: Boolean
-        )
-    }
+        val options: List<CartItemEditPrice>
+    )
 }

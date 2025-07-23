@@ -95,7 +95,7 @@ interface StoreRepository {
     suspend fun getOrderableShopMenu(
         shopId: Int,
         menuId: Int
-    ): Result<ShopMenu>
+    ): Result<CartItemEdit>
 
     suspend fun getOrderableShopMenuGroups(shopId: Int): Result<List<ShopMenusGroup>>
 
