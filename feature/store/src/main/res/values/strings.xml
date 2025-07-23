@@ -45,6 +45,9 @@
     <string name="no_registered_information">등록된 정보가 없습니다.</string>
     <string name="origin_marking">원산지 표기</string>
 
+    <!--메뉴 선택 -->
+    <string name="option_select">%1$d개 선택</string>
+    <string name="plus_won">+%1$d원</string>
 
 
 
