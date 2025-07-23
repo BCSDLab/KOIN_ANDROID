@@ -71,19 +71,12 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun StoreNearbyScreen(
     modifier: Modifier = Modifier,
-    categoryId: Int = 1,
     viewModel: StoreNearbyViewModel = hiltViewModel(),
     navigateToDetail: (Int) -> Unit = { },
     navigateToCart: () -> Unit = { },
     onBackPressed: () -> Unit = { }
 ) {
     val uiState by viewModel.collectAsState()
-
-    LaunchedEffect(Unit) {
-        if (uiState.categoryId == -1) {
-            viewModel.onCategoryChange(categoryId)
-        }
-    }
 
     LaunchedEffect(Unit) {
         combine(
@@ -211,7 +204,7 @@ private fun StoreHomeScreen(
 
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(24.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 contentPadding = PaddingValues(horizontal = 24.dp)
             ) {
