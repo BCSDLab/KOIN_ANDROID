@@ -85,7 +85,7 @@ private fun CategoryItem(
         Box(
             modifier = Modifier
                 .size(48.dp)
-                .clip(KoinTheme.shapes.medium)
+                .clip(KoinTheme.shapes.small)
                 .background(
                     color = KoinTheme.colors.neutral100,
                     shape = KoinTheme.shapes.small
