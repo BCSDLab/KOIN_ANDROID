@@ -10,6 +10,7 @@ import `in`.koreatech.koin.data.response.store.CartPaymentSummaryResponse
 import `in`.koreatech.koin.data.response.store.CartResponse
 import `in`.koreatech.koin.data.response.store.CartSummaryResponse
 import `in`.koreatech.koin.data.response.store.LegacyShopMenusResponse
+import `in`.koreatech.koin.data.response.store.OrderableShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopDeliveryAvailableResponse
 import `in`.koreatech.koin.data.response.store.ShopDetailResponse
 import `in`.koreatech.koin.data.response.store.ShopMenuOptionsResponse
@@ -51,6 +52,7 @@ import `in`.koreatech.koin.domain.model.store.CartPaymentSummary
 import `in`.koreatech.koin.domain.model.store.CartSummary
 import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 import `in`.koreatech.koin.domain.model.store.OpenStatus
+import `in`.koreatech.koin.domain.model.store.OrderableShopSearchRelated
 import `in`.koreatech.koin.domain.model.store.Shop
 import `in`.koreatech.koin.domain.model.store.ShopDeliveryAvailable
 import `in`.koreatech.koin.domain.model.store.ShopDetail
@@ -622,6 +624,27 @@ fun ShopMenusGroupResponse.toShopMenusGroup() = ShopMenusGroup(
         )
     }
 )
+
+fun OrderableShopSearchRelatedResponse.toOrderableShopSearchRelated() =
+    OrderableShopSearchRelated(
+        searchKeyword = searchKeyword,
+        processedSearchKeyword = processedSearchKeyword,
+        shopNameSearchResultCount = shopNameSearchResultCount,
+        menuNameSearchResultCount = menuNameSearchResultCount,
+        shopNameSearchResults = shopNameSearchResults.map { result ->
+            OrderableShopSearchRelated.OrderableShopSearchShopNameResult(
+                orderableShopId = result.orderableShopId,
+                orderableShopName = result.orderableShopName
+            )
+        },
+        menuNameSearchResults = menuNameSearchResults.map { result ->
+            OrderableShopSearchRelated.OrderableShopSearchMenuNameResult(
+                orderableShopId = result.orderableShopId,
+                orderableShopName = result.orderableShopName,
+                menuName = result.menuName
+            )
+        }
+    )
 
 fun CartItem.toCartItemRequest() = CartItemRequest(
     orderableShopMenuPriceId = orderableShopMenuPriceId,

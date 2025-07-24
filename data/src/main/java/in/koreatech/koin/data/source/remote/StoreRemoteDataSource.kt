@@ -13,6 +13,7 @@ import `in`.koreatech.koin.data.response.store.CartItemEditResponse
 import `in`.koreatech.koin.data.response.store.CartPaymentSummaryResponse
 import `in`.koreatech.koin.data.response.store.CartResponse
 import `in`.koreatech.koin.data.response.store.CartSummaryResponse
+import `in`.koreatech.koin.data.response.store.OrderableShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopDeliveryAvailableResponse
 import `in`.koreatech.koin.data.response.store.ShopDetailResponse
 import `in`.koreatech.koin.data.response.store.ShopMenuResponse
@@ -191,6 +192,10 @@ class StoreRemoteDataSource @Inject constructor(
 
     suspend fun getOrderableShopMenuGroups(shopId: Int): List<ShopMenusGroupResponse> {
         return storeApi.getOrderableShopMenuGroups(shopId)
+    }
+
+    suspend fun getOrderableShopSearchRelated(keyword: String): OrderableShopSearchRelatedResponse {
+        return storeApi.getOrderableShopSearchRelated(keyword)
     }
 
     suspend fun updateCartItem(

@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.api
 
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.response.store.BenefitCategoryListResponse
+import `in`.koreatech.koin.data.response.store.OrderableShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopDeliveryAvailableResponse
 import `in`.koreatech.koin.data.response.store.ShopDetailResponse
 import `in`.koreatech.koin.data.response.store.ShopMenuResponse
@@ -138,4 +139,9 @@ interface StoreApi {
     suspend fun getOrderableShopMenuGroups(
         @Path("orderableShopId") shopId: Int
     ): List<ShopMenusGroupResponse>
+
+    @GET("/order/shop/search/{keyword}/related")
+    suspend fun getOrderableShopSearchRelated(
+        @Path("keyword") keyword: String
+    ): OrderableShopSearchRelatedResponse
 }
