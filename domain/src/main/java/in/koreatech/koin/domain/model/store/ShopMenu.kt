@@ -22,12 +22,6 @@ data class ShopMenu(
         val isRequired: Boolean,
         val minSelect: Int,
         val maxSelect: Int,
-        val options: List<ShopMenuOption>
-    ) {
-        data class ShopMenuOption(
-            val id: Int,
-            val name: String,
-            val price: Int
-        )
-    }
+        val options: List<ShopMenuPrice>
+    )
 }

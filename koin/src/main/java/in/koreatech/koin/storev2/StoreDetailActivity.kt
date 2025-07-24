@@ -3,7 +3,6 @@ package `in`.koreatech.koin.storev2
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.pager.rememberPagerState
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.databinding.ActivityStoreDetailBinding
@@ -24,10 +23,7 @@ class StoreDetailActivity : AppCompatActivity() {
     private fun initComposeView() {
         binding.composeView.setContent {
             KoinTheme {
-                val pagerState = rememberPagerState(0, 0f) { 1 }
-                StoreDetailScreen(
-                    pagerState = pagerState
-                )
+                StoreDetailScreen()
             }
         }
     }

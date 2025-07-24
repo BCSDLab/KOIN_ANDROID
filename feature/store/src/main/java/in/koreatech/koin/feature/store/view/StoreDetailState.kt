@@ -11,6 +11,7 @@ import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
 
 data class StoreDetailState(
     val store: ShopInfoModel = ShopInfoModel.empty(),
+    val isOrderableShop: Boolean = true,
     val shopDescription: StoreDescriptionModel = StoreDescriptionModel.empty(),
     val orderableStore: OrderShop = OrderShop.empty(),
     val categories: List<MenuCategoryModel> = emptyList(),

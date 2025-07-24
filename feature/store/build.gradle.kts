@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.koin.library)
     alias(libs.plugins.koin.hilt)
@@ -7,8 +10,29 @@ plugins {
     id("kotlin-parcelize")
 }
 
+val localProperties = Properties()
+localProperties.load(FileInputStream(rootProject.file("local.properties")))
+
 android {
     namespace = "in.koreatech.koin.feature.store"
+
+    buildTypes {
+        getByName("debug") {
+            buildConfigField(
+                "String",
+                "ORDER_BASE_URL",
+                "String.valueOf(\"${localProperties["order_stage_base_url"]}\")"
+            )
+        }
+
+        getByName("release") {
+            buildConfigField(
+                "String",
+                "ORDER_BASE_URL",
+                "String.valueOf(\"${localProperties["order_base_url"]}\")"
+            )
+        }
+    }
 
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.10"
@@ -21,6 +45,7 @@ android {
 
 dependencies {
     implementation(project(":core"))
+    implementation(project(":core:webapp"))
     implementation(project(":domain"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:analytics"))

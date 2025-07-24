@@ -46,6 +46,7 @@ import `in`.koreatech.koin.domain.model.store.Cart
 import `in`.koreatech.koin.domain.model.store.CartAdd
 import `in`.koreatech.koin.domain.model.store.CartItem
 import `in`.koreatech.koin.domain.model.store.CartItemEdit
+import `in`.koreatech.koin.domain.model.store.CartItemEdit.CartItemEditPrice
 import `in`.koreatech.koin.domain.model.store.CartPaymentSummary
 import `in`.koreatech.koin.domain.model.store.CartSummary
 import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
@@ -543,6 +544,39 @@ fun ShopMenusResponse.toShopMenus() = ShopMenus(
     }
 )
 
+fun ShopMenu.toAddMenu() = CartItemEdit(
+    id = id,
+    name = name,
+    description = description,
+    images = images,
+    prices = prices.map { price ->
+        CartItemEdit.CartItemEditPrice(
+            id = price.id,
+            name = price.name,
+            price = price.price,
+            isSelected = false
+        )
+    },
+    optionGroups = optionGroups.map { optionGroup ->
+        CartItemEdit.CartItemEditOptionGroup(
+            id = optionGroup.id,
+            name = optionGroup.name,
+            description = optionGroup.description,
+            isRequired = optionGroup.isRequired,
+            minSelect = optionGroup.minSelect,
+            maxSelect = optionGroup.maxSelect,
+            options = optionGroup.options.map { option ->
+                CartItemEditPrice(
+                    id = option.id,
+                    name = option.name,
+                    price = option.price,
+                    isSelected = false
+                )
+            }
+        )
+    }
+)
+
 fun ShopMenuResponse.toShopMenu() = ShopMenu(
     id = id,
     name = name,
@@ -565,7 +599,7 @@ fun ShopMenuResponse.toShopMenu() = ShopMenu(
             minSelect = optionGroup.minSelect,
             maxSelect = optionGroup.maxSelect,
             options = optionGroup.options.map { option ->
-                ShopMenu.ShopMenuOptionGroup.ShopMenuOption(
+                ShopMenu.ShopMenuPrice(
                     id = option.id,
                     name = option.name,
                     price = option.price
@@ -678,7 +712,7 @@ fun CartItemEditResponse.toCartItemEdit() = CartItemEdit(
             minSelect = optionGroup.minSelect,
             maxSelect = optionGroup.maxSelect,
             options = optionGroup.options.map { option ->
-                CartItemEdit.CartItemEditOptionGroup.CartItemEditOption(
+                CartItemEditPrice(
                     id = option.id,
                     name = option.name,
                     price = option.price,

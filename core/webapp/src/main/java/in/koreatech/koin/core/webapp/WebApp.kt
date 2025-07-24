@@ -4,12 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebChromeClient
-import android.webkit.WebResourceRequest
+import android.webkit.CookieManager
+import android.webkit.WebSettings
 import android.webkit.WebView
-import android.webkit.WebViewClient
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -20,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
+import java.net.URL
 
 /**
  * WebApp composable
@@ -27,8 +27,12 @@ import androidx.compose.ui.viewinterop.AndroidView
  * @param url Web app url
  * @param modifier Modifier
  * @param exposedInterfaceName The name used to expose the object in JavaScript
+ * @param windowInsets WindowInsets
+ * @param cookies List of Cookie. First one is key and second one is value
  * @param koinWebAppInterface An instance of [KoinWebAppInterface]
- * @param onProgressChanged Callback invoked when the progress changes
+ * @param koinWebAppWebViewClient An instance of [KoinWebAppWebViewClient]
+ * @param koinWebChromeClient An instance of [KoinWebAppWebChromeClient]
+ * @param backHandler Back handler of WebApp
  */
 @Composable
 fun WebApp(
@@ -36,27 +40,45 @@ fun WebApp(
     modifier: Modifier = Modifier,
     exposedInterfaceName: String = "Android",
     windowInsets: WindowInsets = WindowInsets.safeDrawing,
+    cookies: List<Pair<String, String>> = emptyList(),
     koinWebAppInterface: KoinWebAppInterface = KoinWebAppInterface(),
-    onNavigateBack: () -> Unit = {},
-    onProgressChanged: (Int) -> Unit = {}
+    koinWebAppWebViewClient: KoinWebAppWebViewClient = KoinWebAppWebViewClient(),
+    koinWebChromeClient: KoinWebAppWebChromeClient = KoinWebAppWebChromeClient(),
+    backHandler: @Composable (view: WebView?) -> Unit = {}
 ) {
     var webView: WebView? by remember { mutableStateOf(null) }
+    val cookieManager = CookieManager.getInstance()
 
     AndroidView(
         modifier = modifier
             .fillMaxSize()
-            .windowInsetsPadding(windowInsets),
+            .windowInsetsPadding(windowInsets)
+            .consumeWindowInsets(windowInsets),
         factory = { factoryContext ->
             createWebView(
                 context = factoryContext,
                 exposedInterfaceName = exposedInterfaceName,
                 koinWebAppInterface = koinWebAppInterface,
-                onProgressChanged = onProgressChanged
+                koinWebAppWebViewClient = koinWebAppWebViewClient,
+                koinWebChromeClient = koinWebChromeClient
             ).apply {
                 webView = this
             }
         },
         update = {
+            val baseUrl = URL(url).let { url ->
+                "${url.protocol}://${url.host}"
+            }
+
+            cookieManager.apply {
+                removeSessionCookies { }
+                removeAllCookies { }
+                acceptCookie()
+                acceptThirdPartyCookies(it)
+                cookies.forEach { cookie ->
+                    setCookie(baseUrl, "${cookie.first}=${cookie.second}")
+                }
+            }
             it.loadUrl(url)
         },
         onRelease = {
@@ -64,13 +86,7 @@ fun WebApp(
         }
     )
 
-    BackHandler {
-        if (webView?.canGoBack() == true) {
-            webView!!.goBack()
-        } else {
-            onNavigateBack()
-        }
-    }
+    backHandler(webView)
 }
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -78,23 +94,15 @@ private fun createWebView(
     context: Context,
     exposedInterfaceName: String,
     koinWebAppInterface: KoinWebAppInterface,
-    onProgressChanged: (Int) -> Unit = {}
+    koinWebAppWebViewClient: KoinWebAppWebViewClient = KoinWebAppWebViewClient(),
+    koinWebChromeClient: KoinWebAppWebChromeClient = KoinWebAppWebChromeClient()
 ) = WebView(context).apply {
     layoutParams = ViewGroup.LayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT,
         ViewGroup.LayoutParams.MATCH_PARENT
     )
-    webViewClient = object : WebViewClient() {
-        override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-            return false
-        }
-    }
-    webChromeClient = object : WebChromeClient() {
-        override fun onProgressChanged(view: WebView, newProgress: Int) {
-            onProgressChanged(newProgress)
-            super.onProgressChanged(view, newProgress)
-        }
-    }
+    webViewClient = koinWebAppWebViewClient
+    webChromeClient = koinWebChromeClient
     addJavascriptInterface(koinWebAppInterface, exposedInterfaceName)
     overScrollMode = View.OVER_SCROLL_NEVER
     settings.apply {
@@ -103,6 +111,7 @@ private fun createWebView(
         javaScriptEnabled = true
         loadWithOverviewMode = true
         blockNetworkLoads = false
+        mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
         setSupportZoom(false)
     }
 }
