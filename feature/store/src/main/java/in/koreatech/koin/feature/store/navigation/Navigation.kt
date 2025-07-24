@@ -180,6 +180,11 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
         AddMenuScreen(
             navigateToCart = {
                 navController.navigate(StoreNavType.StoreCart.route)
+            },
+            navigateToBack = {
+                if (!navController.navigateUp()) {
+                    finish()
+                }
             }
         )
     }
