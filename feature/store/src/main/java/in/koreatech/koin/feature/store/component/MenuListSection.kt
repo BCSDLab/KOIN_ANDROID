@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.store.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -35,7 +36,8 @@ import `in`.koreatech.koin.feature.store.model.MenuModel
 fun LazyListScope.menuListSection(
     category: String,
     menus: List<MenuModel>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onMenuClick: (menuId: Int) -> Unit = { }
 ) {
     if (menus.isEmpty()) return
 
@@ -64,7 +66,8 @@ fun LazyListScope.menuListSection(
                     menus.forEachIndexed { index, menu ->
                         MenuItem(
                             modifier = Modifier
-                                .padding(16.dp),
+                                .padding(16.dp)
+                                .clickable { onMenuClick(menu.id) },
                             menu = menu
                         )
                         if (index != menus.lastIndex) {
