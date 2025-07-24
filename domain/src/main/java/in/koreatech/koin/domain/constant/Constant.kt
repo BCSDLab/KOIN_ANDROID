@@ -19,10 +19,8 @@ const val KOIN_WEB_STAGE_URL = "https://stage.koreatech.in/"
 
 const val LOGIN_ACTIVITY_URL = "koin://login/login"
 
+const val HTTP_URL = "http://"
+
 const val HTTPS_URL = "https://"
 
-const val INSTAGRAM_URL = "${HTTPS_URL}www.instagram.com"
-
-const val GOOGLE_FORM_URL = "${HTTPS_URL}forms.gle"
-
-const val OPEN_CHAT_URL = "${HTTPS_URL}open.kakao.com"
+const val INSTAGRAM_URL = "instagram.com"

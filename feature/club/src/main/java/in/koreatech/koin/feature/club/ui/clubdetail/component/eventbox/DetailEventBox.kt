@@ -54,7 +54,7 @@ fun DetailEventBox(
                 modifier = Modifier
                     .matchParentSize()
                     .background(
-                        color = KoinTheme.colors.neutral800.copy(alpha = 0.7f),
+                        color = KoinTheme.colors.neutral800.copy(alpha = 0.5f),
                         shape = KoinTheme.shapes.small
                     )
                     .zIndex(1f)

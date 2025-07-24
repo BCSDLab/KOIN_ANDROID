@@ -56,9 +56,12 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
-import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.feature.club.CONTENT_MAX_LENGTH
+import `in`.koreatech.koin.feature.club.CONTENT_MIN_LINES
+import `in`.koreatech.koin.feature.club.EVENT_INTRO_MAX_LENGTH
+import `in`.koreatech.koin.feature.club.EVENT_NAME_MAX_LENGTH
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.KoinClubBasicTextField
 import `in`.koreatech.koin.feature.club.component.KoinClubDatePickerDialog
@@ -183,11 +186,6 @@ fun ClubEventCreateScreenImpl(
 
     var isStartDateSelected by remember { mutableStateOf(true) }
 
-    val textFieldMinLines = 1
-    val textFieldMaxLength = 255
-    val introTextFieldMaxLength = 70
-    val contentTextFieldMaxLines = 2
-
     val pickMultipleMedia = pickMultipleMedia(
         context = context,
         maxItems = maxOf(maxImageLimit - imageUrls.size, 2),
@@ -253,13 +251,11 @@ fun ClubEventCreateScreenImpl(
             negativeButtonText = stringResource(R.string.club_event_modify_request_dialog_negative),
             titleTextAlign = TextAlign.Center,
             descriptionTextAlign = TextAlign.Center,
-            positiveButtonColors = FilledButtonColors.Primary,
             onPositive = {
                 updateModifyRequestDialog(false)
                 modifyEvent()
             },
-            onNegative = { updateModifyRequestDialog(false) },
-            onDismiss = { updateModifyRequestDialog(false) }
+            onNegative = { updateModifyRequestDialog(false) }
         )
     }
 
@@ -277,8 +273,7 @@ fun ClubEventCreateScreenImpl(
                 updateModifyCancelDialog(false)
                 modifyEventCancel()
             },
-            onNegative = { updateModifyCancelDialog(false) },
-            onDismiss = { updateModifyCancelDialog(false) }
+            onNegative = { updateModifyCancelDialog(false) }
         )
     }
 
@@ -392,8 +387,7 @@ fun ClubEventCreateScreenImpl(
                     onValueChange = { updateEventName(it) },
                     modifier = Modifier
                         .weight(1f),
-                    minLines = textFieldMinLines,
-                    maxLength = textFieldMaxLength,
+                    maxLength = EVENT_NAME_MAX_LENGTH,
                     borderColor = if (eventNameRequired) KoinTheme.colors.sub500 else KoinTheme.colors.neutral100,
                     hint = stringResource(R.string.club_event_create_name_hint)
                 )
@@ -500,8 +494,7 @@ fun ClubEventCreateScreenImpl(
                 onValueChange = { updateEventIntroduce(it) },
                 modifier = Modifier
                     .fillMaxWidth(),
-                minLines = textFieldMinLines,
-                maxLength = introTextFieldMaxLength,
+                maxLength = EVENT_INTRO_MAX_LENGTH,
                 borderColor = if (eventIntroduceRequired) KoinTheme.colors.sub500 else KoinTheme.colors.neutral100,
                 hint = stringResource(R.string.club_event_create_intro_hint)
             )
@@ -527,8 +520,8 @@ fun ClubEventCreateScreenImpl(
                 onValueChange = { updateEventContent(it) },
                 modifier = Modifier
                     .fillMaxWidth(),
-                minLines = contentTextFieldMaxLines,
-                maxLength = textFieldMaxLength,
+                minLines = CONTENT_MIN_LINES,
+                maxLength = CONTENT_MAX_LENGTH,
                 hint = stringResource(R.string.club_event_create_content_hint)
             )
         }

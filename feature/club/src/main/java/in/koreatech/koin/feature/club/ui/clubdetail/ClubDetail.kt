@@ -66,25 +66,25 @@ import coil.request.ImageRequest
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
-import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.toast.ToastUtil
-import `in`.koreatech.koin.domain.constant.HTTPS_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_STAGE_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_URL
 import `in`.koreatech.koin.domain.constant.LOGIN_ACTIVITY_URL
-import `in`.koreatech.koin.domain.util.ext.formatInstagramLinkForm
-import `in`.koreatech.koin.domain.util.ext.formatInstagramUrlForm
 import `in`.koreatech.koin.domain.util.ext.formatPhoneNumber
 import `in`.koreatech.koin.domain.util.ext.isValidGoogleFormUrl
 import `in`.koreatech.koin.domain.util.ext.isValidInstagramUrl
 import `in`.koreatech.koin.domain.util.ext.isValidOpenChatUrl
 import `in`.koreatech.koin.domain.util.ext.isValidPhoneNumber
+import `in`.koreatech.koin.domain.util.ext.isValidUrlScheme
+import `in`.koreatech.koin.domain.util.ext.removeUrlScheme
+import `in`.koreatech.koin.domain.util.ext.toHttpsUrl
+import `in`.koreatech.koin.domain.util.ext.toInstagramLink
+import `in`.koreatech.koin.domain.util.ext.toInstagramUrl
 import `in`.koreatech.koin.feature.club.BuildConfig
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
-import `in`.koreatech.koin.feature.club.component.DetailLoginDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_CATEGORY
@@ -261,9 +261,10 @@ fun ClubDetail(
         }
 
         if (state.showLoginDialog) {
-            DetailLoginDialog(
+            KoinClubExtraSmallDialog(
                 title = stringResource(R.string.detail_dialog_login_title),
                 description = stringResource(R.string.detail_dialog_login_description),
+                positiveButtonText = stringResource(id = R.string.detail_dialog_login_positive),
                 onPositive = {
                     viewModel.dismissLoginDialog()
                     viewModel.openUrl(LOGIN_ACTIVITY_URL)
@@ -346,8 +347,7 @@ fun ClubDetail(
                     viewModel.dismissRecruitDeleteDialog()
                     viewModel.deleteRecruitment()
                 },
-                onNegative = viewModel::dismissRecruitDeleteDialog,
-                onDismiss = viewModel::dismissRecruitDeleteDialog
+                onNegative = viewModel::dismissRecruitDeleteDialog
             )
         }
 
@@ -365,8 +365,7 @@ fun ClubDetail(
                     viewModel.updateEventsDeleteDialog(false)
                     viewModel.deleteClubEvent(state.clubEvents[state.selectedEventIndex].id)
                 },
-                onNegative = { viewModel.updateEventsDeleteDialog(false) },
-                onDismiss = { viewModel.updateEventsDeleteDialog(false) }
+                onNegative = { viewModel.updateEventsDeleteDialog(false) }
             )
         }
 
@@ -381,7 +380,6 @@ fun ClubDetail(
                 negativeButtonText = stringResource(if (isSubscribed) R.string.detail_dialog_recruit_unsubscribe_negative else R.string.detail_dialog_recruit_subscribe_negative),
                 titleTextAlign = TextAlign.Center,
                 descriptionTextAlign = TextAlign.Center,
-                positiveButtonColors = FilledButtonColors.Primary,
                 onPositive = {
                     EventLogger.logCampusClickEvent(
                         if (isSubscribed) {
@@ -394,8 +392,7 @@ fun ClubDetail(
                     viewModel.updateRecruitSubscribeDialog(false)
                     viewModel.changeClubRecruitmentSubscribe()
                 },
-                onNegative = { viewModel.updateRecruitSubscribeDialog(false) },
-                onDismiss = { viewModel.updateRecruitSubscribeDialog(false) }
+                onNegative = { viewModel.updateRecruitSubscribeDialog(false) }
             )
         }
 
@@ -410,13 +407,11 @@ fun ClubDetail(
                 negativeButtonText = stringResource(if (isSubscribed) R.string.detail_dialog_recruit_unsubscribe_negative else R.string.detail_dialog_recruit_subscribe_negative),
                 titleTextAlign = TextAlign.Center,
                 descriptionTextAlign = TextAlign.Center,
-                positiveButtonColors = FilledButtonColors.Primary,
                 onPositive = {
                     viewModel.updateEventSubscribeDialog(false)
                     viewModel.changeClubEventSubscribe()
                 },
-                onNegative = { viewModel.updateEventSubscribeDialog(false) },
-                onDismiss = { viewModel.updateEventSubscribeDialog(false) }
+                onNegative = { viewModel.updateEventSubscribeDialog(false) }
             )
         }
 
@@ -579,6 +574,7 @@ fun ClubDetail(
                             var icon = -1
                             var onClick = {}
                             var onIconClick = {}
+                            val clipboard = LocalClipboardManager.current
                             intro.second?.let {
                                 when (intro.first) {
                                     DETAIL_DESCRIPTION -> {
@@ -586,17 +582,31 @@ fun ClubDetail(
                                         onClick = { showMore.value = !showMore.value }
                                     }
                                     DETAIL_INSTAGRAM -> {
-                                        linkUrl = if (it.isValidInstagramUrl()) it else it.formatInstagramUrlForm()
+                                        val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
+                                        linkUrl = if (url.isValidInstagramUrl()) url else url.toInstagramUrl()
                                         onClick = { viewModel.openUrl(linkUrl) }
-                                        outputText = it.formatInstagramLinkForm()
+                                        outputText = it.toInstagramLink()
                                     }
-                                    DETAIL_GOOGLE_FORM -> outputText = it.removePrefix(HTTPS_URL)
-                                    DETAIL_OPEN_CHAT -> outputText = it.removePrefix(HTTPS_URL)
+                                    DETAIL_GOOGLE_FORM -> {
+                                        val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
+                                        linkUrl = if (url.isValidGoogleFormUrl()) url else ""
+                                        onClick = { viewModel.openUrl(linkUrl) }
+                                        outputText = it.removeUrlScheme().let { text -> if (text.length <= 22) text else "${text.take(22)}..." }
+                                        icon = R.drawable.icon_club_copy
+                                        onIconClick = { clipboard.setText(AnnotatedString(linkUrl)) }
+                                    }
+                                    DETAIL_OPEN_CHAT -> {
+                                        val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
+                                        linkUrl = if (url.isValidOpenChatUrl()) url else ""
+                                        onClick = { viewModel.openUrl(linkUrl) }
+                                        outputText = it.removeUrlScheme()
+                                        icon = R.drawable.icon_club_copy
+                                        onIconClick = { clipboard.setText(AnnotatedString(linkUrl)) }
+                                    }
                                     DETAIL_PHONE_NUMBER -> {
                                         outputText = if (it.isValidPhoneNumber) it.formatPhoneNumber() else it
-                                        icon = R.drawable.icon_phonenumber_copy
-                                        val clipboard = LocalClipboardManager.current
-                                        onIconClick = { clipboard.setText(AnnotatedString(outputText)) }
+                                        icon = R.drawable.icon_club_copy
+                                        onIconClick = { clipboard.setText(AnnotatedString(it)) }
                                     }
                                     else -> outputText = it
                                 }
@@ -622,7 +632,7 @@ fun ClubDetail(
                                     style = KoinTheme.typography.medium18,
                                     color = if (linkUrl.isEmpty()) KoinTheme.colors.neutral800 else KoinTheme.colors.info700,
                                     overflow = TextOverflow.Ellipsis,
-                                    modifier = Modifier.clickable { onClick() }
+                                    modifier = Modifier.clickable { onClick() }.weight(1f, fill = false)
                                 )
                                 if (icon != -1) {
                                     Spacer(Modifier.width(8.dp))
@@ -845,8 +855,12 @@ suspend fun handleSideEffect(
             )
         }
         is ClubDetailSideEffect.OpenUrl -> {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url))
-            context.startActivity(intent)
+            try {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url))
+                context.startActivity(intent)
+            } catch (e: Exception) {
+                ToastUtil.getInstance().makeShort(context.getString(R.string.detail_error_incorrect_link))
+            }
         }
         is ClubDetailSideEffect.UnauthorizedError -> {
             ToastUtil.getInstance().makeShort(sideEffect.messageResId)
