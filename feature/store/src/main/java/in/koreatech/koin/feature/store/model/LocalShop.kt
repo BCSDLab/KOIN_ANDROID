@@ -19,7 +19,8 @@ data class LocalShop(
     val maximumDeliveryTip: Int,
     val isOpen: Boolean,
     val categoryIds: List<Int>,
-    val imageUrls: List<String>,
+    val images: List<String>,
+    val thumbnail: String,
     val open: List<LocalOrderStoreShopsOpen>,
     val openStatus: OpenStatus
 ) : Parcelable {
@@ -49,7 +50,10 @@ internal fun Shop.toLocalShop(): LocalShop {
         maximumDeliveryTip = maximumDeliveryTip,
         isOpen = isOpen,
         categoryIds = categoryIds,
-        imageUrls = imageUrls,
+        images = images.map {
+            it.imageUrl
+        },
+        thumbnail = images.firstOrNull { it.isThumbnail }?.imageUrl ?: "",
         open = open.map { it.toLocalOrderStoreShopsOpen() },
         openStatus = openStatus
     )

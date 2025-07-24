@@ -52,8 +52,8 @@ data class ShopOriginResponse(
     )
 
     data class Origin(
-        @SerializedName("ingredients")
-        val ingredients: String,
+        @SerializedName("ingredient")
+        val ingredient: String,
         @SerializedName("origin")
         val origin: String
     )

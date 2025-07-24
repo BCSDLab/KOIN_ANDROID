@@ -393,7 +393,12 @@ fun ShopResponse.toShop(): Shop {
         maximumDeliveryTip = maximumDeliveryTip,
         isOpen = convertedOpenStatus == OpenStatus.OPERATING,
         categoryIds = categoryIds,
-        imageUrls = imageUrls,
+        images = images.map {
+            Shop.ShopImageUrls(
+                imageUrl = it.imageUrl,
+                isThumbnail = it.isThumbnail
+            )
+        },
         open = open.map {
             Shop.OrderStoreShopsOpen(
                 dayOfWeek = DateFormatUtil.dayOfWeekToIndex(it.dayOfWeek),
@@ -422,7 +427,7 @@ fun StoreItemResponse.toShop(): Shop {
         maximumDeliveryTip = 0, // Legacy store API does not have maximumDeliveryTip
         isOpen = convertedOpenStatus == OpenStatus.OPERATING,
         categoryIds = categoryIds,
-        imageUrls = emptyList(),
+        images = emptyList(),
         open = open?.map {
             Shop.OrderStoreShopsOpen(
                 dayOfWeek = DateFormatUtil.dayOfWeekToIndex(it.dayOfWeek ?: ""),
@@ -580,9 +585,8 @@ fun ShopMenu.toAddMenu() = CartItemEdit(
 fun ShopMenuResponse.toShopMenu() = ShopMenu(
     id = id,
     name = name,
-    description = description,
+    description = description ?: "",
     images = images,
-    isSoldOut = isSoldOut,
     prices = prices.map { price ->
         ShopMenu.ShopMenuPrice(
             id = price.id,

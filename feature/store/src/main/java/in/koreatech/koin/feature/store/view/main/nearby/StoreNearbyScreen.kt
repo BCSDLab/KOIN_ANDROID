@@ -283,7 +283,7 @@ private fun StoreNearbyScreen(
                             storeAverageRating = it.ratingAverage.toString(),
                             storeReviewCount = it.reviewCount,
                             storeDeliveryFee = it.minimumDeliveryTip.toString(),
-                            storeImageUrl = it.imageUrls.firstOrNull() ?: "",
+                            storeImageUrl = it.thumbnail,
                             isOpen = it.isOpen,
                             filterBadgeList = it.filterBadgeList
                         ) {
@@ -349,7 +349,8 @@ private fun StoreNearbyScreenPreview() {
                     maximumDeliveryTip = 500,
                     isOpen = true,
                     categoryIds = listOf(0, 1),
-                    imageUrls = listOf("https://example.com/store.jpg"),
+                    images = listOf("https://example.com/store.jpg"),
+                    thumbnail = "https://example.com/store_thumbnail.jpg",
                     open = listOf(
                         LocalShop.LocalOrderStoreShopsOpen(
                             dayOfWeek = 1,

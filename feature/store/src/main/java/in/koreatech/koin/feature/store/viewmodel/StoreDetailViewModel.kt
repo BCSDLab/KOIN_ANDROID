@@ -72,7 +72,7 @@ class StoreDetailViewModel @Inject constructor(
                         origins = result.origins.map { origin ->
                             listOf(
                                 OriginModel(
-                                    ingredients = origin.ingredients,
+                                    ingredients = origin.ingredient,
                                     origin = origin.origin
                                 )
                             )

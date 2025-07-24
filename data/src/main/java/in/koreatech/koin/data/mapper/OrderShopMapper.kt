@@ -70,6 +70,6 @@ fun ShopOriginResponse.OwnerInfoResponse.toOwnerInfo() = OrderShop.OwnerInfo(
 )
 
 fun ShopOriginResponse.Origin.toOrigin() = OrderShop.Origin(
-    ingredients = ingredients,
+    ingredient = ingredient,
     origin = origin
 )
