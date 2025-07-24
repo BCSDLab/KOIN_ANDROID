@@ -8,7 +8,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -21,6 +23,8 @@ import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.component.OrderBottomBar
+import `in`.koreatech.koin.feature.store.enums.CartValidation
 import `in`.koreatech.koin.feature.store.viewmodel.ShoppingCartViewModel
 import org.orbitmvi.orbit.compose.collectAsState
 
@@ -29,9 +33,17 @@ import org.orbitmvi.orbit.compose.collectAsState
 fun ShoppingCartScreen(
     viewModel: ShoppingCartViewModel = hiltViewModel(),
     isOperating: Boolean = true,
-    navigateToStoreDetail: () -> Unit = { }
+    navigateToStoreDetail: () -> Unit = { },
+    navigateToPayment: () -> Unit = { }
 ) {
     val uiState by viewModel.collectAsState()
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { uiState.cart }
+            .collect {
+                viewModel.getCartValidate()
+            }
+    }
 
     Scaffold(
         topBar = {
@@ -57,6 +69,14 @@ fun ShoppingCartScreen(
                             }
                     )
                 }
+            )
+        },
+        bottomBar = {
+            OrderBottomBar(
+                totalPrice = uiState.cart.totalAmount,
+                isOrderEnabled = uiState.cartValidation == CartValidation.VALID,
+                orderableMessage = uiState.isValidateCart.message,
+                navigateToCart = navigateToPayment
             )
         }
     ) { innerPadding ->
