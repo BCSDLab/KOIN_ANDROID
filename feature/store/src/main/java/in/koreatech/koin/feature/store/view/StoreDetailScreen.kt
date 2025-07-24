@@ -136,7 +136,9 @@ fun StoreDetailScreen(
                     menus = category.menus,
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
                 ) {
-                    navigateToMenuInfo(it)
+                    if (uiState.isOrderableShop) {
+                        navigateToMenuInfo(it)
+                    }
                 }
             }
         }
