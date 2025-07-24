@@ -429,7 +429,12 @@ fun StoreItemResponse.toShop(): Shop {
         maximumDeliveryTip = 0, // Legacy store API does not have maximumDeliveryTip
         isOpen = convertedOpenStatus == OpenStatus.OPERATING,
         categoryIds = categoryIds,
-        images = emptyList(),
+        images = images?.mapIndexed { index, s ->
+            Shop.ShopImageUrls(
+                imageUrl = s,
+                isThumbnail = index == 0
+            )
+        } ?: emptyList(),
         open = open?.map {
             Shop.OrderStoreShopsOpen(
                 dayOfWeek = DateFormatUtil.dayOfWeekToIndex(it.dayOfWeek ?: ""),

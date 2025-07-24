@@ -52,6 +52,7 @@ object URLConstant {
         }
         const val SHOPS = "shops"
         const val SHOPS_V2 = "/v2/shops"
+        const val SHOPS_V3 = "/v3/shops"
         const val EVENTS = "$SHOPS/events"
         const val CATERGORIES = "$SHOPS/categories"
         object ID {
