@@ -28,7 +28,10 @@ class ClubActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdgeWithLightStatusBar()
 
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        try {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        } catch (ignore: IllegalStateException) {
+        }
 
         val clubCategory = intent.getIntExtra(CATEGORY_ID, -1)
 
