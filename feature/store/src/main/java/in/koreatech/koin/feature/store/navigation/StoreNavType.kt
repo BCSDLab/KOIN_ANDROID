@@ -6,6 +6,7 @@ import `in`.koreatech.koin.feature.store.R
 
 sealed class StoreNavType(val route: String) {
     data object StoreMain : StoreNavType("store_main")
+    data object StoreSearch : StoreNavType("store_search")
     data object StoreDetail : StoreNavType("store_detail")
     data object StoreCart : StoreNavType("store_cart")
 }

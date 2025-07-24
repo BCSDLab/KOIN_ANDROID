@@ -12,7 +12,6 @@ import `in`.koreatech.koin.feature.store.model.toLocalShop
 import `in`.koreatech.koin.feature.store.model.toLocalStoreCategories
 import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
-import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
@@ -109,14 +108,6 @@ class StoreHomeViewModel @Inject constructor(
         }
     }
 
-    fun onShowSearchChange(showSearch: Boolean) = intent {
-        reduce {
-            state.copy(
-                showSearch = showSearch
-            )
-        }
-    }
-
     fun onCategoryChange(categoryId: Int) = intent {
         if (categoryId == state.categoryId) return@intent
         reduce {
@@ -124,17 +115,5 @@ class StoreHomeViewModel @Inject constructor(
                 categoryId = categoryId
             )
         }
-    }
-
-    fun onQueryChange(query: String) = blockingIntent {
-        reduce {
-            state.copy(
-                query = query
-            )
-        }
-    }
-
-    fun onSearch() = intent {
-        // TODO
     }
 }

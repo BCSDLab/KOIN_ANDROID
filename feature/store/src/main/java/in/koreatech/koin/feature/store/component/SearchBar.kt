@@ -1,53 +1,41 @@
 package `in`.koreatech.koin.feature.store.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 
-object StoreSearchBarDefaults {
-    @Composable
-    fun colors(): TextFieldColors = TextFieldDefaults.colors(
-        focusedContainerColor = RebrandKoinTheme.colors.neutral0,
-        unfocusedContainerColor = RebrandKoinTheme.colors.neutral0,
-        disabledContainerColor = RebrandKoinTheme.colors.neutral0,
-        errorContainerColor = RebrandKoinTheme.colors.neutral0
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
-    onSearch: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    hint: String = stringResource(R.string.store_search_hint)
 ) {
-    val focusManager = LocalFocusManager.current
+    val focusRequester = remember { FocusRequester() }
 
     BasicTextField(
         value = query,
@@ -57,47 +45,42 @@ fun SearchBar(
             .fillMaxWidth()
             .shadow(
                 elevation = 4.dp,
-                shape = RoundedCornerShape(16.dp),
+                shape = RebrandKoinTheme.shapes.medium,
                 ambientColor = RebrandKoinTheme.colors.neutral400,
                 spotColor = RebrandKoinTheme.colors.neutral500
             )
-            .background(RebrandKoinTheme.colors.neutral0, shape = RoundedCornerShape(16.dp))
-            .height(40.dp),
+            .clip(RebrandKoinTheme.shapes.medium)
+            .background(RebrandKoinTheme.colors.neutral0, shape = RebrandKoinTheme.shapes.medium)
+            .focusRequester(focusRequester),
         textStyle = RebrandKoinTheme.typography.regular14,
         decorationBox = { innerTextField ->
-            TextFieldDefaults.DecorationBox(
-                value = query,
-                innerTextField = innerTextField,
-                placeholder = {
-                    Text(
-                        text = stringResource(R.string.store_search_hint),
-                        style = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral500),
-                        fontSize = 14.sp
-                    )
-                },
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_search),
-                        contentDescription = "검색",
-                        tint = RebrandKoinTheme.colors.neutral500
-                    )
-                },
-                singleLine = true,
-                enabled = true,
-                interactionSource = remember { MutableInteractionSource() },
-                contentPadding = PaddingValues(start = 12.dp, top = 8.dp, bottom = 8.dp),
-                visualTransformation = VisualTransformation.None,
-                colors = StoreSearchBarDefaults.colors()
-            )
-        },
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(
-            onSearch = {
-                focusManager.clearFocus()
-                onSearch()
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_search),
+                    contentDescription = "검색",
+                    tint = RebrandKoinTheme.colors.neutral500
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Box {
+                    innerTextField()
+                    if (query.isEmpty()) {
+                        Text(
+                            text = hint,
+                            style = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral400)
+                        )
+                    }
+                }
             }
-        )
+        },
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
     )
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
 }
 
 @Preview
@@ -107,7 +90,6 @@ private fun SearchBarPreview() {
         SearchBar(
             query = "",
             onQueryChange = {},
-            onSearch = {},
             modifier = Modifier.fillMaxWidth()
         )
     }
