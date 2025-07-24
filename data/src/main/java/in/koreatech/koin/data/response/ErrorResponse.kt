@@ -1,14 +1,12 @@
 package `in`.koreatech.koin.data.response
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 data class ErrorResponse(
-    @SerialName("message")
+    @SerializedName("message")
     val message: String?,
-    @SerialName("code")
+    @SerializedName("code")
     val code: String?,
-    @SerialName("errorTraceId")
+    @SerializedName("errorTraceId")
     val errorTraceId: String?
 )

@@ -119,7 +119,7 @@ class SemesterViewModel @Inject constructor(
                 } else {
                     getAllFramesUseCase()
                         .catch { Timber.d("Fail to getAllFramesUseCase on initialScreenState| message: ${it.message}") }
-                        .map { it.mapKeys { it.key.toSemesterModel() } }
+                        .map { it.mapKeys { it.key.toSemesterModel() }.toSortedMap() }
                         .first()
                 }
             emit(

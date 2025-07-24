@@ -230,7 +230,12 @@ class ClubRepositoryImpl @Inject constructor(
 
     override suspend fun deleteClubQna(clubId: Int, qnaId: Int): Result<Unit> {
         return runCatching {
-            clubRemoteDataSource.deleteClubQna(clubId, qnaId)
+            val response = clubRemoteDataSource.deleteClubQna(clubId, qnaId)
+            if (response.isSuccessful) {
+                Unit
+            } else {
+                throw HttpException(response)
+            }
         }.onFailure { exception ->
             return Result.failure(
                 when (exception) {

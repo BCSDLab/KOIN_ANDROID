@@ -27,6 +27,13 @@ class SignupTermsLocalDataSource @Inject constructor(
             }
         }
 
+    suspend fun getMarketingTermText(): String =
+        withContext(coroutineDispatcher) {
+            applicationContext.assets.open(MARKETING_TERMS_TEXT_FILE_NAME).bufferedReader().useLines { lines ->
+                lines.joinToString("\n")
+            }
+        }
+
     suspend fun getPrivacyTerm(): TermEntity =
         withContext(coroutineDispatcher) {
             applicationContext.assets.open(PRIVACY_TERMS_JSON_FILE_NAME).bufferedReader().use { it.readText() }.let {
@@ -41,10 +48,19 @@ class SignupTermsLocalDataSource @Inject constructor(
             }
         }
 
+    suspend fun getMarketingTerms(): TermEntity =
+        withContext(coroutineDispatcher) {
+            applicationContext.assets.open(MARKETING_TERMS_JSON_FILE_NAME).bufferedReader().use { it.readText() }.let {
+                Json.decodeFromString<TermEntity>(it)
+            }
+        }
+
     companion object {
         const val PRIVACY_TERMS_TEXT_FILE_NAME = "Terms_personal_information.txt"
         const val PRIVACY_TERMS_JSON_FILE_NAME = "Terms_personal_information.json"
         const val KOIN_TERMS_TEXT_FILE_NAME = "Terms_koin_sign_up.txt"
         const val KOIN_TERMS_JSON_FILE_NAME = "Terms_koin_sign_up.json"
+        const val MARKETING_TERMS_TEXT_FILE_NAME = "Terms_marketing.txt"
+        const val MARKETING_TERMS_JSON_FILE_NAME = "Terms_marketing.json"
     }
 }

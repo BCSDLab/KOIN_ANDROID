@@ -9,8 +9,8 @@ internal fun Project.configureAndroidPaparazzi(
     commonExtension: CommonExtension<*, *, *, *, *, *>
 ) {
     dependencies {
-        androidTestImplementation(libs.findLibrary("androidx-junit-ktx").get())
-        androidTestImplementation(libs.findLibrary("androidx-ui-test-junit4-android").get())
+        androidTestImplementation(libs.findLibrary("androidx-test-ext-junit-ktx").get())
+        androidTestImplementation(libs.findLibrary("androidx-compose-ui-test-junit4-android").get())
         testImplementation(libs.findLibrary("paparazzi").get())
     }
 }
