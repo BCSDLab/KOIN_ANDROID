@@ -9,23 +9,36 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.error.club.KoinClubException
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.club.CancelClubLikeUseCase
+import `in`.koreatech.koin.domain.usecase.club.DeleteClubEventUseCase
 import `in`.koreatech.koin.domain.usecase.club.DeleteClubQnaUseCase
+import `in`.koreatech.koin.domain.usecase.club.DeleteClubRecruitmentUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubDetailsUseCase
+import `in`.koreatech.koin.domain.usecase.club.GetClubEventsUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubQnasUseCase
+import `in`.koreatech.koin.domain.usecase.club.GetClubRecruitmentUseCase
 import `in`.koreatech.koin.domain.usecase.club.PostClubQnaUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubEmpowermentUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubLikeUseCase
+import `in`.koreatech.koin.domain.usecase.club.SubscribeClubEventUseCase
+import `in`.koreatech.koin.domain.usecase.club.SubscribeClubRecruitmentUseCase
+import `in`.koreatech.koin.domain.usecase.club.UnsubscribeClubEventUseCase
+import `in`.koreatech.koin.domain.usecase.club.UnsubscribeClubRecruitmentUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubDetails
+import `in`.koreatech.koin.feature.club.model.toParcelizeClubEvent
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubQnasInfo
+import `in`.koreatech.koin.feature.club.model.toParcelizeClubRecruitment
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
+import `in`.koreatech.koin.feature.club.type.EventSearchType
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import okhttp3.internal.immutableListOf
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -41,7 +54,15 @@ class ClubDetailViewModel @Inject constructor(
     private val cancelClubLikeUseCase: CancelClubLikeUseCase,
     private val postClubQnaUseCase: PostClubQnaUseCase,
     private val setClubEmpowermentUseCase: SetClubEmpowermentUseCase,
-    private val setClubLikeUseCase: SetClubLikeUseCase
+    private val setClubLikeUseCase: SetClubLikeUseCase,
+    private val getClubRecruitmentUseCase: GetClubRecruitmentUseCase,
+    private val deleteClubRecruitmentUseCase: DeleteClubRecruitmentUseCase,
+    private val getClubEventsUseCase: GetClubEventsUseCase,
+    private val deleteClubEventUseCase: DeleteClubEventUseCase,
+    private val subscribeClubRecruitmentUseCase: SubscribeClubRecruitmentUseCase,
+    private val unsubscribeClubRecruitmentUseCase: UnsubscribeClubRecruitmentUseCase,
+    private val subscribeClubEventUseCase: SubscribeClubEventUseCase,
+    private val unsubscribeClubEventUseCase: UnsubscribeClubEventUseCase
 ) : ViewModel(), ContainerHost<ClubDetailState, ClubDetailSideEffect> {
     override val container = container<ClubDetailState, ClubDetailSideEffect>(
         initialState = ClubDetailState(),
@@ -70,6 +91,8 @@ class ClubDetailViewModel @Inject constructor(
         if (state.isLoading) return@intent
         loadClubDetails()
         loadClubQnas()
+        loadClubRecruitment()
+        loadClubEvents()
     }
 
     private fun getUserIdCollect() = intent {
@@ -90,17 +113,18 @@ class ClubDetailViewModel @Inject constructor(
     private fun loadClubDetails() = viewModelScope.launch {
         intent {
             reduce {
-                state.copy(isLoading = true)
+                state.copy(isLoading = true, showDetailProgressBar = true)
             }
             getClubDetailsUseCase(state.clubId).onSuccess {
                 reduce {
                     state.copy(
                         clubDetails = it.toParcelizeClubDetails(),
-                        isLoading = false
+                        isLoading = false,
+                        showDetailProgressBar = false
                     )
                 }
             }.onFailure { e ->
-                reduce { state.copy(isLoading = false) }
+                reduce { state.copy(isLoading = false, showDetailProgressBar = false) }
                 when (e) {
                     is KoinClubException.ClubNotFoundException -> {
                         postSideEffect(ClubDetailSideEffect.ClubNotFoundError)
@@ -126,6 +150,111 @@ class ClubDetailViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun loadClubRecruitment() = intent {
+        reduce { state.copy(isLoading = true, showRecruitProgressBar = true) }
+        getClubRecruitmentUseCase(state.clubId).onSuccess {
+            reduce {
+                state.copy(
+                    clubRecruitment = it.toParcelizeClubRecruitment(),
+                    isLoading = false,
+                    showRecruitProgressBar = false
+                )
+            }
+        }.onFailure { e ->
+            reduce { state.copy(isLoading = false, showRecruitProgressBar = false) }
+            when (e) {
+                is KoinClubException.WrongInputDataException -> {
+                    postSideEffect(ClubDetailSideEffect.LoadClubRecruitmentError)
+                }
+                is KoinClubException.ClubRecruitNotFoundException -> {
+                    reduce { state.copy(clubRecruitment = null) }
+                }
+                else -> throw e
+            }
+        }
+    }
+
+    private fun loadClubEvents() = intent {
+        reduce { state.copy(isLoading = true, showEventsProgressBar = true) }
+        getClubEventsUseCase(state.clubId, state.clubEventSearchType.value).onSuccess {
+            reduce {
+                state.copy(
+                    clubEvents = it.map { it.toParcelizeClubEvent() },
+                    isLoading = false,
+                    showEventsProgressBar = false,
+                    clubEventLoaded = true
+                )
+            }
+        }.onFailure { e ->
+            reduce { state.copy(isLoading = false, showEventsProgressBar = false) }
+            when (e) {
+                is KoinClubException.WrongInputDataException -> {
+                    postSideEffect(ClubDetailSideEffect.LoadClubRecruitmentError)
+                }
+                is KoinClubException.ClubEventNotFoundException -> {
+                    reduce { state.copy(clubEvents = immutableListOf()) }
+                }
+                else -> throw e
+            }
+        }
+    }
+
+    fun deleteClubEvent(eventId: Int) = intent {
+        reduce { state.copy(isLoading = true, showEventsProgressBar = true) }
+        deleteClubEventUseCase(state.clubId, eventId).onSuccess {
+            reduce {
+                state.copy(
+                    isLoading = false,
+                    showEventsProgressBar = false,
+                    selectedEventIndex = -1,
+                    clubEventSelected = false
+                )
+            }
+            loadClubEvents()
+        }.onFailure {
+            reduce { state.copy(isLoading = false, showEventsProgressBar = false) }
+            postSideEffect(ClubDetailSideEffect.DeleteClubEventError)
+        }
+    }
+
+    fun selectEvent(index: Int) = intent {
+        reduce { state.copy(selectedEventIndex = index, clubEventSelected = true) }
+    }
+
+    fun deselectEvent() = intent {
+        reduce { state.copy(selectedEventIndex = -1, clubEventSelected = false) }
+    }
+
+    fun deleteRecruitment() = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true, showRecruitProgressBar = true) }
+        deleteClubRecruitmentUseCase(state.clubId).onSuccess {
+            reduce { state.copy(isLoading = false, showRecruitProgressBar = false) }
+            loadClubRecruitment()
+        }.onFailure { e ->
+            reduce { state.copy(isLoading = false, showRecruitProgressBar = false) }
+            when (e) {
+                is KoinClubException.WrongInputDataException,
+                is KoinClubException.ClubRecruitNotFoundException -> {
+                    postSideEffect(ClubDetailSideEffect.DeleteClubRecruitmentError)
+                    reduce { state.copy(clubRecruitment = null) }
+                }
+                else -> {
+                    postSideEffect(ClubDetailSideEffect.UnknownError)
+                    reduce { state.copy(clubRecruitment = null) }
+                }
+            }
+        }
+    }
+
+    fun showRecruitDeleteDialog() = intent {
+        reduce { state.copy(showRecruitDeleteDialog = true) }
+    }
+
+    fun dismissRecruitDeleteDialog() = intent {
+        reduce { state.copy(showRecruitDeleteDialog = false) }
     }
 
     fun showAddQnaDialog() = intent {
@@ -167,7 +296,9 @@ class ClubDetailViewModel @Inject constructor(
                     is KoinClubException.NotClubManagerException -> {
                         postSideEffect(ClubDetailSideEffect.NotClubManagerError)
                     }
-                    else -> throw e
+                    else -> {
+                        postSideEffect(ClubDetailSideEffect.UnknownError)
+                    }
                 }
             }
         }
@@ -197,7 +328,9 @@ class ClubDetailViewModel @Inject constructor(
                     is KoinClubException.NotClubManagerException -> {
                         postSideEffect(ClubDetailSideEffect.NotClubManagerError)
                     }
-                    else -> throw e
+                    else -> {
+                        postSideEffect(ClubDetailSideEffect.UnknownError)
+                    }
                 }
             }
         }
@@ -221,7 +354,9 @@ class ClubDetailViewModel @Inject constructor(
                     is KoinClubException.DeletePermissionDeniedException -> {
                         postSideEffect(ClubDetailSideEffect.DeletePermissionDeniedError)
                     }
-                    else -> throw e
+                    else -> {
+                        postSideEffect(ClubDetailSideEffect.UnknownError)
+                    }
                 }
             }
         }
@@ -254,7 +389,9 @@ class ClubDetailViewModel @Inject constructor(
                         is KoinClubException.AlreadyNotLikedException -> {
                             postSideEffect(ClubDetailSideEffect.AlreadyNotLikedError)
                         }
-                        else -> throw e
+                        else -> {
+                            postSideEffect(ClubDetailSideEffect.UnknownError)
+                        }
                     }
                 }
             } else {
@@ -271,13 +408,71 @@ class ClubDetailViewModel @Inject constructor(
                         is KoinClubException.AlreadyLikedException -> {
                             postSideEffect(ClubDetailSideEffect.AlreadyLikedError)
                         }
-                        else -> throw e
+                        else -> {
+                            postSideEffect(ClubDetailSideEffect.UnknownError)
+                        }
                     }
                 }
             }
         }
         loadClubDetails()
         dismissLoginDialog()
+    }
+
+    fun changeClubRecruitmentSubscribe() = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true) }
+        state.clubDetails?.let {
+            if (it.isRecruitSubscribed) {
+                unsubscribeClubRecruitmentUseCase(clubId = state.clubId).onSuccess {
+                }.onFailure {
+                    postSideEffect(ClubDetailSideEffect.UnknownError)
+                }
+            } else {
+                subscribeClubRecruitmentUseCase(clubId = state.clubId).onSuccess {
+                }.onFailure {
+                    postSideEffect(ClubDetailSideEffect.UnknownError)
+                }
+            }
+        }
+        loadClubDetails()
+        dismissLoginDialog()
+    }
+
+    fun changeClubEventSubscribe() = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true) }
+        state.clubEvents[state.selectedEventIndex].let {
+            if (it.isSubscribed) {
+                unsubscribeClubEventUseCase(clubId = state.clubId, eventId = it.id).onSuccess {
+                }.onFailure {
+                    postSideEffect(ClubDetailSideEffect.UnknownError)
+                }
+            } else {
+                subscribeClubEventUseCase(clubId = state.clubId, eventId = it.id).onSuccess {
+                }.onFailure {
+                    postSideEffect(ClubDetailSideEffect.UnknownError)
+                }
+            }
+        }
+        loadClubEvents()
+        dismissLoginDialog()
+    }
+
+    fun updateEventSubscribeDialog(bool: Boolean) = blockingIntent {
+        reduce { state.copy(showEventSubscribeDialog = bool) }
+    }
+
+    fun updateRecruitSubscribeDialog(bool: Boolean) = blockingIntent {
+        reduce { state.copy(showRecruitSubscribeDialog = bool) }
+    }
+
+    fun updateEventsDropdownExpanded(bool: Boolean) = blockingIntent {
+        reduce { state.copy(isEventsDropdownExpanded = bool) }
+    }
+
+    fun updateEventsDeleteDialog(bool: Boolean) = blockingIntent {
+        reduce { state.copy(showEventDeleteDialog = bool) }
     }
 
     fun showEmpowermentDialog() = intent {
@@ -334,11 +529,16 @@ class ClubDetailViewModel @Inject constructor(
         postSideEffect(ClubDetailSideEffect.OpenUrl(url))
     }
 
-    fun showImageDialog() = intent {
-        reduce { state.copy(showImageDialog = true) }
+    fun showImageDialog(url: String) = intent {
+        reduce { state.copy(showImageDialog = true, imageDialogUrl = url) }
     }
 
     fun dismissImageDialog() = intent {
         reduce { state.copy(showImageDialog = false) }
+    }
+
+    fun updateClubEventSearchType(eventSearchType: EventSearchType) = blockingIntent {
+        reduce { state.copy(clubEventSearchType = eventSearchType) }
+        loadClubEvents()
     }
 }

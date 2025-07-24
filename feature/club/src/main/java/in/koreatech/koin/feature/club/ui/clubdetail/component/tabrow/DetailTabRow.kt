@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.club.ui.clubdetail.component.tabrow
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabPosition
 import androidx.compose.material3.TabRow
@@ -31,12 +32,16 @@ fun DetailTabRow(
             TabRowDefaults.SecondaryIndicator(
                 modifier = Modifier
                     .tabIndicatorOffset(tabPositions[selectedTabIndex])
-                    .height(1.dp),
+                    .height(2.dp),
                 color = indicatorColor
             )
         }
     },
-    divider: @Composable () -> Unit = @Composable { }
+    divider: @Composable () -> Unit = @Composable {
+        HorizontalDivider(
+            color = KoinTheme.colors.neutral400
+        )
+    }
 ) {
     TabRow(
         selectedTabIndex = selectedTabIndex,

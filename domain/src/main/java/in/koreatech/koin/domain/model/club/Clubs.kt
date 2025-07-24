@@ -10,6 +10,12 @@ data class Clubs(
         val likes: Int,
         val imageUrl: String,
         val isLiked: Boolean,
-        val isLikeHidden: Boolean
+        val isLikeHidden: Boolean,
+        val recruitmentInfo: ClubItemRecruitmentInfo
+    )
+
+    data class ClubItemRecruitmentInfo(
+        val status: String,
+        val dDay: Int?
     )
 }
