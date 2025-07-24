@@ -102,7 +102,7 @@ interface StoreApi {
         @Query("minimum_order_amount") minimumOrderAmount: Int?
     ): List<ShopResponse>
 
-    @GET(URLConstant.SHOPS.SHOPS_V2)
+    @GET(URLConstant.SHOPS.SHOPS_V3)
     suspend fun getNearbyShops(
         @Query("sorter") sorter: String,
         @Query("filter") filter: List<String>?,
