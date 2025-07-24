@@ -7,6 +7,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.domain.repository.OnboardingRepository
+import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import javax.inject.Singleton
 
 @Module
@@ -16,8 +17,9 @@ object OnboardingModule {
     @Singleton
     fun provideOnboardingManager(
         onboardingRepository: OnboardingRepository,
+        getUserInfoUseCase: GetUserInfoUseCase,
         @ApplicationContext context: Context
     ): OnboardingManager {
-        return OnboardingManager(onboardingRepository, context)
+        return OnboardingManager(onboardingRepository, getUserInfoUseCase, context)
     }
 }

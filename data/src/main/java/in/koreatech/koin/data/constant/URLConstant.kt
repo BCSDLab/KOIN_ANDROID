@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.data.constant
 
+import `in`.koreatech.koin.data.constant.URLConstant.USER.USER
+
 /**
  * KOIN API URL
  */
@@ -108,9 +110,13 @@ object URLConstant {
         const val FINDPASSWORD: String = "$USER/find/password"
         const val ME: String = "$USER/student/me"
         const val REFRESH: String = "$USER/refresh"
+        const val CHECKUSERID: String = "$USER/check/id"
+
         const val AUTH: String = "$USER/auth"
         const val EMAIL = "email"
         const val PW = "password"
+        const val LOGIN_ID = "login_id"
+        const val LOGIN_PW = "login_pw"
         object NOTIFICATION {
             const val NOTIFICATION = "/notification"
             object SUBSCRIBE {
@@ -134,15 +140,54 @@ object URLConstant {
             const val SMSCOUNT: String = "$VERIFICATION/count"
         }
 
-        const val VERSION: String = "v2"
         object STUDENT {
             const val STUDENT = "student"
             const val REGISTER: String = "$USER/$STUDENT/register"
-            const val REGISTER_V2: String = "$VERSION/$USER/$STUDENT/register"
+        }
+
+        object EXISTS {
+            const val EXISTS = "exists"
+            const val ID_EXISTS = "$USER/id/$EXISTS"
+            const val EMAIL = "$USER/email/$EXISTS"
+            const val PHONE = "$USER/phone/$EXISTS"
+        }
+    }
+
+    object USERS {
+        const val USERS = "users"
+        const val CHECKLOGINID: String = "$USERS/check/id"
+
+        const val SMSSEND: String = "$USERS/verification/sms/send"
+        const val SMSVERIFY: String = "$USERS/verification/sms/verify"
+        const val EMAILSEND: String = "$USERS/verification/email/send"
+        const val EMAILVERIFY: String = "$USERS/verification/email/verify"
+
+        const val VERSION: String = "v2"
+
+        const val SIGNIN_V2: String = "$VERSION/$USERS/login"
+
+        const val PASSWORD_RESET_BY_EMAIL: String = "$USERS/password/reset/email"
+        const val PASSWORD_RESET_BY_SMS: String = "$USERS/password/reset/sms"
+
+        const val PASSWORD_CHANGE = "$USERS/password"
+
+        const val ID_MATCH_EMAIL: String = "$USERS/id/match/email"
+        const val ID_MATCH_PHONE: String = "$USERS/id/match/phone"
+
+        object FINDID {
+            const val FINDID = "id/find"
+            const val EMAIL = "$USERS/$FINDID/email"
+            const val SMS = "$USERS/$FINDID/sms"
+        }
+
+        object STUDENTS {
+            const val STUDENTS = "students"
+            const val ME: String = "$VERSION/$USERS/$STUDENTS/me"
+            const val REGISTER_V2: String = "$VERSION/$USERS/$STUDENTS/register"
         }
         object GENERAL {
-            const val GENERAL = "general"
-            const val REGISTER: String = "$VERSION/$USER/$GENERAL/register"
+            const val REGISTER: String = "$VERSION/$USERS/register"
+            const val ME: String = "$VERSION/$USERS/me"
         }
     }
 

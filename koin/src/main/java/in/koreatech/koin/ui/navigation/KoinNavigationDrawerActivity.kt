@@ -16,6 +16,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -36,10 +39,11 @@ import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.feature.chat.ui.list.ChatListActivity
 import `in`.koreatech.koin.feature.club.ui.ClubActivity
+import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
+import `in`.koreatech.koin.feature.user.ui.signup.SignUpActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.land.LandActivity
-import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.navigation.viewmodel.KoinNavigationDrawerViewModel
@@ -80,6 +84,7 @@ abstract class KoinNavigationDrawerActivity :
         listOf(
             R.id.navi_item_chat,
             R.id.navi_item_setting,
+            R.id.navi_item_sign_up,
             R.id.navi_item_login_or_logout,
             R.id.navi_item_store,
             R.id.navi_item_bus_timetable,
@@ -98,6 +103,7 @@ abstract class KoinNavigationDrawerActivity :
             listOf(
                 MenuState.Chat,
                 MenuState.Setting,
+                MenuState.SignUp,
                 MenuState.LoginOrLogout,
                 MenuState.Store,
                 MenuState.BusTimetable,
@@ -121,6 +127,9 @@ abstract class KoinNavigationDrawerActivity :
     }
     private val helloMessageTextView by lazy {
         findViewById<TextView>(R.id.navi_hello_message)
+    }
+    private val signUpTextView by lazy {
+        findViewById<TextView>(R.id.navi_item_sign_up)
     }
     private val loginOrLogoutTextView by lazy {
         menus.get(MenuState.LoginOrLogout) as TextView?
@@ -255,7 +264,7 @@ abstract class KoinNavigationDrawerActivity :
                             }
 
                             MenuState.LoginOrLogout -> {
-                                if (koinNavigationDrawerViewModel.userInfoFlow.value.isStudent) {
+                                if (koinNavigationDrawerViewModel.userInfoFlow.value.isStudent || koinNavigationDrawerViewModel.userInfoFlow.value.isGeneral) {
                                     EventLogger.logClickEvent(
                                         EventAction.USER,
                                         AnalyticsConstant.Label.HAMBURGER,
@@ -265,7 +274,7 @@ abstract class KoinNavigationDrawerActivity :
                                     EventLogger.logClickEvent(
                                         EventAction.USER,
                                         AnalyticsConstant.Label.HAMBURGER,
-                                        getString(R.string.navigation_item_login)
+                                        "로그인 시도"
                                     )
                                 }
                             }
@@ -299,6 +308,14 @@ abstract class KoinNavigationDrawerActivity :
                                 )
                             }
 
+                            MenuState.SignUp -> {
+                                EventLogger.logClickEvent(
+                                    EventAction.USER,
+                                    AnalyticsConstant.Label.HAMBURGER,
+                                    "회원가입 시작"
+                                )
+                            }
+
                             else -> Unit
                         }
                     }
@@ -324,6 +341,15 @@ abstract class KoinNavigationDrawerActivity :
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
+        ViewCompat.setOnApplyWindowInsetsListener(leftNavigationView) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(
+                top = systemBars.top,
+                bottom = systemBars.bottom
+            )
+            WindowInsetsCompat.CONSUMED
+        }
+
         leftNavigationView.layoutParams =
             leftNavigationView.layoutParams.apply { width = windowWidth }
     }
@@ -339,13 +365,14 @@ abstract class KoinNavigationDrawerActivity :
                 MenuState.Main -> goToMainActivity()
                 MenuState.Store -> goToStoreActivity()
                 MenuState.Chat -> goToChatActivity()
+                MenuState.SignUp -> goToSignUpActivity()
                 MenuState.Setting -> {
                     goToSettingActivity()
                     return@observeLiveData
                 }
 
                 MenuState.LoginOrLogout -> {
-                    if (userInfoFlow.value.isStudent) {
+                    if (userInfoFlow.value.isStudent || userInfoFlow.value.isGeneral) {
                         logout()
                     }
                     goToLoginActivity()
@@ -360,7 +387,7 @@ abstract class KoinNavigationDrawerActivity :
                 }
 
                 MenuState.LoginOrLogout -> {
-                    if (userInfoFlow.value.isStudent) {
+                    if (userInfoFlow.value.isStudent || userInfoFlow.value.isGeneral) {
                         logout()
                     }
                     goToLoginActivity()
@@ -387,6 +414,7 @@ abstract class KoinNavigationDrawerActivity :
                                 helloMessageTextView.text =
                                     getString(R.string.navigation_hello_message_anonymous)
                                 loginOrLogoutTextView.text = getString(R.string.navigation_item_login)
+                                signUpTextView.visibility = View.VISIBLE
                                 chatMenuIcon.visibility = View.GONE
                                 unReadMessageCountTextView.visibility = View.GONE
                             }
@@ -403,6 +431,37 @@ abstract class KoinNavigationDrawerActivity :
                                 nameTextView.visibility = View.VISIBLE
                                 helloMessageTextView.text = getString(R.string.navigation_hello_message)
                                 loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
+                                signUpTextView.visibility = View.GONE
+                                chatMenuIcon.visibility = View.VISIBLE
+                                koinNavigationDrawerViewModel.getUnreadMessageCount()
+
+                                when (menuState) {
+                                    MenuState.Main -> {
+                                        if (!checkMainPermission()) {
+                                            requestMainPermissionLauncher.launch(
+                                                MAIN_REQUIRED_PERMISSION
+                                            )
+                                        }
+                                        koinNavigationDrawerViewModel.updateDeviceToken()
+                                    }
+
+                                    else -> Unit
+                                }
+                            }
+
+                            is User.General -> {
+                                nameTextView.text =
+                                    if (user.nickname?.isNotEmpty() == true) {
+                                        user.nickname!!
+                                    } else if (user.name.isNotEmpty()) {
+                                        user.name
+                                    } else {
+                                        "회원"
+                                    }
+                                nameTextView.visibility = View.VISIBLE
+                                helloMessageTextView.text = getString(R.string.navigation_hello_message)
+                                loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
+                                signUpTextView.visibility = View.GONE
                                 chatMenuIcon.visibility = View.VISIBLE
                                 koinNavigationDrawerViewModel.getUnreadMessageCount()
 
@@ -597,6 +656,12 @@ abstract class KoinNavigationDrawerActivity :
         }
     }
 
+    private fun goToSignUpActivity() {
+        Intent(this, SignUpActivity::class.java).apply {
+            startActivity(this)
+        }
+    }
+
     private fun goToChatActivity() {
         EventLogger.logCampusClickEvent(
             AnalyticsConstant.Label.CHAT.HAMBURGER,
@@ -616,7 +681,7 @@ abstract class KoinNavigationDrawerActivity :
                 val intent =
                     Intent(
                         this,
-                        LoginActivity::class.java
+                        SignInActivity::class.java
                     )
                 intent.putExtra("FIRST_LOGIN", false)
                 startActivity(intent)
@@ -642,7 +707,7 @@ abstract class KoinNavigationDrawerActivity :
     private fun goToLoginActivity() {
         Intent(
             this,
-            LoginActivity::class.java
+            SignInActivity::class.java
         ).apply {
             startActivity(this)
         }

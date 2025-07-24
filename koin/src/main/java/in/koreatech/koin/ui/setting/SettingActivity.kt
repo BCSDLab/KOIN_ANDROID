@@ -3,7 +3,11 @@ package `in`.koreatech.koin.ui.setting
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.activity.viewModels
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -13,13 +17,21 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.URL
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
+import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
 import `in`.koreatech.koin.databinding.ActivitySettingBinding
-import `in`.koreatech.koin.ui.changepassword.ChangePasswordContract
-import `in`.koreatech.koin.ui.login.LoginActivity
+import `in`.koreatech.koin.feature.user.ui.changepassword.ChangePasswordContract
+import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
+import `in`.koreatech.koin.feature.user.ui.userinfo.UserInfoActivity
 import `in`.koreatech.koin.ui.notification.NotificationActivity
 import `in`.koreatech.koin.ui.term.TermActivity
-import `in`.koreatech.koin.ui.userinfo.UserInfoActivity
+import `in`.koreatech.koin.ui.term.TermActivity.Companion.KEY_TERM
+import `in`.koreatech.koin.ui.term.TermActivity.Companion.TERM_KOIN
+import `in`.koreatech.koin.ui.term.TermActivity.Companion.TERM_MARKETING
+import `in`.koreatech.koin.ui.term.TermActivity.Companion.TERM_PRIVACY_POLICY
 import `in`.koreatech.koin.util.SnackbarUtil
 import kotlinx.coroutines.launch
 
@@ -37,7 +49,7 @@ class SettingActivity : ActivityBase() {
             setActionTextColor(getColor(R.color.sub_sub500))
             setBackgroundTint(getColor(R.color.primary_900))
             setAction(R.string.snack_bar_login_action_text) {
-                startActivity(Intent(this@SettingActivity, LoginActivity::class.java))
+                startActivity(Intent(this@SettingActivity, SignInActivity::class.java))
                 dismiss()
             }
         }
@@ -54,6 +66,7 @@ class SettingActivity : ActivityBase() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdgeWithDarkStatusBar()
         super.onCreate(savedInstanceState)
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -64,6 +77,13 @@ class SettingActivity : ActivityBase() {
     }
 
     private fun initView() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updateLayoutParams<MarginLayoutParams> {
+                bottomMargin = systemBars.bottom
+            }
+            insets
+        }
     }
 
     private fun initListeners() {
@@ -77,21 +97,31 @@ class SettingActivity : ActivityBase() {
             }
 
             svProfile.setOnSettingClickListener {
-                if (viewModel.isStudent) {
+                EventLogger.logClickEvent(
+                    EventAction.USER,
+                    AnalyticsConstant.Label.HAMBURGER,
+                    "정보수정 시도"
+                )
+                if (viewModel.isLoggedIn) {
                     startActivity(Intent(this@SettingActivity, UserInfoActivity::class.java))
                 } else {
                     loginSnackBar.show()
                 }
             }
             svChangePassword.setOnSettingClickListener {
-                if (viewModel.isStudent) {
+                EventLogger.logClickEvent(
+                    EventAction.USER,
+                    AnalyticsConstant.Label.HAMBURGER,
+                    "정보수정 시도"
+                )
+                if (viewModel.isLoggedIn) {
                     changePasswordResult.launch(Unit)
                 } else {
                     loginSnackBar.show()
                 }
             }
             svNotification.setOnSettingClickListener {
-                if (viewModel.isStudent) {
+                if (viewModel.isLoggedIn) {
                     startActivity(Intent(this@SettingActivity, NotificationActivity::class.java))
                 } else {
                     loginSnackBar.show()
@@ -100,14 +130,21 @@ class SettingActivity : ActivityBase() {
             svPrivacyPolicy.setOnSettingClickListener {
                 startActivity(
                     Intent(this@SettingActivity, TermActivity::class.java).apply {
-                        putExtra(TermActivity.KEY_TERM, TermActivity.TERM_PRIVACY_POLICY)
+                        putExtra(KEY_TERM, TERM_PRIVACY_POLICY)
                     }
                 )
             }
             svKoinTerms.setOnSettingClickListener {
                 startActivity(
                     Intent(this@SettingActivity, TermActivity::class.java).apply {
-                        putExtra(TermActivity.KEY_TERM, TermActivity.TERM_KOIN)
+                        putExtra(KEY_TERM, TERM_KOIN)
+                    }
+                )
+            }
+            svMarketingTerms.setOnSettingClickListener {
+                startActivity(
+                    Intent(this@SettingActivity, TermActivity::class.java).apply {
+                        putExtra(KEY_TERM, TERM_MARKETING)
                     }
                 )
             }

@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Message
 import android.view.Menu
 import android.view.MenuItem
+import android.view.ViewGroup.MarginLayoutParams
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
@@ -15,6 +16,12 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.databinding.ActivityWebviewBinding
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -36,6 +43,11 @@ class WebViewActivity : ActivityBase(R.layout.activity_webview) {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(
+                ContextCompat.getColor(this, R.color.primary_500)
+            )
+        )
         super.onCreate(savedInstanceState)
         val title = intent.getStringExtra("title") ?: ""
         val url = intent.getStringExtra("url")
@@ -62,6 +74,15 @@ class WebViewActivity : ActivityBase(R.layout.activity_webview) {
         url: String?
     ) {
         setTitle(title)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.webView) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updateLayoutParams<MarginLayoutParams> {
+                topMargin = systemBars.top
+                bottomMargin = systemBars.bottom
+            }
+            WindowInsetsCompat.CONSUMED
+        }
 
         binding.webView.apply {
             webChromeClient =

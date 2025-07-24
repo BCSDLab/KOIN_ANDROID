@@ -15,6 +15,7 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
+import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.util.dataBinding
@@ -80,6 +81,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
     lateinit var onboardingManager: OnboardingManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdgeWithDarkStatusBar()
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
@@ -247,7 +249,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         intent.apply {
             this?.action = Intent.ACTION_VIEW
             setIntent(this)
