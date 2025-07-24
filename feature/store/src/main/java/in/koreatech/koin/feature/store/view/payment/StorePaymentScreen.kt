@@ -46,7 +46,7 @@ fun StorePaymentScreen(
 
     WebApp(
         modifier = Modifier.fillMaxSize(),
-        url = BuildConfig.ORDER_BASE_URL, // TODO
+        url = "${BuildConfig.ORDER_BASE_URL}/payment?orderType=DELIVERY", // TODO
         koinWebAppWebViewClient = StorePaymentWebViewClient(
             Tokens(
                 refreshToken = authToken.refreshToken,

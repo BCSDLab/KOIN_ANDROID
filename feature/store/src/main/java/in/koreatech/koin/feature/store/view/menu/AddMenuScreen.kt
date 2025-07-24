@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.feature.store.util.CustomClosingToolbarScreenDefaults
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -200,7 +201,7 @@ fun AddMenuScreen(
                     .height(rememberState.toolbarMaxHeight)
                     .offset { IntOffset(0, rememberState.toolbarOffsetPx.floatValue.roundToInt()) }
                     .zIndex(1f),
-                painter = painterResource(id = R.drawable.ic_delivery),
+                painter = rememberAsyncImagePainter(uiState.cartItemEdit?.images?.firstOrNull()),
                 contentDescription = null,
                 alpha = 1 - overlayAlpha,
                 alignment = Alignment.Center

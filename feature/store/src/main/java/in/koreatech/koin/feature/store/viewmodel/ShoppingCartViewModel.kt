@@ -2,12 +2,14 @@ package `in`.koreatech.koin.feature.store.viewmodel
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.error.store.KoinStoreException
 import `in`.koreatech.koin.domain.model.cart.CartType
 import `in`.koreatech.koin.domain.usecase.cart.CartMenuQuantityUseCase
 import `in`.koreatech.koin.domain.usecase.cart.CartUseCase
-import `in`.koreatech.koin.domain.usecase.cart.CartValidateUseCase
 import `in`.koreatech.koin.domain.usecase.cart.DeleteCartMenuItemUseCase
 import `in`.koreatech.koin.domain.usecase.cart.ResetCartUseCase
+import `in`.koreatech.koin.domain.usecase.store.ValidateCartItemsUseCase
+import `in`.koreatech.koin.feature.store.enums.CartValidation
 import `in`.koreatech.koin.feature.store.view.CartState
 import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
@@ -19,7 +21,7 @@ import org.orbitmvi.orbit.viewmodel.container
 @HiltViewModel
 class ShoppingCartViewModel @Inject constructor(
     private val cartUseCase: CartUseCase,
-    private val cartValidateUseCase: CartValidateUseCase,
+    private val validateCartItemsUseCase: ValidateCartItemsUseCase,
     private val cartMenuQuantityUseCase: CartMenuQuantityUseCase,
     private val deleteCartMenuItemUseCase: DeleteCartMenuItemUseCase,
     private val resetCartUseCase: ResetCartUseCase
@@ -29,6 +31,7 @@ class ShoppingCartViewModel @Inject constructor(
 
     init {
         getCart(CartType.DELIVERY)
+        getCartValidate()
     }
 
     fun getCart(type: CartType) = intent {
@@ -38,8 +41,23 @@ class ShoppingCartViewModel @Inject constructor(
     }
 
     fun getCartValidate() = intent {
-        cartValidateUseCase().collect { cartValidate ->
-            reduce { state.copy(isValidateCart = cartValidate) }
+        validateCartItemsUseCase().onSuccess {
+            reduce {
+                state.copy(
+                    cartValidation = CartValidation.VALID
+                )
+            }
+        }.onFailure {
+            reduce {
+                state.copy(
+                    cartValidation = when (it) {
+                        is KoinStoreException.OrderAmountBelowMinimumException -> CartValidation.AMOUNT_NOT_ENOUGH
+                        is KoinStoreException.CartNotFoundException -> CartValidation.CART_NOT_FOUND
+                        is KoinStoreException.ShopClosedException -> CartValidation.NOT_OPERATING
+                        else -> CartValidation.NONE
+                    }
+                )
+            }
         }
     }
 
