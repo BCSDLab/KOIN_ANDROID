@@ -26,7 +26,7 @@
     <string name="minimum_order">최소주문</string>
     <string name="delivery_fee">배달금액</string>
     <string name="review_count"> · 리뷰 %1$d개</string>
-    <string name="price_with_won">%1$d원</string>
+    <string name="price_with_won">%1$,d원</string>
     <string name="option_price">%1$s : %2$d원\n</string>
     <string name="delivery_not_available">코인 주문이\n불가능한 매장이에요.</string>
     <string name="store_detail_notice_empty">등록된 공지가\n없습니다.</string>
@@ -47,7 +47,7 @@
 
     <!--메뉴 선택 -->
     <string name="option_select">%1$d개 선택</string>
-    <string name="plus_won">+%1$d원</string>
+    <string name="plus_won">+%1$,d원</string>
     <string name="price_option">가격</string>
     <string name="essential">필수</string>
 
@@ -105,4 +105,6 @@
     <string name="store_banner_subtitle">코인 전용 할인혜택 받기!</string>
 
     <string name="store_main_widget">주문</string>
+    <string name="store_cart_min_select">%1$d가지 선택</string>
+    <string name="store_cart_add_menu">장바구니 추가</string>
 </resources>
