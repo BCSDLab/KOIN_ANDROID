@@ -1,13 +1,13 @@
-package `in`.koreatech.koin.feature.store.view.menu
+package `in`.koreatech.koin.feature.store.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -33,26 +33,24 @@ fun AddMenuBottomCard(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(color = RebrandKoinTheme.colors.neutral0, shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
-            .padding(top = 10.dp, bottom = 20.dp)
             .border(
-                width = 1.dp,
+                width = 0.5.dp,
                 color = RebrandKoinTheme.colors.neutral200,
                 shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)
             )
+            .background(color = RebrandKoinTheme.colors.neutral0, shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
+            .padding(vertical = 12.dp, horizontal = 32.dp)
             .navigationBarsPadding()
     ) {
         Button(
             onClick = onClick,
-            shape = RebrandKoinTheme.shapes.large,
+            shape = RebrandKoinTheme.shapes.medium,
             colors = ButtonDefaults.buttonColors(
                 containerColor = RebrandKoinTheme.colors.primary500,
                 contentColor = RebrandKoinTheme.colors.neutral0
             ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-                .height(56.dp)
+            contentPadding = PaddingValues(vertical = 10.dp, horizontal = 16.dp),
+            modifier = Modifier.fillMaxWidth()
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -60,10 +58,10 @@ fun AddMenuBottomCard(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "장바구니 추가",
+                    text = stringResource(R.string.store_cart_add_menu),
                     style = RebrandKoinTheme.typography.regular14
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(10.dp))
                 Text(
                     text = stringResource(R.string.price_with_won, price),
                     style = RebrandKoinTheme.typography.bold18
