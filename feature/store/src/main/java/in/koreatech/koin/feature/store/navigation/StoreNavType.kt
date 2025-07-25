@@ -9,6 +9,7 @@ sealed class StoreNavType(val route: String) {
     data object StoreSearch : StoreNavType("store_search")
     data object StoreDetail : StoreNavType("store_detail")
     data object StoreCart : StoreNavType("store_cart")
+    data object StoreCartAdd : StoreDetailNavType("store_cart_add")
     data object StorePayment : StoreNavType("store_payment")
 }
 
@@ -21,7 +22,6 @@ sealed class StoreMainNavType(val route: String) {
 sealed class StoreDetailNavType(val route: String) {
     data object StoreDetailMain : StoreDetailNavType("store_detail_main")
     data object StoreDetailInfo : StoreDetailNavType("store_detail_info")
-    data object StoreDetailMenu : StoreDetailNavType("store_detail_menu")
 }
 
 data class NavigationBarItem(
