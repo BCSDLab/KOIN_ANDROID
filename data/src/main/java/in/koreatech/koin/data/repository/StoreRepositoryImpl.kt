@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.repository
 
-import `in`.koreatech.koin.data.mapper.toAddMenu
 import `in`.koreatech.koin.data.mapper.toCart
 import `in`.koreatech.koin.data.mapper.toCartAddRequest
 import `in`.koreatech.koin.data.mapper.toCartItemEdit
@@ -45,6 +44,7 @@ import `in`.koreatech.koin.domain.model.store.Shop
 import `in`.koreatech.koin.domain.model.store.ShopDeliveryAvailable
 import `in`.koreatech.koin.domain.model.store.ShopDetail
 import `in`.koreatech.koin.domain.model.store.ShopEvents
+import `in`.koreatech.koin.domain.model.store.ShopMenu
 import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.domain.model.store.ShopMenusGroup
 import `in`.koreatech.koin.domain.model.store.ShopSearchRelatedList
@@ -330,9 +330,9 @@ class StoreRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getOrderableShopMenu(shopId: Int, menuId: Int): Result<CartItemEdit> {
+    override suspend fun getOrderableShopMenu(shopId: Int, menuId: Int): Result<ShopMenu> {
         return runCatching {
-            storeRemoteDataSource.getOrderableShopMenu(shopId, menuId).toShopMenu().toAddMenu()
+            storeRemoteDataSource.getOrderableShopMenu(shopId, menuId).toShopMenu()
         }.onFailure { e ->
             return Result.failure(
                 when (e) {
