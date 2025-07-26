@@ -44,6 +44,8 @@ import `in`.koreatech.koin.core.navigation.SchemeType
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_CLUB_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_EVENT_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
 import `in`.koreatech.koin.core.onboarding.ArrowDirection
@@ -424,6 +426,8 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         val targetBoardId = intent.getIntExtra(EXTRA_BOARD_ID, -1)
         val targetArticleId = intent.getIntExtra(EXTRA_ARTICLE_ID, -1)
         val targetChatId = intent.getIntExtra(EXTRA_CHAT_ROOM_ID, -1)
+        val targetClubId = intent.getIntExtra(EXTRA_CLUB_ID, -1)
+        val targetEventId = intent.getIntExtra(EXTRA_EVENT_ID, -1)
         val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
 
         when (type) {
@@ -464,6 +468,36 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         context = this,
                         targetArticleId = Pair(EXTRA_ARTICLE_ID, targetArticleId),
                         targetChatId = Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
+                        type = Pair(EXTRA_TYPE, type)
+                    )
+                startActivity(intent)
+            }
+
+            SchemeType.CLUB_RECRUIT.type -> {
+                val intent =
+                    navigator.navigateToClubRecruitment(
+                        context = this,
+                        targetClubId = Pair(
+                            EXTRA_CLUB_ID,
+                            targetId
+                        ),
+                        type = Pair(EXTRA_TYPE, type)
+                    )
+                startActivity(intent)
+            }
+
+            SchemeType.CLUB.type -> {
+                val intent =
+                    navigator.navigateToClub(
+                        context = this,
+                        targetClubId = Pair(
+                            EXTRA_CLUB_ID,
+                            targetClubId
+                        ),
+                        targetEventId = Pair(
+                            EXTRA_EVENT_ID,
+                            targetEventId
+                        ),
                         type = Pair(EXTRA_TYPE, type)
                     )
                 startActivity(intent)

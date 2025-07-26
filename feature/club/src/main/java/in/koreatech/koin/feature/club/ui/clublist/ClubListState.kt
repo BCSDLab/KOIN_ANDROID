@@ -10,11 +10,14 @@ data class ClubListState(
     val isInitialized: Boolean = false,
     val isLoading: Boolean = false,
     val categoryId: Int? = null,
-    val sortType: ClubSort = ClubSort.NONE,
+    val isRecruiting: Boolean = false,
+    val sortType: ClubSort = if (isRecruiting) ClubSort.RECRUITMENT_UPDATED_DESC else ClubSort.CREATED_AT_ASC,
     val isDropdownExpanded: Boolean = false,
     val shouldShowClubCreateDialog: Boolean = false,
     val shouldShowLoginDialog: Boolean = false,
     val clubs: List<ParcelizeClubItem> = emptyList(),
     val searchKeyword: String = "",
-    val isAnonymous: Boolean = true
+    val suggestions: List<String> = emptyList(),
+    val isAnonymous: Boolean = true,
+    val shouldExpandSearchBar: Boolean = false
 ) : Parcelable

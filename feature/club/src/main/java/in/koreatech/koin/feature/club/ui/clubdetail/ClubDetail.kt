@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -49,13 +50,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
@@ -65,21 +69,24 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.toast.ToastUtil
-import `in`.koreatech.koin.domain.constant.HTTPS_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_STAGE_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_URL
 import `in`.koreatech.koin.domain.constant.LOGIN_ACTIVITY_URL
-import `in`.koreatech.koin.domain.util.ext.formatInstagramLinkForm
-import `in`.koreatech.koin.domain.util.ext.formatInstagramUrlForm
 import `in`.koreatech.koin.domain.util.ext.formatPhoneNumber
 import `in`.koreatech.koin.domain.util.ext.isValidGoogleFormUrl
 import `in`.koreatech.koin.domain.util.ext.isValidInstagramUrl
 import `in`.koreatech.koin.domain.util.ext.isValidOpenChatUrl
 import `in`.koreatech.koin.domain.util.ext.isValidPhoneNumber
+import `in`.koreatech.koin.domain.util.ext.isValidUrlScheme
+import `in`.koreatech.koin.domain.util.ext.removeUrlScheme
+import `in`.koreatech.koin.domain.util.ext.toHttpsUrl
+import `in`.koreatech.koin.domain.util.ext.toInstagramLink
+import `in`.koreatech.koin.domain.util.ext.toInstagramUrl
 import `in`.koreatech.koin.feature.club.BuildConfig
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
-import `in`.koreatech.koin.feature.club.component.DetailLoginDialog
+import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialog
+import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_CATEGORY
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_DESCRIPTION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_GOOGLE_FORM
@@ -88,13 +95,17 @@ import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_LOCATION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_OPEN_CHAT
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_PHONE_NUMBER
 import `in`.koreatech.koin.feature.club.type.DetailTabType
+import `in`.koreatech.koin.feature.club.type.eventSearchTypeList
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.DetailImageDialog
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogAddQnaContent
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogEmpowermentContent
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.snackbar.DetailSnackBar
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.tabrow.DetailTabRow
+import `in`.koreatech.koin.feature.club.ui.clubdetail.events.ClubDetailEventInfo
+import `in`.koreatech.koin.feature.club.ui.clubdetail.events.ClubDetailEvents
 import `in`.koreatech.koin.feature.club.ui.clubdetail.intro.ClubDetailIntro
 import `in`.koreatech.koin.feature.club.ui.clubdetail.qna.ClubDetailQna
+import `in`.koreatech.koin.feature.club.ui.clubdetail.recruit.ClubDetailRecruit
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -103,11 +114,18 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun ClubDetail(
     isClubModified: Boolean = false,
+    isRecruitEvent: Boolean = false,
+    norificationEventId: Int = -1,
     initialPage: Int = 0,
+    viewModel: ClubDetailViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {},
     onModifyClick: (Int) -> Unit = {},
+    onRecruitCreateClick: (Int) -> Unit = {},
+    onRecruitModifyClick: (Int) -> Unit = {},
+    onEventCreateClick: (Int) -> Unit = {},
+    onEventModifyClick: (Int, Int) -> Unit = { _, _ -> },
     resetClubModifiedState: () -> Unit = {},
-    viewModel: ClubDetailViewModel = hiltViewModel()
+    resetNorificationEventId: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
 
@@ -132,6 +150,12 @@ fun ClubDetail(
 
     val listState = rememberLazyListState()
 
+    val recruitScrollState = rememberScrollState()
+    val isRecruitScrollable = remember { derivedStateOf { !listState.canScrollForward || recruitScrollState.value != 0 } }
+
+    val eventsScrollState = rememberScrollState()
+    val isEventsScrollable = remember { derivedStateOf { !listState.canScrollForward || eventsScrollState.value != 0 } }
+
     val qnaScrollState = rememberScrollState()
     val isQnaScrollable = remember { derivedStateOf { !listState.canScrollForward || qnaScrollState.value != 0 } }
 
@@ -152,6 +176,25 @@ fun ClubDetail(
                 duration = SnackbarDuration.Short
             )
             resetClubModifiedState()
+        }
+    }
+
+    LaunchedEffect(isRecruitEvent) {
+        if (isRecruitEvent) {
+            pagerState.animateScrollToPage(1)
+            listState.animateScrollToItem(2)
+        }
+    }
+
+    LaunchedEffect(state.clubEventLoaded) {
+        if (norificationEventId != -1) {
+            val eventIndex = state.clubEvents.indexOfFirst { it.id == norificationEventId }
+            if (eventIndex != -1) {
+                viewModel.selectEvent(eventIndex)
+                pagerState.animateScrollToPage(2)
+                listState.animateScrollToItem(2)
+                resetNorificationEventId()
+            }
         }
     }
 
@@ -218,9 +261,10 @@ fun ClubDetail(
         }
 
         if (state.showLoginDialog) {
-            DetailLoginDialog(
+            KoinClubExtraSmallDialog(
                 title = stringResource(R.string.detail_dialog_login_title),
                 description = stringResource(R.string.detail_dialog_login_description),
+                positiveButtonText = stringResource(id = R.string.detail_dialog_login_positive),
                 onPositive = {
                     viewModel.dismissLoginDialog()
                     viewModel.openUrl(LOGIN_ACTIVITY_URL)
@@ -282,10 +326,92 @@ fun ClubDetail(
         if (state.showImageDialog) {
             DetailImageDialog(
                 imageModel = ImageRequest.Builder(context)
-                    .data(state.clubDetails?.imageUrl)
+                    .data(state.imageDialogUrl)
                     .size(400)
                     .build(),
                 onDismiss = { viewModel.dismissImageDialog() }
+            )
+        }
+
+        if (state.showRecruitDeleteDialog) {
+            KoinClubExtraSmallDialog(
+                description = stringResource(R.string.detail_recruit_delete_dialog_description),
+                descriptionStyle = KoinTheme.typography.medium15,
+                descriptionColor = KoinTheme.colors.neutral600,
+                positiveButtonText = stringResource(R.string.detail_recruit_delete_dialog_positive),
+                negativeButtonText = stringResource(R.string.detail_recruit_delete_dialog_negative),
+                positiveButtonColors = KoinClubExtraSmallDialogDanger.positiveButtonColors(),
+                titleTextAlign = TextAlign.Center,
+                descriptionTextAlign = TextAlign.Center,
+                onPositive = {
+                    viewModel.dismissRecruitDeleteDialog()
+                    viewModel.deleteRecruitment()
+                },
+                onNegative = viewModel::dismissRecruitDeleteDialog
+            )
+        }
+
+        if (state.showEventDeleteDialog) {
+            KoinClubExtraSmallDialog(
+                description = stringResource(R.string.detail_event_delete_dialog_description),
+                descriptionStyle = KoinTheme.typography.medium15,
+                descriptionColor = KoinTheme.colors.neutral600,
+                positiveButtonText = stringResource(R.string.detail_event_delete_dialog_positive),
+                negativeButtonText = stringResource(R.string.detail_event_delete_dialog_negative),
+                positiveButtonColors = KoinClubExtraSmallDialogDanger.positiveButtonColors(),
+                titleTextAlign = TextAlign.Center,
+                descriptionTextAlign = TextAlign.Center,
+                onPositive = {
+                    viewModel.updateEventsDeleteDialog(false)
+                    viewModel.deleteClubEvent(state.clubEvents[state.selectedEventIndex].id)
+                },
+                onNegative = { viewModel.updateEventsDeleteDialog(false) }
+            )
+        }
+
+        if (state.showRecruitSubscribeDialog) {
+            val isSubscribed = state.clubDetails?.isRecruitSubscribed ?: false
+            KoinClubExtraSmallDialog(
+                title = "",
+                description = stringResource(if (isSubscribed) R.string.detail_dialog_recruit_unsubscribe_text else R.string.detail_dialog_recruit_subscribe_text),
+                descriptionStyle = KoinTheme.typography.medium15,
+                descriptionColor = KoinTheme.colors.neutral600,
+                positiveButtonText = stringResource(if (isSubscribed) R.string.detail_dialog_recruit_unsubscribe_positive else R.string.detail_dialog_recruit_subscribe_positive),
+                negativeButtonText = stringResource(if (isSubscribed) R.string.detail_dialog_recruit_unsubscribe_negative else R.string.detail_dialog_recruit_subscribe_negative),
+                titleTextAlign = TextAlign.Center,
+                descriptionTextAlign = TextAlign.Center,
+                onPositive = {
+                    EventLogger.logCampusClickEvent(
+                        if (isSubscribed) {
+                            AnalyticsConstant.Label.Club.CLUB_RECRUITMENT_CANCEL
+                        } else {
+                            AnalyticsConstant.Label.Club.CLUB_RECRUITMENT_ACCEPT
+                        },
+                        state.clubDetails?.name ?: "알 수 없는 동아리"
+                    )
+                    viewModel.updateRecruitSubscribeDialog(false)
+                    viewModel.changeClubRecruitmentSubscribe()
+                },
+                onNegative = { viewModel.updateRecruitSubscribeDialog(false) }
+            )
+        }
+
+        if (state.showEventSubscribeDialog) {
+            val isSubscribed = state.clubEvents[state.selectedEventIndex].isSubscribed
+            KoinClubExtraSmallDialog(
+                title = "",
+                description = stringResource(if (isSubscribed) R.string.detail_dialog_event_unsubscribe_text else R.string.detail_dialog_event_subscribe_text),
+                descriptionStyle = KoinTheme.typography.medium15,
+                descriptionColor = KoinTheme.colors.neutral600,
+                positiveButtonText = stringResource(if (isSubscribed) R.string.detail_dialog_recruit_unsubscribe_positive else R.string.detail_dialog_recruit_subscribe_positive),
+                negativeButtonText = stringResource(if (isSubscribed) R.string.detail_dialog_recruit_unsubscribe_negative else R.string.detail_dialog_recruit_subscribe_negative),
+                titleTextAlign = TextAlign.Center,
+                descriptionTextAlign = TextAlign.Center,
+                onPositive = {
+                    viewModel.updateEventSubscribeDialog(false)
+                    viewModel.changeClubEventSubscribe()
+                },
+                onNegative = { viewModel.updateEventSubscribeDialog(false) }
             )
         }
 
@@ -304,7 +430,7 @@ fun ClubDetail(
                     modifier = Modifier
                         .size(200.dp)
                         .clickable {
-                            viewModel.showImageDialog()
+                            viewModel.showImageDialog(state.clubDetails?.imageUrl ?: "")
                         },
                     model = ImageRequest.Builder(context)
                         .data(state.clubDetails?.imageUrl)
@@ -391,6 +517,29 @@ fun ClubDetail(
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            state.clubDetails?.hotStatus?.let {
+                                Row(
+                                    modifier = Modifier
+                                        .background(
+                                            color = KoinTheme.colors.primary100,
+                                            shape = KoinTheme.shapes.extraSmall
+                                        )
+                                        .padding(vertical = 7.dp, horizontal = 8.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = stringResource(
+                                            R.string.detail_hotStatus_club_intro,
+                                            state.clubDetails?.hotStatus?.month ?: 0,
+                                            state.clubDetails?.hotStatus?.weekOfMonth ?: 0
+                                        ),
+                                        style = KoinTheme.typography.regular10.copy(fontSize = 11.sp),
+                                        color = KoinTheme.colors.neutral800
+                                    )
+                                }
+                            }
+                            Spacer(Modifier.width(8.dp))
                             Image(
                                 painter = if (state.clubDetails?.isLiked == true) painterResource(id = R.drawable.icon_like_true) else painterResource(id = R.drawable.icon_like_false),
                                 contentDescription = "",
@@ -422,21 +571,43 @@ fun ClubDetail(
                             var outputText = ""
                             var linkUrl = ""
                             val showMore = remember { mutableStateOf(false) }
+                            var icon = -1
                             var onClick = {}
+                            var onIconClick = {}
+                            val clipboard = LocalClipboardManager.current
                             intro.second?.let {
                                 when (intro.first) {
                                     DETAIL_DESCRIPTION -> {
-                                        outputText = "${stringResource(intro.first.strResId)}$it"
+                                        outputText = stringResource(intro.first.strResId, it)
                                         onClick = { showMore.value = !showMore.value }
                                     }
                                     DETAIL_INSTAGRAM -> {
-                                        linkUrl = if (it.isValidInstagramUrl()) it else it.formatInstagramUrlForm()
+                                        val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
+                                        linkUrl = if (url.isValidInstagramUrl()) url else url.toInstagramUrl()
                                         onClick = { viewModel.openUrl(linkUrl) }
-                                        outputText = it.formatInstagramLinkForm()
+                                        outputText = it.toInstagramLink()
                                     }
-                                    DETAIL_GOOGLE_FORM -> outputText = it.removePrefix(HTTPS_URL)
-                                    DETAIL_OPEN_CHAT -> outputText = it.removePrefix(HTTPS_URL)
-                                    DETAIL_PHONE_NUMBER -> outputText = if (it.isValidPhoneNumber) it.formatPhoneNumber() else it
+                                    DETAIL_GOOGLE_FORM -> {
+                                        val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
+                                        linkUrl = if (url.isValidGoogleFormUrl()) url else ""
+                                        onClick = { viewModel.openUrl(linkUrl) }
+                                        outputText = it.removeUrlScheme().let { text -> if (text.length <= 22) text else "${text.take(22)}..." }
+                                        icon = R.drawable.icon_club_copy
+                                        onIconClick = { clipboard.setText(AnnotatedString(linkUrl)) }
+                                    }
+                                    DETAIL_OPEN_CHAT -> {
+                                        val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
+                                        linkUrl = if (url.isValidOpenChatUrl()) url else ""
+                                        onClick = { viewModel.openUrl(linkUrl) }
+                                        outputText = it.removeUrlScheme()
+                                        icon = R.drawable.icon_club_copy
+                                        onIconClick = { clipboard.setText(AnnotatedString(linkUrl)) }
+                                    }
+                                    DETAIL_PHONE_NUMBER -> {
+                                        outputText = if (it.isValidPhoneNumber) it.formatPhoneNumber() else it
+                                        icon = R.drawable.icon_club_copy
+                                        onIconClick = { clipboard.setText(AnnotatedString(it)) }
+                                    }
                                     else -> outputText = it
                                 }
                                 if (
@@ -447,7 +618,9 @@ fun ClubDetail(
                                     onClick = { if (linkUrl.isNotEmpty()) viewModel.openUrl(linkUrl) }
                                 }
                             }
-                            Row {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
                                 Text(
                                     text = if (intro.first != DETAIL_DESCRIPTION) stringResource(intro.first.strResId) else "",
                                     style = KoinTheme.typography.medium18,
@@ -459,7 +632,52 @@ fun ClubDetail(
                                     style = KoinTheme.typography.medium18,
                                     color = if (linkUrl.isEmpty()) KoinTheme.colors.neutral800 else KoinTheme.colors.info700,
                                     overflow = TextOverflow.Ellipsis,
-                                    modifier = Modifier.clickable { onClick() }
+                                    modifier = Modifier.clickable { onClick() }.weight(1f, fill = false)
+                                )
+                                if (icon != -1) {
+                                    Spacer(Modifier.width(8.dp))
+                                    Image(
+                                        painter = painterResource(id = icon),
+                                        contentDescription = "Phone Number Copy Icon",
+                                        modifier = Modifier
+                                            .size(24.dp)
+                                            .padding(end = 4.dp)
+                                            .clickable {
+                                                onIconClick()
+                                            }
+                                    )
+                                }
+                            }
+                        }
+                        if (state.clubDetails?.manager == false) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.detail_intro_notification),
+                                    style = KoinTheme.typography.medium18,
+                                    color = KoinTheme.colors.neutral800
+                                )
+                                Spacer(Modifier.width(8.dp))
+                                Image(
+                                    painter = if (state.clubDetails?.isRecruitSubscribed == true) {
+                                        painterResource(R.drawable.icon_notification_true)
+                                    } else {
+                                        painterResource(R.drawable.icon_notification_false)
+                                    },
+                                    contentDescription = "Notification Icon",
+                                    modifier = Modifier
+                                        .size(24.dp)
+                                        .padding(end = 4.dp)
+                                        .clickable {
+                                            EventLogger.logCampusClickEvent(
+                                                AnalyticsConstant.Label.Club.CLUB_RECRUITMENT_NOTI,
+                                                state.clubDetails?.name ?: "알 수 없는 동아리"
+                                            )
+                                            state.userId?.let {
+                                                viewModel.updateRecruitSubscribeDialog(true)
+                                            } ?: viewModel.showLoginDialog()
+                                        }
                                 )
                             }
                         }
@@ -540,39 +758,81 @@ fun ClubDetail(
                                 userId = state.userId
                             )
                         }
-                        DetailTabType.QNA.strResId -> {
-                            Box {
-                                if (state.showQnasProgressBar) {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .zIndex(1f)
-                                    ) {
-                                        CircularProgressIndicator(
-                                            modifier = Modifier
-                                                .size(100.dp)
-                                                .align(Alignment.Center)
-                                        )
-                                    }
-                                }
-                                ClubDetailQna(
+                        DetailTabType.RECRUIT.strResId -> {
+                            ClubDetailRecruit(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .verticalScroll(recruitScrollState, enabled = isRecruitScrollable.value),
+                                recruitment = state.clubRecruitment,
+                                showProgressBar = state.showRecruitProgressBar,
+                                onImageClick = viewModel::showImageDialog,
+                                onRecruitCreateClick = { onRecruitCreateClick(state.clubId) },
+                                showRecruitDeleteDialog = viewModel::showRecruitDeleteDialog,
+                                onRecruitModifyClick = { onRecruitModifyClick(state.clubId) },
+                                isManager = state.clubDetails?.manager ?: false
+                            )
+                        }
+                        DetailTabType.EVENT.strResId -> {
+                            if (state.clubEventSelected && state.selectedEventIndex != -1) {
+                                val selectedEvent = state.clubEvents[state.selectedEventIndex]
+                                val eventInfoScrollState = rememberScrollState()
+                                val isEventInfoScrollable = remember { derivedStateOf { !listState.canScrollForward || eventInfoScrollState.value != 0 } }
+                                ClubDetailEventInfo(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .verticalScroll(qnaScrollState, enabled = isQnaScrollable.value),
-                                    qnaList = qnaList,
+                                        .verticalScroll(eventInfoScrollState, enabled = isEventInfoScrollable.value),
+                                    clubEvent = selectedEvent,
+                                    onBackPressed = viewModel::deselectEvent,
+                                    onEventDeleteClick = {
+                                        viewModel.updateEventsDeleteDialog(true)
+                                    },
+                                    onEventModifyClick = { onEventModifyClick(state.clubId, selectedEvent.id) },
+                                    onNotificationClick = {
+                                        state.userId?.let {
+                                            viewModel.updateEventSubscribeDialog(true)
+                                        } ?: viewModel.showLoginDialog()
+                                    },
+                                    isManager = state.clubDetails?.manager ?: false
+                                )
+                            } else {
+                                ClubDetailEvents(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .verticalScroll(eventsScrollState, enabled = isEventsScrollable.value),
+                                    isDropdownExpanded = state.isEventsDropdownExpanded,
+                                    clubEvents = state.clubEvents,
+                                    onDropdownExpandChange = viewModel::updateEventsDropdownExpanded,
+                                    showProgressBar = state.showEventsProgressBar,
+                                    dropdownTitle = stringResource(state.clubEventSearchType.strRes),
+                                    dropdownList = eventSearchTypeList,
                                     isManager = state.clubDetails?.manager ?: false,
-                                    userId = state.userId,
-                                    onAddQnaClick = {
-                                        viewModel.showAddQnaDialog()
+                                    onDropdownItemSelected = { index ->
+                                        viewModel.updateClubEventSearchType(eventSearchTypeList[index])
                                     },
-                                    onDeleteQnaClick = { qnaId ->
-                                        viewModel.deleteClubQna(qnaId)
-                                    },
-                                    onAddAnswerClick = { qnaId, content ->
-                                        viewModel.addClubQnaAnswer(qnaId, content)
-                                    }
+                                    onEventCreateClick = { onEventCreateClick(state.clubId) },
+                                    onEventClick = viewModel::selectEvent
                                 )
                             }
+                        }
+                        DetailTabType.QNA.strResId -> {
+                            ClubDetailQna(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .verticalScroll(qnaScrollState, enabled = isQnaScrollable.value),
+                                qnaList = qnaList,
+                                isManager = state.clubDetails?.manager ?: false,
+                                userId = state.userId,
+                                showProgressBar = state.showQnasProgressBar,
+                                onAddQnaClick = {
+                                    viewModel.showAddQnaDialog()
+                                },
+                                onDeleteQnaClick = { qnaId ->
+                                    viewModel.deleteClubQna(qnaId)
+                                },
+                                onAddAnswerClick = { qnaId, content ->
+                                    viewModel.addClubQnaAnswer(qnaId, content)
+                                }
+                            )
                         }
                     }
                 }
@@ -595,8 +855,12 @@ suspend fun handleSideEffect(
             )
         }
         is ClubDetailSideEffect.OpenUrl -> {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url))
-            context.startActivity(intent)
+            try {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url))
+                context.startActivity(intent)
+            } catch (e: Exception) {
+                ToastUtil.getInstance().makeShort(context.getString(R.string.detail_error_incorrect_link))
+            }
         }
         is ClubDetailSideEffect.UnauthorizedError -> {
             ToastUtil.getInstance().makeShort(sideEffect.messageResId)
@@ -617,6 +881,21 @@ suspend fun handleSideEffect(
             ToastUtil.getInstance().makeShort(sideEffect.messageResId)
         }
         is ClubDetailSideEffect.AlreadyNotLikedError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.DeleteClubRecruitmentError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.LoadClubRecruitmentError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.LoadClubEventError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.DeleteClubEventError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.UnknownError -> {
             ToastUtil.getInstance().makeShort(sideEffect.messageResId)
         }
     }

@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
+import `in`.koreatech.koin.feature.club.model.ParcelizeClubItem
 
 @Composable
 fun KoinClubListItem(
@@ -34,6 +35,7 @@ fun KoinClubListItem(
     logoUrl: String,
     isLiked: Boolean,
     isLikeHidden: Boolean,
+    recruitmentInfo: ParcelizeClubItem.ParcelizeClubItemRecruitmentInfo,
     modifier: Modifier = Modifier,
     onClick: (Int) -> Unit = {},
     onLikeClick: (Int) -> Unit = {}
@@ -43,18 +45,31 @@ fun KoinClubListItem(
             .border(width = 1.dp, color = KoinTheme.colors.primary300, shape = KoinTheme.shapes.small)
             .clip(KoinTheme.shapes.small)
             .clickable { onClick(id) }
-            .padding(vertical = 8.dp, horizontal = 16.dp),
+            .padding(vertical = 16.dp, horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column {
-            Text(
-                text = name,
-                style = KoinTheme.typography.bold20
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = name,
+                    style = KoinTheme.typography.bold16
+                )
+
+                Spacer(modifier = Modifier.width(4.dp))
+
+                KoinClubRecruitmentLabel(
+                    labelType = recruitmentInfo.status,
+                    dDay = recruitmentInfo.dDay
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             Text(
                 text = category,
-                style = KoinTheme.typography.regular14,
+                style = KoinTheme.typography.regular12,
                 color = KoinTheme.colors.neutral600
             )
 
@@ -86,7 +101,7 @@ fun KoinClubListItem(
         SubcomposeAsyncImage(
             model = logoUrl,
             contentDescription = null,
-            modifier = modifier.size(100.dp),
+            modifier = Modifier.size(100.dp),
             loading = {
                 CircularProgressIndicator()
             }
@@ -106,7 +121,11 @@ fun KoinClubListItemPreview() {
                 likes = 100,
                 logoUrl = "https://example.com/logo.png",
                 isLiked = false,
-                isLikeHidden = false
+                isLikeHidden = false,
+                recruitmentInfo = ParcelizeClubItem.ParcelizeClubItemRecruitmentInfo(
+                    status = KoinClubRecruitmentLabelType.RECRUITING,
+                    dDay = 5
+                )
             )
         }
     }

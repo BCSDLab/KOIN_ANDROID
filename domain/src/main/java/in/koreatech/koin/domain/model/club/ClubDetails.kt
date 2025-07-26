@@ -15,6 +15,14 @@ data class ClubDetails(
     val phoneNumber: String?,
     val manager: Boolean,
     val isLiked: Boolean,
+    val isRecruitSubscribed: Boolean,
     val updatedAt: String,
-    val isLikeHidden: Boolean
-)
+    val isLikeHidden: Boolean,
+    val hotStatus: HotStatus?
+) {
+    data class HotStatus(
+        val month: Int,
+        val weekOfMonth: Int,
+        val streakCount: Int
+    )
+}

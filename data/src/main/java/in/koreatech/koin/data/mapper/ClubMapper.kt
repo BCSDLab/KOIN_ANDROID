@@ -2,15 +2,21 @@ package `in`.koreatech.koin.data.mapper
 
 import `in`.koreatech.koin.data.response.club.ClubCategoriesResponse
 import `in`.koreatech.koin.data.response.club.ClubDetailsResponse
+import `in`.koreatech.koin.data.response.club.ClubEventResponse
 import `in`.koreatech.koin.data.response.club.ClubHotResponse
 import `in`.koreatech.koin.data.response.club.ClubQnasResponse
 import `in`.koreatech.koin.data.response.club.ClubQnasResponse.QnaResponse
+import `in`.koreatech.koin.data.response.club.ClubRecruitmentResponse
+import `in`.koreatech.koin.data.response.club.ClubSearchResponse
 import `in`.koreatech.koin.data.response.club.ClubsResponse
 import `in`.koreatech.koin.domain.model.club.ClubCategories
 import `in`.koreatech.koin.domain.model.club.ClubDetails
+import `in`.koreatech.koin.domain.model.club.ClubEvent
 import `in`.koreatech.koin.domain.model.club.ClubHot
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo.Qna
+import `in`.koreatech.koin.domain.model.club.ClubRecruitment
+import `in`.koreatech.koin.domain.model.club.ClubSearch
 import `in`.koreatech.koin.domain.model.club.Clubs
 
 fun ClubCategoriesResponse.toClubCategories() = ClubCategories(
@@ -37,7 +43,11 @@ fun ClubsResponse.toClubs() = Clubs(
             likes = it.likes,
             imageUrl = it.imageUrl,
             isLiked = it.isLiked,
-            isLikeHidden = it.isLikeHidden
+            isLikeHidden = it.isLikeHidden,
+            recruitmentInfo = Clubs.ClubItemRecruitmentInfo(
+                status = it.recruitmentInfo.status,
+                dDay = it.recruitmentInfo.dDay
+            )
         )
     }
 )
@@ -57,8 +67,16 @@ fun ClubDetailsResponse.toClubDetails() = ClubDetails(
     phoneNumber,
     manager,
     isLiked,
+    isRecruitSubscribed,
     updatedAt,
-    isLikeHidden
+    isLikeHidden,
+    hotStatus?.toHotStatus()
+)
+
+fun ClubDetailsResponse.HotStatusResponse.toHotStatus() = ClubDetails.HotStatus(
+    month,
+    weekOfMonth,
+    streakCount
 )
 
 fun ClubQnasResponse.toClubQnasInfo() = ClubQnasInfo(
@@ -83,4 +101,36 @@ fun QnaResponse.toFinalQna() = Qna(
     content,
     createdAt,
     listOf<Qna>()
+)
+
+fun ClubRecruitmentResponse.toClubRecruitment() = ClubRecruitment(
+    id,
+    status,
+    dday,
+    startDate,
+    endDate,
+    imageUrl,
+    content,
+    isManager
+)
+
+fun ClubEventResponse.toClubEvent() = ClubEvent(
+    id,
+    name,
+    imageUrls,
+    startDate,
+    endDate,
+    introduce,
+    content,
+    status,
+    isSubscribed
+)
+
+fun ClubSearchResponse.toClubSearch() = ClubSearch(
+    keywords = keywords.map { it.toClubSearchItem() }
+)
+
+fun ClubSearchResponse.ClubSearchItemResponse.toClubSearchItem() = ClubSearch.ClubSearchItem(
+    clubId = clubId,
+    clubName = clubName
 )
