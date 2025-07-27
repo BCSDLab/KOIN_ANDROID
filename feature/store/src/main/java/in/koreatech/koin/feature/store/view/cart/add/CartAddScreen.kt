@@ -259,7 +259,11 @@ private fun CartAddScreen(
                         option.optionSelected
                     }.map { it.id }
                 },
-                minSelectCount = localShopMenuOptionGroup.minSelect
+                requiredSelectCount = if (localShopMenuOptionGroup.minSelect == localShopMenuOptionGroup.maxSelect) {
+                    localShopMenuOptionGroup.minSelect
+                } else {
+                    0
+                },
             ) { selectedItems ->
                 onSelectedOptionGroup(localShopMenuOptionGroup.id, selectedItems)
             }

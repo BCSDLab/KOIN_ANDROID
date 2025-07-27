@@ -34,7 +34,7 @@ fun KoinCartOptionItem(
     description: String,
     selectedId: List<Int>,
     modifier: Modifier = Modifier,
-    minSelectCount: Int = 0,
+    requiredSelectCount: Int = 0,
     onClick: (Int) -> Unit = {}
 ) {
     Column(
@@ -66,7 +66,7 @@ fun KoinCartOptionItem(
                 }
             }
 
-            if (minSelectCount > 0) {
+            if (requiredSelectCount > 0) {
                 Box(
                     modifier = modifier
                         .border(1.dp, RebrandKoinTheme.colors.primary500, RoundedCornerShape(24.dp))
@@ -75,7 +75,7 @@ fun KoinCartOptionItem(
                 ) {
                     BasicText(
                         modifier = Modifier,
-                        text = stringResource(R.string.store_cart_min_select, minSelectCount),
+                        text = stringResource(R.string.store_cart_min_select, requiredSelectCount),
                         style = RebrandKoinTheme.typography.regular12.copy(color = RebrandKoinTheme.colors.primary500)
                     )
                 }
