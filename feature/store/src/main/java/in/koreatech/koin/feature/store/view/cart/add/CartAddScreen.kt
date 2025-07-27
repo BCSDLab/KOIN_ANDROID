@@ -213,6 +213,7 @@ fun CartAddScreen(
         }
         AddMenuBottomCard(
             price = uiState.price,
+            isButtonEnabled = uiState.isButtonEnabled,
             onClick = { viewModel.addCartItem() }
         )
     }

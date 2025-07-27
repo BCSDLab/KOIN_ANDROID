@@ -152,4 +152,13 @@ class CartAddViewModel @Inject constructor(
             )
         }
     }
+
+    fun dismissErrorDialog() = intent {
+        reduce {
+            state.copy(
+                showErrorDialog = false,
+                error = CartAddError.NONE
+            )
+        }
+    }
 }

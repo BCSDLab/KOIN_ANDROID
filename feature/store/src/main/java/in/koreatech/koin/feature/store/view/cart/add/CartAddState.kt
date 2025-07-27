@@ -24,4 +24,10 @@ data class CartAddState(
         get() = (prices.firstOrNull { it.id == orderableShopMenuPriceId }?.price ?: 0) + options.sumOf { optionGroup ->
             optionGroup.options.filter { it.optionSelected }.sumOf { it.price }
         }
+
+    val isButtonEnabled: Boolean
+        get() = options.all { optionGroup ->
+            optionGroup.minSelect <= optionGroup.options.count { it.optionSelected } &&
+                    optionGroup.maxSelect >= optionGroup.options.count { it.optionSelected }
+        } && orderableShopMenuPriceId != -1
 }
