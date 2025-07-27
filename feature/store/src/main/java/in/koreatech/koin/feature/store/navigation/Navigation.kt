@@ -9,6 +9,7 @@ import androidx.navigation.navArgument
 import `in`.koreatech.koin.feature.store.view.ShoppingCartScreen
 import `in`.koreatech.koin.feature.store.view.StoreDetailScreen
 import `in`.koreatech.koin.feature.store.view.cart.add.CartAddScreen
+import `in`.koreatech.koin.feature.store.view.cart.edit.CartEditScreen
 import `in`.koreatech.koin.feature.store.view.main.home.StoreHomeScreen
 import `in`.koreatech.koin.feature.store.view.main.nearby.StoreNearbyScreen
 import `in`.koreatech.koin.feature.store.view.payment.StorePaymentScreen
@@ -94,7 +95,16 @@ fun NavGraphBuilder.koinStoreGraph(
             }
         )
     ) {
-
+        CartEditScreen(
+            navigateToCart = {
+                navController.navigate(StoreNavType.StoreCart.route)
+            },
+            navigateBack = {
+                if (!navController.navigateUp()) {
+                    finish()
+                }
+            }
+        )
     }
 
     composable(

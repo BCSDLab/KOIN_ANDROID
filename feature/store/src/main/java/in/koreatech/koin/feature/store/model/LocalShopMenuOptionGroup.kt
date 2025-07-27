@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.store.model
 
 import android.os.Parcelable
+import `in`.koreatech.koin.domain.model.store.CartItemEdit
 import `in`.koreatech.koin.domain.model.store.ShopMenu
 import `in`.koreatech.koin.domain.model.store.ShopMenu.ShopMenuPrice
 import kotlinx.parcelize.Parcelize
@@ -42,5 +43,26 @@ fun ShopMenuPrice.toLocalShopMenuOption(): LocalShopMenuOptionGroup.LocalShopMen
         name = name ?: "",
         price = price,
         optionSelected = false
+    )
+}
+
+fun CartItemEdit.CartItemEditOptionGroup.toLocalShopMenuOptionGroup(): LocalShopMenuOptionGroup {
+    return LocalShopMenuOptionGroup(
+        id = id,
+        name = name,
+        description = description,
+        isRequired = isRequired,
+        minSelect = minSelect,
+        maxSelect = maxSelect,
+        options = options.map { it.toLocalShopMenuOption() }
+    )
+}
+
+fun CartItemEdit.CartItemEditPrice.toLocalShopMenuOption(): LocalShopMenuOptionGroup.LocalShopMenuOption {
+    return LocalShopMenuOptionGroup.LocalShopMenuOption(
+        id = id,
+        name = name ?: "",
+        price = price,
+        optionSelected = isSelected
     )
 }
