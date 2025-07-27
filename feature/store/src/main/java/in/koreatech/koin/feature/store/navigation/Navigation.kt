@@ -79,7 +79,7 @@ fun NavGraphBuilder.koinStoreGraph(
             navigateToCart = {
                 navController.navigate(StoreNavType.StoreCart.route)
             },
-            navigateToBack = {
+            navigateBack = {
                 if (!navController.navigateUp()) {
                     finish()
                 }

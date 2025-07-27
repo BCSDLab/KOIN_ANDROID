@@ -61,12 +61,12 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun CartAddScreen(
     viewModel: CartAddViewModel = hiltViewModel(),
     navigateToCart: () -> Unit = {},
-    navigateToBack: () -> Unit = {}
+    navigateBack: () -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
 
     viewModel.collectSideEffect {
-        handleSideEffect(it, navigateToBack)
+        handleSideEffect(it, navigateBack)
     }
 
     val rememberState = rememberCollapsingToolbarState(
@@ -127,7 +127,7 @@ fun CartAddScreen(
                 modifier = Modifier.zIndex(2f),
                 title = uiState.menuName,
                 onNavigationIconClick = {
-                    navigateToBack()
+                    navigateBack()
                 },
                 actions = {
                     Box(contentAlignment = Alignment.TopEnd) {
