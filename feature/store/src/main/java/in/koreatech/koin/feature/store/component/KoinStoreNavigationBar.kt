@@ -62,7 +62,12 @@ fun RowScope.KoinStoreNavigationBarItem(
     onClick: () -> Unit = {}
 ) {
     val animatedTintColor by animateColorAsState(
-        targetValue = if (selected) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral400,
+        targetValue = if (selected) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral300,
+        label = "NavigationBarItemTintColor"
+    )
+
+    val animatedTextColor by animateColorAsState(
+        targetValue = if (selected) RebrandKoinTheme.colors.neutral800 else RebrandKoinTheme.colors.neutral300,
         label = "NavigationBarItemTintColor"
     )
 
@@ -91,7 +96,9 @@ fun RowScope.KoinStoreNavigationBarItem(
 
         BasicText(
             text = label,
-            style = RebrandKoinTheme.typography.bold12
+            style = RebrandKoinTheme.typography.bold12.copy(
+                color = animatedTextColor
+            )
         )
     }
 }
