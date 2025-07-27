@@ -54,6 +54,7 @@ import `in`.koreatech.koin.feature.store.state.progress
 import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
 import kotlin.math.roundToInt
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,6 +64,10 @@ fun CartAddScreen(
     navigateToBack: () -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
+
+    viewModel.collectSideEffect {
+        handleSideEffect(it, navigateToBack)
+    }
 
     val rememberState = rememberCollapsingToolbarState(
         toolbarMinHeight = 64.dp
@@ -285,5 +290,14 @@ private fun CartAddScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
         }
+    }
+}
+
+fun handleSideEffect(
+    sideEffect: CartAddSideEffect,
+    navigateBack: () -> Unit
+) {
+    when (sideEffect) {
+        CartAddSideEffect.CartItemAdded -> navigateBack()
     }
 }

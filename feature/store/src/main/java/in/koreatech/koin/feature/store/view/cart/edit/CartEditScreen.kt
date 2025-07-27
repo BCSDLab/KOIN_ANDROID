@@ -302,5 +302,7 @@ fun handleSideEffect(
             ToastUtil.getInstance().makeShort(R.string.error)
             navigateBack()
         }
+
+        CartEditSideEffect.CartItemUpdated -> navigateBack()
     }
 }

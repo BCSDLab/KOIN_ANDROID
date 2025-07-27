@@ -16,6 +16,7 @@ import `in`.koreatech.koin.feature.store.navigation.ORDERABLE_SHOP_MENU_ID
 import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
@@ -24,8 +25,8 @@ class CartAddViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getOrderableShopMenuUseCase: GetOrderableShopMenuUseCase,
     private val addCartItemUseCase: AddCartItemUseCase
-) : ViewModel(), ContainerHost<CartAddState, Unit> {
-    override val container = container<CartAddState, Unit>(CartAddState()) {
+) : ViewModel(), ContainerHost<CartAddState, CartAddSideEffect> {
+    override val container = container<CartAddState, CartAddSideEffect>(CartAddState()) {
         val orderableShopId = savedStateHandle.get<Int>(ORDERABLE_SHOP_ID)
         val orderableShopMenuId = savedStateHandle.get<Int>(ORDERABLE_SHOP_MENU_ID)
 
@@ -98,6 +99,7 @@ class CartAddViewModel @Inject constructor(
                     isLoading = false
                 )
             }
+            postSideEffect(CartAddSideEffect.CartItemAdded)
         }.onFailure { exception ->
             intent {
                 reduce {

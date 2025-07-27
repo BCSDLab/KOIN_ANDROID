@@ -88,6 +88,7 @@ class CartEditViewModel @Inject constructor(
             reduce {
                 state.copy(isLoading = false)
             }
+            postSideEffect(CartEditSideEffect.CartItemUpdated)
         }.onFailure { exception ->
             intent {
                 reduce {
