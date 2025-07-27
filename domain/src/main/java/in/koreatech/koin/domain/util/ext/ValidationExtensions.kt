@@ -41,7 +41,7 @@ val String.isValidStudentId: Boolean
     }
 
 val String.isValidPhoneNumber: Boolean get() =
-    this.trim().matches(Regex("""^(010)-?(\d{4})-?(\d{4})$"""))
+    this.trim().matches(Regex("""^(010)-?([0-9]{4})-?([0-9]{4})$"""))
 
 fun String.isValidName(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$"""))
 

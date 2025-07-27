@@ -56,7 +56,7 @@ class PasswordUtil {
         private const val FILTER_CONTAIN_ALPHABET = ".*[a-zA-Z].*"
         val CONTAIN_ALPHABET_REGEX = Pattern.compile(FILTER_CONTAIN_ALPHABET)
 
-        private const val FILTER_CONTAIN_NUMBER = """.*\d.*"""
+        private const val FILTER_CONTAIN_NUMBER = """.*[0-9].*"""
         val CONTAIN_NUMBER_REGEX = Pattern.compile(FILTER_CONTAIN_NUMBER)
 
         // TODO::특수문자 명세 확인 후 수정

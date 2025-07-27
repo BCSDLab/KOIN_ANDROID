@@ -3,7 +3,7 @@ import java.io.File
 val NO_VERSION_DATA = "NO_VERSION"
 
 fun searchReleaseVersion(prBody: String): String {
-    val versionRegex = Regex("""v\d+\.\d+\.\d+""")
+    val versionRegex = Regex("""v[0-9]+\.[0-9]+\.[0-9]+""")
     return versionRegex.find(prBody)?.value ?: NO_VERSION_DATA
 }
 

@@ -11,7 +11,7 @@ internal fun String.parseColor(default: Int): Int {
 }
 
 private fun parseRgbColor(rgbString: String, default: Int): Int {
-    val regex = """rgb\((\d+), (\d+), (\d+)\)""".toRegex()
+    val regex = """rgb\(([0-9]+), ([0-9]+), ([0-9]+)\)""".toRegex()
     val matchResult = regex.matchEntire(rgbString)
 
     return if (matchResult != null) {
