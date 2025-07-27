@@ -42,11 +42,15 @@ class CartEditViewModel @Inject constructor(
     }
 
     private fun getCart() = intent {
+        reduce {
+            state.copy(isLoading = true)
+        }
         getCartItemEditUseCase(
             cartMenuItemId = state.cartMenuItemId
         ).onSuccess {
             reduce {
                 state.copy(
+                    isLoading = false,
                     menuName = it.name,
                     menuDescription = it.description,
                     menuImageUrls = it.images,
@@ -56,11 +60,17 @@ class CartEditViewModel @Inject constructor(
                 )
             }
         }.onFailure {
+            reduce {
+                state.copy(isLoading = false)
+            }
             postSideEffect(CartEditSideEffect.UnknownError)
         }
     }
 
     fun updateCartItem() = intent {
+        reduce {
+            state.copy(isLoading = true)
+        }
         updateCartItemUseCase(
             cartMenuItemId = state.cartMenuItemId,
             cartItem = CartItem(
@@ -75,9 +85,14 @@ class CartEditViewModel @Inject constructor(
                 }
             )
         ).onSuccess {
-
+            reduce {
+                state.copy(isLoading = false)
+            }
         }.onFailure { exception ->
             intent {
+                reduce {
+                    state.copy(isLoading = false)
+                }
                 when (exception) {
                     is KoinStoreException.RequiredOptionGroupMissingException -> {
                         reduce {

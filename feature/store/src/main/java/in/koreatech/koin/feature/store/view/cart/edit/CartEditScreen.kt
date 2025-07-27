@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -88,6 +89,19 @@ fun CartEditScreen(
             onDismissRequest = viewModel::dismissErrorDialog,
         )
     }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .zIndex(4f),
+        contentAlignment = Alignment.Center
+    ) {
+        if (uiState.isLoading) {
+            CircularProgressIndicator()
+        }
+    }
+
+    if (uiState.menuName.isEmpty()) return // If menu not loaded, do not render the screen
 
     Column {
         Box(

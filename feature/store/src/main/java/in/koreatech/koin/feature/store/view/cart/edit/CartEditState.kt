@@ -8,6 +8,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class CartEditState(
+    val isLoading: Boolean = false,
     val cartMenuItemId: Int = -1,
     val orderableShopMenuPriceId: Int = -1,
     val menuName: String = "",

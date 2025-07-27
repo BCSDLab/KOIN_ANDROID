@@ -45,12 +45,16 @@ class CartAddViewModel @Inject constructor(
     }
 
     private fun getMenus() = intent {
+        reduce {
+            state.copy(isLoading = true)
+        }
         getOrderableShopMenuUseCase(
             shopId = state.orderableShopId,
             menuId = state.orderableShopMenuId
         ).onSuccess {
             reduce {
                 state.copy(
+                    isLoading = false,
                     menuName = it.name,
                     menuDescription = it.description,
                     menuImageUrls = it.images,
@@ -64,11 +68,16 @@ class CartAddViewModel @Inject constructor(
                 )
             }
         }.onFailure {
-            // Handle error case
+            reduce {
+                state.copy(isLoading = false)
+            }
         }
     }
 
     fun addCartItem() = intent {
+        reduce {
+            state.copy(isLoading = true)
+        }
         addCartItemUseCase(
             CartAdd(
                 orderableShopId = state.orderableShopId,
@@ -84,8 +93,16 @@ class CartAddViewModel @Inject constructor(
                 }
             )
         ).onSuccess {
+            reduce {
+                state.copy(
+                    isLoading = false
+                )
+            }
         }.onFailure { exception ->
             intent {
+                reduce {
+                    state.copy(isLoading = false)
+                }
                 when (exception) {
                     is KoinStoreException.DifferentShopItemInCartException -> {
                         reduce {
