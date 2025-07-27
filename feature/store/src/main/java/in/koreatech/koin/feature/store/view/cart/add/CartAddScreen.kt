@@ -85,7 +85,7 @@ fun CartAddScreen(
     if (uiState.showErrorDialog) {
         KoinStoreDialog(
             message = stringResource(uiState.error.message),
-            onDismissRequest = viewModel::dismissErrorDialog,
+            onDismissRequest = viewModel::dismissErrorDialog
         )
     }
 
@@ -101,7 +101,6 @@ fun CartAddScreen(
     }
 
     if (uiState.menuName.isEmpty()) return // If menu not loaded, do not render the screen
-
 
     Column {
         Box(
@@ -283,7 +282,7 @@ private fun CartAddScreen(
                     localShopMenuOptionGroup.minSelect
                 } else {
                     0
-                },
+                }
             ) { selectedItems ->
                 onSelectedOptionGroup(localShopMenuOptionGroup.id, selectedItems)
             }

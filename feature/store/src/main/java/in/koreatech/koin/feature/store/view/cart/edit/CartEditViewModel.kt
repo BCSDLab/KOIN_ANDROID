@@ -56,7 +56,7 @@ class CartEditViewModel @Inject constructor(
                     menuImageUrls = it.images,
                     prices = it.prices.map { it.toLocalShopPrice() },
                     options = it.optionGroups.map { it.toLocalShopMenuOptionGroup() },
-                    orderableShopMenuPriceId = it.prices.filter { it.isSelected }.getOrNull(0)?.id ?: -1,
+                    orderableShopMenuPriceId = it.prices.filter { it.isSelected }.getOrNull(0)?.id ?: -1
                 )
             }
         }.onFailure {

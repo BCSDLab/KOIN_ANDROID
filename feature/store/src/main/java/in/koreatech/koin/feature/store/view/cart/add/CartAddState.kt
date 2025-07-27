@@ -19,7 +19,7 @@ data class CartAddState(
     val options: List<LocalShopMenuOptionGroup> = emptyList(),
     val cartItemCount: Int = 0,
     val error: CartError = CartError.NONE,
-    val showErrorDialog: Boolean = false,
+    val showErrorDialog: Boolean = false
 ) : Parcelable {
     val price: Int
         get() = (prices.firstOrNull { it.id == orderableShopMenuPriceId }?.price ?: 0) + options.sumOf { optionGroup ->
@@ -29,6 +29,6 @@ data class CartAddState(
     val isButtonEnabled: Boolean
         get() = options.all { optionGroup ->
             optionGroup.minSelect <= optionGroup.options.count { it.optionSelected } &&
-                    optionGroup.maxSelect >= optionGroup.options.count { it.optionSelected }
+                optionGroup.maxSelect >= optionGroup.options.count { it.optionSelected }
         } && orderableShopMenuPriceId != -1
 }

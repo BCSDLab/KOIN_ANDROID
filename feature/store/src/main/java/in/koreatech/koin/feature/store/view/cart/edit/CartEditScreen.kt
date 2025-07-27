@@ -86,7 +86,7 @@ fun CartEditScreen(
     if (uiState.showErrorDialog) {
         KoinStoreDialog(
             message = stringResource(uiState.error.message),
-            onDismissRequest = viewModel::dismissErrorDialog,
+            onDismissRequest = viewModel::dismissErrorDialog
         )
     }
 
@@ -283,7 +283,7 @@ private fun CartEditScreen(
                     localShopMenuOptionGroup.minSelect
                 } else {
                     0
-                },
+                }
             ) { selectedItems ->
                 onSelectedOptionGroup(localShopMenuOptionGroup.id, selectedItems)
             }

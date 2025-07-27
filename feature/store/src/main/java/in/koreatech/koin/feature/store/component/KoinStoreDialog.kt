@@ -36,7 +36,7 @@ fun KoinStoreDialog(
                 .clip(RebrandKoinTheme.shapes.small)
                 .background(RebrandKoinTheme.colors.neutral0, RebrandKoinTheme.shapes.small)
                 .padding(vertical = 24.dp, horizontal = 32.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             BasicText(
                 text = message,
@@ -70,12 +70,11 @@ fun KoinStoreDialog(
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun KoinStoreDialogPreview() {
     KoinStoreDialog(
         onDismissRequest = {},
-        message = "This is a preview of the Koin Store Dialog.",
+        message = "This is a preview of the Koin Store Dialog."
     )
 }
