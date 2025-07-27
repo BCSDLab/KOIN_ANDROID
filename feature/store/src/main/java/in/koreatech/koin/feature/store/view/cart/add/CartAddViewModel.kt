@@ -3,10 +3,12 @@ package `in`.koreatech.koin.feature.store.view.cart.add
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.error.store.KoinStoreException
 import `in`.koreatech.koin.domain.model.store.AddCartItemOption
 import `in`.koreatech.koin.domain.model.store.CartAdd
 import `in`.koreatech.koin.domain.usecase.store.AddCartItemUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetOrderableShopMenuUseCase
+import `in`.koreatech.koin.feature.store.enums.CartAddError
 import `in`.koreatech.koin.feature.store.model.toLocalShopMenuOptionGroup
 import `in`.koreatech.koin.feature.store.model.toLocalShopPrice
 import `in`.koreatech.koin.feature.store.navigation.ORDERABLE_SHOP_ID
@@ -82,7 +84,41 @@ class CartAddViewModel @Inject constructor(
                 }
             )
         ).onSuccess {
-        }.onFailure {
+        }.onFailure { exception ->
+            intent {
+                when (exception) {
+                    is KoinStoreException.DifferentShopItemInCartException -> {
+                        reduce {
+                            state.copy(error = CartAddError.DIFFERENT_SHOP_ITEM_IN_CART, showErrorDialog = true)
+                        }
+                    }
+                    is KoinStoreException.MenuSoldOutException -> {
+                        reduce {
+                            state.copy(error = CartAddError.MENU_SOLD_OUT, showErrorDialog = true)
+                        }
+                    }
+                    is KoinStoreException.RequiredOptionGroupMissingException -> {
+                        reduce {
+                            state.copy(error = CartAddError.REQUIRED_OPTION_GROUP_MISSING, showErrorDialog = true)
+                        }
+                    }
+                    is KoinStoreException.MaxSelectionExceededException -> {
+                        reduce {
+                            state.copy(error = CartAddError.MAX_SELECTION_EXCEEDED, showErrorDialog = true)
+                        }
+                    }
+                    is KoinStoreException.InvalidMenuInShopException -> {
+                        reduce {
+                            state.copy(error = CartAddError.INVALID_MENU_IN_SHOP, showErrorDialog = true)
+                        }
+                    }
+                    is KoinStoreException.ShopClosedException -> {
+                        reduce {
+                            state.copy(error = CartAddError.SHOP_CLOSED, showErrorDialog = true)
+                        }
+                    }
+                }
+            }
         }
     }
 

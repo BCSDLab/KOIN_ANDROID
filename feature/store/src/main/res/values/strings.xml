@@ -17,6 +17,7 @@
     <string name="delete_all">전체삭제</string>
     <string name="yes">예</string>
     <string name="no">아니요</string>
+    <string name="ok">확인</string>
     <string name="delete_menu_dialog_message">정말로 담았던 메뉴들을\n전체 삭제하시겠어요?</string>
     <string name="store_is_not_operating_dialog_message">영업시간이 아니라서 주문할 수 없어요.\n담았던 메뉴는 삭제할까요?</string>
     <string name="order_only_notice">이 가게는 %1$s만 가능해요</string>
@@ -107,4 +108,11 @@
     <string name="store_main_widget">주문</string>
     <string name="store_cart_min_select">%1$d가지 선택</string>
     <string name="store_cart_add_menu">장바구니 추가</string>
+
+    <string name="store_cart_add_different_shop_item_in_cart">장바구니에는 같은 가게 메뉴만 담을 수 있어요.\n담았던 메뉴는 삭제할까요?</string>
+    <string name="store_cart_add_menu_sold_out">해당 메뉴는 품절이에요.</string>
+    <string name="store_cart_add_required_option_group_missing">필수 옵션이 선택되지 않았어요.</string>
+    <string name="store_cart_add_max_selection_exceeded">최대 선택 개수를 초과했어요.</string>
+    <string name="store_cart_add_invalid_menu_in_shop">선택한 메뉴는 해당 상점에 속해있지 않습니다.</string>
+    <string name="store_cart_add_shop_closed">영업시간이 아니라서\n장바구니에 담을 수 없어요.</string>
 </resources>

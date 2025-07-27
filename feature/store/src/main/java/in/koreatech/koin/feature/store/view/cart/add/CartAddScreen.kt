@@ -43,6 +43,7 @@ import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.AddMenuBottomCard
 import `in`.koreatech.koin.feature.store.component.KoinCartOptionItem
 import `in`.koreatech.koin.feature.store.component.KoinCartPriceItem
+import `in`.koreatech.koin.feature.store.component.KoinStoreDialog
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.model.LocalShopMenuOptionGroup
 import `in`.koreatech.koin.feature.store.model.LocalShopPrice
@@ -74,6 +75,14 @@ fun CartAddScreen(
         minHeightPx = rememberState.minHeightPx
     )
     val currentToolbarHeightDp = rememberState.currentToolbarHeightDp()
+
+    if (uiState.showErrorDialog) {
+        KoinStoreDialog(
+            message = stringResource(uiState.error.message),
+            onDismissRequest = viewModel::dismissErrorDialog,
+        )
+    }
+
     Column {
         Box(
             modifier = Modifier
