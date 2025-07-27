@@ -10,6 +10,7 @@ sealed class StoreNavType(val route: String) {
     data object StoreDetail : StoreNavType("store_detail")
     data object StoreCart : StoreNavType("store_cart")
     data object StoreCartAdd : StoreDetailNavType("store_cart_add")
+    data object StoreCartEdit : StoreDetailNavType("store_cart_edit")
     data object StorePayment : StoreNavType("store_payment")
 }
 

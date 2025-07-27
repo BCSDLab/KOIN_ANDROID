@@ -56,6 +56,9 @@ fun NavGraphBuilder.koinStoreGraph(
             },
             navigateToPayment = {
                 navController.navigate(StoreNavType.StorePayment.route)
+            },
+            navigateToCartEdit = {
+                navController.navigate("${StoreNavType.StoreCartEdit.route}/$it")
             }
         )
     }
@@ -81,6 +84,17 @@ fun NavGraphBuilder.koinStoreGraph(
                 }
             }
         )
+    }
+
+    composable(
+        route = "${StoreNavType.StoreCartEdit.route}/{$CART_MENU_ITEM_ID}",
+        arguments = listOf(
+            navArgument(CART_MENU_ITEM_ID) {
+                type = NavType.IntType
+            }
+        )
+    ) {
+
     }
 
     composable(
@@ -212,3 +226,4 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
 const val ORDERABLE_SHOP_MENU_ID = "orderableShopMenuId"
 const val ORDERABLE_SHOP_ID = "orderableShopId"
 const val IS_ORDERABLE_SHOP = "isOrderableShop"
+const val CART_MENU_ITEM_ID = "cartMenuItemId"
