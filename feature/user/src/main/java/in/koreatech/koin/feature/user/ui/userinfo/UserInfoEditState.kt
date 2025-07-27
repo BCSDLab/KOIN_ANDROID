@@ -22,7 +22,8 @@ data class UserInfoEditState(
     val beforeUserState: UserState = UserState(),
     val userState: UserState = UserState(),
     val userType: UserType = UserType.ANONYMOUS,
-    val majorList: List<String> = emptyList()
+    val majorList: List<String> = emptyList(),
+    val debouncedNickname: String = ""
 )
 
 val UserInfoEditState.isPhoneNumberChanged: Boolean
@@ -43,8 +44,8 @@ val UserInfoEditState.isNameValid: Boolean
 val UserInfoEditState.isEmailValid: Boolean
     get() = (userState.email.isNotEmpty() && (userState.email.isValidEmail() || userState.email.isValidGeneralEmail())) || userState.email.isEmpty()
 
-val UserInfoEditState.isNicknameValid
-    get() = ((userState.nickname.isNotEmpty() && userState.nickname.isValidNickname()) || userState.nickname.isEmpty())
+val UserInfoEditState.isNicknameValid: Boolean
+    get() = ((userState.nickname.isNotEmpty() && debouncedNickname.isValidNickname()) || userState.nickname.isEmpty())
 
 val UserInfoEditState.isStudentNumberValid
     get() = when (userType) {

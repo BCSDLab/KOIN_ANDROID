@@ -45,6 +45,6 @@ val String.isValidPhoneNumber: Boolean get() =
 
 fun String.isValidName(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$"""))
 
-fun String.isValidNickname(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ가-힣a-zA-Z0-9]+${'$'}"""))
+fun String.isValidNickname(): Boolean = this.matches(Regex("""^[가-힣a-zA-Z0-9]+${'$'}"""))
 
 fun String.containsKorean(): Boolean = Regex("""[ㄱ-ㅎㅏ-ㅣ가-힣]""").containsMatchIn(this)

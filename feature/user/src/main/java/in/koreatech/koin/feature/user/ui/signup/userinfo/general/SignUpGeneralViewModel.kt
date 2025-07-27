@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.user.ui.signup.userinfo.general
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
@@ -16,6 +17,11 @@ import `in`.koreatech.koin.feature.user.KOREATECH_EMAIL_DOMAIN
 import `in`.koreatech.koin.feature.user.ui.signup.navigation.GENDER
 import `in`.koreatech.koin.feature.user.ui.signup.navigation.NAME
 import `in`.koreatech.koin.feature.user.ui.signup.navigation.PHONE_NUMBER
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -42,6 +48,26 @@ class SignUpGeneralViewModel @Inject constructor(
         checkNotNull(gender)
 
         setInitData(phoneNumber, name, gender)
+    }
+
+    init {
+        debouncedNickname()
+    }
+
+    private fun debouncedNickname() {
+        viewModelScope.launch {
+            container.stateFlow
+                .map { it.nickname }
+                .distinctUntilChanged()
+                .debounce(300)
+                .collectLatest { debounced ->
+                    intent {
+                        reduce {
+                            state.copy(debouncedNickname = debounced)
+                        }
+                    }
+                }
+        }
     }
 
     private fun setInitData(phoneNumber: String, name: String, gender: String) {

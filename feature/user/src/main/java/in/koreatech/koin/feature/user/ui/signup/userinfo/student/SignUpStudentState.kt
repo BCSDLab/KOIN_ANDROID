@@ -27,7 +27,8 @@ data class SignUpStudentState(
     val email: String = "",
     val isEmailAvailable: Boolean? = null,
     val isSignUpSuccess: Boolean = false,
-    val majorList: List<String> = emptyList()
+    val majorList: List<String> = emptyList(),
+    val debouncedNickname: String = ""
 ) : Parcelable
 
 val SignUpStudentState.isPasswordValid
@@ -44,7 +45,7 @@ val SignUpStudentState.currentStep: SignUpStudentStep
     }
 
 private val SignUpStudentState.isNicknameValid
-    get() = (nickname.isNotEmpty() && nickname.isValidNickname() && isNicknameAvailable == true) || nickname.isEmpty()
+    get() = (nickname.isNotEmpty() && debouncedNickname.isValidNickname() && isNicknameAvailable == true) || nickname.isEmpty()
 
 private val SignUpStudentState.isStudentNumberValid
     get() = studentNumber.isNotEmpty() && studentNumber.isValidStudentId
