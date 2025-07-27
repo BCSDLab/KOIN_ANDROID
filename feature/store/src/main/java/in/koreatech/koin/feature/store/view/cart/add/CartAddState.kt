@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.feature.store.view.cart.add
 
 import android.os.Parcelable
-import `in`.koreatech.koin.feature.store.enums.CartAddError
+import `in`.koreatech.koin.feature.store.enums.CartError
 import `in`.koreatech.koin.feature.store.model.LocalShopMenuOptionGroup
 import `in`.koreatech.koin.feature.store.model.LocalShopPrice
 import kotlinx.parcelize.Parcelize
@@ -17,7 +17,7 @@ data class CartAddState(
     val prices: List<LocalShopPrice> = emptyList(),
     val options: List<LocalShopMenuOptionGroup> = emptyList(),
     val cartItemCount: Int = 0,
-    val error: CartAddError = CartAddError.NONE,
+    val error: CartError = CartError.NONE,
     val showErrorDialog: Boolean = false,
 ) : Parcelable {
     val price: Int

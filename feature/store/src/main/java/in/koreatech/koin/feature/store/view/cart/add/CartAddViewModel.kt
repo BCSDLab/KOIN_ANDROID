@@ -8,7 +8,7 @@ import `in`.koreatech.koin.domain.model.store.AddCartItemOption
 import `in`.koreatech.koin.domain.model.store.CartAdd
 import `in`.koreatech.koin.domain.usecase.store.AddCartItemUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetOrderableShopMenuUseCase
-import `in`.koreatech.koin.feature.store.enums.CartAddError
+import `in`.koreatech.koin.feature.store.enums.CartError
 import `in`.koreatech.koin.feature.store.model.toLocalShopMenuOptionGroup
 import `in`.koreatech.koin.feature.store.model.toLocalShopPrice
 import `in`.koreatech.koin.feature.store.navigation.ORDERABLE_SHOP_ID
@@ -89,32 +89,32 @@ class CartAddViewModel @Inject constructor(
                 when (exception) {
                     is KoinStoreException.DifferentShopItemInCartException -> {
                         reduce {
-                            state.copy(error = CartAddError.DIFFERENT_SHOP_ITEM_IN_CART, showErrorDialog = true)
+                            state.copy(error = CartError.DIFFERENT_SHOP_ITEM_IN_CART, showErrorDialog = true)
                         }
                     }
                     is KoinStoreException.MenuSoldOutException -> {
                         reduce {
-                            state.copy(error = CartAddError.MENU_SOLD_OUT, showErrorDialog = true)
+                            state.copy(error = CartError.MENU_SOLD_OUT, showErrorDialog = true)
                         }
                     }
                     is KoinStoreException.RequiredOptionGroupMissingException -> {
                         reduce {
-                            state.copy(error = CartAddError.REQUIRED_OPTION_GROUP_MISSING, showErrorDialog = true)
+                            state.copy(error = CartError.REQUIRED_OPTION_GROUP_MISSING, showErrorDialog = true)
                         }
                     }
                     is KoinStoreException.MaxSelectionExceededException -> {
                         reduce {
-                            state.copy(error = CartAddError.MAX_SELECTION_EXCEEDED, showErrorDialog = true)
+                            state.copy(error = CartError.MAX_SELECTION_EXCEEDED, showErrorDialog = true)
                         }
                     }
                     is KoinStoreException.InvalidMenuInShopException -> {
                         reduce {
-                            state.copy(error = CartAddError.INVALID_MENU_IN_SHOP, showErrorDialog = true)
+                            state.copy(error = CartError.INVALID_MENU_IN_SHOP, showErrorDialog = true)
                         }
                     }
                     is KoinStoreException.ShopClosedException -> {
                         reduce {
-                            state.copy(error = CartAddError.SHOP_CLOSED, showErrorDialog = true)
+                            state.copy(error = CartError.SHOP_CLOSED, showErrorDialog = true)
                         }
                     }
                 }
@@ -157,7 +157,7 @@ class CartAddViewModel @Inject constructor(
         reduce {
             state.copy(
                 showErrorDialog = false,
-                error = CartAddError.NONE
+                error = CartError.NONE
             )
         }
     }
