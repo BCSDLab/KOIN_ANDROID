@@ -61,7 +61,7 @@ fun CommonBottomSheet(
                     modifier = Modifier.weight(1f)
                 )
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_close),
+                    painter = painterResource(id = R.drawable.ic_store_close),
                     contentDescription = stringResource(R.string.store_bottom_sheet_close),
                     tint = RebrandKoinTheme.colors.neutral800,
                     modifier = Modifier
