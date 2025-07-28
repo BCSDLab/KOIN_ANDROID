@@ -35,22 +35,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.model.DeliveryTipModel
-import `in`.koreatech.koin.feature.store.model.OwnerInfoModel
-import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
 import `in`.koreatech.koin.feature.store.view.hasAnyInfo
+import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
+import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShopOriginInfoScreen(
     cartItemNumber: Int = 0,
-    shopDescription: StoreDescriptionModel,
+    storeDetailViewModel: StoreDetailViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
     navigateToShoppingCart: () -> Unit = {}
 ) {
+    val uiState = storeDetailViewModel.collectAsState()
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -109,7 +111,7 @@ fun ShopOriginInfoScreen(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )
-            Text(text = shopDescription.notice ?: stringResource(R.string.no_registered_information), fontSize = 14.sp)
+            Text(text = uiState.value.shopDescription.notice ?: stringResource(R.string.no_registered_information), fontSize = 14.sp)
             Spacer(Modifier.height(24.dp))
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
@@ -119,7 +121,7 @@ fun ShopOriginInfoScreen(
             )
             DeliveryFeeTable(
                 modifier = Modifier.fillMaxWidth(),
-                deliveryFees = shopDescription.deliveryTips ?: emptyList()
+                deliveryFees = uiState.value.shopDescription.deliveryTips ?: emptyList()
             )
             Spacer(Modifier.height(24.dp))
             Text(
@@ -128,26 +130,26 @@ fun ShopOriginInfoScreen(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )
-            if (shopDescription.ownerInfo.hasAnyInfo()) {
+            if (uiState.value.shopDescription.ownerInfo.hasAnyInfo()) {
                 Row {
                     Column(
                         modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        if (shopDescription.ownerInfo?.name != null) Text(text = stringResource(R.string.owner_name))
-                        if (shopDescription.ownerInfo?.shopName != null) Text(text = stringResource(R.string.trade_name))
-                        if (shopDescription.ownerInfo?.address != null) Text(text = stringResource(R.string.business_address))
-                        if (shopDescription.ownerInfo?.companyRegistrationNumber != null) Text(stringResource(R.string.business_registration_number))
+                        if (uiState.value.shopDescription.ownerInfo?.name != null) Text(text = stringResource(R.string.owner_name))
+                        if (uiState.value.shopDescription.ownerInfo?.shopName != null) Text(text = stringResource(R.string.trade_name))
+                        if (uiState.value.shopDescription.ownerInfo?.address != null) Text(text = stringResource(R.string.business_address))
+                        if (uiState.value.shopDescription.ownerInfo?.companyRegistrationNumber != null) Text(stringResource(R.string.business_registration_number))
                     }
 
                     Column(
                         modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        shopDescription.ownerInfo?.name?.let { Text(it) }
-                        shopDescription.ownerInfo?.shopName?.let { Text(it) }
-                        shopDescription.ownerInfo?.address?.let { Text(it) }
-                        shopDescription.ownerInfo?.companyRegistrationNumber?.let { Text(it) }
+                        uiState.value.shopDescription.ownerInfo?.name?.let { Text(it) }
+                        uiState.value.shopDescription.ownerInfo?.shopName?.let { Text(it) }
+                        uiState.value.shopDescription.ownerInfo?.address?.let { Text(it) }
+                        uiState.value.shopDescription.ownerInfo?.companyRegistrationNumber?.let { Text(it) }
                     }
                 }
             } else {
@@ -161,7 +163,7 @@ fun ShopOriginInfoScreen(
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = shopDescription.origins?.joinToString(separator = ", ") {
+                text = uiState.value.shopDescription.origins?.joinToString(separator = ", ") {
                     "${it.ingredients} (${it.origin})"
                 } ?: stringResource(R.string.no_registered_information),
                 fontSize = 14.sp
@@ -216,23 +218,6 @@ private fun ShopOriginInfoScreenPreview() {
     ShopOriginInfoScreen(
         onBackClick = {},
         navigateToShoppingCart = {},
-        shopDescription = StoreDescriptionModel(
-            id = 1,
-            description = "테스트 가게 설명",
-            storeName = "테스트 가게",
-            notice = "테스트 가게 공지사항",
-            deliveryTips = listOf(
-                DeliveryTipModel(fromAmount = 0, toAmount = 12000, fee = 3000),
-                DeliveryTipModel(fromAmount = 12000, toAmount = 22000, fee = 2500),
-                DeliveryTipModel(fromAmount = 22000, toAmount = null, fee = 110)
-            ),
-            origins = null,
-            ownerInfo = OwnerInfoModel(
-                name = "홍길동",
-                shopName = "테스트 가게",
-                address = "서울시 강남구 역삼동 123-45",
-                companyRegistrationNumber = "123-45-67890"
-            )
+
         )
-    )
 }
