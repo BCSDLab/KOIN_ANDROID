@@ -101,40 +101,43 @@ class CartAddViewModel @Inject constructor(
             }
             postSideEffect(CartAddSideEffect.CartItemAdded)
         }.onFailure { exception ->
-            intent {
-                reduce {
-                    state.copy(isLoading = false)
+            reduce {
+                state.copy(isLoading = false)
+            }
+            when (exception) {
+                is KoinStoreException.DifferentShopItemInCartException -> {
+                    reduce {
+                        state.copy(error = CartError.DIFFERENT_SHOP_ITEM_IN_CART, showErrorDialog = true)
+                    }
                 }
-                when (exception) {
-                    is KoinStoreException.DifferentShopItemInCartException -> {
-                        reduce {
-                            state.copy(error = CartError.DIFFERENT_SHOP_ITEM_IN_CART, showErrorDialog = true)
-                        }
+
+                is KoinStoreException.MenuSoldOutException -> {
+                    reduce {
+                        state.copy(error = CartError.MENU_SOLD_OUT, showErrorDialog = true)
                     }
-                    is KoinStoreException.MenuSoldOutException -> {
-                        reduce {
-                            state.copy(error = CartError.MENU_SOLD_OUT, showErrorDialog = true)
-                        }
+                }
+
+                is KoinStoreException.RequiredOptionGroupMissingException -> {
+                    reduce {
+                        state.copy(error = CartError.REQUIRED_OPTION_GROUP_MISSING, showErrorDialog = true)
                     }
-                    is KoinStoreException.RequiredOptionGroupMissingException -> {
-                        reduce {
-                            state.copy(error = CartError.REQUIRED_OPTION_GROUP_MISSING, showErrorDialog = true)
-                        }
+                }
+
+                is KoinStoreException.MaxSelectionExceededException -> {
+                    reduce {
+                        state.copy(error = CartError.MAX_SELECTION_EXCEEDED, showErrorDialog = true)
                     }
-                    is KoinStoreException.MaxSelectionExceededException -> {
-                        reduce {
-                            state.copy(error = CartError.MAX_SELECTION_EXCEEDED, showErrorDialog = true)
-                        }
+                }
+
+                is KoinStoreException.InvalidMenuInShopException -> {
+                    reduce {
+                        state.copy(error = CartError.INVALID_MENU_IN_SHOP, showErrorDialog = true)
                     }
-                    is KoinStoreException.InvalidMenuInShopException -> {
-                        reduce {
-                            state.copy(error = CartError.INVALID_MENU_IN_SHOP, showErrorDialog = true)
-                        }
-                    }
-                    is KoinStoreException.ShopClosedException -> {
-                        reduce {
-                            state.copy(error = CartError.SHOP_CLOSED, showErrorDialog = true)
-                        }
+                }
+
+                is KoinStoreException.ShopClosedException -> {
+                    reduce {
+                        state.copy(error = CartError.SHOP_CLOSED, showErrorDialog = true)
                     }
                 }
             }

@@ -90,38 +90,36 @@ class CartEditViewModel @Inject constructor(
             }
             postSideEffect(CartEditSideEffect.CartItemUpdated)
         }.onFailure { exception ->
-            intent {
-                reduce {
-                    state.copy(isLoading = false)
+            reduce {
+                state.copy(isLoading = false)
+            }
+            when (exception) {
+                is KoinStoreException.RequiredOptionGroupMissingException -> {
+                    reduce {
+                        state.copy(error = CartError.REQUIRED_OPTION_GROUP_MISSING, showErrorDialog = true)
+                    }
                 }
-                when (exception) {
-                    is KoinStoreException.RequiredOptionGroupMissingException -> {
-                        reduce {
-                            state.copy(error = CartError.REQUIRED_OPTION_GROUP_MISSING, showErrorDialog = true)
-                        }
-                    }
 
-                    is KoinStoreException.MinimumSelectionNotMetException -> {
-                        reduce {
-                            state.copy(error = CartError.MIN_SELECTION_NOT_MET, showErrorDialog = true)
-                        }
+                is KoinStoreException.MinimumSelectionNotMetException -> {
+                    reduce {
+                        state.copy(error = CartError.MIN_SELECTION_NOT_MET, showErrorDialog = true)
                     }
+                }
 
-                    is KoinStoreException.MaxSelectionExceededException -> {
-                        reduce {
-                            state.copy(error = CartError.MAX_SELECTION_EXCEEDED, showErrorDialog = true)
-                        }
+                is KoinStoreException.MaxSelectionExceededException -> {
+                    reduce {
+                        state.copy(error = CartError.MAX_SELECTION_EXCEEDED, showErrorDialog = true)
                     }
+                }
 
-                    is KoinStoreException.InvalidMenuInShopException -> {
-                        reduce {
-                            state.copy(error = CartError.INVALID_MENU_IN_SHOP, showErrorDialog = true)
-                        }
+                is KoinStoreException.InvalidMenuInShopException -> {
+                    reduce {
+                        state.copy(error = CartError.INVALID_MENU_IN_SHOP, showErrorDialog = true)
                     }
+                }
 
-                    else -> {
-                        postSideEffect(CartEditSideEffect.UnknownError)
-                    }
+                else -> {
+                    postSideEffect(CartEditSideEffect.UnknownError)
                 }
             }
         }
