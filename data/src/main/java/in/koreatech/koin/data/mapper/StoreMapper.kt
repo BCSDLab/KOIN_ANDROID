@@ -655,7 +655,8 @@ fun CartAdd.toCartAddRequest() = CartAddRequest(
             optionGroupId = option.optionGroupId,
             optionId = option.optionId
         )
-    }
+    },
+    quantity = quantity
 )
 
 fun CartResponse.toCart() = Cart(
