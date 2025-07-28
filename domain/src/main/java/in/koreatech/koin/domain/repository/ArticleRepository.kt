@@ -68,6 +68,12 @@ interface ArticleRepository {
         type: String?
     ): Flow<ArticleLostAndFoundPagination>
 
+    fun fetchSearchedLostAndFoundArticles(
+        query: String,
+        page: Int,
+        limit: Int
+    ): Flow<ArticleLostAndFoundPagination>
+
     fun fetchArticleLostAndFound(articleId: Int): Flow<ArticleLostAndFound>
 
     suspend fun uploadArticleLostAndFound(articleLostAndFoundList: List<ArticleLostAndFoundUpload>): Result<ArticleLostAndFound>

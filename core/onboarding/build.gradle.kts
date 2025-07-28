@@ -18,9 +18,9 @@ android {
 dependencies {
     implementation(project(":domain"))
 
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
-    implementation(platform(libs.compose.bom))
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose.m3)
     implementation(libs.timber)
     implementation(libs.balloon)

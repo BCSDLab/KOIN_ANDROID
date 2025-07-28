@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -56,7 +57,9 @@ class KoinNavigationDrawerViewModel @Inject constructor(
     fun getUnreadMessageCount() = viewModelScope.launch {
         if (userInfoFlow.value == User.Anonymous) return@launch
         var tempUnReadMessageCount = 0
-        getChatListUseCase().collectLatest { messages ->
+        getChatListUseCase().catch {
+            Timber.e("Failed to get chat list: ${it.message}")
+        }.collectLatest { messages ->
             messages.forEach { message ->
                 tempUnReadMessageCount += message.unReadMessageCount
             }

@@ -1,0 +1,82 @@
+name: "Auto PR Label Adder"
+on:
+  pull_request:
+    types: [opened, edited]
+
+jobs:
+  auto_pr_label_adder:
+    if: github.base_ref != 'production' || !startsWith(github.head_ref, 'release/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Team and Job From PR
+        id: check_need_label
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+
+          NO_VALUE="no value"
+          
+          declare -A TEAM_MAP
+
+          # Team 별 REGEX
+          CAMPUS_REGEX="\[[cC][aA][mM][pP][uU][sS]\]"
+          BUSINESS_REGEX="\[[bB][uU][sS][iI][nN][eE][sS][sS]\]"
+          USER_REGEX="\[[uU][sS][eE][rR]\]"
+          KOIN_PROJECT_REGEX="\[[kK][oO][iI][nN][[:space:]]?[pP][rR][oO][jJ][eE][cC][tT]\]"
+
+          # Team 별 TAG
+          CAMPUS_TAG="campus"
+          BUSINESS_TAG="business"
+          USER_TAG="user"
+          KOIN_PROJECT_TAG="koin project"
+
+          # Team 별 REGEX, TAG 연관 배열
+          TEAM_MAP["$CAMPUS_REGEX"]="$CAMPUS_TAG"
+          TEAM_MAP["$BUSINESS_REGEX"]="$BUSINESS_TAG"
+          TEAM_MAP["$USER_REGEX"]="$USER_TAG"
+          TEAM_MAP["$KOIN_PROJECT_REGEX"]="$KOIN_PROJECT_TAG"
+
+          # 정규식 검사
+          check_by_regex() {
+            local string=$1
+            local regex=$2
+            [[ "$string" =~ $regex ]]
+            return $?
+          }
+
+          # 팀 순차 검색
+          team_check() {
+            local title=$1
+            for regex in "${!TEAM_MAP[@]}"; do
+              if check_by_regex "$title" "$regex"; then
+                echo "${TEAM_MAP[$regex]}"
+                return 0
+              fi
+            done
+            echo "$NO_VALUE"
+            return 0
+          }
+
+          # Team 검사, 결과 저장
+          TEAM_RESULT=$(team_check "$PR_TITLE")
+          echo "team=$TEAM_RESULT" >> $GITHUB_OUTPUT
+
+      - name: Check Error
+        run: |
+          NO_VALUE="no value"
+          TEAM_LABEL="${{ steps.check_need_label.outputs.team }}"
+          if [[ "$TEAM_LABEL" == "$NO_VALUE" ]]; then
+            echo "No Team code like \"[Campus]\""
+            exit 1
+          fi
+
+      - name: Add Label
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const team_label = '${{ steps.check_need_label.outputs.team }}';
+            github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: [team_label]
+            });

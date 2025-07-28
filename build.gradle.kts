@@ -7,8 +7,8 @@ buildscript {
     }
 
     extra.apply {
-        set("versionName", "4.4.0")
-        set("versionCode", 40400)
+        set("versionName", "4.5.2")
+        set("versionCode", 40502)
         // 코인 버전 관리
 
         set("versionBusinessName", "1.0.1")
@@ -19,7 +19,7 @@ buildscript {
     dependencies {
         classpath(libs.android.gradle.tool)
         classpath(libs.kotlin.gradle)
-        classpath(libs.android.gradle.crashlytics)
+        classpath(libs.firebase.crashlytics.gradle)
         classpath(libs.firebase.appdistribution.gradle)
         classpath(libs.oss.licenses.plugin)
         classpath(libs.hilt.gradle.plugin)

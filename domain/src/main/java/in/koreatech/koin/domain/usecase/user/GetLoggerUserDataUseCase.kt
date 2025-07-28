@@ -44,4 +44,20 @@ private fun User.toLoggerUserData(): LoggerUserData? =
                 major = major ?: ""
             )
         }
+
+        is User.General -> {
+            val id_prefix = "anonymous"
+            val id_postfix = id
+
+            LoggerUserData(
+                userId = "${id_prefix}_${id_postfix}",
+                gender =
+                when (gender) {
+                    is Gender.Man -> "0"
+                    is Gender.Woman -> "1"
+                    is Gender.Unknown -> ""
+                },
+                major = ""
+            )
+        }
     }

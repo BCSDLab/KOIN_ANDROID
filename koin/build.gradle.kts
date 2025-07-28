@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -52,7 +53,8 @@ android {
                 "KAKAO_NATIVE_APP_KEY",
                 "String.valueOf(\"${localProperties["kakao_native_app_key"]}\")"
             )
-            firebaseCrashlytics {
+            buildConfigField("String", "OKHTTP_VERSION", "\"${libs.versions.okhttp.get()}\"")
+            configure<CrashlyticsExtension> {
                 mappingFileUploadEnabled = false
             }
         }
@@ -73,6 +75,7 @@ android {
                 "KAKAO_NATIVE_APP_KEY",
                 "String.valueOf(\"${localProperties["kakao_native_app_key"]}\")"
             )
+            buildConfigField("String", "OKHTTP_VERSION", "\"${libs.versions.okhttp.get()}\"")
             firebaseAppDistribution {
                 artifactType = "AAB"
                 releaseNotes = "${rootProject.extra["versionName"]} release"
@@ -107,6 +110,8 @@ dependencies {
     implementation(project(":feature:lostandfound"))
     implementation(project(":feature:chat"))
     implementation(project(":feature:banner"))
+    implementation(project(":feature:user"))
+    implementation(project(":feature:club"))
 
     implementation(libs.guava)
 
@@ -116,35 +121,37 @@ dependencies {
     ksp(libs.glide.ksp)
 
     // Dependency - naver api
-    implementation(libs.map.sdk)
+    implementation(libs.naver.map.sdk)
 
     // Dependency -google play core
-    implementation(libs.inApp.update)
-    implementation(libs.inApp.update.ktx)
-    implementation(libs.feature.delivery.ktx)
+    implementation(libs.play.app.update)
+    implementation(libs.play.app.update.ktx)
+    implementation(libs.play.feature.delivery.ktx)
 
     implementation(libs.colorpicker)
     implementation(libs.photoview)
 
     implementation(libs.markerman.roundedImageView)
     implementation(libs.powerSpinner)
-    implementation(libs.viewpager2)
+    implementation(libs.androidx.viewpager2)
 
     implementation(libs.kakao.share)
     implementation(libs.lottie)
-    implementation(libs.dataStore)
+    implementation(libs.androidx.datastore)
 
-    implementation(libs.nav.fragment.ktx)
-    implementation(libs.nav.ui.ktx)
-    implementation(libs.nav.dynamic.features.fragment)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.navigation.dynamic.features.fragment)
 
-    implementation(libs.feature.delivery.ktx)
+    implementation(libs.play.feature.delivery.ktx)
 
     implementation(libs.timber)
 
-    implementation(libs.compose.lifecycle)
-    implementation(libs.kotlinxCollectionsImmutable)
+    implementation(libs.firebase.crashlytics)
 
-    implementation(platform(libs.compose.bom))
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.kotlinx.collections.immutable)
+
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose.m3)
 }

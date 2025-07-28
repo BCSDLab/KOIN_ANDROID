@@ -18,7 +18,7 @@ class SendAuthCodeUseCase @Inject constructor(
                 else ->
                     ownerChangePasswordRepository.requestEmailVerification(
                         email = email
-                    ).map { ChangePasswordContinuationState.SendAuthCode }
+                    ).map { ChangePasswordContinuationState.AuthCodeSent }
             }
         } catch (t: CancellationException) {
             throw t

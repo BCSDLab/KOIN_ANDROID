@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.koin.library)
     alias(libs.plugins.koin.hilt)
     alias(libs.plugins.koin.library.orbit)
+    alias(libs.plugins.koin.library.paparazzi)
+    alias(libs.plugins.paparazzi)
 }
 
 android {
@@ -22,21 +24,21 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:analytics"))
 
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.compose.lifecycle)
+    implementation(libs.androidx.lifecycle.runtime.compose)
 
-    implementation(platform(libs.compose.bom))
-    implementation(libs.compose.material2)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.material2)
     implementation(libs.bundles.compose.m3)
-    implementation(libs.kotlinxCollectionsImmutable)
+    implementation(libs.kotlinx.collections.immutable)
 
     implementation(libs.timber)
 
-    testImplementation(libs.coroutines.test)
+    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
     debugImplementation(libs.bundles.compose.debug.test)
-    androidTestImplementation(libs.compose.ui.test.manifest)
-    androidTestImplementation(libs.coroutines.test)
+    androidTestImplementation(libs.androidx.compose.ui.test.manifest)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
 }

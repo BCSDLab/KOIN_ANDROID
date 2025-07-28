@@ -1,0 +1,544 @@
+package `in`.koreatech.koin.feature.club.ui.clubdetail
+
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.domain.error.club.KoinClubException
+import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.usecase.club.CancelClubLikeUseCase
+import `in`.koreatech.koin.domain.usecase.club.DeleteClubEventUseCase
+import `in`.koreatech.koin.domain.usecase.club.DeleteClubQnaUseCase
+import `in`.koreatech.koin.domain.usecase.club.DeleteClubRecruitmentUseCase
+import `in`.koreatech.koin.domain.usecase.club.GetClubDetailsUseCase
+import `in`.koreatech.koin.domain.usecase.club.GetClubEventsUseCase
+import `in`.koreatech.koin.domain.usecase.club.GetClubQnasUseCase
+import `in`.koreatech.koin.domain.usecase.club.GetClubRecruitmentUseCase
+import `in`.koreatech.koin.domain.usecase.club.PostClubQnaUseCase
+import `in`.koreatech.koin.domain.usecase.club.SetClubEmpowermentUseCase
+import `in`.koreatech.koin.domain.usecase.club.SetClubLikeUseCase
+import `in`.koreatech.koin.domain.usecase.club.SubscribeClubEventUseCase
+import `in`.koreatech.koin.domain.usecase.club.SubscribeClubRecruitmentUseCase
+import `in`.koreatech.koin.domain.usecase.club.UnsubscribeClubEventUseCase
+import `in`.koreatech.koin.domain.usecase.club.UnsubscribeClubRecruitmentUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
+import `in`.koreatech.koin.feature.club.R
+import `in`.koreatech.koin.feature.club.model.toParcelizeClubDetails
+import `in`.koreatech.koin.feature.club.model.toParcelizeClubEvent
+import `in`.koreatech.koin.feature.club.model.toParcelizeClubQnasInfo
+import `in`.koreatech.koin.feature.club.model.toParcelizeClubRecruitment
+import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
+import `in`.koreatech.koin.feature.club.type.EventSearchType
+import javax.inject.Inject
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import okhttp3.internal.immutableListOf
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
+
+@HiltViewModel
+class ClubDetailViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val getUserStatusUseCase: GetUserStatusUseCase,
+    private val getClubDetailsUseCase: GetClubDetailsUseCase,
+    private val getClubQnasUseCase: GetClubQnasUseCase,
+    private val deleteClubQnaUseCase: DeleteClubQnaUseCase,
+    private val cancelClubLikeUseCase: CancelClubLikeUseCase,
+    private val postClubQnaUseCase: PostClubQnaUseCase,
+    private val setClubEmpowermentUseCase: SetClubEmpowermentUseCase,
+    private val setClubLikeUseCase: SetClubLikeUseCase,
+    private val getClubRecruitmentUseCase: GetClubRecruitmentUseCase,
+    private val deleteClubRecruitmentUseCase: DeleteClubRecruitmentUseCase,
+    private val getClubEventsUseCase: GetClubEventsUseCase,
+    private val deleteClubEventUseCase: DeleteClubEventUseCase,
+    private val subscribeClubRecruitmentUseCase: SubscribeClubRecruitmentUseCase,
+    private val unsubscribeClubRecruitmentUseCase: UnsubscribeClubRecruitmentUseCase,
+    private val subscribeClubEventUseCase: SubscribeClubEventUseCase,
+    private val unsubscribeClubEventUseCase: UnsubscribeClubEventUseCase
+) : ViewModel(), ContainerHost<ClubDetailState, ClubDetailSideEffect> {
+    override val container = container<ClubDetailState, ClubDetailSideEffect>(
+        initialState = ClubDetailState(),
+        savedStateHandle = savedStateHandle
+    ) {
+        val clubId = savedStateHandle.get<Int>(CLUB_ID)
+        checkNotNull(clubId)
+        intent {
+            reduce {
+                state.copy(
+                    clubId = clubId
+                )
+            }
+        }
+    }
+
+    private val userInfoFlow: StateFlow<User> =
+        getUserStatusUseCase()
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), User.Anonymous)
+
+    init {
+        getUserIdCollect()
+    }
+
+    fun fetchAllData() = intent {
+        if (state.isLoading) return@intent
+        loadClubDetails()
+        loadClubQnas()
+        loadClubRecruitment()
+        loadClubEvents()
+    }
+
+    private fun getUserIdCollect() = intent {
+        userInfoFlow.collect { user ->
+            when (user) {
+                is User.Anonymous -> {
+                    reduce { state.copy(userId = null, userLoginId = null) }
+                }
+                is User.Student -> {
+                    reduce { state.copy(userId = user.id, userLoginId = user.email?.removeSuffix("@koreatech.ac.kr")) }
+                }
+
+                is User.General -> TODO("Handle general user later")
+            }
+        }
+    }
+
+    private fun loadClubDetails() = viewModelScope.launch {
+        intent {
+            reduce {
+                state.copy(isLoading = true, showDetailProgressBar = true)
+            }
+            getClubDetailsUseCase(state.clubId).onSuccess {
+                reduce {
+                    state.copy(
+                        clubDetails = it.toParcelizeClubDetails(),
+                        isLoading = false,
+                        showDetailProgressBar = false
+                    )
+                }
+            }.onFailure { e ->
+                reduce { state.copy(isLoading = false, showDetailProgressBar = false) }
+                when (e) {
+                    is KoinClubException.ClubNotFoundException -> {
+                        postSideEffect(ClubDetailSideEffect.ClubNotFoundError)
+                    }
+                    else -> throw e
+                }
+            }
+        }
+    }
+
+    private fun loadClubQnas() = viewModelScope.launch {
+        intent {
+            reduce {
+                state.copy(isLoading = true, showQnasProgressBar = true)
+            }
+            getClubQnasUseCase(state.clubId).onSuccess {
+                reduce {
+                    state.copy(
+                        clubQnasInfo = it.toParcelizeClubQnasInfo(),
+                        isLoading = false,
+                        showQnasProgressBar = false
+                    )
+                }
+            }
+        }
+    }
+
+    private fun loadClubRecruitment() = intent {
+        reduce { state.copy(isLoading = true, showRecruitProgressBar = true) }
+        getClubRecruitmentUseCase(state.clubId).onSuccess {
+            reduce {
+                state.copy(
+                    clubRecruitment = it.toParcelizeClubRecruitment(),
+                    isLoading = false,
+                    showRecruitProgressBar = false
+                )
+            }
+        }.onFailure { e ->
+            reduce { state.copy(isLoading = false, showRecruitProgressBar = false) }
+            when (e) {
+                is KoinClubException.WrongInputDataException -> {
+                    postSideEffect(ClubDetailSideEffect.LoadClubRecruitmentError)
+                }
+                is KoinClubException.ClubRecruitNotFoundException -> {
+                    reduce { state.copy(clubRecruitment = null) }
+                }
+                else -> throw e
+            }
+        }
+    }
+
+    private fun loadClubEvents() = intent {
+        reduce { state.copy(isLoading = true, showEventsProgressBar = true) }
+        getClubEventsUseCase(state.clubId, state.clubEventSearchType.value).onSuccess {
+            reduce {
+                state.copy(
+                    clubEvents = it.map { it.toParcelizeClubEvent() },
+                    isLoading = false,
+                    showEventsProgressBar = false,
+                    clubEventLoaded = true
+                )
+            }
+        }.onFailure { e ->
+            reduce { state.copy(isLoading = false, showEventsProgressBar = false) }
+            when (e) {
+                is KoinClubException.WrongInputDataException -> {
+                    postSideEffect(ClubDetailSideEffect.LoadClubRecruitmentError)
+                }
+                is KoinClubException.ClubEventNotFoundException -> {
+                    reduce { state.copy(clubEvents = immutableListOf()) }
+                }
+                else -> throw e
+            }
+        }
+    }
+
+    fun deleteClubEvent(eventId: Int) = intent {
+        reduce { state.copy(isLoading = true, showEventsProgressBar = true) }
+        deleteClubEventUseCase(state.clubId, eventId).onSuccess {
+            reduce {
+                state.copy(
+                    isLoading = false,
+                    showEventsProgressBar = false,
+                    selectedEventIndex = -1,
+                    clubEventSelected = false
+                )
+            }
+            loadClubEvents()
+        }.onFailure {
+            reduce { state.copy(isLoading = false, showEventsProgressBar = false) }
+            postSideEffect(ClubDetailSideEffect.DeleteClubEventError)
+        }
+    }
+
+    fun selectEvent(index: Int) = intent {
+        reduce { state.copy(selectedEventIndex = index, clubEventSelected = true) }
+    }
+
+    fun deselectEvent() = intent {
+        reduce { state.copy(selectedEventIndex = -1, clubEventSelected = false) }
+    }
+
+    fun deleteRecruitment() = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true, showRecruitProgressBar = true) }
+        deleteClubRecruitmentUseCase(state.clubId).onSuccess {
+            reduce { state.copy(isLoading = false, showRecruitProgressBar = false) }
+            loadClubRecruitment()
+        }.onFailure { e ->
+            reduce { state.copy(isLoading = false, showRecruitProgressBar = false) }
+            when (e) {
+                is KoinClubException.WrongInputDataException,
+                is KoinClubException.ClubRecruitNotFoundException -> {
+                    postSideEffect(ClubDetailSideEffect.DeleteClubRecruitmentError)
+                    reduce { state.copy(clubRecruitment = null) }
+                }
+                else -> {
+                    postSideEffect(ClubDetailSideEffect.UnknownError)
+                    reduce { state.copy(clubRecruitment = null) }
+                }
+            }
+        }
+    }
+
+    fun showRecruitDeleteDialog() = intent {
+        reduce { state.copy(showRecruitDeleteDialog = true) }
+    }
+
+    fun dismissRecruitDeleteDialog() = intent {
+        reduce { state.copy(showRecruitDeleteDialog = false) }
+    }
+
+    fun showAddQnaDialog() = intent {
+        reduce { state.copy(showAddQnaDialog = true) }
+    }
+
+    fun dismissAddQnaDialog() = intent {
+        reduce { state.copy(showAddQnaDialog = false, textFieldErrorMessageResId = null) }
+    }
+
+    fun addClubQna(
+        parentId: Int?,
+        content: String
+    ) = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true) }
+        if (content.isBlank()) {
+            reduce {
+                state.copy(
+                    isLoading = false,
+                    textFieldErrorMessageResId = R.string.detail_error_empty_text_field
+                )
+            }
+            return@intent
+        }
+        state.clubDetails?.let {
+            postClubQnaUseCase(
+                clubId = state.clubId,
+                parentId = parentId,
+                content = content
+            ).onFailure { e ->
+                when (e) {
+                    is KoinClubException.UnauthorizedException -> {
+                        postSideEffect(ClubDetailSideEffect.UnauthorizedError)
+                    }
+                    is KoinClubException.ClubNotFoundException -> {
+                        postSideEffect(ClubDetailSideEffect.ClubNotFoundError)
+                    }
+                    is KoinClubException.NotClubManagerException -> {
+                        postSideEffect(ClubDetailSideEffect.NotClubManagerError)
+                    }
+                    else -> {
+                        postSideEffect(ClubDetailSideEffect.UnknownError)
+                    }
+                }
+            }
+        }
+        loadClubQnas()
+        dismissAddQnaDialog()
+    }
+
+    fun addClubQnaAnswer(
+        parentId: Int,
+        content: String
+    ) = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true) }
+        state.clubDetails?.let {
+            postClubQnaUseCase(
+                clubId = state.clubId,
+                parentId = parentId,
+                content = content
+            ).onFailure { e ->
+                when (e) {
+                    is KoinClubException.UnauthorizedException -> {
+                        postSideEffect(ClubDetailSideEffect.UnauthorizedError)
+                    }
+                    is KoinClubException.ClubNotFoundException -> {
+                        postSideEffect(ClubDetailSideEffect.ClubNotFoundError)
+                    }
+                    is KoinClubException.NotClubManagerException -> {
+                        postSideEffect(ClubDetailSideEffect.NotClubManagerError)
+                    }
+                    else -> {
+                        postSideEffect(ClubDetailSideEffect.UnknownError)
+                    }
+                }
+            }
+        }
+        loadClubQnas()
+    }
+
+    fun deleteClubQna(
+        qnaId: Int
+    ) = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true) }
+        state.clubDetails?.let {
+            deleteClubQnaUseCase(
+                clubId = state.clubId,
+                qnaId = qnaId
+            ).onFailure { e ->
+                when (e) {
+                    is KoinClubException.QnaNotFoundException -> {
+                        postSideEffect(ClubDetailSideEffect.QnaNotFoundError)
+                    }
+                    is KoinClubException.DeletePermissionDeniedException -> {
+                        postSideEffect(ClubDetailSideEffect.DeletePermissionDeniedError)
+                    }
+                    else -> {
+                        postSideEffect(ClubDetailSideEffect.UnknownError)
+                    }
+                }
+            }
+        }
+        loadClubQnas()
+    }
+
+    fun showLoginDialog() = intent {
+        reduce { state.copy(showLoginDialog = true) }
+    }
+
+    fun dismissLoginDialog() = intent {
+        reduce { state.copy(showLoginDialog = false) }
+    }
+
+    fun changeClubLike() = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true) }
+        state.clubDetails?.let {
+            if (it.isLiked) {
+                cancelClubLikeUseCase(clubId = state.clubId).onSuccess { _ ->
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.Club.CLUB_INTRODUCTION_LIKE_CANCEL,
+                        it.name
+                    )
+                }.onFailure { e ->
+                    when (e) {
+                        is KoinClubException.UnauthorizedException -> {
+                            postSideEffect(ClubDetailSideEffect.UnauthorizedError)
+                        }
+                        is KoinClubException.AlreadyNotLikedException -> {
+                            postSideEffect(ClubDetailSideEffect.AlreadyNotLikedError)
+                        }
+                        else -> {
+                            postSideEffect(ClubDetailSideEffect.UnknownError)
+                        }
+                    }
+                }
+            } else {
+                setClubLikeUseCase(clubId = state.clubId).onSuccess { _ ->
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.Club.CLUB_INTRODUCTION_LIKE,
+                        it.name
+                    )
+                }.onFailure { e ->
+                    when (e) {
+                        is KoinClubException.UnauthorizedException -> {
+                            postSideEffect(ClubDetailSideEffect.UnauthorizedError)
+                        }
+                        is KoinClubException.AlreadyLikedException -> {
+                            postSideEffect(ClubDetailSideEffect.AlreadyLikedError)
+                        }
+                        else -> {
+                            postSideEffect(ClubDetailSideEffect.UnknownError)
+                        }
+                    }
+                }
+            }
+        }
+        loadClubDetails()
+        dismissLoginDialog()
+    }
+
+    fun changeClubRecruitmentSubscribe() = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true) }
+        state.clubDetails?.let {
+            if (it.isRecruitSubscribed) {
+                unsubscribeClubRecruitmentUseCase(clubId = state.clubId).onSuccess {
+                }.onFailure {
+                    postSideEffect(ClubDetailSideEffect.UnknownError)
+                }
+            } else {
+                subscribeClubRecruitmentUseCase(clubId = state.clubId).onSuccess {
+                }.onFailure {
+                    postSideEffect(ClubDetailSideEffect.UnknownError)
+                }
+            }
+        }
+        loadClubDetails()
+        dismissLoginDialog()
+    }
+
+    fun changeClubEventSubscribe() = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true) }
+        state.clubEvents[state.selectedEventIndex].let {
+            if (it.isSubscribed) {
+                unsubscribeClubEventUseCase(clubId = state.clubId, eventId = it.id).onSuccess {
+                }.onFailure {
+                    postSideEffect(ClubDetailSideEffect.UnknownError)
+                }
+            } else {
+                subscribeClubEventUseCase(clubId = state.clubId, eventId = it.id).onSuccess {
+                }.onFailure {
+                    postSideEffect(ClubDetailSideEffect.UnknownError)
+                }
+            }
+        }
+        loadClubEvents()
+        dismissLoginDialog()
+    }
+
+    fun updateEventSubscribeDialog(bool: Boolean) = blockingIntent {
+        reduce { state.copy(showEventSubscribeDialog = bool) }
+    }
+
+    fun updateRecruitSubscribeDialog(bool: Boolean) = blockingIntent {
+        reduce { state.copy(showRecruitSubscribeDialog = bool) }
+    }
+
+    fun updateEventsDropdownExpanded(bool: Boolean) = blockingIntent {
+        reduce { state.copy(isEventsDropdownExpanded = bool) }
+    }
+
+    fun updateEventsDeleteDialog(bool: Boolean) = blockingIntent {
+        reduce { state.copy(showEventDeleteDialog = bool) }
+    }
+
+    fun showEmpowermentDialog() = intent {
+        reduce { state.copy(showEmpowermentDialog = true) }
+    }
+
+    fun dismissEmpowermentDialog() = intent {
+        reduce { state.copy(showEmpowermentDialog = false, textFieldErrorMessageResId = null) }
+    }
+
+    fun setManagerEmpowerment(newUserId: String) = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true) }
+        if (newUserId.isEmpty()) {
+            reduce { state.copy(isLoading = false, textFieldErrorMessageResId = R.string.detail_error_empty_text_field) }
+            return@intent
+        }
+        setClubEmpowermentUseCase(
+            clubId = state.clubId,
+            changedManagerId = newUserId
+        ).onSuccess {
+            EventLogger.logCampusClickEvent(
+                AnalyticsConstant.Label.Club.CLUB_DELEGATION_AUTHORITY_CONFIRM,
+                "권한위임"
+            )
+        }.onFailure { e ->
+            reduce { state.copy(isLoading = false) }
+            when (e) {
+                is KoinClubException.AlreadyManagerException -> {
+                    reduce { state.copy(textFieldErrorMessageResId = R.string.detail_error_already_manager) }
+                }
+                is KoinClubException.UnauthorizedException -> {
+                    postSideEffect(ClubDetailSideEffect.UnauthorizedError)
+                }
+                is KoinClubException.NotClubManagerException -> {
+                    postSideEffect(ClubDetailSideEffect.NotClubManagerError)
+                }
+                is KoinClubException.LoginIdNotFoundException -> {
+                    reduce { state.copy(textFieldErrorMessageResId = R.string.detail_error_user_id_not_found) }
+                }
+                is KoinClubException.ClubNotFoundException -> {
+                    postSideEffect(ClubDetailSideEffect.ClubNotFoundError)
+                }
+            }
+            return@intent
+        }
+        loadClubDetails()
+        loadClubQnas()
+        dismissEmpowermentDialog()
+        postSideEffect(ClubDetailSideEffect.ShowEmpowermentSnackBar)
+    }
+
+    fun openUrl(url: String) = intent {
+        postSideEffect(ClubDetailSideEffect.OpenUrl(url))
+    }
+
+    fun showImageDialog(url: String) = intent {
+        reduce { state.copy(showImageDialog = true, imageDialogUrl = url) }
+    }
+
+    fun dismissImageDialog() = intent {
+        reduce { state.copy(showImageDialog = false) }
+    }
+
+    fun updateClubEventSearchType(eventSearchType: EventSearchType) = blockingIntent {
+        reduce { state.copy(clubEventSearchType = eventSearchType) }
+        loadClubEvents()
+    }
+}

@@ -6,8 +6,8 @@ data class PasswordAuthenticationState(
     val authenticationBtnIsClicked: Boolean = false,
     val phoneNumber: String = "",
     val authenticationCode: String = "",
-    val accountContinuationState: ChangePasswordContinuationState = ChangePasswordContinuationState.RequestedSmsValidation,
-    val smsAuthContinuationState: ChangePasswordContinuationState = ChangePasswordContinuationState.RequestedSmsValidation,
+    val accountContinuationState: ChangePasswordContinuationState = ChangePasswordContinuationState.SmsValidationRequested,
+    val smsAuthContinuationState: ChangePasswordContinuationState = ChangePasswordContinuationState.SmsValidationRequested,
     val sendSmsError: Throwable? = null,
     val authError: Throwable? = null
 )
