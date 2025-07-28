@@ -66,7 +66,7 @@ fun KoinCartPriceItem(
             }
 
             Box(
-                modifier = modifier
+                modifier = Modifier
                     .border(1.dp, RebrandKoinTheme.colors.primary500, RoundedCornerShape(24.dp))
                     .clip(RoundedCornerShape(24.dp))
                     .padding(vertical = 2.dp, horizontal = 8.dp)
