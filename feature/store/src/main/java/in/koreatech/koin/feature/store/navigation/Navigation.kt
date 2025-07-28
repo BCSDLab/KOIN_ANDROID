@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.store.navigation
 
+import ShopOriginInfoScreen
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -159,6 +160,7 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
         )
     ) {
         val storeId = it.arguments?.getInt("storeId") ?: 0
+        val isOrderableShop = it.arguments?.getBoolean("isOrderableShop") ?: true
         StoreDetailScreen(
             navigateToBack = {
                 if (!navController.navigateUp()) {
@@ -169,7 +171,7 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
                 navController.navigate(StoreNavType.StoreCart.route)
             },
             navigateToDetailInfo = {
-                navController.navigate(StoreDetailNavType.StoreDetailInfo.route)
+                navController.navigate("${StoreDetailNavType.StoreDetailInfo.route}/$storeId/$isOrderableShop")
             },
             navigateToReview = {
                 // Navigate to review screen if implemented
@@ -181,8 +183,27 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
     }
 
     composable(
-        route = StoreDetailNavType.StoreDetailInfo.route
+        route = "${StoreDetailNavType.StoreDetailInfo.route}/{storeId}/{isOrderableShop}",
+        arguments = listOf(
+            navArgument("storeId") {
+                type = NavType.IntType
+            },
+            navArgument("isOrderableShop") {
+                type = NavType.BoolType
+                defaultValue = true
+            }
+        )
     ) {
+        ShopOriginInfoScreen(
+            onBackClick = {
+                if (!navController.navigateUp()) {
+                    finish()
+                }
+            },
+            navigateToShoppingCart = {
+                navController.navigate(StoreNavType.StoreCart.route)
+            },
+        )
     }
 
     composable(
