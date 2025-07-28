@@ -47,8 +47,6 @@ import `in`.koreatech.koin.feature.store.component.MenuCategoryChips
 import `in`.koreatech.koin.feature.store.component.menuListSection
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
 import `in`.koreatech.koin.feature.store.state.collapseToolbar
-import `in`.koreatech.koin.feature.store.state.currentToolbarHeightDp
-import `in`.koreatech.koin.feature.store.state.progress
 import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
 import kotlin.math.roundToInt
@@ -71,7 +69,7 @@ fun StoreDetailScreen(
 
     val rememberState = rememberCollapsingToolbarState()
     val progress = rememberState.progress()
-    val overlayAlpha = (progress).coerceIn(0f, 1f)
+    val overlayAlpha = (progress.value).coerceIn(0f, 1f)
     val nestedScrollConnection = storeCollapsingToolbarConnection(
         listState = rememberState.listState,
         toolbarOffsetPx = rememberState.toolbarOffsetPx,
@@ -91,7 +89,7 @@ fun StoreDetailScreen(
                 .fillMaxSize()
                 .navigationBarsPadding()
                 .padding(
-                    top = currentToolbarHeightDp + CustomClosingToolbarScreenDefaults.windowInsets
+                    top = currentToolbarHeightDp.value + CustomClosingToolbarScreenDefaults.windowInsets
                         .asPaddingValues()
                         .calculateTopPadding()
                 ),

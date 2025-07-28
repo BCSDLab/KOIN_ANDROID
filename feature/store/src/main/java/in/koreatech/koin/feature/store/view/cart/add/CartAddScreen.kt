@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -49,8 +51,6 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.model.LocalShopMenuOptionGroup
 import `in`.koreatech.koin.feature.store.model.LocalShopPrice
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
-import `in`.koreatech.koin.feature.store.state.currentToolbarHeightDp
-import `in`.koreatech.koin.feature.store.state.progress
 import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
 import kotlin.math.roundToInt
 import org.orbitmvi.orbit.compose.collectAsState
@@ -72,8 +72,7 @@ fun CartAddScreen(
     val rememberState = rememberCollapsingToolbarState(
         toolbarMinHeight = 64.dp
     )
-    val progress = rememberState.progress()
-    val overlayAlpha = (progress).coerceIn(0f, 1f)
+    val overlayAlpha = rememberState.progress()
     val nestedScrollConnection = storeCollapsingToolbarConnection(
         listState = rememberState.listState,
         toolbarOffsetPx = rememberState.toolbarOffsetPx,
@@ -119,7 +118,7 @@ fun CartAddScreen(
                 onSelectedOptionGroup = viewModel::updateSelectedOptionGroup,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = currentToolbarHeightDp + CustomClosingToolbarScreenDefaults.windowInsets.asPaddingValues().calculateTopPadding())
+                    .padding(top = currentToolbarHeightDp.value + CustomClosingToolbarScreenDefaults.windowInsets.asPaddingValues().calculateTopPadding())
             )
 
             KoinStoreTopAppBar(
@@ -140,7 +139,7 @@ fun CartAddScreen(
                                 tint = lerp(
                                     RebrandKoinTheme.colors.neutral800,
                                     RebrandKoinTheme.colors.neutral0,
-                                    1f - overlayAlpha
+                                    1f - overlayAlpha.value
                                 )
                             )
                         }
@@ -167,9 +166,9 @@ fun CartAddScreen(
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = RebrandKoinTheme.colors.neutral0.copy(alpha = overlayAlpha),
-                    actionIconContentColor = lerp(RebrandKoinTheme.colors.neutral800, RebrandKoinTheme.colors.neutral0, 1f - overlayAlpha),
-                    titleContentColor = RebrandKoinTheme.colors.neutral800.copy(alpha = overlayAlpha)
+                    containerColor = RebrandKoinTheme.colors.neutral0.copy(alpha = overlayAlpha.value),
+                    actionIconContentColor = lerp(RebrandKoinTheme.colors.neutral800, RebrandKoinTheme.colors.neutral0, 1f - overlayAlpha.value),
+                    titleContentColor = RebrandKoinTheme.colors.neutral800.copy(alpha = overlayAlpha.value)
                 )
             )
 
@@ -187,7 +186,7 @@ fun CartAddScreen(
                 Image(
                     painter = rememberAsyncImagePainter(uiState.menuImageUrls.firstOrNull()),
                     contentDescription = null,
-                    alpha = 1 - overlayAlpha,
+                    alpha = 1 - overlayAlpha.value,
                     alignment = Alignment.Center,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -206,7 +205,7 @@ fun CartAddScreen(
                         text = uiState.menuName,
                         style = RebrandKoinTheme.typography.bold20.copy(
                             color = RebrandKoinTheme.colors.neutral800.copy(
-                                alpha = 1 - overlayAlpha
+                                alpha = 1 - overlayAlpha.value
                             )
                         )
                     )
@@ -215,7 +214,7 @@ fun CartAddScreen(
                         text = stringResource(R.string.price_with_won, uiState.prices.getOrNull(0)?.price ?: 0),
                         style = RebrandKoinTheme.typography.bold20.copy(
                             color = RebrandKoinTheme.colors.primary500.copy(
-                                alpha = 1 - overlayAlpha
+                                alpha = 1 - overlayAlpha.value
                             )
                         )
                     )
@@ -223,7 +222,7 @@ fun CartAddScreen(
                         text = uiState.menuDescription,
                         style = RebrandKoinTheme.typography.regular12.copy(
                             color = RebrandKoinTheme.colors.neutral500.copy(
-                                alpha = 1 - overlayAlpha
+                                alpha = 1 - overlayAlpha.value
                             )
                         )
                     )

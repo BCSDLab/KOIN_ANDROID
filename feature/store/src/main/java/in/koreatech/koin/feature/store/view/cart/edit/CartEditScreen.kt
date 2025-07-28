@@ -50,8 +50,6 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.model.LocalShopMenuOptionGroup
 import `in`.koreatech.koin.feature.store.model.LocalShopPrice
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
-import `in`.koreatech.koin.feature.store.state.currentToolbarHeightDp
-import `in`.koreatech.koin.feature.store.state.progress
 import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
 import kotlin.math.roundToInt
 import org.orbitmvi.orbit.compose.collectAsState
@@ -74,7 +72,7 @@ fun CartEditScreen(
         toolbarMinHeight = 64.dp
     )
     val progress = rememberState.progress()
-    val overlayAlpha = (progress).coerceIn(0f, 1f)
+    val overlayAlpha = (progress.value).coerceIn(0f, 1f)
     val nestedScrollConnection = storeCollapsingToolbarConnection(
         listState = rememberState.listState,
         toolbarOffsetPx = rememberState.toolbarOffsetPx,
@@ -120,7 +118,7 @@ fun CartEditScreen(
                 onSelectedOptionGroup = viewModel::updateSelectedOptionGroup,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = currentToolbarHeightDp + CustomClosingToolbarScreenDefaults.windowInsets.asPaddingValues().calculateTopPadding())
+                    .padding(top = currentToolbarHeightDp.value + CustomClosingToolbarScreenDefaults.windowInsets.asPaddingValues().calculateTopPadding())
             )
 
             KoinStoreTopAppBar(
