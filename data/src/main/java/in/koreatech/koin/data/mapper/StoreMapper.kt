@@ -6,6 +6,7 @@ import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
 import `in`.koreatech.koin.data.response.owner.OwnerGetStoreResponse
 import `in`.koreatech.koin.data.response.store.BenefitCategoryListResponse
 import `in`.koreatech.koin.data.response.store.CartItemEditResponse
+import `in`.koreatech.koin.data.response.store.CartItemsCountResponse
 import `in`.koreatech.koin.data.response.store.CartPaymentSummaryResponse
 import `in`.koreatech.koin.data.response.store.CartResponse
 import `in`.koreatech.koin.data.response.store.CartSummaryResponse
@@ -48,6 +49,7 @@ import `in`.koreatech.koin.domain.model.store.CartAdd
 import `in`.koreatech.koin.domain.model.store.CartItem
 import `in`.koreatech.koin.domain.model.store.CartItemEdit
 import `in`.koreatech.koin.domain.model.store.CartItemEdit.CartItemEditPrice
+import `in`.koreatech.koin.domain.model.store.CartItemsCount
 import `in`.koreatech.koin.domain.model.store.CartPaymentSummary
 import `in`.koreatech.koin.domain.model.store.CartSummary
 import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
@@ -739,4 +741,9 @@ fun CartItemEditResponse.toCartItemEdit() = CartItemEdit(
             }
         )
     }
+)
+
+fun CartItemsCountResponse.toCartItemsCount() = CartItemsCount(
+    itemTypeCount = itemTypeCount,
+    totalQuantity = totalQuantity
 )

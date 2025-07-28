@@ -6,6 +6,7 @@ import `in`.koreatech.koin.domain.model.store.Cart
 import `in`.koreatech.koin.domain.model.store.CartAdd
 import `in`.koreatech.koin.domain.model.store.CartItem
 import `in`.koreatech.koin.domain.model.store.CartItemEdit
+import `in`.koreatech.koin.domain.model.store.CartItemsCount
 import `in`.koreatech.koin.domain.model.store.CartPaymentSummary
 import `in`.koreatech.koin.domain.model.store.CartSummary
 import `in`.koreatech.koin.domain.model.store.OrderableShopSearchRelated
@@ -133,4 +134,6 @@ interface StoreRepository {
     suspend fun resetCart(): Result<Unit>
 
     suspend fun deleteCartItem(cartMenuItemId: Int): Result<Unit>
+
+    suspend fun getCartItemsCount(): Result<CartItemsCount>
 }
