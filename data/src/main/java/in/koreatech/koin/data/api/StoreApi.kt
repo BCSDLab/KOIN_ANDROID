@@ -99,6 +99,7 @@ interface StoreApi {
     suspend fun getOrderableShops(
         @Query("sorter") sorter: String?,
         @Query("filter") filter: List<String>?,
+        @Query("category_filter") categoryFilter: Int?,
         @Query("minimum_order_amount") minimumOrderAmount: Int?
     ): List<ShopResponse>
 

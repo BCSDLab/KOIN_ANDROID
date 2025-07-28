@@ -379,8 +379,6 @@ fun OwnerGetStoreResponse.toOwnerGetStore(): OwnerGetStore =
     )
 
 fun ShopResponse.toShop(): Shop {
-    val convertedOpenStatus = open.first { it.dayOfWeek == localDayOfWeekName }.toOpenStatus()
-
     return Shop(
         shopId = shopId,
         orderableShopId = orderableShopId,
@@ -393,7 +391,7 @@ fun ShopResponse.toShop(): Shop {
         reviewCount = reviewCount,
         minimumDeliveryTip = minimumDeliveryTip,
         maximumDeliveryTip = maximumDeliveryTip,
-        isOpen = convertedOpenStatus == OpenStatus.OPERATING,
+        isOpen = isOpen,
         categoryIds = categoryIds,
         images = images.map {
             Shop.ShopImageUrls(
@@ -401,20 +399,11 @@ fun ShopResponse.toShop(): Shop {
                 isThumbnail = it.isThumbnail
             )
         },
-        open = open.map {
-            Shop.OrderStoreShopsOpen(
-                dayOfWeek = DateFormatUtil.dayOfWeekToIndex(it.dayOfWeek),
-                closed = it.closed,
-                openTime = it.openTime,
-                closeTime = it.closeTime
-            )
-        },
-        openStatus = convertedOpenStatus
+        openStatus = OpenStatus.valueOf(openStatus)
     )
 }
 
 fun StoreItemResponse.toShop(): Shop {
-    val convertedOpenStatus = open?.firstOrNull { it.dayOfWeek == localDayOfWeekName }?.toOpenStatus() ?: OpenStatus.CLOSED
     return Shop(
         shopId = uid ?: 0,
         orderableShopId = 0, // Legacy store API does not have orderableShopId
@@ -427,7 +416,7 @@ fun StoreItemResponse.toShop(): Shop {
         reviewCount = reviewCount,
         minimumDeliveryTip = 0, // Legacy store API does not have minimumDeliveryTip
         maximumDeliveryTip = 0, // Legacy store API does not have maximumDeliveryTip
-        isOpen = convertedOpenStatus == OpenStatus.OPERATING,
+        isOpen = isOpen ?: false,
         categoryIds = categoryIds,
         images = images?.mapIndexed { index, s ->
             Shop.ShopImageUrls(
@@ -435,15 +424,11 @@ fun StoreItemResponse.toShop(): Shop {
                 isThumbnail = index == 0
             )
         } ?: emptyList(),
-        open = open?.map {
-            Shop.OrderStoreShopsOpen(
-                dayOfWeek = DateFormatUtil.dayOfWeekToIndex(it.dayOfWeek ?: ""),
-                closed = it.closed ?: false,
-                openTime = it.openTime ?: "00:00",
-                closeTime = it.closeTime ?: "00:00"
-            )
-        }.orEmpty(),
-        openStatus = convertedOpenStatus
+        openStatus = if (isOpen == true) {
+            OpenStatus.OPERATING
+        } else {
+            OpenStatus.CLOSED
+        }
     )
 }
 

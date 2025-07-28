@@ -208,13 +208,14 @@ class StoreRepositoryImpl @Inject constructor(
         return storeRemoteDataSource.getShopSearchRelated(query).toShopSearchRelatedList()
     }
 
-    override suspend fun getOrderableShops(): Result<List<Shop>> {
+    override suspend fun getOrderableShops(
+        sorter: String?,
+        filter: List<String>,
+        categoryFilter: Int?,
+        minimumOrderAmount: Int?
+    ): Result<List<Shop>> {
         return runCatching {
-            storeLocalDataSource.getCachedShops()?.map { it.toShop() } ?: storeRemoteDataSource.getOrderableShops().also {
-                storeLocalDataSource.setCachedShops(it)
-            }.map {
-                it.toShop()
-            }
+            storeRemoteDataSource.getOrderableShops(sorter, filter, categoryFilter, minimumOrderAmount).map { it.toShop() }
         }.onFailure { e ->
             return Result.failure(
                 when (e) {

@@ -376,14 +376,6 @@ private fun StoreHomeScreenPreview() {
                     isOpen = true,
                     categoryIds = listOf(0, 1),
                     images = listOf("https://example.com/store.jpg"),
-                    open = listOf(
-                        LocalShop.LocalOrderStoreShopsOpen(
-                            dayOfWeek = 1,
-                            closed = false,
-                            openTime = "09:00",
-                            closeTime = "21:00"
-                        )
-                    ),
                     thumbnail = "https://example.com/store_thumbnail.jpg",
                     openStatus = OpenStatus.OPERATING
                 )
