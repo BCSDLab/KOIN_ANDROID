@@ -68,7 +68,9 @@ fun StoreDetailInfo(
             OriginInfoChips(
                 modifier = Modifier
                     .defaultMinSize(minHeight = 28.dp)
-                    .clickable { }
+                    .clickable {
+                        navigateToDetailInfo()
+                    }
             )
         }
         Spacer(modifier = Modifier.height(12.dp))
