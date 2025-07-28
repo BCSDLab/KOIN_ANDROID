@@ -1,29 +1,33 @@
 package `in`.koreatech.koin.data.repository
 
+import `in`.koreatech.koin.data.mapper.toCodeCount
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
-import `in`.koreatech.koin.data.mapper.toUserRequestWithPassword
 import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
 import `in`.koreatech.koin.data.request.user.ABTestRequest
-import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
+import `in`.koreatech.koin.data.request.user.EmailSendRequest
+import `in`.koreatech.koin.data.request.user.EmailVerifyRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.SmsSendRequest
 import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
-import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
+import `in`.koreatech.koin.data.util.getErrorResponse
+import `in`.koreatech.koin.data.util.toKoinUnknownErrorException
+import `in`.koreatech.koin.domain.error.KoinUnknownErrorException
+import `in`.koreatech.koin.domain.error.user.KoinUserException
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.CodeCount
-import `in`.koreatech.koin.domain.model.user.Duplicated
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.model.user.Verification
+import `in`.koreatech.koin.domain.model.user.UserType
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
@@ -34,12 +38,12 @@ class UserRepositoryImpl @Inject constructor(
     private val userLocalDataSource: UserLocalDataSource
 ) : UserRepository {
     override suspend fun getToken(
-        email: String,
+        loginId: String,
         hashedPassword: String
     ): AuthToken {
         val authResponse =
             userRemoteDataSource.getToken(
-                LoginRequest(email, hashedPassword)
+                LoginRequest(loginId, hashedPassword)
             )
 
         return AuthToken(authResponse.token, authResponse.refreshToken, authResponse.userType)
@@ -72,17 +76,44 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchUserInfo(userType: String) {
-        userRemoteDataSource.getUserInfo().toUser(userType).also {
+    override suspend fun fetchStudentUserInfo() {
+        userRemoteDataSource.getStudentUserInfo().toUser().also {
+            userLocalDataSource.updateUserInfo(it)
+        }
+    }
+
+    override suspend fun fetchGeneralUserInfo() {
+        userRemoteDataSource.getGeneralUserInfo().toUser().also {
             userLocalDataSource.updateUserInfo(it)
         }
     }
 
     override suspend fun getUserInfo(): User {
-        val userType = userRemoteDataSource.getUserType()
+        return when (userLocalDataSource.user.first()) {
+            is User.Student -> userRemoteDataSource.getStudentUserInfo().toUser().also {
+                userLocalDataSource.updateUserInfo(it)
+            }
 
-        return userRemoteDataSource.getUserInfo().toUser(userType.userType).also {
-            userLocalDataSource.updateUserInfo(it)
+            is User.General -> userRemoteDataSource.getGeneralUserInfo().toUser().also {
+                userLocalDataSource.updateUserInfo(it)
+            }
+
+            is User.Anonymous -> User.Anonymous
+
+            null -> {
+                when (userLocalDataSource.userType.first()) {
+                    UserType.STUDENT,
+                    UserType.COUNCIL -> userRemoteDataSource.getStudentUserInfo().toUser().also {
+                        userLocalDataSource.updateUserInfo(it)
+                    }
+
+                    UserType.GENERAL -> userRemoteDataSource.getGeneralUserInfo().toUser().also {
+                        userLocalDataSource.updateUserInfo(it)
+                    }
+
+                    else -> User.Anonymous
+                }
+            }
         }
     }
 
@@ -133,11 +164,34 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateUser(user: User) {
-        when (user) {
-            User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
-            is User.Student -> {
-                userRemoteDataSource.updateUser(user.toUserRequest())
-                userLocalDataSource.updateUserInfo(user)
+        runCatching {
+            when (user) {
+                User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
+                is User.Student -> {
+                    userRemoteDataSource.updateStudentUser(user.toUserRequest())
+                    userLocalDataSource.updateUserInfo(user)
+                }
+
+                is User.General -> {
+                    userRemoteDataSource.updateGeneralUser(user.toUserRequest())
+                    userLocalDataSource.updateUserInfo(user)
+                }
+            }
+        }.onSuccess {
+            userLocalDataSource.updateUserInfo(user)
+        }.onFailure {
+            throw if (it is HttpException) {
+                when (it.code()) {
+                    400 -> KoinUserException.DataInvalidException()
+                    401 -> KoinUserException.UnauthorizedException()
+                    404 -> KoinUserException.UserNotFoundException()
+                    409 -> KoinUserException.NicknameOrEmailConflictException()
+                    else -> it.getErrorResponse().let { errorResponse ->
+                        KoinUnknownErrorException(errorResponse.code, errorResponse.message, errorResponse.errorTraceId)
+                    }
+                }
+            } else {
+                it
             }
         }
     }
@@ -164,135 +218,287 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateUserPassword(
-        user: User,
         hashedPassword: String
-    ) {
-        when (user) {
-            User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
-            is User.Student -> {
-                userRemoteDataSource.updateUser(user.toUserRequestWithPassword(hashedPassword))
-            }
+    ): Result<Unit> {
+        return runCatching {
+            userRemoteDataSource.updateUserPassword(hashedPassword) // TODO: Handle error after error code PR is completed.
         }
     }
 
-    override suspend fun isUsernameDuplicatedV2(nickname: String): Duplicated {
-        return try {
-            userRemoteDataSource.checkNicknameV2(nickname)
-            Duplicated.OK
-        } catch (e: HttpException) {
-            when (e.code()) {
-                400 -> Duplicated.INVALID
-                409 -> Duplicated.CONFLICT
-                else -> Duplicated.UNDEFINED
-            }
-        }
-    }
+    override suspend fun requestSmsVerification(phoneNumber: String): Result<CodeCount> {
+        return runCatching {
+            userRemoteDataSource.sendSMS(SmsSendRequest(phoneNumber)).toCodeCount()
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            429 -> KoinUserException.VerificationCodeRequestCountExceededException()
+                            400 -> KoinUserException.PhoneNumberInvalidException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
 
-    override suspend fun isPhoneDuplicated(phone: String): Duplicated {
-        return try {
-            userRemoteDataSource.checkPhoneNumberDuplicate(phone)
-            Duplicated.OK
-        } catch (e: HttpException) {
-            when (e.code()) {
-                400 -> Duplicated.INVALID
-                409 -> Duplicated.CONFLICT
-                else -> Duplicated.UNDEFINED
-            }
-        }
-    }
-
-    override suspend fun postStudentRegister(
-        name: String,
-        phoneNumber: String,
-        userId: String,
-        password: String,
-        department: String,
-        studentNumber: String,
-        gender: String,
-        email: String,
-        nickname: String
-    ): Boolean {
-        return try {
-            userRemoteDataSource.postStudentRegister(
-                StudentInfoRequestV2(
-                    name = name,
-                    phoneNumber = phoneNumber,
-                    userId = userId,
-                    password = password,
-                    department = department,
-                    studentNumber = studentNumber,
-                    gender = gender,
-                    email = email,
-                    nickname = nickname
-                )
+                    else -> exception
+                }
             )
-            true
-        } catch (e: HttpException) {
-            false
         }
     }
 
-    override suspend fun postGeneralRegister(
-        name: String,
-        phoneNumber: String,
-        userId: String,
-        password: String,
-        gender: String,
-        email: String,
-        nickname: String
-    ): Boolean {
-        return try {
-            userRemoteDataSource.postGeneralRegister(
-                GeneralInfoRequest(
-                    name = name,
-                    phoneNumber = phoneNumber,
-                    userId = userId,
-                    password = password,
-                    gender = gender,
-                    email = email,
-                    nickname = nickname
-                )
+    override suspend fun requestEmailVerification(email: String): Result<CodeCount> {
+        return runCatching {
+            userRemoteDataSource.sendEmail(EmailSendRequest(email)).toCodeCount()
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            429 -> KoinUserException.VerificationCodeRequestCountExceededException()
+                            400 -> KoinUserException.EmailInvalidException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> throw exception
+                }
             )
-            false
-        } catch (e: HttpException) {
-            false
         }
     }
 
-    override suspend fun sendSMS(target: String): Boolean {
-        return try {
-            userRemoteDataSource.sendSMS(SmsSendRequest(target = target))
-            false
-        } catch (e: HttpException) {
-            false
-        }
-    }
-
-    override suspend fun verifyCertificationCode(target: String, code: String): Verification {
-        return try {
+    override suspend fun verifyCertificationCode(phoneNumber: String, verificationCode: String): Result<Unit> {
+        return runCatching {
             userRemoteDataSource.verifyCode(
                 SmsVerifyRequest(
-                    target = target,
-                    code = code
+                    phoneNumber = phoneNumber,
+                    verificationCode = verificationCode
                 )
             )
-            Verification.OK
-        } catch (e: HttpException) {
-            when (e.code()) {
-                400 -> Verification.INVALID
-                404 -> Verification.NOCODE
-                else -> Verification.UNDEFINED
-            }
+        }.onFailure {
+            return Result.failure(
+                when (it) {
+                    is HttpException -> {
+                        when (it.code()) {
+                            404 -> KoinUserException.VerificationCodeExpiredException()
+                            400 -> KoinUserException.VerificationCodeInvalidException()
+                            else -> it.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> it
+                }
+            )
         }
     }
 
-    override suspend fun countSMS(target: String): Result<CodeCount> {
-        return try {
-            userRemoteDataSource.countSMS(target = target).let {
-                Result.success(CodeCount(it.target, it.totalCount, it.remainingCount, it.currentCount))
-            }
-        } catch (e: HttpException) {
-            Result.failure(e)
+    override suspend fun verifyEmailCode(email: String, verificationCode: String): Result<Unit> {
+        return runCatching {
+            userRemoteDataSource.verifyEmailCode(
+                EmailVerifyRequest(
+                    email = email,
+                    verificationCode = verificationCode
+                )
+            )
+        }.onFailure {
+            return Result.failure(
+                when (it) {
+                    is HttpException -> {
+                        when (it.code()) {
+                            404 -> KoinUserException.VerificationCodeExpiredException()
+                            400 -> KoinUserException.VerificationCodeInvalidException()
+                            else -> it.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> it
+                }
+            )
+        }
+    }
+
+    override suspend fun checkIdExists(loginId: String): Result<Unit> {
+        return runCatching {
+            userRemoteDataSource.idExists(loginId)
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            404 -> KoinUserException.LoginIdNotFoundException()
+                            400 -> KoinUserException.LoginIdInvalidException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
+                }
+            )
+        }
+    }
+
+    override suspend fun checkIdMatchEmail(loginId: String, email: String): Result<Unit> {
+        return runCatching {
+            userRemoteDataSource.idMatchEmail(loginId, email)
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            404 -> KoinUserException.LoginIdNotFoundException()
+                            400 -> KoinUserException.LoginIdNotMatchEmailException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
+                }
+            )
+        }
+    }
+
+    override suspend fun checkIdMatchPhone(loginId: String, phone: String): Result<Unit> {
+        return runCatching {
+            userRemoteDataSource.idMatchPhone(
+                loginId,
+                phone
+            )
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            404 -> KoinUserException.LoginIdNotFoundException()
+                            400 -> KoinUserException.LoginIdNotMatchPhoneException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
+                }
+            )
+        }
+    }
+
+    override suspend fun resetPasswordByEmail(loginId: String, email: String, newPassword: String): Result<Unit> {
+        return runCatching {
+            userRemoteDataSource.resetPasswordByEmail(
+                loginId,
+                email,
+                newPassword
+            )
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            404 -> KoinUserException.LoginIdNotFoundException()
+                            400 -> KoinUserException.LoginIdNotMatchEmailException()
+                            401 -> KoinUserException.UnauthorizedException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
+                }
+            )
+        }
+    }
+
+    override suspend fun resetPasswordBySms(loginId: String, phone: String, newPassword: String): Result<Unit> {
+        return runCatching {
+            userRemoteDataSource.resetPasswordBySms(loginId, phone, newPassword)
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            404 -> KoinUserException.LoginIdNotFoundException()
+                            400 -> KoinUserException.LoginIdNotMatchPhoneException()
+                            401 -> KoinUserException.UnauthorizedException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
+                }
+            )
+        }
+    }
+
+    override suspend fun checkEmailExists(email: String): Result<Unit> {
+        return runCatching {
+            userRemoteDataSource.checkEmailExists(email)
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> when (exception.code()) {
+                        400 -> KoinUserException.EmailInvalidException()
+                        404 -> KoinUserException.EmailNotFoundException()
+                        else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                    }
+
+                    else -> exception
+                }
+            )
+        }
+    }
+
+    override suspend fun checkPhoneExists(phone: String): Result<Unit> {
+        return runCatching {
+            userRemoteDataSource.checkPhoneExists(phone)
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> when (exception.code()) {
+                        400 -> KoinUserException.PhoneNumberInvalidException()
+                        404 -> KoinUserException.PhoneNumberNotFoundException()
+                        else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                    }
+
+                    else -> exception
+                }
+            )
+        }
+    }
+
+    override suspend fun findLoginIdByEmail(email: String, verificationCode: String): Result<String> {
+        return runCatching {
+            userRemoteDataSource.findLoginIdByEmail(EmailVerifyRequest(email, verificationCode)).loginId
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            400 -> KoinUserException.EmailInvalidException()
+                            401 -> KoinUserException.UnauthorizedException()
+                            404 -> KoinUserException.EmailNotFoundException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
+                }
+            )
+        }
+    }
+
+    override suspend fun findLoginIdBySms(phone: String, verificationCode: String): Result<String> {
+        return runCatching {
+            userRemoteDataSource.findLoginIdBySms(SmsVerifyRequest(phone, verificationCode)).loginId
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            400 -> KoinUserException.PhoneNumberInvalidException()
+                            401 -> KoinUserException.UnauthorizedException()
+                            404 -> KoinUserException.PhoneNumberNotFoundException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
+                }
+            )
         }
     }
 }

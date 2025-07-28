@@ -18,7 +18,7 @@ class OwnerAuthenticateCode @Inject constructor(
                 ownerChangePasswordRepository.authenticateCode(
                     email = email,
                     authCode = authCode
-                ).map { ChangePasswordContinuationState.GotoChangePasswordScreen }
+                ).map { ChangePasswordContinuationState.ChangePasswordScreenNavigated }
         }
     }
 }

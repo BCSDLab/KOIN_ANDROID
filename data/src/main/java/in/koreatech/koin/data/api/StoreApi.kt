@@ -49,40 +49,40 @@ interface StoreApi {
     suspend fun getCategories(): StoreCategoriesResponse
 
     // Get Shop list API
-    @GET(URLConstant.SHOPS.SHOPS + "/{id}")
+    @GET(URLConstant.SHOPS.ID.ID)
     suspend fun getStore(
         @Path("id") uid: Int
     ): StoreItemWithMenusResponse
 
-    @GET(URLConstant.SHOPS.SHOPS + "/{shopId}/menus/categories")
+    @GET(URLConstant.SHOPS.SHOPID.MENUS.CATEGORIES)
     suspend fun getStoreMenuCategory(
         @Path("shopId") uid: Int
     ): StoreMenuCategoryResponse
 
-    @GET(URLConstant.SHOPS.SHOPS + "/{id}" + "/menus")
+    @GET(URLConstant.SHOPS.ID.MENUS)
     suspend fun getShopMenus(
         @Path("id") uid: Int
     ): StoreMenuResponse
 
-    @GET(URLConstant.SHOPS.SHOPS + "/{id}" + "/events")
+    @GET(URLConstant.SHOPS.ID.EVENTS)
     suspend fun getShopEvents(
         @Path("id") uid: Int
     ): StoreDetailEventResponse
 
-    @GET(URLConstant.SHOPS.SHOPS + "/{id}" + "/reviews")
+    @GET(URLConstant.SHOPS.ID.REVIEWS)
     suspend fun getShopReviews(
         @Path("id") uid: Int
     ): StoreReviewResponse
 
-    @GET("benefit/{id}/shops")
+    @GET(URLConstant.BENEFIT.SHOPS)
     suspend fun getBenefitShopList(
         @Path("id") uid: Int
     ): StoreBenefitResponse
 
-    @GET("benefit/categories")
+    @GET(URLConstant.BENEFIT.CATEGORIES)
     suspend fun getBenefitCategories(): BenefitCategoryListResponse
 
-    @GET("/shops/search/related/{query}")
+    @GET(URLConstant.SHOPS.QUERY)
     suspend fun getShopSearchRelated(
         @Path("query") query: String
     ): ShopRelatedListResponse

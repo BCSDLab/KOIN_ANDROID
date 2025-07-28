@@ -4,8 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.core.os.bundleOf
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,21 +29,9 @@ class ArticleActivity : ActivityBase() {
     override val screenTitle: String = "공지사항"
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_article)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-
-            v.setPadding(
-                systemBars.left,
-                systemBars.top,
-                systemBars.right,
-                imeInsets.bottom or systemBars.bottom
-            )
-            WindowInsetsCompat.CONSUMED
-        }
 
         window.whiteStatusBar()
 
@@ -76,7 +62,7 @@ class ArticleActivity : ActivityBase() {
         navigateToDetailFragment()
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         navigateToArticleDetail(intent)
         super.onNewIntent(intent)
     }
@@ -95,6 +81,7 @@ class ArticleActivity : ActivityBase() {
         when (link) {
             "article_keyword" -> {
                 setNavigationGraph()
+                navController.popBackStack()
                 navController.navigate(
                     R.id.articleKeywordFragment
                 ) // See ArticleKeywordFragment, LoginActivity
@@ -103,6 +90,7 @@ class ArticleActivity : ActivityBase() {
                 setNavigationGraph()
                 val articleId = uri.getQueryParameter("article_id")?.toIntOrNull() ?: 0
                 val boardId = uri.getQueryParameter("board_id")?.toIntOrNull() ?: 0
+                navController.popBackStack()
                 navController.navigate(
                     R.id.articleDetailFragment,
                     bundleOf(
@@ -154,7 +142,7 @@ class ArticleActivity : ActivityBase() {
 
     private fun setToolbar(state: ArticleToolbarState) {
         binding.toolbarArticleList.apply {
-            setOnNavigationIconClickListener { finish() }
+            setOnNavigationIconClickListener { onBackPressedCallback.handleOnBackPressed() }
             setTitle(getString(state.title))
             setMenus(
                 ToolbarMenu(

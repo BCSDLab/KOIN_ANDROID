@@ -8,8 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="end"
-    android:background="@color/background"
-    android:fitsSystemWindows="false">
+    android:background="@color/background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -84,6 +83,20 @@
             app:layout_constraintStart_toEndOf="@id/navi_user_nickname"
             app:layout_constraintTop_toBottomOf="@id/drawer_left_arrow_button"
             app:layout_goneMarginStart="24dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/navi_item_sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="24dp"
+            android:gravity="center_vertical"
+            android:text="@string/navigation_item_sign_up"
+            android:textAppearance="@style/TextAppearance.Koin.Medium.14"
+            android:textColor="@color/neutral_600"
+            app:layout_constraintEnd_toStartOf="@id/navi_item_login_or_logout"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintTop_toBottomOf="@id/navi_hello_message" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/navi_item_login_or_logout"
@@ -177,6 +190,15 @@
                     android:gravity="center_vertical"
                     android:paddingHorizontal="24dp"
                     android:text="@string/navigation_item_timetable"
+                    android:textAppearance="@style/TextAppearance.Koin.Regular.16" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/navi_item_club"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="24dp"
+                    android:text="@string/navigation_item_club"
                     android:textAppearance="@style/TextAppearance.Koin.Regular.16" />
 
                 <androidx.appcompat.widget.AppCompatTextView

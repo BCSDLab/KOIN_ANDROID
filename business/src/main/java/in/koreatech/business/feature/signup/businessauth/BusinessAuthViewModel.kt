@@ -85,7 +85,7 @@ class BusinessAuthViewModel @Inject constructor(
                         reduce {
                             state.copy(
                                 error = null,
-                                signupContinuationState = SignupContinuationState.CheckComplete
+                                signupContinuationState = SignupContinuationState.SignupCheckComplete
                             )
                         }
                     }.onFailure {
@@ -224,7 +224,7 @@ class BusinessAuthViewModel @Inject constructor(
                                         )
                                     )
                                 },
-                                signupContinuationState = SignupContinuationState.SuccessUploadFiles,
+                                signupContinuationState = SignupContinuationState.FilesUploadSuccess,
                                 error = null
                             )
                         }
@@ -265,7 +265,7 @@ class BusinessAuthViewModel @Inject constructor(
             ).onSuccess {
                 onNavigateToNextScreen()
                 intent {
-                    reduce { state.copy(signupContinuationState = SignupContinuationState.RequestedOwnerRegister) }
+                    reduce { state.copy(signupContinuationState = SignupContinuationState.OwnerRegistrationRequested) }
                 }
             }.onFailure {
                 intent {

@@ -3,7 +3,10 @@ package `in`.koreatech.koin.ui.main.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,6 +40,14 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
     }
 
     private fun initView() = with(binding) {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.constraintLayoutDiningContainer) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(
+                bottom = v.paddingBottom + systemBars.bottom
+            )
+            WindowInsetsCompat.CONSUMED
+        }
+
         diningContainer.setOnClickListener {
             if (activity is MainActivity) {
                 val mainActivity = activity as MainActivity

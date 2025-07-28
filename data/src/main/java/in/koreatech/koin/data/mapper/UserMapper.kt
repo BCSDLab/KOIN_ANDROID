@@ -1,22 +1,26 @@
 package `in`.koreatech.koin.data.mapper
 
-import `in`.koreatech.koin.data.request.user.UserRequest
+import `in`.koreatech.koin.data.request.user.GeneralUserRequest
+import `in`.koreatech.koin.data.request.user.StudentUserRequest
+import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
+import `in`.koreatech.koin.data.response.user.GeneralUserResponse
 import `in`.koreatech.koin.data.response.user.RefreshResponse
-import `in`.koreatech.koin.data.response.user.UserResponse
+import `in`.koreatech.koin.data.response.user.StudentUserResponse
 import `in`.koreatech.koin.domain.model.user.AuthToken
+import `in`.koreatech.koin.domain.model.user.CodeCount
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.model.user.User
 
-fun UserResponse.toUser(userType: String) =
+fun StudentUserResponse.toUser() =
     User.Student(
         id = id,
+        loginId = loginId,
         anonymousNickname = anonymousNickname,
         email = email,
         name = name,
         studentNumber = studentNumber,
-        gender =
-        when (gender) {
+        gender = when (gender) {
             0 -> Gender.Man
             1 -> Gender.Woman
             else -> Gender.Unknown
@@ -27,41 +31,51 @@ fun UserResponse.toUser(userType: String) =
         userType = userType
     )
 
+fun GeneralUserResponse.toUser() =
+    User.General(
+        id = id,
+        loginId = loginId,
+        anonymousNickname = anonymousNickname,
+        email = email,
+        name = name,
+        nickname = nickname,
+        phoneNumber = phoneNumber,
+        gender = when (gender) {
+            0 -> Gender.Man
+            1 -> Gender.Woman
+            else -> throw IllegalStateException()
+        },
+        userType = userType
+    )
+
 fun User.Student.toUserRequest() =
-    UserRequest(
+    StudentUserRequest(
         nickname = nickname,
         name = name,
         studentNumber = studentNumber,
         major = major,
         phoneNumber = phoneNumber,
-        gender =
-        when (gender) {
+        gender = when (gender) {
             Gender.Man -> 0
             Gender.Woman -> 1
             else -> null
         },
-        identity = 0,
-        isGraduated = isStudent,
+        email = email,
         hashedPassword = null
     )
 
-fun User.Student.toUserRequestWithPassword(hashedPassword: String) =
-    UserRequest(
-        nickname = nickname,
-        name = name,
-        studentNumber = studentNumber,
-        major = major,
-        phoneNumber = phoneNumber,
-        gender =
-        when (gender) {
-            Gender.Man -> 0
-            Gender.Woman -> 1
-            else -> null
-        },
-        identity = 0,
-        isGraduated = isStudent,
-        hashedPassword = hashedPassword
-    )
+fun User.General.toUserRequest() = GeneralUserRequest(
+    nickname = nickname,
+    name = name,
+    phoneNumber = phoneNumber,
+    gender = when (gender) {
+        Gender.Man -> 0
+        Gender.Woman -> 1
+        else -> null
+    },
+    email = email,
+    hashedPassword = null
+)
 
 fun Graduated.toBoolean(): Boolean {
     return this == Graduated.Graduate
@@ -118,4 +132,12 @@ fun RefreshResponse.toAuthToken() =
         token = this.token,
         refreshToken = this.refreshToken,
         userType = null
+    )
+
+fun CodeRequestCountResponse.toCodeCount() =
+    CodeCount(
+        target = this.target,
+        totalCount = this.totalCount,
+        remainingCount = this.remainingCount,
+        currentCount = this.currentCount
     )

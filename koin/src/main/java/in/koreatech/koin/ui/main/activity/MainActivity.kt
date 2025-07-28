@@ -4,12 +4,19 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
@@ -24,6 +31,10 @@ import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_1
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_TEST_CATEGORY
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_TEST_DESIGN_A
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_TEST_DESIGN_B
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
@@ -33,6 +44,8 @@ import `in`.koreatech.koin.core.navigation.SchemeType
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_CLUB_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_EVENT_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
 import `in`.koreatech.koin.core.onboarding.ArrowDirection
@@ -46,6 +59,8 @@ import `in`.koreatech.koin.domain.model.article.ArticleNotiType
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.feature.banner.ui.BannerActivity
+import `in`.koreatech.koin.feature.club.ui.MainClubWidgetA
+import `in`.koreatech.koin.feature.club.ui.MainClubWidgetB
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.main.adapter.ArticleMainAdapter
@@ -56,6 +71,7 @@ import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.activity.CallBenefitStoreActivity
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
+import `in`.koreatech.koin.util.ext.blueStatusBar
 import `in`.koreatech.koin.util.ext.observeLiveData
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
@@ -145,8 +161,11 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        window.blueStatusBar()
 
         initView()
         initDiningTooltip()
@@ -164,6 +183,17 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         viewModel.checkKeywordNotiContent()
         initArticleBannerABTest()
         initDiningABTest()
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbarLayout) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updateLayoutParams<MarginLayoutParams> {
+                leftMargin = systemBars.left
+                topMargin = systemBars.top
+                rightMargin = systemBars.right
+            }
+            WindowInsetsCompat.CONSUMED
+        }
+
         binding.nestedScrollViewMain.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             val offset = binding.nestedScrollViewMain.computeVerticalScrollOffset()
             val extent = binding.nestedScrollViewMain.computeVerticalScrollExtent()
@@ -255,6 +285,35 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp)
                 )
+            }
+        }
+
+        clubComposeView.apply {
+            setContent {
+                val abTestGroup by viewModel.clubABTestExperimentGroup.collectAsStateWithLifecycle()
+                if (abTestGroup == ExperimentGroup.CATEGORY) {
+                    EventLogger.logABTestEvent(
+                        CLUB_AB_TEST_CATEGORY,
+                        CLUB_1,
+                        CLUB_AB_TEST_DESIGN_A
+                    )
+                } else if (abTestGroup == ExperimentGroup.HOT) {
+                    EventLogger.logABTestEvent(
+                        CLUB_AB_TEST_CATEGORY,
+                        CLUB_1,
+                        CLUB_AB_TEST_DESIGN_B
+                    )
+                }
+
+                if (abTestGroup == ExperimentGroup.CATEGORY) {
+                    MainClubWidgetA()
+                } else if (abTestGroup == ExperimentGroup.HOT) {
+                    val hotClub by viewModel.hotClub.collectAsStateWithLifecycle()
+                    MainClubWidgetB(
+                        hotClubId = hotClub?.clubId ?: -1,
+                        hotClubImageUrl = hotClub?.imageUrl ?: ""
+                    )
+                }
             }
         }
 
@@ -367,6 +426,8 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         val targetBoardId = intent.getIntExtra(EXTRA_BOARD_ID, -1)
         val targetArticleId = intent.getIntExtra(EXTRA_ARTICLE_ID, -1)
         val targetChatId = intent.getIntExtra(EXTRA_CHAT_ROOM_ID, -1)
+        val targetClubId = intent.getIntExtra(EXTRA_CLUB_ID, -1)
+        val targetEventId = intent.getIntExtra(EXTRA_EVENT_ID, -1)
         val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
 
         when (type) {
@@ -407,6 +468,36 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         context = this,
                         targetArticleId = Pair(EXTRA_ARTICLE_ID, targetArticleId),
                         targetChatId = Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
+                        type = Pair(EXTRA_TYPE, type)
+                    )
+                startActivity(intent)
+            }
+
+            SchemeType.CLUB_RECRUIT.type -> {
+                val intent =
+                    navigator.navigateToClubRecruitment(
+                        context = this,
+                        targetClubId = Pair(
+                            EXTRA_CLUB_ID,
+                            targetId
+                        ),
+                        type = Pair(EXTRA_TYPE, type)
+                    )
+                startActivity(intent)
+            }
+
+            SchemeType.CLUB.type -> {
+                val intent =
+                    navigator.navigateToClub(
+                        context = this,
+                        targetClubId = Pair(
+                            EXTRA_CLUB_ID,
+                            targetClubId
+                        ),
+                        targetEventId = Pair(
+                            EXTRA_EVENT_ID,
+                            targetEventId
+                        ),
                         type = Pair(EXTRA_TYPE, type)
                     )
                 startActivity(intent)

@@ -25,11 +25,11 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:analytics"))
 
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
     implementation(libs.material)
 
-    implementation(platform(libs.compose.bom))
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose.m3)
 
     implementation(libs.coil.compose)
@@ -38,6 +38,6 @@ dependencies {
     implementation(libs.timber)
 
     testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 }
