@@ -4,6 +4,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -73,6 +76,7 @@ fun StoreDetailScreen(
         minHeightPx = rememberState.minHeightPx
     )
     val currentToolbarHeightDp = rememberState.currentToolbarHeightDp()
+    val statusBarHeight = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
     val coroutineScope = rememberCoroutineScope()
     Box(
         modifier = Modifier
@@ -88,7 +92,7 @@ fun StoreDetailScreen(
                 .offset {
                     IntOffset(
                         0,
-                        currentToolbarHeightDp.value.toPx().roundToInt() + rememberState.toolbarMinHeight.toPx().roundToInt()
+                        currentToolbarHeightDp.value.toPx().roundToInt() + statusBarHeight.toPx().roundToInt()
                     )
                 },
             state = rememberState.listState
@@ -191,7 +195,7 @@ fun StoreDetailScreen(
         ) {
             StoreDetailImage(
                 modifier = Modifier
-                    .heightIn(rememberState.toolbarMinHeight, rememberState.toolbarMinHeight + rememberState.toolbarMaxHeight)
+                    .heightIn(rememberState.toolbarMinHeight, rememberState.toolbarMaxHeight + statusBarHeight)
                     .fillMaxWidth()
                     .graphicsLayer {
                         clip = true
