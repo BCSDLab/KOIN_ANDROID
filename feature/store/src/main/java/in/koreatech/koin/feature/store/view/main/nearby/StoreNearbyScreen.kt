@@ -353,14 +353,6 @@ private fun StoreNearbyScreenPreview() {
                     categoryIds = listOf(0, 1),
                     images = listOf("https://example.com/store.jpg"),
                     thumbnail = "https://example.com/store_thumbnail.jpg",
-                    open = listOf(
-                        LocalShop.LocalOrderStoreShopsOpen(
-                            dayOfWeek = 1,
-                            closed = false,
-                            openTime = "09:00",
-                            closeTime = "21:00"
-                        )
-                    ),
                     openStatus = OpenStatus.OPERATING
                 )
             ),

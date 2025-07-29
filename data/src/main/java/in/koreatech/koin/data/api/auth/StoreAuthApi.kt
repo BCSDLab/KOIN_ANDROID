@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.api.auth
 import `in`.koreatech.koin.data.request.store.CartAddRequest
 import `in`.koreatech.koin.data.request.store.CartItemRequest
 import `in`.koreatech.koin.data.response.store.CartItemEditResponse
+import `in`.koreatech.koin.data.response.store.CartItemsCountResponse
 import `in`.koreatech.koin.data.response.store.CartPaymentSummaryResponse
 import `in`.koreatech.koin.data.response.store.CartResponse
 import `in`.koreatech.koin.data.response.store.CartSummaryResponse
@@ -63,4 +64,7 @@ interface StoreAuthApi {
     suspend fun deleteCartItem(
         @Path("cartMenuItemId") cartMenuItemId: Int
     ): Response<Unit>
+
+    @GET("/cart/items/count")
+    suspend fun getCartItemsCount(): CartItemsCountResponse
 }
