@@ -88,7 +88,7 @@ fun StoreDetailScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .navigationBarsPadding()
-                .padding(bottom = rememberState.toolbarMinHeight * 2)
+                .padding(bottom = rememberState.toolbarMinHeight + statusBarHeight)
                 .offset {
                     IntOffset(
                         0,

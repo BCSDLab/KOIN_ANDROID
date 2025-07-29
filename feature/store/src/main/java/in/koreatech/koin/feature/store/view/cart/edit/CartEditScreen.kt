@@ -119,7 +119,7 @@ fun CartEditScreen(
                 onSelectedOptionGroup = viewModel::updateSelectedOptionGroup,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = rememberState.toolbarMinHeight * 2)
+                    .padding(bottom = rememberState.toolbarMinHeight + statusBarHeight)
                     .offset {
                         IntOffset(
                             0,
