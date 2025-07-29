@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,13 +21,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
@@ -40,7 +37,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import `in`.koreatech.feature.store.util.CustomClosingToolbarScreenDefaults
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.AddMenuBottomCard
@@ -118,7 +114,13 @@ fun CartAddScreen(
                 onSelectedOptionGroup = viewModel::updateSelectedOptionGroup,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = currentToolbarHeightDp.value + CustomClosingToolbarScreenDefaults.windowInsets.asPaddingValues().calculateTopPadding())
+                    .padding(bottom = rememberState.toolbarMinHeight * 2)
+                    .offset {
+                        IntOffset(
+                            0,
+                            currentToolbarHeightDp.value.toPx().roundToInt() + rememberState.toolbarMinHeight.toPx().roundToInt()
+                        )
+                    }
             )
 
             KoinStoreTopAppBar(
@@ -135,12 +137,7 @@ fun CartAddScreen(
                             Icon(
                                 modifier = Modifier.size(25.dp),
                                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_shopping_cart),
-                                contentDescription = null,
-                                tint = lerp(
-                                    RebrandKoinTheme.colors.neutral800,
-                                    RebrandKoinTheme.colors.neutral0,
-                                    1f - overlayAlpha.value
-                                )
+                                contentDescription = null
                             )
                         }
                         if (uiState.cartItemCount > 0) {
@@ -165,67 +162,67 @@ fun CartAddScreen(
                         }
                     }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = RebrandKoinTheme.colors.neutral0.copy(alpha = overlayAlpha.value),
-                    actionIconContentColor = lerp(RebrandKoinTheme.colors.neutral800, RebrandKoinTheme.colors.neutral0, 1f - overlayAlpha.value),
-                    titleContentColor = RebrandKoinTheme.colors.neutral800.copy(alpha = overlayAlpha.value)
-                )
-            )
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(
-                        rememberState.toolbarMaxHeight + CustomClosingToolbarScreenDefaults.windowInsets
-                            .asPaddingValues()
-                            .calculateTopPadding()
-                    )
-                    .offset { IntOffset(0, rememberState.toolbarOffsetPx.floatValue.roundToInt()) }
-                    .zIndex(1f)
+                overlayAlpha = overlayAlpha
             ) {
-                Image(
-                    painter = rememberAsyncImagePainter(uiState.menuImageUrls.firstOrNull()),
-                    contentDescription = null,
-                    alpha = 1 - overlayAlpha.value,
-                    alignment = Alignment.Center,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxSize()
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 24.dp)
+                        .heightIn(rememberState.toolbarMinHeight, rememberState.toolbarMinHeight + rememberState.toolbarMaxHeight)
+                        .graphicsLayer {
+                            clip = true
+                            translationY = -(rememberState.toolbarMaxHeight.toPx() - currentToolbarHeightDp.value.toPx())
+                        }
+                        .zIndex(1f)
                 ) {
-                    BasicText(
-                        text = uiState.menuName,
-                        style = RebrandKoinTheme.typography.bold20.copy(
-                            color = RebrandKoinTheme.colors.neutral800.copy(
-                                alpha = 1 - overlayAlpha.value
-                            )
-                        )
+                    Image(
+                        painter = rememberAsyncImagePainter(uiState.menuImageUrls.firstOrNull()),
+                        contentDescription = null,
+                        alignment = Alignment.Center,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxSize()
+                            .graphicsLayer {
+                                alpha = 1f - overlayAlpha.value
+                            }
                     )
 
-                    BasicText(
-                        text = stringResource(R.string.price_with_won, uiState.prices.getOrNull(0)?.price ?: 0),
-                        style = RebrandKoinTheme.typography.bold20.copy(
-                            color = RebrandKoinTheme.colors.primary500.copy(
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp)
+                    ) {
+                        BasicText(
+                            modifier = Modifier.graphicsLayer {
                                 alpha = 1 - overlayAlpha.value
+                            },
+                            text = uiState.menuName,
+                            style = RebrandKoinTheme.typography.bold20.copy(
+                                color = RebrandKoinTheme.colors.neutral800
                             )
                         )
-                    )
-                    BasicText(
-                        text = uiState.menuDescription,
-                        style = RebrandKoinTheme.typography.regular12.copy(
-                            color = RebrandKoinTheme.colors.neutral500.copy(
+
+                        BasicText(
+                            modifier = Modifier.graphicsLayer {
                                 alpha = 1 - overlayAlpha.value
+                            },
+                            text = stringResource(R.string.price_with_won, uiState.prices.getOrNull(0)?.price ?: 0),
+                            style = RebrandKoinTheme.typography.bold20.copy(
+                                color = RebrandKoinTheme.colors.primary500
                             )
                         )
-                    )
+                        BasicText(
+                            modifier = Modifier.graphicsLayer {
+                                alpha = 1 - overlayAlpha.value
+                            },
+                            text = uiState.menuDescription,
+                            style = RebrandKoinTheme.typography.regular12.copy(
+                                color = RebrandKoinTheme.colors.neutral500
+                            )
+                        )
+                    }
                 }
             }
         }
