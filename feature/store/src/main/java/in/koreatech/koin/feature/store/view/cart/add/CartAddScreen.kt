@@ -54,7 +54,6 @@ import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
 import kotlin.math.roundToInt
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
