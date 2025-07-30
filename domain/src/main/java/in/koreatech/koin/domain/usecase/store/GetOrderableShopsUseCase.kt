@@ -14,15 +14,12 @@ class GetOrderableShopsUseCase @Inject constructor(
         minimumOrderAmount: Int? = null,
         categoryId: Int = 1
     ): Result<List<Shop>> {
-        return runCatching {
-            storeRepository.getOrderableShops().getOrThrow()
-                .filter { it.categoryIds.contains(categoryId) }
-                .filter { it.minimumOrderAmount <= (minimumOrderAmount ?: Int.MAX_VALUE) }
-                .filterByStoreFilter(filter)
-                .orderByStoreSorter(sorter)
-        }.onFailure {
-            return Result.failure(it)
-        }
+        return storeRepository.getOrderableShops(
+            sorter = sorter.name,
+            filter = filter ?: emptyList(),
+            categoryFilter = categoryId,
+            minimumOrderAmount = if (minimumOrderAmount == Int.MAX_VALUE) null else minimumOrderAmount
+        )
     }
 }
 

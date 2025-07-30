@@ -113,7 +113,7 @@ fun NavGraphBuilder.koinStoreGraph(
         StoreSearchScreen(
             navigateToDetail = {
                 navController.navigateUp()
-                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$it")
+                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$it/${true}")
             },
             onBackPressed = {
                 if (!navController.navigateUp()) {

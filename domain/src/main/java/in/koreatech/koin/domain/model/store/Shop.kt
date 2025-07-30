@@ -15,7 +15,6 @@ data class Shop(
     val isOpen: Boolean,
     val categoryIds: List<Int>,
     val images: List<ShopImageUrls>,
-    val open: List<OrderStoreShopsOpen>,
     val openStatus: OpenStatus
 ) {
     data class OrderStoreShopsOpen(

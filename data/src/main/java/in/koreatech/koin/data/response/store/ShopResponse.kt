@@ -17,7 +17,6 @@ data class ShopResponse(
     @SerializedName("is_open") val isOpen: Boolean,
     @SerializedName("category_ids") val categoryIds: List<Int>,
     @SerializedName("images") val images: List<ShopImagesResponse>,
-    @SerializedName("open") val open: List<OrderStoreShopsOpenResponse>,
     @SerializedName("open_status") val openStatus: String
 ) {
     data class ShopImagesResponse(
