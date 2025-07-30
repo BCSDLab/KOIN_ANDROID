@@ -4,6 +4,7 @@ import `in`.koreatech.koin.data.mapper.toCart
 import `in`.koreatech.koin.data.mapper.toCartAddRequest
 import `in`.koreatech.koin.data.mapper.toCartItemEdit
 import `in`.koreatech.koin.data.mapper.toCartItemRequest
+import `in`.koreatech.koin.data.mapper.toCartItemsCount
 import `in`.koreatech.koin.data.mapper.toCartPaymentSummary
 import `in`.koreatech.koin.data.mapper.toCartSummary
 import `in`.koreatech.koin.data.mapper.toCategory
@@ -36,6 +37,7 @@ import `in`.koreatech.koin.domain.model.store.Cart
 import `in`.koreatech.koin.domain.model.store.CartAdd
 import `in`.koreatech.koin.domain.model.store.CartItem
 import `in`.koreatech.koin.domain.model.store.CartItemEdit
+import `in`.koreatech.koin.domain.model.store.CartItemsCount
 import `in`.koreatech.koin.domain.model.store.CartPaymentSummary
 import `in`.koreatech.koin.domain.model.store.CartSummary
 import `in`.koreatech.koin.domain.model.store.OrderableShopSearchRelated
@@ -208,13 +210,14 @@ class StoreRepositoryImpl @Inject constructor(
         return storeRemoteDataSource.getShopSearchRelated(query).toShopSearchRelatedList()
     }
 
-    override suspend fun getOrderableShops(): Result<List<Shop>> {
+    override suspend fun getOrderableShops(
+        sorter: String?,
+        filter: List<String>,
+        categoryFilter: Int?,
+        minimumOrderAmount: Int?
+    ): Result<List<Shop>> {
         return runCatching {
-            storeLocalDataSource.getCachedShops()?.map { it.toShop() } ?: storeRemoteDataSource.getOrderableShops().also {
-                storeLocalDataSource.setCachedShops(it)
-            }.map {
-                it.toShop()
-            }
+            storeRemoteDataSource.getOrderableShops(sorter, filter, categoryFilter, minimumOrderAmount).map { it.toShop() }
         }.onFailure { e ->
             return Result.failure(
                 when (e) {
@@ -635,6 +638,25 @@ class StoreRepositoryImpl @Inject constructor(
                                 else -> e.getErrorResponse().toKoinUnknownErrorException()
                             }
 
+                            else -> e.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> e
+                }
+            )
+        }
+    }
+
+    override suspend fun getCartItemsCount(): Result<CartItemsCount> {
+        return runCatching {
+            storeRemoteDataSource.getCartItemsCount().toCartItemsCount()
+        }.onFailure { e ->
+            return Result.failure(
+                when (e) {
+                    is HttpException -> {
+                        when (e.code()) {
+                            401 -> KoinStoreException.UnauthorizedException()
                             else -> e.getErrorResponse().toKoinUnknownErrorException()
                         }
                     }

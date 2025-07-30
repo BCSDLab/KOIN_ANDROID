@@ -15,7 +15,8 @@ data class CartAddState(
     val menuImageUrls: List<String> = emptyList(),
     val prices: List<LocalShopPrice> = emptyList(),
     val options: List<LocalShopMenuOptionGroup> = emptyList(),
-    val cartItemCount: Int = 0
+    val cartItemCount: Int = 0,
+    val quantity: Int = 1
 ) : Parcelable {
     val price: Int
         get() = (prices.firstOrNull { it.id == orderableShopMenuPriceId }?.price ?: 0) + options.sumOf { optionGroup ->

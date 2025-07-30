@@ -10,6 +10,7 @@ import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
 import `in`.koreatech.koin.data.request.user.ReviewRequest
 import `in`.koreatech.koin.data.response.store.BenefitCategoryListResponse
 import `in`.koreatech.koin.data.response.store.CartItemEditResponse
+import `in`.koreatech.koin.data.response.store.CartItemsCountResponse
 import `in`.koreatech.koin.data.response.store.CartPaymentSummaryResponse
 import `in`.koreatech.koin.data.response.store.CartResponse
 import `in`.koreatech.koin.data.response.store.CartSummaryResponse
@@ -155,11 +156,12 @@ class StoreRemoteDataSource @Inject constructor(
     }
 
     suspend fun getOrderableShops(
-        sorter: String? = StoreSorter.NONE.name,
-        filter: List<String>? = null,
-        minimumOrderAmount: Int? = null
+        sorter: String?,
+        filter: List<String>?,
+        categoryFilter: Int?,
+        minimumOrderAmount: Int?
     ): List<ShopResponse> {
-        return storeApi.getOrderableShops(sorter, filter, minimumOrderAmount)
+        return storeApi.getOrderableShops(sorter, filter, categoryFilter, minimumOrderAmount)
     }
 
     suspend fun getNearbyShops(
@@ -242,5 +244,9 @@ class StoreRemoteDataSource @Inject constructor(
 
     suspend fun deleteCartItem(cartMenuItemId: Int): Response<Unit> {
         return storeAuthApi.deleteCartItem(cartMenuItemId)
+    }
+
+    suspend fun getCartItemsCount(): CartItemsCountResponse {
+        return storeAuthApi.getCartItemsCount()
     }
 }

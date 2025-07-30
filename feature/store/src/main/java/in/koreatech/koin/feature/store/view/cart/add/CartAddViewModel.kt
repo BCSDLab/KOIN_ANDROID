@@ -79,7 +79,8 @@ class CartAddViewModel @Inject constructor(
                             optionId = option.id
                         )
                     }
-                }
+                },
+                quantity = state.quantity
             )
         ).onSuccess {
         }.onFailure {
