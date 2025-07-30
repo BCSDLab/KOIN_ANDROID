@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.sharp.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -37,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
@@ -62,12 +62,13 @@ fun ShopOriginInfoScreen(
                 ),
                 title = { Text(stringResource(R.string.store_info_and_origin)) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Sharp.KeyboardArrowLeft,
-                            contentDescription = ""
-                        )
-                    }
+                    Icon(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .noRippleClickable { onBackClick() },
+                        imageVector = Icons.AutoMirrored.Sharp.KeyboardArrowLeft,
+                        contentDescription = ""
+                    )
                 },
                 actions = {
                     Box(contentAlignment = Alignment.TopEnd) {
