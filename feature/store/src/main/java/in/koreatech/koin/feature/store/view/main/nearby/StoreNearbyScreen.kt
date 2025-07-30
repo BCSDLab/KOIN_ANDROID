@@ -47,6 +47,7 @@ import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.util.KoinCoilImageLoader
 import `in`.koreatech.koin.domain.model.store.OpenStatus
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreCard
@@ -194,7 +195,8 @@ private fun StoreNearbyScreen(
                     KoinStoreCategoryItem(
                         categoryName = category.name,
                         categoryIcon = rememberAsyncImagePainter(
-                            model = category.imageUrl
+                            model = category.imageUrl,
+                            imageLoader = KoinCoilImageLoader.getImageLoader(context)
                         ),
                         isSelected = index + 1 == categoryId,
                         onClick = {
@@ -353,14 +355,6 @@ private fun StoreNearbyScreenPreview() {
                     categoryIds = listOf(0, 1),
                     images = listOf("https://example.com/store.jpg"),
                     thumbnail = "https://example.com/store_thumbnail.jpg",
-                    open = listOf(
-                        LocalShop.LocalOrderStoreShopsOpen(
-                            dayOfWeek = 1,
-                            closed = false,
-                            openTime = "09:00",
-                            closeTime = "21:00"
-                        )
-                    ),
                     openStatus = OpenStatus.OPERATING
                 )
             ),

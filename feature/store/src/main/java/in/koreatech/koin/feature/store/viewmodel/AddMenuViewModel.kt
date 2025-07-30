@@ -132,7 +132,8 @@ class AddMenuViewModel @Inject constructor(
                             optionId = option.id
                         )
                     }
-                }
+                },
+                quantity = state.quantity
             )
         ).onFailure {
             Timber.d("AddMenuViewModel addCartItem error: $it")

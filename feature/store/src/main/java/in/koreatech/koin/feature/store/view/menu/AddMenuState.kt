@@ -14,5 +14,6 @@ data class AddMenuState(
     val cartItem: CartItem? = null,
     val cartAdd: CartAdd? = null,
     val totalPrice: Int = 0,
-    val cartItemOptioins: List<AddCartItemOption> = emptyList()
+    val cartItemOptioins: List<AddCartItemOption> = emptyList(),
+    val quantity: Int = 1
 )

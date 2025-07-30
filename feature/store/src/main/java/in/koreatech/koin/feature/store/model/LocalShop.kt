@@ -21,7 +21,6 @@ data class LocalShop(
     val categoryIds: List<Int>,
     val images: List<String>,
     val thumbnail: String,
-    val open: List<LocalOrderStoreShopsOpen>,
     val openStatus: OpenStatus
 ) : Parcelable {
     @Parcelize
@@ -54,7 +53,6 @@ internal fun Shop.toLocalShop(): LocalShop {
             it.imageUrl
         },
         thumbnail = images.firstOrNull { it.isThumbnail }?.imageUrl ?: "",
-        open = open.map { it.toLocalOrderStoreShopsOpen() },
         openStatus = openStatus
     )
 }

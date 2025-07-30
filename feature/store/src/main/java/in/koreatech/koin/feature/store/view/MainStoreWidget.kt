@@ -20,12 +20,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.util.KoinCoilImageLoader
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.feature.store.R
 
@@ -78,6 +80,8 @@ private fun CategoryItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
+    val context = LocalContext.current
+
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -101,7 +105,8 @@ private fun CategoryItem(
             SubcomposeAsyncImage(
                 model = categoryImageUrl,
                 contentDescription = categoryName,
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(32.dp),
+                imageLoader = KoinCoilImageLoader.getImageLoader(context)
             )
         }
 

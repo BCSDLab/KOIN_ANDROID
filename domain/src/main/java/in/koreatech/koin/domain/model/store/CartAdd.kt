@@ -4,5 +4,6 @@ data class CartAdd(
     val orderableShopId: Int,
     val orderableShopMenuId: Int,
     val orderableShopMenuPriceId: Int,
-    val orderableShopMenuOptionIds: List<AddCartItemOption>?
+    val orderableShopMenuOptionIds: List<AddCartItemOption>?,
+    val quantity: Int
 )
