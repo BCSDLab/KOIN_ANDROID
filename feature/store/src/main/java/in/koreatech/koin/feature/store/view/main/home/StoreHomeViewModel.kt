@@ -11,6 +11,7 @@ import `in`.koreatech.koin.feature.store.enums.toStoreSorter
 import `in`.koreatech.koin.feature.store.model.toLocalShop
 import `in`.koreatech.koin.feature.store.model.toLocalStoreCategories
 import javax.inject.Inject
+import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -41,6 +42,7 @@ class StoreHomeViewModel @Inject constructor(
                 isLoading = true
             )
         }
+        delay(30000L)
         getOrderableShopsUseCase(
             sorter = state.selectedOrderOption.toStoreSorter(),
             filter = state.selectedStoreFilter.map { it.name },
