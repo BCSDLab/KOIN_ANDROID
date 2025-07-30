@@ -105,4 +105,5 @@
     <string name="store_banner_subtitle">코인 전용 할인혜택 받기!</string>
 
     <string name="store_main_widget">주문</string>
+    <string name="takeout_available">포장 가능</string>
 </resources>

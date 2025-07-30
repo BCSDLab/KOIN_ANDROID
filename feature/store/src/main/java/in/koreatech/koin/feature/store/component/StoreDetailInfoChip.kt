@@ -73,6 +73,11 @@ fun AvailableChips(storeInfo: ShopInfoModel) {
                 text = stringResource(R.string.account_transfer_avilable)
             )
         }
+        if (storeInfo.isTakeoutAvailable) {
+            AvailableChip(
+                text = stringResource(R.string.takeout_available)
+            )
+        }
     }
 }
 
