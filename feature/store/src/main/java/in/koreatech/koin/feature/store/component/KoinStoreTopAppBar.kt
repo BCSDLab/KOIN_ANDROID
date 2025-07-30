@@ -62,7 +62,7 @@ fun KoinStoreTopAppBar(
                     style = textStyle.copy(color = colors.titleContentColor)
                 )
             },
-            modifier = modifier.graphicsLayer {
+            modifier = Modifier.graphicsLayer {
                 alpha = overlayAlpha.value
             },
             navigationIcon = {
