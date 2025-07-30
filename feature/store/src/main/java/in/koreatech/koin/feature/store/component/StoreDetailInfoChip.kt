@@ -83,13 +83,14 @@ fun AvailableChips(storeInfo: ShopInfoModel) {
 
 @Composable
 private fun AvailableChip(
+    modifier: Modifier= Modifier,
     text: String
 ) {
     Surface(
         shadowElevation = 1.dp,
         shape = RoundedCornerShape(50),
         color = KoinTheme.colors.neutral0,
-        modifier = Modifier
+        modifier = modifier
             .heightIn(min = 24.dp)
     ) {
         Box(
