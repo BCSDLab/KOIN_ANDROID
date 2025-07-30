@@ -27,7 +27,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
@@ -46,6 +45,7 @@ import `in`.koreatech.koin.feature.store.component.menuListSection
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
 import `in`.koreatech.koin.feature.store.state.collapseToolbar
 import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
+import `in`.koreatech.koin.feature.store.util.customCollapsingToolbarContent
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
 import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineScope
@@ -197,11 +197,11 @@ fun StoreDetailScreen(
                 modifier = Modifier
                     .heightIn(rememberState.toolbarMinHeight, rememberState.toolbarMaxHeight + statusBarHeight)
                     .fillMaxWidth()
-                    .graphicsLayer {
-                        clip = true
-                        translationY = -(rememberState.toolbarMaxHeight.toPx() - currentToolbarHeightDp.value.toPx())
-                        alpha = 1f - overlayAlpha.value
-                    },
+                    .customCollapsingToolbarContent(
+                        maxToolbarHeight = rememberState.toolbarMaxHeight,
+                        currentToolbarHeight = currentToolbarHeightDp.value,
+                        overlayAlpha = overlayAlpha.value
+                    ),
                 imageUrls = uiState.store.imageUrls ?: emptyList(),
                 pagerState = pagerState
             )

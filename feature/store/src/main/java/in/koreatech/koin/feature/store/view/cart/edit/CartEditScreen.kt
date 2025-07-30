@@ -52,6 +52,7 @@ import `in`.koreatech.koin.feature.store.model.LocalShopMenuOptionGroup
 import `in`.koreatech.koin.feature.store.model.LocalShopPrice
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
 import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
+import `in`.koreatech.koin.feature.store.util.customCollapsingToolbarContent
 import kotlin.math.roundToInt
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -173,10 +174,11 @@ fun CartEditScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .heightIn(rememberState.toolbarMinHeight, rememberState.toolbarMaxHeight + statusBarHeight)
-                        .graphicsLayer {
-                            clip = true
-                            translationY = -(rememberState.toolbarMaxHeight.toPx() - currentToolbarHeightDp.value.toPx())
-                        }
+                        .customCollapsingToolbarContent(
+                            maxToolbarHeight = rememberState.toolbarMaxHeight,
+                            currentToolbarHeight = currentToolbarHeightDp.value,
+                            overlayAlpha = overlayAlpha.value
+                        )
                         .zIndex(1f)
                 ) {
                     Image(
