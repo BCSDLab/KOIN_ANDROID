@@ -270,11 +270,7 @@ private fun CartEditScreen(
                 title = localShopMenuOptionGroup.name,
                 options = localShopMenuOptionGroup.options,
                 description = localShopMenuOptionGroup.description,
-                selectedId = localShopMenuOptionGroup.options.flatMap {
-                    localShopMenuOptionGroup.options.filter { option ->
-                        option.optionSelected
-                    }.map { it.id }
-                },
+                selectedId = localShopMenuOptionGroup.options.filter { it.optionSelected }.map { it.id },
                 requiredSelectCount = if (localShopMenuOptionGroup.minSelect == localShopMenuOptionGroup.maxSelect) {
                     localShopMenuOptionGroup.minSelect
                 } else {
