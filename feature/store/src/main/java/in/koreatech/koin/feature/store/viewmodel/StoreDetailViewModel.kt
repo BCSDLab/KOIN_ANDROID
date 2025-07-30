@@ -124,7 +124,7 @@ class StoreDetailViewModel @Inject constructor(
                         id = id,
                         storeName = result.name,
                         description = result.description,
-                        notice = null,
+                        notice = result.description,
                         deliveryTips = DeliveryTipModel(
                             fromAmount = 0,
                             toAmount = null,
