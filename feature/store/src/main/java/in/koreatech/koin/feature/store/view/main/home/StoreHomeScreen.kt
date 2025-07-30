@@ -48,6 +48,7 @@ import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.util.KoinCoilImageLoader
 import `in`.koreatech.koin.domain.model.store.OpenStatus
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreCard
@@ -212,7 +213,8 @@ private fun StoreHomeScreen(
                     KoinStoreCategoryItem(
                         categoryName = category.name,
                         categoryIcon = rememberAsyncImagePainter(
-                            model = category.imageUrl
+                            model = category.imageUrl,
+                            imageLoader = KoinCoilImageLoader.getImageLoader(context)
                         ),
                         isSelected = storeCategories[index].id == categoryId,
                         onClick = {
