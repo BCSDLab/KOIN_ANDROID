@@ -202,7 +202,7 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
             },
             navigateToShoppingCart = {
                 navController.navigate(StoreNavType.StoreCart.route)
-            },
+            }
         )
     }
 

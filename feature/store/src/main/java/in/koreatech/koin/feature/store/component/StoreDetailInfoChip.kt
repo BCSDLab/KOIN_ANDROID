@@ -83,7 +83,7 @@ fun AvailableChips(storeInfo: ShopInfoModel) {
 
 @Composable
 private fun AvailableChip(
-    modifier: Modifier= Modifier,
+    modifier: Modifier = Modifier,
     text: String
 ) {
     Surface(

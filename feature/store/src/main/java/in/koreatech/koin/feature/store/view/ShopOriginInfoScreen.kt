@@ -219,7 +219,7 @@ fun DeliveryFeeRow(
 private fun ShopOriginInfoScreenPreview() {
     ShopOriginInfoScreen(
         onBackClick = {},
-        navigateToShoppingCart = {},
+        navigateToShoppingCart = {}
 
-        )
+    )
 }
