@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.colorResource
@@ -80,6 +81,7 @@ fun MenuCategoryChip(
                 color = borderColor,
                 shape = RoundedCornerShape(50)
             )
+            .clip(RoundedCornerShape(50))
             .clickable {
                 onCategoryClicked(menuCategory.menuGroupId)
             }
