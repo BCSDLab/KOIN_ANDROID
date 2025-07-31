@@ -55,13 +55,13 @@ import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
 import `in`.koreatech.koin.feature.store.util.customCollapsingToolbarContent
 import `in`.koreatech.koin.feature.store.viewmodel.ShoppingCartViewModel
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
+import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
-import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -74,7 +74,7 @@ fun StoreDetailScreen(
     navigateToBack: () -> Unit = {},
     navigateToDetailInfo: () -> Unit = {},
     navigateToReview: () -> Unit = {},
-    navigateToMenuInfo: (menuId: Int) -> Unit = {},
+    navigateToMenuInfo: (menuId: Int) -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
     val cartUiState by cartViewModel.collectAsState()
@@ -236,7 +236,6 @@ fun StoreDetailScreen(
                                     )
                                 )
                             )
-
                         }
                     }
                 },

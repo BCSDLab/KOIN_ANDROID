@@ -25,7 +25,6 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.OrderBottomBar
 import `in`.koreatech.koin.feature.store.enums.CartValidation
-import `in`.koreatech.koin.feature.store.util.formatPrice
 import `in`.koreatech.koin.feature.store.viewmodel.ShoppingCartViewModel
 import org.orbitmvi.orbit.compose.collectAsState
 
