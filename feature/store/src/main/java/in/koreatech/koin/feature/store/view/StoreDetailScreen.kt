@@ -111,10 +111,10 @@ fun StoreDetailScreen(
         snapshotFlow { uiState.isLogin }
             .distinctUntilChanged()
             .collectLatest {
-            if (uiState.isLogin) {
-                viewModel.getCartItemsCount()
+                if (uiState.isLogin) {
+                    viewModel.getCartItemsCount()
+                }
             }
-        }
     }
 
     if (uiState.isLoading) {
@@ -222,23 +222,25 @@ fun StoreDetailScreen(
                                 contentDescription = null
                             )
                         }
-                        Box(
-                            modifier = Modifier
-                                .offset(x = (-5).dp, y = 5.dp)
-                                .size(16.dp)
-                                .background(RebrandKoinTheme.colors.primary500, CircleShape),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "${uiState.cartItemCount}",
-                                style = RebrandKoinTheme.typography.medium12.copy(
-                                    color = RebrandKoinTheme.colors.neutral0,
-                                    lineHeightStyle = LineHeightStyle(
-                                        trim = LineHeightStyle.Trim.Both,
-                                        alignment = LineHeightStyle.Alignment.Center
+                        if (uiState.cartItemCount > 0) {
+                            Box(
+                                modifier = Modifier
+                                    .offset(x = (-5).dp, y = 5.dp)
+                                    .size(16.dp)
+                                    .background(RebrandKoinTheme.colors.primary500, CircleShape),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = "${uiState.cartItemCount}",
+                                    style = RebrandKoinTheme.typography.medium12.copy(
+                                        color = RebrandKoinTheme.colors.neutral0,
+                                        lineHeightStyle = LineHeightStyle(
+                                            trim = LineHeightStyle.Trim.Both,
+                                            alignment = LineHeightStyle.Alignment.Center
+                                        )
                                     )
                                 )
-                            )
+                            }
                         }
                     }
                 },
