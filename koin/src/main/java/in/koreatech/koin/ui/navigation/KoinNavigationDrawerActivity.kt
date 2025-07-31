@@ -49,7 +49,7 @@ import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.navigation.viewmodel.KoinNavigationDrawerViewModel
 import `in`.koreatech.koin.ui.operating.OperatingInfoActivity
 import `in`.koreatech.koin.ui.setting.SettingActivity
-//import `in`.koreatech.koin.ui.store.activity.StoreActivity
+// import `in`.koreatech.koin.ui.store.activity.StoreActivity
 import `in`.koreatech.koin.feature.store.StoreActivity
 import `in`.koreatech.koin.util.ext.addDrawerListener
 import `in`.koreatech.koin.util.ext.blueStatusBar
