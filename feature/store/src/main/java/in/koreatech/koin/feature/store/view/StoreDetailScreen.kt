@@ -63,7 +63,9 @@ fun StoreDetailScreen(
     navigateToMenuInfo: (menuId: Int) -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
-    val pagerState = rememberPagerState(0, 0f) { 1 }
+    val pagerState = rememberPagerState(0, 0f) {
+        uiState.store.imageUrls?.size ?: 0
+    }
 
     val rememberState = rememberCollapsingToolbarState(
         toolbarMinHeight = 64.dp

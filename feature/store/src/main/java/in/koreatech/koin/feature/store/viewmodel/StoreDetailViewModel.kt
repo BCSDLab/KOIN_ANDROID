@@ -107,7 +107,9 @@ class StoreDetailViewModel @Inject constructor(
             reduce {
                 state.copy(
                     categories = result.map {
-                        it.toMenuCategoryModel()
+                        it.toMenuCategoryModel().copy(
+                            isChecked = result.indexOf(it) == 0
+                        )
                     }
                 )
             }
@@ -124,7 +126,7 @@ class StoreDetailViewModel @Inject constructor(
                         id = id,
                         storeName = result.name,
                         description = result.description,
-                        notice = null,
+                        notice = result.description,
                         deliveryTips = DeliveryTipModel(
                             fromAmount = 0,
                             toAmount = null,
