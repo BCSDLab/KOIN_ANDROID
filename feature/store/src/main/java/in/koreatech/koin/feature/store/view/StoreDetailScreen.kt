@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -24,7 +23,6 @@ import androidx.compose.material.TabRowDefaults.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -66,8 +64,8 @@ import org.orbitmvi.orbit.compose.collectAsState
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun StoreDetailScreen(
-    isCartModified: Boolean = false,
     modifier: Modifier = Modifier,
+    isCartModified: Boolean = false,
     viewModel: StoreDetailViewModel = hiltViewModel(),
     cartViewModel: ShoppingCartViewModel = hiltViewModel(),
     navigateToCart: () -> Unit = {},
@@ -107,39 +105,24 @@ fun StoreDetailScreen(
             .launchIn(coroutineScope)
     }
 
-    Scaffold(
-        modifier = modifier.imePadding(),
-        bottomBar = {
-            if (cartUiState.cart.items.isNotEmpty()) {
-                OrderBottomBar(
-                    itemCount = cartUiState.cart.items.count(),
-                    totalPrice = cartUiState.cart.totalAmount,
-                    isOrderEnabled = cartUiState.cartValidation == CartValidation.VALID,
-                    orderableMessage = cartUiState.isValidateCart.message,
-                    navigateToCart = navigateToCart
-                )
-            }
-        }
+    Column(
+        modifier = modifier
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .weight (1f)
                 .background(color = colorResource(id = R.color.store_detail_background))
                 .nestedScroll(nestedScrollConnection)
         ) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .navigationBarsPadding()
-                    .padding(bottom = rememberState.toolbarMinHeight * 2)
+                    .padding(bottom = rememberState.toolbarMinHeight)
                     .offset {
                         IntOffset(
                             0,
-                            currentToolbarHeightDp.value
-                                .toPx()
-                                .roundToInt() + rememberState.toolbarMinHeight
-                                .toPx()
-                                .roundToInt()
+                            currentToolbarHeightDp.value.toPx().roundToInt() + rememberState.toolbarMinHeight.toPx().roundToInt()
                         )
                     },
                 state = rememberState.listState
@@ -255,6 +238,15 @@ fun StoreDetailScreen(
                     pagerState = pagerState
                 )
             }
+        }
+        if (cartUiState.cart.items.isNotEmpty()) {
+            OrderBottomBar(
+                itemCount = cartUiState.cart.items.count(),
+                totalPrice = cartUiState.cart.totalAmount,
+                isOrderEnabled = cartUiState.cartValidation == CartValidation.VALID,
+                orderableMessage = cartUiState.isValidateCart.message,
+                navigateToCart = navigateToCart
+            )
         }
     }
 }
