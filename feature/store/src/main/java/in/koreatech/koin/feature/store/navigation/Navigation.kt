@@ -252,16 +252,18 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
                 }
             },
             navigateToCart = {
+                it.savedStateHandle[IS_CART_ADDED] = false
                 navController.navigate(StoreNavType.StoreCart.route)
             },
             navigateToDetailInfo = {
+                it.savedStateHandle[IS_CART_ADDED] = false
                 navController.navigate("${StoreDetailNavType.StoreDetailInfo.route}/$storeId/$isOrderableShop")
             },
             navigateToReview = {
                 // Navigate to review screen if implemented
             },
             navigateToMenuInfo = { menuId ->
-                it.savedStateHandle[IS_CART_ADDED] = false // Reset when navigate to cart add
+                it.savedStateHandle[IS_CART_ADDED] = false
                 navController.navigate("${StoreNavType.StoreCartAdd.route}/$storeId/$menuId")
             }
         )
