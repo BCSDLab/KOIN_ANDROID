@@ -47,6 +47,7 @@ import `in`.koreatech.koin.feature.store.component.AddMenuBottomCard
 import `in`.koreatech.koin.feature.store.component.KoinCartOptionItem
 import `in`.koreatech.koin.feature.store.component.KoinCartPriceItem
 import `in`.koreatech.koin.feature.store.component.KoinStoreDialog
+import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.model.LocalShopMenuOptionGroup
 import `in`.koreatech.koin.feature.store.model.LocalShopPrice
@@ -97,7 +98,9 @@ fun CartEditScreen(
         contentAlignment = Alignment.Center
     ) {
         if (uiState.isLoading) {
-            CircularProgressIndicator()
+            KoinStoreProgressIndicator(
+                modifier = Modifier.size(150.dp)
+            )
         }
     }
 
