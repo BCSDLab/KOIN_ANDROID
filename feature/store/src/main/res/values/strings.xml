@@ -124,5 +124,6 @@
     <string name="store_cart_add_max_selection_exceeded">최대 선택 개수를 초과했어요.</string>
     <string name="store_cart_add_invalid_menu_in_shop">선택한 메뉴는 해당 상점에 속해있지 않습니다.</string>
     <string name="store_cart_add_shop_closed">영업시간이 아니라서\n장바구니에 담을 수 없어요.</string>
+    <string name="store_cart_add_added">장바구니에 담았습니다</string>
     <string name="takeout_available">포장 가능</string>
 </resources>

@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.store.view
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -33,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -95,12 +97,14 @@ fun StoreDetailScreen(
     val currentToolbarHeightDp = rememberState.currentToolbarHeightDp()
     val statusBarHeight = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     LaunchedEffect(isCartModified) {
         snapshotFlow { isCartModified }
             .distinctUntilChanged()
             .onEach {
                 if (it) {
+                    Toast.makeText(context, R.string.store_cart_add_added, Toast.LENGTH_SHORT).show()
                     cartViewModel.getCart(cartUiState.cartType)
                 }
             }
