@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
-import `in`.koreatech.koin.feature.store.util.formatPrice
 
 @Composable
 fun PaymentSummaryCard(
@@ -50,7 +49,7 @@ fun PaymentSummaryCard(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(text = stringResource(R.string.total_amount), style = RebrandKoinTheme.typography.bold16)
-                    Text(text = stringResource(R.string.menu_price_won, formatPrice(totalAmount)), style = RebrandKoinTheme.typography.bold16)
+                    Text(text = stringResource(R.string.price_with_won, totalAmount), style = RebrandKoinTheme.typography.bold16)
                 }
                 Spacer(modifier = Modifier.height(12.dp))
                 Row(
@@ -62,7 +61,7 @@ fun PaymentSummaryCard(
                         color = RebrandKoinTheme.colors.neutral500
                     )
                     Text(
-                        text = stringResource(R.string.menu_price_won, formatPrice(itemAmount)),
+                        text = stringResource(R.string.price_with_won, itemAmount),
                         color = RebrandKoinTheme.colors.neutral500
                     )
                 }
@@ -76,7 +75,7 @@ fun PaymentSummaryCard(
                         color = RebrandKoinTheme.colors.neutral500
                     )
                     Text(
-                        text = stringResource(R.string.menu_price_won, formatPrice(deliveryFee)),
+                        text = stringResource(R.string.price_with_won, deliveryFee),
                         color = RebrandKoinTheme.colors.neutral500
                     )
                 }
@@ -92,7 +91,7 @@ fun PaymentSummaryCard(
                         style = RebrandKoinTheme.typography.bold16
                     )
                     Text(
-                        text = stringResource(R.string.menu_price_won, formatPrice(finalPaymentAmount)),
+                        text = stringResource(R.string.price_with_won, finalPaymentAmount),
                         style = RebrandKoinTheme.typography.bold16
                     )
                 }

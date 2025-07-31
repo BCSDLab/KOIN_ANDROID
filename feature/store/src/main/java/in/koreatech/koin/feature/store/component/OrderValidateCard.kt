@@ -32,7 +32,7 @@ import `in`.koreatech.koin.feature.store.R
 
 @Composable
 fun OrderBottomBar(
-    totalPrice: String,
+    totalPrice: Int,
     isOrderEnabled: Boolean,
     orderableMessage: String,
     modifier: Modifier = Modifier,
@@ -101,7 +101,7 @@ private fun OrderBottomBarPreview() {
         ) {
             Spacer(modifier = Modifier.weight(1f))
             OrderBottomBar(
-                totalPrice = "29500",
+                totalPrice = 29500,
                 isOrderEnabled = false,
                 orderableMessage = "최소 주문 금액은 20,000"
             )

@@ -139,7 +139,11 @@ private fun OptionPriceText(
             )
         } else {
             val options = menu.prices.fold("") { acc, menu ->
-                acc + stringResource(R.string.option_price, menu.name ?: "", menu.price ?: 0)
+                acc + if (menu.name != null) {
+                    stringResource(R.string.option_price, menu.name, menu.price ?: 0)
+                } else {
+                    stringResource(R.string.price_with_won, menu.price ?: 0)
+                }
             }.trim()
             Text(text = options, fontSize = 14.sp, fontWeight = FontWeight.Bold)
         }

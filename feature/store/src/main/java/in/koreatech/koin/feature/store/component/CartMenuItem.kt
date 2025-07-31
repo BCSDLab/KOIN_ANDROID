@@ -27,7 +27,6 @@ import `in`.koreatech.koin.domain.model.cart.CartItem
 import `in`.koreatech.koin.domain.model.cart.CartItemOption
 import `in`.koreatech.koin.domain.model.cart.CartItemPrice
 import `in`.koreatech.koin.feature.store.R
-import `in`.koreatech.koin.feature.store.util.formatPrice
 
 @Composable
 fun CartMenuItem(
@@ -37,32 +36,35 @@ fun CartMenuItem(
     onChangeQuantity: (Int, Int) -> Unit = { _, _ -> },
     onDeleteMenuItem: (Int) -> Unit = { }
 ) {
+    val context = LocalContext.current
+
     Column(modifier = modifier) {
         Row {
             Column(modifier = Modifier.weight(1f)) {
                 Text(modifier = Modifier.padding(vertical = 8.dp), text = menu.name, fontWeight = SemiBold, fontSize = 18.sp)
                 Text(
-                    text = stringResource(R.string.menu_price) + stringResource(R.string.menu_price_won, formatPrice(menu.totalAmount)),
+                    text = stringResource(R.string.store_cart_price, menu.totalAmount),
                     style = KoinTheme.typography.medium15,
                     color = KoinTheme.colors.neutral500
                 )
+
                 if (menu.options.isNotEmpty()) {
                     Text(
-                        text = menu.options.joinToString("\n") { "${it.optionName} : ${formatPrice(it.optionPrice)}원" },
+                        text = menu.options.joinToString("\n") { context.getString(R.string.store_cart_option_price, it.optionName, it.optionPrice) },
                         style = KoinTheme.typography.medium15,
                         color = KoinTheme.colors.neutral500
                     )
                 }
 
                 Text(
-                    text = stringResource(R.string.menu_price_won, formatPrice(menu.totalAmount)),
+                    text = stringResource(R.string.price_with_won, menu.totalAmount),
                     style = KoinTheme.typography.bold16,
                     color = KoinTheme.colors.neutral800
                 )
             }
             Spacer(modifier = Modifier.width(16.dp))
             AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
+                model = ImageRequest.Builder(context)
                     .data(menu.menuThumbnailImageUrl)
                     .crossfade(true)
                     .build(),
