@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopMenuUseCase
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopOriginInfoUseCase
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopSummaryUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetShopMenusUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuUseCase
@@ -38,6 +39,7 @@ class StoreDetailViewModel @Inject constructor(
     private val getStoreWithMenuUseCase: GetStoreWithMenuUseCase,
     private val getShopMenusUseCase: GetShopMenusUseCase,
     private val getStoreReviewUseCase: GetStoreReviewUseCase,
+    private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
     private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase
 ) : ViewModel(), ContainerHost<StoreDetailState, StoreDetailSideEffect> {
     override val container =
@@ -191,6 +193,21 @@ class StoreDetailViewModel @Inject constructor(
                 state.copy(
                     storeReview = reviews
                 )
+            }
+        }
+    }
+
+    fun getCartItemsCount() = intent {
+        reduce {
+            state.copy(isLoading = true)
+        }
+        getCartItemsCountUseCase().onSuccess { count ->
+            reduce {
+                state.copy(cartItemCount = count.totalQuantity, isLoading = false)
+            }
+        }.onFailure {
+            reduce {
+                state.copy(isLoading = false)
             }
         }
     }

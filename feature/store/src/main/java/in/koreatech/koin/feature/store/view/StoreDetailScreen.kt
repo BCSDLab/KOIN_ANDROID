@@ -57,6 +57,7 @@ import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
 import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -104,6 +105,14 @@ fun StoreDetailScreen(
                 }
             }
             .launchIn(coroutineScope)
+    }
+
+    LaunchedEffect(Unit) {
+        snapshotFlow {
+            uiState.isLogin
+        }.filter { it }.onEach {
+            viewModel.getCartItemsCount()
+        }
     }
 
     if (uiState.isLoading) {
@@ -225,7 +234,7 @@ fun StoreDetailScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "",
+                                text = "${uiState.cartItemCount}",
                                 style = RebrandKoinTheme.typography.medium12.copy(
                                     color = RebrandKoinTheme.colors.neutral0,
                                     lineHeightStyle = LineHeightStyle(

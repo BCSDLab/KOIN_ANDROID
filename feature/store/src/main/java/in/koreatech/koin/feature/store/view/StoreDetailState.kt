@@ -20,7 +20,8 @@ data class StoreDetailState(
     val scrollUp: StoreDetailScrollType = StoreDetailScrollType.NONE,
     val availableDelivery: Boolean = false,
     val isLogin: Boolean = false,
-    val isLoading: Boolean = true
+    val isLoading: Boolean = true,
+    val cartItemCount: Int = 0
 )
 fun OwnerInfoModel?.hasAnyInfo(): Boolean {
     return this?.let {
