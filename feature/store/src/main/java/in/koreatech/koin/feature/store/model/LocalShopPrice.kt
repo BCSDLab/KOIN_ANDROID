@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.store.model
 
 import android.os.Parcelable
+import `in`.koreatech.koin.domain.model.store.CartItemEdit
 import `in`.koreatech.koin.domain.model.store.ShopMenu.ShopMenuPrice
 import kotlinx.parcelize.Parcelize
 
@@ -12,6 +13,12 @@ data class LocalShopPrice(
 ) : Parcelable
 
 fun ShopMenuPrice.toLocalShopPrice() = LocalShopPrice(
+    id = this.id,
+    name = this.name,
+    price = this.price
+)
+
+fun CartItemEdit.CartItemEditPrice.toLocalShopPrice() = LocalShopPrice(
     id = this.id,
     name = this.name,
     price = this.price

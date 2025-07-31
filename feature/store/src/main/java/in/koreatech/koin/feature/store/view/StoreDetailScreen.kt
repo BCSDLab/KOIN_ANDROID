@@ -2,24 +2,20 @@ package `in`.koreatech.koin.feature.store.view
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.TabRowDefaults.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -28,27 +24,24 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.FontWeight.Companion.Bold
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
-import `in`.koreatech.feature.store.util.CustomClosingToolbarScreenDefaults
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.MenuCategoryChips
 import `in`.koreatech.koin.feature.store.component.menuListSection
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
 import `in`.koreatech.koin.feature.store.state.collapseToolbar
-import `in`.koreatech.koin.feature.store.state.currentToolbarHeightDp
-import `in`.koreatech.koin.feature.store.state.progress
 import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
 import kotlin.math.roundToInt
@@ -56,7 +49,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun StoreDetailScreen(
     viewModel: StoreDetailViewModel = hiltViewModel(),
@@ -69,9 +62,10 @@ fun StoreDetailScreen(
     val uiState by viewModel.collectAsState()
     val pagerState = rememberPagerState(0, 0f) { 1 }
 
-    val rememberState = rememberCollapsingToolbarState()
-    val progress = rememberState.progress()
-    val overlayAlpha = (progress).coerceIn(0f, 1f)
+    val rememberState = rememberCollapsingToolbarState(
+        toolbarMinHeight = 64.dp
+    )
+    val overlayAlpha = rememberState.progress()
     val nestedScrollConnection = storeCollapsingToolbarConnection(
         listState = rememberState.listState,
         toolbarOffsetPx = rememberState.toolbarOffsetPx,
@@ -90,11 +84,13 @@ fun StoreDetailScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .navigationBarsPadding()
-                .padding(
-                    top = currentToolbarHeightDp + CustomClosingToolbarScreenDefaults.windowInsets
-                        .asPaddingValues()
-                        .calculateTopPadding()
-                ),
+                .padding(bottom = rememberState.toolbarMinHeight * 2)
+                .offset {
+                    IntOffset(
+                        0,
+                        currentToolbarHeightDp.value.toPx().roundToInt() + rememberState.toolbarMinHeight.toPx().roundToInt()
+                    )
+                },
             state = rememberState.listState
         ) {
             item {
@@ -134,7 +130,9 @@ fun StoreDetailScreen(
                 menuListSection(
                     category = category.menuGroupName,
                     menus = category.menus,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
                 ) {
                     if (uiState.isOrderableShop) {
                         navigateToMenuInfo(it)
@@ -143,57 +141,66 @@ fun StoreDetailScreen(
             }
         }
 
-        Row(
-            modifier = Modifier
-                .statusBarsPadding()
-                .fillMaxWidth()
-                .zIndex(2f),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = {
+        KoinStoreTopAppBar(
+            modifier = Modifier.zIndex(2f),
+            title = uiState.store.name,
+            onNavigationIconClick = {
                 navigateToBack()
-            }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_arrow_left),
-                    contentDescription = null,
-                    tint = lerp(KoinTheme.colors.neutral800, KoinTheme.colors.neutral0, 1f - overlayAlpha)
-                )
-            }
-            Text(
-                text = uiState.store.name,
-                fontWeight = Bold,
-                color = KoinTheme.colors.neutral800.copy(alpha = overlayAlpha)
+            },
+            actions = {
+                Box(contentAlignment = Alignment.TopEnd) {
+                    IconButton(onClick = {
+                        navigateToCart()
+                    }) {
+                        Icon(
+                            modifier = Modifier.size(25.dp),
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_shopping_cart),
+                            contentDescription = null
+                        )
+                    }
+                    IconButton(onClick = {
+                        navigateToCart()
+                    }) {
+                        Icon(
+                            modifier = Modifier.size(25.dp),
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_shopping_cart),
+                            contentDescription = null
+                        )
+                    }
+                    Box(
+                        modifier = Modifier
+                            .offset(x = (-5).dp, y = 5.dp)
+                            .size(16.dp)
+                            .background(RebrandKoinTheme.colors.primary500, CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "",
+                            style = RebrandKoinTheme.typography.medium12.copy(
+                                color = RebrandKoinTheme.colors.neutral0,
+                                lineHeightStyle = LineHeightStyle(
+                                    trim = LineHeightStyle.Trim.Both,
+                                    alignment = LineHeightStyle.Alignment.Center
+                                )
+                            )
+                        )
+                    }
+                }
+            },
+            overlayAlpha = overlayAlpha
+        ) {
+            StoreDetailImage(
+                modifier = Modifier
+                    .heightIn(rememberState.toolbarMinHeight, rememberState.toolbarMinHeight + rememberState.toolbarMaxHeight)
+                    .fillMaxWidth()
+                    .graphicsLayer {
+                        clip = true
+                        translationY = -(rememberState.toolbarMaxHeight.toPx() - currentToolbarHeightDp.value.toPx())
+                        alpha = 1f - overlayAlpha.value
+                    },
+                imageUrls = uiState.store.imageUrls ?: emptyList(),
+                pagerState = pagerState
             )
-            Box(contentAlignment = Alignment.TopEnd) {
-                IconButton(onClick = {
-                    navigateToCart()
-                }) {
-                    Icon(
-                        modifier = Modifier.size(25.dp),
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_shopping_cart),
-                        contentDescription = null,
-                        tint = lerp(KoinTheme.colors.neutral800, KoinTheme.colors.neutral0, 1f - overlayAlpha)
-                    )
-                }
-                Box(
-                    modifier = Modifier
-                        .offset(x = (-5).dp, y = 5.dp)
-                        .size(16.dp)
-                        .background(Color.Magenta, CircleShape)
-                ) {
-                }
-            }
         }
-
-        StoreDetailImage(
-            modifier = Modifier
-                .height(rememberState.toolbarMaxHeight)
-                .offset { IntOffset(0, rememberState.toolbarOffsetPx.floatValue.roundToInt()) }
-                .fillMaxWidth(),
-            imageUrls = uiState.store.imageUrls ?: emptyList(),
-            alpha = overlayAlpha,
-            pagerState = pagerState
-        )
     }
 }

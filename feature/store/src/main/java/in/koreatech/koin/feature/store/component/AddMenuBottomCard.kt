@@ -28,6 +28,7 @@ import `in`.koreatech.koin.feature.store.R
 fun AddMenuBottomCard(
     price: Int,
     modifier: Modifier = Modifier,
+    isButtonEnabled: Boolean = true,
     onClick: () -> Unit = {}
 ) {
     Box(
@@ -43,6 +44,7 @@ fun AddMenuBottomCard(
             .navigationBarsPadding()
     ) {
         Button(
+            enabled = isButtonEnabled,
             onClick = onClick,
             shape = RebrandKoinTheme.shapes.medium,
             colors = ButtonDefaults.buttonColors(

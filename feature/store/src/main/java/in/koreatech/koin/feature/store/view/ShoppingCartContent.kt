@@ -65,6 +65,7 @@ fun ShoppingCartContent(
     isOperating: Boolean = true,
     dialogVisibility: Boolean = false,
     navigateToStoreDetail: (Int) -> Unit = { },
+    navigateToCartEdit: (Int) -> Unit = { },
     onOrderModeChanged: (CartType) -> Unit = { },
     onChangeQuantity: (Int, Int) -> Unit = { _, _ -> },
     onResetMenu: () -> Unit = { },
@@ -230,7 +231,7 @@ fun ShoppingCartContent(
                             modifier = Modifier
                                 .padding(16.dp),
                             menu = cartItem,
-                            navigateToMenu = {},
+                            navigateToMenu = navigateToCartEdit,
                             onChangeQuantity = { menuId, quantity ->
                                 onChangeQuantity(menuId, quantity)
                             },

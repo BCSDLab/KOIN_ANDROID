@@ -467,8 +467,8 @@ class StoreRepositoryImpl @Inject constructor(
 
                             401 -> KoinStoreException.UnauthorizedException()
                             404 -> when (e.getErrorResponse().code) {
-                                "MENU_PRICE_NOT_FOUND" -> KoinStoreException.MenuPriceNotFoundException()
-                                "MENU_OPTION_NOT_FOUND" -> KoinStoreException.MenuOptionNotFoundException()
+                                "NOT_FOUND_ORDERABLE_SHOP_MENU_PRICE" -> KoinStoreException.MenuPriceNotFoundException()
+                                "NOT_FOUND_ORDERABLE_SHOP_MENU_OPTION" -> KoinStoreException.MenuOptionNotFoundException()
                                 else -> e.getErrorResponse().toKoinUnknownErrorException()
                             }
 

@@ -36,6 +36,7 @@ fun ShoppingCartScreen(
     isOperating: Boolean = true,
     navigateToStoreDetail: (Int) -> Unit = { },
     navigateToPayment: () -> Unit = { },
+    navigateToCartEdit: (Int) -> Unit = { },
     navigateToStoreMain: () -> Unit = { }
 ) {
     val uiState by viewModel.collectAsState()
@@ -116,6 +117,7 @@ fun ShoppingCartScreen(
             setDialogVisibility = {
                 viewModel.setShowDeleteDialog(it)
             },
+            navigateToCartEdit = navigateToCartEdit,
             navigateToStoreDetail = { storeId ->
                 navigateToStoreDetail(storeId)
             }

@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.view.cart.add
+package `in`.koreatech.koin.feature.store.view.cart.edit
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -38,6 +38,7 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.AddMenuBottomCard
 import `in`.koreatech.koin.feature.store.component.KoinCartOptionItem
@@ -54,8 +55,8 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CartAddScreen(
-    viewModel: CartAddViewModel = hiltViewModel(),
+fun CartEditScreen(
+    viewModel: CartEditViewModel = hiltViewModel(),
     navigateToCart: () -> Unit = {},
     navigateBack: () -> Unit = {}
 ) {
@@ -104,7 +105,7 @@ fun CartAddScreen(
                 .weight(1f)
                 .nestedScroll(nestedScrollConnection)
         ) {
-            CartAddScreen(
+            CartEditScreen(
                 menuName = uiState.menuName,
                 menuDescription = uiState.menuDescription,
                 menuPrices = uiState.prices,
@@ -229,13 +230,13 @@ fun CartAddScreen(
         AddMenuBottomCard(
             price = uiState.price,
             isButtonEnabled = uiState.isButtonEnabled,
-            onClick = { viewModel.addCartItem() }
+            onClick = { viewModel.updateCartItem() }
         )
     }
 }
 
 @Composable
-private fun CartAddScreen(
+private fun CartEditScreen(
     menuName: String,
     menuDescription: String,
     menuPrices: List<LocalShopPrice>,
@@ -269,11 +270,7 @@ private fun CartAddScreen(
                 title = localShopMenuOptionGroup.name,
                 options = localShopMenuOptionGroup.options,
                 description = localShopMenuOptionGroup.description,
-                selectedId = localShopMenuOptionGroup.options.flatMap {
-                    localShopMenuOptionGroup.options.filter { option ->
-                        option.optionSelected
-                    }.map { it.id }
-                },
+                selectedId = localShopMenuOptionGroup.options.filter { it.optionSelected }.map { it.id },
                 requiredSelectCount = if (localShopMenuOptionGroup.minSelect == localShopMenuOptionGroup.maxSelect) {
                     localShopMenuOptionGroup.minSelect
                 } else {
@@ -289,10 +286,15 @@ private fun CartAddScreen(
 }
 
 fun handleSideEffect(
-    sideEffect: CartAddSideEffect,
+    sideEffect: CartEditSideEffect,
     navigateBack: () -> Unit
 ) {
     when (sideEffect) {
-        CartAddSideEffect.CartItemAdded -> navigateBack()
+        is CartEditSideEffect.UnknownError -> {
+            ToastUtil.getInstance().makeShort(R.string.error)
+            navigateBack()
+        }
+
+        CartEditSideEffect.CartItemUpdated -> navigateBack()
     }
 }

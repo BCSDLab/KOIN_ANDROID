@@ -1,18 +1,17 @@
-package `in`.koreatech.koin.feature.store.view.cart.add
+package `in`.koreatech.koin.feature.store.view.cart.edit
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.error.store.KoinStoreException
 import `in`.koreatech.koin.domain.model.store.AddCartItemOption
-import `in`.koreatech.koin.domain.model.store.CartAdd
-import `in`.koreatech.koin.domain.usecase.store.AddCartItemUseCase
-import `in`.koreatech.koin.domain.usecase.store.GetOrderableShopMenuUseCase
+import `in`.koreatech.koin.domain.model.store.CartItem
+import `in`.koreatech.koin.domain.usecase.store.GetCartItemEditUseCase
+import `in`.koreatech.koin.domain.usecase.store.UpdateCartItemUseCase
 import `in`.koreatech.koin.feature.store.enums.CartError
 import `in`.koreatech.koin.feature.store.model.toLocalShopMenuOptionGroup
 import `in`.koreatech.koin.feature.store.model.toLocalShopPrice
-import `in`.koreatech.koin.feature.store.navigation.ORDERABLE_SHOP_ID
-import `in`.koreatech.koin.feature.store.navigation.ORDERABLE_SHOP_MENU_ID
+import `in`.koreatech.koin.feature.store.navigation.CART_MENU_ITEM_ID
 import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -21,37 +20,33 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
-class CartAddViewModel @Inject constructor(
+class CartEditViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getOrderableShopMenuUseCase: GetOrderableShopMenuUseCase,
-    private val addCartItemUseCase: AddCartItemUseCase
-) : ViewModel(), ContainerHost<CartAddState, CartAddSideEffect> {
-    override val container = container<CartAddState, CartAddSideEffect>(CartAddState()) {
-        val orderableShopId = savedStateHandle.get<Int>(ORDERABLE_SHOP_ID)
-        val orderableShopMenuId = savedStateHandle.get<Int>(ORDERABLE_SHOP_MENU_ID)
+    private val getCartItemEditUseCase: GetCartItemEditUseCase,
+    private val updateCartItemUseCase: UpdateCartItemUseCase
+) : ViewModel(), ContainerHost<CartEditState, CartEditSideEffect> {
+    override val container = container<CartEditState, CartEditSideEffect>(CartEditState()) {
+        val cartMenuItemId = savedStateHandle.get<Int>(CART_MENU_ITEM_ID)
 
-        checkNotNull(orderableShopId)
-        checkNotNull(orderableShopMenuId)
+        checkNotNull(cartMenuItemId)
 
         intent {
             reduce {
                 state.copy(
-                    orderableShopId = orderableShopId,
-                    orderableShopMenuId = orderableShopMenuId
+                    cartMenuItemId = cartMenuItemId
                 )
             }
         }
 
-        getMenus()
+        getCart()
     }
 
-    private fun getMenus() = intent {
+    private fun getCart() = intent {
         reduce {
             state.copy(isLoading = true)
         }
-        getOrderableShopMenuUseCase(
-            shopId = state.orderableShopId,
-            menuId = state.orderableShopMenuId
+        getCartItemEditUseCase(
+            cartMenuItemId = state.cartMenuItemId
         ).onSuccess {
             reduce {
                 state.copy(
@@ -61,66 +56,53 @@ class CartAddViewModel @Inject constructor(
                     menuImageUrls = it.images,
                     prices = it.prices.map { it.toLocalShopPrice() },
                     options = it.optionGroups.map { it.toLocalShopMenuOptionGroup() },
-                    orderableShopMenuPriceId = if (it.prices.size == 1) {
-                        it.prices.first().id
-                    } else {
-                        -1
-                    }
+                    orderableShopMenuPriceId = it.prices.filter { it.isSelected }.getOrNull(0)?.id ?: -1
                 )
             }
         }.onFailure {
             reduce {
                 state.copy(isLoading = false)
             }
+            postSideEffect(CartEditSideEffect.UnknownError)
         }
     }
 
-    fun addCartItem() = intent {
+    fun updateCartItem() = intent {
         reduce {
             state.copy(isLoading = true)
         }
-        addCartItemUseCase(
-            CartAdd(
-                orderableShopId = state.orderableShopId,
-                orderableShopMenuId = state.orderableShopMenuId,
-                orderableShopMenuPriceId = state.prices.getOrNull(0)?.id ?: -1,
-                orderableShopMenuOptionIds = state.options.flatMap {
+        updateCartItemUseCase(
+            cartMenuItemId = state.cartMenuItemId,
+            cartItem = CartItem(
+                orderableShopMenuPriceId = state.orderableShopMenuPriceId,
+                options = state.options.flatMap {
                     it.options.filter { option -> option.optionSelected }.map { option ->
                         AddCartItemOption(
                             optionGroupId = it.id,
                             optionId = option.id
                         )
                     }
-                },
-                quantity = state.quantity
+                }
             )
         ).onSuccess {
             reduce {
-                state.copy(
-                    isLoading = false
-                )
+                state.copy(isLoading = false)
             }
-            postSideEffect(CartAddSideEffect.CartItemAdded)
+            postSideEffect(CartEditSideEffect.CartItemUpdated)
         }.onFailure { exception ->
             reduce {
                 state.copy(isLoading = false)
             }
             when (exception) {
-                is KoinStoreException.DifferentShopItemInCartException -> {
-                    reduce {
-                        state.copy(error = CartError.DIFFERENT_SHOP_ITEM_IN_CART, showErrorDialog = true)
-                    }
-                }
-
-                is KoinStoreException.MenuSoldOutException -> {
-                    reduce {
-                        state.copy(error = CartError.MENU_SOLD_OUT, showErrorDialog = true)
-                    }
-                }
-
                 is KoinStoreException.RequiredOptionGroupMissingException -> {
                     reduce {
                         state.copy(error = CartError.REQUIRED_OPTION_GROUP_MISSING, showErrorDialog = true)
+                    }
+                }
+
+                is KoinStoreException.MinimumSelectionNotMetException -> {
+                    reduce {
+                        state.copy(error = CartError.MIN_SELECTION_NOT_MET, showErrorDialog = true)
                     }
                 }
 
@@ -136,10 +118,8 @@ class CartAddViewModel @Inject constructor(
                     }
                 }
 
-                is KoinStoreException.ShopClosedException -> {
-                    reduce {
-                        state.copy(error = CartError.SHOP_CLOSED, showErrorDialog = true)
-                    }
+                else -> {
+                    postSideEffect(CartEditSideEffect.UnknownError)
                 }
             }
         }
