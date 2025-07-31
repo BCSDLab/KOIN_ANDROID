@@ -54,7 +54,6 @@ fun ShoppingCartScreen(
                     containerColor = colorResource(id = R.color.store_detail_background)
                 ),
                 title = stringResource(R.string.shopping_cart),
-//                onNavigationIconClick = navigateToStoreDetail,
                 onNavigationIconClick = {
                     uiState.cart.orderableShopId?.let { storeId ->
                         navigateToStoreDetail(storeId)

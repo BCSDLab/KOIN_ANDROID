@@ -51,7 +51,7 @@ fun NavGraphBuilder.koinStoreGraph(
         route = StoreNavType.StoreCart.route
     ) {
         ShoppingCartScreen(
-            navigateToStoreDetail = {storeId: Int ->
+            navigateToStoreDetail = { storeId: Int ->
                 navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId/${true}")
             },
             navigateToPayment = {

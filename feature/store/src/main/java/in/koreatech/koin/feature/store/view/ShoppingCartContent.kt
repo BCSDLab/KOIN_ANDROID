@@ -187,7 +187,6 @@ fun ShoppingCartContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 12.dp, horizontal = 4.dp)
-//                    .clickable { navigateToStoreDetail() }
                     .clickable {
                         cart.orderableShopId?.let { storeId ->
                             navigateToStoreDetail(storeId)
@@ -251,7 +250,6 @@ fun ShoppingCartContent(
         }
         item {
             Button(
-//                onClick = { navigateToStoreDetail() },
                 onClick = {
                     cart.orderableShopId?.let { storeId ->
                         navigateToStoreDetail(storeId)
