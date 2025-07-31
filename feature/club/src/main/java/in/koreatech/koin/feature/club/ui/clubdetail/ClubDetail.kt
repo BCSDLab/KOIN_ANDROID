@@ -583,7 +583,7 @@ fun ClubDetail(
                                     }
                                     DETAIL_INSTAGRAM -> {
                                         val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
-                                        linkUrl = if (url.isValidInstagramUrl()) url else url.toInstagramUrl()
+                                        linkUrl = if (url.isValidInstagramUrl()) url else url.removeUrlScheme().toInstagramUrl()
                                         onClick = { viewModel.openUrl(linkUrl) }
                                         outputText = it.toInstagramLink()
                                     }
