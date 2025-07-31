@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -32,7 +33,7 @@ import `in`.koreatech.koin.feature.store.R
 
 @Composable
 fun OrderBottomBar(
-    totalPrice: String,
+    totalPrice: Int,
     isOrderEnabled: Boolean,
     orderableMessage: String,
     modifier: Modifier = Modifier,
@@ -43,13 +44,17 @@ fun OrderBottomBar(
         shadowElevation = 10.dp,
         modifier = modifier
             .fillMaxWidth()
-            .navigationBarsPadding()
+            .shadow(
+                elevation = 10.dp,
+                shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+            )
             .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(RebrandKoinTheme.colors.neutral0)
+                .navigationBarsPadding()
                 .padding(horizontal = 16.dp, vertical = 15.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -101,7 +106,7 @@ private fun OrderBottomBarPreview() {
         ) {
             Spacer(modifier = Modifier.weight(1f))
             OrderBottomBar(
-                totalPrice = "29500",
+                totalPrice = 29500,
                 isOrderEnabled = false,
                 orderableMessage = "최소 주문 금액은 20,000"
             )

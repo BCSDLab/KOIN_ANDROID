@@ -1,12 +1,14 @@
 package `in`.koreatech.koin.feature.store.navigation
 
-import ShopOriginInfoScreen
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
+import `in`.koreatech.koin.feature.store.view.ShopOriginInfoScreen
 import `in`.koreatech.koin.feature.store.view.ShoppingCartScreen
 import `in`.koreatech.koin.feature.store.view.StoreDetailScreen
 import `in`.koreatech.koin.feature.store.view.cart.add.CartAddScreen
@@ -51,8 +53,14 @@ fun NavGraphBuilder.koinStoreGraph(
         route = StoreNavType.StoreCart.route
     ) {
         ShoppingCartScreen(
-            navigateToStoreDetail = { storeId: Int ->
-                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId/${true}")
+            navigateToStoreDetail = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(
+                    IS_CART_MODIFIED,
+                    true
+                )
+                if (!navController.navigateUp()) {
+                    finish()
+                }
             },
             navigateToPayment = {
                 navController.navigate(StoreNavType.StorePayment.route)
@@ -82,6 +90,10 @@ fun NavGraphBuilder.koinStoreGraph(
                 navController.navigate(StoreNavType.StoreCart.route)
             },
             navigateBack = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(
+                    IS_CART_MODIFIED,
+                    true
+                )
                 if (!navController.navigateUp()) {
                     finish()
                 }
@@ -102,6 +114,10 @@ fun NavGraphBuilder.koinStoreGraph(
                 navController.navigate(StoreNavType.StoreCart.route)
             },
             navigateBack = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(
+                    IS_CART_MODIFIED,
+                    true
+                )
                 if (!navController.navigateUp()) {
                     finish()
                 }
@@ -209,9 +225,11 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
             }
         )
     ) {
+        val isCartModified by it.savedStateHandle.getStateFlow(IS_CART_MODIFIED, initialValue = false).collectAsStateWithLifecycle()
         val storeId = it.arguments?.getInt("storeId") ?: 0
         val isOrderableShop = it.arguments?.getBoolean("isOrderableShop") ?: true
         StoreDetailScreen(
+            isCartModified = isCartModified,
             navigateToBack = {
                 if (!navController.navigateUp()) {
                     finish()
@@ -261,3 +279,4 @@ const val ORDERABLE_SHOP_MENU_ID = "orderableShopMenuId"
 const val ORDERABLE_SHOP_ID = "orderableShopId"
 const val IS_ORDERABLE_SHOP = "isOrderableShop"
 const val CART_MENU_ITEM_ID = "cartMenuItemId"
+const val IS_CART_MODIFIED = "isCartModified"
