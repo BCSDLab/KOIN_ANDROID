@@ -35,10 +35,10 @@ fun NavGraphBuilder.koinStoreGraph(
     }
 
     navigation(
-        route = "${StoreNavType.StoreDetail.route}/{storeId}",
-        startDestination = "${StoreDetailNavType.StoreDetailMain.route}/{storeId}",
+        route = "${StoreNavType.StoreDetail.route}/{$STORE_ID}",
+        startDestination = "${StoreDetailNavType.StoreDetailMain.route}/{$STORE_ID}",
         arguments = listOf(
-            navArgument("storeId") {
+            navArgument(STORE_ID) {
                 type = NavType.IntType
             }
         )
@@ -214,20 +214,20 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
     finish: () -> Unit = { }
 ) {
     composable(
-        route = "${StoreDetailNavType.StoreDetailMain.route}/{storeId}/{$IS_ORDERABLE_SHOP}",
+        route = "${StoreDetailNavType.StoreDetailMain.route}/{$STORE_ID}/{$IS_ORDERABLE_SHOP}",
         arguments = listOf(
-            navArgument("storeId") {
+            navArgument(STORE_ID) {
                 type = NavType.IntType
             },
-            navArgument("isOrderableShop") {
+            navArgument(IS_ORDERABLE_SHOP) {
                 type = NavType.BoolType
                 defaultValue = true
             }
         )
     ) {
         val isCartModified by it.savedStateHandle.getStateFlow(IS_CART_MODIFIED, initialValue = false).collectAsStateWithLifecycle()
-        val storeId = it.arguments?.getInt("storeId") ?: 0
-        val isOrderableShop = it.arguments?.getBoolean("isOrderableShop") ?: true
+        val storeId = it.arguments?.getInt(STORE_ID) ?: 0
+        val isOrderableShop = it.arguments?.getBoolean(IS_ORDERABLE_SHOP) ?: true
         StoreDetailScreen(
             isCartModified = isCartModified,
             navigateToBack = {
@@ -251,12 +251,12 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
     }
 
     composable(
-        route = "${StoreDetailNavType.StoreDetailInfo.route}/{storeId}/{isOrderableShop}",
+        route = "${StoreDetailNavType.StoreDetailInfo.route}/{$STORE_ID}/{$IS_ORDERABLE_SHOP}",
         arguments = listOf(
-            navArgument("storeId") {
+            navArgument(STORE_ID) {
                 type = NavType.IntType
             },
-            navArgument("isOrderableShop") {
+            navArgument(IS_ORDERABLE_SHOP) {
                 type = NavType.BoolType
                 defaultValue = true
             }
@@ -277,6 +277,7 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
 
 const val ORDERABLE_SHOP_MENU_ID = "orderableShopMenuId"
 const val ORDERABLE_SHOP_ID = "orderableShopId"
+const val STORE_ID = "storeId"
 const val IS_ORDERABLE_SHOP = "isOrderableShop"
 const val CART_MENU_ITEM_ID = "cartMenuItemId"
 const val IS_CART_MODIFIED = "isCartModified"

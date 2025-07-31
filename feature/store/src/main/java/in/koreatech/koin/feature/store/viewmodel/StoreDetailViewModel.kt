@@ -18,6 +18,8 @@ import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
 import `in`.koreatech.koin.feature.store.model.toMenuCategoryModel
 import `in`.koreatech.koin.feature.store.model.toStoreIndoModel
 import `in`.koreatech.koin.feature.store.model.toStoreInfoModel
+import `in`.koreatech.koin.feature.store.navigation.IS_ORDERABLE_SHOP
+import `in`.koreatech.koin.feature.store.navigation.STORE_ID
 import `in`.koreatech.koin.feature.store.view.StoreDetailSideEffect
 import `in`.koreatech.koin.feature.store.view.StoreDetailState
 import javax.inject.Inject
@@ -41,7 +43,7 @@ class StoreDetailViewModel @Inject constructor(
     override val container =
         container<StoreDetailState, StoreDetailSideEffect>(StoreDetailState()) {
             val storeId = savedStateHandle.get<Int>(STORE_ID)
-            val isOrderableShop = savedStateHandle.get<Boolean>("isOrderableShop") ?: true
+            val isOrderableShop = savedStateHandle.get<Boolean>(IS_ORDERABLE_SHOP) ?: true
             checkNotNull(storeId)
 
             intent {
@@ -205,9 +207,5 @@ class StoreDetailViewModel @Inject constructor(
                 }
             )
         }
-    }
-
-    companion object {
-        const val STORE_ID = "storeId"
     }
 }
