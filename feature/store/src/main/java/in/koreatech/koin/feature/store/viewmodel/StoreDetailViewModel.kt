@@ -44,6 +44,14 @@ class StoreDetailViewModel @Inject constructor(
             val isOrderableShop = savedStateHandle.get<Boolean>("isOrderableShop") ?: true
             checkNotNull(storeId)
 
+            intent {
+                reduce {
+                    state.copy(
+                        isOrderableShop = isOrderableShop
+                    )
+                }
+            }
+
             if (isOrderableShop) {
                 fetchOrderableStore(storeId)
             } else {
