@@ -33,7 +33,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,7 +42,6 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.model.DeliveryTipModel
-import `in`.koreatech.koin.feature.store.view.hasAnyInfo
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
 import org.orbitmvi.orbit.compose.collectAsState
 
@@ -112,14 +110,14 @@ fun ShopOriginInfoScreen(
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = stringResource(R.string.store_info),
-                style = RebrandKoinTheme.typography.bold18,
+                style = RebrandKoinTheme.typography.bold18
             )
             Text(text = uiState.value.shopDescription.notice ?: stringResource(R.string.no_registered_information), style = RebrandKoinTheme.typography.regular14)
             Spacer(Modifier.height(24.dp))
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = stringResource(R.string.total_delivery_tip_by_order_amount),
-                style = RebrandKoinTheme.typography.bold18,
+                style = RebrandKoinTheme.typography.bold18
             )
             DeliveryFeeTable(
                 modifier = Modifier.fillMaxWidth(),
@@ -129,7 +127,7 @@ fun ShopOriginInfoScreen(
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = stringResource(R.string.business_info),
-                style = RebrandKoinTheme.typography.bold18,
+                style = RebrandKoinTheme.typography.bold18
             )
             if (uiState.value.shopDescription.ownerInfo.hasAnyInfo()) {
                 Row {
@@ -160,13 +158,13 @@ fun ShopOriginInfoScreen(
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = stringResource(R.string.origin_marking),
-                style = RebrandKoinTheme.typography.bold18,
+                style = RebrandKoinTheme.typography.bold18
             )
             Text(
                 text = uiState.value.shopDescription.origins?.joinToString(separator = ", ") {
                     "${it.ingredients} (${it.origin})"
                 } ?: stringResource(R.string.no_registered_information),
-                style = RebrandKoinTheme.typography.regular14,
+                style = RebrandKoinTheme.typography.regular14
             )
         }
     }

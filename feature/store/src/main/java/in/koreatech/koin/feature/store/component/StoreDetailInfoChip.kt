@@ -84,7 +84,7 @@ fun AvailableChips(storeInfo: ShopInfoModel) {
 @Composable
 private fun AvailableChip(
     text: String,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Surface(
         shadowElevation = 1.dp,
