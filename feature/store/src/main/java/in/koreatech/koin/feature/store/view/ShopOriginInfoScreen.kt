@@ -27,6 +27,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -53,7 +54,7 @@ fun ShopOriginInfoScreen(
     onBackClick: () -> Unit,
     navigateToShoppingCart: () -> Unit = {}
 ) {
-    val uiState = storeDetailViewModel.collectAsState()
+    val uiState by storeDetailViewModel.collectAsState()
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -112,7 +113,7 @@ fun ShopOriginInfoScreen(
                 text = stringResource(R.string.store_info),
                 style = RebrandKoinTheme.typography.bold18
             )
-            Text(text = uiState.value.shopDescription.notice ?: stringResource(R.string.no_registered_information), style = RebrandKoinTheme.typography.regular14)
+            Text(text = uiState.shopDescription.notice ?: stringResource(R.string.no_registered_information), style = RebrandKoinTheme.typography.regular14)
             Spacer(Modifier.height(24.dp))
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
@@ -121,7 +122,7 @@ fun ShopOriginInfoScreen(
             )
             DeliveryFeeTable(
                 modifier = Modifier.fillMaxWidth(),
-                deliveryFees = uiState.value.shopDescription.deliveryTips ?: emptyList()
+                deliveryFees = uiState.shopDescription.deliveryTips ?: emptyList()
             )
             Spacer(Modifier.height(24.dp))
             Text(
@@ -129,26 +130,26 @@ fun ShopOriginInfoScreen(
                 text = stringResource(R.string.business_info),
                 style = RebrandKoinTheme.typography.bold18
             )
-            if (uiState.value.shopDescription.ownerInfo.hasAnyInfo()) {
+            if (uiState.shopDescription.ownerInfo.hasAnyInfo()) {
                 Row {
                     Column(
                         modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        if (uiState.value.shopDescription.ownerInfo?.name != null) Text(text = stringResource(R.string.owner_name))
-                        if (uiState.value.shopDescription.ownerInfo?.shopName != null) Text(text = stringResource(R.string.trade_name))
-                        if (uiState.value.shopDescription.ownerInfo?.address != null) Text(text = stringResource(R.string.business_address))
-                        if (uiState.value.shopDescription.ownerInfo?.companyRegistrationNumber != null) Text(stringResource(R.string.business_registration_number))
+                        if (uiState.shopDescription.ownerInfo?.name != null) Text(text = stringResource(R.string.owner_name))
+                        if (uiState.shopDescription.ownerInfo?.shopName != null) Text(text = stringResource(R.string.trade_name))
+                        if (uiState.shopDescription.ownerInfo?.address != null) Text(text = stringResource(R.string.business_address))
+                        if (uiState.shopDescription.ownerInfo?.companyRegistrationNumber != null) Text(stringResource(R.string.business_registration_number))
                     }
 
                     Column(
                         modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        uiState.value.shopDescription.ownerInfo?.name?.let { Text(it) }
-                        uiState.value.shopDescription.ownerInfo?.shopName?.let { Text(it) }
-                        uiState.value.shopDescription.ownerInfo?.address?.let { Text(it) }
-                        uiState.value.shopDescription.ownerInfo?.companyRegistrationNumber?.let { Text(it) }
+                        uiState.shopDescription.ownerInfo?.name?.let { Text(it) }
+                        uiState.shopDescription.ownerInfo?.shopName?.let { Text(it) }
+                        uiState.shopDescription.ownerInfo?.address?.let { Text(it) }
+                        uiState.shopDescription.ownerInfo?.companyRegistrationNumber?.let { Text(it) }
                     }
                 }
             } else {
@@ -161,7 +162,7 @@ fun ShopOriginInfoScreen(
                 style = RebrandKoinTheme.typography.bold18
             )
             Text(
-                text = uiState.value.shopDescription.origins?.joinToString(separator = ", ") {
+                text = uiState.shopDescription.origins?.joinToString(separator = ", ") {
                     "${it.ingredients} (${it.origin})"
                 } ?: stringResource(R.string.no_registered_information),
                 style = RebrandKoinTheme.typography.regular14
