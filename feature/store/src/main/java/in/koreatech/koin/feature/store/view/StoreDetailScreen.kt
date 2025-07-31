@@ -259,7 +259,7 @@ fun StoreDetailScreen(
                 )
             }
         }
-        if (cartUiState.cart.items.isNotEmpty()) {
+        if (cartUiState.cart.items.isNotEmpty() && cartUiState.cart.orderableShopId == uiState.store.orderableShopId) {
             OrderBottomBar(
                 itemCount = cartUiState.cart.items.count(),
                 totalPrice = cartUiState.cart.totalAmount,
