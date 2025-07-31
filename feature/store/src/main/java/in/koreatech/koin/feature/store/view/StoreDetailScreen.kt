@@ -1,7 +1,5 @@
 package `in`.koreatech.koin.feature.store.view
 
-import android.util.Log
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -24,7 +22,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,13 +33,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -57,13 +52,13 @@ import `in`.koreatech.koin.feature.store.state.collapseToolbar
 import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
 import `in`.koreatech.koin.feature.store.viewmodel.ShoppingCartViewModel
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import org.orbitmvi.orbit.compose.collectAsState
 import kotlin.math.roundToInt
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -101,7 +96,6 @@ fun StoreDetailScreen(
             .onEach {
                 if (it) {
                     cartViewModel.getCart(cartUiState.cartType)
-
                 }
             }
             .launchIn(coroutineScope)
@@ -110,13 +104,14 @@ fun StoreDetailScreen(
     Scaffold(
         modifier = modifier.imePadding(),
         bottomBar = {
-            if (cartUiState.cart.items.isNotEmpty())
+            if (cartUiState.cart.items.isNotEmpty()) {
                 OrderBottomBar(
                     totalPrice = cartUiState.cart.totalAmount,
                     isOrderEnabled = cartUiState.cartValidation == CartValidation.VALID,
                     orderableMessage = cartUiState.isValidateCart.message,
                     navigateToCart = navigateToCart
                 )
+            }
         }
 
     ) {
@@ -255,6 +250,5 @@ fun StoreDetailScreen(
                 )
             }
         }
-
     }
 }
