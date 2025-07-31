@@ -543,39 +543,6 @@ fun ShopMenusResponse.toShopMenus() = ShopMenus(
     }
 )
 
-fun ShopMenu.toAddMenu() = CartItemEdit(
-    id = id,
-    name = name,
-    description = description,
-    images = images,
-    prices = prices.map { price ->
-        CartItemEdit.CartItemEditPrice(
-            id = price.id,
-            name = price.name,
-            price = price.price,
-            isSelected = false
-        )
-    },
-    optionGroups = optionGroups.map { optionGroup ->
-        CartItemEdit.CartItemEditOptionGroup(
-            id = optionGroup.id,
-            name = optionGroup.name,
-            description = optionGroup.description,
-            isRequired = optionGroup.isRequired,
-            minSelect = optionGroup.minSelect,
-            maxSelect = optionGroup.maxSelect,
-            options = optionGroup.options.map { option ->
-                CartItemEditPrice(
-                    id = option.id,
-                    name = option.name,
-                    price = option.price,
-                    isSelected = false
-                )
-            }
-        )
-    }
-)
-
 fun ShopMenuResponse.toShopMenu() = ShopMenu(
     id = id,
     name = name,
