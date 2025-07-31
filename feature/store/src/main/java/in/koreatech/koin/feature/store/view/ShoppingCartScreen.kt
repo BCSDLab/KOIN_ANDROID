@@ -83,7 +83,11 @@ fun ShoppingCartScreen(
                     itemCount = uiState.cart.items.count(),
                     totalPrice = uiState.cart.totalAmount,
                     isOrderEnabled = uiState.cartValidation == CartValidation.VALID,
-                    orderableMessage = uiState.isValidateCart.message,
+                    orderableMessage = if (uiState.cart.totalAmount >= uiState.minimumOrderAmount) {
+                        stringResource(R.string.store_cart_amount_met)
+                    } else {
+                        stringResource(R.string.store_cart_amount_not_met, uiState.minimumOrderAmount - uiState.cart.totalAmount)
+                    },
                     navigateToCart = navigateToPayment
                 )
             }

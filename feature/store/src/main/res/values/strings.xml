@@ -32,6 +32,8 @@
     <string name="option_price">%1$s : %2$,d원\n</string>
     <string name="delivery_not_available">코인 주문이\n불가능한 매장이에요.</string>
     <string name="store_detail_notice_empty">등록된 공지가\n없습니다.</string>
+    <string name="store_order_can_delivery">배달 가능</string>
+    <string name="store_order_cant_delivery">배달 불가</string>
 
     <!--가게 정보 및 원산지-->
     <string name="store_info_and_origin">가게정보·원산지</string>
@@ -111,6 +113,9 @@
     <string name="store_cart_add_menu">장바구니 추가</string>
     <string name="store_cart_price">가격 : %1$,d원</string>
     <string name="store_cart_option_price">%1$s : %2$,d원</string>
+
+    <string name="store_cart_amount_not_met">%1$,d원 더 담으면 배달 가능 </string>
+    <string name="store_cart_amount_met">주문 가능</string>
 
     <string name="store_cart_add_different_shop_item_in_cart">장바구니에는 같은 가게 메뉴만 담을 수 있어요.\n담았던 메뉴는 삭제할까요?</string>
     <string name="store_cart_add_menu_sold_out">해당 메뉴는 품절이에요.</string>

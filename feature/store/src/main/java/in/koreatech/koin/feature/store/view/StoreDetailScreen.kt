@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.IntOffset
@@ -263,7 +264,7 @@ fun StoreDetailScreen(
                 itemCount = cartUiState.cart.items.count(),
                 totalPrice = cartUiState.cart.totalAmount,
                 isOrderEnabled = cartUiState.cartValidation == CartValidation.VALID,
-                orderableMessage = cartUiState.isValidateCart.message,
+                orderableMessage = if (cartUiState.cart.totalAmount >= cartUiState.minimumOrderAmount) stringResource(R.string.store_order_can_delivery) else stringResource(R.string.store_order_cant_delivery),
                 navigateToCart = navigateToCart
             )
         }
