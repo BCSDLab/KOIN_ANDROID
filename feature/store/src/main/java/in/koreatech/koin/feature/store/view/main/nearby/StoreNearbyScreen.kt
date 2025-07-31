@@ -297,6 +297,10 @@ private fun StoreNearbyScreen(
                         }
                     }
                 }
+
+                item {
+                    // Empty item for bottom spacing
+                }
             }
 
             if (showOrderOptions) {

@@ -321,6 +321,10 @@ private fun StoreHomeScreen(
                         }
                     }
                 }
+
+                item {
+                    // Empty item for bottom spacing
+                }
             }
 
             if (showOrderOptions) {
