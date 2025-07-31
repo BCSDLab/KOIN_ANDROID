@@ -64,7 +64,8 @@ fun ShoppingCartContent(
     cartType: CartType = CartType.DELIVERY,
     isOperating: Boolean = true,
     dialogVisibility: Boolean = false,
-    navigateToStoreDetail: () -> Unit = { },
+    navigateToStoreDetail: (Int) -> Unit = { },
+    navigateToCartEdit: (Int) -> Unit = { },
     onOrderModeChanged: (CartType) -> Unit = { },
     onChangeQuantity: (Int, Int) -> Unit = { _, _ -> },
     onResetMenu: () -> Unit = { },
@@ -187,7 +188,11 @@ fun ShoppingCartContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 12.dp, horizontal = 4.dp)
-                    .clickable { navigateToStoreDetail() }
+                    .clickable {
+                        cart.orderableShopId?.let { storeId ->
+                            navigateToStoreDetail(storeId)
+                        }
+                    }
             ) {
                 Image(
                     painter = rememberAsyncImagePainter(cart.shopThumbnailImageUrl),
@@ -226,7 +231,7 @@ fun ShoppingCartContent(
                             modifier = Modifier
                                 .padding(16.dp),
                             menu = cartItem,
-                            navigateToMenu = {},
+                            navigateToMenu = navigateToCartEdit,
                             onChangeQuantity = { menuId, quantity ->
                                 onChangeQuantity(menuId, quantity)
                             },
@@ -246,7 +251,11 @@ fun ShoppingCartContent(
         }
         item {
             Button(
-                onClick = { navigateToStoreDetail() },
+                onClick = {
+                    cart.orderableShopId?.let { storeId ->
+                        navigateToStoreDetail(storeId)
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .drawBehind {
@@ -289,7 +298,7 @@ fun ShoppingCartContent(
 @Composable
 fun ShoppingCartEmptyContent(
     modifier: Modifier = Modifier,
-    navigateToStoreDetail: () -> Unit = { }
+    navigateToStoreMain: () -> Unit = { }
 ) {
     Column(
         modifier = modifier
@@ -311,7 +320,7 @@ fun ShoppingCartEmptyContent(
         )
         Button(
             onClick = {
-                navigateToStoreDetail()
+                navigateToStoreMain()
             },
             modifier = Modifier
                 .padding(top = 20.dp),
