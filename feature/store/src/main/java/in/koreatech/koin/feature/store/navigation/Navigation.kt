@@ -130,8 +130,10 @@ fun NavGraphBuilder.koinStoreGraph(
         StorePaymentScreen(
             finish = finish,
             navigateBack = {
-                if (!navController.navigateUp()) {
-                    finish()
+                navController.navigate(StoreNavType.StoreMain.route) {
+                    popUpTo(StoreNavType.StoreMain.route) {
+                        inclusive = true
+                    }
                 }
             }
         )

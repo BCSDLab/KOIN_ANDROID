@@ -74,7 +74,7 @@ fun StorePaymentScreen(
                 if (webView?.canGoBack() == true) {
                     webView.goBack()
                 } else {
-                    finish()
+                    navigateBack()
                 }
             }
         }
