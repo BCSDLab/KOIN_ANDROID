@@ -13,6 +13,8 @@ import `in`.koreatech.koin.feature.store.view.main.home.StoreHomeScreen
 import `in`.koreatech.koin.feature.store.view.main.nearby.StoreNearbyScreen
 import `in`.koreatech.koin.feature.store.view.payment.StorePaymentScreen
 import `in`.koreatech.koin.feature.store.view.search.StoreSearchScreen
+import `in`.koreatech.koin.feature.store.viewmodel.AddMenuViewModel.Companion.CART_MENU_ID
+import `in`.koreatech.koin.feature.store.viewmodel.AddMenuViewModel.Companion.ORDERABLE_STORE_ID
 
 fun NavGraphBuilder.koinStoreGraph(
     navController: NavController,
@@ -49,13 +51,14 @@ fun NavGraphBuilder.koinStoreGraph(
         route = StoreNavType.StoreCart.route
     ) {
         ShoppingCartScreen(
-            navigateToStoreDetail = {
-                if (!navController.navigateUp()) {
-                    finish()
-                }
+            navigateToStoreDetail = { storeId: Int ->
+                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId/${true}")
             },
             navigateToPayment = {
                 navController.navigate(StoreNavType.StorePayment.route)
+            },
+            navigateToStoreMain = {
+                navController.navigate(StoreNavType.StoreMain.route)
             }
         )
     }

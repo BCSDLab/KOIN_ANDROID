@@ -27,6 +27,7 @@ import `in`.koreatech.koin.domain.model.cart.CartItem
 import `in`.koreatech.koin.domain.model.cart.CartItemOption
 import `in`.koreatech.koin.domain.model.cart.CartItemPrice
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.util.formatPrice
 
 @Composable
 fun CartMenuItem(
@@ -41,20 +42,20 @@ fun CartMenuItem(
             Column(modifier = Modifier.weight(1f)) {
                 Text(modifier = Modifier.padding(vertical = 8.dp), text = menu.name, fontWeight = SemiBold, fontSize = 18.sp)
                 Text(
-                    text = stringResource(R.string.menu_price) + stringResource(R.string.menu_price_won, menu.totalAmount.toString()),
+                    text = stringResource(R.string.menu_price) + stringResource(R.string.menu_price_won, formatPrice(menu.totalAmount)),
                     style = KoinTheme.typography.medium15,
                     color = KoinTheme.colors.neutral500
                 )
                 if (menu.options.isNotEmpty()) {
                     Text(
-                        text = menu.options.joinToString("\n") { "${it.optionName} : ${it.optionPrice}원" },
+                        text = menu.options.joinToString("\n") { "${it.optionName} : ${formatPrice(it.optionPrice)}원" },
                         style = KoinTheme.typography.medium15,
                         color = KoinTheme.colors.neutral500
                     )
                 }
 
                 Text(
-                    text = stringResource(R.string.menu_price_won, menu.totalAmount.toString()),
+                    text = stringResource(R.string.menu_price_won, formatPrice(menu.totalAmount)),
                     style = KoinTheme.typography.bold16,
                     color = KoinTheme.colors.neutral800
                 )
@@ -105,7 +106,7 @@ private fun ShoppingCartItem() {
                 quantity = 2,
                 menuThumbnailImageUrl = "https://example.com/image.jpg",
                 options = listOf(
-                    CartItemOption(optionGroupName = "테스트", optionName = "샷 추가", optionPrice = 500)
+                    CartItemOption(optionGroupName = "테스트", optionName = "샷 추가", optionPrice = 1500)
                 ),
                 price = CartItemPrice(
                     name = "아메리카노",
