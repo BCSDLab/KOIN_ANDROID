@@ -78,13 +78,15 @@ fun ShoppingCartScreen(
             )
         },
         bottomBar = {
-            OrderBottomBar(
-                itemCount = uiState.cart.items.count(),
-                totalPrice = uiState.cart.totalAmount,
-                isOrderEnabled = uiState.cartValidation == CartValidation.VALID,
-                orderableMessage = uiState.isValidateCart.message,
-                navigateToCart = navigateToPayment
-            )
+            if (uiState.cart.items.isNotEmpty()) {
+                OrderBottomBar(
+                    itemCount = uiState.cart.items.count(),
+                    totalPrice = uiState.cart.totalAmount,
+                    isOrderEnabled = uiState.cartValidation == CartValidation.VALID,
+                    orderableMessage = uiState.isValidateCart.message,
+                    navigateToCart = navigateToPayment
+                )
+            }
         }
     ) { innerPadding ->
         if (uiState.cart.items.isEmpty()) {
