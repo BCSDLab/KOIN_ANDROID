@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.feature.store.view
 
+import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -22,15 +24,19 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.LineHeightStyle
@@ -55,10 +61,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import kotlin.math.roundToInt
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun StoreDetailScreen(
+    isCartModified: Boolean = false,
     viewModel: StoreDetailViewModel = hiltViewModel(),
     cartViewModel: ShoppingCartViewModel = hiltViewModel(),
     navigateToCart: () -> Unit = {},
@@ -85,6 +95,18 @@ fun StoreDetailScreen(
     val currentToolbarHeightDp = rememberState.currentToolbarHeightDp()
     val coroutineScope = rememberCoroutineScope()
 
+    LaunchedEffect(isCartModified) {
+        snapshotFlow { isCartModified }
+            .distinctUntilChanged()
+            .onEach {
+                if (it) {
+                    cartViewModel.getCart(cartUiState.cartType)
+
+                }
+            }
+            .launchIn(coroutineScope)
+    }
+
     Scaffold(
         modifier = modifier.imePadding(),
         bottomBar = {
@@ -95,7 +117,6 @@ fun StoreDetailScreen(
                     orderableMessage = cartUiState.isValidateCart.message,
                     navigateToCart = navigateToCart
                 )
-
         }
 
     ) {
@@ -168,7 +189,7 @@ fun StoreDetailScreen(
                         }
                     }
                 }
-                item{
+                item {
                     Spacer(modifier = Modifier.height(100.dp))
                 }
             }
