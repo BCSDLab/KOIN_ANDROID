@@ -26,11 +26,14 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.OrderBottomBar
 import `in`.koreatech.koin.feature.store.enums.CartValidation
 import `in`.koreatech.koin.feature.store.viewmodel.ShoppingCartViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShoppingCartScreen(
+    isCartModified: Boolean = false,
     viewModel: ShoppingCartViewModel = hiltViewModel(),
     isOperating: Boolean = true,
     navigateToStoreDetail: (Int) -> Unit = { },
@@ -44,6 +47,16 @@ fun ShoppingCartScreen(
         snapshotFlow { uiState.cart }
             .collect {
                 viewModel.getCartValidate()
+            }
+    }
+
+    LaunchedEffect(isCartModified) {
+        snapshotFlow { isCartModified }
+            .distinctUntilChanged()
+            .collectLatest {
+                if (it) {
+                    viewModel.getCart(uiState.cartType)
+                }
             }
     }
 

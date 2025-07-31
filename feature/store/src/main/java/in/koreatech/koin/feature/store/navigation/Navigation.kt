@@ -52,7 +52,10 @@ fun NavGraphBuilder.koinStoreGraph(
     composable(
         route = StoreNavType.StoreCart.route
     ) {
+        val isCartModified by it.savedStateHandle.getStateFlow(IS_CART_MODIFIED, initialValue = false).collectAsStateWithLifecycle()
+
         ShoppingCartScreen(
+            isCartModified = isCartModified,
             navigateToStoreDetail = {
                 navController.previousBackStackEntry?.savedStateHandle?.set(
                     IS_CART_MODIFIED,
