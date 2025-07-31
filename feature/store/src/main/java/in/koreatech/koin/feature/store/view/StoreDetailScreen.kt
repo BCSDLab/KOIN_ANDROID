@@ -82,9 +82,7 @@ fun StoreDetailScreen(
         uiState.store.imageUrls?.size ?: 0
     }
 
-    val rememberState = rememberCollapsingToolbarState(
-        toolbarMinHeight = 64.dp
-    )
+    val rememberState = rememberCollapsingToolbarState()
     val overlayAlpha = rememberState.progress()
     val nestedScrollConnection = storeCollapsingToolbarConnection(
         listState = rememberState.listState,
@@ -141,11 +139,11 @@ fun StoreDetailScreen(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = rememberState.toolbarMinHeight)
+                    .padding(bottom = rememberState.toolbarMinHeight + statusBarHeight)
                     .offset {
                         IntOffset(
                             0,
-                            currentToolbarHeightDp.value.toPx().roundToInt() + rememberState.toolbarMinHeight.toPx().roundToInt()
+                            currentToolbarHeightDp.value.toPx().roundToInt() + statusBarHeight.toPx().roundToInt()
                         )
                     },
                 state = rememberState.listState
@@ -208,15 +206,6 @@ fun StoreDetailScreen(
                 },
                 actions = {
                     Box(contentAlignment = Alignment.TopEnd) {
-                        IconButton(onClick = {
-                            navigateToCart()
-                        }) {
-                            Icon(
-                                modifier = Modifier.size(25.dp),
-                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_shopping_cart),
-                                contentDescription = null
-                            )
-                        }
                         IconButton(onClick = {
                             navigateToCart()
                         }) {

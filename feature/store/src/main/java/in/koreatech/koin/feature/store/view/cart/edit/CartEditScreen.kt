@@ -70,9 +70,7 @@ fun CartEditScreen(
         handleSideEffect(it, navigateBack)
     }
 
-    val rememberState = rememberCollapsingToolbarState(
-        toolbarMinHeight = 64.dp
-    )
+    val rememberState = rememberCollapsingToolbarState()
     val overlayAlpha = rememberState.progress()
     val nestedScrollConnection = storeCollapsingToolbarConnection(
         listState = rememberState.listState,
