@@ -31,13 +31,13 @@ class ShoppingCartViewModel @Inject constructor(
 
     init {
         getCart(CartType.DELIVERY)
-        getCartValidate()
     }
 
     fun getCart(type: CartType) = intent {
         cartUseCase(type).collect { cart ->
             reduce { state.copy(cart = cart, cartType = type) }
         }
+        getCartValidate()
     }
 
     fun getCartValidate() = intent {
