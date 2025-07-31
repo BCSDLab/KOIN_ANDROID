@@ -57,6 +57,7 @@ class StoreDetailViewModel @Inject constructor(
         getOrderShopOriginInfoUseCase(id).also { result ->
             reduce {
                 state.copy(
+                    isLoading = false,
                     shopDescription = StoreDescriptionModel(
                         id = id,
                         storeName = result.name,
@@ -93,13 +94,11 @@ class StoreDetailViewModel @Inject constructor(
         getOrderShopSummaryUseCase(id).also { result ->
             reduce {
                 state.copy(
-                    store = result.toStoreIndoModel(),
-                    isLoading = false
+                    store = result.toStoreIndoModel()
                 )
             }
         }
         fetchOrderableStoreMenu(id)
-        fetchOrderStoreNotice(id)
     }
 
     private fun fetchOrderableStoreMenu(id: Int) = intent {
@@ -114,6 +113,7 @@ class StoreDetailViewModel @Inject constructor(
                 )
             }
         }
+        fetchOrderStoreNotice(id)
     }
 
     private fun fetchStore(id: Int) = intent {
@@ -159,20 +159,17 @@ class StoreDetailViewModel @Inject constructor(
     }
 
     private fun checkToken() = intent {
-        reduce { state.copy(isLoading = true) }
         val hasToken = isTokenSavedInDeviceUseCase()
         if (hasToken) {
             reduce {
                 state.copy(
-                    isLogin = true,
-                    isLoading = false
+                    isLogin = true
                 )
             }
         } else {
             reduce {
                 state.copy(
-                    isLogin = false,
-                    isLoading = false
+                    isLogin = false
                 )
             }
         }

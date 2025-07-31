@@ -37,10 +37,12 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.MenuCategoryChips
 import `in`.koreatech.koin.feature.store.component.OrderBottomBar
@@ -104,13 +106,26 @@ fun StoreDetailScreen(
             .launchIn(coroutineScope)
     }
 
+    if (uiState.isLoading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .zIndex(2f),
+            contentAlignment = Alignment.Center
+        ) {
+            KoinStoreProgressIndicator(
+                modifier = Modifier.size(150.dp)
+            )
+        }
+    }
+
     Column(
         modifier = modifier
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .weight (1f)
+                .weight(1f)
                 .background(color = colorResource(id = R.color.store_detail_background))
                 .nestedScroll(nestedScrollConnection)
         ) {
