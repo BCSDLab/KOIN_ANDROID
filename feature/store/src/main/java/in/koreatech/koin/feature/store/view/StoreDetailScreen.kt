@@ -23,6 +23,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -235,7 +236,10 @@ fun StoreDetailScreen(
                         }
                     }
                 },
-                overlayAlpha = overlayAlpha
+                overlayAlpha = overlayAlpha,
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = colorResource(id = R.color.store_detail_background)
+                )
             ) {
                 StoreDetailImage(
                     modifier = Modifier
