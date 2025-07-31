@@ -24,7 +24,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicText
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -56,6 +55,7 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreCategoryItem
 import `in`.koreatech.koin.feature.store.component.KoinStoreFilterChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreMinimumPriceChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreOrderChip
+import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.MinOrderSliderBottomSheet
 import `in`.koreatech.koin.feature.store.component.SearchBarFake
 import `in`.koreatech.koin.feature.store.component.SortBottomSheet
@@ -187,7 +187,9 @@ private fun StoreHomeScreen(
             contentAlignment = Alignment.Center
         ) {
             if (isLoading) {
-                CircularProgressIndicator()
+                KoinStoreProgressIndicator(
+                    modifier = Modifier.size(150.dp)
+                )
             }
         }
 
