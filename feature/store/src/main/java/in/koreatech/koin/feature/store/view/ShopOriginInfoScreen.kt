@@ -112,16 +112,14 @@ fun ShopOriginInfoScreen(
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = stringResource(R.string.store_info),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+                style = RebrandKoinTheme.typography.bold18,
             )
-            Text(text = uiState.value.shopDescription.notice ?: stringResource(R.string.no_registered_information), fontSize = 14.sp)
+            Text(text = uiState.value.shopDescription.notice ?: stringResource(R.string.no_registered_information), style = RebrandKoinTheme.typography.regular14)
             Spacer(Modifier.height(24.dp))
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = stringResource(R.string.total_delivery_tip_by_order_amount),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+                style = RebrandKoinTheme.typography.bold18,
             )
             DeliveryFeeTable(
                 modifier = Modifier.fillMaxWidth(),
@@ -131,8 +129,7 @@ fun ShopOriginInfoScreen(
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = stringResource(R.string.business_info),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+                style = RebrandKoinTheme.typography.bold18,
             )
             if (uiState.value.shopDescription.ownerInfo.hasAnyInfo()) {
                 Row {
@@ -163,14 +160,13 @@ fun ShopOriginInfoScreen(
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = stringResource(R.string.origin_marking),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+                style = RebrandKoinTheme.typography.bold18,
             )
             Text(
                 text = uiState.value.shopDescription.origins?.joinToString(separator = ", ") {
                     "${it.ingredients} (${it.origin})"
                 } ?: stringResource(R.string.no_registered_information),
-                fontSize = 14.sp
+                style = RebrandKoinTheme.typography.regular14,
             )
         }
     }
