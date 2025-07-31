@@ -73,18 +73,24 @@ fun AvailableChips(storeInfo: ShopInfoModel) {
                 text = stringResource(R.string.account_transfer_avilable)
             )
         }
+        if (storeInfo.isTakeoutAvailable) {
+            AvailableChip(
+                text = stringResource(R.string.takeout_available)
+            )
+        }
     }
 }
 
 @Composable
 private fun AvailableChip(
-    text: String
+    text: String,
+    modifier: Modifier = Modifier
 ) {
     Surface(
         shadowElevation = 1.dp,
         shape = RoundedCornerShape(50),
         color = KoinTheme.colors.neutral0,
-        modifier = Modifier
+        modifier = modifier
             .heightIn(min = 24.dp)
     ) {
         Box(

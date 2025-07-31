@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -46,13 +47,17 @@ fun OrderBottomBar(
         shadowElevation = 10.dp,
         modifier = modifier
             .fillMaxWidth()
-            .navigationBarsPadding()
+            .shadow(
+                elevation = 10.dp,
+                shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+            )
             .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(RebrandKoinTheme.colors.neutral0)
+                .navigationBarsPadding()
                 .padding(horizontal = 16.dp, vertical = 15.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween

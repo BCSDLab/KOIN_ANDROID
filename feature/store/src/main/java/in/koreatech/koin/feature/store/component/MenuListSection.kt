@@ -66,8 +66,8 @@ fun LazyListScope.menuListSection(
                     menus.forEachIndexed { index, menu ->
                         MenuItem(
                             modifier = Modifier
-                                .padding(16.dp)
-                                .clickable { onMenuClick(menu.id) },
+                                .clickable { onMenuClick(menu.id) }
+                                .padding(16.dp),
                             menu = menu
                         )
                         if (index != menus.lastIndex) {
