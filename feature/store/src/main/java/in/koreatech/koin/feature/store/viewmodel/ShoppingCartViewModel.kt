@@ -36,11 +36,11 @@ class ShoppingCartViewModel @Inject constructor(
     }
 
     fun getCart(type: CartType) = intent {
+        reduce { state.copy(isLoading = true) }
         cartUseCase(type).collect { cart ->
             reduce { state.copy(cart = cart, cartType = type) }
         }
         getCartValidate()
-        getCartSummary()
     }
 
     fun getCartValidate() = intent {
@@ -62,6 +62,7 @@ class ShoppingCartViewModel @Inject constructor(
                 )
             }
         }
+        getCartSummary()
     }
 
     private fun getCartSummary() = intent {
@@ -69,7 +70,14 @@ class ShoppingCartViewModel @Inject constructor(
         getCartSummaryUseCase(state.cart.orderableShopId!!).onSuccess {
             reduce {
                 state.copy(
-                    minimumOrderAmount = it.shopMinimumOrderAmount
+                    minimumOrderAmount = it.shopMinimumOrderAmount,
+                    isLoading = false
+                )
+            }
+        }.onFailure {
+            reduce {
+                state.copy(
+                    isLoading = false
                 )
             }
         }
