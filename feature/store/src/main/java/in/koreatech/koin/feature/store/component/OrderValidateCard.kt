@@ -70,7 +70,7 @@ fun OrderBottomBar(
                 )
                 Text(
                     text = orderableMessage,
-                    style = RebrandKoinTheme.typography.medium14,
+                    style = RebrandKoinTheme.typography.medium12,
                     color = RebrandKoinTheme.colors.neutral500
                 )
             }
