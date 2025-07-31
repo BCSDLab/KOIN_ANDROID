@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -38,7 +39,7 @@ fun QuantitySelectorSection(
                 shape = RoundedCornerShape(24.dp)
             )
             .background(Color.White, shape = RoundedCornerShape(24.dp))
-            .padding(horizontal = 16.dp, vertical = 4.dp),
+            .padding(horizontal = 16.dp, vertical = 2.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -63,6 +64,7 @@ fun QuantitySelectorSection(
             painter = painterResource(id = R.drawable.ic_store_quantity_plus),
             contentDescription = stringResource(R.string.store_quantity_plus),
             modifier = Modifier
+                .size(16.dp)
                 .noRippleClickable {
                     onIncrement()
                 },

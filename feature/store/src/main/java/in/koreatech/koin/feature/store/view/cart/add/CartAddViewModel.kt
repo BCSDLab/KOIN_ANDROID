@@ -202,4 +202,10 @@ class CartAddViewModel @Inject constructor(
             )
         }
     }
+
+    fun updateQuantity(quantity: Int) = intent {
+        reduce {
+            state.copy(quantity = quantity)
+        }
+    }
 }
