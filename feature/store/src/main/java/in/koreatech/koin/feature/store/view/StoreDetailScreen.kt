@@ -71,6 +71,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun StoreDetailScreen(
     modifier: Modifier = Modifier,
+    isCartAdded: Boolean = false,
     isCartModified: Boolean = false,
     viewModel: StoreDetailViewModel = hiltViewModel(),
     cartViewModel: ShoppingCartViewModel = hiltViewModel(),
@@ -104,11 +105,20 @@ fun StoreDetailScreen(
             .distinctUntilChanged()
             .onEach {
                 if (it) {
-                    Toast.makeText(context, R.string.store_cart_add_added, Toast.LENGTH_SHORT).show()
                     cartViewModel.getCart(cartUiState.cartType)
                 }
             }
             .launchIn(coroutineScope)
+    }
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { isCartAdded }
+            .distinctUntilChanged()
+            .collectLatest {
+                if (it) {
+                    Toast.makeText(context, R.string.store_cart_add_added, Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     LaunchedEffect(Unit) {

@@ -90,9 +90,20 @@ fun NavGraphBuilder.koinStoreGraph(
     ) {
         CartAddScreen(
             navigateToCart = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(
+                    IS_CART_ADDED,
+                    true
+                )
                 navController.navigate(StoreNavType.StoreCart.route)
             },
-            navigateBack = {
+            navigateBack = { isItemAdded ->
+                if (isItemAdded) {
+                    navController.previousBackStackEntry?.savedStateHandle?.set(
+                        IS_CART_ADDED,
+                        true
+                    )
+                }
+
                 navController.previousBackStackEntry?.savedStateHandle?.set(
                     IS_CART_MODIFIED,
                     true
@@ -228,10 +239,12 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
             }
         )
     ) {
+        val isCartAdded by it.savedStateHandle.getStateFlow(IS_CART_ADDED, initialValue = false).collectAsStateWithLifecycle()
         val isCartModified by it.savedStateHandle.getStateFlow(IS_CART_MODIFIED, initialValue = false).collectAsStateWithLifecycle()
         val storeId = it.arguments?.getInt(STORE_ID) ?: 0
         val isOrderableShop = it.arguments?.getBoolean(IS_ORDERABLE_SHOP) ?: true
         StoreDetailScreen(
+            isCartAdded = isCartAdded,
             isCartModified = isCartModified,
             navigateToBack = {
                 if (!navController.navigateUp()) {
@@ -248,6 +261,7 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
                 // Navigate to review screen if implemented
             },
             navigateToMenuInfo = { menuId ->
+                it.savedStateHandle[IS_CART_ADDED] = false // Reset when navigate to cart add
                 navController.navigate("${StoreNavType.StoreCartAdd.route}/$storeId/$menuId")
             }
         )
@@ -283,4 +297,5 @@ const val ORDERABLE_SHOP_ID = "orderableShopId"
 const val STORE_ID = "storeId"
 const val IS_ORDERABLE_SHOP = "isOrderableShop"
 const val CART_MENU_ITEM_ID = "cartMenuItemId"
+const val IS_CART_ADDED = "isCartAdded"
 const val IS_CART_MODIFIED = "isCartModified"

@@ -63,7 +63,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun CartAddScreen(
     viewModel: CartAddViewModel = hiltViewModel(),
     navigateToCart: () -> Unit = {},
-    navigateBack: () -> Unit = {}
+    navigateBack: (Boolean) -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
 
@@ -136,7 +136,7 @@ fun CartAddScreen(
                 modifier = Modifier.zIndex(2f),
                 title = uiState.menuName,
                 onNavigationIconClick = {
-                    navigateBack()
+                    navigateBack(false)
                 },
                 actions = {
                     Box(contentAlignment = Alignment.TopEnd) {
@@ -318,9 +318,9 @@ private fun CartAddScreen(
 
 fun handleSideEffect(
     sideEffect: CartAddSideEffect,
-    navigateBack: () -> Unit
+    navigateBack: (Boolean) -> Unit
 ) {
     when (sideEffect) {
-        CartAddSideEffect.CartItemAdded -> navigateBack()
+        CartAddSideEffect.CartItemAdded -> navigateBack(true)
     }
 }
