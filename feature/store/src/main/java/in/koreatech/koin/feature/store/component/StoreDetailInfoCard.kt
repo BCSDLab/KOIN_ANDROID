@@ -66,13 +66,17 @@ fun DeliveryInfoCard(
         modifier = modifier
             .widthIn(175.dp)
             .heightIn(60.dp)
-            .clickable { navigateToDetailInfo() },
+            .clickable(enabled = storeInfo.isDeliveryAvailable) {
+                navigateToDetailInfo()
+            },
         shadowElevation = 1.dp,
         color = KoinTheme.colors.neutral0
     ) {
         if (!storeInfo.isDeliveryAvailable) {
             Text(
-                modifier = Modifier.fillMaxWidth().padding(12.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp),
                 lineHeight = 17.sp,
                 text = stringResource(R.string.delivery_not_available),
                 fontSize = 14.sp,

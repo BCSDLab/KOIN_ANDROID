@@ -23,7 +23,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicText
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -47,12 +46,14 @@ import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.util.KoinCoilImageLoader
 import `in`.koreatech.koin.domain.model.store.OpenStatus
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreCard
 import `in`.koreatech.koin.feature.store.component.KoinStoreCategoryItem
 import `in`.koreatech.koin.feature.store.component.KoinStoreFilterChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreOrderChip
+import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.MinOrderSliderBottomSheet
 import `in`.koreatech.koin.feature.store.component.SearchBarFake
 import `in`.koreatech.koin.feature.store.component.SortBottomSheet
@@ -169,7 +170,9 @@ private fun StoreNearbyScreen(
             contentAlignment = Alignment.Center
         ) {
             if (isLoading) {
-                CircularProgressIndicator()
+                KoinStoreProgressIndicator(
+                    modifier = Modifier.size(150.dp)
+                )
             }
         }
 
@@ -194,7 +197,8 @@ private fun StoreNearbyScreen(
                     KoinStoreCategoryItem(
                         categoryName = category.name,
                         categoryIcon = rememberAsyncImagePainter(
-                            model = category.imageUrl
+                            model = category.imageUrl,
+                            imageLoader = KoinCoilImageLoader.getImageLoader(context)
                         ),
                         isSelected = index + 1 == categoryId,
                         onClick = {

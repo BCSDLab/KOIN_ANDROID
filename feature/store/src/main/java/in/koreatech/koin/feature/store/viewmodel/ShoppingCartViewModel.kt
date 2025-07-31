@@ -97,7 +97,17 @@ class ShoppingCartViewModel @Inject constructor(
 
     fun resetCart() = intent {
         resetCartUseCase().collect {
-            reduce { state.copy(cart = state.cart.copy(items = emptyList())) }
+            reduce {
+                state.copy(
+                    cart = state.cart.copy(
+                        items = emptyList(),
+                        itemsAmount = 0,
+                        deliveryFee = 0,
+                        totalAmount = 0,
+                        finalPaymentAmount = 0
+                    )
+                )
+            }
         }
     }
 

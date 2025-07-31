@@ -1,3 +1,5 @@
+package `in`.koreatech.koin.feature.store.view
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -5,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -14,7 +17,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.sharp.KeyboardArrowLeft
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -24,32 +27,34 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.model.DeliveryTipModel
-import `in`.koreatech.koin.feature.store.model.OwnerInfoModel
-import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
-import `in`.koreatech.koin.feature.store.view.hasAnyInfo
+import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
+import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShopOriginInfoScreen(
     cartItemNumber: Int = 0,
-    shopDescription: StoreDescriptionModel,
+    storeDetailViewModel: StoreDetailViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
     navigateToShoppingCart: () -> Unit = {}
 ) {
+    val uiState by storeDetailViewModel.collectAsState()
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -58,12 +63,13 @@ fun ShopOriginInfoScreen(
                 ),
                 title = { Text(stringResource(R.string.store_info_and_origin)) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = ""
-                        )
-                    }
+                    Icon(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .noRippleClickable { onBackClick() },
+                        imageVector = Icons.AutoMirrored.Sharp.KeyboardArrowLeft,
+                        contentDescription = ""
+                    )
                 },
                 actions = {
                     Box(contentAlignment = Alignment.TopEnd) {
@@ -96,6 +102,8 @@ fun ShopOriginInfoScreen(
     ) { padding ->
         Column(
             modifier = Modifier
+                .fillMaxSize()
+                .background(color = colorResource(R.color.store_detail_background))
                 .padding(padding)
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
@@ -103,48 +111,45 @@ fun ShopOriginInfoScreen(
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = stringResource(R.string.store_info),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+                style = RebrandKoinTheme.typography.bold18
             )
-            Text(text = shopDescription.notice ?: stringResource(R.string.no_registered_information), fontSize = 14.sp)
+            Text(text = uiState.shopDescription.notice ?: stringResource(R.string.no_registered_information), style = RebrandKoinTheme.typography.regular14)
             Spacer(Modifier.height(24.dp))
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = stringResource(R.string.total_delivery_tip_by_order_amount),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+                style = RebrandKoinTheme.typography.bold18
             )
             DeliveryFeeTable(
                 modifier = Modifier.fillMaxWidth(),
-                deliveryFees = shopDescription.deliveryTips ?: emptyList()
+                deliveryFees = uiState.shopDescription.deliveryTips ?: emptyList()
             )
             Spacer(Modifier.height(24.dp))
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = stringResource(R.string.business_info),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+                style = RebrandKoinTheme.typography.bold18
             )
-            if (shopDescription.ownerInfo.hasAnyInfo()) {
+            if (uiState.shopDescription.ownerInfo.hasAnyInfo()) {
                 Row {
                     Column(
                         modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        if (shopDescription.ownerInfo?.name != null) Text(text = stringResource(R.string.owner_name))
-                        if (shopDescription.ownerInfo?.shopName != null) Text(text = stringResource(R.string.trade_name))
-                        if (shopDescription.ownerInfo?.address != null) Text(text = stringResource(R.string.business_address))
-                        if (shopDescription.ownerInfo?.companyRegistrationNumber != null) Text(stringResource(R.string.business_registration_number))
+                        if (uiState.shopDescription.ownerInfo?.name != null) Text(text = stringResource(R.string.owner_name))
+                        if (uiState.shopDescription.ownerInfo?.shopName != null) Text(text = stringResource(R.string.trade_name))
+                        if (uiState.shopDescription.ownerInfo?.address != null) Text(text = stringResource(R.string.business_address))
+                        if (uiState.shopDescription.ownerInfo?.companyRegistrationNumber != null) Text(stringResource(R.string.business_registration_number))
                     }
 
                     Column(
                         modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        shopDescription.ownerInfo?.name?.let { Text(it) }
-                        shopDescription.ownerInfo?.shopName?.let { Text(it) }
-                        shopDescription.ownerInfo?.address?.let { Text(it) }
-                        shopDescription.ownerInfo?.companyRegistrationNumber?.let { Text(it) }
+                        uiState.shopDescription.ownerInfo?.name?.let { Text(it) }
+                        uiState.shopDescription.ownerInfo?.shopName?.let { Text(it) }
+                        uiState.shopDescription.ownerInfo?.address?.let { Text(it) }
+                        uiState.shopDescription.ownerInfo?.companyRegistrationNumber?.let { Text(it) }
                     }
                 }
             } else {
@@ -154,14 +159,13 @@ fun ShopOriginInfoScreen(
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = stringResource(R.string.origin_marking),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+                style = RebrandKoinTheme.typography.bold18
             )
             Text(
-                text = shopDescription.origins?.joinToString(separator = ", ") {
+                text = uiState.shopDescription.origins?.joinToString(separator = ", ") {
                     "${it.ingredients} (${it.origin})"
                 } ?: stringResource(R.string.no_registered_information),
-                fontSize = 14.sp
+                style = RebrandKoinTheme.typography.regular14
             )
         }
     }
@@ -212,24 +216,7 @@ fun DeliveryFeeRow(
 private fun ShopOriginInfoScreenPreview() {
     ShopOriginInfoScreen(
         onBackClick = {},
-        navigateToShoppingCart = {},
-        shopDescription = StoreDescriptionModel(
-            id = 1,
-            description = "테스트 가게 설명",
-            storeName = "테스트 가게",
-            notice = "테스트 가게 공지사항",
-            deliveryTips = listOf(
-                DeliveryTipModel(fromAmount = 0, toAmount = 12000, fee = 3000),
-                DeliveryTipModel(fromAmount = 12000, toAmount = 22000, fee = 2500),
-                DeliveryTipModel(fromAmount = 22000, toAmount = null, fee = 110)
-            ),
-            origins = null,
-            ownerInfo = OwnerInfoModel(
-                name = "홍길동",
-                shopName = "테스트 가게",
-                address = "서울시 강남구 역삼동 123-45",
-                companyRegistrationNumber = "123-45-67890"
-            )
-        )
+        navigateToShoppingCart = {}
+
     )
 }

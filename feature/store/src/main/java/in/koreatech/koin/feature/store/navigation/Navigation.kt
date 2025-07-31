@@ -8,6 +8,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
+import `in`.koreatech.koin.feature.store.view.ShopOriginInfoScreen
 import `in`.koreatech.koin.feature.store.view.ShoppingCartScreen
 import `in`.koreatech.koin.feature.store.view.StoreDetailScreen
 import `in`.koreatech.koin.feature.store.view.cart.add.CartAddScreen
@@ -52,7 +53,8 @@ fun NavGraphBuilder.koinStoreGraph(
         route = StoreNavType.StoreCart.route
     ) {
         ShoppingCartScreen(
-            navigateToStoreDetail = {
+            navigateToStoreDetail = { storeId: Int ->
+                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId/${true}")
                 navController.previousBackStackEntry?.savedStateHandle?.set(
                     IS_CART_MODIFIED,
                     true
@@ -66,6 +68,9 @@ fun NavGraphBuilder.koinStoreGraph(
             },
             navigateToCartEdit = {
                 navController.navigate("${StoreNavType.StoreCartEdit.route}/$it")
+            },
+            navigateToStoreMain = {
+                navController.navigate(StoreNavType.StoreMain.route)
             }
         )
     }
@@ -143,8 +148,10 @@ fun NavGraphBuilder.koinStoreGraph(
         StorePaymentScreen(
             finish = finish,
             navigateBack = {
-                if (!navController.navigateUp()) {
-                    finish()
+                navController.navigate(StoreNavType.StoreMain.route) {
+                    popUpTo(StoreNavType.StoreMain.route) {
+                        inclusive = true
+                    }
                 }
             }
         )
@@ -221,6 +228,7 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
     ) {
         val isCartModified by it.savedStateHandle.getStateFlow(IS_CART_MODIFIED, initialValue = false).collectAsStateWithLifecycle()
         val storeId = it.arguments?.getInt("storeId") ?: 0
+        val isOrderableShop = it.arguments?.getBoolean("isOrderableShop") ?: true
         StoreDetailScreen(
             isCartModified = isCartModified,
             navigateToBack = {
@@ -232,7 +240,7 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
                 navController.navigate(StoreNavType.StoreCart.route)
             },
             navigateToDetailInfo = {
-                navController.navigate(StoreDetailNavType.StoreDetailInfo.route)
+                navController.navigate("${StoreDetailNavType.StoreDetailInfo.route}/$storeId/$isOrderableShop")
             },
             navigateToReview = {
                 // Navigate to review screen if implemented
@@ -244,8 +252,27 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
     }
 
     composable(
-        route = StoreDetailNavType.StoreDetailInfo.route
+        route = "${StoreDetailNavType.StoreDetailInfo.route}/{storeId}/{isOrderableShop}",
+        arguments = listOf(
+            navArgument("storeId") {
+                type = NavType.IntType
+            },
+            navArgument("isOrderableShop") {
+                type = NavType.BoolType
+                defaultValue = true
+            }
+        )
     ) {
+        ShopOriginInfoScreen(
+            onBackClick = {
+                if (!navController.navigateUp()) {
+                    finish()
+                }
+            },
+            navigateToShoppingCart = {
+                navController.navigate(StoreNavType.StoreCart.route)
+            }
+        )
     }
 }
 

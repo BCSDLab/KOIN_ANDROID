@@ -25,6 +25,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.OrderBottomBar
 import `in`.koreatech.koin.feature.store.enums.CartValidation
+import `in`.koreatech.koin.feature.store.util.formatPrice
 import `in`.koreatech.koin.feature.store.viewmodel.ShoppingCartViewModel
 import org.orbitmvi.orbit.compose.collectAsState
 
@@ -33,9 +34,10 @@ import org.orbitmvi.orbit.compose.collectAsState
 fun ShoppingCartScreen(
     viewModel: ShoppingCartViewModel = hiltViewModel(),
     isOperating: Boolean = true,
-    navigateToStoreDetail: () -> Unit = { },
+    navigateToStoreDetail: (Int) -> Unit = { },
     navigateToPayment: () -> Unit = { },
-    navigateToCartEdit: (Int) -> Unit = { }
+    navigateToCartEdit: (Int) -> Unit = { },
+    navigateToStoreMain: () -> Unit = { }
 ) {
     val uiState by viewModel.collectAsState()
 
@@ -53,7 +55,11 @@ fun ShoppingCartScreen(
                     containerColor = colorResource(id = R.color.store_detail_background)
                 ),
                 title = stringResource(R.string.shopping_cart),
-                onNavigationIconClick = navigateToStoreDetail,
+                onNavigationIconClick = {
+                    uiState.cart.orderableShopId?.let { storeId ->
+                        navigateToStoreDetail(storeId)
+                    }
+                },
                 actions = {
                     Text(
                         color = if (uiState.cart.items.isEmpty()) RebrandKoinTheme.colors.primary300 else RebrandKoinTheme.colors.primary500,
@@ -85,7 +91,8 @@ fun ShoppingCartScreen(
             ShoppingCartEmptyContent(
                 modifier = Modifier
                     .padding(innerPadding)
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                navigateToStoreMain = navigateToStoreMain
             )
             return@Scaffold
         }
@@ -110,7 +117,10 @@ fun ShoppingCartScreen(
             setDialogVisibility = {
                 viewModel.setShowDeleteDialog(it)
             },
-            navigateToCartEdit = navigateToCartEdit
+            navigateToCartEdit = navigateToCartEdit,
+            navigateToStoreDetail = { storeId ->
+                navigateToStoreDetail(storeId)
+            }
         )
     }
 }

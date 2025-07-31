@@ -5,6 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -30,7 +33,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
@@ -50,20 +52,22 @@ import `in`.koreatech.koin.feature.store.enums.CartValidation
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
 import `in`.koreatech.koin.feature.store.state.collapseToolbar
 import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
+import `in`.koreatech.koin.feature.store.util.customCollapsingToolbarContent
 import `in`.koreatech.koin.feature.store.viewmodel.ShoppingCartViewModel
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
-import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun StoreDetailScreen(
     isCartModified: Boolean = false,
+    modifier: Modifier = Modifier,
     viewModel: StoreDetailViewModel = hiltViewModel(),
     cartViewModel: ShoppingCartViewModel = hiltViewModel(),
     navigateToCart: () -> Unit = {},
@@ -71,11 +75,12 @@ fun StoreDetailScreen(
     navigateToDetailInfo: () -> Unit = {},
     navigateToReview: () -> Unit = {},
     navigateToMenuInfo: (menuId: Int) -> Unit = {},
-    modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.collectAsState()
     val cartUiState by cartViewModel.collectAsState()
-    val pagerState = rememberPagerState(0, 0f) { 1 }
+    val pagerState = rememberPagerState(0, 0f) {
+        uiState.store.imageUrls?.size ?: 0
+    }
 
     val rememberState = rememberCollapsingToolbarState(
         toolbarMinHeight = 64.dp
@@ -88,6 +93,7 @@ fun StoreDetailScreen(
         minHeightPx = rememberState.minHeightPx
     )
     val currentToolbarHeightDp = rememberState.currentToolbarHeightDp()
+    val statusBarHeight = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(isCartModified) {
@@ -113,7 +119,6 @@ fun StoreDetailScreen(
                 )
             }
         }
-
     ) {
         Box(
             modifier = Modifier
@@ -231,6 +236,7 @@ fun StoreDetailScreen(
                                     )
                                 )
                             )
+
                         }
                     }
                 },
@@ -238,13 +244,13 @@ fun StoreDetailScreen(
             ) {
                 StoreDetailImage(
                     modifier = Modifier
-                        .heightIn(rememberState.toolbarMinHeight, rememberState.toolbarMinHeight + rememberState.toolbarMaxHeight)
+                        .heightIn(rememberState.toolbarMinHeight, rememberState.toolbarMaxHeight + statusBarHeight)
                         .fillMaxWidth()
-                        .graphicsLayer {
-                            clip = true
-                            translationY = -(rememberState.toolbarMaxHeight.toPx() - currentToolbarHeightDp.value.toPx())
-                            alpha = 1f - overlayAlpha.value
-                        },
+                        .customCollapsingToolbarContent(
+                            maxToolbarHeight = rememberState.toolbarMaxHeight,
+                            currentToolbarHeight = currentToolbarHeightDp.value,
+                            overlayAlpha = overlayAlpha.value
+                        ),
                     imageUrls = uiState.store.imageUrls ?: emptyList(),
                     pagerState = pagerState
                 )
