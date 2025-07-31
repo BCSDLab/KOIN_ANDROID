@@ -53,8 +53,7 @@ fun NavGraphBuilder.koinStoreGraph(
         route = StoreNavType.StoreCart.route
     ) {
         ShoppingCartScreen(
-            navigateToStoreDetail = { storeId: Int ->
-                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId/${true}")
+            navigateToStoreDetail = {
                 navController.previousBackStackEntry?.savedStateHandle?.set(
                     IS_CART_MODIFIED,
                     true
