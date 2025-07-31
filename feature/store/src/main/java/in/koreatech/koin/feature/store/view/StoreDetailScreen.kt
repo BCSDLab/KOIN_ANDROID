@@ -140,7 +140,10 @@ fun StoreDetailScreen(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = rememberState.toolbarMinHeight + statusBarHeight)
+                    .padding(
+                        top = 16.dp,
+                        bottom = rememberState.toolbarMinHeight + statusBarHeight
+                    )
                     .offset {
                         IntOffset(
                             0,
