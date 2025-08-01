@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.store.view
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,8 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,12 +19,12 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.TabRowDefaults.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,15 +34,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.MenuCategoryChips
 import `in`.koreatech.koin.feature.store.component.OrderBottomBar
@@ -57,6 +60,7 @@ import `in`.koreatech.koin.feature.store.viewmodel.ShoppingCartViewModel
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
 import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -66,8 +70,9 @@ import org.orbitmvi.orbit.compose.collectAsState
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun StoreDetailScreen(
-    isCartModified: Boolean = false,
     modifier: Modifier = Modifier,
+    isCartAdded: Boolean = false,
+    isCartModified: Boolean = false,
     viewModel: StoreDetailViewModel = hiltViewModel(),
     cartViewModel: ShoppingCartViewModel = hiltViewModel(),
     navigateToCart: () -> Unit = {},
@@ -82,9 +87,7 @@ fun StoreDetailScreen(
         uiState.store.imageUrls?.size ?: 0
     }
 
-    val rememberState = rememberCollapsingToolbarState(
-        toolbarMinHeight = 64.dp
-    )
+    val rememberState = rememberCollapsingToolbarState()
     val overlayAlpha = rememberState.progress()
     val nestedScrollConnection = storeCollapsingToolbarConnection(
         listState = rememberState.listState,
@@ -95,6 +98,7 @@ fun StoreDetailScreen(
     val currentToolbarHeightDp = rememberState.currentToolbarHeightDp()
     val statusBarHeight = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     LaunchedEffect(isCartModified) {
         snapshotFlow { isCartModified }
@@ -107,44 +111,65 @@ fun StoreDetailScreen(
             .launchIn(coroutineScope)
     }
 
-    Scaffold(
-        modifier = modifier.imePadding(),
-        bottomBar = {
-            if (cartUiState.cart.items.isNotEmpty()) {
-                OrderBottomBar(
-                    totalPrice = cartUiState.cart.totalAmount,
-                    isOrderEnabled = cartUiState.cartValidation == CartValidation.VALID,
-                    orderableMessage = cartUiState.isValidateCart.message,
-                    navigateToCart = navigateToCart
-                )
+    LaunchedEffect(Unit) {
+        snapshotFlow { isCartAdded }
+            .distinctUntilChanged()
+            .collectLatest {
+                if (it) {
+                    Toast.makeText(context, R.string.store_cart_add_added, Toast.LENGTH_SHORT).show()
+                }
             }
+    }
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { uiState.isLogin }
+            .distinctUntilChanged()
+            .collectLatest {
+                if (uiState.isLogin) {
+                    viewModel.getCartItemsCount()
+                }
+            }
+    }
+
+    if (uiState.isLoading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .zIndex(2f),
+            contentAlignment = Alignment.Center
+        ) {
+            KoinStoreProgressIndicator(
+                modifier = Modifier.size(150.dp)
+            )
         }
+    }
+
+    Column(
+        modifier = modifier
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .weight(1f)
                 .background(color = colorResource(id = R.color.store_detail_background))
                 .nestedScroll(nestedScrollConnection)
         ) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .navigationBarsPadding()
-                    .padding(bottom = rememberState.toolbarMinHeight * 2)
+                    .padding(bottom = rememberState.toolbarMinHeight + statusBarHeight)
                     .offset {
                         IntOffset(
                             0,
-                            currentToolbarHeightDp.value
-                                .toPx()
-                                .roundToInt() + rememberState.toolbarMinHeight
-                                .toPx()
-                                .roundToInt()
+                            currentToolbarHeightDp.value.toPx().roundToInt() + statusBarHeight.toPx().roundToInt()
                         )
                     },
                 state = rememberState.listState
             ) {
                 item {
-                    Column {
+                    Column(
+                        modifier = Modifier.padding(top = 16.dp)
+                    ) {
                         StoreDetailInfo(
                             storeInfo = uiState.store,
                             storeReview = uiState.storeReview,
@@ -152,7 +177,7 @@ fun StoreDetailScreen(
                             navigateToReview = { navigateToReview() },
                             navigateToDetailInfo = { navigateToDetailInfo() }
                         )
-                        Divider(
+                        HorizontalDivider(
                             modifier = Modifier.padding(vertical = 8.dp),
                             color = KoinTheme.colors.neutral100,
                             thickness = 8.dp
@@ -210,36 +235,32 @@ fun StoreDetailScreen(
                                 contentDescription = null
                             )
                         }
-                        IconButton(onClick = {
-                            navigateToCart()
-                        }) {
-                            Icon(
-                                modifier = Modifier.size(25.dp),
-                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_shopping_cart),
-                                contentDescription = null
-                            )
-                        }
-                        Box(
-                            modifier = Modifier
-                                .offset(x = (-5).dp, y = 5.dp)
-                                .size(16.dp)
-                                .background(RebrandKoinTheme.colors.primary500, CircleShape),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "",
-                                style = RebrandKoinTheme.typography.medium12.copy(
-                                    color = RebrandKoinTheme.colors.neutral0,
-                                    lineHeightStyle = LineHeightStyle(
-                                        trim = LineHeightStyle.Trim.Both,
-                                        alignment = LineHeightStyle.Alignment.Center
+                        if (uiState.cartItemCount > 0) {
+                            Box(
+                                modifier = Modifier
+                                    .offset(x = (-5).dp, y = 5.dp)
+                                    .size(16.dp)
+                                    .background(RebrandKoinTheme.colors.primary500, CircleShape),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = "${uiState.cartItemCount}",
+                                    style = RebrandKoinTheme.typography.medium12.copy(
+                                        color = RebrandKoinTheme.colors.neutral0,
+                                        lineHeightStyle = LineHeightStyle(
+                                            trim = LineHeightStyle.Trim.Both,
+                                            alignment = LineHeightStyle.Alignment.Center
+                                        )
                                     )
                                 )
-                            )
+                            }
                         }
                     }
                 },
-                overlayAlpha = overlayAlpha
+                overlayAlpha = overlayAlpha,
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = colorResource(id = R.color.store_detail_background)
+                )
             ) {
                 StoreDetailImage(
                     modifier = Modifier
@@ -254,6 +275,15 @@ fun StoreDetailScreen(
                     pagerState = pagerState
                 )
             }
+        }
+        if (cartUiState.cart.items.isNotEmpty() && cartUiState.cart.orderableShopId == uiState.store.orderableShopId) {
+            OrderBottomBar(
+                itemCount = cartUiState.cart.items.count(),
+                totalPrice = cartUiState.cart.totalAmount,
+                isOrderEnabled = cartUiState.cartValidation == CartValidation.VALID,
+                orderableMessage = if (cartUiState.cart.totalAmount >= cartUiState.minimumOrderAmount) stringResource(R.string.store_order_can_delivery) else stringResource(R.string.store_order_cant_delivery),
+                navigateToCart = navigateToCart
+            )
         }
     }
 }

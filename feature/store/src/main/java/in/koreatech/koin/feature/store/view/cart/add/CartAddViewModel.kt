@@ -7,6 +7,7 @@ import `in`.koreatech.koin.domain.error.store.KoinStoreException
 import `in`.koreatech.koin.domain.model.store.AddCartItemOption
 import `in`.koreatech.koin.domain.model.store.CartAdd
 import `in`.koreatech.koin.domain.usecase.store.AddCartItemUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetOrderableShopMenuUseCase
 import `in`.koreatech.koin.feature.store.enums.CartError
 import `in`.koreatech.koin.feature.store.model.toLocalShopMenuOptionGroup
@@ -24,6 +25,7 @@ import org.orbitmvi.orbit.viewmodel.container
 class CartAddViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getOrderableShopMenuUseCase: GetOrderableShopMenuUseCase,
+    private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
     private val addCartItemUseCase: AddCartItemUseCase
 ) : ViewModel(), ContainerHost<CartAddState, CartAddSideEffect> {
     override val container = container<CartAddState, CartAddSideEffect>(CartAddState()) {
@@ -43,6 +45,22 @@ class CartAddViewModel @Inject constructor(
         }
 
         getMenus()
+        getCartItemsCount()
+    }
+
+    private fun getCartItemsCount() = intent {
+        reduce {
+            state.copy(isLoading = true)
+        }
+        getCartItemsCountUseCase().onSuccess { count ->
+            reduce {
+                state.copy(cartItemCount = count.totalQuantity, isLoading = false)
+            }
+        }.onFailure {
+            reduce {
+                state.copy(isLoading = false)
+            }
+        }
     }
 
     private fun getMenus() = intent {
@@ -182,6 +200,12 @@ class CartAddViewModel @Inject constructor(
                 showErrorDialog = false,
                 error = CartError.NONE
             )
+        }
+    }
+
+    fun updateQuantity(quantity: Int) = intent {
+        reduce {
+            state.copy(quantity = quantity)
         }
     }
 }

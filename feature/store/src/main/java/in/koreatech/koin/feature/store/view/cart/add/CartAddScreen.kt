@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -19,7 +20,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -46,7 +46,9 @@ import `in`.koreatech.koin.feature.store.component.AddMenuBottomCard
 import `in`.koreatech.koin.feature.store.component.KoinCartOptionItem
 import `in`.koreatech.koin.feature.store.component.KoinCartPriceItem
 import `in`.koreatech.koin.feature.store.component.KoinStoreDialog
+import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
+import `in`.koreatech.koin.feature.store.component.QuantitySelectorSection
 import `in`.koreatech.koin.feature.store.model.LocalShopMenuOptionGroup
 import `in`.koreatech.koin.feature.store.model.LocalShopPrice
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
@@ -61,7 +63,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun CartAddScreen(
     viewModel: CartAddViewModel = hiltViewModel(),
     navigateToCart: () -> Unit = {},
-    navigateBack: () -> Unit = {}
+    navigateBack: (Boolean) -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
 
@@ -69,9 +71,7 @@ fun CartAddScreen(
         handleSideEffect(it, navigateBack)
     }
 
-    val rememberState = rememberCollapsingToolbarState(
-        toolbarMinHeight = 64.dp
-    )
+    val rememberState = rememberCollapsingToolbarState()
     val overlayAlpha = rememberState.progress()
     val nestedScrollConnection = storeCollapsingToolbarConnection(
         listState = rememberState.listState,
@@ -96,7 +96,9 @@ fun CartAddScreen(
         contentAlignment = Alignment.Center
     ) {
         if (uiState.isLoading) {
-            CircularProgressIndicator()
+            KoinStoreProgressIndicator(
+                modifier = Modifier.size(150.dp)
+            )
         }
     }
 
@@ -115,8 +117,10 @@ fun CartAddScreen(
                 menuPrices = uiState.prices,
                 menuOptions = uiState.options,
                 orderableShopMenuPriceId = uiState.orderableShopMenuPriceId,
+                quantity = uiState.quantity,
                 onPriceSelected = viewModel::updateMenuPriceId,
                 onSelectedOptionGroup = viewModel::updateSelectedOptionGroup,
+                onQuantityChange = viewModel::updateQuantity,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(bottom = rememberState.toolbarMinHeight + statusBarHeight)
@@ -132,7 +136,7 @@ fun CartAddScreen(
                 modifier = Modifier.zIndex(2f),
                 title = uiState.menuName,
                 onNavigationIconClick = {
-                    navigateBack()
+                    navigateBack(false)
                 },
                 actions = {
                     Box(contentAlignment = Alignment.TopEnd) {
@@ -246,10 +250,12 @@ private fun CartAddScreen(
     menuDescription: String,
     menuPrices: List<LocalShopPrice>,
     menuOptions: List<LocalShopMenuOptionGroup>,
+    quantity: Int,
     orderableShopMenuPriceId: Int,
     modifier: Modifier = Modifier,
     onPriceSelected: (Int) -> Unit = { },
-    onSelectedOptionGroup: (Int, Int) -> Unit = { _, _ -> }
+    onSelectedOptionGroup: (Int, Int) -> Unit = { _, _ -> },
+    onQuantityChange: (Int) -> Unit = { }
 ) {
     Column(
         modifier = modifier
@@ -291,14 +297,30 @@ private fun CartAddScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
         }
+
+        Row(
+            modifier = Modifier.padding(vertical = 16.dp, horizontal = 24.dp)
+        ) {
+            Spacer(modifier = Modifier.weight(1f))
+
+            QuantitySelectorSection(
+                value = quantity,
+                onIncrement = {
+                    onQuantityChange(quantity + 1)
+                },
+                onDecrement = {
+                    if (quantity > 1) onQuantityChange(quantity - 1)
+                }
+            )
+        }
     }
 }
 
 fun handleSideEffect(
     sideEffect: CartAddSideEffect,
-    navigateBack: () -> Unit
+    navigateBack: (Boolean) -> Unit
 ) {
     when (sideEffect) {
-        CartAddSideEffect.CartItemAdded -> navigateBack()
+        CartAddSideEffect.CartItemAdded -> navigateBack(true)
     }
 }

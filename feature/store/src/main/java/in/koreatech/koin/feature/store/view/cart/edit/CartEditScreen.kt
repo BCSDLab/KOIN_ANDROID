@@ -19,7 +19,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -47,6 +46,7 @@ import `in`.koreatech.koin.feature.store.component.AddMenuBottomCard
 import `in`.koreatech.koin.feature.store.component.KoinCartOptionItem
 import `in`.koreatech.koin.feature.store.component.KoinCartPriceItem
 import `in`.koreatech.koin.feature.store.component.KoinStoreDialog
+import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.model.LocalShopMenuOptionGroup
 import `in`.koreatech.koin.feature.store.model.LocalShopPrice
@@ -70,9 +70,7 @@ fun CartEditScreen(
         handleSideEffect(it, navigateBack)
     }
 
-    val rememberState = rememberCollapsingToolbarState(
-        toolbarMinHeight = 64.dp
-    )
+    val rememberState = rememberCollapsingToolbarState()
     val overlayAlpha = rememberState.progress()
     val nestedScrollConnection = storeCollapsingToolbarConnection(
         listState = rememberState.listState,
@@ -97,7 +95,9 @@ fun CartEditScreen(
         contentAlignment = Alignment.Center
     ) {
         if (uiState.isLoading) {
-            CircularProgressIndicator()
+            KoinStoreProgressIndicator(
+                modifier = Modifier.size(150.dp)
+            )
         }
     }
 

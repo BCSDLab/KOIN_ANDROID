@@ -8,6 +8,7 @@ import `in`.koreatech.koin.domain.usecase.cart.CartMenuQuantityUseCase
 import `in`.koreatech.koin.domain.usecase.cart.CartUseCase
 import `in`.koreatech.koin.domain.usecase.cart.DeleteCartMenuItemUseCase
 import `in`.koreatech.koin.domain.usecase.cart.ResetCartUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetCartSummaryUseCase
 import `in`.koreatech.koin.domain.usecase.store.ValidateCartItemsUseCase
 import `in`.koreatech.koin.feature.store.enums.CartValidation
 import `in`.koreatech.koin.feature.store.view.CartState
@@ -23,6 +24,7 @@ class ShoppingCartViewModel @Inject constructor(
     private val cartUseCase: CartUseCase,
     private val validateCartItemsUseCase: ValidateCartItemsUseCase,
     private val cartMenuQuantityUseCase: CartMenuQuantityUseCase,
+    private val getCartSummaryUseCase: GetCartSummaryUseCase,
     private val deleteCartMenuItemUseCase: DeleteCartMenuItemUseCase,
     private val resetCartUseCase: ResetCartUseCase
 ) : ViewModel(), ContainerHost<CartState, Unit> {
@@ -34,6 +36,7 @@ class ShoppingCartViewModel @Inject constructor(
     }
 
     fun getCart(type: CartType) = intent {
+        reduce { state.copy(isLoading = true) }
         cartUseCase(type).collect { cart ->
             reduce { state.copy(cart = cart, cartType = type) }
         }
@@ -56,6 +59,25 @@ class ShoppingCartViewModel @Inject constructor(
                         is KoinStoreException.ShopClosedException -> CartValidation.NOT_OPERATING
                         else -> CartValidation.NONE
                     }
+                )
+            }
+        }
+        getCartSummary()
+    }
+
+    private fun getCartSummary() = intent {
+        if (state.cart.orderableShopId == null) return@intent
+        getCartSummaryUseCase(state.cart.orderableShopId!!).onSuccess {
+            reduce {
+                state.copy(
+                    minimumOrderAmount = it.shopMinimumOrderAmount,
+                    isLoading = false
+                )
+            }
+        }.onFailure {
+            reduce {
+                state.copy(
+                    isLoading = false
                 )
             }
         }

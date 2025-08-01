@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopMenuUseCase
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopOriginInfoUseCase
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopSummaryUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetShopMenusUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuUseCase
@@ -18,6 +19,8 @@ import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
 import `in`.koreatech.koin.feature.store.model.toMenuCategoryModel
 import `in`.koreatech.koin.feature.store.model.toStoreIndoModel
 import `in`.koreatech.koin.feature.store.model.toStoreInfoModel
+import `in`.koreatech.koin.feature.store.navigation.IS_ORDERABLE_SHOP
+import `in`.koreatech.koin.feature.store.navigation.STORE_ID
 import `in`.koreatech.koin.feature.store.view.StoreDetailSideEffect
 import `in`.koreatech.koin.feature.store.view.StoreDetailState
 import javax.inject.Inject
@@ -36,13 +39,22 @@ class StoreDetailViewModel @Inject constructor(
     private val getStoreWithMenuUseCase: GetStoreWithMenuUseCase,
     private val getShopMenusUseCase: GetShopMenusUseCase,
     private val getStoreReviewUseCase: GetStoreReviewUseCase,
+    private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
     private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase
 ) : ViewModel(), ContainerHost<StoreDetailState, StoreDetailSideEffect> {
     override val container =
         container<StoreDetailState, StoreDetailSideEffect>(StoreDetailState()) {
             val storeId = savedStateHandle.get<Int>(STORE_ID)
-            val isOrderableShop = savedStateHandle.get<Boolean>("isOrderableShop") ?: true
+            val isOrderableShop = savedStateHandle.get<Boolean>(IS_ORDERABLE_SHOP) ?: true
             checkNotNull(storeId)
+
+            intent {
+                reduce {
+                    state.copy(
+                        isOrderableShop = isOrderableShop
+                    )
+                }
+            }
 
             if (isOrderableShop) {
                 fetchOrderableStore(storeId)
@@ -57,6 +69,7 @@ class StoreDetailViewModel @Inject constructor(
         getOrderShopOriginInfoUseCase(id).also { result ->
             reduce {
                 state.copy(
+                    isLoading = false,
                     shopDescription = StoreDescriptionModel(
                         id = id,
                         storeName = result.name,
@@ -93,13 +106,11 @@ class StoreDetailViewModel @Inject constructor(
         getOrderShopSummaryUseCase(id).also { result ->
             reduce {
                 state.copy(
-                    store = result.toStoreIndoModel(),
-                    isLoading = false
+                    store = result.toStoreIndoModel()
                 )
             }
         }
         fetchOrderableStoreMenu(id)
-        fetchOrderStoreNotice(id)
     }
 
     private fun fetchOrderableStoreMenu(id: Int) = intent {
@@ -114,6 +125,7 @@ class StoreDetailViewModel @Inject constructor(
                 )
             }
         }
+        fetchOrderStoreNotice(id)
     }
 
     private fun fetchStore(id: Int) = intent {
@@ -159,20 +171,17 @@ class StoreDetailViewModel @Inject constructor(
     }
 
     private fun checkToken() = intent {
-        reduce { state.copy(isLoading = true) }
         val hasToken = isTokenSavedInDeviceUseCase()
         if (hasToken) {
             reduce {
                 state.copy(
-                    isLogin = true,
-                    isLoading = false
+                    isLogin = true
                 )
             }
         } else {
             reduce {
                 state.copy(
-                    isLogin = false,
-                    isLoading = false
+                    isLogin = false
                 )
             }
         }
@@ -184,6 +193,21 @@ class StoreDetailViewModel @Inject constructor(
                 state.copy(
                     storeReview = reviews
                 )
+            }
+        }
+    }
+
+    fun getCartItemsCount() = intent {
+        reduce {
+            state.copy(isLoading = true)
+        }
+        getCartItemsCountUseCase().onSuccess { count ->
+            reduce {
+                state.copy(cartItemCount = count.totalQuantity, isLoading = false)
+            }
+        }.onFailure {
+            reduce {
+                state.copy(isLoading = false)
             }
         }
     }
@@ -200,9 +224,5 @@ class StoreDetailViewModel @Inject constructor(
                 }
             )
         }
-    }
-
-    companion object {
-        const val STORE_ID = "storeId"
     }
 }

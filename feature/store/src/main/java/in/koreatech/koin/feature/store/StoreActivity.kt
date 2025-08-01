@@ -13,7 +13,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -86,7 +86,7 @@ class StoreActivity : ComponentActivity() {
                             }
                         }
                     },
-                    containerColor = Color(0xFFF2F2F2),
+                    containerColor = colorResource(id = R.color.store_detail_background),
                     contentWindowInsets = WindowInsets(0, 0, 0, 0)
                 ) { innerPadding ->
                     NavHost(

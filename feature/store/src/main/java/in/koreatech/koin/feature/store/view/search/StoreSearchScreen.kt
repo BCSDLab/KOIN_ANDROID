@@ -19,6 +19,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,9 +29,8 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -72,17 +73,16 @@ fun StoreSearchScreen(
                 onBackPressed()
             },
             actions = {
-                Image(
-                    modifier = Modifier
-                        .padding(end = 10.dp)
-                        .size(24.dp),
-                    painter = painterResource(R.drawable.ic_shopping_cart),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(Color(0xFF1C1B1F))
-                )
+                IconButton(onClick = {}) {
+                    Icon(
+                        modifier = Modifier.size(25.dp),
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_shopping_cart),
+                        contentDescription = null
+                    )
+                }
             },
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                containerColor = Color(0XFFF2F2F2)
+                containerColor = colorResource(id = R.color.store_detail_background)
             )
         )
 

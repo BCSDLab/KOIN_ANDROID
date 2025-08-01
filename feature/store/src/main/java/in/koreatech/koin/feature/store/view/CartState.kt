@@ -10,5 +10,7 @@ data class CartState(
     val isValidateCart: CartValidate = CartValidate.Empty,
     val cartValidation: CartValidation = CartValidation.NONE,
     val cartType: CartType = CartType.DELIVERY,
-    val showDeleteDialog: Boolean = false
+    val showDeleteDialog: Boolean = false,
+    val minimumOrderAmount: Int = 0,
+    val isLoading: Boolean = false
 )

@@ -88,7 +88,10 @@ fun MenuItem(
     menu: MenuModel,
     modifier: Modifier = Modifier
 ) {
-    Row(modifier = modifier) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Column(modifier = Modifier.weight(1f)) {
             Text(text = menu.name, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
             if (menu.description?.isNotEmpty() == true) {
@@ -139,7 +142,11 @@ private fun OptionPriceText(
             )
         } else {
             val options = menu.prices.fold("") { acc, menu ->
-                acc + stringResource(R.string.option_price, menu.name ?: "", menu.price ?: 0)
+                acc + if (menu.name != null) {
+                    stringResource(R.string.option_price, menu.name, menu.price ?: 0)
+                } else {
+                    stringResource(R.string.price_with_won, menu.price ?: 0)
+                }
             }.trim()
             Text(text = options, fontSize = 14.sp, fontWeight = FontWeight.Bold)
         }

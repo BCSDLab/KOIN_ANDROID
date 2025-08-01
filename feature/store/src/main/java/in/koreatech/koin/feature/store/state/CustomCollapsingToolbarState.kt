@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 
 @Immutable
 class CustomCollapsingToolbarState(
-    val toolbarMinHeight: Dp = 40.dp,
+    val toolbarMinHeight: Dp = 60.dp,
     val toolbarMaxHeight: Dp = 300.dp,
     val toolbarOffsetPx: MutableFloatState = mutableFloatStateOf(0f),
     val listState: LazyListState = LazyListState(),
@@ -49,7 +49,7 @@ class CustomCollapsingToolbarState(
 
 @Composable
 fun rememberCollapsingToolbarState(
-    toolbarMinHeight: Dp = 40.dp,
+    toolbarMinHeight: Dp = 60.dp,
     toolbarMaxHeight: Dp = 300.dp
 ): CustomCollapsingToolbarState {
     val listState = remember { LazyListState() }

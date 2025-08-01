@@ -9,7 +9,7 @@ data class CartItemResponse(
     @SerializedName("name")
     val name: String,
     @SerializedName("menu_thumbnail_image_url")
-    val menuThumbnailImageUrl: String,
+    val menuThumbnailImageUrl: String?,
     @SerializedName("quantity")
     val quantity: Int,
     @SerializedName("total_amount")
@@ -25,7 +25,7 @@ data class CartItemResponse(
         CartItem(
             cartMenuItemId = cartMenuItemId,
             name = name,
-            menuThumbnailImageUrl = menuThumbnailImageUrl,
+            menuThumbnailImageUrl = menuThumbnailImageUrl ?: "",
             quantity = quantity,
             totalAmount = totalAmount,
             price = price.toCartItemPrice(),
