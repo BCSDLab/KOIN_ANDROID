@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.store.view.main.nearby
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -22,10 +24,12 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,6 +43,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -100,12 +105,36 @@ fun StoreNearbyScreen(
                 onBackPressed()
             },
             actions = {
-                IconButton(onClick = navigateToCart) {
-                    Icon(
-                        modifier = Modifier.size(25.dp),
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_shopping_cart),
-                        contentDescription = null
-                    )
+                Box(contentAlignment = Alignment.TopEnd) {
+                    IconButton(onClick = {
+                        navigateToCart()
+                    }) {
+                        Icon(
+                            modifier = Modifier.size(25.dp),
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_shopping_cart),
+                            contentDescription = null
+                        )
+                    }
+                    if (uiState.cartItemCount > 0) {
+                        Box(
+                            modifier = Modifier
+                                .offset(x = (-5).dp, y = 5.dp)
+                                .size(16.dp)
+                                .background(RebrandKoinTheme.colors.primary500, CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "${uiState.cartItemCount}",
+                                style = RebrandKoinTheme.typography.medium12.copy(
+                                    color = RebrandKoinTheme.colors.neutral0,
+                                    lineHeightStyle = LineHeightStyle(
+                                        trim = LineHeightStyle.Trim.Both,
+                                        alignment = LineHeightStyle.Alignment.Center
+                                    )
+                                )
+                            )
+                        }
+                    }
                 }
             },
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
