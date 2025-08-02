@@ -49,6 +49,14 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreDialog
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.QuantitySelectorSection
+import `in`.koreatech.koin.feature.store.enums.CartError.DIFFERENT_SHOP_ITEM_IN_CART
+import `in`.koreatech.koin.feature.store.enums.CartError.INVALID_MENU_IN_SHOP
+import `in`.koreatech.koin.feature.store.enums.CartError.MAX_SELECTION_EXCEEDED
+import `in`.koreatech.koin.feature.store.enums.CartError.MENU_SOLD_OUT
+import `in`.koreatech.koin.feature.store.enums.CartError.MIN_SELECTION_NOT_MET
+import `in`.koreatech.koin.feature.store.enums.CartError.NONE
+import `in`.koreatech.koin.feature.store.enums.CartError.REQUIRED_OPTION_GROUP_MISSING
+import `in`.koreatech.koin.feature.store.enums.CartError.SHOP_CLOSED
 import `in`.koreatech.koin.feature.store.model.LocalShopMenuOptionGroup
 import `in`.koreatech.koin.feature.store.model.LocalShopPrice
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
@@ -86,7 +94,18 @@ fun CartAddScreen(
         KoinStoreDialog(
             message = stringResource(uiState.error.message),
             onDismissRequest = viewModel::dismissErrorDialog
-        )
+        ) {
+            when (uiState.error) {
+                DIFFERENT_SHOP_ITEM_IN_CART -> viewModel.resetCart()
+                NONE,
+                MENU_SOLD_OUT,
+                REQUIRED_OPTION_GROUP_MISSING,
+                MIN_SELECTION_NOT_MET,
+                MAX_SELECTION_EXCEEDED,
+                INVALID_MENU_IN_SHOP,
+                SHOP_CLOSED -> viewModel.dismissErrorDialog()
+            }
+        }
     }
 
     Box(
