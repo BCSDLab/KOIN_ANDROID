@@ -9,6 +9,7 @@ import `in`.koreatech.koin.domain.model.store.CartAdd
 import `in`.koreatech.koin.domain.usecase.store.AddCartItemUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetOrderableShopMenuUseCase
+import `in`.koreatech.koin.domain.usecase.store.ResetCartUseCase
 import `in`.koreatech.koin.feature.store.enums.CartError
 import `in`.koreatech.koin.feature.store.model.toLocalShopMenuOptionGroup
 import `in`.koreatech.koin.feature.store.model.toLocalShopPrice
@@ -26,7 +27,8 @@ class CartAddViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getOrderableShopMenuUseCase: GetOrderableShopMenuUseCase,
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
-    private val addCartItemUseCase: AddCartItemUseCase
+    private val addCartItemUseCase: AddCartItemUseCase,
+    private val resetCartUseCase: ResetCartUseCase
 ) : ViewModel(), ContainerHost<CartAddState, CartAddSideEffect> {
     override val container = container<CartAddState, CartAddSideEffect>(CartAddState()) {
         val orderableShopId = savedStateHandle.get<Int>(ORDERABLE_SHOP_ID)
@@ -206,6 +208,24 @@ class CartAddViewModel @Inject constructor(
     fun updateQuantity(quantity: Int) = intent {
         reduce {
             state.copy(quantity = quantity)
+        }
+    }
+
+    fun resetCart() = intent {
+        reduce {
+            state.copy(isLoading = true)
+        }
+        resetCartUseCase().onSuccess {
+            reduce {
+                state.copy(isLoading = false)
+            }
+            addCartItem() // Call add cart again
+            dismissErrorDialog()
+        }.onFailure {
+            // Should not happen
+            reduce {
+                state.copy(isLoading = false)
+            }
         }
     }
 }
