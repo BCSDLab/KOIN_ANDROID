@@ -40,7 +40,6 @@ import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.navigation.Navigator
-import `in`.koreatech.koin.core.navigation.SchemeType
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
@@ -430,84 +429,18 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         val targetEventId = intent.getIntExtra(EXTRA_EVENT_ID, -1)
         val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
 
-        when (type) {
-            SchemeType.SHOP.type -> {
-                val intent =
-                    navigator.navigateToShop(
-                        context = this,
-                        targetId = Pair(EXTRA_ID, targetId),
-                        type = Pair(EXTRA_TYPE, type)
-                    )
-                startActivity(intent)
-            }
-
-            SchemeType.DINING.type -> {
-                val intent =
-                    navigator.navigateToDinging(
-                        context = this,
-                        targetId = Pair(EXTRA_ID, targetId),
-                        type = Pair(EXTRA_TYPE, type)
-                    )
-                startActivity(intent)
-            }
-
-            SchemeType.ARTICLE.type -> {
-                val intent =
-                    navigator.navigateToArticle(
-                        context = this,
-                        targetId = Pair(EXTRA_ID, targetId),
-                        targetBoardId = Pair(EXTRA_BOARD_ID, targetBoardId),
-                        type = Pair(EXTRA_TYPE, type)
-                    )
-                startActivity(intent)
-            }
-
-            SchemeType.CHAT.type -> {
-                val intent =
-                    navigator.navigateToChat(
-                        context = this,
-                        targetArticleId = Pair(EXTRA_ARTICLE_ID, targetArticleId),
-                        targetChatId = Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
-                        type = Pair(EXTRA_TYPE, type)
-                    )
-                startActivity(intent)
-            }
-
-            SchemeType.CLUB_RECRUIT.type -> {
-                val intent =
-                    navigator.navigateToClubRecruitment(
-                        context = this,
-                        targetClubId = Pair(
-                            EXTRA_CLUB_ID,
-                            targetId
-                        ),
-                        type = Pair(EXTRA_TYPE, type)
-                    )
-                startActivity(intent)
-            }
-
-            SchemeType.CLUB.type -> {
-                val intent =
-                    navigator.navigateToClub(
-                        context = this,
-                        targetClubId = Pair(
-                            EXTRA_CLUB_ID,
-                            targetClubId
-                        ),
-                        targetEventId = Pair(
-                            EXTRA_EVENT_ID,
-                            targetEventId
-                        ),
-                        type = Pair(EXTRA_TYPE, type)
-                    )
-                startActivity(intent)
-            }
-
-            else -> {
-                // Banner shouldn't popup on other page
-                initBanner()
-            }
-        }
+        navigator.navigateTo(
+            context = this,
+            type = Pair(EXTRA_TYPE, type),
+            *arrayOf(
+                Pair(EXTRA_ID, targetId),
+                Pair(EXTRA_BOARD_ID, targetBoardId),
+                Pair(EXTRA_ARTICLE_ID, targetArticleId),
+                Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
+                Pair(EXTRA_CLUB_ID, targetClubId),
+                Pair(EXTRA_EVENT_ID, targetEventId)
+            )
+        )
     }
 
     private fun initArticleBannerABTest() {
