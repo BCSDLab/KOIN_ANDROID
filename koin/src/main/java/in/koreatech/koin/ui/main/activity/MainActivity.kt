@@ -60,6 +60,7 @@ import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.feature.banner.ui.BannerActivity
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetA
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetB
+import `in`.koreatech.koin.navigation.SchemeType
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.main.adapter.ArticleMainAdapter
@@ -429,18 +430,32 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         val targetEventId = intent.getIntExtra(EXTRA_EVENT_ID, -1)
         val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
 
-        navigator.navigateTo(
-            context = this,
-            type = Pair(EXTRA_TYPE, type),
-            *arrayOf(
-                Pair(EXTRA_ID, targetId),
-                Pair(EXTRA_BOARD_ID, targetBoardId),
-                Pair(EXTRA_ARTICLE_ID, targetArticleId),
-                Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
-                Pair(EXTRA_CLUB_ID, targetClubId),
-                Pair(EXTRA_EVENT_ID, targetEventId)
-            )
-        )
+        when (type) {
+            SchemeType.SHOP.type,
+            SchemeType.DINING.type,
+            SchemeType.ARTICLE.type,
+            SchemeType.CHAT.type,
+            SchemeType.CLUB_RECRUIT.type,
+            SchemeType.CLUB.type -> {
+                navigator.navigateTo(
+                    context = this,
+                    type = Pair(EXTRA_TYPE, type),
+                    *arrayOf(
+                        Pair(EXTRA_ID, targetId),
+                        Pair(EXTRA_BOARD_ID, targetBoardId),
+                        Pair(EXTRA_ARTICLE_ID, targetArticleId),
+                        Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
+                        Pair(EXTRA_CLUB_ID, targetClubId),
+                        Pair(EXTRA_EVENT_ID, targetEventId)
+                    )
+                )
+            }
+
+            else -> {
+                // Banner shouldn't popup on other page
+                initBanner()
+            }
+        }
     }
 
     private fun initArticleBannerABTest() {
