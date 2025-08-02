@@ -12,25 +12,11 @@ import kotlin.jvm.java
 class NavigatorImpl @Inject constructor() : Navigator {
     override fun navigateToSplash(
         context: Context,
-        targetId: Pair<String, Any?>,
-        targetBoardId: Pair<String, Any?>,
-        targetArticleId: Pair<String, Any?>,
-        targetChatId: Pair<String, Any?>,
-        targetClubId: Pair<String, Any?>,
-        targetEventId: Pair<String, Any?>,
         type: Pair<String, Any?>,
-        navType: Pair<String, Any?>
+        navType: Pair<String, Any?>,
+        vararg args: Pair<String, Any?>
     ): Intent {
-        val intent = context.buildIntent<SplashActivity>(
-            targetId,
-            targetBoardId,
-            targetArticleId,
-            targetChatId,
-            targetClubId,
-            targetEventId,
-            type,
-            navType
-        )
+        val intent = context.buildIntent<SplashActivity>(type, navType, *args)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         return intent
     }

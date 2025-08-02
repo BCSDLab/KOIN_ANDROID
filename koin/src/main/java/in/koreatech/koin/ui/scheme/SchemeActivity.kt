@@ -84,26 +84,9 @@ class SchemeActivity : ActivityBase() {
                     val intent =
                         navigator.navigateToSplash(
                             context = this,
-                            targetId = Pair(EXTRA_ID, getIdFromUrl(url ?: "")),
-                            targetBoardId = Pair(EXTRA_BOARD_ID, getBoardIdFromUrl(url ?: "")),
-                            targetArticleId = Pair(
-                                EXTRA_ARTICLE_ID,
-                                getArticleIdFromUrl(url ?: "")
-                            ),
-                            targetChatId = Pair(
-                                EXTRA_CHAT_ROOM_ID,
-                                getChatRoomIdFromUrl(url ?: "")
-                            ),
-                            targetClubId = Pair(
-                                EXTRA_CLUB_ID,
-                                getClubIdFromUrl(url ?: "")
-                            ),
-                            targetEventId = Pair(
-                                EXTRA_EVENT_ID,
-                                getEventIdFromUrl(url ?: "")
-                            ),
                             type = Pair(EXTRA_TYPE, url?.toHost()),
-                            navType = Pair(EXTRA_NAV_TYPE, NavigatorType.MAIN.type)
+                            navType = Pair(EXTRA_NAV_TYPE, NavigatorType.MAIN.type),
+                            *(getExtraIds(url ?: "").toTypedArray())
                         )
                     navigateToActivity(intent)
                 }
