@@ -17,5 +17,6 @@ data class StoreNearbyState(
     val showMinimumPriceOptions: Boolean = false,
     val selectedOrderOption: OrderOption = OrderOption.NONE,
     val selectedStoreFilter: List<StoreFilter> = listOf(StoreFilter.IS_OPEN),
-    val selectedMinimumPriceOption: MinimumPriceOption = MinimumPriceOption.ALL
+    val selectedMinimumPriceOption: MinimumPriceOption = MinimumPriceOption.ALL,
+    val cartItemCount: Int = 0
 )

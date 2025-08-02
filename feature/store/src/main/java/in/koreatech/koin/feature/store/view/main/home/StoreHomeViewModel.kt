@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.store.view.main.home
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetOrderableShopsUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import `in`.koreatech.koin.feature.store.enums.MinimumPriceOption
@@ -19,11 +20,13 @@ import org.orbitmvi.orbit.viewmodel.container
 @HiltViewModel
 class StoreHomeViewModel @Inject constructor(
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
+    private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
     private val getOrderableShopsUseCase: GetOrderableShopsUseCase
 ) : ViewModel(), ContainerHost<StoreHomeState, StoreHomeSideEffect> {
     override val container = container<StoreHomeState, StoreHomeSideEffect>(StoreHomeState())
 
     init {
+        getCartItemsCount()
         intent {
             getStoreCategoriesUseCase().let {
                 reduce {
@@ -31,6 +34,21 @@ class StoreHomeViewModel @Inject constructor(
                         storeCategories = it.map { it.toLocalStoreCategories() }
                     )
                 }
+            }
+        }
+    }
+
+    private fun getCartItemsCount() = intent {
+        reduce {
+            state.copy(isLoading = true)
+        }
+        getCartItemsCountUseCase().onSuccess { count ->
+            reduce {
+                state.copy(cartItemCount = count.totalQuantity, isLoading = false)
+            }
+        }.onFailure {
+            reduce {
+                state.copy(isLoading = false)
             }
         }
     }
