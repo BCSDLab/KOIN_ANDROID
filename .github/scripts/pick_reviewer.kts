@@ -91,7 +91,7 @@ fun pickRandomReviewer(prOwnerTeam: KoinTeam?, developer: Developer) {
         .filter { it.shouldPick }
         .filter { it != randomReviewerFromSameTeam }
         .filter { !it.isMentor }
-        .filter { if (prOwnerTeam != null) it.team.contains(prOwnerTeam) else true }
+        .filter { if (prOwnerTeam != null) !it.team.contains(prOwnerTeam) else true }
     val randomReviewerFromOtherTeam = otherTeamDevelopers.random()
     exportReviewer(randomReviewerFromOtherTeam.githubName, randomReviewerFromSameTeam.githubName)
 }
