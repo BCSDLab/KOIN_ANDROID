@@ -110,7 +110,7 @@ class SchemeActivity : ActivityBase() {
                 EventLogger.logNotificationEvent(
                     EventAction.CAMPUS,
                     AnalyticsConstant.Label.KEYWORD_NOTIFICATION,
-                    getKeywordFromUrl(url)
+                    getKeywordFromUrl(url) ?: ""
                 )
             }
         }
@@ -131,28 +131,28 @@ class SchemeActivity : ActivityBase() {
         return Uri.parse(url).getQueryParameter("id")?.toIntOrNull()
     }
 
-    private fun getArticleIdFromUrl(url: String): Int {
-        return Uri.parse(url).getQueryParameter("articleId")?.toIntOrNull() ?: -1
+    private fun getArticleIdFromUrl(url: String): Int? {
+        return Uri.parse(url).getQueryParameter("articleId")?.toIntOrNull()
     }
 
-    private fun getChatRoomIdFromUrl(url: String): Int {
-        return Uri.parse(url).getQueryParameter("chatRoomId")?.toIntOrNull() ?: -1
+    private fun getChatRoomIdFromUrl(url: String): Int? {
+        return Uri.parse(url).getQueryParameter("chatRoomId")?.toIntOrNull()
     }
 
-    private fun getBoardIdFromUrl(url: String): Int {
-        return Uri.parse(url).getQueryParameter("board-id")?.toIntOrNull() ?: -1
+    private fun getBoardIdFromUrl(url: String): Int? {
+        return Uri.parse(url).getQueryParameter("board-id")?.toIntOrNull()
     }
 
-    private fun getKeywordFromUrl(url: String): String {
-        return Uri.parse(url).getQueryParameter("keyword") ?: ""
+    private fun getKeywordFromUrl(url: String): String? {
+        return Uri.parse(url).getQueryParameter("keyword")
     }
 
-    private fun getClubIdFromUrl(url: String): Int {
-        return Uri.parse(url).getQueryParameter("clubId")?.toIntOrNull() ?: -1
+    private fun getClubIdFromUrl(url: String): Int? {
+        return Uri.parse(url).getQueryParameter("clubId")?.toIntOrNull()
     }
 
-    private fun getEventIdFromUrl(url: String): Int {
-        return Uri.parse(url).getQueryParameter("eventId")?.toIntOrNull() ?: -1
+    private fun getEventIdFromUrl(url: String): Int? {
+        return Uri.parse(url).getQueryParameter("eventId")?.toIntOrNull()
     }
 
     private fun navigateToActivity(intent: Intent) {
