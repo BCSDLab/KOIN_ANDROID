@@ -111,7 +111,7 @@ fun ShoppingCartScreen(
         bottomBar = {
             if (uiState.cart.items.isNotEmpty()) {
                 OrderBottomBar(
-                    itemCount = uiState.cart.items.count(),
+                    itemCount = uiState.totalItemCount,
                     totalPrice = uiState.cart.totalAmount,
                     isOrderEnabled = uiState.cartValidation == CartValidation.VALID,
                     orderableMessage = if (uiState.cart.totalAmount >= uiState.minimumOrderAmount) {
