@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -48,6 +49,7 @@ import `in`.koreatech.koin.feature.store.component.KoinCartPriceItem
 import `in`.koreatech.koin.feature.store.component.KoinStoreDialog
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
+import `in`.koreatech.koin.feature.store.component.QuantitySelectorSection
 import `in`.koreatech.koin.feature.store.model.LocalShopMenuOptionGroup
 import `in`.koreatech.koin.feature.store.model.LocalShopPrice
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
@@ -116,8 +118,10 @@ fun CartEditScreen(
                 menuPrices = uiState.prices,
                 menuOptions = uiState.options,
                 orderableShopMenuPriceId = uiState.orderableShopMenuPriceId,
+                quantity = uiState.quantity,
                 onPriceSelected = viewModel::updateMenuPriceId,
                 onSelectedOptionGroup = viewModel::updateSelectedOptionGroup,
+                onQuantityChange = viewModel::updateQuantity,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(bottom = rememberState.toolbarMinHeight + statusBarHeight)
@@ -248,9 +252,11 @@ private fun CartEditScreen(
     menuPrices: List<LocalShopPrice>,
     menuOptions: List<LocalShopMenuOptionGroup>,
     orderableShopMenuPriceId: Int,
+    quantity: Int,
     modifier: Modifier = Modifier,
     onPriceSelected: (Int) -> Unit = { },
-    onSelectedOptionGroup: (Int, Int) -> Unit = { _, _ -> }
+    onSelectedOptionGroup: (Int, Int) -> Unit = { _, _ -> },
+    onQuantityChange: (Int) -> Unit = { }
 ) {
     Column(
         modifier = modifier
@@ -287,6 +293,22 @@ private fun CartEditScreen(
             }
 
             Spacer(modifier = Modifier.height(12.dp))
+        }
+
+        Row(
+            modifier = Modifier.padding(vertical = 16.dp, horizontal = 24.dp)
+        ) {
+            Spacer(modifier = Modifier.weight(1f))
+
+            QuantitySelectorSection(
+                value = quantity,
+                onIncrement = {
+                    if (quantity < 10) onQuantityChange(quantity + 1)
+                },
+                onDecrement = {
+                    if (quantity > 1) onQuantityChange(quantity - 1)
+                }
+            )
         }
     }
 }
