@@ -325,7 +325,7 @@ private fun CartAddScreen(
             QuantitySelectorSection(
                 value = quantity,
                 onIncrement = {
-                    onQuantityChange(quantity + 1)
+                    if (quantity < 10) onQuantityChange(quantity + 1)
                 },
                 onDecrement = {
                     if (quantity > 1) onQuantityChange(quantity - 1)
