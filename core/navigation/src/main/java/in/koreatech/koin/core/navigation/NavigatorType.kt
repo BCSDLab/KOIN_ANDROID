@@ -13,5 +13,7 @@ enum class SchemeType(
     SHOP("shop"),
     DINING("dining"),
     ARTICLE("keyword"),
-    CHAT("chat")
+    CHAT("chat"),
+    CLUB_RECRUIT("club-recruitment"),
+    CLUB("club")
 }

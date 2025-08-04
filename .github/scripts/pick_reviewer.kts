@@ -13,8 +13,13 @@ enum class KoinTeam {
     USER
 }
 
-enum class Developer(val githubName: String, val team: Set<KoinTeam>, val isMentor: Boolean = false) {
+/**
+ * If developer is a mentor, set isMentor to true.
+ * If developer should not be picked as a reviewer, set shouldPick to false.
+ */
+enum class Developer(val githubName: String, val team: Set<KoinTeam>, val isMentor: Boolean = false, val shouldPick: Boolean = true) {
     YUNJAENA("yunjaena", setOf(), true),
+    SKDUD0629("skdud0629", setOf(), shouldPick = false),
     JAEYOUNG290("JaeYoung290", setOf(KoinTeam.BUSINESS)),
     KONGWOOJIN("kongwoojin", setOf(KoinTeam.BUSINESS, KoinTeam.CAMPUS, KoinTeam.USER)),
     KYM_P("KYM-P", setOf(KoinTeam.CAMPUS)),
@@ -70,23 +75,25 @@ fun pickPairedReviewer(developer: Developer) {
 }
 
 /**
- * Pick a random reviewer from the other team members.
+ * Pick a random reviewer.
  * The developer and reviewer should not be in the same team.
  */
 fun pickRandomReviewer(prOwnerTeam: KoinTeam?, developer: Developer) {
-    val sameTeamDevelopers = Developer.entries
-        .filter { it != developer }
-        .filter { !it.isMentor }
-        .filter { it.team.contains(prOwnerTeam) }
-    val randomReviewerFromSameTeam = sameTeamDevelopers.random()
-
     val otherTeamDevelopers = Developer.entries
         .filter { it != developer }
-        .filter { it != randomReviewerFromSameTeam }
+        .filter { it.shouldPick }
         .filter { !it.isMentor }
-        .filter { !it.team.contains(prOwnerTeam) }
+        .filter { if (prOwnerTeam != null) !it.team.contains(prOwnerTeam) else true }
     val randomReviewerFromOtherTeam = otherTeamDevelopers.random()
-    exportReviewer(randomReviewerFromOtherTeam.githubName, randomReviewerFromSameTeam.githubName)
+
+    val sameTeamDevelopers = Developer.entries
+        .filter { it != developer }
+        .filter { it.shouldPick }
+        .filter { !it.isMentor }
+        .filter { it != randomReviewerFromOtherTeam }
+        .filter { if (prOwnerTeam != null) it.team.contains(prOwnerTeam) else true }
+    val randomReviewerFromSameTeam = sameTeamDevelopers.randomOrNull()
+    exportReviewer(randomReviewerFromOtherTeam.githubName, randomReviewerFromSameTeam?.githubName ?: "")
 }
 
 /**

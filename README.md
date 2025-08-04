@@ -4,8 +4,8 @@
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.9.22-blue.svg)](https://kotlinlang.org)
 [![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://kotlinlang.org)
-[![Gradle](https://img.shields.io/badge/gradle-8.6-green.svg)](https://gradle.org/)
-[![Android Gradle](https://img.shields.io/badge/AGP-8.4.1-green.svg)](https://gradle.org/)
+[![Gradle](https://img.shields.io/badge/gradle-8.7-green.svg)](https://gradle.org/)
+[![Android Gradle](https://img.shields.io/badge/AGP-8.5.1-green.svg)](https://gradle.org/)
 
 [![minSdkVersion](https://img.shields.io/badge/minSdkVersion-26-red)](https://developer.android.com/distribute/best-practices/develop/target-sdk)
 [![compileSdkVersion](https://img.shields.io/badge/compileSdkVersion-34-red)](https://developer.android.com/distribute/best-practices/develop/target-sdk)

@@ -1,15 +1,19 @@
 <resources>
     <string name="detail_tab_detail">상세 소개</string>
+    <string name="detail_tab_recruit">모집</string>
+    <string name="detail_tab_event">행사</string>
     <string name="detail_tab_qna">Q&amp;A</string>
     <string name="detail_club_image_error">이미지를 불러올 수 없습니다.</string>
     <string name="detail_intro_category">분과 :&#160;</string>
     <string name="detail_intro_location">동아리방 위치 :&#160;</string>
-    <string name="detail_intro_introduction">동아리 소개 :&#160;</string>
+    <string name="detail_intro_introduction">동아리&#160;소개&#160;: %1$s</string>
     <string name="detail_intro_instagram">인스타 :&#160;</string>
     <string name="detail_intro_google_form">구글폼 :&#160;</string>
     <string name="detail_intro_open_chat">오픈채팅 :&#160;</string>
     <string name="detail_intro_phone_number">전화번호 :&#160;</string>
+    <string name="detail_intro_notification">모집알림</string>
     <string name="detail_qna_text_field_hint">답변을 입력해주세요.</string>
+    <string name="detail_qnas_empty">Q&amp;A 가 존재하지 않아요.</string>
     <string name="detail_fix_button">수정하기</string>
     <string name="detail_empowerment_button">권한 위임</string>
     <string name="detail_date_text">&#160;업데이트</string>
@@ -32,7 +36,42 @@
     <string name="detail_dialog_empowerment_old_id">현 권한자 아이디:&#160;</string>
     <string name="detail_dialog_empowerment_new_id">향후 권한자 아이디</string>
     <string name="detail_dialog_empowerment_hint">아이디를 입력해주세요.</string>
+    <string name="detail_dialog_recruit_subscribe_text">모집 알림을 받으시겠습니까?</string>
+    <string name="detail_dialog_recruit_subscribe_positive">알림 받기</string>
+    <string name="detail_dialog_recruit_subscribe_negative">취소하기</string>
+    <string name="detail_dialog_recruit_unsubscribe_text">모집 알림을 취소하시겠습니까?</string>
+    <string name="detail_dialog_recruit_unsubscribe_positive">알림 취소</string>
+    <string name="detail_dialog_recruit_unsubscribe_negative">취소하기</string>
+    <string name="detail_dialog_event_delete">행사 삭제</string>
+    <string name="detail_dialog_event_modify">행사 수정</string>
+    <string name="detail_dialog_event_notification">행사 알림</string>
+    <string name="detail_dialog_event_subscribe_text">행사 알림을 받으시겠습니까?</string>
+    <string name="detail_dialog_event_unsubscribe_text">행사 알림을 취소하시겠습니까?</string>
     <string name="detail_detail_intro_in_development">아직 준비중입니다.</string>
+    <string name="detail_hotStatus_club_intro">🎉%1$d월 %2$d째주 인기 동아리 🎉</string>
+
+    <string name="detail_recruit_end">모집이 마감되었어요.\n모집알림을 켜 알림을 받아보세요.</string>
+    <string name="detail_recruit_create">모집 생성하기</string>
+    <string name="detail_recruit_deadline_header">모집 기한</string>
+    <string name="detail_recruit_modify">모집 수정</string>
+    <string name="detail_recruit_delete">모집 삭제</string>
+    <string name="detail_recruit_delete_dialog_description">모집을 삭제하시겠어요?\n모집이 삭제되며 되돌릴 수 없어요.</string>
+    <string name="detail_recruit_delete_dialog_positive">삭제하기</string>
+    <string name="detail_recruit_delete_dialog_negative">취소하기</string>
+
+    <string name="detail_events_empty">해당되는 행사가 없어요.</string>
+    <string name="detail_events_sort_type_recent">최신 등록순</string>
+    <string name="detail_events_sort_type_ongoing">행사 진행중</string>
+    <string name="detail_events_sort_type_upcoming">행사 예정</string>
+    <string name="detail_events_sort_type_ended">종료 행사</string>
+    <string name="detail_events_create">행사 생성하기</string>
+
+    <string name="detail_event_info_delete">행사 생성하기</string>
+    <string name="detail_event_info_introduce">행사 내용 : %1$s</string>
+    <string name="detail_event_info_content">상세 내용 : %1$s</string>
+    <string name="detail_event_delete_dialog_description">행사를 삭제하시겠어요?\n행사가 삭제되며 되돌릴 수 없어요.</string>
+    <string name="detail_event_delete_dialog_positive">삭제하기</string>
+    <string name="detail_event_delete_dialog_negative">취소하기</string>
 
     <string name="detail_error_empty_text_field">필수 입력란입니다.</string>
     <string name="detail_error_unauthorized">올바르지 않은 인증 정보입니다.</string>
@@ -45,8 +84,13 @@
     <string name="detail_error_already_liked">이미 좋아요 상태입니다.</string>
     <string name="detail_error_already_not_liked">이미 좋아요 상태가 아닙니다.</string>
     <string name="detail_error_incorrect_link">올바른 링크 형식이 아닙니다.</string>
+    <string name="detail_error_delete_recruit">모집이 삭제되지 않았습니다.</string>
+    <string name="detail_error_load_recruit">모집을 불러오지 못했습니다.</string>
+    <string name="detail_error_load_events">행사를 불러오지 못했습니다.</string>
+    <string name="detail_error_delete_event">행사가 삭제되지 않았습니다.</string>
+    <string name="detail_error_unkown">알 수 없는 오류가 발생했습니다.</string>
 
-    <string name="club_main_activity_widget_title">동아리 조회</string>
+    <string name="club_main_activity_widget_title">동아리</string>
     <string name="club_main_widget_category_performance">공연</string>
     <string name="club_main_widget_category_sports">운동</string>
     <string name="club_main_widget_category_religious">종교</string>
@@ -61,12 +105,23 @@
     <string name="club_list_search_hint">동아리 명을 입력하세요.</string>
     <string name="club_list_dropdown_sort_none">생성순</string>
     <string name="club_list_dropdown_sort_hits">조회순</string>
+    <string name="club_list_dropdown_sort_recruitment_updated_desc">모집 생성순</string>
+    <string name="club_list_dropdown_sort_recruitment_deadline_asc">모집 마감순</string>
     <string name="club_list_create_dialog_title">동아리 생성 안내사항</string>
     <string name="club_list_create_dialog_content">동아리 생성과 정보 수정 권한은\n최종 승인자에 의해 동시에 부여됩니다.\n생성 요청 전, 반드시 동아리 임원진 간\n협의를 완료해 주시기 바랍니다.</string>
     <string name="club_list_like_failed">좋아요에 실패했습니다.</string>
     <string name="club_list_dislike_failed">좋아요 취소에 실패했습니다.</string>
     <string name="club_list_fetch_failed">동아리 목록을 불러오는데 실패했습니다.</string>
     <string name="club_list_count">총 %1$d개의 동아리가 있습니다.</string>
+    <string name="club_list_search_placeholder">동아리 명을 입력하세요.</string>
+    <string name="club_list_recruiting">모집 중인 동아리</string>
+    <string name="club_list_label_none"></string>
+    <string name="club_list_label_recruiting">D-%1$d</string>
+    <string name="club_list_label_recruiting_before">모집 예정</string>
+    <string name="club_list_label_recruiting_finished">마감</string>
+    <string name="club_list_label_recruiting_always">상시 모집</string>
+    <string name="club_list_recruiting_not_found">모집중인 동아리가 존재하지 않아요.</string>
+    <string name="club_list_search_not_found">%1$s에 대한\n검색 결과가 존재하지 않아요.</string>
 
     <string name="club_create_logo_description">클릭하여 사진을\n업로드해주세요.</string>
     <string name="club_create_create_cancel">생성 취소</string>
@@ -111,6 +166,79 @@
     <string name="club_modify_logo_description">클릭하여 이미지를\n변경해주세요.(선택)</string>
     <string name="club_modify_success_snackbar">동아리 정보가 수정되었습니다.</string>
 
+    <string name="club_recruit_create_title">동아리 모집 생성</string>
+    <string name="club_recruit_create_logo_description">클릭하여 사진을\n업로드해주세요.</string>
+    <string name="club_recruit_create_date_text">모집 기한</string>
+    <string name="club_recruit_create_always_recruit_text">상시 모집</string>
+    <string name="club_recruit_create_image_intro">4:5 비율로 업로드 해주세요.\n사진을 클릭하여 수정할 수 있습니다.</string>
+    <string name="club_recruit_create_name">행사 이름:</string>
+    <string name="club_recruit_create_period">행사 기간</string>
+    <string name="club_recruit_create_introduce">행사 내용</string>
+    <string name="club_recruit_create_recruit_description">상세 내용</string>
+    <string name="club_recruit_create_recruit_description_hint">상세 내용을 적어주세요.</string>
+    <string name="club_recruit_create_cancel">생성 취소</string>
+    <string name="club_recruit_create_request">생성 하기</string>
+    <string name="club_recruit_create_request_dialog_description">작성하신 내용으로\n생성하시겠어요?</string>
+    <string name="club_recruit_create_request_dialog_positive">생성하기</string>
+    <string name="club_recruit_create_request_dialog_negative">취소하기</string>
+    <string name="club_recruit_create_cancel_dialog_description">생성을 취소하시겠어요?\n작성하신 내용은 모두 사라져요.</string>
+    <string name="club_recruit_create_cancel_dialog_positive">취소하기</string>
+    <string name="club_recruit_create_cancel_dialog_negative">게속 생성</string>
+    <string name="club_recruit_create_error_create_failure">모집 생성에 실패했습니다.</string>
+
+    <string name="club_recruit_modify_request_dialog_description">작성하신 내용으로\n수정하시겠어요?</string>
+    <string name="club_recruit_modify_request_dialog_positive">수정하기</string>
+    <string name="club_recruit_modify_request_dialog_negative">취소하기</string>
+    <string name="club_recruit_modify_cancel_dialog_description">"수정을 취소하시겠어요?\n작성하신 내용은 모두 사라져요."</string>
+    <string name="club_recruit_modify_cancel_dialog_positive">취소하기</string>
+    <string name="club_recruit_modify_cancel_dialog_negative">계속 편집</string>
+    <string name="club_recruit_modify_cancel">수정 취소</string>
+    <string name="club_recruit_modify_request">수정 하기</string>
+    <string name="club_recruit_modify_error_load">기존 모집 정보를 불러오지 못했습니다.</string>
+
+    <string name="club_event_create_title">동아리 행사 생성</string>
+    <string name="club_event_create_logo_description">클릭하여 사진을\n업로드해주세요.\n스와이프 하여 사진을\n추가할 수 있습니다.</string>
+    <string name="club_event_create_image_intro">5:4 비율로 업로드 해주세요. \n사진을 클릭하여 수정할 수 있습니다.</string>
+    <string name="club_event_create_name_hint">행사 이름을 적어주세요.(필수)</string>
+    <string name="club_event_create_intro_hint">행사내용을 적어주세요. (최대 70자)(필수)</string>
+    <string name="club_event_create_content_hint">상세 내용을 적어주세요.</string>
+    <string name="club_event_create_error_create_failure">행사 생성에 실패했습니다.</string>
+    <string name="club_event_create_cancel">생성 취소</string>
+    <string name="club_event_create_request">생성 하기</string>
+    <string name="club_event_period">%1$s. 부터 %2$s. 까지</string>
+
+    <string name="club_event_modify_title">동아리 행사 수정</string>
+    <string name="club_event_modify_request_dialog_description">작성하신 내용으로\n수정하시겠어요?</string>
+    <string name="club_event_modify_request_dialog_positive">수정하기</string>
+    <string name="club_event_modify_request_dialog_negative">취소하기</string>
+    <string name="club_event_modify_cancel_dialog_description">"수정을 취소하시겠어요?\n작성하신 내용은 모두 사라져요."</string>
+    <string name="club_event_modify_cancel_dialog_positive">취소하기</string>
+    <string name="club_event_modify_cancel_dialog_negative">계속 편집</string>
+    <string name="club_event_modify_cancel">수정 취소</string>
+    <string name="club_event_modify_request">수정 하기</string>
+    <string name="club_event_modify_error_load">기존 행사 정보를 불러오지 못했습니다.</string>
+    <string name="club_event_modify_error_failure">행사 수정에 실패했습니다.</string>
+
+    <string name="club_recruit_dday">D-%1$d</string>
+    <string name="club_recruit_always">상시 모집</string>
+    <string name="club_recruit_closed">마감</string>
+    <string name="club_recruit_before">모집 예정</string>
+    <string name="club_recruit_period">%1$s. 부터 %2$s. 까지</string>
+
+    <string name="club_event_soon">곧 행사 진행</string>
+    <string name="club_event_ongoing">행사 진행 중</string>
+    <string name="club_event_upcoming">행사 예정</string>
+    <string name="club_event_ended">종료된 행사</string>
+    <string name="club_event_unknown">알 수 없음</string>
+    <string name="club_event_max_image_error">더이상 추가할 수 없습니다.</string>
+
+    <string name="club_event_intro_header">행사 소개:&#160;</string>
+
+    <string name="club_date_picker_format">%1$d년\n%2$d월 %3$d일 (%4$s)</string>
+    <string name="club_time_picker_format">%1$02d:%2$02d</string>
+    <string name="club_time_picker_title">시간을 선택해주세요.</string>
+
     <string name="club_image_upload_failed">이미지 업로드에 실패했습니다.</string>
     <string name="club_dialog_ok">확인</string>
+    <string name="club_dialog_cancel">취소</string>
 </resources>

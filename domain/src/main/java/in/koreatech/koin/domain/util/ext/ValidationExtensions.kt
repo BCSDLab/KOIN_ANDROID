@@ -33,12 +33,13 @@ fun String.isValidOpenChatUrl(): Boolean = this.matches(RegexPatterns.openChatUr
 
 val String.isValidStudentId: Boolean
     get() {
-        if (this.trim().length != 10) {
+        // Korean student number is 10 digit
+        // Foreign student number is 8 or 9 digit
+        if (this.trim().length !in 8..10) {
             return false
         }
 
-        val year: Int = this.trim().substring(0..3).toInt()
-        return year in 1992..Calendar.getInstance().get(Calendar.YEAR)
+        return this.matches(Regex("""^\d+${'$'}""")) // TODO: Create Regex file
     }
 
 val String.isValidPhoneNumber: Boolean get() =

@@ -235,6 +235,7 @@ object URLConstant {
         }
         const val CATEGORIES = "$CLUBS/categories"
         const val HOT = "$CLUBS/hot"
+        const val SEARCH = "$CLUBS/search/related"
         object CLUBID {
             const val CLUBID = "$CLUBS/${PATH.CLUBID}"
             object QNA {
@@ -244,6 +245,18 @@ object URLConstant {
             object LIKE {
                 const val LIKE = "$CLUBID/like"
                 const val CANCEL = "$LIKE/cancel"
+            }
+            object RECRUITMENT {
+                const val RECRUITMENT = "$CLUBID/recruitment"
+                const val NOTIFICATION = "$RECRUITMENT/notification"
+            }
+            object EVENT {
+                const val EVENTS = "$CLUBID/events"
+                const val EVENT = "$CLUBID/event"
+                object EVENTID {
+                    const val EVENTID = "$EVENT/{eventId}"
+                    const val NOTIFICATION = "$EVENTID/notification"
+                }
             }
         }
         const val EMPOWERMENT = "$CLUBS/empowerment"
@@ -277,7 +290,7 @@ object URLConstant {
     object CHAT {
         const val CHATROOM = "chatroom/lost-item"
         object PATH {
-            const val ARTICLEID = "{articleId}"
+            const val ARTICLEID = "{article_id}"
             const val CHATROOMID = "{chat_room_id}"
         }
         object ARTICLEID {
