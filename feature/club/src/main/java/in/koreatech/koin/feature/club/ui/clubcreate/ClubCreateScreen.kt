@@ -594,7 +594,7 @@ fun ClubCreateScreenImpl(
                     hint = stringResource(R.string.club_create_contact_open_chat_hint)
                 )
 
-                val numericRegex = Regex(NUMERIC_REGEX)
+                val numericRegex = NUMERIC_REGEX
 
                 Column {
                     KoinClubBasicTextField(

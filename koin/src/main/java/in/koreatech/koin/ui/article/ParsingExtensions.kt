@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.ui.article
 
 import android.graphics.Color
+import `in`.koreatech.koin.core.util.RegexPatterns
 
 internal fun String.parseColor(default: Int): Int {
     return try {
@@ -11,8 +12,7 @@ internal fun String.parseColor(default: Int): Int {
 }
 
 private fun parseRgbColor(rgbString: String, default: Int): Int {
-    val regex = """rgb\(([0-9]+), ([0-9]+), ([0-9]+)\)""".toRegex()
-    val matchResult = regex.matchEntire(rgbString)
+    val matchResult = RegexPatterns.rgb.matchEntire(rgbString)
 
     return if (matchResult != null) {
         val (r, g, b) = matchResult.destructured

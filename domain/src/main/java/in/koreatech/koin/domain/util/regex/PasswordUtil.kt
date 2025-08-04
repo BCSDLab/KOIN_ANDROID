@@ -50,10 +50,10 @@ class PasswordUtil {
     }
 
     companion object {
-        private const val FILTER_PASSWORD = "^(?=.*[a-zA-Z])(?=.*[`₩~!@#$%<>^&*()\\-=+_?<>:;\"',.{}|[]/\\\\]])(?=.*[0-9]).{6,18}$"
+        private const val FILTER_PASSWORD = """^(?=.*[a-zA-Z])(?=.*[`₩~!@#$%<>^&*()\-=+_?:;"',.{}|\[\]/\\])(?=.*[0-9]).{6,18}${'$'}"""
         val PASSWORD_REGEX: Pattern = Pattern.compile(FILTER_PASSWORD)
 
-        private const val FILTER_CONTAIN_ALPHABET = ".*[a-zA-Z].*"
+        private const val FILTER_CONTAIN_ALPHABET = """.*[a-zA-Z].*"""
         val CONTAIN_ALPHABET_REGEX = Pattern.compile(FILTER_CONTAIN_ALPHABET)
 
         private const val FILTER_CONTAIN_NUMBER = """.*[0-9].*"""

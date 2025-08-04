@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.article.state
 
+import `in`.koreatech.koin.core.util.RegexPatterns
 import `in`.koreatech.koin.domain.model.article.Attachment
 
 data class AttachmentState(
@@ -18,13 +19,11 @@ fun Attachment.toAttachmentState() = AttachmentState(
  * 본교 파일 이름은 "수강 신청 안내(129 KB)" 이런 형태임
  */
 private fun String.extractFileSize(): String? {
-    val regex = Regex("""[0-9]+\s?[KMG]?B""")
-    return regex.findAll(this).lastOrNull()?.value
+    return RegexPatterns.fileSize.findAll(this).lastOrNull()?.value
 }
 
 private fun String.removeFileSize(): String {
-    val regex = Regex("""[0-9]+\s?[KMG]?B""")
-    val match = regex.findAll(this).lastOrNull()?.value
+    val match = RegexPatterns.fileSize.findAll(this).lastOrNull()?.value
     return if (match != null) {
         try {
             this.removeRange(this.indexOf(match) - 1, this.length)
