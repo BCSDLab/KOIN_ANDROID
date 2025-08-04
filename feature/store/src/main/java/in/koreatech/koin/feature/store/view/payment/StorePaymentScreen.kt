@@ -21,7 +21,6 @@ import `in`.koreatech.koin.core.webapp.KoinWebAppInterface
 import `in`.koreatech.koin.core.webapp.KoinWebAppWebViewClient
 import `in`.koreatech.koin.core.webapp.Tokens
 import `in`.koreatech.koin.core.webapp.WebApp
-import `in`.koreatech.koin.domain.model.cart.CartType
 import `in`.koreatech.koin.feature.store.BuildConfig
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 

@@ -23,10 +23,10 @@ data class CartEditState(
 ) : Parcelable {
     val price: Int
         get() = (
-                (prices.firstOrNull { it.id == orderableShopMenuPriceId }?.price ?: 0) + options.sumOf { optionGroup ->
-                    optionGroup.options.filter { it.optionSelected }.sumOf { it.price }
-                }
-                ) * quantity
+            (prices.firstOrNull { it.id == orderableShopMenuPriceId }?.price ?: 0) + options.sumOf { optionGroup ->
+                optionGroup.options.filter { it.optionSelected }.sumOf { it.price }
+            }
+            ) * quantity
 
     val isButtonEnabled: Boolean
         get() = options.all { optionGroup ->
