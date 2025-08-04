@@ -21,11 +21,13 @@ import `in`.koreatech.koin.core.webapp.KoinWebAppInterface
 import `in`.koreatech.koin.core.webapp.KoinWebAppWebViewClient
 import `in`.koreatech.koin.core.webapp.Tokens
 import `in`.koreatech.koin.core.webapp.WebApp
+import `in`.koreatech.koin.domain.model.cart.CartType
 import `in`.koreatech.koin.feature.store.BuildConfig
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 
 @Composable
 fun StorePaymentScreen(
+    cartType: String,
     viewModel: StorePaymentViewModel = hiltViewModel(),
     finish: () -> Unit = {},
     navigateBack: () -> Unit = {}
@@ -50,7 +52,7 @@ fun StorePaymentScreen(
 
     WebApp(
         modifier = Modifier.fillMaxSize(),
-        url = "${BuildConfig.ORDER_BASE_URL}/payment?orderType=DELIVERY", // TODO
+        url = "${BuildConfig.ORDER_BASE_URL}/payment?orderType=$cartType",
         koinWebAppWebViewClient = StorePaymentWebViewClient(
             Tokens(
                 refreshToken = authToken.refreshToken,

@@ -42,7 +42,7 @@ fun ShoppingCartScreen(
     viewModel: ShoppingCartViewModel = hiltViewModel(),
     isOperating: Boolean = true,
     navigateToStoreDetail: (Int) -> Unit = { },
-    navigateToPayment: () -> Unit = { },
+    navigateToPayment: (String) -> Unit = { },
     navigateToCartEdit: (Int) -> Unit = { },
     navigateToStoreMain: () -> Unit = { }
 ) {
@@ -119,7 +119,9 @@ fun ShoppingCartScreen(
                     } else {
                         stringResource(R.string.store_cart_amount_not_met, uiState.minimumOrderAmount - uiState.cart.totalAmount)
                     },
-                    navigateToCart = navigateToPayment
+                    navigateToCart = {
+                        navigateToPayment(uiState.cartType.name)
+                    }
                 )
             }
         }
