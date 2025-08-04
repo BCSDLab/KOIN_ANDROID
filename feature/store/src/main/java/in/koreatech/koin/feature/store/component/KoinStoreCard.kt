@@ -47,7 +47,7 @@ fun KoinStoreCard(
     storeReviewCount: Int,
     storeImageUrl: String,
     modifier: Modifier = Modifier,
-    storeDeliveryFee: String? = null,
+    storeDeliveryFee: Int? = null,
     isOpen: Boolean = true,
     filterBadgeList: List<FilterBadge> = emptyList(),
     onClick: () -> Unit = { }
@@ -198,7 +198,7 @@ private fun KoinStoreCardPreview() {
             storeName = "Koin Store",
             storeAverageRating = "4.5",
             storeReviewCount = 5,
-            storeDeliveryFee = "2,500",
+            storeDeliveryFee = 2500,
             isOpen = true,
             filterBadgeList = listOf(
                 FilterBadge.SERVICE,
