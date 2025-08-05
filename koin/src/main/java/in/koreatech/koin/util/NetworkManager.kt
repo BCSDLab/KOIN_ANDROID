@@ -2,9 +2,9 @@ package `in`.koreatech.koin.util
 
 import android.net.ConnectivityManager
 import android.net.Network
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import javax.inject.Inject
 
 class NetworkManager @Inject constructor(private val connectivityManager: ConnectivityManager) {
 

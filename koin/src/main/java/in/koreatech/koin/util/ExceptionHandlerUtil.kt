@@ -3,7 +3,6 @@ package `in`.koreatech.koin.util
 import android.content.Context
 import android.content.Intent
 import android.os.Looper
-import android.widget.Toast
 import androidx.core.os.HandlerCompat
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.EntryPointAccessors
@@ -33,7 +32,7 @@ class ExceptionHandlerUtil(private val context: Context) : Thread.UncaughtExcept
      * @param throwable
      */
     override fun uncaughtException(thread: Thread, throwable: Throwable) {
-        if(!networkManager.isConnected.value) {
+        if (!networkManager.isConnected.value) {
             context.applicationContext.showToast(
                 context.getString(R.string.error_network_connection)
             )
