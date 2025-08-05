@@ -3,9 +3,12 @@ package `in`.koreatech.koin.util
 import android.content.Context
 import android.content.Intent
 import android.os.Looper
+import android.widget.Toast
 import androidx.core.os.HandlerCompat
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import dagger.hilt.android.EntryPointAccessors
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.di.network.NetworkManagerEntryPoint
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import `in`.koreatech.koin.ui.error.ErrorActivity
 import `in`.koreatech.koin.util.ext.showToast
@@ -15,6 +18,14 @@ import java.io.Writer
 import kotlin.system.exitProcess
 
 class ExceptionHandlerUtil(private val context: Context) : Thread.UncaughtExceptionHandler {
+
+    private val networkManager: NetworkManager by lazy {
+        EntryPointAccessors.fromApplication(
+            context.applicationContext,
+            NetworkManagerEntryPoint::class.java
+        ).networkManager()
+    }
+
     /***
      * UncaughtException을 캐치하여 처리하는 함수
      * Error message가 있다면 ErrorActivity로 이동
@@ -22,6 +33,12 @@ class ExceptionHandlerUtil(private val context: Context) : Thread.UncaughtExcept
      * @param throwable
      */
     override fun uncaughtException(thread: Thread, throwable: Throwable) {
+        if(!networkManager.isConnected.value) {
+            context.applicationContext.showToast(
+                context.getString(R.string.error_network_connection)
+            )
+            return
+        }
         FirebaseCrashlytics.getInstance().recordException(throwable)
 
         val stringWriter = StringWriter()
