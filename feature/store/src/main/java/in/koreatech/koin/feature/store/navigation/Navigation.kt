@@ -56,14 +56,8 @@ fun NavGraphBuilder.koinStoreGraph(
 
         ShoppingCartScreen(
             isCartModified = isCartModified,
-            navigateToStoreDetail = {
-                navController.previousBackStackEntry?.savedStateHandle?.set(
-                    IS_CART_MODIFIED,
-                    true
-                )
-                if (!navController.navigateUp()) {
-                    finish()
-                }
+            navigateToStoreDetail = { storeId ->
+                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId/${true}")
             },
             navigateToPayment = {
                 navController.navigate(StoreNavType.StorePayment.route)
@@ -73,6 +67,11 @@ fun NavGraphBuilder.koinStoreGraph(
             },
             navigateToStoreMain = {
                 navController.navigate(StoreNavType.StoreMain.route)
+            },
+            navigateBack = {
+                if (!navController.navigateUp()) {
+                    finish()
+                }
             }
         )
     }

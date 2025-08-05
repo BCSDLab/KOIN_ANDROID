@@ -116,9 +116,11 @@ fun ShoppingCartContent(
                         .weight(1f)
                         .padding(4.dp),
                     onClick = {
-                        onOrderModeChanged(
-                            CartType.DELIVERY
-                        )
+                        if (cartType != CartType.DELIVERY) {
+                            onOrderModeChanged(
+                                CartType.DELIVERY
+                            )
+                        }
                     },
                     enabled = cart.isDeliveryAvailable,
                     shape = RebrandKoinTheme.shapes.medium,
@@ -139,9 +141,11 @@ fun ShoppingCartContent(
                         .weight(1f)
                         .padding(4.dp),
                     onClick = {
-                        onOrderModeChanged(
-                            CartType.TAKE_OUT
-                        )
+                        if (cartType != CartType.TAKE_OUT) {
+                            onOrderModeChanged(
+                                CartType.TAKE_OUT
+                            )
+                        }
                     },
                     enabled = cart.isTakeoutAvailable,
                     shape = RebrandKoinTheme.shapes.medium,

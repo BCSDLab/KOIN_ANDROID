@@ -38,7 +38,7 @@ class StoreHomeViewModel @Inject constructor(
         }
     }
 
-    private fun getCartItemsCount() = intent {
+    fun getCartItemsCount() = intent {
         reduce {
             state.copy(isLoading = true)
         }

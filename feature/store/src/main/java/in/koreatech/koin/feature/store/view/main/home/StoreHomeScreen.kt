@@ -105,6 +105,10 @@ fun StoreHomeScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.getCartItemsCount()
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()

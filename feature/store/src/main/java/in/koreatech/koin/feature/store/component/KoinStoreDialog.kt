@@ -52,13 +52,13 @@ fun KoinStoreDialog(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RebrandKoinTheme.shapes.extraSmall)
-                    .background(RebrandKoinTheme.colors.primary500, RebrandKoinTheme.shapes.extraSmall),
+                    .background(RebrandKoinTheme.colors.primary500, RebrandKoinTheme.shapes.extraSmall)
+                    .clickable {
+                        onClick()
+                    }.padding(12.dp),
                 contentAlignment = Alignment.Center
             ) {
                 BasicText(
-                    modifier = Modifier.clickable {
-                        onClick()
-                    }.padding(12.dp),
                     text = buttonText,
                     style = RebrandKoinTheme.typography.regular15.copy(
                         color = RebrandKoinTheme.colors.neutral0,
