@@ -196,7 +196,7 @@ fun StoreDetailScreen(
                                 state = rememberState
                             )
                             CoroutineScope(coroutineScope.coroutineContext).launch {
-                                rememberState.listState.scrollToItem(uiState.categories.indexOfFirst { it.menuGroupId == categoryId } + 2, -stickyHeaderHeight)
+                                rememberState.listState.animateScrollToItem(uiState.categories.indexOfFirst { it.menuGroupId == categoryId } + 2, -stickyHeaderHeight)
                             }
                         }
                     )
