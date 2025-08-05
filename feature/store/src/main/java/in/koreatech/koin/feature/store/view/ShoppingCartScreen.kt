@@ -88,9 +88,6 @@ fun ShoppingCartScreen(
                 title = stringResource(R.string.shopping_cart),
                 onNavigationIconClick = {
                     navigateBack()
-//                    uiState.cart.orderableShopId?.let { storeId ->
-//                        navigateToStoreDetail(storeId)
-//                    }
                 },
                 actions = {
                     Text(
