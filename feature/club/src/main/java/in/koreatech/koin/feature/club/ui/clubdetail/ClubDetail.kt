@@ -157,7 +157,6 @@ fun ClubDetail(
     val introductionScrollState = rememberScrollState()
     val isIntroductionScrollable = remember { derivedStateOf { !listState.canScrollForward || introductionScrollState.value != 0 } }
 
-
     val recruitScrollState = rememberScrollState()
     val isRecruitScrollable = remember { derivedStateOf { !listState.canScrollForward || recruitScrollState.value != 0 } }
 
