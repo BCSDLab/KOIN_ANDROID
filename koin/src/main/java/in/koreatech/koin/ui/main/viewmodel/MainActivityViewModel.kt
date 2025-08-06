@@ -23,7 +23,6 @@ import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.ui.main.state.ArticleMainState
 import `in`.koreatech.koin.ui.main.state.toContent
 import `in`.koreatech.koin.ui.main.state.toNoti
-import `in`.koreatech.koin.util.NetworkManager
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -44,8 +43,7 @@ class MainActivityViewModel @Inject constructor(
     private val abTestUseCase: ABTestUseCase,
     private val checkBannerRefusalUseCase: CheckBannerRefusalUseCase,
     private val articleRepository: ArticleRepository,
-    private val getClubHotUseCase: GetClubHotUseCase,
-    private val networkManager: NetworkManager
+    private val getClubHotUseCase: GetClubHotUseCase
 ) : BaseViewModel() {
     private val _variableName = MutableLiveData<String>()
     val variableName: LiveData<String> get() = _variableName
@@ -145,7 +143,6 @@ class MainActivityViewModel @Inject constructor(
         checkBannerRefusal()
         updateDining()
         getClubHot()
-        registerNetworkCallback()
     }
 
     fun postABTestAssign(title: String) = viewModelScope.launchWithLoading {
@@ -211,20 +208,7 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    private fun registerNetworkCallback() {
-        networkManager.registerNetworkCallback()
-    }
-
-    private fun unRegisterNetworkCallback() {
-        networkManager.unRegisterNetworkCallback()
-    }
-
     companion object {
         private const val HOT_ARTICLE_COUNT = 4
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        unRegisterNetworkCallback()
     }
 }
