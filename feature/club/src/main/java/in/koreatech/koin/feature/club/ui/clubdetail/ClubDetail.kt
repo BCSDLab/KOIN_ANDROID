@@ -154,6 +154,10 @@ fun ClubDetail(
 
     val listState = rememberLazyListState()
 
+    val introductionScrollState = rememberScrollState()
+    val isIntroductionScrollable = remember { derivedStateOf { !listState.canScrollForward || introductionScrollState.value != 0 } }
+
+
     val recruitScrollState = rememberScrollState()
     val isRecruitScrollable = remember { derivedStateOf { !listState.canScrollForward || recruitScrollState.value != 0 } }
 
@@ -749,7 +753,8 @@ fun ClubDetail(
                             ClubDetailIntro(
                                 introduction = state.clubDetails?.introduction ?: "",
                                 modifier = Modifier
-                                    .fillMaxSize(),
+                                    .fillMaxSize()
+                                    .verticalScroll(introductionScrollState, enabled = isIntroductionScrollable.value),
                                 onFixIntroClick = {
                                     scope.launch {
                                         val result = snackbarHostState.showSnackbar(
