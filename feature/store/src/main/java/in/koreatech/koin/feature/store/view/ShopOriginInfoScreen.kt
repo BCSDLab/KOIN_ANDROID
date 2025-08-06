@@ -16,9 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.sharp.KeyboardArrowLeft
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -27,6 +24,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,14 +32,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.model.DeliveryTipModel
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
 import org.orbitmvi.orbit.compose.collectAsState
@@ -49,54 +46,59 @@ import org.orbitmvi.orbit.compose.collectAsState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShopOriginInfoScreen(
-    cartItemNumber: Int = 0,
     storeDetailViewModel: StoreDetailViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
     navigateToShoppingCart: () -> Unit = {}
 ) {
     val uiState by storeDetailViewModel.collectAsState()
+
+    LaunchedEffect(Unit) {
+        storeDetailViewModel.getCartItemsCount()
+    }
+
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = colorResource(id = R.color.store_detail_background)
-                ),
-                title = { Text(stringResource(R.string.store_info_and_origin)) },
-                navigationIcon = {
-                    Icon(
-                        modifier = Modifier
-                            .size(36.dp)
-                            .noRippleClickable { onBackClick() },
-                        imageVector = Icons.AutoMirrored.Sharp.KeyboardArrowLeft,
-                        contentDescription = ""
-                    )
+            KoinStoreTopAppBar(
+                title = stringResource(R.string.store_info_and_origin),
+                onNavigationIconClick = {
+                    onBackClick()
                 },
                 actions = {
                     Box(contentAlignment = Alignment.TopEnd) {
-                        IconButton(onClick = navigateToShoppingCart) {
+                        IconButton(onClick = {
+                            navigateToShoppingCart()
+                        }) {
                             Icon(
                                 modifier = Modifier.size(25.dp),
                                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_shopping_cart),
                                 contentDescription = null
                             )
                         }
-                        if (cartItemNumber > 0) {
+                        if (uiState.cartItemCount > 0) {
                             Box(
                                 modifier = Modifier
-                                    .offset(x = (-6).dp, y = (6).dp)
+                                    .offset(x = (-5).dp, y = 5.dp)
                                     .size(16.dp)
                                     .background(RebrandKoinTheme.colors.primary500, CircleShape),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    text = cartItemNumber.toString(),
-                                    fontSize = 10.sp,
-                                    color = KoinTheme.colors.neutral0
+                                    text = "${uiState.cartItemCount}",
+                                    style = RebrandKoinTheme.typography.medium12.copy(
+                                        color = RebrandKoinTheme.colors.neutral0,
+                                        lineHeightStyle = LineHeightStyle(
+                                            trim = LineHeightStyle.Trim.Both,
+                                            alignment = LineHeightStyle.Alignment.Center
+                                        )
+                                    )
                                 )
                             }
                         }
                     }
-                }
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = colorResource(id = R.color.store_detail_background)
+                )
             )
         }
     ) { padding ->

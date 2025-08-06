@@ -18,12 +18,15 @@ data class CartEditState(
     val options: List<LocalShopMenuOptionGroup> = emptyList(),
     val cartItemCount: Int = 0,
     val error: CartError = CartError.NONE,
-    val showErrorDialog: Boolean = false
+    val showErrorDialog: Boolean = false,
+    val quantity: Int = 1
 ) : Parcelable {
     val price: Int
-        get() = (prices.firstOrNull { it.id == orderableShopMenuPriceId }?.price ?: 0) + options.sumOf { optionGroup ->
-            optionGroup.options.filter { it.optionSelected }.sumOf { it.price }
-        }
+        get() = (
+            (prices.firstOrNull { it.id == orderableShopMenuPriceId }?.price ?: 0) + options.sumOf { optionGroup ->
+                optionGroup.options.filter { it.optionSelected }.sumOf { it.price }
+            }
+            ) * quantity
 
     val isButtonEnabled: Boolean
         get() = options.all { optionGroup ->

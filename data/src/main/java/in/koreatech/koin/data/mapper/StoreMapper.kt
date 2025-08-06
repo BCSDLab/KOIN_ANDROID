@@ -606,6 +606,7 @@ fun OrderableShopSearchRelatedResponse.toOrderableShopSearchRelated() =
     )
 
 fun CartItem.toCartItemRequest() = CartItemRequest(
+    quantity = quantity,
     orderableShopMenuPriceId = orderableShopMenuPriceId,
     options = options?.map { option ->
         CartItemRequest.CartItemOptionRequest(
@@ -679,6 +680,7 @@ fun CartPaymentSummaryResponse.toCartPaymentSummary() = CartPaymentSummary(
 
 fun CartItemEditResponse.toCartItemEdit() = CartItemEdit(
     id = id,
+    quantity = quantity,
     name = name,
     description = description,
     images = images,

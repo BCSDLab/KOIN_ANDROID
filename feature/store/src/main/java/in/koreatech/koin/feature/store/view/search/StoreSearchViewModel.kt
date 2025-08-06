@@ -26,6 +26,14 @@ class StoreSearchViewModel @Inject constructor(
     }
 
     fun onSearch() = intent {
+        if (state.searchQuery.isEmpty()) {
+            reduce {
+                state.copy(
+                    searchResults = emptyList()
+                )
+            }
+            return@intent
+        }
         getOrderableShopSearchRelatedUseCase(
             query = state.searchQuery
         ).onSuccess {

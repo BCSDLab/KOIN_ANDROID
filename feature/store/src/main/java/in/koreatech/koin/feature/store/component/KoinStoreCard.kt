@@ -45,9 +45,9 @@ fun KoinStoreCard(
     storeName: String,
     storeAverageRating: String,
     storeReviewCount: Int,
-    storeDeliveryFee: String,
     storeImageUrl: String,
     modifier: Modifier = Modifier,
+    storeDeliveryFee: Int? = null,
     isOpen: Boolean = true,
     filterBadgeList: List<FilterBadge> = emptyList(),
     onClick: () -> Unit = { }
@@ -79,8 +79,7 @@ fun KoinStoreCard(
             horizontalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             SubcomposeAsyncImage(
-                model =
-                ImageRequest.Builder(LocalContext.current)
+                model = ImageRequest.Builder(LocalContext.current)
                     .data(storeImageUrl)
                     .crossfade(true)
                     .build(),
@@ -131,24 +130,26 @@ fun KoinStoreCard(
                     )
                 }
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(16.dp)
-                            .paint(
-                                painter = painterResource(R.drawable.ic_delivery)
-                            )
-                    )
-
-                    BasicText(
-                        text = stringResource(R.string.store_delivery_fee, storeDeliveryFee),
-                        style = RebrandKoinTheme.typography.regular12.copy(
-                            color = RebrandKoinTheme.colors.neutral600
+                if (storeDeliveryFee != null) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(16.dp)
+                                .paint(
+                                    painter = painterResource(R.drawable.ic_delivery)
+                                )
                         )
-                    )
+
+                        BasicText(
+                            text = stringResource(R.string.store_delivery_fee, storeDeliveryFee),
+                            style = RebrandKoinTheme.typography.regular12.copy(
+                                color = RebrandKoinTheme.colors.neutral600
+                            )
+                        )
+                    }
                 }
 
                 if (filterBadgeList.isNotEmpty()) {
@@ -197,7 +198,7 @@ private fun KoinStoreCardPreview() {
             storeName = "Koin Store",
             storeAverageRating = "4.5",
             storeReviewCount = 5,
-            storeDeliveryFee = "2,500",
+            storeDeliveryFee = 2500,
             isOpen = true,
             filterBadgeList = listOf(
                 FilterBadge.SERVICE,

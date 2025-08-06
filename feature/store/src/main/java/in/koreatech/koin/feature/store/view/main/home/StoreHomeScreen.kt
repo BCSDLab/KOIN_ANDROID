@@ -339,7 +339,7 @@ private fun StoreHomeScreen(
                             storeName = it.name,
                             storeAverageRating = it.ratingAverage.toString(),
                             storeReviewCount = it.reviewCount,
-                            storeDeliveryFee = it.minimumDeliveryTip.toString(),
+                            storeDeliveryFee = it.minimumDeliveryTip,
                             storeImageUrl = it.thumbnail,
                             isOpen = it.isOpen,
                             filterBadgeList = it.filterBadgeList
