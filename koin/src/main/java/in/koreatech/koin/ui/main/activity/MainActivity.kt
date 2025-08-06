@@ -191,7 +191,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 topMargin = systemBars.top
                 rightMargin = systemBars.right
             }
-            WindowInsetsCompat.CONSUMED
+            insets
         }
 
         binding.nestedScrollViewMain.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
