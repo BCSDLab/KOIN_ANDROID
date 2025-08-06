@@ -214,9 +214,10 @@ fun StoreDetailScreen(
                         }
                     }
                 }
-                item {
-                    Spacer(modifier = Modifier.height(100.dp))
+                item{
+                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
                 }
+
             }
 
             KoinStoreTopAppBar(
