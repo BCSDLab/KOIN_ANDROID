@@ -3,7 +3,6 @@ package `in`.koreatech.koin.util
 import android.content.Context
 import android.content.Intent
 import android.os.Looper
-import android.util.Log
 import androidx.core.os.HandlerCompat
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import `in`.koreatech.koin.R
@@ -11,6 +10,10 @@ import `in`.koreatech.koin.domain.state.network.NetworkStatus
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import `in`.koreatech.koin.ui.error.ErrorActivity
 import `in`.koreatech.koin.util.ext.showToast
+import java.io.PrintWriter
+import java.io.StringWriter
+import java.io.Writer
+import kotlin.system.exitProcess
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -18,10 +21,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
-import java.io.PrintWriter
-import java.io.StringWriter
-import java.io.Writer
-import kotlin.system.exitProcess
 
 class ExceptionHandlerUtil(
     private val context: Context,
@@ -36,6 +35,7 @@ class ExceptionHandlerUtil(
         scope = scope,
         started = WhileSubscribed(5000)
     )
+
     /***
      * UncaughtException을 캐치하여 처리하는 함수
      * Error message가 있다면 ErrorActivity로 이동
@@ -43,7 +43,6 @@ class ExceptionHandlerUtil(
      * @param throwable
      */
     override fun uncaughtException(thread: Thread, throwable: Throwable) {
-        Log.e("MYLOG","${networkStatus.value}")
         if (networkStatus.value == NetworkStatus.Disconnected) {
             context.applicationContext.showToast(
                 context.getString(R.string.error_network_connection)

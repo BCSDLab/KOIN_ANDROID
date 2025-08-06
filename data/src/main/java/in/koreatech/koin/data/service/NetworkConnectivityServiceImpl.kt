@@ -5,20 +5,19 @@ import android.net.ConnectivityManager.NetworkCallback
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import android.util.Log
 import `in`.koreatech.koin.domain.service.NetworkConnectivityService
 import `in`.koreatech.koin.domain.state.network.NetworkStatus
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
-class NetworkConnectivityServiceImpl @Inject constructor (
+class NetworkConnectivityServiceImpl @Inject constructor(
     connectivityManager: ConnectivityManager
-): NetworkConnectivityService {
+) : NetworkConnectivityService {
 
     private val currentNetwork = connectivityManager.activeNetwork
     private val capabilities = connectivityManager.getNetworkCapabilities(currentNetwork)
@@ -44,7 +43,6 @@ class NetworkConnectivityServiceImpl @Inject constructor (
                 latestStatus = NetworkStatus.Disconnected
                 trySend(NetworkStatus.Disconnected)
             }
-
         }
 
         val request = NetworkRequest.Builder()
@@ -54,7 +52,6 @@ class NetworkConnectivityServiceImpl @Inject constructor (
             .build()
 
         connectivityManager.registerNetworkCallback(request, connectivityCallback)
-        Log.e("MYLOG","${latestStatus} it is")
 
         awaitClose {
             connectivityManager.unregisterNetworkCallback(connectivityCallback)
