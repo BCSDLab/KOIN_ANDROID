@@ -60,6 +60,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
@@ -709,6 +710,7 @@ fun ClubDetail(
             }
             stickyHeader {
                 DetailTabRow(
+                    modifier = Modifier.zIndex(2f),
                     selectedTabIndex = pagerState.currentPage,
                     onTabSelected = {
                         EventLogger.logCampusClickEvent(
