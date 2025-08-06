@@ -1,13 +1,20 @@
 package `in`.koreatech.koin.feature.club.ui.clubdetail.intro
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
@@ -17,7 +24,7 @@ import `in`.koreatech.koin.feature.club.component.KoinClubIntroduction
 
 @Composable
 fun ClubDetailIntro(
-    introduction: String,
+    introduction: String?,
     modifier: Modifier = Modifier,
     onFixIntroClick: () -> Unit = {},
     isManager: Boolean = false,
@@ -40,9 +47,26 @@ fun ClubDetailIntro(
                 )
             }
         }
-        KoinClubIntroduction(
-            data = introduction
-        )
+        if (introduction.isNullOrBlank()) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Spacer(Modifier.height(200.dp))
+
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(R.string.detail_introduction_no_content),
+                    style = KoinTheme.typography.medium18,
+                    color = KoinTheme.colors.neutral500,
+                    textAlign = TextAlign.Center
+                )
+            }
+        } else {
+            KoinClubIntroduction(
+                data = introduction
+            )
+        }
     }
 }
 

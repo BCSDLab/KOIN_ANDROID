@@ -750,7 +750,7 @@ fun ClubDetail(
                             val snackbarMessage = stringResource(R.string.detail_snackbar_detail_intro_text)
                             val snackbarActionLabel = stringResource(R.string.detail_snackbar_detail_intro_button)
                             ClubDetailIntro(
-                                introduction = state.clubDetails?.introduction ?: "",
+                                introduction = state.clubDetails?.introduction,
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .verticalScroll(introductionScrollState, enabled = isIntroductionScrollable.value),
