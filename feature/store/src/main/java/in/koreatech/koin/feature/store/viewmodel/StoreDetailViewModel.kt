@@ -226,4 +226,18 @@ class StoreDetailViewModel @Inject constructor(
             )
         }
     }
+
+    fun changeCategory(categoryId: Int) = blockingIntent {
+        reduce {
+            state.copy(
+                categories = state.categories.map {
+                    if (it.menuGroupId == categoryId) {
+                        it.copy(isChecked = true)
+                    } else {
+                        it.copy(isChecked = false)
+                    }
+                }
+            )
+        }
+    }
 }

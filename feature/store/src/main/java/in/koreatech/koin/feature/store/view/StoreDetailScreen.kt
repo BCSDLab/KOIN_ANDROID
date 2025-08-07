@@ -133,6 +133,16 @@ fun StoreDetailScreen(
             }
     }
 
+    LaunchedEffect(rememberState.listState) {
+        snapshotFlow { rememberState.listState.firstVisibleItemIndex }
+            .collect { index ->
+                val visibleCategory = uiState.categories.getOrNull(index - 2)
+                visibleCategory?.let {
+                    viewModel.changeCategory(it.menuGroupId)
+                }
+            }
+    }
+
     if (uiState.isLoading) {
         Box(
             modifier = Modifier
