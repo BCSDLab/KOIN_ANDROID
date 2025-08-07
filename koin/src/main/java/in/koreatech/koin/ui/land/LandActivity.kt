@@ -2,6 +2,7 @@ package `in`.koreatech.koin.ui.land
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
@@ -34,6 +35,7 @@ class LandActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = DataBindingUtil.setContentView(this, R.layout.land_activity_main)
         initView()
         landViewModel.landData.observe(this) {
