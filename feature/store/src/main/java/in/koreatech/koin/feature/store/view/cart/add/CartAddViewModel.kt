@@ -118,7 +118,15 @@ class CartAddViewModel @Inject constructor(
         }
     }
 
+    fun hideSignInDialog() = intent {
+        reduce { state.copy(showSignInDialog = false) }
+    }
+
     fun addCartItem() = intent {
+        if (!state.isLoggedIn) {
+            reduce { state.copy(showSignInDialog = true) }
+            return@intent
+        }
         reduce {
             state.copy(isLoading = true)
         }

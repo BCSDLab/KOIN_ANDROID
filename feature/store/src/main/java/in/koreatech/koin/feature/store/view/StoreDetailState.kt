@@ -21,7 +21,10 @@ data class StoreDetailState(
     val availableDelivery: Boolean = false,
     val isLogin: Boolean = false,
     val isLoading: Boolean = true,
-    val cartItemCount: Int = 0
+    val storeId: Int = -1,
+    val cartItemCount: Int = 0,
+    val isLoggedIn: Boolean = false,
+    val showSignInDialog: Boolean = false
 )
 fun OwnerInfoModel?.hasAnyInfo(): Boolean {
     return this?.let {

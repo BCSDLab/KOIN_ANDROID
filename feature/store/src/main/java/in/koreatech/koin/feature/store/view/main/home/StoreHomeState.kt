@@ -17,5 +17,6 @@ data class StoreHomeState(
     val selectedStoreFilter: List<StoreFilter> = listOf(StoreFilter.IS_OPEN),
     val selectedMinimumPriceOption: MinimumPriceOption = MinimumPriceOption.ALL,
     val cartItemCount: Int = 0,
-    val isLoggedIn: Boolean = false
+    val isLoggedIn: Boolean = false,
+    val showSignInDialog: Boolean = false
 )

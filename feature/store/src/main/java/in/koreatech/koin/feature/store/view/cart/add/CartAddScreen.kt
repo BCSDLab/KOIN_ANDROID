@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.store.view.cart.add
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -34,21 +35,25 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_ADD_CART
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.AddMenuBottomCard
 import `in`.koreatech.koin.feature.store.component.KoinCartOptionItem
 import `in`.koreatech.koin.feature.store.component.KoinCartPriceItem
 import `in`.koreatech.koin.feature.store.component.KoinStoreDialog
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
+import `in`.koreatech.koin.feature.store.component.KoinStoreSignInDialog
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.QuantitySelectorSection
 import `in`.koreatech.koin.feature.store.enums.CartError.DIFFERENT_SHOP_ITEM_IN_CART
@@ -76,6 +81,7 @@ fun CartAddScreen(
     navigateBack: (Boolean) -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
+    val context = LocalContext.current
 
     viewModel.collectSideEffect {
         handleSideEffect(it, navigateBack)
@@ -108,6 +114,19 @@ fun CartAddScreen(
                 SHOP_CLOSED -> viewModel.dismissErrorDialog()
             }
         }
+    }
+
+    if (uiState.showSignInDialog) {
+        KoinStoreSignInDialog(
+            onPositive = {
+                Intent(Intent.ACTION_VIEW).apply {
+                    data = "koin://login/login?link=$DEEPLINK_STORE_ADD_CART/${uiState.orderableShopId}/${uiState.orderableShopMenuId}".toUri()
+                }.apply {
+                    context.startActivity(this)
+                }
+            },
+            onNegative = viewModel::hideSignInDialog
+        )
     }
 
     Box(

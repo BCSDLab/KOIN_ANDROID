@@ -17,6 +17,7 @@ import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
@@ -74,6 +75,20 @@ class StoreNearbyViewModel @Inject constructor(
                 state.copy(isLoading = false)
             }
         }
+    }
+
+    fun navigateToCart() = intent {
+        if (state.isLoggedIn) {
+            postSideEffect(StoreNearbySideEffect.NavigateToCart)
+        } else {
+            reduce {
+                state.copy(showSignInDialog = true)
+            }
+        }
+    }
+
+    fun hideSignInDialog() = intent {
+        reduce { state.copy(showSignInDialog = false) }
     }
 
     fun fetchData() = intent {

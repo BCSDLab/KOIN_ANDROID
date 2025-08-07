@@ -21,7 +21,8 @@ data class CartAddState(
     val error: CartError = CartError.NONE,
     val showErrorDialog: Boolean = false,
     val quantity: Int = 1,
-    val isLoggedIn: Boolean = false
+    val isLoggedIn: Boolean = false,
+    val showSignInDialog: Boolean = false
 ) : Parcelable {
     val price: Int
         get() = (
