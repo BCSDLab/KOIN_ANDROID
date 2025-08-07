@@ -202,7 +202,7 @@ fun StoreDetailScreen(
                             }
                             .heightIn(min = 66.dp),
                         menuCategories = uiState.categories,
-                        onCategoryClicked = { categoryId, stickyHeaderHeight ->
+                        onCategoryClicked = { categoryId ->
                             viewModel.clickMenuCategory(categoryId)
                             rememberState.collapseToolbar(
                                 state = rememberState
