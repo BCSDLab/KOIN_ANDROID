@@ -32,7 +32,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -65,12 +64,12 @@ import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
 import `in`.koreatech.koin.feature.store.util.customCollapsingToolbarContent
 import `in`.koreatech.koin.feature.store.viewmodel.ShoppingCartViewModel
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
-import kotlin.math.roundToInt
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.orbitmvi.orbit.compose.collectAsState
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -82,7 +81,7 @@ fun StoreDetailScreen(
     cartViewModel: ShoppingCartViewModel = hiltViewModel(),
     navigateToCart: () -> Unit = {},
     navigateToBack: () -> Unit = {},
-    navigateToDetailInfo: () -> Unit = {},
+    navigateToDetailInfo: (selectedInfo: String) -> Unit = {},
     navigateToReview: () -> Unit = {},
     navigateToMenuInfo: (menuId: Int) -> Unit = {}
 ) {
@@ -203,7 +202,9 @@ fun StoreDetailScreen(
                             storeReview = uiState.storeReview,
                             storeDescriptionModel = uiState.shopDescription,
                             navigateToReview = { navigateToReview() },
-                            navigateToDetailInfo = { navigateToDetailInfo() }
+                            navigateToDetailInfo = { selectedInfo ->
+                                navigateToDetailInfo(selectedInfo)
+                            }
                         )
                         HorizontalDivider(
                             modifier = Modifier.padding(vertical = 8.dp),

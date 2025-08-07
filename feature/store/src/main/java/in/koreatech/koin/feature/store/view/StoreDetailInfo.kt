@@ -29,6 +29,7 @@ import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.AvailableChips
 import `in`.koreatech.koin.feature.store.component.OriginInfoChips
 import `in`.koreatech.koin.feature.store.component.StoreDetailInfoCard
+import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
 import `in`.koreatech.koin.feature.store.model.ShopInfoModel
 import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
 
@@ -37,10 +38,11 @@ fun StoreDetailInfo(
     storeInfo: ShopInfoModel,
     storeReview: StoreReview,
     storeDescriptionModel: StoreDescriptionModel,
+    modifier: Modifier = Modifier,
     navigateToReview: () -> Unit = {},
-    navigateToDetailInfo: () -> Unit = {}
+    navigateToDetailInfo: (selectedInfo: String) -> Unit = {}
 ) {
-    Column(modifier = Modifier.padding(horizontal = 24.dp)) {
+    Column(modifier = modifier.padding(horizontal = 24.dp)) {
         Text(modifier = Modifier.padding(vertical = 4.dp), text = storeInfo.name, fontWeight = FontWeight.Bold, fontSize = 20.sp)
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -72,7 +74,7 @@ fun StoreDetailInfo(
                     .defaultMinSize(minHeight = 28.dp)
                     .clip(RoundedCornerShape(50))
                     .clickable {
-                        navigateToDetailInfo()
+                        navigateToDetailInfo(StoreDetailInfoType.ORIGIN.name)
                     }
             )
         }
@@ -83,7 +85,7 @@ fun StoreDetailInfo(
             storeInfo = storeInfo,
             modifier = Modifier.fillMaxWidth(),
             storeDescriptionModel = storeDescriptionModel,
-            navigateToDetailInfo = navigateToDetailInfo
+            navigateToDetailInfo = { type -> navigateToDetailInfo(type) }
         )
     }
 }
