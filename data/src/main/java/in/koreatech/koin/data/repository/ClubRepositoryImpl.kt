@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.repository
 
+import com.example.network.service.NetworkConnectivityService
 import `in`.koreatech.koin.data.mapper.toClubCategories
 import `in`.koreatech.koin.data.mapper.toClubDetails
 import `in`.koreatech.koin.data.mapper.toClubEvent
@@ -16,6 +17,7 @@ import `in`.koreatech.koin.data.request.club.ClubQnaRequest
 import `in`.koreatech.koin.data.request.club.ClubRecruitmentRequest
 import `in`.koreatech.koin.data.source.remote.ClubRemoteDataSource
 import `in`.koreatech.koin.data.util.getErrorResponse
+import `in`.koreatech.koin.data.util.runCatchingWithNetwork
 import `in`.koreatech.koin.data.util.toKoinUnknownErrorException
 import `in`.koreatech.koin.domain.error.club.KoinClubException
 import `in`.koreatech.koin.domain.model.club.ClubCategories
@@ -31,10 +33,11 @@ import javax.inject.Inject
 import retrofit2.HttpException
 
 class ClubRepositoryImpl @Inject constructor(
-    private val clubRemoteDataSource: ClubRemoteDataSource
+    private val clubRemoteDataSource: ClubRemoteDataSource,
+    private val networkConnectivityService: NetworkConnectivityService
 ) : ClubRepository {
     override suspend fun getClubsCategories(): Result<ClubCategories> {
-        return runCatching {
+        return runCatchingWithNetwork(networkConnectivityService) {
             clubRemoteDataSource.getClubsCategories().toClubCategories()
         }
     }

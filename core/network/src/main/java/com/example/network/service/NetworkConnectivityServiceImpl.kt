@@ -60,4 +60,6 @@ class NetworkConnectivityServiceImpl @Inject constructor(
         .flowOn(Dispatchers.IO)
 
     override fun getLatestStatus(): NetworkStatus = latestStatus
+
+    override fun isConnected(): Boolean = latestStatus == NetworkStatus.Connected
 }
