@@ -15,7 +15,6 @@ import java.io.Writer
 import kotlin.system.exitProcess
 
 class ExceptionHandlerUtil(private val context: Context) : Thread.UncaughtExceptionHandler {
-
     /***
      * UncaughtException을 캐치하여 처리하는 함수
      * Error message가 있다면 ErrorActivity로 이동
