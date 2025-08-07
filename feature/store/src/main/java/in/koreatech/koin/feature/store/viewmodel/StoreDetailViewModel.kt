@@ -216,15 +216,9 @@ class StoreDetailViewModel @Inject constructor(
         reduce {
             state.copy(
                 selectedCategoryId = categoryId,
-                categories = state.categories.map {
-                    if (it.menuGroupId == categoryId) {
-                        it.copy(isChecked = true)
-                    } else {
-                        it.copy(isChecked = false)
-                    }
-                }
             )
         }
+        changeCategory(categoryId)
     }
 
     fun changeCategory(categoryId: Int) = blockingIntent {
