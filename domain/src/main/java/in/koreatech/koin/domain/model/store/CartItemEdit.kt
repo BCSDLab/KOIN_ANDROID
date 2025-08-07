@@ -2,6 +2,7 @@ package `in`.koreatech.koin.domain.model.store
 
 data class CartItemEdit(
     val id: Int,
+    val quantity: Int,
     val name: String,
     val description: String,
     val images: List<String>,

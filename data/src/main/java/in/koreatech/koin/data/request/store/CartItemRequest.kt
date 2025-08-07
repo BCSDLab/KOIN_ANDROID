@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.request.store
 import com.google.gson.annotations.SerializedName
 
 data class CartItemRequest(
+    @SerializedName("quantity") val quantity: Int,
     @SerializedName("orderable_shop_menu_price_id") val orderableShopMenuPriceId: Int,
     @SerializedName("options") val options: List<CartItemOptionRequest>?
 ) {

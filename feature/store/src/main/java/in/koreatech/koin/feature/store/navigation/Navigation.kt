@@ -8,6 +8,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
+import `in`.koreatech.koin.domain.model.cart.CartType
 import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
 import `in`.koreatech.koin.feature.store.view.ShopOriginInfoScreen
 import `in`.koreatech.koin.feature.store.view.ShoppingCartScreen
@@ -67,7 +68,7 @@ fun NavGraphBuilder.koinStoreGraph(
                 }
             },
             navigateToPayment = {
-                navController.navigate(StoreNavType.StorePayment.route)
+                navController.navigate("${StoreNavType.StorePayment.route}/$it")
             },
             navigateToCartEdit = {
                 navController.navigate("${StoreNavType.StoreCartEdit.route}/$it")
@@ -157,9 +158,16 @@ fun NavGraphBuilder.koinStoreGraph(
     }
 
     composable(
-        route = StoreNavType.StorePayment.route
+        route = "${StoreNavType.StorePayment.route}/{$CART_TYPE}",
+        arguments = listOf(
+            navArgument(CART_TYPE) {
+                type = NavType.StringType
+            }
+        )
     ) {
+        val cartType = it.arguments?.getString(CART_TYPE) ?: CartType.DELIVERY.name
         StorePaymentScreen(
+            cartType = cartType,
             finish = finish,
             navigateBack = {
                 navController.navigate(StoreNavType.StoreMain.route) {
@@ -307,4 +315,5 @@ const val IS_ORDERABLE_SHOP = "isOrderableShop"
 const val CART_MENU_ITEM_ID = "cartMenuItemId"
 const val IS_CART_ADDED = "isCartAdded"
 const val IS_CART_MODIFIED = "isCartModified"
+const val CART_TYPE = "cartType"
 const val SELECTED_INFO = "selectedInfo"

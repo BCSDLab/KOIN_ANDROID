@@ -61,7 +61,7 @@
     <string name="menu_detail_option_price">%1$d원</string>
 
     <string name="store_review_count">( 리뷰 %1$d개 )</string>
-    <string name="store_delivery_fee">배달비 %1$s원</string>
+    <string name="store_delivery_fee">배달비 %1$,d원</string>
     <string name="store_closed">영업이 종료된 가게에요!</string>
 
     <string name="store_bottom_sheet_sort_title">가게 정렬</string>

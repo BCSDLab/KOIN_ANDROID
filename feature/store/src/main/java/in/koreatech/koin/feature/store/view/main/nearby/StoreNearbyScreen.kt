@@ -315,7 +315,6 @@ private fun StoreNearbyScreen(
                             storeName = it.name,
                             storeAverageRating = it.ratingAverage.toString(),
                             storeReviewCount = it.reviewCount,
-                            storeDeliveryFee = it.minimumDeliveryTip.toString(),
                             storeImageUrl = it.thumbnail,
                             isOpen = it.isOpen,
                             filterBadgeList = it.filterBadgeList
