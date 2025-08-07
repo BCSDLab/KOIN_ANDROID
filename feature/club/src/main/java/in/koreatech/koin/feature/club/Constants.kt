@@ -8,4 +8,3 @@ const val EVENT_NAME_MAX_LENGTH = 30
 const val EVENT_INTRO_MAX_LENGTH = 70
 const val CONTENT_MIN_LINES = 2
 const val CONTENT_MAX_LENGTH = 1500
-val NUMERIC_REGEX = """[^0-9]""".toRegex()

@@ -57,8 +57,8 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.KRPhoneNumberVisualTransformation
+import `in`.koreatech.koin.core.util.RegexPatterns
 import `in`.koreatech.koin.feature.club.CLUB_DESCRIPTION_MAX_LENGTH
-import `in`.koreatech.koin.feature.club.NUMERIC_REGEX
 import `in`.koreatech.koin.feature.club.PHONE_NUMBER_MAX_LENGTH
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
@@ -501,7 +501,7 @@ fun ClubModifyScreenImpl(
                     hint = stringResource(R.string.club_create_contact_open_chat_hint)
                 )
 
-                val numericRegex = NUMERIC_REGEX
+                val numericRegex = RegexPatterns.nonNumberic
 
                 Column {
                     KoinClubBasicTextField(
