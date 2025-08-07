@@ -1,20 +1,15 @@
 package `in`.koreatech.koin.data.di.network
 
-import android.content.Context
-import android.net.ConnectivityManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.NoAuth
 import `in`.koreatech.koin.core.qualifier.ServerUrl
 import `in`.koreatech.koin.data.BuildConfig
 import `in`.koreatech.koin.data.constant.URLConstant
-import `in`.koreatech.koin.data.service.NetworkConnectivityServiceImpl
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.stomp.KoinStomp
-import `in`.koreatech.koin.domain.service.NetworkConnectivityService
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.runBlocking
@@ -82,16 +77,4 @@ object NetworkModule {
             KoinStomp(baseUrl, authToken, stompClient)
         }
     }
-
-    @Singleton
-    @Provides
-    fun provideConnectivityManager(
-        @ApplicationContext context: Context
-    ): ConnectivityManager = context.getSystemService(ConnectivityManager::class.java)
-
-    @Singleton
-    @Provides
-    fun provideNetworkConnectivityService(
-        connectivityManager: ConnectivityManager
-    ): NetworkConnectivityService = NetworkConnectivityServiceImpl(connectivityManager)
 }
