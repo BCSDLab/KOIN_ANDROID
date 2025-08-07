@@ -104,7 +104,7 @@ fun StoreDetailScreen(
         snapshotFlow { isCartModified }
             .distinctUntilChanged()
             .onEach {
-                if (it) {
+                if (it && cartUiState.isLoggedIn) {
                     cartViewModel.getCart(cartUiState.cartType)
                 }
             }

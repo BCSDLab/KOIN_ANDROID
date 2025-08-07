@@ -96,7 +96,7 @@ fun StoreNearbyScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.getCartItemsCount()
+        viewModel.getUserType()
     }
 
     Column(

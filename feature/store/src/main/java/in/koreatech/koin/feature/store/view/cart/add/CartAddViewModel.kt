@@ -6,10 +6,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.error.store.KoinStoreException
 import `in`.koreatech.koin.domain.model.store.AddCartItemOption
 import `in`.koreatech.koin.domain.model.store.CartAdd
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.store.AddCartItemUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetOrderableShopMenuUseCase
 import `in`.koreatech.koin.domain.usecase.store.ResetCartUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.store.enums.CartError
 import `in`.koreatech.koin.feature.store.model.toLocalShopMenuOptionGroup
 import `in`.koreatech.koin.feature.store.model.toLocalShopPrice
@@ -28,7 +30,8 @@ class CartAddViewModel @Inject constructor(
     private val getOrderableShopMenuUseCase: GetOrderableShopMenuUseCase,
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
     private val addCartItemUseCase: AddCartItemUseCase,
-    private val resetCartUseCase: ResetCartUseCase
+    private val resetCartUseCase: ResetCartUseCase,
+    private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<CartAddState, CartAddSideEffect> {
     override val container = container<CartAddState, CartAddSideEffect>(CartAddState()) {
         val orderableShopId = savedStateHandle.get<Int>(ORDERABLE_SHOP_ID)
@@ -47,7 +50,27 @@ class CartAddViewModel @Inject constructor(
         }
 
         getMenus()
-        getCartItemsCount()
+        getUserType()
+    }
+
+    private fun getUserType() = intent {
+        getUserStatusUseCase().collect {
+            when (it) {
+                is User.Student,
+                is User.General -> {
+                    getCartItemsCount()
+                    reduce {
+                        state.copy(isLoggedIn = true)
+                    }
+                }
+                is User.Anonymous -> {
+                    // Do nothing
+                    reduce {
+                        state.copy(isLoggedIn = false)
+                    }
+                }
+            }
+        }
     }
 
     private fun getCartItemsCount() = intent {

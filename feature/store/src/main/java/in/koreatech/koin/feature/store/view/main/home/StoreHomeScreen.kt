@@ -107,7 +107,7 @@ fun StoreHomeScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.getCartItemsCount()
+        viewModel.getUserType()
     }
 
     Column(

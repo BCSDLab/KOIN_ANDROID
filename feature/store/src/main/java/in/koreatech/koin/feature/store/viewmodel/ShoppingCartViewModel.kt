@@ -4,12 +4,14 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.error.store.KoinStoreException
 import `in`.koreatech.koin.domain.model.cart.CartType
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.cart.CartMenuQuantityUseCase
 import `in`.koreatech.koin.domain.usecase.cart.CartUseCase
 import `in`.koreatech.koin.domain.usecase.cart.DeleteCartMenuItemUseCase
 import `in`.koreatech.koin.domain.usecase.cart.ResetCartUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartSummaryUseCase
 import `in`.koreatech.koin.domain.usecase.store.ValidateCartItemsUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.store.enums.CartValidation
 import `in`.koreatech.koin.feature.store.view.CartState
 import javax.inject.Inject
@@ -26,13 +28,34 @@ class ShoppingCartViewModel @Inject constructor(
     private val cartMenuQuantityUseCase: CartMenuQuantityUseCase,
     private val getCartSummaryUseCase: GetCartSummaryUseCase,
     private val deleteCartMenuItemUseCase: DeleteCartMenuItemUseCase,
-    private val resetCartUseCase: ResetCartUseCase
+    private val resetCartUseCase: ResetCartUseCase,
+    private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<CartState, Unit> {
     override val container =
         container<CartState, Unit>(CartState())
 
     init {
-        getCart(CartType.DELIVERY)
+        getUserType()
+    }
+
+    private fun getUserType() = intent {
+        getUserStatusUseCase().collect {
+            when (it) {
+                is User.Student,
+                is User.General -> {
+                    getCart(CartType.DELIVERY)
+                    reduce {
+                        state.copy(isLoggedIn = true)
+                    }
+                }
+                is User.Anonymous -> {
+                    // Do nothing
+                    reduce {
+                        state.copy(isLoggedIn = false)
+                    }
+                }
+            }
+        }
     }
 
     fun getCart(type: CartType) = intent {

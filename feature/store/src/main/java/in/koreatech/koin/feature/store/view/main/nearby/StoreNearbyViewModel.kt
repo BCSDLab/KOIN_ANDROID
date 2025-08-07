@@ -2,9 +2,11 @@ package `in`.koreatech.koin.feature.store.view.main.nearby
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetNearbyShopUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.store.enums.MinimumPriceOption
 import `in`.koreatech.koin.feature.store.enums.OrderOption
 import `in`.koreatech.koin.feature.store.enums.StoreFilter
@@ -22,7 +24,8 @@ import org.orbitmvi.orbit.viewmodel.container
 class StoreNearbyViewModel @Inject constructor(
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
-    private val getNearbyShopUseCase: GetNearbyShopUseCase
+    private val getNearbyShopUseCase: GetNearbyShopUseCase,
+    private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<StoreNearbyState, StoreNearbySideEffect> {
     override val container = container<StoreNearbyState, StoreNearbySideEffect>(StoreNearbyState())
 
@@ -38,7 +41,27 @@ class StoreNearbyViewModel @Inject constructor(
         }
     }
 
-    fun getCartItemsCount() = intent {
+    fun getUserType() = intent {
+        getUserStatusUseCase().collect {
+            when (it) {
+                is User.Student,
+                is User.General -> {
+                    getCartItemsCount()
+                    reduce {
+                        state.copy(isLoggedIn = true)
+                    }
+                }
+                is User.Anonymous -> {
+                    // Do nothing
+                    reduce {
+                        state.copy(isLoggedIn = false)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getCartItemsCount() = intent {
         reduce {
             state.copy(isLoading = true)
         }
