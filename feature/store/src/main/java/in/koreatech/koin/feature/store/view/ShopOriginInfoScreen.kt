@@ -148,7 +148,8 @@ fun ShopOriginInfoScreen(
             }
             Spacer(Modifier.height(24.dp))
             HighlightSection(
-                isHighlighted = selectedInfo == StoreDetailInfoType.DELIVERY.name) {
+                isHighlighted = selectedInfo == StoreDetailInfoType.DELIVERY.name
+            ) {
                 Text(
                     modifier = Modifier.padding(vertical = 8.dp),
                     text = stringResource(R.string.total_delivery_tip_by_order_amount),
@@ -161,12 +162,12 @@ fun ShopOriginInfoScreen(
             }
             Spacer(Modifier.height(24.dp))
             Text(
-                modifier=Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = 16.dp),
                 text = stringResource(R.string.business_info),
                 style = RebrandKoinTheme.typography.bold18
             )
             if (uiState.shopDescription.ownerInfo.hasAnyInfo()) {
-                Row(modifier=Modifier.padding(vertical = 8.dp, horizontal = 16.dp))    {
+                Row(modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)) {
                     Column(
                         modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -246,6 +247,7 @@ fun DeliveryFeeRow(
         Text(value)
     }
 }
+
 @Composable
 fun HighlightSection(
     isHighlighted: Boolean,
@@ -279,7 +281,6 @@ fun HighlightSection(
         content()
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

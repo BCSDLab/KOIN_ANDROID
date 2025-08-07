@@ -64,12 +64,12 @@ import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
 import `in`.koreatech.koin.feature.store.util.customCollapsingToolbarContent
 import `in`.koreatech.koin.feature.store.viewmodel.ShoppingCartViewModel
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
+import kotlin.math.roundToInt
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.orbitmvi.orbit.compose.collectAsState
-import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
