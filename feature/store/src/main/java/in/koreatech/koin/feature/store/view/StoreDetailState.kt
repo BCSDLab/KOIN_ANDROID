@@ -18,6 +18,7 @@ data class StoreDetailState(
     val storeMenu: List<ShopMenus> = emptyList(),
     val storeReview: StoreReview = StoreReview.empty(),
     val scrollUp: StoreDetailScrollType = StoreDetailScrollType.NONE,
+    val selectedCategoryId: Int = 0,
     val availableDelivery: Boolean = false,
     val isLogin: Boolean = false,
     val isLoading: Boolean = true,

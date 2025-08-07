@@ -215,6 +215,7 @@ class StoreDetailViewModel @Inject constructor(
     fun clickMenuCategory(categoryId: Int) = blockingIntent {
         reduce {
             state.copy(
+                selectedCategoryId = categoryId,
                 categories = state.categories.map {
                     if (it.menuGroupId == categoryId) {
                         it.copy(isChecked = true)

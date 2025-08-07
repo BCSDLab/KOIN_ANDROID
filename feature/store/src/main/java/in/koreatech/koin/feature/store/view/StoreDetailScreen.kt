@@ -97,6 +97,7 @@ fun StoreDetailScreen(
     )
     val currentToolbarHeightDp = rememberState.currentToolbarHeightDp()
     val statusBarHeight = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+    val menuCategoryHeight = remember { mutableStateOf(0) }
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
@@ -111,6 +112,10 @@ fun StoreDetailScreen(
             .launchIn(coroutineScope)
     }
 
+    LaunchedEffect(uiState.selectedCategoryId) {
+        rememberState.listState.animateScrollToItem(uiState.categories.indexOfFirst { it.menuGroupId == uiState.selectedCategoryId } + 2, - menuCategoryHeight.value)
+    }
+
     LaunchedEffect(Unit) {
         snapshotFlow { isCartAdded }
             .distinctUntilChanged()
@@ -119,9 +124,6 @@ fun StoreDetailScreen(
                     Toast.makeText(context, R.string.store_cart_add_added, Toast.LENGTH_SHORT).show()
                 }
             }
-    }
-
-    LaunchedEffect(Unit) {
         snapshotFlow { uiState.isLogin }
             .distinctUntilChanged()
             .collectLatest {
@@ -135,7 +137,7 @@ fun StoreDetailScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .zIndex(2f),
+                .zIndex(2f)
             contentAlignment = Alignment.Center
         ) {
             KoinStoreProgressIndicator(
@@ -188,6 +190,9 @@ fun StoreDetailScreen(
                     MenuCategoryChips(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .onSizeChanged { size: IntSize ->
+                                menuCategoryHeight.value = size.height
+                            }
                             .heightIn(min = 66.dp),
                         menuCategories = uiState.categories,
                         onCategoryClicked = { categoryId, stickyHeaderHeight ->
@@ -195,9 +200,6 @@ fun StoreDetailScreen(
                             rememberState.collapseToolbar(
                                 state = rememberState
                             )
-                            CoroutineScope(coroutineScope.coroutineContext).launch {
-                                rememberState.listState.animateScrollToItem(uiState.categories.indexOfFirst { it.menuGroupId == categoryId } + 2, -stickyHeaderHeight)
-                            }
                         }
                     )
                 }

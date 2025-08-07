@@ -35,16 +35,12 @@ import `in`.koreatech.koin.feature.store.model.MenuCategoryModel
 fun MenuCategoryChips(
     modifier: Modifier = Modifier,
     menuCategories: List<MenuCategoryModel>,
-    onCategoryClicked: (Int, Int) -> Unit = { categoryId, height -> }
+    onCategoryClicked: (Int) -> Unit = { }
 ) {
     val scrollState = rememberScrollState()
-    val menuCategoryHeight = remember { mutableStateOf(0) }
 
     Row(
         modifier = modifier
-            .onSizeChanged { size: IntSize ->
-                menuCategoryHeight.value = size.height
-            }
             .background(color = colorResource(id = R.color.store_detail_background))
             .horizontalScroll(scrollState)
             .padding(horizontal = 24.dp, vertical = 12.dp)
@@ -54,7 +50,7 @@ fun MenuCategoryChips(
                 menuCategory = menuCategories[i],
                 modifier = Modifier.padding(end = 8.dp),
                 onCategoryClicked = {
-                    onCategoryClicked(it, menuCategoryHeight.value)
+                    onCategoryClicked(it)
                 }
             )
         }
