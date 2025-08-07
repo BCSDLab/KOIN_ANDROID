@@ -57,14 +57,15 @@ fun NavGraphBuilder.koinStoreGraph(
 
         ShoppingCartScreen(
             isCartModified = isCartModified,
-            navigateToStoreDetail = {
-                navController.previousBackStackEntry?.savedStateHandle?.set(
-                    IS_CART_MODIFIED,
-                    true
-                )
-                if (!navController.navigateUp()) {
-                    finish()
+            navigateToStoreDetail = { storeId ->
+                val targetRoute = "${StoreDetailNavType.StoreDetailMain.route}/$storeId/${true}"
+                navController.navigate(targetRoute) {
+                    launchSingleTop = true
+                    popUpTo(targetRoute) {
+                        inclusive = false
+                    }
                 }
+                navController.currentBackStackEntry?.savedStateHandle?.set(IS_CART_MODIFIED, false)
             },
             navigateToPayment = {
                 navController.navigate("${StoreNavType.StorePayment.route}/$it")
@@ -73,7 +74,13 @@ fun NavGraphBuilder.koinStoreGraph(
                 navController.navigate("${StoreNavType.StoreCartEdit.route}/$it")
             },
             navigateToStoreMain = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(IS_CART_MODIFIED, false)
                 navController.navigate(StoreNavType.StoreMain.route)
+            },
+            navigateBack = {
+                if (!navController.navigateUp()) {
+                    finish()
+                }
             }
         )
     }

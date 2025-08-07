@@ -26,7 +26,6 @@ class StoreHomeViewModel @Inject constructor(
     override val container = container<StoreHomeState, StoreHomeSideEffect>(StoreHomeState())
 
     init {
-        getCartItemsCount()
         intent {
             getStoreCategoriesUseCase().let {
                 reduce {
@@ -38,7 +37,7 @@ class StoreHomeViewModel @Inject constructor(
         }
     }
 
-    private fun getCartItemsCount() = intent {
+    fun getCartItemsCount() = intent {
         reduce {
             state.copy(isLoading = true)
         }

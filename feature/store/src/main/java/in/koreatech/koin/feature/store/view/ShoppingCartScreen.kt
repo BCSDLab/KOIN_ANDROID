@@ -44,7 +44,8 @@ fun ShoppingCartScreen(
     navigateToStoreDetail: (Int) -> Unit = { },
     navigateToPayment: (String) -> Unit = { },
     navigateToCartEdit: (Int) -> Unit = { },
-    navigateToStoreMain: () -> Unit = { }
+    navigateToStoreMain: () -> Unit = { },
+    navigateBack: () -> Unit = { }
 ) {
     val uiState by viewModel.collectAsState()
 
@@ -86,9 +87,7 @@ fun ShoppingCartScreen(
                 ),
                 title = stringResource(R.string.shopping_cart),
                 onNavigationIconClick = {
-                    uiState.cart.orderableShopId?.let { storeId ->
-                        navigateToStoreDetail(storeId)
-                    }
+                    navigateBack()
                 },
                 actions = {
                     Text(
