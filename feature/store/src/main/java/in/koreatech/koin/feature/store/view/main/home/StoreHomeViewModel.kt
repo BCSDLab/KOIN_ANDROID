@@ -26,7 +26,6 @@ class StoreHomeViewModel @Inject constructor(
     override val container = container<StoreHomeState, StoreHomeSideEffect>(StoreHomeState())
 
     init {
-        getCartItemsCount()
         intent {
             getStoreCategoriesUseCase().let {
                 reduce {

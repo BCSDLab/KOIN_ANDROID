@@ -27,7 +27,6 @@ class StoreNearbyViewModel @Inject constructor(
     override val container = container<StoreNearbyState, StoreNearbySideEffect>(StoreNearbyState())
 
     init {
-        getCartItemsCount()
         intent {
             getStoreCategoriesUseCase().let {
                 reduce {
