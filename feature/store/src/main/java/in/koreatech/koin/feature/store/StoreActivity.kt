@@ -1,8 +1,11 @@
 package `in`.koreatech.koin.feature.store
 
+import android.app.ActivityManager
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.WindowInsets
@@ -16,6 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.core.content.getSystemService
+import androidx.core.net.toUri
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -44,6 +49,14 @@ class StoreActivity : ComponentActivity() {
         }
 
         val categoryId = intent.getIntExtra(STORE_CATEGORY, 1)
+
+        val isStoreActivityOnTop =
+            getSystemService<ActivityManager>()?.appTasks?.map {
+                /**
+                 * class Name : in.koreatech.koin.feature.store.StoreActivity
+                 */
+                it.taskInfo.baseActivity?.className?.equals(StoreActivity::class.qualifiedName) == true
+            }?.firstOrNull() ?: false
 
         setContent {
             val currentRoute by viewModel.currentRoute.collectAsState()
@@ -99,9 +112,31 @@ class StoreActivity : ComponentActivity() {
                         koinStoreGraph(
                             navController = navController,
                             categoryId = categoryId,
-                            finish = { finish() }
+                            finish = {
+                                if (isStoreActivityOnTop) {
+                                    Intent(Intent.ACTION_VIEW).apply {
+                                        data = DEEPLINK_MAIN.toUri()
+                                    }.apply {
+                                        startActivity(this)
+                                    }
+                                } else {
+                                    finish()
+                                }
+                            }
                         )
                     }
+                }
+            }
+
+            BackHandler {
+                if (isStoreActivityOnTop) {
+                    Intent(Intent.ACTION_VIEW).apply {
+                        data = DEEPLINK_MAIN.toUri()
+                    }.apply {
+                        startActivity(this)
+                    }
+                } else {
+                    finish()
                 }
             }
         }
