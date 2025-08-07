@@ -138,6 +138,13 @@ fun StoreDetailScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .zIndex(2f)
+                .pointerInput(Unit) {
+                    awaitPointerEventScope {
+                        while (true) {
+                            awaitPointerEvent()
+                        }
+                    }
+                },
             contentAlignment = Alignment.Center
         ) {
             KoinStoreProgressIndicator(
