@@ -310,7 +310,7 @@ fun ClubListScreenImpl(
         item {
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterHorizontally)
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
                 clubCategories.forEach {
                     KoinClubCategoryItem(
