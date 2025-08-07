@@ -135,7 +135,7 @@ fun MenuItem(
                     )
                 }
 
-            if (menu.isSoldOut)
+            if (menu.isSoldOut) {
                 Image(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_sold_out),
                     contentDescription = "",
@@ -146,7 +146,7 @@ fun MenuItem(
                         .padding(14.dp)
 
                 )
-
+            }
         }
     }
 }

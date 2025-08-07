@@ -215,7 +215,7 @@ class StoreDetailViewModel @Inject constructor(
     fun clickMenuCategory(categoryId: Int) = blockingIntent {
         reduce {
             state.copy(
-                selectedCategoryId = categoryId,
+                selectedCategoryId = categoryId
             )
         }
         changeCategory(categoryId)
