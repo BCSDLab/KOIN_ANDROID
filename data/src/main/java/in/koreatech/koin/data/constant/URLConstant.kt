@@ -290,7 +290,7 @@ object URLConstant {
     object CHAT {
         const val CHATROOM = "chatroom/lost-item"
         object PATH {
-            const val ARTICLEID = "{articleId}"
+            const val ARTICLEID = "{article_id}"
             const val CHATROOMID = "{chat_room_id}"
         }
         object ARTICLEID {
