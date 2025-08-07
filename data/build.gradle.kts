@@ -33,7 +33,6 @@ android {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":core"))
-    implementation(project(":core:network"))
 
     // Dependency - androidx
     implementation(libs.androidx.core.ktx)

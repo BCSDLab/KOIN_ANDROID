@@ -1,6 +1,6 @@
-package com.example.network.service
+package `in`.koreatech.koin.domain.service
 
-import com.example.network.state.NetworkStatus
+import `in`.koreatech.koin.domain.state.network.NetworkStatus
 import kotlinx.coroutines.flow.Flow
 
 interface NetworkConnectivityService {

@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.repository
 
-import com.example.network.service.NetworkConnectivityService
 import `in`.koreatech.koin.data.mapper.toClubCategories
 import `in`.koreatech.koin.data.mapper.toClubDetails
 import `in`.koreatech.koin.data.mapper.toClubEvent
@@ -29,6 +28,7 @@ import `in`.koreatech.koin.domain.model.club.ClubRecruitment
 import `in`.koreatech.koin.domain.model.club.ClubSearch
 import `in`.koreatech.koin.domain.model.club.Clubs
 import `in`.koreatech.koin.domain.repository.ClubRepository
+import `in`.koreatech.koin.domain.service.NetworkConnectivityService
 import javax.inject.Inject
 import retrofit2.HttpException
 

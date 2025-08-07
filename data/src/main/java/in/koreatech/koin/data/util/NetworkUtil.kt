@@ -1,10 +1,10 @@
 package `in`.koreatech.koin.data.util
 
-import com.example.network.service.NetworkConnectivityService
 import com.google.gson.Gson
 import `in`.koreatech.koin.data.response.ErrorResponse
 import `in`.koreatech.koin.domain.error.KoinUnknownErrorException
 import `in`.koreatech.koin.domain.error.network.KoinNetworkException
+import `in`.koreatech.koin.domain.service.NetworkConnectivityService
 import retrofit2.HttpException
 
 fun HttpException.getErrorResponse(): ErrorResponse {
