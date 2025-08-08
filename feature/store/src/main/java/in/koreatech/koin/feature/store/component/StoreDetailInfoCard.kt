@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
 import `in`.koreatech.koin.feature.store.model.ShopInfoModel
 import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
 
@@ -38,19 +39,21 @@ fun StoreDetailInfoCard(
     storeInfo: ShopInfoModel,
     modifier: Modifier = Modifier,
     storeDescriptionModel: StoreDescriptionModel? = null,
-    navigateToDetailInfo: () -> Unit = {}
+    navigateToDetailInfo: (String) -> Unit = {}
 ) {
     Row(modifier = modifier) {
         DeliveryInfoCard(
             modifier = Modifier.weight(1f),
             storeInfo = storeInfo,
-            navigateToDetailInfo = navigateToDetailInfo
+            navigateToDetailInfo = { navigateToDetailInfo(StoreDetailInfoType.DELIVERY.name) }
         )
         Spacer(modifier = Modifier.width(8.dp))
         NoticeCard(
             modifier = Modifier.weight(1f),
             description = storeDescriptionModel?.description ?: stringResource(R.string.store_detail_notice_empty),
-            navigateToDetailInfo = navigateToDetailInfo
+            navigateToDetailInfo = {
+                navigateToDetailInfo(StoreDetailInfoType.DETAIL.name)
+            }
         )
     }
 }

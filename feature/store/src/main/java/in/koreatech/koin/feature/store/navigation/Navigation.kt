@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import `in`.koreatech.koin.domain.model.cart.CartType
+import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
 import `in`.koreatech.koin.feature.store.view.ShopOriginInfoScreen
 import `in`.koreatech.koin.feature.store.view.ShoppingCartScreen
 import `in`.koreatech.koin.feature.store.view.StoreDetailScreen
@@ -270,9 +271,8 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
                 it.savedStateHandle[IS_CART_ADDED] = false
                 navController.navigate(StoreNavType.StoreCart.route)
             },
-            navigateToDetailInfo = {
-                it.savedStateHandle[IS_CART_ADDED] = false
-                navController.navigate("${StoreDetailNavType.StoreDetailInfo.route}/$storeId/$isOrderableShop")
+            navigateToDetailInfo = { selectedInfoType ->
+                navController.navigate("${StoreDetailNavType.StoreDetailInfo.route}/$storeId/$isOrderableShop/$selectedInfoType")
             },
             navigateToReview = {
                 // Navigate to review screen if implemented
@@ -285,7 +285,7 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
     }
 
     composable(
-        route = "${StoreDetailNavType.StoreDetailInfo.route}/{$STORE_ID}/{$IS_ORDERABLE_SHOP}",
+        route = "${StoreDetailNavType.StoreDetailInfo.route}/{$STORE_ID}/{$IS_ORDERABLE_SHOP}/{$SELECTED_INFO}",
         arguments = listOf(
             navArgument(STORE_ID) {
                 type = NavType.IntType
@@ -293,10 +293,16 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
             navArgument(IS_ORDERABLE_SHOP) {
                 type = NavType.BoolType
                 defaultValue = true
+            },
+            navArgument(SELECTED_INFO) {
+                type = NavType.StringType
+                defaultValue = StoreDetailInfoType.ORIGIN.routeName
             }
         )
     ) {
+        val selectedInfo = it.arguments?.getString(SELECTED_INFO) ?: StoreDetailInfoType.ORIGIN.routeName
         ShopOriginInfoScreen(
+            selectedInfo = selectedInfo,
             onBackClick = {
                 if (!navController.navigateUp()) {
                     finish()
@@ -317,3 +323,4 @@ const val CART_MENU_ITEM_ID = "cartMenuItemId"
 const val IS_CART_ADDED = "isCartAdded"
 const val IS_CART_MODIFIED = "isCartModified"
 const val CART_TYPE = "cartType"
+const val SELECTED_INFO = "selectedInfo"
