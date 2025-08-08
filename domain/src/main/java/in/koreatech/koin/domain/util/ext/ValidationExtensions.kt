@@ -3,7 +3,6 @@ package `in`.koreatech.koin.domain.util.ext
 import `in`.koreatech.koin.domain.util.regex.EmailUtil
 import `in`.koreatech.koin.domain.util.regex.PasswordUtil
 import `in`.koreatech.koin.domain.util.regex.RegexPatterns
-import java.util.Calendar
 
 fun String.isValidEmail(): Boolean = EmailUtil().isEmailValidate(this)
 
