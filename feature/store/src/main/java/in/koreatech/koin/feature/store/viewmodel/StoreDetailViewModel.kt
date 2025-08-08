@@ -23,6 +23,7 @@ import `in`.koreatech.koin.feature.store.model.toStoreIndoModel
 import `in`.koreatech.koin.feature.store.model.toStoreInfoModel
 import `in`.koreatech.koin.feature.store.navigation.IS_ORDERABLE_SHOP
 import `in`.koreatech.koin.feature.store.navigation.STORE_ID
+import `in`.koreatech.koin.feature.store.util.toKoreanWeek
 import `in`.koreatech.koin.feature.store.view.StoreDetailSideEffect
 import `in`.koreatech.koin.feature.store.view.StoreDetailState
 import javax.inject.Inject
@@ -105,7 +106,7 @@ class StoreDetailViewModel @Inject constructor(
                         phone = result.phone ?: "",
                         openTime = result.openTime,
                         closeTime = result.closeTime,
-                        closedDays = result.closedDays,
+                        closedDays = result.closedDays.map { it.toKoreanWeek() },
                         deliveryTips = result.deliveryTips.map { tips ->
                             DeliveryTipModel(
                                 fromAmount = tips.fromAmount,

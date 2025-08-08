@@ -167,7 +167,13 @@ fun ShopOriginInfoScreen(
                             Text(uiState.shopDescription.storeName)
                             Text(uiState.shopDescription.address)
                             Text(stringResource(R.string.open_to_close_time, uiState.shopDescription.openTime, uiState.shopDescription.closeTime))
-                            Text(stringResource(R.string.closed_days_description, uiState.shopDescription.closedDays.joinToString(", ")))
+                            Text(
+                                text = if (uiState.shopDescription.closedDays.isEmpty()) {
+                                    ""
+                                } else {
+                                    stringResource(R.string.closed_days_description, uiState.shopDescription.closedDays.joinToString(", "))
+                                }
+                            )
                             Text(uiState.shopDescription.phone)
                         }
                     )
