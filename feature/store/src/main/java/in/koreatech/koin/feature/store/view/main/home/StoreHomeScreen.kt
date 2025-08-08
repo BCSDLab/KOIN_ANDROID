@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.store.view.main.home
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -34,7 +35,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -49,11 +49,13 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.util.KoinCoilImageLoader
 import `in`.koreatech.koin.domain.model.store.OpenStatus
+import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_HOME
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreCard
 import `in`.koreatech.koin.feature.store.component.KoinStoreCategoryItem
@@ -61,6 +63,7 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreFilterChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreMinimumPriceChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreOrderChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
+import `in`.koreatech.koin.feature.store.component.KoinStoreSignInDialog
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.MinOrderSliderBottomSheet
 import `in`.koreatech.koin.feature.store.component.SearchBarFake
@@ -75,6 +78,7 @@ import `in`.koreatech.koin.feature.store.model.LocalShop
 import `in`.koreatech.koin.feature.store.model.LocalStoreCategories
 import kotlinx.coroutines.flow.combine
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -88,6 +92,11 @@ fun StoreHomeScreen(
     onBackPressed: () -> Unit = { }
 ) {
     val uiState by viewModel.collectAsState()
+    val context = LocalContext.current
+
+    viewModel.collectSideEffect {
+        handleSideEffect(it, navigateToCart)
+    }
 
     LaunchedEffect(Unit) {
         if (uiState.categoryId == -1) {
@@ -107,7 +116,20 @@ fun StoreHomeScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.getCartItemsCount()
+        viewModel.getUserType()
+    }
+
+    if (uiState.showSignInDialog) {
+        KoinStoreSignInDialog(
+            onPositive = {
+                Intent(Intent.ACTION_VIEW).apply {
+                    data = "koin://login/login?link=$DEEPLINK_STORE_MAIN_HOME".toUri()
+                }.apply {
+                    context.startActivity(this)
+                }
+            },
+            onNegative = viewModel::hideSignInDialog
+        )
     }
 
     Column(
@@ -121,9 +143,7 @@ fun StoreHomeScreen(
             },
             actions = {
                 Box(contentAlignment = Alignment.TopEnd) {
-                    IconButton(onClick = {
-                        navigateToCart()
-                    }) {
+                    IconButton(onClick = viewModel::navigateToCart) {
                         Icon(
                             modifier = Modifier.size(25.dp),
                             imageVector = ImageVector.vectorResource(id = R.drawable.ic_shopping_cart),
@@ -437,5 +457,16 @@ private fun StoreHomeScreenPreview() {
             selectedMinimumPriceOption = MinimumPriceOption.ALL,
             showMinimumPriceOptions = false
         )
+    }
+}
+
+private fun handleSideEffect(
+    sideEffect: StoreHomeSideEffect,
+    navigateToCart: () -> Unit
+) {
+    when (sideEffect) {
+        StoreHomeSideEffect.NavigateToCart -> {
+            navigateToCart()
+        }
     }
 }

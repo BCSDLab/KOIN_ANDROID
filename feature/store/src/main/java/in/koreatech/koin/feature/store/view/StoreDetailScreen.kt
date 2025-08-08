@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.store.view
 
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -48,11 +49,14 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_DETAIL_MAIN
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
+import `in`.koreatech.koin.feature.store.component.KoinStoreSignInDialog
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.MenuCategoryChips
 import `in`.koreatech.koin.feature.store.component.OrderBottomBar
@@ -70,6 +74,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -87,6 +92,10 @@ fun StoreDetailScreen(
 ) {
     val uiState by viewModel.collectAsState()
     val cartUiState by cartViewModel.collectAsState()
+    viewModel.collectSideEffect {
+        handleSideEffect(it, navigateToCart)
+    }
+
     val pagerState = rememberPagerState(0, 0f) {
         uiState.store.imageUrls?.size ?: 0
     }
@@ -109,7 +118,7 @@ fun StoreDetailScreen(
         snapshotFlow { isCartModified }
             .distinctUntilChanged()
             .onEach {
-                if (it) {
+                if (it && cartUiState.isLoggedIn) {
                     cartViewModel.getCart(cartUiState.cartType)
                 }
             }
@@ -145,6 +154,19 @@ fun StoreDetailScreen(
                     viewModel.changeCategory(it.menuGroupId)
                 }
             }
+    }
+
+    if (uiState.showSignInDialog) {
+        KoinStoreSignInDialog(
+            onPositive = {
+                Intent(Intent.ACTION_VIEW).apply {
+                    data = "koin://login/login?link=$DEEPLINK_STORE_DETAIL_MAIN/${uiState.storeId}/${uiState.isOrderableShop}".toUri()
+                }.apply {
+                    context.startActivity(this)
+                }
+            },
+            onNegative = viewModel::hideSignInDialog
+        )
     }
 
     if (uiState.isLoading) {
@@ -255,9 +277,7 @@ fun StoreDetailScreen(
                 },
                 actions = {
                     Box(contentAlignment = Alignment.TopEnd) {
-                        IconButton(onClick = {
-                            navigateToCart()
-                        }) {
+                        IconButton(onClick = viewModel::navigateToCart) {
                             Icon(
                                 modifier = Modifier.size(25.dp),
                                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_shopping_cart),
@@ -313,6 +333,17 @@ fun StoreDetailScreen(
                 orderableMessage = if (cartUiState.cart.totalAmount >= cartUiState.minimumOrderAmount) stringResource(R.string.store_order_can_delivery) else stringResource(R.string.store_order_cant_delivery),
                 navigateToCart = navigateToCart
             )
+        }
+    }
+}
+
+fun handleSideEffect(
+    sideEffect: StoreDetailSideEffect,
+    navigateToCart: () -> Unit = {}
+) {
+    when (sideEffect) {
+        StoreDetailSideEffect.NavigateToCart -> {
+            navigateToCart()
         }
     }
 }

@@ -12,7 +12,8 @@ data class CartState(
     val cartType: CartType = CartType.DELIVERY,
     val showDeleteDialog: Boolean = false,
     val minimumOrderAmount: Int = 0,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val isLoggedIn: Boolean = false
 ) {
     val totalItemCount: Int
         get() = cart.items.count() * cart.items.sumOf { it.quantity }

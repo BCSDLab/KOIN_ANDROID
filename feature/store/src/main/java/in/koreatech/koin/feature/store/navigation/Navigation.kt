@@ -8,7 +8,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import `in`.koreatech.koin.domain.model.cart.CartType
+import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_ADD_CART
+import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_DETAIL_MAIN
+import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_HOME
+import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_NEARBY
 import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
 import `in`.koreatech.koin.feature.store.view.ShopOriginInfoScreen
 import `in`.koreatech.koin.feature.store.view.ShoppingCartScreen
@@ -37,11 +42,15 @@ fun NavGraphBuilder.koinStoreGraph(
     }
 
     navigation(
-        route = "${StoreNavType.StoreDetail.route}/{$STORE_ID}",
-        startDestination = "${StoreDetailNavType.StoreDetailMain.route}/{$STORE_ID}",
+        route = "${StoreNavType.StoreDetail.route}/{$STORE_ID}/{$IS_ORDERABLE_SHOP}",
+        startDestination = "${StoreDetailNavType.StoreDetailMain.route}/{$STORE_ID}/{$IS_ORDERABLE_SHOP}",
         arguments = listOf(
             navArgument(STORE_ID) {
                 type = NavType.IntType
+            },
+            navArgument(IS_ORDERABLE_SHOP) {
+                type = NavType.BoolType
+                defaultValue = true
             }
         )
     ) {
@@ -94,6 +103,11 @@ fun NavGraphBuilder.koinStoreGraph(
             },
             navArgument(ORDERABLE_SHOP_MENU_ID) {
                 type = NavType.IntType
+            }
+        ),
+        deepLinks = listOf(
+            navDeepLink {
+                uriPattern = "$DEEPLINK_STORE_ADD_CART/{$ORDERABLE_SHOP_ID}/{$ORDERABLE_SHOP_MENU_ID}"
             }
         )
     ) {
@@ -193,7 +207,12 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
     finish: () -> Unit = { }
 ) {
     composable(
-        route = StoreMainNavType.StoreMainHome.route
+        route = StoreMainNavType.StoreMainHome.route,
+        deepLinks = listOf(
+            navDeepLink {
+                uriPattern = DEEPLINK_STORE_MAIN_HOME
+            }
+        )
     ) {
         StoreHomeScreen(
             categoryId = categoryId,
@@ -214,7 +233,12 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
     }
 
     composable(
-        route = StoreMainNavType.StoreMainNearby.route
+        route = StoreMainNavType.StoreMainNearby.route,
+        deepLinks = listOf(
+            navDeepLink {
+                uriPattern = DEEPLINK_STORE_MAIN_NEARBY
+            }
+        )
     ) {
         StoreNearbyScreen(
             navigateToDetail = { storeId ->
@@ -252,6 +276,11 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
             navArgument(IS_ORDERABLE_SHOP) {
                 type = NavType.BoolType
                 defaultValue = true
+            }
+        ),
+        deepLinks = listOf(
+            navDeepLink {
+                uriPattern = "$DEEPLINK_STORE_DETAIL_MAIN/{$STORE_ID}/{$IS_ORDERABLE_SHOP}"
             }
         )
     ) {

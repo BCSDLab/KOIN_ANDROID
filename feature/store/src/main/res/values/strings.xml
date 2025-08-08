@@ -21,7 +21,10 @@
     <string name="delete_menu_dialog_message">정말로 담았던 메뉴들을\n전체 삭제하시겠어요?</string>
     <string name="store_is_not_operating_dialog_message">영업시간이 아니라서 주문할 수 없어요.\n담았던 메뉴는 삭제할까요?</string>
     <string name="order_only_notice">이 가게는 %1$s만 가능해요</string>
-
+    <string name="store_sign_in_dialog_title">코인 주문을 이용하기 위해선\n로그인이 필요해요.</string>
+    <string name="store_sign_in_dialog_message">로그인 후 코인의 주문 기능을\n이용해보세요!</string>
+    <string name="store_sign_in_dialog_positive_button">로그인하기</string>
+    <string name="store_sign_in_dialog_negative_button">닫기</string>
 
     <!--상점 상세-->
     <string name="minimum_order">최소주문</string>

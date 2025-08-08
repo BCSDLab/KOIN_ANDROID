@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.store.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopMenuUseCase
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopOriginInfoUseCase
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopSummaryUseCase
@@ -11,6 +12,7 @@ import `in`.koreatech.koin.domain.usecase.store.GetShopMenusUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuUseCase
 import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.store.model.DeliveryTipModel
 import `in`.koreatech.koin.feature.store.model.MenuCategoryModel
 import `in`.koreatech.koin.feature.store.model.OriginModel
@@ -27,6 +29,7 @@ import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
@@ -40,7 +43,8 @@ class StoreDetailViewModel @Inject constructor(
     private val getShopMenusUseCase: GetShopMenusUseCase,
     private val getStoreReviewUseCase: GetStoreReviewUseCase,
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
-    private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase
+    private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase,
+    private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<StoreDetailState, StoreDetailSideEffect> {
     override val container =
         container<StoreDetailState, StoreDetailSideEffect>(StoreDetailState()) {
@@ -48,9 +52,12 @@ class StoreDetailViewModel @Inject constructor(
             val isOrderableShop = savedStateHandle.get<Boolean>(IS_ORDERABLE_SHOP) ?: true
             checkNotNull(storeId)
 
+            getUserType()
+
             intent {
                 reduce {
                     state.copy(
+                        storeId = storeId,
                         isOrderableShop = isOrderableShop
                     )
                 }
@@ -64,6 +71,24 @@ class StoreDetailViewModel @Inject constructor(
             fetchReview(storeId)
             checkToken()
         }
+
+    private fun getUserType() = intent {
+        getUserStatusUseCase().collect {
+            when (it) {
+                is User.Student,
+                is User.General -> {
+                    reduce {
+                        state.copy(isLoggedIn = true)
+                    }
+                }
+                is User.Anonymous -> {
+                    reduce {
+                        state.copy(isLoggedIn = false)
+                    }
+                }
+            }
+        }
+    }
 
     private fun fetchOrderStoreNotice(id: Int) = intent {
         getOrderShopOriginInfoUseCase(id).also { result ->
@@ -210,6 +235,20 @@ class StoreDetailViewModel @Inject constructor(
                 state.copy(isLoading = false)
             }
         }
+    }
+
+    fun navigateToCart() = intent {
+        if (state.isLoggedIn) {
+            postSideEffect(StoreDetailSideEffect.NavigateToCart)
+        } else {
+            reduce {
+                state.copy(showSignInDialog = true)
+            }
+        }
+    }
+
+    fun hideSignInDialog() = intent {
+        reduce { state.copy(showSignInDialog = false) }
     }
 
     fun clickMenuCategory(categoryId: Int) = blockingIntent {

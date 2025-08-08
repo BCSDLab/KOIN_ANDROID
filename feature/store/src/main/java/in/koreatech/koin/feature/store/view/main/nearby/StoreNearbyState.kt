@@ -18,5 +18,7 @@ data class StoreNearbyState(
     val selectedOrderOption: OrderOption = OrderOption.NONE,
     val selectedStoreFilter: List<StoreFilter> = listOf(StoreFilter.IS_OPEN),
     val selectedMinimumPriceOption: MinimumPriceOption = MinimumPriceOption.ALL,
-    val cartItemCount: Int = 0
+    val cartItemCount: Int = 0,
+    val isLoggedIn: Boolean = false,
+    val showSignInDialog: Boolean = false
 )

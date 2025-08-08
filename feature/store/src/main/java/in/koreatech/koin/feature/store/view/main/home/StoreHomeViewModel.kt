@@ -2,9 +2,11 @@ package `in`.koreatech.koin.feature.store.view.main.home
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetOrderableShopsUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.store.enums.MinimumPriceOption
 import `in`.koreatech.koin.feature.store.enums.OrderOption
 import `in`.koreatech.koin.feature.store.enums.StoreFilter
@@ -14,6 +16,7 @@ import `in`.koreatech.koin.feature.store.model.toLocalStoreCategories
 import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
@@ -21,7 +24,8 @@ import org.orbitmvi.orbit.viewmodel.container
 class StoreHomeViewModel @Inject constructor(
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
-    private val getOrderableShopsUseCase: GetOrderableShopsUseCase
+    private val getOrderableShopsUseCase: GetOrderableShopsUseCase,
+    private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<StoreHomeState, StoreHomeSideEffect> {
     override val container = container<StoreHomeState, StoreHomeSideEffect>(StoreHomeState())
 
@@ -37,7 +41,27 @@ class StoreHomeViewModel @Inject constructor(
         }
     }
 
-    fun getCartItemsCount() = intent {
+    fun getUserType() = intent {
+        getUserStatusUseCase().collect {
+            when (it) {
+                is User.Student,
+                is User.General -> {
+                    getCartItemsCount()
+                    reduce {
+                        state.copy(isLoggedIn = true)
+                    }
+                }
+                is User.Anonymous -> {
+                    // Do nothing
+                    reduce {
+                        state.copy(isLoggedIn = false)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getCartItemsCount() = intent {
         reduce {
             state.copy(isLoading = true)
         }
@@ -50,6 +74,20 @@ class StoreHomeViewModel @Inject constructor(
                 state.copy(isLoading = false)
             }
         }
+    }
+
+    fun navigateToCart() = intent {
+        if (state.isLoggedIn) {
+            postSideEffect(StoreHomeSideEffect.NavigateToCart)
+        } else {
+            reduce {
+                state.copy(showSignInDialog = true)
+            }
+        }
+    }
+
+    fun hideSignInDialog() = intent {
+        reduce { state.copy(showSignInDialog = false) }
     }
 
     fun fetchData() = intent {
