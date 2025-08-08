@@ -137,13 +137,12 @@ fun StoreDetailScreen(
                     Toast.makeText(context, R.string.store_cart_add_added, Toast.LENGTH_SHORT).show()
                 }
             }
-        snapshotFlow { uiState.isLogin }
-            .distinctUntilChanged()
-            .collectLatest {
-                if (uiState.isLogin) {
-                    viewModel.getCartItemsCount()
-                }
-            }
+    }
+
+    LaunchedEffect(Unit, uiState.isLogin) {
+        if (uiState.isLogin) {
+            viewModel.getCartItemsCount()
+        }
     }
 
     LaunchedEffect(rememberState.listState) {
