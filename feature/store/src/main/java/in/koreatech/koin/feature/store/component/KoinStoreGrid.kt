@@ -5,16 +5,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.SubcomposeLayout
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
+import kotlin.math.roundToInt
 
 @Composable
 fun KoinStoreGrid(
     leftContent: @Composable () -> Unit,
     rightContent: @Composable () -> Unit,
     modifier: Modifier = Modifier,
+    innerPadding: Dp = 16.dp,
     verticalAlignment: Alignment.Vertical = Alignment.Top
 ) {
+    val density = LocalDensity.current
+
     SubcomposeLayout(modifier) { constraints ->
         val leftMainPlaceables =
             subcompose(SlotsEnum.LeftMain, leftContent).map {
@@ -57,9 +64,9 @@ fun KoinStoreGrid(
                     Constraints(
                         minWidth = minOf(
                             rightMaxSize.width,
-                            constraints.maxWidth - leftMaxSize.width
+                            constraints.maxWidth - leftMaxSize.width - with(density) { innerPadding.toPx() }.roundToInt()
                         ),
-                        maxWidth = constraints.maxWidth - leftMaxSize.width
+                        maxWidth = constraints.maxWidth - leftMaxSize.width - with(density) { innerPadding.toPx() }.roundToInt()
                     )
                 )
             }
@@ -100,7 +107,7 @@ fun KoinStoreGrid(
                     x = constraints.maxWidth - minOf(
                         rightMaxSize.width,
                         constraints.maxWidth - leftMaxSize.width
-                    ),
+                    ) + with(density) { innerPadding.toPx() }.roundToInt(),
                     y = rightHeightStart
                 )
             }
