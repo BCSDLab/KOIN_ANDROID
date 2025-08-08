@@ -141,17 +141,20 @@ fun ShopOriginInfoScreen(
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {
-            HighlightSection(isHighlighted = selectedInfo == StoreDetailInfoType.DETAIL.name, content = {
-                Text(
-                    text = stringResource(R.string.store_info),
-                    style = RebrandKoinTheme.typography.bold18
-                )
-                Text(text = uiState.shopDescription.notice ?: stringResource(R.string.no_registered_information), style = RebrandKoinTheme.typography.regular14)
-            }
+            HighlightSection(
+                isHighlighted = selectedInfo == StoreDetailInfoType.DETAIL.name,
+                content = {
+                    Text(
+                        text = stringResource(R.string.store_info),
+                        style = RebrandKoinTheme.typography.bold18
+                    )
+                    Text(text = uiState.shopDescription.notice ?: stringResource(R.string.no_registered_information), style = RebrandKoinTheme.typography.regular14)
+                }
             )
             Spacer(Modifier.height(24.dp))
             HighlightSection(
-                isHighlighted = selectedInfo == StoreDetailInfoType.DELIVERY.name, content = {
+                isHighlighted = selectedInfo == StoreDetailInfoType.DELIVERY.name,
+                content = {
                     Text(
                         modifier = Modifier.padding(vertical = 8.dp),
                         text = stringResource(R.string.total_delivery_tip_by_order_amount),
@@ -195,7 +198,8 @@ fun ShopOriginInfoScreen(
                 Text(text = stringResource(R.string.no_registered_information))
             }
             Spacer(Modifier.height(24.dp))
-            HighlightSection(isHighlighted = selectedInfo == StoreDetailInfoType.ORIGIN.name,
+            HighlightSection(
+                isHighlighted = selectedInfo == StoreDetailInfoType.ORIGIN.name,
                 content = {
                     Text(
                         text = stringResource(R.string.origin_marking),
@@ -258,7 +262,7 @@ fun HighlightSection(
     content: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
-    isHighlighted: Boolean= false,
+    isHighlighted: Boolean = false
 ) {
     var targetColor by remember { mutableStateOf(Color.Transparent) }
     val highlightColor = RebrandKoinTheme.colors.neutral400.copy(alpha = 0.3f)
