@@ -95,7 +95,7 @@ internal class StorePaymentScreenInterface(
 
 internal class StorePaymentWebViewClient(private val tokens: Tokens) : KoinWebAppWebViewClient() {
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-        if (request?.url?.scheme == "intent") {
+        if (request?.url?.scheme == "intent" || request?.url?.scheme == "market") {
             try {
                 val intent = Intent.parseUri(request.url.toString(), Intent.URI_INTENT_SCHEME)
                 view?.context?.startActivity(intent)

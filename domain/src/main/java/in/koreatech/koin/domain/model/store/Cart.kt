@@ -35,4 +35,20 @@ data class Cart(
             val optionPrice: Int
         )
     }
+
+    companion object {
+        val Empty = Cart(
+            shopName = "",
+            shopThumbnailImageUrl = "",
+            orderableShopId = 0,
+            isDeliveryAvailable = false,
+            isTakeoutAvailable = false,
+            shopMinimumOrderAmount = 0,
+            items = emptyList(),
+            itemsAmount = 0,
+            deliveryFee = 0,
+            totalAmount = 0,
+            finalPaymentAmount = 0
+        )
+    }
 }

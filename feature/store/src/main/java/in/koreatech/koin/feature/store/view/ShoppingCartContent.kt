@@ -50,8 +50,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
-import `in`.koreatech.koin.domain.model.cart.Cart
 import `in`.koreatech.koin.domain.model.cart.CartType
+import `in`.koreatech.koin.domain.model.store.Cart
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.CartMenuItem
 import `in`.koreatech.koin.feature.store.component.DeleteCartDialog

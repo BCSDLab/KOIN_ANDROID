@@ -6,15 +6,16 @@ import `in`.koreatech.koin.domain.error.store.KoinStoreException
 import `in`.koreatech.koin.domain.model.cart.CartType
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.cart.CartMenuQuantityUseCase
-import `in`.koreatech.koin.domain.usecase.cart.CartUseCase
 import `in`.koreatech.koin.domain.usecase.cart.DeleteCartMenuItemUseCase
 import `in`.koreatech.koin.domain.usecase.cart.ResetCartUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetCartItemUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartSummaryUseCase
 import `in`.koreatech.koin.domain.usecase.store.ValidateCartItemsUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.store.enums.CartValidation
 import `in`.koreatech.koin.feature.store.view.CartState
 import javax.inject.Inject
+import kotlinx.coroutines.Job
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -23,7 +24,7 @@ import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
 class ShoppingCartViewModel @Inject constructor(
-    private val cartUseCase: CartUseCase,
+    private val getCartItemUseCase: GetCartItemUseCase,
     private val validateCartItemsUseCase: ValidateCartItemsUseCase,
     private val cartMenuQuantityUseCase: CartMenuQuantityUseCase,
     private val getCartSummaryUseCase: GetCartSummaryUseCase,
@@ -58,12 +59,18 @@ class ShoppingCartViewModel @Inject constructor(
         }
     }
 
-    fun getCart(type: CartType) = intent {
+    fun getCart(type: CartType): Job = intent {
         reduce { state.copy(isLoading = true) }
-        cartUseCase(type).collect { cart ->
-            reduce { state.copy(cart = cart, cartType = type) }
+        getCartItemUseCase(type.name).onSuccess {
+            reduce { state.copy(cart = it, cartType = type, isLoading = false) }
+            getCartValidate()
+        }.onFailure {
+            reduce { state.copy(isLoading = false) }
+            when (it) {
+                is KoinStoreException.ShopNotDeliverableException -> getCart(CartType.TAKE_OUT)
+                is KoinStoreException.ShopNotTakeoutAvailableException -> getCart(CartType.TAKE_OUT)
+            }
         }
-        getCartValidate()
     }
 
     fun getCartValidate() = intent {
