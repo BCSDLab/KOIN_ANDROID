@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.webapp.KoinWebAppInterface
 import `in`.koreatech.koin.core.webapp.KoinWebAppWebViewClient
@@ -27,7 +28,6 @@ import `in`.koreatech.koin.core.webapp.WebApp
 import `in`.koreatech.koin.feature.store.BuildConfig
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import java.net.URISyntaxException
-import androidx.core.net.toUri
 
 @Composable
 fun StorePaymentScreen(
