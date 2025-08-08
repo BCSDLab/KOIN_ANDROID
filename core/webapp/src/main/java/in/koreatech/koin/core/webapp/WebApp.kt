@@ -16,9 +16,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.os.bundleOf
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import java.net.URL
 
 /**
@@ -48,6 +52,15 @@ fun WebApp(
 ) {
     var webView: WebView? by remember { mutableStateOf(null) }
     val cookieManager = CookieManager.getInstance()
+    val bundle = rememberSaveable { bundleOf() }
+
+    LifecycleEventEffect(Lifecycle.Event.ON_PAUSE) {
+        webView?.saveState(bundle)
+    }
+
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+        webView?.restoreState(bundle)
+    }
 
     AndroidView(
         modifier = modifier
@@ -79,7 +92,9 @@ fun WebApp(
                     setCookie(baseUrl, "${cookie.first}=${cookie.second}")
                 }
             }
-            it.loadUrl(url)
+            if (bundle.isEmpty) {
+                it.loadUrl(url)
+            }
         },
         onRelease = {
             webView = null
