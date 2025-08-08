@@ -42,13 +42,12 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
-import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
+import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
 import `in`.koreatech.koin.feature.store.model.DeliveryTipModel
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
@@ -142,27 +141,28 @@ fun ShopOriginInfoScreen(
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {
-            HighlightSection(isHighlighted = selectedInfo == StoreDetailInfoType.DETAIL.name) {
+            HighlightSection(isHighlighted = selectedInfo == StoreDetailInfoType.DETAIL.name, content = {
                 Text(
                     text = stringResource(R.string.store_info),
                     style = RebrandKoinTheme.typography.bold18
                 )
                 Text(text = uiState.shopDescription.notice ?: stringResource(R.string.no_registered_information), style = RebrandKoinTheme.typography.regular14)
             }
+            )
             Spacer(Modifier.height(24.dp))
             HighlightSection(
-                isHighlighted = selectedInfo == StoreDetailInfoType.DELIVERY.name
-            ) {
-                Text(
-                    modifier = Modifier.padding(vertical = 8.dp),
-                    text = stringResource(R.string.total_delivery_tip_by_order_amount),
-                    style = RebrandKoinTheme.typography.bold18
-                )
-                DeliveryFeeTable(
-                    modifier = Modifier.fillMaxWidth(),
-                    deliveryFees = uiState.shopDescription.deliveryTips ?: emptyList()
-                )
-            }
+                isHighlighted = selectedInfo == StoreDetailInfoType.DELIVERY.name, content = {
+                    Text(
+                        modifier = Modifier.padding(vertical = 8.dp),
+                        text = stringResource(R.string.total_delivery_tip_by_order_amount),
+                        style = RebrandKoinTheme.typography.bold18
+                    )
+                    DeliveryFeeTable(
+                        modifier = Modifier.fillMaxWidth(),
+                        deliveryFees = uiState.shopDescription.deliveryTips ?: emptyList()
+                    )
+                }
+            )
             Spacer(Modifier.height(24.dp))
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp),
@@ -195,18 +195,20 @@ fun ShopOriginInfoScreen(
                 Text(text = stringResource(R.string.no_registered_information))
             }
             Spacer(Modifier.height(24.dp))
-            HighlightSection(isHighlighted = selectedInfo == StoreDetailInfoType.ORIGIN.name) {
-                Text(
-                    text = stringResource(R.string.origin_marking),
-                    style = RebrandKoinTheme.typography.bold18
-                )
-                Text(
-                    text = uiState.shopDescription.origins?.joinToString(separator = ", ") {
-                        "${it.ingredients} (${it.origin})"
-                    } ?: stringResource(R.string.no_registered_information),
-                    style = RebrandKoinTheme.typography.regular14
-                )
-            }
+            HighlightSection(isHighlighted = selectedInfo == StoreDetailInfoType.ORIGIN.name,
+                content = {
+                    Text(
+                        text = stringResource(R.string.origin_marking),
+                        style = RebrandKoinTheme.typography.bold18
+                    )
+                    Text(
+                        text = uiState.shopDescription.origins?.joinToString(separator = ", ") {
+                            "${it.ingredients} (${it.origin})"
+                        } ?: stringResource(R.string.no_registered_information),
+                        style = RebrandKoinTheme.typography.regular14
+                    )
+                }
+            )
         }
     }
 }
@@ -253,10 +255,10 @@ fun DeliveryFeeRow(
 
 @Composable
 fun HighlightSection(
-    isHighlighted: Boolean,
+    content: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
-    content: @Composable () -> Unit
+    isHighlighted: Boolean= false,
 ) {
     var targetColor by remember { mutableStateOf(Color.Transparent) }
     val highlightColor = RebrandKoinTheme.colors.neutral400.copy(alpha = 0.3f)
