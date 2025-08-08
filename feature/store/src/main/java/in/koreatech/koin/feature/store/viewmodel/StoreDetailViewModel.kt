@@ -81,6 +81,7 @@ class StoreDetailViewModel @Inject constructor(
                         state.copy(isLoggedIn = true)
                     }
                 }
+
                 is User.Anonymous -> {
                     reduce {
                         state.copy(isLoggedIn = false)
@@ -98,8 +99,13 @@ class StoreDetailViewModel @Inject constructor(
                     shopDescription = StoreDescriptionModel(
                         id = id,
                         storeName = result.name,
+                        address = result.address,
                         description = result.introduction,
                         notice = result.notice,
+                        phone = result.phone ?: "",
+                        openTime = result.openTime,
+                        closeTime = result.closeTime,
+                        closedDays = result.closedDays,
                         deliveryTips = result.deliveryTips.map { tips ->
                             DeliveryTipModel(
                                 fromAmount = tips.fromAmount,
@@ -162,8 +168,13 @@ class StoreDetailViewModel @Inject constructor(
                     shopDescription = StoreDescriptionModel(
                         id = id,
                         storeName = result.name,
+                        address = result.address ?: "",
                         description = result.description,
                         notice = result.description,
+                        phone = result.phone,
+                        openTime = result.open.openTime,
+                        closeTime = result.open.closeTime,
+                        closedDays = emptyList(),
                         deliveryTips = DeliveryTipModel(
                             fromAmount = 0,
                             toAmount = null,

@@ -69,8 +69,13 @@ data class ShopInfoModel(
 data class StoreDescriptionModel(
     val id: Int,
     val storeName: String,
+    val address: String,
     val description: String?,
     val notice: String?,
+    val phone: String,
+    val openTime: String,
+    val closeTime: String,
+    val closedDays: List<String>,
     val deliveryTips: List<DeliveryTipModel>?,
     val origins: List<OriginModel>?,
     val ownerInfo: OwnerInfoModel?
@@ -79,8 +84,13 @@ data class StoreDescriptionModel(
         fun empty() = StoreDescriptionModel(
             id = 0,
             storeName = "",
+            address = "",
             description = null,
             notice = null,
+            phone = "",
+            openTime = "",
+            closeTime = "",
+            closedDays = emptyList(),
             deliveryTips = null,
             origins = listOf(OriginModel.empty()),
             ownerInfo = OwnerInfoModel.empty()

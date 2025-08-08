@@ -144,10 +144,48 @@ fun ShopOriginInfoScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             HighlightSection(
-                isHighlighted = selectedInfo == StoreDetailInfoType.DETAIL.name,
+                isHighlighted = selectedInfo == StoreDetailInfoType.ORIGIN.name,
+                content = {
+                    Text(
+                        text = uiState.shopDescription.storeName,
+                        style = RebrandKoinTheme.typography.bold18
+                    )
+                    KoinStoreGrid(
+                        modifier = Modifier.wrapContentHeight(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        leftContent = {
+                            Text(text = stringResource(R.string.trade_name))
+                            Text(text = stringResource(R.string.address))
+                            Text(text = stringResource(R.string.open_time))
+                            Text(text = stringResource(R.string.closed_days))
+                            Text(text = stringResource(R.string.store_call_number))
+                        },
+                        rightContent = {
+                            Text(uiState.shopDescription.storeName)
+                            Text(uiState.shopDescription.address)
+                            Text(stringResource(R.string.open_to_close_time, uiState.shopDescription.openTime, uiState.shopDescription.closeTime))
+                            Text(stringResource(R.string.closed_days_description, uiState.shopDescription.closedDays.joinToString(", ")))
+                            Text(uiState.shopDescription.phone)
+                        }
+                    )
+                }
+            )
+            Spacer(Modifier.height(24.dp))
+            HighlightSection(
                 content = {
                     Text(
                         text = stringResource(R.string.store_info),
+                        style = RebrandKoinTheme.typography.bold18
+                    )
+                    Text(text = uiState.shopDescription.description ?: stringResource(R.string.no_registered_information), style = RebrandKoinTheme.typography.regular14)
+                }
+            )
+            Spacer(Modifier.height(24.dp))
+            HighlightSection(
+                isHighlighted = selectedInfo == StoreDetailInfoType.DETAIL.name,
+                content = {
+                    Text(
+                        text = stringResource(R.string.store_notice),
                         style = RebrandKoinTheme.typography.bold18
                     )
                     Text(text = uiState.shopDescription.notice ?: stringResource(R.string.no_registered_information), style = RebrandKoinTheme.typography.regular14)
@@ -196,7 +234,6 @@ fun ShopOriginInfoScreen(
             }
             Spacer(Modifier.height(24.dp))
             HighlightSection(
-                isHighlighted = selectedInfo == StoreDetailInfoType.ORIGIN.name,
                 content = {
                     Text(
                         text = stringResource(R.string.origin_marking),
