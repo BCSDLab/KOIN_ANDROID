@@ -1,8 +1,11 @@
 package `in`.koreatech.koin.feature.store.view.payment
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.webkit.JavascriptInterface
+import android.webkit.URLUtil
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import androidx.activity.compose.BackHandler
@@ -23,6 +26,8 @@ import `in`.koreatech.koin.core.webapp.Tokens
 import `in`.koreatech.koin.core.webapp.WebApp
 import `in`.koreatech.koin.feature.store.BuildConfig
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
+import java.net.URISyntaxException
+import androidx.core.net.toUri
 
 @Composable
 fun StorePaymentScreen(
@@ -94,17 +99,9 @@ internal class StorePaymentScreenInterface(
 }
 
 internal class StorePaymentWebViewClient(private val tokens: Tokens) : KoinWebAppWebViewClient() {
-    override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-        if (request?.url?.scheme == "intent" || request?.url?.scheme == "market") {
-            try {
-                val intent = Intent.parseUri(request.url.toString(), Intent.URI_INTENT_SCHEME)
-                view?.context?.startActivity(intent)
-                return true
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-        return false
+    override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+        val url = request.url.toString()
+        return handleUrl(view.context, url)
     }
 
     override fun onPageFinished(view: WebView?, url: String?) {
@@ -113,4 +110,58 @@ internal class StorePaymentWebViewClient(private val tokens: Tokens) : KoinWebAp
         view?.evaluateJavascript("localStorage.removeItem('refresh-token-storage');", null)
         view?.evaluateJavascript("localStorage.setItem('refresh-token-storage','{\"state\":{\"refreshToken\":\"${tokens.refreshToken}\",\"userType\":\"${tokens.userType}\"},\"version\":0}');", null)
     }
+}
+
+/*
+ * from https://docs.tosspayments.com/guides/v2/webview
+ */
+private fun handleUrl(context: Context?, url: String): Boolean {
+    if (!URLUtil.isNetworkUrl(url) && !URLUtil.isJavaScriptUrl(url)) {
+        val uri = try {
+            url.toUri()
+        } catch (_: Exception) {
+            return false
+        }
+
+        return when (uri.scheme) {
+            "intent" -> {
+                startSchemeIntent(context, url)
+            }
+            else -> {
+                return try {
+                    context?.startActivity(Intent(Intent.ACTION_VIEW, uri))
+                    true
+                } catch (_: Exception) {
+                    false
+                }
+            }
+        }
+    } else {
+        return false
+    }
+}
+
+private fun startSchemeIntent(context: Context?, url: String): Boolean {
+    val schemeIntent: Intent = try {
+        Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
+    } catch (_: URISyntaxException) {
+        return false
+    }
+    try {
+        context?.startActivity(schemeIntent)
+        return true
+    } catch (_: ActivityNotFoundException) {
+        val packageName = schemeIntent.getPackage()
+
+        if (!packageName.isNullOrBlank()) {
+            context?.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    "market://details?id=$packageName".toUri()
+                )
+            )
+            return true
+        }
+    }
+    return false
 }
