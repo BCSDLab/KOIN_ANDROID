@@ -121,19 +121,15 @@ fun MenuItem(
                 .size(88.dp)
                 .clip(KoinTheme.shapes.small)
         ) {
-            menu.thumbnailImage
-                ?.firstOrNull()?.let { url ->
-                    AsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(url)
-                            .crossfade(true)
-                            .build(),
-                        contentDescription = null,
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier
-                            .matchParentSize()
-                    )
-                }
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(menu.thumbnailImage)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier.matchParentSize()
+            )
 
             if (menu.isSoldOut) {
                 Image(
