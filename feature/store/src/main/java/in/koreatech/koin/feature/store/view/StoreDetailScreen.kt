@@ -11,12 +11,13 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -29,18 +30,23 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.core.net.toUri
@@ -63,12 +69,10 @@ import `in`.koreatech.koin.feature.store.util.customCollapsingToolbarContent
 import `in`.koreatech.koin.feature.store.viewmodel.ShoppingCartViewModel
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
 import kotlin.math.roundToInt
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -82,7 +86,7 @@ fun StoreDetailScreen(
     cartViewModel: ShoppingCartViewModel = hiltViewModel(),
     navigateToCart: () -> Unit = {},
     navigateToBack: () -> Unit = {},
-    navigateToDetailInfo: () -> Unit = {},
+    navigateToDetailInfo: (selectedInfo: String) -> Unit = {},
     navigateToReview: () -> Unit = {},
     navigateToMenuInfo: (menuId: Int) -> Unit = {}
 ) {
@@ -106,6 +110,7 @@ fun StoreDetailScreen(
     )
     val currentToolbarHeightDp = rememberState.currentToolbarHeightDp()
     val statusBarHeight = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+    val menuCategoryHeight = remember { mutableStateOf(0) }
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
@@ -120,6 +125,10 @@ fun StoreDetailScreen(
             .launchIn(coroutineScope)
     }
 
+    LaunchedEffect(uiState.selectedCategoryId) {
+        rememberState.listState.animateScrollToItem(uiState.categories.indexOfFirst { it.menuGroupId == uiState.selectedCategoryId } + 2, -menuCategoryHeight.value)
+    }
+
     LaunchedEffect(Unit) {
         snapshotFlow { isCartAdded }
             .distinctUntilChanged()
@@ -128,14 +137,21 @@ fun StoreDetailScreen(
                     Toast.makeText(context, R.string.store_cart_add_added, Toast.LENGTH_SHORT).show()
                 }
             }
-    }
-
-    LaunchedEffect(Unit) {
         snapshotFlow { uiState.isLogin }
             .distinctUntilChanged()
             .collectLatest {
                 if (uiState.isLogin) {
                     viewModel.getCartItemsCount()
+                }
+            }
+    }
+
+    LaunchedEffect(rememberState.listState) {
+        snapshotFlow { rememberState.listState.firstVisibleItemIndex }
+            .collect { index ->
+                val visibleCategory = uiState.categories.getOrNull(index - 2)
+                visibleCategory?.let {
+                    viewModel.changeCategory(it.menuGroupId)
                 }
             }
     }
@@ -157,7 +173,14 @@ fun StoreDetailScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .zIndex(2f),
+                .zIndex(2f)
+                .pointerInput(Unit) {
+                    awaitPointerEventScope {
+                        while (true) {
+                            awaitPointerEvent()
+                        }
+                    }
+                },
             contentAlignment = Alignment.Center
         ) {
             KoinStoreProgressIndicator(
@@ -183,7 +206,11 @@ fun StoreDetailScreen(
                     .offset {
                         IntOffset(
                             0,
-                            currentToolbarHeightDp.value.toPx().roundToInt() + statusBarHeight.toPx().roundToInt()
+                            currentToolbarHeightDp.value
+                                .toPx()
+                                .roundToInt() + statusBarHeight
+                                .toPx()
+                                .roundToInt()
                         )
                     },
                 state = rememberState.listState
@@ -197,7 +224,9 @@ fun StoreDetailScreen(
                             storeReview = uiState.storeReview,
                             storeDescriptionModel = uiState.shopDescription,
                             navigateToReview = { navigateToReview() },
-                            navigateToDetailInfo = { navigateToDetailInfo() }
+                            navigateToDetailInfo = { selectedInfo ->
+                                navigateToDetailInfo(selectedInfo)
+                            }
                         )
                         HorizontalDivider(
                             modifier = Modifier.padding(vertical = 8.dp),
@@ -210,16 +239,16 @@ fun StoreDetailScreen(
                     MenuCategoryChips(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .onSizeChanged { size: IntSize ->
+                                menuCategoryHeight.value = size.height
+                            }
                             .heightIn(min = 66.dp),
                         menuCategories = uiState.categories,
-                        onCategoryClicked = { categoryId, stickyHeaderHeight ->
+                        onCategoryClicked = { categoryId ->
                             viewModel.clickMenuCategory(categoryId)
                             rememberState.collapseToolbar(
                                 state = rememberState
                             )
-                            CoroutineScope(coroutineScope.coroutineContext).launch {
-                                rememberState.listState.scrollToItem(uiState.categories.indexOfFirst { it.menuGroupId == categoryId } + 2, -stickyHeaderHeight)
-                            }
                         }
                     )
                 }
@@ -237,7 +266,7 @@ fun StoreDetailScreen(
                     }
                 }
                 item {
-                    Spacer(modifier = Modifier.height(100.dp))
+                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
                 }
             }
 

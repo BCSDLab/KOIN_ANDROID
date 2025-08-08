@@ -1,6 +1,9 @@
 package `in`.koreatech.koin.feature.store.component
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -20,9 +23,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.model.MenuModel
 
@@ -109,21 +115,39 @@ fun MenuItem(
             )
         }
         Spacer(modifier = Modifier.width(16.dp))
-        menu.thumbnailImage
-            ?.firstOrNull()?.let { url ->
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(url)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
+        Box(
+            modifier = Modifier
+                .align(Alignment.Bottom)
+                .size(88.dp)
+                .clip(KoinTheme.shapes.small)
+        ) {
+            menu.thumbnailImage
+                ?.firstOrNull()?.let { url ->
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(url)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = null,
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .matchParentSize()
+                    )
+                }
+
+            if (menu.isSoldOut) {
+                Image(
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_sold_out),
+                    contentDescription = "",
+                    contentScale = ContentScale.Fit,
                     modifier = Modifier
-                        .align(Alignment.Bottom)
-                        .size(88.dp)
-                        .clip(KoinTheme.shapes.small)
+                        .matchParentSize()
+                        .background(RebrandKoinTheme.colors.neutral800.copy(alpha = 0.6f))
+                        .padding(14.dp)
+
                 )
             }
+        }
     }
 }
 
