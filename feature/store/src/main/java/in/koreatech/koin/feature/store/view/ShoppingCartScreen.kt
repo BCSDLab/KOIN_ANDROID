@@ -144,6 +144,7 @@ fun ShoppingCartScreen(
             dialogVisibility = uiState.showDeleteDialog,
             onOrderModeChanged = { viewModel.getCart(it) },
             onChangeQuantity = { cartMenuItemId, quantity ->
+                viewModel.resetCartValidation()
                 viewModel.modifyCartMenuQuantity(cartMenuItemId, quantity)
             },
             onResetMenu = {

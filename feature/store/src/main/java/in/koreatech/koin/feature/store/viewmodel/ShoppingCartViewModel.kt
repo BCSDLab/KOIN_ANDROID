@@ -113,6 +113,12 @@ class ShoppingCartViewModel @Inject constructor(
         }
     }
 
+    fun resetCartValidation() = blockingIntent {
+        reduce {
+            state.copy(cartValidation = CartValidation.NONE)
+        }
+    }
+
     fun modifyCartMenuQuantity(cartMenuItemId: Int, quantity: Int) = intent {
         cartMenuQuantityUseCase(cartMenuItemId, quantity).collect {
             reduce {
