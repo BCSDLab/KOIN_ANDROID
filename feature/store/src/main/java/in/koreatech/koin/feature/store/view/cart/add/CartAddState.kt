@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.store.view.cart.add
 
 import android.os.Parcelable
 import `in`.koreatech.koin.feature.store.enums.CartError
+import `in`.koreatech.koin.feature.store.model.LocalAddCartItemOption
 import `in`.koreatech.koin.feature.store.model.LocalShopMenuOptionGroup
 import `in`.koreatech.koin.feature.store.model.LocalShopPrice
 import kotlinx.parcelize.Parcelize
@@ -12,6 +13,7 @@ data class CartAddState(
     val orderableShopId: Int = -1,
     val orderableShopMenuId: Int = -1,
     val orderableShopMenuPriceId: Int = -1,
+    val orderableShopMenuOptionIds: List<LocalAddCartItemOption> = emptyList(),
     val menuName: String = "",
     val menuDescription: String = "",
     val menuImageUrls: List<String> = emptyList(),
