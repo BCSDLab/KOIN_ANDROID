@@ -148,8 +148,11 @@ fun ShopOriginInfoScreen(
                 content = {
                     Text(
                         text = uiState.shopDescription.storeName,
-                        style = RebrandKoinTheme.typography.bold18
+                        style = RebrandKoinTheme.typography.bold15
                     )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
                     KoinStoreGrid(
                         modifier = Modifier.wrapContentHeight(),
                         verticalAlignment = Alignment.CenterVertically,
@@ -170,69 +173,84 @@ fun ShopOriginInfoScreen(
                     )
                 }
             )
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(6.dp))
             HighlightSection(
                 content = {
                     Text(
                         text = stringResource(R.string.store_info),
-                        style = RebrandKoinTheme.typography.bold18
+                        style = RebrandKoinTheme.typography.bold15
                     )
+                    Spacer(modifier = Modifier.height(12.dp))
+
                     Text(text = uiState.shopDescription.description ?: stringResource(R.string.no_registered_information), style = RebrandKoinTheme.typography.regular14)
                 }
             )
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(6.dp))
             HighlightSection(
                 isHighlighted = selectedInfo == StoreDetailInfoType.DETAIL.name,
                 content = {
                     Text(
                         text = stringResource(R.string.store_notice),
-                        style = RebrandKoinTheme.typography.bold18
+                        style = RebrandKoinTheme.typography.bold15
                     )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
                     Text(text = uiState.shopDescription.notice ?: stringResource(R.string.no_registered_information), style = RebrandKoinTheme.typography.regular14)
                 }
             )
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(6.dp))
             HighlightSection(
                 isHighlighted = selectedInfo == StoreDetailInfoType.DELIVERY.name,
                 content = {
                     Text(
                         modifier = Modifier.padding(vertical = 8.dp),
                         text = stringResource(R.string.total_delivery_tip_by_order_amount),
-                        style = RebrandKoinTheme.typography.bold18
+                        style = RebrandKoinTheme.typography.bold15
                     )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
                     DeliveryFeeTable(
                         modifier = Modifier.fillMaxWidth(),
                         deliveryFees = uiState.shopDescription.deliveryTips ?: emptyList()
                     )
                 }
             )
-            Spacer(Modifier.height(24.dp))
-            Text(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                text = stringResource(R.string.business_info),
-                style = RebrandKoinTheme.typography.bold18
-            )
-            if (uiState.shopDescription.ownerInfo.hasAnyInfo()) {
-                KoinStoreGrid(
-                    modifier = Modifier.wrapContentHeight().padding(vertical = 8.dp, horizontal = 16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    leftContent = {
-                        Text(text = stringResource(R.string.owner_name))
-                        Text(text = stringResource(R.string.trade_name))
-                        Text(text = stringResource(R.string.business_address))
-                        Text(stringResource(R.string.business_registration_number))
-                    },
-                    rightContent = {
-                        uiState.shopDescription.ownerInfo?.name?.let { Text(it) }
-                        uiState.shopDescription.ownerInfo?.shopName?.let { Text(it) }
-                        uiState.shopDescription.ownerInfo?.address?.let { Text(it) }
-                        uiState.shopDescription.ownerInfo?.companyRegistrationNumber?.let { Text(it) }
+            Spacer(Modifier.height(6.dp))
+            HighlightSection(
+                content = {
+                    Text(
+                        text = stringResource(R.string.business_info),
+                        style = RebrandKoinTheme.typography.bold15
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    if (uiState.shopDescription.ownerInfo.hasAnyInfo()) {
+                        KoinStoreGrid(
+                            modifier = Modifier
+                                .wrapContentHeight(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            leftContent = {
+                                Text(text = stringResource(R.string.owner_name))
+                                Text(text = stringResource(R.string.trade_name))
+                                Text(text = stringResource(R.string.business_address))
+                                Text(stringResource(R.string.business_registration_number))
+                            },
+                            rightContent = {
+                                uiState.shopDescription.ownerInfo?.name?.let { Text(it) }
+                                uiState.shopDescription.ownerInfo?.shopName?.let { Text(it) }
+                                uiState.shopDescription.ownerInfo?.address?.let { Text(it) }
+                                uiState.shopDescription.ownerInfo?.companyRegistrationNumber?.let { Text(it) }
+                            }
+                        )
+                    } else {
+                        Text(text = stringResource(R.string.no_registered_information))
                     }
-                )
-            } else {
-                Text(text = stringResource(R.string.no_registered_information))
-            }
-            Spacer(Modifier.height(24.dp))
+                }
+            )
+            Spacer(Modifier.height(6.dp))
             HighlightSection(
                 content = {
                     Text(
@@ -298,7 +316,7 @@ fun HighlightSection(
     isLoading: Boolean = false,
     isHighlighted: Boolean = false
 ) {
-    var targetColor by remember { mutableStateOf(Color.Transparent) }
+    var targetColor by remember { mutableStateOf(Color.White) }
     val highlightColor = RebrandKoinTheme.colors.neutral400.copy(alpha = 0.3f)
     val animatedBackgroundColor by animateColorAsState(
         targetValue = targetColor,
@@ -318,7 +336,7 @@ fun HighlightSection(
         modifier = modifier
             .fillMaxWidth()
             .background(animatedBackgroundColor)
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(horizontal = 24.dp, vertical = 12.dp)
 
     ) {
         content()
