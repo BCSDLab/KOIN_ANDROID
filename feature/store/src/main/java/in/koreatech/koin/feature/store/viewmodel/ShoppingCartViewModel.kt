@@ -74,9 +74,11 @@ class ShoppingCartViewModel @Inject constructor(
     }
 
     fun getCartValidate() = intent {
+        reduce { state.copy(isLoading = true) }
         validateCartItemsUseCase().onSuccess {
             reduce {
                 state.copy(
+                    isLoading = false,
                     cartValidation = CartValidation.VALID
                 )
             }
@@ -88,7 +90,8 @@ class ShoppingCartViewModel @Inject constructor(
                         is KoinStoreException.CartNotFoundException -> CartValidation.CART_NOT_FOUND
                         is KoinStoreException.ShopClosedException -> CartValidation.NOT_OPERATING
                         else -> CartValidation.NONE
-                    }
+                    },
+                    isLoading = false
                 )
             }
         }
@@ -120,9 +123,13 @@ class ShoppingCartViewModel @Inject constructor(
     }
 
     fun modifyCartMenuQuantity(cartMenuItemId: Int, quantity: Int) = intent {
+        reduce {
+            state.copy(isLoading = true)
+        }
         cartMenuQuantityUseCase(cartMenuItemId, quantity).collect {
             reduce {
                 state.copy(
+                    isLoading = false,
                     cart = state.cart.copy(
                         items = state.cart.items.map { menuItem ->
                             if (menuItem.cartMenuItemId == cartMenuItemId) {
