@@ -127,7 +127,7 @@ fun StoreDetailScreen(
 
     LaunchedEffect(uiState.selectedCategoryId) {
         if (currentToolbarHeightDp.value != rememberState.toolbarMinHeight) return@LaunchedEffect // Don't scroll if toolbar not collapsed
-        rememberState.listState.animateScrollToItem(uiState.categories.indexOfFirst { it.menuGroupId == uiState.selectedCategoryId } + 2, -menuCategoryHeight.value)
+        rememberState.listState.animateScrollToItem(uiState.categories.indexOfFirst { it.menuGroupId == uiState.selectedCategoryId } + 2)
     }
 
     LaunchedEffect(Unit) {
