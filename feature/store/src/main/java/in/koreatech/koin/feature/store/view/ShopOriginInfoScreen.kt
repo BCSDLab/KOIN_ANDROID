@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -46,6 +47,7 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.component.KoinStoreGrid
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
@@ -173,27 +175,22 @@ fun ShopOriginInfoScreen(
                 style = RebrandKoinTheme.typography.bold18
             )
             if (uiState.shopDescription.ownerInfo.hasAnyInfo()) {
-                Row(modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)) {
-                    Column(
-                        modifier = Modifier.weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
+                KoinStoreGrid(
+                    modifier = Modifier.wrapContentHeight().padding(vertical = 8.dp, horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    leftContent = {
                         Text(text = stringResource(R.string.owner_name))
                         Text(text = stringResource(R.string.trade_name))
                         Text(text = stringResource(R.string.business_address))
                         Text(stringResource(R.string.business_registration_number))
-                    }
-
-                    Column(
-                        modifier = Modifier.weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
+                    },
+                    rightContent = {
                         uiState.shopDescription.ownerInfo?.name?.let { Text(it) }
                         uiState.shopDescription.ownerInfo?.shopName?.let { Text(it) }
                         uiState.shopDescription.ownerInfo?.address?.let { Text(it) }
                         uiState.shopDescription.ownerInfo?.companyRegistrationNumber?.let { Text(it) }
                     }
-                }
+                )
             } else {
                 Text(text = stringResource(R.string.no_registered_information))
             }
