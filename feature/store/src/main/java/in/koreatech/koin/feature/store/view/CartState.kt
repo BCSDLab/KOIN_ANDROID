@@ -16,5 +16,5 @@ data class CartState(
     val isLoggedIn: Boolean = false
 ) {
     val totalItemCount: Int
-        get() = cart.items.count() * cart.items.sumOf { it.quantity }
+        get() = cart.items.sumOf { it.quantity }
 }

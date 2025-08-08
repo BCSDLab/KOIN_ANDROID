@@ -327,7 +327,7 @@ fun StoreDetailScreen(
         }
         if (cartUiState.cart.items.isNotEmpty() && cartUiState.cart.orderableShopId == uiState.store.orderableShopId) {
             OrderBottomBar(
-                itemCount = cartUiState.cart.items.count(),
+                itemCount = cartUiState.cart.items.sumOf { it.quantity },
                 totalPrice = cartUiState.cart.totalAmount,
                 isOrderEnabled = cartUiState.cartValidation == CartValidation.VALID,
                 orderableMessage = if (cartUiState.cart.totalAmount >= cartUiState.minimumOrderAmount) stringResource(R.string.store_order_can_delivery) else stringResource(R.string.store_order_cant_delivery),
