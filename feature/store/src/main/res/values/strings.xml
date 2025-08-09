@@ -40,7 +40,14 @@
 
     <!--가게 정보 및 원산지-->
     <string name="store_info_and_origin">가게정보·원산지</string>
-    <string name="store_info">가게 알림</string>
+    <string name="store_info">가게 소개</string>
+    <string name="store_notice">가게 알림</string>
+    <string name="address">주소</string>
+    <string name="open_time">운영시간</string>
+    <string name="open_to_close_time">%1$s ~ %2$s</string>
+    <string name="closed_days">휴무일</string>
+    <string name="closed_days_description">매주 %1$s</string>
+    <string name="store_call_number">전화번호</string>
     <string name="owner_name">대표자명</string>
     <string name="fee_range">%1$d ~ %2$d원 미만</string>
     <string name="fee_range_start">%1$d원부터</string>

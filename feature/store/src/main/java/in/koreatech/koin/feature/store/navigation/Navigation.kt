@@ -103,11 +103,15 @@ fun NavGraphBuilder.koinStoreGraph(
             },
             navArgument(ORDERABLE_SHOP_MENU_ID) {
                 type = NavType.IntType
+            },
+            navArgument(CART_DATA) {
+                type = NavType.StringType
+                nullable = true
             }
         ),
         deepLinks = listOf(
             navDeepLink {
-                uriPattern = "$DEEPLINK_STORE_ADD_CART/{$ORDERABLE_SHOP_ID}/{$ORDERABLE_SHOP_MENU_ID}"
+                uriPattern = "$DEEPLINK_STORE_ADD_CART/{$ORDERABLE_SHOP_ID}/{$ORDERABLE_SHOP_MENU_ID}/{$CART_DATA}"
             }
         )
     ) {
@@ -353,3 +357,4 @@ const val IS_CART_ADDED = "isCartAdded"
 const val IS_CART_MODIFIED = "isCartModified"
 const val CART_TYPE = "cartType"
 const val SELECTED_INFO = "selectedInfo"
+const val CART_DATA = "cartData"

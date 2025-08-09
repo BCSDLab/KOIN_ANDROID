@@ -64,12 +64,15 @@ import `in`.koreatech.koin.feature.store.enums.CartError.MIN_SELECTION_NOT_MET
 import `in`.koreatech.koin.feature.store.enums.CartError.NONE
 import `in`.koreatech.koin.feature.store.enums.CartError.REQUIRED_OPTION_GROUP_MISSING
 import `in`.koreatech.koin.feature.store.enums.CartError.SHOP_CLOSED
+import `in`.koreatech.koin.feature.store.model.LocalCartAdd
 import `in`.koreatech.koin.feature.store.model.LocalShopMenuOptionGroup
 import `in`.koreatech.koin.feature.store.model.LocalShopPrice
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
 import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
 import `in`.koreatech.koin.feature.store.util.customCollapsingToolbarContent
 import kotlin.math.roundToInt
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -117,10 +120,19 @@ fun CartAddScreen(
     }
 
     if (uiState.showSignInDialog) {
+        val cartData = Json.encodeToString(
+            LocalCartAdd(
+                orderableShopId = uiState.orderableShopId,
+                orderableShopMenuId = uiState.orderableShopMenuId,
+                orderableShopMenuPriceId = uiState.orderableShopMenuPriceId,
+                orderableShopMenuOptionIds = uiState.orderableShopMenuOptionIds,
+                quantity = uiState.quantity
+            )
+        )
         KoinStoreSignInDialog(
             onPositive = {
                 Intent(Intent.ACTION_VIEW).apply {
-                    data = "koin://login/login?link=$DEEPLINK_STORE_ADD_CART/${uiState.orderableShopId}/${uiState.orderableShopMenuId}".toUri()
+                    data = "koin://login/login?link=$DEEPLINK_STORE_ADD_CART/${uiState.orderableShopId}/${uiState.orderableShopMenuId}/$cartData".toUri()
                 }.apply {
                     context.startActivity(this)
                 }
@@ -285,7 +297,13 @@ fun CartAddScreen(
         AddMenuBottomCard(
             price = uiState.price,
             isButtonEnabled = uiState.isButtonEnabled,
-            onClick = { viewModel.addCartItem() }
+            onClick = {
+                if (uiState.isLoggedIn) {
+                    viewModel.addCartItem()
+                } else {
+                    viewModel.showSignInDialog()
+                }
+            }
         )
     }
 }
@@ -367,6 +385,8 @@ fun handleSideEffect(
     navigateBack: (Boolean) -> Unit
 ) {
     when (sideEffect) {
-        CartAddSideEffect.CartItemAdded -> navigateBack(true)
+        CartAddSideEffect.CartItemAdded -> {
+            navigateBack(true)
+        }
     }
 }

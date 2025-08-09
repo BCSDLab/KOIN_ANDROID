@@ -1,8 +1,8 @@
 package `in`.koreatech.koin.feature.store.view
 
-import `in`.koreatech.koin.domain.model.cart.Cart
 import `in`.koreatech.koin.domain.model.cart.CartType
 import `in`.koreatech.koin.domain.model.cart.CartValidate
+import `in`.koreatech.koin.domain.model.store.Cart
 import `in`.koreatech.koin.feature.store.enums.CartValidation
 
 data class CartState(
@@ -16,5 +16,5 @@ data class CartState(
     val isLoggedIn: Boolean = false
 ) {
     val totalItemCount: Int
-        get() = cart.items.count() * cart.items.sumOf { it.quantity }
+        get() = cart.items.sumOf { it.quantity }
 }

@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.error.store.KoinStoreException
-import `in`.koreatech.koin.domain.model.store.AddCartItemOption
 import `in`.koreatech.koin.domain.model.store.CartAdd
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.store.AddCartItemUseCase
@@ -13,16 +12,23 @@ import `in`.koreatech.koin.domain.usecase.store.GetOrderableShopMenuUseCase
 import `in`.koreatech.koin.domain.usecase.store.ResetCartUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.store.enums.CartError
+import `in`.koreatech.koin.feature.store.model.LocalAddCartItemOption
+import `in`.koreatech.koin.feature.store.model.LocalCartAdd
+import `in`.koreatech.koin.feature.store.model.toAddCartItemOption
 import `in`.koreatech.koin.feature.store.model.toLocalShopMenuOptionGroup
 import `in`.koreatech.koin.feature.store.model.toLocalShopPrice
+import `in`.koreatech.koin.feature.store.navigation.CART_DATA
 import `in`.koreatech.koin.feature.store.navigation.ORDERABLE_SHOP_ID
 import `in`.koreatech.koin.feature.store.navigation.ORDERABLE_SHOP_MENU_ID
 import javax.inject.Inject
+import kotlinx.serialization.json.Json
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
 @HiltViewModel
 class CartAddViewModel @Inject constructor(
@@ -36,11 +42,12 @@ class CartAddViewModel @Inject constructor(
     override val container = container<CartAddState, CartAddSideEffect>(CartAddState()) {
         val orderableShopId = savedStateHandle.get<Int>(ORDERABLE_SHOP_ID)
         val orderableShopMenuId = savedStateHandle.get<Int>(ORDERABLE_SHOP_MENU_ID)
+        val cartData = savedStateHandle.get<String>(CART_DATA)
 
         checkNotNull(orderableShopId)
         checkNotNull(orderableShopMenuId)
 
-        intent {
+        blockingIntent {
             reduce {
                 state.copy(
                     orderableShopId = orderableShopId,
@@ -51,6 +58,22 @@ class CartAddViewModel @Inject constructor(
 
         getMenus()
         getUserType()
+        Timber.d("cartData: $cartData")
+        if (cartData != null) {
+            Json.decodeFromString<LocalCartAdd>(cartData).let {
+                blockingIntent {
+                    reduce {
+                        state.copy(
+                            orderableShopMenuId = it.orderableShopMenuId,
+                            orderableShopMenuPriceId = it.orderableShopMenuPriceId,
+                            orderableShopMenuOptionIds = it.orderableShopMenuOptionIds,
+                            quantity = it.quantity
+                        )
+                    }
+                    addCartItem()
+                }
+            }
+        }
     }
 
     private fun getUserType() = intent {
@@ -63,6 +86,7 @@ class CartAddViewModel @Inject constructor(
                         state.copy(isLoggedIn = true)
                     }
                 }
+
                 is User.Anonymous -> {
                     // Do nothing
                     reduce {
@@ -118,15 +142,15 @@ class CartAddViewModel @Inject constructor(
         }
     }
 
-    fun hideSignInDialog() = intent {
+    fun showSignInDialog() = blockingIntent {
+        reduce { state.copy(showSignInDialog = true) }
+    }
+
+    fun hideSignInDialog() = blockingIntent {
         reduce { state.copy(showSignInDialog = false) }
     }
 
     fun addCartItem() = intent {
-        if (!state.isLoggedIn) {
-            reduce { state.copy(showSignInDialog = true) }
-            return@intent
-        }
         reduce {
             state.copy(isLoading = true)
         }
@@ -134,15 +158,8 @@ class CartAddViewModel @Inject constructor(
             CartAdd(
                 orderableShopId = state.orderableShopId,
                 orderableShopMenuId = state.orderableShopMenuId,
-                orderableShopMenuPriceId = state.prices.getOrNull(0)?.id ?: -1,
-                orderableShopMenuOptionIds = state.options.flatMap {
-                    it.options.filter { option -> option.optionSelected }.map { option ->
-                        AddCartItemOption(
-                            optionGroupId = it.id,
-                            optionId = option.id
-                        )
-                    }
-                },
+                orderableShopMenuPriceId = state.orderableShopMenuPriceId,
+                orderableShopMenuOptionIds = state.orderableShopMenuOptionIds.toAddCartItemOption(),
                 quantity = state.quantity
             )
         ).onSuccess {
@@ -205,7 +222,7 @@ class CartAddViewModel @Inject constructor(
     fun updateSelectedOptionGroup(
         optionGroupId: Int,
         selectedOptionId: Int
-    ) = intent {
+    ) = blockingIntent {
         reduce {
             state.copy(
                 options = state.options.map { optionGroup ->
@@ -221,6 +238,18 @@ class CartAddViewModel @Inject constructor(
                         )
                     } else {
                         optionGroup
+                    }
+                }
+            )
+        }
+        reduce {
+            state.copy(
+                orderableShopMenuOptionIds = state.options.flatMap {
+                    it.options.filter { option -> option.optionSelected }.map { option ->
+                        LocalAddCartItemOption(
+                            optionGroupId = it.id,
+                            optionId = option.id
+                        )
                     }
                 }
             )

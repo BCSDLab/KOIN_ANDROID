@@ -23,9 +23,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.domain.model.cart.CartItem
-import `in`.koreatech.koin.domain.model.cart.CartItemOption
-import `in`.koreatech.koin.domain.model.cart.CartItemPrice
+import `in`.koreatech.koin.domain.model.store.Cart.CartItem
 import `in`.koreatech.koin.feature.store.R
 
 @Composable
@@ -108,13 +106,14 @@ private fun ShoppingCartItem() {
                 quantity = 2,
                 menuThumbnailImageUrl = "https://example.com/image.jpg",
                 options = listOf(
-                    CartItemOption(optionGroupName = "테스트", optionName = "샷 추가", optionPrice = 1500)
+                    CartItem.CartOption(optionGroupName = "테스트", optionName = "샷 추가", optionPrice = 1500)
                 ),
-                price = CartItemPrice(
+                price = CartItem.CartPrice(
                     name = "아메리카노",
                     price = 4500
                 ),
-                isModified = false
+                isModified = false,
+                orderableShopMenuId = 0
             )
         )
     }

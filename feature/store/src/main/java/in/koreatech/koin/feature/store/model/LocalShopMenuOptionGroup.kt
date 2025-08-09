@@ -5,7 +5,9 @@ import `in`.koreatech.koin.domain.model.store.CartItemEdit
 import `in`.koreatech.koin.domain.model.store.ShopMenu
 import `in`.koreatech.koin.domain.model.store.ShopMenu.ShopMenuPrice
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
+@Serializable
 @Parcelize
 data class LocalShopMenuOptionGroup(
     val id: Int,
@@ -16,6 +18,7 @@ data class LocalShopMenuOptionGroup(
     val maxSelect: Int,
     val options: List<LocalShopMenuOption>
 ) : Parcelable {
+    @Serializable
     @Parcelize
     data class LocalShopMenuOption(
         val id: Int,

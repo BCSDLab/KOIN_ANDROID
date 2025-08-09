@@ -126,7 +126,8 @@ fun StoreDetailScreen(
     }
 
     LaunchedEffect(uiState.selectedCategoryId) {
-        rememberState.listState.animateScrollToItem(uiState.categories.indexOfFirst { it.menuGroupId == uiState.selectedCategoryId } + 2, -menuCategoryHeight.value)
+        if (currentToolbarHeightDp.value != rememberState.toolbarMinHeight) return@LaunchedEffect // Don't scroll if toolbar not collapsed
+        rememberState.listState.animateScrollToItem(uiState.categories.indexOfFirst { it.menuGroupId == uiState.selectedCategoryId } + 2)
     }
 
     LaunchedEffect(Unit) {
@@ -137,13 +138,12 @@ fun StoreDetailScreen(
                     Toast.makeText(context, R.string.store_cart_add_added, Toast.LENGTH_SHORT).show()
                 }
             }
-        snapshotFlow { uiState.isLogin }
-            .distinctUntilChanged()
-            .collectLatest {
-                if (uiState.isLogin) {
-                    viewModel.getCartItemsCount()
-                }
-            }
+    }
+
+    LaunchedEffect(Unit, uiState.isLogin) {
+        if (uiState.isLogin) {
+            viewModel.getCartItemsCount()
+        }
     }
 
     LaunchedEffect(rememberState.listState) {
@@ -327,7 +327,7 @@ fun StoreDetailScreen(
         }
         if (cartUiState.cart.items.isNotEmpty() && cartUiState.cart.orderableShopId == uiState.store.orderableShopId) {
             OrderBottomBar(
-                itemCount = cartUiState.cart.items.count(),
+                itemCount = cartUiState.cart.items.sumOf { it.quantity },
                 totalPrice = cartUiState.cart.totalAmount,
                 isOrderEnabled = cartUiState.cartValidation == CartValidation.VALID,
                 orderableMessage = if (cartUiState.cart.totalAmount >= cartUiState.minimumOrderAmount) stringResource(R.string.store_order_can_delivery) else stringResource(R.string.store_order_cant_delivery),

@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.koin.library.orbit)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.koin.library.paparazzi)
+    alias(libs.plugins.kotlinx.serialization)
     id("kotlin-parcelize")
 }
 
@@ -59,6 +60,7 @@ dependencies {
     implementation(libs.androidx.compose.material2)
     implementation(libs.bundles.compose.m3)
     implementation(libs.kotlinx.collections.immutable)
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.timber)
 
