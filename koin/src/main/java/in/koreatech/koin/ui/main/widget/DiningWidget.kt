@@ -137,30 +137,37 @@ fun DiningWidget(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        ScrollableTabRow(
-            selectedTabIndex = tabIndex,
-            containerColor = Color.Transparent,
-            edgePadding = 20.dp
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.BottomStart
         ) {
-            DiningPlace.entries.filter { it != DiningPlace.Campus2 }
-                .forEachIndexed { index, place ->
-                    Tab(
-                        modifier = Modifier.width(70.dp),
-                        text = {
-                            Text(
-                                text = place.place,
-                                style = KoinTheme.typography.medium14
-                            )
-                        },
-                        unselectedContentColor = KoinTheme.colors.neutral500,
-                        selected = tabIndex == index,
-                        onClick = {
-                            coroutineScope.launch {
-                                pagerState.animateScrollToPage(index)
+            ScrollableTabRow(
+                selectedTabIndex = tabIndex,
+                containerColor = Color.Transparent,
+                edgePadding = 20.dp,
+                divider = {}
+            ) {
+                DiningPlace.entries.filter { it != DiningPlace.Campus2 }
+                    .forEachIndexed { index, place ->
+                        Tab(
+                            modifier = Modifier.width(70.dp),
+                            text = {
+                                Text(
+                                    text = place.place,
+                                    style = KoinTheme.typography.medium14
+                                )
+                            },
+                            unselectedContentColor = KoinTheme.colors.neutral500,
+                            selected = tabIndex == index,
+                            onClick = {
+                                coroutineScope.launch {
+                                    pagerState.animateScrollToPage(index)
+                                }
                             }
-                        }
-                    )
-                }
+                        )
+                    }
+            }
+            HorizontalDivider()
         }
 
         HorizontalPager(
