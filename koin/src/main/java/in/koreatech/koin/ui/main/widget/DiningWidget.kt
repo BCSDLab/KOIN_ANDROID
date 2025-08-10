@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
@@ -144,6 +145,7 @@ fun DiningWidget(
             DiningPlace.entries.filter { it != DiningPlace.Campus2 }
                 .forEachIndexed { index, place ->
                     Tab(
+                        modifier = Modifier.width(70.dp),
                         text = {
                             Text(
                                 text = place.place,
