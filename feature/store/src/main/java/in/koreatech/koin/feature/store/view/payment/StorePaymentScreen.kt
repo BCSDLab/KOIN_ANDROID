@@ -9,6 +9,7 @@ import android.webkit.URLUtil
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -34,9 +35,12 @@ fun StorePaymentScreen(
     cartType: String,
     viewModel: StorePaymentViewModel = hiltViewModel(),
     finish: () -> Unit = {},
-    navigateBack: () -> Unit = {}
+    navigateToMain: () -> Unit = {},
+    navigateToCart: () -> Unit = {}
 ) {
     val context = LocalContext.current
+    val dispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+
     val authToken by viewModel.authToken.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
 
@@ -67,7 +71,7 @@ fun StorePaymentScreen(
         koinWebAppInterface = StorePaymentScreenInterface(
             navigateBack = {
                 (context as Activity).runOnUiThread {
-                    navigateBack()
+                    dispatcher?.onBackPressed()
                 }
             },
             finish = finish
@@ -77,10 +81,20 @@ fun StorePaymentScreen(
         ),
         backHandler = { webView ->
             BackHandler {
-                if (webView?.canGoBack() == true) {
-                    webView.goBack()
-                } else {
-                    navigateBack()
+                when (webView?.url?.toUri()?.path) {
+                    "/payment" -> {
+                        navigateToCart()
+                    }
+                    "/result", "/orderCancel" -> {
+                        navigateToMain()
+                    }
+                    else -> {
+                        if (webView?.canGoBack() == true) {
+                            webView.goBack()
+                        } else {
+                            navigateToMain()
+                        }
+                    }
                 }
             }
         }
