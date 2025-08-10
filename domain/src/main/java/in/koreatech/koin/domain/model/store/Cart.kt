@@ -38,9 +38,9 @@ data class Cart(
 
     companion object {
         val Empty = Cart(
-            shopName = "",
-            shopThumbnailImageUrl = "",
-            orderableShopId = 0,
+            shopName = null,
+            shopThumbnailImageUrl = null,
+            orderableShopId = null,
             isDeliveryAvailable = false,
             isTakeoutAvailable = false,
             shopMinimumOrderAmount = 0,
