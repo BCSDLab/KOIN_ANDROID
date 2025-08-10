@@ -194,9 +194,16 @@ fun NavGraphBuilder.koinStoreGraph(
         StorePaymentScreen(
             cartType = cartType,
             finish = finish,
-            navigateBack = {
+            navigateToMain = {
                 navController.navigate(StoreNavType.StoreMain.route) {
                     popUpTo(StoreNavType.StoreMain.route) {
+                        inclusive = true
+                    }
+                }
+            },
+            navigateToCart = {
+                navController.navigate(StoreNavType.StoreCart.route) {
+                    popUpTo(StoreNavType.StoreCart.route) {
                         inclusive = true
                     }
                 }
