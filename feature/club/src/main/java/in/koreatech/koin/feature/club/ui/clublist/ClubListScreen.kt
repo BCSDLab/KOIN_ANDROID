@@ -2,7 +2,6 @@ package `in`.koreatech.koin.feature.club.ui.clublist
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,14 +46,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.domain.constant.LOGIN_ACTIVITY_URL
+import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.KoinClubCategoryItem
 import `in`.koreatech.koin.feature.club.component.KoinClubDropdown
@@ -87,6 +85,7 @@ fun ClubListScreen(
 ) {
     val uiState by viewModel.collectAsState()
     val context = LocalContext.current
+    val navigator = rememberNavigator()
 
     viewModel.collectSideEffect {
         handleSideEffect(it, viewModel, context, navigateToCreateClub)
@@ -189,7 +188,7 @@ fun ClubListScreen(
                 viewModel.updateRecruiting(isRecruiting)
             },
             navigateToLogin = {
-                Intent(Intent.ACTION_VIEW, LOGIN_ACTIVITY_URL.toUri()).let {
+                navigator.navigateToSignIn(context).let {
                     context.startActivity(it)
                 }
             }
