@@ -75,25 +75,25 @@ fun pickPairedReviewer(developer: Developer) {
 }
 
 /**
- * Pick a random reviewer from the other team members.
+ * Pick a random reviewer.
  * The developer and reviewer should not be in the same team.
  */
 fun pickRandomReviewer(prOwnerTeam: KoinTeam?, developer: Developer) {
+    val otherTeamDevelopers = Developer.entries
+        .filter { it != developer }
+        .filter { it.shouldPick }
+        .filter { !it.isMentor }
+        .filter { if (prOwnerTeam != null) !it.team.contains(prOwnerTeam) else true }
+    val randomReviewerFromOtherTeam = otherTeamDevelopers.random()
+
     val sameTeamDevelopers = Developer.entries
         .filter { it != developer }
         .filter { it.shouldPick }
         .filter { !it.isMentor }
+        .filter { it != randomReviewerFromOtherTeam }
         .filter { if (prOwnerTeam != null) it.team.contains(prOwnerTeam) else true }
-    val randomReviewerFromSameTeam = sameTeamDevelopers.random()
-
-    val otherTeamDevelopers = Developer.entries
-        .filter { it != developer }
-        .filter { it.shouldPick }
-        .filter { it != randomReviewerFromSameTeam }
-        .filter { !it.isMentor }
-        .filter { if (prOwnerTeam != null) it.team.contains(prOwnerTeam) else true }
-    val randomReviewerFromOtherTeam = otherTeamDevelopers.random()
-    exportReviewer(randomReviewerFromOtherTeam.githubName, randomReviewerFromSameTeam.githubName)
+    val randomReviewerFromSameTeam = sameTeamDevelopers.randomOrNull()
+    exportReviewer(randomReviewerFromOtherTeam.githubName, randomReviewerFromSameTeam?.githubName ?: "")
 }
 
 /**

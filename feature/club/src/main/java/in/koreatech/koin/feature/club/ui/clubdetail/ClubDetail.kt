@@ -50,9 +50,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -60,6 +62,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
@@ -128,6 +131,7 @@ fun ClubDetail(
     resetNorificationEventId: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
+    val density = LocalDensity.current
 
     val detailList = listOf(
         Pair(DETAIL_CATEGORY, state.clubDetails?.category),
@@ -150,6 +154,9 @@ fun ClubDetail(
 
     val listState = rememberLazyListState()
 
+    val introductionScrollState = rememberScrollState()
+    val isIntroductionScrollable = remember { derivedStateOf { !listState.canScrollForward || introductionScrollState.value != 0 } }
+
     val recruitScrollState = rememberScrollState()
     val isRecruitScrollable = remember { derivedStateOf { !listState.canScrollForward || recruitScrollState.value != 0 } }
 
@@ -158,6 +165,8 @@ fun ClubDetail(
 
     val qnaScrollState = rememberScrollState()
     val isQnaScrollable = remember { derivedStateOf { !listState.canScrollForward || qnaScrollState.value != 0 } }
+
+    var tabRowHeight by remember { mutableStateOf(0.dp) }
 
     viewModel.collectSideEffect { sideEffect ->
         handleSideEffect(sideEffect, context, snackbarHostState)
@@ -583,7 +592,7 @@ fun ClubDetail(
                                     }
                                     DETAIL_INSTAGRAM -> {
                                         val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
-                                        linkUrl = if (url.isValidInstagramUrl()) url else url.toInstagramUrl()
+                                        linkUrl = if (url.isValidInstagramUrl()) url else url.removeUrlScheme().toInstagramUrl()
                                         onClick = { viewModel.openUrl(linkUrl) }
                                         outputText = it.toInstagramLink()
                                     }
@@ -709,6 +718,11 @@ fun ClubDetail(
             }
             stickyHeader {
                 DetailTabRow(
+                    modifier = Modifier.zIndex(2f).onGloballyPositioned {
+                        tabRowHeight = with(density) {
+                            it.size.height.toDp()
+                        }
+                    },
                     selectedTabIndex = pagerState.currentPage,
                     onTabSelected = {
                         EventLogger.logCampusClickEvent(
@@ -723,7 +737,7 @@ fun ClubDetail(
                 )
             }
             item {
-                val deviceHeightDp = LocalConfiguration.current.screenHeightDp.dp - (contentPadding.calculateTopPadding().value.dp + 24.dp)
+                val deviceHeightDp = LocalConfiguration.current.screenHeightDp.dp - (contentPadding.calculateTopPadding().value.dp + 24.dp) - tabRowHeight
                 HorizontalPager(
                     modifier = Modifier
                         .fillMaxSize()
@@ -736,8 +750,10 @@ fun ClubDetail(
                             val snackbarMessage = stringResource(R.string.detail_snackbar_detail_intro_text)
                             val snackbarActionLabel = stringResource(R.string.detail_snackbar_detail_intro_button)
                             ClubDetailIntro(
+                                introduction = state.clubDetails?.introduction,
                                 modifier = Modifier
-                                    .fillMaxSize(),
+                                    .fillMaxSize()
+                                    .verticalScroll(introductionScrollState, enabled = isIntroductionScrollable.value),
                                 onFixIntroClick = {
                                     scope.launch {
                                         val result = snackbarHostState.showSnackbar(

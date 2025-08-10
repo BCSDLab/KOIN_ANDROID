@@ -11,13 +11,13 @@ internal fun configureAndroidProject(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
     (commonExtension as? ApplicationExtension)?.let {
-        it.defaultConfig.targetSdk = 34
+        it.defaultConfig.targetSdk = 35
     }
 
     commonExtension.apply {
-        compileSdk = 34
+        compileSdk = 35
         (this as? ApplicationExtension)?.let {
-            it.defaultConfig.targetSdk = 34
+            it.defaultConfig.targetSdk = 35
         }
         defaultConfig {
             minSdk = 26

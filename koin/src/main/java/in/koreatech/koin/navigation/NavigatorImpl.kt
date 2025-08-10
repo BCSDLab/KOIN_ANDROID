@@ -3,139 +3,31 @@ package `in`.koreatech.koin.navigation
 import android.content.Context
 import android.content.Intent
 import `in`.koreatech.koin.core.navigation.Navigator
-import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.buildIntent
-import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
-import `in`.koreatech.koin.feature.club.ui.ClubActivity
-import `in`.koreatech.koin.ui.article.ArticleActivity
-import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.splash.SplashActivity
-import `in`.koreatech.koin.ui.store.activity.StoreActivity
 import javax.inject.Inject
+import kotlin.jvm.java
 
 class NavigatorImpl @Inject constructor() : Navigator {
     override fun navigateToSplash(
         context: Context,
-        targetId: Pair<String, Any?>,
-        targetBoardId: Pair<String, Any?>,
-        targetArticleId: Pair<String, Any?>,
-        targetChatId: Pair<String, Any?>,
-        targetClubId: Pair<String, Any?>,
-        targetEventId: Pair<String, Any?>,
         type: Pair<String, Any?>,
-        navType: Pair<String, Any?>
+        navType: Pair<String, Any?>,
+        vararg args: Pair<String, Any?>
     ): Intent {
-        val intent = context.buildIntent<SplashActivity>(
-            targetId,
-            targetBoardId,
-            targetArticleId,
-            targetChatId,
-            targetClubId,
-            targetEventId,
-            type,
-            navType
-        )
+        val intent = context.buildIntent<SplashActivity>(type, navType, *args)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         return intent
     }
 
-    override fun navigateToMain(
+    override fun navigateTo(
         context: Context,
-        targetId: Pair<String, Any?>,
-        targetBoardId: Pair<String, Any?>,
-        targetArticleId: Pair<String, Any?>,
-        targetChatId: Pair<String, Any?>,
-        targetClubId: Pair<String, Any?>,
-        targetEventId: Pair<String, Any?>,
-        type: Pair<String, Any?>
+        type: Pair<String, String?>,
+        vararg args: Pair<String, Any?>
     ): Intent {
-        val intent = context.buildIntent<MainActivity>(
-            targetId,
-            targetBoardId,
-            targetArticleId,
-            targetChatId,
-            targetClubId,
-            targetEventId,
-            type
-        )
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        return intent
-    }
-
-    override fun navigateToShop(
-        context: Context,
-        targetId: Pair<String, Any?>,
-        type: Pair<String, Any?>
-    ): Intent {
-        val intent = context.buildIntent<StoreActivity>(targetId, type)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        return intent
-    }
-
-    override fun navigateToDinging(
-        context: Context,
-        targetId: Pair<String, Any?>,
-        type: Pair<String, Any?>
-    ): Intent {
-        val intent = context.buildIntent<DiningActivity>(targetId, type)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        return intent
-    }
-
-    override fun navigateToArticle(
-        context: Context,
-        targetId: Pair<String, Any?>,
-        targetBoardId: Pair<String, Any?>,
-        type: Pair<String, Any?>
-    ): Intent {
-        val intent = context.buildIntent<ArticleActivity>(targetId, targetBoardId, type)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        return intent
-    }
-
-    override fun navigateToArticleLostAndFound(
-        context: Context,
-        targetId: Pair<String, Any?>,
-        type: Pair<String, Any?>
-    ): Intent {
-        val intent = context.buildIntent<ArticleActivity>(
-            targetId,
-            Pair(EXTRA_BOARD_ID, 14),
-            type
-        )
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        return intent
-    }
-
-    override fun navigateToChat(
-        context: Context,
-        targetArticleId: Pair<String, Any?>,
-        targetChatId: Pair<String, Any?>,
-        type: Pair<String, Any?>
-    ): Intent {
-        val intent = context.buildIntent<ChatRoomActivity>(targetArticleId, targetChatId, type)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        return intent
-    }
-
-    override fun navigateToClubRecruitment(
-        context: Context,
-        targetClubId: Pair<String, Any?>,
-        type: Pair<String, Any?>
-    ): Intent {
-        val intent = context.buildIntent<ClubActivity>(targetClubId, type)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        return intent
-    }
-
-    override fun navigateToClub(
-        context: Context,
-        targetClubId: Pair<String, Any?>,
-        targetEventId: Pair<String, Any?>,
-        type: Pair<String, Any?>
-    ): Intent {
-        val intent = context.buildIntent<ClubActivity>(targetClubId, targetEventId, type)
+        val className = SchemeType.fromType(type.second)?.className ?: return context.buildIntent(MainActivity::class.java)
+        val intent = context.buildIntent(className, type, *args)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         return intent
     }

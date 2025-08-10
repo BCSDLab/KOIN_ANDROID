@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -36,7 +40,6 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.navigation.Navigator
-import `in`.koreatech.koin.core.navigation.SchemeType
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
@@ -52,6 +55,7 @@ import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.feature.banner.ui.BannerActivity
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetA
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetB
+import `in`.koreatech.koin.navigation.SchemeType
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.main.adapter.ArticleMainAdapter
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
@@ -166,6 +170,17 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     private fun initView() = with(binding) {
         viewModel.checkKeywordNotiContent()
         initArticleBannerABTest()
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbarLayout) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                leftMargin = systemBars.left
+                topMargin = systemBars.top
+                rightMargin = systemBars.right
+            }
+            insets
+        }
+
         binding.nestedScrollViewMain.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             val offset = binding.nestedScrollViewMain.computeVerticalScrollOffset()
             val extent = binding.nestedScrollViewMain.computeVerticalScrollExtent()
@@ -378,76 +393,24 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
 
         when (type) {
-            SchemeType.SHOP.type -> {
-                val intent =
-                    navigator.navigateToShop(
-                        context = this,
-                        targetId = Pair(EXTRA_ID, targetId),
-                        type = Pair(EXTRA_TYPE, type)
-                    )
-                startActivity(intent)
-            }
-
-            SchemeType.DINING.type -> {
-                val intent =
-                    navigator.navigateToDinging(
-                        context = this,
-                        targetId = Pair(EXTRA_ID, targetId),
-                        type = Pair(EXTRA_TYPE, type)
-                    )
-                startActivity(intent)
-            }
-
-            SchemeType.ARTICLE.type -> {
-                val intent =
-                    navigator.navigateToArticle(
-                        context = this,
-                        targetId = Pair(EXTRA_ID, targetId),
-                        targetBoardId = Pair(EXTRA_BOARD_ID, targetBoardId),
-                        type = Pair(EXTRA_TYPE, type)
-                    )
-                startActivity(intent)
-            }
-
-            SchemeType.CHAT.type -> {
-                val intent =
-                    navigator.navigateToChat(
-                        context = this,
-                        targetArticleId = Pair(EXTRA_ARTICLE_ID, targetArticleId),
-                        targetChatId = Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
-                        type = Pair(EXTRA_TYPE, type)
-                    )
-                startActivity(intent)
-            }
-
-            SchemeType.CLUB_RECRUIT.type -> {
-                val intent =
-                    navigator.navigateToClubRecruitment(
-                        context = this,
-                        targetClubId = Pair(
-                            EXTRA_CLUB_ID,
-                            targetId
-                        ),
-                        type = Pair(EXTRA_TYPE, type)
-                    )
-                startActivity(intent)
-            }
-
+            SchemeType.SHOP.type,
+            SchemeType.DINING.type,
+            SchemeType.ARTICLE.type,
+            SchemeType.CHAT.type,
+            SchemeType.CLUB_RECRUIT.type,
             SchemeType.CLUB.type -> {
-                val intent =
-                    navigator.navigateToClub(
-                        context = this,
-                        targetClubId = Pair(
-                            EXTRA_CLUB_ID,
-                            targetClubId
-                        ),
-                        targetEventId = Pair(
-                            EXTRA_EVENT_ID,
-                            targetEventId
-                        ),
-                        type = Pair(EXTRA_TYPE, type)
+                navigator.navigateTo(
+                    context = this,
+                    type = Pair(EXTRA_TYPE, type),
+                    *arrayOf(
+                        Pair(EXTRA_ID, targetId),
+                        Pair(EXTRA_BOARD_ID, targetBoardId),
+                        Pair(EXTRA_ARTICLE_ID, targetArticleId),
+                        Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
+                        Pair(EXTRA_CLUB_ID, targetClubId),
+                        Pair(EXTRA_EVENT_ID, targetEventId)
                     )
-                startActivity(intent)
+                )
             }
 
             else -> {

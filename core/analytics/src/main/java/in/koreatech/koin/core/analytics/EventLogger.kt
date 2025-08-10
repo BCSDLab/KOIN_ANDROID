@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 object EventLogger {
-    private const val USER_ID = "user_id"
     private const val USER_GENDER = "gender"
     private const val USER_MAJOR = "major"
 
@@ -155,9 +154,9 @@ object EventLogger {
         value: String
     ) {
         if (BuildConfig.IS_DEBUG) {
+            Firebase.analytics.setUserId(loggerUserData.userId)
             Firebase.analytics.logEvent("${action}_debug") {
                 loggerUserData.let {
-                    param(USER_ID, it.userId)
                     param(USER_GENDER, it.gender)
                     param(USER_MAJOR, it.major)
                 }
@@ -166,9 +165,9 @@ object EventLogger {
                 param(VALUE, value)
             }
         } else {
+            Firebase.analytics.setUserId(loggerUserData.userId)
             Firebase.analytics.logEvent(action) {
                 loggerUserData.let {
-                    param(USER_ID, it.userId)
                     param(USER_GENDER, it.gender)
                     param(USER_MAJOR, it.major)
                 }
@@ -199,9 +198,9 @@ object EventLogger {
         vararg extras: EventExtra
     ) {
         if (BuildConfig.IS_DEBUG) {
+            Firebase.analytics.setUserId(loggerUserData.userId)
             Firebase.analytics.logEvent("${action.value}_debug") {
                 loggerUserData.let {
-                    param(USER_ID, it.userId)
                     param(USER_GENDER, it.gender)
                     param(USER_MAJOR, it.major)
                 }
@@ -214,8 +213,8 @@ object EventLogger {
             }
         } else {
             Firebase.analytics.logEvent(action.value) {
+                Firebase.analytics.setUserId(loggerUserData.userId)
                 loggerUserData.let {
-                    param(USER_ID, it.userId)
                     param(USER_GENDER, it.gender)
                     param(USER_MAJOR, it.major)
                 }
