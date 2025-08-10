@@ -27,6 +27,7 @@ import `in`.koreatech.koin.feature.user.DEEPLINK_MAIN
 import `in`.koreatech.koin.feature.user.DEEPLINK_TIMETABLE
 import javax.inject.Inject
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class SignInActivity : ComponentActivity() {
@@ -68,8 +69,7 @@ class SignInActivity : ComponentActivity() {
     }
 
     private fun goToNextRoute(isSignIn: Boolean) {
-        val uri = intent.data
-        val link = uri?.getQueryParameter("link")
+        val link = intent.extras?.getString("link")
 
         if (link != null) {
             try {

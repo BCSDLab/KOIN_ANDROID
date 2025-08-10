@@ -16,4 +16,9 @@ interface Navigator {
         type: Pair<String, String?> = Pair("", ""), // SchemeType
         vararg args: Pair<String, Any?> // Extra IDs
     ): Intent
+
+    fun navigateToSignIn(
+        context: Context,
+        redirectUrl: String? = null
+    ): Intent
 }
