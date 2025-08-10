@@ -172,7 +172,7 @@ fun DiningWidget(
                         )
                     }
             }
-            HorizontalDivider()
+            HorizontalDivider(color = KoinTheme.colors.neutral300)
         }
 
         HorizontalPager(
