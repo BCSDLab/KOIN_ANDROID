@@ -1,9 +1,9 @@
 package `in`.koreatech.koin.domain.model.store
 
 data class Cart(
-    val shopName: String,
-    val shopThumbnailImageUrl: String,
-    val orderableShopId: Int,
+    val shopName: String?,
+    val shopThumbnailImageUrl: String?,
+    val orderableShopId: Int?,
     val isDeliveryAvailable: Boolean,
     val isTakeoutAvailable: Boolean,
     val shopMinimumOrderAmount: Int,
@@ -38,9 +38,9 @@ data class Cart(
 
     companion object {
         val Empty = Cart(
-            shopName = "",
-            shopThumbnailImageUrl = "",
-            orderableShopId = 0,
+            shopName = null,
+            shopThumbnailImageUrl = null,
+            orderableShopId = null,
             isDeliveryAvailable = false,
             isTakeoutAvailable = false,
             shopMinimumOrderAmount = 0,

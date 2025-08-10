@@ -52,7 +52,9 @@ fun ShoppingCartScreen(
     LaunchedEffect(Unit) {
         snapshotFlow { uiState.cart }
             .collect {
-                viewModel.getCartValidate()
+                if (it.shopName != null) {
+                    viewModel.getCartValidate()
+                }
             }
     }
 

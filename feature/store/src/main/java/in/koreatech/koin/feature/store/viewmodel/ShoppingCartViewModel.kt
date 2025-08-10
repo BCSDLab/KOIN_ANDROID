@@ -63,7 +63,6 @@ class ShoppingCartViewModel @Inject constructor(
         reduce { state.copy(isLoading = true) }
         getCartItemUseCase(type.name).onSuccess {
             reduce { state.copy(cart = it, cartType = type, isLoading = false) }
-            getCartValidate()
         }.onFailure {
             reduce { state.copy(isLoading = false) }
             when (it) {
