@@ -8,10 +8,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
@@ -171,7 +176,9 @@ fun DiningWidget(
         }
 
         HorizontalPager(
-            modifier = Modifier.background(KoinTheme.colors.neutral50),
+            modifier = Modifier
+                .background(KoinTheme.colors.neutral50)
+                .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom)),
             state = pagerState,
             verticalAlignment = Alignment.Top
         ) { index ->
@@ -188,8 +195,7 @@ fun DiningWidget(
                             context.startActivity(it)
                         }
                     },
-                    colors =
-                    CardDefaults.cardColors(
+                    colors = CardDefaults.cardColors(
                         containerColor = KoinTheme.colors.neutral0
                     ),
                     shape = KoinTheme.shapes.small,
