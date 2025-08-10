@@ -24,10 +24,8 @@ import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.feature.signin.ui.SignInScreen
 import `in`.koreatech.koin.feature.user.DEEPLINK_ARTICLE
 import `in`.koreatech.koin.feature.user.DEEPLINK_MAIN
-import `in`.koreatech.koin.feature.user.DEEPLINK_TIMETABLE
 import javax.inject.Inject
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class SignInActivity : ComponentActivity() {
@@ -87,13 +85,7 @@ class SignInActivity : ComponentActivity() {
                 }
             }
         } else {
-            if (handleTimetableIntent()) {
-                Intent(Intent.ACTION_VIEW).apply {
-                    data = DEEPLINK_TIMETABLE.toUri()
-                }.let {
-                    startActivity(it)
-                }
-            } else if (handleArticleIntent()) {
+            if (handleArticleIntent()) {
                 val bundle = intent.getBundleExtra(BUNDLE_EXTRA_KEY)
                 val startBoard = bundle?.getInt(START_BOARD, 4)
                 startActivity(
@@ -143,11 +135,6 @@ class SignInActivity : ComponentActivity() {
         } else {
             overridePendingTransition(0, 0)
         }
-    }
-
-    private fun handleTimetableIntent(): Boolean {
-        val bundle = intent.getBundleExtra(BUNDLE_EXTRA_KEY)
-        return bundle?.getBoolean(NAV_TIMETABLE, false) ?: false
     }
 
     private fun handleArticleIntent(): Boolean {

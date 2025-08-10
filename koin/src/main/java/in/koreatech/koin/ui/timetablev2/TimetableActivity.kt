@@ -29,6 +29,7 @@ import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHo
 import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
+import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.util.KeyboardUtils
 import `in`.koreatech.koin.databinding.ActivityTimetableBinding
 import `in`.koreatech.koin.feature.timetable.component.CircleLoadingBar
@@ -49,6 +50,7 @@ import `in`.koreatech.koin.feature.timetable.viewmodel.TimetableViewModel
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -58,6 +60,9 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
         get() = SCREEN_TITLE
     override val menuState: MenuState
         get() = MenuState.Timetable
+
+    @Inject
+    lateinit var navigator: Navigator
 
     private lateinit var binding: ActivityTimetableBinding
     private val viewModel: TimetableViewModel by viewModels()
@@ -76,11 +81,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
             }
 
             if (it.resultCode == TimetableSemesterActivity.REQUEST_CODE_LOGIN_ACTIVITY) {
-                it.data?.getBundleExtra(BUNDLE_LOGIN_EXTRA_KEY)?.let { bundle ->
-                    bundle.getBoolean(NAV_TIMETABLE).let {
-                        if (it) startToLoginActivity()
-                    }
-                }
+                startToLoginActivity()
             }
         }
 
@@ -407,11 +408,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
     }
 
     private fun startToLoginActivity() {
-        Intent(this, SignInActivity::class.java).apply {
-            putExtra(BUNDLE_LOGIN_EXTRA_KEY, bundleOf(NAV_TIMETABLE to true))
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            finish()
-        }.let(::startActivity)
+        navigator.navigateToSignIn(this, "koin://timetable/activity").let(::startActivity)
     }
 
     private fun saveTimetable(bitmap: Bitmap, callback: (Boolean) -> Unit) {

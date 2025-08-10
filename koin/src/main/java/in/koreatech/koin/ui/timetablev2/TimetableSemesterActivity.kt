@@ -235,11 +235,7 @@ class TimetableSemesterActivity : ActivityBase() {
     }
 
     private fun startToLoginActivity() {
-        val intent =
-            Intent().apply {
-                putExtra(BUNDLE_LOGIN_EXTRA_KEY, bundleOf(NAV_TIMETABLE to true))
-            }
-        setResult(REQUEST_CODE_LOGIN_ACTIVITY, intent)
+        setResult(REQUEST_CODE_LOGIN_ACTIVITY)
         finish()
     }
 
