@@ -3,9 +3,9 @@ package `in`.koreatech.koin.data.response.store
 import com.google.gson.annotations.SerializedName
 
 data class CartResponse(
-    @SerializedName("shop_name") val shopName: String,
-    @SerializedName("shop_thumbnail_image_url") val shopThumbnailImageUrl: String,
-    @SerializedName("orderable_shop_id") val orderableShopId: Int,
+    @SerializedName("shop_name") val shopName: String?,
+    @SerializedName("shop_thumbnail_image_url") val shopThumbnailImageUrl: String?,
+    @SerializedName("orderable_shop_id") val orderableShopId: Int?,
     @SerializedName("is_delivery_available") val isDeliveryAvailable: Boolean,
     @SerializedName("is_takeout_available") val isTakeoutAvailable: Boolean,
     @SerializedName("shop_minimum_order_amount") val shopMinimumOrderAmount: Int,
