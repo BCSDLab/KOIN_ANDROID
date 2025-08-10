@@ -32,8 +32,6 @@ import `in`.koreatech.koin.feature.timetable.view.dialog.EditTimetableFrameDialo
 import `in`.koreatech.koin.feature.timetable.view.dialog.RequestLoginDialog
 import `in`.koreatech.koin.feature.timetable.viewmodel.ScreenStateUIMode
 import `in`.koreatech.koin.feature.timetable.viewmodel.SemesterViewModel
-import `in`.koreatech.koin.ui.timetablev2.TimetableActivity.Companion.BUNDLE_LOGIN_EXTRA_KEY
-import `in`.koreatech.koin.ui.timetablev2.TimetableActivity.Companion.NAV_TIMETABLE
 import timber.log.Timber
 
 @AndroidEntryPoint

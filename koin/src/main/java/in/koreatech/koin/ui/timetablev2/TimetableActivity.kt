@@ -47,7 +47,6 @@ import `in`.koreatech.koin.feature.timetable.view.dialog.ScheduleDuplicationDial
 import `in`.koreatech.koin.feature.timetable.view.dialog.SelectDepartmentDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.TimetableTimePickerDialog
 import `in`.koreatech.koin.feature.timetable.viewmodel.TimetableViewModel
-import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import javax.inject.Inject
