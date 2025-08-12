@@ -74,7 +74,7 @@ class ShoppingCartViewModel @Inject constructor(
 
     fun getCartValidate() = intent {
         reduce { state.copy(isLoading = true) }
-        validateCartItemsUseCase().onSuccess {
+        validateCartItemsUseCase(state.cartType.name).onSuccess {
             reduce {
                 state.copy(
                     isLoading = false,

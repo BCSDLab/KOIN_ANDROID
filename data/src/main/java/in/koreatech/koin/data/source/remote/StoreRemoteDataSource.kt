@@ -222,8 +222,8 @@ class StoreRemoteDataSource @Inject constructor(
         return storeAuthApi.getCartItems(type)
     }
 
-    suspend fun validateCartItems() {
-        storeAuthApi.validateCartItems()
+    suspend fun validateCartItems(orderType: String) {
+        storeAuthApi.validateCartItems(orderType)
     }
 
     suspend fun getCartSummary(orderableShopId: Int): CartSummaryResponse {

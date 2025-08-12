@@ -40,7 +40,9 @@ interface StoreAuthApi {
     ): CartResponse
 
     @GET("/cart/validate")
-    suspend fun validateCartItems()
+    suspend fun validateCartItems(
+        @Query("order_type") orderType: String
+    )
 
     @GET("/cart/summary/{orderableShopId}")
     suspend fun getCartSummary(
