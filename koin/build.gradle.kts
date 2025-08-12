@@ -118,6 +118,7 @@ dependencies {
     // Dependency - glide & coil
     implementation(libs.glide)
     implementation(libs.coil)
+    implementation(libs.coil.compose)
     ksp(libs.glide.ksp)
 
     // Dependency - naver api
