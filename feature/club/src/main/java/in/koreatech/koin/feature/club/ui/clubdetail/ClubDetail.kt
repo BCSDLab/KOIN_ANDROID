@@ -431,8 +431,7 @@ fun ClubDetail(
                 .systemBarsPadding()
                 .fillMaxSize(),
             state = listState,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            userScrollEnabled = qnaScrollState.value == 0
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
                 SubcomposeAsyncImage(
