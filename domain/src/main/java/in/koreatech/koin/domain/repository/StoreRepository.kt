@@ -124,7 +124,7 @@ interface StoreRepository {
 
     suspend fun getCartItems(type: String): Result<Cart>
 
-    suspend fun validateCartItems(): Result<Unit>
+    suspend fun validateCartItems(orderType: String): Result<Unit>
 
     suspend fun getCartSummary(orderableShopId: Int): Result<CartSummary>
 
