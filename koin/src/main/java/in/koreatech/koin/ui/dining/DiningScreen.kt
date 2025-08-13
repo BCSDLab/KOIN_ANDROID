@@ -119,6 +119,15 @@ fun DiningScreenImpl(
 
     val listState = rememberLazyListState()
 
+    val breakfastScrollState = rememberScrollState()
+    val isBreakfastScrollable = remember { derivedStateOf { !listState.canScrollForward || breakfastScrollState.value != 0 } }
+
+    val lunchScrollState = rememberScrollState()
+    val isLunchScrollable = remember { derivedStateOf { !listState.canScrollForward || breakfastScrollState.value != 0 } }
+
+    val dinnerScrollState = rememberScrollState()
+    val isDinnerScrollable = remember { derivedStateOf { !listState.canScrollForward || breakfastScrollState.value != 0 } }
+
     LazyColumn(
         modifier = modifier
             .padding(contentPadding)
@@ -186,8 +195,6 @@ fun DiningScreenImpl(
             ) { page ->
                 when (tabList[page]) {
                     DiningType.Breakfast.typeKorean -> {
-                        val breakfastScrollState = rememberScrollState()
-                        val isBreakfastScrollable = remember { derivedStateOf { !listState.canScrollForward || breakfastScrollState.value != 0 } }
                         Column(
                             modifier = Modifier
                                 .verticalScroll(breakfastScrollState, enabled = isBreakfastScrollable.value),
@@ -204,10 +211,36 @@ fun DiningScreenImpl(
                         }
                     }
                     DiningType.Lunch.typeKorean -> {
-
+                        Column(
+                            modifier = Modifier
+                                .verticalScroll(lunchScrollState, enabled = isLunchScrollable.value),
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            diningList.forEach { dining ->
+                                if (dining.type == DiningType.Lunch.typeEnglish) {
+                                    DiningItem(
+                                        dining = dining,
+                                        context = context
+                                    )
+                                }
+                            }
+                        }
                     }
                     DiningType.Dinner.typeKorean -> {
-
+                        Column(
+                            modifier = Modifier
+                                .verticalScroll(dinnerScrollState, enabled = isDinnerScrollable.value),
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            diningList.forEach { dining ->
+                                if (dining.type == DiningType.Dinner.typeEnglish) {
+                                    DiningItem(
+                                        dining = dining,
+                                        context = context
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
             }
