@@ -53,7 +53,8 @@ val titleRegex = Regex("(?<=\\[)(user|campus|business)(?=\\])")
  */
 fun exportReviewer(firstReviewer: String, secondReviewer: String = "") {
     val githubOutput = System.getenv("GITHUB_OUTPUT")
-    File(githubOutput).appendText("reviewer1=$firstReviewer\n, reviewer2=$secondReviewer\n")
+    File(githubOutput).appendText("reviewer1=$firstReviewer\n")
+    File(githubOutput).appendText("reviewer2=$secondReviewer\n")
 }
 
 /**
