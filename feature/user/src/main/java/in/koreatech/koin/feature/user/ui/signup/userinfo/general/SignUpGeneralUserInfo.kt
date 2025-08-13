@@ -19,7 +19,10 @@ import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -44,6 +47,10 @@ import `in`.koreatech.koin.feature.user.component.KoinUserProgressHeader
 import `in`.koreatech.koin.feature.user.component.KoinUserProgressIndicator
 import `in`.koreatech.koin.feature.user.component.KoinUserTextFieldAlert
 import `in`.koreatech.koin.feature.user.component.KoinUserTextFieldAlertState
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -60,6 +67,19 @@ fun SignUpGeneralUserInfo(
             sideEffect = it,
             navigateToNextScreen = navigateToNextScreen
         )
+    }
+
+    val nickname by viewModel.container.stateFlow
+        .map { it.nickname }
+        .collectAsState(initial = "")
+
+    LaunchedEffect(nickname) {
+        snapshotFlow { nickname }
+            .distinctUntilChanged()
+            .debounce(300)
+            .collectLatest { debounced ->
+                viewModel.updateDebouncedNickname(debounced)
+            }
     }
 
     SignUpGeneralUserInfoImpl(

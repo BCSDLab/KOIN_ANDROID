@@ -45,7 +45,7 @@ val SignUpStudentState.currentStep: SignUpStudentStep
     }
 
 private val SignUpStudentState.isNicknameValid
-    get() = (nickname.isNotEmpty() && debouncedNickname.isValidNickname() && isNicknameAvailable == true) || nickname.isEmpty()
+    get() = (debouncedNickname.isValidNickname() && isNicknameAvailable == true) || nickname.isEmpty()
 
 private val SignUpStudentState.isStudentNumberValid
     get() = studentNumber.isNotEmpty() && studentNumber.isValidStudentId

@@ -45,7 +45,7 @@ val UserInfoEditState.isEmailValid: Boolean
     get() = (userState.email.isNotEmpty() && (userState.email.isValidEmail() || userState.email.isValidGeneralEmail())) || userState.email.isEmpty()
 
 val UserInfoEditState.isNicknameValid: Boolean
-    get() = ((userState.nickname.isNotEmpty() && debouncedNickname.isValidNickname()) || userState.nickname.isEmpty())
+    get() = debouncedNickname.isValidNickname() || userState.nickname.isEmpty()
 
 val UserInfoEditState.isStudentNumberValid
     get() = when (userType) {

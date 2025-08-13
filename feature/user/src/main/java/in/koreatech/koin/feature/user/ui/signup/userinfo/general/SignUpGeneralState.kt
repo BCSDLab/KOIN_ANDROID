@@ -43,7 +43,7 @@ private val SignUpGeneralState.isEmailValid
     get() = (email.isNotEmpty() && email.isValidGeneralEmail()) || email.isEmpty()
 
 private val SignUpGeneralState.isNicknameValid
-    get() = (nickname.isNotEmpty() && debouncedNickname.isValidNickname() && isNicknameAvailable == true) || nickname.isEmpty()
+    get() = (debouncedNickname.isValidNickname() && isNicknameAvailable == true) || nickname.isEmpty()
 
 val SignUpGeneralState.isEnabled
     get() = isNicknameValid && isEmailValid && isPasswordValid && isPasswordEqual && isLoginIdAvailable == true

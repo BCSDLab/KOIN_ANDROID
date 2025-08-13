@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.user.ui.userinfo
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
@@ -25,11 +24,6 @@ import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.feature.user.model.NicknameState
 import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.feature.user.model.VerificationMethodState
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -56,22 +50,11 @@ class UserInfoEditViewModel @Inject constructor(
     init {
         getUserInfo()
         getDeptNames()
-        debouncedNickname()
     }
 
-    fun debouncedNickname() {
-        viewModelScope.launch {
-            container.stateFlow
-                .map { it.userState.nickname }
-                .distinctUntilChanged()
-                .debounce(300)
-                .collectLatest { debounced ->
-                    intent {
-                        reduce {
-                            state.copy(debouncedNickname = debounced)
-                        }
-                    }
-                }
+    fun updateDebouncedNickname(value: String) = intent {
+        if (state.debouncedNickname != value) {
+            reduce { state.copy(debouncedNickname = value) }
         }
     }
 

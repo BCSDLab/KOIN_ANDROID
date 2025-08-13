@@ -32,8 +32,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -76,6 +78,10 @@ import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -96,6 +102,19 @@ fun UserInfoEditScreen(
             startTimer = viewModel::startTimer,
             stopTimer = viewModel::stopTimer
         )
+    }
+
+    val nickname by viewModel.container.stateFlow
+        .map { it.userState.nickname }
+        .collectAsState(initial = "")
+
+    LaunchedEffect(nickname) {
+        snapshotFlow { nickname }
+            .distinctUntilChanged()
+            .debounce(300)
+            .collectLatest { debounced ->
+                viewModel.updateDebouncedNickname(debounced)
+            }
     }
 
     Scaffold(
