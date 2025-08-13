@@ -11,9 +11,8 @@ import kotlin.random.Random
  * If developer is a mentor, set isMentor to true.
  * If developer should not be picked as a reviewer, set shouldPick to false.
  */
-enum class Developer(val githubName: String, val isMentor: Boolean = false, val shouldPick: Boolean = true) {
+enum class Developer(val githubName: String, val isMentor: Boolean = false) {
     YUNJAENA("yunjaena", true),
-    SKDUD0629("skdud0629", shouldPick = false),
     JAEYOUNG290("JaeYoung290"),
     KONGWOOJIN("kongwoojin"),
     KYM_P("KYM-P"),
@@ -69,7 +68,6 @@ fun pickPairedReviewer(developer: Developer) {
 fun pickRandomReviewer(developer: Developer?) {
     val otherDevelopers = Developer.entries
         .filter { it != developer }
-        .filter { it.shouldPick }
         .filter { !it.isMentor }
     val randomDevelopers = otherDevelopers.shuffled().take(2)
     exportReviewer(randomDevelopers[0].githubName, randomDevelopers[1].githubName)
