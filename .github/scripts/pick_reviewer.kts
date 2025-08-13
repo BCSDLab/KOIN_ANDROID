@@ -20,6 +20,12 @@ enum class Developer(val githubName: String, val isMentor: Boolean = false) {
 }
 
 /**
+ * Reviewer count
+ * Need to edit pick_reviewer.yml too
+ */
+val reviewerCount = 2
+
+/**
  * Reviewer pairs for each developer.
  * first element is developer and second element is reviewer.
  *
@@ -35,13 +41,13 @@ val reviewerPair = listOf(
 
 /**
  * Export the reviewer name to GitHub Actions output.
- * @param firstReviewer The name of the reviewer.
- * @param secondReviewer The name of the second reviewer (optional).
+ * @param reviewers The name of the reviewers.
  */
-fun exportReviewer(firstReviewer: String, secondReviewer: String = "") {
+fun exportReviewer(reviewers: List<String>) {
     val githubOutput = System.getenv("GITHUB_OUTPUT")
-    File(githubOutput).appendText("reviewer1=$firstReviewer\n")
-    File(githubOutput).appendText("reviewer2=$secondReviewer\n")
+    reviewers.forEachIndexed { index, reviewer ->
+        File(githubOutput).appendText("reviewer${index + 1}=$reviewer\n")
+    }
 }
 
 /**
@@ -59,18 +65,19 @@ fun exportMentor(name: String) {
  */
 fun pickPairedReviewer(developer: Developer) {
     val reviewer = reviewerPair.first { it.first == developer }.second
-    exportReviewer(reviewer.githubName, "")
+    exportReviewer(listOf(reviewer.githubName))
 }
 
 /**
  * Pick a random reviewer.
  */
 fun pickRandomReviewer(developer: Developer?) {
-    val otherDevelopers = Developer.entries
+    val reviewers = Developer.entries
         .filter { it != developer }
         .filter { !it.isMentor }
-    val randomDevelopers = otherDevelopers.shuffled().take(2)
-    exportReviewer(randomDevelopers[0].githubName, randomDevelopers[1].githubName)
+        .shuffled()
+        .take(reviewerCount)
+    exportReviewer(reviewers.map { it.githubName })
 }
 
 /**
