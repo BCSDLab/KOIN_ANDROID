@@ -3,9 +3,11 @@ package `in`.koreatech.koin.util
 import android.content.Context
 import android.content.Intent
 import android.os.Looper
+import android.util.Log
 import androidx.core.os.HandlerCompat
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.domain.error.network.KoinNetworkException
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import `in`.koreatech.koin.ui.error.ErrorActivity
 import `in`.koreatech.koin.util.ext.showToast
@@ -22,6 +24,9 @@ class ExceptionHandlerUtil(private val context: Context) : Thread.UncaughtExcept
      * @param throwable
      */
     override fun uncaughtException(thread: Thread, throwable: Throwable) {
+        if (throwable.cause is KoinNetworkException.NetworkUnavailableException) {
+            return
+        }
         FirebaseCrashlytics.getInstance().recordException(throwable)
 
         val stringWriter = StringWriter()

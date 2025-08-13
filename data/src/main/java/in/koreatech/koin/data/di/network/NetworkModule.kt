@@ -8,8 +8,10 @@ import `in`.koreatech.koin.core.qualifier.NoAuth
 import `in`.koreatech.koin.core.qualifier.ServerUrl
 import `in`.koreatech.koin.data.BuildConfig
 import `in`.koreatech.koin.data.constant.URLConstant
+import `in`.koreatech.koin.data.di.interceptor.NetworkUnavailableInterceptor
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.stomp.KoinStomp
+import `in`.koreatech.koin.domain.service.NetworkConnectivityService
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.runBlocking
@@ -33,6 +35,12 @@ object NetworkModule {
                     HttpLoggingInterceptor.Level.HEADERS
                 }
         }
+
+    @Provides
+    @Singleton
+    fun provideNetworkUnavailableInterceptor(
+        networkConnectivityService: NetworkConnectivityService
+    ): NetworkUnavailableInterceptor = NetworkUnavailableInterceptor(networkConnectivityService)
 
     @ServerUrl
     @Provides
