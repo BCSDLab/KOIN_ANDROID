@@ -66,7 +66,7 @@ fun pickPairedReviewer(developer: Developer) {
 /**
  * Pick a random reviewer.
  */
-fun pickRandomReviewer(developer: Developer) {
+fun pickRandomReviewer(developer: Developer?) {
     val otherDevelopers = Developer.entries
         .filter { it != developer }
         .filter { it.shouldPick }
@@ -89,10 +89,6 @@ fun pickMentor() {
 fun main(args: Array<String>) {
     val githubActor = System.getenv("GITHUB_ACTOR")
     val developer = Developer.entries.firstOrNull { it.githubName == githubActor }
-
-    if (developer == null) {
-        return
-    }
 
     pickRandomReviewer(developer)
     pickMentor()
