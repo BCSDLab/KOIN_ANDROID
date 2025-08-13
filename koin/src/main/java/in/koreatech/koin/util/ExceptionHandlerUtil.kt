@@ -3,7 +3,6 @@ package `in`.koreatech.koin.util
 import android.content.Context
 import android.content.Intent
 import android.os.Looper
-import android.util.Log
 import androidx.core.os.HandlerCompat
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import `in`.koreatech.koin.R

@@ -25,17 +25,13 @@ import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.VersionApi
 import `in`.koreatech.koin.data.di.interceptor.NetworkUnavailableInterceptor
 import `in`.koreatech.koin.data.util.EmptyStringToNullAdapter
-import `in`.koreatech.koin.domain.error.network.KoinNetworkException
-import `in`.koreatech.koin.domain.service.NetworkConnectivityService
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
 
 @Module
 @InstallIn(SingletonComponent::class)
