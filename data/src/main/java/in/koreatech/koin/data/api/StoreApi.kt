@@ -141,8 +141,8 @@ interface StoreApi {
         @Path("orderableShopId") shopId: Int
     ): List<ShopMenusGroupResponse>
 
-    @GET("/order/shop/search/{keyword}/related")
+    @GET("/order/shop/search/related")
     suspend fun getOrderableShopSearchRelated(
-        @Path("keyword") keyword: String
+        @Query("keyword") keyword: String
     ): OrderableShopSearchRelatedResponse
 }
