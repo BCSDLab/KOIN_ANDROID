@@ -48,6 +48,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -97,7 +98,7 @@ fun DiningDetailScreen(
         containerColor = KoinTheme.colors.neutral0,
         topBar = {
             KoinTopAppBar(
-                title = "식단",
+                title = stringResource(R.string.dining_appbar_title),
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = KoinTheme.colors.primary500,
                     navigationIconContentColor = Color.White,

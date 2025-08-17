@@ -4,6 +4,7 @@
     <string name="sold_out_menu">품절된 메뉴입니다.</string>
     <string name="action_share">카카오톡으로 식단 공유하기</string>
     <string name="action_share_origin">공유하기</string>
+    <string name="dining_appbar_title">식단</string>
     <string name="dining_item_kcal_format">%1$skcal</string>
     <string name="dining_item_price_format">%1$s원/%2$s원</string>
     <string name="dining_notice_appbar_title">학생식당정보</string>
