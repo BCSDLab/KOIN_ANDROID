@@ -61,8 +61,8 @@ import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.feature.banner.ui.BannerActivity
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetA
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetB
+import `in`.koreatech.koin.feature.dining.ui.DiningActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity
-import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.main.adapter.ArticleMainAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter

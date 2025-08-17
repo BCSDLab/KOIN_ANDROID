@@ -1,0 +1,20 @@
+<resources>
+    <string name="no_photo">사진 없음</string>
+    <string name="sold_out">품절</string>
+    <string name="sold_out_menu">품절된 메뉴입니다.</string>
+    <string name="action_share">카카오톡으로 식단 공유하기</string>
+    <string name="action_share_origin">공유하기</string>
+    <string name="dining_item_kcal_format">%1$skcal</string>
+    <string name="dining_item_price_format">%1$s원/%2$s원</string>
+    <string name="dining_notice_appbar_title">학생식당정보</string>
+    <string name="dining_notice_title_format">%1$s %2$s 운영시간</string>
+    <string name="dining_notice_location">위치</string>
+    <string name="dining_notice_phone">전화번호</string>
+    <string name="dining_notice_updated_at_format">%1$s 업데이트</string>
+    <string name="dining_notice_subtitle_time_format">%1$s 운영시간</string>
+    <string name="dining_notice_timetable_type">시간</string>
+    <string name="dining_notice_timetable_open_time">시작시간</string>
+    <string name="dining_notice_timetable_close_time">마감시간</string>
+
+    <string name="kakaolink_host">kakaolink</string>
+</resources>

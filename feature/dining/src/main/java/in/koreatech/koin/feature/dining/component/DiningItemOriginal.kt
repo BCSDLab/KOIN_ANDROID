@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.ui.dining.component
+package `in`.koreatech.koin.feature.dining.component
 
 import android.content.Context
 import androidx.compose.foundation.Image
@@ -11,16 +11,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
-import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -31,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -42,12 +36,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
-import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.dining.Dining
+import `in`.koreatech.koin.feature.dining.R
 
 @Composable
-fun DiningItem(
+fun DiningItemOriginal(
     dining: Dining,
     context: Context,
     modifier: Modifier = Modifier,
@@ -57,16 +51,13 @@ fun DiningItem(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(
-                color = KoinTheme.colors.neutral0,
-                shape = RoundedCornerShape(16.dp) // not in design theme value
-            )
+            .background(color = KoinTheme.colors.neutral0)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp, horizontal = 20.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(
@@ -77,24 +68,9 @@ fun DiningItem(
                     text = dining.place,
                     style = KoinTheme.typography.bold16.copy(fontWeight = FontWeight.SemiBold)
                 )
-                if(dining.soldOutAt.isNotBlank()) {
-                    Box(
-                        modifier = Modifier
-                            .background(
-                                color = KoinTheme.colors.warning200,
-                                shape = KoinTheme.shapes.extraSmall
-                            )
-                            .padding(vertical = 4.dp, horizontal = 8.dp)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.sold_out),
-                            style = KoinTheme.typography.medium14,
-                            color = KoinTheme.colors.warning600
-                        )
-                    }
-                }
             }
             Row(
+                modifier = Modifier.weight(1f),
                 horizontalArrangement = Arrangement.spacedBy(2.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -113,6 +89,22 @@ fun DiningItem(
                     style = KoinTheme.typography.regular12,
                     color = KoinTheme.colors.neutral500
                 )
+            }
+            if(dining.soldOutAt.isNotBlank()) {
+                Box(
+                    modifier = Modifier
+                        .background(
+                            color = KoinTheme.colors.warning200,
+                            shape = KoinTheme.shapes.extraSmall
+                        )
+                        .padding(vertical = 4.dp, horizontal = 8.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.sold_out),
+                        style = KoinTheme.typography.medium14,
+                        color = KoinTheme.colors.warning600
+                    )
+                }
             }
         }
         Column(
@@ -259,13 +251,13 @@ fun DiningItem(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = ripple(
                         bounded = true,
-                        color = Color.Red
+                        color = KoinTheme.colors.neutral500
                     )
                 ) {
                     onShareClick()
                 }
                 .padding(vertical = 14.dp, horizontal = 24.dp),
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.End
         ) {
             Row (
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -276,7 +268,7 @@ fun DiningItem(
                     contentDescription = null
                 )
                 Text(
-                    text = stringResource(R.string.action_share),
+                    text = stringResource(R.string.action_share_origin),
                     style = KoinTheme.typography.regular14,
                     color = KoinTheme.colors.neutral600
                 )
@@ -287,8 +279,8 @@ fun DiningItem(
 
 @Preview
 @Composable
-fun DiningItemPreview() {
-    DiningItem(
+private fun DiningItemOriginalPreview() {
+    DiningItemOriginal(
         Dining(
             id = 0,
             date = "2025.05.17",
@@ -310,8 +302,8 @@ fun DiningItemPreview() {
 
 @Preview
 @Composable
-fun DiningItemSoldoutPreview() {
-    DiningItem(
+private fun DiningItemOriginalSoldoutPreview() {
+    DiningItemOriginal(
         Dining(
             id = 0,
             date = "2025.05.17",

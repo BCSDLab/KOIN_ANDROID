@@ -23,7 +23,6 @@ android {
         versionCode = rootProject.extra["versionCode"] as Int
         versionName = rootProject.extra["versionName"].toString()
         manifestPlaceholders["naverMapKey"] = getPropertyKey("navermap_key")
-        manifestPlaceholders["kakaoScheme"] = "kakao" + getPropertyKey("kakao_native_app_key")
     }
 
     signingConfigs {
@@ -112,6 +111,7 @@ dependencies {
     implementation(project(":feature:banner"))
     implementation(project(":feature:user"))
     implementation(project(":feature:club"))
+    implementation(project(":feature:dining"))
 
     implementation(libs.guava)
 

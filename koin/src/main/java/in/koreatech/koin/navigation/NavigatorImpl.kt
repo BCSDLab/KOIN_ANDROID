@@ -7,8 +7,8 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.buildIntent
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
 import `in`.koreatech.koin.feature.club.ui.ClubActivity
+import `in`.koreatech.koin.feature.dining.ui.DiningActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity
-import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.splash.SplashActivity
 import `in`.koreatech.koin.ui.store.activity.StoreActivity

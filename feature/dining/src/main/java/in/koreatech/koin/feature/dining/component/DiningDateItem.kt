@@ -1,7 +1,9 @@
-package `in`.koreatech.koin.ui.dining.component
+package `in`.koreatech.koin.feature.dining.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,13 +27,18 @@ import java.util.Date
 fun DiningDateItem(
     date: Date,
     isSelected: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: (Date) -> Unit = {}
 ) {
     val currentDate = TimeUtil.getCurrentTime()
     val isToday: Boolean = TimeUtil.getDateDifferenceInDays(currentDate,date) == 0
     val isBeforeDate: Boolean = date <= currentDate
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) { onClick(date) },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
