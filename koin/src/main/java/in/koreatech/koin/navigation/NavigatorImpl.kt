@@ -10,6 +10,7 @@ import `in`.koreatech.koin.feature.club.ui.ClubActivity
 import `in`.koreatech.koin.feature.dining.ui.DiningActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
+import `in`.koreatech.koin.ui.notification.NotificationActivity
 import `in`.koreatech.koin.ui.splash.SplashActivity
 import `in`.koreatech.koin.ui.store.activity.StoreActivity
 import javax.inject.Inject
@@ -136,6 +137,16 @@ class NavigatorImpl @Inject constructor() : Navigator {
         type: Pair<String, Any?>
     ): Intent {
         val intent = context.buildIntent<ClubActivity>(targetClubId, targetEventId, type)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        return intent
+    }
+
+    override fun navigateToNotification(
+        context: Context,
+        targetId: Pair<String, Any?>,
+        type: Pair<String, Any?>
+    ): Intent {
+        val intent = context.buildIntent<NotificationActivity>(targetId, type)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         return intent
     }

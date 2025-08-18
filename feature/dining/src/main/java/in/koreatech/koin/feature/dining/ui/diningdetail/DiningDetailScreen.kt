@@ -1,6 +1,9 @@
 package `in`.koreatech.koin.feature.dining.ui.diningdetail
 
 import android.content.Context
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,8 +30,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -73,6 +78,7 @@ import `in`.koreatech.koin.feature.dining.component.DiningDateItem
 import `in`.koreatech.koin.feature.dining.component.dialog.DiningImageDialog
 import `in`.koreatech.koin.feature.dining.component.DiningItem
 import `in`.koreatech.koin.feature.dining.component.DiningItemOriginal
+import `in`.koreatech.koin.feature.dining.component.bottomsheet.DiningBottomSheet
 import kotlinx.coroutines.launch
 import java.util.Date
 
@@ -90,9 +96,19 @@ fun DiningDetailScreen(
 
     val showTooltip by viewModel.showTooltip.collectAsState()
 
+    val showBottomSheet by viewModel.showBottomSheet.collectAsState()
+
+    val isSoldOutSubscribed by viewModel.isSoldOutSubscribed.collectAsState()
+
+    val isDiningImageSubscribed by viewModel.isDiningImageSubscribed.collectAsState()
+
     val diningList by viewModel.dining.collectAsState()
 
     val abTestExperimentGroup by viewModel.abTestExperimentGroup.collectAsState()
+
+    LaunchedEffect(userState) {
+        viewModel.getShowBottomSheetValue() // userState NPE error in viewModel init{}; Flow is null
+    }
 
     Scaffold(
         containerColor = KoinTheme.colors.neutral0,
@@ -133,29 +149,45 @@ fun DiningDetailScreen(
             diningList = diningList,
             contentPadding = contentPadding,
             selectedDate = TimeUtil.stringToDateYYMMDD(selectedDate),
-            showTooltipDefault = showTooltip,
+            showTooltip = showTooltip,
+            showBottomSheet = showBottomSheet,
             experimentGroup = abTestExperimentGroup,
             context = LocalContext.current,
             initialPage = if(initialPage != -1) initialPage else viewModel.getInitialPage(),
+            isSoldOutSubscribed = isSoldOutSubscribed,
+            isDiningImageSubscribed = isDiningImageSubscribed,
             onDateClick = viewModel::setSelectedDate,
+            changeShowTooltip = viewModel::changeShowTooltip,
+            changeSoldOutSubscribe = viewModel::changeIsSoldOutSubscribed,
+            changeDiningImageSubscribe = viewModel::changeIsDiningImageSubscribed,
+            getNotificationIntent = viewModel::getNotificationIntent,
+            getNotificationPermitInfo = viewModel::getNotificationPermissionInfo,
             onShareClick = viewModel::shareDining
         )
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun DiningDetailScreenImpl(
     diningList: List<Dining>,
     contentPadding: PaddingValues,
     selectedDate: Date,
-    showTooltipDefault: Boolean,
+    showTooltip: Boolean,
+    showBottomSheet: Boolean,
     experimentGroup: String,
     context: Context,
     modifier: Modifier = Modifier,
+    isSoldOutSubscribed: Boolean = false,
+    isDiningImageSubscribed: Boolean = false,
     initialPage: Int = 0,
     onDateClick: (Date) -> Unit = {},
-    onShareClick: (Dining, Context) -> Unit = {_,_ -> },
+    changeShowTooltip: (Boolean) -> Unit = {},
+    changeSoldOutSubscribe: (Boolean) -> Unit = {},
+    changeDiningImageSubscribe: (Boolean) -> Unit = {},
+    getNotificationIntent: (Context) -> Intent? = {null},
+    getNotificationPermitInfo: () -> Unit = {},
+    onShareClick: (Dining, Context) -> Unit = {_,_ -> }
 ) {
     val tabSize = 3
     val tabList = DiningType.entries.take(tabSize).map { it.typeKorean }
@@ -196,8 +228,6 @@ fun DiningDetailScreenImpl(
     var showImageDialog by remember { mutableStateOf(false) }
     var selectedImage by remember { mutableStateOf("")}
 
-    var showTooltip by remember(showTooltipDefault) { mutableStateOf(showTooltipDefault) }
-
     var isUserScrolling by remember { mutableStateOf(true) }
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.isScrollInProgress }
@@ -215,6 +245,50 @@ fun DiningDetailScreenImpl(
                     }
                 }
             }
+    }
+
+    val sheetState = rememberModalBottomSheetState()
+
+    LaunchedEffect(showBottomSheet) {
+        if(showBottomSheet) {
+            sheetState.show()
+        }
+    }
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) {
+        getNotificationPermitInfo()
+    }
+
+    if(sheetState.isVisible) {
+        ModalBottomSheet(
+            sheetState = sheetState,
+            onDismissRequest = {
+                scope.launch{sheetState.hide()}
+            },
+            dragHandle = {}, // to delete drag Handle
+            containerColor = Color.Transparent,
+            tonalElevation = 0.dp
+        ) {
+            DiningBottomSheet(
+                firstChecked = isSoldOutSubscribed,
+                secondChecked = isDiningImageSubscribed,
+                onDismiss = { scope.launch{sheetState.hide()} },
+                onPositive = {
+                    val intent = getNotificationIntent(context)
+                    intent?.let {
+                        launcher.launch(intent)
+                    }
+                },
+                onFirstValueChange = {
+                    changeSoldOutSubscribe(!isSoldOutSubscribed)
+                },
+                onSecondValueChange = {
+                    changeDiningImageSubscribe(!isDiningImageSubscribed)
+                }
+            )
+        }
     }
 
     if (showImageDialog) {
@@ -346,7 +420,7 @@ fun DiningDetailScreenImpl(
                                         .offset { IntOffset(0, with(density) { 60.dp.toPx().toInt() }) }
                                         .fillMaxWidth()
                                         .zIndex(1f)
-                                        .clickable { showTooltip = false }
+                                        .clickable { changeShowTooltip(false) }
                                         .scale(1.3f),
                                     model = ImageRequest.Builder(context)
                                         .data(R.drawable.tooltip_share)
@@ -463,7 +537,8 @@ private fun DiningScreenPreview() {
         contentPadding = PaddingValues(),
         context = LocalContext.current,
         selectedDate = TimeUtil.getNextDayDate(TimeUtil.getCurrentTime()),
-        showTooltipDefault = true,
+        showTooltip = true,
+        showBottomSheet = false,
         experimentGroup = ExperimentGroup.SHARE_NEW
     )
 }

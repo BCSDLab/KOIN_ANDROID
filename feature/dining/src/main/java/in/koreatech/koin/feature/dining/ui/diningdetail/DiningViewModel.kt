@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.feature.dining.ui.diningdetail
 
 import android.content.Context
+import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.kakao.sdk.share.ShareClient
@@ -15,18 +17,26 @@ import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.model.dining.DiningType
+import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
+import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
+import `in`.koreatech.koin.domain.usecase.notification.DeleteNotificationSubscriptionUseCase
+import `in`.koreatech.koin.domain.usecase.notification.GetNotificationPermissionInfoUseCase
+import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionDetailUseCase
+import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionUseCase
 import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
+import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_DATE
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_PLACE
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_TYPE
@@ -46,7 +56,12 @@ class DiningViewModel @Inject constructor(
     private val getDiningUseCase: GetDiningUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
     private val abTestUseCase: ABTestUseCase,
-    private val onboardingManager: OnboardingManager
+    private val onboardingManager: OnboardingManager,
+    private val getNotificationPermissionInfoUseCase: GetNotificationPermissionInfoUseCase,
+    private val updateNotificationSubscriptionUseCase: UpdateNotificationSubscriptionUseCase,
+    private val updateNotificationSubscriptionDetailUseCase: UpdateNotificationSubscriptionDetailUseCase,
+    private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase,
+    private val navigator: Navigator
 ) : BaseViewModel() {
 
     private val initDate = savedStateHandle.get<String>(INIT_DATE)
@@ -56,15 +71,16 @@ class DiningViewModel @Inject constructor(
     init {
         getDining(initDate)
         getShowTooltipValue()
+        getNotificationPermissionInfo()
     }
 
-    val userState: StateFlow<User?>
-        get() =
+    private val _userState: StateFlow<User> =
             getUserStatusUseCase().stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.Eagerly,
-                initialValue = null
+                initialValue = User.Anonymous
             )
+    val userState: StateFlow<User> get() = _userState
 
     private val _selectedDate =
         MutableStateFlow(initDate)
@@ -76,6 +92,15 @@ class DiningViewModel @Inject constructor(
 
     private val _showTooltip = MutableStateFlow(false)
     val showTooltip: StateFlow<Boolean> get() = _showTooltip
+
+    private val _showBottomSheet = MutableStateFlow(false)
+    val showBottomSheet: StateFlow<Boolean> get() = _showBottomSheet
+
+    private val _isSoldOutSubscribed = MutableStateFlow(false)
+    val isSoldOutSubscribed: StateFlow<Boolean> get() = _isSoldOutSubscribed
+
+    private val _isDiningImageSubscribed = MutableStateFlow(false)
+    val isDiningImageSubscribed: StateFlow<Boolean> get() = _isDiningImageSubscribed
 
     val abTestExperimentGroup =
         flow {
@@ -95,7 +120,7 @@ class DiningViewModel @Inject constructor(
         getDining(selectedDate.value)
     }
 
-    fun getDining(date: String = selectedDate.value) {
+    private fun getDining(date: String = selectedDate.value) {
         if (isLoading.value == false) {
             viewModelScope.launchWithLoading {
                 getDiningUseCase(date)
@@ -128,6 +153,16 @@ class DiningViewModel @Inject constructor(
             if (onboardingManager.getShouldOnboard(OnboardingType.DINING_SHARE)) {
                 _showTooltip.value = true
                 onboardingManager.updateShouldOnboard(OnboardingType.DINING_SHARE, false)
+            }
+        }
+    }
+
+    fun getShowBottomSheetValue() {
+        if(userState.value.isAnonymous) return
+        viewModelScope.launch {
+            if (onboardingManager.getShouldOnboard(OnboardingType.DINING_NOTIFICATION)) {
+                _showBottomSheet.value = true
+                onboardingManager.updateShouldOnboard(OnboardingType.DINING_NOTIFICATION, false)
             }
         }
     }
@@ -196,5 +231,68 @@ class DiningViewModel @Inject constructor(
                 Button("코인에서 식단 전체보기", link)
             )
         )
+    }
+
+    fun getNotificationPermissionInfo() {
+        viewModelScope.launch {
+            getNotificationPermissionInfoUseCase().onSuccess { info ->
+                info.subscribes.forEach {
+                    when (it.type) {
+                        SubscribesType.DINING_SOLD_OUT ->
+                            _isSoldOutSubscribed.value = it.isPermit
+                        SubscribesType.DINING_IMAGE_UPLOAD ->
+                            _isDiningImageSubscribed.value = it.isPermit
+                        SubscribesType.NOTHING -> Unit
+                        else -> Unit
+                    }
+                }
+            }
+        }
+    }
+
+    private fun onSoldOutSubscribe(boolean: Boolean) {
+        if(userState.value.isAnonymous) return
+        viewModelScope.launch {
+            if(boolean) {
+                updateNotificationSubscriptionUseCase(SubscribesType.DINING_SOLD_OUT)
+                updateNotificationSubscriptionDetailUseCase(SubscribesDetailType.BREAKFAST)
+                updateNotificationSubscriptionDetailUseCase(SubscribesDetailType.LUNCH)
+                updateNotificationSubscriptionDetailUseCase(SubscribesDetailType.DINNER)
+            }
+            else {
+                deleteNotificationSubscriptionUseCase(SubscribesType.DINING_SOLD_OUT)
+            }
+        }
+    }
+
+    private fun onDiningImageSubscribe(boolean: Boolean) {
+        if(userState.value.isAnonymous) return
+        viewModelScope.launch {
+            if(boolean) {
+                updateNotificationSubscriptionUseCase(SubscribesType.DINING_IMAGE_UPLOAD)
+            }
+            else {
+                deleteNotificationSubscriptionUseCase(SubscribesType.DINING_IMAGE_UPLOAD)
+            }
+        }
+    }
+
+    fun changeShowTooltip(boolean: Boolean) {
+        _showTooltip.value = boolean
+    }
+
+    fun changeIsSoldOutSubscribed(boolean: Boolean) {
+        _isSoldOutSubscribed.value = boolean
+        onSoldOutSubscribe(boolean)
+    }
+
+    fun changeIsDiningImageSubscribed(boolean: Boolean) {
+        _isDiningImageSubscribed.value = boolean
+        onDiningImageSubscribe(boolean)
+    }
+
+    fun getNotificationIntent(context: Context): Intent? {
+        return if(userState.value.isAnonymous) null
+        else (navigator.navigateToNotification(context = context))
     }
 }
