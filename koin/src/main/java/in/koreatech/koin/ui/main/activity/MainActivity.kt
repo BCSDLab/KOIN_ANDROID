@@ -40,7 +40,6 @@ import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.navigation.Navigator
-import `in`.koreatech.koin.core.navigation.SchemeType
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
@@ -61,6 +60,7 @@ import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.feature.banner.ui.BannerActivity
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetA
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetB
+import `in`.koreatech.koin.navigation.SchemeType
 import `in`.koreatech.koin.feature.dining.ui.DiningActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.main.adapter.ArticleMainAdapter
@@ -431,76 +431,24 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
 
         when (type) {
-            SchemeType.SHOP.type -> {
-                val intent =
-                    navigator.navigateToShop(
-                        context = this,
-                        targetId = Pair(EXTRA_ID, targetId),
-                        type = Pair(EXTRA_TYPE, type)
-                    )
-                startActivity(intent)
-            }
-
-            SchemeType.DINING.type -> {
-                val intent =
-                    navigator.navigateToDinging(
-                        context = this,
-                        targetId = Pair(EXTRA_ID, targetId),
-                        type = Pair(EXTRA_TYPE, type)
-                    )
-                startActivity(intent)
-            }
-
-            SchemeType.ARTICLE.type -> {
-                val intent =
-                    navigator.navigateToArticle(
-                        context = this,
-                        targetId = Pair(EXTRA_ID, targetId),
-                        targetBoardId = Pair(EXTRA_BOARD_ID, targetBoardId),
-                        type = Pair(EXTRA_TYPE, type)
-                    )
-                startActivity(intent)
-            }
-
-            SchemeType.CHAT.type -> {
-                val intent =
-                    navigator.navigateToChat(
-                        context = this,
-                        targetArticleId = Pair(EXTRA_ARTICLE_ID, targetArticleId),
-                        targetChatId = Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
-                        type = Pair(EXTRA_TYPE, type)
-                    )
-                startActivity(intent)
-            }
-
-            SchemeType.CLUB_RECRUIT.type -> {
-                val intent =
-                    navigator.navigateToClubRecruitment(
-                        context = this,
-                        targetClubId = Pair(
-                            EXTRA_CLUB_ID,
-                            targetId
-                        ),
-                        type = Pair(EXTRA_TYPE, type)
-                    )
-                startActivity(intent)
-            }
-
+            SchemeType.SHOP.type,
+            SchemeType.DINING.type,
+            SchemeType.ARTICLE.type,
+            SchemeType.CHAT.type,
+            SchemeType.CLUB_RECRUIT.type,
             SchemeType.CLUB.type -> {
-                val intent =
-                    navigator.navigateToClub(
-                        context = this,
-                        targetClubId = Pair(
-                            EXTRA_CLUB_ID,
-                            targetClubId
-                        ),
-                        targetEventId = Pair(
-                            EXTRA_EVENT_ID,
-                            targetEventId
-                        ),
-                        type = Pair(EXTRA_TYPE, type)
+                navigator.navigateTo(
+                    context = this,
+                    type = Pair(EXTRA_TYPE, type),
+                    *arrayOf(
+                        Pair(EXTRA_ID, targetId),
+                        Pair(EXTRA_BOARD_ID, targetBoardId),
+                        Pair(EXTRA_ARTICLE_ID, targetArticleId),
+                        Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
+                        Pair(EXTRA_CLUB_ID, targetClubId),
+                        Pair(EXTRA_EVENT_ID, targetEventId)
                     )
-                startActivity(intent)
+                )
             }
 
             else -> {

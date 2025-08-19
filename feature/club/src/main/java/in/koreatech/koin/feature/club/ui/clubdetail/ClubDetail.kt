@@ -71,10 +71,10 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_STAGE_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_URL
-import `in`.koreatech.koin.domain.constant.LOGIN_ACTIVITY_URL
 import `in`.koreatech.koin.domain.util.ext.formatPhoneNumber
 import `in`.koreatech.koin.domain.util.ext.isValidGoogleFormUrl
 import `in`.koreatech.koin.domain.util.ext.isValidInstagramUrl
@@ -167,6 +167,8 @@ fun ClubDetail(
     val isQnaScrollable = remember { derivedStateOf { !listState.canScrollForward || qnaScrollState.value != 0 } }
 
     var tabRowHeight by remember { mutableStateOf(0.dp) }
+
+    val navigator = rememberNavigator()
 
     viewModel.collectSideEffect { sideEffect ->
         handleSideEffect(sideEffect, context, snackbarHostState)
@@ -276,7 +278,9 @@ fun ClubDetail(
                 positiveButtonText = stringResource(id = R.string.detail_dialog_login_positive),
                 onPositive = {
                     viewModel.dismissLoginDialog()
-                    viewModel.openUrl(LOGIN_ACTIVITY_URL)
+                    navigator.navigateToSignIn(context).let {
+                        context.startActivity(it)
+                    }
                 },
                 onNegative = { viewModel.dismissLoginDialog() }
             )
@@ -431,8 +435,7 @@ fun ClubDetail(
                 .systemBarsPadding()
                 .fillMaxSize(),
             state = listState,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            userScrollEnabled = qnaScrollState.value == 0
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
                 SubcomposeAsyncImage(

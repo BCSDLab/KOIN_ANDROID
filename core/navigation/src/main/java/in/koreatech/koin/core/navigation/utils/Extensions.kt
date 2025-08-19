@@ -10,6 +10,11 @@ inline fun <reified T : Activity> Context.buildIntent(vararg argument: Pair<Stri
         putExtras(bundleOf(*argument))
     }
 
+fun Context.buildIntent(className: Class<*>, vararg argument: Pair<String, Any?>) =
+    Intent(this, className).apply {
+        putExtras(bundleOf(*argument))
+    }
+
 inline fun <reified T : Activity> Context.goToActivity(vararg argument: Pair<String, Any?>) {
     startActivity(buildIntent<T>(*argument))
 }

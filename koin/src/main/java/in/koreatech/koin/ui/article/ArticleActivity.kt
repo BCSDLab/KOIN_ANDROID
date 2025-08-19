@@ -181,7 +181,6 @@ class ArticleActivity : ActivityBase() {
 
     companion object {
         const val NAVIGATE_ACTION = "navigate_action"
-        const val NAV_ARTICLE = "article"
         const val START_BOARD = "start_board"
         const val BUNDLE_ARTICLE_EXTRA_KEY = "BUNDLE_EXTRA_KEY"
     }

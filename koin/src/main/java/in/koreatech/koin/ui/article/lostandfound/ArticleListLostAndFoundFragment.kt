@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.ui.article.lostandfound
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,16 +11,17 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.LostAndFoundList
 import `in`.koreatech.koin.feature.lostandfound.ui.write.LostAndFoundWriteArticleViewModel.Companion.LOST_OR_FOUND_TYPE
-import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
-import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.BUNDLE_ARTICLE_EXTRA_KEY
-import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.NAV_ARTICLE
-import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.START_BOARD
-import `in`.koreatech.koin.ui.article.ArticleBoardType
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ArticleListLostAndFoundFragment : Fragment() {
+
+    @Inject
+    lateinit var navigator: Navigator
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -59,17 +59,10 @@ class ArticleListLostAndFoundFragment : Fragment() {
                         )
                     },
                     navigateToLoginActivity = {
-                        Intent(requireContext(), SignInActivity::class.java).apply {
-                            putExtra(
-                                BUNDLE_ARTICLE_EXTRA_KEY,
-                                bundleOf(
-                                    NAV_ARTICLE to true,
-                                    START_BOARD to ArticleBoardType.LOSTANDFOUND.id
-                                )
-                            )
-                            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                            requireActivity().finish()
-                        }.let(::startActivity)
+                        navigator.navigateToSignIn(
+                            requireContext(),
+                            "koin://article/activity?fragment=article_lost_and_found"
+                        ).let(::startActivity)
                     }
                 )
             }
