@@ -28,7 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -84,7 +83,7 @@ fun DiningItem(
                     text = dining.place,
                     style = KoinTheme.typography.bold16.copy(fontWeight = FontWeight.SemiBold)
                 )
-                if(dining.soldOutAt.isNotBlank()) {
+                if (dining.soldOutAt.isNotBlank()) {
                     Box(
                         modifier = Modifier
                             .background(
@@ -136,7 +135,7 @@ fun DiningItem(
                     .aspectRatio(4f / 3f),
                 contentAlignment = Alignment.Center
             ) {
-                if(dining.imageUrl.isEmpty()) {
+                if (dining.imageUrl.isEmpty()) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -166,8 +165,7 @@ fun DiningItem(
                             )
                         }
                     }
-                }
-                else {
+                } else {
                     SubcomposeAsyncImage(
                         modifier = Modifier
                             .clip(shape = KoinTheme.shapes.small)
@@ -189,7 +187,7 @@ fun DiningItem(
                         }
                     )
                 }
-                if(dining.soldOutAt.isNotBlank()) {
+                if (dining.soldOutAt.isNotBlank()) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -227,7 +225,7 @@ fun DiningItem(
                     modifier = Modifier.weight(1f)
                 ) {
                     dining.menu.forEachIndexed { index, item ->
-                        if(index %2 == 0) {
+                        if (index % 2 == 0) {
                             Text(
                                 text = item,
                                 style = KoinTheme.typography.regular14
@@ -239,7 +237,7 @@ fun DiningItem(
                     modifier = Modifier.weight(1f)
                 ) {
                     dining.menu.forEachIndexed { index, item ->
-                        if(index %2 == 1) {
+                        if (index % 2 == 1) {
                             Text(
                                 text = item,
                                 style = KoinTheme.typography.regular14
@@ -253,7 +251,7 @@ fun DiningItem(
             thickness = 1.dp,
             color = KoinTheme.colors.neutral100
         )
-        Row (
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(
@@ -274,8 +272,8 @@ fun DiningItem(
                 .padding(vertical = 14.dp, horizontal = 24.dp),
             horizontalArrangement = Arrangement.Center
         ) {
-            Row (
-                horizontalArrangement = Arrangement.spacedBy(4.dp)  ,
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
@@ -304,7 +302,7 @@ private fun DiningItemPreview() {
             priceCard = "1000",
             priceCash = "1000",
             kcal = "786",
-            menu = listOf("밥","국","김치"),
+            menu = listOf("밥", "국", "김치"),
             imageUrl = "",
             createdAt = "2025.05.17",
             updatedAt = "2025.05.17",
@@ -327,7 +325,7 @@ private fun DiningItemSoldoutPreview() {
             priceCard = "1000",
             priceCash = "1000",
             kcal = "786",
-            menu = listOf("밥","국","김치"),
+            menu = listOf("밥", "국", "김치"),
             imageUrl = "",
             createdAt = "2025.05.17",
             updatedAt = "2025.05.17",

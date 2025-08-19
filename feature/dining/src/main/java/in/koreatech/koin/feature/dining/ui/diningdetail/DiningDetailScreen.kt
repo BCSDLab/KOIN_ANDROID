@@ -75,12 +75,12 @@ import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.feature.dining.R
 import `in`.koreatech.koin.feature.dining.component.DiningDateItem
-import `in`.koreatech.koin.feature.dining.component.dialog.DiningImageDialog
 import `in`.koreatech.koin.feature.dining.component.DiningItem
 import `in`.koreatech.koin.feature.dining.component.DiningItemOriginal
 import `in`.koreatech.koin.feature.dining.component.bottomsheet.DiningBottomSheet
-import kotlinx.coroutines.launch
+import `in`.koreatech.koin.feature.dining.component.dialog.DiningImageDialog
 import java.util.Date
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -153,7 +153,7 @@ fun DiningDetailScreen(
             showBottomSheet = showBottomSheet,
             experimentGroup = abTestExperimentGroup,
             context = LocalContext.current,
-            initialPage = if(initialPage != -1) initialPage else viewModel.getInitialPage(),
+            initialPage = if (initialPage != -1) initialPage else viewModel.getInitialPage(),
             isSoldOutSubscribed = isSoldOutSubscribed,
             isDiningImageSubscribed = isDiningImageSubscribed,
             onDateClick = viewModel::setSelectedDate,
@@ -185,9 +185,9 @@ fun DiningDetailScreenImpl(
     changeShowTooltip: (Boolean) -> Unit = {},
     changeSoldOutSubscribe: (Boolean) -> Unit = {},
     changeDiningImageSubscribe: (Boolean) -> Unit = {},
-    getNotificationIntent: (Context) -> Intent? = {null},
+    getNotificationIntent: (Context) -> Intent? = { null },
     getNotificationPermitInfo: () -> Unit = {},
-    onShareClick: (Dining, Context) -> Unit = {_,_ -> }
+    onShareClick: (Dining, Context) -> Unit = { _, _ -> }
 ) {
     val tabSize = 3
     val tabList = DiningType.entries.take(tabSize).map { it.typeKorean }
@@ -211,7 +211,7 @@ fun DiningDetailScreenImpl(
 
     val currentDate = remember { TimeUtil.getCurrentTime() }
     val dates = remember(currentDate) {
-        buildList{
+        buildList {
             add(currentDate)
             repeat(3) {
                 add(0, TimeUtil.getPreviousDayDate(first()))
@@ -226,7 +226,7 @@ fun DiningDetailScreenImpl(
     }
 
     var showImageDialog by remember { mutableStateOf(false) }
-    var selectedImage by remember { mutableStateOf("")}
+    var selectedImage by remember { mutableStateOf("") }
 
     var isUserScrolling by remember { mutableStateOf(true) }
     LaunchedEffect(pagerState) {
@@ -239,8 +239,7 @@ fun DiningDetailScreenImpl(
                             AnalyticsConstant.Label.MENU_TIME,
                             tabList[pagerState.currentPage]
                         )
-                    }
-                    else {
+                    } else {
                         isUserScrolling = true
                     }
                 }
@@ -250,7 +249,7 @@ fun DiningDetailScreenImpl(
     val sheetState = rememberModalBottomSheetState()
 
     LaunchedEffect(showBottomSheet) {
-        if(showBottomSheet) {
+        if (showBottomSheet) {
             sheetState.show()
         }
     }
@@ -261,11 +260,11 @@ fun DiningDetailScreenImpl(
         getNotificationPermitInfo()
     }
 
-    if(sheetState.isVisible) {
+    if (sheetState.isVisible) {
         ModalBottomSheet(
             sheetState = sheetState,
             onDismissRequest = {
-                scope.launch{sheetState.hide()}
+                scope.launch { sheetState.hide() }
             },
             dragHandle = {}, // to delete drag Handle
             containerColor = Color.Transparent,
@@ -274,7 +273,7 @@ fun DiningDetailScreenImpl(
             DiningBottomSheet(
                 firstChecked = isSoldOutSubscribed,
                 secondChecked = isDiningImageSubscribed,
-                onDismiss = { scope.launch{sheetState.hide()} },
+                onDismiss = { scope.launch { sheetState.hide() } },
                 onPositive = {
                     val intent = getNotificationIntent(context)
                     intent?.let {
@@ -361,7 +360,7 @@ fun DiningDetailScreenImpl(
                     .height(deviceHeightDp)
                     .background(color = KoinTheme.colors.neutral100),
                 state = pagerState,
-                verticalAlignment = Alignment.Top,
+                verticalAlignment = Alignment.Top
             ) { page ->
                 val diningFilterList by remember(diningList, page) {
                     derivedStateOf {
@@ -394,7 +393,7 @@ fun DiningDetailScreenImpl(
                 ) {
                     diningFilterList.forEachIndexed { index, dining ->
                         Box(
-                            modifier = Modifier.zIndex(if(index == 0 && showTooltip) 1f else 0f),
+                            modifier = Modifier.zIndex(if (index == 0 && showTooltip) 1f else 0f),
                             contentAlignment = Alignment.BottomCenter
                         ) {
                             DiningItemByABTest(
@@ -432,7 +431,9 @@ fun DiningDetailScreenImpl(
                             }
                         }
                     }
-                    if(diningFilterList.size == 1) { Spacer(Modifier.height(10.dp)) } // to show tooltip image area
+                    if (diningFilterList.size == 1) {
+                        Spacer(Modifier.height(10.dp))
+                    } // to show tooltip image area
                 }
             }
         }
@@ -481,7 +482,7 @@ private fun DiningScreenPreview() {
                 priceCard = "1000",
                 priceCash = "1000",
                 kcal = "786",
-                menu = listOf("밥","국","김치","아침"),
+                menu = listOf("밥", "국", "김치", "아침"),
                 imageUrl = "https://image.utoimage.com/preview/cp872722/2022/12/202212008462_500.jpg",
                 createdAt = "2025.05.17",
                 updatedAt = "2025.05.17",
@@ -496,7 +497,7 @@ private fun DiningScreenPreview() {
                 priceCard = "1000",
                 priceCash = "1000",
                 kcal = "786",
-                menu = listOf("밥","국","김치","아침"),
+                menu = listOf("밥", "국", "김치", "아침"),
                 imageUrl = "",
                 createdAt = "2025.05.17",
                 updatedAt = "2025.05.17",
@@ -511,7 +512,7 @@ private fun DiningScreenPreview() {
                 priceCard = "1000",
                 priceCash = "1000",
                 kcal = "786",
-                menu = listOf("밥","국","김치","점심"),
+                menu = listOf("밥", "국", "김치", "점심"),
                 imageUrl = "",
                 createdAt = "2025.05.17",
                 updatedAt = "2025.05.17",
@@ -526,7 +527,7 @@ private fun DiningScreenPreview() {
                 priceCard = "1000",
                 priceCash = "1000",
                 kcal = "786",
-                menu = listOf("밥","국","김치","저녁"),
+                menu = listOf("밥", "국", "김치", "저녁"),
                 imageUrl = "",
                 createdAt = "2025.05.17",
                 updatedAt = "2025.05.17",

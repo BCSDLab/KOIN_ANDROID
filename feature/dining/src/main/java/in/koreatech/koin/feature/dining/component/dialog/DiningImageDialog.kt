@@ -60,7 +60,7 @@ fun DiningImageDialog(
             ) {
                 Icon(
                     modifier = Modifier.padding(1.dp).size(24.dp)
-                        .clickable (
+                        .clickable(
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() }
                         ) { onDismiss() },

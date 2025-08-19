@@ -31,7 +31,7 @@ fun DiningDateItem(
     onClick: (Date) -> Unit = {}
 ) {
     val currentDate = TimeUtil.getCurrentTime()
-    val isToday: Boolean = TimeUtil.getDateDifferenceInDays(currentDate,date) == 0
+    val isToday: Boolean = TimeUtil.getDateDifferenceInDays(currentDate, date) == 0
     val isBeforeDate: Boolean = date <= currentDate
     Column(
         modifier = modifier
@@ -44,42 +44,51 @@ fun DiningDateItem(
         Text(
             text = DateFormatUtil.getDayOfWeek(date),
             style = KoinTheme.typography.regular13,
-            color = if(isBeforeDate) KoinTheme.colors.neutral500 else KoinTheme.colors.neutral800
+            color = if (isBeforeDate) KoinTheme.colors.neutral500 else KoinTheme.colors.neutral800
         )
         Spacer(Modifier.height(8.dp))
         Box(
-                modifier = Modifier
-                    .size(28.dp)
-                    .background(
-                        color = if(isSelected) KoinTheme.colors.primary500 else KoinTheme.colors.neutral0,
-                        shape = CircleShape
-                    ).then(
-                        if(isToday) Modifier.border(1.dp, KoinTheme.colors.primary500, CircleShape)
-                        else Modifier
-                    ),
+            modifier = Modifier
+                .size(28.dp)
+                .background(
+                    color = if (isSelected) KoinTheme.colors.primary500 else KoinTheme.colors.neutral0,
+                    shape = CircleShape
+                ).then(
+                    if (isToday) {
+                        Modifier.border(1.dp, KoinTheme.colors.primary500, CircleShape)
+                    } else {
+                        Modifier
+                    }
+                ),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().dayOfMonth.toString(),
                 style = KoinTheme.typography.medium15,
-                color = if(isSelected) KoinTheme.colors.neutral0
-                else {
-                    if(isToday) KoinTheme.colors.primary500
-                    else {
-                        if(isBeforeDate) KoinTheme.colors.neutral500
-                        else KoinTheme.colors.neutral800
+                color = if (isSelected) {
+                    KoinTheme.colors.neutral0
+                } else {
+                    if (isToday) {
+                        KoinTheme.colors.primary500
+                    } else {
+                        if (isBeforeDate) {
+                            KoinTheme.colors.neutral500
+                        } else {
+                            KoinTheme.colors.neutral800
+                        }
                     }
                 }
             )
         }
         Spacer(Modifier.height(5.dp))
-        Spacer(Modifier
-            .size(12.dp, 2.dp)
-            .border(
-                1.dp,
-                color = if(isToday) KoinTheme.colors.primary500 else KoinTheme.colors.neutral0,
-                shape = KoinTheme.shapes.extraLarge
-            )
+        Spacer(
+            Modifier
+                .size(12.dp, 2.dp)
+                .border(
+                    1.dp,
+                    color = if (isToday) KoinTheme.colors.primary500 else KoinTheme.colors.neutral0,
+                    shape = KoinTheme.shapes.extraLarge
+                )
         )
     }
 }

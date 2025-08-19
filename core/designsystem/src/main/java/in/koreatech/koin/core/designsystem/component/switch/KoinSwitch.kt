@@ -43,7 +43,7 @@ fun KoinSwitch(
             .height(24.dp)
             .aspectRatio(2.1f)
             .background(Color.Gray, CircleShape)
-            .clickable (
+            .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
             ) {

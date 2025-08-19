@@ -41,7 +41,7 @@ import `in`.koreatech.koin.feature.dining.component.DiningTimetableItem
 @Composable
 fun DiningNoticeScreen(
     viewModel: DiningNoticeViewModel = hiltViewModel(),
-    onTopbarBackClick: () -> Unit = {},
+    onTopbarBackClick: () -> Unit = {}
 ) {
     val diningNotice by viewModel.diningNotice.collectAsState()
     val context = LocalContext.current

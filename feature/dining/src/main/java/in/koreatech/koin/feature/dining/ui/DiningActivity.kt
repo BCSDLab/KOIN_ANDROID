@@ -48,7 +48,7 @@ class DiningActivity : ComponentActivity() {
                 NavHost(
                     modifier = Modifier,
                     navController = navController,
-                    startDestination = startDestination,
+                    startDestination = startDestination
                 ) {
                     koinDiningGraph(
                         navController = navController

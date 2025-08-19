@@ -2,7 +2,6 @@ package `in`.koreatech.koin.feature.dining.ui.diningdetail
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.kakao.sdk.share.ShareClient
@@ -75,11 +74,11 @@ class DiningViewModel @Inject constructor(
     }
 
     private val _userState: StateFlow<User> =
-            getUserStatusUseCase().stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.Eagerly,
-                initialValue = User.Anonymous
-            )
+        getUserStatusUseCase().stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = User.Anonymous
+        )
     val userState: StateFlow<User> get() = _userState
 
     private val _selectedDate =
@@ -127,8 +126,8 @@ class DiningViewModel @Inject constructor(
                     .onSuccess {
                         _dining.value = it.filter { dining ->
                             dining.place == DiningPlace.CornerA.place ||
-                            dining.place == DiningPlace.CornerB.place ||
-                            dining.place == DiningPlace.CornerC.place
+                                dining.place == DiningPlace.CornerB.place ||
+                                dining.place == DiningPlace.CornerC.place
                         }
                     }
                     .onFailure {
@@ -158,7 +157,7 @@ class DiningViewModel @Inject constructor(
     }
 
     fun getShowBottomSheetValue() {
-        if(userState.value.isAnonymous) return
+        if (userState.value.isAnonymous) return
         viewModelScope.launch {
             if (onboardingManager.getShouldOnboard(OnboardingType.DINING_NOTIFICATION)) {
                 _showBottomSheet.value = true
@@ -251,27 +250,25 @@ class DiningViewModel @Inject constructor(
     }
 
     private fun onSoldOutSubscribe(boolean: Boolean) {
-        if(userState.value.isAnonymous) return
+        if (userState.value.isAnonymous) return
         viewModelScope.launch {
-            if(boolean) {
+            if (boolean) {
                 updateNotificationSubscriptionUseCase(SubscribesType.DINING_SOLD_OUT)
                 updateNotificationSubscriptionDetailUseCase(SubscribesDetailType.BREAKFAST)
                 updateNotificationSubscriptionDetailUseCase(SubscribesDetailType.LUNCH)
                 updateNotificationSubscriptionDetailUseCase(SubscribesDetailType.DINNER)
-            }
-            else {
+            } else {
                 deleteNotificationSubscriptionUseCase(SubscribesType.DINING_SOLD_OUT)
             }
         }
     }
 
     private fun onDiningImageSubscribe(boolean: Boolean) {
-        if(userState.value.isAnonymous) return
+        if (userState.value.isAnonymous) return
         viewModelScope.launch {
-            if(boolean) {
+            if (boolean) {
                 updateNotificationSubscriptionUseCase(SubscribesType.DINING_IMAGE_UPLOAD)
-            }
-            else {
+            } else {
                 deleteNotificationSubscriptionUseCase(SubscribesType.DINING_IMAGE_UPLOAD)
             }
         }
@@ -292,7 +289,10 @@ class DiningViewModel @Inject constructor(
     }
 
     fun getNotificationIntent(context: Context): Intent? {
-        return if(userState.value.isAnonymous) null
-        else (navigator.navigateToNotification(context = context))
+        return if (userState.value.isAnonymous) {
+            null
+        } else {
+            (navigator.navigateToNotification(context = context))
+        }
     }
 }

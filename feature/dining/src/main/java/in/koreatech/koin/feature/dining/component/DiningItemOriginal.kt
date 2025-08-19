@@ -90,7 +90,7 @@ fun DiningItemOriginal(
                     color = KoinTheme.colors.neutral500
                 )
             }
-            if(dining.soldOutAt.isNotBlank()) {
+            if (dining.soldOutAt.isNotBlank()) {
                 Box(
                     modifier = Modifier
                         .background(
@@ -121,7 +121,7 @@ fun DiningItemOriginal(
                     .aspectRatio(4f / 3f),
                 contentAlignment = Alignment.Center
             ) {
-                if(dining.imageUrl.isEmpty()) {
+                if (dining.imageUrl.isEmpty()) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -151,8 +151,7 @@ fun DiningItemOriginal(
                             )
                         }
                     }
-                }
-                else {
+                } else {
                     SubcomposeAsyncImage(
                         modifier = Modifier
                             .clip(shape = KoinTheme.shapes.small)
@@ -174,7 +173,7 @@ fun DiningItemOriginal(
                         }
                     )
                 }
-                if(dining.soldOutAt.isNotBlank()) {
+                if (dining.soldOutAt.isNotBlank()) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -212,7 +211,7 @@ fun DiningItemOriginal(
                     modifier = Modifier.weight(1f)
                 ) {
                     dining.menu.forEachIndexed { index, item ->
-                        if(index %2 == 0) {
+                        if (index % 2 == 0) {
                             Text(
                                 text = item,
                                 style = KoinTheme.typography.regular14
@@ -224,7 +223,7 @@ fun DiningItemOriginal(
                     modifier = Modifier.weight(1f)
                 ) {
                     dining.menu.forEachIndexed { index, item ->
-                        if(index %2 == 1) {
+                        if (index % 2 == 1) {
                             Text(
                                 text = item,
                                 style = KoinTheme.typography.regular14
@@ -238,7 +237,7 @@ fun DiningItemOriginal(
             thickness = 1.dp,
             color = KoinTheme.colors.neutral100
         )
-        Row (
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(
@@ -259,7 +258,7 @@ fun DiningItemOriginal(
                 .padding(vertical = 14.dp, horizontal = 24.dp),
             horizontalArrangement = Arrangement.End
         ) {
-            Row (
+            Row(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -289,7 +288,7 @@ private fun DiningItemOriginalPreview() {
             priceCard = "1000",
             priceCash = "1000",
             kcal = "786",
-            menu = listOf("밥","국","김치"),
+            menu = listOf("밥", "국", "김치"),
             imageUrl = "",
             createdAt = "2025.05.17",
             updatedAt = "2025.05.17",
@@ -312,7 +311,7 @@ private fun DiningItemOriginalSoldoutPreview() {
             priceCard = "1000",
             priceCash = "1000",
             kcal = "786",
-            menu = listOf("밥","국","김치"),
+            menu = listOf("밥", "국", "김치"),
             imageUrl = "",
             createdAt = "2025.05.17",
             updatedAt = "2025.05.17",
