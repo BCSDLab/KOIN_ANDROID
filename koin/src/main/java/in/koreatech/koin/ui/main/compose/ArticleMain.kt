@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.R
@@ -37,8 +38,8 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun HotArticlePager(
-    modifier: Modifier = Modifier,
     articles: List<ArticleMainState>,
+    modifier: Modifier = Modifier,
     onNotiClick: (ArticleMainState.Noti) -> Unit = {},
     onArticleClick: (ArticleMainState.Content) -> Unit = {}
 ) {
@@ -111,7 +112,7 @@ fun PagerIndicator(
 @Composable
 fun HotNotiCard(
     noti: ArticleMainState.Noti,
-    onClick: () -> Unit
+    onClick: () -> Unit = {}
 ) {
     Card(
         modifier = Modifier
@@ -161,7 +162,7 @@ fun HotNotiCard(
 @Composable
 fun HotArticleCard(
     article: ArticleMainState.Content,
-    onClick: () -> Unit
+    onClick: () -> Unit = {}
 ) {
     Card(
         modifier = Modifier
@@ -189,7 +190,7 @@ fun HotArticleCard(
             Spacer(Modifier.width(16.dp))
             Column {
                 Text(
-                    text = "지금 인기있는 글",
+                    text = stringResource(R.string.now_hot_article),
                     color = KoinTheme.colors.sub500,
                     style = KoinTheme.typography.bold12
                 )
@@ -208,7 +209,7 @@ fun HotArticleCard(
 
 @Preview(showBackground = true)
 @Composable
-fun HotNotiCardPreview() {
+private fun HotNotiCardPreview() {
     KoinTheme {
         HotNotiCard(
             noti = ArticleMainState.Noti(
@@ -224,7 +225,7 @@ fun HotNotiCardPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun HotNotiCardPreview2() {
+private fun HotNotiCardPreview2() {
     KoinTheme {
         HotNotiCard(
             noti = ArticleMainState.Noti(
@@ -240,7 +241,7 @@ fun HotNotiCardPreview2() {
 
 @Preview(showBackground = true)
 @Composable
-fun HotArticleCardPreview() {
+private fun HotArticleCardPreview() {
     KoinTheme {
         HotArticleCard(
             article = ArticleMainState.Content(
@@ -255,7 +256,7 @@ fun HotArticleCardPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun HotArticlePagerPreview() {
+private fun HotArticlePagerPreview() {
     val sampleArticles = listOf(
         ArticleMainState.Noti(
             title = "분실물은 여기 다 모아뒀어요",
