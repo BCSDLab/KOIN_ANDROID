@@ -113,7 +113,7 @@
                                     app:drawableEndCompat="@drawable/ic_arrow_right" />
 
                                 <androidx.compose.ui.platform.ComposeView
-                                    android:id="@+id/view_pager_hot_article"
+                                    android:id="@+id/compose_view_hot_article"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="12dp"

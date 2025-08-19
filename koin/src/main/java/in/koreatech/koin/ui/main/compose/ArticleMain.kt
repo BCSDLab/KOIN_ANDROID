@@ -1,15 +1,16 @@
 package `in`.koreatech.koin.ui.main.compose
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -26,15 +27,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.R
+import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.article.ArticleNotiType
 import `in`.koreatech.koin.ui.main.state.ArticleMainState
 import kotlinx.coroutines.delay
+
+private const val AUTO_SCROLL_INTERVAL = 5000L
 
 @Composable
 fun HotArticlePager(
@@ -47,7 +53,7 @@ fun HotArticlePager(
 
     LaunchedEffect(pagerState.settledPage, articles.size) {
         if (articles.isNotEmpty()) {
-            delay(5000)
+            delay(AUTO_SCROLL_INTERVAL)
             val nextPage = (pagerState.currentPage + 1) % articles.size
             pagerState.animateScrollToPage(nextPage)
         }
@@ -61,7 +67,7 @@ fun HotArticlePager(
             state = pagerState,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(95.dp)
+                .heightIn(max = 95.dp)
         ) { page ->
             when (val article = articles[page]) {
                 is ArticleMainState.Noti -> {
@@ -112,15 +118,15 @@ fun PagerIndicator(
 @Composable
 fun HotNotiCard(
     noti: ArticleMainState.Noti,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .padding(horizontal = 16.dp)
-            .clickable { onClick() },
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+            .padding(horizontal = 16.dp),
+        onClick = { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = KoinTheme.colors.neutral100
         )
@@ -162,15 +168,14 @@ fun HotNotiCard(
 @Composable
 fun HotArticleCard(
     article: ArticleMainState.Content,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .padding(horizontal = 16.dp)
-            .clickable { onClick() },
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
+        onClick = { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = KoinTheme.colors.neutral100
         )
@@ -182,7 +187,7 @@ fun HotArticleCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                painter = painterResource(R.drawable.ic_star),
+                imageVector = ImageVector.vectorResource(`in`.koreatech.koin.core.R.drawable.ic_star),
                 contentDescription = null,
                 modifier = Modifier.size(40.dp),
                 tint = Color.Unspecified
@@ -190,7 +195,7 @@ fun HotArticleCard(
             Spacer(Modifier.width(16.dp))
             Column {
                 Text(
-                    text = stringResource(R.string.now_hot_article),
+                    text = stringResource(`in`.koreatech.koin.R.string.now_hot_article),
                     color = KoinTheme.colors.sub500,
                     style = KoinTheme.typography.bold12
                 )
@@ -200,7 +205,7 @@ fun HotArticleCard(
                     color = KoinTheme.colors.neutral600,
                     style = KoinTheme.typography.bold16,
                     maxLines = 2,
-                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                    overflow = Ellipsis
                 )
             }
         }

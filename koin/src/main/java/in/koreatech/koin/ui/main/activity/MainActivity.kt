@@ -205,7 +205,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             toggleNavigationDrawer()
         }
 
-        binding.viewPagerHotArticle.setContent {
+        binding.composeViewHotArticle.setContent {
             KoinTheme {
                 val articleMain by viewModel.articleMain.collectAsState()
 
