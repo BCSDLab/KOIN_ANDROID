@@ -9,7 +9,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.view.ViewCompat
@@ -39,6 +41,7 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.SchemeType
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
@@ -52,7 +55,6 @@ import `in`.koreatech.koin.core.onboarding.ArrowDirection
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.util.dataBinding
-import `in`.koreatech.koin.core.viewpager.enableAutoScroll
 import `in`.koreatech.koin.data.util.todayOrTomorrow
 import `in`.koreatech.koin.databinding.ActivityMainBinding
 import `in`.koreatech.koin.domain.model.article.ArticleNotiType
@@ -63,9 +65,9 @@ import `in`.koreatech.koin.feature.club.ui.MainClubWidgetA
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetB
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
-import `in`.koreatech.koin.ui.main.adapter.ArticleMainAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
+import `in`.koreatech.koin.ui.main.compose.HotArticlePager
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
@@ -91,39 +93,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     @Inject
     lateinit var onboardingManager: OnboardingManager
-
-    private val articleMainAdapter =
-        ArticleMainAdapter(
-            onNotiClick = {
-                EventLogger.logClickEvent(
-                    EventAction.CAMPUS,
-                    AnalyticsConstant.Label.TO_MANAGE_KEYWORD,
-                    it.value
-                )
-                val intent =
-                    Intent(Intent.ACTION_VIEW).apply {
-                        data =
-                            when (it.type) {
-                                ArticleNotiType.KEYWORD -> Uri.parse("koin://article/activity?fragment=article_keyword")
-                                ArticleNotiType.LOST_AND_FOUND -> Uri.parse("koin://article/activity?fragment=article_lost_and_found")
-                            }
-                    }
-                startActivity(intent)
-            },
-            onArticleClick = {
-                EventLogger.logClickEvent(
-                    EventAction.CAMPUS,
-                    AnalyticsConstant.Label.POPULAR_NOTICE_BANNER,
-                    it.title
-                )
-                val intent =
-                    Intent(Intent.ACTION_VIEW).apply {
-                        data =
-                            Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.boardId}")
-                    }
-                startActivity(intent)
-            }
-        )
 
     private val diningContainerAdapter by lazy { DiningContainerViewPager2Adapter(this) }
 
@@ -181,7 +150,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     private fun initView() = with(binding) {
         viewModel.checkKeywordNotiContent()
-        initArticleBannerABTest()
         initDiningABTest()
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.toolbarLayout) { v, insets ->
@@ -237,12 +205,42 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             toggleNavigationDrawer()
         }
 
-        viewPagerHotArticle.apply {
-            adapter = articleMainAdapter
-            offscreenPageLimit = 3
-            enableAutoScroll(this@MainActivity, 5_000)
+        binding.viewPagerHotArticle.setContent {
+            KoinTheme {
+                val articleMain by viewModel.articleMain.collectAsState()
+
+                HotArticlePager(
+                    articles = articleMain,
+                    onNotiClick = {
+                        EventLogger.logClickEvent(
+                            EventAction.CAMPUS,
+                            AnalyticsConstant.Label.TO_MANAGE_KEYWORD,
+                            it.value
+                        )
+                        val intent =
+                            Intent(Intent.ACTION_VIEW).apply {
+                                data = when (it.type) {
+                                    ArticleNotiType.KEYWORD -> Uri.parse("koin://article/activity?fragment=article_keyword")
+                                    ArticleNotiType.LOST_AND_FOUND -> Uri.parse("koin://article/activity?fragment=article_lost_and_found")
+                                }
+                            }
+                        startActivity(intent)
+                    },
+                    onArticleClick = {
+                        EventLogger.logClickEvent(
+                            EventAction.CAMPUS,
+                            AnalyticsConstant.Label.POPULAR_NOTICE_BANNER,
+                            it.title
+                        )
+                        val intent =
+                            Intent(Intent.ACTION_VIEW).apply {
+                                data = Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.boardId}")
+                            }
+                        startActivity(intent)
+                    }
+                )
+            }
         }
-        TabLayoutMediator(tabHotArticle, viewPagerHotArticle) { _, _ -> }.attach()
 
         textSeeMoreArticle.setOnClickListener {
             EventLogger.logClickEvent(
@@ -506,16 +504,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             else -> {
                 // Banner shouldn't popup on other page
                 initBanner()
-            }
-        }
-    }
-
-    private fun initArticleBannerABTest() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.articleMain.collectLatest {
-                    articleMainAdapter.submitList(it)
-                }
             }
         }
     }
