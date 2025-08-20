@@ -35,10 +35,7 @@ object URLConstant {
     }
 
     object DINING {
-        const val DINING = "dining"
         const val DININGS = "dinings"
-        const val LIKE = "$DINING/like"
-        const val UNLIKE = "$LIKE/cancel"
     }
 
     // external url
@@ -110,6 +107,7 @@ object URLConstant {
         const val FINDPASSWORD: String = "$USER/find/password"
         const val ME: String = "$USER/student/me"
         const val REFRESH: String = "$USER/refresh"
+
         const val CHECKUSERID: String = "$USER/check/id"
 
         const val AUTH: String = "$USER/auth"
