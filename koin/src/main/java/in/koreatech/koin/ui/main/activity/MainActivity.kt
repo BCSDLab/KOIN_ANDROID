@@ -4,7 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup.MarginLayoutParams
+import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,7 +20,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.bus.BusSearchActivity
@@ -39,6 +38,7 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
@@ -47,26 +47,20 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_CLUB_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_EVENT_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
-import `in`.koreatech.koin.core.onboarding.ArrowDirection
-import `in`.koreatech.koin.core.onboarding.OnboardingManager
-import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.enableAutoScroll
-import `in`.koreatech.koin.data.util.todayOrTomorrow
 import `in`.koreatech.koin.databinding.ActivityMainBinding
 import `in`.koreatech.koin.domain.model.article.ArticleNotiType
-import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.feature.banner.ui.BannerActivity
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetA
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetB
 import `in`.koreatech.koin.navigation.SchemeType
 import `in`.koreatech.koin.ui.article.ArticleActivity
-import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.main.adapter.ArticleMainAdapter
-import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
+import `in`.koreatech.koin.ui.main.widget.DiningWidget
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.activity.CallBenefitStoreActivity
@@ -88,9 +82,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     @Inject
     lateinit var navigator: Navigator
-
-    @Inject
-    lateinit var onboardingManager: OnboardingManager
 
     private val articleMainAdapter =
         ArticleMainAdapter(
@@ -124,8 +115,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 startActivity(intent)
             }
         )
-
-    private val diningContainerAdapter by lazy { DiningContainerViewPager2Adapter(this) }
 
     private val storeCategoriesRecyclerAdapter =
         StoreCategoriesRecyclerAdapter().apply {
@@ -167,8 +156,8 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
         window.blueStatusBar()
 
+        fixTabRowSize()
         initView()
-        initDiningTooltip()
         initViewModel()
         handleIntent()
     }
@@ -179,14 +168,29 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         viewModel.updateDining()
     }
 
+    private fun fixTabRowSize() {
+        // Compose M3's ScrollableTabRow has a hard coded minimum tab width
+        // 1.4.0-alpha10 fixes this, but we are using older version
+        // REMOVE THIS WHEN WE UPGRADE TO M3 1.4.0-alpha10 OR LATER
+        // Reference: https://issuetracker.google.com/issues/226665301
+        try {
+            Class
+                .forName("androidx.compose.material3.TabRowKt")
+                .getDeclaredField("ScrollableTabRowMinimumTabWidth").apply {
+                    isAccessible = true
+                }.set(this, 0f)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     private fun initView() = with(binding) {
         viewModel.checkKeywordNotiContent()
         initArticleBannerABTest()
-        initDiningABTest()
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.toolbarLayout) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.updateLayoutParams<MarginLayoutParams> {
+            v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 leftMargin = systemBars.left
                 topMargin = systemBars.top
                 rightMargin = systemBars.right
@@ -326,33 +330,23 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             viewModel.updateDining()
         }
 
-//        diningContainer.setOnClickListener {
-//            callDrawerItem(R.id.navi_item_dining)
-//        }
+        diningComposeView.apply {
+            setContent {
+                KoinTheme {
+                    val diningData by viewModel.diningData.collectAsStateWithLifecycle()
+                    val selectedPosition by viewModel.selectedPosition.collectAsStateWithLifecycle()
+                    val selectedType by viewModel.selectedType.collectAsStateWithLifecycle()
+                    val diningABTestExperimentGroup by viewModel.diningABTestExperimentGroup.collectAsStateWithLifecycle()
 
-        pagerDiningContainer.adapter = diningContainerAdapter
-        pagerDiningContainer.offscreenPageLimit = 3
-
-        TabLayoutMediator(tabDining, pagerDiningContainer) { tab, position ->
-            tab.text = DiningPlace.entries[position].place
-        }.attach()
-
-        tabDining.addOnTabSelectedListener(
-            object : TabLayout.OnTabSelectedListener {
-                override fun onTabSelected(tab: TabLayout.Tab) {
-                    viewModel.setSelectedPosition(tab.position)
-                    EventLogger.logClickEvent(
-                        EventAction.CAMPUS,
-                        AnalyticsConstant.Label.MAIN_MENU_CORNER,
-                        tab.text.toString()
+                    DiningWidget(
+                        diningData = diningData,
+                        selectedPosition = selectedPosition,
+                        selectedType = selectedType,
+                        diningABTestExperimentGroup = diningABTestExperimentGroup
                     )
                 }
-
-                override fun onTabUnselected(tab: TabLayout.Tab) {}
-
-                override fun onTabReselected(tab: TabLayout.Tab) {}
             }
-        )
+        }
     }
 
     private fun initViewModel() = with(viewModel) {
@@ -380,14 +374,9 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             binding.mainSwipeRefreshLayout.isRefreshing = it
         }
 
-        observeLiveData(selectedType) {
-            binding.textViewDiningTodayOrTomorrow.text = it.todayOrTomorrow(this@MainActivity)
-        }
-
         observeLiveData(storeCategories) {
             storeCategoriesRecyclerAdapter.submitList(it)
         }
-
         binding.recyclerViewStoreCategory.visibility = View.GONE
         binding.storeButtonLayout.visibility = View.VISIBLE
     }
@@ -402,16 +391,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                     }
                 }
             }
-        }
-    }
-
-    private fun initDiningTooltip() {
-        with(onboardingManager) {
-            showOnboardingTooltipIfNeeded(
-                type = OnboardingType.DINING_IMAGE,
-                view = binding.textViewDiningTitle,
-                arrowDirection = ArrowDirection.LEFT
-            )
         }
     }
 
@@ -463,29 +442,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.articleMain.collectLatest {
                     articleMainAdapter.submitList(it)
-                }
-            }
-        }
-    }
-
-    private fun initDiningABTest() {
-        binding.textSeeMoreDining.setOnClickListener {
-            Intent(this, DiningActivity::class.java).run {
-                startActivity(this)
-            }
-        }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.diningABTestExperimentGroup.collect {
-                    when (it) {
-                        ExperimentGroup.MAIN_DINING_NEW -> {
-                            binding.textSeeMoreDining.visibility = View.VISIBLE
-                        }
-
-                        ExperimentGroup.MAIN_DINING_ORIGINAL -> {
-                            binding.textSeeMoreDining.visibility = View.GONE
-                        }
-                    }
                 }
             }
         }

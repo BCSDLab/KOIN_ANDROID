@@ -307,6 +307,9 @@
     <string name="dining_non_upload">학교에서 식단이 업로드 되지 않았습니다.</string>
     <string name="dining_soldout">품절</string>
     <string name="dining_changed">변경됨</string>
+    <string name="dining_today">오늘</string>
+    <string name="dining_tomorrow">내일</string>
+    <string name="dining_see_more">더보기</string>
     <string name="cafeteria_info">학생식당정보</string>
     <string name="bus_app_bar_title">버스 / 교통</string>
     <string name="bus_tab_info">운행정보</string>
