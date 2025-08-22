@@ -50,9 +50,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -60,6 +62,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
@@ -68,10 +71,10 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_STAGE_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_URL
-import `in`.koreatech.koin.domain.constant.LOGIN_ACTIVITY_URL
 import `in`.koreatech.koin.domain.util.ext.formatPhoneNumber
 import `in`.koreatech.koin.domain.util.ext.isValidGoogleFormUrl
 import `in`.koreatech.koin.domain.util.ext.isValidInstagramUrl
@@ -128,6 +131,7 @@ fun ClubDetail(
     resetNorificationEventId: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
+    val density = LocalDensity.current
 
     val detailList = listOf(
         Pair(DETAIL_CATEGORY, state.clubDetails?.category),
@@ -150,6 +154,9 @@ fun ClubDetail(
 
     val listState = rememberLazyListState()
 
+    val introductionScrollState = rememberScrollState()
+    val isIntroductionScrollable = remember { derivedStateOf { !listState.canScrollForward || introductionScrollState.value != 0 } }
+
     val recruitScrollState = rememberScrollState()
     val isRecruitScrollable = remember { derivedStateOf { !listState.canScrollForward || recruitScrollState.value != 0 } }
 
@@ -158,6 +165,10 @@ fun ClubDetail(
 
     val qnaScrollState = rememberScrollState()
     val isQnaScrollable = remember { derivedStateOf { !listState.canScrollForward || qnaScrollState.value != 0 } }
+
+    var tabRowHeight by remember { mutableStateOf(0.dp) }
+
+    val navigator = rememberNavigator()
 
     viewModel.collectSideEffect { sideEffect ->
         handleSideEffect(sideEffect, context, snackbarHostState)
@@ -267,7 +278,9 @@ fun ClubDetail(
                 positiveButtonText = stringResource(id = R.string.detail_dialog_login_positive),
                 onPositive = {
                     viewModel.dismissLoginDialog()
-                    viewModel.openUrl(LOGIN_ACTIVITY_URL)
+                    navigator.navigateToSignIn(context).let {
+                        context.startActivity(it)
+                    }
                 },
                 onNegative = { viewModel.dismissLoginDialog() }
             )
@@ -422,8 +435,7 @@ fun ClubDetail(
                 .systemBarsPadding()
                 .fillMaxSize(),
             state = listState,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            userScrollEnabled = qnaScrollState.value == 0
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
                 SubcomposeAsyncImage(
@@ -709,6 +721,11 @@ fun ClubDetail(
             }
             stickyHeader {
                 DetailTabRow(
+                    modifier = Modifier.zIndex(2f).onGloballyPositioned {
+                        tabRowHeight = with(density) {
+                            it.size.height.toDp()
+                        }
+                    },
                     selectedTabIndex = pagerState.currentPage,
                     onTabSelected = {
                         EventLogger.logCampusClickEvent(
@@ -723,7 +740,7 @@ fun ClubDetail(
                 )
             }
             item {
-                val deviceHeightDp = LocalConfiguration.current.screenHeightDp.dp - (contentPadding.calculateTopPadding().value.dp + 24.dp)
+                val deviceHeightDp = LocalConfiguration.current.screenHeightDp.dp - (contentPadding.calculateTopPadding().value.dp + 24.dp) - tabRowHeight
                 HorizontalPager(
                     modifier = Modifier
                         .fillMaxSize()
@@ -736,8 +753,10 @@ fun ClubDetail(
                             val snackbarMessage = stringResource(R.string.detail_snackbar_detail_intro_text)
                             val snackbarActionLabel = stringResource(R.string.detail_snackbar_detail_intro_button)
                             ClubDetailIntro(
+                                introduction = state.clubDetails?.introduction,
                                 modifier = Modifier
-                                    .fillMaxSize(),
+                                    .fillMaxSize()
+                                    .verticalScroll(introductionScrollState, enabled = isIntroductionScrollable.value),
                                 onFixIntroClick = {
                                     scope.launch {
                                         val result = snackbarHostState.showSnackbar(
