@@ -40,4 +40,10 @@ class NavigatorImpl @Inject constructor() : Navigator {
             putExtra("link", redirectUrl)
         }
     }
+
+    override fun navigateToNotificationSetting(context: Context): Intent {
+        return context.buildIntent(NotificationActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+    }
 }

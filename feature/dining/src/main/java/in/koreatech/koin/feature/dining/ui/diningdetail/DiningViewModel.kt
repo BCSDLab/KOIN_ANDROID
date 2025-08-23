@@ -292,7 +292,7 @@ class DiningViewModel @Inject constructor(
         return if (userState.value.isAnonymous) {
             null
         } else {
-            (navigator.navigateTo(context = context))
+            (navigator.navigateToNotificationSetting(context))
         }
     }
 }
