@@ -152,18 +152,6 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/dining_widget_info" />
         </receiver>
-        <receiver
-            android:name=".ui.bus.BusWidget"
-            android:exported="false"
-            android:label="@string/navigation_item_bus">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/bus_widget_info" />
-        </receiver>
 
         <meta-data
             android:name="com.naver.maps.map.NCP_KEY_ID"
@@ -230,11 +218,6 @@
         </activity>
         <activity
             android:name=".ui.dining.DiningNoticeActivity"
-            android:exported="false"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.bus.BusActivity"
             android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
