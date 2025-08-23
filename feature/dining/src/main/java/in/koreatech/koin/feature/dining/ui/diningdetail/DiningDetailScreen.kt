@@ -106,8 +106,9 @@ fun DiningDetailScreen(
 
     val abTestExperimentGroup by viewModel.abTestExperimentGroup.collectAsState()
 
-    LaunchedEffect(userState) {
-        viewModel.getShowBottomSheetValue() // userState NPE error in viewModel init{}; Flow is null
+    LaunchedEffect(userState) { // userState NPE error in viewModel init{}; Flow is null
+        viewModel.getShowBottomSheetValue()
+        viewModel.getNotificationPermissionInfo()
     }
 
     Scaffold(

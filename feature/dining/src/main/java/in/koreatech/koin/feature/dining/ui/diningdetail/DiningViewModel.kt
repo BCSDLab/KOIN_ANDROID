@@ -70,7 +70,6 @@ class DiningViewModel @Inject constructor(
     init {
         getDining(initDate)
         getShowTooltipValue()
-        getNotificationPermissionInfo()
     }
 
     private val _userState: StateFlow<User> =
@@ -233,6 +232,7 @@ class DiningViewModel @Inject constructor(
     }
 
     fun getNotificationPermissionInfo() {
+        if (userState.value.isAnonymous) return
         viewModelScope.launch {
             getNotificationPermissionInfoUseCase().onSuccess { info ->
                 info.subscribes.forEach {
