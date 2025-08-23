@@ -27,7 +27,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 @Composable
 fun KoinSwitch(
     checked: Boolean,
-    onCheckedChange: () -> Unit,
+    onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     switchColors: KoinSwitchColors = KoinSwitchDefaults.koinSwitchColors()
 ) {
@@ -47,8 +47,8 @@ fun KoinSwitch(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
             ) {
-                onCheckedChange()
                 isChecked = !isChecked
+                onCheckedChange(isChecked)
             }
     ) {
         Canvas(modifier = Modifier.matchParentSize()) {
@@ -102,7 +102,7 @@ class KoinSwitchColors internal constructor(
 private fun KoinSwitchCheckedPreview() {
     KoinSwitch(
         checked = true,
-        onCheckedChange = {}
+        onCheckedChange = {false}
     )
 }
 
@@ -111,6 +111,6 @@ private fun KoinSwitchCheckedPreview() {
 private fun KoinSwitchUnCheckedPreview() {
     KoinSwitch(
         checked = false,
-        onCheckedChange = {}
+        onCheckedChange = {true}
     )
 }

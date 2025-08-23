@@ -27,13 +27,13 @@ import `in`.koreatech.koin.feature.dining.R
 
 @Composable
 fun DiningBottomSheet(
-    firstChecked: Boolean,
-    secondChecked: Boolean,
+    soldOutChecked: Boolean,
+    imageUploadChecked: Boolean,
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = {},
     onPositive: () -> Unit = {},
-    onFirstValueChange: () -> Unit = {},
-    onSecondValueChange: () -> Unit = {}
+    onSoldOutChange: (Boolean) -> Unit = {},
+    onImageUploadChange: (Boolean) -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -72,10 +72,8 @@ fun DiningBottomSheet(
                     style = KoinTheme.typography.regular16
                 )
                 KoinSwitch(
-                    checked = firstChecked,
-                    onCheckedChange = {
-                        onFirstValueChange()
-                    }
+                    checked = soldOutChecked,
+                    onCheckedChange = onSoldOutChange
                 )
             }
             Row(
@@ -88,10 +86,8 @@ fun DiningBottomSheet(
                     style = KoinTheme.typography.regular16
                 )
                 KoinSwitch(
-                    checked = secondChecked,
-                    onCheckedChange = {
-                        onSecondValueChange()
-                    }
+                    checked = imageUploadChecked,
+                    onCheckedChange = onImageUploadChange
                 )
             }
         }
@@ -125,7 +121,7 @@ fun DiningBottomSheet(
 @Composable
 private fun DiningBottomSheetPreview() {
     DiningBottomSheet(
-        firstChecked = true,
-        secondChecked = false
+        soldOutChecked = true,
+        imageUploadChecked = false
     )
 }

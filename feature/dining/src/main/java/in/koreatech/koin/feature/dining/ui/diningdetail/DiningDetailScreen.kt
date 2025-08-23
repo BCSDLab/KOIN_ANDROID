@@ -271,8 +271,8 @@ fun DiningDetailScreenImpl(
             tonalElevation = 0.dp
         ) {
             DiningBottomSheet(
-                firstChecked = isSoldOutSubscribed,
-                secondChecked = isDiningImageSubscribed,
+                soldOutChecked = isSoldOutSubscribed,
+                imageUploadChecked = isDiningImageSubscribed,
                 onDismiss = { scope.launch { sheetState.hide() } },
                 onPositive = {
                     val intent = getNotificationIntent(context)
@@ -280,12 +280,8 @@ fun DiningDetailScreenImpl(
                         launcher.launch(intent)
                     }
                 },
-                onFirstValueChange = {
-                    changeSoldOutSubscribe(!isSoldOutSubscribed)
-                },
-                onSecondValueChange = {
-                    changeDiningImageSubscribe(!isDiningImageSubscribed)
-                }
+                onSoldOutChange = changeSoldOutSubscribe,
+                onImageUploadChange = changeDiningImageSubscribe
             )
         }
     }
