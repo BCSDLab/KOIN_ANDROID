@@ -45,8 +45,8 @@ import `in`.koreatech.koin.feature.dining.R
 @Composable
 fun DiningItem(
     dining: Dining,
-    context: Context,
     modifier: Modifier = Modifier,
+    context: Context = LocalContext.current,
     onImageClick: () -> Unit = {},
     onShareClick: () -> Unit = {}
 ) {
@@ -224,26 +224,18 @@ fun DiningItem(
                 Column(
                     modifier = Modifier.weight(1f)
                 ) {
-                    dining.menu.forEachIndexed { index, item ->
-                        if (index % 2 == 0) {
-                            Text(
-                                text = item,
-                                style = KoinTheme.typography.regular14
-                            )
-                        }
-                    }
+                    Text(
+                        text = dining.menu.filterIndexed { index, _ -> index % 2 == 0 }.joinToString(separator = "\n"),
+                        style = KoinTheme.typography.regular14
+                    )
                 }
                 Column(
                     modifier = Modifier.weight(1f)
                 ) {
-                    dining.menu.forEachIndexed { index, item ->
-                        if (index % 2 == 1) {
-                            Text(
-                                text = item,
-                                style = KoinTheme.typography.regular14
-                            )
-                        }
-                    }
+                    Text(
+                        text = dining.menu.filterIndexed { index, _ -> index % 2 == 1 }.joinToString(separator = "\n"),
+                        style = KoinTheme.typography.regular14
+                    )
                 }
             }
         }
@@ -308,8 +300,7 @@ private fun DiningItemPreview() {
             updatedAt = "2025.05.17",
             soldOutAt = "",
             changedAt = "2025.05.17"
-        ),
-        context = LocalContext.current
+        )
     )
 }
 
@@ -331,7 +322,6 @@ private fun DiningItemSoldoutPreview() {
             updatedAt = "2025.05.17",
             soldOutAt = "2025.05.17",
             changedAt = "2025.05.17"
-        ),
-        context = LocalContext.current
+        )
     )
 }

@@ -43,8 +43,8 @@ import `in`.koreatech.koin.feature.dining.R
 @Composable
 fun DiningItemOriginal(
     dining: Dining,
-    context: Context,
     modifier: Modifier = Modifier,
+    context: Context = LocalContext.current,
     onImageClick: () -> Unit = {},
     onShareClick: () -> Unit = {}
 ) {

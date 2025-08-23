@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.core.designsystem.component.switch
+package `in`.koreatech.koin.feature.dining.component.switch
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween

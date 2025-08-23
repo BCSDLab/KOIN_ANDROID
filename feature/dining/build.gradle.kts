@@ -33,6 +33,7 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:analytics"))
     implementation(project(":core:navigation"))
+    implementation(project(":core:onboarding"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -48,7 +49,6 @@ dependencies {
     implementation(libs.coil.gif)
 
     implementation(libs.timber)
-    implementation(project(":core:onboarding"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

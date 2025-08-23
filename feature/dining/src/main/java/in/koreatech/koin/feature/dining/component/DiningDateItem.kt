@@ -30,9 +30,9 @@ fun DiningDateItem(
     modifier: Modifier = Modifier,
     onClick: (Date) -> Unit = {}
 ) {
-    val currentDate = TimeUtil.getCurrentTime()
-    val isToday: Boolean = TimeUtil.getDateDifferenceInDays(currentDate, date) == 0
-    val isBeforeDate: Boolean = date <= currentDate
+    val currentDate = remember { TimeUtil.getCurrentTime() }
+    val isToday = remember { TimeUtil.getDateDifferenceInDays(currentDate, date) == 0 }
+    val isBeforeDate = remember { date <= currentDate }
     Column(
         modifier = modifier
             .clickable(
