@@ -21,9 +21,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
-import `in`.koreatech.koin.feature.dining.component.switch.KoinSwitch
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.dining.R
+import `in`.koreatech.koin.feature.dining.component.switch.KoinSwitch
 
 @Composable
 fun DiningBottomSheet(

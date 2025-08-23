@@ -102,7 +102,7 @@ class KoinSwitchColors internal constructor(
 private fun KoinSwitchCheckedPreview() {
     KoinSwitch(
         checked = true,
-        onCheckedChange = {false}
+        onCheckedChange = {}
     )
 }
 
@@ -111,6 +111,6 @@ private fun KoinSwitchCheckedPreview() {
 private fun KoinSwitchUnCheckedPreview() {
     KoinSwitch(
         checked = false,
-        onCheckedChange = {true}
+        onCheckedChange = {}
     )
 }
