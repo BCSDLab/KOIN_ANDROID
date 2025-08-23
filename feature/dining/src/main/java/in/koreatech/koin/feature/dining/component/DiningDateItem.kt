@@ -65,18 +65,11 @@ fun DiningDateItem(
             Text(
                 text = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().dayOfMonth.toString(),
                 style = KoinTheme.typography.medium15,
-                color = if (isSelected) {
-                    KoinTheme.colors.neutral0
-                } else {
-                    if (isToday) {
-                        KoinTheme.colors.primary500
-                    } else {
-                        if (isBeforeDate) {
-                            KoinTheme.colors.neutral500
-                        } else {
-                            KoinTheme.colors.neutral800
-                        }
-                    }
+                color = when {
+                    isSelected -> KoinTheme.colors.neutral0
+                    isToday -> KoinTheme.colors.primary500
+                    isBeforeDate -> KoinTheme.colors.neutral500
+                    else -> KoinTheme.colors.neutral800
                 }
             )
         }
