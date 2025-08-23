@@ -169,7 +169,7 @@ fun DiningDetailScreen(
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun DiningDetailScreenImpl(
+private fun DiningDetailScreenImpl(
     diningList: List<Dining>,
     contentPadding: PaddingValues,
     selectedDate: Date,
