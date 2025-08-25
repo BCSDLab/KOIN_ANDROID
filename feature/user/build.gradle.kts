@@ -22,11 +22,11 @@ android {
 }
 
 dependencies {
-    implementation(project(":core"))
-    implementation(project(":domain"))
-    implementation(project(":core:onboarding"))
-    implementation(project(":core:designsystem"))
-    implementation(project(":core:analytics"))
+    implementation(projects.core)
+    implementation(projects.domain)
+    implementation(projects.core.onboarding)
+    implementation(projects.core.designsystem)
+    implementation(projects.core.analytics)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

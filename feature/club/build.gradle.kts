@@ -19,11 +19,11 @@ android {
 }
 
 dependencies {
-    implementation(project(":core"))
-    implementation(project(":core:navigation"))
-    implementation(project(":domain"))
-    implementation(project(":core:designsystem"))
-    implementation(project(":core:analytics"))
+    implementation(projects.core)
+    implementation(projects.core.navigation)
+    implementation(projects.domain)
+    implementation(projects.core.designsystem)
+    implementation(projects.core.analytics)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
