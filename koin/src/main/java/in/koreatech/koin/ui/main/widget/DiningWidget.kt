@@ -52,7 +52,7 @@ import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.util.DiningUtil
-import `in`.koreatech.koin.ui.dining.DiningActivity
+import `in`.koreatech.koin.feature.dining.ui.DiningActivity
 import kotlinx.coroutines.launch
 
 @Composable
