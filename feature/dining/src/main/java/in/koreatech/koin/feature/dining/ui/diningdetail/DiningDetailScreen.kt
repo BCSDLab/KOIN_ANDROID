@@ -34,6 +34,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -53,9 +54,12 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
@@ -378,13 +382,6 @@ private fun DiningDetailScreenImpl(
             }
         }
         KoinTabRow(
-            modifier = Modifier
-                .zIndex(2f)
-                .shadow(
-                    elevation = 4.dp,
-                    spotColor = KoinTheme.colors.neutral800.copy(alpha = 0.2f),
-                    ambientColor = KoinTheme.colors.neutral800.copy(alpha = 0.2f)
-                ),
             selectedTabIndex = pagerState.currentPage,
             onTabSelected = {
                 EventLogger.logClickEvent(

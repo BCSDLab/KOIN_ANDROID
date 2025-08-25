@@ -64,7 +64,7 @@ fun DiningDateItem(
         ) {
             Text(
                 text = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().dayOfMonth.toString(),
-                style = KoinTheme.typography.medium15,
+                style = KoinTheme.typography.medium16,
                 color = when {
                     isSelected -> KoinTheme.colors.neutral0
                     isToday -> KoinTheme.colors.primary500
