@@ -29,8 +29,6 @@ class DiningNoticeViewModel @Inject constructor(
         )
     )
     val diningNotice: StateFlow<CoopShop> get() = _diningNotice
-    private val _toastErrorMessage = MutableStateFlow("")
-    val toastErrorMessage: StateFlow<String> get() = _toastErrorMessage
 
     init {
         getDiningNotice(CoopShopType.Dining)
@@ -41,9 +39,6 @@ class DiningNoticeViewModel @Inject constructor(
             getCoopShopUseCase(type)
                 .onSuccess {
                     _diningNotice.value = it
-                }
-                .onFailure {
-                    _toastErrorMessage.value = it.message
                 }
         }
     }
