@@ -55,13 +55,15 @@ fun DiningItem(
             .fillMaxWidth()
             .shadow(
                 elevation = 4.dp,
-                spotColor = KoinTheme.colors.neutral800.copy(alpha = 0.04f),
-                ambientColor = KoinTheme.colors.neutral800.copy(alpha = 0.04f)
+                spotColor = KoinTheme.colors.neutral800.copy(alpha = 0.2f),
+                ambientColor = KoinTheme.colors.neutral800.copy(alpha = 0.2f),
+                shape = RoundedCornerShape(16.dp) // not in design theme value
             )
             .shadow(
-                elevation = 1.dp,
-                spotColor = KoinTheme.colors.neutral800.copy(alpha = 0.02f),
-                ambientColor = KoinTheme.colors.neutral800.copy(alpha = 0.02f)
+                elevation = 2.dp,
+                spotColor = KoinTheme.colors.neutral800.copy(alpha = 0.1f),
+                ambientColor = KoinTheme.colors.neutral800.copy(alpha = 0.1f),
+                shape = RoundedCornerShape(16.dp) // not in design theme value
             )
             .background(
                 color = KoinTheme.colors.neutral0,
