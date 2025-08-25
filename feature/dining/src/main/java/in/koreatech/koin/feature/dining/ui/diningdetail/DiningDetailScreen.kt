@@ -4,9 +4,12 @@ import android.content.Context
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,6 +23,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,6 +31,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -39,6 +44,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -46,8 +52,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -57,6 +69,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.ImageLoader
@@ -190,25 +203,28 @@ private fun DiningDetailScreenImpl(
     getNotificationPermitInfo: () -> Unit = {},
     onShareClick: (Dining, Context) -> Unit = { _, _ -> }
 ) {
-    val tabSize = 3
-    val tabList = DiningType.entries.take(tabSize).map { it.typeKorean }
-    var tabRowHeight by remember { mutableStateOf(0.dp) }
-
-    val pagerState = rememberPagerState(initialPage = initialPage) { tabList.size }
     val scope = rememberCoroutineScope()
-
     val density = LocalDensity.current
 
-    val listState = rememberLazyListState()
+    val tabSize = 3
+    val tabList = DiningType.entries.take(tabSize).map { it.typeKorean }
+
+    val pagerState = rememberPagerState(initialPage = initialPage) { tabList.size }
 
     val breakfastScrollState = rememberScrollState()
-    val isBreakfastScrollable = remember { derivedStateOf { !listState.canScrollForward || breakfastScrollState.value != 0 } }
-
     val lunchScrollState = rememberScrollState()
-    val isLunchScrollable = remember { derivedStateOf { !listState.canScrollForward || lunchScrollState.value != 0 } }
-
     val dinnerScrollState = rememberScrollState()
-    val isDinnerScrollable = remember { derivedStateOf { !listState.canScrollForward || dinnerScrollState.value != 0 } }
+
+    val currentScrollState = remember {
+        derivedStateOf {
+            when (tabList[pagerState.currentPage]) {
+                DiningType.Breakfast.typeKorean -> breakfastScrollState
+                DiningType.Lunch.typeKorean -> lunchScrollState
+                DiningType.Dinner.typeKorean -> dinnerScrollState
+                else -> breakfastScrollState
+            }
+        }
+    }
 
     val currentDate = remember { TimeUtil.getCurrentTime() }
     val dates = remember(currentDate) {
@@ -296,142 +312,159 @@ private fun DiningDetailScreenImpl(
         )
     }
 
-    LazyColumn(
+    val maxToolbarHeight = 105.dp
+    val minToolbarHeight = 0.dp
+    val maxToolbarHeightPx = with(density) { maxToolbarHeight.toPx() }
+    val minToolbarHeightPx = with(density) { minToolbarHeight.toPx() }
+
+    var toolbarOffsetPx by remember { mutableFloatStateOf(0f) }
+
+    val toolbarHeight = lerp(
+        maxToolbarHeight,
+        minToolbarHeight,
+        -toolbarOffsetPx / (maxToolbarHeightPx - minToolbarHeightPx)
+    )
+    val animatedToolbarHeight by animateDpAsState(
+        targetValue = toolbarHeight,
+        animationSpec = tween(durationMillis = 50)
+    )
+
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                var delta = available.y
+                if(available.y > 0) {
+                    val scrollState = currentScrollState.value
+                    if(scrollState.value <= delta) {
+                        delta -= scrollState.value
+                    }
+                    else {
+                        return Offset.Zero
+                    }
+                }
+                val newOffset = toolbarOffsetPx + delta
+                val beforeToolbarOffsetPx = toolbarOffsetPx
+                toolbarOffsetPx = newOffset.coerceIn(-(maxToolbarHeightPx - minToolbarHeightPx), 0f)
+                return Offset(0f, toolbarOffsetPx - beforeToolbarOffsetPx)
+            }
+        }
+    }
+
+    Column(
         modifier = modifier
             .padding(contentPadding)
             .consumeWindowInsets(contentPadding)
             .systemBarsPadding()
-            .fillMaxSize(),
-        state = listState
+            .fillMaxSize()
+            .nestedScroll(nestedScrollConnection)
     ) {
-        item {
-            Row(
-                modifier = Modifier
-                    .padding(
-                        start = 24.dp,
-                        end = 24.dp,
-                        top = 24.dp,
-                        bottom = 16.dp
-                    )
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                dates.forEachIndexed { index, date ->
-                    DiningDateItem(
-                        date = date,
-                        isSelected = selectedPosition == index,
-                        onClick = onDateClick
-                    )
-                }
+        Row(
+            modifier = Modifier
+                .height(animatedToolbarHeight)
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .offset(y = -(maxToolbarHeight - animatedToolbarHeight)/2),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            dates.forEachIndexed { index, date ->
+                DiningDateItem(
+                    modifier = Modifier
+                        .requiredHeight(maxToolbarHeight)
+                        .padding(top = 24.dp, bottom = 16.dp),
+                    date = date,
+                    isSelected = selectedPosition == index,
+                    onClick = onDateClick
+                )
             }
         }
-        stickyHeader {
-            KoinTabRow(
-                modifier = Modifier
-                    .zIndex(2f)
-                    .onGloballyPositioned {
-                        tabRowHeight = with(density) {
-                            it.size.height.toDp()
-                        }
-                    },
-                selectedTabIndex = pagerState.currentPage,
-                onTabSelected = {
-                    EventLogger.logClickEvent(
-                        EventAction.CAMPUS,
-                        AnalyticsConstant.Label.MENU_TIME,
-                        tabList[it]
-                    )
-                    isUserScrolling = false
-                    scope.launch {
-                        pagerState.animateScrollToPage(it)
-                    }
-                },
-                titles = tabList.map { it }
-            )
-        }
-        item {
-            val deviceHeightDp = LocalConfiguration.current.screenHeightDp.dp - (contentPadding.calculateTopPadding().value.dp + 24.dp) - tabRowHeight
-            HorizontalPager(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .height(deviceHeightDp)
-                    .background(color = KoinTheme.colors.neutral100),
-                state = pagerState,
-                verticalAlignment = Alignment.Top
-            ) { page ->
-                val diningFilterList by remember(diningList, page) {
-                    derivedStateOf {
-                        when (tabList[page]) {
-                            DiningType.Breakfast.typeKorean -> diningList.filter { it.type == DiningType.Breakfast.typeEnglish }
-                            DiningType.Lunch.typeKorean -> diningList.filter { it.type == DiningType.Breakfast.typeEnglish }
-                            DiningType.Dinner.typeKorean -> diningList.filter { it.type == DiningType.Breakfast.typeEnglish }
-                            else -> listOf()
-                        }
+        KoinTabRow(
+            modifier = Modifier
+                .zIndex(2f)
+                .shadow(
+                    elevation = 4.dp,
+                    spotColor = KoinTheme.colors.neutral800.copy(alpha = 0.2f),
+                    ambientColor = KoinTheme.colors.neutral800.copy(alpha = 0.2f)
+                ),
+            selectedTabIndex = pagerState.currentPage,
+            onTabSelected = {
+                EventLogger.logClickEvent(
+                    EventAction.CAMPUS,
+                    AnalyticsConstant.Label.MENU_TIME,
+                    tabList[it]
+                )
+                isUserScrolling = false
+                scope.launch {
+                    pagerState.animateScrollToPage(it)
+                }
+            },
+            titles = tabList.map { it }
+        )
+        HorizontalPager(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = KoinTheme.colors.neutral200),
+            state = pagerState,
+            verticalAlignment = Alignment.Top
+        ) { page ->
+            val diningFilterList by remember(diningList, page) {
+                derivedStateOf {
+                    when (tabList[page]) {
+                        DiningType.Breakfast.typeKorean -> diningList.filter { it.type == DiningType.Breakfast.typeEnglish }
+                        DiningType.Lunch.typeKorean -> diningList.filter { it.type == DiningType.Breakfast.typeEnglish }
+                        DiningType.Dinner.typeKorean -> diningList.filter { it.type == DiningType.Breakfast.typeEnglish }
+                        else -> listOf()
                     }
                 }
-                Column(
-                    modifier = Modifier
-                        .verticalScroll(
-                            when (tabList[page]) {
-                                DiningType.Breakfast.typeKorean -> breakfastScrollState
-                                DiningType.Lunch.typeKorean -> lunchScrollState
-                                DiningType.Dinner.typeKorean -> dinnerScrollState
-                                else -> breakfastScrollState
+            }
+            Column(
+                modifier = Modifier
+                    .verticalScroll(currentScrollState.value)
+                    .padding(vertical = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                diningFilterList.forEachIndexed { index, dining ->
+                    Box(
+                        modifier = Modifier.zIndex(if (index == 0 && showTooltip) 1f else 0f),
+                        contentAlignment = Alignment.BottomCenter
+                    ) {
+                        DiningItemByABTest(
+                            experimentGroup = experimentGroup,
+                            dining = dining,
+                            context = context,
+                            onImageClick = {
+                                selectedImage = dining.imageUrl
+                                showImageDialog = true
                             },
-                            enabled = when (tabList[page]) {
-                                DiningType.Breakfast.typeKorean -> isBreakfastScrollable.value
-                                DiningType.Lunch.typeKorean -> isLunchScrollable.value
-                                DiningType.Dinner.typeKorean -> isDinnerScrollable.value
-                                else -> isBreakfastScrollable.value
+                            onShareClick = {
+                                onShareClick(dining, context)
                             }
                         )
-                        .padding(vertical = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    diningFilterList.forEachIndexed { index, dining ->
-                        Box(
-                            modifier = Modifier.zIndex(if (index == 0 && showTooltip) 1f else 0f),
-                            contentAlignment = Alignment.BottomCenter
-                        ) {
-                            DiningItemByABTest(
-                                experimentGroup = experimentGroup,
-                                dining = dining,
-                                context = context,
-                                onImageClick = {
-                                    selectedImage = dining.imageUrl
-                                    showImageDialog = true
-                                },
-                                onShareClick = {
-                                    onShareClick(dining, context)
+                        if (index == 0 && showTooltip) {
+                            val imageLoader = ImageLoader.Builder(context)
+                                .components {
+                                    add(GifDecoder.Factory())
                                 }
+                                .build()
+                            SubcomposeAsyncImage(
+                                modifier = Modifier
+                                    .offset { IntOffset(0, with(density) { 60.dp.toPx().toInt() }) }
+                                    .fillMaxWidth()
+                                    .zIndex(1f)
+                                    .clickable { changeShowTooltip(false) }
+                                    .scale(1.3f),
+                                model = ImageRequest.Builder(context)
+                                    .data(R.drawable.tooltip_share)
+                                    .crossfade(true)
+                                    .build(),
+                                imageLoader = imageLoader,
+                                contentDescription = "Share tooltip"
                             )
-                            if (index == 0 && showTooltip) {
-                                val imageLoader = ImageLoader.Builder(context)
-                                    .components {
-                                        add(GifDecoder.Factory())
-                                    }
-                                    .build()
-                                SubcomposeAsyncImage(
-                                    modifier = Modifier
-                                        .offset { IntOffset(0, with(density) { 60.dp.toPx().toInt() }) }
-                                        .fillMaxWidth()
-                                        .zIndex(1f)
-                                        .clickable { changeShowTooltip(false) }
-                                        .scale(1.3f),
-                                    model = ImageRequest.Builder(context)
-                                        .data(R.drawable.tooltip_share)
-                                        .crossfade(true)
-                                        .build(),
-                                    imageLoader = imageLoader,
-                                    contentDescription = "Share tooltip"
-                                )
-                            }
                         }
                     }
-                    if (diningFilterList.size == 1) {
-                        Spacer(Modifier.height(10.dp))
-                    } // to show tooltip image area
                 }
+                if (diningFilterList.size == 1) {
+                    Spacer(Modifier.height(10.dp))
+                } // to show tooltip image area
             }
         }
     }
@@ -448,7 +481,8 @@ private fun DiningItemByABTest(
     when (experimentGroup) {
         ExperimentGroup.SHARE_NEW -> {
             DiningItem(
-                modifier = Modifier.padding(horizontal = 24.dp),
+                modifier = Modifier
+                    .padding(horizontal = 24.dp),
                 dining = dining,
                 context = context,
                 onImageClick = onImageClick,
