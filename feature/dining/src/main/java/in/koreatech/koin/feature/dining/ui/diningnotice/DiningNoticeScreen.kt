@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.dining.ui.diningnotice
 
 import android.app.Activity
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
