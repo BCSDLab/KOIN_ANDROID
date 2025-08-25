@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.dining.ui.diningnotice
 
 import android.app.Activity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
@@ -21,6 +23,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -74,7 +77,8 @@ fun DiningNoticeScreen(
             modifier = Modifier
                 .padding(contentPadding)
                 .consumeWindowInsets(contentPadding)
-                .systemBarsPadding()
+                .systemBarsPadding(),
+            isLoading = viewModel.isLoading.value ?: false
         )
     }
 }
@@ -82,9 +86,20 @@ fun DiningNoticeScreen(
 @Composable
 fun DiningNoticeScreenImpl(
     diningNotice: CoopShop,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isLoading: Boolean = false
 ) {
     val listState = rememberLazyListState()
+
+    if (isLoading) {
+        Column(
+            Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            CircularProgressIndicator()
+        }
+    }
 
     LazyColumn(
         modifier = modifier
