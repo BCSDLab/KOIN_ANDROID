@@ -83,6 +83,7 @@ import `in`.koreatech.koin.feature.dining.component.DiningItem
 import `in`.koreatech.koin.feature.dining.component.DiningItemOriginal
 import `in`.koreatech.koin.feature.dining.component.bottomsheet.DiningBottomSheet
 import `in`.koreatech.koin.feature.dining.component.dialog.DiningImageDialog
+import `in`.koreatech.koin.feature.dining.ui.diningdetail.scroll.diningScrollConnection
 import java.util.Date
 import kotlinx.coroutines.launch
 
@@ -308,12 +309,12 @@ private fun DiningDetailScreenImpl(
     val maxToolbarHeightPx = with(density) { maxToolbarHeight.toPx() }
     val minToolbarHeightPx = with(density) { minToolbarHeight.toPx() }
 
-    var toolbarOffsetPx by remember { mutableFloatStateOf(0f) }
+    val toolbarOffsetPx = remember { mutableFloatStateOf(0f) }
 
     val toolbarHeight = lerp(
         maxToolbarHeight,
         minToolbarHeight,
-        -toolbarOffsetPx / (maxToolbarHeightPx - minToolbarHeightPx)
+        -toolbarOffsetPx.floatValue / (maxToolbarHeightPx - minToolbarHeightPx)
     )
     val animatedToolbarHeight by animateDpAsState(
         targetValue = toolbarHeight,
@@ -321,23 +322,12 @@ private fun DiningDetailScreenImpl(
     )
 
     val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                var delta = available.y
-                if (available.y > 0) {
-                    val scrollState = currentScrollState.value
-                    if (scrollState.value <= delta) {
-                        delta -= scrollState.value
-                    } else {
-                        return Offset.Zero
-                    }
-                }
-                val newOffset = toolbarOffsetPx + delta
-                val beforeToolbarOffsetPx = toolbarOffsetPx
-                toolbarOffsetPx = newOffset.coerceIn(-(maxToolbarHeightPx - minToolbarHeightPx), 0f)
-                return Offset(0f, toolbarOffsetPx - beforeToolbarOffsetPx)
-            }
-        }
+        diningScrollConnection(
+            currentScrollState = currentScrollState,
+            toolbarOffsetPx = toolbarOffsetPx,
+            maxToolbarHeightPx = maxToolbarHeightPx,
+            minToolbarHeightPx = minToolbarHeightPx
+        )
     }
 
     Column(
