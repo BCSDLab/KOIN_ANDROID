@@ -210,7 +210,7 @@ fun DiningItemOriginal(
                 Column(
                     modifier = Modifier.weight(1f)
                 ) {
-                    dining.menu.filterIndexed { index,_ -> index % 2 == 0 }.forEach { item ->
+                    dining.menu.filterIndexed { index, _ -> index % 2 == 0 }.forEach { item ->
                         Text(
                             text = item,
                             style = KoinTheme.typography.regular14
@@ -220,7 +220,7 @@ fun DiningItemOriginal(
                 Column(
                     modifier = Modifier.weight(1f)
                 ) {
-                    dining.menu.filterIndexed { index,_ -> index % 2 == 1 }.forEach {item ->
+                    dining.menu.filterIndexed { index, _ -> index % 2 == 1 }.forEach { item ->
                         Text(
                             text = item,
                             style = KoinTheme.typography.regular14

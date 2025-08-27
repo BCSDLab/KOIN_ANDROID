@@ -27,5 +27,5 @@ fun diningScrollConnection(
         val beforeToolbarOffsetPx = toolbarOffsetPx.value
         toolbarOffsetPx.value = newOffset.coerceIn(-(maxToolbarHeightPx - minToolbarHeightPx), 0f)
         return Offset(0f, toolbarOffsetPx.value - beforeToolbarOffsetPx)
-   }
+    }
 }
