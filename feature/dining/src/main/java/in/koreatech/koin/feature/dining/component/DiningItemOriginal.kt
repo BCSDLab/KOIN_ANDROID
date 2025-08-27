@@ -142,7 +142,7 @@ fun DiningItemOriginal(
                         ) {
                             Image(
                                 painter = painterResource(R.drawable.no_photo),
-                                contentDescription = ""
+                                contentDescription = null
                             )
                             Text(
                                 text = stringResource(R.string.no_photo),
@@ -190,7 +190,7 @@ fun DiningItemOriginal(
                         ) {
                             Image(
                                 painter = painterResource(R.drawable.no_meals),
-                                contentDescription = "",
+                                contentDescription = null,
                                 modifier = Modifier.scale(1.5f)
                             )
                             Text(
@@ -210,25 +210,21 @@ fun DiningItemOriginal(
                 Column(
                     modifier = Modifier.weight(1f)
                 ) {
-                    dining.menu.forEachIndexed { index, item ->
-                        if (index % 2 == 0) {
-                            Text(
-                                text = item,
-                                style = KoinTheme.typography.regular14
-                            )
-                        }
+                    dining.menu.filterIndexed { index,_ -> index % 2 == 0 }.forEach { item ->
+                        Text(
+                            text = item,
+                            style = KoinTheme.typography.regular14
+                        )
                     }
                 }
                 Column(
                     modifier = Modifier.weight(1f)
                 ) {
-                    dining.menu.forEachIndexed { index, item ->
-                        if (index % 2 == 1) {
-                            Text(
-                                text = item,
-                                style = KoinTheme.typography.regular14
-                            )
-                        }
+                    dining.menu.filterIndexed { index,_ -> index % 2 == 1 }.forEach {item ->
+                        Text(
+                            text = item,
+                            style = KoinTheme.typography.regular14
+                        )
                     }
                 }
             }

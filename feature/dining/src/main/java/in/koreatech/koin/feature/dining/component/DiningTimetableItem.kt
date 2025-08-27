@@ -55,9 +55,9 @@ fun DiningTimetableItem(
                     color = KoinTheme.colors.neutral50
                 )
                 .padding(vertical = 5.dp),
-            firstText = stringResource(R.string.dining_notice_timetable_type),
-            secondText = stringResource(R.string.dining_notice_timetable_open_time),
-            thirdText = stringResource(R.string.dining_notice_timetable_close_time),
+            typeText = stringResource(R.string.dining_notice_timetable_type),
+            openTimeText = stringResource(R.string.dining_notice_timetable_open_time),
+            closeTimeText = stringResource(R.string.dining_notice_timetable_close_time),
             style = KoinTheme.typography.medium14
         )
         HorizontalDivider(
@@ -72,9 +72,9 @@ fun DiningTimetableItem(
         ) {
             openCloseTimeInfoList.forEachIndexed { index, it ->
                 DiningTimetableItemSheets(
-                    firstText = it.type,
-                    secondText = it.openTime,
-                    thirdText = it.closeTime,
+                    typeText = it.type,
+                    openTimeText = it.openTime,
+                    closeTimeText = it.closeTime,
                     style = KoinTheme.typography.regular16
                 )
                 if (index != openCloseTimeInfoList.lastIndex) {
@@ -96,9 +96,9 @@ fun DiningTimetableItem(
 @Composable
 fun DiningTimetableItemSheets(
     modifier: Modifier = Modifier,
-    firstText: String,
-    secondText: String,
-    thirdText: String,
+    typeText: String,
+    openTimeText: String,
+    closeTimeText: String,
     style: TextStyle = KoinTheme.typography.medium14,
     color: Color = KoinTheme.colors.neutral800
 ) {
@@ -108,21 +108,21 @@ fun DiningTimetableItemSheets(
     ) {
         Text(
             modifier = Modifier.weight(1f),
-            text = firstText,
+            text = typeText,
             style = style,
             textAlign = TextAlign.Center,
             color = color
         )
         Text(
             modifier = Modifier.weight(1f),
-            text = secondText,
+            text = openTimeText,
             style = style,
             textAlign = TextAlign.Center,
             color = color
         )
         Text(
             modifier = Modifier.weight(1f),
-            text = thirdText,
+            text = closeTimeText,
             style = style,
             textAlign = TextAlign.Center,
             color = color

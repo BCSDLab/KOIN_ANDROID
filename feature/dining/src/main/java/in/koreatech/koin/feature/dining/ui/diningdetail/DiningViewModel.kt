@@ -205,8 +205,7 @@ class DiningViewModel @Inject constructor(
                 imageUrl = dining.imageUrl,
                 link = link
             ),
-            itemContent =
-            ItemContent(
+            itemContent = ItemContent(
                 profileText = "${
                     if (TimeUtil.isToday(dining.date)) {
                         "오늘"
@@ -216,8 +215,7 @@ class DiningViewModel @Inject constructor(
                         TimeUtil.formatDateToKorean(dining.date)
                     }
                 } ${DiningUtil.getKoreanName(dining.type)} 식단",
-                items =
-                listOf(
+                items = listOf(
                     ItemInfo(
                         item = dining.place,
                         itemOp = dining.menu.joinToString(", ")

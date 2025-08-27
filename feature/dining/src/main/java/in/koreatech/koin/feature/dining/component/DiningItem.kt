@@ -158,7 +158,7 @@ fun DiningItem(
                         ) {
                             Image(
                                 painter = painterResource(R.drawable.no_photo),
-                                contentDescription = ""
+                                contentDescription = null
                             )
                             Text(
                                 text = stringResource(R.string.no_photo),
@@ -206,7 +206,7 @@ fun DiningItem(
                         ) {
                             Image(
                                 painter = painterResource(R.drawable.no_meals),
-                                contentDescription = "",
+                                contentDescription = null,
                                 modifier = Modifier.scale(1.5f)
                             )
                             Text(
@@ -241,10 +241,7 @@ fun DiningItem(
                 }
             }
         }
-        HorizontalDivider(
-            thickness = 1.dp,
-            color = KoinTheme.colors.neutral100
-        )
+        HorizontalDivider(color = KoinTheme.colors.neutral100)
         Row(
             modifier = Modifier
                 .fillMaxWidth()

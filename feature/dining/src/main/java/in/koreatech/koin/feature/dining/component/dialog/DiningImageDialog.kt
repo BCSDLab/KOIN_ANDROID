@@ -45,8 +45,7 @@ fun DiningImageDialog(
     var scale by remember { mutableStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
     BasicAlertDialog(
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight(),
         onDismissRequest = { onDismiss() }
