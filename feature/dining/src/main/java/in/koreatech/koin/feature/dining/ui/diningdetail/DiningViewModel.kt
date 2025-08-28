@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.dining.ui.diningdetail
 
 import android.content.Context
-import android.content.Intent
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.kakao.sdk.share.ShareClient

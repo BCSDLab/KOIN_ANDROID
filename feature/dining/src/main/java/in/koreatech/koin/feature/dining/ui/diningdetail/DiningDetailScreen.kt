@@ -59,9 +59,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.ImageLoader
 import coil.compose.SubcomposeAsyncImage
-import coil.decode.GifDecoder
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
@@ -71,6 +69,7 @@ import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.navigation.Navigator
+import `in`.koreatech.koin.core.util.KoinCoilImageLoader
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.util.TimeUtil
@@ -409,11 +408,6 @@ private fun DiningDetailScreenImpl(
                             }
                         )
                         if (index == 0 && showTooltip) {
-                            val imageLoader = ImageLoader.Builder(context)
-                                .components {
-                                    add(GifDecoder.Factory())
-                                }
-                                .build()
                             SubcomposeAsyncImage(
                                 modifier = Modifier
                                     .offset { IntOffset(0, with(density) { 60.dp.toPx().toInt() }) }
@@ -425,7 +419,7 @@ private fun DiningDetailScreenImpl(
                                     .data(R.drawable.tooltip_share)
                                     .crossfade(true)
                                     .build(),
-                                imageLoader = imageLoader,
+                                imageLoader = KoinCoilImageLoader.getImageLoader(context, true),
                                 contentDescription = "Share tooltip"
                             )
                         }
