@@ -279,11 +279,11 @@ class DiningViewModel @Inject constructor(
         onDiningImageSubscribe(boolean)
     }
 
-    fun getNotificationIntent(context: Context): Intent? {
+    fun getNavigator(): Navigator? {
         return if (userState.value.isAnonymous) {
             null
         } else {
-            (navigator.navigateToNotificationSetting(context))
+            navigator
         }
     }
 }

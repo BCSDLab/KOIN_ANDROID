@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.dining.ui.diningdetail
 
 import android.content.Context
-import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.animateDpAsState
@@ -71,6 +70,7 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.util.TimeUtil
@@ -163,7 +163,7 @@ fun DiningDetailScreen(
             changeShowTooltip = viewModel::changeShowTooltip,
             changeSoldOutSubscribe = viewModel::changeIsSoldOutSubscribed,
             changeDiningImageSubscribe = viewModel::changeIsDiningImageSubscribed,
-            getNotificationIntent = viewModel::getNotificationIntent,
+            getNavigator = viewModel::getNavigator,
             getNotificationPermitInfo = viewModel::getNotificationPermissionInfo,
             onShareClick = viewModel::shareDining
         )
@@ -188,7 +188,7 @@ private fun DiningDetailScreenImpl(
     changeShowTooltip: (Boolean) -> Unit = {},
     changeSoldOutSubscribe: (Boolean) -> Unit = {},
     changeDiningImageSubscribe: (Boolean) -> Unit = {},
-    getNotificationIntent: (Context) -> Intent? = { null },
+    getNavigator: () -> Navigator? = { null },
     getNotificationPermitInfo: () -> Unit = {},
     onShareClick: (Dining, Context) -> Unit = { _, _ -> }
 ) {
@@ -281,7 +281,7 @@ private fun DiningDetailScreenImpl(
                 imageUploadChecked = isDiningImageSubscribed,
                 onDismiss = { scope.launch { sheetState.hide() } },
                 onPositive = {
-                    getNotificationIntent(context)?.let {
+                    getNavigator()?.navigateToNotificationSetting(context)?.let {
                         launcher.launch(it)
                     }
                 },
