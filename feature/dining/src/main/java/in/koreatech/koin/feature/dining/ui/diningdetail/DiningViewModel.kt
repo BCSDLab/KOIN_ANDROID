@@ -72,20 +72,17 @@ class DiningViewModel @Inject constructor(
         getShowTooltipValue()
     }
 
-    private val _userState: StateFlow<User> =
-        getUserStatusUseCase().stateIn(
+    private val _userState: StateFlow<User> = getUserStatusUseCase().stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
             initialValue = User.Anonymous
         )
     val userState: StateFlow<User> get() = _userState
 
-    private val _selectedDate =
-        MutableStateFlow(initDate)
+    private val _selectedDate = MutableStateFlow(initDate)
     val selectedDate: StateFlow<String> get() = _selectedDate
 
-    private val _dining =
-        MutableStateFlow<List<Dining>>(emptyList())
+    private val _dining = MutableStateFlow<List<Dining>>(emptyList())
     val dining: StateFlow<List<Dining>> get() = _dining
 
     private val _showTooltip = MutableStateFlow(false)
@@ -100,8 +97,7 @@ class DiningViewModel @Inject constructor(
     private val _isDiningImageSubscribed = MutableStateFlow(false)
     val isDiningImageSubscribed: StateFlow<Boolean> get() = _isDiningImageSubscribed
 
-    val abTestExperimentGroup =
-        flow {
+    val abTestExperimentGroup = flow {
             abTestUseCase(Experiment.DINING_SHARE.experimentTitle).onSuccess {
                 emit(it)
             }.onFailure {
@@ -130,6 +126,7 @@ class DiningViewModel @Inject constructor(
                         }
                     }
                     .onFailure {
+                        _dining.value = listOf()
                     }
             }
         }
@@ -187,20 +184,17 @@ class DiningViewModel @Inject constructor(
     }
 
     private fun createFeedMessageTemplate(dining: Dining): FeedTemplate {
-        val executionParams =
-            mapOf(
+        val executionParams = mapOf(
                 PARAMS_DATE to dining.date,
                 PARAMS_TYPE to dining.type,
                 PARAMS_PLACE to dining.place
             )
-        val link =
-            Link(
+        val link = Link(
                 androidExecutionParams = executionParams,
                 iosExecutionParams = executionParams
             )
         return FeedTemplate(
-            content =
-            Content(
+            content = Content(
                 title = "ㅤ",
                 imageUrl = dining.imageUrl,
                 link = link
@@ -222,8 +216,7 @@ class DiningViewModel @Inject constructor(
                     )
                 )
             ),
-            buttons =
-            listOf(
+            buttons = listOf(
                 Button("코인에서 식단 전체보기", link)
             )
         )

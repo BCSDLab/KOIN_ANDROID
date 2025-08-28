@@ -34,8 +34,7 @@ fun DiningDateItem(
     val isToday = remember { TimeUtil.getDateDifferenceInDays(currentDate, date) == 0 }
     val isBeforeDate = remember { date <= currentDate }
     Column(
-        modifier = modifier
-            .clickable(
+        modifier = modifier.clickable(
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() }
             ) { onClick(date) },

@@ -92,7 +92,7 @@ fun DiningNoticeScreenImpl(
 
     if (isLoading) {
         Column(
-            Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -107,8 +107,7 @@ fun DiningNoticeScreenImpl(
     ) {
         item {
             Column(
-                modifier = Modifier
-                    .padding(vertical = 12.dp, horizontal = 24.dp)
+                modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp)
             ) {
                 Text(
                     text = stringResource(R.string.dining_notice_title_format, diningNotice.name, diningNotice.semester),

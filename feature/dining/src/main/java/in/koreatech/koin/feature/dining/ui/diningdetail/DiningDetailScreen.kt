@@ -179,7 +179,7 @@ private fun DiningDetailScreenImpl(
     showTooltip: Boolean,
     showBottomSheet: Boolean,
     experimentGroup: String,
-    context: Context,
+    context: Context = LocalContext.current,
     modifier: Modifier = Modifier,
     isSoldOutSubscribed: Boolean = false,
     isDiningImageSubscribed: Boolean = false,
@@ -281,9 +281,8 @@ private fun DiningDetailScreenImpl(
                 imageUploadChecked = isDiningImageSubscribed,
                 onDismiss = { scope.launch { sheetState.hide() } },
                 onPositive = {
-                    val intent = getNotificationIntent(context)
-                    intent?.let {
-                        launcher.launch(intent)
+                    getNotificationIntent(context)?.let {
+                        launcher.launch(it)
                     }
                 },
                 onSoldOutChange = changeSoldOutSubscribe,

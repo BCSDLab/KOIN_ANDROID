@@ -66,8 +66,7 @@ fun DiningTimetableItem(
         )
         Spacer(Modifier.height(2.dp))
         Column(
-            modifier = Modifier
-                .padding(vertical = 4.dp),
+            modifier = Modifier.padding(vertical = 4.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             openCloseTimeInfoList.forEachIndexed { index, it ->
@@ -103,8 +102,7 @@ fun DiningTimetableItemSheets(
     color: Color = KoinTheme.colors.neutral800
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         Text(
             modifier = Modifier.weight(1f),
