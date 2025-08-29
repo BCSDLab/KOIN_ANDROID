@@ -45,10 +45,7 @@ fun DiningTimetableItem(
             color = KoinTheme.colors.primary500
         )
         Spacer(Modifier.height(8.dp))
-        HorizontalDivider(
-            thickness = 1.dp,
-            color = KoinTheme.colors.neutral400
-        )
+        HorizontalDivider(color = KoinTheme.colors.neutral400)
         DiningTimetableItemSheets(
             modifier = Modifier
                 .background(
@@ -60,10 +57,7 @@ fun DiningTimetableItem(
             closeTimeText = stringResource(R.string.dining_notice_timetable_close_time),
             style = KoinTheme.typography.medium14
         )
-        HorizontalDivider(
-            thickness = 1.dp,
-            color = KoinTheme.colors.neutral400
-        )
+        HorizontalDivider(color = KoinTheme.colors.neutral400)
         Spacer(Modifier.height(2.dp))
         Column(
             modifier = Modifier.padding(vertical = 4.dp),
@@ -85,10 +79,7 @@ fun DiningTimetableItem(
             }
         }
         Spacer(Modifier.height(2.dp))
-        HorizontalDivider(
-            thickness = 1.dp,
-            color = KoinTheme.colors.neutral400
-        )
+        HorizontalDivider(color = KoinTheme.colors.neutral400)
     }
 }
 
