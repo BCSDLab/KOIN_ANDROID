@@ -146,66 +146,6 @@ class DiningViewModel @Inject constructor(
         }
     }
 
-    fun shareDining(dining: Dining, context: Context) {
-        EventLogger.logClickEvent(
-            EventAction.CAMPUS,
-            AnalyticsConstant.Label.MENU_SHARE,
-            "공유하기"
-        )
-        val messageTemplate = createFeedMessageTemplate(dining)
-
-        if (ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
-            ShareClient.instance.shareDefault(
-                context,
-                messageTemplate
-            ) { sharingResult, error ->
-                error?.printStackTrace()
-                sharingResult?.let {
-                    context.startActivity(it.intent)
-                }
-            }
-        }
-    }
-
-    private fun createFeedMessageTemplate(dining: Dining): FeedTemplate {
-        val executionParams = mapOf(
-            PARAMS_DATE to dining.date,
-            PARAMS_TYPE to dining.type,
-            PARAMS_PLACE to dining.place
-        )
-        val link = Link(
-            androidExecutionParams = executionParams,
-            iosExecutionParams = executionParams
-        )
-        return FeedTemplate(
-            content = Content(
-                title = "ㅤ",
-                imageUrl = dining.imageUrl,
-                link = link
-            ),
-            itemContent = ItemContent(
-                profileText = "${
-                    if (TimeUtil.isToday(dining.date)) {
-                        "오늘"
-                    } else if (TimeUtil.isTomorrow(dining.date)) {
-                        "내일"
-                    } else {
-                        TimeUtil.formatDateToKorean(dining.date)
-                    }
-                } ${DiningUtil.getKoreanName(dining.type)} 식단",
-                items = listOf(
-                    ItemInfo(
-                        item = dining.place,
-                        itemOp = dining.menu.joinToString(", ")
-                    )
-                )
-            ),
-            buttons = listOf(
-                Button("코인에서 식단 전체보기", link)
-            )
-        )
-    }
-
     fun getNotificationPermissionInfo() {
         if (userState.value.isAnonymous) return
         viewModelScope.launch {

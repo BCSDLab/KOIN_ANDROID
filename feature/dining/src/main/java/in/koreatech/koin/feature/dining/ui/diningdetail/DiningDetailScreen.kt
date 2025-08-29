@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.dining.ui.diningdetail
 
 import android.content.Context
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.LinearEasing
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -64,6 +66,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.request.ImageRequest
+import com.kakao.sdk.share.ShareClient
+import com.kakao.sdk.template.model.Button
+import com.kakao.sdk.template.model.Content
+import com.kakao.sdk.template.model.FeedTemplate
+import com.kakao.sdk.template.model.ItemContent
+import com.kakao.sdk.template.model.ItemInfo
+import com.kakao.sdk.template.model.Link
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
@@ -77,7 +86,7 @@ import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.onboarding.rememberOnboardingManager
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningType
-import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.feature.dining.R
 import `in`.koreatech.koin.feature.dining.component.DiningDateItem
@@ -85,6 +94,9 @@ import `in`.koreatech.koin.feature.dining.component.DiningItem
 import `in`.koreatech.koin.feature.dining.component.DiningItemOriginal
 import `in`.koreatech.koin.feature.dining.component.bottomsheet.DiningBottomSheet
 import `in`.koreatech.koin.feature.dining.component.dialog.DiningImageDialog
+import `in`.koreatech.koin.feature.dining.constants.PARAMS_DATE
+import `in`.koreatech.koin.feature.dining.constants.PARAMS_PLACE
+import `in`.koreatech.koin.feature.dining.constants.PARAMS_TYPE
 import `in`.koreatech.koin.feature.dining.ui.diningdetail.scroll.diningScrollConnection
 import java.util.Date
 import kotlinx.coroutines.launch
@@ -149,7 +161,8 @@ fun DiningDetailScreen(
                 },
                 onNavigationIconClick = onTopbarBackClick
             )
-        }
+        },
+        contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { contentPadding ->
         DiningDetailScreenImpl(
             diningList = diningList,
@@ -157,15 +170,14 @@ fun DiningDetailScreen(
             selectedDate = TimeUtil.stringToDateYYMMDD(selectedDate),
             showBottomSheet = showBottomSheet,
             experimentGroup = abTestExperimentGroup,
-            userState = userState,
+            isAnonymous = userState.isAnonymous,
             initialPage = if (initialPage != -1) initialPage else viewModel.getInitialPage(),
             isSoldOutSubscribed = isSoldOutSubscribed,
             isDiningImageSubscribed = isDiningImageSubscribed,
             onDateClick = viewModel::setSelectedDate,
             changeSoldOutSubscribe = viewModel::changeIsSoldOutSubscribed,
             changeDiningImageSubscribe = viewModel::changeIsDiningImageSubscribed,
-            getNotificationPermitInfo = viewModel::getNotificationPermissionInfo,
-            onShareClick = viewModel::shareDining
+            getNotificationPermitInfo = viewModel::getNotificationPermissionInfo
         )
     }
 }
@@ -178,17 +190,16 @@ private fun DiningDetailScreenImpl(
     selectedDate: Date,
     showBottomSheet: Boolean,
     experimentGroup: String,
-    userState: User,
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
     isSoldOutSubscribed: Boolean = false,
     isDiningImageSubscribed: Boolean = false,
+    isAnonymous: Boolean = true,
     initialPage: Int = 0,
     onDateClick: (Date) -> Unit = {},
     changeSoldOutSubscribe: (Boolean) -> Unit = {},
     changeDiningImageSubscribe: (Boolean) -> Unit = {},
-    getNotificationPermitInfo: () -> Unit = {},
-    onShareClick: (Dining, Context) -> Unit = { _, _ -> }
+    getNotificationPermitInfo: () -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current
@@ -287,7 +298,7 @@ private fun DiningDetailScreenImpl(
                 imageUploadChecked = isDiningImageSubscribed,
                 onDismiss = { scope.launch { sheetState.hide() } },
                 onPositive = {
-                    if (!userState.isAnonymous) {
+                    if (!isAnonymous) {
                         navigator.navigateToNotificationSetting(context).let {
                             launcher.launch(it)
                         }
@@ -337,8 +348,6 @@ private fun DiningDetailScreenImpl(
     Column(
         modifier = modifier
             .padding(contentPadding)
-            .consumeWindowInsets(contentPadding)
-            .systemBarsPadding()
             .fillMaxSize()
             .nestedScroll(nestedScrollConnection)
     ) {
@@ -387,8 +396,8 @@ private fun DiningDetailScreenImpl(
                 derivedStateOf {
                     when (tabList[page]) {
                         DiningType.Breakfast.typeKorean -> diningList.filter { it.type == DiningType.Breakfast.typeEnglish }
-                        DiningType.Lunch.typeKorean -> diningList.filter { it.type == DiningType.Breakfast.typeEnglish }
-                        DiningType.Dinner.typeKorean -> diningList.filter { it.type == DiningType.Breakfast.typeEnglish }
+                        DiningType.Lunch.typeKorean -> diningList.filter { it.type == DiningType.Lunch.typeEnglish }
+                        DiningType.Dinner.typeKorean -> diningList.filter { it.type == DiningType.Dinner.typeEnglish }
                         else -> listOf()
                     }
                 }
@@ -406,13 +415,31 @@ private fun DiningDetailScreenImpl(
                         DiningItemByABTest(
                             experimentGroup = experimentGroup,
                             dining = dining,
-                            context = context,
                             onImageClick = {
                                 selectedImage = dining.imageUrl
                                 showImageDialog = true
                             },
                             onShareClick = {
-                                onShareClick(dining, context)
+                                EventLogger.logClickEvent(
+                                    EventAction.CAMPUS,
+                                    AnalyticsConstant.Label.MENU_SHARE,
+                                    "공유하기"
+                                )
+                                val messageTemplate = createFeedMessageTemplate(dining)
+
+                                if (ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
+                                    ShareClient.instance.shareDefault(
+                                        context,
+                                        messageTemplate
+                                    ) { sharingResult, error ->
+                                        error?.printStackTrace()
+                                        sharingResult?.let {
+                                            context.startActivity(it.intent)
+                                        }
+                                    }
+                                } else {
+                                    Toast.makeText(context, context.getString(R.string.kakao_share_unable), Toast.LENGTH_SHORT).show()
+                                }
                             }
                         )
                         if (index == 0 && showToolTip) {
@@ -450,17 +477,14 @@ private fun DiningDetailScreenImpl(
 private fun DiningItemByABTest(
     experimentGroup: String,
     dining: Dining,
-    context: Context,
     onImageClick: () -> Unit = {},
     onShareClick: () -> Unit = {}
 ) {
     when (experimentGroup) {
         ExperimentGroup.SHARE_NEW -> {
             DiningItem(
-                modifier = Modifier
-                    .padding(horizontal = 24.dp),
+                modifier = Modifier.padding(horizontal = 24.dp),
                 dining = dining,
-                context = context,
                 onImageClick = onImageClick,
                 onShareClick = onShareClick
             )
@@ -468,12 +492,50 @@ private fun DiningItemByABTest(
         ExperimentGroup.SHARE_ORIGINAL -> {
             DiningItemOriginal(
                 dining = dining,
-                context = context,
                 onImageClick = onImageClick,
                 onShareClick = onShareClick
             )
         }
     }
+}
+
+private fun createFeedMessageTemplate(dining: Dining): FeedTemplate {
+    val executionParams = mapOf(
+        PARAMS_DATE to dining.date,
+        PARAMS_TYPE to dining.type,
+        PARAMS_PLACE to dining.place
+    )
+    val link = Link(
+        androidExecutionParams = executionParams,
+        iosExecutionParams = executionParams
+    )
+    return FeedTemplate(
+        content = Content(
+            title = "ㅤ",
+            imageUrl = dining.imageUrl,
+            link = link
+        ),
+        itemContent = ItemContent(
+            profileText = "${
+                if (TimeUtil.isToday(dining.date)) {
+                    "오늘"
+                } else if (TimeUtil.isTomorrow(dining.date)) {
+                    "내일"
+                } else {
+                    TimeUtil.formatDateToKorean(dining.date)
+                }
+            } ${DiningUtil.getKoreanName(dining.type)} 식단",
+            items = listOf(
+                ItemInfo(
+                    item = dining.place,
+                    itemOp = dining.menu.joinToString(", ")
+                )
+            )
+        ),
+        buttons = listOf(
+            Button("코인에서 식단 전체보기", link)
+        )
+    )
 }
 
 @Preview(showBackground = true)
@@ -542,7 +604,7 @@ private fun DiningScreenPreview() {
                 changedAt = "2025.05.17"
             )
         ),
-        userState = User.Anonymous,
+        isAnonymous = true,
         contentPadding = PaddingValues(),
         context = LocalContext.current,
         selectedDate = TimeUtil.getNextDayDate(TimeUtil.getCurrentTime()),
