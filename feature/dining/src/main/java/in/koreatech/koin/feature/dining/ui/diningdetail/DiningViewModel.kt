@@ -58,8 +58,7 @@ class DiningViewModel @Inject constructor(
     private val getNotificationPermissionInfoUseCase: GetNotificationPermissionInfoUseCase,
     private val updateNotificationSubscriptionUseCase: UpdateNotificationSubscriptionUseCase,
     private val updateNotificationSubscriptionDetailUseCase: UpdateNotificationSubscriptionDetailUseCase,
-    private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase,
-    private val navigator: Navigator
+    private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase
 ) : BaseViewModel() {
 
     private val initDate = savedStateHandle.get<String>(INIT_DATE)
@@ -259,13 +258,5 @@ class DiningViewModel @Inject constructor(
     fun changeIsDiningImageSubscribed(boolean: Boolean) {
         _isDiningImageSubscribed.value = boolean
         onDiningImageSubscribe(boolean)
-    }
-
-    fun getNavigator(): Navigator? {
-        return if (userState.value.isAnonymous) {
-            null
-        } else {
-            navigator
-        }
     }
 }

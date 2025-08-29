@@ -72,11 +72,13 @@ import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.navigation.Navigator
+import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.core.onboarding.ArrowDirection
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.onboarding.rememberOnboardingManager
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningType
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.feature.dining.R
 import `in`.koreatech.koin.feature.dining.component.DiningDateItem
@@ -156,13 +158,13 @@ fun DiningDetailScreen(
             selectedDate = TimeUtil.stringToDateYYMMDD(selectedDate),
             showBottomSheet = showBottomSheet,
             experimentGroup = abTestExperimentGroup,
+            userState = userState,
             initialPage = if (initialPage != -1) initialPage else viewModel.getInitialPage(),
             isSoldOutSubscribed = isSoldOutSubscribed,
             isDiningImageSubscribed = isDiningImageSubscribed,
             onDateClick = viewModel::setSelectedDate,
             changeSoldOutSubscribe = viewModel::changeIsSoldOutSubscribed,
             changeDiningImageSubscribe = viewModel::changeIsDiningImageSubscribed,
-            getNavigator = viewModel::getNavigator,
             getNotificationPermitInfo = viewModel::getNotificationPermissionInfo,
             onShareClick = viewModel::shareDining
         )
@@ -177,6 +179,7 @@ private fun DiningDetailScreenImpl(
     selectedDate: Date,
     showBottomSheet: Boolean,
     experimentGroup: String,
+    userState: User,
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
     isSoldOutSubscribed: Boolean = false,
@@ -185,7 +188,6 @@ private fun DiningDetailScreenImpl(
     onDateClick: (Date) -> Unit = {},
     changeSoldOutSubscribe: (Boolean) -> Unit = {},
     changeDiningImageSubscribe: (Boolean) -> Unit = {},
-    getNavigator: () -> Navigator? = { null },
     getNotificationPermitInfo: () -> Unit = {},
     onShareClick: (Dining, Context) -> Unit = { _, _ -> }
 ) {
@@ -197,6 +199,8 @@ private fun DiningDetailScreenImpl(
     LaunchedEffect(onboardingManager) {
         showToolTip = onboardingManager.getShouldOnboard(OnboardingType.DINING_SHARE)
     }
+
+    val navigator = rememberNavigator()
 
     val tabSize = 3
     val tabList = DiningType.entries.take(tabSize).map { it.typeKorean }
@@ -284,8 +288,10 @@ private fun DiningDetailScreenImpl(
                 imageUploadChecked = isDiningImageSubscribed,
                 onDismiss = { scope.launch { sheetState.hide() } },
                 onPositive = {
-                    getNavigator()?.navigateToNotificationSetting(context)?.let {
-                        launcher.launch(it)
+                    if (!userState.isAnonymous) {
+                        navigator.navigateToNotificationSetting(context).let {
+                            launcher.launch(it)
+                        }
                     }
                 },
                 onSoldOutChange = changeSoldOutSubscribe,
@@ -537,6 +543,7 @@ private fun DiningScreenPreview() {
                 changedAt = "2025.05.17"
             )
         ),
+        userState = User.Anonymous,
         contentPadding = PaddingValues(),
         context = LocalContext.current,
         selectedDate = TimeUtil.getNextDayDate(TimeUtil.getCurrentTime()),
