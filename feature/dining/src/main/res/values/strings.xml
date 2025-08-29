@@ -23,4 +23,5 @@
     <string name="navigate_to_notification_setting">알림 설정 바로가기</string>
 
     <string name="kakaolink_host">kakaolink</string>
+    <string name="kakao_share_unable">카카오톡 공유에 실패했습니다.</string>
 </resources>
