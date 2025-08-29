@@ -3,7 +3,13 @@ package `in`.koreatech.koin.feature.dining.ui.diningdetail
 import android.content.Context
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateValue
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -46,7 +52,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -54,12 +59,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
-import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
@@ -69,7 +72,9 @@ import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.navigation.Navigator
-import `in`.koreatech.koin.core.util.KoinCoilImageLoader
+import `in`.koreatech.koin.core.onboarding.ArrowDirection
+import `in`.koreatech.koin.core.onboarding.OnboardingType
+import `in`.koreatech.koin.core.onboarding.rememberOnboardingManager
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.util.TimeUtil
@@ -94,8 +99,6 @@ fun DiningDetailScreen(
     val userState by viewModel.userState.collectAsState()
 
     val selectedDate by viewModel.selectedDate.collectAsState()
-
-    val showTooltip by viewModel.showTooltip.collectAsState()
 
     val showBottomSheet by viewModel.showBottomSheet.collectAsState()
 
@@ -151,15 +154,12 @@ fun DiningDetailScreen(
             diningList = diningList,
             contentPadding = contentPadding,
             selectedDate = TimeUtil.stringToDateYYMMDD(selectedDate),
-            showTooltip = showTooltip,
             showBottomSheet = showBottomSheet,
             experimentGroup = abTestExperimentGroup,
-            context = LocalContext.current,
             initialPage = if (initialPage != -1) initialPage else viewModel.getInitialPage(),
             isSoldOutSubscribed = isSoldOutSubscribed,
             isDiningImageSubscribed = isDiningImageSubscribed,
             onDateClick = viewModel::setSelectedDate,
-            changeShowTooltip = viewModel::changeShowTooltip,
             changeSoldOutSubscribe = viewModel::changeIsSoldOutSubscribed,
             changeDiningImageSubscribe = viewModel::changeIsDiningImageSubscribed,
             getNavigator = viewModel::getNavigator,
@@ -175,16 +175,14 @@ private fun DiningDetailScreenImpl(
     diningList: List<Dining>,
     contentPadding: PaddingValues,
     selectedDate: Date,
-    showTooltip: Boolean,
     showBottomSheet: Boolean,
     experimentGroup: String,
-    context: Context = LocalContext.current,
     modifier: Modifier = Modifier,
+    context: Context = LocalContext.current,
     isSoldOutSubscribed: Boolean = false,
     isDiningImageSubscribed: Boolean = false,
     initialPage: Int = 0,
     onDateClick: (Date) -> Unit = {},
-    changeShowTooltip: (Boolean) -> Unit = {},
     changeSoldOutSubscribe: (Boolean) -> Unit = {},
     changeDiningImageSubscribe: (Boolean) -> Unit = {},
     getNavigator: () -> Navigator? = { null },
@@ -193,6 +191,12 @@ private fun DiningDetailScreenImpl(
 ) {
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current
+
+    val onboardingManager = rememberOnboardingManager()
+    var showToolTip by remember { mutableStateOf(false) }
+    LaunchedEffect(onboardingManager) {
+        showToolTip = onboardingManager.getShouldOnboard(OnboardingType.DINING_SHARE)
+    }
 
     val tabSize = 3
     val tabList = DiningType.entries.take(tabSize).map { it.typeKorean }
@@ -392,7 +396,6 @@ private fun DiningDetailScreenImpl(
             ) {
                 diningFilterList.forEachIndexed { index, dining ->
                     Box(
-                        modifier = Modifier.zIndex(if (index == 0 && showTooltip) 1f else 0f),
                         contentAlignment = Alignment.BottomCenter
                     ) {
                         DiningItemByABTest(
@@ -407,27 +410,32 @@ private fun DiningDetailScreenImpl(
                                 onShareClick(dining, context)
                             }
                         )
-                        if (index == 0 && showTooltip) {
-                            SubcomposeAsyncImage(
-                                modifier = Modifier
-                                    .offset { IntOffset(0, with(density) { 60.dp.toPx().toInt() }) }
-                                    .fillMaxWidth()
-                                    .zIndex(1f)
-                                    .clickable { changeShowTooltip(false) }
-                                    .scale(1.3f),
-                                model = ImageRequest.Builder(context)
-                                    .data(R.drawable.tooltip_share)
-                                    .crossfade(true)
-                                    .build(),
-                                imageLoader = KoinCoilImageLoader.getImageLoader(context, true),
-                                contentDescription = "Share tooltip"
+                        if (index == 0 && showToolTip) {
+                            val infiniteTransition = rememberInfiniteTransition()
+                            val offsetY by infiniteTransition.animateValue(
+                                initialValue = 15.dp,
+                                targetValue = 20.dp,
+                                typeConverter = Dp.VectorConverter,
+                                animationSpec = infiniteRepeatable(
+                                    animation = tween(1000, easing = LinearEasing),
+                                    repeatMode = RepeatMode.Reverse
+                                ),
                             )
+                            Box(
+                                modifier = Modifier.offset(y = -(offsetY))
+                            ) {
+                                with(onboardingManager) {
+                                    ShowOnboardingTooltipIfNeeded(
+                                        type = OnboardingType.DINING_SHARE,
+                                        arrowDirection = ArrowDirection.TOP
+                                    ) {
+                                        Spacer(modifier = Modifier.fillMaxWidth())
+                                    }
+                                }
+                            }
                         }
                     }
                 }
-                if (diningFilterList.size == 1) {
-                    Spacer(Modifier.height(10.dp))
-                } // to show tooltip image area
             }
         }
     }
@@ -532,7 +540,6 @@ private fun DiningScreenPreview() {
         contentPadding = PaddingValues(),
         context = LocalContext.current,
         selectedDate = TimeUtil.getNextDayDate(TimeUtil.getCurrentTime()),
-        showTooltip = true,
         showBottomSheet = false,
         experimentGroup = ExperimentGroup.SHARE_NEW
     )

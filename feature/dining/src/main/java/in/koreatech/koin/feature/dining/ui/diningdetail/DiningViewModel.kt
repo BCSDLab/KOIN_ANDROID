@@ -68,7 +68,6 @@ class DiningViewModel @Inject constructor(
 
     init {
         getDining(initDate)
-        getShowTooltipValue()
     }
 
     private val _userState: StateFlow<User> = getUserStatusUseCase().stateIn(
@@ -83,9 +82,6 @@ class DiningViewModel @Inject constructor(
 
     private val _dining = MutableStateFlow<List<Dining>>(emptyList())
     val dining: StateFlow<List<Dining>> get() = _dining
-
-    private val _showTooltip = MutableStateFlow(false)
-    val showTooltip: StateFlow<Boolean> get() = _showTooltip
 
     private val _showBottomSheet = MutableStateFlow(false)
     val showBottomSheet: StateFlow<Boolean> get() = _showBottomSheet
@@ -139,15 +135,6 @@ class DiningViewModel @Inject constructor(
             DiningType.Lunch -> 1
             DiningType.Dinner -> 2
             DiningType.NextBreakfast -> 0
-        }
-    }
-
-    private fun getShowTooltipValue() {
-        viewModelScope.launch {
-            if (onboardingManager.getShouldOnboard(OnboardingType.DINING_SHARE)) {
-                _showTooltip.value = true
-                onboardingManager.updateShouldOnboard(OnboardingType.DINING_SHARE, false)
-            }
         }
     }
 
@@ -262,10 +249,6 @@ class DiningViewModel @Inject constructor(
                 deleteNotificationSubscriptionUseCase(SubscribesType.DINING_IMAGE_UPLOAD)
             }
         }
-    }
-
-    fun changeShowTooltip(boolean: Boolean) {
-        _showTooltip.value = boolean
     }
 
     fun changeIsSoldOutSubscribed(boolean: Boolean) {
