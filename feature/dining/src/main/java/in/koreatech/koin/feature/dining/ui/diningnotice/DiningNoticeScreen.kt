@@ -88,7 +88,6 @@ fun DiningNoticeScreenImpl(
     modifier: Modifier = Modifier,
     isLoading: Boolean = false
 ) {
-
     if (isLoading) {
         Column(
             modifier = Modifier.fillMaxSize(),

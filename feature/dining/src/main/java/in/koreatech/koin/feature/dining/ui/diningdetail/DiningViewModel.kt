@@ -1,20 +1,9 @@
 package `in`.koreatech.koin.feature.dining.ui.diningdetail
 
-import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.kakao.sdk.share.ShareClient
-import com.kakao.sdk.template.model.Button
-import com.kakao.sdk.template.model.Content
-import com.kakao.sdk.template.model.FeedTemplate
-import com.kakao.sdk.template.model.ItemContent
-import com.kakao.sdk.template.model.ItemInfo
-import com.kakao.sdk.template.model.Link
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.abtest.Experiment
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
-import `in`.koreatech.koin.core.analytics.EventAction
-import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
@@ -34,9 +23,6 @@ import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.domain.util.onSuccess
-import `in`.koreatech.koin.feature.dining.constants.PARAMS_DATE
-import `in`.koreatech.koin.feature.dining.constants.PARAMS_PLACE
-import `in`.koreatech.koin.feature.dining.constants.PARAMS_TYPE
 import `in`.koreatech.koin.feature.dining.navigation.INIT_DATE
 import java.util.Date
 import javax.inject.Inject
