@@ -71,10 +71,10 @@ class DiningViewModel @Inject constructor(
     }
 
     private val _userState: StateFlow<User> = getUserStatusUseCase().stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Eagerly,
-            initialValue = User.Anonymous
-        )
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = User.Anonymous
+    )
     val userState: StateFlow<User> get() = _userState
 
     private val _selectedDate = MutableStateFlow(initDate)
@@ -93,16 +93,16 @@ class DiningViewModel @Inject constructor(
     val isDiningImageSubscribed: StateFlow<Boolean> get() = _isDiningImageSubscribed
 
     val abTestExperimentGroup = flow {
-            abTestUseCase(Experiment.DINING_SHARE.experimentTitle).onSuccess {
-                emit(it)
-            }.onFailure {
-                emit(Experiment.DINING_SHARE.experimentGroups.first())
-            }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = Experiment.DINING_SHARE.experimentGroups.first()
-        )
+        abTestUseCase(Experiment.DINING_SHARE.experimentTitle).onSuccess {
+            emit(it)
+        }.onFailure {
+            emit(Experiment.DINING_SHARE.experimentGroups.first())
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = Experiment.DINING_SHARE.experimentGroups.first()
+    )
 
     fun setSelectedDate(date: Date) {
         _selectedDate.value = TimeUtil.dateFormatToYYMMDD(date)
@@ -171,14 +171,14 @@ class DiningViewModel @Inject constructor(
 
     private fun createFeedMessageTemplate(dining: Dining): FeedTemplate {
         val executionParams = mapOf(
-                PARAMS_DATE to dining.date,
-                PARAMS_TYPE to dining.type,
-                PARAMS_PLACE to dining.place
-            )
+            PARAMS_DATE to dining.date,
+            PARAMS_TYPE to dining.type,
+            PARAMS_PLACE to dining.place
+        )
         val link = Link(
-                androidExecutionParams = executionParams,
-                iosExecutionParams = executionParams
-            )
+            androidExecutionParams = executionParams,
+            iosExecutionParams = executionParams
+        )
         return FeedTemplate(
             content = Content(
                 title = "ㅤ",

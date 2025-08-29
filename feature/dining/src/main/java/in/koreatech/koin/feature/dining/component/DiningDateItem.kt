@@ -35,9 +35,9 @@ fun DiningDateItem(
     val isBeforeDate = remember { date <= currentDate }
     Column(
         modifier = modifier.clickable(
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() }
-            ) { onClick(date) },
+            indication = null,
+            interactionSource = remember { MutableInteractionSource() }
+        ) { onClick(date) },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(

@@ -419,7 +419,7 @@ private fun DiningDetailScreenImpl(
                                 animationSpec = infiniteRepeatable(
                                     animation = tween(1000, easing = LinearEasing),
                                     repeatMode = RepeatMode.Reverse
-                                ),
+                                )
                             )
                             Box(
                                 modifier = Modifier.offset(y = -(offsetY))
