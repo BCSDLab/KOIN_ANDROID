@@ -85,7 +85,7 @@ fun DiningItemOriginal(
                     color = KoinTheme.colors.neutral500
                 )
                 Text(
-                    text = "${dining.priceCard}원/${dining.priceCash}원",
+                    text = stringResource(R.string.dining_item_price_format, dining.priceCard, dining.priceCash),
                     style = KoinTheme.typography.regular12,
                     color = KoinTheme.colors.neutral500
                 )
@@ -206,32 +206,19 @@ fun DiningItemOriginal(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Column(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    dining.menu.filterIndexed { index, _ -> index % 2 == 0 }.forEach { item ->
-                        Text(
-                            text = item,
-                            style = KoinTheme.typography.regular14
-                        )
-                    }
-                }
-                Column(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    dining.menu.filterIndexed { index, _ -> index % 2 == 1 }.forEach { item ->
-                        Text(
-                            text = item,
-                            style = KoinTheme.typography.regular14
-                        )
-                    }
-                }
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = dining.menu.filterIndexed { index, _ -> index % 2 == 0 }.joinToString(separator = "\n"),
+                    style = KoinTheme.typography.regular14
+                )
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = dining.menu.filterIndexed { index, _ -> index % 2 == 1 }.joinToString(separator = "\n"),
+                    style = KoinTheme.typography.regular14
+                )
             }
         }
-        HorizontalDivider(
-            thickness = 1.dp,
-            color = KoinTheme.colors.neutral100
-        )
+        HorizontalDivider(color = KoinTheme.colors.neutral100)
         Row(
             modifier = Modifier
                 .fillMaxWidth()

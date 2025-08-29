@@ -222,22 +222,16 @@ fun DiningItem(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Column(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text(
-                        text = dining.menu.filterIndexed { index, _ -> index % 2 == 0 }.joinToString(separator = "\n"),
-                        style = KoinTheme.typography.regular14
-                    )
-                }
-                Column(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text(
-                        text = dining.menu.filterIndexed { index, _ -> index % 2 == 1 }.joinToString(separator = "\n"),
-                        style = KoinTheme.typography.regular14
-                    )
-                }
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = dining.menu.filterIndexed { index, _ -> index % 2 == 0 }.joinToString(separator = "\n"),
+                    style = KoinTheme.typography.regular14
+                )
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = dining.menu.filterIndexed { index, _ -> index % 2 == 1 }.joinToString(separator = "\n"),
+                    style = KoinTheme.typography.regular14
+                )
             }
         }
         HorizontalDivider(color = KoinTheme.colors.neutral100)
