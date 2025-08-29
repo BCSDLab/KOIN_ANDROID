@@ -88,7 +88,6 @@ fun DiningNoticeScreenImpl(
     modifier: Modifier = Modifier,
     isLoading: Boolean = false
 ) {
-    val listState = rememberLazyListState()
 
     if (isLoading) {
         Column(
@@ -101,9 +100,8 @@ fun DiningNoticeScreenImpl(
     }
 
     LazyColumn(
-        modifier = modifier
-            .fillMaxSize(),
-        state = listState
+        modifier = modifier.fillMaxSize(),
+        state = rememberLazyListState()
     ) {
         item {
             Column(
