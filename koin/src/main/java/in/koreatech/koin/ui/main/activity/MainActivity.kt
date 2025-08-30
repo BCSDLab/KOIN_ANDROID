@@ -47,7 +47,6 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_CLUB_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_EVENT_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
-import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityMainBinding
 import `in`.koreatech.koin.domain.model.article.ArticleNotiType
@@ -82,9 +81,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     @Inject
     lateinit var navigator: Navigator
-
-    @Inject
-    lateinit var onboardingManager: OnboardingManager
 
     private val storeCategoriesRecyclerAdapter =
         StoreCategoriesRecyclerAdapter().apply {
