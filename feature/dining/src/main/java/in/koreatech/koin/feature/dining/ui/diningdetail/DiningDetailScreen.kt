@@ -219,17 +219,6 @@ private fun DiningDetailScreenImpl(
     val lunchScrollState = rememberScrollState()
     val dinnerScrollState = rememberScrollState()
 
-    val currentScrollState = remember {
-        derivedStateOf {
-            when (tabList[pagerState.currentPage]) {
-                DiningType.Breakfast.typeKorean -> breakfastScrollState
-                DiningType.Lunch.typeKorean -> lunchScrollState
-                DiningType.Dinner.typeKorean -> dinnerScrollState
-                else -> breakfastScrollState
-            }
-        }
-    }
-
     val currentDate = remember { TimeUtil.getCurrentTime() }
     val dates = remember(currentDate) {
         buildList {
@@ -334,6 +323,17 @@ private fun DiningDetailScreenImpl(
         animationSpec = tween(durationMillis = 50)
     )
 
+    val currentScrollState = remember {
+        derivedStateOf {
+            when (tabList[pagerState.currentPage]) {
+                DiningType.Breakfast.typeKorean -> breakfastScrollState
+                DiningType.Lunch.typeKorean -> lunchScrollState
+                DiningType.Dinner.typeKorean -> dinnerScrollState
+                else -> breakfastScrollState
+            }
+        }
+    }
+
     val nestedScrollConnection = remember {
         diningScrollConnection(
             currentScrollState = currentScrollState,
@@ -402,7 +402,14 @@ private fun DiningDetailScreenImpl(
             }
             Column(
                 modifier = Modifier
-                    .verticalScroll(currentScrollState.value)
+                    .verticalScroll(
+                        when (tabList[page]) { // Can't use currentScrollState.value; because all pages have to give each other scroll state, not same currentScrollState
+                            DiningType.Breakfast.typeKorean -> breakfastScrollState
+                            DiningType.Lunch.typeKorean -> lunchScrollState
+                            DiningType.Dinner.typeKorean -> dinnerScrollState
+                            else -> breakfastScrollState
+                        }
+                    )
                     .padding(vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
