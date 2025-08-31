@@ -170,6 +170,7 @@ fun DiningItem(
                 } else {
                     SubcomposeAsyncImage(
                         modifier = Modifier
+                            .fillMaxSize()
                             .clip(shape = KoinTheme.shapes.small)
                             .clickable {
                                 onImageClick()
