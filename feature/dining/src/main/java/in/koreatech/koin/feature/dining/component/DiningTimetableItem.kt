@@ -121,7 +121,7 @@ fun DiningTimetableItemSheets(
 
 @Preview
 @Composable
-fun DiningTimetableItemPreview() {
+private fun DiningTimetableItemPreview() {
     DiningTimetableItem(
         titleText = "타이틀",
         openCloseTimeInfoList = listOf(

@@ -87,7 +87,7 @@ fun DiningDateItem(
 
 @Preview(showBackground = true)
 @Composable
-fun DiningDateItemCurrentPreview() {
+private fun DiningDateItemCurrentPreview() {
     DiningDateItem(
         date = TimeUtil.getCurrentTime(),
         isSelected = false
@@ -96,7 +96,7 @@ fun DiningDateItemCurrentPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun DiningDateItemAfterPreview() {
+private fun DiningDateItemAfterPreview() {
     DiningDateItem(
         date = TimeUtil.getNextDayDate(TimeUtil.getCurrentTime()),
         isSelected = false
@@ -105,7 +105,7 @@ fun DiningDateItemAfterPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun DiningDateItemSeletedPreview() {
+private fun DiningDateItemSeletedPreview() {
     DiningDateItem(
         date = TimeUtil.getCurrentTime(),
         isSelected = true
