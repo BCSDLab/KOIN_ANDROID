@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.databinding.ActivityStoreDetailBinding
-import `in`.koreatech.koin.feature.store.view.ShoppingCartScreen
+import `in`.koreatech.koin.feature.store.cart.ShoppingCartScreen
 
 @AndroidEntryPoint
 class ShoppingCartActivity : AppCompatActivity() {
