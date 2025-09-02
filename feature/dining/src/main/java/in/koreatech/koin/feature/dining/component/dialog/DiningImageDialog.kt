@@ -95,12 +95,14 @@ fun DiningImageDialog(
                             val dx = (tapOffset.x - imageWidth / 2)
                             val dy = (tapOffset.y - imageHeight / 2)
 
-                            val maxX = (imageWidth * (newScale - 1)) / 2
-                            val maxY = (imageHeight * (newScale - 1)) / newScale / 2
-
-                            newOffset = Offset(
-                                x = (offset.x - dx * (newScale / scale - 1)).coerceIn(-maxX, maxX),
-                                y = (offset.y - dy * (newScale / scale - 1)).coerceIn(-maxY, maxY)
+                            newOffset = coerceInMaxOffset(
+                                imageWidth =  imageWidth,
+                                imageHeight = imageHeight,
+                                scale = newScale,
+                                offset = Offset(
+                                    x = (offset.x - dx * (newScale / scale - 1)),
+                                    y = (offset.y - dy * (newScale / scale - 1))
+                                )
                             )
                         }
 
@@ -114,12 +116,11 @@ fun DiningImageDialog(
                     val newScale = (scale * zoom).coerceIn(minScale, maxScale)
                     offset += pan
 
-                    val maxX = (imageWidth * (newScale - 1)) / 2
-                    val maxY = (imageHeight * (newScale - 1)) / newScale / 2
-
-                    offset = Offset(
-                        x = offset.x.coerceIn(-maxX, maxX),
-                        y = offset.y.coerceIn(-maxY, maxY)
+                    offset = coerceInMaxOffset(
+                        imageWidth = imageWidth,
+                        imageHeight = imageHeight,
+                        scale = newScale,
+                        offset = offset
                     )
 
                     scale = newScale
@@ -174,4 +175,19 @@ fun DiningImageDialog(
             }
         }
     }
+}
+
+private fun coerceInMaxOffset(
+    imageWidth: Float,
+    imageHeight: Float,
+    scale: Float,
+    offset: Offset
+): Offset {
+    val maxX = (imageWidth * (scale - 1)) / 2
+    val maxY = (imageHeight * (scale - 1)) / scale / 2
+
+    return Offset(
+        x = offset.x.coerceIn(-maxX, maxX),
+        y = offset.y.coerceIn(-maxY, maxY)
+    )
 }
