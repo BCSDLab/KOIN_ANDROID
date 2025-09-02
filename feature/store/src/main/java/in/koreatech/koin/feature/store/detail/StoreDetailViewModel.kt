@@ -3,16 +3,22 @@ package `in`.koreatech.koin.feature.store.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.error.store.KoinStoreException
+import `in`.koreatech.koin.domain.model.cart.CartType
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopMenuUseCase
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopOriginInfoUseCase
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopSummaryUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetCartItemUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetCartSummaryUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetShopMenusUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuUseCase
+import `in`.koreatech.koin.domain.usecase.store.ValidateCartItemsUseCase
 import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
+import `in`.koreatech.koin.feature.store.enums.CartValidation
 import `in`.koreatech.koin.feature.store.model.DeliveryTipModel
 import `in`.koreatech.koin.feature.store.model.MenuCategoryModel
 import `in`.koreatech.koin.feature.store.model.OriginModel
@@ -25,6 +31,7 @@ import `in`.koreatech.koin.feature.store.navigation.IS_ORDERABLE_SHOP
 import `in`.koreatech.koin.feature.store.navigation.STORE_ID
 import `in`.koreatech.koin.feature.store.util.toKoreanWeek
 import javax.inject.Inject
+import kotlinx.coroutines.Job
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -35,6 +42,9 @@ import org.orbitmvi.orbit.viewmodel.container
 @HiltViewModel
 class StoreDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val getCartItemUseCase: GetCartItemUseCase,
+    private val validateCartItemsUseCase: ValidateCartItemsUseCase,
+    private val getCartSummaryUseCase: GetCartSummaryUseCase,
     private val getOrderShopOriginInfoUseCase: GetOrderShopOriginInfoUseCase,
     private val getOrderShopSummaryUseCase: GetOrderShopSummaryUseCase,
     private val getOrderShopMenuUseCase: GetOrderShopMenuUseCase,
@@ -281,6 +291,63 @@ class StoreDetailViewModel @Inject constructor(
                     }
                 }
             )
+        }
+    }
+
+    fun getCart(type: CartType): Job = intent {
+        reduce { state.copy(isLoading = true) }
+        getCartItemUseCase(type.name).onSuccess {
+            reduce { state.copy(cart = it, cartType = type, isLoading = false) }
+            getCartValidate()
+        }.onFailure {
+            reduce { state.copy(isLoading = false) }
+            when (it) {
+                is KoinStoreException.ShopNotDeliverableException -> getCart(CartType.TAKE_OUT)
+                is KoinStoreException.ShopNotTakeoutAvailableException -> getCart(CartType.TAKE_OUT)
+            }
+        }
+    }
+
+    fun getCartValidate() = intent {
+        reduce { state.copy(isLoading = true) }
+        validateCartItemsUseCase(state.cartType.name).onSuccess {
+            reduce {
+                state.copy(
+                    isLoading = false,
+                    cartValidation = CartValidation.VALID
+                )
+            }
+        }.onFailure {
+            reduce {
+                state.copy(
+                    cartValidation = when (it) {
+                        is KoinStoreException.OrderAmountBelowMinimumException -> CartValidation.AMOUNT_NOT_ENOUGH
+                        is KoinStoreException.CartNotFoundException -> CartValidation.CART_NOT_FOUND
+                        is KoinStoreException.ShopClosedException -> CartValidation.NOT_OPERATING
+                        else -> CartValidation.NONE
+                    },
+                    isLoading = false
+                )
+            }
+        }
+        getCartSummary()
+    }
+
+    private fun getCartSummary() = intent {
+        if (state.cart.orderableShopId == null) return@intent
+        getCartSummaryUseCase(state.cart.orderableShopId!!).onSuccess {
+            reduce {
+                state.copy(
+                    minimumOrderAmount = it.shopMinimumOrderAmount,
+                    isLoading = false
+                )
+            }
+        }.onFailure {
+            reduce {
+                state.copy(
+                    isLoading = false
+                )
+            }
         }
     }
 }

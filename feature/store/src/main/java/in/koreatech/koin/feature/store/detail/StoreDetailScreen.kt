@@ -58,17 +58,16 @@ import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreSignInDialog
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
-import `in`.koreatech.koin.feature.store.detail.component.MenuCategoryChips
 import `in`.koreatech.koin.feature.store.component.OrderBottomBar
+import `in`.koreatech.koin.feature.store.detail.component.MenuCategoryChips
+import `in`.koreatech.koin.feature.store.detail.component.StoreDetailImage
+import `in`.koreatech.koin.feature.store.detail.component.StoreDetailInfo
 import `in`.koreatech.koin.feature.store.detail.component.menuListSection
 import `in`.koreatech.koin.feature.store.enums.CartValidation
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
 import `in`.koreatech.koin.feature.store.state.collapseToolbar
 import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
 import `in`.koreatech.koin.feature.store.util.customCollapsingToolbarContent
-import `in`.koreatech.koin.feature.store.detail.component.StoreDetailImage
-import `in`.koreatech.koin.feature.store.detail.component.StoreDetailInfo
-import `in`.koreatech.koin.feature.store.cart.ShoppingCartViewModel
 import kotlin.math.roundToInt
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -84,7 +83,6 @@ fun StoreDetailScreen(
     isCartAdded: Boolean = false,
     isCartModified: Boolean = false,
     viewModel: StoreDetailViewModel = hiltViewModel(),
-    cartViewModel: ShoppingCartViewModel = hiltViewModel(),
     navigateToCart: () -> Unit = {},
     navigateToBack: () -> Unit = {},
     navigateToDetailInfo: (selectedInfo: String) -> Unit = {},
@@ -92,7 +90,6 @@ fun StoreDetailScreen(
     navigateToMenuInfo: (menuId: Int) -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
-    val cartUiState by cartViewModel.collectAsState()
     viewModel.collectSideEffect {
         handleSideEffect(it, navigateToCart)
     }
@@ -119,8 +116,8 @@ fun StoreDetailScreen(
         snapshotFlow { isCartModified }
             .distinctUntilChanged()
             .onEach {
-                if (it && cartUiState.isLoggedIn) {
-                    cartViewModel.getCart(cartUiState.cartType)
+                if (it && uiState.isLoggedIn) {
+                    viewModel.getCart(uiState.cartType)
                 }
             }
             .launchIn(coroutineScope)
@@ -329,12 +326,12 @@ fun StoreDetailScreen(
                 )
             }
         }
-        if (cartUiState.cart.items.isNotEmpty() && cartUiState.cart.orderableShopId == uiState.store.orderableShopId) {
+        if (uiState.cart.items.isNotEmpty() && uiState.cart.orderableShopId == uiState.store.orderableShopId) {
             OrderBottomBar(
-                itemCount = cartUiState.cart.items.sumOf { it.quantity },
-                totalPrice = cartUiState.cart.totalAmount,
-                isOrderEnabled = cartUiState.cartValidation == CartValidation.VALID,
-                orderableMessage = if (cartUiState.cart.totalAmount >= cartUiState.minimumOrderAmount) stringResource(R.string.store_order_can_delivery) else stringResource(R.string.store_order_cant_delivery),
+                itemCount = uiState.cart.items.sumOf { it.quantity },
+                totalPrice = uiState.cart.totalAmount,
+                isOrderEnabled = uiState.cartValidation == CartValidation.VALID,
+                orderableMessage = if (uiState.cart.totalAmount >= uiState.minimumOrderAmount) stringResource(R.string.store_order_can_delivery) else stringResource(R.string.store_order_cant_delivery),
                 navigateToCart = navigateToCart
             )
         }

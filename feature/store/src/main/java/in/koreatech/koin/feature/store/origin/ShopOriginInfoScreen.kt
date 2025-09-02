@@ -47,13 +47,12 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
-import `in`.koreatech.koin.feature.store.origin.component.KoinStoreGrid
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.detail.hasAnyInfo
 import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
 import `in`.koreatech.koin.feature.store.model.DeliveryTipModel
-import `in`.koreatech.koin.feature.store.detail.StoreDetailViewModel
+import `in`.koreatech.koin.feature.store.origin.component.KoinStoreGrid
 import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.compose.collectAsState
 
@@ -62,14 +61,14 @@ import org.orbitmvi.orbit.compose.collectAsState
 fun ShopOriginInfoScreen(
     selectedInfo: String,
     cartItemNumber: Int = 0,
-    storeDetailViewModel: StoreDetailViewModel = hiltViewModel(),
+    shopOriginViewModel: ShopOriginViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
     navigateToShoppingCart: () -> Unit = {}
 ) {
-    val uiState by storeDetailViewModel.collectAsState()
+    val uiState by shopOriginViewModel.collectAsState()
 
     LaunchedEffect(Unit) {
-        storeDetailViewModel.getCartItemsCount()
+        shopOriginViewModel.getCartItemsCount()
     }
 
     if (uiState.isLoading) {
