@@ -17,6 +17,7 @@ dependencyResolutionManagement {
         maven { url 'https://devrepo.kakao.com/nexus/content/groups/public/' }
     }
 }
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include ':koin', ':core'
 include ':data'

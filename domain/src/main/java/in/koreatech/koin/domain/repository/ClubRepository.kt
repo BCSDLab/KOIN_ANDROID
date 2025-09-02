@@ -2,8 +2,11 @@ package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.club.ClubCategories
 import `in`.koreatech.koin.domain.model.club.ClubDetails
+import `in`.koreatech.koin.domain.model.club.ClubEvent
 import `in`.koreatech.koin.domain.model.club.ClubHot
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
+import `in`.koreatech.koin.domain.model.club.ClubRecruitment
+import `in`.koreatech.koin.domain.model.club.ClubSearch
 import `in`.koreatech.koin.domain.model.club.Clubs
 
 interface ClubRepository {
@@ -12,8 +15,10 @@ interface ClubRepository {
     suspend fun getClubHot(): Result<ClubHot>
 
     suspend fun getClubs(
-        categoryId: Int? = null,
-        sortType: String? = null
+        categoryId: Int?,
+        sortType: String,
+        isRecruiting: Boolean,
+        query: String
     ): Result<Clubs>
 
     suspend fun getClubDetails(
@@ -75,5 +80,89 @@ interface ClubRepository {
 
     suspend fun cancelClubLike(
         clubId: Int
+    ): Result<Unit>
+
+    suspend fun getClubRecruitment(
+        clubId: Int
+    ): Result<ClubRecruitment>
+
+    suspend fun createClubRecruitment(
+        clubId: Int,
+        startDate: String?,
+        endDate: String?,
+        isAlwaysRecruiting: Boolean,
+        imageUrl: String,
+        content: String
+    ): Result<Unit>
+
+    suspend fun deleteClubRecruitment(
+        clubId: Int
+    ): Result<Unit>
+
+    suspend fun modifyClubRecruitment(
+        clubId: Int,
+        startDate: String?,
+        endDate: String?,
+        isAlwaysRecruiting: Boolean,
+        imageUrl: String,
+        content: String
+    ): Result<Unit>
+
+    suspend fun getClubEvents(
+        clubId: Int,
+        eventType: String
+    ): Result<List<ClubEvent>>
+
+    suspend fun createClubEvent(
+        clubId: Int,
+        name: String,
+        imageUrls: List<String>,
+        startDate: String,
+        endDate: String,
+        introduce: String,
+        content: String?
+    ): Result<Unit>
+
+    suspend fun getClubEvent(
+        clubId: Int,
+        eventId: Int
+    ): Result<ClubEvent>
+
+    suspend fun searchClubs(
+        query: String
+    ): Result<ClubSearch>
+
+    suspend fun modifyClubEvent(
+        clubId: Int,
+        eventId: Int,
+        name: String,
+        imageUrls: List<String>,
+        startDate: String,
+        endDate: String,
+        introduce: String,
+        content: String?
+    ): Result<Unit>
+
+    suspend fun deleteClubEvent(
+        clubId: Int,
+        eventId: Int
+    ): Result<Unit>
+
+    suspend fun subscribeClubRecruitment(
+        clubId: Int
+    ): Result<Unit>
+
+    suspend fun unsubscribeClubRecruitment(
+        clubId: Int
+    ): Result<Unit>
+
+    suspend fun subscribeClubEvent(
+        clubId: Int,
+        eventId: Int
+    ): Result<Unit>
+
+    suspend fun unsubscribeClubEvent(
+        clubId: Int,
+        eventId: Int
     ): Result<Unit>
 }

@@ -6,12 +6,3 @@ enum class NavigatorType(
     MAIN("main"),
     DETAIL("detail")
 }
-
-enum class SchemeType(
-    val type: String
-) {
-    SHOP("shop"),
-    DINING("dining"),
-    ARTICLE("keyword"),
-    CHAT("chat")
-}

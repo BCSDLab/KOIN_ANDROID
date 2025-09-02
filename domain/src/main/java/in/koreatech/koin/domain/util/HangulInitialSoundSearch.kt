@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.domain.util
 
+import `in`.koreatech.koin.domain.util.regex.RegexPatterns
+
 object HangulInitialSoundSearch {
     private val initialSounds =
         arrayOf(
@@ -49,8 +51,8 @@ object HangulInitialSoundSearch {
         value: String,
         search: String
     ): Boolean {
-        val trimValue = value.replace(Regex("""\s"""), "")
-        val trimSearch = search.replace(Regex("""\s"""), "")
+        val trimValue = value.replace(RegexPatterns.space, "")
+        val trimSearch = search.replace(RegexPatterns.space, "")
 
         var t = 0
         val seof = trimValue.length - trimSearch.length
