@@ -68,7 +68,9 @@ fun ShopOriginInfoScreen(
     val uiState by shopOriginViewModel.collectAsState()
 
     LaunchedEffect(Unit) {
-        shopOriginViewModel.getCartItemsCount()
+        if (uiState.isLoggedIn) {
+            shopOriginViewModel.getCartItemsCount()
+        }
     }
 
     if (uiState.isLoading) {

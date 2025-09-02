@@ -3,8 +3,10 @@ package `in`.koreatech.koin.feature.store.origin
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopOriginInfoUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.store.model.DeliveryTipModel
 import `in`.koreatech.koin.feature.store.model.OriginModel
 import `in`.koreatech.koin.feature.store.model.OwnerInfoModel
@@ -22,7 +24,8 @@ import org.orbitmvi.orbit.viewmodel.container
 class ShopOriginViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
-    private val getOrderShopOriginInfoUseCase: GetOrderShopOriginInfoUseCase
+    private val getOrderShopOriginInfoUseCase: GetOrderShopOriginInfoUseCase,
+    private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<ShopOriginState, Unit> {
     override val container = container<ShopOriginState, Unit>(ShopOriginState()) {
         val storeId = savedStateHandle.get<Int>(STORE_ID)
@@ -31,6 +34,29 @@ class ShopOriginViewModel @Inject constructor(
 
         if (isOrderableShop) {
             fetchOrderStoreNotice(storeId)
+        }
+    }
+
+    init {
+        getUserType()
+    }
+
+    private fun getUserType() = intent {
+        getUserStatusUseCase().collect {
+            when (it) {
+                is User.Student,
+                is User.General -> {
+                    reduce {
+                        state.copy(isLoggedIn = true)
+                    }
+                }
+                is User.Anonymous -> {
+                    // Do nothing
+                    reduce {
+                        state.copy(isLoggedIn = false)
+                    }
+                }
+            }
         }
     }
 
