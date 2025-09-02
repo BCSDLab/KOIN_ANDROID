@@ -96,7 +96,7 @@ fun DiningImageDialog(
                             val dy = (tapOffset.y - imageHeight / 2)
 
                             newOffset = coerceInMaxOffset(
-                                imageWidth =  imageWidth,
+                                imageWidth = imageWidth,
                                 imageHeight = imageHeight,
                                 scale = newScale,
                                 offset = Offset(
