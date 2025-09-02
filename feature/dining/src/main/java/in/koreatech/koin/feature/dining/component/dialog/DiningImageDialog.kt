@@ -1,6 +1,10 @@
 package `in`.koreatech.koin.feature.dining.component.dialog
 
+import androidx.compose.animation.core.VectorConverter
+import androidx.compose.animation.core.animate
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -8,16 +12,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -42,12 +49,83 @@ fun DiningImageDialog(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = {}
 ) {
-    var scale by remember { mutableStateOf(1f) }
+    var scale by remember { mutableFloatStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
+
+    var doubleTapScale by remember { mutableFloatStateOf(1f) }
+    var doubleTapOffset by remember { mutableStateOf(Offset.Zero) }
+
+    var imageWidth by remember { mutableFloatStateOf(0f) }
+    var imageHeight by remember { mutableFloatStateOf(0f) }
+
+    LaunchedEffect(doubleTapScale) {
+        animate(
+            initialValue = scale,
+            targetValue = doubleTapScale,
+            animationSpec = tween(durationMillis = 300)
+        ) { value, _ ->
+            scale = value
+        }
+    }
+    LaunchedEffect(doubleTapOffset) {
+        animate(
+            initialValue = offset,
+            targetValue = doubleTapOffset,
+            animationSpec = tween(durationMillis = 300),
+            typeConverter = Offset.VectorConverter
+        ) { value, _ ->
+            offset = value
+        }
+    }
+
+    val minScale = 1f
+    val maxScale = 5f
     BasicAlertDialog(
         modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onDoubleTap = { tapOffset ->
+                        var newScale = scale * 2f
+                        var newOffset = Offset.Zero
+
+                        if (newScale > maxScale) {
+                            newScale = 1f
+                        } else {
+                            val dx = (tapOffset.x - imageWidth / 2)
+                            val dy = (tapOffset.y - imageHeight / 2)
+
+                            val maxX = (imageWidth * (newScale - 1)) / 2
+                            val maxY = (imageHeight * (newScale - 1)) / newScale / 2
+
+                            newOffset = Offset(
+                                x = (offset.x - dx * (newScale / scale - 1)).coerceIn(-maxX, maxX),
+                                y = (offset.y - dy * (newScale / scale - 1)).coerceIn(-maxY, maxY)
+                            )
+                        }
+
+                        doubleTapScale = newScale
+                        doubleTapOffset = newOffset
+                    }
+                )
+            }
+            .pointerInput(Unit) {
+                detectTransformGestures { _, pan, zoom, _ ->
+                    val newScale = (scale * zoom).coerceIn(minScale, maxScale)
+                    offset += pan
+
+                    val maxX = (imageWidth * (newScale - 1)) / 2
+                    val maxY = (imageHeight * (newScale - 1)) / newScale / 2
+
+                    offset = Offset(
+                        x = offset.x.coerceIn(-maxX, maxX),
+                        y = offset.y.coerceIn(-maxY, maxY)
+                    )
+
+                    scale = newScale
+                }
+            }
+            .wrapContentSize(Alignment.Center),
         onDismissRequest = { onDismiss() }
     ) {
         Column {
@@ -69,32 +147,17 @@ fun DiningImageDialog(
                 )
             }
             BoxWithConstraints {
-                val boxWidth = constraints.maxWidth.toFloat()
-                val boxHeight = constraints.maxHeight.toFloat()
+                imageWidth = constraints.maxWidth.toFloat()
+                imageHeight = constraints.maxHeight.toFloat()
                 SubcomposeAsyncImage(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .pointerInput(Unit) {
-                            detectTransformGestures { _, pan, zoom, _ ->
-                                val newScale = (scale * zoom).coerceIn(1f, 5f)
-                                offset += pan
-
-                                scale = newScale
-
-                                val maxX = (boxWidth * (scale - 1)) / 2
-                                val maxY = (boxHeight * (scale - 1)) / 2
-
-                                offset = Offset(
-                                    x = offset.x.coerceIn(-maxX, maxX),
-                                    y = offset.y.coerceIn(-maxY, maxY)
-                                )
-                            }
-                        }
                         .graphicsLayer(
                             scaleX = scale,
                             scaleY = scale,
                             translationX = offset.x,
-                            translationY = offset.y
+                            translationY = offset.y,
+                            clip = false
                         ),
                     model = imageModel,
                     contentDescription = "Dining Image",
