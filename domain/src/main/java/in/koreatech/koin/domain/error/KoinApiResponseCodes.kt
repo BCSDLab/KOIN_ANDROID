@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.domain.error
 
 sealed class KoinApiResponseCodes(
-    codes : String
+    codes: String
 ) : KoinErrorException() {
     /**
      * 2xx Success(성공)
@@ -26,7 +26,7 @@ sealed class KoinApiResponseCodes(
     object NotMatchedVerificationCode : KoinApiResponseCodes("NOT_MATCHED_VERIFICATION_CODE")
     object NotMatchedRefreshToken : KoinApiResponseCodes("NOT_MATCHED_REFRESH_TOKEN")
     object NotReadableHttpMessage : KoinApiResponseCodes("NOT_READABLE_HTTP_MESSAGE")
-    object UnSupportedOperation : KoinApiResponseCodes("UNSUPPORTED_OPERATION")
+    object UnsupportedOperation : KoinApiResponseCodes("UNSUPPORTED_OPERATION")
     object InvalidRecruitmentPeriod : KoinApiResponseCodes("INVALID_RECRUITMENT_PERIOD")
     object MustBeNullRecruitmentPeriod : KoinApiResponseCodes("MUST_BE_NULL_RECRUITMENT_PERIOD")
     object RequiredRecruitmentPeriod : KoinApiResponseCodes("REQUIRED_RECRUITMENT_PERIOD")
@@ -44,7 +44,7 @@ sealed class KoinApiResponseCodes(
     object AddressKeywordInvalidSymbols : KoinApiResponseCodes("ADDRESS_KEYWORD_INVALID_SYMBOLS")
     object AddressSearchLimitExceeded : KoinApiResponseCodes("ADDRESS_SEARCH_LIMIT_EXCEEDED")
     object DifferentShopItemInCart : KoinApiResponseCodes("DIFFERENT_SHOP_ITEM_IN_CART")
-    object MenuSoldout : KoinApiResponseCodes("MENU_SOLD_OUT")
+    object MenuSoldOut : KoinApiResponseCodes("MENU_SOLD_OUT")
     object ShopClosed : KoinApiResponseCodes("SHOP_CLOSED")
     object InvalidMenuInShop : KoinApiResponseCodes("INVALID_MENU_IN_SHOP")
     object InvalidOptionInGroup : KoinApiResponseCodes("INVALID_OPTION_IN_GROUP")
@@ -52,7 +52,7 @@ sealed class KoinApiResponseCodes(
     object RequiredOptionGroupMissing : KoinApiResponseCodes("REQUIRED_OPTION_GROUP_MISSING")
     object MinSelectionNotMet : KoinApiResponseCodes("MIN_SELECTION_NOT_MET")
     object MaxSelectionExceeded : KoinApiResponseCodes("MAX_SELECTION_EXCEEDED")
-    object OrderAmountBelowMinimun : KoinApiResponseCodes("ORDER_AMOUNT_BELOW_MINIMUM")
+    object OrderAmountBelowMinimum : KoinApiResponseCodes("ORDER_AMOUNT_BELOW_MINIMUM")
     object InvalidSelfChat : KoinApiResponseCodes("INVALID_SELF_CHAT")
     object InvalidWebsocketUserSession : KoinApiResponseCodes("INVALID_WEBSOCKET_USER_SESSION")
 
@@ -77,7 +77,7 @@ sealed class KoinApiResponseCodes(
      */
     object NotFoundUser : KoinApiResponseCodes("NOT_FOUND_USER")
     object NotFoundRefreshToken : KoinApiResponseCodes("NOT_FOUND_REFRESH_TOKEN")
-    object NotFountResetToken : KoinApiResponseCodes("NOT_FOUND_RESET_TOKEN")
+    object NotFoundResetToken : KoinApiResponseCodes("NOT_FOUND_RESET_TOKEN")
     object NoHandlerFound : KoinApiResponseCodes("NO_HANDLER_FOUND")
     object NotFoundClub : KoinApiResponseCodes("NOT_FOUND_CLUB")
     object NotFoundClubRecruitment : KoinApiResponseCodes("NOT_FOUND_CLUB_RECRUITMENT")
@@ -89,8 +89,8 @@ sealed class KoinApiResponseCodes(
     object NotFoundOrderableShopMenuOption : KoinApiResponseCodes("NOT_FOUND_ORDERABLE_SHOP_MENU_OPTION")
     object NotFoundCart : KoinApiResponseCodes("NOT_FOUND_CART")
     object NotFoundCartItem : KoinApiResponseCodes("NOT_FOUND_CART_ITEM")
-    object NotfoundArticle : KoinApiResponseCodes("NOT_FOUND_ARTICLE")
-    object NotfoundLostItemChatroom : KoinApiResponseCodes("NOT_FOUND_LOST_ITEM_CHATROOM")
+    object NotFoundArticle : KoinApiResponseCodes("NOT_FOUND_ARTICLE")
+    object NotFoundLostItemChatroom : KoinApiResponseCodes("NOT_FOUND_LOST_ITEM_CHATROOM")
 
     /**
      * 409 Conflict (중복 혹은 충돌)
@@ -114,5 +114,4 @@ sealed class KoinApiResponseCodes(
     object InternalServerError : KoinApiResponseCodes("INTERNAL_SERVER_ERROR")
     object ClientAborted : KoinApiResponseCodes("CLIENT_ABORTED")
     object ExternalApiError : KoinApiResponseCodes("EXTERNAL_API_ERROR")
-
 }
