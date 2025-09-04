@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.domain.error
 
 sealed class KoinApiResponseCode(
-    codes: String
+    val codes: String
 ) : KoinErrorException() {
     /**
      * 2xx Success(성공)
