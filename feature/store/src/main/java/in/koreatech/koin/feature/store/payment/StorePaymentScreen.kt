@@ -81,11 +81,11 @@ fun StorePaymentScreen(
         ),
         backHandler = { webView ->
             BackHandler {
-                when (webView?.url?.toUri()?.path) {
-                    "/payment" -> {
+                when (webView?.url?.toUri()?.path?.split("/")?.get(1)) {
+                    "payment" -> {
                         navigateToCart()
                     }
-                    "/result", "/orderCancel" -> {
+                    "result", "orderCancel" -> {
                         navigateToMain()
                     }
                     else -> {
