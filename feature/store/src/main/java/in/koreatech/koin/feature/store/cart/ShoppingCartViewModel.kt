@@ -81,6 +81,7 @@ class ShoppingCartViewModel @Inject constructor(
                     cartValidation = CartValidation.VALID
                 )
             }
+            getCartSummary()
         }.onFailure {
             reduce {
                 state.copy(
@@ -94,7 +95,6 @@ class ShoppingCartViewModel @Inject constructor(
                 )
             }
         }
-        getCartSummary()
     }
 
     private fun getCartSummary() = intent {
