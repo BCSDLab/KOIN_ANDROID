@@ -50,7 +50,6 @@ class ShoppingCartViewModel @Inject constructor(
                     }
                 }
                 is User.Anonymous -> {
-                    // Do nothing
                     reduce {
                         state.copy(isLoggedIn = false)
                     }
