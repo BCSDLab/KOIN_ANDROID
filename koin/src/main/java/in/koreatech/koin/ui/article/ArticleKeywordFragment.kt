@@ -1,7 +1,5 @@
 package `in`.koreatech.koin.ui.article
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +22,7 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.dialog.AlertModalDialog
 import `in`.koreatech.koin.core.dialog.AlertModalDialogData
+import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.permission.checkNotificationPermission
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.FragmentArticleKeywordBinding
@@ -34,6 +33,7 @@ import `in`.koreatech.koin.ui.article.viewmodel.KeywordInputUiState
 import `in`.koreatech.koin.ui.notification.viewmodel.NotificationUiState
 import `in`.koreatech.koin.ui.notification.viewmodel.NotificationViewModel
 import `in`.koreatech.koin.util.SnackbarUtil
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -43,6 +43,9 @@ class ArticleKeywordFragment : Fragment() {
 
     private val viewModel by viewModels<ArticleKeywordViewModel>()
     private val notificationViewModel by viewModels<NotificationViewModel>()
+
+    @Inject
+    lateinit var navigator: Navigator
 
     private val loginModal: AlertModalDialog by lazy {
         AlertModalDialog(
@@ -57,10 +60,7 @@ class ArticleKeywordFragment : Fragment() {
                     AnalyticsConstant.Label.LOGIN_PROMPT,
                     "키워드 알림 팝업"
                 )
-                val intent =
-                    Intent(Intent.ACTION_VIEW).apply {
-                        data = Uri.parse("koin://login/login?link=koin://article/activity?fragment=article_keyword")
-                    }
+                val intent = navigator.navigateToSignIn(this.requireContext(), redirectUrl = "koin://article/activity?fragment=article_keyword")
                 it.dismiss()
                 startActivity(intent)
             },

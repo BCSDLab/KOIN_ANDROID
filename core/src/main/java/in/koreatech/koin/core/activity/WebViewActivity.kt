@@ -78,6 +78,7 @@ class WebViewActivity : ActivityBase(R.layout.activity_webview) {
         ViewCompat.setOnApplyWindowInsetsListener(binding.webView) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.updateLayoutParams<MarginLayoutParams> {
+                topMargin = systemBars.top
                 bottomMargin = systemBars.bottom
             }
             WindowInsetsCompat.CONSUMED

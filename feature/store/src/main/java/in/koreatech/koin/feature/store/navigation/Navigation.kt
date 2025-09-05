@@ -14,16 +14,16 @@ import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_ADD_CART
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_DETAIL_MAIN
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_HOME
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_NEARBY
+import `in`.koreatech.koin.feature.store.cart.ShoppingCartScreen
+import `in`.koreatech.koin.feature.store.cartadd.CartAddScreen
+import `in`.koreatech.koin.feature.store.cartedit.CartEditScreen
+import `in`.koreatech.koin.feature.store.detail.StoreDetailScreen
 import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
-import `in`.koreatech.koin.feature.store.view.ShopOriginInfoScreen
-import `in`.koreatech.koin.feature.store.view.ShoppingCartScreen
-import `in`.koreatech.koin.feature.store.view.StoreDetailScreen
-import `in`.koreatech.koin.feature.store.view.cart.add.CartAddScreen
-import `in`.koreatech.koin.feature.store.view.cart.edit.CartEditScreen
-import `in`.koreatech.koin.feature.store.view.main.home.StoreHomeScreen
-import `in`.koreatech.koin.feature.store.view.main.nearby.StoreNearbyScreen
-import `in`.koreatech.koin.feature.store.view.payment.StorePaymentScreen
-import `in`.koreatech.koin.feature.store.view.search.StoreSearchScreen
+import `in`.koreatech.koin.feature.store.home.StoreHomeScreen
+import `in`.koreatech.koin.feature.store.nearby.StoreNearbyScreen
+import `in`.koreatech.koin.feature.store.origin.ShopOriginInfoScreen
+import `in`.koreatech.koin.feature.store.payment.StorePaymentScreen
+import `in`.koreatech.koin.feature.store.search.StoreSearchScreen
 
 fun NavGraphBuilder.koinStoreGraph(
     navController: NavController,

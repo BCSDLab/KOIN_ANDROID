@@ -1,31 +1,26 @@
 ---
-name: Bug report
-about: Create a report to help us improve
+name: Bug Report
+about: 버그 리포트
 title: ''
-labels: Bug
+labels: "bug"
 assignees: ''
 ---
 
-<!-- Template from tui.chart -->
-## Describe the bug
-A clear and concise description of what the bug is.
+### 어떤 오류인가요?
+*
 
-## To Reproduce
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+### 재현 방법은 무엇인가요?
+1.
 
-## Expected behavior
-A clear and concise description of what you expected to happen.
+### 정상적인 동작은 무엇인가요?
+*
 
-## Screenshot
-If applicable, add screenshots to help explain your problem.
+### 예상되는 원인은 무엇인가요?
+*
 
-## Environment
+### 오류 사진을 올려주세요
 
-**Smartphone:**
-- Device: [e.g. Pixel]
-- OS: [e.g. Android14]
-- Version [e.g. 1.0.0]
+### 오류가 발생한 환경을 알려주세요
+* 기기:
+* OS:
+* KOIN 버전: 

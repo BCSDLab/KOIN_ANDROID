@@ -17,6 +17,14 @@ data class ClubDetailsResponse(
     @SerializedName("phone_number") val phoneNumber: String?,
     @SerializedName("manager") val manager: Boolean,
     @SerializedName("is_liked") val isLiked: Boolean,
+    @SerializedName("is_recruit_subscribed") val isRecruitSubscribed: Boolean,
     @SerializedName("updated_at") val updatedAt: String,
-    @SerializedName("is_like_hidden") val isLikeHidden: Boolean
-)
+    @SerializedName("is_like_hidden") val isLikeHidden: Boolean,
+    @SerializedName("hot_status") val hotStatus: HotStatusResponse?
+) {
+    data class HotStatusResponse(
+        @SerializedName("month") val month: Int,
+        @SerializedName("week_of_month") val weekOfMonth: Int,
+        @SerializedName("streak_count") val streakCount: Int
+    )
+}

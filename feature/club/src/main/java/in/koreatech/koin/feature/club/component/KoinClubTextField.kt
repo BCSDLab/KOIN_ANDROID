@@ -45,7 +45,7 @@ fun KoinClubBasicTextField(
     modifier: Modifier = Modifier,
     hint: String = "",
     textStyle: TextStyle = KoinTheme.typography.regular14,
-    borderColor: Color = KoinTheme.colors.primary300,
+    borderColor: Color = KoinTheme.colors.neutral100,
     backgroundColor: Color = KoinTheme.colors.neutral100,
     enabled: Boolean = true,
     readOnly: Boolean = false,
@@ -53,13 +53,14 @@ fun KoinClubBasicTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     singleLine: Boolean = false,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
+    minLines: Int = 1,
     maxLength: Int = Int.MAX_VALUE,
     visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
     BasicTextField(
         modifier = modifier
-            .border(width = 1.dp, color = borderColor, shape = KoinTheme.shapes.small)
-            .background(color = backgroundColor, shape = KoinTheme.shapes.small),
+            .border(width = 1.dp, color = borderColor, shape = KoinTheme.shapes.extraSmall)
+            .background(color = backgroundColor, shape = KoinTheme.shapes.extraSmall),
         value = value,
         onValueChange = {
             if (it.length < maxLength) {
@@ -77,6 +78,7 @@ fun KoinClubBasicTextField(
         ),
         singleLine = singleLine,
         maxLines = maxLines,
+        minLines = minLines,
         visualTransformation = visualTransformation,
         decorationBox = { innerTextField ->
             Column(

@@ -16,7 +16,6 @@
     <!--학교 정보-->
     <string name="navigation_item_store">상점</string>
     <string name="navigation_item_dining">식단</string>
-    <string name="navigation_item_circle">동아리</string>
     <string name="navigation_item_land">복덕방</string>
     <!--<string name="navigation_item_faq">FAQ</string>-->
 
@@ -39,7 +38,6 @@
     <!--<string name="navigation_item_user_request">문의 사항</string>-->
     <string name="navigation_item_kakao_talk">카카오톡 대화</string>
     <string name="navigation_item_version_info">버전 정보</string>
-    <string name="navigation_item_developer">만든 이</string>
     <string name="navigation_item_open_source">오픈소스</string>
     <string name="navigation_item_login">로그인</string>
     <string name="navigation_item_logout">로그아웃</string>
@@ -307,6 +305,9 @@
     <string name="dining_non_upload">학교에서 식단이 업로드 되지 않았습니다.</string>
     <string name="dining_soldout">품절</string>
     <string name="dining_changed">변경됨</string>
+    <string name="dining_today">오늘</string>
+    <string name="dining_tomorrow">내일</string>
+    <string name="dining_see_more">더보기</string>
     <string name="cafeteria_info">학생식당정보</string>
     <string name="bus_app_bar_title">버스 / 교통</string>
     <string name="bus_tab_info">운행정보</string>
