@@ -15,7 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -53,7 +54,7 @@ fun KoinOrdersFilterChip(
         Spacer(modifier = Modifier.width(6.dp))
         Icon(
             modifier = Modifier.size(16.dp),
-            painter = painterResource(id = R.drawable.ic_store_arrow_down),
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_store_arrow_down),
             contentDescription = "",
             tint = textColor
         )

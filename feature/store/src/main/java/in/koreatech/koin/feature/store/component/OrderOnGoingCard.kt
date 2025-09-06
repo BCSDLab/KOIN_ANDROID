@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.feature.store.component
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -31,19 +31,24 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
-import `in`.koreatech.koin.feature.store.enums.OrderStatus
-import `in`.koreatech.koin.feature.store.enums.StoreStatus
-import `in`.koreatech.koin.feature.store.model.OrderHistoryData
+import `in`.koreatech.koin.feature.store.enums.TypeOption
+import `in`.koreatech.koin.feature.store.model.OrderOnGoingData
 
 @Composable
-fun OrderHistoryCard(
-    orderdata: OrderHistoryData,
-    modifier: Modifier = Modifier,
-    onDetailClick: () -> Unit,
-    onWriteReviewClick: () -> Unit,
-    onReorderClick: () -> Unit
+fun OrderOnGoingCard(
+    orderdata: OrderOnGoingData,
+    modifier: Modifier = Modifier
 ) {
-    val textColor = if (orderdata.status.isActivated) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral400
+    val chipIcon = if (orderdata.status == TypeOption.DELIVERY) {
+        R.drawable.ic_order_delivery
+    } else {
+        R.drawable.ic_order_takeout
+    }
+    val timeGuide = if (orderdata.status == TypeOption.DELIVERY) {
+        R.string.delivery_time_guide
+    } else {
+        R.string.takeout_time_guide
+    }
 
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -57,41 +62,43 @@ fun OrderHistoryCard(
                 .padding(vertical = 16.dp, horizontal = 24.dp)
         ) {
             Row(
+                modifier = modifier
+                    .clip(RoundedCornerShape(4.dp))
+                    .background(RebrandKoinTheme.colors.primary100)
+                    .padding(horizontal = 6.dp, vertical = 2.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = stringResource(orderdata.status.stringRes),
-                    style = RebrandKoinTheme.typography.bold16,
-                    color = textColor
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = chipIcon),
+                    contentDescription = null,
+                    tint = RebrandKoinTheme.colors.primary500,
+                    modifier = modifier.size(16.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = orderdata.date,
-                    style = RebrandKoinTheme.typography.regular12,
-                    color = textColor
+                    text = stringResource(orderdata.status.stringRes),
+                    style = RebrandKoinTheme.typography.medium12,
+                    color = RebrandKoinTheme.colors.primary500
                 )
-                Spacer(modifier = Modifier.weight(1f))
-                Row(
-                    modifier = Modifier.clickable(onClick = onDetailClick)
-                ) {
-                    Text(
-                        text = stringResource(R.string.order_detail),
-                        style = RebrandKoinTheme.typography.medium12,
-                        color = RebrandKoinTheme.colors.neutral500
-                    )
-                    Spacer(modifier = Modifier.width(2.dp))
-                    Icon(
-                        modifier = Modifier.size(20.dp),
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_right_round),
-                        contentDescription = "",
-                        tint = RebrandKoinTheme.colors.neutral500
-                    )
-                }
             }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                text = orderdata.time + stringResource(timeGuide),
+                style = RebrandKoinTheme.typography.bold20,
+                color = RebrandKoinTheme.colors.primary700
+            )
+
+            Text(
+                text = stringResource(R.string.food_condition_guide),
+                style = RebrandKoinTheme.typography.regular12,
+                color = RebrandKoinTheme.colors.neutral500
+            )
 
             HorizontalDivider(
                 thickness = 1.dp,
-                modifier = Modifier.padding(vertical = 12.dp),
+                modifier = Modifier.padding(vertical = 16.dp),
                 color = RebrandKoinTheme.colors.neutral200
             )
 
@@ -130,66 +137,49 @@ fun OrderHistoryCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (orderdata.status.isActivated) {
-                OutlinedButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = onWriteReviewClick,
-                    shape = RoundedCornerShape(8.dp),
-                    contentPadding = PaddingValues(vertical = 8.dp, horizontal = 12.dp),
-                    border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral400)
-                ) {
-                    Text(
-                        text = stringResource(R.string.write_review),
-                        style = RebrandKoinTheme.typography.bold14,
-                        color = RebrandKoinTheme.colors.neutral600
-                    )
-                }
-
-                Spacer(modifier = Modifier.width(12.dp))
+            OutlinedButton(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = { },
+                shape = RoundedCornerShape(8.dp),
+                contentPadding = PaddingValues(vertical = 8.dp, horizontal = 12.dp),
+                border = BorderStroke(1.dp, RebrandKoinTheme.colors.primary500)
+            ) {
+                Text(
+                    text = "주문 상세 보기",
+                    style = RebrandKoinTheme.typography.bold14,
+                    color = RebrandKoinTheme.colors.primary500
+                )
             }
-
-            MenuAddButton(
-                status = orderdata.storeStatus,
-                onClick = onReorderClick
-            )
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun OrderHistoryCardPreview() {
-    OrderHistoryCard(
-        orderdata = OrderHistoryData(
-            OrderStatus.DELIVERED,
-            date = "9월 5일 (금)",
+fun OrderOnGoingCardPreview() {
+    OrderOnGoingCard(
+        orderdata = OrderOnGoingData(
+            TypeOption.DELIVERY,
+            time = "오후 8:32",
             storeImageUrl = "https://example.com/store_thumbnail.jpg",
-            storeStatus = StoreStatus.SOLD_OUT,
             storeName = "맛있는 족발 - 병천점",
             orders = "족발 + 막국수 저녁 set 외 1건",
             price = 32500
-        ),
-        onDetailClick = { },
-        onWriteReviewClick = { },
-        onReorderClick = { }
+        )
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-fun OrderHistoryCardPreview2() {
-    OrderHistoryCard(
-        orderdata = OrderHistoryData(
-            OrderStatus.CANCELLED,
-            date = "9월 5일 (금)",
+fun OrderOnGoingCardPreview2() {
+    OrderOnGoingCard(
+        orderdata = OrderOnGoingData(
+            TypeOption.TAKEOUT,
+            time = "오후 8:32",
             storeImageUrl = "https://example.com/store_thumbnail.jpg",
-            storeStatus = StoreStatus.OPEN,
             storeName = "맛있는 족발 - 병천점",
             orders = "족발 + 막국수 저녁 set 외 1건",
             price = 32500
-        ),
-        onDetailClick = { },
-        onWriteReviewClick = { },
-        onReorderClick = { }
+        )
     )
 }

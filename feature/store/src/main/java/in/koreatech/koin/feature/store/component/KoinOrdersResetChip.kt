@@ -15,8 +15,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -49,7 +50,7 @@ fun KoinOrdersResetChip(
         Spacer(modifier = Modifier.width(6.dp))
         Icon(
             modifier = Modifier.size(16.dp),
-            painter = painterResource(id = R.drawable.ic_process),
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_process),
             contentDescription = "",
             tint = RebrandKoinTheme.colors.neutral500
         )

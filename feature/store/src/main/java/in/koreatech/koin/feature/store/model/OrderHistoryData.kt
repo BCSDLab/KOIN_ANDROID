@@ -1,9 +1,9 @@
 package `in`.koreatech.koin.feature.store.model
 
-import `in`.koreatech.koin.feature.store.component.StoreStatus
 import `in`.koreatech.koin.feature.store.enums.OrderStatus
+import `in`.koreatech.koin.feature.store.enums.StoreStatus
 
-data class OrderData(
+data class OrderHistoryData(
     val status: OrderStatus,
     val date: String,
     val storeImageUrl: String,

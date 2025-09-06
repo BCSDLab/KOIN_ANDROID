@@ -143,6 +143,7 @@
     <string name="add_same_menu_pre_open">같은 메뉴 담기 (오픈 전)</string>
     <string name="add_same_menu_sold_out">같은 메뉴 담기 (품절)</string>
     <string name="orders_chip_reset">초기화</string>
+    <string name="orders_chip_apply">적용하기</string>
     <string name="order_history_searchbar_hint">주문한 메뉴/매장을 찾아보세요</string>
     <string name="order_histroy_price_won">%,d원</string>
     <string name="bullet_separator"> · </string>
@@ -165,4 +166,7 @@
     <string name="order_history_status_canceled">주문 취소</string>
     <string name="order_history_status_delivered">배달 완료</string>
     <string name="order_history_status_takeout_done">포장 완료</string>
+    <string name="delivery_time_guide"> 도착 예정</string>
+    <string name="takeout_time_guide"> 수령 가능</string>
+    <string name="food_condition_guide">가게에서 열심히 음식을 조리하고있어요!</string>
 </resources>

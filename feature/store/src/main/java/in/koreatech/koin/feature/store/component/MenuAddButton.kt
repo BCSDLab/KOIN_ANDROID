@@ -13,12 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
-
-enum class StoreStatus(val isButtonEnabled: Boolean) {
-    OPEN(true),
-    PRE_OPEN(false),
-    SOLD_OUT(false)
-}
+import `in`.koreatech.koin.feature.store.enums.StoreStatus
 
 @Composable
 fun MenuAddButton(

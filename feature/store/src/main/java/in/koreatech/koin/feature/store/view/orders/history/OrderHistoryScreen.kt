@@ -27,20 +27,20 @@ import `in`.koreatech.koin.feature.store.component.KoinOrdersFilterChip
 import `in`.koreatech.koin.feature.store.component.KoinOrdersResetChip
 import `in`.koreatech.koin.feature.store.component.OrderHistoryCard
 import `in`.koreatech.koin.feature.store.component.SearchBar
-import `in`.koreatech.koin.feature.store.component.StoreStatus
 import `in`.koreatech.koin.feature.store.enums.LocationOption
 import `in`.koreatech.koin.feature.store.enums.OrderStatus
 import `in`.koreatech.koin.feature.store.enums.PeriodOption
 import `in`.koreatech.koin.feature.store.enums.StatusOption
+import `in`.koreatech.koin.feature.store.enums.StoreStatus
 import `in`.koreatech.koin.feature.store.enums.TypeOption
-import `in`.koreatech.koin.feature.store.model.OrderData
 import `in`.koreatech.koin.feature.store.model.OrderFilter
+import `in`.koreatech.koin.feature.store.model.OrderHistoryData
 import `in`.koreatech.koin.feature.store.model.filters
 
 @Composable
 fun OrderHistoryScreen(
     filters: OrderFilter,
-    orderHistorys: List<OrderData>,
+    orderHistorys: List<OrderHistoryData>,
     modifier: Modifier = Modifier,
     isTyping: Boolean = false,
     openFilterDialog: () -> Unit = {}
@@ -131,8 +131,8 @@ fun OrderHistoryScreen(
 @Preview(showBackground = true)
 @Composable
 fun OrderHistoryPreview() {
-    val orderHistorys: List<OrderData> = listOf(
-        OrderData(
+    val orderHistorys: List<OrderHistoryData> = listOf(
+        OrderHistoryData(
             OrderStatus.CANCELLED,
             date = "9월 5일 (금)",
             storeImageUrl = "https://example.com/store_thumbnail.jpg",
@@ -141,7 +141,7 @@ fun OrderHistoryPreview() {
             orders = "족발 + 막국수 저녁 set 외 1건",
             price = 32500
         ),
-        OrderData(
+        OrderHistoryData(
             OrderStatus.DELIVERED,
             date = "9월 5일 (금)",
             storeImageUrl = "https://example.com/store_thumbnail.jpg",
@@ -161,8 +161,8 @@ fun OrderHistoryPreview() {
 @Preview(showBackground = true)
 @Composable
 fun OrderHistoryPreview2() {
-    val orderHistorys: List<OrderData> = listOf(
-        OrderData(
+    val orderHistorys: List<OrderHistoryData> = listOf(
+        OrderHistoryData(
             OrderStatus.CANCELLED,
             date = "9월 5일 (금)",
             storeImageUrl = "https://example.com/store_thumbnail.jpg",
@@ -171,7 +171,7 @@ fun OrderHistoryPreview2() {
             orders = "족발 + 막국수 저녁 set 외 1건",
             price = 32500
         ),
-        OrderData(
+        OrderHistoryData(
             OrderStatus.DELIVERED,
             date = "9월 5일 (금)",
             storeImageUrl = "https://example.com/store_thumbnail.jpg",
