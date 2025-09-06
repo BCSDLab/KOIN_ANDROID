@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -64,7 +65,7 @@ fun OrderOnGoingScreen(
                 }
 
                 Text(
-                    text = "준비 중인 주문 내역이 없어요",
+                    text = stringResource(R.string.no_ongoing_orders),
                     style = RebrandKoinTheme.typography.bold18,
                     color = RebrandKoinTheme.colors.primary500
                 )
@@ -84,7 +85,7 @@ fun OrderOnGoingScreen(
                         .padding(10.dp)
                 ) {
                     Text(
-                        text = "과거 주문 내역 보기",
+                        text = stringResource(R.string.goto_order_history),
                         style = RebrandKoinTheme.typography.bold13,
                         color = RebrandKoinTheme.colors.neutral500
                     )
