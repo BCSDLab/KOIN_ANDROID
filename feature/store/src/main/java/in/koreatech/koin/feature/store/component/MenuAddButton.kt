@@ -2,7 +2,6 @@ package `in`.koreatech.koin.feature.store.component
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -25,13 +24,13 @@ fun MenuAddButton(
         when (status) {
             StoreStatus.PRE_OPEN -> stringResource(R.string.add_same_menu_pre_open)
             StoreStatus.SOLD_OUT -> stringResource(R.string.add_same_menu_sold_out)
-            else /* OPEN */ -> stringResource(R.string.add_same_menu_open)
+            else -> stringResource(R.string.add_same_menu_open)
         }
 
     Button(
         modifier = modifier.fillMaxWidth(),
         onClick = onClick,
-        shape = RoundedCornerShape(8.dp),
+        shape = RebrandKoinTheme.shapes.small,
         contentPadding = PaddingValues(vertical = 8.dp, horizontal = 12.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = RebrandKoinTheme.colors.primary500,
@@ -49,7 +48,7 @@ fun MenuAddButton(
 
 @Preview(showBackground = true)
 @Composable
-fun MenuAddButtonOPENPreview() {
+private fun MenuAddButtonOPENPreview() {
     MenuAddButton(
         StoreStatus.OPEN
     )
@@ -57,7 +56,7 @@ fun MenuAddButtonOPENPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun MenuAddButtonPRE_OPENPreview() {
+private fun MenuAddButtonPREOPENPreview() {
     MenuAddButton(
         StoreStatus.PRE_OPEN
     )
@@ -65,7 +64,7 @@ fun MenuAddButtonPRE_OPENPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun MenuAddButtonSOLD_OUTPreview() {
+private fun MenuAddButtonSOLDOUTPreview() {
     MenuAddButton(
         StoreStatus.SOLD_OUT
     )

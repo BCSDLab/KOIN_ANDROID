@@ -186,7 +186,6 @@ strict-version-matcher-plugin = { module = "com.google.android.gms:strict-versio
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 toolbar-compose = { module = "me.onebone:toolbar-compose", version.ref = "toolbarCompose" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
-androidx-benchmark-traceprocessor-android = { group = "androidx.benchmark", name = "benchmark-traceprocessor-android", version.ref = "benchmarkTraceprocessorAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradle" }

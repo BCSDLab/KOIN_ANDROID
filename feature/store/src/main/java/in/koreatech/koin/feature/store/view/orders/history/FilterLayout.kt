@@ -39,9 +39,9 @@ import `in`.koreatech.koin.feature.store.model.filters
 
 @Composable
 fun FilterOverlay(
-    backgroundContent: @Composable () -> Unit,
-    onClose: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    backgroundContent: @Composable () -> Unit = {},
+    onClose: () -> Unit = {}
 ) {
     Box(
         modifier = modifier.fillMaxSize()
@@ -51,7 +51,7 @@ fun FilterOverlay(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.7f))
+                .background(RebrandKoinTheme.colors.neutral800.copy(alpha = 0.7f))
         )
 
         Column(
@@ -59,7 +59,7 @@ fun FilterOverlay(
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
                 .background(
-                    color = Color.White,
+                    color = RebrandKoinTheme.colors.neutral0,
                     shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
                 )
         ) {
@@ -67,8 +67,7 @@ fun FilterOverlay(
                 modifier = Modifier.padding(vertical = 12.dp)
             ) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Spacer(modifier = Modifier.width(32.dp))
@@ -109,7 +108,6 @@ fun FilterOverlay(
                 HorizontalDivider(
                     modifier = Modifier
                         .padding(vertical = 16.dp),
-                    thickness = 1.dp,
                     color = RebrandKoinTheme.colors.neutral200
                 )
 
@@ -121,7 +119,6 @@ fun FilterOverlay(
                 HorizontalDivider(
                     modifier = Modifier
                         .padding(vertical = 16.dp),
-                    thickness = 1.dp,
                     color = RebrandKoinTheme.colors.neutral200
                 )
 
@@ -186,7 +183,7 @@ fun FilterOverlay(
 
 @Preview(showBackground = true)
 @Composable
-fun FilterOverlayPreview() {
+private fun FilterOverlayPreview() {
     FilterOverlay(
         backgroundContent = {
             Box(

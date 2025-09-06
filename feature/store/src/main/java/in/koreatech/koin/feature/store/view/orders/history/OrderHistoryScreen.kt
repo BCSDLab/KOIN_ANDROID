@@ -130,7 +130,7 @@ fun OrderHistoryScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun OrderHistoryPreview() {
+private fun OrderHistoryPreview() {
     val orderHistorys: List<OrderHistoryData> = listOf(
         OrderHistoryData(
             OrderStatus.CANCELLED,
@@ -160,7 +160,7 @@ fun OrderHistoryPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun OrderHistoryPreview2() {
+private fun OrderHistoryPreview2() {
     val orderHistorys: List<OrderHistoryData> = listOf(
         OrderHistoryData(
             OrderStatus.CANCELLED,

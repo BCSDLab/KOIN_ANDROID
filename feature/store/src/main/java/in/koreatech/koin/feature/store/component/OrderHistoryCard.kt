@@ -39,9 +39,9 @@ import `in`.koreatech.koin.feature.store.model.OrderHistoryData
 fun OrderHistoryCard(
     orderdata: OrderHistoryData,
     modifier: Modifier = Modifier,
-    onDetailClick: () -> Unit,
-    onWriteReviewClick: () -> Unit,
-    onReorderClick: () -> Unit
+    onDetailClick: () -> Unit = {},
+    onWriteReviewClick: () -> Unit = {},
+    onReorderClick: () -> Unit = {}
 ) {
     val textColor = if (orderdata.status.isActivated) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral400
 
@@ -90,7 +90,6 @@ fun OrderHistoryCard(
             }
 
             HorizontalDivider(
-                thickness = 1.dp,
                 modifier = Modifier.padding(vertical = 12.dp),
                 color = RebrandKoinTheme.colors.neutral200
             )
@@ -103,7 +102,7 @@ fun OrderHistoryCard(
                     contentDescription = "",
                     modifier = Modifier
                         .size(88.dp)
-                        .clip(RoundedCornerShape(4.dp)),
+                        .clip(RebrandKoinTheme.shapes.extraSmall),
                     contentScale = ContentScale.Crop
                 )
                 Spacer(modifier = Modifier.width(11.dp))
@@ -158,7 +157,7 @@ fun OrderHistoryCard(
 
 @Preview(showBackground = true)
 @Composable
-fun OrderHistoryCardPreview() {
+private fun OrderHistoryCardPreview() {
     OrderHistoryCard(
         orderdata = OrderHistoryData(
             OrderStatus.DELIVERED,
@@ -177,7 +176,7 @@ fun OrderHistoryCardPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun OrderHistoryCardPreview2() {
+private fun OrderHistoryCardPreview2() {
     OrderHistoryCard(
         orderdata = OrderHistoryData(
             OrderStatus.CANCELLED,

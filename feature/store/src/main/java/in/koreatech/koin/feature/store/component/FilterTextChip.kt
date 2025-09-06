@@ -71,13 +71,12 @@ fun FilterTextChip(
                 ambientColor = RebrandKoinTheme.colors.neutral400,
                 spotColor = RebrandKoinTheme.colors.neutral500
             )
+            .clickable { onClick() }
             .then(
                 if (isSelected) {
                     Modifier
-                        .clickable { onClick() }
                 } else {
                     Modifier
-                        .clickable { onClick() }
                         .border(
                             width = 1.dp,
                             color = RebrandKoinTheme.colors.neutral300,
@@ -98,7 +97,7 @@ fun FilterTextChip(
 
 @Preview(showBackground = true)
 @Composable
-fun FilterTextChipSelectPreview() {
+private fun FilterTextChipSelectPreview() {
     FilterTextChipSelect(
         title = "주소",
         value = LocationOption.CAMPUS
@@ -107,7 +106,7 @@ fun FilterTextChipSelectPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun FilterTextChipSelectPreview2() {
+private fun FilterTextChipSelectPreview2() {
     FilterTextChipSelect(
         title = "주소",
         value = LocationOption.OUTSIDE

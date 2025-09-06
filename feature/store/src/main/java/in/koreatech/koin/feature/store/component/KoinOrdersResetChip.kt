@@ -59,6 +59,6 @@ fun KoinOrdersResetChip(
 
 @Preview(showBackground = true)
 @Composable
-fun KoinOrdersResetChipPreview() {
+private fun KoinOrdersResetChipPreview() {
     KoinOrdersResetChip()
 }

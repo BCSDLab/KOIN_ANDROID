@@ -37,7 +37,6 @@ fun OrderOnGoingScreen(
     modifier: Modifier = Modifier
 ) {
     if (orderOnGoings.isEmpty()) {
-        // 비었을 때 보여줄 화면
         Box(
             modifier = modifier
                 .fillMaxSize(),
@@ -73,7 +72,7 @@ fun OrderOnGoingScreen(
                 Column(
                     modifier = Modifier
                         .shadow(
-                            elevation = 1.dp,
+                            elevation = 2.dp,
                             shape = RebrandKoinTheme.shapes.medium,
                             ambientColor = RebrandKoinTheme.colors.neutral400,
                             spotColor = RebrandKoinTheme.colors.neutral500
@@ -109,7 +108,7 @@ fun OrderOnGoingScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun OrderOnGoingPreview() {
+private fun OrderOnGoingPreview() {
     val orderOnGoings = listOf(
         OrderOnGoingData(
             TypeOption.TAKEOUT,
@@ -134,7 +133,7 @@ fun OrderOnGoingPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun OrderOnGoingEmptyPreview() {
+private fun OrderOnGoingEmptyPreview() {
     val orderOnGoings = listOf<OrderOnGoingData>()
 
     OrderOnGoingScreen(orderOnGoings)

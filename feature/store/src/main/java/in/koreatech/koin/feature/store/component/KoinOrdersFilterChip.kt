@@ -29,8 +29,7 @@ fun KoinOrdersFilterChip(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
-    val backgroundColor = if (active) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral0
-    val textColor = if (active) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.neutral500
+    val contentColor = if (active) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.neutral500
 
     Row(
         modifier = modifier
@@ -41,7 +40,7 @@ fun KoinOrdersFilterChip(
                 spotColor = RebrandKoinTheme.colors.neutral500
             )
             .clip(RoundedCornerShape(16.dp))
-            .background(backgroundColor)
+            .background(if (active) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral0)
             .padding(horizontal = 8.dp, vertical = 6.dp)
             .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically
@@ -49,21 +48,21 @@ fun KoinOrdersFilterChip(
         Text(
             text = text,
             style = RebrandKoinTheme.typography.bold14,
-            color = textColor
+            color = contentColor
         )
         Spacer(modifier = Modifier.width(6.dp))
         Icon(
             modifier = Modifier.size(16.dp),
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_store_arrow_down),
             contentDescription = "",
-            tint = textColor
+            tint = contentColor
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun DownClipTruePreview() {
+private fun DownClipTruePreview() {
     KoinOrdersFilterChip(
         text = "주소",
         active = true

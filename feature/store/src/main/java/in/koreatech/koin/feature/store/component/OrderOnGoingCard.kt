@@ -39,15 +39,9 @@ fun OrderOnGoingCard(
     orderdata: OrderOnGoingData,
     modifier: Modifier = Modifier
 ) {
-    val chipIcon = if (orderdata.status == TypeOption.DELIVERY) {
-        R.drawable.ic_order_delivery
-    } else {
-        R.drawable.ic_order_takeout
-    }
-    val timeGuide = if (orderdata.status == TypeOption.DELIVERY) {
-        R.string.delivery_time_guide
-    } else {
-        R.string.takeout_time_guide
+    val (chipIcon, timeGuide) = when (orderdata.status) {
+        TypeOption.TAKEOUT -> R.drawable.ic_order_takeout to R.string.takeout_time_guide
+        else -> R.drawable.ic_order_delivery to R.string.delivery_time_guide
     }
 
     Card(
@@ -97,7 +91,6 @@ fun OrderOnGoingCard(
             )
 
             HorizontalDivider(
-                thickness = 1.dp,
                 modifier = Modifier.padding(vertical = 16.dp),
                 color = RebrandKoinTheme.colors.neutral200
             )
@@ -145,7 +138,7 @@ fun OrderOnGoingCard(
                 border = BorderStroke(1.dp, RebrandKoinTheme.colors.primary500)
             ) {
                 Text(
-                    text = "주문 상세 보기",
+                    text = stringResource(R.string.view_order_details),
                     style = RebrandKoinTheme.typography.bold14,
                     color = RebrandKoinTheme.colors.primary500
                 )
@@ -156,7 +149,7 @@ fun OrderOnGoingCard(
 
 @Preview(showBackground = true)
 @Composable
-fun OrderOnGoingCardPreview() {
+private fun OrderOnGoingCardPreview() {
     OrderOnGoingCard(
         orderdata = OrderOnGoingData(
             TypeOption.DELIVERY,
@@ -171,7 +164,7 @@ fun OrderOnGoingCardPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun OrderOnGoingCardPreview2() {
+private fun OrderOnGoingCardPreview2() {
     OrderOnGoingCard(
         orderdata = OrderOnGoingData(
             TypeOption.TAKEOUT,
