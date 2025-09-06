@@ -43,9 +43,7 @@ import `in`.koreatech.koin.feature.store.model.filters
 @Composable
 fun FilterOverlay(
     backgroundContent: @Composable () -> Unit,
-    onClose: () -> Unit,
-    onButtonClick1: () -> Unit,
-    onButtonClick2: () -> Unit
+    onClose: () -> Unit
 ) {
     Box(
         modifier = Modifier.fillMaxSize()
@@ -78,7 +76,7 @@ fun FilterOverlay(
                     Spacer(modifier = Modifier.width(32.dp))
                     Text(
                         modifier = Modifier.weight(1f),
-                        text = "필터",
+                        text = stringResource(R.string.order_history_filter),
                         style = RebrandKoinTheme.typography.bold18,
                         color = RebrandKoinTheme.colors.primary500
                     )
@@ -106,7 +104,7 @@ fun FilterOverlay(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 FilterSelect(
-                    title = "주소",
+                    title = stringResource(R.string.filter_option_location),
                     value = filters.location
                 )
 
@@ -118,7 +116,7 @@ fun FilterOverlay(
                 )
 
                 FilterSelect(
-                    title = "조회 기간",
+                    title = stringResource(R.string.filter_option_period),
                     value = filters.period
                 )
 
@@ -130,14 +128,14 @@ fun FilterOverlay(
                 )
 
                 FilterSelect(
-                    title = "주문 상태",
+                    title = stringResource(R.string.filter_option_type),
                     value = filters.type
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 FilterSelect(
-                    title = "주문 정보",
+                    title = stringResource(R.string.filter_option_status),
                     value = filters.status
                 )
 
@@ -265,8 +263,6 @@ fun FilterOverlayPreview() {
                     .background(Color.LightGray)
             )
         },
-        onClose = {},
-        onButtonClick1 = {},
-        onButtonClick2 = {}
+        onClose = {}
     )
 }

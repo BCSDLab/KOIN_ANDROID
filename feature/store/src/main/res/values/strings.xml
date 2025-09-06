@@ -147,17 +147,18 @@
     <string name="order_histroy_price_won">%,d원</string>
     <string name="bullet_separator"> · </string>
 
-    <string name="filter_option_location_default">주소</string>
+    <string name="order_history_filter">필터</string>
+    <string name="filter_option_location">주소</string>
     <string name="filter_option_location_campus">교내</string>
     <string name="filter_option_location_outside">교외</string>
-    <string name="filter_option_period_default">조회 기간</string>
+    <string name="filter_option_period">조회 기간</string>
     <string name="filter_option_period_three_months">최근 3개월</string>
     <string name="filter_option_period_six_months">최근 6개월</string>
     <string name="filter_option_period_one_year">최근 1년</string>
-    <string name="filter_option_type_default">주문 상태</string>
+    <string name="filter_option_type">주문 상태</string>
     <string name="filter_option_type_delivery">배달</string>
     <string name="filter_option_type_takeout">포장</string>
-    <string name="filter_option_status_default">정보</string>
+    <string name="filter_option_status">정보</string>
     <string name="filter_option_status_complete">완료</string>
     <string name="filter_option_status_canceled">취소</string>
 

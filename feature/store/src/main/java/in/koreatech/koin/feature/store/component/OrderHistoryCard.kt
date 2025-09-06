@@ -34,7 +34,7 @@ import `in`.koreatech.koin.feature.store.enums.OrderStatus
 import `in`.koreatech.koin.feature.store.model.OrderData
 
 @Composable
-fun OrderCard(
+fun OrderHistoryCard(
     orderdata: OrderData,
     modifier: Modifier = Modifier,
     onDetailClick: () -> Unit,
@@ -156,8 +156,8 @@ fun OrderCard(
 
 @Preview(showBackground = true)
 @Composable
-fun OrderCardPreview() {
-    OrderCard(
+fun OrderHistoryCardPreview() {
+    OrderHistoryCard(
         orderdata = OrderData(
             OrderStatus.DELIVERED,
             date = "9월 5일 (금)",
@@ -175,8 +175,8 @@ fun OrderCardPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun OrderCardPreview2() {
-    OrderCard(
+fun OrderHistoryCardPreview2() {
+    OrderHistoryCard(
         orderdata = OrderData(
             OrderStatus.CANCELLED,
             date = "9월 5일 (금)",

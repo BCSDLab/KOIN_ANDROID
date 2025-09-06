@@ -25,7 +25,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinOrdersFilterChip
 import `in`.koreatech.koin.feature.store.component.KoinOrdersResetChip
-import `in`.koreatech.koin.feature.store.component.OrderCard
+import `in`.koreatech.koin.feature.store.component.OrderHistoryCard
 import `in`.koreatech.koin.feature.store.component.SearchBar
 import `in`.koreatech.koin.feature.store.component.StoreStatus
 import `in`.koreatech.koin.feature.store.enums.LocationOption
@@ -108,7 +108,7 @@ fun OrderHistoryScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(orderHistorys) { orderdata ->
-                    OrderCard(
+                    OrderHistoryCard(
                         orderdata = orderdata,
                         onDetailClick = { },
                         onWriteReviewClick = { },
