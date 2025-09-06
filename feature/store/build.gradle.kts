@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.timber)
+    implementation(libs.androidx.benchmark.traceprocessor.android)
 
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
