@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.store.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -106,7 +107,9 @@ fun OrderHistoryCard(
                     contentScale = ContentScale.Crop
                 )
                 Spacer(modifier = Modifier.width(11.dp))
-                Column {
+                Column (
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
+                ){
                     Text(
                         text = orderdata.storeName,
                         style = RebrandKoinTheme.typography.bold16,

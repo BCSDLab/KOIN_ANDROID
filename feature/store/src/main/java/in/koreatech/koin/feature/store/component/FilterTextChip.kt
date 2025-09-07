@@ -42,14 +42,15 @@ fun <T> FilterTextChipSelect(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             value::class.java.enumConstants
-                .drop(1)
                 .forEach { item ->
-                    val isSelected = item == value
-                    FilterTextChip(
-                        title = stringResource(id = item.stringRes),
-                        isSelected = isSelected,
-                        onClick = { }
-                    )
+                    if (!item.isDefault) {
+                        val isSelected = item == value
+                        FilterTextChip(
+                            title = stringResource(id = item.stringRes),
+                            isSelected = isSelected,
+                            onClick = { }
+                        )
+                    }
                 }
         }
     }

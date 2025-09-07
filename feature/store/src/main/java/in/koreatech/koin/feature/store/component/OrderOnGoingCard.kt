@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.store.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -107,19 +108,19 @@ fun OrderOnGoingCard(
                     contentScale = ContentScale.Crop
                 )
                 Spacer(modifier = Modifier.width(11.dp))
-                Column {
+                Column (
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
+                ){
                     Text(
                         text = orderdata.storeName,
                         style = RebrandKoinTheme.typography.bold16,
                         color = RebrandKoinTheme.colors.neutral800
                     )
-                    Spacer(modifier = Modifier.height(6.dp))
                     Text(
                         text = orderdata.orders,
                         style = RebrandKoinTheme.typography.medium14,
                         color = RebrandKoinTheme.colors.neutral800
                     )
-                    Spacer(modifier = Modifier.height(6.dp))
                     Text(
                         text = stringResource(R.string.order_histroy_price_won, orderdata.price),
                         style = RebrandKoinTheme.typography.bold14,

@@ -95,8 +95,7 @@ fun FilterOverlay(
             )
 
             Column(
-                modifier = Modifier
-                    .padding(horizontal = 32.dp)
+                modifier = Modifier.padding(horizontal = 32.dp)
             ) {
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -106,8 +105,7 @@ fun FilterOverlay(
                 )
 
                 HorizontalDivider(
-                    modifier = Modifier
-                        .padding(vertical = 16.dp),
+                    modifier = Modifier.padding(vertical = 16.dp),
                     color = RebrandKoinTheme.colors.neutral200
                 )
 
@@ -117,8 +115,7 @@ fun FilterOverlay(
                 )
 
                 HorizontalDivider(
-                    modifier = Modifier
-                        .padding(vertical = 16.dp),
+                    modifier = Modifier.padding(vertical = 16.dp),
                     color = RebrandKoinTheme.colors.neutral200
                 )
 

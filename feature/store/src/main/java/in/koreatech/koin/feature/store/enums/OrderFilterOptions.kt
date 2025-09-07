@@ -6,29 +6,30 @@ import `in`.koreatech.koin.feature.store.R
 interface OrderFilterEnum {
     val stringRes: Int
     val isActivated: Boolean
+    val isDefault: Boolean
 }
 
-enum class LocationOption(@StringRes override val stringRes: Int, override val isActivated: Boolean) : OrderFilterEnum {
-    DEFAULT(R.string.filter_option_location, false),
+enum class LocationOption(@StringRes override val stringRes: Int, override val isActivated: Boolean, override val isDefault: Boolean = false) : OrderFilterEnum {
+    DEFAULT(R.string.filter_option_location, false, true),
     CAMPUS(R.string.filter_option_location_campus, true),
     OUTSIDE(R.string.filter_option_location_outside, true)
 }
 
-enum class PeriodOption(@StringRes override val stringRes: Int, override val isActivated: Boolean) : OrderFilterEnum {
-    DEFAULT(R.string.filter_option_period, false),
+enum class PeriodOption(@StringRes override val stringRes: Int, override val isActivated: Boolean, override val isDefault: Boolean = false) : OrderFilterEnum {
+    DEFAULT(R.string.filter_option_period, false, true),
     THREE_MONTHS(R.string.filter_option_period_three_months, true),
     SIX_MONTHS(R.string.filter_option_period_six_months, true),
     ONE_YEAR(R.string.filter_option_period_one_year, true)
 }
 
-enum class TypeOption(@StringRes override val stringRes: Int, override val isActivated: Boolean) : OrderFilterEnum {
-    DEFAULT(R.string.filter_option_type, false),
+enum class TypeOption(@StringRes override val stringRes: Int, override val isActivated: Boolean, override val isDefault: Boolean = false) : OrderFilterEnum {
+    DEFAULT(R.string.filter_option_type, false, true),
     DELIVERY(R.string.filter_option_type_delivery, true),
     TAKEOUT(R.string.filter_option_type_takeout, true)
 }
 
-enum class StatusOption(@StringRes override val stringRes: Int, override val isActivated: Boolean) : OrderFilterEnum {
-    DEFAULT(R.string.filter_option_status, false),
+enum class StatusOption(@StringRes override val stringRes: Int, override val isActivated: Boolean, override val isDefault: Boolean = false) : OrderFilterEnum {
+    DEFAULT(R.string.filter_option_status, false, true),
     COMPLETE(R.string.filter_option_status_complete, true),
     CANCELED(R.string.filter_option_status_canceled, true)
 }
