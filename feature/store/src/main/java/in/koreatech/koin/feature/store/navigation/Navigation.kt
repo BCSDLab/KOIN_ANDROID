@@ -22,6 +22,7 @@ import `in`.koreatech.koin.feature.store.view.cart.add.CartAddScreen
 import `in`.koreatech.koin.feature.store.view.cart.edit.CartEditScreen
 import `in`.koreatech.koin.feature.store.view.main.home.StoreHomeScreen
 import `in`.koreatech.koin.feature.store.view.main.nearby.StoreNearbyScreen
+import `in`.koreatech.koin.feature.store.view.orders.OrderHistoryScreen
 import `in`.koreatech.koin.feature.store.view.payment.StorePaymentScreen
 import `in`.koreatech.koin.feature.store.view.search.StoreSearchScreen
 
@@ -271,6 +272,18 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
     composable(
         route = StoreMainNavType.StoreMainOrderHistory.route
     ) {
+        OrderHistoryScreen(
+            navigateToDetail = { storeId ->
+                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId/${false}")
+            },
+            navigateToCart = {
+                navController.navigate(StoreNavType.StoreCart.route)
+            }
+        ) {
+            if (!navController.navigateUp()) {
+                finish()
+            }
+        }
     }
 }
 

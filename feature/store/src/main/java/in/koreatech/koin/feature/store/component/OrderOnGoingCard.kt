@@ -108,9 +108,9 @@ fun OrderOnGoingCard(
                     contentScale = ContentScale.Crop
                 )
                 Spacer(modifier = Modifier.width(11.dp))
-                Column (
+                Column(
                     verticalArrangement = Arrangement.spacedBy(6.dp)
-                ){
+                ) {
                     Text(
                         text = orderdata.storeName,
                         style = RebrandKoinTheme.typography.bold16,

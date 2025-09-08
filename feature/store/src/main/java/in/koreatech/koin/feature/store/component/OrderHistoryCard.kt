@@ -44,7 +44,7 @@ fun OrderHistoryCard(
     onWriteReviewClick: () -> Unit = {},
     onReorderClick: () -> Unit = {}
 ) {
-    val textColor = if (orderdata.status.isActivated) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral400
+    val textColor = if (orderdata.orderStatus.isActivated) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral400
 
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -61,13 +61,13 @@ fun OrderHistoryCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(orderdata.status.stringRes),
+                    text = stringResource(orderdata.orderStatus.stringRes),
                     style = RebrandKoinTheme.typography.bold16,
                     color = textColor
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = orderdata.date,
+                    text = orderdata.orderDate,
                     style = RebrandKoinTheme.typography.regular12,
                     color = textColor
                 )
@@ -107,17 +107,17 @@ fun OrderHistoryCard(
                     contentScale = ContentScale.Crop
                 )
                 Spacer(modifier = Modifier.width(11.dp))
-                Column (
+                Column(
                     verticalArrangement = Arrangement.spacedBy(6.dp)
-                ){
+                ) {
                     Text(
-                        text = orderdata.storeName,
+                        text = orderdata.orderableShopName,
                         style = RebrandKoinTheme.typography.bold16,
                         color = RebrandKoinTheme.colors.neutral800
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = orderdata.orders,
+                        text = orderdata.orderTitle,
                         style = RebrandKoinTheme.typography.medium14,
                         color = RebrandKoinTheme.colors.neutral800
                     )
@@ -132,7 +132,7 @@ fun OrderHistoryCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (orderdata.status.isActivated) {
+            if (orderdata.orderStatus.isActivated) {
                 OutlinedButton(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = onWriteReviewClick,
@@ -163,12 +163,15 @@ fun OrderHistoryCard(
 private fun OrderHistoryCardPreview() {
     OrderHistoryCard(
         orderdata = OrderHistoryData(
-            OrderStatus.DELIVERED,
-            date = "9월 5일 (금)",
+            id = 1,
+            paymentId = 1,
+            orderableShopId = 1,
+            orderStatus = OrderStatus.DELIVERED,
+            orderDate = "9월 5일 (금)",
             storeImageUrl = "https://example.com/store_thumbnail.jpg",
             storeStatus = StoreStatus.SOLD_OUT,
-            storeName = "맛있는 족발 - 병천점",
-            orders = "족발 + 막국수 저녁 set 외 1건",
+            orderableShopName = "맛있는 족발 - 병천점",
+            orderTitle = "족발 + 막국수 저녁 set 외 1건",
             price = 32500
         ),
         onDetailClick = { },
@@ -182,12 +185,15 @@ private fun OrderHistoryCardPreview() {
 private fun OrderHistoryCardPreview2() {
     OrderHistoryCard(
         orderdata = OrderHistoryData(
-            OrderStatus.CANCELLED,
-            date = "9월 5일 (금)",
+            id = 1,
+            paymentId = 1,
+            orderableShopId = 1,
+            orderStatus = OrderStatus.DELIVERED,
+            orderDate = "9월 5일 (금)",
             storeImageUrl = "https://example.com/store_thumbnail.jpg",
-            storeStatus = StoreStatus.OPEN,
-            storeName = "맛있는 족발 - 병천점",
-            orders = "족발 + 막국수 저녁 set 외 1건",
+            storeStatus = StoreStatus.SOLD_OUT,
+            orderableShopName = "맛있는 족발 - 병천점",
+            orderTitle = "족발 + 막국수 저녁 set 외 1건",
             price = 32500
         ),
         onDetailClick = { },

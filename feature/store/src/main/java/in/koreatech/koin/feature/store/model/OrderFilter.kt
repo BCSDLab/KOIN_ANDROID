@@ -10,11 +10,6 @@ data class OrderFilter(
     val period: PeriodOption,
     val type: TypeOption,
     val status: StatusOption
-)
-
-val filters = OrderFilter(
-    location = LocationOption.DEFAULT,
-    period = PeriodOption.DEFAULT,
-    type = TypeOption.DEFAULT,
-    status = StatusOption.DEFAULT
-)
+) {
+    fun isAllDefault() = listOf(location, period, type, status).all { it.isDefault }
+}

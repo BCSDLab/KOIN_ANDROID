@@ -32,11 +32,11 @@ fun KoinOrdersResetChip(
         modifier = modifier
             .shadow(
                 elevation = 4.dp,
-                shape = RebrandKoinTheme.shapes.medium,
+                shape = RoundedCornerShape(24.dp),
                 ambientColor = RebrandKoinTheme.colors.neutral400,
                 spotColor = RebrandKoinTheme.colors.neutral500
             )
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(24.dp))
             .background(RebrandKoinTheme.colors.neutral0)
             .padding(horizontal = 8.dp, vertical = 6.dp)
             .clickable { onClick() },

@@ -1,13 +1,13 @@
 package `in`.koreatech.koin.feature.store.component
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,8 +25,10 @@ import `in`.koreatech.koin.feature.store.enums.OrderFilterEnum
 fun <T> FilterTextChipSelect(
     title: String,
     value: T,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onValueChange: (T) -> Unit = {}
 ) where T : Enum<T>, T : OrderFilterEnum {
+    var default: T = value::class.java.enumConstants.first()
     Column(
         modifier = modifier
     ) {
@@ -48,8 +50,11 @@ fun <T> FilterTextChipSelect(
                         FilterTextChip(
                             title = stringResource(id = item.stringRes),
                             isSelected = isSelected,
-                            onClick = { }
+                            onClick = { onValueChange(item) },
+                            onCancle = { onValueChange(default) }
                         )
+                    } else {
+                        default = item
                     }
                 }
         }
@@ -61,18 +66,18 @@ fun FilterTextChip(
     title: String,
     isSelected: Boolean,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    onCancle: () -> Unit = {}
 ) {
     TextChip(
         title = title,
         modifier = modifier
             .shadow(
                 elevation = 4.dp,
-                shape = RebrandKoinTheme.shapes.medium,
+                shape = RoundedCornerShape(24.dp),
                 ambientColor = RebrandKoinTheme.colors.neutral400,
                 spotColor = RebrandKoinTheme.colors.neutral500
             )
-            .clickable { onClick() }
             .then(
                 if (isSelected) {
                     Modifier
@@ -86,11 +91,11 @@ fun FilterTextChip(
                 }
             ),
         isSelected = isSelected,
-        onSelect = {},
+        onSelect = { if (isSelected) onCancle() else onClick() },
         chipColors = TextChipDefaults.chipColors(
             RebrandKoinTheme.colors.primary500,
             RebrandKoinTheme.colors.neutral0,
-            RebrandKoinTheme.colors.neutral100,
+            RebrandKoinTheme.colors.neutral0,
             RebrandKoinTheme.colors.neutral500
         )
     )

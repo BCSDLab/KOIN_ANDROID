@@ -26,6 +26,7 @@ import `in`.koreatech.koin.feature.store.R
 fun SearchBarFake(
     modifier: Modifier = Modifier,
     hint: String = stringResource(R.string.store_search_hint),
+    query: String = "",
     onClick: () -> Unit = {}
 ) {
     Box(
@@ -52,8 +53,8 @@ fun SearchBarFake(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = hint,
-                style = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral400)
+                text = if (query == "") hint else query,
+                style = if (query == "") RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral400) else RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral600)
             )
         }
     }
@@ -62,5 +63,13 @@ fun SearchBarFake(
 @Preview
 @Composable
 fun SearchBarFakePreview() {
+    SearchBarFake(
+        query = "족발"
+    )
+}
+
+@Preview
+@Composable
+fun SearchBarFakePreview2() {
     SearchBarFake()
 }

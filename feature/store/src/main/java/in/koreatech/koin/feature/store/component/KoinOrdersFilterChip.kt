@@ -35,11 +35,11 @@ fun KoinOrdersFilterChip(
         modifier = modifier
             .shadow(
                 elevation = 4.dp,
-                shape = RebrandKoinTheme.shapes.medium,
+                shape = RoundedCornerShape(24.dp),
                 ambientColor = RebrandKoinTheme.colors.neutral400,
                 spotColor = RebrandKoinTheme.colors.neutral500
             )
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(24.dp))
             .background(if (active) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral0)
             .padding(horizontal = 8.dp, vertical = 6.dp)
             .clickable { onClick() },
