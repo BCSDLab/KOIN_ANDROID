@@ -33,7 +33,6 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreNavigationBarItem
 import `in`.koreatech.koin.feature.store.navigation.StoreNavType
 import `in`.koreatech.koin.feature.store.navigation.koinStoreGraph
 import `in`.koreatech.koin.feature.store.navigation.navigationBarItems
-import `in`.koreatech.koin.feature.store.viewmodel.StoreViewModel
 
 @AndroidEntryPoint
 class StoreActivity : ComponentActivity() {

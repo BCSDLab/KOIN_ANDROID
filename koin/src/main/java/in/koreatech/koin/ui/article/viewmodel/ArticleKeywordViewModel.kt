@@ -89,7 +89,7 @@ class ArticleKeywordViewModel @Inject constructor(
             return
         }
 
-        if (Regex("""\s+""").containsMatchIn(trimmedKeyword)) {
+        if (trimmedKeywordRegex.containsMatchIn(trimmedKeyword)) { // jusang-regex-opt
             _keywordAddUiState.tryEmit(KeywordAddUiState.BlankNotAllowed)
             return
         }
@@ -121,6 +121,7 @@ class ArticleKeywordViewModel @Inject constructor(
         const val MAX_KEYWORD_LENGTH = 20
         const val MIN_KEYWORD_LENGTH = 2
         const val KEYWORD_INPUT = "keyword_input"
+        val trimmedKeywordRegex = Regex("""\s+""")
     }
 }
 

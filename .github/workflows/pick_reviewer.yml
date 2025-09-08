@@ -17,7 +17,7 @@ jobs:
       - name: Add Reviewer
         uses: madrapps/add-reviewers@v1
         with:
-          reviewers: ${{ steps.pick_reviewer.outputs.reviewer1 }}, ${{ steps.pick_reviewer.outputs.reviewer2 }}
+          reviewers: ${{ steps.pick_reviewer.outputs.reviewer1 }},${{ steps.pick_reviewer.outputs.reviewer2 }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Add Mentor

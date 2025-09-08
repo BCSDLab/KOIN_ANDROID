@@ -11,8 +11,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import `in`.koreatech.koin.feature.club.ui.clubcreate.ClubCreateScreen
 import `in`.koreatech.koin.feature.club.ui.clubdetail.ClubDetail
+import `in`.koreatech.koin.feature.club.ui.clubeventcreate.ClubEventCreateScreen
+import `in`.koreatech.koin.feature.club.ui.clubeventmodify.ClubEventModifyScreen
 import `in`.koreatech.koin.feature.club.ui.clublist.ClubListScreen
 import `in`.koreatech.koin.feature.club.ui.clubmodify.ClubModifyScreen
+import `in`.koreatech.koin.feature.club.ui.clubrecruitcreate.ClubRecruitCreateScreen
+import `in`.koreatech.koin.feature.club.ui.clubrecruitmodify.ClubRecruitModifyScreen
 
 fun NavGraphBuilder.koinClubGraph(
     navController: NavController
@@ -41,16 +45,30 @@ fun NavGraphBuilder.koinClubGraph(
     }
 
     composable(
-        route = "${ClubNavType.ClubDetail.route}/{$CLUB_ID}",
+        route = "${ClubNavType.ClubDetail.route}/{$CLUB_ID}?recruitEvent={$RECRUIT_EVENT}&eventId={$EVENT_ID}",
         arguments = listOf(
-            navArgument(CLUB_ID) { type = NavType.IntType }
+            navArgument(CLUB_ID) { type = NavType.IntType },
+            navArgument(RECRUIT_EVENT) {
+                type = NavType.BoolType
+                defaultValue = false
+            },
+            navArgument(EVENT_ID) {
+                type = NavType.IntType
+                defaultValue = -1
+            }
         )
     ) {
         val isClubModified by it.savedStateHandle.getStateFlow(IS_CLUB_MODIFIED, initialValue = false).collectAsStateWithLifecycle()
+
+        val isRecruitEvent = it.arguments?.getBoolean(RECRUIT_EVENT) ?: false
+
+        var eventId = it.arguments?.getInt(EVENT_ID) ?: -1
         val context = LocalContext.current
 
         ClubDetail(
             isClubModified = isClubModified,
+            isRecruitEvent = isRecruitEvent,
+            norificationEventId = eventId,
             onTopbarBackClick = {
                 if (!navController.popBackStack()) {
                     (context as? Activity)?.finish()
@@ -59,8 +77,23 @@ fun NavGraphBuilder.koinClubGraph(
             onModifyClick = { clubId ->
                 navController.navigate("${ClubNavType.ClubModify.route}/$clubId")
             },
+            onRecruitCreateClick = { clubId ->
+                navController.navigate("${ClubNavType.ClubRecruitCreate.route}/$clubId")
+            },
+            onRecruitModifyClick = { clubId ->
+                navController.navigate("${ClubNavType.ClubRecruitModify.route}/$clubId")
+            },
+            onEventCreateClick = { clubId ->
+                navController.navigate("${ClubNavType.ClubEventCreate.route}/$clubId")
+            },
+            onEventModifyClick = { clubId, eventId ->
+                navController.navigate("${ClubNavType.ClubEventModify.route}/$clubId/$eventId")
+            },
             resetClubModifiedState = {
                 it.savedStateHandle[IS_CLUB_MODIFIED] = false
+            },
+            resetNorificationEventId = {
+                eventId = -1
             }
         )
     }
@@ -101,9 +134,78 @@ fun NavGraphBuilder.koinClubGraph(
             }
         )
     }
+
+    composable(
+        route = "${ClubNavType.ClubRecruitCreate.route}/{$CLUB_ID}",
+        arguments = listOf(
+            navArgument(CLUB_ID) { type = NavType.IntType }
+        )
+    ) {
+        ClubRecruitCreateScreen(
+            onNavigateUp = {
+                navController.navigateUp()
+            },
+            onRecruitCreated = {
+                navController.navigateUp()
+            }
+        )
+    }
+
+    composable(
+        route = "${ClubNavType.ClubRecruitModify.route}/{$CLUB_ID}",
+        arguments = listOf(
+            navArgument(CLUB_ID) { type = NavType.IntType }
+        )
+    ) {
+        ClubRecruitModifyScreen(
+            onNavigateUp = {
+                navController.navigateUp()
+            },
+            onRecruitModified = {
+                navController.navigateUp()
+            }
+        )
+    }
+
+    composable(
+        route = "${ClubNavType.ClubEventCreate.route}/{$CLUB_ID}",
+        arguments = listOf(
+            navArgument(CLUB_ID) { type = NavType.IntType }
+        )
+    ) {
+        ClubEventCreateScreen(
+            onNavigateUp = {
+                navController.navigateUp()
+            },
+            onEventCreated = {
+                navController.navigateUp()
+            }
+        )
+    }
+
+    composable(
+        route = "${ClubNavType.ClubEventModify.route}/{$CLUB_ID}/{$EVENT_ID}",
+        arguments = listOf(
+            navArgument(CLUB_ID) { type = NavType.IntType },
+            navArgument(EVENT_ID) { type = NavType.IntType }
+        )
+    ) {
+        ClubEventModifyScreen(
+            onNavigateUp = {
+                navController.navigateUp()
+            },
+            onEventModified = {
+                navController.navigateUp()
+            }
+        )
+    }
 }
 
 const val CLUB_ID = "clubId"
+const val EVENT_ID = "eventId"
 const val CATEGORY_ID = "categoryId"
 const val IS_CLUB_CREATED = "isClubCreated"
 const val IS_CLUB_MODIFIED = "isClubModified"
+const val RECRUIT_EVENT = "recruitEvent"
+const val EXTRA_CLUB_ID = "extra_club_id"
+const val EXTRA_EVENT_ID = "extra_event_id"
