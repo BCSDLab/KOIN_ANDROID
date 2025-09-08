@@ -163,7 +163,7 @@ internal class KoinWebViewClient(
             } catch (e: ActivityNotFoundException) {
                 intent.getPackage()?.let { packageName ->
                     try {
-                        val marketIntent = Intent(Intent.ACTION_VIEW).apply{
+                        val marketIntent = Intent(Intent.ACTION_VIEW).apply {
                             data = Uri.parse("market://details?id=$packageName")
                         }
                         context.startActivity(marketIntent)
