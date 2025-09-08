@@ -23,9 +23,6 @@ class ExceptionHandlerUtil(private val context: Context) : Thread.UncaughtExcept
      * @param throwable
      */
     override fun uncaughtException(thread: Thread, throwable: Throwable) {
-        if (throwable.cause is KoinNetworkException.NetworkUnavailableException) {
-            return
-        }
         FirebaseCrashlytics.getInstance().recordException(throwable)
 
         val stringWriter = StringWriter()
