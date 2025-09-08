@@ -19,7 +19,7 @@ inline fun <T> runCatchingWithNetwork(
 ): Result<T> {
     return runCatching(block).onFailure { exception ->
         return Result.failure(
-            if(exception.cause is KoinNetworkException.NetworkUnavailableException) {
+            if (exception.cause is KoinNetworkException.NetworkUnavailableException) {
                 KoinNetworkException.NetworkUnavailableException()
             } else {
                 exception

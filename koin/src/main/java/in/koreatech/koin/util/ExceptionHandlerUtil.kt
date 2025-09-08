@@ -6,7 +6,6 @@ import android.os.Looper
 import androidx.core.os.HandlerCompat
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.domain.error.network.KoinNetworkException
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import `in`.koreatech.koin.ui.error.ErrorActivity
 import `in`.koreatech.koin.util.ext.showToast
