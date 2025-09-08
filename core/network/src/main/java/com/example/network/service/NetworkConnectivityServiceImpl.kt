@@ -16,15 +16,23 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 
 class NetworkConnectivityServiceImpl @Inject constructor(
-    connectivityManager: ConnectivityManager
+    private val connectivityManager: ConnectivityManager
 ) : NetworkConnectivityService {
 
-    private val currentNetwork = connectivityManager.activeNetwork
-    private val capabilities = connectivityManager.getNetworkCapabilities(currentNetwork)
-    private var latestStatus: NetworkStatus = if (capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true) {
-        NetworkStatus.Connected
-    } else {
-        NetworkStatus.Disconnected
+    private var latestStatus: NetworkStatus = NetworkStatus.Disconnected
+
+    init {
+        checkCurrentNetwork()
+    }
+
+    private fun checkCurrentNetwork() {
+        val currentNetwork = connectivityManager.activeNetwork
+        val capabilities = connectivityManager.getNetworkCapabilities(currentNetwork)
+        latestStatus = if (capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true) {
+            NetworkStatus.Connected
+        } else {
+            NetworkStatus.Disconnected
+        }
     }
 
     override val networkStatus: Flow<NetworkStatus> = callbackFlow {
@@ -60,7 +68,12 @@ class NetworkConnectivityServiceImpl @Inject constructor(
         .distinctUntilChanged()
         .flowOn(Dispatchers.IO)
 
-    override fun getLatestStatus(): NetworkStatus = latestStatus
+    override fun getLatestStatus(): NetworkStatus {
+        checkCurrentNetwork()
+        return latestStatus
+    }
 
-    override fun isConnected(): Boolean = latestStatus == NetworkStatus.Connected
+    override fun isConnected(): Boolean {
+        return getLatestStatus() == NetworkStatus.Connected
+    }
 }
