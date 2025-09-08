@@ -4,6 +4,7 @@ import `in`.koreatech.koin.domain.constant.HTTPS_URL
 import `in`.koreatech.koin.domain.constant.HTTP_URL
 import `in`.koreatech.koin.domain.constant.INSTAGRAM_URL
 import `in`.koreatech.koin.domain.util.regex.PasswordUtil
+import `in`.koreatech.koin.domain.util.regex.RegexPatterns
 
 fun String.toSHA256() = PasswordUtil().generateSHA256(this)
 
@@ -26,6 +27,6 @@ fun Int.formatTime(): String {
     return String.format("%02d:%02d", minute, second)
 }
 
-fun String.formatPhoneNumber(): String = this.replace(Regex("(\\d{3})-?(\\d{4})-?(\\d{4})"), "$1-$2-$3")
+fun String.formatPhoneNumber(): String = this.replace(RegexPatterns.phone, "$1-$2-$3")
 
-fun String.formatBusinessNumber(): String = this.replace(Regex("(\\d{3})(\\d{2})(\\d{5})"), "$1-$2-$3")
+fun String.formatBusinessNumber(): String = this.replace(RegexPatterns.businessNumber, "$1-$2-$3")

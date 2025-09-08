@@ -12,7 +12,6 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.NavigatorType
-import `in`.koreatech.koin.core.navigation.SchemeType
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
@@ -24,6 +23,7 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_URL
 import `in`.koreatech.koin.core.navigation.utils.toHost
 import `in`.koreatech.koin.databinding.ActivitySchemeBinding
+import `in`.koreatech.koin.navigation.SchemeType
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import javax.inject.Inject
 import timber.log.Timber
@@ -84,156 +84,75 @@ class SchemeActivity : ActivityBase() {
                     val intent =
                         navigator.navigateToSplash(
                             context = this,
-                            targetId = Pair(EXTRA_ID, getIdFromUrl(url ?: "")),
-                            targetBoardId = Pair(EXTRA_BOARD_ID, getBoardIdFromUrl(url ?: "")),
-                            targetArticleId = Pair(
-                                EXTRA_ARTICLE_ID,
-                                getArticleIdFromUrl(url ?: "")
-                            ),
-                            targetChatId = Pair(
-                                EXTRA_CHAT_ROOM_ID,
-                                getChatRoomIdFromUrl(url ?: "")
-                            ),
-                            targetClubId = Pair(
-                                EXTRA_CLUB_ID,
-                                getClubIdFromUrl(url ?: "")
-                            ),
-                            targetEventId = Pair(
-                                EXTRA_EVENT_ID,
-                                getEventIdFromUrl(url ?: "")
-                            ),
                             type = Pair(EXTRA_TYPE, url?.toHost()),
-                            navType = Pair(EXTRA_NAV_TYPE, NavigatorType.MAIN.type)
+                            navType = Pair(EXTRA_NAV_TYPE, NavigatorType.MAIN.type),
+                            *(getExtraIds(url ?: "").toTypedArray())
                         )
                     navigateToActivity(intent)
                 }
 
                 NavigatorType.DETAIL -> {
-                    when (val host = url?.toHost()) {
-                        SchemeType.SHOP.type -> {
-                            val intent =
-                                navigator.navigateToShop(
-                                    context = this,
-                                    targetId = Pair(EXTRA_ID, getIdFromUrl(url)),
-                                    type = Pair(EXTRA_TYPE, host)
-                                )
-                            navigateToActivity(intent)
-                        }
-
-                        SchemeType.DINING.type -> {
-                            val intent =
-                                navigator.navigateToDinging(
-                                    context = this,
-                                    targetId = Pair(EXTRA_ID, ""),
-                                    type = Pair(EXTRA_TYPE, host)
-                                )
-                            navigateToActivity(intent)
-                        }
-
-                        SchemeType.ARTICLE.type -> {
-                            EventLogger.logNotificationEvent(
-                                EventAction.CAMPUS,
-                                AnalyticsConstant.Label.KEYWORD_NOTIFICATION,
-                                getKeywordFromUrl(url)
-                            )
-                            val intent =
-                                navigator.navigateToArticle(
-                                    context = this,
-                                    targetId = Pair(EXTRA_ID, getIdFromUrl(url)),
-                                    targetBoardId = Pair(EXTRA_BOARD_ID, getBoardIdFromUrl(url)),
-                                    type = Pair(EXTRA_TYPE, host)
-                                )
-                            navigateToActivity(intent)
-                        }
-
-                        SchemeType.CHAT.type -> {
-                            val intent =
-                                navigator.navigateToChat(
-                                    context = this,
-                                    targetArticleId = Pair(
-                                        EXTRA_ARTICLE_ID,
-                                        getArticleIdFromUrl(url)
-                                    ),
-                                    targetChatId = Pair(
-                                        EXTRA_CHAT_ROOM_ID,
-                                        getChatRoomIdFromUrl(url)
-                                    ),
-                                    type = Pair(EXTRA_TYPE, host)
-                                )
-                            navigateToActivity(intent)
-                        }
-
-                        SchemeType.CLUB_RECRUIT.type -> {
-                            val intent =
-                                navigator.navigateToClubRecruitment(
-                                    context = this,
-                                    targetClubId = Pair(
-                                        EXTRA_CLUB_ID,
-                                        getIdFromUrl(url)
-                                    ),
-                                    type = Pair(EXTRA_TYPE, host)
-                                )
-                            navigateToActivity(intent)
-                        }
-
-                        SchemeType.CLUB.type -> {
-                            val intent =
-                                navigator.navigateToClub(
-                                    context = this,
-                                    targetClubId = Pair(
-                                        EXTRA_CLUB_ID,
-                                        getClubIdFromUrl(url)
-                                    ),
-                                    targetEventId = Pair(
-                                        EXTRA_EVENT_ID,
-                                        getEventIdFromUrl(url)
-                                    ),
-                                    type = Pair(EXTRA_TYPE, host)
-                                )
-                            navigateToActivity(intent)
-                        }
-
-                        else -> {
-                            val intent = navigator.navigateToMain(context = this)
-                            navigateToActivity(intent)
-                        }
-                    }
-                }
-
-                else -> {
-                    val intent = navigator.navigateToMain(context = this)
+                    logging(url)
+                    val intent = navigator.navigateTo(
+                        context = this,
+                        type = Pair(EXTRA_TYPE, url?.toHost()),
+                        *(getExtraIds(url ?: "").toTypedArray())
+                    )
                     navigateToActivity(intent)
                 }
             }
         }
     }
 
-    private fun getIdFromUrl(url: String): Int {
-        return Uri.parse(url).getQueryParameter("id")?.toIntOrNull() ?: -1
+    private fun logging(url: String?) {
+        when (url?.toHost()) {
+            SchemeType.ARTICLE.type -> {
+                EventLogger.logNotificationEvent(
+                    EventAction.CAMPUS,
+                    AnalyticsConstant.Label.KEYWORD_NOTIFICATION,
+                    getKeywordFromUrl(url) ?: ""
+                )
+            }
+        }
     }
 
-    private fun getArticleIdFromUrl(url: String): Int {
-        return Uri.parse(url).getQueryParameter("articleId")?.toIntOrNull() ?: -1
+    private fun getExtraIds(url: String): List<Pair<String, Any?>> {
+        return listOf(
+            Pair(EXTRA_ID, getIdFromUrl(url)),
+            Pair(EXTRA_ARTICLE_ID, getArticleIdFromUrl(url)),
+            Pair(EXTRA_CHAT_ROOM_ID, getChatRoomIdFromUrl(url)),
+            Pair(EXTRA_BOARD_ID, getBoardIdFromUrl(url)),
+            Pair(EXTRA_CLUB_ID, getClubIdFromUrl(url)),
+            Pair(EXTRA_EVENT_ID, getEventIdFromUrl(url))
+        ).filter { it.second != null }
     }
 
-    private fun getChatRoomIdFromUrl(url: String): Int {
-        return Uri.parse(url).getQueryParameter("chatRoomId")?.toIntOrNull() ?: -1
+    private fun getIdFromUrl(url: String): Int? {
+        return Uri.parse(url).getQueryParameter("id")?.toIntOrNull()
     }
 
-    private fun getBoardIdFromUrl(url: String): Int {
-        return Uri.parse(url).getQueryParameter("board-id")?.toIntOrNull() ?: -1
+    private fun getArticleIdFromUrl(url: String): Int? {
+        return Uri.parse(url).getQueryParameter("articleId")?.toIntOrNull()
     }
 
-    private fun getKeywordFromUrl(url: String): String {
-        return Uri.parse(url).getQueryParameter("keyword") ?: ""
+    private fun getChatRoomIdFromUrl(url: String): Int? {
+        return Uri.parse(url).getQueryParameter("chatRoomId")?.toIntOrNull()
     }
 
-    private fun getClubIdFromUrl(url: String): Int {
-        return Uri.parse(url).getQueryParameter("clubId")?.toIntOrNull() ?: -1
+    private fun getBoardIdFromUrl(url: String): Int? {
+        return Uri.parse(url).getQueryParameter("board-id")?.toIntOrNull()
     }
 
-    private fun getEventIdFromUrl(url: String): Int {
-        return Uri.parse(url).getQueryParameter("eventId")?.toIntOrNull() ?: -1
+    private fun getKeywordFromUrl(url: String): String? {
+        return Uri.parse(url).getQueryParameter("keyword")
+    }
+
+    private fun getClubIdFromUrl(url: String): Int? {
+        return Uri.parse(url).getQueryParameter("clubId")?.toIntOrNull()
+    }
+
+    private fun getEventIdFromUrl(url: String): Int? {
+        return Uri.parse(url).getQueryParameter("eventId")?.toIntOrNull()
     }
 
     private fun navigateToActivity(intent: Intent) {
