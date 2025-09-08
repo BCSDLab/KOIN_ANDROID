@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -63,7 +64,9 @@ fun LostAndFoundWriteArticle(
 
     KoinTheme {
         Scaffold(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .imePadding(),
             containerColor = KoinTheme.colors.neutral0,
             bottomBar = {
                 WriteArticleDoneButton {
@@ -107,8 +110,7 @@ fun LostAndFoundWriteArticle(
 
             LazyColumn(
                 state = lazyColumnState,
-                modifier =
-                Modifier
+                modifier = Modifier
                     .padding(contentPadding)
                     .consumeWindowInsets(contentPadding)
             ) {
