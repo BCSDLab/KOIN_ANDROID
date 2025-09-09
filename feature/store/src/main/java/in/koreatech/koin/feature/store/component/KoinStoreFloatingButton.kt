@@ -35,9 +35,8 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun KoinStoreFloatingButton(
-    etaTime: LocalTime,
+    text: String,
     storeName: String,
-    cartType: CartType,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
@@ -63,13 +62,7 @@ fun KoinStoreFloatingButton(
             modifier = Modifier.padding(vertical = 16.dp)
         ) {
             BasicText(
-                stringResource(
-                    when (cartType) {
-                        CartType.DELIVERY -> R.string.store_fab_delivery_eta
-                        CartType.TAKE_OUT -> R.string.store_fab_takeout_eta
-                    },
-                    etaTime.format(DateTimeFormatter.ofPattern("a h시 m분"))
-                ),
+                text = text,
                 style = KoinTheme.typography.bold16.copy(
                     color = RebrandKoinTheme.colors.primary600,
                     lineHeightStyle = LineHeightStyle(
@@ -103,8 +96,7 @@ fun KoinStoreFloatingButton(
 @Composable
 private fun KoinStoreFloatingButtonPreview() {
     KoinStoreFloatingButton(
-        etaTime = LocalTime.now(),
-        cartType = CartType.TAKE_OUT,
+        text = "Text",
         storeName = "Store name"
     )
 }
