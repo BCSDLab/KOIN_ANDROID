@@ -39,17 +39,17 @@ class NetworkConnectivityServiceImpl @Inject constructor(
         val connectivityCallback = object : NetworkCallback() {
             override fun onAvailable(network: Network) {
                 latestStatus = NetworkStatus.Connected
-                trySend(NetworkStatus.Connected)
+                trySend(latestStatus)
             }
 
             override fun onUnavailable() {
                 latestStatus = NetworkStatus.Disconnected
-                trySend(NetworkStatus.Disconnected)
+                trySend(latestStatus)
             }
 
             override fun onLost(network: Network) {
                 latestStatus = NetworkStatus.Disconnected
-                trySend(NetworkStatus.Disconnected)
+                trySend(latestStatus)
             }
         }
 
