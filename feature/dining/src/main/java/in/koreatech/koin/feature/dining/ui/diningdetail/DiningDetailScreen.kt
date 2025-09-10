@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
@@ -58,10 +59,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.request.ImageRequest
 import com.kakao.sdk.share.ShareClient
@@ -130,6 +133,7 @@ fun DiningDetailScreen(
         containerColor = KoinTheme.colors.neutral0,
         topBar = {
             KoinTopAppBar(
+                modifier = Modifier.heightIn(max = 85.dp),
                 title = stringResource(R.string.dining_appbar_title),
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = KoinTheme.colors.primary500,
