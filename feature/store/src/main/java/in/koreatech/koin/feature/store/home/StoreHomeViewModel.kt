@@ -70,7 +70,7 @@ class StoreHomeViewModel @Inject constructor(
             reduce {
                 state.copy(
                     isLoading = false,
-                    orderInProgress = it.first().toLocalOrderInProgress()
+                    orderInProgress = it.firstOrNull()?.toLocalOrderInProgress()
                 )
             }
         }.onFailure {
