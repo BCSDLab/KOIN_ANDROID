@@ -1,12 +1,12 @@
 package `in`.koreatech.koin.domain.model.store
 
 data class OrderInProgress(
-    val orderId: Int,
+    val id: Int,
     val orderType: String,
-    val shopName: String,
-    val shopThumbnail: String,
+    val orderableShopName: String,
+    val orderableShopThumbnail: String,
     val estimatedAt: String?,
     val orderStatus: String,
-    val paymentDescription: String,
+    val orderTitle: String,
     val totalAmount: Int
 )
