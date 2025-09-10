@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetOrderInProgressUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetOrderableShopsUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
@@ -11,6 +12,7 @@ import `in`.koreatech.koin.feature.store.enums.MinimumPriceOption
 import `in`.koreatech.koin.feature.store.enums.OrderOption
 import `in`.koreatech.koin.feature.store.enums.StoreFilter
 import `in`.koreatech.koin.feature.store.enums.toStoreSorter
+import `in`.koreatech.koin.feature.store.home.model.toLocalOrderInProgress
 import `in`.koreatech.koin.feature.store.model.toLocalShop
 import `in`.koreatech.koin.feature.store.model.toLocalStoreCategories
 import javax.inject.Inject
@@ -19,12 +21,14 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
 @HiltViewModel
 class StoreHomeViewModel @Inject constructor(
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
     private val getOrderableShopsUseCase: GetOrderableShopsUseCase,
+    private val getOrderInProgressUseCase: GetOrderInProgressUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<StoreHomeState, StoreHomeSideEffect> {
     override val container = container<StoreHomeState, StoreHomeSideEffect>(StoreHomeState())
@@ -57,6 +61,21 @@ class StoreHomeViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun getOrderInProgress() = intent {
+        reduce { state.copy(isLoading = true) }
+        getOrderInProgressUseCase().onSuccess {
+            reduce {
+                state.copy(
+                    isLoading = false,
+                    orderInProgress = it.first().toLocalOrderInProgress()
+                )
+            }
+        }.onFailure {
+            Timber.e(it)
+            state.copy(isLoading = false)
         }
     }
 

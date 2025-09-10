@@ -54,12 +54,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.util.KoinCoilImageLoader
+import `in`.koreatech.koin.domain.model.cart.CartType
 import `in`.koreatech.koin.domain.model.store.OpenStatus
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_HOME
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreCard
 import `in`.koreatech.koin.feature.store.component.KoinStoreCategoryItem
 import `in`.koreatech.koin.feature.store.component.KoinStoreFilterChip
+import `in`.koreatech.koin.feature.store.component.KoinStoreFloatingButton
 import `in`.koreatech.koin.feature.store.component.KoinStoreMinimumPriceChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreOrderChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
@@ -74,8 +76,10 @@ import `in`.koreatech.koin.feature.store.enums.OrderOption
 import `in`.koreatech.koin.feature.store.enums.StoreFilter
 import `in`.koreatech.koin.feature.store.enums.minimumPriceOptions
 import `in`.koreatech.koin.feature.store.enums.storeFilters
+import `in`.koreatech.koin.feature.store.home.model.OrderStatus
 import `in`.koreatech.koin.feature.store.model.LocalShop
 import `in`.koreatech.koin.feature.store.model.LocalStoreCategories
+import java.time.format.DateTimeFormatter
 import kotlinx.coroutines.flow.combine
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -101,6 +105,14 @@ fun StoreHomeScreen(
     LaunchedEffect(Unit) {
         if (uiState.categoryId == -1) {
             viewModel.onCategoryChange(categoryId)
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { uiState.isLoggedIn }.collect {
+            if (it) {
+                viewModel.getOrderInProgress()
+            }
         }
     }
 
@@ -177,25 +189,56 @@ fun StoreHomeScreen(
             )
         )
 
-        StoreHomeScreen(
-            isLoading = uiState.isLoading,
-            showOrderOptions = uiState.showOrderOptions,
-            storeList = uiState.orderableShops,
-            categoryId = uiState.categoryId,
-            storeCategories = uiState.storeCategories,
-            selectedOrderOption = uiState.selectedOrderOption,
-            selectedStoreFilter = uiState.selectedStoreFilter,
-            selectedMinimumPriceOption = uiState.selectedMinimumPriceOption,
-            showMinimumPriceOptions = uiState.showMinimumPriceOptions,
-            navigateToDetail = navigateToDetail,
-            navigateToSearch = navigateToSearch,
-            onCategoryChange = viewModel::onCategoryChange,
-            onShowOrderOptionsChange = viewModel::onShowOrderOptionsChange,
-            onSelectedOrderOptionChange = viewModel::onSelectedOrderOptionChange,
-            onSelectedStoreFilterChange = viewModel::onSelectedStoreFilterChange,
-            onShowMinimumPriceOptionsChange = viewModel::onShowMinimumPriceOptionsChange,
-            onSelectedMinimumPriceOptionChange = viewModel::onSelectedMinimumPriceOptionChange
-        )
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            StoreHomeScreen(
+                isLoading = uiState.isLoading,
+                showOrderOptions = uiState.showOrderOptions,
+                storeList = uiState.orderableShops,
+                categoryId = uiState.categoryId,
+                storeCategories = uiState.storeCategories,
+                selectedOrderOption = uiState.selectedOrderOption,
+                selectedStoreFilter = uiState.selectedStoreFilter,
+                selectedMinimumPriceOption = uiState.selectedMinimumPriceOption,
+                showMinimumPriceOptions = uiState.showMinimumPriceOptions,
+                navigateToDetail = navigateToDetail,
+                navigateToSearch = navigateToSearch,
+                onCategoryChange = viewModel::onCategoryChange,
+                onShowOrderOptionsChange = viewModel::onShowOrderOptionsChange,
+                onSelectedOrderOptionChange = viewModel::onSelectedOrderOptionChange,
+                onSelectedStoreFilterChange = viewModel::onSelectedStoreFilterChange,
+                onShowMinimumPriceOptionsChange = viewModel::onShowMinimumPriceOptionsChange,
+                onSelectedMinimumPriceOptionChange = viewModel::onSelectedMinimumPriceOptionChange
+            )
+
+            if (uiState.orderInProgress != null) {
+                uiState.orderInProgress!!.apply {
+                    if (orderStatus != OrderStatus.NONE) {
+                        KoinStoreFloatingButton(
+                            modifier = Modifier
+                                .zIndex(1f)
+                                .padding(bottom = 12.dp),
+                            text = when (orderStatus) {
+                                OrderStatus.CONFIRMING -> stringResource(R.string.store_fab_confirming)
+                                OrderStatus.DELIVERING,
+                                OrderStatus.PACKAGED -> stringResource(
+                                    when (type) {
+                                        CartType.DELIVERY -> R.string.store_fab_delivery_eta
+                                        CartType.TAKE_OUT -> R.string.store_fab_takeout_eta
+                                    },
+                                    estimatedAt!!.format(DateTimeFormatter.ofPattern("a h시 m분"))
+                                )
+
+                                OrderStatus.NONE -> ""
+                            },
+                            storeName = shopName
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
