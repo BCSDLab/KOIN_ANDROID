@@ -346,6 +346,7 @@ private fun DiningDetailScreenImpl(
     Column(
         modifier = modifier
             .padding(contentPadding)
+            .consumeWindowInsets(contentPadding)
             .fillMaxSize()
             .nestedScroll(nestedScrollConnection)
     ) {
