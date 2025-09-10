@@ -10,6 +10,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import `in`.koreatech.koin.domain.model.cart.CartType
+import `in`.koreatech.koin.feature.store.BuildConfig
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_ADD_CART
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_DETAIL_MAIN
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_HOME
@@ -191,8 +192,9 @@ fun NavGraphBuilder.koinStoreGraph(
         )
     ) {
         val cartType = it.arguments?.getString(CART_TYPE) ?: CartType.DELIVERY.name
+        val url = "${BuildConfig.ORDER_BASE_URL}/payment?orderType=$cartType"
         StorePaymentScreen(
-            cartType = cartType,
+            url = url,
             finish = finish,
             navigateToMain = {
                 navController.navigate(StoreNavType.StoreMain.route) {
