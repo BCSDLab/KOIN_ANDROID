@@ -8,6 +8,7 @@ import `in`.koreatech.koin.data.mapper.toCartItemsCount
 import `in`.koreatech.koin.data.mapper.toCartPaymentSummary
 import `in`.koreatech.koin.data.mapper.toCartSummary
 import `in`.koreatech.koin.data.mapper.toCategory
+import `in`.koreatech.koin.data.mapper.toOrderInProgress
 import `in`.koreatech.koin.data.mapper.toOrderableShopSearchRelated
 import `in`.koreatech.koin.data.mapper.toShop
 import `in`.koreatech.koin.data.mapper.toShopDeliveryAvailable
@@ -40,6 +41,7 @@ import `in`.koreatech.koin.domain.model.store.CartItemEdit
 import `in`.koreatech.koin.domain.model.store.CartItemsCount
 import `in`.koreatech.koin.domain.model.store.CartPaymentSummary
 import `in`.koreatech.koin.domain.model.store.CartSummary
+import `in`.koreatech.koin.domain.model.store.OrderInProgress
 import `in`.koreatech.koin.domain.model.store.OrderableShopSearchRelated
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.model.store.Shop
@@ -661,6 +663,19 @@ class StoreRepositoryImpl @Inject constructor(
                         }
                     }
 
+                    else -> e
+                }
+            )
+        }
+    }
+
+    override suspend fun getOrderInProgress(): Result<List<OrderInProgress>> {
+        return runCatching {
+            storeRemoteDataSource.getOrderInProgress().map { it.toOrderInProgress() }
+        }.onFailure { e ->
+            return Result.failure(
+                when (e) {
+                    is HttpException -> e.getErrorResponse().toKoinUnknownErrorException()
                     else -> e
                 }
             )
