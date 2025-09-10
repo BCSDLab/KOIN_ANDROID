@@ -11,7 +11,8 @@ data class LocalOrderInProgress(
     val type: CartType,
     val orderStatus: OrderStatus,
     val estimatedAt: LocalTime?,
-    val shopName: String
+    val shopName: String,
+    val orderId: Int
 )
 
 fun OrderInProgress.toLocalOrderInProgress(): LocalOrderInProgress {
@@ -21,6 +22,7 @@ fun OrderInProgress.toLocalOrderInProgress(): LocalOrderInProgress {
         type = CartType.valueOf(orderType),
         orderStatus = OrderStatus.fromString(orderStatus),
         estimatedAt = if (estimatedAt != null) LocalTime.parse(estimatedAt, formatter) else null,
-        shopName = shopName
+        shopName = orderableShopName,
+        orderId = id
     )
 }

@@ -23,8 +23,8 @@ import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
 import `in`.koreatech.koin.feature.store.home.StoreHomeScreen
 import `in`.koreatech.koin.feature.store.nearby.StoreNearbyScreen
 import `in`.koreatech.koin.feature.store.origin.ShopOriginInfoScreen
-import `in`.koreatech.koin.feature.store.webapp.StoreWebAppScreen
 import `in`.koreatech.koin.feature.store.search.StoreSearchScreen
+import `in`.koreatech.koin.feature.store.webapp.StoreWebAppScreen
 
 fun NavGraphBuilder.koinStoreGraph(
     navController: NavController,
@@ -212,6 +212,37 @@ fun NavGraphBuilder.koinStoreGraph(
             }
         )
     }
+
+    composable(
+        route = "${StoreNavType.StoreOrderResult.route}/{$ORDER_ID}",
+        arguments = listOf(
+            navArgument(ORDER_ID) {
+                type = NavType.IntType
+            }
+        )
+    ) {
+        val orderId = it.arguments?.getInt(ORDER_ID)
+        val url = "${BuildConfig.ORDER_BASE_URL}/result/$orderId"
+
+        StoreWebAppScreen(
+            url = url,
+            finish = finish,
+            navigateToMain = {
+                navController.navigate(StoreNavType.StoreMain.route) {
+                    popUpTo(StoreNavType.StoreMain.route) {
+                        inclusive = true
+                    }
+                }
+            },
+            navigateToCart = {
+                navController.navigate(StoreNavType.StoreCart.route) {
+                    popUpTo(StoreNavType.StoreCart.route) {
+                        inclusive = true
+                    }
+                }
+            }
+        )
+    }
 }
 
 internal fun NavGraphBuilder.koinStoreMainGraph(
@@ -237,6 +268,9 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
             },
             navigateToSearch = {
                 navController.navigate(StoreNavType.StoreSearch.route)
+            },
+            navigateToOrderResult = { orderId ->
+                navController.navigate("${StoreNavType.StoreOrderResult.route}/$orderId")
             }
         ) {
             if (!navController.navigateUp()) {
@@ -367,3 +401,4 @@ const val IS_CART_MODIFIED = "isCartModified"
 const val CART_TYPE = "cartType"
 const val SELECTED_INFO = "selectedInfo"
 const val CART_DATA = "cartData"
+const val ORDER_ID = "orderId"

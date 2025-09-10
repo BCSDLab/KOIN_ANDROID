@@ -93,6 +93,7 @@ fun StoreHomeScreen(
     navigateToDetail: (Int) -> Unit = { },
     navigateToCart: () -> Unit = { },
     navigateToSearch: () -> Unit = { },
+    navigateToOrderResult: (orderId: Int) -> Unit = { },
     onBackPressed: () -> Unit = { }
 ) {
     val uiState by viewModel.collectAsState()
@@ -233,7 +234,10 @@ fun StoreHomeScreen(
 
                                 OrderStatus.NONE -> ""
                             },
-                            storeName = shopName
+                            storeName = shopName,
+                            onClick = {
+                                navigateToOrderResult(orderId)
+                            }
                         )
                     }
                 }
