@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.payment
+package `in`.koreatech.koin.feature.store.webapp
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
@@ -30,9 +30,9 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import java.net.URISyntaxException
 
 @Composable
-fun StorePaymentScreen(
+fun StoreWebAppScreen(
     url: String,
-    viewModel: StorePaymentViewModel = hiltViewModel(),
+    viewModel: StoreWebAppViewModel = hiltViewModel(),
     finish: () -> Unit = {},
     navigateToMain: () -> Unit = {},
     navigateToCart: () -> Unit = {}

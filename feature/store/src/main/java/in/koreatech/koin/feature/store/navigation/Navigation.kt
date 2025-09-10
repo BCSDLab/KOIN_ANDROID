@@ -23,7 +23,7 @@ import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
 import `in`.koreatech.koin.feature.store.home.StoreHomeScreen
 import `in`.koreatech.koin.feature.store.nearby.StoreNearbyScreen
 import `in`.koreatech.koin.feature.store.origin.ShopOriginInfoScreen
-import `in`.koreatech.koin.feature.store.payment.StorePaymentScreen
+import `in`.koreatech.koin.feature.store.webapp.StoreWebAppScreen
 import `in`.koreatech.koin.feature.store.search.StoreSearchScreen
 
 fun NavGraphBuilder.koinStoreGraph(
@@ -193,7 +193,7 @@ fun NavGraphBuilder.koinStoreGraph(
     ) {
         val cartType = it.arguments?.getString(CART_TYPE) ?: CartType.DELIVERY.name
         val url = "${BuildConfig.ORDER_BASE_URL}/payment?orderType=$cartType"
-        StorePaymentScreen(
+        StoreWebAppScreen(
             url = url,
             finish = finish,
             navigateToMain = {
