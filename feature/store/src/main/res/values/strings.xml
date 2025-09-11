@@ -140,4 +140,5 @@
     <string name="store_fab_confirming">주문 확인 중</string>
     <string name="store_fab_delivery_eta">%1$s 도착예정</string>
     <string name="store_fab_takeout_eta">%1$s 포장 수령가능</string>
+    <string name="store_fab_eta_unavailable">도착 미정</string>
 </resources>

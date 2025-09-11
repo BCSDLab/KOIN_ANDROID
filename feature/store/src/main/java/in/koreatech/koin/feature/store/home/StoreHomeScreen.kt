@@ -228,7 +228,7 @@ fun StoreHomeScreen(
                                     CartType.DELIVERY -> R.string.store_fab_delivery_eta
                                     CartType.TAKE_OUT -> R.string.store_fab_takeout_eta
                                 },
-                                estimatedAt!!.format(DateTimeFormatter.ofPattern("a h시 m분"))
+                                estimatedAt?.format(DateTimeFormatter.ofPattern("a h시 m분")) ?: stringResource(R.string.store_fab_eta_unavailable)
                             )
 
                             OrderStatus.NONE -> ""
