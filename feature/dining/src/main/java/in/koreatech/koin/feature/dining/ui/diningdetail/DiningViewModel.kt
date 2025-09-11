@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.dining.ui.diningdetail
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.abtest.Experiment
@@ -44,14 +45,16 @@ class DiningViewModel @Inject constructor(
     private val updateNotificationSubscriptionUseCase: UpdateNotificationSubscriptionUseCase,
     private val updateNotificationSubscriptionDetailUseCase: UpdateNotificationSubscriptionDetailUseCase,
     private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase
-) : BaseViewModel() {
+) : ViewModel() {
 
     private val initDate = savedStateHandle.get<String>(INIT_DATE)
         .takeUnless { it.isNullOrBlank() }
         ?: TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate())
 
-    init {
+    fun initData() {
         getDining(initDate)
+        getShowBottomSheetValue()
+        getNotificationPermissionInfo()
     }
 
     private val _userState: StateFlow<User> = getUserStatusUseCase().stateIn(
@@ -60,6 +63,8 @@ class DiningViewModel @Inject constructor(
         initialValue = User.Anonymous
     )
     val userState: StateFlow<User> get() = _userState
+
+    private val _isLoading = MutableStateFlow(false)
 
     private val _selectedDate = MutableStateFlow(initDate)
     val selectedDate: StateFlow<String> get() = _selectedDate
@@ -75,6 +80,9 @@ class DiningViewModel @Inject constructor(
 
     private val _isDiningImageSubscribed = MutableStateFlow(false)
     val isDiningImageSubscribed: StateFlow<Boolean> get() = _isDiningImageSubscribed
+
+    private val _isDiningRefreshing = MutableStateFlow(false)
+    val isDiningRefreshing: StateFlow<Boolean> get() = _isDiningRefreshing
 
     val abTestExperimentGroup = flow {
         abTestUseCase(Experiment.DINING_SHARE.experimentTitle).onSuccess {
@@ -93,9 +101,15 @@ class DiningViewModel @Inject constructor(
         getDining(selectedDate.value)
     }
 
+    fun refreshDining() {
+        _isDiningRefreshing.value = true
+        getDining(selectedDate.value)
+    }
+
     private fun getDining(date: String = selectedDate.value) {
-        if (isLoading.value == false) {
-            viewModelScope.launchWithLoading {
+        if (!_isLoading.value) {
+            _isLoading.value = true
+            viewModelScope.launch {
                 getDiningUseCase(date)
                     .onSuccess {
                         _dining.value = it.filter { dining ->
@@ -103,6 +117,8 @@ class DiningViewModel @Inject constructor(
                                 dining.place == DiningPlace.CornerB.place ||
                                 dining.place == DiningPlace.CornerC.place
                         }
+                        _isLoading.value = false
+                        _isDiningRefreshing.value = false
                     }
                     .onFailure {
                         _dining.value = listOf()
