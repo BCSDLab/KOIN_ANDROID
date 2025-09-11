@@ -6,8 +6,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
@@ -38,6 +41,7 @@ fun KoinStoreFloatingButton(
 ) {
     Row(
         modifier = modifier
+            .windowInsetsPadding(WindowInsets.systemBars)
             .shadow(elevation = 4.dp, shape = CircleShape)
             .clip(CircleShape)
             .background(color = KoinTheme.colors.neutral0, shape = CircleShape)
