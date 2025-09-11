@@ -39,7 +39,7 @@ fun WriteArticleDoneButton(
     windowInsets: WindowInsets = WriteArticleDoneButtonDefaults.windowInsets,
     onClick: () -> Unit = {}
 ) = Column(
-    modifier = Modifier.windowInsetsPadding(windowInsets),
+    modifier = modifier.windowInsetsPadding(windowInsets),
     horizontalAlignment = Alignment.CenterHorizontally
 ) {
     HorizontalDivider(
@@ -48,16 +48,14 @@ fun WriteArticleDoneButton(
         color = KoinTheme.colors.neutral100
     )
     Box(
-        modifier =
-        modifier
+        modifier = Modifier
             .padding(24.dp)
             .fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
         Button(
             onClick = onClick,
-            modifier =
-            Modifier
+            modifier = Modifier
                 .padding(vertical = 8.dp, horizontal = 24.dp)
                 .width(160.dp)
                 .height(38.dp),
