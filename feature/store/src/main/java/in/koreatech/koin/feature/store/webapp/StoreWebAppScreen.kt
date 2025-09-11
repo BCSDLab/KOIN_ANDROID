@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.payment
+package `in`.koreatech.koin.feature.store.webapp
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
@@ -26,14 +26,13 @@ import `in`.koreatech.koin.core.webapp.KoinWebAppInterface
 import `in`.koreatech.koin.core.webapp.KoinWebAppWebViewClient
 import `in`.koreatech.koin.core.webapp.Tokens
 import `in`.koreatech.koin.core.webapp.WebApp
-import `in`.koreatech.koin.feature.store.BuildConfig
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import java.net.URISyntaxException
 
 @Composable
-fun StorePaymentScreen(
-    cartType: String,
-    viewModel: StorePaymentViewModel = hiltViewModel(),
+fun StoreWebAppScreen(
+    url: String,
+    viewModel: StoreWebAppViewModel = hiltViewModel(),
     finish: () -> Unit = {},
     navigateToMain: () -> Unit = {},
     navigateToCart: () -> Unit = {}
@@ -60,7 +59,7 @@ fun StorePaymentScreen(
 
     WebApp(
         modifier = Modifier.fillMaxSize(),
-        url = "${BuildConfig.ORDER_BASE_URL}/payment?orderType=$cartType",
+        url = url,
         koinWebAppWebViewClient = StorePaymentWebViewClient(
             Tokens(
                 refreshToken = authToken.refreshToken,

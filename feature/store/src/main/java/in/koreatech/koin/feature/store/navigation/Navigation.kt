@@ -10,6 +10,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import `in`.koreatech.koin.domain.model.cart.CartType
+import `in`.koreatech.koin.feature.store.BuildConfig
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_ADD_CART
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_DETAIL_MAIN
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_HOME
@@ -19,16 +20,12 @@ import `in`.koreatech.koin.feature.store.cartadd.CartAddScreen
 import `in`.koreatech.koin.feature.store.cartedit.CartEditScreen
 import `in`.koreatech.koin.feature.store.detail.StoreDetailScreen
 import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
-import `in`.koreatech.koin.feature.store.view.ShopOriginInfoScreen
-import `in`.koreatech.koin.feature.store.view.ShoppingCartScreen
-import `in`.koreatech.koin.feature.store.view.StoreDetailScreen
-import `in`.koreatech.koin.feature.store.view.cart.add.CartAddScreen
-import `in`.koreatech.koin.feature.store.view.cart.edit.CartEditScreen
-import `in`.koreatech.koin.feature.store.view.main.home.StoreHomeScreen
-import `in`.koreatech.koin.feature.store.view.main.nearby.StoreNearbyScreen
+import `in`.koreatech.koin.feature.store.home.StoreHomeScreen
+import `in`.koreatech.koin.feature.store.nearby.StoreNearbyScreen
+import `in`.koreatech.koin.feature.store.origin.ShopOriginInfoScreen
+import `in`.koreatech.koin.feature.store.search.StoreSearchScreen
+import `in`.koreatech.koin.feature.store.webapp.StoreWebAppScreen
 import `in`.koreatech.koin.feature.store.view.orders.OrderHistoryScreen
-import `in`.koreatech.koin.feature.store.view.payment.StorePaymentScreen
-import `in`.koreatech.koin.feature.store.view.search.StoreSearchScreen
 
 fun NavGraphBuilder.koinStoreGraph(
     navController: NavController,
@@ -196,8 +193,40 @@ fun NavGraphBuilder.koinStoreGraph(
         )
     ) {
         val cartType = it.arguments?.getString(CART_TYPE) ?: CartType.DELIVERY.name
-        StorePaymentScreen(
-            cartType = cartType,
+        val url = "${BuildConfig.ORDER_BASE_URL}/payment?orderType=$cartType"
+        StoreWebAppScreen(
+            url = url,
+            finish = finish,
+            navigateToMain = {
+                navController.navigate(StoreNavType.StoreMain.route) {
+                    popUpTo(StoreNavType.StoreMain.route) {
+                        inclusive = true
+                    }
+                }
+            },
+            navigateToCart = {
+                navController.navigate(StoreNavType.StoreCart.route) {
+                    popUpTo(StoreNavType.StoreCart.route) {
+                        inclusive = true
+                    }
+                }
+            }
+        )
+    }
+
+    composable(
+        route = "${StoreNavType.StoreOrderResult.route}/{$ORDER_ID}",
+        arguments = listOf(
+            navArgument(ORDER_ID) {
+                type = NavType.IntType
+            }
+        )
+    ) {
+        val orderId = it.arguments?.getInt(ORDER_ID)
+        val url = "${BuildConfig.ORDER_BASE_URL}/result/$orderId"
+
+        StoreWebAppScreen(
+            url = url,
             finish = finish,
             navigateToMain = {
                 navController.navigate(StoreNavType.StoreMain.route) {
@@ -240,6 +269,9 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
             },
             navigateToSearch = {
                 navController.navigate(StoreNavType.StoreSearch.route)
+            },
+            navigateToOrderResult = { orderId ->
+                navController.navigate("${StoreNavType.StoreOrderResult.route}/$orderId")
             }
         ) {
             if (!navController.navigateUp()) {
@@ -382,3 +414,4 @@ const val IS_CART_MODIFIED = "isCartModified"
 const val CART_TYPE = "cartType"
 const val SELECTED_INFO = "selectedInfo"
 const val CART_DATA = "cartData"
+const val ORDER_ID = "orderId"

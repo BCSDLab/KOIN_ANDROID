@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.store.home
 import `in`.koreatech.koin.feature.store.enums.MinimumPriceOption
 import `in`.koreatech.koin.feature.store.enums.OrderOption
 import `in`.koreatech.koin.feature.store.enums.StoreFilter
+import `in`.koreatech.koin.feature.store.home.model.LocalOrderInProgress
 import `in`.koreatech.koin.feature.store.model.LocalShop
 import `in`.koreatech.koin.feature.store.model.LocalStoreCategories
 
@@ -18,5 +19,6 @@ data class StoreHomeState(
     val selectedMinimumPriceOption: MinimumPriceOption = MinimumPriceOption.ALL,
     val cartItemCount: Int = 0,
     val isLoggedIn: Boolean = false,
-    val showSignInDialog: Boolean = false
+    val showSignInDialog: Boolean = false,
+    val orderInProgress: LocalOrderInProgress? = null
 )

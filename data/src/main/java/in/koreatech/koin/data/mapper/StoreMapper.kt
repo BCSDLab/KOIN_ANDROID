@@ -13,6 +13,7 @@ import `in`.koreatech.koin.data.response.store.CartSummaryResponse
 import `in`.koreatech.koin.data.response.store.LegacyShopMenusResponse
 import `in`.koreatech.koin.data.response.store.OrderHistoryResponse
 import `in`.koreatech.koin.data.response.store.OrderOnGoingResponse
+import `in`.koreatech.koin.data.response.store.OrderInProgressResponse
 import `in`.koreatech.koin.data.response.store.OrderableShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopDeliveryAvailableResponse
 import `in`.koreatech.koin.data.response.store.ShopDetailResponse
@@ -56,9 +57,9 @@ import `in`.koreatech.koin.domain.model.store.CartPaymentSummary
 import `in`.koreatech.koin.domain.model.store.CartSummary
 import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 import `in`.koreatech.koin.domain.model.store.OpenStatus
+import `in`.koreatech.koin.domain.model.store.OrderInProgress
 import `in`.koreatech.koin.domain.model.store.OrderHistoryOrders
 import `in`.koreatech.koin.domain.model.store.OrderHistoryRelated
-import `in`.koreatech.koin.domain.model.store.OrderOnGoingRelated
 import `in`.koreatech.koin.domain.model.store.OrderableShopSearchRelated
 import `in`.koreatech.koin.domain.model.store.Shop
 import `in`.koreatech.koin.domain.model.store.ShopDeliveryAvailable
@@ -632,19 +633,6 @@ fun OrderHistoryResponse.toOrderHistoryRelated() =
         }
     )
 
-fun OrderOnGoingResponse.toOrderOnGoingRelated() =
-    OrderOnGoingRelated(
-        id = id,
-        paymentId = paymentId,
-        orderType = orderType,
-        orderableShopName = orderableShopName,
-        orderableShopThumbnail = orderableShopThumbnail,
-        estimatedAt = estimatedAt,
-        orderStatus = orderStatus,
-        orderTitle = orderTitle,
-        totalAmount = totalAmount
-    )
-
 fun CartItem.toCartItemRequest() = CartItemRequest(
     quantity = quantity,
     orderableShopMenuPriceId = orderableShopMenuPriceId,
@@ -755,4 +743,16 @@ fun CartItemEditResponse.toCartItemEdit() = CartItemEdit(
 fun CartItemsCountResponse.toCartItemsCount() = CartItemsCount(
     itemTypeCount = itemTypeCount,
     totalQuantity = totalQuantity
+)
+
+fun OrderInProgressResponse.toOrderInProgress() = OrderInProgress(
+    id = id,
+    paymentId = paymentId,
+    orderType = orderType,
+    orderableShopName = orderableShopName,
+    orderableShopThumbnail = orderableShopThumbnail,
+    estimatedAt = estimatedAt,
+    orderStatus = orderStatus,
+    orderTitle = orderTitle,
+    totalAmount = totalAmount
 )
