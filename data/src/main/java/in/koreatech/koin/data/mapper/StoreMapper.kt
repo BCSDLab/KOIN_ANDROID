@@ -11,6 +11,7 @@ import `in`.koreatech.koin.data.response.store.CartPaymentSummaryResponse
 import `in`.koreatech.koin.data.response.store.CartResponse
 import `in`.koreatech.koin.data.response.store.CartSummaryResponse
 import `in`.koreatech.koin.data.response.store.LegacyShopMenusResponse
+import `in`.koreatech.koin.data.response.store.OrderInProgressResponse
 import `in`.koreatech.koin.data.response.store.OrderableShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopDeliveryAvailableResponse
 import `in`.koreatech.koin.data.response.store.ShopDetailResponse
@@ -54,6 +55,7 @@ import `in`.koreatech.koin.domain.model.store.CartPaymentSummary
 import `in`.koreatech.koin.domain.model.store.CartSummary
 import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 import `in`.koreatech.koin.domain.model.store.OpenStatus
+import `in`.koreatech.koin.domain.model.store.OrderInProgress
 import `in`.koreatech.koin.domain.model.store.OrderableShopSearchRelated
 import `in`.koreatech.koin.domain.model.store.Shop
 import `in`.koreatech.koin.domain.model.store.ShopDeliveryAvailable
@@ -715,4 +717,16 @@ fun CartItemEditResponse.toCartItemEdit() = CartItemEdit(
 fun CartItemsCountResponse.toCartItemsCount() = CartItemsCount(
     itemTypeCount = itemTypeCount,
     totalQuantity = totalQuantity
+)
+
+fun OrderInProgressResponse.toOrderInProgress() = OrderInProgress(
+    id = id,
+    paymentId = paymentId,
+    orderType = orderType,
+    orderableShopName = orderableShopName,
+    orderableShopThumbnail = orderableShopThumbnail,
+    estimatedAt = estimatedAt,
+    orderStatus = orderStatus,
+    orderTitle = orderTitle,
+    totalAmount = totalAmount
 )

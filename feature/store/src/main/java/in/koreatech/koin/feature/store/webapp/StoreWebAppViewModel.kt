@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.payment
+package `in`.koreatech.koin.feature.store.webapp
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class StorePaymentViewModel @Inject constructor(
+class StoreWebAppViewModel @Inject constructor(
     private val getTokensUseCase: GetTokensUseCase
 ) : ViewModel() {
     private val _authToken: MutableStateFlow<AuthToken> = MutableStateFlow(AuthToken("", "", ""))
