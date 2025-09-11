@@ -34,11 +34,15 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -59,12 +63,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.request.ImageRequest
 import com.kakao.sdk.share.ShareClient
@@ -120,13 +123,14 @@ fun DiningDetailScreen(
 
     val isDiningImageSubscribed by viewModel.isDiningImageSubscribed.collectAsState()
 
+    val isDiningRefreshing by viewModel.isDiningRefreshing.collectAsState()
+
     val diningList by viewModel.dining.collectAsState()
 
     val abTestExperimentGroup by viewModel.abTestExperimentGroup.collectAsState()
 
     LaunchedEffect(userState) { // userState NPE error in viewModel init{}; Flow is null
-        viewModel.getShowBottomSheetValue()
-        viewModel.getNotificationPermissionInfo()
+        viewModel.initData()
     }
 
     Scaffold(
@@ -173,9 +177,11 @@ fun DiningDetailScreen(
             showBottomSheet = showBottomSheet,
             experimentGroup = abTestExperimentGroup,
             isAnonymous = userState.isAnonymous,
+            isDiningRefreshing = isDiningRefreshing,
             initialPage = if (initialPage != -1) initialPage else viewModel.getInitialPage(),
             isSoldOutSubscribed = isSoldOutSubscribed,
             isDiningImageSubscribed = isDiningImageSubscribed,
+            refreshDining = viewModel::refreshDining,
             onDateClick = viewModel::setSelectedDate,
             changeSoldOutSubscribe = viewModel::changeIsSoldOutSubscribed,
             changeDiningImageSubscribe = viewModel::changeIsDiningImageSubscribed,
@@ -197,7 +203,9 @@ private fun DiningDetailScreenImpl(
     isSoldOutSubscribed: Boolean = false,
     isDiningImageSubscribed: Boolean = false,
     isAnonymous: Boolean = true,
+    isDiningRefreshing: Boolean = false,
     initialPage: Int = 0,
+    refreshDining: () -> Unit = {},
     onDateClick: (Date) -> Unit = {},
     changeSoldOutSubscribe: (Boolean) -> Unit = {},
     changeDiningImageSubscribe: (Boolean) -> Unit = {},
@@ -394,83 +402,110 @@ private fun DiningDetailScreenImpl(
             state = pagerState,
             verticalAlignment = Alignment.Top
         ) { page ->
-            val diningFilterList by remember(diningList, page) {
-                derivedStateOf {
-                    when (tabList[page]) {
-                        DiningType.Breakfast.typeKorean -> diningList.filter { it.type == DiningType.Breakfast.typeEnglish }
-                        DiningType.Lunch.typeKorean -> diningList.filter { it.type == DiningType.Lunch.typeEnglish }
-                        DiningType.Dinner.typeKorean -> diningList.filter { it.type == DiningType.Dinner.typeEnglish }
-                        else -> listOf()
+            val state = rememberPullToRefreshState()
+            PullToRefreshBox(
+                isRefreshing = isDiningRefreshing,
+                onRefresh = refreshDining,
+                state = state,
+                indicator = {
+                    Indicator(
+                        modifier = Modifier.align(Alignment.TopCenter),
+                        isRefreshing = isDiningRefreshing,
+                        containerColor = KoinTheme.colors.neutral0,
+                        color = KoinTheme.colors.neutral800,
+                        state = state
+                    )
+                }
+            ) {
+                if(isDiningRefreshing) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .zIndex(2f)
+                            .background(color = KoinTheme.colors.neutral200),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        CircularProgressIndicator()
                     }
                 }
-            }
-            Column(
-                modifier = Modifier
-                    .verticalScroll(
-                        when (tabList[page]) { // Can't use currentScrollState.value; because all pages have to give each other scroll state, not same currentScrollState
-                            DiningType.Breakfast.typeKorean -> breakfastScrollState
-                            DiningType.Lunch.typeKorean -> lunchScrollState
-                            DiningType.Dinner.typeKorean -> dinnerScrollState
-                            else -> breakfastScrollState
+                val diningFilterList by remember(diningList, page) {
+                    derivedStateOf {
+                        when (tabList[page]) {
+                            DiningType.Breakfast.typeKorean -> diningList.filter { it.type == DiningType.Breakfast.typeEnglish }
+                            DiningType.Lunch.typeKorean -> diningList.filter { it.type == DiningType.Lunch.typeEnglish }
+                            DiningType.Dinner.typeKorean -> diningList.filter { it.type == DiningType.Dinner.typeEnglish }
+                            else -> listOf()
                         }
-                    )
-                    .padding(vertical = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                diningFilterList.forEachIndexed { index, dining ->
-                    Box(
-                        contentAlignment = Alignment.BottomCenter
-                    ) {
-                        DiningItemByABTest(
-                            experimentGroup = experimentGroup,
-                            dining = dining,
-                            onImageClick = {
-                                selectedImage = dining.imageUrl
-                                showImageDialog = true
-                            },
-                            onShareClick = {
-                                EventLogger.logClickEvent(
-                                    EventAction.CAMPUS,
-                                    AnalyticsConstant.Label.MENU_SHARE,
-                                    "공유하기"
-                                )
-                                val messageTemplate = createFeedMessageTemplate(dining)
-
-                                if (ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
-                                    ShareClient.instance.shareDefault(
-                                        context,
-                                        messageTemplate
-                                    ) { sharingResult, error ->
-                                        error?.printStackTrace()
-                                        sharingResult?.let {
-                                            context.startActivity(it.intent)
-                                        }
-                                    }
-                                } else {
-                                    Toast.makeText(context, context.getString(R.string.kakao_share_unable), Toast.LENGTH_SHORT).show()
-                                }
+                    }
+                }
+                Column(
+                    modifier = Modifier
+                        .verticalScroll(
+                            when (tabList[page]) { // Can't use currentScrollState.value; because all pages have to give each other scroll state, not same currentScrollState
+                                DiningType.Breakfast.typeKorean -> breakfastScrollState
+                                DiningType.Lunch.typeKorean -> lunchScrollState
+                                DiningType.Dinner.typeKorean -> dinnerScrollState
+                                else -> breakfastScrollState
                             }
                         )
-                        if (index == 0 && showToolTip) {
-                            val infiniteTransition = rememberInfiniteTransition()
-                            val offsetY by infiniteTransition.animateValue(
-                                initialValue = 15.dp,
-                                targetValue = 20.dp,
-                                typeConverter = Dp.VectorConverter,
-                                animationSpec = infiniteRepeatable(
-                                    animation = tween(1000, easing = LinearEasing),
-                                    repeatMode = RepeatMode.Reverse
-                                )
+                        .padding(vertical = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    diningFilterList.forEachIndexed { index, dining ->
+                        Box(
+                            contentAlignment = Alignment.BottomCenter
+                        ) {
+                            DiningItemByABTest(
+                                experimentGroup = experimentGroup,
+                                dining = dining,
+                                onImageClick = {
+                                    selectedImage = dining.imageUrl
+                                    showImageDialog = true
+                                },
+                                onShareClick = {
+                                    EventLogger.logClickEvent(
+                                        EventAction.CAMPUS,
+                                        AnalyticsConstant.Label.MENU_SHARE,
+                                        "공유하기"
+                                    )
+                                    val messageTemplate = createFeedMessageTemplate(dining)
+
+                                    if (ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
+                                        ShareClient.instance.shareDefault(
+                                            context,
+                                            messageTemplate
+                                        ) { sharingResult, error ->
+                                            error?.printStackTrace()
+                                            sharingResult?.let {
+                                                context.startActivity(it.intent)
+                                            }
+                                        }
+                                    } else {
+                                        Toast.makeText(context, context.getString(R.string.kakao_share_unable), Toast.LENGTH_SHORT).show()
+                                    }
+                                }
                             )
-                            Box(
-                                modifier = Modifier.offset(y = -(offsetY))
-                            ) {
-                                with(onboardingManager) {
-                                    ShowOnboardingTooltipIfNeeded(
-                                        type = OnboardingType.DINING_SHARE,
-                                        arrowDirection = ArrowDirection.TOP
-                                    ) {
-                                        Spacer(modifier = Modifier.fillMaxWidth())
+                            if (index == 0 && showToolTip) {
+                                val infiniteTransition = rememberInfiniteTransition()
+                                val offsetY by infiniteTransition.animateValue(
+                                    initialValue = 15.dp,
+                                    targetValue = 20.dp,
+                                    typeConverter = Dp.VectorConverter,
+                                    animationSpec = infiniteRepeatable(
+                                        animation = tween(1000, easing = LinearEasing),
+                                        repeatMode = RepeatMode.Reverse
+                                    )
+                                )
+                                Box(
+                                    modifier = Modifier.offset(y = -(offsetY))
+                                ) {
+                                    with(onboardingManager) {
+                                        ShowOnboardingTooltipIfNeeded(
+                                            type = OnboardingType.DINING_SHARE,
+                                            arrowDirection = ArrowDirection.TOP
+                                        ) {
+                                            Spacer(modifier = Modifier.fillMaxWidth())
+                                        }
                                     }
                                 }
                             }
