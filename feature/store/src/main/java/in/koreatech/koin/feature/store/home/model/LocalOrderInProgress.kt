@@ -12,7 +12,7 @@ data class LocalOrderInProgress(
     val orderStatus: OrderStatus,
     val estimatedAt: LocalTime?,
     val shopName: String,
-    val orderId: Int
+    val paymentId: Int
 )
 
 fun OrderInProgress.toLocalOrderInProgress(): LocalOrderInProgress {
@@ -23,6 +23,6 @@ fun OrderInProgress.toLocalOrderInProgress(): LocalOrderInProgress {
         orderStatus = OrderStatus.fromString(orderStatus),
         estimatedAt = if (estimatedAt != null) LocalTime.parse(estimatedAt, formatter) else null,
         shopName = orderableShopName,
-        orderId = id
+        paymentId = paymentId
     )
 }

@@ -721,6 +721,7 @@ fun CartItemsCountResponse.toCartItemsCount() = CartItemsCount(
 
 fun OrderInProgressResponse.toOrderInProgress() = OrderInProgress(
     id = id,
+    paymentId = paymentId,
     orderType = orderType,
     orderableShopName = orderableShopName,
     orderableShopThumbnail = orderableShopThumbnail,

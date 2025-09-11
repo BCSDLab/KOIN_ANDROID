@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class OrderInProgressResponse(
     @SerializedName("id") val id: Int,
+    @SerializedName("payment_id") val paymentId: Int,
     @SerializedName("order_type") val orderType: String,
     @SerializedName("orderable_shop_name") val orderableShopName: String,
     @SerializedName("orderable_shop_thumbnail") val orderableShopThumbnail: String,

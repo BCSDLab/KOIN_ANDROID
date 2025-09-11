@@ -235,7 +235,7 @@ fun StoreHomeScreen(
                         },
                         storeName = shopName,
                         onClick = {
-                            navigateToOrderResult(orderId)
+                            navigateToOrderResult(paymentId)
                         }
                     )
                 }
