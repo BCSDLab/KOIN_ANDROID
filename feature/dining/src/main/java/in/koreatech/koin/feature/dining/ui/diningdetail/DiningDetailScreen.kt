@@ -417,13 +417,13 @@ private fun DiningDetailScreenImpl(
                     )
                 }
             ) {
-                if(isDiningRefreshing) {
+                if (isDiningRefreshing) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
                             .zIndex(2f)
                             .background(color = KoinTheme.colors.neutral200),
-                        contentAlignment = Alignment.Center,
+                        contentAlignment = Alignment.Center
                     ) {
                         CircularProgressIndicator()
                     }
