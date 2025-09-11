@@ -64,7 +64,7 @@ fun OrderHistoryScreen(
 
     BackHandler {
         if (uiState.isTyping) {
-            viewModel.typingCancel()
+            viewModel.typingEnd()
         } else {
             onBackPressed()
         }
@@ -174,6 +174,7 @@ fun OrderHistoryScreen(
                         modifier = modifier,
                         isTyping = uiState.isTyping,
                         searchQuery = uiState.searchQuery,
+                        getOrderHistoryData = viewModel::getOrderHistoryData,
                         onSearchStart = viewModel::onSearchStart,
                         onSearchCancel = viewModel::onSearchCancel,
                         onQueryChanged = viewModel::onSearchQueryChanged,
@@ -185,7 +186,8 @@ fun OrderHistoryScreen(
                     )
                 1 ->
                     OrderOnGoingScreen(
-                        orderOnGoings = uiState.orderOnGoings
+                        orderOnGoings = uiState.orderOnGoings,
+                        toOrderHistories = viewModel::onTabSelected
                     )
             }
         }

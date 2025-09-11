@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
-import `in`.koreatech.koin.feature.store.enums.OrderStatus
+import `in`.koreatech.koin.feature.store.enums.OrderHistoryStatus
 import `in`.koreatech.koin.feature.store.enums.StoreStatus
 import `in`.koreatech.koin.feature.store.model.OrderHistoryData
 
@@ -99,7 +99,7 @@ fun OrderHistoryCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AsyncImage(
-                    model = orderdata.storeImageUrl,
+                    model = orderdata.orderableShopThumbnail,
                     contentDescription = "",
                     modifier = Modifier
                         .size(88.dp)
@@ -123,7 +123,7 @@ fun OrderHistoryCard(
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = stringResource(R.string.order_histroy_price_won, orderdata.price),
+                        text = stringResource(R.string.order_histroy_price_won, orderdata.totalAmount),
                         style = RebrandKoinTheme.typography.bold14,
                         color = RebrandKoinTheme.colors.neutral800
                     )
@@ -151,7 +151,7 @@ fun OrderHistoryCard(
             }
 
             MenuAddButton(
-                status = orderdata.storeStatus,
+                status = orderdata.openStatus,
                 onClick = onReorderClick
             )
         }
@@ -166,13 +166,13 @@ private fun OrderHistoryCardPreview() {
             id = 1,
             paymentId = 1,
             orderableShopId = 1,
-            orderStatus = OrderStatus.DELIVERED,
+            orderStatus = OrderHistoryStatus.DELIVERED,
             orderDate = "9월 5일 (금)",
-            storeImageUrl = "https://example.com/store_thumbnail.jpg",
-            storeStatus = StoreStatus.SOLD_OUT,
+            orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
+            openStatus = StoreStatus.SOLD_OUT,
             orderableShopName = "맛있는 족발 - 병천점",
             orderTitle = "족발 + 막국수 저녁 set 외 1건",
-            price = 32500
+            totalAmount = 32500
         ),
         onDetailClick = { },
         onWriteReviewClick = { },
@@ -188,13 +188,13 @@ private fun OrderHistoryCardPreview2() {
             id = 1,
             paymentId = 1,
             orderableShopId = 1,
-            orderStatus = OrderStatus.DELIVERED,
+            orderStatus = OrderHistoryStatus.DELIVERED,
             orderDate = "9월 5일 (금)",
-            storeImageUrl = "https://example.com/store_thumbnail.jpg",
-            storeStatus = StoreStatus.SOLD_OUT,
+            orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
+            openStatus = StoreStatus.SOLD_OUT,
             orderableShopName = "맛있는 족발 - 병천점",
             orderTitle = "족발 + 막국수 저녁 set 외 1건",
-            price = 32500
+            totalAmount = 32500
         ),
         onDetailClick = { },
         onWriteReviewClick = { },

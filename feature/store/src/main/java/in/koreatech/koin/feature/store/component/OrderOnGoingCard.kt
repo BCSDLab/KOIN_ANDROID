@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.enums.OrderOnGoingStatus
 import `in`.koreatech.koin.feature.store.enums.TypeOption
 import `in`.koreatech.koin.feature.store.model.OrderOnGoingData
 
@@ -40,9 +41,9 @@ fun OrderOnGoingCard(
     orderdata: OrderOnGoingData,
     modifier: Modifier = Modifier
 ) {
-    val (chipIcon, timeGuide) = when (orderdata.status) {
-        TypeOption.TAKEOUT -> R.drawable.ic_order_takeout to R.string.takeout_time_guide
-        else -> R.drawable.ic_order_delivery to R.string.delivery_time_guide
+    val chipIcon = when (orderdata.orderType) {
+        TypeOption.TAKE_OUT -> R.drawable.ic_order_takeout
+        else -> R.drawable.ic_order_delivery
     }
 
     Card(
@@ -71,7 +72,7 @@ fun OrderOnGoingCard(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = stringResource(orderdata.status.stringRes),
+                    text = stringResource(orderdata.orderType.stringRes),
                     style = RebrandKoinTheme.typography.medium12,
                     color = RebrandKoinTheme.colors.primary500
                 )
@@ -80,13 +81,21 @@ fun OrderOnGoingCard(
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = orderdata.time + stringResource(timeGuide),
+                text = stringResource(orderdata.orderStatus.stringRes),
                 style = RebrandKoinTheme.typography.bold20,
-                color = RebrandKoinTheme.colors.primary700
+                color = RebrandKoinTheme.colors.primary500
             )
 
+            if (orderdata.orderStatus.showTime) {
+                Text(
+                    text = orderdata.estimatedAt + stringResource(R.string.delivery_time_guide),
+                    style = RebrandKoinTheme.typography.bold20,
+                    color = RebrandKoinTheme.colors.primary700
+                )
+            }
+
             Text(
-                text = stringResource(R.string.food_condition_guide),
+                text = stringResource(orderdata.orderStatus.stringResMessage),
                 style = RebrandKoinTheme.typography.regular12,
                 color = RebrandKoinTheme.colors.neutral500
             )
@@ -100,7 +109,7 @@ fun OrderOnGoingCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AsyncImage(
-                    model = orderdata.storeImageUrl,
+                    model = orderdata.orderableShopThumbnail,
                     contentDescription = "",
                     modifier = Modifier
                         .size(88.dp)
@@ -112,17 +121,17 @@ fun OrderOnGoingCard(
                     verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     Text(
-                        text = orderdata.storeName,
+                        text = orderdata.orderableShopName,
                         style = RebrandKoinTheme.typography.bold16,
                         color = RebrandKoinTheme.colors.neutral800
                     )
                     Text(
-                        text = orderdata.orders,
+                        text = orderdata.orderTitle,
                         style = RebrandKoinTheme.typography.medium14,
                         color = RebrandKoinTheme.colors.neutral800
                     )
                     Text(
-                        text = stringResource(R.string.order_histroy_price_won, orderdata.price),
+                        text = stringResource(R.string.order_histroy_price_won, orderdata.totalAmount),
                         style = RebrandKoinTheme.typography.bold14,
                         color = RebrandKoinTheme.colors.neutral800
                     )
@@ -153,12 +162,15 @@ fun OrderOnGoingCard(
 private fun OrderOnGoingCardPreview() {
     OrderOnGoingCard(
         orderdata = OrderOnGoingData(
-            TypeOption.DELIVERY,
-            time = "오후 8:32",
-            storeImageUrl = "https://example.com/store_thumbnail.jpg",
-            storeName = "맛있는 족발 - 병천점",
-            orders = "족발 + 막국수 저녁 set 외 1건",
-            price = 32500
+            id = 1,
+            paymentId = 2,
+            orderType = TypeOption.DELIVERY,
+            estimatedAt = "오후 8:32",
+            orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
+            orderableShopName = "맛있는 족발 - 병천점",
+            orderStatus = OrderOnGoingStatus.COOKING,
+            orderTitle = "족발 + 막국수 저녁 set 외 1건",
+            totalAmount = 32500
         )
     )
 }
@@ -168,12 +180,15 @@ private fun OrderOnGoingCardPreview() {
 private fun OrderOnGoingCardPreview2() {
     OrderOnGoingCard(
         orderdata = OrderOnGoingData(
-            TypeOption.TAKEOUT,
-            time = "오후 8:32",
-            storeImageUrl = "https://example.com/store_thumbnail.jpg",
-            storeName = "맛있는 족발 - 병천점",
-            orders = "족발 + 막국수 저녁 set 외 1건",
-            price = 32500
+            id = 1,
+            paymentId = 2,
+            orderType = TypeOption.TAKE_OUT,
+            estimatedAt = "오후 8:32",
+            orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
+            orderableShopName = "맛있는 족발 - 병천점",
+            orderStatus = OrderOnGoingStatus.COOKING,
+            orderTitle = "족발 + 막국수 저녁 set 외 1건",
+            totalAmount = 32500
         )
     )
 }

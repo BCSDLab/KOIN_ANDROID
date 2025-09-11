@@ -4,15 +4,15 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetHistoryRelatedUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetOnGoingRelatedUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
-import `in`.koreatech.koin.feature.store.enums.LocationOption
-import `in`.koreatech.koin.feature.store.enums.OrderStatus
 import `in`.koreatech.koin.feature.store.enums.PeriodOption
 import `in`.koreatech.koin.feature.store.enums.StatusOption
-import `in`.koreatech.koin.feature.store.enums.StoreStatus
 import `in`.koreatech.koin.feature.store.enums.TypeOption
 import `in`.koreatech.koin.feature.store.model.OrderFilter
-import `in`.koreatech.koin.feature.store.model.OrderHistoryData
+import `in`.koreatech.koin.feature.store.model.toOrderHistoryData
+import `in`.koreatech.koin.feature.store.model.toOrderOnGoingData
 import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -22,83 +22,59 @@ import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
 class OrderHistoryViewModel @Inject constructor(
-    // private val getOrderHistoriesUseCase: GetOrderHistoriesUseCase,
-    // private val getOrderOnGoingsUseCase: GetOrderOnGoingsUseCase,
+    private val getHistoryRelatedUseCase: GetHistoryRelatedUseCase,
+    private val getOnGoingRelatedUseCase: GetOnGoingRelatedUseCase,
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<OrderHistoryState, OrderHistorySideEffect> {
     override val container = container<OrderHistoryState, OrderHistorySideEffect>(OrderHistoryState())
+    private var page = 0
+    private var totalPage = 1
 
     init {
-        intent {
-            /*
-            getOrderHistoriesUseCase().let {
-                reduce {
-                    state.copy(
-                        orderHistories = it.map { it.toOrderHistoryDatas() }
-                    )
-                }
-            }
-            getOrderOnGoingsUseCase().let {
-                reduce {
-                    state.copy(
-                        orderOnGoings = it.map { it.toOrderOnGoinfDatas() }
-                    )
-                }
-            }
-             */
-            reduce {
-                state.copy(
-                    orderHistories = listOf(
-                        OrderHistoryData(
-                            id = 1,
-                            paymentId = 1,
-                            orderableShopId = 1,
-                            orderStatus = OrderStatus.CANCELLED,
-                            orderDate = "9월 5일 (금)",
-                            storeImageUrl = "https://example.com/store_thumbnail.jpg",
-                            storeStatus = StoreStatus.SOLD_OUT,
-                            orderableShopName = "맛있는 족발 - 병천점",
-                            orderTitle = "족발 + 막국수 저녁 set 외 1건",
-                            price = 32500
-                        ),
-                        OrderHistoryData(
-                            id = 1,
-                            paymentId = 1,
-                            orderableShopId = 1,
-                            orderStatus = OrderStatus.DELIVERED,
-                            orderDate = "9월 5일 (금)",
-                            storeImageUrl = "https://example.com/store_thumbnail.jpg",
-                            storeStatus = StoreStatus.SOLD_OUT,
-                            orderableShopName = "맛있는 족발 - 병천점",
-                            orderTitle = "족발 + 막국수 저녁 set 외 1건",
-                            price = 32500
-                        )
-                    ),
-                    orderOnGoings = listOf(
-                        /*
-                        OrderOnGoingData(
-                            TypeOption.TAKEOUT,
-                            time = "오후 8:32",
-                            storeImageUrl = "https://example.com/store_thumbnail.jpg",
-                            storeName = "맛있는 족발 - 병천점",
-                            orders = "족발 + 막국수 저녁 set 외 1건",
-                            price = 32500
-                        ),
-                        OrderOnGoingData(
-                            TypeOption.DELIVERY,
-                            time = "오후 8:32",
-                            storeImageUrl = "https://example.com/store_thumbnail.jpg",
-                            storeName = "맛있는 족발 - 병천점",
-                            orders = "족발 + 막국수 저녁 set 외 1건",
-                            price = 32500
-                        )
-                         */
-                    )
-                )
-            }
+        getOrderHistoryData()
+        // getOrderOnGoingData()
+    }
 
-            // Todo : 주문 내역 가져오기 API USE CASE
+    fun getNewOrderHistoryData() {
+        page = 0
+        totalPage = 1
+        getOrderHistoryData()
+    }
+
+    fun getOrderHistoryData() {
+        if (page < totalPage) {
+            page += 1
+            intent {
+                getHistoryRelatedUseCase(
+                    page = page,
+                    limit = 10,
+                    period = state.filters.period.name,
+                    status = state.filters.status.name,
+                    type = state.filters.type.name,
+                    query = state.searchQuery
+                ).onSuccess { data ->
+                    totalPage = data.totalPage
+                    reduce {
+                        state.copy(
+                            orderHistories = state.orderHistories + data.orders.map { it.toOrderHistoryData() }
+                        )
+                    }
+                }.onFailure {
+                }
+            }
+        }
+    }
+
+    private fun getOrderOnGoingData() {
+        intent {
+            getOnGoingRelatedUseCase().let { data ->
+                reduce {
+                    state.copy(
+                        orderOnGoings = data.map { it.toOrderOnGoingData() }
+                    )
+                }
+            }
         }
     }
 
@@ -167,13 +143,15 @@ class OrderHistoryViewModel @Inject constructor(
         }
     }
 
-    fun applyFilterOverlay(newFilters: OrderFilter) = intent {
-        reduce {
-            state.copy(
-                filters = newFilters
-            )
-            // TODO : 필터로 검색 ㄱㄱ
+    fun applyFilterOverlay(newFilters: OrderFilter) {
+        intent {
+            reduce {
+                state.copy(
+                    filters = newFilters
+                )
+            }
         }
+        getNewOrderHistoryData()
     }
 
     fun closeFilterOverlay() = intent {
@@ -189,10 +167,9 @@ class OrderHistoryViewModel @Inject constructor(
             reduce {
                 state.copy(
                     filters = OrderFilter(
-                        location = LocationOption.DEFAULT,
-                        period = PeriodOption.DEFAULT,
-                        type = TypeOption.DEFAULT,
-                        status = StatusOption.DEFAULT
+                        period = PeriodOption.NONE,
+                        type = TypeOption.NONE,
+                        status = StatusOption.NONE
                     )
                 )
             }
@@ -218,12 +195,13 @@ class OrderHistoryViewModel @Inject constructor(
         }
     }
 
-    fun typingCancel() {
+    fun typingEnd() {
         intent {
             reduce {
                 state.copy(isTyping = false)
             }
         }
+        getNewOrderHistoryData()
     }
 
     fun onTabSelected(selectedTabIndex: Int) {

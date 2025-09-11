@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.store.view.orders
 
-import `in`.koreatech.koin.feature.store.enums.LocationOption
 import `in`.koreatech.koin.feature.store.enums.PeriodOption
 import `in`.koreatech.koin.feature.store.enums.StatusOption
 import `in`.koreatech.koin.feature.store.enums.TypeOption
@@ -10,10 +9,9 @@ import `in`.koreatech.koin.feature.store.model.OrderOnGoingData
 
 data class OrderHistoryState(
     val filters: OrderFilter = OrderFilter(
-        location = LocationOption.DEFAULT,
-        period = PeriodOption.DEFAULT,
-        type = TypeOption.DEFAULT,
-        status = StatusOption.DEFAULT
+        period = PeriodOption.NONE,
+        type = TypeOption.NONE,
+        status = StatusOption.NONE
     ),
     val selectedTabIndex: Int = 0,
     val isLoading: Boolean = true,

@@ -8,6 +8,8 @@ import `in`.koreatech.koin.data.mapper.toCartItemsCount
 import `in`.koreatech.koin.data.mapper.toCartPaymentSummary
 import `in`.koreatech.koin.data.mapper.toCartSummary
 import `in`.koreatech.koin.data.mapper.toCategory
+import `in`.koreatech.koin.data.mapper.toOrderHistoryRelated
+import `in`.koreatech.koin.data.mapper.toOrderOnGoingRelated
 import `in`.koreatech.koin.data.mapper.toOrderableShopSearchRelated
 import `in`.koreatech.koin.data.mapper.toShop
 import `in`.koreatech.koin.data.mapper.toShopDeliveryAvailable
@@ -40,6 +42,8 @@ import `in`.koreatech.koin.domain.model.store.CartItemEdit
 import `in`.koreatech.koin.domain.model.store.CartItemsCount
 import `in`.koreatech.koin.domain.model.store.CartPaymentSummary
 import `in`.koreatech.koin.domain.model.store.CartSummary
+import `in`.koreatech.koin.domain.model.store.OrderHistoryRelated
+import `in`.koreatech.koin.domain.model.store.OrderOnGoingRelated
 import `in`.koreatech.koin.domain.model.store.OrderableShopSearchRelated
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.model.store.Shop
@@ -385,6 +389,33 @@ class StoreRepositoryImpl @Inject constructor(
                 }
             )
         }
+    }
+
+    override suspend fun getOrderHistories(
+        page: Int,
+        limit: Int,
+        period: String,
+        status: String,
+        type: String,
+        query: String
+    ): Result<OrderHistoryRelated> {
+        return runCatching {
+            storeRemoteDataSource.getOrderHistories(page, limit, period, status, type, query).toOrderHistoryRelated()
+        }.onFailure { e ->
+            return Result.failure(
+                when (e) {
+                    is HttpException -> {
+                        e.getErrorResponse().toKoinUnknownErrorException()
+                    }
+
+                    else -> e
+                }
+            )
+        }
+    }
+
+    override suspend fun getOrderOnGoings(): List<OrderOnGoingRelated> {
+        return storeRemoteDataSource.getOrderOnGoings().map { it.toOrderOnGoingRelated() }
     }
 
     override suspend fun updateCartItem(cartMenuItemId: Int, cartItem: CartItem): Result<Unit> {

@@ -37,7 +37,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
-import `in`.koreatech.koin.feature.store.enums.LocationOption
 import `in`.koreatech.koin.feature.store.enums.PeriodOption
 import `in`.koreatech.koin.feature.store.enums.StatusOption
 import `in`.koreatech.koin.feature.store.enums.TypeOption
@@ -111,23 +110,11 @@ fun FilterOverlay(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     FilterTextChipSelect(
-                        title = stringResource(R.string.filter_option_location),
-                        value = localFilters.location,
-                        onValueChange = { newValue ->
-                            localFilters = localFilters.copy(location = newValue)
-                        }
-                    )
-
-                    HorizontalDivider(
-                        modifier = Modifier.padding(vertical = 16.dp),
-                        color = RebrandKoinTheme.colors.neutral200
-                    )
-
-                    FilterTextChipSelect(
                         title = stringResource(R.string.filter_option_period),
-                        value = localFilters.period,
-                        onValueChange = { newValue ->
-                            localFilters = localFilters.copy(period = newValue)
+                        selected = localFilters.period.ordinal,
+                        chipTitle = PeriodOption.values().map { Pair(it.stringRes, it.isDefault) },
+                        onValueChange = { newIdx ->
+                            localFilters = localFilters.copy(period = PeriodOption.values()[newIdx])
                         }
                     )
 
@@ -138,9 +125,10 @@ fun FilterOverlay(
 
                     FilterTextChipSelect(
                         title = stringResource(R.string.filter_option_type),
-                        value = localFilters.type,
-                        onValueChange = { newValue ->
-                            localFilters = localFilters.copy(type = newValue)
+                        selected = localFilters.type.ordinal,
+                        chipTitle = TypeOption.values().map { Pair(it.stringRes, it.isDefault) },
+                        onValueChange = { newIdx ->
+                            localFilters = localFilters.copy(type = TypeOption.values()[newIdx])
                         }
                     )
 
@@ -148,9 +136,10 @@ fun FilterOverlay(
 
                     FilterTextChipSelect(
                         title = stringResource(R.string.filter_option_status),
-                        value = localFilters.status,
-                        onValueChange = { newValue ->
-                            localFilters = localFilters.copy(status = newValue)
+                        selected = localFilters.status.ordinal,
+                        chipTitle = StatusOption.values().map { Pair(it.stringRes, it.isDefault) },
+                        onValueChange = { newIdx ->
+                            localFilters = localFilters.copy(status = StatusOption.values()[newIdx])
                         }
                     )
 
@@ -163,10 +152,9 @@ fun FilterOverlay(
                         OutlinedButton(
                             onClick = {
                                 localFilters = OrderFilter(
-                                    location = LocationOption.DEFAULT,
-                                    period = PeriodOption.DEFAULT,
-                                    type = TypeOption.DEFAULT,
-                                    status = StatusOption.DEFAULT
+                                    period = PeriodOption.NONE,
+                                    type = TypeOption.NONE,
+                                    status = StatusOption.NONE
                                 )
                             },
                             shape = RebrandKoinTheme.shapes.small,
@@ -216,10 +204,9 @@ fun FilterOverlay(
 private fun FilterOverlayPreview() {
     FilterOverlay(
         OrderFilter(
-            location = LocationOption.DEFAULT,
-            period = PeriodOption.DEFAULT,
-            type = TypeOption.DEFAULT,
-            status = StatusOption.DEFAULT
+            period = PeriodOption.NONE,
+            type = TypeOption.NONE,
+            status = StatusOption.NONE
         )
     )
 }

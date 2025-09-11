@@ -13,22 +13,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChip
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipDefaults
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
-import `in`.koreatech.koin.feature.store.enums.LocationOption
-import `in`.koreatech.koin.feature.store.enums.OrderFilterEnum
 
 @Composable
-fun <T> FilterTextChipSelect(
+fun FilterTextChipSelect(
     title: String,
-    value: T,
+    selected: Int,
+    chipTitle: List<Pair<Int, Boolean>>,
     modifier: Modifier = Modifier,
-    onValueChange: (T) -> Unit = {}
-) where T : Enum<T>, T : OrderFilterEnum {
-    var default: T = value::class.java.enumConstants.first()
+    onValueChange: (Int) -> Unit = {}
+) {
+    var defaultIdx = 0
+
     Column(
         modifier = modifier
     ) {
@@ -43,20 +42,19 @@ fun <T> FilterTextChipSelect(
         Row(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            value::class.java.enumConstants
-                .forEach { item ->
-                    if (!item.isDefault) {
-                        val isSelected = item == value
-                        FilterTextChip(
-                            title = stringResource(id = item.stringRes),
-                            isSelected = isSelected,
-                            onClick = { onValueChange(item) },
-                            onCancle = { onValueChange(default) }
-                        )
-                    } else {
-                        default = item
-                    }
+            chipTitle.forEachIndexed { idx, (title, default) ->
+                if (!default) {
+                    val isSelected = idx == selected
+                    FilterTextChip(
+                        title = stringResource(id = title),
+                        isSelected = isSelected,
+                        onClick = { onValueChange(idx) },
+                        onCancle = { onValueChange(defaultIdx) }
+                    )
+                } else {
+                    defaultIdx = idx
                 }
+            }
         }
     }
 }
@@ -98,23 +96,5 @@ fun FilterTextChip(
             RebrandKoinTheme.colors.neutral0,
             RebrandKoinTheme.colors.neutral500
         )
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun FilterTextChipSelectPreview() {
-    FilterTextChipSelect(
-        title = "주소",
-        value = LocationOption.CAMPUS
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun FilterTextChipSelectPreview2() {
-    FilterTextChipSelect(
-        title = "주소",
-        value = LocationOption.OUTSIDE
     )
 }

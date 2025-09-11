@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.feature.store.view.orders.ongoing
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.content.MediaType.Companion.Text
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -29,13 +28,15 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.OrderOnGoingCard
+import `in`.koreatech.koin.feature.store.enums.OrderOnGoingStatus
 import `in`.koreatech.koin.feature.store.enums.TypeOption
 import `in`.koreatech.koin.feature.store.model.OrderOnGoingData
 
 @Composable
 fun OrderOnGoingScreen(
     orderOnGoings: List<OrderOnGoingData>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    toOrderHistories: (Int) -> Unit = { }
 ) {
     if (orderOnGoings.isEmpty()) {
         Box(
@@ -82,6 +83,7 @@ fun OrderOnGoingScreen(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .padding(10.dp)
+                        .clickable { toOrderHistories(0) }
                 ) {
                     Text(
                         text = stringResource(R.string.goto_order_history),
@@ -111,20 +113,26 @@ fun OrderOnGoingScreen(
 private fun OrderOnGoingPreview() {
     val orderOnGoings = listOf(
         OrderOnGoingData(
-            TypeOption.TAKEOUT,
-            time = "오후 8:32",
-            storeImageUrl = "https://example.com/store_thumbnail.jpg",
-            storeName = "맛있는 족발 - 병천점",
-            orders = "족발 + 막국수 저녁 set 외 1건",
-            price = 32500
+            id = 1,
+            paymentId = 2,
+            orderType = TypeOption.TAKE_OUT,
+            estimatedAt = "오후 8:32",
+            orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
+            orderableShopName = "맛있는 족발 - 병천점",
+            orderStatus = OrderOnGoingStatus.COOKING,
+            orderTitle = "족발 + 막국수 저녁 set 외 1건",
+            totalAmount = 32500
         ),
         OrderOnGoingData(
-            TypeOption.DELIVERY,
-            time = "오후 8:32",
-            storeImageUrl = "https://example.com/store_thumbnail.jpg",
-            storeName = "맛있는 족발 - 병천점",
-            orders = "족발 + 막국수 저녁 set 외 1건",
-            price = 32500
+            id = 1,
+            paymentId = 2,
+            orderType = TypeOption.DELIVERY,
+            estimatedAt = "오후 8:32",
+            orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
+            orderableShopName = "맛있는 족발 - 병천점",
+            orderStatus = OrderOnGoingStatus.COOKING,
+            orderTitle = "족발 + 막국수 저녁 set 외 1건",
+            totalAmount = 32500
         )
     )
 

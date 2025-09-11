@@ -9,6 +9,8 @@ import `in`.koreatech.koin.domain.model.store.CartItemEdit
 import `in`.koreatech.koin.domain.model.store.CartItemsCount
 import `in`.koreatech.koin.domain.model.store.CartPaymentSummary
 import `in`.koreatech.koin.domain.model.store.CartSummary
+import `in`.koreatech.koin.domain.model.store.OrderHistoryRelated
+import `in`.koreatech.koin.domain.model.store.OrderOnGoingRelated
 import `in`.koreatech.koin.domain.model.store.OrderableShopSearchRelated
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.model.store.Shop
@@ -109,6 +111,17 @@ interface StoreRepository {
     suspend fun getOrderableShopSearchRelated(
         query: String
     ): Result<OrderableShopSearchRelated>
+
+    suspend fun getOrderHistories(
+        page: Int,
+        limit: Int,
+        period: String,
+        status: String,
+        type: String,
+        query: String
+    ): Result<OrderHistoryRelated>
+
+    suspend fun getOrderOnGoings(): List<OrderOnGoingRelated>
 
     suspend fun updateCartItem(
         cartMenuItemId: Int,
