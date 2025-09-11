@@ -214,32 +214,30 @@ fun StoreHomeScreen(
                 onSelectedMinimumPriceOptionChange = viewModel::onSelectedMinimumPriceOptionChange
             )
 
-            if (uiState.orderInProgress != null) {
-                uiState.orderInProgress!!.apply {
-                    if (orderStatus != OrderStatus.NONE) {
-                        KoinStoreFloatingButton(
-                            modifier = Modifier
-                                .zIndex(1f)
-                                .padding(bottom = 12.dp),
-                            text = when (orderStatus) {
-                                OrderStatus.CONFIRMING -> stringResource(R.string.store_fab_confirming)
-                                OrderStatus.DELIVERING,
-                                OrderStatus.PACKAGED -> stringResource(
-                                    when (type) {
-                                        CartType.DELIVERY -> R.string.store_fab_delivery_eta
-                                        CartType.TAKE_OUT -> R.string.store_fab_takeout_eta
-                                    },
-                                    estimatedAt!!.format(DateTimeFormatter.ofPattern("a h시 m분"))
-                                )
+            uiState.orderInProgress?.apply {
+                if (orderStatus != OrderStatus.NONE) {
+                    KoinStoreFloatingButton(
+                        modifier = Modifier
+                            .zIndex(1f)
+                            .padding(bottom = 12.dp),
+                        text = when (orderStatus) {
+                            OrderStatus.CONFIRMING -> stringResource(R.string.store_fab_confirming)
+                            OrderStatus.DELIVERING,
+                            OrderStatus.PACKAGED -> stringResource(
+                                when (type) {
+                                    CartType.DELIVERY -> R.string.store_fab_delivery_eta
+                                    CartType.TAKE_OUT -> R.string.store_fab_takeout_eta
+                                },
+                                estimatedAt!!.format(DateTimeFormatter.ofPattern("a h시 m분"))
+                            )
 
-                                OrderStatus.NONE -> ""
-                            },
-                            storeName = shopName,
-                            onClick = {
-                                navigateToOrderResult(orderId)
-                            }
-                        )
-                    }
+                            OrderStatus.NONE -> ""
+                        },
+                        storeName = shopName,
+                        onClick = {
+                            navigateToOrderResult(orderId)
+                        }
+                    )
                 }
             }
         }
