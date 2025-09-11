@@ -14,6 +14,10 @@ import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_ADD_CART
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_DETAIL_MAIN
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_HOME
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_NEARBY
+import `in`.koreatech.koin.feature.store.cart.ShoppingCartScreen
+import `in`.koreatech.koin.feature.store.cartadd.CartAddScreen
+import `in`.koreatech.koin.feature.store.cartedit.CartEditScreen
+import `in`.koreatech.koin.feature.store.detail.StoreDetailScreen
 import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
 import `in`.koreatech.koin.feature.store.view.ShopOriginInfoScreen
 import `in`.koreatech.koin.feature.store.view.ShoppingCartScreen

@@ -20,6 +20,15 @@ data class ClubsResponse(
         @SerializedName("is_liked")
         val isLiked: Boolean,
         @SerializedName("is_like_hidden")
-        val isLikeHidden: Boolean
+        val isLikeHidden: Boolean,
+        @SerializedName("recruitment_info")
+        val recruitmentInfo: ClubItemRecruitmentInfoResponse
+    )
+
+    data class ClubItemRecruitmentInfoResponse(
+        @SerializedName("status")
+        val status: String,
+        @SerializedName("dday")
+        val dDay: Int? = null
     )
 }

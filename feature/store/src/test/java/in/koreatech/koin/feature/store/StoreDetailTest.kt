@@ -7,7 +7,7 @@ import app.cash.paparazzi.Paparazzi
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.store.TestDevice.FLIP_DEVICE
 import `in`.koreatech.koin.feature.store.TestDevice.FOLDABLE_DEVICE
-import `in`.koreatech.koin.feature.store.view.StoreDetailScreen
+import `in`.koreatech.koin.feature.store.detail.StoreDetailScreen
 import org.junit.Rule
 import org.junit.Test
 

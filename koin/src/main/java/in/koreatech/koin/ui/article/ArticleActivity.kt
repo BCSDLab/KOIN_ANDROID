@@ -4,6 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,6 +35,16 @@ class ArticleActivity : ActivityBase() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_article)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val navigationBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+
+            view.updatePadding(
+                top = navigationBars.top,
+                bottom = navigationBars.bottom
+            )
+            insets
+        }
 
         window.whiteStatusBar()
 
@@ -168,7 +181,6 @@ class ArticleActivity : ActivityBase() {
 
     companion object {
         const val NAVIGATE_ACTION = "navigate_action"
-        const val NAV_ARTICLE = "article"
         const val START_BOARD = "start_board"
         const val BUNDLE_ARTICLE_EXTRA_KEY = "BUNDLE_EXTRA_KEY"
     }

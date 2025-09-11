@@ -7,8 +7,6 @@ import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.toast.ToastUtil
-import `in`.koreatech.koin.data.sharedpreference.RecentSearchSharedPreference
-import `in`.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper
 import `in`.koreatech.koin.domain.repository.TokenRepository
 import `in`.koreatech.koin.domain.usecase.user.GetLoggerUserDataUseCase
 import `in`.koreatech.koin.util.ExceptionHandlerUtil
@@ -32,9 +30,7 @@ class KoinApplication : Application() {
     }
 
     private fun init() {
-        UserInfoSharedPreferencesHelper.getInstance().init(applicationContext)
         ToastUtil.getInstance().init(applicationContext)
-        RecentSearchSharedPreference.getInstance().init(applicationContext)
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandlerUtil(applicationContext))
         initTimber()
         KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_APP_KEY)

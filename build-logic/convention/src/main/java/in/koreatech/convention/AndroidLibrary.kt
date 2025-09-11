@@ -9,18 +9,18 @@ internal fun Project.configureAndroidLibrary(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
     (commonExtension as? LibraryExtension)?.let {
-        it.defaultConfig.targetSdk = 34
+        it.defaultConfig.targetSdk = 35
     }
 
     commonExtension.apply {
         (this as? LibraryExtension)?.let {
-            it.defaultConfig.targetSdk = 34
+            it.defaultConfig.targetSdk = 35
         }
 
-        compileSdk = 34
+        compileSdk = 35
 
         defaultConfig {
-            minSdk = 26
+            minSdk = 28
 
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
