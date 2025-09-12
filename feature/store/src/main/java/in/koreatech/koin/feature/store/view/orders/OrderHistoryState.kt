@@ -8,8 +8,8 @@ import `in`.koreatech.koin.feature.store.model.OrderHistoryData
 import `in`.koreatech.koin.feature.store.model.OrderInProgressData
 
 data class OrderHistoryState(
-    val page: Int = 0,
-    val totalPage: Int = 1,
+    val page: Int = 1,
+    val totalPage: Int = 2,
     val filters: OrderFilter = OrderFilter(
         period = PeriodOption.NONE,
         type = TypeOption.NONE,

@@ -38,8 +38,8 @@ class OrderHistoryViewModel @Inject constructor(
         intent {
             reduce {
                 state.copy(
-                    page = 0,
-                    totalPage = 1
+                    page = 1,
+                    totalPage = 2
                 )
             }
         }
