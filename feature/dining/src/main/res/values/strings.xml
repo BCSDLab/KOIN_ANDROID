@@ -23,6 +23,7 @@
     <string name="navigate_to_notification_setting">알림 설정 바로가기</string>
 
     <string name="caution_dining_changeable">식단 정보는 운영 상황에 따라 변동될 수 있습니다.</string>
+    <string name="photo_not_provided_on_weekend">주말은 식단 이미지를 제공하지 않습니다.</string>
 
     <string name="kakaolink_host">kakaolink</string>
     <string name="kakao_share_unable">카카오톡 공유에 실패했습니다.</string>

@@ -233,6 +233,9 @@ private fun DiningDetailScreenImpl(
     val lunchScrollState = rememberScrollState()
     val dinnerScrollState = rememberScrollState()
 
+    val isWeekend = remember(selectedDate) {
+        TimeUtil.let { it.isWeekend(it.dateFormatToYYYYMMDD(selectedDate)) }
+    }
     val currentDate = remember { TimeUtil.getCurrentTime() }
     val dates = remember(currentDate) {
         buildList {
@@ -461,7 +464,13 @@ private fun DiningDetailScreenImpl(
                             DiningItemByABTest(
                                 experimentGroup = experimentGroup,
                                 dining = dining,
+                                isWeekend = isWeekend,
                                 onImageClick = {
+                                    EventLogger.logClickEvent(
+                                        EventAction.CAMPUS,
+                                        AnalyticsConstant.Label.MENU_IMAGE,
+                                        DiningUtil.getKoreanName(dining.type) + "_" + dining.place
+                                    )
                                     selectedImage = dining.imageUrl
                                     showImageDialog = true
                                 },
@@ -531,6 +540,7 @@ private fun DiningDetailScreenImpl(
 private fun DiningItemByABTest(
     experimentGroup: String,
     dining: Dining,
+    isWeekend: Boolean,
     onImageClick: () -> Unit = {},
     onShareClick: () -> Unit = {}
 ) {
@@ -539,6 +549,7 @@ private fun DiningItemByABTest(
             DiningItem(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 dining = dining,
+                isWeekend = isWeekend,
                 onImageClick = onImageClick,
                 onShareClick = onShareClick
             )
@@ -546,6 +557,7 @@ private fun DiningItemByABTest(
         ExperimentGroup.SHARE_ORIGINAL -> {
             DiningItemOriginal(
                 dining = dining,
+                isWeekend = isWeekend,
                 onImageClick = onImageClick,
                 onShareClick = onShareClick
             )

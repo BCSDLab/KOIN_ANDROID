@@ -45,6 +45,7 @@ fun DiningItemOriginal(
     dining: Dining,
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
+    isWeekend: Boolean = false,
     onImageClick: () -> Unit = {},
     onShareClick: () -> Unit = {}
 ) {
@@ -145,7 +146,13 @@ fun DiningItemOriginal(
                                 contentDescription = null
                             )
                             Text(
-                                text = stringResource(R.string.no_photo),
+                                text = stringResource(
+                                    if (isWeekend) {
+                                        R.string.photo_not_provided_on_weekend
+                                    } else {
+                                        R.string.no_photo
+                                    }
+                                ),
                                 style = KoinTheme.typography.regular14,
                                 color = KoinTheme.colors.neutral500 // Change to a similar color; original color is 0xFF8E8E8E
                             )
