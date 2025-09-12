@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
@@ -39,6 +40,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
@@ -358,6 +360,7 @@ private fun DiningDetailScreenImpl(
     Column(
         modifier = modifier
             .padding(contentPadding)
+            .navigationBarsPadding()
             .fillMaxSize()
             .nestedScroll(nestedScrollConnection)
     ) {
@@ -511,6 +514,13 @@ private fun DiningDetailScreenImpl(
                             }
                         }
                     }
+                    Text(
+                        modifier = Modifier.padding(horizontal = 24.dp),
+                        text = stringResource(R.string.caution_dining_changeable),
+                        style = KoinTheme.typography.medium13,
+                        color = KoinTheme.colors.neutral400
+                    )
+                    Spacer(Modifier.height(75.dp))
                 }
             }
         }
