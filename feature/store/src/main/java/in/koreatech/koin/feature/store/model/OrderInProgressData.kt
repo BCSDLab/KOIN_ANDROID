@@ -3,7 +3,8 @@ package `in`.koreatech.koin.feature.store.model
 import `in`.koreatech.koin.domain.model.store.OrderInProgress
 import `in`.koreatech.koin.feature.store.enums.OrderInProgressStatus
 import `in`.koreatech.koin.feature.store.enums.TypeOption
-import java.text.SimpleDateFormat
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 data class OrderInProgressData(
@@ -20,10 +21,10 @@ data class OrderInProgressData(
 
 fun OrderInProgress.toOrderInProgressData(): OrderInProgressData {
     val formattedEstimatedAt = if (estimatedAt != null) {
-        val inputFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("a h:mm", Locale.KOREA)
-        val date = inputFormat.parse(estimatedAt!!)
-        outputFormat.format(date!!)
+        val inputFormatter = DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault())
+        val outputFormatter = DateTimeFormatter.ofPattern("a h:mm", Locale.KOREA)
+        val time = LocalTime.parse(estimatedAt, inputFormatter)
+        time.format(outputFormatter)
     } else {
         ""
     }
