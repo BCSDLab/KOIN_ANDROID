@@ -113,12 +113,12 @@ interface StoreRepository {
     ): Result<OrderableShopSearchRelated>
 
     suspend fun getOrderHistories(
-        page: Int,
-        limit: Int,
-        period: String,
-        status: String,
-        type: String,
-        query: String
+        page: Int?,
+        limit: Int?,
+        period: String?,
+        status: String?,
+        type: String?,
+        query: String?
     ): Result<OrderHistoryRelated>
 
     suspend fun updateCartItem(

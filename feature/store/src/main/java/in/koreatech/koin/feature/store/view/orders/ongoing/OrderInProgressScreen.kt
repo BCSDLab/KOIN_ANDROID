@@ -27,18 +27,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
-import `in`.koreatech.koin.feature.store.component.OrderOnGoingCard
-import `in`.koreatech.koin.feature.store.enums.OrderOnGoingStatus
+import `in`.koreatech.koin.feature.store.component.OrderInProgressCard
+import `in`.koreatech.koin.feature.store.enums.OrderInProgressStatus
 import `in`.koreatech.koin.feature.store.enums.TypeOption
-import `in`.koreatech.koin.feature.store.model.OrderOnGoingData
+import `in`.koreatech.koin.feature.store.model.OrderInProgressData
 
 @Composable
-fun OrderOnGoingScreen(
-    orderOnGoings: List<OrderOnGoingData>,
+fun OrderInProgressScreen(
+    orderInProgress: List<OrderInProgressData>,
     modifier: Modifier = Modifier,
     toOrderHistories: (Int) -> Unit = { }
 ) {
-    if (orderOnGoings.isEmpty()) {
+    if (orderInProgress.isEmpty()) {
         Box(
             modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
@@ -49,7 +49,7 @@ fun OrderOnGoingScreen(
             ) {
                 Box {
                     Icon(
-                        modifier = Modifier.width(95.dp),
+                        modifier = Modifier.width(96.dp),
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_bbiko_sleep),
                         contentDescription = "",
                         tint = Color.Unspecified
@@ -99,8 +99,8 @@ fun OrderOnGoingScreen(
             contentPadding = PaddingValues(horizontal = 24.dp, vertical = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(orderOnGoings) { orderdata ->
-                OrderOnGoingCard(
+            items(orderInProgress) { orderdata ->
+                OrderInProgressCard(
                     orderdata = orderdata
                 )
             }
@@ -110,39 +110,39 @@ fun OrderOnGoingScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun OrderOnGoingPreview() {
-    val orderOnGoings = listOf(
-        OrderOnGoingData(
+private fun OrderInProgressPreview() {
+    val orderInProgress = listOf(
+        OrderInProgressData(
             id = 1,
             paymentId = 2,
             orderType = TypeOption.TAKE_OUT,
             estimatedAt = "오후 8:32",
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             orderableShopName = "맛있는 족발 - 병천점",
-            orderStatus = OrderOnGoingStatus.COOKING,
+            orderStatus = OrderInProgressStatus.COOKING,
             orderTitle = "족발 + 막국수 저녁 set 외 1건",
             totalAmount = 32500
         ),
-        OrderOnGoingData(
+        OrderInProgressData(
             id = 1,
             paymentId = 2,
             orderType = TypeOption.DELIVERY,
             estimatedAt = "오후 8:32",
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             orderableShopName = "맛있는 족발 - 병천점",
-            orderStatus = OrderOnGoingStatus.COOKING,
+            orderStatus = OrderInProgressStatus.COOKING,
             orderTitle = "족발 + 막국수 저녁 set 외 1건",
             totalAmount = 32500
         )
     )
 
-    OrderOnGoingScreen(orderOnGoings)
+    OrderInProgressScreen(orderInProgress)
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun OrderOnGoingEmptyPreview() {
-    val orderOnGoings = listOf<OrderOnGoingData>()
+private fun OrderInProgressEmptyPreview() {
+    val orderInProgress = listOf<OrderInProgressData>()
 
-    OrderOnGoingScreen(orderOnGoings)
+    OrderInProgressScreen(orderInProgress)
 }

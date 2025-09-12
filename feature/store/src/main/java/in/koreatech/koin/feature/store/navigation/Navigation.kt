@@ -24,8 +24,8 @@ import `in`.koreatech.koin.feature.store.home.StoreHomeScreen
 import `in`.koreatech.koin.feature.store.nearby.StoreNearbyScreen
 import `in`.koreatech.koin.feature.store.origin.ShopOriginInfoScreen
 import `in`.koreatech.koin.feature.store.search.StoreSearchScreen
-import `in`.koreatech.koin.feature.store.webapp.StoreWebAppScreen
 import `in`.koreatech.koin.feature.store.view.orders.OrderHistoryScreen
+import `in`.koreatech.koin.feature.store.webapp.StoreWebAppScreen
 
 fun NavGraphBuilder.koinStoreGraph(
     navController: NavController,

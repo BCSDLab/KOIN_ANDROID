@@ -8,8 +8,8 @@ import `in`.koreatech.koin.data.mapper.toCartItemsCount
 import `in`.koreatech.koin.data.mapper.toCartPaymentSummary
 import `in`.koreatech.koin.data.mapper.toCartSummary
 import `in`.koreatech.koin.data.mapper.toCategory
-import `in`.koreatech.koin.data.mapper.toOrderInProgress
 import `in`.koreatech.koin.data.mapper.toOrderHistoryRelated
+import `in`.koreatech.koin.data.mapper.toOrderInProgress
 import `in`.koreatech.koin.data.mapper.toOrderableShopSearchRelated
 import `in`.koreatech.koin.data.mapper.toShop
 import `in`.koreatech.koin.data.mapper.toShopDeliveryAvailable
@@ -392,12 +392,12 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getOrderHistories(
-        page: Int,
-        limit: Int,
-        period: String,
-        status: String,
-        type: String,
-        query: String
+        page: Int?,
+        limit: Int?,
+        period: String?,
+        status: String?,
+        type: String?,
+        query: String?
     ): Result<OrderHistoryRelated> {
         return runCatching {
             storeRemoteDataSource.getOrderHistories(page, limit, period, status, type, query).toOrderHistoryRelated()

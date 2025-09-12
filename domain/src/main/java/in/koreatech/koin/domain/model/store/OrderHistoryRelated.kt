@@ -13,7 +13,7 @@ data class OrderHistoryOrders(
     val paymentId: Int,
     val orderableShopId: Int,
     val orderableShopName: String,
-    val openStatus: String,
+    val openStatus: Boolean,
     val orderableShopThumbnail: String,
     val orderDate: String,
     val orderStatus: String,

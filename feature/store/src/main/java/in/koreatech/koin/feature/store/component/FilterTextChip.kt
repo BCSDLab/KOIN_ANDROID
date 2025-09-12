@@ -10,6 +10,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
@@ -26,8 +28,6 @@ fun FilterTextChipSelect(
     modifier: Modifier = Modifier,
     onValueChange: (Int) -> Unit = {}
 ) {
-    var defaultIdx = 0
-
     Column(
         modifier = modifier
     ) {
@@ -49,10 +49,8 @@ fun FilterTextChipSelect(
                         title = stringResource(id = title),
                         isSelected = isSelected,
                         onClick = { onValueChange(idx) },
-                        onCancle = { onValueChange(defaultIdx) }
+                        onCancle = { onValueChange(0) }
                     )
-                } else {
-                    defaultIdx = idx
                 }
             }
         }

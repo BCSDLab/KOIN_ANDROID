@@ -5,9 +5,11 @@ import `in`.koreatech.koin.feature.store.enums.StatusOption
 import `in`.koreatech.koin.feature.store.enums.TypeOption
 import `in`.koreatech.koin.feature.store.model.OrderFilter
 import `in`.koreatech.koin.feature.store.model.OrderHistoryData
-import `in`.koreatech.koin.feature.store.model.OrderOnGoingData
+import `in`.koreatech.koin.feature.store.model.OrderInProgressData
 
 data class OrderHistoryState(
+    val page: Int = 0,
+    val totalPage: Int = 1,
     val filters: OrderFilter = OrderFilter(
         period = PeriodOption.NONE,
         type = TypeOption.NONE,
@@ -16,8 +18,8 @@ data class OrderHistoryState(
     val selectedTabIndex: Int = 0,
     val isLoading: Boolean = true,
     val orderHistories: List<OrderHistoryData> = emptyList(),
-    val orderOnGoings: List<OrderOnGoingData> = emptyList(),
-    val isTyping: Boolean = false,
+    val orderInProgress: List<OrderInProgressData> = emptyList(),
+    val isSearching: Boolean = false,
     val isFilterSelecting: Boolean = false,
     val searchQuery: String = "",
     val cartItemCount: Int = 0,

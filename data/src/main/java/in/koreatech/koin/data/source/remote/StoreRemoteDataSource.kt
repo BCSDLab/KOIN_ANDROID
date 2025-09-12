@@ -203,12 +203,12 @@ class StoreRemoteDataSource @Inject constructor(
     }
 
     suspend fun getOrderHistories(
-        page: Int,
-        limit: Int,
-        period: String,
-        status: String,
-        type: String,
-        query: String
+        page: Int?,
+        limit: Int?,
+        period: String?,
+        status: String?,
+        type: String?,
+        query: String?
     ): OrderHistoryResponse {
         return storeApi.getOrderHistories(page, limit, period, status, type, query)
     }

@@ -35,7 +35,6 @@ import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinOrdersFilterChip
 import `in`.koreatech.koin.feature.store.component.KoinOrdersResetChip
 import `in`.koreatech.koin.feature.store.component.OrderHistoryCard
-import `in`.koreatech.koin.feature.store.component.SearchBar
 import `in`.koreatech.koin.feature.store.component.SearchBarFake
 import `in`.koreatech.koin.feature.store.enums.OrderHistoryStatus
 import `in`.koreatech.koin.feature.store.enums.PeriodOption
@@ -44,13 +43,14 @@ import `in`.koreatech.koin.feature.store.enums.StoreStatus
 import `in`.koreatech.koin.feature.store.enums.TypeOption
 import `in`.koreatech.koin.feature.store.model.OrderFilter
 import `in`.koreatech.koin.feature.store.model.OrderHistoryData
+import `in`.koreatech.koin.feature.store.search.component.SearchBar
 
 @Composable
 fun OrderHistoryScreen(
     filters: OrderFilter,
     orderHistories: List<OrderHistoryData>,
     modifier: Modifier = Modifier,
-    isTyping: Boolean = false,
+    isSearching: Boolean = false,
     searchQuery: String = "",
     getOrderHistoryData: () -> Unit = { },
     onSearchStart: () -> Unit = { },
@@ -62,10 +62,6 @@ fun OrderHistoryScreen(
     onWriteReviewClick: (Int) -> Unit = { },
     onReorderClick: (Int) -> Unit = { }
 ) {
-    val period: List<Pair<Int, Boolean>> = PeriodOption.values().map { it.stringRes to it.isDefault }
-    val type: List<Pair<Int, Boolean>> = TypeOption.values().map { it.stringRes to it.isDefault }
-    val status: List<Pair<Int, Boolean>> = StatusOption.values().map { it.stringRes to it.isDefault }
-
     if (orderHistories.isEmpty()) {
         Box(
             modifier = modifier.fillMaxSize(),
@@ -77,7 +73,7 @@ fun OrderHistoryScreen(
             ) {
                 Box {
                     Icon(
-                        modifier = Modifier.width(95.dp),
+                        modifier = Modifier.width(96.dp),
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_bbiko_sleep),
                         contentDescription = "",
                         tint = Color.Unspecified
@@ -118,7 +114,7 @@ fun OrderHistoryScreen(
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (isTyping) {
+                if (isSearching) {
                     SearchBar(
                         query = searchQuery,
                         onQueryChange = onQueryChanged,
@@ -198,7 +194,7 @@ fun OrderHistoryScreen(
                     }
                 }
 
-                if (isTyping) {
+                if (isSearching) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -287,7 +283,7 @@ private fun OrderHistoryPreview3() {
             status = StatusOption.NONE
         ),
         orderHistories = orderHistories,
-        isTyping = true
+        isSearching = true
     )
 }
 

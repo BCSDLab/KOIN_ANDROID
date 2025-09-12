@@ -8,11 +8,11 @@ class GetHistoryRelatedUseCase @Inject constructor(
     private val storeRepository: StoreRepository
 ) {
     suspend operator fun invoke(
-        page: Int,
-        limit: Int,
-        period: String,
-        status: String,
-        type: String,
-        query: String
+        page: Int? = null,
+        limit: Int? = null,
+        period: String? = null,
+        status: String? = null,
+        type: String? = null,
+        query: String? = null
     ): Result<OrderHistoryRelated> = storeRepository.getOrderHistories(page, limit, period, status, type, query)
 }

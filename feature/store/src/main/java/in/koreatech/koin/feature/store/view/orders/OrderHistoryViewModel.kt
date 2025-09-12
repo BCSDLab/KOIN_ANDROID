@@ -5,14 +5,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetHistoryRelatedUseCase
-import `in`.koreatech.koin.domain.usecase.store.GetOnGoingRelatedUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetOrderInProgressUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.store.enums.PeriodOption
 import `in`.koreatech.koin.feature.store.enums.StatusOption
 import `in`.koreatech.koin.feature.store.enums.TypeOption
 import `in`.koreatech.koin.feature.store.model.OrderFilter
 import `in`.koreatech.koin.feature.store.model.toOrderHistoryData
-import `in`.koreatech.koin.feature.store.model.toOrderOnGoingData
+import `in`.koreatech.koin.feature.store.model.toOrderInProgressData
 import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -23,58 +23,61 @@ import org.orbitmvi.orbit.viewmodel.container
 @HiltViewModel
 class OrderHistoryViewModel @Inject constructor(
     private val getHistoryRelatedUseCase: GetHistoryRelatedUseCase,
-    private val getOnGoingRelatedUseCase: GetOnGoingRelatedUseCase,
+    private val getOrderInProgressUseCase: GetOrderInProgressUseCase,
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<OrderHistoryState, OrderHistorySideEffect> {
     override val container = container<OrderHistoryState, OrderHistorySideEffect>(OrderHistoryState())
-    private var page = 0
-    private var totalPage = 1
 
     init {
         getOrderHistoryData()
-        // getOrderOnGoingData()
+        getOrderInProgressData()
     }
 
     fun getNewOrderHistoryData() {
-        page = 0
-        totalPage = 1
+        intent {
+            reduce {
+                state.copy(
+                    page = 0,
+                    totalPage = 1
+                )
+            }
+        }
         getOrderHistoryData()
     }
 
     fun getOrderHistoryData() {
-        if (page < totalPage) {
-            page += 1
-            intent {
+        intent {
+            if (state.page < state.totalPage) {
                 getHistoryRelatedUseCase(
-                    page = page,
-                    limit = 10,
+                    page = state.page,
                     period = state.filters.period.name,
                     status = state.filters.status.name,
                     type = state.filters.type.name,
                     query = state.searchQuery
                 ).onSuccess { data ->
-                    totalPage = data.totalPage
                     reduce {
                         state.copy(
+                            page = data.currentPage,
+                            totalPage = data.totalPage,
                             orderHistories = state.orderHistories + data.orders.map { it.toOrderHistoryData() }
                         )
                     }
-                }.onFailure {
                 }
             }
         }
     }
 
-    private fun getOrderOnGoingData() {
+    private fun getOrderInProgressData() {
         intent {
-            getOnGoingRelatedUseCase().let { data ->
-                reduce {
-                    state.copy(
-                        orderOnGoings = data.map { it.toOrderOnGoingData() }
-                    )
+            getOrderInProgressUseCase()
+                .onSuccess { data ->
+                    reduce {
+                        state.copy(
+                            orderInProgress = data.map { it.toOrderInProgressData() }
+                        )
+                    }
                 }
-            }
         }
     }
 
@@ -138,7 +141,7 @@ class OrderHistoryViewModel @Inject constructor(
         reduce {
             state.copy(
                 isFilterSelecting = true,
-                isTyping = false
+                isSearching = false
             )
         }
     }
@@ -179,7 +182,7 @@ class OrderHistoryViewModel @Inject constructor(
     fun onSearchStart() {
         intent {
             reduce {
-                state.copy(isTyping = true)
+                state.copy(isSearching = true)
             }
         }
     }
@@ -188,7 +191,7 @@ class OrderHistoryViewModel @Inject constructor(
         intent {
             reduce {
                 state.copy(
-                    isTyping = false,
+                    isSearching = false,
                     searchQuery = ""
                 )
             }
@@ -198,7 +201,7 @@ class OrderHistoryViewModel @Inject constructor(
     fun typingEnd() {
         intent {
             reduce {
-                state.copy(isTyping = false)
+                state.copy(isSearching = false)
             }
         }
         getNewOrderHistoryData()
@@ -209,7 +212,7 @@ class OrderHistoryViewModel @Inject constructor(
             reduce {
                 state.copy(
                     selectedTabIndex = selectedTabIndex,
-                    isTyping = false
+                    isSearching = false
                 )
             }
         }

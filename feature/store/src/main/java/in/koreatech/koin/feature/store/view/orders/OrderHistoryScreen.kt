@@ -37,7 +37,7 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreSignInDialog
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.OrdersTabRow
 import `in`.koreatech.koin.feature.store.view.orders.history.OrderHistoryScreen
-import `in`.koreatech.koin.feature.store.view.orders.ongoing.OrderOnGoingScreen
+import `in`.koreatech.koin.feature.store.view.orders.ongoing.OrderInProgressScreen
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -63,7 +63,7 @@ fun OrderHistoryScreen(
     }
 
     BackHandler {
-        if (uiState.isTyping) {
+        if (uiState.isSearching) {
             viewModel.typingEnd()
         } else {
             onBackPressed()
@@ -172,7 +172,7 @@ fun OrderHistoryScreen(
                         filters = uiState.filters,
                         orderHistories = uiState.orderHistories,
                         modifier = modifier,
-                        isTyping = uiState.isTyping,
+                        isSearching = uiState.isSearching,
                         searchQuery = uiState.searchQuery,
                         getOrderHistoryData = viewModel::getOrderHistoryData,
                         onSearchStart = viewModel::onSearchStart,
@@ -185,8 +185,8 @@ fun OrderHistoryScreen(
                         onReorderClick = navigateToReorder
                     )
                 1 ->
-                    OrderOnGoingScreen(
-                        orderOnGoings = uiState.orderOnGoings,
+                    OrderInProgressScreen(
+                        orderInProgress = uiState.orderInProgress,
                         toOrderHistories = viewModel::onTabSelected
                     )
             }

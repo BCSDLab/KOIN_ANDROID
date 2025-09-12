@@ -32,13 +32,13 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
-import `in`.koreatech.koin.feature.store.enums.OrderOnGoingStatus
+import `in`.koreatech.koin.feature.store.enums.OrderInProgressStatus
 import `in`.koreatech.koin.feature.store.enums.TypeOption
-import `in`.koreatech.koin.feature.store.model.OrderOnGoingData
+import `in`.koreatech.koin.feature.store.model.OrderInProgressData
 
 @Composable
-fun OrderOnGoingCard(
-    orderdata: OrderOnGoingData,
+fun OrderInProgressCard(
+    orderdata: OrderInProgressData,
     modifier: Modifier = Modifier
 ) {
     val chipIcon = when (orderdata.orderType) {
@@ -159,16 +159,16 @@ fun OrderOnGoingCard(
 
 @Preview(showBackground = true)
 @Composable
-private fun OrderOnGoingCardPreview() {
-    OrderOnGoingCard(
-        orderdata = OrderOnGoingData(
+private fun OrderInProgressCardPreview() {
+    OrderInProgressCard(
+        orderdata = OrderInProgressData(
             id = 1,
             paymentId = 2,
             orderType = TypeOption.DELIVERY,
             estimatedAt = "오후 8:32",
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             orderableShopName = "맛있는 족발 - 병천점",
-            orderStatus = OrderOnGoingStatus.COOKING,
+            orderStatus = OrderInProgressStatus.COOKING,
             orderTitle = "족발 + 막국수 저녁 set 외 1건",
             totalAmount = 32500
         )
@@ -177,16 +177,16 @@ private fun OrderOnGoingCardPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun OrderOnGoingCardPreview2() {
-    OrderOnGoingCard(
-        orderdata = OrderOnGoingData(
+private fun OrderInProgressCardPreview2() {
+    OrderInProgressCard(
+        orderdata = OrderInProgressData(
             id = 1,
             paymentId = 2,
             orderType = TypeOption.TAKE_OUT,
             estimatedAt = "오후 8:32",
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             orderableShopName = "맛있는 족발 - 병천점",
-            orderStatus = OrderOnGoingStatus.COOKING,
+            orderStatus = OrderInProgressStatus.COOKING,
             orderTitle = "족발 + 막국수 저녁 set 외 1건",
             totalAmount = 32500
         )

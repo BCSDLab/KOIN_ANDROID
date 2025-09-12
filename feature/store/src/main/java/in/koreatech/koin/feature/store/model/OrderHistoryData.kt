@@ -20,21 +20,17 @@ data class OrderHistoryData(
 )
 
 fun OrderHistoryOrders.toOrderHistoryData(): OrderHistoryData {
-    val formattedOrderDate = try {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("M월 d일 (E)", Locale.KOREA)
-        val date = inputFormat.parse(orderDate)
-        outputFormat.format(date!!)
-    } catch (e: Exception) {
-        orderDate
-    }
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("M월 d일 (E)", Locale.KOREA)
+    val date = inputFormat.parse(orderDate)
+    val formattedOrderDate = outputFormat.format(date!!)
 
     return OrderHistoryData(
         id = id,
         paymentId = paymentId,
         orderableShopId = orderableShopId,
         orderableShopName = orderableShopName,
-        openStatus = StoreStatus.valueOf(openStatus),
+        openStatus = StoreStatus.OPEN, // openStatus,
         orderableShopThumbnail = orderableShopThumbnail,
         orderDate = formattedOrderDate,
         orderStatus = OrderHistoryStatus.valueOf(orderStatus),
