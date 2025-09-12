@@ -24,6 +24,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 fun FilterTextChipSelect(
     title: String,
     selected: Int,
+    defaultIdx: Int,
     chipTitle: List<Pair<Int, Boolean>>,
     modifier: Modifier = Modifier,
     onValueChange: (Int) -> Unit = {}
@@ -49,7 +50,7 @@ fun FilterTextChipSelect(
                         title = stringResource(id = title),
                         isSelected = isSelected,
                         onClick = { onValueChange(idx) },
-                        onCancle = { onValueChange(0) }
+                        onCancle = { onValueChange(defaultIdx) }
                     )
                 }
             }

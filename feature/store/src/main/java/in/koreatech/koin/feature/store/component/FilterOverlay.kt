@@ -50,6 +50,9 @@ fun FilterOverlay(
     onApply: (OrderFilter) -> Unit = {}
 ) {
     var localFilters by remember { mutableStateOf(filters) }
+    val periodValue by remember { mutableStateOf(PeriodOption.values()) }
+    val typeValue by remember { mutableStateOf(TypeOption.values()) }
+    val statusValue by remember { mutableStateOf(StatusOption.values()) }
 
     Popup(
         alignment = Alignment.TopStart,
@@ -112,9 +115,10 @@ fun FilterOverlay(
                     FilterTextChipSelect(
                         title = stringResource(R.string.filter_option_period),
                         selected = localFilters.period.ordinal,
-                        chipTitle = PeriodOption.values().map { Pair(it.stringRes, it.isDefault) },
+                        chipTitle = periodValue.map { Pair(it.stringRes, it.isDefault) },
+                        defaultIdx = periodValue.withIndex().first { it.value.isDefault }.index,
                         onValueChange = { newIdx ->
-                            localFilters = localFilters.copy(period = PeriodOption.values()[newIdx])
+                            localFilters = localFilters.copy(period = periodValue[newIdx])
                         }
                     )
 
@@ -126,9 +130,10 @@ fun FilterOverlay(
                     FilterTextChipSelect(
                         title = stringResource(R.string.filter_option_type),
                         selected = localFilters.type.ordinal,
-                        chipTitle = TypeOption.values().map { Pair(it.stringRes, it.isDefault) },
+                        chipTitle = typeValue.map { Pair(it.stringRes, it.isDefault) },
+                        defaultIdx = typeValue.withIndex().first { it.value.isDefault }.index,
                         onValueChange = { newIdx ->
-                            localFilters = localFilters.copy(type = TypeOption.values()[newIdx])
+                            localFilters = localFilters.copy(type = typeValue[newIdx])
                         }
                     )
 
@@ -137,9 +142,10 @@ fun FilterOverlay(
                     FilterTextChipSelect(
                         title = stringResource(R.string.filter_option_status),
                         selected = localFilters.status.ordinal,
-                        chipTitle = StatusOption.values().map { Pair(it.stringRes, it.isDefault) },
+                        chipTitle = statusValue.map { Pair(it.stringRes, it.isDefault) },
+                        defaultIdx = statusValue.withIndex().first { it.value.isDefault }.index,
                         onValueChange = { newIdx ->
-                            localFilters = localFilters.copy(status = StatusOption.values()[newIdx])
+                            localFilters = localFilters.copy(status = statusValue[newIdx])
                         }
                     )
 
