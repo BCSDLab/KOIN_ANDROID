@@ -151,15 +151,6 @@ fun OrderHistoryScreen(
                         )
                     }
                 }
-                /* 주소
-            item {
-                KoinOrdersFilterChip(
-                    text = stringResource(filters.location.stringRes),
-                    active = filters.location.isActivated,
-                    onClick = { openFilterOverlay() }
-                )
-            }
-                 */
                 item {
                     KoinOrdersFilterChip(
                         text = stringResource(filters.period.stringRes),
@@ -169,7 +160,7 @@ fun OrderHistoryScreen(
                 }
                 item {
                     KoinOrdersFilterChip(
-                        text = stringResource(filters.type.stringRes) + stringResource(R.string.bullet_separator) + stringResource(filters.status.stringRes),
+                        text = stringResource(R.string.bullet_separator, stringResource(filters.type.stringRes), stringResource(filters.status.stringRes)),
                         active = !filters.type.isDefault or !filters.status.isDefault,
                         onClick = { openFilterOverlay() }
                     )

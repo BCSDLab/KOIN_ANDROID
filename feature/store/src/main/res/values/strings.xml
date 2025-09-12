@@ -152,7 +152,6 @@
     <string name="orders_chip_apply">적용하기</string>
     <string name="order_history_searchbar_hint">주문한 메뉴/매장을 찾아보세요</string>
     <string name="order_histroy_price_won">%,d원</string>
-    <string name="bullet_separator"> · </string>
 
     <string name="order_history_filter">필터</string>
     <string name="filter_option_location">주소</string>
@@ -168,6 +167,7 @@
     <string name="filter_option_status">정보</string>
     <string name="filter_option_status_complete">완료</string>
     <string name="filter_option_status_canceled">취소</string>
+    <string name="bullet_separator">%s · %s</string>
 
     <string name="order_history_status_canceled">주문 취소</string>
     <string name="order_history_status_delivered">배달 완료</string>
