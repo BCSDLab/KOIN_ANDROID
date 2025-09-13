@@ -62,7 +62,7 @@ fun OrderHistoryScreen(
     onWriteReviewClick: (Int) -> Unit = { },
     onReorderClick: (Int) -> Unit = { }
 ) {
-    if (!orderHistories.isEmpty()) {
+    if (orderHistories.isEmpty()) {
         Box(
             modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
