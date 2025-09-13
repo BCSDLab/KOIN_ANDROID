@@ -1,9 +1,11 @@
 package `in`.koreatech.koin.core.activity
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.os.Message
 import android.view.Menu
@@ -152,9 +154,33 @@ internal class KoinWebViewClient(
         view: WebView?,
         request: WebResourceRequest?
     ): Boolean {
+        val url = request?.url.toString()
+
+        if (url.startsWith("intent://")) {
+            val intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
+            try {
+                context.startActivity(intent)
+            } catch (e: ActivityNotFoundException) {
+                intent.getPackage()?.let { packageName ->
+                    try {
+                        val marketIntent = Intent(Intent.ACTION_VIEW).apply {
+                            data = Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                            setPackage("com.android.vending")
+                        }
+                        context.startActivity(marketIntent)
+                    } catch (e: ActivityNotFoundException) {
+                        intent.getStringExtra("browser_fallback_url")?.let { fallbackUrl ->
+                            view?.loadUrl(fallbackUrl)
+                        }
+                    }
+                }
+            }
+            return true
+        }
+
         if (openInNewTab) {
             val intent = Intent(context, WebViewActivity::class.java)
-            intent.putExtra("url", request?.url.toString())
+            intent.putExtra("url", url)
             context.startActivity(intent)
             return true
         }
