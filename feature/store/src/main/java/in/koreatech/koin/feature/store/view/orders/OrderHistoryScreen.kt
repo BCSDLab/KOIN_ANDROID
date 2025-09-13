@@ -65,7 +65,7 @@ fun OrderHistoryScreen(
 
     BackHandler {
         if (uiState.isSearching) {
-            viewModel.searchEnd()
+            viewModel.onSearchCancel()
         } else {
             onBackPressed()
         }
@@ -168,6 +168,7 @@ fun OrderHistoryScreen(
                         getOrderHistoryData = viewModel::getOrderHistoryData,
                         onSearchStart = viewModel::onSearchStart,
                         onSearchCancel = viewModel::onSearchCancel,
+                        onSearchDone = viewModel::onSearchDone,
                         onQueryChanged = viewModel::onSearchQueryChanged,
                         openFilterOverlay = viewModel::openFilterOverlay,
                         resetFilter = viewModel::resetFilter,

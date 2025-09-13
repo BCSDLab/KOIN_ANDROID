@@ -35,7 +35,7 @@ import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinOrdersFilterChip
 import `in`.koreatech.koin.feature.store.component.KoinOrdersResetChip
 import `in`.koreatech.koin.feature.store.component.OrderHistoryCard
-import `in`.koreatech.koin.feature.store.component.SearchBarFake
+import `in`.koreatech.koin.feature.store.component.SearchBar
 import `in`.koreatech.koin.feature.store.enums.OrderHistoryStatus
 import `in`.koreatech.koin.feature.store.enums.PeriodOption
 import `in`.koreatech.koin.feature.store.enums.StatusOption
@@ -43,7 +43,6 @@ import `in`.koreatech.koin.feature.store.enums.StoreStatus
 import `in`.koreatech.koin.feature.store.enums.TypeOption
 import `in`.koreatech.koin.feature.store.model.OrderFilter
 import `in`.koreatech.koin.feature.store.model.OrderHistoryData
-import `in`.koreatech.koin.feature.store.search.component.SearchBar
 
 @Composable
 fun OrderHistoryScreen(
@@ -55,6 +54,7 @@ fun OrderHistoryScreen(
     getOrderHistoryData: () -> Unit = { },
     onSearchStart: () -> Unit = { },
     onSearchCancel: () -> Unit = { },
+    onSearchDone: () -> Unit = { },
     onQueryChanged: (String) -> Unit = { },
     resetFilter: () -> Unit = { },
     openFilterOverlay: () -> Unit = { },
@@ -62,7 +62,7 @@ fun OrderHistoryScreen(
     onWriteReviewClick: (Int) -> Unit = { },
     onReorderClick: (Int) -> Unit = { }
 ) {
-    if (orderHistories.isEmpty()) {
+    if (!orderHistories.isEmpty()) {
         Box(
             modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
@@ -114,30 +114,23 @@ fun OrderHistoryScreen(
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (isSearching) {
-                    SearchBar(
-                        query = searchQuery,
-                        onQueryChange = onQueryChanged,
-                        modifier = Modifier.weight(1f),
-                        hint = stringResource(R.string.order_history_searchbar_hint)
-                    )
+                SearchBar(
+                    query = searchQuery,
+                    onQueryChange = onQueryChanged,
+                    modifier = Modifier.weight(1f),
+                    hint = stringResource(R.string.order_history_searchbar_hint),
+                    onFocused = onSearchStart,
+                    onDone = onSearchDone
+                )
 
-                    Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(16.dp))
 
-                    Text(
-                        modifier = Modifier.clickable { onSearchCancel() },
-                        text = stringResource(R.string.cancel),
-                        style = RebrandKoinTheme.typography.bold14,
-                        color = RebrandKoinTheme.colors.neutral500
-                    )
-                } else {
-                    SearchBarFake(
-                        query = searchQuery,
-                        modifier = Modifier.weight(1f),
-                        hint = stringResource(R.string.order_history_searchbar_hint),
-                        onClick = onSearchStart
-                    )
-                }
+                Text(
+                    modifier = Modifier.clickable { onSearchCancel() },
+                    text = stringResource(R.string.cancel),
+                    style = RebrandKoinTheme.typography.bold14,
+                    color = RebrandKoinTheme.colors.neutral500
+                )
             }
 
             LazyRow(
