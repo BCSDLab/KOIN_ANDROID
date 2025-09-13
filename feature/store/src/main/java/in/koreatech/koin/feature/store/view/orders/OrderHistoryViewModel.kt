@@ -65,7 +65,7 @@ class OrderHistoryViewModel @Inject constructor(
             }.onFailure {
                 reduce {
                     state.copy(
-                        isLoading = true
+                        isLoading = false
                     )
                 }
             }
@@ -90,7 +90,7 @@ class OrderHistoryViewModel @Inject constructor(
                 }.onFailure {
                     reduce {
                         state.copy(
-                            isLoading = true
+                            isLoading = false
                         )
                     }
                 }
@@ -213,7 +213,7 @@ class OrderHistoryViewModel @Inject constructor(
         }
     }
 
-    fun searchEnd() {
+    fun onSearchDone() {
         intent {
             reduce {
                 state.copy(
