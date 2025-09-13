@@ -29,40 +29,44 @@ class OrderHistoryViewModel @Inject constructor(
 ) : ViewModel(), ContainerHost<OrderHistoryState, OrderHistorySideEffect> {
     override val container = container<OrderHistoryState, OrderHistorySideEffect>(OrderHistoryState())
 
-    init {
-        getOrderHistoryData()
-        getOrderInProgressData()
-    }
-
-    fun getNewOrderHistoryData() {
-        intent {
-            reduce {
-                state.copy(
-                    page = 1,
-                    totalPage = 2
-                )
-            }
+    fun getNewOrderHistoryData() = intent {
+        reduce {
+            state.copy(
+                page = 1,
+                totalPage = 2
+            )
         }
         getOrderHistoryData()
     }
 
-    fun getOrderHistoryData() {
-        intent {
-            if (state.page < state.totalPage) {
-                getHistoryRelatedUseCase(
-                    page = state.page,
-                    period = state.filters.period.name,
-                    status = state.filters.status.name,
-                    type = state.filters.type.name,
-                    query = state.searchQuery
-                ).onSuccess { data ->
-                    reduce {
-                        state.copy(
-                            page = data.currentPage,
-                            totalPage = data.totalPage,
-                            orderHistories = state.orderHistories + data.orders.map { it.toOrderHistoryData() }
-                        )
-                    }
+    fun getOrderHistoryData() = intent {
+        reduce {
+            state.copy(
+                isLoading = true
+            )
+        }
+
+        if (state.page < state.totalPage) {
+            getHistoryRelatedUseCase(
+                page = state.page,
+                period = state.filters.period.name,
+                status = state.filters.status.name,
+                type = state.filters.type.name,
+                query = state.searchQuery
+            ).onSuccess { data ->
+                reduce {
+                    state.copy(
+                        page = data.currentPage,
+                        totalPage = data.totalPage,
+                        orderHistories = state.orderHistories + data.orders.map { it.toOrderHistoryData() },
+                        isLoading = false
+                    )
+                }
+            }.onFailure {
+                reduce {
+                    state.copy(
+                        isLoading = true
+                    )
                 }
             }
         }
@@ -70,11 +74,23 @@ class OrderHistoryViewModel @Inject constructor(
 
     private fun getOrderInProgressData() {
         intent {
+            reduce {
+                state.copy(
+                    isLoading = true
+                )
+            }
             getOrderInProgressUseCase()
                 .onSuccess { data ->
                     reduce {
                         state.copy(
-                            orderInProgress = data.map { it.toOrderInProgressData() }
+                            orderInProgress = data.map { it.toOrderInProgressData() },
+                            isLoading = false
+                        )
+                    }
+                }.onFailure {
+                    reduce {
+                        state.copy(
+                            isLoading = true
                         )
                     }
                 }
@@ -154,7 +170,6 @@ class OrderHistoryViewModel @Inject constructor(
                 )
             }
         }
-        getNewOrderHistoryData()
     }
 
     fun closeFilterOverlay() = intent {

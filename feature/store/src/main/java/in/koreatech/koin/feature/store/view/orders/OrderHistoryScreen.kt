@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -70,27 +71,17 @@ fun OrderHistoryScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        snapshotFlow { uiState.filters }
+            .collect {
+                viewModel.getNewOrderHistoryData()
+                viewModel.getOrderHistoryData()
+            }
+    }
+
     viewModel.collectSideEffect {
         handleSideEffect(it, navigateToCart)
     }
-
-    /* ToDo
-    LaunchedEffect(Unit) {
-        if (uiState.categoryId == -1) {
-            viewModel.onCategoryChange(categoryId)
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        combine(
-            snapshotFlow { uiState.selectedStoreFilter },
-            snapshotFlow { uiState.selectedOrderOption },
-            snapshotFlow { uiState.categoryId },
-            snapshotFlow { uiState.selectedMinimumPriceOption }
-        ) { _, _, _, _ -> }.collect {
-            viewModel.fetchData()
-        }
-    }*/
 
     LaunchedEffect(Unit) {
         viewModel.getUserType()
