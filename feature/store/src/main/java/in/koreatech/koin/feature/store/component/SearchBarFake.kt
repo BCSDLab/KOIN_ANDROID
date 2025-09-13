@@ -52,10 +52,18 @@ fun SearchBarFake(
                 tint = RebrandKoinTheme.colors.neutral500
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = if (query == "") hint else query,
-                style = if (query == "") RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral400) else RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral600)
-            )
+
+            if (query.isEmpty()) {
+                Text(
+                    text = hint,
+                    style = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral400)
+                )
+            } else {
+                Text(
+                    text = query,
+                    style = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral600)
+                )
+            }
         }
     }
 }

@@ -65,7 +65,7 @@ fun OrderHistoryScreen(
 
     BackHandler {
         if (uiState.isSearching) {
-            viewModel.typingEnd()
+            viewModel.searchEnd()
         } else {
             onBackPressed()
         }

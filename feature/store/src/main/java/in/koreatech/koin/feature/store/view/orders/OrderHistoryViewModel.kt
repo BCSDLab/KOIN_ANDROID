@@ -213,10 +213,12 @@ class OrderHistoryViewModel @Inject constructor(
         }
     }
 
-    fun typingEnd() {
+    fun searchEnd() {
         intent {
             reduce {
-                state.copy(isSearching = false)
+                state.copy(
+                    isSearching = false
+                )
             }
         }
         getNewOrderHistoryData()
