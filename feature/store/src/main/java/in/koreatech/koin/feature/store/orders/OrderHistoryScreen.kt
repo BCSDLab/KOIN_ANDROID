@@ -63,12 +63,10 @@ fun OrderHistoryScreen(
         }
     }
 
-    BackHandler {
-        if (uiState.isSearching) {
-            viewModel.onSearchCancel()
-        } else {
-            onBackPressed()
-        }
+    BackHandler(
+        enabled = uiState.isSearching
+    ) {
+        viewModel.onSearchCancel()
     }
 
     LaunchedEffect(Unit) {
