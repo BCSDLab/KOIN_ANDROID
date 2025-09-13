@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.view.orders
+package `in`.koreatech.koin.feature.store.orders
 
 import `in`.koreatech.koin.feature.store.enums.PeriodOption
 import `in`.koreatech.koin.feature.store.enums.StatusOption

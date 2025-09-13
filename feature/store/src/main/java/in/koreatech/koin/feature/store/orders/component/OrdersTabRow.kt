@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.component
+package `in`.koreatech.koin.feature.store.orders.component
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider

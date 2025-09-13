@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.component
+package `in`.koreatech.koin.feature.store.orders.component
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth

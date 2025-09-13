@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.view.orders
+package `in`.koreatech.koin.feature.store.orders
 
 import android.content.Intent
 import androidx.activity.compose.BackHandler
@@ -33,12 +33,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_HOME
 import `in`.koreatech.koin.feature.store.R
-import `in`.koreatech.koin.feature.store.component.FilterOverlay
 import `in`.koreatech.koin.feature.store.component.KoinStoreSignInDialog
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
-import `in`.koreatech.koin.feature.store.component.OrdersTabRow
-import `in`.koreatech.koin.feature.store.view.orders.history.OrderHistoryScreen
-import `in`.koreatech.koin.feature.store.view.orders.ongoing.OrderInProgressScreen
+import `in`.koreatech.koin.feature.store.orders.component.FilterOverlay
+import `in`.koreatech.koin.feature.store.orders.component.OrdersTabRow
+import `in`.koreatech.koin.feature.store.orders.screen.OrderHistoryScreen
+import `in`.koreatech.koin.feature.store.orders.screen.OrderInProgressScreen
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 

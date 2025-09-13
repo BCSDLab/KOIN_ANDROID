@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.view.orders.history
+package `in`.koreatech.koin.feature.store.orders.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,8 +34,6 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinOrdersFilterChip
 import `in`.koreatech.koin.feature.store.component.KoinOrdersResetChip
-import `in`.koreatech.koin.feature.store.component.OrderHistoryCard
-import `in`.koreatech.koin.feature.store.component.SearchBar
 import `in`.koreatech.koin.feature.store.enums.OrderHistoryStatus
 import `in`.koreatech.koin.feature.store.enums.PeriodOption
 import `in`.koreatech.koin.feature.store.enums.StatusOption
@@ -43,6 +41,8 @@ import `in`.koreatech.koin.feature.store.enums.StoreStatus
 import `in`.koreatech.koin.feature.store.enums.TypeOption
 import `in`.koreatech.koin.feature.store.model.OrderFilter
 import `in`.koreatech.koin.feature.store.model.OrderHistoryData
+import `in`.koreatech.koin.feature.store.orders.component.OrderHistoryCard
+import `in`.koreatech.koin.feature.store.orders.component.SearchBar
 
 @Composable
 fun OrderHistoryScreen(

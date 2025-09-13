@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.view.orders.ongoing
+package `in`.koreatech.koin.feature.store.orders.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,10 +27,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
-import `in`.koreatech.koin.feature.store.component.OrderInProgressCard
 import `in`.koreatech.koin.feature.store.enums.OrderInProgressStatus
 import `in`.koreatech.koin.feature.store.enums.TypeOption
 import `in`.koreatech.koin.feature.store.model.OrderInProgressData
+import `in`.koreatech.koin.feature.store.orders.component.OrderInProgressCard
 
 @Composable
 fun OrderInProgressScreen(

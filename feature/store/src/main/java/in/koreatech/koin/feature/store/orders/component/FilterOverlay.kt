@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.component
+package `in`.koreatech.koin.feature.store.orders.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
