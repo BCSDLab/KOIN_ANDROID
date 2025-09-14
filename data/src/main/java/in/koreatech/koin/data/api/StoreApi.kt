@@ -2,7 +2,6 @@ package `in`.koreatech.koin.data.api
 
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.response.store.BenefitCategoryListResponse
-import `in`.koreatech.koin.data.response.store.OrderHistoryResponse
 import `in`.koreatech.koin.data.response.store.OrderableShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopDeliveryAvailableResponse
 import `in`.koreatech.koin.data.response.store.ShopDetailResponse
@@ -146,14 +145,4 @@ interface StoreApi {
     suspend fun getOrderableShopSearchRelated(
         @Query("keyword") keyword: String
     ): OrderableShopSearchRelatedResponse
-
-    @GET("order")
-    suspend fun getOrderHistories(
-        @Query("page") page: Int?,
-        @Query("limit") limit: Int?,
-        @Query("period") period: String?,
-        @Query("status") status: String?,
-        @Query("type") type: String?,
-        @Query("query") query: String?
-    ): OrderHistoryResponse
 }

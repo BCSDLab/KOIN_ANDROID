@@ -7,6 +7,7 @@ import `in`.koreatech.koin.data.response.store.CartItemsCountResponse
 import `in`.koreatech.koin.data.response.store.CartPaymentSummaryResponse
 import `in`.koreatech.koin.data.response.store.CartResponse
 import `in`.koreatech.koin.data.response.store.CartSummaryResponse
+import `in`.koreatech.koin.data.response.store.OrderHistoryResponse
 import `in`.koreatech.koin.data.response.store.OrderInProgressResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -73,4 +74,14 @@ interface StoreAuthApi {
 
     @GET("/order/in-progress")
     suspend fun getOrderInProgress(): List<OrderInProgressResponse>
+
+    @GET("/order")
+    suspend fun getOrderHistories(
+        @Query("page") page: Int?,
+        @Query("limit") limit: Int?,
+        @Query("period") period: String?,
+        @Query("status") status: String?,
+        @Query("type") type: String?,
+        @Query("query") query: String?
+    ): OrderHistoryResponse
 }

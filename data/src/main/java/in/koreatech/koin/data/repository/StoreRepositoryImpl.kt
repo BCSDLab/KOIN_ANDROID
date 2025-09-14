@@ -391,29 +391,6 @@ class StoreRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getOrderHistories(
-        page: Int?,
-        limit: Int?,
-        period: String?,
-        status: String?,
-        type: String?,
-        query: String?
-    ): Result<OrderHistoryRelated> {
-        return runCatching {
-            storeRemoteDataSource.getOrderHistories(page, limit, period, status, type, query).toOrderHistoryRelated()
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        e.getErrorResponse().toKoinUnknownErrorException()
-                    }
-
-                    else -> e
-                }
-            )
-        }
-    }
-
     override suspend fun updateCartItem(cartMenuItemId: Int, cartItem: CartItem): Result<Unit> {
         return runCatching {
             storeRemoteDataSource.updateCartItem(cartMenuItemId, cartItem.toCartItemRequest())
@@ -701,6 +678,29 @@ class StoreRepositoryImpl @Inject constructor(
             return Result.failure(
                 when (e) {
                     is HttpException -> e.getErrorResponse().toKoinUnknownErrorException()
+                    else -> e
+                }
+            )
+        }
+    }
+
+    override suspend fun getOrderHistories(
+        page: Int?,
+        limit: Int?,
+        period: String?,
+        status: String?,
+        type: String?,
+        query: String?
+    ): Result<OrderHistoryRelated> {
+        return runCatching {
+            storeRemoteDataSource.getOrderHistories(page, limit, period, status, type, query).toOrderHistoryRelated()
+        }.onFailure { e ->
+            return Result.failure(
+                when (e) {
+                    is HttpException -> {
+                        e.getErrorResponse().toKoinUnknownErrorException()
+                    }
+
                     else -> e
                 }
             )

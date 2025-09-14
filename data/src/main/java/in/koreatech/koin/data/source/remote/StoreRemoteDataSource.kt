@@ -202,17 +202,6 @@ class StoreRemoteDataSource @Inject constructor(
         return storeApi.getOrderableShopSearchRelated(keyword)
     }
 
-    suspend fun getOrderHistories(
-        page: Int?,
-        limit: Int?,
-        period: String?,
-        status: String?,
-        type: String?,
-        query: String?
-    ): OrderHistoryResponse {
-        return storeApi.getOrderHistories(page, limit, period, status, type, query)
-    }
-
     suspend fun updateCartItem(
         cartMenuItemId: Int,
         cartItemRequest: CartItemRequest
@@ -265,5 +254,16 @@ class StoreRemoteDataSource @Inject constructor(
 
     suspend fun getOrderInProgress(): List<OrderInProgressResponse> {
         return storeAuthApi.getOrderInProgress()
+    }
+
+    suspend fun getOrderHistories(
+        page: Int?,
+        limit: Int?,
+        period: String?,
+        status: String?,
+        type: String?,
+        query: String?
+    ): OrderHistoryResponse {
+        return storeAuthApi.getOrderHistories(page, limit, period, status, type, query)
     }
 }
