@@ -58,7 +58,6 @@ fun OrderHistoryScreen(
     onQueryChanged: (String) -> Unit = { },
     resetFilter: () -> Unit = { },
     openFilterOverlay: () -> Unit = { },
-    onDetailClick: (Int) -> Unit = { },
     onWriteReviewClick: (Int) -> Unit = { },
     onReorderClick: (Int) -> Unit = { }
 ) {
@@ -171,7 +170,7 @@ fun OrderHistoryScreen(
                     items(orderHistories) { orderdata ->
                         OrderHistoryCard(
                             orderdata = orderdata,
-                            onDetailClick = { onDetailClick(orderdata.id) },
+                            onDetailClick = { },
                             onWriteReviewClick = { onWriteReviewClick(orderdata.id) },
                             onReorderClick = { onReorderClick(orderdata.id) }
                         )
@@ -198,7 +197,7 @@ private fun OrderHistoryPreview2() {
             id = 1,
             paymentId = 1,
             orderableShopId = 1,
-            orderStatus = OrderHistoryStatus.CANCELLED,
+            orderStatus = OrderHistoryStatus.CANCELED,
             orderDate = "9월 5일 (금)",
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             openStatus = StoreStatus.SOLD_OUT,
@@ -238,7 +237,7 @@ private fun OrderHistoryPreview3() {
             id = 1,
             paymentId = 1,
             orderableShopId = 1,
-            orderStatus = OrderHistoryStatus.CANCELLED,
+            orderStatus = OrderHistoryStatus.CANCELED,
             orderDate = "9월 5일 (금)",
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             openStatus = StoreStatus.SOLD_OUT,
@@ -274,14 +273,12 @@ private fun OrderHistoryPreview3() {
 @Preview(showBackground = true)
 @Composable
 private fun OrderHistoryPreview4() {
-    val orderHistories: List<OrderHistoryData> = listOf()
-
     OrderHistoryScreen(
         OrderFilter(
             period = PeriodOption.NONE,
             type = TypeOption.NONE,
             status = StatusOption.NONE
         ),
-        orderHistories = orderHistories
+        orderHistories = listOf()
     )
 }

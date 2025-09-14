@@ -18,7 +18,7 @@ sealed class StoreNavType(val route: String) {
 sealed class StoreMainNavType(val route: String) {
     data object StoreMainHome : StoreMainNavType("store_main_home")
     data object StoreMainNearby : StoreMainNavType("store_main_nearby")
-    data object StoreMainOrderHistory : StoreMainNavType("store_main_order_history")
+    data object StoreMainOrder : StoreMainNavType("store_main_order_history")
 }
 
 sealed class StoreDetailNavType(val route: String) {
@@ -44,7 +44,7 @@ val navigationBarItems = listOf(
         stringRes = R.string.store_navigation_bar_nearby
     ),
     NavigationBarItem(
-        type = StoreMainNavType.StoreMainOrderHistory,
+        type = StoreMainNavType.StoreMainOrder,
         iconRes = R.drawable.ic_store_navigation_order_history,
         stringRes = R.string.store_navigation_bar_order_history
     )

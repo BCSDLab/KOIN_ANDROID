@@ -42,6 +42,10 @@ import `in`.koreatech.koin.feature.store.enums.StatusOption
 import `in`.koreatech.koin.feature.store.enums.TypeOption
 import `in`.koreatech.koin.feature.store.model.OrderFilter
 
+val periodValue = PeriodOption.values()
+val typeValue = TypeOption.values()
+val statusValue = StatusOption.values()
+
 @Composable
 fun FilterOverlay(
     filters: OrderFilter,
@@ -50,9 +54,6 @@ fun FilterOverlay(
     onApply: (OrderFilter) -> Unit = {}
 ) {
     var localFilters by remember { mutableStateOf(filters) }
-    val periodValue by remember { mutableStateOf(PeriodOption.values()) }
-    val typeValue by remember { mutableStateOf(TypeOption.values()) }
-    val statusValue by remember { mutableStateOf(StatusOption.values()) }
 
     Popup(
         alignment = Alignment.TopStart,
@@ -115,7 +116,7 @@ fun FilterOverlay(
                     FilterTextChipSelect(
                         title = stringResource(R.string.filter_option_period),
                         selected = localFilters.period.ordinal,
-                        chipTitle = periodValue.map { Pair(it.stringRes, it.isDefault) },
+                        chipTitle = periodValue.filter { !it.isDefault }.map { it.stringRes },
                         defaultIdx = periodValue.withIndex().first { it.value.isDefault }.index,
                         onValueChange = { newIdx ->
                             localFilters = localFilters.copy(period = periodValue[newIdx])
@@ -130,7 +131,7 @@ fun FilterOverlay(
                     FilterTextChipSelect(
                         title = stringResource(R.string.filter_option_type),
                         selected = localFilters.type.ordinal,
-                        chipTitle = typeValue.map { Pair(it.stringRes, it.isDefault) },
+                        chipTitle = typeValue.filter { !it.isDefault }.map { it.stringRes },
                         defaultIdx = typeValue.withIndex().first { it.value.isDefault }.index,
                         onValueChange = { newIdx ->
                             localFilters = localFilters.copy(type = typeValue[newIdx])
@@ -142,7 +143,7 @@ fun FilterOverlay(
                     FilterTextChipSelect(
                         title = stringResource(R.string.filter_option_status),
                         selected = localFilters.status.ordinal,
-                        chipTitle = statusValue.map { Pair(it.stringRes, it.isDefault) },
+                        chipTitle = statusValue.filter { !it.isDefault }.map { it.stringRes },
                         defaultIdx = statusValue.withIndex().first { it.value.isDefault }.index,
                         onValueChange = { newIdx ->
                             localFilters = localFilters.copy(status = statusValue[newIdx])

@@ -44,11 +44,10 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OrderHistoryScreen(
+fun OrderScreen(
     modifier: Modifier = Modifier,
-    viewModel: OrderHistoryViewModel = hiltViewModel(),
+    viewModel: OrderViewModel = hiltViewModel(),
     navigateToCart: () -> Unit = { },
-    navigateToDetail: (Int) -> Unit = { },
     navigateToReview: (Int) -> Unit = { },
     navigateToReorder: (Int) -> Unit = { },
     onBackPressed: () -> Unit = { }
@@ -69,20 +68,18 @@ fun OrderHistoryScreen(
         viewModel.onSearchCancel()
     }
 
-    LaunchedEffect(Unit) {
-        snapshotFlow { uiState.filters }
-            .collect {
-                viewModel.getNewOrderHistoryData()
-                viewModel.getOrderHistoryData()
-            }
-    }
-
     viewModel.collectSideEffect {
         handleSideEffect(it, navigateToCart)
     }
 
     LaunchedEffect(Unit) {
         viewModel.getUserType()
+
+        snapshotFlow { uiState.filters }
+            .collect {
+                viewModel.getNewOrderHistoryData()
+            }
+        viewModel.getOrderInProgressData()
     }
 
     if (uiState.showSignInDialog) {
@@ -102,8 +99,7 @@ fun OrderHistoryScreen(
         modifier = modifier.fillMaxSize()
     ) {
         Column(
-            modifier = modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             KoinStoreTopAppBar(
                 title = stringResource(R.string.store_title_home_history),
@@ -160,7 +156,6 @@ fun OrderHistoryScreen(
                     OrderHistoryScreen(
                         filters = uiState.filters,
                         orderHistories = uiState.orderHistories,
-                        modifier = modifier,
                         isSearching = uiState.isSearching,
                         searchQuery = uiState.searchQuery,
                         getOrderHistoryData = viewModel::getOrderHistoryData,
@@ -170,7 +165,6 @@ fun OrderHistoryScreen(
                         onQueryChanged = viewModel::onSearchQueryChanged,
                         openFilterOverlay = viewModel::openFilterOverlay,
                         resetFilter = viewModel::resetFilter,
-                        onDetailClick = navigateToDetail,
                         onWriteReviewClick = navigateToReview,
                         onReorderClick = navigateToReorder
                     )
@@ -186,18 +180,18 @@ fun OrderHistoryScreen(
             FilterOverlay(
                 filters = uiState.filters,
                 onClose = viewModel::closeFilterOverlay,
-                onApply = viewModel::applyFilterOverlay
+                onApply = viewModel::applyFilter
             )
         }
     }
 }
 
 private fun handleSideEffect(
-    sideEffect: OrderHistorySideEffect,
+    sideEffect: OrderSideEffect,
     navigateToCart: () -> Unit
 ) {
     when (sideEffect) {
-        OrderHistorySideEffect.NavigateToCart -> {
+        OrderSideEffect.NavigateToCart -> {
             navigateToCart()
         }
     }

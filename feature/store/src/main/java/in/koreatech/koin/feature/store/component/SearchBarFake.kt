@@ -70,7 +70,7 @@ fun SearchBarFake(
 
 @Preview
 @Composable
-fun SearchBarFakePreview() {
+private fun SearchBarFakePreview() {
     SearchBarFake(
         query = "족발"
     )
@@ -78,6 +78,6 @@ fun SearchBarFakePreview() {
 
 @Preview
 @Composable
-fun SearchBarFakePreview2() {
+private fun SearchBarFakePreview2() {
     SearchBarFake()
 }

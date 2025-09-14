@@ -43,7 +43,8 @@ fun OrderInProgressCard(
 ) {
     val chipIcon = when (orderdata.orderType) {
         TypeOption.TAKE_OUT -> R.drawable.ic_order_takeout
-        else -> R.drawable.ic_order_delivery
+        TypeOption.DELIVERY -> R.drawable.ic_order_delivery
+        TypeOption.NONE -> R.drawable.ic_order_delivery
     }
 
     Card(

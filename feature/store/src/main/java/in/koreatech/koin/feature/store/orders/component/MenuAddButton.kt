@@ -24,7 +24,7 @@ fun MenuAddButton(
         when (status) {
             StoreStatus.PRE_OPEN -> stringResource(R.string.add_same_menu_pre_open)
             StoreStatus.SOLD_OUT -> stringResource(R.string.add_same_menu_sold_out)
-            else -> stringResource(R.string.add_same_menu_open)
+            StoreStatus.OPEN -> stringResource(R.string.add_same_menu_open)
         }
 
     Button(

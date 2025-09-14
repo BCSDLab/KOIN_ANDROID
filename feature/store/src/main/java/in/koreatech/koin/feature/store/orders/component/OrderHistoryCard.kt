@@ -48,7 +48,7 @@ fun OrderHistoryCard(
 
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RebrandKoinTheme.shapes.medium,
         colors = CardDefaults.cardColors(RebrandKoinTheme.colors.neutral0),
         border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral200)
     ) {

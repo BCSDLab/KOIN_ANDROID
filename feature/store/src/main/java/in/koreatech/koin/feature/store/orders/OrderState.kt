@@ -7,7 +7,7 @@ import `in`.koreatech.koin.feature.store.model.OrderFilter
 import `in`.koreatech.koin.feature.store.model.OrderHistoryData
 import `in`.koreatech.koin.feature.store.model.OrderInProgressData
 
-data class OrderHistoryState(
+data class OrderState(
     val page: Int = 1,
     val totalPage: Int = 2,
     val filters: OrderFilter = OrderFilter(
@@ -16,13 +16,13 @@ data class OrderHistoryState(
         status = StatusOption.NONE
     ),
     val selectedTabIndex: Int = 0,
-    val isLoading: Boolean = true,
+    val isLoading: Boolean = false,
     val orderHistories: List<OrderHistoryData> = emptyList(),
     val orderInProgress: List<OrderInProgressData> = emptyList(),
     val isSearching: Boolean = false,
     val isFilterSelecting: Boolean = false,
     val searchQuery: String = "",
     val cartItemCount: Int = 0,
-    val isLoggedIn: Boolean = false,
+    val isLoggedIn: Boolean? = null,
     val showSignInDialog: Boolean = false
 )

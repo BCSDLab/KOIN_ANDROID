@@ -14,6 +14,7 @@ import `in`.koreatech.koin.feature.store.model.OrderFilter
 import `in`.koreatech.koin.feature.store.model.toOrderHistoryData
 import `in`.koreatech.koin.feature.store.model.toOrderInProgressData
 import javax.inject.Inject
+import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
@@ -21,13 +22,13 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
-class OrderHistoryViewModel @Inject constructor(
+class OrderViewModel @Inject constructor(
     private val getHistoryRelatedUseCase: GetHistoryRelatedUseCase,
     private val getOrderInProgressUseCase: GetOrderInProgressUseCase,
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase
-) : ViewModel(), ContainerHost<OrderHistoryState, OrderHistorySideEffect> {
-    override val container = container<OrderHistoryState, OrderHistorySideEffect>(OrderHistoryState())
+) : ViewModel(), ContainerHost<OrderState, OrderSideEffect> {
+    override val container = container<OrderState, OrderSideEffect>(OrderState())
 
     fun getNewOrderHistoryData() = intent {
         reduce {
@@ -39,61 +40,81 @@ class OrderHistoryViewModel @Inject constructor(
         getOrderHistoryData()
     }
 
-    fun getOrderHistoryData() = intent {
-        reduce {
-            state.copy(
-                isLoading = true
-            )
-        }
-
-        if (state.page < state.totalPage) {
-            getHistoryRelatedUseCase(
-                page = state.page,
-                period = state.filters.period.name,
-                status = state.filters.status.name,
-                type = state.filters.type.name,
-                query = state.searchQuery
-            ).onSuccess { data ->
+    fun getOrderHistoryData() {
+        intent {
+            if (state.isLoggedIn == null) {
+                delay(50)
+                getOrderHistoryData()
+            } else if (state.isLoggedIn!!) {
                 reduce {
                     state.copy(
-                        page = data.currentPage,
-                        totalPage = data.totalPage,
-                        orderHistories = state.orderHistories + data.orders.map { it.toOrderHistoryData() },
-                        isLoading = false
+                        isLoading = true
                     )
                 }
-            }.onFailure {
+
+                if (state.page < state.totalPage) {
+                    getHistoryRelatedUseCase(
+                        page = state.page,
+                        period = state.filters.period.name,
+                        status = state.filters.status.name,
+                        type = state.filters.type.name,
+                        query = state.searchQuery
+                    ).onSuccess { data ->
+                        reduce {
+                            state.copy(
+                                page = data.currentPage,
+                                totalPage = data.totalPage,
+                                orderHistories = state.orderHistories + data.orders.map { it.toOrderHistoryData() },
+                                isLoading = false
+                            )
+                        }
+                    }.onFailure {
+                        reduce {
+                            state.copy(
+                                isLoading = false
+                            )
+                        }
+                    }
+                }
+            } else {
                 reduce {
-                    state.copy(
-                        isLoading = false
-                    )
+                    state.copy(showSignInDialog = true)
                 }
             }
         }
     }
 
-    private fun getOrderInProgressData() {
+    fun getOrderInProgressData() {
         intent {
-            reduce {
-                state.copy(
-                    isLoading = true
-                )
-            }
-            getOrderInProgressUseCase()
-                .onSuccess { data ->
-                    reduce {
-                        state.copy(
-                            orderInProgress = data.map { it.toOrderInProgressData() },
-                            isLoading = false
-                        )
-                    }
-                }.onFailure {
-                    reduce {
-                        state.copy(
-                            isLoading = false
-                        )
-                    }
+            if (state.isLoggedIn == null) {
+                delay(50)
+                getOrderHistoryData()
+            } else if (state.isLoggedIn!!) {
+                reduce {
+                    state.copy(
+                        isLoading = true
+                    )
                 }
+                getOrderInProgressUseCase()
+                    .onSuccess { data ->
+                        reduce {
+                            state.copy(
+                                orderInProgress = data.map { it.toOrderInProgressData() },
+                                isLoading = false
+                            )
+                        }
+                    }.onFailure {
+                        reduce {
+                            state.copy(
+                                isLoading = false
+                            )
+                        }
+                    }
+            } else {
+                reduce {
+                    state.copy(showSignInDialog = true)
+                }
+            }
         }
     }
 
@@ -133,8 +154,8 @@ class OrderHistoryViewModel @Inject constructor(
     }
 
     fun navigateToCart() = intent {
-        if (state.isLoggedIn) {
-            postSideEffect(OrderHistorySideEffect.NavigateToCart)
+        if (state.isLoggedIn == true) {
+            postSideEffect(OrderSideEffect.NavigateToCart)
         } else {
             reduce {
                 state.copy(showSignInDialog = true)
@@ -162,7 +183,7 @@ class OrderHistoryViewModel @Inject constructor(
         }
     }
 
-    fun applyFilterOverlay(newFilters: OrderFilter) {
+    fun applyFilter(newFilters: OrderFilter) {
         intent {
             reduce {
                 state.copy(

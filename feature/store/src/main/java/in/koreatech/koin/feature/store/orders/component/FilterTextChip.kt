@@ -23,7 +23,7 @@ fun FilterTextChipSelect(
     title: String,
     selected: Int,
     defaultIdx: Int,
-    chipTitle: List<Pair<Int, Boolean>>,
+    chipTitle: List<Int>,
     modifier: Modifier = Modifier,
     onValueChange: (Int) -> Unit = {}
 ) {
@@ -41,16 +41,14 @@ fun FilterTextChipSelect(
         Row(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            chipTitle.forEachIndexed { idx, (title, default) ->
-                if (!default) {
-                    val isSelected = idx == selected
-                    FilterTextChip(
-                        title = stringResource(id = title),
-                        isSelected = isSelected,
-                        onClick = { onValueChange(idx) },
-                        onCancle = { onValueChange(defaultIdx) }
-                    )
-                }
+            chipTitle.forEachIndexed { idx, title ->
+                val isSelected = idx == selected
+                FilterTextChip(
+                    title = stringResource(id = title),
+                    isSelected = isSelected,
+                    onClick = { onValueChange(idx) },
+                    onCancle = { onValueChange(defaultIdx) }
+                )
             }
         }
     }

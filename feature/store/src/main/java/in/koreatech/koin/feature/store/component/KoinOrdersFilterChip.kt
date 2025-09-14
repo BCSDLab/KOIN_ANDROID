@@ -40,9 +40,9 @@ fun KoinOrdersFilterChip(
                 spotColor = RebrandKoinTheme.colors.neutral500
             )
             .clip(RoundedCornerShape(24.dp))
+            .clickable { onClick() }
             .background(if (active) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral0)
-            .padding(horizontal = 8.dp, vertical = 6.dp)
-            .clickable { onClick() },
+            .padding(horizontal = 8.dp, vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(

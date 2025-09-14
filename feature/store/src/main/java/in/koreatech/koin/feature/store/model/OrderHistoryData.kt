@@ -21,7 +21,7 @@ data class OrderHistoryData(
 )
 
 fun OrderHistoryOrders.toOrderHistoryData(): OrderHistoryData {
-    val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
+    val inputFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd", Locale.getDefault())
     val outputFormatter = DateTimeFormatter.ofPattern("M월 d일 (E)", Locale.KOREA)
     val date = LocalDate.parse(orderDate, inputFormatter)
     val formattedOrderDate = date.format(outputFormatter)

@@ -3,13 +3,6 @@ package `in`.koreatech.koin.feature.store.enums
 import androidx.annotation.StringRes
 import `in`.koreatech.koin.feature.store.R
 
-/*
-enum class LocationOption(@StringRes val stringRes: Int, val isDefault: Boolean = false) {
-    DEFAULT(R.string.filter_option_location, true),
-    CAMPUS(R.string.filter_option_location_campus),
-    OUTSIDE(R.string.filter_option_location_outside)
-}*/
-
 enum class PeriodOption(@StringRes val stringRes: Int, val isDefault: Boolean = false) {
     NONE(R.string.filter_option_period, true),
     LAST_3_MONTHS(R.string.filter_option_period_three_months),
