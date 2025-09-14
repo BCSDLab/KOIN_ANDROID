@@ -212,7 +212,7 @@ fun NavGraphBuilder.koinStoreGraph(
             },
             navigateToDetail = { storeId ->
                 navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId/${false}")
-            },
+            }
         )
     }
 
@@ -246,7 +246,7 @@ fun NavGraphBuilder.koinStoreGraph(
             },
             navigateToDetail = { storeId ->
                 navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId/${false}")
-            },
+            }
         )
     }
 }

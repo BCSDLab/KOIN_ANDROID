@@ -32,7 +32,7 @@ class WebAppBridgeTest {
     internal class WebAppBridgeTestInterface(val testStoreId: Int) : KoinWebAppInterface() {
         @JavascriptInterface
         fun goToShopDetail(shopId: Int) {
-            Log.e("BridgeTest", "result = ${shopId == testStoreId}, StoreId = ${shopId}, TestStoreId = ${testStoreId}")
+            Log.e("BridgeTest", "result = ${shopId == testStoreId}, StoreId = $shopId, TestStoreId = $testStoreId")
         }
     }
 
