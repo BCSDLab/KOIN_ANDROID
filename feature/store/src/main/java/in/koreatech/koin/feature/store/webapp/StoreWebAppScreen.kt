@@ -35,7 +35,8 @@ fun StoreWebAppScreen(
     viewModel: StoreWebAppViewModel = hiltViewModel(),
     finish: () -> Unit = {},
     navigateToMain: () -> Unit = {},
-    navigateToCart: () -> Unit = {}
+    navigateToCart: () -> Unit = {},
+    navigateToDetail: (Int) -> Unit = {}
 ) {
     val context = LocalContext.current
     val dispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
@@ -68,6 +69,11 @@ fun StoreWebAppScreen(
             )
         ),
         koinWebAppInterface = StorePaymentScreenInterface(
+            navigateDetail = { storeId ->
+                (context as Activity).runOnUiThread {
+                    navigateToDetail(storeId)
+                }
+            },
             navigateBack = {
                 (context as Activity).runOnUiThread {
                     dispatcher?.onBackPressed()
@@ -101,6 +107,7 @@ fun StoreWebAppScreen(
 }
 
 internal class StorePaymentScreenInterface(
+    private val navigateDetail: (Int) -> Unit,
     private val navigateBack: () -> Unit,
     private val finish: () -> Unit
 ) : KoinWebAppInterface() {
@@ -109,6 +116,11 @@ internal class StorePaymentScreenInterface(
 
     @JavascriptInterface
     fun finish() = finish.invoke()
+
+    @JavascriptInterface
+    fun goToShopDetail(shopId: Int) {
+        navigateDetail(shopId)
+    }
 }
 
 internal class StorePaymentWebViewClient(private val tokens: Tokens) : KoinWebAppWebViewClient() {
