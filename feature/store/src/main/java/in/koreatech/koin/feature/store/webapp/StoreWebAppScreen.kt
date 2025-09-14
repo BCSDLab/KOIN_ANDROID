@@ -69,7 +69,7 @@ fun StoreWebAppScreen(
             )
         ),
         koinWebAppInterface = StorePaymentScreenInterface(
-            navigateDetail = { storeId ->
+            navigateToDetail = { storeId ->
                 (context as Activity).runOnUiThread {
                     navigateToDetail(storeId)
                 }
@@ -107,7 +107,7 @@ fun StoreWebAppScreen(
 }
 
 internal class StorePaymentScreenInterface(
-    private val navigateDetail: (Int) -> Unit,
+    private val navigateToDetail: (Int) -> Unit,
     private val navigateBack: () -> Unit,
     private val finish: () -> Unit
 ) : KoinWebAppInterface() {
@@ -119,7 +119,7 @@ internal class StorePaymentScreenInterface(
 
     @JavascriptInterface
     fun goToShopDetail(shopId: Int) {
-        navigateDetail(shopId)
+        navigateToDetail(shopId)
     }
 }
 
