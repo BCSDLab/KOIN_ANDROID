@@ -62,7 +62,14 @@ class StoreOrderHistoryViewModel @Inject constructor(
             type = state.filters.orderType?.name ?: "NONE",
             query = state.searchQuery
         ).onSuccess {
-            if (state.currentPage > it.currentPage) return@intent
+            if (state.currentPage > it.currentPage) {
+                reduce {
+                    state.copy(
+                        isLoading = false
+                    )
+                }
+                return@intent
+            }
             reduce {
                 state.copy(
                     isLoading = false,
