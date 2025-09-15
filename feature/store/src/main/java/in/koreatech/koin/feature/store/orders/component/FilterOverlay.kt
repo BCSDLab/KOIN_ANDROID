@@ -116,7 +116,7 @@ fun FilterOverlay(
                     FilterTextChipSelect(
                         title = stringResource(R.string.filter_option_period),
                         selected = localFilters.period.ordinal,
-                        chipTitle = periodValue.filter { !it.isDefault }.map { it.stringRes },
+                        chipItem = periodValue.filter { !it.isDefault }.map { it.stringRes },
                         defaultIdx = periodValue.withIndex().first { it.value.isDefault }.index,
                         onValueChange = { newIdx ->
                             localFilters = localFilters.copy(period = periodValue[newIdx])
@@ -131,7 +131,7 @@ fun FilterOverlay(
                     FilterTextChipSelect(
                         title = stringResource(R.string.filter_option_type),
                         selected = localFilters.type.ordinal,
-                        chipTitle = typeValue.filter { !it.isDefault }.map { it.stringRes },
+                        chipItem = typeValue.filter { !it.isDefault }.map { it.stringRes },
                         defaultIdx = typeValue.withIndex().first { it.value.isDefault }.index,
                         onValueChange = { newIdx ->
                             localFilters = localFilters.copy(type = typeValue[newIdx])
@@ -143,7 +143,7 @@ fun FilterOverlay(
                     FilterTextChipSelect(
                         title = stringResource(R.string.filter_option_status),
                         selected = localFilters.status.ordinal,
-                        chipTitle = statusValue.filter { !it.isDefault }.map { it.stringRes },
+                        chipItem = statusValue.filter { !it.isDefault }.map { it.stringRes },
                         defaultIdx = statusValue.withIndex().first { it.value.isDefault }.index,
                         onValueChange = { newIdx ->
                             localFilters = localFilters.copy(status = statusValue[newIdx])
