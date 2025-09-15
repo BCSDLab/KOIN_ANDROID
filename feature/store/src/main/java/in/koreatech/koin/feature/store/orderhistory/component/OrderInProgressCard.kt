@@ -33,20 +33,20 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
-import `in`.koreatech.koin.feature.store.orderhistory.enums.OrderStatus
-import `in`.koreatech.koin.feature.store.orderhistory.enums.OrderType
-import `in`.koreatech.koin.feature.store.orderhistory.model.OrderInProgressData
+import `in`.koreatech.koin.feature.store.model.LocalOrderInProgress
+import `in`.koreatech.koin.feature.store.model.OrderStatus
+import `in`.koreatech.koin.feature.store.model.OrderType
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Composable
 fun OrderInProgressCard(
-    orderdata: OrderInProgressData,
+    orderdata: LocalOrderInProgress,
     modifier: Modifier = Modifier
 ) {
     val chipIcon = when (orderdata.orderType) {
-        OrderType.PICKUP -> R.drawable.ic_order_takeout
+        OrderType.TAKE_OUT -> R.drawable.ic_order_takeout
         OrderType.DELIVERY -> R.drawable.ic_order_delivery
     }
     val timeFormatter = remember {
@@ -128,7 +128,7 @@ fun OrderInProgressCard(
                     verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     Text(
-                        text = orderdata.orderableShopName,
+                        text = orderdata.shopName,
                         style = RebrandKoinTheme.typography.bold16,
                         color = RebrandKoinTheme.colors.neutral800
                     )
@@ -168,13 +168,13 @@ fun OrderInProgressCard(
 @Composable
 private fun OrderInProgressCardPreview() {
     OrderInProgressCard(
-        orderdata = OrderInProgressData(
+        orderdata = LocalOrderInProgress(
             id = 1,
             paymentId = 2,
             orderType = OrderType.DELIVERY,
             estimatedAt = LocalTime.of(20, 32),
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
-            orderableShopName = "맛있는 족발 - 병천점",
+            shopName = "맛있는 족발 - 병천점",
             orderStatus = OrderStatus.COOKING,
             orderTitle = "족발 + 막국수 저녁 set 외 1건",
             totalAmount = 32500
@@ -186,13 +186,13 @@ private fun OrderInProgressCardPreview() {
 @Composable
 private fun OrderInProgressCardPreview2() {
     OrderInProgressCard(
-        orderdata = OrderInProgressData(
+        orderdata = LocalOrderInProgress(
             id = 1,
             paymentId = 2,
-            orderType = OrderType.PICKUP,
+            orderType = OrderType.TAKE_OUT,
             estimatedAt = LocalTime.of(20, 32),
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
-            orderableShopName = "맛있는 족발 - 병천점",
+            shopName = "맛있는 족발 - 병천점",
             orderStatus = OrderStatus.COOKING,
             orderTitle = "족발 + 막국수 저녁 set 외 1건",
             totalAmount = 32500

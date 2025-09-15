@@ -12,7 +12,7 @@ import `in`.koreatech.koin.feature.store.enums.MinimumPriceOption
 import `in`.koreatech.koin.feature.store.enums.OrderOption
 import `in`.koreatech.koin.feature.store.enums.StoreFilter
 import `in`.koreatech.koin.feature.store.enums.toStoreSorter
-import `in`.koreatech.koin.feature.store.home.model.toLocalOrderInProgress
+import `in`.koreatech.koin.feature.store.model.toLocalOrderInProgress
 import `in`.koreatech.koin.feature.store.model.toLocalShop
 import `in`.koreatech.koin.feature.store.model.toLocalStoreCategories
 import javax.inject.Inject

@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
-import `in`.koreatech.koin.feature.store.orderhistory.enums.OrderStatus
 import `in`.koreatech.koin.feature.store.enums.StoreStatus
+import `in`.koreatech.koin.feature.store.model.OrderStatus
 import `in`.koreatech.koin.feature.store.orderhistory.model.OrderHistoryData
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
