@@ -43,6 +43,7 @@ import `in`.koreatech.koin.feature.store.model.OrderFilter
 import `in`.koreatech.koin.feature.store.model.OrderHistoryData
 import `in`.koreatech.koin.feature.store.orders.component.OrderHistoryCard
 import `in`.koreatech.koin.feature.store.orders.component.SearchBar
+import java.time.LocalDate
 
 @Composable
 fun OrderHistoryScreen(
@@ -198,7 +199,7 @@ private fun OrderHistoryPreview2() {
             paymentId = 1,
             orderableShopId = 1,
             orderStatus = OrderHistoryStatus.CANCELED,
-            orderDate = "9월 5일 (금)",
+            orderDate = LocalDate.of(2025, 9, 5),
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             openStatus = StoreStatus.SOLD_OUT,
             orderableShopName = "맛있는 족발 - 병천점",
@@ -210,7 +211,7 @@ private fun OrderHistoryPreview2() {
             paymentId = 1,
             orderableShopId = 1,
             orderStatus = OrderHistoryStatus.DELIVERED,
-            orderDate = "9월 5일 (금)",
+            orderDate = LocalDate.of(2025, 9, 5),
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             openStatus = StoreStatus.SOLD_OUT,
             orderableShopName = "맛있는 족발 - 병천점",
@@ -238,7 +239,7 @@ private fun OrderHistoryPreview3() {
             paymentId = 1,
             orderableShopId = 1,
             orderStatus = OrderHistoryStatus.CANCELED,
-            orderDate = "9월 5일 (금)",
+            orderDate = LocalDate.of(2025, 9, 5),
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             openStatus = StoreStatus.SOLD_OUT,
             orderableShopName = "맛있는 족발 - 병천점",
@@ -250,7 +251,7 @@ private fun OrderHistoryPreview3() {
             paymentId = 1,
             orderableShopId = 1,
             orderStatus = OrderHistoryStatus.DELIVERED,
-            orderDate = "9월 5일 (금)",
+            orderDate = LocalDate.of(2025, 9, 5),
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             openStatus = StoreStatus.SOLD_OUT,
             orderableShopName = "맛있는 족발 - 병천점",

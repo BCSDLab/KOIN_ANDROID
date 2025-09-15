@@ -31,6 +31,7 @@ import `in`.koreatech.koin.feature.store.enums.OrderInProgressStatus
 import `in`.koreatech.koin.feature.store.enums.TypeOption
 import `in`.koreatech.koin.feature.store.model.OrderInProgressData
 import `in`.koreatech.koin.feature.store.orders.component.OrderInProgressCard
+import java.time.LocalTime
 
 @Composable
 fun OrderInProgressScreen(
@@ -116,7 +117,7 @@ private fun OrderInProgressPreview() {
             id = 1,
             paymentId = 2,
             orderType = TypeOption.TAKE_OUT,
-            estimatedAt = "오후 8:32",
+            estimatedAt = LocalTime.of(20, 32),
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             orderableShopName = "맛있는 족발 - 병천점",
             orderStatus = OrderInProgressStatus.COOKING,
@@ -127,7 +128,7 @@ private fun OrderInProgressPreview() {
             id = 1,
             paymentId = 2,
             orderType = TypeOption.DELIVERY,
-            estimatedAt = "오후 8:32",
+            estimatedAt = LocalTime.of(20, 32),
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             orderableShopName = "맛있는 족발 - 병천점",
             orderStatus = OrderInProgressStatus.COOKING,

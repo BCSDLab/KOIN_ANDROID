@@ -183,7 +183,7 @@
     <string name="order_ongoing_status_delivering_message">열심히 달려가는 중이에요!</string>
     <string name="order_ongoing_status_delivered">배달 완료</string>
     <string name="order_ongoing_status_delivered_message">배달이 완료되었어요 감사합니다!</string>
-    <string name="delivery_time_guide"> 도착 예정</string>
+    <string name="delivery_time_guide">\u00A0도착 예정</string>
     <string name="goto_order_history">과거 주문 내역 보기</string>
     <string name="no_ongoing_orders">준비 중인 주문 내역이 없어요</string>
     <string name="no_history_orders">주문 내역이 없어요</string>

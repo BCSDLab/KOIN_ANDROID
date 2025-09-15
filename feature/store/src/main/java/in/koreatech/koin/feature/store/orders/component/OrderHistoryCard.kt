@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +36,9 @@ import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.enums.OrderHistoryStatus
 import `in`.koreatech.koin.feature.store.enums.StoreStatus
 import `in`.koreatech.koin.feature.store.model.OrderHistoryData
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @Composable
 fun OrderHistoryCard(
@@ -45,6 +49,9 @@ fun OrderHistoryCard(
     onReorderClick: () -> Unit = {}
 ) {
     val textColor = if (orderdata.orderStatus.isActivated) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral400
+    val dateFormatter = remember {
+        DateTimeFormatter.ofPattern("M월 d일 (E)", Locale("ko", "KR"))
+    }
 
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -67,7 +74,7 @@ fun OrderHistoryCard(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = orderdata.orderDate,
+                    text = orderdata.orderDate.format(dateFormatter) ?: "",
                     style = RebrandKoinTheme.typography.regular12,
                     color = textColor
                 )
@@ -167,7 +174,7 @@ private fun OrderHistoryCardPreview() {
             paymentId = 1,
             orderableShopId = 1,
             orderStatus = OrderHistoryStatus.DELIVERED,
-            orderDate = "9월 5일 (금)",
+            orderDate = LocalDate.of(2025, 9, 5),
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             openStatus = StoreStatus.SOLD_OUT,
             orderableShopName = "맛있는 족발 - 병천점",
@@ -189,7 +196,7 @@ private fun OrderHistoryCardPreview2() {
             paymentId = 1,
             orderableShopId = 1,
             orderStatus = OrderHistoryStatus.DELIVERED,
-            orderDate = "9월 5일 (금)",
+            orderDate = LocalDate.of(2025, 9, 5),
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             openStatus = StoreStatus.SOLD_OUT,
             orderableShopName = "맛있는 족발 - 병천점",

@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +36,9 @@ import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.enums.OrderInProgressStatus
 import `in`.koreatech.koin.feature.store.enums.TypeOption
 import `in`.koreatech.koin.feature.store.model.OrderInProgressData
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @Composable
 fun OrderInProgressCard(
@@ -45,6 +49,9 @@ fun OrderInProgressCard(
         TypeOption.TAKE_OUT -> R.drawable.ic_order_takeout
         TypeOption.DELIVERY -> R.drawable.ic_order_delivery
         TypeOption.NONE -> R.drawable.ic_order_delivery
+    }
+    val timeFormatter = remember {
+        DateTimeFormatter.ofPattern("a h:mm", Locale("ko", "KR"))
     }
 
     Card(
@@ -89,7 +96,7 @@ fun OrderInProgressCard(
 
             if (orderdata.orderStatus.showTime) {
                 Text(
-                    text = orderdata.estimatedAt + stringResource(R.string.delivery_time_guide),
+                    text = (orderdata.estimatedAt?.format(timeFormatter) ?: "") + stringResource(R.string.delivery_time_guide),
                     style = RebrandKoinTheme.typography.bold20,
                     color = RebrandKoinTheme.colors.primary700
                 )
@@ -166,7 +173,7 @@ private fun OrderInProgressCardPreview() {
             id = 1,
             paymentId = 2,
             orderType = TypeOption.DELIVERY,
-            estimatedAt = "오후 8:32",
+            estimatedAt = LocalTime.of(20, 32),
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             orderableShopName = "맛있는 족발 - 병천점",
             orderStatus = OrderInProgressStatus.COOKING,
@@ -184,7 +191,7 @@ private fun OrderInProgressCardPreview2() {
             id = 1,
             paymentId = 2,
             orderType = TypeOption.TAKE_OUT,
-            estimatedAt = "오후 8:32",
+            estimatedAt = LocalTime.of(20, 32),
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             orderableShopName = "맛있는 족발 - 병천점",
             orderStatus = OrderInProgressStatus.COOKING,

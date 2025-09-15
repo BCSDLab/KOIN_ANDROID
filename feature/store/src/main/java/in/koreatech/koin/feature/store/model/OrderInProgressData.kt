@@ -13,21 +13,15 @@ data class OrderInProgressData(
     val orderType: TypeOption,
     val orderableShopName: String,
     val orderableShopThumbnail: String,
-    val estimatedAt: String,
+    val estimatedAt: LocalTime?,
     val orderStatus: OrderInProgressStatus,
     val orderTitle: String,
     val totalAmount: Int
 )
 
 fun OrderInProgress.toOrderInProgressData(): OrderInProgressData {
-    val formattedEstimatedAt = if (estimatedAt != null) {
-        val inputFormatter = DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault())
-        val outputFormatter = DateTimeFormatter.ofPattern("a h:mm", Locale.KOREA)
-        val time = LocalTime.parse(estimatedAt, inputFormatter)
-        time.format(outputFormatter)
-    } else {
-        ""
-    }
+    val inputFormatter = DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault())
+    val estimated = estimatedAt?.let { LocalTime.parse(it, inputFormatter) }
 
     return OrderInProgressData(
         id = id,
@@ -35,7 +29,7 @@ fun OrderInProgress.toOrderInProgressData(): OrderInProgressData {
         orderType = TypeOption.valueOf(orderType),
         orderableShopName = orderableShopName,
         orderableShopThumbnail = orderableShopThumbnail,
-        estimatedAt = formattedEstimatedAt,
+        estimatedAt = estimated,
         orderStatus = OrderInProgressStatus.valueOf(orderStatus),
         orderTitle = orderTitle,
         totalAmount = totalAmount
