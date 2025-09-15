@@ -165,8 +165,8 @@
     <string name="order_type_delivery">배달</string>
     <string name="order_type_pickup">포장</string>
     <string name="order_status_none">정보</string>
-    <string name="order_status_completed">완료</string>
-    <string name="order_status_canceled">취소</string>
+    <string name="order_status_filter_completed">완료</string>
+    <string name="order_status_filter_canceled">취소</string>
     <string name="bullet_separator">%s · %s</string>
 
     <string name="order_history_status_canceled">주문 취소</string>

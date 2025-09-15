@@ -321,7 +321,7 @@ private fun SearchBarAndFilter(
         Row(
             modifier = Modifier.padding(horizontal = 24.dp)
         ) {
-            if (filters.orderHistoryPeriod != null || filters.orderType != null || filters.orderStatus != null) {
+            if (filters.orderHistoryPeriod != null || filters.orderType != null || filters.orderStatusFilter != null) {
                 KoinStoreChip(
                     modifier = modifier,
                     text = stringResource(R.string.orders_chip_reset),
@@ -360,15 +360,15 @@ private fun SearchBarAndFilter(
                 text = stringResource(
                     R.string.bullet_separator,
                     if (filters.orderType == null) stringResource(R.string.order_type_none) else stringResource(filters.orderType.stringRes),
-                    if (filters.orderStatus == null) stringResource(R.string.order_status_none) else stringResource(filters.orderStatus.stringRes)
+                    if (filters.orderStatusFilter == null) stringResource(R.string.order_status_none) else stringResource(filters.orderStatusFilter.stringRes)
                 ),
                 chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
-                    containerColor = if (filters.orderType == null || filters.orderStatus == null) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.primary500,
-                    textColor = if (filters.orderType == null || filters.orderStatus == null) RebrandKoinTheme.colors.neutral500 else RebrandKoinTheme.colors.neutral0
+                    containerColor = if (filters.orderType == null || filters.orderStatusFilter == null) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.primary500,
+                    textColor = if (filters.orderType == null || filters.orderStatusFilter == null) RebrandKoinTheme.colors.neutral500 else RebrandKoinTheme.colors.neutral0
                 ),
                 trailingIcon = painterResource(R.drawable.ic_store_arrow_down),
                 trailingIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(
-                    iconColor = if (filters.orderType == null || filters.orderStatus == null) RebrandKoinTheme.colors.neutral500 else RebrandKoinTheme.colors.neutral0
+                    iconColor = if (filters.orderType == null || filters.orderStatusFilter == null) RebrandKoinTheme.colors.neutral500 else RebrandKoinTheme.colors.neutral0
                 ),
                 onClick = { updateShowFilters(true) }
             )

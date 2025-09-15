@@ -33,7 +33,7 @@ import `in`.koreatech.koin.feature.store.component.CommonBottomSheet
 import `in`.koreatech.koin.feature.store.component.KoinStoreChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreChipDefaults
 import `in`.koreatech.koin.feature.store.orderhistory.enums.OrderHistoryPeriod
-import `in`.koreatech.koin.feature.store.orderhistory.enums.OrderStatus
+import `in`.koreatech.koin.feature.store.orderhistory.enums.OrderStatusFilter
 import `in`.koreatech.koin.feature.store.orderhistory.enums.OrderType
 import `in`.koreatech.koin.feature.store.orderhistory.model.StoreOrderHistoryFilters
 
@@ -132,18 +132,18 @@ fun OrderHistoryFilterBottomSheet(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                OrderStatus.entries.forEach {
+                OrderStatusFilter.entries.forEach {
                     KoinStoreChip(
                         text = stringResource(it.stringRes),
                         chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
-                            borderWidth = if (it != temporaryFilters.orderStatus) 1.dp else 0.dp,
+                            borderWidth = if (it != temporaryFilters.orderStatusFilter) 1.dp else 0.dp,
                             borderColor = RebrandKoinTheme.colors.neutral300,
-                            containerColor = if (it != temporaryFilters.orderStatus) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.primary500,
-                            textColor = if (it != temporaryFilters.orderStatus) RebrandKoinTheme.colors.neutral500 else RebrandKoinTheme.colors.neutral0,
+                            containerColor = if (it != temporaryFilters.orderStatusFilter) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.primary500,
+                            textColor = if (it != temporaryFilters.orderStatusFilter) RebrandKoinTheme.colors.neutral500 else RebrandKoinTheme.colors.neutral0,
                             paddingValues = PaddingValues(vertical = 6.dp, horizontal = 12.dp)
                         ),
                         onClick = {
-                            temporaryFilters = temporaryFilters.copy(orderStatus = if (temporaryFilters.orderStatus == it) null else it)
+                            temporaryFilters = temporaryFilters.copy(orderStatusFilter = if (temporaryFilters.orderStatusFilter == it) null else it)
                         }
                     )
                 }
