@@ -189,7 +189,7 @@
     <string name="delivery_time_guide">\u00A0도착 예정</string>
     <string name="goto_order_history">과거 주문 내역 보기</string>
     <string name="no_ongoing_orders">준비 중인 주문 내역이 없어요</string>
-    <string name="no_history_orders">주문 내역이 없어요</string>
+    <string name="no_order_history">주문 내역이 없어요</string>
     <string name="view_order_details">주문 상세 보기</string>
     <string name="order_history">주문 내역</string>
     <string name="order_ongoing_topbar">진행 중</string>
