@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -20,6 +21,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -28,6 +30,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,6 +44,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -66,15 +70,18 @@ import `in`.koreatech.koin.feature.store.search.component.SearchBar
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrderHistoryScreen(
-    viewModel: StoreOrderHistoryViewModel = hiltViewModel()
+    viewModel: StoreOrderHistoryViewModel = hiltViewModel(),
+    navigateToCart: () -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
     val navigator = rememberNavigator()
     val context = LocalContext.current
+    viewModel.collectSideEffect { handleSideEffect(it, navigateToCart) }
 
     LaunchedEffect(Unit) {
         snapshotFlow { uiState.isLoggedIn }.collect {
@@ -82,6 +89,7 @@ fun OrderHistoryScreen(
                 viewModel.updateShowSignInDialog(false)
                 viewModel.getOrderHistories()
                 viewModel.getOrderInProgress()
+                viewModel.getCartItemsCount()
             } else {
                 viewModel.updateShowSignInDialog(true)
             }
@@ -125,12 +133,32 @@ fun OrderHistoryScreen(
             },
             actions = {
                 Box(contentAlignment = Alignment.TopEnd) {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = viewModel::navigateToCart) {
                         Icon(
                             modifier = Modifier.size(25.dp),
                             imageVector = ImageVector.vectorResource(id = R.drawable.ic_shopping_cart),
                             contentDescription = null
                         )
+                    }
+                    if (uiState.cartItemCount > 0) {
+                        Box(
+                            modifier = Modifier
+                                .offset(x = (-5).dp, y = 5.dp)
+                                .size(16.dp)
+                                .background(RebrandKoinTheme.colors.primary500, CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "${uiState.cartItemCount}",
+                                style = RebrandKoinTheme.typography.medium12.copy(
+                                    color = RebrandKoinTheme.colors.neutral0,
+                                    lineHeightStyle = LineHeightStyle(
+                                        trim = LineHeightStyle.Trim.Both,
+                                        alignment = LineHeightStyle.Alignment.Center
+                                    )
+                                )
+                            )
+                        }
                     }
                 }
             },
@@ -461,6 +489,18 @@ private fun SearchBarAndFilter(
         }
     }
 }
+
+private fun handleSideEffect(
+    sideEffect: StoreOrderHistorySideEffect,
+    navigateToCart: () -> Unit
+) {
+    when (sideEffect) {
+        StoreOrderHistorySideEffect.NavigateToCart -> {
+            navigateToCart()
+        }
+    }
+}
+
 
 @Preview
 @Composable

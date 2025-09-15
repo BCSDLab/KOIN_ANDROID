@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.store.orderhistory
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetHistoryRelatedUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetOrderInProgressUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
@@ -13,6 +14,7 @@ import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
@@ -20,7 +22,8 @@ import org.orbitmvi.orbit.viewmodel.container
 class StoreOrderHistoryViewModel @Inject constructor(
     private val getHistoryRelatedUseCase: GetHistoryRelatedUseCase,
     private val getOrderInProgressUseCase: GetOrderInProgressUseCase,
-    private val getUserStatusUseCase: GetUserStatusUseCase
+    private val getUserStatusUseCase: GetUserStatusUseCase,
+    private val getCartItemsCountUseCase: GetCartItemsCountUseCase
 ) : ViewModel(), ContainerHost<StoreOrderHistoryState, StoreOrderHistorySideEffect> {
     override val container = container<StoreOrderHistoryState, StoreOrderHistorySideEffect>(StoreOrderHistoryState())
 
@@ -107,6 +110,31 @@ class StoreOrderHistoryViewModel @Inject constructor(
                 state.copy(
                     orderInProgress = it.map { it.toLocalOrderInProgress() }
                 )
+            }
+        }
+    }
+
+    fun getCartItemsCount() = intent {
+        reduce {
+            state.copy(isLoading = true)
+        }
+        getCartItemsCountUseCase().onSuccess { count ->
+            reduce {
+                state.copy(cartItemCount = count.totalQuantity, isLoading = false)
+            }
+        }.onFailure {
+            reduce {
+                state.copy(isLoading = false)
+            }
+        }
+    }
+
+    fun navigateToCart() = intent {
+        if (state.isLoggedIn) {
+            postSideEffect(StoreOrderHistorySideEffect.NavigateToCart)
+        } else {
+            reduce {
+                state.copy(showSignInDialog = true)
             }
         }
     }

@@ -17,5 +17,6 @@ data class StoreOrderHistoryState(
     val isLoggedIn: Boolean = false,
     val currentPage: Int = 1,
     val totalPage: Int = Int.MAX_VALUE, // This is placeholder
-    val showSignInDialog: Boolean = false
+    val showSignInDialog: Boolean = false,
+    val cartItemCount: Int = 0
 )

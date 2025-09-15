@@ -314,7 +314,11 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
     composable(
         route = StoreMainNavType.StoreMainOrder.route
     ) {
-        OrderHistoryScreen()
+        OrderHistoryScreen(
+            navigateToCart = {
+                navController.navigate(StoreNavType.StoreCart.route)
+            }
+        )
     }
 }
 
