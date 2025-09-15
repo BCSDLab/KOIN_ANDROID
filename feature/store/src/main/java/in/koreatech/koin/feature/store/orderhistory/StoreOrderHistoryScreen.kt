@@ -102,8 +102,8 @@ fun OrderHistoryScreen(
     LaunchedEffect(Unit) {
         combine(
             snapshotFlow { uiState.filters },
-            snapshotFlow { uiState.searchQuery }.debounce(3000L)
-        ) { _, _ -> }.collect {
+            snapshotFlow { uiState.searchQuery }
+        ) { _, _ -> }.debounce(500L).collect {
             if (uiState.isLoggedIn) {
                 viewModel.getOrderHistories()
             }
