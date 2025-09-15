@@ -34,8 +34,8 @@ import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.enums.OrderInProgressStatus
-import `in`.koreatech.koin.feature.store.orderhistory.model.OrderInProgressData
 import `in`.koreatech.koin.feature.store.orderhistory.enums.OrderType
+import `in`.koreatech.koin.feature.store.orderhistory.model.OrderInProgressData
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
