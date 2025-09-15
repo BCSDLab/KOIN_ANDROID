@@ -56,11 +56,13 @@ fun SearchBarFake(
             if (query.isEmpty()) {
                 Text(
                     text = hint,
+                    maxLines = 1,
                     style = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral400)
                 )
             } else {
                 Text(
                     text = query,
+                    maxLines = 1,
                     style = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral600)
                 )
             }
