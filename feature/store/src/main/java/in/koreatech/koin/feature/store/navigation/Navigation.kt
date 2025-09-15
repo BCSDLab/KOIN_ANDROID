@@ -318,7 +318,11 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
             navigateToCart = {
                 navController.navigate(StoreNavType.StoreCart.route)
             }
-        )
+        ) {
+            if (!navController.navigateUp()) {
+                finish()
+            }
+        }
     }
 }
 

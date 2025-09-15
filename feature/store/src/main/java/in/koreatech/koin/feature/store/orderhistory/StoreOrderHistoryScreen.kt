@@ -76,7 +76,8 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun OrderHistoryScreen(
     viewModel: StoreOrderHistoryViewModel = hiltViewModel(),
-    navigateToCart: () -> Unit = {}
+    navigateToCart: () -> Unit = {},
+    onBackPressed: () -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
     val navigator = rememberNavigator()
@@ -130,6 +131,11 @@ fun OrderHistoryScreen(
         KoinStoreTopAppBar(
             title = stringResource(R.string.order_history),
             onNavigationIconClick = {
+                if (uiState.isSearching) {
+                    viewModel.updateIsSearching(false)
+                } else {
+                    onBackPressed()
+                }
             },
             actions = {
                 Box(contentAlignment = Alignment.TopEnd) {
