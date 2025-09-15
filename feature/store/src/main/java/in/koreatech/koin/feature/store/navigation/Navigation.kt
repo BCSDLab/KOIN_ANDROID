@@ -317,6 +317,9 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
         OrderHistoryScreen(
             navigateToCart = {
                 navController.navigate(StoreNavType.StoreCart.route)
+            },
+            navigateToOrderResult = { orderId ->
+                navController.navigate("${StoreNavType.StoreOrderResult.route}/$orderId")
             }
         ) {
             if (!navController.navigateUp()) {

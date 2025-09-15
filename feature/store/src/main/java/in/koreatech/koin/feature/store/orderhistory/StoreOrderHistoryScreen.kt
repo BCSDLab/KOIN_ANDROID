@@ -78,6 +78,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun OrderHistoryScreen(
     viewModel: StoreOrderHistoryViewModel = hiltViewModel(),
     navigateToCart: () -> Unit = {},
+    navigateToOrderResult: (Int) -> Unit = {},
     onBackPressed: () -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
@@ -227,7 +228,8 @@ fun OrderHistoryScreen(
                         updateFilters = viewModel::updateFilters,
                         updateIsSearching = viewModel::updateIsSearching,
                         updateSearchQuery = viewModel::updateSearchQuery,
-                        requestNextPage = viewModel::requestNextPage
+                        requestNextPage = viewModel::requestNextPage,
+                        navigateToOrderResult = navigateToOrderResult
                     )
                 }
             }
@@ -237,7 +239,8 @@ fun OrderHistoryScreen(
                     OrderInProgressEmptyScreen()
                 } else {
                     OrderInProgressScreen(
-                        orderInProgress = uiState.orderInProgress
+                        orderInProgress = uiState.orderInProgress,
+                        navigateToOrderResult = navigateToOrderResult
                     )
                 }
             }
@@ -258,7 +261,8 @@ private fun OrderHistoryScreen(
     updateShowFilters: (Boolean) -> Unit = {},
     updateFilters: (StoreOrderHistoryFilters) -> Unit = {},
     updateSearchQuery: (String) -> Unit = {},
-    requestNextPage: () -> Unit = {}
+    requestNextPage: () -> Unit = {},
+    navigateToOrderResult: (Int) -> Unit = {}
 ) {
     val listState = rememberLazyListState()
 
@@ -313,7 +317,10 @@ private fun OrderHistoryScreen(
             ) {
                 items(orderHistories) {
                     OrderHistoryCard(
-                        orderHistoryData = it
+                        orderHistoryData = it,
+                        onDetailClick = {
+                            navigateToOrderResult(it.paymentId)
+                        }
                     )
                 }
 
@@ -357,7 +364,8 @@ private fun OrderHistoryEmptyScreen() {
 
 @Composable
 private fun OrderInProgressScreen(
-    orderInProgress: List<LocalOrderInProgress>
+    orderInProgress: List<LocalOrderInProgress>,
+    navigateToOrderResult: (Int) -> Unit = {}
 ) {
     LazyColumn(
         modifier = Modifier
@@ -367,7 +375,10 @@ private fun OrderInProgressScreen(
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
         items(orderInProgress) {
-            OrderInProgressCard(it)
+            OrderInProgressCard(
+                orderdata = it,
+                onDetailClick = { navigateToOrderResult(it.paymentId) }
+            )
         }
     }
 }

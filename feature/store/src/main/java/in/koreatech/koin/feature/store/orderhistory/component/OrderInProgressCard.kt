@@ -43,7 +43,8 @@ import java.util.Locale
 @Composable
 fun OrderInProgressCard(
     orderdata: LocalOrderInProgress,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onDetailClick: () -> Unit = {}
 ) {
     val chipIcon = when (orderdata.orderType) {
         OrderType.TAKE_OUT -> R.drawable.ic_order_takeout
@@ -149,7 +150,7 @@ fun OrderInProgressCard(
 
             OutlinedButton(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { },
+                onClick = onDetailClick,
                 shape = RoundedCornerShape(8.dp),
                 contentPadding = PaddingValues(vertical = 8.dp, horizontal = 12.dp),
                 border = BorderStroke(1.dp, RebrandKoinTheme.colors.primary500)
