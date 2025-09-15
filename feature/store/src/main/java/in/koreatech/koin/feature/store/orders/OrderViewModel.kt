@@ -88,7 +88,7 @@ class OrderViewModel @Inject constructor(
         intent {
             if (state.isLoggedIn == null) {
                 delay(50)
-                getOrderHistoryData()
+                getOrderInProgressData()
             } else if (state.isLoggedIn!!) {
                 reduce {
                     state.copy(
