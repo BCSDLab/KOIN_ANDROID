@@ -1,7 +1,7 @@
-package `in`.koreatech.koin.feature.store.orders.component
+package `in`.koreatech.koin.feature.store.orderhistory.component
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,29 +33,30 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
-import `in`.koreatech.koin.feature.store.enums.OrderHistoryStatus
-import `in`.koreatech.koin.feature.store.enums.StoreStatus
-import `in`.koreatech.koin.feature.store.model.OrderHistoryData
-import java.time.LocalDate
+import `in`.koreatech.koin.feature.store.enums.OrderInProgressStatus
+import `in`.koreatech.koin.feature.store.enums.TypeOption
+import `in`.koreatech.koin.feature.store.model.OrderInProgressData
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Composable
-fun OrderHistoryCard(
-    orderdata: OrderHistoryData,
-    modifier: Modifier = Modifier,
-    onDetailClick: () -> Unit = {},
-    onWriteReviewClick: () -> Unit = {},
-    onReorderClick: () -> Unit = {}
+fun OrderInProgressCard(
+    orderdata: OrderInProgressData,
+    modifier: Modifier = Modifier
 ) {
-    val textColor = if (orderdata.orderStatus.isActivated) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral400
-    val dateFormatter = remember {
-        DateTimeFormatter.ofPattern("M월 d일 (E)", Locale("ko", "KR"))
+    val chipIcon = when (orderdata.orderType) {
+        TypeOption.TAKE_OUT -> R.drawable.ic_order_takeout
+        TypeOption.DELIVERY -> R.drawable.ic_order_delivery
+        TypeOption.NONE -> R.drawable.ic_order_delivery
+    }
+    val timeFormatter = remember {
+        DateTimeFormatter.ofPattern("a h:mm", Locale("ko", "KR"))
     }
 
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RebrandKoinTheme.shapes.medium,
+        shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(RebrandKoinTheme.colors.neutral0),
         border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral200)
     ) {
@@ -65,40 +66,50 @@ fun OrderHistoryCard(
                 .padding(vertical = 16.dp, horizontal = 24.dp)
         ) {
             Row(
+                modifier = modifier
+                    .clip(RoundedCornerShape(4.dp))
+                    .background(RebrandKoinTheme.colors.primary100)
+                    .padding(horizontal = 6.dp, vertical = 2.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = stringResource(orderdata.orderStatus.stringRes),
-                    style = RebrandKoinTheme.typography.bold16,
-                    color = textColor
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = chipIcon),
+                    contentDescription = null,
+                    tint = RebrandKoinTheme.colors.primary500,
+                    modifier = modifier.size(16.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = orderdata.orderDate.format(dateFormatter) ?: "",
-                    style = RebrandKoinTheme.typography.regular12,
-                    color = textColor
+                    text = stringResource(orderdata.orderType.stringRes),
+                    style = RebrandKoinTheme.typography.medium12,
+                    color = RebrandKoinTheme.colors.primary500
                 )
-                Spacer(modifier = Modifier.weight(1f))
-                Row(
-                    modifier = Modifier.clickable(onClick = onDetailClick)
-                ) {
-                    Text(
-                        text = stringResource(R.string.order_detail),
-                        style = RebrandKoinTheme.typography.medium12,
-                        color = RebrandKoinTheme.colors.neutral500
-                    )
-                    Spacer(modifier = Modifier.width(2.dp))
-                    Icon(
-                        modifier = Modifier.size(20.dp),
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_right_round),
-                        contentDescription = "",
-                        tint = RebrandKoinTheme.colors.neutral500
-                    )
-                }
             }
 
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                text = stringResource(orderdata.orderStatus.stringRes),
+                style = RebrandKoinTheme.typography.bold20,
+                color = RebrandKoinTheme.colors.primary500
+            )
+
+            if (orderdata.orderStatus.showTime) {
+                Text(
+                    text = (orderdata.estimatedAt?.format(timeFormatter) ?: "") + stringResource(R.string.delivery_time_guide),
+                    style = RebrandKoinTheme.typography.bold20,
+                    color = RebrandKoinTheme.colors.primary700
+                )
+            }
+
+            Text(
+                text = stringResource(orderdata.orderStatus.stringResMessage),
+                style = RebrandKoinTheme.typography.regular12,
+                color = RebrandKoinTheme.colors.neutral500
+            )
+
             HorizontalDivider(
-                modifier = Modifier.padding(vertical = 12.dp),
+                modifier = Modifier.padding(vertical = 16.dp),
                 color = RebrandKoinTheme.colors.neutral200
             )
 
@@ -110,7 +121,7 @@ fun OrderHistoryCard(
                     contentDescription = "",
                     modifier = Modifier
                         .size(88.dp)
-                        .clip(RebrandKoinTheme.shapes.extraSmall),
+                        .clip(RoundedCornerShape(4.dp)),
                     contentScale = ContentScale.Crop
                 )
                 Spacer(modifier = Modifier.width(11.dp))
@@ -122,13 +133,11 @@ fun OrderHistoryCard(
                         style = RebrandKoinTheme.typography.bold16,
                         color = RebrandKoinTheme.colors.neutral800
                     )
-                    Spacer(modifier = Modifier.height(6.dp))
                     Text(
                         text = orderdata.orderTitle,
                         style = RebrandKoinTheme.typography.medium14,
                         color = RebrandKoinTheme.colors.neutral800
                     )
-                    Spacer(modifier = Modifier.height(6.dp))
                     Text(
                         text = stringResource(R.string.order_histroy_price_won, orderdata.totalAmount),
                         style = RebrandKoinTheme.typography.bold14,
@@ -139,72 +148,55 @@ fun OrderHistoryCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (orderdata.orderStatus.isActivated) {
-                OutlinedButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = onWriteReviewClick,
-                    shape = RoundedCornerShape(8.dp),
-                    contentPadding = PaddingValues(vertical = 8.dp, horizontal = 12.dp),
-                    border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral400)
-                ) {
-                    Text(
-                        text = stringResource(R.string.write_review),
-                        style = RebrandKoinTheme.typography.bold14,
-                        color = RebrandKoinTheme.colors.neutral600
-                    )
-                }
-
-                Spacer(modifier = Modifier.width(12.dp))
+            OutlinedButton(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = { },
+                shape = RoundedCornerShape(8.dp),
+                contentPadding = PaddingValues(vertical = 8.dp, horizontal = 12.dp),
+                border = BorderStroke(1.dp, RebrandKoinTheme.colors.primary500)
+            ) {
+                Text(
+                    text = stringResource(R.string.view_order_details),
+                    style = RebrandKoinTheme.typography.bold14,
+                    color = RebrandKoinTheme.colors.primary500
+                )
             }
-
-            MenuAddButton(
-                status = orderdata.openStatus,
-                onClick = onReorderClick
-            )
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun OrderHistoryCardPreview() {
-    OrderHistoryCard(
-        orderdata = OrderHistoryData(
+private fun OrderInProgressCardPreview() {
+    OrderInProgressCard(
+        orderdata = OrderInProgressData(
             id = 1,
-            paymentId = 1,
-            orderableShopId = 1,
-            orderStatus = OrderHistoryStatus.DELIVERED,
-            orderDate = LocalDate.of(2025, 9, 5),
+            paymentId = 2,
+            orderType = TypeOption.DELIVERY,
+            estimatedAt = LocalTime.of(20, 32),
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
-            openStatus = StoreStatus.SOLD_OUT,
             orderableShopName = "맛있는 족발 - 병천점",
+            orderStatus = OrderInProgressStatus.COOKING,
             orderTitle = "족발 + 막국수 저녁 set 외 1건",
             totalAmount = 32500
-        ),
-        onDetailClick = { },
-        onWriteReviewClick = { },
-        onReorderClick = { }
+        )
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun OrderHistoryCardPreview2() {
-    OrderHistoryCard(
-        orderdata = OrderHistoryData(
+private fun OrderInProgressCardPreview2() {
+    OrderInProgressCard(
+        orderdata = OrderInProgressData(
             id = 1,
-            paymentId = 1,
-            orderableShopId = 1,
-            orderStatus = OrderHistoryStatus.DELIVERED,
-            orderDate = LocalDate.of(2025, 9, 5),
+            paymentId = 2,
+            orderType = TypeOption.TAKE_OUT,
+            estimatedAt = LocalTime.of(20, 32),
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
-            openStatus = StoreStatus.SOLD_OUT,
             orderableShopName = "맛있는 족발 - 병천점",
+            orderStatus = OrderInProgressStatus.COOKING,
             orderTitle = "족발 + 막국수 저녁 set 외 1건",
             totalAmount = 32500
-        ),
-        onDetailClick = { },
-        onWriteReviewClick = { },
-        onReorderClick = { }
+        )
     )
 }
