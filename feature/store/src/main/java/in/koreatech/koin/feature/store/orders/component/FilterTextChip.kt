@@ -1,22 +1,19 @@
 package `in`.koreatech.koin.feature.store.orders.component
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.component.chip.TextChip
-import `in`.koreatech.koin.core.designsystem.component.chip.TextChipDefaults
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.store.component.KoinStoreChip
+import `in`.koreatech.koin.feature.store.component.KoinStoreChipDefaults
 
 @Composable
 fun FilterTextChipSelect(
@@ -47,7 +44,7 @@ fun FilterTextChipSelect(
                     title = stringResource(id = title),
                     isSelected = isSelected,
                     onClick = { onValueChange(idx) },
-                    onCancle = { onValueChange(defaultIdx) }
+                    onCancel = { onValueChange(defaultIdx) }
                 )
             }
         }
@@ -60,36 +57,18 @@ fun FilterTextChip(
     isSelected: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
-    onCancle: () -> Unit = {}
+    onCancel: () -> Unit = {}
 ) {
-    TextChip(
-        title = title,
-        modifier = modifier
-            .shadow(
-                elevation = 4.dp,
-                shape = RoundedCornerShape(24.dp),
-                ambientColor = RebrandKoinTheme.colors.neutral400,
-                spotColor = RebrandKoinTheme.colors.neutral500
-            )
-            .then(
-                if (isSelected) {
-                    Modifier
-                } else {
-                    Modifier
-                        .border(
-                            width = 1.dp,
-                            color = RebrandKoinTheme.colors.neutral300,
-                            shape = CircleShape
-                        )
-                }
-            ),
-        isSelected = isSelected,
-        onSelect = { if (isSelected) onCancle() else onClick() },
-        chipColors = TextChipDefaults.chipColors(
-            RebrandKoinTheme.colors.primary500,
-            RebrandKoinTheme.colors.neutral0,
-            RebrandKoinTheme.colors.neutral0,
-            RebrandKoinTheme.colors.neutral500
-        )
+    KoinStoreChip(
+        modifier = modifier,
+        text = title,
+        chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
+            borderWidth = if (isSelected) 1.dp else 0.dp,
+            borderColor = RebrandKoinTheme.colors.neutral300,
+            containerColor = if (isSelected) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral0,
+            textColor = if (isSelected) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.neutral500,
+            paddingValues = PaddingValues(vertical = 6.dp, horizontal = 12.dp)
+        ),
+        onClick = if (isSelected) onCancel else onClick
     )
 }
