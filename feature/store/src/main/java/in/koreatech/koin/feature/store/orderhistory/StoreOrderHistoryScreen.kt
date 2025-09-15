@@ -56,6 +56,7 @@ import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_HOME
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreChipDefaults
+import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreSignInDialog
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.SearchBarFake
@@ -113,6 +114,19 @@ fun OrderHistoryScreen(
             if (uiState.isLoggedIn) {
                 viewModel.getMoreOrderHistories()
             }
+        }
+    }
+
+    if (uiState.isLoading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .zIndex(4f),
+            contentAlignment = Alignment.Center
+        ) {
+            KoinStoreProgressIndicator(
+                modifier = Modifier.size(150.dp)
+            )
         }
     }
 
