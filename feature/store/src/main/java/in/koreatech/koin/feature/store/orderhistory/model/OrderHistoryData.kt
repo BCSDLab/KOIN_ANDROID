@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.model
+package `in`.koreatech.koin.feature.store.orderhistory.model
 
 import `in`.koreatech.koin.domain.model.store.OrderHistoryOrders
 import `in`.koreatech.koin.feature.store.enums.OrderHistoryStatus

@@ -35,20 +35,20 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.enums.OrderHistoryStatus
 import `in`.koreatech.koin.feature.store.enums.StoreStatus
-import `in`.koreatech.koin.feature.store.model.OrderHistoryData
+import `in`.koreatech.koin.feature.store.orderhistory.model.OrderHistoryData
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Composable
 fun OrderHistoryCard(
-    orderdata: OrderHistoryData,
+    orderHistoryData: OrderHistoryData,
     modifier: Modifier = Modifier,
     onDetailClick: () -> Unit = {},
     onWriteReviewClick: () -> Unit = {},
     onReorderClick: () -> Unit = {}
 ) {
-    val textColor = if (orderdata.orderStatus.isActivated) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral400
+    val textColor = if (orderHistoryData.orderStatus.isActivated) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral400
     val dateFormatter = remember {
         DateTimeFormatter.ofPattern("M월 d일 (E)", Locale("ko", "KR"))
     }
@@ -68,13 +68,13 @@ fun OrderHistoryCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(orderdata.orderStatus.stringRes),
+                    text = stringResource(orderHistoryData.orderStatus.stringRes),
                     style = RebrandKoinTheme.typography.bold16,
                     color = textColor
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = orderdata.orderDate.format(dateFormatter) ?: "",
+                    text = orderHistoryData.orderDate.format(dateFormatter) ?: "",
                     style = RebrandKoinTheme.typography.regular12,
                     color = textColor
                 )
@@ -106,7 +106,7 @@ fun OrderHistoryCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AsyncImage(
-                    model = orderdata.orderableShopThumbnail,
+                    model = orderHistoryData.orderableShopThumbnail,
                     contentDescription = "",
                     modifier = Modifier
                         .size(88.dp)
@@ -118,19 +118,19 @@ fun OrderHistoryCard(
                     verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     Text(
-                        text = orderdata.orderableShopName,
+                        text = orderHistoryData.orderableShopName,
                         style = RebrandKoinTheme.typography.bold16,
                         color = RebrandKoinTheme.colors.neutral800
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = orderdata.orderTitle,
+                        text = orderHistoryData.orderTitle,
                         style = RebrandKoinTheme.typography.medium14,
                         color = RebrandKoinTheme.colors.neutral800
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = stringResource(R.string.order_histroy_price_won, orderdata.totalAmount),
+                        text = stringResource(R.string.order_histroy_price_won, orderHistoryData.totalAmount),
                         style = RebrandKoinTheme.typography.bold14,
                         color = RebrandKoinTheme.colors.neutral800
                     )
@@ -139,7 +139,7 @@ fun OrderHistoryCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (orderdata.orderStatus.isActivated) {
+            if (orderHistoryData.orderStatus.isActivated) {
                 OutlinedButton(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = onWriteReviewClick,
@@ -158,7 +158,7 @@ fun OrderHistoryCard(
             }
 
             MenuAddButton(
-                status = orderdata.openStatus,
+                status = orderHistoryData.openStatus,
                 onClick = onReorderClick
             )
         }
@@ -169,7 +169,7 @@ fun OrderHistoryCard(
 @Composable
 private fun OrderHistoryCardPreview() {
     OrderHistoryCard(
-        orderdata = OrderHistoryData(
+        orderHistoryData = OrderHistoryData(
             id = 1,
             paymentId = 1,
             orderableShopId = 1,
@@ -191,7 +191,7 @@ private fun OrderHistoryCardPreview() {
 @Composable
 private fun OrderHistoryCardPreview2() {
     OrderHistoryCard(
-        orderdata = OrderHistoryData(
+        orderHistoryData = OrderHistoryData(
             id = 1,
             paymentId = 1,
             orderableShopId = 1,

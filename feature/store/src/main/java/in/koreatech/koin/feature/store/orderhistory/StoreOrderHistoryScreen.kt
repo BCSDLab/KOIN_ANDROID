@@ -1,10 +1,13 @@
 package `in`.koreatech.koin.feature.store.orderhistory
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +15,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,14 +38,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreChipDefaults
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.SearchBarFake
+import `in`.koreatech.koin.feature.store.orderhistory.component.OrderHistoryCard
 import `in`.koreatech.koin.feature.store.orderhistory.component.OrderHistoryFilterBottomSheet
+import `in`.koreatech.koin.feature.store.orderhistory.component.OrderInProgressCard
 import `in`.koreatech.koin.feature.store.orderhistory.enums.OrderHistoryTabs
+import `in`.koreatech.koin.feature.store.orderhistory.model.OrderHistoryData
+import `in`.koreatech.koin.feature.store.orderhistory.model.OrderInProgressData
 import `in`.koreatech.koin.feature.store.orderhistory.model.StoreOrderHistoryFilters
 import `in`.koreatech.koin.feature.store.search.component.SearchBar
 import org.orbitmvi.orbit.compose.collectAsState
@@ -98,20 +109,33 @@ fun OrderHistoryScreen(
 
         when (uiState.selectedIndex) {
             0 -> {
-                OrderHistoryScreen(
-                    showFilters = uiState.showFilters,
-                    filters = uiState.filters,
-                    isSearching = uiState.isSearching,
-                    searchQuery = uiState.searchQuery,
-                    modifier = Modifier,
-                    updateShowFilters = viewModel::updateShowFilters,
-                    updateFilters = viewModel::updateFilters,
-                    updateIsSearching = viewModel::updateIsSearching,
-                    updateSearchQuery = viewModel::updateSearchQuery
-                )
+                if (uiState.orderHistories.isEmpty()) {
+                    OrderHistoryEmptyScreen()
+                } else {
+                    OrderHistoryScreen(
+                        showFilters = uiState.showFilters,
+                        filters = uiState.filters,
+                        isSearching = uiState.isSearching,
+                        searchQuery = uiState.searchQuery,
+                        orderHistories = uiState.orderHistories,
+                        modifier = Modifier,
+                        updateShowFilters = viewModel::updateShowFilters,
+                        updateFilters = viewModel::updateFilters,
+                        updateIsSearching = viewModel::updateIsSearching,
+                        updateSearchQuery = viewModel::updateSearchQuery
+                    )
+                }
             }
 
-            1 -> {}
+            1 -> {
+                if (uiState.orderInProgress.isEmpty()) {
+                    OrderInProgressEmptyScreen()
+                } else {
+                    OrderInProgressScreen(
+                        orderInProgress = uiState.orderInProgress
+                    )
+                }
+            }
         }
     }
 }
@@ -122,6 +146,7 @@ private fun OrderHistoryScreen(
     filters: StoreOrderHistoryFilters,
     isSearching: Boolean,
     searchQuery: String,
+    orderHistories: List<OrderHistoryData>,
     modifier: Modifier = Modifier,
     updateIsSearching: (Boolean) -> Unit = {},
     updateShowFilters: (Boolean) -> Unit = {},
@@ -159,7 +184,93 @@ private fun OrderHistoryScreen(
                 updateIsSearching = updateIsSearching,
                 updateSearchQuery = updateSearchQuery
             )
+
+            LazyColumn(
+                modifier = Modifier.padding(horizontal = 24.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(orderHistories) {
+                    OrderHistoryCard(
+                        orderHistoryData = it
+                    )
+                }
+            }
         }
+    }
+}
+
+@Composable
+private fun OrderHistoryEmptyScreen() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            imageVector = ImageVector.vectorResource(R.drawable.ic_bbiko_sleep),
+            contentDescription = null
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        BasicText(
+            text = stringResource(R.string.no_order_history),
+            style = RebrandKoinTheme.typography.medium18.merge(
+                color = RebrandKoinTheme.colors.primary500
+            )
+        )
+    }
+}
+
+@Composable
+private fun OrderInProgressScreen(
+    orderInProgress: List<OrderInProgressData>
+) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        items(orderInProgress) {
+            OrderInProgressCard(it)
+        }
+    }
+}
+
+@Composable
+private fun OrderInProgressEmptyScreen() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            imageVector = ImageVector.vectorResource(R.drawable.ic_bbiko_sleep),
+            contentDescription = null
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        BasicText(
+            text = stringResource(R.string.no_ongoing_orders),
+            style = RebrandKoinTheme.typography.medium18.merge(
+                color = RebrandKoinTheme.colors.primary500
+            )
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        FilledButton(
+            shape = RebrandKoinTheme.shapes.small,
+            onClick = {},
+            text = stringResource(R.string.goto_order_history),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = RebrandKoinTheme.colors.neutral0,
+                contentColor = RebrandKoinTheme.colors.neutral500
+            ),
+            contentPadding = PaddingValues(vertical = 4.dp, horizontal = 8.dp)
+        )
     }
 }
 
@@ -272,6 +383,7 @@ private fun OrderHistoryScreenPreview() {
         searchQuery = "",
         isSearching = false,
         showFilters = false,
+        orderHistories = emptyList(),
         filters = StoreOrderHistoryFilters(),
         modifier = Modifier
     )
