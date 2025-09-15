@@ -36,6 +36,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,9 +47,12 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
+import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_HOME
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreChipDefaults
+import `in`.koreatech.koin.feature.store.component.KoinStoreSignInDialog
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.SearchBarFake
 import `in`.koreatech.koin.feature.store.model.LocalOrderInProgress
@@ -69,12 +73,17 @@ fun OrderHistoryScreen(
     viewModel: StoreOrderHistoryViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.collectAsState()
+    val navigator = rememberNavigator()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         snapshotFlow { uiState.isLoggedIn }.collect {
             if (it) {
+                viewModel.updateShowSignInDialog(false)
                 viewModel.getOrderHistories()
                 viewModel.getOrderInProgress()
+            } else {
+                viewModel.updateShowSignInDialog(true)
             }
         }
     }
@@ -96,6 +105,15 @@ fun OrderHistoryScreen(
                 viewModel.getMoreOrderHistories()
             }
         }
+    }
+
+    if (uiState.showSignInDialog) {
+        KoinStoreSignInDialog(
+            onPositive = {
+                navigator.navigateToSignIn(context, DEEPLINK_STORE_MAIN_HOME)
+            },
+            onNegative = { viewModel.updateShowSignInDialog(false) }
+        )
     }
 
     Column(

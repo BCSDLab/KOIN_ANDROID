@@ -16,5 +16,6 @@ data class StoreOrderHistoryState(
     val orderInProgress: List<LocalOrderInProgress> = emptyList(),
     val isLoggedIn: Boolean = false,
     val currentPage: Int = 1,
-    val totalPage: Int = Int.MAX_VALUE // This is placeholder
+    val totalPage: Int = Int.MAX_VALUE, // This is placeholder
+    val showSignInDialog: Boolean = false
 )

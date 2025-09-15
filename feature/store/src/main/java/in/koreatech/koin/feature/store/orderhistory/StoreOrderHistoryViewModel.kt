@@ -159,4 +159,12 @@ class StoreOrderHistoryViewModel @Inject constructor(
             )
         }
     }
+
+    fun updateShowSignInDialog(showSignInDialog: Boolean) = blockingIntent {
+        reduce {
+            state.copy(
+                showSignInDialog = showSignInDialog
+            )
+        }
+    }
 }
