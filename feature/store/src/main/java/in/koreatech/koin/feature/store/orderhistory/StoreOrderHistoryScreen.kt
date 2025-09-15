@@ -90,7 +90,6 @@ fun OrderHistoryScreen(
         snapshotFlow { uiState.isLoggedIn }.collect {
             if (it) {
                 viewModel.updateShowSignInDialog(false)
-                viewModel.getOrderHistories()
                 viewModel.getOrderInProgress()
                 viewModel.getCartItemsCount()
             } else {
