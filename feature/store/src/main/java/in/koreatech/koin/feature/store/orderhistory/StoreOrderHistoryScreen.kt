@@ -11,14 +11,18 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,7 +30,9 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -45,14 +51,16 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreChipDefaults
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.SearchBarFake
+import `in`.koreatech.koin.feature.store.model.LocalOrderInProgress
 import `in`.koreatech.koin.feature.store.orderhistory.component.OrderHistoryCard
 import `in`.koreatech.koin.feature.store.orderhistory.component.OrderHistoryFilterBottomSheet
 import `in`.koreatech.koin.feature.store.orderhistory.component.OrderInProgressCard
 import `in`.koreatech.koin.feature.store.orderhistory.enums.OrderHistoryTabs
 import `in`.koreatech.koin.feature.store.orderhistory.model.OrderHistoryData
-import `in`.koreatech.koin.feature.store.orderhistory.model.OrderInProgressData
 import `in`.koreatech.koin.feature.store.orderhistory.model.StoreOrderHistoryFilters
 import `in`.koreatech.koin.feature.store.search.component.SearchBar
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
 import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,6 +69,35 @@ fun OrderHistoryScreen(
     viewModel: StoreOrderHistoryViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.collectAsState()
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { uiState.isLoggedIn }.collect {
+            if (it) {
+                viewModel.getOrderHistories()
+                viewModel.getOrderInProgress()
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        combine(
+            snapshotFlow { uiState.filters },
+            snapshotFlow { uiState.searchQuery }.debounce(3000L)
+        ) { _, _ -> }.collect {
+            if (uiState.isLoggedIn) {
+                viewModel.getOrderHistories()
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { uiState.currentPage }.collect {
+            if (uiState.isLoggedIn) {
+                viewModel.getMoreOrderHistories()
+            }
+        }
+    }
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -113,6 +150,7 @@ fun OrderHistoryScreen(
                     OrderHistoryEmptyScreen()
                 } else {
                     OrderHistoryScreen(
+                        isLoadingNextPage = uiState.isLoadingNextPage,
                         showFilters = uiState.showFilters,
                         filters = uiState.filters,
                         isSearching = uiState.isSearching,
@@ -122,7 +160,8 @@ fun OrderHistoryScreen(
                         updateShowFilters = viewModel::updateShowFilters,
                         updateFilters = viewModel::updateFilters,
                         updateIsSearching = viewModel::updateIsSearching,
-                        updateSearchQuery = viewModel::updateSearchQuery
+                        updateSearchQuery = viewModel::updateSearchQuery,
+                        requestNextPage = viewModel::requestNextPage
                     )
                 }
             }
@@ -146,53 +185,81 @@ private fun OrderHistoryScreen(
     filters: StoreOrderHistoryFilters,
     isSearching: Boolean,
     searchQuery: String,
+    isLoadingNextPage: Boolean,
     orderHistories: List<OrderHistoryData>,
     modifier: Modifier = Modifier,
     updateIsSearching: (Boolean) -> Unit = {},
     updateShowFilters: (Boolean) -> Unit = {},
     updateFilters: (StoreOrderHistoryFilters) -> Unit = {},
-    updateSearchQuery: (String) -> Unit = {}
+    updateSearchQuery: (String) -> Unit = {},
+    requestNextPage: () -> Unit = {}
 ) {
-    Box(
-        modifier = modifier
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { listState.shouldRequestNextPage() }.collect {
+            if (it) {
+                requestNextPage()
+            }
+        }
+    }
+
+    Column(
+        modifier = Modifier.fillMaxSize()
     ) {
-        if (isSearching) {
-            BackHandler {
-                updateIsSearching(false)
+        SearchBarAndFilter(
+            modifier = Modifier.zIndex(2f),
+            showFilters = showFilters,
+            filters = filters,
+            isSearching = isSearching,
+            searchQuery = searchQuery,
+            updateFilters = updateFilters,
+            updateShowFilters = updateShowFilters,
+            updateIsSearching = updateIsSearching,
+            updateSearchQuery = updateSearchQuery
+        )
+
+        Box(
+            modifier = modifier
+        ) {
+            if (isSearching) {
+                BackHandler {
+                    updateIsSearching(false)
+                }
+
+                Box(
+                    modifier = Modifier
+                        .zIndex(1f)
+                        .fillMaxSize()
+                        .background(RebrandKoinTheme.colors.neutral800.copy(alpha = 0.7f))
+                        .clickable {
+                            updateIsSearching(false)
+                        }
+                )
             }
 
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(RebrandKoinTheme.colors.neutral800.copy(alpha = 0.7f))
-                    .clickable {
-                        updateIsSearching(false)
-                    }
-            )
-        }
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            SearchBarAndFilter(
-                modifier = Modifier.zIndex(2f),
-                showFilters = showFilters,
-                filters = filters,
-                isSearching = isSearching,
-                searchQuery = searchQuery,
-                updateFilters = updateFilters,
-                updateShowFilters = updateShowFilters,
-                updateIsSearching = updateIsSearching,
-                updateSearchQuery = updateSearchQuery
-            )
-
             LazyColumn(
-                modifier = Modifier.padding(horizontal = 24.dp),
+                modifier = Modifier
+                    .padding(horizontal = 24.dp)
+                    .zIndex(0f),
+                state = listState,
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(orderHistories) {
                     OrderHistoryCard(
                         orderHistoryData = it
                     )
+                }
+
+                item {
+                    if (isLoadingNextPage) {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    }
                 }
             }
         }
@@ -224,13 +291,14 @@ private fun OrderHistoryEmptyScreen() {
 
 @Composable
 private fun OrderInProgressScreen(
-    orderInProgress: List<OrderInProgressData>
+    orderInProgress: List<LocalOrderInProgress>
 ) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 24.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(vertical = 16.dp)
     ) {
         items(orderInProgress) {
             OrderInProgressCard(it)
@@ -380,6 +448,7 @@ private fun SearchBarAndFilter(
 @Composable
 private fun OrderHistoryScreenPreview() {
     OrderHistoryScreen(
+        isLoadingNextPage = false,
         searchQuery = "",
         isSearching = false,
         showFilters = false,
@@ -388,3 +457,5 @@ private fun OrderHistoryScreenPreview() {
         modifier = Modifier
     )
 }
+
+fun LazyListState.shouldRequestNextPage() = layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount - 2
