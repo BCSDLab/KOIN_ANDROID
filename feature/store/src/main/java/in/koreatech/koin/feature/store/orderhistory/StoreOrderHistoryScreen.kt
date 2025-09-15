@@ -235,7 +235,11 @@ fun OrderHistoryScreen(
 
             1 -> {
                 if (uiState.orderInProgress.isEmpty()) {
-                    OrderInProgressEmptyScreen()
+                    OrderInProgressEmptyScreen(
+                        navigateToOldOrderHistory = {
+                            viewModel.updateSelectedTab(0)
+                        }
+                    )
                 } else {
                     OrderInProgressScreen(
                         orderInProgress = uiState.orderInProgress,
@@ -383,7 +387,9 @@ private fun OrderInProgressScreen(
 }
 
 @Composable
-private fun OrderInProgressEmptyScreen() {
+private fun OrderInProgressEmptyScreen(
+    navigateToOldOrderHistory: () -> Unit = {}
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -407,7 +413,7 @@ private fun OrderInProgressEmptyScreen() {
 
         FilledButton(
             shape = RebrandKoinTheme.shapes.small,
-            onClick = {},
+            onClick = navigateToOldOrderHistory,
             text = stringResource(R.string.goto_order_history),
             colors = ButtonDefaults.buttonColors(
                 containerColor = RebrandKoinTheme.colors.neutral0,
