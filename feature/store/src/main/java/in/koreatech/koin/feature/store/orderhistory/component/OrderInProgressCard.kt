@@ -34,8 +34,8 @@ import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.enums.OrderInProgressStatus
-import `in`.koreatech.koin.feature.store.enums.TypeOption
-import `in`.koreatech.koin.feature.store.model.OrderInProgressData
+import `in`.koreatech.koin.feature.store.orderhistory.model.OrderInProgressData
+import `in`.koreatech.koin.feature.store.orderhistory.enums.OrderType
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -46,9 +46,8 @@ fun OrderInProgressCard(
     modifier: Modifier = Modifier
 ) {
     val chipIcon = when (orderdata.orderType) {
-        TypeOption.TAKE_OUT -> R.drawable.ic_order_takeout
-        TypeOption.DELIVERY -> R.drawable.ic_order_delivery
-        TypeOption.NONE -> R.drawable.ic_order_delivery
+        OrderType.PICKUP -> R.drawable.ic_order_takeout
+        OrderType.DELIVERY -> R.drawable.ic_order_delivery
     }
     val timeFormatter = remember {
         DateTimeFormatter.ofPattern("a h:mm", Locale("ko", "KR"))
@@ -172,7 +171,7 @@ private fun OrderInProgressCardPreview() {
         orderdata = OrderInProgressData(
             id = 1,
             paymentId = 2,
-            orderType = TypeOption.DELIVERY,
+            orderType = OrderType.DELIVERY,
             estimatedAt = LocalTime.of(20, 32),
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             orderableShopName = "맛있는 족발 - 병천점",
@@ -190,7 +189,7 @@ private fun OrderInProgressCardPreview2() {
         orderdata = OrderInProgressData(
             id = 1,
             paymentId = 2,
-            orderType = TypeOption.TAKE_OUT,
+            orderType = OrderType.PICKUP,
             estimatedAt = LocalTime.of(20, 32),
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             orderableShopName = "맛있는 족발 - 병천점",
