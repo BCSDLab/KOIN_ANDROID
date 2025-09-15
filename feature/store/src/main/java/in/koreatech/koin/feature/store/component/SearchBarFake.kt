@@ -26,6 +26,7 @@ import `in`.koreatech.koin.feature.store.R
 fun SearchBarFake(
     modifier: Modifier = Modifier,
     hint: String = stringResource(R.string.store_search_hint),
+    query: String = "",
     onClick: () -> Unit = {}
 ) {
     Box(
@@ -51,16 +52,32 @@ fun SearchBarFake(
                 tint = RebrandKoinTheme.colors.neutral500
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = hint,
-                style = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral400)
-            )
+
+            if (query.isEmpty()) {
+                Text(
+                    text = hint,
+                    style = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral400)
+                )
+            } else {
+                Text(
+                    text = query,
+                    style = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral600)
+                )
+            }
         }
     }
 }
 
 @Preview
 @Composable
-fun SearchBarFakePreview() {
+private fun SearchBarFakePreview() {
+    SearchBarFake(
+        query = "족발"
+    )
+}
+
+@Preview
+@Composable
+private fun SearchBarFakePreview2() {
     SearchBarFake()
 }

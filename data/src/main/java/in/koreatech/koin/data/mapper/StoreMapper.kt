@@ -11,6 +11,7 @@ import `in`.koreatech.koin.data.response.store.CartPaymentSummaryResponse
 import `in`.koreatech.koin.data.response.store.CartResponse
 import `in`.koreatech.koin.data.response.store.CartSummaryResponse
 import `in`.koreatech.koin.data.response.store.LegacyShopMenusResponse
+import `in`.koreatech.koin.data.response.store.OrderHistoryResponse
 import `in`.koreatech.koin.data.response.store.OrderInProgressResponse
 import `in`.koreatech.koin.data.response.store.OrderableShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopDeliveryAvailableResponse
@@ -55,6 +56,8 @@ import `in`.koreatech.koin.domain.model.store.CartPaymentSummary
 import `in`.koreatech.koin.domain.model.store.CartSummary
 import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 import `in`.koreatech.koin.domain.model.store.OpenStatus
+import `in`.koreatech.koin.domain.model.store.OrderHistoryOrders
+import `in`.koreatech.koin.domain.model.store.OrderHistoryRelated
 import `in`.koreatech.koin.domain.model.store.OrderInProgress
 import `in`.koreatech.koin.domain.model.store.OrderableShopSearchRelated
 import `in`.koreatech.koin.domain.model.store.Shop
@@ -603,6 +606,28 @@ fun OrderableShopSearchRelatedResponse.toOrderableShopSearchRelated() =
                 orderableShopId = result.orderableShopId,
                 orderableShopName = result.orderableShopName,
                 menuName = result.menuName
+            )
+        }
+    )
+
+fun OrderHistoryResponse.toOrderHistoryRelated() =
+    OrderHistoryRelated(
+        totalCount = totalCount,
+        currentCount = currentCount,
+        totalPage = totalPage,
+        currentPage = currentPage,
+        orders = orders.map { result ->
+            OrderHistoryOrders(
+                id = result.id,
+                paymentId = result.paymentId,
+                orderableShopId = result.orderableShopId,
+                orderableShopName = result.orderableShopName,
+                openStatus = result.openStatus,
+                orderableShopThumbnail = result.orderableShopThumbnail,
+                orderDate = result.orderDate,
+                orderStatus = result.orderStatus,
+                orderTitle = result.orderTitle,
+                totalAmount = result.totalAmount
             )
         }
     )

@@ -14,6 +14,7 @@ import `in`.koreatech.koin.data.response.store.CartItemsCountResponse
 import `in`.koreatech.koin.data.response.store.CartPaymentSummaryResponse
 import `in`.koreatech.koin.data.response.store.CartResponse
 import `in`.koreatech.koin.data.response.store.CartSummaryResponse
+import `in`.koreatech.koin.data.response.store.OrderHistoryResponse
 import `in`.koreatech.koin.data.response.store.OrderInProgressResponse
 import `in`.koreatech.koin.data.response.store.OrderableShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopDeliveryAvailableResponse
@@ -253,5 +254,16 @@ class StoreRemoteDataSource @Inject constructor(
 
     suspend fun getOrderInProgress(): List<OrderInProgressResponse> {
         return storeAuthApi.getOrderInProgress()
+    }
+
+    suspend fun getOrderHistories(
+        page: Int?,
+        limit: Int?,
+        period: String?,
+        status: String?,
+        type: String?,
+        query: String?
+    ): OrderHistoryResponse {
+        return storeAuthApi.getOrderHistories(page, limit, period, status, type, query)
     }
 }

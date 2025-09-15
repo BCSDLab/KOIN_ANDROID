@@ -92,6 +92,7 @@
 
     <string name="store_title_home_order">주문</string>
     <string name="store_title_home_nearby">주변상점</string>
+    <string name="store_title_home_history">주문 내역</string>
     <string name="store_title_home_search">검색</string>
 
     <string name="store_order_option_none">기본순</string>
@@ -141,4 +142,52 @@
     <string name="store_fab_delivery_eta">%1$s 도착예정</string>
     <string name="store_fab_takeout_eta">%1$s 포장 수령가능</string>
     <string name="store_fab_eta_unavailable">도착 미정</string>
+
+    <string name="order_detail">주문상세</string>
+    <string name="write_review">리뷰 쓰기</string>
+    <string name="add_same_menu_open">같은 메뉴 담기</string>
+    <string name="add_same_menu_pre_open">같은 메뉴 담기 (오픈 전)</string>
+    <string name="add_same_menu_sold_out">같은 메뉴 담기 (품절)</string>
+    <string name="orders_chip_reset">초기화</string>
+    <string name="orders_chip_apply">적용하기</string>
+    <string name="order_history_searchbar_hint">주문한 메뉴/매장을 찾아보세요</string>
+    <string name="order_histroy_price_won">%,d원</string>
+
+    <string name="order_history_filter">필터</string>
+    <string name="filter_option_location">주소</string>
+    <string name="filter_option_location_campus">교내</string>
+    <string name="filter_option_location_outside">교외</string>
+    <string name="filter_option_period">조회 기간</string>
+    <string name="filter_option_period_three_months">최근 3개월</string>
+    <string name="filter_option_period_six_months">최근 6개월</string>
+    <string name="filter_option_period_one_year">최근 1년</string>
+    <string name="filter_option_type">주문 상태</string>
+    <string name="filter_option_type_delivery">배달</string>
+    <string name="filter_option_type_takeout">포장</string>
+    <string name="filter_option_status">정보</string>
+    <string name="filter_option_status_complete">완료</string>
+    <string name="filter_option_status_canceled">취소</string>
+    <string name="bullet_separator">%s · %s</string>
+
+    <string name="order_history_status_canceled">주문 취소</string>
+    <string name="order_history_status_delivered">배달 완료</string>
+    <string name="order_history_status_takeout_done">포장 완료</string>
+
+    <string name="order_ongoing_status_confirming">주문 확인 중</string>
+    <string name="order_ongoing_status_confirming_message">사장님이 주문을 확인하고 있어요!</string>
+    <string name="order_ongoing_status_cooking">조리 중</string>
+    <string name="order_ongoing_status_cooking_message">가게에서 열심히 음식을 조리하고있어요!</string>
+    <string name="order_ongoing_status_packaged">수령 가능</string>
+    <string name="order_ongoing_status_packaged_message">준비가 완료되었어요!</string>
+    <string name="order_ongoing_status_delivering">배달 출발</string>
+    <string name="order_ongoing_status_delivering_message">열심히 달려가는 중이에요!</string>
+    <string name="order_ongoing_status_delivered">배달 완료</string>
+    <string name="order_ongoing_status_delivered_message">배달이 완료되었어요 감사합니다!</string>
+    <string name="delivery_time_guide">\u00A0도착 예정</string>
+    <string name="goto_order_history">과거 주문 내역 보기</string>
+    <string name="no_ongoing_orders">준비 중인 주문 내역이 없어요</string>
+    <string name="no_history_orders">주문 내역이 없어요</string>
+    <string name="view_order_details">주문 상세 보기</string>
+    <string name="order_history_topbar">주문 내역</string>
+    <string name="order_ongoing_topbar">진행 중</string>
 </resources>
