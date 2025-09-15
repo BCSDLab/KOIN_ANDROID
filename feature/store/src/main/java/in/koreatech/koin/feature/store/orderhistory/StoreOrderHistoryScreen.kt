@@ -532,7 +532,6 @@ private fun handleSideEffect(
     }
 }
 
-
 @Preview
 @Composable
 private fun OrderHistoryScreenPreview() {

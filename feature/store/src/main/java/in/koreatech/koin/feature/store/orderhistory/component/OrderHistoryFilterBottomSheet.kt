@@ -32,9 +32,9 @@ import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.CommonBottomSheet
 import `in`.koreatech.koin.feature.store.component.KoinStoreChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreChipDefaults
+import `in`.koreatech.koin.feature.store.model.OrderType
 import `in`.koreatech.koin.feature.store.orderhistory.enums.OrderHistoryPeriod
 import `in`.koreatech.koin.feature.store.orderhistory.enums.OrderStatusFilter
-import `in`.koreatech.koin.feature.store.model.OrderType
 import `in`.koreatech.koin.feature.store.orderhistory.model.StoreOrderHistoryFilters
 
 @Composable

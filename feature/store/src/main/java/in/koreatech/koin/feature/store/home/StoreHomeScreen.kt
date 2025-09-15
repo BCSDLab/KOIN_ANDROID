@@ -75,9 +75,9 @@ import `in`.koreatech.koin.feature.store.enums.OrderOption
 import `in`.koreatech.koin.feature.store.enums.StoreFilter
 import `in`.koreatech.koin.feature.store.enums.minimumPriceOptions
 import `in`.koreatech.koin.feature.store.enums.storeFilters
-import `in`.koreatech.koin.feature.store.model.OrderStatus
 import `in`.koreatech.koin.feature.store.model.LocalShop
 import `in`.koreatech.koin.feature.store.model.LocalStoreCategories
+import `in`.koreatech.koin.feature.store.model.OrderStatus
 import `in`.koreatech.koin.feature.store.model.OrderType
 import java.time.format.DateTimeFormatter
 import kotlinx.coroutines.flow.combine
