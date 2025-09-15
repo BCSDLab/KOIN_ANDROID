@@ -35,10 +35,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.model.LocalShopSearchResult
 import `in`.koreatech.koin.feature.store.search.component.SearchBar
 import kotlinx.coroutines.flow.debounce
@@ -67,7 +67,7 @@ fun StoreSearchScreen(
             .fillMaxSize()
             .imePadding()
     ) {
-        KoinTopAppBar(
+        KoinStoreTopAppBar(
             title = stringResource(R.string.store_title_home_search),
             onNavigationIconClick = {
                 onBackPressed()
