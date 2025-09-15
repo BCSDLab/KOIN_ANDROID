@@ -74,12 +74,17 @@ fun OrderScreen(
 
     LaunchedEffect(Unit) {
         viewModel.getUserType()
+    }
 
+    LaunchedEffect(Unit) {
+        viewModel.getOrderInProgressData()
+    }
+
+    LaunchedEffect(Unit) {
         snapshotFlow { uiState.filters }
             .collect {
                 viewModel.getNewOrderHistoryData()
             }
-        viewModel.getOrderInProgressData()
     }
 
     if (uiState.showSignInDialog) {

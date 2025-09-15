@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.store.orders
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
@@ -43,6 +44,7 @@ class OrderViewModel @Inject constructor(
     fun getOrderHistoryData() {
         intent {
             if (state.isLoggedIn == null) {
+                Log.d("OrderViewModel", "getOrderHistoryData")
                 delay(50)
                 getOrderHistoryData()
             } else if (state.isLoggedIn!!) {
@@ -90,6 +92,7 @@ class OrderViewModel @Inject constructor(
                 delay(50)
                 getOrderInProgressData()
             } else if (state.isLoggedIn!!) {
+                Log.d("OrderViewModel", "getOrderInProgressData")
                 reduce {
                     state.copy(
                         isLoading = true
