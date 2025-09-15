@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
-import `in`.koreatech.koin.feature.store.enums.OrderInProgressStatus
+import `in`.koreatech.koin.feature.store.orderhistory.enums.OrderStatus
 import `in`.koreatech.koin.feature.store.orderhistory.enums.OrderType
 import `in`.koreatech.koin.feature.store.orderhistory.model.OrderInProgressData
 import java.time.LocalTime
@@ -93,7 +93,7 @@ fun OrderInProgressCard(
                 color = RebrandKoinTheme.colors.primary500
             )
 
-            if (orderdata.orderStatus.showTime) {
+            if (orderdata.orderStatus in listOf(OrderStatus.COOKING, OrderStatus.DELIVERING, OrderStatus.PACKAGED)) {
                 Text(
                     text = (orderdata.estimatedAt?.format(timeFormatter) ?: "") + stringResource(R.string.delivery_time_guide),
                     style = RebrandKoinTheme.typography.bold20,
@@ -102,7 +102,7 @@ fun OrderInProgressCard(
             }
 
             Text(
-                text = stringResource(orderdata.orderStatus.stringResMessage),
+                text = stringResource(orderdata.orderStatus.stringRes),
                 style = RebrandKoinTheme.typography.regular12,
                 color = RebrandKoinTheme.colors.neutral500
             )
@@ -175,7 +175,7 @@ private fun OrderInProgressCardPreview() {
             estimatedAt = LocalTime.of(20, 32),
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             orderableShopName = "맛있는 족발 - 병천점",
-            orderStatus = OrderInProgressStatus.COOKING,
+            orderStatus = OrderStatus.COOKING,
             orderTitle = "족발 + 막국수 저녁 set 외 1건",
             totalAmount = 32500
         )
@@ -193,7 +193,7 @@ private fun OrderInProgressCardPreview2() {
             estimatedAt = LocalTime.of(20, 32),
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             orderableShopName = "맛있는 족발 - 병천점",
-            orderStatus = OrderInProgressStatus.COOKING,
+            orderStatus = OrderStatus.COOKING,
             orderTitle = "족발 + 막국수 저녁 set 외 1건",
             totalAmount = 32500
         )

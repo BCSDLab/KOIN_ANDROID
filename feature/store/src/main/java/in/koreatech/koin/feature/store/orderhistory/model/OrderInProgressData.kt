@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.feature.store.orderhistory.model
 
-import `in`.koreatech.koin.feature.store.enums.OrderInProgressStatus
+import `in`.koreatech.koin.feature.store.orderhistory.enums.OrderStatus
 import `in`.koreatech.koin.feature.store.orderhistory.enums.OrderType
 import java.time.LocalTime
 
@@ -11,7 +11,7 @@ data class OrderInProgressData(
     val orderableShopName: String,
     val orderableShopThumbnail: String,
     val estimatedAt: LocalTime?,
-    val orderStatus: OrderInProgressStatus,
+    val orderStatus: OrderStatus,
     val orderTitle: String,
     val totalAmount: Int
 )
