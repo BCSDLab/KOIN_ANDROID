@@ -212,7 +212,7 @@ fun OrderHistoryScreen(
 
         when (uiState.selectedIndex) {
             0 -> {
-                if (uiState.orderHistories.isEmpty()) {
+                if (uiState.orderHistories.isEmpty() && !uiState.isSearching) {
                     OrderHistoryEmptyScreen()
                 } else {
                     OrderHistoryScreen(
