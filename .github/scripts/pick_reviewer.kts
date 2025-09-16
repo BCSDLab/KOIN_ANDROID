@@ -16,7 +16,6 @@ enum class Developer(val githubName: String, val isMentor: Boolean = false) {
     JAEYOUNG290("JaeYoung290"),
     KONGWOOJIN("kongwoojin"),
     KYM_P("KYM-P"),
-    JUSANG3057("jusang3057"),
     TTRR1007("TTRR1007")
 }
 
@@ -37,8 +36,7 @@ val reviewerPair = listOf(
     Developer.JAEYOUNG290 to Developer.KONGWOOJIN,
     Developer.KONGWOOJIN to Developer.JAEYOUNG290,
     Developer.KYM_P to Developer.TTRR1007,
-    Developer.JUSANG3057 to Developer.KYM_P,
-    Developer.TTRR1007 to Developer.JUSANG3057
+    Developer.TTRR1007 to Developer.KYM_P
 )
 
 /**
