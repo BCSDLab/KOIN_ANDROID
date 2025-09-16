@@ -133,7 +133,9 @@ fun OrderHistoryScreen(
     if (uiState.showSignInDialog) {
         KoinStoreSignInDialog(
             onPositive = {
-                navigator.navigateToSignIn(context, DEEPLINK_STORE_MAIN_HOME)
+                navigator.navigateToSignIn(context, DEEPLINK_STORE_MAIN_HOME).apply {
+                    context.startActivity(this)
+                }
             },
             onNegative = { viewModel.updateShowSignInDialog(false) }
         )
