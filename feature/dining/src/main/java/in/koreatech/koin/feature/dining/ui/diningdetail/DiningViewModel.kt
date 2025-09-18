@@ -50,12 +50,6 @@ class DiningViewModel @Inject constructor(
         .takeUnless { it.isNullOrBlank() }
         ?: TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate())
 
-    fun initData() {
-        getDining(initDate)
-        getShowBottomSheetValue()
-        getNotificationPermissionInfo()
-    }
-
     private val _userState: StateFlow<User> = getUserStatusUseCase().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
@@ -105,7 +99,7 @@ class DiningViewModel @Inject constructor(
         getDining(selectedDate.value)
     }
 
-    private fun getDining(date: String = selectedDate.value) {
+    fun getDining(date: String = selectedDate.value) {
         if (!_isLoading.value) {
             _isLoading.value = true
             viewModelScope.launch {

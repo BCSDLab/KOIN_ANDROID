@@ -131,15 +131,21 @@ fun DiningDetailScreen(
 
     val abTestExperimentGroup by viewModel.abTestExperimentGroup.collectAsState()
 
-    LaunchedEffect(userState) { // userState NPE error in viewModel init{}; Flow is null
-        viewModel.initData()
+    LaunchedEffect(Unit) { // userState NPE error in viewModel init{}; Flow is null
+        viewModel.getDining()
+        snapshotFlow { userState }
+            .collect { state ->
+                if(!state.isAnonymous) {
+                    viewModel.getShowBottomSheetValue()
+                    viewModel.getNotificationPermissionInfo()
+                }
+            }
     }
 
     Scaffold(
         containerColor = KoinTheme.colors.neutral0,
         topBar = {
             KoinTopAppBar(
-                modifier = Modifier.heightIn(max = 85.dp),
                 title = stringResource(R.string.dining_appbar_title),
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = KoinTheme.colors.primary500,
