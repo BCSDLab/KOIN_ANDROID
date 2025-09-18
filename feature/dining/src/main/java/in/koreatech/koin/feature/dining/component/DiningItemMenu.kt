@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 @Composable
-fun DiningItemMenu (
+fun DiningItemMenu(
     menu: List<String>,
     modifier: Modifier = Modifier,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.spacedBy(12.dp)
