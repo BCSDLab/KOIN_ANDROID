@@ -226,21 +226,11 @@ fun DiningItem(
                     }
                 }
             }
-            Row(
+            DiningItemMenu(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Text(
-                    modifier = Modifier.weight(1f),
-                    text = dining.menu.filterIndexed { index, _ -> index % 2 == 0 }.joinToString(separator = "\n"),
-                    style = KoinTheme.typography.regular14
-                )
-                Text(
-                    modifier = Modifier.weight(1f),
-                    text = dining.menu.filterIndexed { index, _ -> index % 2 == 1 }.joinToString(separator = "\n"),
-                    style = KoinTheme.typography.regular14
-                )
-            }
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                menu = dining.menu
+            )
         }
         HorizontalDivider(color = KoinTheme.colors.neutral100)
         Row(

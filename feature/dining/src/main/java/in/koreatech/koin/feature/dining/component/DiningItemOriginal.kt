@@ -76,7 +76,7 @@ fun DiningItemOriginal(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "${dining.kcal}kcal",
+                    text = stringResource(R.string.dining_item_kcal_format, dining.kcal),
                     style = KoinTheme.typography.regular12,
                     color = KoinTheme.colors.neutral500
                 )
@@ -210,21 +210,11 @@ fun DiningItemOriginal(
                     }
                 }
             }
-            Row(
+            DiningItemMenu(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Text(
-                    modifier = Modifier.weight(1f),
-                    text = dining.menu.filterIndexed { index, _ -> index % 2 == 0 }.joinToString(separator = "\n"),
-                    style = KoinTheme.typography.regular14
-                )
-                Text(
-                    modifier = Modifier.weight(1f),
-                    text = dining.menu.filterIndexed { index, _ -> index % 2 == 1 }.joinToString(separator = "\n"),
-                    style = KoinTheme.typography.regular14
-                )
-            }
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                menu = dining.menu
+            )
         }
         HorizontalDivider(color = KoinTheme.colors.neutral100)
         Row(
