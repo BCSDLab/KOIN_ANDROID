@@ -13,17 +13,3 @@ fun HttpException.getErrorResponse(): ErrorResponse {
 fun ErrorResponse.toKoinUnknownErrorException(): KoinUnknownErrorException {
     return KoinUnknownErrorException(this.code, this.message, this.errorTraceId)
 }
-
-inline fun <T> runCatchingWithNetwork(
-    block: () -> T
-): Result<T> {
-    return runCatching(block).onFailure { exception ->
-        return Result.failure(
-            if (exception.cause is KoinNetworkException.NetworkUnavailableException) {
-                KoinNetworkException.NetworkUnavailableException()
-            } else {
-                exception
-            }
-        )
-    }
-}
