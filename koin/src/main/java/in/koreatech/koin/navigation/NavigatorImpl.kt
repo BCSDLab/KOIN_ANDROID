@@ -6,6 +6,7 @@ import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.utils.buildIntent
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
+import `in`.koreatech.koin.ui.notification.NotificationActivity
 import `in`.koreatech.koin.ui.splash.SplashActivity
 import javax.inject.Inject
 import kotlin.jvm.java
@@ -37,6 +38,12 @@ class NavigatorImpl @Inject constructor() : Navigator {
         return context.buildIntent(SignInActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             putExtra("link", redirectUrl)
+        }
+    }
+
+    override fun navigateToNotificationSetting(context: Context): Intent {
+        return context.buildIntent(NotificationActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
     }
 }
