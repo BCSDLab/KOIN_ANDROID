@@ -11,7 +11,6 @@ import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.di.interceptor.NetworkUnavailableInterceptor
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.stomp.KoinStomp
-import `in`.koreatech.koin.domain.service.NetworkConnectivityService
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.runBlocking
@@ -38,9 +37,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideNetworkUnavailableInterceptor(
-        networkConnectivityService: NetworkConnectivityService
-    ): NetworkUnavailableInterceptor = NetworkUnavailableInterceptor(networkConnectivityService)
+    fun provideNetworkUnavailableInterceptor() = NetworkUnavailableInterceptor()
 
     @ServerUrl
     @Provides
