@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
-import `in`.koreatech.koin.feature.store.enums.OrderHistoryStatus
 import `in`.koreatech.koin.feature.store.enums.StoreStatus
+import `in`.koreatech.koin.feature.store.model.OrderStatus
 import `in`.koreatech.koin.feature.store.orderhistory.model.OrderHistoryData
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -48,7 +48,7 @@ fun OrderHistoryCard(
     onWriteReviewClick: () -> Unit = {},
     onReorderClick: () -> Unit = {}
 ) {
-    val textColor = if (orderHistoryData.orderStatus.isActivated) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral400
+    val textColor = if (orderHistoryData.orderStatus in listOf(OrderStatus.DELIVERED, OrderStatus.PICKED_UP)) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral400
     val dateFormatter = remember {
         DateTimeFormatter.ofPattern("M월 d일 (E)", Locale("ko", "KR"))
     }
@@ -139,23 +139,21 @@ fun OrderHistoryCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (orderHistoryData.orderStatus.isActivated) {
-                OutlinedButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = onWriteReviewClick,
-                    shape = RoundedCornerShape(8.dp),
-                    contentPadding = PaddingValues(vertical = 8.dp, horizontal = 12.dp),
-                    border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral400)
-                ) {
-                    Text(
-                        text = stringResource(R.string.write_review),
-                        style = RebrandKoinTheme.typography.bold14,
-                        color = RebrandKoinTheme.colors.neutral600
-                    )
-                }
-
-                Spacer(modifier = Modifier.width(12.dp))
+            OutlinedButton(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = onWriteReviewClick,
+                shape = RoundedCornerShape(8.dp),
+                contentPadding = PaddingValues(vertical = 8.dp, horizontal = 12.dp),
+                border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral400)
+            ) {
+                Text(
+                    text = stringResource(R.string.write_review),
+                    style = RebrandKoinTheme.typography.bold14,
+                    color = RebrandKoinTheme.colors.neutral600
+                )
             }
+
+            Spacer(modifier = Modifier.width(12.dp))
 
             MenuAddButton(
                 status = orderHistoryData.openStatus,
@@ -173,7 +171,7 @@ private fun OrderHistoryCardPreview() {
             id = 1,
             paymentId = 1,
             orderableShopId = 1,
-            orderStatus = OrderHistoryStatus.DELIVERED,
+            orderStatus = OrderStatus.DELIVERED,
             orderDate = LocalDate.of(2025, 9, 5),
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             openStatus = StoreStatus.SOLD_OUT,
@@ -195,7 +193,7 @@ private fun OrderHistoryCardPreview2() {
             id = 1,
             paymentId = 1,
             orderableShopId = 1,
-            orderStatus = OrderHistoryStatus.DELIVERED,
+            orderStatus = OrderStatus.DELIVERED,
             orderDate = LocalDate.of(2025, 9, 5),
             orderableShopThumbnail = "https://example.com/store_thumbnail.jpg",
             openStatus = StoreStatus.SOLD_OUT,

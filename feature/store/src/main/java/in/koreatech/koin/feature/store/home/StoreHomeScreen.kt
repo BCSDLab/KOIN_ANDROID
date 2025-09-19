@@ -54,7 +54,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.util.KoinCoilImageLoader
-import `in`.koreatech.koin.domain.model.cart.CartType
 import `in`.koreatech.koin.domain.model.store.OpenStatus
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_HOME
 import `in`.koreatech.koin.feature.store.R
@@ -76,9 +75,10 @@ import `in`.koreatech.koin.feature.store.enums.OrderOption
 import `in`.koreatech.koin.feature.store.enums.StoreFilter
 import `in`.koreatech.koin.feature.store.enums.minimumPriceOptions
 import `in`.koreatech.koin.feature.store.enums.storeFilters
-import `in`.koreatech.koin.feature.store.home.model.OrderStatus
 import `in`.koreatech.koin.feature.store.model.LocalShop
 import `in`.koreatech.koin.feature.store.model.LocalStoreCategories
+import `in`.koreatech.koin.feature.store.model.OrderStatus
+import `in`.koreatech.koin.feature.store.model.OrderType
 import java.time.format.DateTimeFormatter
 import kotlinx.coroutines.flow.combine
 import org.orbitmvi.orbit.compose.collectAsState
@@ -224,14 +224,18 @@ fun StoreHomeScreen(
                             OrderStatus.CONFIRMING -> stringResource(R.string.store_fab_confirming)
                             OrderStatus.DELIVERING,
                             OrderStatus.PACKAGED -> stringResource(
-                                when (type) {
-                                    CartType.DELIVERY -> R.string.store_fab_delivery_eta
-                                    CartType.TAKE_OUT -> R.string.store_fab_takeout_eta
+                                when (orderType) {
+                                    OrderType.DELIVERY -> R.string.store_fab_delivery_eta
+                                    OrderType.TAKE_OUT -> R.string.store_fab_takeout_eta
                                 },
                                 estimatedAt?.format(DateTimeFormatter.ofPattern("a h시 m분")) ?: stringResource(R.string.store_fab_eta_unavailable)
                             )
 
-                            OrderStatus.NONE -> ""
+                            OrderStatus.NONE,
+                            OrderStatus.COOKING,
+                            OrderStatus.PICKED_UP,
+                            OrderStatus.DELIVERED,
+                            OrderStatus.CANCELED -> ""
                         },
                         storeName = shopName,
                         onClick = {

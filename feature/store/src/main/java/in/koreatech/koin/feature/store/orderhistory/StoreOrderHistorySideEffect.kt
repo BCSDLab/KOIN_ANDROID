@@ -1,3 +1,5 @@
 package `in`.koreatech.koin.feature.store.orderhistory
 
-sealed class StoreOrderHistorySideEffect
+sealed class StoreOrderHistorySideEffect {
+    data object NavigateToCart : StoreOrderHistorySideEffect()
+}

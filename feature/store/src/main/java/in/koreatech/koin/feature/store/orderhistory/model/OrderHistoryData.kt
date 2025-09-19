@@ -1,8 +1,8 @@
 package `in`.koreatech.koin.feature.store.orderhistory.model
 
 import `in`.koreatech.koin.domain.model.store.OrderHistoryOrders
-import `in`.koreatech.koin.feature.store.enums.OrderHistoryStatus
 import `in`.koreatech.koin.feature.store.enums.StoreStatus
+import `in`.koreatech.koin.feature.store.model.OrderStatus
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -13,7 +13,7 @@ data class OrderHistoryData(
     val orderableShopId: Int,
     val orderableShopName: String,
     val orderDate: LocalDate,
-    val orderStatus: OrderHistoryStatus,
+    val orderStatus: OrderStatus,
     val orderTitle: String,
     val openStatus: StoreStatus,
     val orderableShopThumbnail: String,
@@ -32,7 +32,7 @@ fun OrderHistoryOrders.toOrderHistoryData(): OrderHistoryData {
         openStatus = if (openStatus) StoreStatus.OPEN else StoreStatus.PRE_OPEN, // API에 openStatus 구분이 추가되면 SOLD_OUT도 넣어야함
         orderableShopThumbnail = orderableShopThumbnail,
         orderDate = orderDate,
-        orderStatus = OrderHistoryStatus.valueOf(orderStatus),
+        orderStatus = OrderStatus.fromString(orderStatus),
         orderTitle = orderTitle,
         totalAmount = totalAmount
     )

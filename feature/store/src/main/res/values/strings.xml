@@ -165,26 +165,26 @@
     <string name="order_type_delivery">배달</string>
     <string name="order_type_pickup">포장</string>
     <string name="order_status_none">정보</string>
-    <string name="order_status_completed">완료</string>
-    <string name="order_status_canceled">취소</string>
+    <string name="order_status_filter_completed">완료</string>
+    <string name="order_status_filter_canceled">취소</string>
     <string name="bullet_separator">%s · %s</string>
 
-    <string name="order_history_status_canceled">주문 취소</string>
+    <string name="order_status_canceled">주문 취소</string>
     <string name="order_history_status_delivered">배달 완료</string>
-    <string name="order_history_status_picked_up">포장 완료</string>
+    <string name="order_status_picked_up">포장 완료</string>
 
     <string name="order_history_tab_old_history">지난 주문</string>
     <string name="order_history_tab_in_progress">준비 중</string>
 
-    <string name="order_ongoing_status_confirming">주문 확인 중</string>
+    <string name="order_status_confirming">주문 확인 중</string>
     <string name="order_ongoing_status_confirming_message">사장님이 주문을 확인하고 있어요!</string>
-    <string name="order_ongoing_status_cooking">조리 중</string>
+    <string name="order_status_cooking">조리 중</string>
     <string name="order_ongoing_status_cooking_message">가게에서 열심히 음식을 조리하고있어요!</string>
-    <string name="order_ongoing_status_packaged">수령 가능</string>
+    <string name="order_status_packaged">수령 가능</string>
     <string name="order_ongoing_status_packaged_message">준비가 완료되었어요!</string>
-    <string name="order_ongoing_status_delivering">배달 출발</string>
+    <string name="order_status_delivering">배달 출발</string>
     <string name="order_ongoing_status_delivering_message">열심히 달려가는 중이에요!</string>
-    <string name="order_ongoing_status_delivered">배달 완료</string>
+    <string name="order_status_delivered">배달 완료</string>
     <string name="order_ongoing_status_delivered_message">배달이 완료되었어요 감사합니다!</string>
     <string name="delivery_time_guide">\u00A0도착 예정</string>
     <string name="goto_order_history">과거 주문 내역 보기</string>
