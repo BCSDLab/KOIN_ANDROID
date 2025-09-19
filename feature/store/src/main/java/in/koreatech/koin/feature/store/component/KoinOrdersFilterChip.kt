@@ -25,7 +25,7 @@ fun KoinOrdersFilterChip(
         ),
         trailingIcon = painterResource(R.drawable.ic_store_arrow_down),
         trailingIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(
-            iconColor = if (isSelected) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.neutral400
+            iconColor = if (isSelected) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.neutral500
         ),
         onClick = onClick
     )

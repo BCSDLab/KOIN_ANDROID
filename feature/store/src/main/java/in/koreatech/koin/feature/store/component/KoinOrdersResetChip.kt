@@ -20,7 +20,7 @@ fun KoinOrdersResetChip(
         chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
             elevation = 4.dp,
             containerColor = RebrandKoinTheme.colors.neutral0,
-            textColor = RebrandKoinTheme.colors.neutral400
+            textColor = RebrandKoinTheme.colors.neutral500
         ),
         trailingIcon = painterResource(R.drawable.ic_process),
         trailingIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(
