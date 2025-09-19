@@ -157,21 +157,24 @@
     <string name="filter_option_location">주소</string>
     <string name="filter_option_location_campus">교내</string>
     <string name="filter_option_location_outside">교외</string>
-    <string name="filter_option_period">조회 기간</string>
-    <string name="filter_option_period_three_months">최근 3개월</string>
-    <string name="filter_option_period_six_months">최근 6개월</string>
-    <string name="filter_option_period_one_year">최근 1년</string>
-    <string name="filter_option_type">주문 상태</string>
-    <string name="filter_option_type_delivery">배달</string>
-    <string name="filter_option_type_takeout">포장</string>
-    <string name="filter_option_status">정보</string>
-    <string name="filter_option_status_complete">완료</string>
-    <string name="filter_option_status_canceled">취소</string>
+    <string name="order_history_period_none">조회 기간</string>
+    <string name="order_history_period_three_months">최근 3개월</string>
+    <string name="order_history_period_six_months">최근 6개월</string>
+    <string name="order_history_period_one_year">최근 1년</string>
+    <string name="order_type_none">주문 상태</string>
+    <string name="order_type_delivery">배달</string>
+    <string name="order_type_pickup">포장</string>
+    <string name="order_status_none">정보</string>
+    <string name="order_status_completed">완료</string>
+    <string name="order_status_canceled">취소</string>
     <string name="bullet_separator">%s · %s</string>
 
     <string name="order_history_status_canceled">주문 취소</string>
     <string name="order_history_status_delivered">배달 완료</string>
-    <string name="order_history_status_takeout_done">포장 완료</string>
+    <string name="order_history_status_picked_up">포장 완료</string>
+
+    <string name="order_history_tab_old_history">지난 주문</string>
+    <string name="order_history_tab_in_progress">준비 중</string>
 
     <string name="order_ongoing_status_confirming">주문 확인 중</string>
     <string name="order_ongoing_status_confirming_message">사장님이 주문을 확인하고 있어요!</string>
@@ -186,8 +189,8 @@
     <string name="delivery_time_guide">\u00A0도착 예정</string>
     <string name="goto_order_history">과거 주문 내역 보기</string>
     <string name="no_ongoing_orders">준비 중인 주문 내역이 없어요</string>
-    <string name="no_history_orders">주문 내역이 없어요</string>
+    <string name="no_order_history">주문 내역이 없어요</string>
     <string name="view_order_details">주문 상세 보기</string>
-    <string name="order_history_topbar">주문 내역</string>
+    <string name="order_history">주문 내역</string>
     <string name="order_ongoing_topbar">진행 중</string>
 </resources>

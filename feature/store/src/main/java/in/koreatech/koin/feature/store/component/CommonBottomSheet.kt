@@ -18,6 +18,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -36,13 +37,15 @@ import `in`.koreatech.koin.feature.store.R
 @Composable
 fun CommonBottomSheet(
     title: String,
+    skipPartiallyExpanded: Boolean = false,
     onClose: () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit = {}
 ) {
     ModalBottomSheet(
         onDismissRequest = onClose,
         dragHandle = null,
-        containerColor = RebrandKoinTheme.colors.neutral0
+        containerColor = RebrandKoinTheme.colors.neutral0,
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = skipPartiallyExpanded)
     ) {
         Column(
             modifier = Modifier
