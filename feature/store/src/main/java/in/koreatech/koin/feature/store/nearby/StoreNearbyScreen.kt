@@ -58,8 +58,8 @@ import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_NEARBY
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreCard
 import `in`.koreatech.koin.feature.store.component.KoinStoreCategoryItem
-import `in`.koreatech.koin.feature.store.component.KoinStoreFilterChip
-import `in`.koreatech.koin.feature.store.component.KoinStoreOrderChip
+import `in`.koreatech.koin.feature.store.component.KoinStoreChip
+import `in`.koreatech.koin.feature.store.component.KoinStoreChipDefaults
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreSignInDialog
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
@@ -273,9 +273,19 @@ private fun StoreNearbyScreen(
             ) {
                 Spacer(modifier = Modifier.width(16.dp))
 
-                KoinStoreOrderChip(
+                KoinStoreChip(
                     modifier = Modifier.fillMaxHeight(),
-                    text = stringResource(selectedOrderOption.stringResId)
+                    text = stringResource(selectedOrderOption.stringResId),
+                    chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
+                        textColor = RebrandKoinTheme.colors.primary500,
+                        borderWidth = 1.dp,
+                        borderColor = RebrandKoinTheme.colors.primary500,
+                        elevation = 0.dp
+                    ),
+                    trailingIcon = painterResource(R.drawable.ic_store_arrow_down),
+                    trailingIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(
+                        iconColor = RebrandKoinTheme.colors.primary500
+                    )
                 ) {
                     onShowOrderOptionsChange(true)
                 }
@@ -283,11 +293,28 @@ private fun StoreNearbyScreen(
                 Spacer(modifier = Modifier.width(8.dp))
 
                 StoreFilter.IS_OPEN.let {
-                    KoinStoreFilterChip(
+                    val isSelected = selectedStoreFilter.contains(it)
+
+                    KoinStoreChip(
                         modifier = Modifier.fillMaxHeight(),
                         text = stringResource(it.stringResId),
-                        icon = painterResource(it.iconResId),
-                        isSelected = selectedStoreFilter.contains(it),
+                        leadingIcon = painterResource(it.iconResId),
+                        chipStyle = if (isSelected) {
+                            KoinStoreChipDefaults.koinStoreChipStyle(
+                                elevation = 0.dp,
+                                containerColor = RebrandKoinTheme.colors.primary500,
+                                textColor = RebrandKoinTheme.colors.neutral0
+                            )
+                        } else {
+                            KoinStoreChipDefaults.koinStoreChipStyle()
+                        },
+                        leadingIconStyle = if (isSelected) {
+                            KoinStoreChipDefaults.koinStoreIconStyle(
+                                iconColor = RebrandKoinTheme.colors.neutral0
+                            )
+                        } else {
+                            KoinStoreChipDefaults.koinStoreIconStyle()
+                        },
                         onClick = {
                             onSelectedStoreFilterChange(it)
                         }

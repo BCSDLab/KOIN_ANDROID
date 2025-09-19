@@ -334,14 +334,14 @@ fun OrderHistoryScreen(
                 item {
                     KoinOrdersFilterChip(
                         text = stringResource(filters.period.stringRes),
-                        active = !filters.period.isDefault,
+                        isSelected = !filters.period.isDefault,
                         onClick = { openFilterOverlay() }
                     )
                 }
                 item {
                     KoinOrdersFilterChip(
                         text = stringResource(R.string.bullet_separator, stringResource(filters.type.stringRes), stringResource(filters.status.stringRes)),
-                        active = !filters.type.isDefault or !filters.status.isDefault,
+                        isSelected = !filters.type.isDefault or !filters.status.isDefault,
                         onClick = { openFilterOverlay() }
                     )
                 }
