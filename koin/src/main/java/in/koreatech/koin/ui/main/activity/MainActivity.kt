@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.main.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
@@ -68,6 +69,8 @@ import `in`.koreatech.koin.util.ext.blueStatusBar
 import `in`.koreatech.koin.util.ext.observeLiveData
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -345,6 +348,23 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     }
 
     private fun initViewModel() = with(viewModel) {
+//        lifecycleScope.launch {
+//            viewModel.diningStoreAbTestExperimentGroup
+//                .drop(1)
+//                .first()
+//                .let { group ->
+//                    Log.d("main_dining_test", group)
+//                }
+//            viewModel.diningStoreAbTestExperimentGroup.collect { group ->
+//                Log.d("main_dining_test", group)
+//                EventLogger.logABTestEvent(
+//                    category = "a/b test 로깅(메인화면 식단 진입)",
+//                    label = "dining2shop_1",
+//                    value = group
+//                )
+//            }
+//        }
+
         getStoreCategories(StoreCategories(-1, R.drawable.ic_benefit_icon, "혜택"))
 
         observeLiveData(variableName) {

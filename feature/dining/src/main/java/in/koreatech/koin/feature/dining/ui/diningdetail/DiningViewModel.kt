@@ -29,6 +29,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -88,6 +89,19 @@ class DiningViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = Experiment.DINING_SHARE.experimentGroups.first()
     )
+
+    val diningStoreAbTestExperimentGroup =
+        flow {
+            abTestUseCase(Experiment.DINING_STORE.experimentTitle).onSuccess {
+                emit(it)
+            }.onFailure {
+                emit(Experiment.DINING_STORE.experimentGroups.first())
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = Experiment.DINING_STORE.experimentGroups.first()
+        )
 
     fun setSelectedDate(date: Date) {
         _selectedDate.value = TimeUtil.dateFormatToYYMMDD(date)

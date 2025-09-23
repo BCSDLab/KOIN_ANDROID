@@ -1,6 +1,9 @@
 package `in`.koreatech.koin.feature.dining.ui.diningdetail
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -97,14 +100,15 @@ import `in`.koreatech.koin.feature.dining.R
 import `in`.koreatech.koin.feature.dining.component.DiningDateItem
 import `in`.koreatech.koin.feature.dining.component.DiningItem
 import `in`.koreatech.koin.feature.dining.component.DiningItemOriginal
+import `in`.koreatech.koin.feature.dining.component.abTeset.DiningAbTestFloatingButton
 import `in`.koreatech.koin.feature.dining.component.bottomsheet.DiningBottomSheet
 import `in`.koreatech.koin.feature.dining.component.dialog.DiningImageDialog
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_DATE
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_PLACE
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_TYPE
 import `in`.koreatech.koin.feature.dining.ui.diningdetail.scroll.diningScrollConnection
-import java.util.Date
 import kotlinx.coroutines.launch
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -112,7 +116,8 @@ fun DiningDetailScreen(
     viewModel: DiningViewModel = hiltViewModel(),
     initialPage: Int = -1,
     onTopbarBackClick: () -> Unit = {},
-    onTopbarActionClick: () -> Unit = {}
+    onTopbarActionClick: () -> Unit = {},
+    onNavigateToStore: () -> Unit = {}
 ) {
     val userState by viewModel.userState.collectAsState()
 
@@ -129,6 +134,8 @@ fun DiningDetailScreen(
     val diningList by viewModel.dining.collectAsState()
 
     val abTestExperimentGroup by viewModel.abTestExperimentGroup.collectAsState()
+
+    val diningStoreAbTestExperimentGroup by viewModel.diningStoreAbTestExperimentGroup.collectAsState()
 
     LaunchedEffect(Unit) { // userState NPE error in viewModel init{}; Flow is null
         viewModel.getDining()
@@ -183,6 +190,7 @@ fun DiningDetailScreen(
             selectedDate = TimeUtil.stringToDateYYMMDD(selectedDate),
             showBottomSheet = showBottomSheet,
             experimentGroup = abTestExperimentGroup,
+            diningStoreExperimentGroup = diningStoreAbTestExperimentGroup,
             isAnonymous = userState.isAnonymous,
             isDiningRefreshing = isDiningRefreshing,
             initialPage = if (initialPage != -1) initialPage else viewModel.getInitialPage(),
@@ -192,7 +200,8 @@ fun DiningDetailScreen(
             onDateClick = viewModel::setSelectedDate,
             changeSoldOutSubscribe = viewModel::changeIsSoldOutSubscribed,
             changeDiningImageSubscribe = viewModel::changeIsDiningImageSubscribed,
-            getNotificationPermitInfo = viewModel::getNotificationPermissionInfo
+            getNotificationPermitInfo = viewModel::getNotificationPermissionInfo,
+            onNavigateToStore = onNavigateToStore
         )
     }
 }
@@ -205,6 +214,7 @@ private fun DiningDetailScreenImpl(
     selectedDate: Date,
     showBottomSheet: Boolean,
     experimentGroup: String,
+    diningStoreExperimentGroup: String,
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
     isSoldOutSubscribed: Boolean = false,
@@ -216,7 +226,8 @@ private fun DiningDetailScreenImpl(
     onDateClick: (Date) -> Unit = {},
     changeSoldOutSubscribe: (Boolean) -> Unit = {},
     changeDiningImageSubscribe: (Boolean) -> Unit = {},
-    getNotificationPermitInfo: () -> Unit = {}
+    getNotificationPermitInfo: () -> Unit = {},
+    onNavigateToStore: () -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current
@@ -365,178 +376,204 @@ private fun DiningDetailScreenImpl(
         )
     }
 
-    Column(
+
+    Box(
         modifier = modifier
             .padding(contentPadding)
             .navigationBarsPadding()
             .fillMaxSize()
             .nestedScroll(nestedScrollConnection)
     ) {
-        Row(
-            modifier = Modifier
-                .height(animatedToolbarHeight)
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-                .offset(y = -(maxToolbarHeight - animatedToolbarHeight) / 2),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            dates.forEachIndexed { index, date ->
-                DiningDateItem(
-                    modifier = Modifier
-                        .requiredHeight(maxToolbarHeight)
-                        .padding(top = 24.dp, bottom = 16.dp),
-                    date = date,
-                    isSelected = selectedPosition == index,
-                    onClick = onDateClick
-                )
-            }
-        }
-        KoinTabRow(
-            selectedTabIndex = pagerState.currentPage,
-            onTabSelected = {
-                EventLogger.logClickEvent(
-                    EventAction.CAMPUS,
-                    AnalyticsConstant.Label.MENU_TIME,
-                    tabList[it]
-                )
-                isUserScrolling = false
-                scope.launch {
-                    pagerState.animateScrollToPage(it)
-                }
-            },
-            titles = tabList.map { it }
-        )
-        HorizontalPager(
-            modifier = Modifier
+        Column(
+            modifier = modifier
+//                .padding(contentPadding)
+//                .navigationBarsPadding()
                 .fillMaxSize()
-                .background(color = KoinTheme.colors.neutral200),
-            state = pagerState,
-            verticalAlignment = Alignment.Top
-        ) { page ->
-            val state = rememberPullToRefreshState()
-            PullToRefreshBox(
-                isRefreshing = isDiningRefreshing,
-                onRefresh = refreshDining,
-                state = state,
-                indicator = {
-                    Indicator(
-                        modifier = Modifier.align(Alignment.TopCenter),
-                        isRefreshing = isDiningRefreshing,
-                        containerColor = KoinTheme.colors.neutral0,
-                        color = KoinTheme.colors.neutral800,
-                        state = state
+//                .nestedScroll(nestedScrollConnection)
+        ) {
+            Row(
+                modifier = Modifier
+                    .height(animatedToolbarHeight)
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+                    .offset(y = -(maxToolbarHeight - animatedToolbarHeight) / 2),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                dates.forEachIndexed { index, date ->
+                    DiningDateItem(
+                        modifier = Modifier
+                            .requiredHeight(maxToolbarHeight)
+                            .padding(top = 24.dp, bottom = 16.dp),
+                        date = date,
+                        isSelected = selectedPosition == index,
+                        onClick = onDateClick
                     )
                 }
-            ) {
-                if (isDiningRefreshing) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .zIndex(2f)
-                            .background(color = KoinTheme.colors.neutral200),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
+            }
+            KoinTabRow(
+                selectedTabIndex = pagerState.currentPage,
+                onTabSelected = {
+                    EventLogger.logClickEvent(
+                        EventAction.CAMPUS,
+                        AnalyticsConstant.Label.MENU_TIME,
+                        tabList[it]
+                    )
+                    isUserScrolling = false
+                    scope.launch {
+                        pagerState.animateScrollToPage(it)
                     }
-                }
-                val diningFilterList by remember(diningList, page) {
-                    derivedStateOf {
-                        when (tabList[page]) {
-                            DiningType.Breakfast.typeKorean -> diningList.filter { it.type == DiningType.Breakfast.typeEnglish }
-                            DiningType.Lunch.typeKorean -> diningList.filter { it.type == DiningType.Lunch.typeEnglish }
-                            DiningType.Dinner.typeKorean -> diningList.filter { it.type == DiningType.Dinner.typeEnglish }
-                            else -> listOf()
+                },
+                titles = tabList.map { it }
+            )
+            HorizontalPager(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = KoinTheme.colors.neutral200),
+                state = pagerState,
+                verticalAlignment = Alignment.Top
+            ) { page ->
+                val state = rememberPullToRefreshState()
+                PullToRefreshBox(
+                    isRefreshing = isDiningRefreshing,
+                    onRefresh = refreshDining,
+                    state = state,
+                    indicator = {
+                        Indicator(
+                            modifier = Modifier.align(Alignment.TopCenter),
+                            isRefreshing = isDiningRefreshing,
+                            containerColor = KoinTheme.colors.neutral0,
+                            color = KoinTheme.colors.neutral800,
+                            state = state
+                        )
+                    }
+                ) {
+                    if (isDiningRefreshing) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .zIndex(2f)
+                                .background(color = KoinTheme.colors.neutral200),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
                         }
                     }
-                }
-                Column(
-                    modifier = Modifier
-                        .verticalScroll(
-                            when (tabList[page]) { // Can't use currentScrollState.value; because all pages have to give each other scroll state, not same currentScrollState
-                                DiningType.Breakfast.typeKorean -> breakfastScrollState
-                                DiningType.Lunch.typeKorean -> lunchScrollState
-                                DiningType.Dinner.typeKorean -> dinnerScrollState
-                                else -> breakfastScrollState
+                    val diningFilterList by remember(diningList, page) {
+                        derivedStateOf {
+                            when (tabList[page]) {
+                                DiningType.Breakfast.typeKorean -> diningList.filter { it.type == DiningType.Breakfast.typeEnglish }
+                                DiningType.Lunch.typeKorean -> diningList.filter { it.type == DiningType.Lunch.typeEnglish }
+                                DiningType.Dinner.typeKorean -> diningList.filter { it.type == DiningType.Dinner.typeEnglish }
+                                else -> listOf()
                             }
-                        )
-                        .padding(vertical = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    diningFilterList.forEachIndexed { index, dining ->
-                        Box(
-                            contentAlignment = Alignment.BottomCenter
-                        ) {
-                            DiningItemByABTest(
-                                experimentGroup = experimentGroup,
-                                dining = dining,
-                                isWeekend = isWeekend,
-                                onImageClick = {
-                                    EventLogger.logClickEvent(
-                                        EventAction.CAMPUS,
-                                        AnalyticsConstant.Label.MENU_IMAGE,
-                                        DiningUtil.getKoreanName(dining.type) + "_" + dining.place
-                                    )
-                                    selectedImage = dining.imageUrl
-                                    showImageDialog = true
-                                },
-                                onShareClick = {
-                                    EventLogger.logClickEvent(
-                                        EventAction.CAMPUS,
-                                        AnalyticsConstant.Label.MENU_SHARE,
-                                        "공유하기"
-                                    )
-                                    val messageTemplate = createFeedMessageTemplate(dining)
-
-                                    if (ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
-                                        ShareClient.instance.shareDefault(
-                                            context,
-                                            messageTemplate
-                                        ) { sharingResult, error ->
-                                            error?.printStackTrace()
-                                            sharingResult?.let {
-                                                context.startActivity(it.intent)
-                                            }
-                                        }
-                                    } else {
-                                        Toast.makeText(context, context.getString(R.string.kakao_share_unable), Toast.LENGTH_SHORT).show()
-                                    }
+                        }
+                    }
+                    Column(
+                        modifier = Modifier
+                            .verticalScroll(
+                                when (tabList[page]) { // Can't use currentScrollState.value; because all pages have to give each other scroll state, not same currentScrollState
+                                    DiningType.Breakfast.typeKorean -> breakfastScrollState
+                                    DiningType.Lunch.typeKorean -> lunchScrollState
+                                    DiningType.Dinner.typeKorean -> dinnerScrollState
+                                    else -> breakfastScrollState
                                 }
                             )
-                            if (index == 0 && showToolTip) {
-                                val infiniteTransition = rememberInfiniteTransition()
-                                val offsetY by infiniteTransition.animateValue(
-                                    initialValue = 15.dp,
-                                    targetValue = 20.dp,
-                                    typeConverter = Dp.VectorConverter,
-                                    animationSpec = infiniteRepeatable(
-                                        animation = tween(1000, easing = LinearEasing),
-                                        repeatMode = RepeatMode.Reverse
-                                    )
+                            .padding(vertical = 16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        diningFilterList.forEachIndexed { index, dining ->
+                            Box(
+                                contentAlignment = Alignment.BottomCenter
+                            ) {
+                                DiningItemByABTest(
+                                    experimentGroup = experimentGroup,
+                                    dining = dining,
+                                    isWeekend = isWeekend,
+                                    onImageClick = {
+                                        EventLogger.logClickEvent(
+                                            EventAction.CAMPUS,
+                                            AnalyticsConstant.Label.MENU_IMAGE,
+                                            DiningUtil.getKoreanName(dining.type) + "_" + dining.place
+                                        )
+                                        selectedImage = dining.imageUrl
+                                        showImageDialog = true
+                                    },
+                                    onShareClick = {
+                                        EventLogger.logClickEvent(
+                                            EventAction.CAMPUS,
+                                            AnalyticsConstant.Label.MENU_SHARE,
+                                            "공유하기"
+                                        )
+                                        val messageTemplate = createFeedMessageTemplate(dining)
+
+                                        if (ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
+                                            ShareClient.instance.shareDefault(
+                                                context,
+                                                messageTemplate
+                                            ) { sharingResult, error ->
+                                                error?.printStackTrace()
+                                                sharingResult?.let {
+                                                    context.startActivity(it.intent)
+                                                }
+                                            }
+                                        } else {
+                                            Toast.makeText(context, context.getString(R.string.kakao_share_unable), Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
                                 )
-                                Box(
-                                    modifier = Modifier.offset(y = -(offsetY))
-                                ) {
-                                    with(onboardingManager) {
-                                        ShowOnboardingTooltipIfNeeded(
-                                            type = OnboardingType.DINING_SHARE,
-                                            arrowDirection = ArrowDirection.TOP
-                                        ) {
-                                            Spacer(modifier = Modifier.fillMaxWidth())
+                                if (index == 0 && showToolTip) {
+                                    val infiniteTransition = rememberInfiniteTransition()
+                                    val offsetY by infiniteTransition.animateValue(
+                                        initialValue = 15.dp,
+                                        targetValue = 20.dp,
+                                        typeConverter = Dp.VectorConverter,
+                                        animationSpec = infiniteRepeatable(
+                                            animation = tween(1000, easing = LinearEasing),
+                                            repeatMode = RepeatMode.Reverse
+                                        )
+                                    )
+                                    Box(
+                                        modifier = Modifier.offset(y = -(offsetY))
+                                    ) {
+                                        with(onboardingManager) {
+                                            ShowOnboardingTooltipIfNeeded(
+                                                type = OnboardingType.DINING_SHARE,
+                                                arrowDirection = ArrowDirection.TOP
+                                            ) {
+                                                Spacer(modifier = Modifier.fillMaxWidth())
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
+                        Text(
+                            modifier = Modifier.padding(horizontal = 24.dp),
+                            text = stringResource(R.string.caution_dining_changeable),
+                            style = KoinTheme.typography.medium13,
+                            color = KoinTheme.colors.neutral400
+                        )
+                        Spacer(Modifier.height(75.dp))
                     }
-                    Text(
-                        modifier = Modifier.padding(horizontal = 24.dp),
-                        text = stringResource(R.string.caution_dining_changeable),
-                        style = KoinTheme.typography.medium13,
-                        color = KoinTheme.colors.neutral400
-                    )
-                    Spacer(Modifier.height(75.dp))
                 }
             }
+        }
+
+        if (diningStoreExperimentGroup == ExperimentGroup.VARIANT) {
+            DiningAbTestFloatingButton(
+                text = "오늘 학식 메뉴가 별로라면?",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .padding(start = 16.dp, end = 8.dp, bottom = 16.dp),
+                onClick = {
+                    EventLogger.logCampusClickEvent(
+                        label = "dining_to_shop",
+                        value = tabList[pagerState.currentPage]
+                    )
+                    onNavigateToStore
+                }
+            )
         }
     }
 }
@@ -559,6 +596,7 @@ private fun DiningItemByABTest(
                 onShareClick = onShareClick
             )
         }
+
         ExperimentGroup.SHARE_ORIGINAL -> {
             DiningItemOriginal(
                 dining = dining,
@@ -680,6 +718,7 @@ private fun DiningScreenPreview() {
         context = LocalContext.current,
         selectedDate = TimeUtil.getNextDayDate(TimeUtil.getCurrentTime()),
         showBottomSheet = false,
-        experimentGroup = ExperimentGroup.SHARE_NEW
+        experimentGroup = ExperimentGroup.SHARE_NEW,
+        diningStoreExperimentGroup = ExperimentGroup.VARIANT
     )
 }

@@ -11,7 +11,8 @@ import `in`.koreatech.koin.feature.dining.ui.diningdetail.DiningDetailScreen
 import `in`.koreatech.koin.feature.dining.ui.diningnotice.DiningNoticeScreen
 
 fun NavGraphBuilder.koinDiningGraph(
-    navController: NavController
+    navController: NavController,
+    onNavigateToStore: () -> Unit
 ) {
     composable(
         route = "${DiningNavType.DiningDetail.route}?initDate={${INIT_DATE}}&initTabType={${INIT_TAB_TYPE}}",
@@ -38,6 +39,7 @@ fun NavGraphBuilder.koinDiningGraph(
             onTopbarActionClick = {
                 navController.navigate(DiningNavType.DiningNotice.route)
             },
+            onNavigateToStore = onNavigateToStore,
             initialPage = initialPage
         )
     }
