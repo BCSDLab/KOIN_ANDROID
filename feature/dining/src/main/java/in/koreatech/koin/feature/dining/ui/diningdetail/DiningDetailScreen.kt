@@ -571,7 +571,7 @@ private fun DiningDetailScreenImpl(
                         label = "dining_to_shop",
                         value = tabList[pagerState.currentPage]
                     )
-                    onNavigateToStore
+                    onNavigateToStore()
                 }
             )
         }

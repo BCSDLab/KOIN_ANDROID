@@ -348,22 +348,22 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     }
 
     private fun initViewModel() = with(viewModel) {
-//        lifecycleScope.launch {
-//            viewModel.diningStoreAbTestExperimentGroup
-//                .drop(1)
-//                .first()
-//                .let { group ->
-//                    Log.d("main_dining_test", group)
-//                }
-//            viewModel.diningStoreAbTestExperimentGroup.collect { group ->
-//                Log.d("main_dining_test", group)
-//                EventLogger.logABTestEvent(
-//                    category = "a/b test 로깅(메인화면 식단 진입)",
-//                    label = "dining2shop_1",
-//                    value = group
-//                )
-//            }
-//        }
+        lifecycleScope.launch {
+            viewModel.diningStoreAbTestExperimentGroup
+                .drop(1)
+                .first()
+                .let { group ->
+                    Log.d("main_dining_test", group)
+                }
+            viewModel.diningStoreAbTestExperimentGroup.collect { group ->
+                Log.d("main_dining_test", group)
+                EventLogger.logABTestEvent(
+                    category = "a/b test 로깅(메인화면 식단 진입)",
+                    label = "dining2shop_1",
+                    value = group
+                )
+            }
+        }
 
         getStoreCategories(StoreCategories(-1, R.drawable.ic_benefit_icon, "혜택"))
 

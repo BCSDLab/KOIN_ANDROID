@@ -76,18 +76,18 @@ class MainActivityViewModel @Inject constructor(
             initialValue = Experiment.MAIN_DINING_SEE_MORE.experimentGroups.first()
         )
 
-//    val diningStoreAbTestExperimentGroup =
-//        flow {
-//            abTestUseCase(Experiment.DINING_STORE.experimentTitle).onSuccess {
-//                emit(it)
-//            }.onFailure {
-//                emit(Experiment.DINING_STORE.experimentGroups.first())
-//            }
-//        }.stateIn(
-//            scope = viewModelScope,
-//            started = SharingStarted.WhileSubscribed(5_000),
-//            initialValue = Experiment.DINING_STORE.experimentGroups.first()
-//        )
+    val diningStoreAbTestExperimentGroup =
+        flow {
+            abTestUseCase(Experiment.DINING_STORE.experimentTitle).onSuccess {
+                emit(it)
+            }.onFailure {
+                emit(Experiment.DINING_STORE.experimentGroups.first())
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = Experiment.DINING_STORE.experimentGroups.first()
+        )
 
     val hotArticles: StateFlow<List<ArticleMainState.Content>> =
         articleRepository.fetchHotArticleHeaders()
