@@ -23,6 +23,7 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.util.withLoading
 import `in`.koreatech.koin.databinding.ActivityWriteReviewBinding
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.model.store.StoreReviewContent
@@ -30,7 +31,6 @@ import `in`.koreatech.koin.ui.store.adapter.review.MenuImageRecyclerViewAdapter
 import `in`.koreatech.koin.ui.store.adapter.review.MenuRecyclerViewAdapter
 import `in`.koreatech.koin.ui.store.viewmodel.WriteReviewViewModel
 import `in`.koreatech.koin.util.ext.showToast
-import `in`.koreatech.koin.util.ext.withLoading
 import java.io.Serializable
 import kotlin.properties.Delegates
 import kotlinx.coroutines.CoroutineScope

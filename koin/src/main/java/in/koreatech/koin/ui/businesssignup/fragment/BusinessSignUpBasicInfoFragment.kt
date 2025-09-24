@@ -10,6 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.fragment.BaseFragment
 import `in`.koreatech.koin.core.util.SnackbarUtil
+import `in`.koreatech.koin.core.util.withLoading
 import `in`.koreatech.koin.databinding.FragmentBusinessSignupBasicInfoBinding
 import `in`.koreatech.koin.domain.error.signup.InCorrectEmailAddressException
 import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
@@ -19,7 +20,6 @@ import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessSignUpBasicInfoVi
 import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessVerificationViewModel
 import `in`.koreatech.koin.util.FirebasePerformanceUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
-import `in`.koreatech.koin.util.ext.withLoading
 
 @AndroidEntryPoint
 class BusinessSignUpBasicInfoFragment : BaseFragment() {

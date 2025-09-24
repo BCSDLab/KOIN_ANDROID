@@ -26,6 +26,7 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.core.util.SnackbarUtil
+import `in`.koreatech.koin.core.util.withLoading
 import `in`.koreatech.koin.databinding.FragmentArticleSearchBinding
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
@@ -34,7 +35,6 @@ import `in`.koreatech.koin.ui.article.adapter.RecentSearchedHistoryAdapter
 import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleSearchViewModel
 import `in`.koreatech.koin.ui.article.viewmodel.SearchUiState
-import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -222,6 +222,7 @@ class ArticleSearchFragment : Fragment() {
                     R.id.articleLostAndFoundDetailFragment,
                     bundleOf(ARTICLE_ID to article.id)
                 )
+
             else ->
                 navController.navigate(
                     R.id.action_articleSearchFragment_to_articleDetailFragment,
