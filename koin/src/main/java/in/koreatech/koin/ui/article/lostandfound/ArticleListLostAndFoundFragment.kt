@@ -12,8 +12,8 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.navigation.Navigator
-import `in`.koreatech.koin.feature.article.ui.lostandfound.LostAndFoundList
-import `in`.koreatech.koin.feature.article.ui.write.LostAndFoundWriteArticleViewModel.Companion.LOST_OR_FOUND_TYPE
+import `in`.koreatech.koin.feature.article.ui.lostandfound.list.LostAndFoundList
+import `in`.koreatech.koin.feature.article.ui.lostandfound.write.LostAndFoundWriteArticleViewModel.Companion.LOST_OR_FOUND_TYPE
 import javax.inject.Inject
 
 @AndroidEntryPoint
