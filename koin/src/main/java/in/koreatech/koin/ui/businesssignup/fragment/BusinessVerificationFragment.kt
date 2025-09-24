@@ -11,13 +11,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.fragment.BaseFragment
+import `in`.koreatech.koin.core.util.SnackbarUtil
 import `in`.koreatech.koin.databinding.FragmentBusinessVerificationBinding
 import `in`.koreatech.koin.domain.error.owner.OwnerError
 import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
 import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessSignUpBaseViewModel
 import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessSignUpBasicInfoViewModel
 import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessVerificationViewModel
-import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch

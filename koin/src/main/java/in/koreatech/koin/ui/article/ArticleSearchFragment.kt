@@ -25,6 +25,7 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
+import `in`.koreatech.koin.core.util.SnackbarUtil
 import `in`.koreatech.koin.databinding.FragmentArticleSearchBinding
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
@@ -33,7 +34,6 @@ import `in`.koreatech.koin.ui.article.adapter.RecentSearchedHistoryAdapter
 import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleSearchViewModel
 import `in`.koreatech.koin.ui.article.viewmodel.SearchUiState
-import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
 
