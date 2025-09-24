@@ -106,7 +106,7 @@ dependencies {
     implementation(projects.core.onboarding)
     implementation(projects.feature.timetable)
     implementation(projects.feature.bus)
-    implementation(projects.feature.lostandfound)
+    implementation(projects.feature.article)
     implementation(projects.feature.chat)
     implementation(projects.feature.banner)
     implementation(projects.feature.user)

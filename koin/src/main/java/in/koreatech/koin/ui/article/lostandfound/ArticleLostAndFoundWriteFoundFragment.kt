@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.feature.lostandfound.ui.write.LostAndFoundWriteArticle
+import `in`.koreatech.koin.feature.article.ui.write.LostAndFoundWriteArticle
 
 @AndroidEntryPoint
 class ArticleLostAndFoundWriteFoundFragment : Fragment() {
