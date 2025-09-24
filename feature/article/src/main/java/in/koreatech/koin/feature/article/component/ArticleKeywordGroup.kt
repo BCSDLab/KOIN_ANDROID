@@ -30,6 +30,9 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
+import `in`.koreatech.koin.core.onboarding.ArrowDirection
+import `in`.koreatech.koin.core.onboarding.OnboardingType
+import `in`.koreatech.koin.core.onboarding.rememberOnboardingManager
 import `in`.koreatech.koin.feature.article.R
 import `in`.koreatech.koin.feature.article.util.horizontalFadingEdge
 
@@ -42,6 +45,7 @@ fun ArticleKeywordGroup(
     selectKeyword: (keyword: String) -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
+    val onboardingManager = rememberOnboardingManager()
 
     /**
      * TextStyle for keyword chip
@@ -131,23 +135,30 @@ fun ArticleKeywordGroup(
         }
 
         if (keyWords.isEmpty()) {
-            ArticleTextChip(
-                modifier = Modifier.defaultMinSize(
-                    minWidth = Dp.Unspecified,
-                    minHeight = 32.dp
-                ),
-                title = stringResource(R.string.keyword_add_new),
-                isSelected = false,
-                textStyle = textStyle,
-                onSelect = {
-                    EventLogger.logClickEvent(
-                        EventAction.CAMPUS,
-                        AnalyticsConstant.Label.ADD_KEYWORD,
-                        "키워드추가"
+            with(onboardingManager) {
+                ShowOnboardingTooltipIfNeeded(
+                    type = OnboardingType.ARTICLE_KEYWORD,
+                    arrowDirection = ArrowDirection.TOP
+                ) {
+                    ArticleTextChip(
+                        modifier = Modifier.defaultMinSize(
+                            minWidth = Dp.Unspecified,
+                            minHeight = 32.dp
+                        ),
+                        title = stringResource(R.string.keyword_add_new),
+                        isSelected = false,
+                        textStyle = textStyle,
+                        onSelect = {
+                            EventLogger.logClickEvent(
+                                EventAction.CAMPUS,
+                                AnalyticsConstant.Label.ADD_KEYWORD,
+                                "키워드추가"
+                            )
+                            navigateToKeywordFragment()
+                        }
                     )
-                    navigateToKeywordFragment()
                 }
-            )
+            }
         }
     }
 }

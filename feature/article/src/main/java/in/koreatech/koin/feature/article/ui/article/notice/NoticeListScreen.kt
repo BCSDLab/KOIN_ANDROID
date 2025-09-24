@@ -37,7 +37,7 @@ fun NoticeListScreen(
     navigateToArticleDetail: (articleId: Int, boardId: Int) -> Unit = { _, _ -> },
     navigateToKeywordSetting: () -> Unit = {}
 ) {
-    LaunchedEffect(Unit) {
+    LaunchedEffect(board) {
         viewModel.setCurrentBoard(board)
     }
 
