@@ -10,12 +10,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.toast.ToastUtil
+import `in`.koreatech.koin.core.util.whiteStatusBar
 import `in`.koreatech.koin.core.util.withLoading
 import `in`.koreatech.koin.databinding.ActivityDiningNoticeBinding
 import `in`.koreatech.koin.ui.dining.adapter.DiningNoticeAdapter
 import `in`.koreatech.koin.ui.dining.viewmodel.DiningNoticeViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
-import `in`.koreatech.koin.util.ext.whiteStatusBar
 
 @AndroidEntryPoint
 class DiningNoticeActivity : ActivityBase() {
