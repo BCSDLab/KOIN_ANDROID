@@ -86,7 +86,7 @@ class MainActivityViewModel @Inject constructor(
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = Experiment.DINING_STORE.experimentGroups.first()
+            initialValue = null
         )
 
     val hotArticles: StateFlow<List<ArticleMainState.Content>> =

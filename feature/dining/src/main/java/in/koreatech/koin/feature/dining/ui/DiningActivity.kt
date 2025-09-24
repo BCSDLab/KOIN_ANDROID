@@ -11,6 +11,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
+import `in`.koreatech.koin.core.navigation.Navigator
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,9 +27,13 @@ import `in`.koreatech.koin.feature.dining.constants.PARAMS_DATE
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_TYPE
 import `in`.koreatech.koin.feature.dining.navigation.DiningNavType
 import `in`.koreatech.koin.feature.dining.navigation.koinDiningGraph
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DiningActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var navigator: Navigator
 
     private lateinit var navController: NavHostController
 
@@ -54,8 +59,7 @@ class DiningActivity : ComponentActivity() {
                     koinDiningGraph(
                         navController = navController,
                         onNavigateToStore = {
-                            val uri = "koin://store".toUri()
-                            val intent = Intent(Intent.ACTION_VIEW, uri)
+                            val intent = navigator.navigateToStore(this@DiningActivity)
                             startActivity(intent)
                         }
                     )

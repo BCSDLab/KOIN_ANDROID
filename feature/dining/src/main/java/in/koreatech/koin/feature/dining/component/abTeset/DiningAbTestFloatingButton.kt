@@ -4,10 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -15,10 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 fun DiningAbTestFloatingButton(
@@ -30,27 +29,29 @@ fun DiningAbTestFloatingButton(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(46.dp)
             .shadow(
                 elevation = 4.dp,
-                spotColor = RebrandKoinTheme.colors.neutral800.copy(alpha = 0.04f),
-                ambientColor = RebrandKoinTheme.colors.neutral800.copy(alpha = 0.04f)
+                spotColor = KoinTheme.colors.neutral800.copy(alpha = 0.04f),
+                ambientColor = KoinTheme.colors.neutral800.copy(alpha = 0.04f)
             )
-            .background(color = RebrandKoinTheme.colors.info100, shape = RoundedCornerShape(size = 8.dp))
-            .padding(start = 20.dp, top = 8.dp, end = 8.dp, bottom = 8.dp),
+            .background(color = KoinTheme.colors.info100, shape = KoinTheme.shapes.small)
+            .padding(start = 20.dp, end = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
+            modifier = Modifier.weight(1f),
             text = contentText,
             color = KoinTheme.colors.primary500,
-            style = RebrandKoinTheme.typography.medium14
+            style = KoinTheme.typography.medium14,
+            maxLines = 1,
+            overflow = TextOverflow.Clip
         )
 
         Button(
             onClick = onClick,
-            modifier = Modifier.height(30.dp),
-            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier.defaultMinSize(minHeight = 1.dp),
+            shape = KoinTheme.shapes.small,
             colors = ButtonDefaults.buttonColors(
                 containerColor = KoinTheme.colors.primary500
             ),
@@ -59,7 +60,7 @@ fun DiningAbTestFloatingButton(
             Text(
                 text = buttonText,
                 color = KoinTheme.colors.neutral0,
-                style = RebrandKoinTheme.typography.bold14
+                style = KoinTheme.typography.bold14
             )
         }
     }

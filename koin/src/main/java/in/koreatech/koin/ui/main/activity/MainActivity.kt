@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.main.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
@@ -69,6 +70,7 @@ import `in`.koreatech.koin.util.ext.observeLiveData
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -349,7 +351,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     private fun initViewModel() = with(viewModel) {
         lifecycleScope.launch {
             viewModel.diningStoreAbTestExperimentGroup
-                .drop(1)
+                .filterNotNull()
                 .first()
                 .let { group ->
                     EventLogger.logABTestEvent(
