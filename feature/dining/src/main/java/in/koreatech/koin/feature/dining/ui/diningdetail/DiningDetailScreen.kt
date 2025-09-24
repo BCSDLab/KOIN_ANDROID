@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.dining.ui.diningdetail
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -81,6 +82,7 @@ import com.kakao.sdk.template.model.Link
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
@@ -133,6 +135,8 @@ fun DiningDetailScreen(
     val abTestExperimentGroup by viewModel.abTestExperimentGroup.collectAsState()
 
     val diningStoreAbTestExperimentGroup by viewModel.diningStoreAbTestExperimentGroup.collectAsState()
+
+    val sessionId = remember { viewModel.getDiningSessionId() }
 
     LaunchedEffect(Unit) { // userState NPE error in viewModel init{}; Flow is null
         viewModel.getDining()
@@ -198,7 +202,8 @@ fun DiningDetailScreen(
             changeSoldOutSubscribe = viewModel::changeIsSoldOutSubscribed,
             changeDiningImageSubscribe = viewModel::changeIsDiningImageSubscribed,
             getNotificationPermitInfo = viewModel::getNotificationPermissionInfo,
-            onNavigateToStore = onNavigateToStore
+            onNavigateToStore = onNavigateToStore,
+            onGetSessionId = { viewModel.getDiningSessionId() }
         )
     }
 }
@@ -224,7 +229,8 @@ private fun DiningDetailScreenImpl(
     changeSoldOutSubscribe: (Boolean) -> Unit = {},
     changeDiningImageSubscribe: (Boolean) -> Unit = {},
     getNotificationPermitInfo: () -> Unit = {},
-    onNavigateToStore: () -> Unit = {}
+    onNavigateToStore: () -> Unit = {},
+    onGetSessionId: () -> String,
 ) {
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current
@@ -561,9 +567,14 @@ private fun DiningDetailScreenImpl(
                     .align(Alignment.BottomCenter)
                     .padding(start = 16.dp, end = 8.dp, bottom = 16.dp),
                 onClick = {
-                    EventLogger.logCampusClickEvent(
+                    val sessionId = onGetSessionId()
+                    Log.d("session_is_test", sessionId)
+                    EventLogger.logSessionEvent(
+                        action = EventAction.ABTEST,
+                        category = EventCategory.CLICK,
                         label = "dining_to_shop",
-                        value = tabList[pagerState.currentPage]
+                        value = tabList[pagerState.currentPage],
+                        customSessionId = sessionId
                     )
                     onNavigateToStore()
                 }
@@ -713,6 +724,7 @@ private fun DiningScreenPreview() {
         selectedDate = TimeUtil.getNextDayDate(TimeUtil.getCurrentTime()),
         showBottomSheet = false,
         experimentGroup = ExperimentGroup.SHARE_NEW,
-        diningStoreExperimentGroup = ExperimentGroup.VARIANT
+        diningStoreExperimentGroup = ExperimentGroup.VARIANT,
+        onGetSessionId = { "" }
     )
 }

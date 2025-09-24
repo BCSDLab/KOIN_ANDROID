@@ -36,6 +36,7 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_T
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_TEST_DESIGN_A
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_TEST_DESIGN_B
 import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
@@ -354,10 +355,19 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 .filterNotNull()
                 .first()
                 .let { group ->
+                    val sessionId = viewModel.getDiningToShopSessionId()
+
                     EventLogger.logABTestEvent(
                         category = "a/b test 로깅(메인화면 식단 진입)",
                         label = "dining2shop_1",
                         value = group
+                    )
+                    EventLogger.logSessionEvent(
+                        action = EventAction.ABTEST,
+                        category = "a/b test 로깅(메인화면 식단 진입)",
+                        label = "dining2shop_1",
+                        value = group,
+                        customSessionId = sessionId
                     )
                 }
         }

@@ -16,6 +16,7 @@ import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.usecase.banner.CheckBannerRefusalUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubHotUseCase
 import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
+import `in`.koreatech.koin.domain.usecase.session.GetSessionIdUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
@@ -45,7 +46,8 @@ class MainActivityViewModel @Inject constructor(
     private val abTestUseCase: ABTestUseCase,
     private val checkBannerRefusalUseCase: CheckBannerRefusalUseCase,
     private val articleRepository: ArticleRepository,
-    private val getClubHotUseCase: GetClubHotUseCase
+    private val getClubHotUseCase: GetClubHotUseCase,
+    private val getSessionIdUseCase: GetSessionIdUseCase
 ) : BaseViewModel() {
     private val _variableName = MutableLiveData<String>()
     val variableName: LiveData<String> get() = _variableName
@@ -204,6 +206,17 @@ class MainActivityViewModel @Inject constructor(
             categoryList.add(0, storeCategory)
             _storeCategories.value = categoryList
         }
+    }
+
+    fun getDiningToShopSessionId(): String {
+        return getSessionIdUseCase(
+            sessionName = "dining2shop_1",
+            // 수정
+            isLoggedIn = true,
+            platform = "ANDROID",
+            sessionTime = 1800,
+            shouldExpireOtherSessions = true
+        )
     }
 
     private fun checkBannerRefusal() {

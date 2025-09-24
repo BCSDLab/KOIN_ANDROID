@@ -242,7 +242,7 @@ object EventLogger {
      * logEvent(EventAction.CAMPUS, EventCategory.CLICK, "main_shop_categories", "전체보기")
      * ```
      */
-    private fun logSessionEvent(
+    fun logSessionEvent(
         action: EventAction,
         category: EventCategory,
         label: String,
