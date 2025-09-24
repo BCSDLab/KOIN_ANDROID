@@ -24,6 +24,16 @@ object DateFormatUtil {
         return DateTimeFormatter.ofPattern("MM.dd").format(date)
     }
 
+    /**
+     * yyyy-MM-dd HH:mm:ss -> MM.dd
+     */
+    fun getSimpleMonthAndDay(dateString: String): String {
+        val originalFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val targetFormat = DateTimeFormatter.ofPattern("MM.dd")
+        val date = originalFormat.parse(dateString)
+        return targetFormat.format(date)
+    }
+
     fun getFullDate(date: LocalDate): String {
         return DateTimeFormatter.ofPattern("yyyy-MM-dd").format(date)
     }
