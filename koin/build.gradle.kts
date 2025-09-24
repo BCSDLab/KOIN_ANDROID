@@ -112,6 +112,7 @@ dependencies {
     implementation(projects.feature.user)
     implementation(projects.feature.club)
     implementation(projects.feature.dining)
+    implementation(projects.feature.setting)
 
     implementation(libs.guava)
 
