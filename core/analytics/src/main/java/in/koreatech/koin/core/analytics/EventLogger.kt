@@ -18,6 +18,7 @@ object EventLogger {
     private const val EVENT_CATEGORY = "event_category"
     private const val EVENT_LABEL = "event_label"
     private const val VALUE = "value"
+    private const val CUSTOM_SESSION_ID = "custom_session_id"
 
     private var loggerUserData: LoggerUserData = LoggerUserData("", "", "")
 
@@ -227,6 +228,60 @@ object EventLogger {
             }
         }
         Log.d("EventLogger", "logEvent: action=$action, category=$category, label=$label, value=$value, extras=$extras")
+    }
+
+    /**
+     * @param action 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
+     * @param category 이벤트 종류(click, scroll, ...)
+     * @param label 이벤트 소분류
+     * @param value 이벤트 값
+     * @param customSessionId 세션 값
+     * @param extras 추가 이벤트 값
+     *
+     * ```
+     * logEvent(EventAction.CAMPUS, EventCategory.CLICK, "main_shop_categories", "전체보기")
+     * ```
+     */
+    private fun logSessionEvent(
+        action: EventAction,
+        category: EventCategory,
+        label: String,
+        value: String,
+        customSessionId: String,
+        vararg extras: EventExtra
+    ) {
+        if (BuildConfig.IS_DEBUG) {
+            Firebase.analytics.setUserId(loggerUserData.userId)
+            Firebase.analytics.logEvent("${action.value}_debug") {
+                loggerUserData.let {
+                    param(USER_GENDER, it.gender)
+                    param(USER_MAJOR, it.major)
+                }
+                param(EVENT_CATEGORY, "${category.value}_debug")
+                param(EVENT_LABEL, "$label (debug)")
+                param(VALUE, value)
+                param(CUSTOM_SESSION_ID, customSessionId)
+                extras.forEach {
+                    param("${it.key}_debug", it.value)
+                }
+            }
+        } else {
+            Firebase.analytics.logEvent(action.value) {
+                Firebase.analytics.setUserId(loggerUserData.userId)
+                loggerUserData.let {
+                    param(USER_GENDER, it.gender)
+                    param(USER_MAJOR, it.major)
+                }
+                param(EVENT_CATEGORY, category.value)
+                param(EVENT_LABEL, label)
+                param(VALUE, value)
+                param(CUSTOM_SESSION_ID, customSessionId)
+                extras.forEach {
+                    param(it.key, it.value)
+                }
+            }
+        }
+        Log.d("EventLogger", "logEvent: action=$action, category=$category, label=$label, value=$value, custom_session_id=$customSessionId extras=$extras")
     }
 }
 
