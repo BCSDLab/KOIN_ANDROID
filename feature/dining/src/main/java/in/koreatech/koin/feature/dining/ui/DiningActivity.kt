@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.dining.ui
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -26,7 +26,6 @@ import `in`.koreatech.koin.feature.dining.constants.PARAMS_DATE
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_TYPE
 import `in`.koreatech.koin.feature.dining.navigation.DiningNavType
 import `in`.koreatech.koin.feature.dining.navigation.koinDiningGraph
-import androidx.core.net.toUri
 
 @AndroidEntryPoint
 class DiningActivity : ComponentActivity() {

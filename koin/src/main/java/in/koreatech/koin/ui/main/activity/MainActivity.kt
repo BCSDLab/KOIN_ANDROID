@@ -3,7 +3,6 @@ package `in`.koreatech.koin.ui.main.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
@@ -353,16 +352,12 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 .drop(1)
                 .first()
                 .let { group ->
-                    Log.d("main_dining_test", group)
+                    EventLogger.logABTestEvent(
+                        category = "a/b test 로깅(메인화면 식단 진입)",
+                        label = "dining2shop_1",
+                        value = group
+                    )
                 }
-            viewModel.diningStoreAbTestExperimentGroup.collect { group ->
-                Log.d("main_dining_test", group)
-                EventLogger.logABTestEvent(
-                    category = "a/b test 로깅(메인화면 식단 진입)",
-                    label = "dining2shop_1",
-                    value = group
-                )
-            }
         }
 
         getStoreCategories(StoreCategories(-1, R.drawable.ic_benefit_icon, "혜택"))

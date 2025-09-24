@@ -22,7 +22,8 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 fun DiningAbTestFloatingButton(
-    text: String,
+    contentText: String,
+    buttonText: String,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
@@ -41,7 +42,7 @@ fun DiningAbTestFloatingButton(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = text,
+            text = contentText,
             color = KoinTheme.colors.primary500,
             style = RebrandKoinTheme.typography.medium14
         )
@@ -56,7 +57,7 @@ fun DiningAbTestFloatingButton(
             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
         ) {
             Text(
-                text = "주변상점 보기",
+                text = buttonText,
                 color = KoinTheme.colors.neutral0,
                 style = RebrandKoinTheme.typography.bold14
             )
@@ -68,7 +69,8 @@ fun DiningAbTestFloatingButton(
 @Composable
 fun DiningAbTestFloatingButtonPreview() {
     DiningAbTestFloatingButton(
-        text = "오늘 학식 메뉴가 별로라면?",
+        contentText = "오늘 학식 메뉴가 별로라면?",
+        buttonText = "주변상점 보기",
         onClick = {}
     )
 }

@@ -1,9 +1,6 @@
 package `in`.koreatech.koin.feature.dining.ui.diningdetail
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -107,8 +104,8 @@ import `in`.koreatech.koin.feature.dining.constants.PARAMS_DATE
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_PLACE
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_TYPE
 import `in`.koreatech.koin.feature.dining.ui.diningdetail.scroll.diningScrollConnection
-import kotlinx.coroutines.launch
 import java.util.Date
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -376,7 +373,6 @@ private fun DiningDetailScreenImpl(
         )
     }
 
-
     Box(
         modifier = modifier
             .padding(contentPadding)
@@ -386,10 +382,7 @@ private fun DiningDetailScreenImpl(
     ) {
         Column(
             modifier = modifier
-//                .padding(contentPadding)
-//                .navigationBarsPadding()
                 .fillMaxSize()
-//                .nestedScroll(nestedScrollConnection)
         ) {
             Row(
                 modifier = Modifier
@@ -561,7 +554,8 @@ private fun DiningDetailScreenImpl(
 
         if (diningStoreExperimentGroup == ExperimentGroup.VARIANT) {
             DiningAbTestFloatingButton(
-                text = "오늘 학식 메뉴가 별로라면?",
+                contentText = "오늘 학식 메뉴가 별로라면?",
+                buttonText = "주변상점 보기",
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
