@@ -32,6 +32,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.compose.runtime.livedata)
     implementation(libs.material)
 
     implementation(platform(libs.androidx.compose.bom))
