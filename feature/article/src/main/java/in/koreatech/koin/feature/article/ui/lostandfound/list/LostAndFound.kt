@@ -44,7 +44,7 @@ import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.LostAn
 import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.LostAndFoundDropdownGroup
 import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.LostAndFoundFAB
 import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.LostAndFoundItem
-import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.LostAndFoundKeywordGroup
+import `in`.koreatech.koin.feature.article.component.ArticleKeywordGroup
 import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.LostAndFoundPagination
 import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.lostAndFoundDialogStyle
 import kotlinx.coroutines.launch
@@ -161,7 +161,7 @@ fun LostAndFoundList(
                     state = lazyListState
                 ) {
                     item {
-                        LostAndFoundKeywordGroup(
+                        ArticleKeywordGroup(
                             keyWords = myKeywords,
                             selectedKeywordIndex = when (uiState.selectedKeyword) {
                                 "" -> 0

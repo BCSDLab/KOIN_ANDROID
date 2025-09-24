@@ -72,7 +72,7 @@ fun LostAndFoundTextChipFlowGroup(
         verticalArrangement = verticalArrangement
     ) {
         titles.forEachIndexed { index, it ->
-            LostAndFoundTextChip(
+            ArticleTextChip(
                 title = it,
                 isSelected = selectedChipIndexes.contains(index),
                 shape = shape,
@@ -129,7 +129,7 @@ internal fun LostAndFoundTextChipScrollGroup(
         horizontalArrangement = horizontalArrangement
     ) {
         titles.forEachIndexed { index, it ->
-            LostAndFoundTextChip(
+            ArticleTextChip(
                 title = it,
                 isSelected = selectedChipIndexes.contains(index),
                 shape = shape,
@@ -155,7 +155,7 @@ internal fun LostAndFoundTextChipScrollGroup(
  * @param chipColors 칩 색상
  */
 @Composable
-fun LostAndFoundTextChip(
+fun ArticleTextChip(
     title: String,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = KoinTheme.typography.medium14,

@@ -41,7 +41,7 @@ fun ReadOnlyTextChip(
     chipColor: Color = KoinTheme.colors.primary500,
     textColor: Color = Color.White
 ) {
-    LostAndFoundTextChip(
+    ArticleTextChip(
         title = title,
         isSelected = false,
         shape = shape,

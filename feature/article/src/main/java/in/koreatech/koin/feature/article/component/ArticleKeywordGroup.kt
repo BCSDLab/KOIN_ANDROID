@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.article.ui.lostandfound.list.component
+package `in`.koreatech.koin.feature.article.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,15 +31,14 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.feature.article.R
-import `in`.koreatech.koin.feature.article.component.LostAndFoundTextChip
 import `in`.koreatech.koin.feature.article.util.horizontalFadingEdge
 
 @Composable
-fun LostAndFoundKeywordGroup(
+fun ArticleKeywordGroup(
     keyWords: List<String>,
     selectedKeywordIndex: Int,
-    navigateToKeywordFragment: () -> Unit = {},
     modifier: Modifier = Modifier,
+    navigateToKeywordFragment: () -> Unit = {},
     selectKeyword: (keyword: String) -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
@@ -95,7 +94,7 @@ fun LostAndFoundKeywordGroup(
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        LostAndFoundTextChip(
+        ArticleTextChip(
             modifier = Modifier.defaultMinSize(
                 minWidth = Dp.Unspecified,
                 minHeight = 32.dp
@@ -116,7 +115,7 @@ fun LostAndFoundKeywordGroup(
         Spacer(modifier = Modifier.width(8.dp))
 
         keyWords.forEachIndexed { index, it ->
-            LostAndFoundTextChip(
+            ArticleTextChip(
                 modifier = Modifier.defaultMinSize(
                     minWidth = Dp.Unspecified,
                     minHeight = 32.dp
@@ -132,7 +131,7 @@ fun LostAndFoundKeywordGroup(
         }
 
         if (keyWords.isEmpty()) {
-            LostAndFoundTextChip(
+            ArticleTextChip(
                 modifier = Modifier.defaultMinSize(
                     minWidth = Dp.Unspecified,
                     minHeight = 32.dp
@@ -155,8 +154,8 @@ fun LostAndFoundKeywordGroup(
 
 @Preview
 @Composable
-fun LostAndFoundKeywordGroupPreview() {
-    LostAndFoundKeywordGroup(
+fun ArticleKeywordGroupPreview() {
+    ArticleKeywordGroup(
         keyWords = listOf("키워드1", "키워드2", "키워드3"),
         navigateToKeywordFragment = {},
         selectKeyword = {},
