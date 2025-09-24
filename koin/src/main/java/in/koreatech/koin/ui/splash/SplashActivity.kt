@@ -35,7 +35,7 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
-import `in`.koreatech.koin.ui.article.ArticleActivity
+import `in`.koreatech.koin.feature.article.ArticleActivity
 import `in`.koreatech.koin.ui.forceupdate.ForceUpdateActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.splash.state.TokenState

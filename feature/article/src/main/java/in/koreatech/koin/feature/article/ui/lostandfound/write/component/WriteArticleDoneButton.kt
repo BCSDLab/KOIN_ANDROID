@@ -27,10 +27,9 @@ import `in`.koreatech.koin.feature.article.R
 object WriteArticleDoneButtonDefaults {
     val windowInsets: WindowInsets
         @Composable
-        get() =
-            WindowInsets.systemBars.only(
-                WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
-            )
+        get() = WindowInsets.systemBars.only(
+            WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
+        )
 }
 
 @Composable

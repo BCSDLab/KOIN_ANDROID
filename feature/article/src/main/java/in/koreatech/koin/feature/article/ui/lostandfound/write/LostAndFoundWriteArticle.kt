@@ -203,14 +203,13 @@ fun WriteFoundItemArticleImpl(
     onShowDatePickerChange: (showDatePicker: Boolean) -> Unit = {},
     onDateChange: (date: LocalDate?) -> Unit = {}
 ) {
-    val pickMultipleMedia =
-        rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(10)) { uris ->
-            if (uris.isNotEmpty()) {
-                uris.forEach {
-                    onAddImageClick(it)
-                }
+    val pickMultipleMedia = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(10)) { uris ->
+        if (uris.isNotEmpty()) {
+            uris.forEach {
+                onAddImageClick(it)
             }
         }
+    }
 
     val imageList = articleData.images
 
@@ -292,9 +291,8 @@ fun handleSideEffect(
                     if (fileNameIndex != -1 && fileSizeIndex != -1) {
                         val fileName = cursor.getString(fileNameIndex)
                         val fileSize = cursor.getLong(fileSizeIndex)
-                        val fileType =
-                            context.contentResolver.getType(imageContextUri)
-                                ?: "image/${fileName.split(".").last()}"
+                        val fileType = context.contentResolver.getType(imageContextUri)
+                            ?: "image/${fileName.split(".").last()}"
 
                         viewModel.getPreSignedUrl(
                             fileSize,

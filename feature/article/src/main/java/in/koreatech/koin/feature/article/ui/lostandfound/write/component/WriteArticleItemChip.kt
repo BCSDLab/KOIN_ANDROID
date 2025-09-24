@@ -34,8 +34,7 @@ fun WriteArticleItemChip(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
-            modifier =
-            Modifier
+            modifier = Modifier
                 .background(
                     color = KoinTheme.colors.info200,
                     shape = RoundedCornerShape(12.dp)
@@ -58,8 +57,7 @@ fun WriteArticleItemChip(
         }
         if (shouldShowDelete) {
             Image(
-                modifier =
-                Modifier
+                modifier = Modifier
                     .width(36.dp)
                     .height(28.dp)
                     .padding(vertical = 4.dp, horizontal = 8.dp)

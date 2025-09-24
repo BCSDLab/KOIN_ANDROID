@@ -29,8 +29,7 @@ fun WriteArticleItemType(
     onItemSelected: (Int) -> Unit = {}
 ) {
     Column(
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(bottom = 24.dp)
     ) {

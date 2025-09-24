@@ -59,8 +59,7 @@ fun WriteArticleUploadImage(
     onRemoveImage: (index: Int) -> Unit = {}
 ) {
     Column(
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(bottom = 24.dp)
     ) {
@@ -72,8 +71,7 @@ fun WriteArticleUploadImage(
             Text(
                 modifier = Modifier.weight(1f),
                 style = KoinTheme.typography.regular12,
-                text =
-                when (type) {
+                text = when (type) {
                     LostOrFoundType.LOST -> stringResource(id = R.string.upload_image_of_lost_item)
                     LostOrFoundType.FOUND -> stringResource(id = R.string.upload_image_of_found_item)
                 },
@@ -89,8 +87,7 @@ fun WriteArticleUploadImage(
 
         if (uploadedImageCount > 0) {
             LazyRow(
-                modifier =
-                Modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(8.dp))
                     .background(KoinTheme.colors.neutral100)
@@ -113,8 +110,7 @@ fun WriteArticleUploadImage(
 
         Button(
             onClick = onUploadImage,
-            colors =
-            ButtonDefaults.buttonColors(
+            colors = ButtonDefaults.buttonColors(
                 containerColor = KoinTheme.colors.info200
             ),
             modifier = Modifier.fillMaxWidth(),
@@ -157,8 +153,7 @@ fun WriteArticleUploadImageThumbnail(
             }
         } else {
             SubcomposeAsyncImage(
-                model =
-                ImageRequest.Builder(LocalContext.current)
+                model = ImageRequest.Builder(LocalContext.current)
                     .data(imageUrl)
                     .crossfade(true)
                     .build(),
@@ -172,8 +167,7 @@ fun WriteArticleUploadImageThumbnail(
                 },
                 contentScale = ContentScale.Fit,
                 contentDescription = null,
-                modifier =
-                modifier.onGloballyPositioned {
+                modifier = modifier.onGloballyPositioned {
                     removeButtonPosition = it.positionInParent() +
                         Offset(
                             it.size.width.toFloat(),
@@ -185,8 +179,7 @@ fun WriteArticleUploadImageThumbnail(
             Image(
                 painter = painterResource(id = R.drawable.ic_delete_image),
                 contentDescription = null,
-                modifier =
-                Modifier
+                modifier = Modifier
                     .offset(
                         x = removeButtonPosition.x.pxToDp - 8.dp,
                         y = removeButtonPosition.y.pxToDp - 8.dp

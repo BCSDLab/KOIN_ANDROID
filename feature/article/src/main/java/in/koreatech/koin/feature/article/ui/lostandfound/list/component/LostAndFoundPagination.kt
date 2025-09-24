@@ -70,8 +70,7 @@ fun LostAndFoundPaginationButton(
     onClick: () -> Unit = {}
 ) {
     Text(
-        modifier =
-        modifier
+        modifier = modifier
             .noRippleClickable {
                 if (isClickable) {
                     onClick()
@@ -91,8 +90,7 @@ fun LostAndFoundPaginationPageButton(
     onClick: (Int) -> Unit = {}
 ) {
     Box(
-        modifier =
-        modifier
+        modifier = modifier
             .size(32.dp)
             .noRippleClickable(onClick = { onClick(page) })
             .clip(RoundedCornerShape(6.dp))

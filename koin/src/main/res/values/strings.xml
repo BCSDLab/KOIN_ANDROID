@@ -232,7 +232,6 @@
     <string name="flyer_current_page_text">%d/%d</string>
     <string name="show_more_menu">메뉴 더보기</string>
     <string name="hide_menu">메뉴 접기</string>
-    <string name="search">검색</string>
 
     <!-- Setting -->
     <string name="setting_title_normal">일반</string>
@@ -536,77 +535,12 @@
     <string name="navigate_to_notification_setting">알림 설정 바로가기</string>
 
     <!-- Koreatech 공지사항 -->
-    <string name="title_article">게시판</string>
-    <string name="navigation_title_article">공지사항</string>
-    <string name="navigation_title_article_search">공지글 검색</string>
-    <string name="navigation_title_article_keyword">키워드 관리</string>
-    <string name="navigation_title_article_write_lost_item">분실물 신고</string>
-    <string name="navigation_title_article_write_found_item">습득물 신고</string>
-    <string name="article_more">더보기</string>
-    <string name="article_free">자유게시판</string>
-    <string name="article_employment">취업게시판</string>
-    <string name="article_anonymous">익명게시판</string>
-    <string name="article_all">전체공지</string>
-    <string name="article_lost_and_found">분실물</string>
-    <string name="article_normal">일반공지</string>
-    <string name="article_normal_simple">일반</string>
-    <string name="article_school">학사공지</string>
-    <string name="article_school_simple">학사</string>
-    <string name="article_scholarship">장학공지</string>
-    <string name="article_scholarship_simple">장학</string>
-    <string name="article_recruit">취업공지</string>
-    <string name="article_recruit_simple">취업</string>
-    <string name="article_koin">코인</string>
-    <string name="article_qna">질문게시판</string>
-    <string name="article_promotion">홍보게시판</string>
-    <string name="article_ipp">현장실습</string>
-    <string name="article_ipp_simple">현장실습</string>
-    <string name="article_student">학생생활</string>
-    <string name="article_student_simple">학생</string>
-    <string name="article_lost_and_found_detail_report">신고하기</string>
-    <string name="previous_page">이전</string>
-    <string name="next_page">다음</string>
-    <string name="divider_dot">•</string>
-    <string name="list">목록</string>
-    <string name="next_article">다음 글</string>
-    <string name="prev_article">이전 글</string>
-    <string name="link_to_original_article">원본 글 바로가기</string>
-    <string name="link_to_portal">아우누리 바로가기</string>
-    <string name="link_to_stems">학생종합경력개발 바로가기</string>
-    <string name="hot_articles">인기있는 게시글</string>
-    <string name="see_all_article">모두보기</string>
-    <string name="my_keyword">내 키워드</string>
-    <string name="keyword_notice_description">키워드는 최대 10개까지 추가 가능합니다.</string>
-    <string name="add_keyword">추가</string>
-    <string name="suggestion_keywords">추천 키워드</string>
-    <string name="keyword_notification">키워드 알림</string>
-    <string name="keyword_notification_notice_description">키워드가 포함된 게시물의 알림을 받을 수 있습니다.</string>
-    <string name="get_keyword_notification">키워드 알림받기</string>
-    <string name="hint_input_keyword">알림받을 키워드를 입력해 주세요.</string>
-    <string name="keyword_add_require_input">키워드를 입력해주세요.</string>
-    <string name="keyword_add_limit_exceeded">키워드는 최대 10개까지 추가 가능합니다.</string>
-    <string name="keyword_add_already_exist">이미 추가되어 있는 키워드입니다.</string>
-    <string name="keyword_add_invalid_length">키워드 길이는 2글자 이상, 20글자 이하입니다.</string>
-    <string name="keyword_add_blank_not_allowed">키워드에 공백은 포함할 수 없습니다.</string>
-    <string name="add_new_keyword">새 키워드 추가</string>
-    <string name="empty_articles">게시글이 존재하지 않습니다.</string>
-    <string name="most_searched_keyword">많이 검색된 키워드</string>
-    <string name="recent_searched_keyword">최근 검색기록</string>
-    <string name="clear_all">전체 삭제</string>
-    <string name="recommend_login_to_get_keyword_notification_title">키워드 알림을 받으려면\n로그인이 필요해요.</string>
-    <string name="recommend_login_to_get_keyword_notification_message">로그인 후 간편하게 공지사항 키워드\n알림을 받아보세요!</string>
-    <string name="search_input_required">검색어를 입력해주세요.</string>
-    <string name="empty_search_result">일치하는 공지글이 없습니다.\n다른 키워드로 다시 시도해주세요.</string>
     <string name="now_hot_article">지금 인기있는 공지</string>
     <string name="hot_article_noti_title">자취방 양도글, 가장 먼저 확인하고 싶을 때?</string>
     <string name="hot_article_noti_sub">공지가 업로드 되면 바로 알려주는\n키워드 알림 설정하러가기</string>
     <string name="lost_and_found_noti_title">분실물은 여기 다 모아뒀어요</string>
     <string name="lost_and_found_noti_sub">바로가기 >></string>
     <string name="attachment">첨부파일</string>
-    <string name="downloading">다운로드 중</string>
-    <string name="start_download">파일을 다운로드합니다.</string>
-    <string name="download_complete">다운로드가 완료되었습니다.</string>
-
 
     <!--리뷰 기능-->
     <string name="review">리뷰 (%1$s)</string>

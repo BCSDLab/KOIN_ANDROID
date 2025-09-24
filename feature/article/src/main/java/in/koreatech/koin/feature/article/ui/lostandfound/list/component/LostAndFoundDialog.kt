@@ -53,8 +53,7 @@ fun LostAndFoundDialog(
     lostAndFoundDialogStyle: LostAndFoundDialogStyle = lostAndFoundDialogStyle()
 ) {
     BasicAlertDialog(
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .background(

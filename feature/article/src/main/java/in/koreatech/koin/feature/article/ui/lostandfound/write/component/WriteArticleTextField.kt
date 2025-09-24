@@ -31,8 +31,7 @@ fun WriteArticleTextField(
         }
 
         BasicTextField(
-            modifier =
-            Modifier
+            modifier = Modifier
                 .padding(textPaddingValues)
                 .fillMaxWidth(),
             value = value,

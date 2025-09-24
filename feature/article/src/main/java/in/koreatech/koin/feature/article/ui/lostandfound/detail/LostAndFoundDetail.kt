@@ -153,10 +153,9 @@ private fun handleSideEffect(
 
         LostAndFoundDetailSideEffect.DeletedArticle -> {
             context.findActivity()?.finish()
-            val intent =
-                Intent(Intent.ACTION_VIEW).apply {
-                    Intent.setData = Uri.parse("koin://article/activity?fragment=article_lost_and_found")
-                }
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("koin://article/activity?fragment=article_lost_and_found")
+            }
             context.startActivity(intent)
             Toast.makeText(
                 context,

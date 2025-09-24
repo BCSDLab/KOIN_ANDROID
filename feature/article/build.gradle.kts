@@ -15,6 +15,8 @@ android {
 
     buildFeatures {
         compose = true
+        dataBinding = true
+        viewBinding = true
     }
 }
 
@@ -24,9 +26,12 @@ dependencies {
     implementation(projects.core.onboarding)
     implementation(projects.core.designsystem)
     implementation(projects.core.analytics)
+    implementation(projects.core.navigation)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.material)
 
     implementation(platform(libs.androidx.compose.bom))
@@ -34,6 +39,7 @@ dependencies {
 
     implementation(libs.coil.compose)
     implementation(libs.coil.gif)
+    implementation(libs.glide)
 
     implementation(libs.timber)
 

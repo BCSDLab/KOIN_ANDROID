@@ -28,10 +28,9 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 object LostAndFoundFABDefaults {
     val windowInsets: WindowInsets
         @Composable
-        get() =
-            WindowInsets.systemBars.only(
-                WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
-            )
+        get() = WindowInsets.systemBars.only(
+            WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
+        )
 }
 
 @Composable

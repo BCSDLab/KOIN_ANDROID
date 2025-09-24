@@ -49,8 +49,7 @@ fun Dropdown(
     )
 
     Row(
-        modifier =
-        Modifier
+        modifier = Modifier
             .clip(KoinTheme.shapes.medium)
             .background(
                 color = KoinTheme.colors.info200
@@ -81,8 +80,7 @@ fun Dropdown(
      * @see [androidx.compose.material3.DropdownMenu]
      */
     DropdownMenu(
-        modifier =
-        Modifier
+        modifier = Modifier
             .width(96.dp)
             .padding(0.dp),
         expanded = isDropdownExpanded,
@@ -92,8 +90,7 @@ fun Dropdown(
         shadowElevation = 0.dp
     ) {
         Box(
-            modifier =
-            Modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .clip(KoinTheme.shapes.medium)
                 .background(
@@ -106,8 +103,7 @@ fun Dropdown(
                         text = it,
                         style = KoinTheme.typography.medium14.copy(textAlign = TextAlign.Center),
                         color = KoinTheme.colors.primary600,
-                        modifier =
-                        Modifier
+                        modifier = Modifier
                             .fillMaxWidth()
                             .noRippleClickable {
                                 onItemSelected(index)

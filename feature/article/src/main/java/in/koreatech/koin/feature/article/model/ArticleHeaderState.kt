@@ -8,8 +8,6 @@ import kotlinx.parcelize.Parcelize
 
 /**
  * For hot articles
- * from main koin module
- * @see `in`.koreatech.koin.feature.main.model.ArticleHeaderState
  */
 @Parcelize
 data class ArticleHeaderState(

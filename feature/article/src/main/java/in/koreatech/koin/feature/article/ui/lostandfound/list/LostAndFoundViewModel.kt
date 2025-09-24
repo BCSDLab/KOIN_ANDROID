@@ -29,11 +29,10 @@ class LostAndFoundViewModel @Inject constructor(
     private val getUserStatusUseCase: GetUserStatusUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), ContainerHost<LostAndFoundState, LostAndFoundSideEffect> {
-    override val container =
-        container<LostAndFoundState, LostAndFoundSideEffect>(
-            initialState = LostAndFoundState(),
-            savedStateHandle = savedStateHandle
-        )
+    override val container = container<LostAndFoundState, LostAndFoundSideEffect>(
+        initialState = LostAndFoundState(),
+        savedStateHandle = savedStateHandle
+    )
 
     init {
         fetchLostAndFoundList()
@@ -41,81 +40,79 @@ class LostAndFoundViewModel @Inject constructor(
         getUserType()
     }
 
-    fun fetchLostAndFoundList() =
-        viewModelScope.launch {
-            intent {
-                reduce {
-                    state.copy(
-                        isLoading = true
-                    )
-                }
+    fun fetchLostAndFoundList() = viewModelScope.launch {
+        intent {
+            reduce {
+                state.copy(
+                    isLoading = true
+                )
+            }
 
-                if (state.selectedKeyword.isEmpty()) {
-                    fetchLostAndFoundArticlePaginationUseCase(
-                        state.currentPage,
-                        ARTICLES_PER_PAGE,
-                        state.selectedType?.name
-                    ).collectLatest {
-                        reduce {
-                            state.copy(
-                                lostAndFoundList = it.articleLostAndFoundHeader.map { it.toLostAndFoundItemState() },
-                                currentCount = it.currentCount,
-                                totalCount = it.totalCount,
-                                currentPage = it.currentPage,
-                                totalPage = it.totalPage,
-                                isLoading = false
-                            )
-                        }
-                    }
-                } else {
-                    fetchSearchedLostAndFoundArticlesUseCase(
-                        state.selectedKeyword,
-                        state.currentPage,
-                        ARTICLES_PER_PAGE
-                    ).collectLatest {
-                        reduce {
-                            state.copy(
-                                lostAndFoundList = it.articleLostAndFoundHeader.map { it.toLostAndFoundItemState() },
-                                currentCount = it.currentCount,
-                                totalCount = it.totalCount,
-                                currentPage = it.currentPage,
-                                totalPage = it.totalPage
-                            )
-                        }
-                    }
-
+            if (state.selectedKeyword.isEmpty()) {
+                fetchLostAndFoundArticlePaginationUseCase(
+                    state.currentPage,
+                    ARTICLES_PER_PAGE,
+                    state.selectedType?.name
+                ).collectLatest {
                     reduce {
                         state.copy(
+                            lostAndFoundList = it.articleLostAndFoundHeader.map { it.toLostAndFoundItemState() },
+                            currentCount = it.currentCount,
+                            totalCount = it.totalCount,
+                            currentPage = it.currentPage,
+                            totalPage = it.totalPage,
                             isLoading = false
                         )
                     }
                 }
-            }
-        }
+            } else {
+                fetchSearchedLostAndFoundArticlesUseCase(
+                    state.selectedKeyword,
+                    state.currentPage,
+                    ARTICLES_PER_PAGE
+                ).collectLatest {
+                    reduce {
+                        state.copy(
+                            lostAndFoundList = it.articleLostAndFoundHeader.map { it.toLostAndFoundItemState() },
+                            currentCount = it.currentCount,
+                            totalCount = it.totalCount,
+                            currentPage = it.currentPage,
+                            totalPage = it.totalPage
+                        )
+                    }
+                }
 
-    fun fetchMyKeyword() =
-        viewModelScope.launch {
-            fetchMyKeywordUseCase().catch {
-                intent {
-                    reduce {
-                        state.copy(
-                            myKeywords = emptyList()
-                        )
-                    }
-                    Timber.d("Failed to fetch my keywords $it")
-                }
-                throw it
-            }.collectLatest {
-                intent {
-                    reduce {
-                        state.copy(
-                            myKeywords = it
-                        )
-                    }
-                    postSideEffect(LostAndFoundSideEffect.KeywordUpdated)
+                reduce {
+                    state.copy(
+                        isLoading = false
+                    )
                 }
             }
         }
+    }
+
+    fun fetchMyKeyword() = viewModelScope.launch {
+        fetchMyKeywordUseCase().catch {
+            intent {
+                reduce {
+                    state.copy(
+                        myKeywords = emptyList()
+                    )
+                }
+                Timber.d("Failed to fetch my keywords $it")
+            }
+            throw it
+        }.collectLatest {
+            intent {
+                reduce {
+                    state.copy(
+                        myKeywords = it
+                    )
+                }
+                postSideEffect(LostAndFoundSideEffect.KeywordUpdated)
+            }
+        }
+    }
 
     fun selectKeyword(it: String) {
         intent {
@@ -127,33 +124,32 @@ class LostAndFoundViewModel @Inject constructor(
         }
     }
 
-    fun getUserType() =
-        viewModelScope.launch {
-            getUserStatusUseCase().collectLatest { user ->
-                intent {
-                    when (user) {
-                        is User.Student -> reduce {
-                            state.copy(
-                                isAnonymous = false,
-                                userType = user.userType
-                            )
-                        }
+    fun getUserType() = viewModelScope.launch {
+        getUserStatusUseCase().collectLatest { user ->
+            intent {
+                when (user) {
+                    is User.Student -> reduce {
+                        state.copy(
+                            isAnonymous = false,
+                            userType = user.userType
+                        )
+                    }
 
-                        is User.General -> reduce {
-                            state.copy(
-                                isAnonymous = false,
-                                userType = user.userType
-                            )
-                        }
-                        User.Anonymous -> reduce {
-                            state.copy(
-                                isAnonymous = true
-                            )
-                        }
+                    is User.General -> reduce {
+                        state.copy(
+                            isAnonymous = false,
+                            userType = user.userType
+                        )
+                    }
+                    User.Anonymous -> reduce {
+                        state.copy(
+                            isAnonymous = true
+                        )
                     }
                 }
             }
         }
+    }
 
     fun changePage(page: Int) {
         intent {
@@ -166,41 +162,37 @@ class LostAndFoundViewModel @Inject constructor(
         }
     }
 
-    fun setShowLoginRequestDialog(showDialog: Boolean) =
-        intent {
-            reduce {
-                state.copy(
-                    showLoginRequestDialog = showDialog
-                )
-            }
+    fun setShowLoginRequestDialog(showDialog: Boolean) = intent {
+        reduce {
+            state.copy(
+                showLoginRequestDialog = showDialog
+            )
         }
+    }
 
-    fun setFabDialogExpanded(isExpanded: Boolean) =
-        intent {
-            reduce {
-                state.copy(
-                    isFabDialogExpanded = isExpanded
-                )
-            }
+    fun setFabDialogExpanded(isExpanded: Boolean) = intent {
+        reduce {
+            state.copy(
+                isFabDialogExpanded = isExpanded
+            )
         }
+    }
 
-    fun setDropdownExpanded(isExpanded: Boolean) =
-        intent {
-            reduce {
-                state.copy(
-                    isDropdownExpanded = isExpanded
-                )
-            }
+    fun setDropdownExpanded(isExpanded: Boolean) = intent {
+        reduce {
+            state.copy(
+                isDropdownExpanded = isExpanded
+            )
         }
+    }
 
-    fun setSelectedType(type: LostOrFoundType?) =
-        intent {
-            reduce {
-                state.copy(
-                    selectedType = type
-                )
-            }
+    fun setSelectedType(type: LostOrFoundType?) = intent {
+        reduce {
+            state.copy(
+                selectedType = type
+            )
         }
+    }
 
     companion object {
         private const val ARTICLES_PER_PAGE = 10

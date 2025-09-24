@@ -48,8 +48,7 @@ fun ReadOnlyTextChip(
         showClickRipple = false,
         onSelect = {},
         contentPadding = contentPadding,
-        chipColors =
-        TextChipDefaults.chipColors(
+        chipColors = TextChipDefaults.chipColors(
             selectedContainerColor = chipColor,
             unselectedContainerColor = chipColor,
             selectedContentColor = textColor,

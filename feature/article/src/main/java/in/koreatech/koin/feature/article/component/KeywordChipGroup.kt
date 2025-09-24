@@ -118,8 +118,7 @@ internal fun LostAndFoundTextChipScrollGroup(
             .drawWithContent {
                 drawContent()
                 drawRect(
-                    brush =
-                    Brush.horizontalGradient(
+                    brush = Brush.horizontalGradient(
                         0f to Color.White,
                         0.1f to Color.Transparent,
                         0.9f to Color.Transparent,

@@ -25,8 +25,7 @@ fun WriteArticleHeader(
         Row {
             Text(
                 style = KoinTheme.typography.regular18,
-                text =
-                when (type) {
+                text = when (type) {
                     LostOrFoundType.LOST -> stringResource(R.string.header_lost_title)
                     LostOrFoundType.FOUND -> stringResource(R.string.header_found_title)
                 }
@@ -34,8 +33,7 @@ fun WriteArticleHeader(
             Spacer(modifier = Modifier.size(8.dp))
             Image(
                 modifier = Modifier.size(24.dp),
-                painter =
-                when (type) {
+                painter = when (type) {
                     LostOrFoundType.LOST -> painterResource(R.drawable.ic_lost)
                     LostOrFoundType.FOUND -> painterResource(R.drawable.ic_found)
                 },
@@ -45,8 +43,7 @@ fun WriteArticleHeader(
         Text(
             color = KoinTheme.colors.neutral500,
             style = KoinTheme.typography.regular12,
-            text =
-            when (type) {
+            text = when (type) {
                 LostOrFoundType.LOST -> stringResource(R.string.header_lost_description)
                 LostOrFoundType.FOUND -> stringResource(R.string.header_found_description)
             }

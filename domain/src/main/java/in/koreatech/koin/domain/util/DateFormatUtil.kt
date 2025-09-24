@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.domain.util
 
-import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -19,11 +20,12 @@ object DateFormatUtil {
     /**
      * yyyy-MM-dd HH:mm:ss -> MM.dd
      */
-    fun getSimpleMonthAndDay(dateString: String): String {
-        val originalFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val targetFormat = SimpleDateFormat("MM.dd", Locale.getDefault())
-        val date = originalFormat.parse(dateString)
-        return targetFormat.format(date)
+    fun getSimpleMonthAndDay(date: LocalDate): String {
+        return DateTimeFormatter.ofPattern("MM.dd").format(date)
+    }
+
+    fun getFullDate(date: LocalDate): String {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd").format(date)
     }
 
     fun dayOfWeekToIndex(dayOfWeek: String): Int {

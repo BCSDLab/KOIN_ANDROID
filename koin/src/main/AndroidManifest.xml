@@ -72,28 +72,6 @@
         <activity
             android:name=".ui.store.activity.CallBenefitStoreActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.article.ArticleActivity"
-            android:exported="true"
-            android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="keyword" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data
-                    android:host="article"
-                    android:pathPrefix="/activity"
-                    android:scheme="koin" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".ui.article.lostandfound.LostAndFoundReportActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".ui.store.activity.WriteReviewActivity"
