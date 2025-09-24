@@ -1,0 +1,17 @@
+<resources>
+    <string name="setting_appbar_title">설정</string>
+    <string name="setting_title_normal">일반</string>
+    <string name="setting_item_profile">프로필</string>
+    <string name="setting_item_change_password">비밀번호 변경</string>
+    <string name="setting_item_notification">알림</string>
+
+    <string name="setting_title_service">서비스</string>
+    <string name="setting_item_privacy_policy">개인정보 처리방침</string>
+    <string name="setting_item_koin_terms">코인 이용약관</string>
+    <string name="setting_item_marketing_terms">마케팅 수신 동의 약관</string>
+    <string name="setting_item_open_source_license">오픈소스 라이선스</string>
+    <string name="setting_item_app_version">앱 버전</string>
+    <string name="setting_item_contact">문의하기</string>
+
+    <string name="setting_item_current_version_info">최신 버전 %1$d</string>
+</resources>
