@@ -298,7 +298,7 @@ enum class EventCategory(val value: String) {
     SWIPE("swipe"), // 하단 뒤로가기(아이폰의 swipe 뒤로가기와 대응)
     NOTIFICATION("notification"),
     ENTRY("entry"),
-    DINING_AB_TEST_CATEGORY("a/b test 로깅(메인화면 동아리 진입)")
+    DINING_AB_TEST_CATEGORY("a/b test 로깅(메인화면 식단 진입)")
 }
 
 data class EventExtra(val key: String, val value: String)
