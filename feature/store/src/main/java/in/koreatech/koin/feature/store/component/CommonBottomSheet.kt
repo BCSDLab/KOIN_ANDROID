@@ -101,8 +101,7 @@ fun SortBottomSheet(
                     Modifier
                         .fillMaxWidth()
                         .clickable { onSelect(idx) }
-                        .padding(horizontal = 32.dp)
-                        .padding(vertical = 10.dp),
+                        .padding(horizontal = 32.dp, vertical = 10.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
