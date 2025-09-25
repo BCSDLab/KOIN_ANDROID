@@ -18,6 +18,7 @@ import `in`.koreatech.koin.domain.usecase.notification.DeleteNotificationSubscri
 import `in`.koreatech.koin.domain.usecase.notification.GetNotificationPermissionInfoUseCase
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionDetailUseCase
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionUseCase
+import `in`.koreatech.koin.domain.usecase.session.GetSessionIdUseCase
 import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
@@ -43,7 +44,8 @@ class DiningViewModel @Inject constructor(
     private val getNotificationPermissionInfoUseCase: GetNotificationPermissionInfoUseCase,
     private val updateNotificationSubscriptionUseCase: UpdateNotificationSubscriptionUseCase,
     private val updateNotificationSubscriptionDetailUseCase: UpdateNotificationSubscriptionDetailUseCase,
-    private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase
+    private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase,
+    private val getSessionIdUseCase: GetSessionIdUseCase
 ) : ViewModel() {
 
     private val initDate = savedStateHandle.get<String>(INIT_DATE)
@@ -88,6 +90,19 @@ class DiningViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = Experiment.DINING_SHARE.experimentGroups.first()
     )
+
+    val diningStoreAbTestExperimentGroup =
+        flow {
+            abTestUseCase(Experiment.DINING_STORE.experimentTitle).onSuccess {
+                emit(it)
+            }.onFailure {
+                emit(Experiment.DINING_STORE.experimentGroups.first())
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = Experiment.DINING_STORE.experimentGroups.first()
+        )
 
     fun setSelectedDate(date: Date) {
         _selectedDate.value = TimeUtil.dateFormatToYYMMDD(date)
@@ -192,5 +207,14 @@ class DiningViewModel @Inject constructor(
     fun changeIsDiningImageSubscribed(boolean: Boolean) {
         _isDiningImageSubscribed.value = boolean
         onDiningImageSubscribe(boolean)
+    }
+
+    fun getDiningSessionId(): String {
+        return getSessionIdUseCase(
+            sessionName = "dining2shop",
+            isLoggedIn = !_userState.value.isAnonymous,
+            sessionTime = 1800,
+            shouldExpireOtherSessions = true
+        )
     }
 }
