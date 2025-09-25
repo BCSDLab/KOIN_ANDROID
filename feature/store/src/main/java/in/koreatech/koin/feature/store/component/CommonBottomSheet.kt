@@ -94,15 +94,15 @@ fun SortBottomSheet(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp, bottom = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+                .padding(top = 6.dp, bottom = 2.dp)
         ) {
             options.forEachIndexed { idx, label ->
                 Row(
                     Modifier
                         .fillMaxWidth()
                         .clickable { onSelect(idx) }
-                        .padding(horizontal = 32.dp),
+                        .padding(horizontal = 32.dp)
+                        .padding(vertical = 10.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
