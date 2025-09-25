@@ -12,6 +12,7 @@ import `in`.koreatech.koin.domain.model.club.ClubHot
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.model.store.StoreCategories
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.usecase.banner.CheckBannerRefusalUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubHotUseCase
@@ -19,6 +20,7 @@ import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
 import `in`.koreatech.koin.domain.usecase.session.GetSessionIdUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.domain.util.ext.arrange
@@ -47,7 +49,8 @@ class MainActivityViewModel @Inject constructor(
     private val checkBannerRefusalUseCase: CheckBannerRefusalUseCase,
     private val articleRepository: ArticleRepository,
     private val getClubHotUseCase: GetClubHotUseCase,
-    private val getSessionIdUseCase: GetSessionIdUseCase
+    private val getSessionIdUseCase: GetSessionIdUseCase,
+    private val getUserStatusUseCase: GetUserStatusUseCase
 ) : BaseViewModel() {
     private val _variableName = MutableLiveData<String>()
     val variableName: LiveData<String> get() = _variableName
@@ -134,6 +137,12 @@ class MainActivityViewModel @Inject constructor(
     private val _selectedType = MutableStateFlow(DiningUtil.getCurrentType())
     val selectedType: StateFlow<DiningType> get() = _selectedType
 
+    private val _userState: StateFlow<User> = getUserStatusUseCase().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = User.Anonymous
+    )
+
     val clubABTestExperimentGroup =
         flow {
             abTestUseCase(Experiment.MAIN_CLUB_UI.experimentTitle).onSuccess {
@@ -210,9 +219,8 @@ class MainActivityViewModel @Inject constructor(
 
     fun getDiningToShopSessionId(): String {
         return getSessionIdUseCase(
-            sessionName = "dining2shop_1",
-            // 수정
-            isLoggedIn = true,
+            sessionName = "dining2shop",
+            isLoggedIn = !_userState.value.isAnonymous,
             platform = "ANDROID",
             sessionTime = 1800,
             shouldExpireOtherSessions = true

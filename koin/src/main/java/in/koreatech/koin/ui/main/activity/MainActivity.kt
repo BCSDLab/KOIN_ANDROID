@@ -3,7 +3,6 @@ package `in`.koreatech.koin.ui.main.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
@@ -35,6 +34,8 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_1
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_TEST_CATEGORY
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_TEST_DESIGN_A
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_TEST_DESIGN_B
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Dining.DINING_AB_TEST_DESIGN_A
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Dining.DINING_AB_TEST_DESIGN_B
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventExtra
@@ -70,7 +71,6 @@ import `in`.koreatech.koin.util.ext.blueStatusBar
 import `in`.koreatech.koin.util.ext.observeLiveData
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -357,18 +357,23 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 .let { group ->
                     val sessionId = viewModel.getDiningToShopSessionId()
 
-                    EventLogger.logABTestEvent(
-                        category = "a/b test 로깅(메인화면 식단 진입)",
-                        label = "dining2shop_1",
-                        value = group
-                    )
-                    EventLogger.logSessionEvent(
-                        action = EventAction.ABTEST,
-                        category = "a/b test 로깅(메인화면 식단 진입)",
-                        label = "dining2shop_1",
-                        value = group,
-                        customSessionId = sessionId
-                    )
+                    if (group == ExperimentGroup.CONTROL) {
+                        EventLogger.logSessionEvent(
+                            action = EventAction.ABTEST,
+                            category = EventCategory.DINING_AB_TEST_CATEGORY,
+                            label = "dining2shop_1",
+                            value = DINING_AB_TEST_DESIGN_A,
+                            customSessionId = sessionId
+                        )
+                    } else if (group == ExperimentGroup.VARIANT) {
+                        EventLogger.logSessionEvent(
+                            action = EventAction.ABTEST,
+                            category = EventCategory.DINING_AB_TEST_CATEGORY,
+                            label = "dining2shop_1",
+                            value = DINING_AB_TEST_DESIGN_B,
+                            customSessionId = sessionId
+                        )
+                    }
                 }
         }
 

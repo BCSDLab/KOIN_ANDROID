@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.dining.ui.diningdetail
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -136,8 +135,6 @@ fun DiningDetailScreen(
 
     val diningStoreAbTestExperimentGroup by viewModel.diningStoreAbTestExperimentGroup.collectAsState()
 
-    val sessionId = remember { viewModel.getDiningSessionId() }
-
     LaunchedEffect(Unit) { // userState NPE error in viewModel init{}; Flow is null
         viewModel.getDining()
         snapshotFlow { userState }
@@ -230,7 +227,7 @@ private fun DiningDetailScreenImpl(
     changeDiningImageSubscribe: (Boolean) -> Unit = {},
     getNotificationPermitInfo: () -> Unit = {},
     onNavigateToStore: () -> Unit = {},
-    onGetSessionId: () -> String,
+    onGetSessionId: () -> String
 ) {
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current
@@ -568,7 +565,7 @@ private fun DiningDetailScreenImpl(
                     .padding(start = 16.dp, end = 8.dp, bottom = 16.dp),
                 onClick = {
                     val sessionId = onGetSessionId()
-                    Log.d("session_is_test", sessionId)
+
                     EventLogger.logSessionEvent(
                         action = EventAction.ABTEST,
                         category = EventCategory.CLICK,

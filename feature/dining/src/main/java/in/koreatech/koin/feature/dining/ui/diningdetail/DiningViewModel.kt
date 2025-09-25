@@ -30,7 +30,6 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -211,11 +210,9 @@ class DiningViewModel @Inject constructor(
     }
 
     fun getDiningSessionId(): String {
-        val isLoggingIn = !userState.value.isAnonymous
-
         return getSessionIdUseCase(
             sessionName = "dining2shop",
-            isLoggedIn = isLoggingIn,
+            isLoggedIn = !_userState.value.isAnonymous,
             sessionTime = 1800,
             shouldExpireOtherSessions = true
         )
