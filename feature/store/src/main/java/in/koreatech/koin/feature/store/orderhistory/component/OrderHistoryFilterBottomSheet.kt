@@ -70,7 +70,7 @@ fun OrderHistoryFilterBottomSheet(
                     KoinStoreChip(
                         text = stringResource(it.stringRes),
                         chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
-                            borderWidth = if (it != temporaryFilters.orderHistoryPeriod) 1.dp else 0.dp,
+                            borderWidth = if (it != temporaryFilters.orderHistoryPeriod) 0.5.dp else 0.dp,
                             borderColor = RebrandKoinTheme.colors.neutral300,
                             containerColor = if (it != temporaryFilters.orderHistoryPeriod) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.primary500,
                             textColor = if (it != temporaryFilters.orderHistoryPeriod) RebrandKoinTheme.colors.neutral500 else RebrandKoinTheme.colors.neutral0,
@@ -104,7 +104,7 @@ fun OrderHistoryFilterBottomSheet(
                     KoinStoreChip(
                         text = stringResource(it.stringRes),
                         chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
-                            borderWidth = if (it != temporaryFilters.orderType) 1.dp else 0.dp,
+                            borderWidth = if (it != temporaryFilters.orderType) 0.5.dp else 0.dp,
                             borderColor = RebrandKoinTheme.colors.neutral300,
                             containerColor = if (it != temporaryFilters.orderType) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.primary500,
                             textColor = if (it != temporaryFilters.orderType) RebrandKoinTheme.colors.neutral500 else RebrandKoinTheme.colors.neutral0,
@@ -136,7 +136,7 @@ fun OrderHistoryFilterBottomSheet(
                     KoinStoreChip(
                         text = stringResource(it.stringRes),
                         chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
-                            borderWidth = if (it != temporaryFilters.orderStatusFilter) 1.dp else 0.dp,
+                            borderWidth = if (it != temporaryFilters.orderStatusFilter) 0.5.dp else 0.dp,
                             borderColor = RebrandKoinTheme.colors.neutral300,
                             containerColor = if (it != temporaryFilters.orderStatusFilter) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.primary500,
                             textColor = if (it != temporaryFilters.orderStatusFilter) RebrandKoinTheme.colors.neutral500 else RebrandKoinTheme.colors.neutral0,
