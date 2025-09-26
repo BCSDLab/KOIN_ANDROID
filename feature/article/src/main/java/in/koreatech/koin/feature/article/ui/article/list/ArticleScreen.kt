@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,7 +41,9 @@ fun ArticleScreen(
     val selectedTabIndex by viewModel.selectedTabIndex.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.setSelectedTabIndex(ArticleBoardType.entries.indexOf(board))
+        if (selectedTabIndex == null) {
+            viewModel.setSelectedTabIndex(ArticleBoardType.entries.indexOf(board))
+        }
     }
 
     Column(
@@ -50,7 +54,7 @@ fun ArticleScreen(
             contentAlignment = Alignment.BottomStart
         ) {
             ScrollableTabRow(
-                selectedTabIndex = selectedTabIndex,
+                selectedTabIndex = selectedTabIndex ?: 0,
                 containerColor = Color.Transparent,
                 edgePadding = 24.dp,
                 divider = {}
@@ -87,7 +91,7 @@ fun ArticleScreen(
             HorizontalDivider(color = KoinTheme.colors.neutral300)
         }
 
-        val currentBoard = ArticleBoardType.entries[selectedTabIndex]
+        val currentBoard by remember(key1 = selectedTabIndex) { mutableStateOf(ArticleBoardType.entries[selectedTabIndex ?: 0]) }
 
         when (currentBoard) {
             ArticleBoardType.ALL,

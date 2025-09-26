@@ -4,12 +4,13 @@ import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.flow.StateFlow
 
 @HiltViewModel
 class ArticleListViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
-    val selectedTabIndex = savedStateHandle.getStateFlow(SELECTED_TAB, 0)
+    val selectedTabIndex: StateFlow<Int?> = savedStateHandle.getStateFlow(SELECTED_TAB, null)
 
     fun setSelectedTabIndex(index: Int) {
         if (selectedTabIndex.value == index) return
