@@ -163,10 +163,7 @@ fun LostAndFoundList(
                     item {
                         ArticleKeywordGroup(
                             keyWords = myKeywords,
-                            selectedKeywordIndex = when (uiState.selectedKeyword) {
-                                "" -> 0
-                                else -> myKeywords.indexOf(uiState.selectedKeyword) + 1
-                            },
+                            selectedKeywordIndex = if (uiState.selectedKeyword.isEmpty()) 0 else myKeywords.indexOf(uiState.selectedKeyword) + 1,
                             navigateToKeywordFragment = navigateToKeywordFragment
                         ) {
                             viewModel.selectKeyword(it)

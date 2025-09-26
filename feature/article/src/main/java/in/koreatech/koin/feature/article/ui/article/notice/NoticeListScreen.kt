@@ -94,10 +94,7 @@ private fun NoticeListScreen(
         item {
             ArticleKeywordGroup(
                 keyWords = myKeywords,
-                selectedKeywordIndex = when (selectedKeyword) {
-                    "" -> 0
-                    else -> myKeywords.indexOf(selectedKeyword) + 1
-                },
+                selectedKeywordIndex = if (selectedKeyword.isEmpty()) 0 else myKeywords.indexOf(selectedKeyword) + 1,
                 navigateToKeywordFragment = navigateToKeywordSetting,
                 selectKeyword = onKeywordSelected
             )
