@@ -55,7 +55,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun LostAndFoundList(
     viewModel: LostAndFoundViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
-    navigateToWriteFoundItem: (lostOrFoundType: String) -> Unit = {},
+    navigateToWriteFoundItem: (lostOrFoundType: LostOrFoundType) -> Unit = {},
     navigateToLostAndFoundDetail: (articleId: Int) -> Unit = {},
     navigateToKeywordFragment: () -> Unit = {},
     navigateToLoginActivity: () -> Unit = {}
@@ -120,7 +120,7 @@ fun LostAndFoundList(
                                 fabFoundText
                             )
                             navigateToWriteFoundItem(
-                                LostOrFoundType.FOUND.name
+                                LostOrFoundType.FOUND
                             )
                         }
                         viewModel.setFabDialogExpanded(false)
@@ -134,7 +134,7 @@ fun LostAndFoundList(
                                 fabLostText
                             )
                             navigateToWriteFoundItem(
-                                LostOrFoundType.LOST.name
+                                LostOrFoundType.LOST
                             )
                         }
                         viewModel.setFabDialogExpanded(false)

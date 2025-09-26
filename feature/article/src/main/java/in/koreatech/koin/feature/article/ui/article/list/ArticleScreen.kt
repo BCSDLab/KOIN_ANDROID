@@ -109,8 +109,8 @@ fun ArticleScreen(
                 LostAndFoundList(
                     navigateToWriteFoundItem = {
                         when (it) {
-                            "LOST" -> navigateToWriteFoundItem(LostOrFoundType.LOST)
-                            "FOUND" -> navigateToWriteFoundItem(LostOrFoundType.FOUND)
+                            LostOrFoundType.LOST -> navigateToWriteFoundItem(LostOrFoundType.LOST)
+                            LostOrFoundType.FOUND -> navigateToWriteFoundItem(LostOrFoundType.FOUND)
                         }
                     },
                     navigateToLostAndFoundDetail = navigateToLostAndFoundDetail,
