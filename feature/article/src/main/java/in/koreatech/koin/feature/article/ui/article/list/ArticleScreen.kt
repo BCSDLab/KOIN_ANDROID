@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,16 +37,9 @@ fun ArticleScreen(
     navigateToKeywordSetting: () -> Unit = {}
 ) {
     val selectedTabIndex by viewModel.selectedTabIndex.collectAsState()
-    val currentBoard by viewModel.currentBoard.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.setCurrentBoard(board)
-    }
-
-    LaunchedEffect(Unit) {
-        snapshotFlow { selectedTabIndex }.collect {
-            viewModel.setCurrentBoard(ArticleBoardType.entries[it])
-        }
+        viewModel.setSelectedTabIndex(ArticleBoardType.entries.indexOf(board))
     }
 
     Column(
@@ -87,13 +79,15 @@ fun ArticleScreen(
                         unselectedContentColor = KoinTheme.colors.neutral500,
                         selected = selectedTabIndex == index,
                         onClick = {
-                            viewModel.setTabIndex(index)
+                            viewModel.setSelectedTabIndex(index)
                         }
                     )
                 }
             }
             HorizontalDivider(color = KoinTheme.colors.neutral300)
         }
+
+        val currentBoard = ArticleBoardType.entries[selectedTabIndex]
 
         when (currentBoard) {
             ArticleBoardType.ALL,
