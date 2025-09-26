@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
+import `in`.koreatech.koin.feature.article.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.article.ui.article.notice.NoticeListScreen
 import `in`.koreatech.koin.feature.article.ui.lostandfound.list.LostAndFoundList
 
@@ -31,7 +32,7 @@ fun ArticleScreen(
     modifier: Modifier = Modifier,
     viewModel: ArticleListViewModel = hiltViewModel(),
     navigateToArticleDetail: (articleId: Int, boardId: Int) -> Unit = { _, _ -> },
-    navigateToWriteFoundItem: (lostOrFoundType: String) -> Unit = {},
+    navigateToWriteFoundItem: (lostOrFoundType: LostOrFoundType) -> Unit = {},
     navigateToLostAndFoundDetail: (articleId: Int) -> Unit = {},
     navigateToLoginActivity: () -> Unit = {},
     navigateToKeywordSetting: () -> Unit = {}
@@ -114,8 +115,8 @@ fun ArticleScreen(
                 LostAndFoundList(
                     navigateToWriteFoundItem = {
                         when (it) {
-                            "LOST" -> navigateToWriteFoundItem("LOST")
-                            "FOUND" -> navigateToWriteFoundItem("FOUND")
+                            "LOST" -> navigateToWriteFoundItem(LostOrFoundType.LOST)
+                            "FOUND" -> navigateToWriteFoundItem(LostOrFoundType.FOUND)
                         }
                     },
                     navigateToLostAndFoundDetail = navigateToLostAndFoundDetail,

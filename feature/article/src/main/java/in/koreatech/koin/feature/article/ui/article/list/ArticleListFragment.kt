@@ -15,6 +15,7 @@ import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.feature.article.ArticleActivity.Companion.START_BOARD
 import `in`.koreatech.koin.feature.article.R
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
+import `in`.koreatech.koin.feature.article.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
 import `in`.koreatech.koin.feature.article.ui.lostandfound.write.LostAndFoundWriteArticleViewModel.Companion.LOST_OR_FOUND_TYPE
@@ -52,13 +53,13 @@ class ArticleListFragment : Fragment() {
                         },
                         navigateToWriteFoundItem = {
                             when (it) {
-                                "LOST" ->
+                                LostOrFoundType.LOST ->
                                     navController.navigate(
                                         R.id.articleLostAndFoundWriteLostFragment,
                                         bundleOf(LOST_OR_FOUND_TYPE to "LOST")
                                     )
 
-                                "FOUND" ->
+                                LostOrFoundType.FOUND ->
                                     navController.navigate(
                                         R.id.articleLostAndFoundWriteFoundFragment,
                                         bundleOf(LOST_OR_FOUND_TYPE to "FOUND")
