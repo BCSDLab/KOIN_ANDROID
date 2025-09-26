@@ -52,19 +52,10 @@ class ArticleListFragment : Fragment() {
                             navController.navigate(R.id.action_articleListFragment_to_articleKeywordFragment)
                         },
                         navigateToWriteFoundItem = {
-                            when (it) {
-                                LostOrFoundType.LOST ->
-                                    navController.navigate(
-                                        R.id.articleLostAndFoundWriteLostFragment,
-                                        bundleOf(LOST_OR_FOUND_TYPE to "LOST")
-                                    )
-
-                                LostOrFoundType.FOUND ->
-                                    navController.navigate(
-                                        R.id.articleLostAndFoundWriteFoundFragment,
-                                        bundleOf(LOST_OR_FOUND_TYPE to "FOUND")
-                                    )
-                            }
+                            navController.navigate(
+                                R.id.articleLostAndFoundWriteFoundFragment,
+                                bundleOf(LOST_OR_FOUND_TYPE to it.name)
+                            )
                         },
                         navigateToLostAndFoundDetail = { articleId ->
                             navController.navigate(
