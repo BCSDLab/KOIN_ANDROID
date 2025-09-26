@@ -52,16 +52,12 @@ fun ArticleItem(
                 color = KoinTheme.colors.primary600,
                 style = KoinTheme.typography.medium12.copy(fontWeight = FontWeight.SemiBold)
             )
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = title,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    style = KoinTheme.typography.medium14
-                )
-            }
+            Text(
+                text = title,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                style = KoinTheme.typography.medium14
+            )
             Spacer(modifier = Modifier.height(4.dp))
             Row(
                 verticalAlignment = Alignment.CenterVertically
