@@ -379,7 +379,6 @@ private fun DiningDetailScreenImpl(
     Box(
         modifier = modifier
             .padding(contentPadding)
-            .navigationBarsPadding()
             .fillMaxSize()
             .nestedScroll(nestedScrollConnection)
     ) {
@@ -474,7 +473,8 @@ private fun DiningDetailScreenImpl(
                                     else -> breakfastScrollState
                                 }
                             )
-                            .padding(vertical = 16.dp),
+                            .padding(vertical = 16.dp)
+                            .navigationBarsPadding(),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         diningFilterList.forEachIndexed { index, dining ->
