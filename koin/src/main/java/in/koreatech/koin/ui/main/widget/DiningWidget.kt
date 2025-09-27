@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -155,7 +156,7 @@ fun DiningWidget(
                 DiningPlace.entries.filter { it != DiningPlace.Campus2 }
                     .forEachIndexed { index, place ->
                         Tab(
-                            modifier = Modifier.width(70.dp),
+                            modifier = Modifier.widthIn(min = 70.dp),
                             text = {
                                 Text(
                                     text = place.place,
