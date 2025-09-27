@@ -52,9 +52,9 @@ dependencies {
     implementation(libs.compose.numberPicker)
     implementation(libs.androidx.security.crypto)
     implementation(libs.compose.numberPicker)
-    implementation(project(mapOf("path" to ":domain")))
-    implementation(project(mapOf("path" to ":data")))
-    implementation(project(mapOf("path" to ":core")))
-    implementation(project(":core:designsystem"))
-    testImplementation(project(":feature:timetable"))
+
+    implementation(projects.domain)
+    implementation(projects.data)
+    implementation(projects.core)
+    implementation(projects.core.designsystem)
 }

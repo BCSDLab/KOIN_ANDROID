@@ -134,10 +134,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-            <data
-                android:host="main"
-                android:pathPrefix="/activity"
-                android:scheme="koin" />
+                <data
+                    android:host="main"
+                    android:pathPrefix="/activity"
+                    android:scheme="koin" />
             </intent-filter>
         </activity>
 
@@ -151,18 +151,6 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/dining_widget_info" />
-        </receiver>
-        <receiver
-            android:name=".ui.bus.BusWidget"
-            android:exported="false"
-            android:label="@string/navigation_item_bus">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/bus_widget_info" />
         </receiver>
 
         <meta-data
@@ -227,25 +215,9 @@
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <!-- 카카오 스킴 설정 -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="@string/kakaolink_host"
-                    android:scheme="${kakaoScheme}" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.dining.DiningNoticeActivity"
-            android:exported="false"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.bus.BusActivity"
             android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />

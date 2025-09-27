@@ -22,6 +22,7 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
+import `in`.koreatech.koin.core.util.SnackbarUtil
 import `in`.koreatech.koin.databinding.ActivitySettingBinding
 import `in`.koreatech.koin.feature.user.ui.changepassword.ChangePasswordContract
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
@@ -32,7 +33,6 @@ import `in`.koreatech.koin.ui.term.TermActivity.Companion.KEY_TERM
 import `in`.koreatech.koin.ui.term.TermActivity.Companion.TERM_KOIN
 import `in`.koreatech.koin.ui.term.TermActivity.Companion.TERM_MARKETING
 import `in`.koreatech.koin.ui.term.TermActivity.Companion.TERM_PRIVACY_POLICY
-import `in`.koreatech.koin.util.SnackbarUtil
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint

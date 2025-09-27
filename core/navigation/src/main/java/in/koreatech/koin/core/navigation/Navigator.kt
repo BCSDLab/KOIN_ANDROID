@@ -6,69 +6,27 @@ import android.content.Intent
 interface Navigator {
     fun navigateToSplash(
         context: Context,
-        targetId: Pair<String, Any?> = Pair("", 0),
-        targetBoardId: Pair<String, Any?> = Pair("", 0),
-        targetArticleId: Pair<String, Any?> = Pair("", 0),
-        targetChatId: Pair<String, Any?> = Pair("", 0),
-        targetClubId: Pair<String, Any?> = Pair("", 0),
-        targetEventId: Pair<String, Any?> = Pair("", 0),
         type: Pair<String, Any?> = Pair("", ""),
-        navType: Pair<String, Any?> = Pair("", "")
+        navType: Pair<String, Any?> = Pair("", ""),
+        vararg args: Pair<String, Any?>
     ): Intent
 
-    fun navigateToMain(
+    fun navigateTo(
         context: Context,
-        targetId: Pair<String, Any?> = Pair("", 0),
-        targetBoardId: Pair<String, Any?> = Pair("", 0),
-        targetArticleId: Pair<String, Any?> = Pair("", 0),
-        targetChatId: Pair<String, Any?> = Pair("", 0),
-        targetClubId: Pair<String, Any?> = Pair("", 0),
-        targetEventId: Pair<String, Any?> = Pair("", 0),
-        type: Pair<String, Any?> = Pair("", "")
+        type: Pair<String, String?> = Pair("", ""), // SchemeType
+        vararg args: Pair<String, Any?> // Extra IDs
     ): Intent
 
-    fun navigateToShop(
+    fun navigateToSignIn(
         context: Context,
-        targetId: Pair<String, Any?> = Pair("", 0),
-        type: Pair<String, Any?> = Pair("", "")
+        redirectUrl: String? = null
     ): Intent
 
-    fun navigateToDinging(
-        context: Context,
-        targetId: Pair<String, Any?> = Pair("", 0),
-        type: Pair<String, Any?> = Pair("", "")
+    fun navigateToNotificationSetting(
+        context: Context
     ): Intent
 
-    fun navigateToArticle(
-        context: Context,
-        targetId: Pair<String, Any?> = Pair("", 0),
-        targetBoardId: Pair<String, Any?> = Pair("", 0),
-        type: Pair<String, Any?> = Pair("", "")
-    ): Intent
-
-    fun navigateToArticleLostAndFound(
-        context: Context,
-        targetId: Pair<String, Any?> = Pair("", 0),
-        type: Pair<String, Any?> = Pair("", "")
-    ): Intent
-
-    fun navigateToChat(
-        context: Context,
-        targetArticleId: Pair<String, Any?> = Pair("", 0),
-        targetChatId: Pair<String, Any?> = Pair("", 0),
-        type: Pair<String, Any?> = Pair("", "")
-    ): Intent
-
-    fun navigateToClubRecruitment(
-        context: Context,
-        targetClubId: Pair<String, Any?> = Pair("", 0),
-        type: Pair<String, Any?> = Pair("", "")
-    ): Intent
-
-    fun navigateToClub(
-        context: Context,
-        targetClubId: Pair<String, Any?> = Pair("", 0),
-        targetEventId: Pair<String, Any?> = Pair("", 0),
-        type: Pair<String, Any?> = Pair("", "")
+    fun navigateToStore(
+        context: Context
     ): Intent
 }

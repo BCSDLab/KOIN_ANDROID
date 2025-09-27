@@ -16,12 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.fragment.BaseFragment
+import `in`.koreatech.koin.core.util.SnackbarUtil
 import `in`.koreatech.koin.databinding.FragmentBusinessCertificationBinding
 import `in`.koreatech.koin.domain.error.upload.UploadError
 import `in`.koreatech.koin.ui.businesssignup.adapter.AttachStoreImageAdapter
 import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessCertificationViewModel
 import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessSignUpBaseViewModel
-import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.textString
 import kotlinx.coroutines.flow.collectLatest

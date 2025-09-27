@@ -23,6 +23,7 @@ import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatus
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.util.dataBinding
+import `in`.koreatech.koin.core.util.withLoading
 import `in`.koreatech.koin.core.viewpager.addOnPageChangedListener
 import `in`.koreatech.koin.core.viewpager.addOnPageScrollListener
 import `in`.koreatech.koin.databinding.ActivityDiningBinding
@@ -35,7 +36,6 @@ import `in`.koreatech.koin.ui.dining.viewmodel.DiningViewModel
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
-import `in`.koreatech.koin.util.ext.withLoading
 import java.util.Date
 import javax.inject.Inject
 import kotlinx.coroutines.launch

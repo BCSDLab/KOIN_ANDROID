@@ -20,6 +20,7 @@ androidxTestJunit = "1.2.1"
 androidxTestRunner = "1.5.2"
 androidxViewpager2 = "1.1.0"
 balloon = "1.5.0"
+balloonCompose = "1.6.4"
 coil = "2.6.0"
 colorpicker = "1.1.1"
 composeCompilerVersion = "1.5.10"
@@ -109,6 +110,7 @@ androidx-test-ext-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx",
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidxTestRunner" }
 androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "androidxViewpager2" }
 balloon = { module = "com.github.skydoves:balloon", version.ref = "balloon" }
+balloon-compose = { module = "com.github.skydoves:balloon-compose", version.ref = "balloonCompose" }
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }

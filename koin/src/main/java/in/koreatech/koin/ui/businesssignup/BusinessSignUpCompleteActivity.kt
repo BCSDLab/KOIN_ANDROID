@@ -6,13 +6,13 @@ import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.util.SnackbarUtil
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.data.mapper.strToOwnerRegisterUrl
 import `in`.koreatech.koin.databinding.ActivityBusinessSignUpCompleteBinding
 import `in`.koreatech.koin.domain.error.owner.OwnerError
 import `in`.koreatech.koin.ui.businesslogin.BusinessLoginActivity
 import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessSignUpCompleteViewModel
-import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 
 @AndroidEntryPoint

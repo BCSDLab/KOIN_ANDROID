@@ -15,10 +15,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.lifecycleScope
-import com.amar.library.BuildConfig
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.UpdateAvailability
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
@@ -239,21 +239,22 @@ class SplashActivity : ActivityBase() {
 
         lifecycleScope.launch {
             delay()
-            val intent =
-                if (navType == NavigatorType.MAIN.type) {
-                    navigator.navigateToMain(
-                        context = this@SplashActivity,
-                        targetId = Pair(EXTRA_ID, targetId),
-                        targetBoardId = Pair(EXTRA_BOARD_ID, targetBoardId),
-                        targetArticleId = Pair(EXTRA_ARTICLE_ID, targetArticleId),
-                        targetChatId = Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
-                        targetClubId = Pair(EXTRA_CLUB_ID, targetClubId),
-                        targetEventId = Pair(EXTRA_EVENT_ID, targetEventId),
-                        type = Pair(EXTRA_TYPE, type)
+            val intent = if (navType == NavigatorType.MAIN.type) {
+                navigator.navigateTo(
+                    context = this@SplashActivity,
+                    type = Pair(EXTRA_TYPE, type),
+                    *arrayOf(
+                        Pair(EXTRA_ID, targetId),
+                        Pair(EXTRA_BOARD_ID, targetBoardId),
+                        Pair(EXTRA_ARTICLE_ID, targetArticleId),
+                        Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
+                        Pair(EXTRA_CLUB_ID, targetClubId),
+                        Pair(EXTRA_EVENT_ID, targetEventId)
                     )
-                } else {
-                    Intent(this@SplashActivity, MainActivity::class.java)
-                }
+                )
+            } else {
+                Intent(this@SplashActivity, MainActivity::class.java)
+            }
 
             startActivity(intent)
             overridePendingTransition(R.anim.fade, R.anim.hold)

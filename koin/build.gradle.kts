@@ -23,7 +23,6 @@ android {
         versionCode = rootProject.extra["versionCode"] as Int
         versionName = rootProject.extra["versionName"].toString()
         manifestPlaceholders["naverMapKey"] = getPropertyKey("navermap_key")
-        manifestPlaceholders["kakaoScheme"] = "kakao" + getPropertyKey("kakao_native_app_key")
     }
 
     signingConfigs {
@@ -97,21 +96,22 @@ fun getPropertyKey(propertyKey: String): String {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation(project(":core"))
-    implementation(project(":core:notification"))
-    implementation(project(":core:navigation"))
-    implementation(project(":core:designsystem"))
-    implementation(project(":core:analytics"))
-    implementation(project(":data"))
-    implementation(project(":domain"))
-    implementation(project(":core:onboarding"))
-    implementation(project(":feature:timetable"))
-    implementation(project(":feature:bus"))
-    implementation(project(":feature:lostandfound"))
-    implementation(project(":feature:chat"))
-    implementation(project(":feature:banner"))
-    implementation(project(":feature:user"))
-    implementation(project(":feature:club"))
+    implementation(projects.core)
+    implementation(projects.core.notification)
+    implementation(projects.core.navigation)
+    implementation(projects.core.designsystem)
+    implementation(projects.core.analytics)
+    implementation(projects.data)
+    implementation(projects.domain)
+    implementation(projects.core.onboarding)
+    implementation(projects.feature.timetable)
+    implementation(projects.feature.bus)
+    implementation(projects.feature.lostandfound)
+    implementation(projects.feature.chat)
+    implementation(projects.feature.banner)
+    implementation(projects.feature.user)
+    implementation(projects.feature.club)
+    implementation(projects.feature.dining)
 
     implementation(libs.guava)
 
