@@ -34,7 +34,10 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_1
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_TEST_CATEGORY
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_TEST_DESIGN_A
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_TEST_DESIGN_B
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Dining.DINING_AB_TEST_DESIGN_A
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Dining.DINING_AB_TEST_DESIGN_B
 import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
@@ -47,6 +50,7 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_CLUB_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_EVENT_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
+import `in`.koreatech.koin.core.util.blueStatusBar
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityMainBinding
 import `in`.koreatech.koin.domain.model.article.ArticleNotiType
@@ -64,10 +68,11 @@ import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.activity.CallBenefitStoreActivity
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
-import `in`.koreatech.koin.util.ext.blueStatusBar
 import `in`.koreatech.koin.util.ext.observeLiveData
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -345,6 +350,33 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     }
 
     private fun initViewModel() = with(viewModel) {
+        lifecycleScope.launch {
+            viewModel.diningStoreAbTestExperimentGroup
+                .filterNotNull()
+                .first()
+                .let { group ->
+                    val sessionId = viewModel.getDiningToShopSessionId()
+
+                    if (group == ExperimentGroup.CONTROL) {
+                        EventLogger.logSessionEvent(
+                            action = EventAction.ABTEST,
+                            category = EventCategory.DINING_AB_TEST_CATEGORY,
+                            label = "dining2shop_1",
+                            value = DINING_AB_TEST_DESIGN_A,
+                            customSessionId = sessionId
+                        )
+                    } else if (group == ExperimentGroup.VARIANT) {
+                        EventLogger.logSessionEvent(
+                            action = EventAction.ABTEST,
+                            category = EventCategory.DINING_AB_TEST_CATEGORY,
+                            label = "dining2shop_1",
+                            value = DINING_AB_TEST_DESIGN_B,
+                            customSessionId = sessionId
+                        )
+                    }
+                }
+        }
+
         getStoreCategories(StoreCategories(-1, R.drawable.ic_benefit_icon, "혜택"))
 
         observeLiveData(variableName) {

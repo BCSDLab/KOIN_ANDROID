@@ -15,7 +15,7 @@ interface ChatAuthApi {
 
     @POST(URLConstant.CHAT.ARTICLEID.ARTICLEID)
     suspend fun getChatRoomFromArticleId(
-        @Path("articleId") articleId: Int
+        @Path("article_id") articleId: Int
     ): ChatRoomResponse
 
     @GET(URLConstant.CHAT.ARTICLEID.ROOMID.ROOMID)

@@ -159,6 +159,11 @@ object AnalyticsConstant {
             const val CLUB_RECRUITMENT_ACCEPT = "club_recruitment_accept"
             const val CLUB_RECRUITMENT_CANCEL = "club_recruitment_cancel"
         }
+
+        object Dining {
+            const val DINING_AB_TEST_DESIGN_A = "design_A"
+            const val DINING_AB_TEST_DESIGN_B = "design_B"
+        }
     }
 
     const val PREVIOUS_PAGE = "previous_page"

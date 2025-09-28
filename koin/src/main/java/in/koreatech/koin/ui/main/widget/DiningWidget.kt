@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -52,7 +52,7 @@ import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.util.DiningUtil
-import `in`.koreatech.koin.ui.dining.DiningActivity
+import `in`.koreatech.koin.feature.dining.ui.DiningActivity
 import kotlinx.coroutines.launch
 
 @Composable
@@ -155,7 +155,7 @@ fun DiningWidget(
                 DiningPlace.entries.filter { it != DiningPlace.Campus2 }
                     .forEachIndexed { index, place ->
                         Tab(
-                            modifier = Modifier.width(70.dp),
+                            modifier = Modifier.widthIn(min = 70.dp),
                             text = {
                                 Text(
                                     text = place.place,

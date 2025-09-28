@@ -16,11 +16,11 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
+import `in`.koreatech.koin.core.util.withLoading
 import `in`.koreatech.koin.databinding.FragmentArticleListBinding
 import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.START_BOARD
 import `in`.koreatech.koin.ui.article.lostandfound.ArticleListLostAndFoundFragment
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleListViewModel
-import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

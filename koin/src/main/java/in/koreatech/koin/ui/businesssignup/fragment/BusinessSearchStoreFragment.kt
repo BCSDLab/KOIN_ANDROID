@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.fragment.BaseFragment
+import `in`.koreatech.koin.core.util.withLoading
 import `in`.koreatech.koin.databinding.FragmentBusinessSearchStoreBinding
 import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessSignUpBaseViewModel
 import `in`.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter
@@ -24,7 +25,6 @@ import `in`.koreatech.koin.ui.store.viewmodel.StoreViewModel
 import `in`.koreatech.koin.util.ext.dpToPx
 import `in`.koreatech.koin.util.ext.hideSoftKeyboard
 import `in`.koreatech.koin.util.ext.showSoftKeyboard
-import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

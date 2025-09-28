@@ -2,8 +2,8 @@ package `in`.koreatech.koin.navigation
 
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
 import `in`.koreatech.koin.feature.club.ui.ClubActivity
+import `in`.koreatech.koin.feature.dining.ui.DiningActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity
-import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.store.activity.StoreActivity
 
 enum class SchemeType(

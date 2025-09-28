@@ -7,14 +7,14 @@ import androidx.core.widget.doOnTextChanged
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.util.SnackbarUtil
 import `in`.koreatech.koin.core.util.dataBinding
+import `in`.koreatech.koin.core.util.withLoading
 import `in`.koreatech.koin.databinding.ActivityBusinessLoginBinding
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import `in`.koreatech.koin.ui.businesslogin.viewmodel.BusinessLoginViewModel
 import `in`.koreatech.koin.ui.businesssignup.BusinessSignUpCheckActivity
-import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
-import `in`.koreatech.koin.util.ext.withLoading
 
 @AndroidEntryPoint
 class BusinessLoginActivity : ActivityBase(R.layout.activity_business_login) {

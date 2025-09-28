@@ -27,6 +27,7 @@ import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.core.download.FileDownloadManager
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.core.toast.ToastUtil
+import `in`.koreatech.koin.core.util.withLoading
 import `in`.koreatech.koin.core.webview.loadKoreatechHtml
 import `in`.koreatech.koin.core.webview.setOnImageClickListener
 import `in`.koreatech.koin.databinding.FragmentArticleDetailBinding
@@ -38,7 +39,6 @@ import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 import `in`.koreatech.koin.ui.article.state.ArticleState
 import `in`.koreatech.koin.ui.article.state.AttachmentState
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleDetailViewModel
-import `in`.koreatech.koin.util.ext.withLoading
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
