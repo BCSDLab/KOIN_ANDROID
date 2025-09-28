@@ -13,7 +13,7 @@ import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
+import `in`.koreatech.koin.domain.usecase.dining.GetNotOperationFilteredDiningUseCase
 import `in`.koreatech.koin.domain.usecase.notification.DeleteNotificationSubscriptionUseCase
 import `in`.koreatech.koin.domain.usecase.notification.GetNotificationPermissionInfoUseCase
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionDetailUseCase
@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class DiningViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getDiningUseCase: GetDiningUseCase,
+    private val getNotOperationFilteredDiningUseCase: GetNotOperationFilteredDiningUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
     private val abTestUseCase: ABTestUseCase,
     private val onboardingManager: OnboardingManager,
@@ -118,7 +118,7 @@ class DiningViewModel @Inject constructor(
         if (!_isLoading.value) {
             _isLoading.value = true
             viewModelScope.launch {
-                getDiningUseCase(date)
+                getNotOperationFilteredDiningUseCase(date)
                     .onSuccess {
                         _dining.value = it.filter { dining ->
                             dining.place == DiningPlace.CornerA.place ||
