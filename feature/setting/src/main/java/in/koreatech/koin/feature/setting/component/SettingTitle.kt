@@ -16,7 +16,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 fun SettingTitle(
     text: String,
     textStyle: TextStyle = KoinTheme.typography.medium14,
-    backgroundColor: Color = KoinTheme.colors.neutral50,
+    backgroundColor: Color = KoinTheme.colors.neutral50
 ) {
     Text(
         modifier = Modifier
