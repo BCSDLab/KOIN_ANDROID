@@ -22,9 +22,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -562,7 +564,8 @@ private fun DiningDetailScreenImpl(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
-                    .padding(start = 16.dp, end = 8.dp, bottom = 16.dp),
+                    .padding(WindowInsets.navigationBars.asPaddingValues())
+                    .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
                 onClick = {
                     val sessionId = onGetSessionId()
 
