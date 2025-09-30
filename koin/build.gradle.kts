@@ -101,6 +101,7 @@ dependencies {
     implementation(projects.core.navigation)
     implementation(projects.core.designsystem)
     implementation(projects.core.analytics)
+    implementation(projects.core.network)
     implementation(projects.data)
     implementation(projects.domain)
     implementation(projects.core.onboarding)
