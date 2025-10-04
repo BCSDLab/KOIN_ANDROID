@@ -43,7 +43,12 @@ internal fun ShuttleTimetableNodeItem(
             Modifier
                 .fillMaxWidth()
                 .background(color = KoinTheme.colors.neutral100)
-                .padding(horizontal = 24.dp, vertical = 8.dp)
+                .padding(
+                    start = 24.dp,
+                    top = 0.dp,
+                    end = 24.dp,
+                    bottom = 16.dp
+                )
         )
 
         nodes.fastForEach { node ->

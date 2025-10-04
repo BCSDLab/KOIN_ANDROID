@@ -11,23 +11,23 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 @Composable
 internal fun RouteInfo(
-    routeName : String,
+    routeName: String,
     modifier: Modifier = Modifier,
-    routeDetail: String = ""
+    routeDetail: String
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = if (routeDetail.isBlank()) Arrangement.Center else Arrangement.Top
+        verticalArrangement = Arrangement.Top
     ) {
         Text(
-            text = routeDetail,
-            style = KoinTheme.typography.regular10,
+            text = routeName,
+            style = KoinTheme.typography.regular14,
             color = KoinTheme.colors.neutral600,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
         Text(
-            text = routeName,
-            style = KoinTheme.typography.regular14,
+            text = routeDetail,
+            style = KoinTheme.typography.regular10,
             color = KoinTheme.colors.neutral600,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
