@@ -31,16 +31,14 @@ fun ShuttleTimetableRouteItem(
         modifier = modifier.width(IntrinsicSize.Max),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = route.name,
-            style = KoinTheme.typography.regular14,
-            color = KoinTheme.colors.neutral600,
-            textAlign = TextAlign.Center,
+        RouteInfo(
+            routeName = route.name,
+            routeDetail = route.detail,
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .background(color = KoinTheme.colors.neutral100)
-                .padding(vertical = 8.dp)
+                Modifier
+                    .fillMaxWidth()
+                    .align(alignment = Alignment.CenterHorizontally)
+                    .background(color = KoinTheme.colors.neutral100)
         )
 
         route.arrivalTimes.fastForEach { time ->
