@@ -7,6 +7,11 @@ plugins {
 
 android {
     namespace = "in.koreatech.koin.feature.user"
+
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
 }
 
 dependencies {
