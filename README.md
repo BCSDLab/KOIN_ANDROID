@@ -2,14 +2,14 @@
 
 # 코인 - 한기대 커뮤니티
 
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.9.22-blue.svg)](https://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.2.20-blue.svg)](https://kotlinlang.org)
 [![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://kotlinlang.org)
 [![Gradle](https://img.shields.io/badge/gradle-8.7-green.svg)](https://gradle.org/)
 [![Android Gradle](https://img.shields.io/badge/AGP-8.5.1-green.svg)](https://gradle.org/)
 
-[![minSdkVersion](https://img.shields.io/badge/minSdkVersion-26-red)](https://developer.android.com/distribute/best-practices/develop/target-sdk)
-[![compileSdkVersion](https://img.shields.io/badge/compileSdkVersion-34-red)](https://developer.android.com/distribute/best-practices/develop/target-sdk)
-[![targetSdkVersion](https://img.shields.io/badge/targetSdkVersion-34-red)](https://developer.android.com/distribute/best-practices/develop/target-sdk)
+[![minSdkVersion](https://img.shields.io/badge/minSdkVersion-28-red)](https://developer.android.com/distribute/best-practices/develop/target-sdk)
+[![compileSdkVersion](https://img.shields.io/badge/compileSdkVersion-35-red)](https://developer.android.com/distribute/best-practices/develop/target-sdk)
+[![targetSdkVersion](https://img.shields.io/badge/targetSdkVersion-35-red)](https://developer.android.com/distribute/best-practices/develop/target-sdk)
 
 코인은 한국기술교육대학교 학생들을 위하여 제공하는 커뮤니티 플랫폼 서비스입니다.
 
