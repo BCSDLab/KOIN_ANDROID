@@ -18,7 +18,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.kotlinx.collections.immutable)
-    implementation(libs.bundles.compose.m3)
     implementation(libs.coil.compose)
     implementation(libs.timber)
 }

@@ -153,5 +153,5 @@ dependencies {
     implementation(libs.kotlinx.collections.immutable)
 
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.bundles.compose.m3)
+    implementation(libs.bundles.compose)
 }

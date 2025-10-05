@@ -20,8 +20,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.kotlinx.collections.immutable)
 
-    implementation(libs.bundles.compose.m3)
-
     debugImplementation(libs.bundles.compose.debug.test)
     androidTestImplementation(libs.androidx.compose.ui.test.manifest)
 

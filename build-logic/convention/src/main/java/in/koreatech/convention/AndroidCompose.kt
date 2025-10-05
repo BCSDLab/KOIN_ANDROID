@@ -27,7 +27,7 @@ internal fun Project.configureAndroidCompose(
 
     dependencies {
         implementation(platform(libs.findLibrary("androidx.compose.bom").get()))
-        implementation(libs.findBundle("compose").get())
+        implementation(libs.findBundle("compose.m3").get())
         debugImplementation(libs.findBundle("compose.debug.test").get())
         androidTestImplementation(libs.findLibrary("androidx.compose.ui.test.manifest").get())
     }

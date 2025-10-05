@@ -19,8 +19,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
 
-    implementation(libs.bundles.compose.m3)
-
     implementation(libs.coil.compose)
     implementation(libs.coil.gif)
 

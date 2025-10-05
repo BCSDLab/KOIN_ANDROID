@@ -33,7 +33,6 @@ dependencies {
 
     implementation(libs.kakao.share)
 
-    implementation(libs.bundles.compose.m3)
     implementation(libs.kotlinx.collections.immutable)
 
     implementation(libs.coil.compose)

@@ -21,7 +21,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.lifecycle.runtime.compose)
 
-    implementation(libs.bundles.compose.m3)
+    implementation(libs.bundles.compose)
     implementation(libs.kotlinx.collections.immutable)
 
     implementation(libs.timber)
