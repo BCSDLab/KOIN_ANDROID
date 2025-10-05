@@ -14,6 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.URL
 import `in`.koreatech.koin.core.activity.ActivityBase
@@ -26,6 +27,7 @@ import `in`.koreatech.koin.databinding.ActivitySettingBinding
 import `in`.koreatech.koin.feature.user.ui.changepassword.ChangePasswordContract
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import `in`.koreatech.koin.feature.user.ui.userinfo.UserInfoActivity
+import `in`.koreatech.koin.ui.developer.DeveloperSettingActivity
 import `in`.koreatech.koin.ui.notification.NotificationActivity
 import `in`.koreatech.koin.ui.term.TermActivity
 import `in`.koreatech.koin.ui.term.TermActivity.Companion.KEY_TERM
@@ -150,6 +152,11 @@ class SettingActivity : ActivityBase() {
             }
             svOpenSourceLicense.setOnSettingClickListener {
                 startActivity(Intent(this@SettingActivity, OssLicensesMenuActivity::class.java))
+            }
+            svAppVersion.setOnClickListener {
+                if (BuildConfig.IS_DEBUG) {
+                    startActivity(Intent(this@SettingActivity, DeveloperSettingActivity::class.java))
+                }
             }
             svContact.setOnSettingClickListener {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(URL.KOIN_ASK_FORM)))
