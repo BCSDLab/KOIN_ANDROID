@@ -186,6 +186,7 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradle" }
 androidLibrary = { id = "com.android.library", version.ref = "androidGradle" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 firebase-appdistribution = { id = "com.google.firebase.appdistribution", version.ref = "firebaseAppdistributionGradle" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseGradle" }
 google-service = { id = "com.google.gms.google-services", version.ref = "googleServiceVersion" }
