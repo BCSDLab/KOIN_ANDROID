@@ -1,21 +1,11 @@
 plugins {
-    alias(libs.plugins.koin.library)
+    alias(libs.plugins.koin.feature)
     alias(libs.plugins.koin.hilt)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlinx.serialization)
-    id("kotlin-parcelize")
 }
 
 android {
     namespace = "in.koreatech.koin.feature.bus"
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.10"
-    }
-
-    buildFeatures {
-        compose = true
-    }
 }
 
 dependencies {
@@ -30,7 +20,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.kotlinx.collections.immutable)
 
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose.m3)
 
     debugImplementation(libs.bundles.compose.debug.test)

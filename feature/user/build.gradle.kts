@@ -1,24 +1,12 @@
 plugins {
-    alias(libs.plugins.koin.library)
+    alias(libs.plugins.koin.feature)
     alias(libs.plugins.koin.hilt)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.koin.library.orbit)
-    id("kotlin-parcelize")
 }
 
 android {
     namespace = "in.koreatech.koin.feature.user"
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.10"
-    }
-
-    buildFeatures {
-        compose = true
-        dataBinding = true
-        viewBinding = true
-    }
 }
 
 dependencies {
@@ -33,7 +21,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.lottie.compose)
 
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose.m3)
     implementation(libs.androidx.navigation.compose)
 
@@ -42,9 +29,6 @@ dependencies {
 
     implementation(libs.timber)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.compose.ui.test)
     androidTestImplementation(libs.androidx.compose.ui.test.manifest)
 }
