@@ -4,7 +4,6 @@ import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.koin.compose)
     alias(libs.plugins.koin.application)
     alias(libs.plugins.koin.hilt)
     alias(libs.plugins.koin.firebase)

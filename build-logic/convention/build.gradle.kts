@@ -18,10 +18,6 @@ gradlePlugin {
             id = "in.koreatech.plugin.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
-        register("AndroidApplicationComposePlugin") {
-            id = "in.koreatech.plugin.compose"
-            implementationClass = "AndroidApplicationComposeConventionPlugin"
-        }
         register("AndroidApplicationHiltPlugin"){
             id = "in.koreatech.plugin.hilt"
             implementationClass = "AndroidApplicationHiltConventionPlugin"
