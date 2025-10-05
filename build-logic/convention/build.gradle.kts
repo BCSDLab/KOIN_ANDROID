@@ -38,6 +38,10 @@ gradlePlugin {
             id = "in.koreatech.plugin.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
+        register("AndroidFeaturePlugin"){
+            id = "in.koreatech.plugin.feature"
+            implementationClass = "AndroidFeatureConventionPlugin"
+        }
         register("FirebasePlugin") {
             id = "in.koreatech.plugin.firebase"
             implementationClass = "FirebaseConventionPlugin"
