@@ -21,6 +21,7 @@ dependencies {
     implementation(projects.core)
     implementation(projects.domain)
     implementation(projects.core.designsystem)
+    implementation(projects.core.navigation)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
