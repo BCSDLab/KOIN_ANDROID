@@ -215,11 +215,17 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun getStoreCategories(storeCategory: StoreCategories) {
+    fun getStoreCategoriesWithBenefit(storeCategory: StoreCategories) {
         viewModelScope.launchWithLoading {
             val categoryList = getStoreCategoriesUseCase().drop(1).toMutableList()
             categoryList.add(0, storeCategory)
             _storeCategories.value = categoryList
+        }
+    }
+
+    fun getStoreCategories() {
+        viewModelScope.launchWithLoading {
+            _storeCategories.value = getStoreCategoriesUseCase()
         }
     }
 

@@ -494,6 +494,12 @@ abstract class KoinNavigationDrawerActivity :
                 }
             }
         }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                getStoreSprintEnabled()
+            }
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -546,7 +552,10 @@ abstract class KoinNavigationDrawerActivity :
     }
 
     private fun goToStoreActivity(bundle: Bundle? = bundleOf()) {
-        val intent = Intent(this, StoreActivity::class.java)
+        val intent = Intent(
+            this,
+            if (koinNavigationDrawerViewModel.isStoreSprintEnabled.value == true) `in`.koreatech.koin.feature.store.StoreActivity::class.java else StoreActivity::class.java
+        )
         intent.putExtras(bundle!!)
 
         if (menuState != MenuState.Main) {

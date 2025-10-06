@@ -247,6 +247,12 @@
                                 tools:listitem="@layout/store_category_item" />
 
                             <androidx.compose.ui.platform.ComposeView
+                                android:id="@+id/shop_compose_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone" />
+
+                            <androidx.compose.ui.platform.ComposeView
                                 android:id="@+id/dining_compose_view"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />

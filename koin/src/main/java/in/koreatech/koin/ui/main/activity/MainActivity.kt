@@ -58,6 +58,7 @@ import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.feature.banner.ui.BannerActivity
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetA
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetB
+import `in`.koreatech.koin.feature.store.MainStoreWidget
 import `in`.koreatech.koin.navigation.SchemeType
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
@@ -322,6 +323,16 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             }
         }
 
+        shopComposeView.setContent {
+            val storeCategories by viewModel.storeCategories.collectAsState()
+
+            MainStoreWidget(
+                categories = storeCategories
+            ) { categoryId ->
+                gotoStoreActivity(categoryId)
+            }
+        }
+
         recyclerViewStoreCategory.apply {
             layoutManager = GridLayoutManager(this@MainActivity, 6)
             adapter = storeCategoriesRecyclerAdapter
@@ -378,8 +389,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 }
         }
 
-        getStoreCategories(StoreCategories(-1, R.drawable.ic_benefit_icon, "혜택"))
-
         observeLiveData(isLoading) {
             binding.mainSwipeRefreshLayout.isRefreshing = it
         }
@@ -399,11 +408,15 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         lifecycleScope.launch {
             isStoreSprintEnabled.filterNotNull().collect {
                 if (it) {
+                    getStoreCategories()
                     binding.textViewStore.visibility = View.GONE
                     binding.storeButtonLayout.visibility = View.GONE
                     binding.recyclerViewStoreCategory.visibility = View.GONE
+                    binding.shopComposeView.visibility = View.VISIBLE
                 } else {
+                    getStoreCategoriesWithBenefit(StoreCategories(-1, R.drawable.ic_benefit_icon, "혜택"))
                     binding.textViewStore.visibility = View.VISIBLE
+                    binding.shopComposeView.visibility = View.GONE
                     observeOldStoreABTest()
                 }
             }
