@@ -32,10 +32,15 @@ class WriteReviewViewModel @Inject constructor(
     private val _toastEvent = MutableSharedFlow<Unit>()
     val toastEvent = _toastEvent.asSharedFlow()
 
+    private val _shouldFinish = MutableSharedFlow<Boolean>()
+    val shouldFinish = _shouldFinish.asSharedFlow()
+
     fun writeReview(storeId: Int, content: Review) {
         viewModelScope.launch {
             writeReviewUseCase(storeId, content).also {
                 _review.value = content
+            }.onSuccess {
+                _shouldFinish.emit(true)
             }.onFailure {
                 _toastEvent.emit(Unit)
             }

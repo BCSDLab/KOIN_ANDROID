@@ -36,6 +36,7 @@ import kotlin.properties.Delegates
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -189,7 +190,6 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                     (storeName ?: "Unknown"),
                     EventExtra(AnalyticsConstant.DURATION_TIME, (elapsedTime / 1000.0).toString())
                 )
-                finish()
             }
         }
     }
@@ -248,6 +248,14 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.toastEvent.collect {
                     showToast(getString(R.string.write_review_error))
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                shouldFinish.collectLatest {
+                    if (it) finish()
                 }
             }
         }
