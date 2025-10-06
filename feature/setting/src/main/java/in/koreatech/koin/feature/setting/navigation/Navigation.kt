@@ -40,7 +40,7 @@ fun NavGraphBuilder.koinSettingGraph(
     composable(
         route = "${SettingNavType.Term.route}/{${TERM_TYPE}}",
         arguments = listOf(
-            navArgument(TERM_TYPE) { type = NavType.StringType },
+            navArgument(TERM_TYPE) { type = NavType.StringType }
         )
     ) {
         val context = LocalContext.current

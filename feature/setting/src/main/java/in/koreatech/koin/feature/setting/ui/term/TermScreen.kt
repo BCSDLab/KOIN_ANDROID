@@ -51,10 +51,18 @@ fun TermScreen(
     val termUnknownMessage = stringResource(R.string.term_unknown_message)
     LaunchedEffect(Unit) {
         when (termType) {
-            TermConstant.TERM_UNKNOWN -> { ToastUtil.getInstance().makeShort(termUnknownMessage) }
-            TermConstant.TERM_KOIN -> { viewModel.loadKoinTerm() }
-            TermConstant.TERM_PRIVACY_POLICY -> { viewModel.loadPrivacyTerm() }
-            TermConstant.TERM_MARKETING -> {viewModel.loadMarketingTerm() }
+            TermConstant.TERM_UNKNOWN -> {
+                ToastUtil.getInstance().makeShort(termUnknownMessage)
+            }
+            TermConstant.TERM_KOIN -> {
+                viewModel.loadKoinTerm()
+            }
+            TermConstant.TERM_PRIVACY_POLICY -> {
+                viewModel.loadPrivacyTerm()
+            }
+            TermConstant.TERM_MARKETING -> {
+                viewModel.loadMarketingTerm()
+            }
         }
     }
     val termState by viewModel.term.collectAsState()
@@ -109,7 +117,7 @@ fun TermScreenImpl(
             .background(color = KoinTheme.colors.neutral0)
             .padding(contentPadding)
             .consumeWindowInsets(contentPadding),
-        state = termLazyState,
+        state = termLazyState
     ) {
         item {
             Row(
@@ -158,9 +166,9 @@ private fun TermScreenPreview() {
     TermScreenImpl(
         title = "코인 이용약관",
         articles = listOf(
-            TermArticle("제 1조 ---",listOf("1조 내용")),
-            TermArticle("제 2조 ---",listOf("2조 내용1", "2조 내용2")),
-            TermArticle("제 3조 ---",listOf("3조 내용1", "3조 내용2", "3조 내용3")),
+            TermArticle("제 1조 ---", listOf("1조 내용")),
+            TermArticle("제 2조 ---", listOf("2조 내용1", "2조 내용2")),
+            TermArticle("제 3조 ---", listOf("3조 내용1", "3조 내용2", "3조 내용3"))
         ),
         contentPadding = PaddingValues()
     )
