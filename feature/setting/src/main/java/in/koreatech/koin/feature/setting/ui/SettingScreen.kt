@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.setting.ui
 
-import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -25,11 +24,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.navigation.utils.goToUrl
 import `in`.koreatech.koin.feature.setting.R
 import `in`.koreatech.koin.feature.setting.component.SettingItem
 import `in`.koreatech.koin.feature.setting.component.SettingTitle
 import `in`.koreatech.koin.feature.setting.component.SettingVersionItem
-import `in`.koreatech.koin.feature.setting.constant.URL
+import `in`.koreatech.koin.feature.setting.constant.URLConstant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -158,7 +158,7 @@ fun SettingScreenImpl(
         SettingItem(
             text = stringResource(R.string.setting_item_contact),
             onClick = {
-                context.startActivity(Intent(Intent.ACTION_VIEW, URL.KOIN_ASK_FORM.toUri()))
+                context.goToUrl(URLConstant.KOIN_ASK_FORM.toUri())
             }
         )
     }
