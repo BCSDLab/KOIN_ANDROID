@@ -31,29 +31,25 @@ class SettingViewModel @Inject constructor(
         fetchUserInfo()
     }
 
-    fun fetchUserInfo() {
-        viewModelScope.launch {
-            getUserInfoUseCase()
-                .onSuccess {
-                    _userInfo.value = it
-                }
-        }
+    fun fetchUserInfo() = viewModelScope.launch {
+        getUserInfoUseCase()
+            .onSuccess {
+                _userInfo.value = it
+            }
     }
 
-    fun fetchVersion() {
-        viewModelScope.launch {
-            getLatestVersionUseCase()
-                .onSuccess { (currentVersion, latestVersion) ->
-                    _versionState.value =
-                        if (currentVersion == latestVersion) {
-                            VersionState.Latest(currentVersion)
-                        } else {
-                            VersionState.Outdated(currentVersion, latestVersion)
-                        }
-                }
-                .onFailure {
-                    _versionState.value = VersionState.Failure
-                }
-        }
+    fun fetchVersion() = viewModelScope.launch {
+        getLatestVersionUseCase()
+            .onSuccess { (currentVersion, latestVersion) ->
+                _versionState.value =
+                    if (currentVersion == latestVersion) {
+                        VersionState.Latest(currentVersion)
+                    } else {
+                        VersionState.Outdated(currentVersion, latestVersion)
+                    }
+            }
+            .onFailure {
+                _versionState.value = VersionState.Failure
+            }
     }
 }
