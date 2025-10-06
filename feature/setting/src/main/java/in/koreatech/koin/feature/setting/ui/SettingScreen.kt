@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -28,7 +29,6 @@ import `in`.koreatech.koin.feature.setting.component.SettingItem
 import `in`.koreatech.koin.feature.setting.component.SettingTitle
 import `in`.koreatech.koin.feature.setting.component.SettingVersionItem
 import `in`.koreatech.koin.feature.setting.constant.URL
-import androidx.core.net.toUri
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -78,19 +78,19 @@ fun SettingScreen(
 
 @Composable
 fun SettingScreenImpl(
-    isLoggedIn : Boolean,
+    isLoggedIn: Boolean,
     currentVersionName: String,
     latestVersionName: String,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
-    onProfileClick : () -> Unit = {},
-    onChangePasswordClick : () -> Unit = {},
-    onNotificationClick : () -> Unit = {},
-    onServiceClick : () -> Unit = {},
-    onPrivacyPolicyClick : () -> Unit = {},
-    onKoinTermsClick : () -> Unit = {},
-    onMarketingTermsClick : () -> Unit = {},
-    onOpenSourceLicenseClick : () -> Unit = {}
+    onProfileClick: () -> Unit = {},
+    onChangePasswordClick: () -> Unit = {},
+    onNotificationClick: () -> Unit = {},
+    onServiceClick: () -> Unit = {},
+    onPrivacyPolicyClick: () -> Unit = {},
+    onKoinTermsClick: () -> Unit = {},
+    onMarketingTermsClick: () -> Unit = {},
+    onOpenSourceLicenseClick: () -> Unit = {}
 ) {
     val context = LocalContext.current
     Column(

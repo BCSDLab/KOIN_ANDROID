@@ -23,8 +23,8 @@ import `in`.koreatech.koin.feature.setting.R
 fun SettingVersionItem(
     currentVersion: String,
     latestVersion: String,
-    showVersionInfo : Boolean,
-    modifier : Modifier = Modifier,
+    showVersionInfo: Boolean,
+    modifier: Modifier = Modifier,
     textStyle: TextStyle = KoinTheme.typography.regular16,
     backgroundColor: Color = KoinTheme.colors.neutral0
 ) {
