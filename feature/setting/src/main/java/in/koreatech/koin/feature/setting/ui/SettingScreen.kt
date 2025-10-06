@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.feature.setting.ui
 
-import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +27,8 @@ import `in`.koreatech.koin.feature.setting.R
 import `in`.koreatech.koin.feature.setting.component.SettingItem
 import `in`.koreatech.koin.feature.setting.component.SettingTitle
 import `in`.koreatech.koin.feature.setting.component.SettingVersionItem
+import `in`.koreatech.koin.feature.setting.constant.URL
+import androidx.core.net.toUri
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -88,8 +90,7 @@ fun SettingScreenImpl(
     onPrivacyPolicyClick : () -> Unit = {},
     onKoinTermsClick : () -> Unit = {},
     onMarketingTermsClick : () -> Unit = {},
-    onOpenSourceLicenseClick : () -> Unit = {},
-    onContactClick : () -> Unit = {}
+    onOpenSourceLicenseClick : () -> Unit = {}
 ) {
     val context = LocalContext.current
     Column(
@@ -144,7 +145,9 @@ fun SettingScreenImpl(
         Spacer(Modifier.weight(1f))
         SettingItem(
             text = stringResource(R.string.setting_item_contact),
-            onClick = {}
+            onClick = {
+                context.startActivity(Intent(Intent.ACTION_VIEW, URL.KOIN_ASK_FORM.toUri()))
+            }
         )
     }
 }
