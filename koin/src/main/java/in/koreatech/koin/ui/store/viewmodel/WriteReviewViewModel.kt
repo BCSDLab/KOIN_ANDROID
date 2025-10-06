@@ -55,6 +55,10 @@ class WriteReviewViewModel @Inject constructor(
         viewModelScope.launch {
             modifyReviewUseCase(reviewId, storeId, content).also {
                 _review.value = content
+            }.onSuccess {
+                _shouldFinish.emit(true)
+            }.onFailure {
+                _toastEvent.emit(Unit)
             }
         }
     }
