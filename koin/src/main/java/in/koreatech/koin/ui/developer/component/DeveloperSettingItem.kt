@@ -46,9 +46,9 @@ fun DeveloperSettingItem(
                 style = KoinTheme.typography.regular16
             )
 
-            if (description != null) {
+            description?.let {
                 BasicText(
-                    text = description,
+                    text = it,
                     style = KoinTheme.typography.regular13
                 )
             }
