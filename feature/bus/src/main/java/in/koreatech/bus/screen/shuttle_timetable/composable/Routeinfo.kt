@@ -24,9 +24,9 @@ internal fun RouteInfo(
             text = routeName,
             style = KoinTheme.typography.regular14,
             color = KoinTheme.colors.neutral600,
-            modifier = Modifier.align(if(routeDetail.isBlank()) Alignment.Center else Alignment.TopCenter)
+            modifier = Modifier.align(if (routeDetail.isBlank()) Alignment.Center else Alignment.TopCenter)
         )
-        if(routeDetail.isNotBlank()){
+        if (routeDetail.isNotBlank()) {
             Text(
                 text = routeDetail,
                 style = KoinTheme.typography.regular14,
