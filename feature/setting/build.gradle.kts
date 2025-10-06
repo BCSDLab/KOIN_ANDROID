@@ -31,6 +31,7 @@ dependencies {
     implementation(libs.kotlinx.collections.immutable)
 
     implementation(libs.timber)
+    implementation(libs.play.services.oss.licenses)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
