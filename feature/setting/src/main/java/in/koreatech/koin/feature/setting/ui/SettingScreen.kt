@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.setting.R
@@ -34,7 +35,14 @@ import `in`.koreatech.koin.feature.setting.constant.URL
 @Composable
 fun SettingScreen(
     viewModel: SettingViewModel = hiltViewModel(),
-    onTopbarBackClick: () -> Unit = {}
+    onTopbarBackClick: () -> Unit = {},
+    onProfileClick: () -> Unit = {},
+    onChangePasswordClick: () -> Unit = {},
+    onNotificationClick: () -> Unit = {},
+    onServiceClick: () -> Unit = {},
+    onPrivacyPolicyClick: () -> Unit = {},
+    onKoinTermsClick: () -> Unit = {},
+    onMarketingTermsClick: () -> Unit = {}
 ) {
     val versionState by viewModel.versionState.collectAsState()
 
@@ -71,7 +79,10 @@ fun SettingScreen(
             isLoggedIn = viewModel.isLoggedIn,
             currentVersionName = currentVersionName,
             latestVersionName = latestVersionName,
-            contentPadding = contentPadding
+            contentPadding = contentPadding,
+            onPrivacyPolicyClick = onPrivacyPolicyClick,
+            onKoinTermsClick = onKoinTermsClick,
+            onMarketingTermsClick = onMarketingTermsClick
         )
     }
 }
@@ -89,8 +100,7 @@ fun SettingScreenImpl(
     onServiceClick: () -> Unit = {},
     onPrivacyPolicyClick: () -> Unit = {},
     onKoinTermsClick: () -> Unit = {},
-    onMarketingTermsClick: () -> Unit = {},
-    onOpenSourceLicenseClick: () -> Unit = {}
+    onMarketingTermsClick: () -> Unit = {}
 ) {
     val context = LocalContext.current
     Column(
@@ -123,19 +133,21 @@ fun SettingScreenImpl(
         )
         SettingItem(
             text = stringResource(R.string.setting_item_privacy_policy),
-            onClick = {}
+            onClick = onPrivacyPolicyClick
         )
         SettingItem(
             text = stringResource(R.string.setting_item_koin_terms),
-            onClick = {}
+            onClick = onKoinTermsClick
         )
         SettingItem(
             text = stringResource(R.string.setting_item_marketing_terms),
-            onClick = {}
+            onClick = onMarketingTermsClick
         )
         SettingItem(
             text = stringResource(R.string.setting_item_open_source_license),
-            onClick = {}
+            onClick = {
+                context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))
+            }
         )
         SettingVersionItem(
             currentVersion = currentVersionName,
