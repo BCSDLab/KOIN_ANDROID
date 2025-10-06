@@ -13,11 +13,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.setting.R
@@ -28,9 +31,11 @@ import `in`.koreatech.koin.feature.setting.component.SettingVersionItem
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingScreen(
-    // viewModel: SettingViewModel = hiltViewModel(),
+    viewModel: SettingViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {}
 ) {
+    val versionState by viewModel.versionState.collectAsState()
+
     Scaffold(
         containerColor = KoinTheme.colors.neutral0,
         topBar = {
@@ -47,18 +52,46 @@ fun SettingScreen(
         },
         contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { contentPadding ->
+        var currentVersionName = ""
+        var latestVersionName = ""
+        when (versionState) { // smartcast not working
+            is VersionState.Outdated -> {
+                currentVersionName = (versionState as VersionState.Outdated).currentVersion
+                latestVersionName = (versionState as VersionState.Outdated).latestVersion
+            }
+            is VersionState.Latest -> {
+                currentVersionName = (versionState as VersionState.Latest).currentVersion
+                latestVersionName = currentVersionName
+            }
+            else -> {}
+        }
         SettingScreenImpl(
-            contentPadding
+            isLoggedIn = viewModel.isLoggedIn,
+            currentVersionName = currentVersionName,
+            latestVersionName = latestVersionName,
+            contentPadding = contentPadding
         )
     }
 }
 
 @Composable
 fun SettingScreenImpl(
+    isLoggedIn : Boolean,
+    currentVersionName: String,
+    latestVersionName: String,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
-    context: Context = LocalContext.current
+    onProfileClick : () -> Unit = {},
+    onChangePasswordClick : () -> Unit = {},
+    onNotificationClick : () -> Unit = {},
+    onServiceClick : () -> Unit = {},
+    onPrivacyPolicyClick : () -> Unit = {},
+    onKoinTermsClick : () -> Unit = {},
+    onMarketingTermsClick : () -> Unit = {},
+    onOpenSourceLicenseClick : () -> Unit = {},
+    onContactClick : () -> Unit = {}
 ) {
+    val context = LocalContext.current
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -71,39 +104,47 @@ fun SettingScreenImpl(
         )
         SettingItem(
             text = stringResource(R.string.setting_item_profile),
-            showIcon = true
+            showIcon = true,
+            onClick = {}
         )
         SettingItem(
             text = stringResource(R.string.setting_item_change_password),
-            showIcon = true
+            showIcon = true,
+            onClick = {}
         )
         SettingItem(
             text = stringResource(R.string.setting_item_notification),
-            showIcon = true
+            showIcon = true,
+            onClick = {}
         )
         SettingTitle(
             text = stringResource(R.string.setting_title_service)
         )
         SettingItem(
-            text = stringResource(R.string.setting_item_privacy_policy)
+            text = stringResource(R.string.setting_item_privacy_policy),
+            onClick = {}
         )
         SettingItem(
-            text = stringResource(R.string.setting_item_koin_terms)
+            text = stringResource(R.string.setting_item_koin_terms),
+            onClick = {}
         )
         SettingItem(
-            text = stringResource(R.string.setting_item_marketing_terms)
+            text = stringResource(R.string.setting_item_marketing_terms),
+            onClick = {}
         )
         SettingItem(
-            text = stringResource(R.string.setting_item_open_source_license)
+            text = stringResource(R.string.setting_item_open_source_license),
+            onClick = {}
         )
         SettingVersionItem(
-            appVersion = "4.5.2",
-            currentVersion = "4.5.3",
-            showVersionInfo = false
+            currentVersion = currentVersionName,
+            latestVersion = latestVersionName,
+            showVersionInfo = currentVersionName.isNotEmpty() && latestVersionName.isNotEmpty()
         )
         Spacer(Modifier.weight(1f))
         SettingItem(
-            text = stringResource(R.string.setting_item_contact)
+            text = stringResource(R.string.setting_item_contact),
+            onClick = {}
         )
     }
 }
@@ -112,6 +153,9 @@ fun SettingScreenImpl(
 @Preview(showBackground = true)
 private fun SettingScreenPreview() {
     SettingScreenImpl(
+        isLoggedIn = false,
+        currentVersionName = "4.5.2",
+        latestVersionName = "4.5.3",
         contentPadding = PaddingValues()
     )
 }
