@@ -39,24 +39,17 @@ internal fun ShuttleTimetableNodeItem(
             text = stringResource(R.string.node_name),
             style = KoinTheme.typography.regular14,
             color = KoinTheme.colors.neutral600,
-            modifier =
-            Modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .background(color = KoinTheme.colors.neutral100)
-                .padding(
-                    start = 24.dp,
-                    top = 0.dp,
-                    end = 24.dp,
-                    bottom = 16.dp
-                )
+                .padding(horizontal = 24.dp, vertical = 8.dp)
         )
 
         nodes.fastForEach { node ->
             NodeItem(
                 nodeTitle = node.name,
                 nodeDescription = node.detail,
-                modifier =
-                Modifier
+                modifier = Modifier
                     .padding(horizontal = 24.dp, vertical = 4.dp)
                     .height(nodeItemHeightDp)
             )
