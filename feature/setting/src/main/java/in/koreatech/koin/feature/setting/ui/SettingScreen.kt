@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.setting.ui
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
