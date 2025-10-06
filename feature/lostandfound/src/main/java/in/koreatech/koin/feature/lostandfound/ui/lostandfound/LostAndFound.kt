@@ -101,7 +101,9 @@ fun LostAndFoundList(
                 val fabFoundText = stringResource(R.string.fab_found)
                 val fabLostText = stringResource(R.string.fab_lost)
                 LostAndFoundFAB(
-                    modifier = Modifier.padding(bottom = fabBottomPadding),
+                    modifier = Modifier
+                        .padding(bottom = fabBottomPadding)
+                        .consumeWindowInsets(WindowInsets.navigationBars),
                     isDialogExpanded = uiState.isFabDialogExpanded,
                     dialogExpandButtonText = fabWrite,
                     dialogExpandButtonPainter = painterResource(id = R.drawable.ic_fab_write),

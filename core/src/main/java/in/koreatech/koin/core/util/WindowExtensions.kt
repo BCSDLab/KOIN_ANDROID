@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.util.ext
+package `in`.koreatech.koin.core.util
 
 import android.os.Build
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.Window
 import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
-import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.R
 
 fun Window.statusBarColor(@ColorInt color: Int, lightStatusBar: Boolean = false) {
     if (color != statusBarColor) {

@@ -19,10 +19,10 @@ import `in`.koreatech.koin.core.appbar.ToolbarMenu
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.util.dataBinding
+import `in`.koreatech.koin.core.util.whiteStatusBar
 import `in`.koreatech.koin.databinding.ActivityArticleBinding
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
-import `in`.koreatech.koin.util.ext.whiteStatusBar
 import timber.log.Timber
 
 @AndroidEntryPoint

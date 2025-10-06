@@ -21,4 +21,12 @@ interface Navigator {
         context: Context,
         redirectUrl: String? = null
     ): Intent
+
+    fun navigateToNotificationSetting(
+        context: Context
+    ): Intent
+
+    fun navigateToStore(
+        context: Context
+    ): Intent
 }

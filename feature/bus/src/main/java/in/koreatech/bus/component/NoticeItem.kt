@@ -19,6 +19,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import `in`.koreatech.bus.mock.busNoticeUiStateMock
 import `in`.koreatech.bus.state.BusNoticeState
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -59,7 +60,7 @@ internal fun NoticeItem(
         )
         Icon(
             modifier =
-            Modifier.padding(start = 4.dp).padding(vertical = (textHeightDp - 16.dp) / 2).size(16.dp).noRippleClickable {
+            Modifier.padding(start = 4.dp).padding(vertical = max(0.dp, (textHeightDp - 16.dp) / 2)).size(16.dp).noRippleClickable {
                 onCloseIconClick()
             },
             imageVector = Icons.Rounded.Close,

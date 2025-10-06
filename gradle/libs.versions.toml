@@ -191,13 +191,17 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradle" }
 androidLibrary = { id = "com.android.library", version.ref = "androidGradle" }
+firebase-appdistribution = { id = "com.google.firebase.appdistribution", version.ref = "firebaseAppdistributionGradle" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseGradle" }
 google-service = { id = "com.google.gms.google-services", version.ref = "googleServiceVersion" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+oss-license-plugin = { id = "com.google.android.gms.oss-licenses-plugin", version.ref = "ossLicensesPlugin" }
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 
 koin-application = { id = "in.koreatech.plugin.application", version = "unspecified" }
