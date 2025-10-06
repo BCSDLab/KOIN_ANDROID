@@ -77,6 +77,12 @@ class WebViewActivity : ActivityBase(R.layout.activity_webview) {
             insets
         }
 
+        binding.koinBaseAppBar.setOnClickListener {
+            when (it.id) {
+                AppBarBase.getLeftButtonId() -> onBackPressedDispatcher.onBackPressed()
+            }
+        }
+
         binding.webView.apply {
             webChromeClient =
                 KoinWebChromeClient(

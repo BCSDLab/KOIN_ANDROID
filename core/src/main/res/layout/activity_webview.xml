@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -9,7 +10,8 @@
         <in.koreatech.koin.core.appbar.AppBarBase
             android:id="@+id/koin_base_app_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:leftButtonBackground="@drawable/ic_back_arrow" />
 
         <WebView
             android:id="@+id/web_view"
