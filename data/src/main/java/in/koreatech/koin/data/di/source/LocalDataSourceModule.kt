@@ -9,9 +9,11 @@ import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.IoDispatcher
 import `in`.koreatech.koin.data.source.datastore.ArticleDataStore
 import `in`.koreatech.koin.data.source.datastore.SessionDataStore
+import `in`.koreatech.koin.data.source.datastore.SettingDataStore
 import `in`.koreatech.koin.data.source.local.ArticleLocalDataSource
 import `in`.koreatech.koin.data.source.local.DeptLocalDataSource
 import `in`.koreatech.koin.data.source.local.SessionLocalDataSource
+import `in`.koreatech.koin.data.source.local.SettingLocalDataSource
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
@@ -74,5 +76,11 @@ object LocalDataSourceModule {
     @Singleton
     fun provideSessionLocalDataSource(sessionDataStore: SessionDataStore): SessionLocalDataSource {
         return SessionLocalDataSource(sessionDataStore)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSettingLocalDataSource(settingDataStore: SettingDataStore): SettingLocalDataSource {
+        return SettingLocalDataSource(settingDataStore)
     }
 }
