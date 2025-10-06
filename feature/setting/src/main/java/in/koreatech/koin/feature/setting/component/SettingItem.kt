@@ -32,10 +32,10 @@ fun SettingItem(
         modifier = Modifier
             .fillMaxWidth()
             .background(color = backgroundColor)
-            .padding(vertical = 13.dp, horizontal = 24.dp)
             .clickable {
                 onClick()
-            },
+            }
+            .padding(vertical = 13.dp, horizontal = 24.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

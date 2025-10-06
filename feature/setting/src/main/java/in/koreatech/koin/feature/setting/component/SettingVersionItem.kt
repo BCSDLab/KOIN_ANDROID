@@ -21,14 +21,15 @@ import `in`.koreatech.koin.feature.setting.R
 
 @Composable
 fun SettingVersionItem(
-    appVersion: String,
     currentVersion: String,
-    showVersionInfo: Boolean = false,
+    latestVersion: String,
+    showVersionInfo : Boolean,
+    modifier : Modifier = Modifier,
     textStyle: TextStyle = KoinTheme.typography.regular16,
     backgroundColor: Color = KoinTheme.colors.neutral0
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(color = backgroundColor)
             .padding(
@@ -47,13 +48,21 @@ fun SettingVersionItem(
                 horizontalAlignment = Alignment.End
             ) {
                 Text(
-                    text = appVersion,
+                    text = currentVersion,
                     style = KoinTheme.typography.regular14
                 )
                 Text(
-                    text = stringResource(R.string.setting_item_current_version_info, currentVersion),
+                    text = if (currentVersion == latestVersion) {
+                        stringResource(R.string.setting_item_newest_version_info)
+                    } else {
+                        stringResource(R.string.setting_item_not_newest_version_info, latestVersion)
+                    },
                     style = KoinTheme.typography.regular12,
-                    color = KoinTheme.colors.neutral500
+                    color = if (currentVersion == latestVersion) {
+                        KoinTheme.colors.neutral500
+                    } else {
+                        KoinTheme.colors.primary500
+                    }
                 )
             }
         }
@@ -65,18 +74,28 @@ fun SettingVersionItem(
 @Composable
 private fun SettingVersionItemPreviewVersion() {
     SettingVersionItem(
-        appVersion = "4.2.3",
-        currentVersion = "4.2.2",
+        currentVersion = "4.2.3",
+        latestVersion = "4.2.4",
         showVersionInfo = true
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun SettingVersionItemPreview() {
+private fun SettingVersionItemPreviewLatest() {
     SettingVersionItem(
-        appVersion = "4.2.2",
-        currentVersion = "4.2.3",
+        currentVersion = "4.2.2",
+        latestVersion = "4.2.2",
+        showVersionInfo = true
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SettingVersionItemPreviewNotShow() {
+    SettingVersionItem(
+        currentVersion = "4.2.2",
+        latestVersion = "4.2.2",
         showVersionInfo = false
     )
 }

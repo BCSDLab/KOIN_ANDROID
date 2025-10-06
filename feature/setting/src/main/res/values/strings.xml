@@ -13,5 +13,6 @@
     <string name="setting_item_app_version">앱 버전</string>
     <string name="setting_item_contact">문의하기</string>
 
-    <string name="setting_item_current_version_info">최신 버전 %1$d</string>
+    <string name="setting_item_not_newest_version_info">최신 버전 %1$s</string>
+    <string name="setting_item_newest_version_info">현재 최신 버전 입니다.</string>
 </resources>
