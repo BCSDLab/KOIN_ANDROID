@@ -19,6 +19,7 @@ internal class AndroidApplicationConventionPlugin : Plugin<Project> {
                 apply(libs.findPlugin("kotlin-parcelize").get().get().pluginId)
                 apply(libs.findPlugin("ksp").get().get().pluginId)
                 apply(libs.findPlugin("ktlint").get().get().pluginId)
+                apply(libs.findPlugin("compose-compiler").get().get().pluginId)
             }
             val extension = extensions.getByType<BaseAppModuleExtension>()
             extensions.configure<ApplicationExtension> {
