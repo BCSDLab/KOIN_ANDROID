@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,7 +40,7 @@ fun SettingVersionItem(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
+        BasicText(
             text = stringResource(R.string.setting_item_app_version),
             style = textStyle
         )
@@ -47,22 +48,23 @@ fun SettingVersionItem(
             Column(
                 horizontalAlignment = Alignment.End
             ) {
-                Text(
+                BasicText(
                     text = currentVersion,
                     style = KoinTheme.typography.regular14
                 )
-                Text(
+                BasicText(
                     text = if (currentVersion == latestVersion) {
                         stringResource(R.string.setting_item_newest_version_info)
                     } else {
                         stringResource(R.string.setting_item_not_newest_version_info, latestVersion)
                     },
-                    style = KoinTheme.typography.regular12,
-                    color = if (currentVersion == latestVersion) {
-                        KoinTheme.colors.neutral500
-                    } else {
-                        KoinTheme.colors.primary500
-                    }
+                    style = KoinTheme.typography.regular12.copy(
+                        color = if (currentVersion == latestVersion) {
+                            KoinTheme.colors.neutral500
+                        } else {
+                            KoinTheme.colors.primary500
+                        }
+                    )
                 )
             }
         }
