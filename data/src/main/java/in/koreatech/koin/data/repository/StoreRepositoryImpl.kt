@@ -82,20 +82,21 @@ class StoreRepositoryImpl @Inject constructor(
         query: String?
     ): List<Store> {
         if (stores == null) {
-            stores = storeRemoteDataSource.getStoreItems().map { it.toStore() }
+            stores =
+                if (isOperating == true && isDelivery == true) {
+                    storeRemoteDataSource.getStoreItemsWithTwoFilter(storeSorter, query).map { it.toStore() }
+                } else if (isOperating == false && isDelivery == false) {
+                    storeRemoteDataSource.getStoreItemsWithSorting(storeSorter, query).map { it.toStore() }
+                } else {
+                    if (isOperating == true) {
+                        storeRemoteDataSource.getStoreItemsWithOneFilter(storeSorter, "OPEN", query).map { it.toStore() }
+                    } else {
+                        storeRemoteDataSource.getStoreItemsWithOneFilter(storeSorter, "DELIVERY", query).map { it.toStore() }
+                    }
+                }
         }
 
-        return if (isOperating == true && isDelivery == true) {
-            stores!!.filter { it.isOpen && it.isDeliveryOk }
-        } else if (isOperating == false && isDelivery == false) {
-            stores!!.filter { !it.isOpen && !it.isDeliveryOk }
-        } else {
-            if (isOperating == true) {
-                stores!!.filter { it.isOpen }
-            } else {
-                stores!!.filter { it.isDeliveryOk }
-            }
-        }
+        return stores!!
     }
 
     override suspend fun getStoreEvents(): List<StoreEvent> {
