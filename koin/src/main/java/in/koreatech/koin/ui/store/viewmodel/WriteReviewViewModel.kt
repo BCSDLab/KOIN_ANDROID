@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 
 @HiltViewModel
 class WriteReviewViewModel @Inject constructor(
@@ -36,7 +35,7 @@ class WriteReviewViewModel @Inject constructor(
     val shouldFinish = _shouldFinish.asSharedFlow()
 
     fun writeReview(storeId: Int, content: Review) {
-        viewModelScope.launch {
+        viewModelScope.launchWithLoading {
             writeReviewUseCase(storeId, content).also {
                 _review.value = content
             }.onSuccess {
@@ -52,7 +51,7 @@ class WriteReviewViewModel @Inject constructor(
     }
 
     fun modifyReview(reviewId: Int, storeId: Int, content: Review) {
-        viewModelScope.launch {
+        viewModelScope.launchWithLoading {
             modifyReviewUseCase(reviewId, storeId, content).also {
                 _review.value = content
             }.onSuccess {
