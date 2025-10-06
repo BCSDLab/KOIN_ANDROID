@@ -25,6 +25,7 @@ import `in`.koreatech.koin.core.dialog.AlertModalDialogData
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.permission.checkNotificationPermission
 import `in`.koreatech.koin.core.toast.ToastUtil
+import `in`.koreatech.koin.core.util.SnackbarUtil
 import `in`.koreatech.koin.databinding.FragmentArticleKeywordBinding
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleKeywordViewModel
@@ -32,7 +33,6 @@ import `in`.koreatech.koin.ui.article.viewmodel.KeywordAddUiState
 import `in`.koreatech.koin.ui.article.viewmodel.KeywordInputUiState
 import `in`.koreatech.koin.ui.notification.viewmodel.NotificationUiState
 import `in`.koreatech.koin.ui.notification.viewmodel.NotificationViewModel
-import `in`.koreatech.koin.util.SnackbarUtil
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 

@@ -8,7 +8,7 @@ class OssLicensePlugin: Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
-                apply("com.google.android.gms.oss-licenses-plugin")
+                apply(libs.findPlugin("oss-license-plugin").get().get().pluginId)
             }
 
             dependencies {

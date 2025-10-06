@@ -136,10 +136,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-            <data
-                android:host="main"
-                android:pathPrefix="/activity"
-                android:scheme="koin" />
+                <data
+                    android:host="main"
+                    android:pathPrefix="/activity"
+                    android:scheme="koin" />
             </intent-filter>
         </activity>
 
@@ -217,17 +217,6 @@
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <!-- 카카오 스킴 설정 -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="@string/kakaolink_host"
-                    android:scheme="${kakaoScheme}" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.dining.DiningNoticeActivity"
@@ -265,6 +254,10 @@
             android:name=".ui.setting.SettingActivity"
             android:exported="false"
             android:label="설정"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".ui.developer.DeveloperSettingActivity"
+            android:exported="false"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.term.TermActivity"

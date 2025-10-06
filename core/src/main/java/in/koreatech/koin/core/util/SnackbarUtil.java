@@ -1,4 +1,4 @@
-package in.koreatech.koin.util;
+package in.koreatech.koin.core.util;
 
 import android.app.Activity;
 import android.content.Intent;
