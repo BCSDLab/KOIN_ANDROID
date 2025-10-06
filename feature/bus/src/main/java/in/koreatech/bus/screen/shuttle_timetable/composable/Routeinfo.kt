@@ -18,7 +18,7 @@ internal fun RouteInfo(
     routeDetail: String = ""
 ) {
     Box(
-        modifier = modifier.height(KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() + 16.dp),
+        modifier = modifier.height(KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() + 16.dp)
     ) {
         Text(
             text = routeName,
