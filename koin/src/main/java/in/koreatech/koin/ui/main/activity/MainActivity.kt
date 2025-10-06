@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.main.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -19,6 +20,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.bus.BusSearchActivity
 import `in`.koreatech.bus.BusTimetableActivity
@@ -52,10 +54,10 @@ import `in`.koreatech.koin.core.util.blueStatusBar
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityMainBinding
 import `in`.koreatech.koin.domain.model.article.ArticleNotiType
+import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.feature.banner.ui.BannerActivity
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetA
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetB
-import `in`.koreatech.koin.feature.store.MainStoreWidget
 import `in`.koreatech.koin.navigation.SchemeType
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
@@ -187,6 +189,25 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         }
         viewModel.postABTestAssign(Experiment.BENEFIT_STORE.experimentTitle)
 
+        storeListButton.setOnClickListener {
+            gotoStoreActivity(0)
+        }
+        callBenefitStoreListButton.setOnClickListener {
+            EventLogger.logClickEvent(
+                EventAction.BUSINESS,
+                AnalyticsConstant.Label.MAIN_SHOP_BENEFIT,
+                "전화주문혜택",
+                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
+                EventExtra(AnalyticsConstant.CURRENT_PAGE, "benefit"),
+                EventExtra(
+                    AnalyticsConstant.DURATION_TIME,
+                    getElapsedTimeAndReset().toString()
+                )
+            )
+            val intent = Intent(this@MainActivity, CallBenefitStoreActivity::class.java)
+            startActivity(intent)
+        }
+
         buttonCategory.setOnClickListener {
             toggleNavigationDrawer()
         }
@@ -301,14 +322,9 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             }
         }
 
-        shopComposeView.setContent {
-            val storeCategories by viewModel.storeCategories.collectAsState()
-
-            MainStoreWidget(
-                categories = storeCategories
-            ) { categoryId ->
-                gotoStoreActivity(categoryId)
-            }
+        recyclerViewStoreCategory.apply {
+            layoutManager = GridLayoutManager(this@MainActivity, 6)
+            adapter = storeCategoriesRecyclerAdapter
         }
 
         mainSwipeRefreshLayout.setOnRefreshListener {
@@ -362,9 +378,39 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 }
         }
 
+        getStoreCategories(StoreCategories(-1, R.drawable.ic_benefit_icon, "혜택"))
+
+        observeLiveData(variableName) {
+            when (viewModel.variableName.value) {
+                ExperimentGroup.A -> {
+                    binding.storeButtonLayout.visibility = View.GONE
+                    binding.recyclerViewStoreCategory.visibility = View.VISIBLE
+                }
+
+                ExperimentGroup.B -> {
+                    binding.storeButtonLayout.visibility = View.VISIBLE
+                    binding.recyclerViewStoreCategory.visibility = View.GONE
+                }
+
+                else -> {
+                    binding.storeButtonLayout.visibility = View.GONE
+                    binding.recyclerViewStoreCategory.visibility = View.VISIBLE
+                }
+            }
+        }
+
         observeLiveData(isLoading) {
             binding.mainSwipeRefreshLayout.isRefreshing = it
         }
+
+        lifecycleScope.launch {
+            storeCategories.collect {
+                storeCategoriesRecyclerAdapter.submitList(it)
+            }
+        }
+
+        binding.recyclerViewStoreCategory.visibility = View.GONE
+        binding.storeButtonLayout.visibility = View.VISIBLE
     }
 
     private fun initBanner() {
