@@ -200,7 +200,7 @@ oss-license-plugin = { id = "com.google.android.gms.oss-licenses-plugin", versio
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 
 koin-application = { id = "in.koreatech.plugin.application", version = "unspecified" }
-koin-compose = { id = "in.koreatech.plugin.compose", version = "unspecified" }
+koin-feature = { id = "in.koreatech.plugin.feature", version = "unspecified" }
 koin-firebase = { id = "in.koreatech.plugin.firebase", version = "unspecified" }
 koin-hilt = { id = "in.koreatech.plugin.hilt", version = "unspecified" }
 koin-java = { id = "in.koreatech.plugin.java", version = "unspecified" }

@@ -4,7 +4,6 @@ import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.koin.compose)
     alias(libs.plugins.koin.application)
     alias(libs.plugins.koin.hilt)
     alias(libs.plugins.koin.firebase)
@@ -154,5 +153,5 @@ dependencies {
     implementation(libs.kotlinx.collections.immutable)
 
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.bundles.compose.m3)
+    implementation(libs.bundles.compose)
 }
