@@ -380,6 +380,37 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
         getStoreCategories(StoreCategories(-1, R.drawable.ic_benefit_icon, "혜택"))
 
+        observeLiveData(isLoading) {
+            binding.mainSwipeRefreshLayout.isRefreshing = it
+        }
+
+        lifecycleScope.launch {
+            storeCategories.collect {
+                storeCategoriesRecyclerAdapter.submitList(it)
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                getStoreSprintEnabled()
+            }
+        }
+
+        lifecycleScope.launch {
+            isStoreSprintEnabled.filterNotNull().collect {
+                if (it) {
+                    binding.textViewStore.visibility = View.GONE
+                    binding.storeButtonLayout.visibility = View.GONE
+                    binding.recyclerViewStoreCategory.visibility = View.GONE
+                } else {
+                    binding.textViewStore.visibility = View.VISIBLE
+                    observeOldStoreABTest()
+                }
+            }
+        }
+    }
+
+    private fun observeOldStoreABTest() = with(viewModel) {
         observeLiveData(variableName) {
             when (viewModel.variableName.value) {
                 ExperimentGroup.A -> {
@@ -398,19 +429,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 }
             }
         }
-
-        observeLiveData(isLoading) {
-            binding.mainSwipeRefreshLayout.isRefreshing = it
-        }
-
-        lifecycleScope.launch {
-            storeCategories.collect {
-                storeCategoriesRecyclerAdapter.submitList(it)
-            }
-        }
-
-        binding.recyclerViewStoreCategory.visibility = View.GONE
-        binding.storeButtonLayout.visibility = View.VISIBLE
     }
 
     private fun initBanner() {
