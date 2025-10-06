@@ -80,6 +80,7 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "androidxConstraintLayoutCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
 androidx-compose-material2 = { group = "androidx.compose.material", name = "material" }
+androidx-compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-compose-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
@@ -212,7 +213,7 @@ koin-oss-license = { id = "in.koreatech.plugin.oss", version = "unspecified" }
 
 [bundles]
 compose = ["androidx-compose-ui", "androidx-compose-graphics", "androidx-compose-preview", "androidx-compose-material2", "androidx-activity-compose", "androidx-compose-ui-tooling"]
-compose_m3 = ["androidx-compose-ui", "androidx-compose-graphics", "androidx-compose-preview", "androidx-compose-material3", "androidx-activity-compose", "androidx-compose-ui-tooling"]
+compose_m3 = ["androidx-compose-ui", "androidx-compose-graphics", "androidx-compose-preview", "androidx-compose-material3", "androidx-activity-compose", "androidx-compose-ui-tooling", "androidx-compose-material-icons-core"]
 compose_debug_test = ["androidx-compose-ui-tooling", "androidx-compose-ui-test-manifest"]
 hilt = ["androidx-hilt-navigation-compose", "hilt-android"]
 orbit = ["orbit-core", "orbit-viewmodel", "orbit-compose"]
