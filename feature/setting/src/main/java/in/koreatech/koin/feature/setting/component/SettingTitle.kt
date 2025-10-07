@@ -15,11 +15,12 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 @Composable
 fun SettingTitle(
     text: String,
+    modifier: Modifier = Modifier,
     textStyle: TextStyle = KoinTheme.typography.medium14,
     backgroundColor: Color = KoinTheme.colors.neutral50
 ) {
     Text(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(color = backgroundColor)
             .padding(vertical = 8.dp, horizontal = 24.dp),

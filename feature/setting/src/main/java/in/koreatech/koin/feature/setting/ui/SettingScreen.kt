@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
@@ -33,6 +35,7 @@ import `in`.koreatech.koin.feature.setting.constant.URLConstant
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingScreen(
+    modifier: Modifier = Modifier,
     viewModel: SettingViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {}
 ) {
@@ -71,7 +74,11 @@ fun SettingScreen(
             isLoggedIn = viewModel.isLoggedIn,
             currentVersionName = currentVersionName,
             latestVersionName = latestVersionName,
-            contentPadding = contentPadding
+            modifier = modifier
+                .statusBarsPadding()
+                .navigationBarsPadding()
+                .padding(contentPadding)
+                .consumeWindowInsets(contentPadding)
         )
     }
 }
@@ -81,7 +88,6 @@ fun SettingScreenImpl(
     isLoggedIn: Boolean,
     currentVersionName: String,
     latestVersionName: String,
-    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     onProfileClick: () -> Unit = {},
     onChangePasswordClick: () -> Unit = {},
@@ -96,9 +102,6 @@ fun SettingScreenImpl(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .navigationBarsPadding()
-            .padding(contentPadding)
-            .consumeWindowInsets(contentPadding)
     ) {
         SettingTitle(
             text = stringResource(R.string.setting_title_normal)
@@ -158,7 +161,6 @@ private fun SettingScreenPreview() {
     SettingScreenImpl(
         isLoggedIn = false,
         currentVersionName = "4.5.2",
-        latestVersionName = "4.5.3",
-        contentPadding = PaddingValues()
+        latestVersionName = "4.5.3"
     )
 }

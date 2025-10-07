@@ -23,13 +23,14 @@ import `in`.koreatech.koin.feature.setting.R
 @Composable
 fun SettingItem(
     text: String,
+    modifier: Modifier = Modifier,
     showIcon: Boolean = false,
     textStyle: TextStyle = KoinTheme.typography.regular16,
     backgroundColor: Color = KoinTheme.colors.neutral0,
     onClick: () -> Unit = {}
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(color = backgroundColor)
             .clickable {
