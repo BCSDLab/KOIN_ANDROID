@@ -44,12 +44,10 @@ fun TermDescriptionItem(
                 .fillMaxWidth()
                 .padding(vertical = 16.dp, horizontal = 26.dp)
         ) {
-            description.forEach {
-                BasicText(
-                    text = it,
-                    style = KoinTheme.typography.regular12
-                )
-            }
+            BasicText(
+                text = description.joinToString(separator = "\n"),
+                style = KoinTheme.typography.regular12
+            )
         }
     }
 }
