@@ -17,11 +17,14 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,11 +51,12 @@ fun TermScreen(
     viewModel: TermViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {}
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
     val termUnknownMessage = stringResource(R.string.term_unknown_message)
-    LaunchedEffect(Unit) {
+    LaunchedEffect(termType) {
         when (termType) {
             TermConstant.TERM_UNKNOWN -> {
-                ToastUtil.getInstance().makeShort(termUnknownMessage)
+                snackbarHostState.showSnackbar(message = termUnknownMessage)
             }
             TermConstant.TERM_KOIN -> {
                 viewModel.loadKoinTerm()
@@ -66,6 +70,11 @@ fun TermScreen(
         }
     }
     val termState by viewModel.term.collectAsState()
+    LaunchedEffect(termState) {
+        if (termState is TermState.Failure) { // smartcast not working
+            snackbarHostState.showSnackbar(message = (termState as TermState.Failure).message)
+        }
+    }
     Scaffold(
         containerColor = KoinTheme.colors.neutral0,
         topBar = {
@@ -80,20 +89,17 @@ fun TermScreen(
                 onNavigationIconClick = onTopbarBackClick
             )
         },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { contentPadding ->
-        when (termState) { // smartcast not working
-            is TermState.Success -> {
-                TermScreenImpl(
-                    title = (termState as TermState.Success).term.header,
-                    articles = (termState as TermState.Success).term.articles,
-                    contentPadding = contentPadding
-                )
-            }
-            is TermState.Failure -> {
-                ToastUtil.getInstance().makeShort((termState as TermState.Failure).message)
-            }
-            is TermState.Init -> {}
+        if (termState is TermState.Success) { // smartcast not working
+            TermScreenImpl(
+                title = (termState as TermState.Success).term.header,
+                articles = (termState as TermState.Success).term.articles,
+                contentPadding = contentPadding
+            )
         }
     }
 }
@@ -105,7 +111,6 @@ fun TermScreenImpl(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     val termLazyState = rememberLazyListState()
