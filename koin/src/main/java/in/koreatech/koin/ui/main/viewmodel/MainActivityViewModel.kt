@@ -215,18 +215,14 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun getStoreCategoriesWithBenefit(storeCategory: StoreCategories) {
-        viewModelScope.launchWithLoading {
-            val categoryList = getStoreCategoriesUseCase().drop(1).toMutableList()
-            categoryList.add(0, storeCategory)
-            _storeCategories.value = categoryList
-        }
+    fun getStoreCategoriesWithBenefit(storeCategory: StoreCategories) = viewModelScope.launchWithLoading {
+        val categoryList = getStoreCategoriesUseCase().drop(1).toMutableList()
+        categoryList.add(0, storeCategory)
+        _storeCategories.value = categoryList
     }
 
-    fun getStoreCategories() {
-        viewModelScope.launchWithLoading {
-            _storeCategories.value = getStoreCategoriesUseCase()
-        }
+    fun getStoreCategories() = viewModelScope.launchWithLoading {
+        _storeCategories.value = getStoreCategoriesUseCase()
     }
 
     fun getDiningToShopSessionId(): String {
