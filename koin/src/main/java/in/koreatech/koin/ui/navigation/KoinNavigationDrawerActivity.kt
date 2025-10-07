@@ -40,8 +40,6 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.feature.chat.ui.list.ChatListActivity
 import `in`.koreatech.koin.feature.club.ui.ClubActivity
 import `in`.koreatech.koin.feature.dining.ui.DiningActivity
-import `in`.koreatech.koin.feature.setting.ui.SettingActivity
-// import `in`.koreatech.koin.ui.setting.SettingActivity
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import `in`.koreatech.koin.feature.user.ui.signup.SignUpActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity
@@ -50,6 +48,7 @@ import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.navigation.viewmodel.KoinNavigationDrawerViewModel
 import `in`.koreatech.koin.ui.operating.OperatingInfoActivity
+import `in`.koreatech.koin.ui.setting.SettingActivity
 import `in`.koreatech.koin.ui.store.activity.StoreActivity
 import `in`.koreatech.koin.util.ext.addDrawerListener
 import `in`.koreatech.koin.util.ext.blueStatusBar
