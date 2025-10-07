@@ -80,7 +80,10 @@ fun SettingScreen(
             isLoggedIn = viewModel.isLoggedIn,
             currentVersionName = currentVersionName,
             latestVersionName = latestVersionName,
-            contentPadding = contentPadding,
+            modifier = Modifier
+                .navigationBarsPadding()
+                .padding(contentPadding)
+                .consumeWindowInsets(contentPadding),
             onPrivacyPolicyClick = onPrivacyPolicyClick,
             onKoinTermsClick = onKoinTermsClick,
             onMarketingTermsClick = onMarketingTermsClick
@@ -93,7 +96,6 @@ fun SettingScreenImpl(
     isLoggedIn: Boolean,
     currentVersionName: String,
     latestVersionName: String,
-    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     onProfileClick: () -> Unit = {},
     onChangePasswordClick: () -> Unit = {},
@@ -107,9 +109,6 @@ fun SettingScreenImpl(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .navigationBarsPadding()
-            .padding(contentPadding)
-            .consumeWindowInsets(contentPadding)
     ) {
         SettingTitle(
             text = stringResource(R.string.setting_title_normal)
@@ -171,7 +170,6 @@ private fun SettingScreenPreview() {
     SettingScreenImpl(
         isLoggedIn = false,
         currentVersionName = "4.5.2",
-        latestVersionName = "4.5.3",
-        contentPadding = PaddingValues()
+        latestVersionName = "4.5.3"
     )
 }
