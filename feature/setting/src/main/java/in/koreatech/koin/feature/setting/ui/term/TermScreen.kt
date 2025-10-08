@@ -100,9 +100,9 @@ fun TermScreen(
         if (termState is TermState.Success) { // smartcast not working
             TermScreenImpl(
                 modifier = modifier
-                    .systemBarsPadding()
                     .padding(contentPadding)
-                    .consumeWindowInsets(contentPadding),
+                    .consumeWindowInsets(contentPadding)
+                    .systemBarsPadding(),
                 title = (termState as TermState.Success).term.header,
                 articles = (termState as TermState.Success).term.articles
             )

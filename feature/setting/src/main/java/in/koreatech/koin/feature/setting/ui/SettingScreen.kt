@@ -82,9 +82,9 @@ fun SettingScreen(
             currentVersionName = currentVersionName,
             latestVersionName = latestVersionName,
             modifier = modifier
-                .systemBarsPadding()
                 .padding(contentPadding)
-                .consumeWindowInsets(contentPadding),
+                .consumeWindowInsets(contentPadding)
+                .systemBarsPadding(),
             onPrivacyPolicyClick = onPrivacyPolicyClick,
             onKoinTermsClick = onKoinTermsClick,
             onMarketingTermsClick = onMarketingTermsClick
