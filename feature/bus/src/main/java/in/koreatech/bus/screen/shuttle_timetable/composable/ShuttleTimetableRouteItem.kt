@@ -36,7 +36,6 @@ fun ShuttleTimetableRouteItem(
             routeDetail = route.detail,
             modifier = Modifier
                 .fillMaxWidth()
-                .align(alignment = Alignment.CenterHorizontally)
                 .background(color = KoinTheme.colors.neutral100)
         )
 

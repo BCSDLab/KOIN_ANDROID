@@ -1,6 +1,7 @@
 package `in`.koreatech.bus.screen.shuttle_timetable.composable
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,6 +24,7 @@ import `in`.koreatech.bus.mock.shuttleTimetableNodeInfoMock4
 import `in`.koreatech.bus.mock.shuttleTimetableNodeInfoMock5
 import `in`.koreatech.bus.state.ShuttleTimetableNodeInfoState
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.util.getMeasuredKoreanHeightDp
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -35,15 +38,21 @@ internal fun ShuttleTimetableNodeItem(
     Column(
         modifier = modifier.width(IntrinsicSize.Max)
     ) {
-        Text(
-            text = stringResource(R.string.node_name),
-            style = KoinTheme.typography.regular14,
-            color = KoinTheme.colors.neutral600,
+        Box(
             modifier = Modifier
+                .height(KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() * 2)
                 .fillMaxWidth()
-                .background(color = KoinTheme.colors.neutral100)
-                .padding(horizontal = 24.dp, vertical = 8.dp)
-        )
+                .background(color = KoinTheme.colors.neutral100),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = stringResource(R.string.node_name),
+                style = KoinTheme.typography.regular14,
+                color = KoinTheme.colors.neutral600,
+                modifier = Modifier
+                    .padding(horizontal = 24.dp, vertical = 8.dp)
+            )
+        }
 
         nodes.fastForEach { node ->
             NodeItem(
