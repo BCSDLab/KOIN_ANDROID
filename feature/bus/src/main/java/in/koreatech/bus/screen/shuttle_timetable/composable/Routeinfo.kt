@@ -23,7 +23,7 @@ internal fun RouteInfo(
         verticalArrangement = if (routeDetail.isBlank()) Arrangement.Center else Arrangement.Top
     ) {
         Text(
-            text = if (routeDetail.isBlank()) routeName.trimEnd() else "$routeName\n$routeDetail",
+            text = if (routeDetail.isBlank()) routeName else "$routeName\n$routeDetail",
             style = KoinTheme.typography.regular14.merge(
                 textAlign = TextAlign.Center
             ),
