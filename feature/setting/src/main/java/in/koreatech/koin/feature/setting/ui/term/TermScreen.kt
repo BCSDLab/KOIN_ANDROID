@@ -47,6 +47,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun TermScreen(
     termType: TermConstant,
+    modifier: Modifier = Modifier,
     viewModel: TermViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {}
 ) {
@@ -98,9 +99,12 @@ fun TermScreen(
     ) { contentPadding ->
         if (termState is TermState.Success) { // smartcast not working
             TermScreenImpl(
+                modifier = modifier
+                    .systemBarsPadding()
+                    .padding(contentPadding)
+                    .consumeWindowInsets(contentPadding),
                 title = (termState as TermState.Success).term.header,
-                articles = (termState as TermState.Success).term.articles,
-                contentPadding = contentPadding
+                articles = (termState as TermState.Success).term.articles
             )
         }
     }
@@ -110,7 +114,6 @@ fun TermScreen(
 fun TermScreenImpl(
     title: String,
     articles: List<TermArticle>,
-    contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
     val scope = rememberCoroutineScope()
@@ -120,10 +123,7 @@ fun TermScreenImpl(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .navigationBarsPadding()
-            .background(color = KoinTheme.colors.neutral0)
-            .padding(contentPadding)
-            .consumeWindowInsets(contentPadding),
+            .background(color = KoinTheme.colors.neutral0),
         state = termLazyState
     ) {
         item {
@@ -176,7 +176,6 @@ private fun TermScreenPreview() {
             TermArticle("제 1조 ---", listOf("1조 내용")),
             TermArticle("제 2조 ---", listOf("2조 내용1", "2조 내용2")),
             TermArticle("제 3조 ---", listOf("3조 내용1", "3조 내용2", "3조 내용3"))
-        ),
-        contentPadding = PaddingValues()
+        )
     )
 }
