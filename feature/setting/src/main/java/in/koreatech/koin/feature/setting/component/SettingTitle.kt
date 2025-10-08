@@ -15,6 +15,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 @Composable
 fun SettingTitle(
     text: String,
+    modifier: Modifier = Modifier,
     textStyle: TextStyle = KoinTheme.typography.medium14,
     backgroundColor: Color = KoinTheme.colors.neutral50
 ) {

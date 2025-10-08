@@ -6,34 +6,36 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.core.navigation.utils.goToUrl
+import `in`.koreatech.koin.core.util.goToContactUrl
 import `in`.koreatech.koin.feature.setting.R
 import `in`.koreatech.koin.feature.setting.component.SettingItem
 import `in`.koreatech.koin.feature.setting.component.SettingTitle
 import `in`.koreatech.koin.feature.setting.component.SettingVersionItem
-import `in`.koreatech.koin.feature.setting.constant.URLConstant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingScreen(
+    modifier: Modifier = Modifier,
     viewModel: SettingViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {},
     onProfileClick: () -> Unit = {},
@@ -62,8 +64,8 @@ fun SettingScreen(
         },
         contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { contentPadding ->
-        var currentVersionName = ""
-        var latestVersionName = ""
+        var currentVersionName by remember { mutableStateOf("") }
+        var latestVersionName by remember { mutableStateOf("") }
         when (versionState) { // smartcast not working
             is VersionState.Outdated -> {
                 currentVersionName = (versionState as VersionState.Outdated).currentVersion
@@ -79,8 +81,8 @@ fun SettingScreen(
             isLoggedIn = viewModel.isLoggedIn,
             currentVersionName = currentVersionName,
             latestVersionName = latestVersionName,
-            modifier = Modifier
-                .navigationBarsPadding()
+            modifier = modifier
+                .systemBarsPadding()
                 .padding(contentPadding)
                 .consumeWindowInsets(contentPadding),
             onPrivacyPolicyClick = onPrivacyPolicyClick,
@@ -157,7 +159,7 @@ fun SettingScreenImpl(
         SettingItem(
             text = stringResource(R.string.setting_item_contact),
             onClick = {
-                context.goToUrl(URLConstant.KOIN_ASK_FORM.toUri())
+                context.goToContactUrl()
             }
         )
     }

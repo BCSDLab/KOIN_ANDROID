@@ -24,12 +24,12 @@ import `in`.koreatech.koin.core.dialog.AlertModalDialogData
 import `in`.koreatech.koin.core.permission.checkNotificationPermission
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.util.setAppBarButtonClickedListener
+import `in`.koreatech.koin.core.util.withLoading
 import `in`.koreatech.koin.databinding.ActivityNotificationBinding
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.ui.notification.viewmodel.NotificationUiState
 import `in`.koreatech.koin.ui.notification.viewmodel.NotificationViewModel
-import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint

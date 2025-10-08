@@ -25,4 +25,8 @@ interface Navigator {
     fun navigateToNotificationSetting(
         context: Context
     ): Intent
+
+    fun navigateToStore(
+        context: Context
+    ): Intent
 }

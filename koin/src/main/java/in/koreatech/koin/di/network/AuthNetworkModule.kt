@@ -25,6 +25,7 @@ import `in`.koreatech.koin.data.api.auth.ClubAuthApi
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
 import `in`.koreatech.koin.data.api.auth.TimetableAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
+import `in`.koreatech.koin.data.di.interceptor.NetworkUnavailableInterceptor
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.util.EmptyStringToNullAdapter
 import `in`.koreatech.koin.di.userAgent.UserAgentInterceptor
@@ -100,6 +101,7 @@ object AuthNetworkModule {
     @Singleton
     fun provideAuthOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
+        networkUnavailableInterceptor: NetworkUnavailableInterceptor,
         @Inspection inspectionInterceptor: Interceptor,
         @UserAgent userAgentInterceptor: Interceptor,
         @Auth authInterceptor: Interceptor,
@@ -114,6 +116,7 @@ object AuthNetworkModule {
             addInterceptor(inspectionInterceptor)
             authenticator(refreshInterceptor)
             addInterceptor(userAgentInterceptor)
+            addInterceptor(networkUnavailableInterceptor)
         }.build()
     }
 

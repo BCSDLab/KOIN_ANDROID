@@ -16,6 +16,7 @@ import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.util.dataBinding
+import `in`.koreatech.koin.core.util.withLoading
 import `in`.koreatech.koin.databinding.ActivityCallBenefitStoreMainBinding
 import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
@@ -27,7 +28,6 @@ import `in`.koreatech.koin.ui.store.contract.StoreDetailActivityContract
 import `in`.koreatech.koin.ui.store.viewmodel.StoreBenefitViewModel
 import `in`.koreatech.koin.ui.store.viewmodel.StoreViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
-import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint

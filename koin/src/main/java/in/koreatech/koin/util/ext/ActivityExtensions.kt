@@ -8,10 +8,7 @@ import android.os.Parcelable
 import android.view.WindowInsets
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.LifecycleOwner
 import `in`.koreatech.koin.core.activity.ActivityBase
-import `in`.koreatech.koin.core.progressdialog.IProgressDialog
-import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import java.io.Serializable
 import java.util.Objects
 import kotlin.math.roundToInt
@@ -49,16 +46,6 @@ inline val Activity.windowWidth: Int
             resources.displayMetrics.widthPixels - insets.left - insets.right
         }
     }
-
-fun <T : BaseViewModel> IProgressDialog.withLoading(lifecycleOwner: LifecycleOwner, viewModel: T) {
-    viewModel.isLoading.observe(lifecycleOwner) {
-        if (it) {
-            showProgressDialog("로딩 중...")
-        } else {
-            hideProgressDialog()
-        }
-    }
-}
 
 fun Activity.showSoftKeyboard() {
     val imm = getSystemService(ActivityBase.INPUT_METHOD_SERVICE) as InputMethodManager

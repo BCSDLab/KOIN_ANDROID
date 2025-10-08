@@ -18,6 +18,7 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
+import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
@@ -25,9 +26,13 @@ import `in`.koreatech.koin.feature.dining.constants.PARAMS_DATE
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_TYPE
 import `in`.koreatech.koin.feature.dining.navigation.DiningNavType
 import `in`.koreatech.koin.feature.dining.navigation.koinDiningGraph
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DiningActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var navigator: Navigator
 
     private lateinit var navController: NavHostController
 
