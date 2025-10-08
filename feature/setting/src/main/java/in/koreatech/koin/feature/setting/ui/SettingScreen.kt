@@ -1,14 +1,12 @@
 package `in`.koreatech.koin.feature.setting.ui
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -21,16 +19,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.core.navigation.utils.goToUrl
+import `in`.koreatech.koin.core.util.goToContactUrl
 import `in`.koreatech.koin.feature.setting.R
 import `in`.koreatech.koin.feature.setting.component.SettingItem
 import `in`.koreatech.koin.feature.setting.component.SettingTitle
 import `in`.koreatech.koin.feature.setting.component.SettingVersionItem
-import `in`.koreatech.koin.feature.setting.constant.URLConstant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -149,7 +145,7 @@ fun SettingScreenImpl(
         SettingItem(
             text = stringResource(R.string.setting_item_contact),
             onClick = {
-                context.goToUrl(URLConstant.KOIN_ASK_FORM.toUri())
+                context.goToContactUrl()
             }
         )
     }
