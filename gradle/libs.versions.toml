@@ -23,7 +23,6 @@ balloon = "1.5.0"
 balloonCompose = "1.6.4"
 coil = "2.6.0"
 colorpicker = "1.1.1"
-composeCompilerVersion = "1.5.10"
 composeNumberPicker = "1.0.3"
 desugarJdkLibs = "2.0.3"
 firebaseAppdistributionGradle = "4.2.0"
@@ -33,19 +32,19 @@ firebaseGradle = "2.9.9"
 googleServiceVersion = "4.3.14"
 glide = "4.14.2"
 guava = "33.0.0-android"
-hilt = "2.50"
+hilt = "2.57.2"
 javaxInject = "1"
 jetbrainsAnnotations = "23.0.0"
 jsoup = "1.18.1"
 jsr250Api = "1.0"
 junit = "4.13.2"
 kakaoShare = "2.11.2"
-kotlin = "1.9.22"
+kotlin = "2.2.20"
 kotlinxCollectionsImmutable = "0.3.8"
 kotlinxCoroutine = "1.8.1"
 kotlinxSerialization = "1.6.3"
 krossbow = "7.0.0"
-kspVersion = "1.9.22-1.0.16"
+kspVersion = "2.2.20-2.0.3"
 ktlint = "12.1.2"
 laserNativeEditor = "3.0.4"
 leakcanary = "2.12"
@@ -81,6 +80,7 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "androidxConstraintLayoutCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
 androidx-compose-material2 = { group = "androidx.compose.material", name = "material" }
+androidx-compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-compose-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
@@ -186,17 +186,22 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradle" }
 androidLibrary = { id = "com.android.library", version.ref = "androidGradle" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+firebase-appdistribution = { id = "com.google.firebase.appdistribution", version.ref = "firebaseAppdistributionGradle" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseGradle" }
 google-service = { id = "com.google.gms.google-services", version.ref = "googleServiceVersion" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+oss-license-plugin = { id = "com.google.android.gms.oss-licenses-plugin", version.ref = "ossLicensesPlugin" }
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 
 koin-application = { id = "in.koreatech.plugin.application", version = "unspecified" }
-koin-compose = { id = "in.koreatech.plugin.compose", version = "unspecified" }
+koin-feature = { id = "in.koreatech.plugin.feature", version = "unspecified" }
 koin-firebase = { id = "in.koreatech.plugin.firebase", version = "unspecified" }
 koin-hilt = { id = "in.koreatech.plugin.hilt", version = "unspecified" }
 koin-java = { id = "in.koreatech.plugin.java", version = "unspecified" }
@@ -208,7 +213,7 @@ koin-oss-license = { id = "in.koreatech.plugin.oss", version = "unspecified" }
 
 [bundles]
 compose = ["androidx-compose-ui", "androidx-compose-graphics", "androidx-compose-preview", "androidx-compose-material2", "androidx-activity-compose", "androidx-compose-ui-tooling"]
-compose_m3 = ["androidx-compose-ui", "androidx-compose-graphics", "androidx-compose-preview", "androidx-compose-material3", "androidx-activity-compose", "androidx-compose-ui-tooling"]
+compose_m3 = ["androidx-compose-ui", "androidx-compose-graphics", "androidx-compose-preview", "androidx-compose-material3", "androidx-activity-compose", "androidx-compose-ui-tooling", "androidx-compose-material-icons-core"]
 compose_debug_test = ["androidx-compose-ui-tooling", "androidx-compose-ui-test-manifest"]
 hilt = ["androidx-hilt-navigation-compose", "hilt-android"]
 orbit = ["orbit-core", "orbit-viewmodel", "orbit-compose"]

@@ -9,7 +9,7 @@ internal class AndroidApplicationHiltConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
-                apply("com.google.dagger.hilt.android")
+                apply(libs.findPlugin("hilt").get().get().pluginId)
             }
             dependencies {
                 implementation(libs.findBundle("hilt").get())

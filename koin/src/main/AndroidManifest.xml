@@ -134,10 +134,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-            <data
-                android:host="main"
-                android:pathPrefix="/activity"
-                android:scheme="koin" />
+                <data
+                    android:host="main"
+                    android:pathPrefix="/activity"
+                    android:scheme="koin" />
             </intent-filter>
         </activity>
 
@@ -252,6 +252,10 @@
             android:name=".ui.setting.SettingActivity"
             android:exported="false"
             android:label="설정"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".ui.developer.DeveloperSettingActivity"
+            android:exported="false"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.term.TermActivity"

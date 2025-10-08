@@ -21,6 +21,7 @@ import `in`.koreatech.koin.data.repository.OwnerSignupRepositoryImpl
 import `in`.koreatech.koin.data.repository.OwnerVerificationCodeRepositoryImpl
 import `in`.koreatech.koin.data.repository.PreSignedUrlRepositoryImpl
 import `in`.koreatech.koin.data.repository.SessionRepositoryImpl
+import `in`.koreatech.koin.data.repository.SettingRepositoryImpl
 import `in`.koreatech.koin.data.repository.SignupRepositoryImpl
 import `in`.koreatech.koin.data.repository.StoreRepositoryImpl
 import `in`.koreatech.koin.data.repository.TokenRepositoryImpl
@@ -31,6 +32,7 @@ import `in`.koreatech.koin.data.source.local.ArticleLocalDataSource
 import `in`.koreatech.koin.data.source.local.BannerLocalDataSource
 import `in`.koreatech.koin.data.source.local.DeptLocalDataSource
 import `in`.koreatech.koin.data.source.local.SessionLocalDataSource
+import `in`.koreatech.koin.data.source.local.SettingLocalDataSource
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.UploadImageLocalDataSource
@@ -67,6 +69,7 @@ import `in`.koreatech.koin.domain.repository.OwnerSignupRepository
 import `in`.koreatech.koin.domain.repository.OwnerVerificationCodeRepository
 import `in`.koreatech.koin.domain.repository.PreSignedUrlRepository
 import `in`.koreatech.koin.domain.repository.SessionRepository
+import `in`.koreatech.koin.domain.repository.SettingRepository
 import `in`.koreatech.koin.domain.repository.SignupRepository
 import `in`.koreatech.koin.domain.repository.StoreRepository
 import `in`.koreatech.koin.domain.repository.TokenRepository
@@ -261,5 +264,13 @@ object RepositoryModule {
         sessionLocalDataSource: SessionLocalDataSource
     ): SessionRepository {
         return SessionRepositoryImpl(sessionLocalDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSettingRepository(
+        settingLocalDataSource: SettingLocalDataSource
+    ): SettingRepository {
+        return SettingRepositoryImpl(settingLocalDataSource)
     }
 }

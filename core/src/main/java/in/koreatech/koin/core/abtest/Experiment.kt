@@ -10,7 +10,8 @@ enum class Experiment(
     MAIN_ARTICLE_KEYWORD_BANNER("c_keyword_ banner_v1", ExperimentGroup.MAIN_BANNER_ORIGINAL, ExperimentGroup.MAIN_BANNER_NEW),
     BUSINESS_CALL("business_call", ExperimentGroup.CALL_NUMBER, ExperimentGroup.CALL_FLOATING),
     MAIN_BANNER_UI("a_main_banner_ui", ExperimentGroup.BOTTOM_BANNER, ExperimentGroup.CENTER_BANNER),
-    MAIN_CLUB_UI("a_main_club_ui", ExperimentGroup.CATEGORY, ExperimentGroup.HOT)
+    MAIN_CLUB_UI("a_main_club_ui", ExperimentGroup.CATEGORY, ExperimentGroup.HOT),
+    DINING_STORE("dining_store", ExperimentGroup.CONTROL, ExperimentGroup.VARIANT)
     ;
 
     init {
@@ -39,4 +40,7 @@ object ExperimentGroup {
 
     const val CATEGORY = "category"
     const val HOT = "hot"
+
+    const val CONTROL = "control"
+    const val VARIANT = "variant"
 }

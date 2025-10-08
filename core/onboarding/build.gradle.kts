@@ -1,14 +1,11 @@
 plugins {
     alias(libs.plugins.koin.library)
     alias(libs.plugins.koin.hilt)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "in.koreatech.koin.core.onboarding"
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.10"
-    }
 
     buildFeatures {
         compose = true

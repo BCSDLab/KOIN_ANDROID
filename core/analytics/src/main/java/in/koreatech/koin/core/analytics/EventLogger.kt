@@ -242,7 +242,7 @@ object EventLogger {
      * logEvent(EventAction.CAMPUS, EventCategory.CLICK, "main_shop_categories", "전체보기")
      * ```
      */
-    private fun logSessionEvent(
+    fun logSessionEvent(
         action: EventAction,
         category: EventCategory,
         label: String,
@@ -297,7 +297,8 @@ enum class EventCategory(val value: String) {
     SCROLL("scroll"),
     SWIPE("swipe"), // 하단 뒤로가기(아이폰의 swipe 뒤로가기와 대응)
     NOTIFICATION("notification"),
-    ENTRY("entry")
+    ENTRY("entry"),
+    DINING_AB_TEST_CATEGORY("a/b test 로깅(메인화면 식단 진입)")
 }
 
 data class EventExtra(val key: String, val value: String)

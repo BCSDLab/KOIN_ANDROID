@@ -13,11 +13,12 @@ import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
+import `in`.koreatech.koin.domain.usecase.dining.GetNotOperationFilteredDiningUseCase
 import `in`.koreatech.koin.domain.usecase.notification.DeleteNotificationSubscriptionUseCase
 import `in`.koreatech.koin.domain.usecase.notification.GetNotificationPermissionInfoUseCase
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionDetailUseCase
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionUseCase
+import `in`.koreatech.koin.domain.usecase.session.GetSessionIdUseCase
 import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
@@ -36,14 +37,15 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class DiningViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getDiningUseCase: GetDiningUseCase,
+    private val getNotOperationFilteredDiningUseCase: GetNotOperationFilteredDiningUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
     private val abTestUseCase: ABTestUseCase,
     private val onboardingManager: OnboardingManager,
     private val getNotificationPermissionInfoUseCase: GetNotificationPermissionInfoUseCase,
     private val updateNotificationSubscriptionUseCase: UpdateNotificationSubscriptionUseCase,
     private val updateNotificationSubscriptionDetailUseCase: UpdateNotificationSubscriptionDetailUseCase,
-    private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase
+    private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase,
+    private val getSessionIdUseCase: GetSessionIdUseCase
 ) : ViewModel() {
 
     private val initDate = savedStateHandle.get<String>(INIT_DATE)
@@ -89,6 +91,19 @@ class DiningViewModel @Inject constructor(
         initialValue = Experiment.DINING_SHARE.experimentGroups.first()
     )
 
+    val diningStoreAbTestExperimentGroup =
+        flow {
+            abTestUseCase(Experiment.DINING_STORE.experimentTitle).onSuccess {
+                emit(it)
+            }.onFailure {
+                emit(Experiment.DINING_STORE.experimentGroups.first())
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = Experiment.DINING_STORE.experimentGroups.first()
+        )
+
     fun setSelectedDate(date: Date) {
         _selectedDate.value = TimeUtil.dateFormatToYYMMDD(date)
         getDining(selectedDate.value)
@@ -103,7 +118,7 @@ class DiningViewModel @Inject constructor(
         if (!_isLoading.value) {
             _isLoading.value = true
             viewModelScope.launch {
-                getDiningUseCase(date)
+                getNotOperationFilteredDiningUseCase(date)
                     .onSuccess {
                         _dining.value = it.filter { dining ->
                             dining.place == DiningPlace.CornerA.place ||
@@ -192,5 +207,14 @@ class DiningViewModel @Inject constructor(
     fun changeIsDiningImageSubscribed(boolean: Boolean) {
         _isDiningImageSubscribed.value = boolean
         onDiningImageSubscribe(boolean)
+    }
+
+    fun getDiningSessionId(): String {
+        return getSessionIdUseCase(
+            sessionName = "dining2shop",
+            isLoggedIn = !_userState.value.isAnonymous,
+            sessionTime = 1800,
+            shouldExpireOtherSessions = true
+        )
     }
 }
