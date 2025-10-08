@@ -16,7 +16,7 @@ import `in`.koreatech.koin.core.designsystem.util.getMeasuredKoreanHeightDp
 internal fun RouteInfo(
     routeName: String,
     routeDetail: String,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.height(KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() * 2),
