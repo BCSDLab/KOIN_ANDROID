@@ -5,6 +5,9 @@
     <string name="setting_item_change_password">비밀번호 변경</string>
     <string name="setting_item_notification">알림</string>
 
+    <string name="setting_snackbar_login">로그인이 필요한 기능이에요.</string>
+    <string name="setting_snackbar_login_button">로그인 하기</string>
+
     <string name="setting_title_service">서비스</string>
     <string name="setting_item_privacy_policy">개인정보 처리방침</string>
     <string name="setting_item_koin_terms">코인 이용약관</string>
