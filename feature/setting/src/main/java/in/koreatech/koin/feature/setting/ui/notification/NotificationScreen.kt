@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.setting.R
@@ -26,6 +27,7 @@ import `in`.koreatech.koin.feature.setting.ui.notification.component.Notificatio
 @Composable
 fun NotificationScreen(
     modifier: Modifier = Modifier,
+    viewModel: NotificationViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {}
 ) {
     Scaffold(
