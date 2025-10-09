@@ -109,7 +109,7 @@ fun TermScreen(
 }
 
 @Composable
-fun TermScreenImpl(
+private fun TermScreenImpl(
     title: String,
     articles: List<TermArticle>,
     modifier: Modifier = Modifier

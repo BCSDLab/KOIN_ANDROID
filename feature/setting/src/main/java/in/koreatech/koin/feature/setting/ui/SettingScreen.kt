@@ -93,7 +93,7 @@ fun SettingScreen(
 }
 
 @Composable
-fun SettingScreenImpl(
+private fun SettingScreenImpl(
     isLoggedIn: Boolean,
     currentVersionName: String,
     latestVersionName: String,
