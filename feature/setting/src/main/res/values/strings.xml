@@ -16,6 +16,7 @@
     <string name="term_appbar_title">코인 이용약관</string>
     <string name="term_unknown_message">약관 타입을 명시해야 합니다.</string>
 
+    <string name="notification_appbar_title">알림 설정</string>
     <string name="notification_item_marketing">마케팅 정보 수신 동의</string>
     <string name="notification_item_marketing_description">마케팅 정보 수신 동의/해제</string>
 

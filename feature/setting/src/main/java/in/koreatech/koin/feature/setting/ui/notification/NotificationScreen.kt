@@ -32,7 +32,7 @@ fun NotificationScreen(
         containerColor = KoinTheme.colors.neutral0,
         topBar = {
             KoinTopAppBar(
-                title = stringResource(R.string.setting_appbar_title),
+                title = stringResource(R.string.notification_appbar_title),
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = KoinTheme.colors.primary500,
                     navigationIconContentColor = Color.White,
