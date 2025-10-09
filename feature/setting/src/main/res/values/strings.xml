@@ -5,6 +5,9 @@
     <string name="setting_item_change_password">비밀번호 변경</string>
     <string name="setting_item_notification">알림</string>
 
+    <string name="setting_snackbar_login">로그인이 필요한 기능이에요.</string>
+    <string name="setting_snackbar_login_button">로그인 하기</string>
+
     <string name="setting_title_service">서비스</string>
     <string name="setting_item_privacy_policy">개인정보 처리방침</string>
     <string name="setting_item_koin_terms">코인 이용약관</string>
@@ -15,6 +18,31 @@
 
     <string name="term_appbar_title">코인 이용약관</string>
     <string name="term_unknown_message">약관 타입을 명시해야 합니다.</string>
+
+    <string name="notification_appbar_title">알림 설정</string>
+    <string name="notification_item_marketing">마케팅 정보 수신 동의</string>
+    <string name="notification_item_marketing_description">마케팅 정보 수신 동의/해제</string>
+
+    <string name="notification_item_dining">식단</string>
+    <string name="notification_item_dining_soldout">품절 알림</string>
+    <string name="notification_item_dining_soldout_description">식단이 품절될 경우 알림을 받습니다.</string>
+    <string name="notification_item_dining_breakfast">아침 식단</string>
+    <string name="notification_item_dining_launch">점심 식단</string>
+    <string name="notification_item_dining_dinner">저녁 식단</string>
+    <string name="notification_item_dining_image_uploaded">식단사진 업로드 알림</string>
+    <string name="notification_item_dining_image_uploaded_description">식단사진이 업로드 될 경우 알림을 받습니다.</string>
+
+    <string name="notification_item_article">게시판</string>
+    <string name="notification_item_article_keyword">공지사항 키워드 알림</string>
+    <string name="notification_item_article_keyword_description">키워드가 포함된 글이 게시될 경우 알림을 받습니다.</string>
+    <string name="notification_item_chat">쪽지 알림</string>
+    <string name="notification_item_chat_description">쪽지가 도착하면 알림을 받습니다.</string>
+
+    <string name="notification_item_nearby">주변상점</string>
+    <string name="notification_item_nearby_event">이벤트 알림</string>
+    <string name="notification_item_nearby_event_description">모든 주변상점의 이벤트 알림을 받습니다.</string>
+    <string name="notification_item_nearby_review">리뷰 작성 요청 알림</string>
+    <string name="notification_item_nearby_review_description">전화 주문 시 리뷰 작성 요청 알림을 받습니다.</string>
 
     <string name="setting_item_not_newest_version_info">최신 버전 %1$s</string>
     <string name="setting_item_newest_version_info">현재 최신 버전 입니다.</string>
