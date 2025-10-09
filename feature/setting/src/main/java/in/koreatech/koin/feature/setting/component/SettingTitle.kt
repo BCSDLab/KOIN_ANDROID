@@ -20,7 +20,7 @@ fun SettingTitle(
     backgroundColor: Color = KoinTheme.colors.neutral50
 ) {
     BasicText(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(color = backgroundColor)
             .padding(vertical = 8.dp, horizontal = 24.dp),
