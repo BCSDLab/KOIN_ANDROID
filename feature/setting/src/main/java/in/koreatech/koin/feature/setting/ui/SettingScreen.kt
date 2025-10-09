@@ -108,7 +108,7 @@ fun SettingScreen(
                 if (viewModel.isLoggedIn) {
                     onNotificationClick()
                 } else {
-                        scope.launch {
+                    scope.launch {
                         showLoginSnackBar(
                             context = context,
                             navigator = navigator,
