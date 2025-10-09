@@ -65,8 +65,8 @@ private fun NotificationScreenImpl(
             NotificationSwitchItem(
                 text = stringResource(R.string.notification_item_marketing),
                 description = stringResource(R.string.notification_item_marketing_description),
-                checked = false, //TODO
-                onClick = {} //TODO
+                checked = false, // TODO
+                onClick = {} // TODO
             )
         }
         item {
@@ -76,29 +76,29 @@ private fun NotificationScreenImpl(
             NotificationSwitchItem(
                 text = stringResource(R.string.notification_item_dining_soldout),
                 description = stringResource(R.string.notification_item_dining_soldout_description),
-                checked = false, //TODO
-                onClick = {} //TODO
+                checked = false, // TODO
+                onClick = {} // TODO
             )
             NotificationSwitchSubItem(
                 text = stringResource(R.string.notification_item_dining_breakfast),
-                checked = false, //TODO
-                onClick = {} //TODO
+                checked = false, // TODO
+                onClick = {} // TODO
             )
             NotificationSwitchSubItem(
                 text = stringResource(R.string.notification_item_dining_launch),
-                checked = false, //TODO
-                onClick = {} //TODO
+                checked = false, // TODO
+                onClick = {} // TODO
             )
             NotificationSwitchSubItem(
                 text = stringResource(R.string.notification_item_dining_dinner),
-                checked = false, //TODO
-                onClick = {} //TODO
+                checked = false, // TODO
+                onClick = {} // TODO
             )
             NotificationSwitchItem(
                 text = stringResource(R.string.notification_item_dining_image_uploaded),
                 description = stringResource(R.string.notification_item_dining_image_uploaded_description),
-                checked = false, //TODO
-                onClick = {} //TODO
+                checked = false, // TODO
+                onClick = {} // TODO
             )
         }
         item {
@@ -108,13 +108,13 @@ private fun NotificationScreenImpl(
             NotificationItem(
                 text = stringResource(R.string.notification_item_article_keyword),
                 description = stringResource(R.string.notification_item_article_keyword_description),
-                onClick = {} //TODO
+                onClick = {} // TODO
             )
             NotificationSwitchItem(
                 text = stringResource(R.string.notification_item_chat),
                 description = stringResource(R.string.notification_item_chat_description),
-                checked = false, //TODO
-                onClick = {} //TODO
+                checked = false, // TODO
+                onClick = {} // TODO
             )
         }
         item {
@@ -124,14 +124,14 @@ private fun NotificationScreenImpl(
             NotificationSwitchItem(
                 text = stringResource(R.string.notification_item_nearby_event),
                 description = stringResource(R.string.notification_item_nearby_event_description),
-                checked = false, //TODO
-                onClick = {} //TODO
+                checked = false, // TODO
+                onClick = {} // TODO
             )
             NotificationSwitchItem(
                 text = stringResource(R.string.notification_item_nearby_review),
                 description = stringResource(R.string.notification_item_nearby_review_description),
-                checked = false, //TODO
-                onClick = {} //TODO
+                checked = false, // TODO
+                onClick = {} // TODO
             )
         }
     }

@@ -32,7 +32,7 @@ fun NotificationSwitchItem(
     backgroundColor: Color = KoinTheme.colors.neutral0,
     onClick: (Boolean) -> Unit = {}
 ) {
-    Column (
+    Column(
         modifier = modifier
             .fillMaxWidth()
             .background(color = backgroundColor)

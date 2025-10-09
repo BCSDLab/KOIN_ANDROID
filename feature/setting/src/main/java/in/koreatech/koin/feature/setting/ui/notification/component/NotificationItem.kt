@@ -34,7 +34,7 @@ fun NotificationItem(
     backgroundColor: Color = KoinTheme.colors.neutral0,
     onClick: () -> Unit = {}
 ) {
-    Column (
+    Column(
         modifier = modifier
             .fillMaxWidth()
             .background(color = backgroundColor)
