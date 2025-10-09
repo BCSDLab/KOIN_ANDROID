@@ -42,7 +42,7 @@ class NotificationViewModel @Inject constructor(
     }
 
     fun updateSubscription(type: SubscribesType) = viewModelScope.launch {
-            updateNotificationSubscriptionUseCase(type)
+        updateNotificationSubscriptionUseCase(type)
     }
 
     fun updateSubscriptionDetail(type: SubscribesDetailType) = viewModelScope.launch {

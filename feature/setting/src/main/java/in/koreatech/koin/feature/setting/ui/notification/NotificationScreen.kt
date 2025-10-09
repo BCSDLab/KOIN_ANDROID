@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.setting.ui.notification
 
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,6 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -35,7 +35,6 @@ import `in`.koreatech.koin.feature.setting.constant.URLConstant
 import `in`.koreatech.koin.feature.setting.ui.notification.component.NotificationItem
 import `in`.koreatech.koin.feature.setting.ui.notification.component.NotificationSwitchItem
 import `in`.koreatech.koin.feature.setting.ui.notification.component.NotificationSwitchSubItem
-import androidx.core.net.toUri
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
