@@ -1,8 +1,8 @@
 package `in`.koreatech.koin.feature.setting.ui.notification
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.model.notification.NotificationPermissionInfo
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
@@ -17,6 +17,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class NotificationViewModel @Inject constructor(
@@ -25,45 +26,35 @@ class NotificationViewModel @Inject constructor(
     private val updateNotificationSubscriptionDetailUseCase: UpdateNotificationSubscriptionDetailUseCase,
     private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase,
     private val deleteNotificationSubscriptionDetailUseCase: DeleteNotificationSubscriptionDetailUseCase
-) : BaseViewModel() {
+) : ViewModel() {
     private val _notificationUiState =
         MutableStateFlow<NotificationUiState>(NotificationUiState.Nothing)
     val notificationUiState = _notificationUiState.asStateFlow()
 
-    fun getPermissionInfo() {
-        viewModelScope.launchWithLoading {
-            getNotificationPermissionInfoUseCase().onSuccess { info ->
-                _notificationUiState.update {
-                    NotificationUiState.Success(info)
-                }
-            }.onFailure {
-                _notificationUiState.update { NotificationUiState.Failed }
+    fun getPermissionInfo() = viewModelScope.launch {
+        getNotificationPermissionInfoUseCase().onSuccess { info ->
+            _notificationUiState.update {
+                NotificationUiState.Success(info)
             }
+        }.onFailure {
+            _notificationUiState.update { NotificationUiState.Failed }
         }
     }
 
-    fun updateSubscription(type: SubscribesType) {
-        viewModelScope.launchWithLoading {
+    fun updateSubscription(type: SubscribesType) = viewModelScope.launch {
             updateNotificationSubscriptionUseCase(type)
-        }
     }
 
-    fun updateSubscriptionDetail(type: SubscribesDetailType) {
-        viewModelScope.launchWithLoading {
-            updateNotificationSubscriptionDetailUseCase(type)
-        }
+    fun updateSubscriptionDetail(type: SubscribesDetailType) = viewModelScope.launch {
+        updateNotificationSubscriptionDetailUseCase(type)
     }
 
-    fun deleteSubscription(type: SubscribesType) {
-        viewModelScope.launchWithLoading {
-            deleteNotificationSubscriptionUseCase(type)
-        }
+    fun deleteSubscription(type: SubscribesType) = viewModelScope.launch {
+        deleteNotificationSubscriptionUseCase(type)
     }
 
-    fun deleteSubscriptionDetail(type: SubscribesDetailType) {
-        viewModelScope.launchWithLoading {
-            deleteNotificationSubscriptionDetailUseCase(type)
-        }
+    fun deleteSubscriptionDetail(type: SubscribesDetailType) = viewModelScope.launch {
+        deleteNotificationSubscriptionDetailUseCase(type)
     }
 }
 
