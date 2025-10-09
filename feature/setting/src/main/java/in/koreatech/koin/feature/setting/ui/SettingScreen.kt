@@ -41,7 +41,6 @@ fun SettingScreen(
     onProfileClick: () -> Unit = {},
     onChangePasswordClick: () -> Unit = {},
     onNotificationClick: () -> Unit = {},
-    onServiceClick: () -> Unit = {},
     onPrivacyPolicyClick: () -> Unit = {},
     onKoinTermsClick: () -> Unit = {},
     onMarketingTermsClick: () -> Unit = {}
@@ -85,6 +84,7 @@ fun SettingScreen(
                 .padding(contentPadding)
                 .consumeWindowInsets(contentPadding)
                 .systemBarsPadding(),
+            onNotificationClick = onNotificationClick,
             onPrivacyPolicyClick = onPrivacyPolicyClick,
             onKoinTermsClick = onKoinTermsClick,
             onMarketingTermsClick = onMarketingTermsClick
@@ -101,7 +101,6 @@ private fun SettingScreenImpl(
     onProfileClick: () -> Unit = {},
     onChangePasswordClick: () -> Unit = {},
     onNotificationClick: () -> Unit = {},
-    onServiceClick: () -> Unit = {},
     onPrivacyPolicyClick: () -> Unit = {},
     onKoinTermsClick: () -> Unit = {},
     onMarketingTermsClick: () -> Unit = {}
@@ -127,7 +126,7 @@ private fun SettingScreenImpl(
         SettingItem(
             text = stringResource(R.string.setting_item_notification),
             showIcon = true,
-            onClick = {}
+            onClick = onNotificationClick
         )
         SettingTitle(
             text = stringResource(R.string.setting_title_service)

@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import `in`.koreatech.koin.feature.setting.constant.TermConstant
 import `in`.koreatech.koin.feature.setting.ui.SettingScreen
+import `in`.koreatech.koin.feature.setting.ui.notification.NotificationScreen
 import `in`.koreatech.koin.feature.setting.ui.term.TermScreen
 
 fun NavGraphBuilder.koinSettingGraph(
@@ -24,6 +25,9 @@ fun NavGraphBuilder.koinSettingGraph(
                 if (!navController.popBackStack()) {
                     (context as? Activity)?.finish()
                 }
+            },
+            onNotificationClick = {
+                navController.navigate(SettingNavType.Notification.route)
             },
             onPrivacyPolicyClick = {
                 navController.navigate("${SettingNavType.Term.route}/${TermConstant.TERM_PRIVACY_POLICY.type}")
@@ -53,6 +57,20 @@ fun NavGraphBuilder.koinSettingGraph(
 
         TermScreen(
             termType = termType,
+            onTopbarBackClick = {
+                if (!navController.popBackStack()) {
+                    (context as? Activity)?.finish()
+                }
+            }
+        )
+    }
+
+    composable(
+        route = SettingNavType.Notification.route
+    ) {
+        val context = LocalContext.current
+
+        NotificationScreen(
             onTopbarBackClick = {
                 if (!navController.popBackStack()) {
                     (context as? Activity)?.finish()
