@@ -30,7 +30,7 @@ fun NotificationSwitchSubItem(
         modifier = modifier
             .fillMaxWidth()
             .background(color = backgroundColor)
-            .padding(vertical = 10.dp, horizontal = 24.dp),
+            .padding(vertical = 16.dp, horizontal = 24.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

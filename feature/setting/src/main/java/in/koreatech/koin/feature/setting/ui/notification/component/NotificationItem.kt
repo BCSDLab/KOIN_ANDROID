@@ -5,7 +5,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.HorizontalDivider
@@ -28,6 +30,7 @@ fun NotificationItem(
     description: String = "",
     textStyle: TextStyle = KoinTheme.typography.medium18,
     descriptionTextStyle: TextStyle = KoinTheme.typography.regular16,
+    descriptionColor: Color = KoinTheme.colors.neutral500,
     backgroundColor: Color = KoinTheme.colors.neutral0,
     onClick: () -> Unit = {}
 ) {
@@ -55,9 +58,12 @@ fun NotificationItem(
             )
         }
         if (description.isNotEmpty()) {
+            Spacer(Modifier.height(5.dp))
             BasicText(
                 text = description,
-                style = descriptionTextStyle
+                style = descriptionTextStyle.copy(
+                    color = descriptionColor
+                )
             )
         }
     }
