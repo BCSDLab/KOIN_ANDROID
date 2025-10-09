@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.setting.ui
 
+import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,12 +11,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,11 +32,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.navigation.Navigator
+import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.core.util.goToContactUrl
 import `in`.koreatech.koin.feature.setting.R
 import `in`.koreatech.koin.feature.setting.component.SettingItem
 import `in`.koreatech.koin.feature.setting.component.SettingTitle
 import `in`.koreatech.koin.feature.setting.component.SettingVersionItem
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,6 +56,12 @@ fun SettingScreen(
 ) {
     val versionState by viewModel.versionState.collectAsState()
 
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    val navigator = rememberNavigator()
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
     Scaffold(
         containerColor = KoinTheme.colors.neutral0,
         topBar = {
@@ -59,6 +74,12 @@ fun SettingScreen(
                     actionIconContentColor = Color.White
                 ),
                 onNavigationIconClick = onTopbarBackClick
+            )
+        },
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier.systemBarsPadding()
             )
         },
         contentWindowInsets = WindowInsets(0, 0, 0, 0)
@@ -77,14 +98,26 @@ fun SettingScreen(
             else -> {}
         }
         SettingScreenImpl(
-            isLoggedIn = viewModel.isLoggedIn,
             currentVersionName = currentVersionName,
             latestVersionName = latestVersionName,
             modifier = modifier
                 .padding(contentPadding)
                 .consumeWindowInsets(contentPadding)
                 .systemBarsPadding(),
-            onNotificationClick = onNotificationClick,
+            onNotificationClick = {
+                if (viewModel.isLoggedIn) {
+                    onNotificationClick()
+                }
+                else {
+                    scope.launch {
+                        showLoginSnackBar(
+                            context = context,
+                            navigator = navigator,
+                            snackbarHostState = snackbarHostState
+                        )
+                    }
+                }
+            },
             onPrivacyPolicyClick = onPrivacyPolicyClick,
             onKoinTermsClick = onKoinTermsClick,
             onMarketingTermsClick = onMarketingTermsClick
@@ -92,9 +125,25 @@ fun SettingScreen(
     }
 }
 
+private suspend fun showLoginSnackBar(
+    context: Context,
+    navigator: Navigator,
+    snackbarHostState: SnackbarHostState
+) {
+    val result = snackbarHostState.showSnackbar(
+        message = context.getString(R.string.setting_snackbar_login),
+        actionLabel = context.getString(R.string.setting_snackbar_login_button),
+        duration = SnackbarDuration.Short
+    )
+    if (result == SnackbarResult.ActionPerformed) {
+        navigator.navigateToSignIn(context).let {
+            context.startActivity(it)
+        }
+    }
+}
+
 @Composable
 private fun SettingScreenImpl(
-    isLoggedIn: Boolean,
     currentVersionName: String,
     latestVersionName: String,
     modifier: Modifier = Modifier,
@@ -168,7 +217,6 @@ private fun SettingScreenImpl(
 @Preview(showBackground = true)
 private fun SettingScreenPreview() {
     SettingScreenImpl(
-        isLoggedIn = false,
         currentVersionName = "4.5.2",
         latestVersionName = "4.5.3"
     )

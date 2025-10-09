@@ -16,6 +16,7 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBarDefaults
@@ -54,7 +55,10 @@ fun TermScreen(
     LaunchedEffect(termType) {
         when (termType) {
             TermConstant.TERM_UNKNOWN -> {
-                snackbarHostState.showSnackbar(message = termUnknownMessage)
+                snackbarHostState.showSnackbar(
+                    message = termUnknownMessage,
+                    duration = SnackbarDuration.Short
+                )
             }
             TermConstant.TERM_KOIN -> {
                 viewModel.loadKoinTerm()
@@ -70,7 +74,10 @@ fun TermScreen(
     val termState by viewModel.term.collectAsState()
     LaunchedEffect(termState) {
         if (termState is TermState.Failure) { // smartcast not working
-            snackbarHostState.showSnackbar(message = (termState as TermState.Failure).message)
+            snackbarHostState.showSnackbar(
+                message = (termState as TermState.Failure).message,
+                duration = SnackbarDuration.Short
+            )
         }
     }
     Scaffold(
