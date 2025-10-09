@@ -21,4 +21,5 @@ dependencies {
     implementation(libs.kotlinx.collections.immutable)
 
     implementation(libs.timber)
+    implementation(libs.play.services.oss.licenses)
 }

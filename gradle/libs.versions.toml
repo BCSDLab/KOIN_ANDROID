@@ -69,6 +69,7 @@ stickyScrollView = "1.0.2"
 strictVersionMatcherPlugin = "1.2.4"
 timber = "5.0.1"
 turbine = "1.2.0"
+playServicesOssLicenses = "17.3.0"
 
 [libraries]
 android-gradle-tool = { module = "com.android.tools.build:gradle", version.ref = "androidGradle" }
@@ -182,6 +183,7 @@ stickyScrollView = { module = "com.github.amarjain07:StickyScrollView", version.
 strict-version-matcher-plugin = { module = "com.google.android.gms:strict-version-matcher-plugin", version.ref = "strictVersionMatcherPlugin" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+play-services-oss-licenses = { group = "com.google.android.gms", name = "play-services-oss-licenses", version.ref = "playServicesOssLicenses" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradle" }

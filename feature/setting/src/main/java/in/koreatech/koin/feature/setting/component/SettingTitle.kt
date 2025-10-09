@@ -3,7 +3,7 @@ package `in`.koreatech.koin.feature.setting.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,7 +19,7 @@ fun SettingTitle(
     textStyle: TextStyle = KoinTheme.typography.medium14,
     backgroundColor: Color = KoinTheme.colors.neutral50
 ) {
-    Text(
+    BasicText(
         modifier = modifier
             .fillMaxWidth()
             .background(color = backgroundColor)
