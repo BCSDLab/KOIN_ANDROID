@@ -1,6 +1,6 @@
 [versions]
 androidGradle = "8.13.0"
-androidxActivity = "1.9.3"
+androidxActivity = "1.10.1"
 androidxAppcompat = "1.7.1"
 androidxCardview = "1.0.0"
 androidxConstraintLayout = "2.2.1"
