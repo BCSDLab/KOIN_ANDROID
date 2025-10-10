@@ -15,6 +15,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -493,6 +494,12 @@ abstract class KoinNavigationDrawerActivity :
                 }
             }
         }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                getStoreSprintEnabled()
+            }
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -544,11 +551,17 @@ abstract class KoinNavigationDrawerActivity :
         goToActivityFinish(Intent(this, MainActivity::class.java))
     }
 
-    private fun goToStoreActivity() {
+    private fun goToStoreActivity(bundle: Bundle? = bundleOf()) {
+        val intent = Intent(
+            this,
+            if (koinNavigationDrawerViewModel.isStoreSprintEnabled.value == true) `in`.koreatech.koin.feature.store.StoreActivity::class.java else StoreActivity::class.java
+        )
+        intent.putExtras(bundle!!)
+
         if (menuState != MenuState.Main) {
-            goToActivityFinish(Intent(this, StoreActivity::class.java))
+            goToActivityFinish(intent)
         } else {
-            startActivity(Intent(this, StoreActivity::class.java))
+            startActivity(intent)
         }
     }
 
@@ -581,17 +594,6 @@ abstract class KoinNavigationDrawerActivity :
             goToActivityFinish(Intent(this, OperatingInfoActivity::class.java))
         } else {
             startActivity(Intent(this, OperatingInfoActivity::class.java))
-        }
-    }
-
-    private fun goToStoreActivity(bundle: Bundle?) {
-        val intent = Intent(this, StoreActivity::class.java)
-        intent.putExtras(bundle!!)
-
-        if (menuState != MenuState.Main) {
-            goToActivityFinish(intent)
-        } else {
-            startActivity(intent)
         }
     }
 
