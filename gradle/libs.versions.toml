@@ -1,5 +1,5 @@
 [versions]
-androidGradle = "8.5.1"
+androidGradle = "8.13.0"
 androidxActivity = "1.9.3"
 androidxAppcompat = "1.7.1"
 androidxCardview = "1.0.0"
@@ -203,9 +203,9 @@ paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 koin-application = { id = "in.koreatech.plugin.application", version = "unspecified" }
 koin-feature = { id = "in.koreatech.plugin.feature", version = "unspecified" }
 koin-firebase = { id = "in.koreatech.plugin.firebase", version = "unspecified" }
-koin-hilt = { id = "in.koreatech.plugin.hilt", version = "unspecified" }
+koin-hilt = { id = "in.koreatech.plugin.hilt" }
 koin-java = { id = "in.koreatech.plugin.java", version = "unspecified" }
-koin-library = { id = "in.koreatech.plugin.library", version = "unspecified" }
+koin-library = { id = "in.koreatech.plugin.library" }
 koin-library-orbit = { id = "in.koreatech.plugin.library.orbit", version = "unspecified" }
 koin-library-paparazzi = { id = "in.koreatech.plugin.library.paparazzi", version = "unspecified" }
 koin-orbit = { id = "in.koreatech.plugin.orbit", version = "unspecified" }
