@@ -20,7 +20,7 @@ internal fun RouteInfo(
 ) {
     Column(
         modifier = modifier.height(KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() * 2),
-        verticalArrangement = if (routeDetail.isBlank()) Arrangement.Center else Arrangement.Top
+        verticalArrangement = Arrangement.Center
     ) {
         Text(
             text = if (routeDetail.isBlank()) routeName else "$routeName\n$routeDetail",
