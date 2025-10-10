@@ -200,16 +200,16 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 oss-license-plugin = { id = "com.google.android.gms.oss-licenses-plugin", version.ref = "ossLicensesPlugin" }
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 
-koin-application = { id = "in.koreatech.plugin.application", version = "unspecified" }
-koin-feature = { id = "in.koreatech.plugin.feature", version = "unspecified" }
-koin-firebase = { id = "in.koreatech.plugin.firebase", version = "unspecified" }
+koin-application = { id = "in.koreatech.plugin.application" }
+koin-feature = { id = "in.koreatech.plugin.feature" }
+koin-firebase = { id = "in.koreatech.plugin.firebase" }
 koin-hilt = { id = "in.koreatech.plugin.hilt" }
-koin-java = { id = "in.koreatech.plugin.java", version = "unspecified" }
+koin-java = { id = "in.koreatech.plugin.java" }
 koin-library = { id = "in.koreatech.plugin.library" }
-koin-library-orbit = { id = "in.koreatech.plugin.library.orbit", version = "unspecified" }
-koin-library-paparazzi = { id = "in.koreatech.plugin.library.paparazzi", version = "unspecified" }
-koin-orbit = { id = "in.koreatech.plugin.orbit", version = "unspecified" }
-koin-oss-license = { id = "in.koreatech.plugin.oss", version = "unspecified" }
+koin-library-orbit = { id = "in.koreatech.plugin.library.orbit" }
+koin-library-paparazzi = { id = "in.koreatech.plugin.library.paparazzi" }
+koin-orbit = { id = "in.koreatech.plugin.orbit" }
+koin-oss-license = { id = "in.koreatech.plugin.oss" }
 
 [bundles]
 compose = ["androidx-compose-ui", "androidx-compose-graphics", "androidx-compose-preview", "androidx-compose-material2", "androidx-activity-compose", "androidx-compose-ui-tooling"]
