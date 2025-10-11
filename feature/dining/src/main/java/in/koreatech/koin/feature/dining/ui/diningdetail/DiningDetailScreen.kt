@@ -309,6 +309,12 @@ private fun DiningDetailScreenImpl(
         }
     }
 
+    var sessionId by remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit) {
+        sessionId = onGetSessionId()
+    }
+
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) {
@@ -592,8 +598,8 @@ private fun DiningDetailScreenImpl(
                     val buttonVisibilityLimit = maxOf(boxHeight * 0.4f, 100f)
 
                     DiningAbTestFloatingButton(
-                        contentText = "오늘 학식 메뉴가 별로라면?",
-                        buttonText = "주변상점 보기",
+                        contentText = stringResource(R.string.dining_menu_dislike),
+                        buttonText = stringResource(R.string.view_nearby_stores),
                         modifier = Modifier
                             .graphicsLayer(translationY = offsetY)
                             .draggable(
@@ -617,8 +623,6 @@ private fun DiningDetailScreenImpl(
                                 }
                             ),
                         onClick = {
-                            val sessionId = onGetSessionId()
-
                             EventLogger.logSessionEvent(
                                 action = EventAction.ABTEST,
                                 category = EventCategory.CLICK,
