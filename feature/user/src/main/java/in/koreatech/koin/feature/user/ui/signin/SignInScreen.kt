@@ -18,7 +18,11 @@ import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -35,6 +39,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.BuildConfig
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
@@ -92,7 +97,8 @@ fun SignInScreen(
         signIn = {
             viewModel.signIn()
         },
-        nextRoute = nextRouteTure
+        nextRoute = nextRouteTure,
+        onGetSessionId = { viewModel.getSignUpSessionId() }
     )
 }
 
@@ -107,11 +113,18 @@ fun SignInScreenImpl(
     setPassword: (String) -> Unit = { },
     setShowPassword: (Boolean) -> Unit = { },
     signIn: () -> Unit = { },
-    nextRoute: () -> Unit = { }
+    nextRoute: () -> Unit = { },
+    onGetSessionId: () -> String
 ) {
     val scrollState = rememberScrollState()
 
     val context = LocalContext.current
+
+    var sessionId by remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit) {
+        sessionId = onGetSessionId()
+    }
 
     Column(
         modifier = modifier
@@ -198,10 +211,12 @@ fun SignInScreenImpl(
                     text = stringResource(R.string.sign_in_sign_up),
                     shape = KoinTheme.shapes.small,
                     onClick = {
-                        EventLogger.logClickEvent(
-                            EventAction.USER,
-                            AnalyticsConstant.Label.START_SIGN_UP,
-                            "회원가입 시작"
+                        EventLogger.logSessionEvent(
+                            action = EventAction.USER,
+                            category = EventCategory.CLICK,
+                            label = AnalyticsConstant.Label.START_SIGN_UP,
+                            value = "회원가입 시작",
+                            customSessionId = sessionId
                         )
                         Intent(context, SignUpActivity::class.java).let {
                             context.startActivity(it)
@@ -312,7 +327,8 @@ private fun SignInScreenPreview() {
         loginId = "",
         password = "",
         showPassword = false,
-        isError = true
+        isError = true,
+        onGetSessionId = { "" }
     )
 }
 

@@ -5,6 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.domain.usecase.session.GetSessionIdUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
@@ -18,7 +19,8 @@ import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val userLoginUseCase: UserLoginUseCase
+    private val userLoginUseCase: UserLoginUseCase,
+    private val getSessionIdUseCase: GetSessionIdUseCase
 ) : ViewModel(), ContainerHost<SignInState, SignInSideEffect> {
     override val container = container<SignInState, SignInSideEffect>(SignInState())
 
@@ -64,5 +66,13 @@ class SignInViewModel @Inject constructor(
                 state.copy(loginError = SignInState.LoginError(true, it.message))
             }
         }
+    }
+
+    fun getSignUpSessionId(): String {
+        return getSessionIdUseCase(
+            sessionName = "sign_up",
+            isLoggedIn = false,
+            shouldExpireOtherSessions = true
+        )
     }
 }
