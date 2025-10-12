@@ -79,6 +79,9 @@ class DiningViewModel @Inject constructor(
     private val _isDiningRefreshing = MutableStateFlow(false)
     val isDiningRefreshing: StateFlow<Boolean> get() = _isDiningRefreshing
 
+    private val _sessionId = MutableStateFlow("")
+    val sessionId: StateFlow<String> = _sessionId
+
     val abTestExperimentGroup = flow {
         abTestUseCase(Experiment.DINING_SHARE.experimentTitle).onSuccess {
             emit(it)
@@ -209,8 +212,8 @@ class DiningViewModel @Inject constructor(
         onDiningImageSubscribe(boolean)
     }
 
-    fun getDiningSessionId(): String {
-        return getSessionIdUseCase(
+    fun getDiningSessionId() {
+        _sessionId.value = getSessionIdUseCase(
             sessionName = "dining2shop",
             isLoggedIn = !_userState.value.isAnonymous,
             sessionTime = 1800,
