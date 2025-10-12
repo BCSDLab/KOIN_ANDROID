@@ -34,7 +34,6 @@ internal fun ShuttleTimetableNodeItem(
     nodeItemHeightDp: Dp,
     modifier: Modifier = Modifier
 ) {
-
     val textHeight = KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() * 2
     val rememberHeight = remember { textHeight }
 
@@ -48,7 +47,7 @@ internal fun ShuttleTimetableNodeItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = KoinTheme.colors.neutral100)
-                .padding(horizontal = 24.dp, vertical = rememberHeight/4)
+                .padding(horizontal = 24.dp, vertical = rememberHeight / 4)
         )
 
         nodes.fastForEach { node ->

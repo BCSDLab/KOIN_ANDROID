@@ -19,7 +19,6 @@ internal fun RouteInfo(
     routeDetail: String,
     modifier: Modifier = Modifier
 ) {
-
     val columnHeight = KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() * 2
     val rememberHeight = remember { columnHeight }
 
