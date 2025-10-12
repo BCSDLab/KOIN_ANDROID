@@ -1,23 +1,23 @@
 [versions]
-androidGradle = "8.5.1"
-androidxActivity = "1.9.3"
+androidGradle = "8.13.0"
+androidxActivity = "1.10.1"
 androidxAppcompat = "1.7.1"
 androidxCardview = "1.0.0"
 androidxConstraintLayout = "2.2.1"
 androidxConstraintLayoutCompose = "1.1.1"
-androidxComposeBom = "2025.03.01"
-androidxComposeUiTestJunit4 = "1.7.8"
-androidxCore = "1.8.0"
+androidxComposeBom = "2025.10.00"
+androidxComposeUiTestJunit4 = "1.9.3"
+androidxCore = "1.16.0"
 androidxDatastore = "1.1.7"
-androidxFragment = "1.8.8"
-androidxHiltNavigationCompose = "1.2.0"
-androidxLifecycle = "2.8.7"
-androidxNavigation = "2.7.7"
-androidxRecyclerview = "1.3.2"
-androidxSecurityCrypto = "1.1.0-alpha03"
-androidxTestEspresso = "3.5.1"
-androidxTestJunit = "1.2.1"
-androidxTestRunner = "1.5.2"
+androidxFragment = "1.8.9"
+androidxHiltNavigationCompose = "1.3.0"
+androidxLifecycle = "2.9.4"
+androidxNavigation = "2.9.5"
+androidxRecyclerview = "1.4.0"
+androidxSecurityCrypto = "1.1.0"
+androidxTestEspresso = "3.7.0"
+androidxTestJunit = "1.3.0"
+androidxTestRunner = "1.7.0"
 androidxViewpager2 = "1.1.0"
 balloon = "1.5.0"
 balloonCompose = "1.6.4"
@@ -200,16 +200,16 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 oss-license-plugin = { id = "com.google.android.gms.oss-licenses-plugin", version.ref = "ossLicensesPlugin" }
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 
-koin-application = { id = "in.koreatech.plugin.application", version = "unspecified" }
-koin-feature = { id = "in.koreatech.plugin.feature", version = "unspecified" }
-koin-firebase = { id = "in.koreatech.plugin.firebase", version = "unspecified" }
-koin-hilt = { id = "in.koreatech.plugin.hilt", version = "unspecified" }
-koin-java = { id = "in.koreatech.plugin.java", version = "unspecified" }
-koin-library = { id = "in.koreatech.plugin.library", version = "unspecified" }
-koin-library-orbit = { id = "in.koreatech.plugin.library.orbit", version = "unspecified" }
-koin-library-paparazzi = { id = "in.koreatech.plugin.library.paparazzi", version = "unspecified" }
-koin-orbit = { id = "in.koreatech.plugin.orbit", version = "unspecified" }
-koin-oss-license = { id = "in.koreatech.plugin.oss", version = "unspecified" }
+koin-application = { id = "in.koreatech.plugin.application" }
+koin-feature = { id = "in.koreatech.plugin.feature" }
+koin-firebase = { id = "in.koreatech.plugin.firebase" }
+koin-hilt = { id = "in.koreatech.plugin.hilt" }
+koin-java = { id = "in.koreatech.plugin.java" }
+koin-library = { id = "in.koreatech.plugin.library" }
+koin-library-orbit = { id = "in.koreatech.plugin.library.orbit" }
+koin-library-paparazzi = { id = "in.koreatech.plugin.library.paparazzi" }
+koin-orbit = { id = "in.koreatech.plugin.orbit" }
+koin-oss-license = { id = "in.koreatech.plugin.oss" }
 
 [bundles]
 compose = ["androidx-compose-ui", "androidx-compose-graphics", "androidx-compose-preview", "androidx-compose-material2", "androidx-activity-compose", "androidx-compose-ui-tooling"]
