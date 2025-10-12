@@ -18,11 +18,8 @@ import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -72,7 +69,10 @@ fun SignInScreen(
 ) {
     val uiState by viewModel.collectAsState()
 
+    val sessionId by viewModel.sessionId.collectAsState()
+
     viewModel.collectSideEffect {
+        viewModel.getSignUpSessionId()
         handleSideEffect(
             sideEffect = it,
             nextRoute = nextRouteSignin
@@ -84,6 +84,7 @@ fun SignInScreen(
         password = uiState.password,
         showPassword = uiState.showPassword,
         isError = uiState.loginError.isError,
+        sessionId = sessionId,
         modifier = modifier,
         setLoginId = {
             viewModel.setLoginId(it)
@@ -97,8 +98,7 @@ fun SignInScreen(
         signIn = {
             viewModel.signIn()
         },
-        nextRoute = nextRouteTure,
-        onGetSessionId = { viewModel.getSignUpSessionId() }
+        nextRoute = nextRouteTure
     )
 }
 
@@ -108,23 +108,17 @@ fun SignInScreenImpl(
     password: String,
     showPassword: Boolean,
     isError: Boolean,
+    sessionId: String,
     modifier: Modifier = Modifier,
     setLoginId: (String) -> Unit = { },
     setPassword: (String) -> Unit = { },
     setShowPassword: (Boolean) -> Unit = { },
     signIn: () -> Unit = { },
-    nextRoute: () -> Unit = { },
-    onGetSessionId: () -> String
+    nextRoute: () -> Unit = { }
 ) {
     val scrollState = rememberScrollState()
 
     val context = LocalContext.current
-
-    var sessionId by remember { mutableStateOf("") }
-
-    LaunchedEffect(Unit) {
-        sessionId = onGetSessionId()
-    }
 
     Column(
         modifier = modifier
@@ -328,7 +322,7 @@ private fun SignInScreenPreview() {
         password = "",
         showPassword = false,
         isError = true,
-        onGetSessionId = { "" }
+        sessionId = ""
     )
 }
 
