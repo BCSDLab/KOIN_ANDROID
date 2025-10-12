@@ -1,7 +1,6 @@
 package `in`.koreatech.bus.screen.shuttle_timetable.composable
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,7 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,24 +34,22 @@ internal fun ShuttleTimetableNodeItem(
     nodeItemHeightDp: Dp,
     modifier: Modifier = Modifier
 ) {
+
+    val textHeight = KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() * 2
+    val rememberHeight = remember { textHeight }
+
     Column(
         modifier = modifier.width(IntrinsicSize.Max)
     ) {
-        Box(
+        Text(
+            text = stringResource(R.string.node_name),
+            style = KoinTheme.typography.regular14,
+            color = KoinTheme.colors.neutral600,
             modifier = Modifier
-                .height(KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() * 2)
                 .fillMaxWidth()
-                .background(color = KoinTheme.colors.neutral100),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = stringResource(R.string.node_name),
-                style = KoinTheme.typography.regular14,
-                color = KoinTheme.colors.neutral600,
-                modifier = Modifier
-                    .padding(horizontal = 24.dp, vertical = 8.dp)
-            )
-        }
+                .background(color = KoinTheme.colors.neutral100)
+                .padding(horizontal = 24.dp, vertical = rememberHeight/4)
+        )
 
         nodes.fastForEach { node ->
             NodeItem(
