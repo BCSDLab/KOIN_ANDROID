@@ -33,6 +33,7 @@ import `in`.koreatech.koin.constant.URL
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.blueStatusBar
@@ -309,10 +310,12 @@ abstract class KoinNavigationDrawerActivity :
                             }
 
                             MenuState.SignUp -> {
-                                EventLogger.logClickEvent(
-                                    EventAction.USER,
-                                    AnalyticsConstant.Label.HAMBURGER,
-                                    "회원가입 시작"
+                                EventLogger.logSessionEvent(
+                                    action = EventAction.USER,
+                                    category = EventCategory.CLICK,
+                                    label = AnalyticsConstant.Label.HAMBURGER,
+                                    value = "회원가입 시작",
+                                    customSessionId = koinNavigationDrawerViewModel.getSignUpSessionId()
                                 )
                             }
 
