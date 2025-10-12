@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
@@ -31,10 +30,12 @@ import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.feature.setting.R
 import `in`.koreatech.koin.feature.setting.component.SettingTitle
-import `in`.koreatech.koin.feature.setting.constant.URLConstant
+import `in`.koreatech.koin.feature.setting.constant.ARTICLE_KEYWORD_URL
 import `in`.koreatech.koin.feature.setting.ui.notification.component.NotificationItem
 import `in`.koreatech.koin.feature.setting.ui.notification.component.NotificationSwitchItem
 import `in`.koreatech.koin.feature.setting.ui.notification.component.NotificationSwitchSubItem
+import `in`.koreatech.koin.feature.setting.util.isDetailTypePermitted
+import `in`.koreatech.koin.feature.setting.util.isTypePermitted
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,16 +48,6 @@ fun NotificationScreen(
         viewModel.getPermissionInfo()
     }
     val notificationState by viewModel.notificationUiState.collectAsState()
-
-    var isMarketingSubscribedInit by remember { mutableStateOf(false) }
-    var isSoldoutSubscribedInit by remember { mutableStateOf(false) }
-    var isBreakfastSubscribedInit by remember { mutableStateOf(false) }
-    var isLaunchSubscribedInit by remember { mutableStateOf(false) }
-    var isDinnerSubscribedInit by remember { mutableStateOf(false) }
-    var isDiningImageUploadedSubscribedInit by remember { mutableStateOf(false) }
-    var isChatSubscribedInit by remember { mutableStateOf(false) }
-    var isEventSubscribedInit by remember { mutableStateOf(false) }
-    var isReviewSubscribedInit by remember { mutableStateOf(false) }
 
     Scaffold(
         containerColor = KoinTheme.colors.neutral0,
@@ -76,38 +67,17 @@ fun NotificationScreen(
     ) { contentPadding ->
         when (notificationState) {
             is NotificationUiState.Success -> {
-                val notificationInfo = remember { (notificationState as NotificationUiState.Success).notificationPermissionInfo }
-                notificationInfo.subscribes.forEach {
-                    when (it.type) {
-                        SubscribesType.MARKETING -> isMarketingSubscribedInit = it.isPermit
-                        SubscribesType.DINING_SOLD_OUT -> {
-                            isSoldoutSubscribedInit = it.isPermit
-                            it.detailSubscribes.forEach { detail ->
-                                when (detail.type) {
-                                    SubscribesDetailType.BREAKFAST -> isBreakfastSubscribedInit = detail.isPermit
-                                    SubscribesDetailType.LUNCH -> isLaunchSubscribedInit = detail.isPermit
-                                    SubscribesDetailType.DINNER -> isDinnerSubscribedInit = detail.isPermit
-                                    SubscribesDetailType.NOTHING -> {}
-                                }
-                            }
-                        }
-                        SubscribesType.DINING_IMAGE_UPLOAD -> isDiningImageUploadedSubscribedInit = it.isPermit
-                        SubscribesType.LOST_ITEM_CHAT -> isChatSubscribedInit = it.isPermit
-                        SubscribesType.SHOP_EVENT -> isEventSubscribedInit = it.isPermit
-                        SubscribesType.REVIEW_PROMPT -> isReviewSubscribedInit = it.isPermit
-                        else -> {}
-                    }
-                }
+                val notificationInfos = remember { (notificationState as NotificationUiState.Success).notificationPermissionInfo }
                 NotificationScreenImpl(
-                    isMarketingSubscribed = isMarketingSubscribedInit,
-                    isSoldoutSubscribed = isSoldoutSubscribedInit,
-                    isBreakfastSubscribed = isBreakfastSubscribedInit,
-                    isLaunchSubscribed = isLaunchSubscribedInit,
-                    isDinnerSubscribed = isDinnerSubscribedInit,
-                    isDiningImageUploadedSubscribed = isDiningImageUploadedSubscribedInit,
-                    isChatSubscribed = isChatSubscribedInit,
-                    isEventSubscribed = isEventSubscribedInit,
-                    isReviewSubscribed = isReviewSubscribedInit,
+                    isMarketingSubscribed = notificationInfos.subscribes.isTypePermitted(SubscribesType.MARKETING),
+                    isSoldoutSubscribed = notificationInfos.subscribes.isTypePermitted(SubscribesType.DINING_SOLD_OUT),
+                    isBreakfastSubscribed = notificationInfos.subscribes.isDetailTypePermitted(SubscribesDetailType.BREAKFAST),
+                    isLunchSubscribed = notificationInfos.subscribes.isDetailTypePermitted(SubscribesDetailType.LUNCH),
+                    isDinnerSubscribed = notificationInfos.subscribes.isDetailTypePermitted(SubscribesDetailType.BREAKFAST),
+                    isDiningImageUploadedSubscribed = notificationInfos.subscribes.isTypePermitted(SubscribesType.MARKETING),
+                    isChatSubscribed = notificationInfos.subscribes.isTypePermitted(SubscribesType.MARKETING),
+                    isEventSubscribed = notificationInfos.subscribes.isTypePermitted(SubscribesType.MARKETING),
+                    isReviewSubscribed = notificationInfos.subscribes.isTypePermitted(SubscribesType.MARKETING),
                     updateSubscription = viewModel::updateSubscription,
                     deleteSubscription = viewModel::deleteSubscription,
                     updateSubscriptionDetail = viewModel::updateSubscriptionDetail,
@@ -128,7 +98,7 @@ private fun NotificationScreenImpl(
     isMarketingSubscribed: Boolean,
     isSoldoutSubscribed: Boolean,
     isBreakfastSubscribed: Boolean,
-    isLaunchSubscribed: Boolean,
+    isLunchSubscribed: Boolean,
     isDinnerSubscribed: Boolean,
     isDiningImageUploadedSubscribed: Boolean,
     isChatSubscribed: Boolean,
@@ -144,7 +114,7 @@ private fun NotificationScreenImpl(
     var isMarketingSubscribed by remember { mutableStateOf(isMarketingSubscribed) }
     var isSoldoutSubscribed by remember { mutableStateOf(isSoldoutSubscribed) }
     var isBreakfastSubscribed by remember { mutableStateOf(isBreakfastSubscribed) }
-    var isLaunchSubscribed by remember { mutableStateOf(isLaunchSubscribed) }
+    var isLunchSubscribed by remember { mutableStateOf(isLunchSubscribed) }
     var isDinnerSubscribed by remember { mutableStateOf(isDinnerSubscribed) }
     var isDiningImageUploadedSubscribed by remember { mutableStateOf(isDiningImageUploadedSubscribed) }
     var isChatSubscribed by remember { mutableStateOf(isChatSubscribed) }
@@ -201,14 +171,14 @@ private fun NotificationScreenImpl(
                 )
                 NotificationSwitchSubItem(
                     text = stringResource(R.string.notification_item_dining_launch),
-                    checked = isLaunchSubscribed,
+                    checked = isLunchSubscribed,
                     onClick = {
-                        if (isLaunchSubscribed) {
+                        if (isLunchSubscribed) {
                             deleteSubscriptionDetail(SubscribesDetailType.LUNCH)
                         } else {
                             updateSubscriptionDetail(SubscribesDetailType.LUNCH)
                         }
-                        isLaunchSubscribed = !isLaunchSubscribed
+                        isLunchSubscribed = !isLunchSubscribed
                     }
                 )
                 NotificationSwitchSubItem(
@@ -246,7 +216,7 @@ private fun NotificationScreenImpl(
                 text = stringResource(R.string.notification_item_article_keyword),
                 description = stringResource(R.string.notification_item_article_keyword_description),
                 onClick = {
-                    context.startActivity(Intent(Intent.ACTION_VIEW, URLConstant.articleKeyword.toUri()))
+                    context.startActivity(Intent(Intent.ACTION_VIEW, ARTICLE_KEYWORD_URL.toUri()))
                 }
             )
             NotificationSwitchItem(
@@ -304,7 +274,7 @@ private fun NotificationScreenPreview() {
         isMarketingSubscribed = false,
         isSoldoutSubscribed = true,
         isBreakfastSubscribed = false,
-        isLaunchSubscribed = false,
+        isLunchSubscribed = false,
         isDinnerSubscribed = false,
         isDiningImageUploadedSubscribed = false,
         isChatSubscribed = false,
