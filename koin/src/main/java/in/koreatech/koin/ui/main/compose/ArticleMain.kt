@@ -49,6 +49,7 @@ fun HotArticlePager(
     onNotiClick: (ArticleMainState.Noti) -> Unit = {},
     onArticleClick: (ArticleMainState.Content) -> Unit = {}
 ) {
+    if (articles.isEmpty()) return
     val pagerState = rememberPagerState { articles.size }
 
     LaunchedEffect(pagerState.settledPage, articles.size) {
