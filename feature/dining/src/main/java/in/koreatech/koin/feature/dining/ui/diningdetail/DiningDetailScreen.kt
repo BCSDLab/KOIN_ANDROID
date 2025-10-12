@@ -147,8 +147,11 @@ fun DiningDetailScreen(
 
     val diningStoreAbTestExperimentGroup by viewModel.diningStoreAbTestExperimentGroup.collectAsState()
 
+    val sessionId by viewModel.sessionId.collectAsState()
+
     LaunchedEffect(Unit) { // userState NPE error in viewModel init{}; Flow is null
         viewModel.getDining()
+        viewModel.getDiningSessionId()
         snapshotFlow { userState }
             .collect { state ->
                 if (!state.isAnonymous) {
@@ -201,6 +204,7 @@ fun DiningDetailScreen(
             showBottomSheet = showBottomSheet,
             experimentGroup = abTestExperimentGroup,
             diningStoreExperimentGroup = diningStoreAbTestExperimentGroup,
+            sessionId = sessionId,
             isAnonymous = userState.isAnonymous,
             isDiningRefreshing = isDiningRefreshing,
             initialPage = if (initialPage != -1) initialPage else viewModel.getInitialPage(),
@@ -211,8 +215,7 @@ fun DiningDetailScreen(
             changeSoldOutSubscribe = viewModel::changeIsSoldOutSubscribed,
             changeDiningImageSubscribe = viewModel::changeIsDiningImageSubscribed,
             getNotificationPermitInfo = viewModel::getNotificationPermissionInfo,
-            onNavigateToStore = onNavigateToStore,
-            onGetSessionId = { viewModel.getDiningSessionId() }
+            onNavigateToStore = onNavigateToStore
         )
     }
 }
@@ -226,6 +229,7 @@ private fun DiningDetailScreenImpl(
     showBottomSheet: Boolean,
     experimentGroup: String,
     diningStoreExperimentGroup: String,
+    sessionId: String,
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
     isSoldOutSubscribed: Boolean = false,
@@ -238,8 +242,7 @@ private fun DiningDetailScreenImpl(
     changeSoldOutSubscribe: (Boolean) -> Unit = {},
     changeDiningImageSubscribe: (Boolean) -> Unit = {},
     getNotificationPermitInfo: () -> Unit = {},
-    onNavigateToStore: () -> Unit = {},
-    onGetSessionId: () -> String
+    onNavigateToStore: () -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current
@@ -307,12 +310,6 @@ private fun DiningDetailScreenImpl(
         if (showBottomSheet) {
             sheetState.show()
         }
-    }
-
-    var sessionId by remember { mutableStateOf("") }
-
-    LaunchedEffect(Unit) {
-        sessionId = onGetSessionId()
     }
 
     val launcher = rememberLauncherForActivityResult(
@@ -774,13 +771,13 @@ private fun DiningScreenPreview() {
                 changedAt = "2025.05.17"
             )
         ),
+        sessionId = "",
         isAnonymous = true,
         contentPadding = PaddingValues(),
         context = LocalContext.current,
         selectedDate = TimeUtil.getNextDayDate(TimeUtil.getCurrentTime()),
         showBottomSheet = false,
         experimentGroup = ExperimentGroup.SHARE_NEW,
-        diningStoreExperimentGroup = ExperimentGroup.VARIANT,
-        onGetSessionId = { "" }
+        diningStoreExperimentGroup = ExperimentGroup.VARIANT
     )
 }
