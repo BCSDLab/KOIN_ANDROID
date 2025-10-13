@@ -1,13 +1,10 @@
 plugins {
     alias(libs.plugins.koin.library)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "in.koreatech.koin.core.webapp"
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.10"
-    }
 
     buildFeatures {
         compose = true
