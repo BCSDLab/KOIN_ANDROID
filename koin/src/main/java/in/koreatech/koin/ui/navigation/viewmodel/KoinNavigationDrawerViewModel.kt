@@ -7,8 +7,8 @@ import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.chat.GetChatListUseCase
-import `in`.koreatech.koin.domain.usecase.setting.GetDeveloperSettingUseCase
 import `in`.koreatech.koin.domain.usecase.session.GetSessionIdUseCase
+import `in`.koreatech.koin.domain.usecase.setting.GetDeveloperSettingUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.usecase.user.UpdateDeviceTokenUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLogoutUseCase
