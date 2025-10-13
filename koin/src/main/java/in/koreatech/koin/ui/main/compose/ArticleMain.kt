@@ -23,6 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,6 +40,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.article.ArticleNotiType
 import `in`.koreatech.koin.ui.main.state.ArticleMainState
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 private const val AUTO_SCROLL_INTERVAL = 5000L
 
@@ -51,11 +53,18 @@ fun HotArticlePager(
 ) {
     val pagerState = rememberPagerState { articles.size }
 
-    LaunchedEffect(pagerState.settledPage, articles.size) {
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(key1 = pagerState.currentPage, key2 = pagerState.isScrollInProgress, key3 = articles.size) {
         if (articles.isNotEmpty()) {
-            delay(AUTO_SCROLL_INTERVAL)
-            val nextPage = (pagerState.currentPage + 1) % articles.size
-            pagerState.animateScrollToPage(nextPage)
+            launch {
+                delay(AUTO_SCROLL_INTERVAL)
+                coroutineScope.launch {
+                    if (!pagerState.isScrollInProgress) {
+                        pagerState.animateScrollToPage((pagerState.currentPage + 1) % articles.size)
+                    }
+                }
+            }
         }
     }
 
