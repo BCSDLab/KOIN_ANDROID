@@ -9,6 +9,7 @@ import `in`.koreatech.koin.domain.usecase.store.benefit.BenefitStoreListUseCase
 import `in`.koreatech.koin.domain.usecase.store.benefit.StoreBenefitCategoryUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
+import timber.log.Timber
 
 @HiltViewModel
 class StoreBenefitViewModel @Inject constructor(
@@ -32,7 +33,7 @@ class StoreBenefitViewModel @Inject constructor(
             _categoryId.value = it.benefitCategories[0].id
             getStoreBenefitShopList(_categoryId.value)
         }.onFailure {
-            it.printStackTrace()
+            Timber.e(it)
         }
     }
 
@@ -40,7 +41,7 @@ class StoreBenefitViewModel @Inject constructor(
         benefitShopListUseCase(uid).onSuccess {
             _storeBenefitShopList.value = it
         }.onFailure {
-            it.printStackTrace()
+            Timber.e(it)
             _storeBenefitShopList.value = StoreBenefit(0, emptyList())
         }
     }

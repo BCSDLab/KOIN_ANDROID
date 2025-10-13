@@ -27,4 +27,7 @@
 
     <string name="kakaolink_host">kakaolink</string>
     <string name="kakao_share_unable">카카오톡 공유에 실패했습니다.</string>
+
+    <string name="dining_menu_dislike">오늘 학식 메뉴가 별로라면?</string>
+    <string name="view_nearby_stores">주변상점 보기</string>
 </resources>

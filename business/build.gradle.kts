@@ -2,7 +2,6 @@
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    alias(libs.plugins.koin.compose)
     alias(libs.plugins.koin.application)
     alias(libs.plugins.koin.hilt)
     alias(libs.plugins.koin.orbit)

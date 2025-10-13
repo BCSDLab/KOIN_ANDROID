@@ -1,5 +1,4 @@
-import com.android.build.api.dsl.ApplicationExtension
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import com.android.build.api.dsl.LibraryExtension
 import `in`.koreatech.convention.configureAndroidCompose
 import `in`.koreatech.convention.configureAndroidProject
 import `in`.koreatech.convention.configureAndroidTest
@@ -8,22 +7,21 @@ import `in`.koreatech.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.getByType
 
-internal class AndroidApplicationConventionPlugin : Plugin<Project> {
+internal class AndroidFeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
-                apply(libs.findPlugin("android-application").get().get().pluginId)
+                apply(libs.findPlugin("androidLibrary").get().get().pluginId)
                 apply(libs.findPlugin("kotlin-android").get().get().pluginId)
                 apply(libs.findPlugin("kotlin-parcelize").get().get().pluginId)
                 apply(libs.findPlugin("ksp").get().get().pluginId)
                 apply(libs.findPlugin("ktlint").get().get().pluginId)
                 apply(libs.findPlugin("compose-compiler").get().get().pluginId)
             }
-            val extension = extensions.getByType<BaseAppModuleExtension>()
-            extensions.configure<ApplicationExtension> {
-                configureAndroidProject(extension)
+
+            extensions.configure<LibraryExtension> {
+                configureAndroidProject(this)
                 configureAndroidCompose(this)
                 configureTest()
                 configureAndroidTest()

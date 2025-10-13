@@ -18,10 +18,6 @@ gradlePlugin {
             id = "in.koreatech.plugin.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
-        register("AndroidApplicationComposePlugin") {
-            id = "in.koreatech.plugin.compose"
-            implementationClass = "AndroidApplicationComposeConventionPlugin"
-        }
         register("AndroidApplicationHiltPlugin"){
             id = "in.koreatech.plugin.hilt"
             implementationClass = "AndroidApplicationHiltConventionPlugin"
@@ -41,6 +37,10 @@ gradlePlugin {
         register("AndroidLibraryPlugin") {
             id = "in.koreatech.plugin.library"
             implementationClass = "AndroidLibraryConventionPlugin"
+        }
+        register("AndroidFeaturePlugin"){
+            id = "in.koreatech.plugin.feature"
+            implementationClass = "AndroidFeatureConventionPlugin"
         }
         register("FirebasePlugin") {
             id = "in.koreatech.plugin.firebase"

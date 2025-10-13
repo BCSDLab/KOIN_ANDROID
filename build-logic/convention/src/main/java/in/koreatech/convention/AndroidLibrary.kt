@@ -30,10 +30,6 @@ internal fun Project.configureAndroidLibrary(
             targetCompatibility = JavaVersion.VERSION_17
         }
 
-        kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_17.toString()
-        }
-
         packagingOptions {
             resources.excludes += "DebugProbesKt.bin"
         }
