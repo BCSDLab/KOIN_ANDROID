@@ -43,11 +43,11 @@ android {
 }
 
 dependencies {
-    implementation(project(":core"))
-    implementation(project(":core:webapp"))
-    implementation(project(":domain"))
-    implementation(project(":core:designsystem"))
-    implementation(project(":core:analytics"))
+    implementation(projects.core)
+    implementation(projects.core.webapp)
+    implementation(projects.domain)
+    implementation(projects.core.designsystem)
+    implementation(projects.core.analytics)
     implementation(projects.core.navigation)
 
     implementation(libs.androidx.core.ktx)
