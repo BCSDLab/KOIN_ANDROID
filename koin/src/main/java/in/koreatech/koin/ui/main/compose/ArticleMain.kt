@@ -51,6 +51,7 @@ fun HotArticlePager(
     onNotiClick: (ArticleMainState.Noti) -> Unit = {},
     onArticleClick: (ArticleMainState.Content) -> Unit = {}
 ) {
+    if (articles.isEmpty()) return
     val pagerState = rememberPagerState { articles.size }
 
     val coroutineScope = rememberCoroutineScope()
