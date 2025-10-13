@@ -2,13 +2,11 @@ import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.koin.library)
+    alias(libs.plugins.koin.feature)
     alias(libs.plugins.koin.hilt)
     alias(libs.plugins.koin.library.orbit)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.koin.library.paparazzi)
     alias(libs.plugins.kotlinx.serialization)
-    id("kotlin-parcelize")
 }
 
 val localProperties = Properties()
