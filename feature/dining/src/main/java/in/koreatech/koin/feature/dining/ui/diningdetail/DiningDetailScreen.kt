@@ -608,6 +608,14 @@ private fun DiningDetailScreenImpl(
                                     scope.launch {
                                         if (offsetY > buttonVisibilityLimit) {
                                             isButtonVisible = false
+
+                                            EventLogger.logSessionEvent(
+                                                action = EventAction.ABTEST,
+                                                category = EventCategory.SWIPE,
+                                                label = "dining_to_shop_close",
+                                                value = tabList[pagerState.currentPage],
+                                                customSessionId = sessionId
+                                            )
                                         } else {
                                             animate(
                                                 initialValue = offsetY,
