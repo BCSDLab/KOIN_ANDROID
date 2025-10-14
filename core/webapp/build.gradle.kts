@@ -1,13 +1,10 @@
 plugins {
     alias(libs.plugins.koin.library)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "in.koreatech.koin.core.webapp"
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.10"
-    }
 
     buildFeatures {
         compose = true
@@ -15,7 +12,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:designsystem"))
+    implementation(projects.core.designsystem)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
