@@ -36,6 +36,20 @@
             android:name=".ui.error.InspectionActivity"
             android:launchMode="singleTask"
             android:exported="false" />
+
+        <activity
+            android:name=".storev2.StoreDetailActivity"
+            android:theme="@style/KAPTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true"/>
+
+        <activity
+            android:name=".storev2.ShoppingCartActivity"
+            android:theme="@style/KAPTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true"/>
+
+
         <activity
             android:name=".ui.timetablev2.TimetableActivity"
             android:exported="true"
@@ -111,18 +125,6 @@
             android:name=".ui.notification.NotificationActivity"
             android:exported="false"
             android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.businesssignup.BusinessSignUpCompleteActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.businesssignup.BusinessSignUpCheckActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.businesslogin.BusinessLoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.businesssignup.BusinessSignupBaseActivity"
-            android:exported="false" />
         <activity
             android:name=".ui.main.activity.MainActivity"
             android:exported="true"

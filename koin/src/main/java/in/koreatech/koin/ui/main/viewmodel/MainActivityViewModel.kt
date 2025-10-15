@@ -18,6 +18,7 @@ import `in`.koreatech.koin.domain.usecase.banner.CheckBannerRefusalUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubHotUseCase
 import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
 import `in`.koreatech.koin.domain.usecase.session.GetSessionIdUseCase
+import `in`.koreatech.koin.domain.usecase.setting.GetDeveloperSettingUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
@@ -40,6 +41,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
@@ -50,7 +52,8 @@ class MainActivityViewModel @Inject constructor(
     private val articleRepository: ArticleRepository,
     private val getClubHotUseCase: GetClubHotUseCase,
     private val getSessionIdUseCase: GetSessionIdUseCase,
-    private val getUserStatusUseCase: GetUserStatusUseCase
+    private val getUserStatusUseCase: GetUserStatusUseCase,
+    private val getDeveloperSettingUseCase: GetDeveloperSettingUseCase
 ) : BaseViewModel() {
     private val _variableName = MutableLiveData<String>()
     val variableName: LiveData<String> get() = _variableName
@@ -156,14 +159,17 @@ class MainActivityViewModel @Inject constructor(
             initialValue = ExperimentGroup.CATEGORY.first()
         )
 
-    private val _storeCategories = MutableLiveData<List<StoreCategories>>(emptyList())
-    val storeCategories: LiveData<List<StoreCategories>> get() = _storeCategories
+    private val _storeCategories = MutableStateFlow<List<StoreCategories>>(emptyList())
+    val storeCategories: StateFlow<List<StoreCategories>> get() = _storeCategories
 
     private val _isBannerRefusal = MutableStateFlow<Boolean?>(null)
     val isBannerRefusal: StateFlow<Boolean?> get() = _isBannerRefusal
 
     private val _hotClub = MutableStateFlow<ClubHot?>(null)
     val hotClub: StateFlow<ClubHot?> get() = _hotClub
+
+    private val _isStoreSprintEnabled = MutableStateFlow<Boolean?>(null)
+    val isStoreSprintEnabled: StateFlow<Boolean?> get() = _isStoreSprintEnabled
 
     init {
         checkBannerRefusal()
@@ -209,12 +215,14 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun getStoreCategories(storeCategory: StoreCategories) {
-        viewModelScope.launchWithLoading {
-            val categoryList = getStoreCategoriesUseCase().drop(1).toMutableList()
-            categoryList.add(0, storeCategory)
-            _storeCategories.value = categoryList
-        }
+    fun getStoreCategoriesWithBenefit(storeCategory: StoreCategories) = viewModelScope.launchWithLoading {
+        val categoryList = getStoreCategoriesUseCase().drop(1).toMutableList()
+        categoryList.add(0, storeCategory)
+        _storeCategories.value = categoryList
+    }
+
+    fun getStoreCategories() = viewModelScope.launchWithLoading {
+        _storeCategories.value = getStoreCategoriesUseCase()
     }
 
     fun getDiningToShopSessionId(): String {
@@ -244,7 +252,12 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
+    fun getStoreSprintEnabled() = viewModelScope.launch {
+        _isStoreSprintEnabled.value = getDeveloperSettingUseCase(STORE_SPRINT)
+    }
+
     companion object {
         private const val HOT_ARTICLE_COUNT = 4
+        private const val STORE_SPRINT = "store_sprint"
     }
 }

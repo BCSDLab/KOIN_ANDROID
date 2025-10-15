@@ -134,6 +134,7 @@
                                 android:layout_height="wrap_content" />
 
                             <TextView
+                                android:id="@+id/text_view_store"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="20dp"
@@ -244,6 +245,12 @@
                                 app:layoutManager="GridLayoutManager"
                                 app:spanCount="6"
                                 tools:listitem="@layout/store_category_item" />
+
+                            <androidx.compose.ui.platform.ComposeView
+                                android:id="@+id/shop_compose_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone" />
 
                             <androidx.compose.ui.platform.ComposeView
                                 android:id="@+id/dining_compose_view"

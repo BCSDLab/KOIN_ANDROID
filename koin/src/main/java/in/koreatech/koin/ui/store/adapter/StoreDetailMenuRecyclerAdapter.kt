@@ -10,10 +10,10 @@ import com.bumptech.glide.Glide
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.StoreDetailMenuHeaderBinding
 import `in`.koreatech.koin.databinding.StoreDetailMenuListItemBinding
-import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.domain.model.store.LegacyShopMenus
 
 class StoreDetailMenuRecyclerAdapter :
-    ListAdapter<ShopMenus, RecyclerView.ViewHolder>(diffCallback) {
+    ListAdapter<LegacyShopMenus, RecyclerView.ViewHolder>(diffCallback) {
     private var category: String? = null
 
     override fun getItemViewType(position: Int) = when (position) {
@@ -39,7 +39,7 @@ class StoreDetailMenuRecyclerAdapter :
 
     class ItemViewHolder(private val binding: ViewDataBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(shopMenu: ShopMenus) {
+        fun bind(shopMenu: LegacyShopMenus) {
             (binding as StoreDetailMenuListItemBinding).storeDetailMenuNameTextview.text =
                 shopMenu.name
 
@@ -66,7 +66,7 @@ class StoreDetailMenuRecyclerAdapter :
                 .into(binding.storeDetailMenuImageview)
         }
 
-        private fun getOptionPriceText(menu: ShopMenus.ShopMenuOptions) = when {
+        private fun getOptionPriceText(menu: LegacyShopMenus.ShopMenuOptions) = when {
             menu.price != null -> {
                 val priceText =
                     binding.root.context.getString(
@@ -115,10 +115,10 @@ class StoreDetailMenuRecyclerAdapter :
         }
     }
 
-    override fun submitList(list: List<ShopMenus>?) {
+    override fun submitList(list: List<LegacyShopMenus>?) {
         super.submitList(
             if (!list.isNullOrEmpty()) {
-                mutableListOf<ShopMenus>().apply {
+                mutableListOf<LegacyShopMenus>().apply {
                     add(list[0])
                     addAll(list)
                 }
@@ -130,12 +130,12 @@ class StoreDetailMenuRecyclerAdapter :
 
     companion object {
         private val diffCallback =
-            object : DiffUtil.ItemCallback<ShopMenus>() {
-                override fun areItemsTheSame(oldItem: ShopMenus, newItem: ShopMenus): Boolean {
+            object : DiffUtil.ItemCallback<LegacyShopMenus>() {
+                override fun areItemsTheSame(oldItem: LegacyShopMenus, newItem: LegacyShopMenus): Boolean {
                     return oldItem.id == newItem.id
                 }
 
-                override fun areContentsTheSame(oldItem: ShopMenus, newItem: ShopMenus): Boolean {
+                override fun areContentsTheSame(oldItem: LegacyShopMenus, newItem: LegacyShopMenus): Boolean {
                     return oldItem == newItem
                 }
             }

@@ -197,7 +197,7 @@ fun HotArticleCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(`in`.koreatech.koin.core.R.drawable.ic_star),
+                imageVector = ImageVector.vectorResource(R.drawable.ic_star_article_banner),
                 contentDescription = null,
                 modifier = Modifier.size(40.dp),
                 tint = Color.Unspecified

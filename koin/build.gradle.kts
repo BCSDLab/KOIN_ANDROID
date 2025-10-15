@@ -109,6 +109,7 @@ dependencies {
     implementation(projects.feature.lostandfound)
     implementation(projects.feature.chat)
     implementation(projects.feature.banner)
+    implementation(projects.feature.store)
     implementation(projects.feature.user)
     implementation(projects.feature.club)
     implementation(projects.feature.dining)

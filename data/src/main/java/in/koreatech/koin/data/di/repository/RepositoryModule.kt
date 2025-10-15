@@ -7,6 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.IoDispatcher
 import `in`.koreatech.koin.data.repository.ArticleRepositoryImpl
 import `in`.koreatech.koin.data.repository.BannerRepositoryImpl
+import `in`.koreatech.koin.data.repository.CartRepositoryImpl
 import `in`.koreatech.koin.data.repository.ChatRepositoryImpl
 import `in`.koreatech.koin.data.repository.ClubRepositoryImpl
 import `in`.koreatech.koin.data.repository.CoopShopRepositoryImpl
@@ -14,6 +15,7 @@ import `in`.koreatech.koin.data.repository.DeptRepositoryImpl
 import `in`.koreatech.koin.data.repository.DiningRepositoryImpl
 import `in`.koreatech.koin.data.repository.LandRepositoryImpl
 import `in`.koreatech.koin.data.repository.NotificationRepositoryImpl
+import `in`.koreatech.koin.data.repository.OrderShopRepositoryImpl
 import `in`.koreatech.koin.data.repository.OwnerChangePasswordRepositoryImpl
 import `in`.koreatech.koin.data.repository.OwnerRegisterRepositoryImpl
 import `in`.koreatech.koin.data.repository.OwnerShopRepositoryImpl
@@ -34,12 +36,14 @@ import `in`.koreatech.koin.data.source.local.DeptLocalDataSource
 import `in`.koreatech.koin.data.source.local.SessionLocalDataSource
 import `in`.koreatech.koin.data.source.local.SettingLocalDataSource
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
+import `in`.koreatech.koin.data.source.local.StoreLocalDataSource
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.UploadImageLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.local.VersionLocalDataSource
 import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.BannerRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.CartRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.ChatRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.ClubRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.CoopShopRemoteDataSource
@@ -47,6 +51,7 @@ import `in`.koreatech.koin.data.source.remote.DeptRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.DiningRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.LandRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.NotificationRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.OrderShopRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.PreSignedUrlRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
@@ -55,6 +60,7 @@ import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.VersionRemoteDataSource
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.repository.BannerRepository
+import `in`.koreatech.koin.domain.repository.CartRepository
 import `in`.koreatech.koin.domain.repository.ChatRepository
 import `in`.koreatech.koin.domain.repository.ClubRepository
 import `in`.koreatech.koin.domain.repository.CoopShopRepository
@@ -62,6 +68,7 @@ import `in`.koreatech.koin.domain.repository.DeptRepository
 import `in`.koreatech.koin.domain.repository.DiningRepository
 import `in`.koreatech.koin.domain.repository.LandRepository
 import `in`.koreatech.koin.domain.repository.NotificationRepository
+import `in`.koreatech.koin.domain.repository.OrderShopRepository
 import `in`.koreatech.koin.domain.repository.OwnerChangePasswordRepository
 import `in`.koreatech.koin.domain.repository.OwnerRegisterRepository
 import `in`.koreatech.koin.domain.repository.OwnerShopRepository
@@ -177,8 +184,8 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideStoreRepository(storeRemoteDataSource: StoreRemoteDataSource): StoreRepository {
-        return StoreRepositoryImpl(storeRemoteDataSource)
+    fun provideStoreRepository(storeRemoteDataSource: StoreRemoteDataSource, storeLocalDataSource: StoreLocalDataSource): StoreRepository {
+        return StoreRepositoryImpl(storeRemoteDataSource, storeLocalDataSource)
     }
 
     @Provides
@@ -255,6 +262,26 @@ object RepositoryModule {
     ): ClubRepository {
         return ClubRepositoryImpl(
             clubRemoteDataSource
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideCartRepository(
+        cartRemoteDataSource: CartRemoteDataSource
+    ): CartRepository {
+        return CartRepositoryImpl(
+            cartRemoteDataSource
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideOrderShopRepository(
+        orderShopRemoteDataSource: OrderShopRemoteDataSource
+    ): OrderShopRepository {
+        return OrderShopRepositoryImpl(
+            orderShopRemoteDataSource
         )
     }
 
