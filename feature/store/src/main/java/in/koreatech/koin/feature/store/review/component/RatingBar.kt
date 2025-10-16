@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.feature.store.R
@@ -32,6 +33,7 @@ fun RatingBar(
     modifier: Modifier = Modifier,
     minRating: Int = 0,
     maxRating: Int = 5,
+    iconSize: Dp = 40.dp,
     onRatingChanged: (Int) -> Unit = {}
 ) {
     require(minRating >= 0) { "minRating should not smaller than $minRating" }
@@ -39,14 +41,14 @@ fun RatingBar(
 
     var offset by remember { mutableFloatStateOf(0f) }
 
-    val iconSize = with(LocalDensity.current) { 40.dp.toPx() }
+    val iconSizeInPx = with(LocalDensity.current) { iconSize.toPx() }
 
     LaunchedEffect(rating) {
         snapshotFlow { offset }.collect {
-            if (offset > iconSize) {
+            if (offset > iconSizeInPx) {
                 if (rating < maxRating) onRatingChanged(rating + 1)
                 offset = 0f
-            } else if (offset < -iconSize) {
+            } else if (offset < -iconSizeInPx) {
                 if (rating > minRating) onRatingChanged(rating - 1)
                 offset = 0f
             }
@@ -67,7 +69,7 @@ fun RatingBar(
         repeat(maxRating) {
             Image(
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(iconSize)
                     .noRippleClickable {
                         onRatingChanged(it + 1)
                     },
