@@ -384,7 +384,7 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
                 navController.navigate("${StoreDetailNavType.StoreDetailInfo.route}/$storeId/$isOrderableShop/$selectedInfoType")
             },
             navigateToReview = {
-                // Navigate to review screen if implemented
+                navController.navigate("${StoreReviewNavType.StoreReviewHome.route}/$storeId")
             },
             navigateToMenuInfo = { menuId ->
                 it.savedStateHandle[IS_CART_ADDED] = false
