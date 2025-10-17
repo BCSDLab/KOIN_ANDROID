@@ -62,6 +62,20 @@ fun NavGraphBuilder.koinStoreGraph(
         )
     }
 
+    navigation(
+        route = "${StoreNavType.StoreReview.route}/{$STORE_ID}",
+        startDestination = "${StoreReviewNavType.StoreReviewHome.route}/{$STORE_ID}",
+        arguments = listOf(
+            navArgument(STORE_ID) {
+                type = NavType.IntType
+            }
+        )
+    ) {
+        koinStoreReviewGraph(
+            navController = navController
+        )
+    }
+
     composable(
         route = StoreNavType.StoreCart.route
     ) {
@@ -407,6 +421,50 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
                 navController.navigate(StoreNavType.StoreCart.route)
             }
         )
+    }
+}
+
+internal fun NavGraphBuilder.koinStoreReviewGraph(
+    navController: NavController
+) {
+    composable(
+        route = "${StoreReviewNavType.StoreReviewHome.route}/{$STORE_ID}",
+        arguments = listOf(
+            navArgument(STORE_ID) {
+                type = NavType.IntType
+            }
+        )
+    ) {
+    }
+
+    composable(
+        route = "${StoreReviewNavType.StoreReviewAdd.route}/{$STORE_ID}",
+        arguments = listOf(
+            navArgument(STORE_ID) {
+                type = NavType.IntType
+            }
+        )
+    ) {
+    }
+
+    composable(
+        route = "${StoreReviewNavType.StoreReviewEdit.route}/{$STORE_ID}",
+        arguments = listOf(
+            navArgument(STORE_ID) {
+                type = NavType.IntType
+            }
+        )
+    ) {
+    }
+
+    composable(
+        route = "${StoreReviewNavType.StoreReviewReport.route}/{$STORE_ID}",
+        arguments = listOf(
+            navArgument(STORE_ID) {
+                type = NavType.IntType
+            }
+        )
+    ) {
     }
 }
 
