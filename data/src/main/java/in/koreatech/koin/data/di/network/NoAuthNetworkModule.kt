@@ -18,11 +18,13 @@ import `in`.koreatech.koin.data.api.CoopShopApi
 import `in`.koreatech.koin.data.api.DeptApi
 import `in`.koreatech.koin.data.api.DiningApi
 import `in`.koreatech.koin.data.api.LandApi
+import `in`.koreatech.koin.data.api.OrderShopApi
 import `in`.koreatech.koin.data.api.OwnerApi
 import `in`.koreatech.koin.data.api.StoreApi
 import `in`.koreatech.koin.data.api.TimetableApi
 import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.VersionApi
+import `in`.koreatech.koin.data.di.interceptor.NetworkUnavailableInterceptor
 import `in`.koreatech.koin.data.util.EmptyStringToNullAdapter
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -41,6 +43,7 @@ object NoAuthNetworkModule {
     fun provideNoAuthOkHttpClient(
         @UserAgent userAgentInterceptor: Interceptor,
         httpLoggingInterceptor: HttpLoggingInterceptor,
+        networkUnavailableInterceptor: NetworkUnavailableInterceptor,
         @Inspection inspectionInterceptor: Interceptor
     ): OkHttpClient {
         return OkHttpClient.Builder().apply {
@@ -49,6 +52,7 @@ object NoAuthNetworkModule {
             writeTimeout(15, TimeUnit.SECONDS)
             addInterceptor(httpLoggingInterceptor)
             addInterceptor(userAgentInterceptor)
+            addInterceptor(networkUnavailableInterceptor)
         }.build()
     }
 
@@ -179,5 +183,13 @@ object NoAuthNetworkModule {
         @NoAuth retrofit: Retrofit
     ): ClubApi {
         return retrofit.create(ClubApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOrderShopApi(
+        @NoAuth retrofit: Retrofit
+    ): OrderShopApi {
+        return retrofit.create(OrderShopApi::class.java)
     }
 }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,6 +23,7 @@ import `in`.koreatech.bus.mock.shuttleTimetableNodeInfoMock4
 import `in`.koreatech.bus.mock.shuttleTimetableNodeInfoMock5
 import `in`.koreatech.bus.state.ShuttleTimetableNodeInfoState
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.util.getMeasuredKoreanHeightDp
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -32,6 +34,9 @@ internal fun ShuttleTimetableNodeItem(
     nodeItemHeightDp: Dp,
     modifier: Modifier = Modifier
 ) {
+    val textHeight = KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() * 2
+    val rememberHeight = remember { textHeight }
+
     Column(
         modifier = modifier.width(IntrinsicSize.Max)
     ) {
@@ -39,19 +44,17 @@ internal fun ShuttleTimetableNodeItem(
             text = stringResource(R.string.node_name),
             style = KoinTheme.typography.regular14,
             color = KoinTheme.colors.neutral600,
-            modifier =
-            Modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .background(color = KoinTheme.colors.neutral100)
-                .padding(horizontal = 24.dp, vertical = 8.dp)
+                .padding(horizontal = 24.dp, vertical = rememberHeight / 4)
         )
 
         nodes.fastForEach { node ->
             NodeItem(
                 nodeTitle = node.name,
                 nodeDescription = node.detail,
-                modifier =
-                Modifier
+                modifier = Modifier
                     .padding(horizontal = 24.dp, vertical = 4.dp)
                     .height(nodeItemHeightDp)
             )

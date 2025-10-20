@@ -208,10 +208,10 @@ fun OperatingTimeSetting(
         Text(
             modifier =
             Modifier.clickable {
-                if (!state.storeInfo.operatingTime[index].closed) onShowOpenTimeDialog(index)
+                if (state.storeInfo.operatingTime?.get(index)?.closed == false) onShowOpenTimeDialog(index)
             },
             text = state.operatingTimeList[index].openTime,
-            color = if (state.storeInfo.operatingTime[index].closed) ColorMinor else Color.Black,
+            color = if (state.storeInfo.operatingTime?.get(index)?.closed == true) ColorMinor else Color.Black,
             fontSize = 15.sp
         )
         Text(
@@ -225,7 +225,7 @@ fun OperatingTimeSetting(
                 if (!operatingTime.closed) onShowCloseTimeDialog(index)
             },
             text = state.operatingTimeList[index].closeTime,
-            color = if (state.storeInfo.operatingTime[index].closed) ColorMinor else Color.Black,
+            color = if (state.storeInfo.operatingTime?.get(index)?.closed == true) ColorMinor else Color.Black,
             fontSize = 15.sp
         )
         Spacer(modifier = Modifier.weight(1f))
@@ -235,7 +235,7 @@ fun OperatingTimeSetting(
                 onCheckBoxClicked(index)
             },
             painter =
-            if (state.storeInfo.operatingTime[index].closed) {
+            if (state.storeInfo.operatingTime?.get(index)?.closed == true) {
                 painterResource(
                     R.drawable.ic_insert_store_time_setting_checked
                 )

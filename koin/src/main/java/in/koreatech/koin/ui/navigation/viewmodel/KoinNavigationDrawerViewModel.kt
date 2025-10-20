@@ -7,10 +7,13 @@ import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.chat.GetChatListUseCase
+import `in`.koreatech.koin.domain.usecase.session.GetSessionIdUseCase
+import `in`.koreatech.koin.domain.usecase.setting.GetDeveloperSettingUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.usecase.user.UpdateDeviceTokenUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLogoutUseCase
 import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.ui.developer.DeveloperSettingViewModel.Companion.STORE_SPRINT
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +31,9 @@ class KoinNavigationDrawerViewModel @Inject constructor(
     private val updateDeviceTokenUseCase: UpdateDeviceTokenUseCase,
     private val userLogoutUseCase: UserLogoutUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
-    private val getChatListUseCase: GetChatListUseCase
+    private val getChatListUseCase: GetChatListUseCase,
+    private val getDeveloperSettingUseCase: GetDeveloperSettingUseCase,
+    private val getSessionIdUseCase: GetSessionIdUseCase
 ) : BaseViewModel() {
     private val _menuEvent = SingleLiveEvent<MenuState>()
     val menuEvent: LiveData<MenuState> get() = _menuEvent
@@ -39,6 +44,9 @@ class KoinNavigationDrawerViewModel @Inject constructor(
 
     private val _unReadMessageCount = MutableStateFlow(0)
     val unReadMessageCount: StateFlow<Int> = _unReadMessageCount.asStateFlow()
+
+    private val _isStoreSprintEnabled = MutableStateFlow<Boolean?>(null)
+    val isStoreSprintEnabled: StateFlow<Boolean?> get() = _isStoreSprintEnabled
 
     fun selectMenu(menuState: MenuState) {
         _menuEvent.value = menuState
@@ -72,9 +80,21 @@ class KoinNavigationDrawerViewModel @Inject constructor(
         }
     }
 
+    fun getStoreSprintEnabled() = viewModelScope.launch {
+        _isStoreSprintEnabled.value = getDeveloperSettingUseCase(STORE_SPRINT)
+    }
+
     fun logout() = viewModelScope.launch {
         userLogoutUseCase().onFailure {
             _errorToast.value = it.message
         }
+    }
+
+    fun getSignUpSessionId(): String {
+        return getSessionIdUseCase(
+            sessionName = "sign_up",
+            isLoggedIn = false,
+            shouldExpireOtherSessions = true
+        )
     }
 }

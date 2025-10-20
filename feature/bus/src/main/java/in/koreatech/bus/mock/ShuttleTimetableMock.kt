@@ -35,6 +35,7 @@ internal val shuttleTimetableNodeInfoMock5 =
 internal val shuttleTimetableRouteInfoMock1 =
     ShuttleTimetableRouteInfoState(
         name = "1회",
+        detail = "등교",
         arrivalTimes =
         listOf(
             "11:10",
@@ -47,6 +48,7 @@ internal val shuttleTimetableRouteInfoMock1 =
 internal val shuttleTimetableRouteInfoMock2 =
     ShuttleTimetableRouteInfoState(
         name = "2회",
+        detail = "",
         arrivalTimes =
         listOf(
             "13:10",
@@ -59,6 +61,7 @@ internal val shuttleTimetableRouteInfoMock2 =
 internal val shuttleTimetableRouteInfoMock3 =
     ShuttleTimetableRouteInfoState(
         name = "3회",
+        detail = "",
         arrivalTimes =
         listOf(
             "14:10",
@@ -71,6 +74,7 @@ internal val shuttleTimetableRouteInfoMock3 =
 internal val shuttleTimetableRouteInfoMock4 =
     ShuttleTimetableRouteInfoState(
         name = "4회",
+        detail = "",
         arrivalTimes =
         listOf(
             "16:10",
@@ -83,6 +87,7 @@ internal val shuttleTimetableRouteInfoMock4 =
 internal val shuttleTimetableRouteInfoMock5 =
     ShuttleTimetableRouteInfoState(
         name = "5회",
+        detail = "",
         arrivalTimes =
         listOf(
             "20:00",
@@ -95,6 +100,7 @@ internal val shuttleTimetableRouteInfoMock5 =
 internal val shuttleTimetableRouteInfoMock6 =
     ShuttleTimetableRouteInfoState(
         name = "6회",
+        detail = "",
         arrivalTimes =
         listOf(
             "21:00",
@@ -107,6 +113,7 @@ internal val shuttleTimetableRouteInfoMock6 =
 internal val shuttleTimetableRouteInfoMock7 =
     ShuttleTimetableRouteInfoState(
         name = "목, 금 추가",
+        detail = "",
         arrivalTimes =
         listOf(
             "14:10/16:30",

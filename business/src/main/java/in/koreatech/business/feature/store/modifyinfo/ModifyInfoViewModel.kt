@@ -39,9 +39,9 @@ class ModifyInfoViewModel @Inject constructor(
     private fun initStoreTimeList() {
         intent {
             reduce {
-                val newList = state.storeInfo.operatingTime.toMutableList()
+                val newList = state.storeInfo.operatingTime?.toMutableList()
                 state.copy(
-                    operatingTimeList = newList
+                    operatingTimeList = newList ?: listOf()
                 )
             }
         }
@@ -230,8 +230,8 @@ class ModifyInfoViewModel @Inject constructor(
 
     fun isClosedDay(index: Int) {
         intent {
-            if (index >= 0 && index <= state.storeInfo.operatingTime.size) {
-                val newList = state.storeInfo.operatingTime.toMutableList()
+            if (index >= 0 && index <= (state.storeInfo.operatingTime?.size ?: 0)) {
+                val newList = state.storeInfo.operatingTime?.toMutableList() ?: mutableListOf()
                 val currentItem = newList[index]
                 newList[index] = currentItem.copy(closed = !currentItem.closed)
                 reduce {

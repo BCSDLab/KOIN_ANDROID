@@ -4,7 +4,6 @@ import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.koin.compose)
     alias(libs.plugins.koin.application)
     alias(libs.plugins.koin.hilt)
     alias(libs.plugins.koin.firebase)
@@ -101,6 +100,7 @@ dependencies {
     implementation(projects.core.navigation)
     implementation(projects.core.designsystem)
     implementation(projects.core.analytics)
+    implementation(projects.core.network)
     implementation(projects.data)
     implementation(projects.domain)
     implementation(projects.core.onboarding)
@@ -109,6 +109,7 @@ dependencies {
     implementation(projects.feature.lostandfound)
     implementation(projects.feature.chat)
     implementation(projects.feature.banner)
+    implementation(projects.feature.store)
     implementation(projects.feature.user)
     implementation(projects.feature.club)
     implementation(projects.feature.dining)
@@ -153,5 +154,5 @@ dependencies {
     implementation(libs.kotlinx.collections.immutable)
 
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.bundles.compose.m3)
+    implementation(libs.bundles.compose)
 }

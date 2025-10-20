@@ -255,7 +255,9 @@ fun ModifyMenuScreenImpl(
                         .padding(top = 16.dp, bottom = 48.dp)
                         .clickable {
                             takePictureUri = createImageFile(context)
-                            takePhotoFromCameraLauncher.launch(takePictureUri)
+                            takePictureUri?.let { uri ->
+                                takePhotoFromCameraLauncher.launch(uri)
+                            }
                             coroutineScope.launch {
                                 sheetState.hide()
                             }

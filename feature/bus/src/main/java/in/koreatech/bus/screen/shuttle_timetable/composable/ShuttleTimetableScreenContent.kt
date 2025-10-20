@@ -182,7 +182,7 @@ fun ShuttleTimetableScreenContent(
                                             Spacer(
                                                 modifier =
                                                 Modifier.weight(1f).height(
-                                                    KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() + 16.dp
+                                                    KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() * 2
                                                 ).background(KoinTheme.colors.neutral100)
                                             )
                                         }
@@ -256,7 +256,7 @@ fun ShuttleTimetableScreenContent(
                                         Spacer(
                                             modifier =
                                             Modifier.weight(1f).height(
-                                                KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() + 16.dp
+                                                KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() * 2
                                             ).background(KoinTheme.colors.neutral100)
                                         )
                                     }

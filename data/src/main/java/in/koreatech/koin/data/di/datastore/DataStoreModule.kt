@@ -13,6 +13,7 @@ import `in`.koreatech.koin.data.source.datastore.ArticleDataStore
 import `in`.koreatech.koin.data.source.datastore.BannerDataStore
 import `in`.koreatech.koin.data.source.datastore.BusDataStore
 import `in`.koreatech.koin.data.source.datastore.SessionDataStore
+import `in`.koreatech.koin.data.source.datastore.SettingDataStore
 import `in`.koreatech.koin.data.source.datastore.TimetableDataStore
 import javax.inject.Singleton
 
@@ -37,6 +38,10 @@ object DataStoreModule {
 
     private val Context.sessionDataStore: DataStore<Preferences> by preferencesDataStore(
         name = "session_data_store"
+    )
+
+    private val Context.settingDataStore: DataStore<Preferences> by preferencesDataStore(
+        name = "setting_data_store"
     )
 
     @Provides
@@ -77,5 +82,13 @@ object DataStoreModule {
         @ApplicationContext context: Context
     ): SessionDataStore {
         return SessionDataStore(context.sessionDataStore)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSettingDataStore(
+        @ApplicationContext context: Context
+    ): SettingDataStore {
+        return SettingDataStore(context.settingDataStore)
     }
 }
