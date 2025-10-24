@@ -193,4 +193,6 @@
     <string name="view_order_details">주문 상세 보기</string>
     <string name="order_history">주문 내역</string>
     <string name="order_ongoing_topbar">진행 중</string>
+
+    <string name="review_rating">%d점</string>
 </resources>
