@@ -41,7 +41,7 @@ class KoinStoreChipStyle(
     val borderColor: Color,
     val shape: Shape,
     val paddingValues: PaddingValues,
-    val innerSpace: Dp
+    val innerPadding: Dp
 )
 
 class KoinStoreChipIconStyle(
@@ -62,7 +62,7 @@ object KoinStoreChipDefaults {
         borderColor: Color = containerColor,
         shape: Shape = RoundedCornerShape(24.dp),
         paddingValues: PaddingValues = PaddingValues(vertical = 6.dp, horizontal = 8.dp),
-        innerSpace: Dp = 6.dp
+        innerPadding: Dp = 6.dp
     ): KoinStoreChipStyle = KoinStoreChipStyle(
         textColor = textColor,
         textStyle = textStyle,
@@ -74,7 +74,7 @@ object KoinStoreChipDefaults {
         borderColor = borderColor,
         shape = shape,
         paddingValues = paddingValues,
-        innerSpace = innerSpace
+        innerPadding = innerPadding
     )
 
     @Composable
@@ -123,7 +123,7 @@ fun KoinStoreChip(
                     )
             )
 
-            Spacer(modifier = Modifier.width(chipStyle.innerSpace))
+            Spacer(modifier = Modifier.width(chipStyle.innerPadding))
         }
 
         BasicText(
@@ -134,7 +134,7 @@ fun KoinStoreChip(
         )
 
         if (trailingIcon != null) {
-            Spacer(modifier = Modifier.width(chipStyle.innerSpace))
+            Spacer(modifier = Modifier.width(chipStyle.innerPadding))
 
             Box(
                 modifier = Modifier

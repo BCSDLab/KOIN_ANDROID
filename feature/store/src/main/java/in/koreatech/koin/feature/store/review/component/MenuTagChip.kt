@@ -35,7 +35,7 @@ fun MenuTagChipGroup(
         paddingValues = PaddingValues(horizontal = 10.dp, vertical = 3.dp),
         ambientColor = Color.Transparent,
         spotColor = Color.Transparent,
-        innerSpace = 4.dp
+        innerPadding = 4.dp
     )
 
     val menuTagIconStyle = KoinStoreChipIconStyle(
