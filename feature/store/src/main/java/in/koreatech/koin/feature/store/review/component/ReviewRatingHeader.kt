@@ -115,7 +115,7 @@ private fun ReviewRatingHeaderDetailBar(
                     BasicText(
                         modifier = Modifier.layoutId("${RATING_QUANTITY_TEXT}$rating"),
                         text = "$quantity",
-                        style = KoinTheme.typography.regular12.merge(color = KoinTheme.colors.neutral500)
+                        style = KoinTheme.typography.regular12.copy(color = KoinTheme.colors.neutral500)
                     )
                 } ?: throw IllegalArgumentException("$rating-star rating data is not declared")
             }
