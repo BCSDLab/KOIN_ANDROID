@@ -191,12 +191,10 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         initViewModel()
         initView()
 
-        val initStoreCategory = intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY, 0)
         storeCategoriesAdapter.selectPosition =
             intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.minus(2)
 
-        viewModel.setCategory(initStoreCategory)
-        storeCategoriesAdapter.initCategory(initStoreCategory)
+        setCategory()
     }
 
     private fun initView() {
@@ -610,6 +608,17 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     binding.searchResultTextView.text =
                         "\"${viewModel.search.value}\" 관련 가게가 총 ${it.size}개 있어요."
                 }
+            }
+        }
+    }
+
+    private fun setCategory() {
+        val initStoreCategory = intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY, 0)
+
+        observeLiveData(viewModel.storeCategoryList) {
+            if (it.isNotEmpty()) {
+                viewModel.setCategory(initStoreCategory)
+                storeCategoriesAdapter.initCategory(initStoreCategory)
             }
         }
     }
