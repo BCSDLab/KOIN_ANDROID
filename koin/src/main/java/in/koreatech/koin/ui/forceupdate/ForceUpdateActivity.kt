@@ -1,6 +1,9 @@
 package `in`.koreatech.koin.ui.forceupdate
 
 import android.os.Bundle
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
@@ -56,6 +59,17 @@ class ForceUpdateActivity : ActivityBase() {
         SystemBarsUtils(this).apply {
             setStatusBarColor(window, R.color.primary_600)
             setNavigationBarColor(window, R.color.primary_600)
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(
+                left = v.left,
+                right = v.right,
+                top = v.top + systemBars.top,
+                bottom = v.top + systemBars.bottom
+            )
+            WindowInsetsCompat.CONSUMED
         }
     }
 
