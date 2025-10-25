@@ -100,6 +100,7 @@ private fun ReviewRatingHeaderDetailBar(
 
                     reviewRatingList.fastFirstOrNull { it.rating == rating }?.apply {
                         require(quantity >= 0) { "Rating quantity must be positive" }
+                        if (quantity == 0) return@apply
                         drawLine(
                             color = ratingContentColor,
                             start = Offset(0f, 0f),
