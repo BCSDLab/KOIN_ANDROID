@@ -21,11 +21,12 @@ import `in`.koreatech.koin.feature.store.cartedit.CartEditScreen
 import `in`.koreatech.koin.feature.store.detail.StoreDetailScreen
 import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
 import `in`.koreatech.koin.feature.store.home.StoreHomeScreen
-import `in`.koreatech.koin.feature.store.model.StoreReviewNavigationData
-import `in`.koreatech.koin.feature.store.model.StoreReviewNavigationDataType
+import `in`.koreatech.koin.feature.store.model.StoreNavigationData
+import `in`.koreatech.koin.feature.store.model.StoreNavigationDataType
 import `in`.koreatech.koin.feature.store.nearby.StoreNearbyScreen
 import `in`.koreatech.koin.feature.store.orderhistory.OrderHistoryScreen
 import `in`.koreatech.koin.feature.store.origin.ShopOriginInfoScreen
+import `in`.koreatech.koin.feature.store.review.ReviewScreen
 import `in`.koreatech.koin.feature.store.search.StoreSearchScreen
 import `in`.koreatech.koin.feature.store.webapp.StoreWebAppScreen
 import kotlin.reflect.typeOf
@@ -67,7 +68,7 @@ fun NavGraphBuilder.koinStoreGraph(
 
     navigation<StoreNavType.StoreReview>(
         startDestination = StoreReviewNavType.StoreReviewHome::class,
-        typeMap = mapOf(typeOf<StoreReviewNavigationData>() to StoreReviewNavigationDataType)
+        typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
     ) {
         koinStoreReviewGraph(
             navController = navController
@@ -426,8 +427,9 @@ internal fun NavGraphBuilder.koinStoreReviewGraph(
     navController: NavController
 ) {
     composable<StoreReviewNavType.StoreReviewHome>(
-        typeMap = mapOf(typeOf<StoreReviewNavigationData>() to StoreReviewNavigationDataType)
+        typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
     ) {
+        ReviewScreen()
     }
 
     composable<StoreReviewNavType.StoreReviewAdd> {

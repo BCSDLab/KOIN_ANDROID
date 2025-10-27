@@ -3,7 +3,7 @@ package `in`.koreatech.koin.feature.store.navigation
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import `in`.koreatech.koin.feature.store.R
-import `in`.koreatech.koin.feature.store.model.StoreReviewNavigationData
+import `in`.koreatech.koin.feature.store.model.StoreNavigationData
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -35,7 +35,7 @@ sealed class StoreDetailNavType(val route: String) {
 @Serializable
 sealed class StoreReviewNavType {
     @Serializable
-    data class StoreReviewHome(val reviewData: StoreReviewNavigationData) : StoreReviewNavType()
+    data class StoreReviewHome(val storeNavigationData: StoreNavigationData) : StoreReviewNavType()
 
     @Serializable
     data object StoreReviewAdd : StoreReviewNavType()
