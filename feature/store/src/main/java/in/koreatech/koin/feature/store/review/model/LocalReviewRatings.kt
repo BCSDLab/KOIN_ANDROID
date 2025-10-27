@@ -2,7 +2,9 @@ package `in`.koreatech.koin.feature.store.review.model
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class LocalReviewRatings(
     val reviews: ImmutableList<LocalReviewRating>,
     val average: Double,
@@ -38,6 +40,7 @@ data class LocalReviewRatings(
     }
 }
 
+@Serializable
 data class LocalReviewRating(
     val rating: Int,
     val quantity: Int
