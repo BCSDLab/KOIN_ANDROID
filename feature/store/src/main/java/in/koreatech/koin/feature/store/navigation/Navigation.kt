@@ -21,11 +21,15 @@ import `in`.koreatech.koin.feature.store.cartedit.CartEditScreen
 import `in`.koreatech.koin.feature.store.detail.StoreDetailScreen
 import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
 import `in`.koreatech.koin.feature.store.home.StoreHomeScreen
+import `in`.koreatech.koin.feature.store.model.StoreNavigationData
+import `in`.koreatech.koin.feature.store.model.StoreNavigationDataType
 import `in`.koreatech.koin.feature.store.nearby.StoreNearbyScreen
 import `in`.koreatech.koin.feature.store.orderhistory.OrderHistoryScreen
 import `in`.koreatech.koin.feature.store.origin.ShopOriginInfoScreen
+import `in`.koreatech.koin.feature.store.review.ReviewScreen
 import `in`.koreatech.koin.feature.store.search.StoreSearchScreen
 import `in`.koreatech.koin.feature.store.webapp.StoreWebAppScreen
+import kotlin.reflect.typeOf
 
 fun NavGraphBuilder.koinStoreGraph(
     navController: NavController,
@@ -62,14 +66,9 @@ fun NavGraphBuilder.koinStoreGraph(
         )
     }
 
-    navigation(
-        route = "${StoreNavType.StoreReview.route}/{$STORE_ID}",
-        startDestination = "${StoreReviewNavType.StoreReviewHome.route}/{$STORE_ID}",
-        arguments = listOf(
-            navArgument(STORE_ID) {
-                type = NavType.IntType
-            }
-        )
+    navigation<StoreNavType.StoreReview>(
+        startDestination = StoreReviewNavType.StoreReviewHome::class,
+        typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
     ) {
         koinStoreReviewGraph(
             navController = navController
@@ -384,7 +383,7 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
                 navController.navigate("${StoreDetailNavType.StoreDetailInfo.route}/$storeId/$isOrderableShop/$selectedInfoType")
             },
             navigateToReview = {
-                navController.navigate("${StoreReviewNavType.StoreReviewHome.route}/$storeId")
+                navController.navigate(StoreReviewNavType.StoreReviewHome(it))
             },
             navigateToMenuInfo = { menuId ->
                 it.savedStateHandle[IS_CART_ADDED] = false
@@ -427,44 +426,19 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
 internal fun NavGraphBuilder.koinStoreReviewGraph(
     navController: NavController
 ) {
-    composable(
-        route = "${StoreReviewNavType.StoreReviewHome.route}/{$STORE_ID}",
-        arguments = listOf(
-            navArgument(STORE_ID) {
-                type = NavType.IntType
-            }
-        )
+    composable<StoreReviewNavType.StoreReviewHome>(
+        typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
     ) {
+        ReviewScreen()
     }
 
-    composable(
-        route = "${StoreReviewNavType.StoreReviewAdd.route}/{$STORE_ID}",
-        arguments = listOf(
-            navArgument(STORE_ID) {
-                type = NavType.IntType
-            }
-        )
-    ) {
+    composable<StoreReviewNavType.StoreReviewAdd> {
     }
 
-    composable(
-        route = "${StoreReviewNavType.StoreReviewEdit.route}/{$STORE_ID}",
-        arguments = listOf(
-            navArgument(STORE_ID) {
-                type = NavType.IntType
-            }
-        )
-    ) {
+    composable<StoreReviewNavType.StoreReviewEdit> {
     }
 
-    composable(
-        route = "${StoreReviewNavType.StoreReviewReport.route}/{$STORE_ID}",
-        arguments = listOf(
-            navArgument(STORE_ID) {
-                type = NavType.IntType
-            }
-        )
-    ) {
+    composable<StoreReviewNavType.StoreReviewReport> {
     }
 }
 

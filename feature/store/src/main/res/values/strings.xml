@@ -94,6 +94,7 @@
     <string name="store_title_home_nearby">주변상점</string>
     <string name="store_title_home_history">주문 내역</string>
     <string name="store_title_home_search">검색</string>
+    <string name="store_title_review">리뷰</string>
 
     <string name="store_order_option_none">기본순</string>
     <string name="store_order_option_review_count_desc">리뷰순</string>
@@ -195,4 +196,13 @@
     <string name="order_ongoing_topbar">진행 중</string>
 
     <string name="review_rating">%d점</string>
+    <string name="review_write">리뷰 작성하기</string>
+
+    <string name="review_order_option_recent">최신순</string>
+    <string name="review_order_option_least_recent">오래된순</string>
+    <string name="review_order_option_higher_rating">별점높은순</string>
+    <string name="review_order_option_lower_rating">별점낮은순</string>
+    <string name="review_mine">내가 작성한 리뷰</string>
+    <string name="review_empty_title">작성된 리뷰가 없어요</string>
+    <string name="review_empty_summary">첫 번째 리뷰를 작성해보세요!</string>
 </resources>

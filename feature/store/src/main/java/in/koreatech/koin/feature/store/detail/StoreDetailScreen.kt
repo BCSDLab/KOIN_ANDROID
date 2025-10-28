@@ -64,6 +64,7 @@ import `in`.koreatech.koin.feature.store.detail.component.StoreDetailImage
 import `in`.koreatech.koin.feature.store.detail.component.StoreDetailInfo
 import `in`.koreatech.koin.feature.store.detail.component.menuListSection
 import `in`.koreatech.koin.feature.store.enums.CartValidation
+import `in`.koreatech.koin.feature.store.model.StoreNavigationData
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
 import `in`.koreatech.koin.feature.store.state.collapseToolbar
 import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
@@ -86,7 +87,7 @@ fun StoreDetailScreen(
     navigateToCart: () -> Unit = {},
     navigateToBack: () -> Unit = {},
     navigateToDetailInfo: (selectedInfo: String) -> Unit = {},
-    navigateToReview: () -> Unit = {},
+    navigateToReview: (StoreNavigationData) -> Unit = {},
     navigateToMenuInfo: (menuId: Int) -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
@@ -221,7 +222,15 @@ fun StoreDetailScreen(
                             storeInfo = uiState.store,
                             storeReview = uiState.storeReview,
                             storeDescriptionModel = uiState.shopDescription,
-                            navigateToReview = { navigateToReview() },
+                            navigateToReview = {
+                                navigateToReview(
+                                    StoreNavigationData(
+                                        shopId = uiState.store.shopId,
+                                        orderableShopId = uiState.store.orderableShopId ?: 0,
+                                        isOrderableShop = uiState.isOrderableShop
+                                    )
+                                )
+                            },
                             navigateToDetailInfo = { selectedInfo ->
                                 navigateToDetailInfo(selectedInfo)
                             }
