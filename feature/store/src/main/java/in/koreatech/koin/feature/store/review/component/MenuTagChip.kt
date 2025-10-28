@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.store.review.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,6 +20,7 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreChipStyle
 fun MenuTagChipGroup(
     menuTags: List<String>,
     modifier: Modifier = Modifier,
+    isIconVisibility: Boolean = true,
     onClick: (Int) -> Unit = { }
 ) {
     val menuTagChipIcon = painterResource(id = R.drawable.ic_close_thin)
@@ -44,19 +44,26 @@ fun MenuTagChipGroup(
     )
 
     FlowRow(
-        modifier = modifier
-            .padding(vertical = 24.dp),
+        modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         menuTags.forEachIndexed { i, tag ->
-            KoinStoreChip(
-                text = tag,
-                chipStyle = menuTagStyle,
-                trailingIcon = menuTagChipIcon,
-                trailingIconStyle = menuTagIconStyle,
-                onClick = { onClick(i) }
-            )
+            if (isIconVisibility) {
+                KoinStoreChip(
+                    text = tag,
+                    chipStyle = menuTagStyle,
+                    trailingIcon = menuTagChipIcon,
+                    trailingIconStyle = menuTagIconStyle,
+                    onClick = { onClick(i) }
+                )
+            } else {
+                KoinStoreChip(
+                    text = tag,
+                    chipStyle = menuTagStyle,
+                    onClick = { onClick(i) }
+                )
+            }
         }
     }
 }
@@ -73,6 +80,24 @@ private fun MenuTagChipGroupPreview() {
         MenuTagChipGroup(
             menuTags = tagList,
             modifier = Modifier,
+            onClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = false)
+@Composable
+private fun MenuTagChipGroupNoIconPreview() {
+    val tagList = listOf(
+        "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발", "닭발", "계란찜", "1인 매운 닭발",
+        "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발"
+    )
+
+    RebrandKoinTheme {
+        MenuTagChipGroup(
+            menuTags = tagList,
+            modifier = Modifier,
+            isIconVisibility = false,
             onClick = {}
         )
     }
