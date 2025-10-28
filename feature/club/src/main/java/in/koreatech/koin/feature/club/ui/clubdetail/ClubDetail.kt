@@ -3,6 +3,9 @@ package `in`.koreatech.koin.feature.club.ui.clubdetail
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,12 +20,11 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -43,16 +45,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -61,6 +64,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -109,6 +113,7 @@ import `in`.koreatech.koin.feature.club.ui.clubdetail.events.ClubDetailEvents
 import `in`.koreatech.koin.feature.club.ui.clubdetail.intro.ClubDetailIntro
 import `in`.koreatech.koin.feature.club.ui.clubdetail.qna.ClubDetailQna
 import `in`.koreatech.koin.feature.club.ui.clubdetail.recruit.ClubDetailRecruit
+import `in`.koreatech.koin.feature.club.ui.clubdetail.scroll.clubDetailScrollConnection
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -152,23 +157,53 @@ fun ClubDetail(
 
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val listState = rememberLazyListState()
-
     val introductionScrollState = rememberScrollState()
-    val isIntroductionScrollable = remember { derivedStateOf { !listState.canScrollForward || introductionScrollState.value != 0 } }
-
     val recruitScrollState = rememberScrollState()
-    val isRecruitScrollable = remember { derivedStateOf { !listState.canScrollForward || recruitScrollState.value != 0 } }
-
     val eventsScrollState = rememberScrollState()
-    val isEventsScrollable = remember { derivedStateOf { !listState.canScrollForward || eventsScrollState.value != 0 } }
-
     val qnaScrollState = rememberScrollState()
-    val isQnaScrollable = remember { derivedStateOf { !listState.canScrollForward || qnaScrollState.value != 0 } }
 
-    var tabRowHeight by remember { mutableStateOf(0.dp) }
+    var maxToolbarHeight by remember { mutableStateOf(0.dp) }
+    val minToolbarHeight = 0.dp
+    val maxToolbarHeightPx = remember(maxToolbarHeight) { with(density) { maxToolbarHeight.toPx() } }
+    val minToolbarHeightPx = with(density) { minToolbarHeight.toPx() }
+    val toolbarOffsetPx = remember { mutableFloatStateOf(0f) }
 
     val navigator = rememberNavigator()
+
+    val currentScrollState = remember {
+        derivedStateOf {
+            when (tabList[pagerState.currentPage]) {
+                DetailTabType.DETAIL_INTRO.strResId -> introductionScrollState
+                DetailTabType.QNA.strResId -> recruitScrollState
+                DetailTabType.EVENT.strResId -> eventsScrollState
+                DetailTabType.RECRUIT.strResId -> qnaScrollState
+                else -> introductionScrollState
+            }
+        }
+    }
+
+    val nestedScrollConnection = remember(maxToolbarHeightPx) {
+        clubDetailScrollConnection(
+            currentScrollState = currentScrollState,
+            toolbarOffsetPx = toolbarOffsetPx,
+            maxToolbarHeightPx = maxToolbarHeightPx,
+            minToolbarHeightPx = minToolbarHeightPx
+        )
+    }
+
+    val toolbarHeight = lerp(
+        maxToolbarHeight,
+        minToolbarHeight,
+        if (maxToolbarHeightPx != minToolbarHeightPx) {
+            -toolbarOffsetPx.floatValue / (maxToolbarHeightPx - minToolbarHeightPx)
+        }
+        else 0f
+    )
+    val animatedToolbarHeight by animateDpAsState(
+        targetValue = toolbarHeight,
+        animationSpec = tween(durationMillis = 50)
+    )
+    Log.e("MYLOG","${animatedToolbarHeight} ${maxToolbarHeight}")
 
     viewModel.collectSideEffect { sideEffect ->
         handleSideEffect(sideEffect, context, snackbarHostState)
@@ -193,7 +228,7 @@ fun ClubDetail(
     LaunchedEffect(isRecruitEvent) {
         if (isRecruitEvent) {
             pagerState.animateScrollToPage(1)
-            listState.animateScrollToItem(2)
+            toolbarOffsetPx.floatValue = minToolbarHeightPx
         }
     }
 
@@ -203,7 +238,7 @@ fun ClubDetail(
             if (eventIndex != -1) {
                 viewModel.selectEvent(eventIndex)
                 pagerState.animateScrollToPage(2)
-                listState.animateScrollToItem(2)
+                toolbarOffsetPx.floatValue = minToolbarHeightPx
                 resetNorificationEventId()
             }
         }
@@ -225,7 +260,7 @@ fun ClubDetail(
                 shape = CircleShape,
                 onClick = {
                     scope.launch {
-                        listState.animateScrollToItem(0)
+                        toolbarOffsetPx.floatValue = maxToolbarHeightPx
                         qnaScrollState.scrollTo(0)
                     }
                 },
@@ -428,16 +463,27 @@ fun ClubDetail(
             )
         }
 
-        LazyColumn(
+        Box(
             modifier = Modifier
                 .padding(contentPadding)
                 .consumeWindowInsets(contentPadding)
                 .systemBarsPadding()
-                .fillMaxSize(),
-            state = listState,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize()
+                .nestedScroll(nestedScrollConnection)
         ) {
-            item {
+            Column(
+                modifier = Modifier
+                    .onGloballyPositioned {
+                        maxToolbarHeight = with(density) { it.size.height.toDp() }
+                    }
+                    .fillMaxWidth()
+                    .offset(y = -(maxToolbarHeight - animatedToolbarHeight))
+                    .padding(
+                        horizontal = 24.dp,
+                        vertical = 16.dp
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 SubcomposeAsyncImage(
                     modifier = Modifier
                         .size(200.dp)
@@ -466,266 +512,258 @@ fun ClubDetail(
                         }
                     }
                 )
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = 24.dp,
-                            vertical = 16.dp
-                        )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        state.userId?.let {
-                            if (state.clubDetails?.manager == true) {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    FilledButton(
-                                        text = stringResource(R.string.detail_empowerment_button),
-                                        onClick = {
-                                            viewModel.showEmpowermentDialog()
-                                            EventLogger.logCampusClickEvent(
-                                                AnalyticsConstant.Label.Club.CLUB_DELEGATION_AUTHORITY,
-                                                "권한위임"
-                                            )
-                                        },
-                                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp)
-                                    )
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    FilledButton(
-                                        text = stringResource(R.string.detail_fix_button),
-                                        onClick = {
-                                            EventLogger.logCampusClickEvent(
-                                                AnalyticsConstant.Label.Club.CLUB_CORRECTION,
-                                                "수정하기"
-                                            )
-                                            onModifyClick(state.clubId)
-                                        }, // 동아리 정보 수정 버튼 클릭
-                                        contentPadding = PaddingValues(horizontal = 25.dp, vertical = 5.dp)
-                                    )
-                                }
+                    state.userId?.let {
+                        if (state.clubDetails?.manager == true) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                FilledButton(
+                                    text = stringResource(R.string.detail_empowerment_button),
+                                    onClick = {
+                                        viewModel.showEmpowermentDialog()
+                                        EventLogger.logCampusClickEvent(
+                                            AnalyticsConstant.Label.Club.CLUB_DELEGATION_AUTHORITY,
+                                            "권한위임"
+                                        )
+                                    },
+                                    contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                FilledButton(
+                                    text = stringResource(R.string.detail_fix_button),
+                                    onClick = {
+                                        EventLogger.logCampusClickEvent(
+                                            AnalyticsConstant.Label.Club.CLUB_CORRECTION,
+                                            "수정하기"
+                                        )
+                                        onModifyClick(state.clubId)
+                                    }, // 동아리 정보 수정 버튼 클릭
+                                    contentPadding = PaddingValues(horizontal = 25.dp, vertical = 5.dp)
+                                )
                             }
                         }
                     }
-                    Spacer(modifier = Modifier.height(16.dp))
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = state.clubDetails?.name ?: "",
+                        style = KoinTheme.typography.bold20,
+                        modifier = Modifier
+                            .padding(end = 16.dp)
+                            .weight(1f, fill = false),
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = state.clubDetails?.name ?: "",
-                            style = KoinTheme.typography.bold20,
+                        state.clubDetails?.hotStatus?.let {
+                            Row(
+                                modifier = Modifier
+                                    .background(
+                                        color = KoinTheme.colors.primary100,
+                                        shape = KoinTheme.shapes.extraSmall
+                                    )
+                                    .padding(vertical = 7.dp, horizontal = 8.dp),
+                                horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = stringResource(
+                                        R.string.detail_hotStatus_club_intro,
+                                        state.clubDetails?.hotStatus?.month ?: 0,
+                                        state.clubDetails?.hotStatus?.weekOfMonth ?: 0
+                                    ),
+                                    style = KoinTheme.typography.regular10.copy(fontSize = 11.sp),
+                                    color = KoinTheme.colors.neutral800
+                                )
+                            }
+                        }
+                        Spacer(Modifier.width(8.dp))
+                        Image(
+                            painter = if (state.clubDetails?.isLiked == true) painterResource(id = R.drawable.icon_like_true) else painterResource(id = R.drawable.icon_like_false),
+                            contentDescription = "",
                             modifier = Modifier
-                                .padding(end = 16.dp)
-                                .weight(1f, fill = false),
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
+                                .size(24.dp)
+                                .padding(end = 4.dp)
+                                .clickable {
+                                    state.userId?.let {
+                                        viewModel.changeClubLike()
+                                    } ?: viewModel.showLoginDialog()
+                                }
                         )
+                        if (state.clubDetails?.isLikeHidden != true) {
+                            Text(
+                                text = "${state.clubDetails?.likes}",
+                                style = KoinTheme.typography.medium14
+                            )
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    detailList.forEach { intro ->
+                        if (intro.second.isNullOrBlank()) return@forEach
+                        var outputText = ""
+                        var linkUrl = ""
+                        val showMore = remember { mutableStateOf(false) }
+                        var icon = -1
+                        var onClick = {}
+                        var onIconClick = {}
+                        val clipboard = LocalClipboardManager.current
+                        intro.second?.let {
+                            when (intro.first) {
+                                DETAIL_DESCRIPTION -> {
+                                    outputText = stringResource(intro.first.strResId, it)
+                                    onClick = { showMore.value = !showMore.value }
+                                }
+                                DETAIL_INSTAGRAM -> {
+                                    val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
+                                    linkUrl = if (url.isValidInstagramUrl()) url else url.removeUrlScheme().toInstagramUrl()
+                                    onClick = { viewModel.openUrl(linkUrl) }
+                                    outputText = it.toInstagramLink()
+                                }
+                                DETAIL_GOOGLE_FORM -> {
+                                    val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
+                                    linkUrl = if (url.isValidGoogleFormUrl()) url else ""
+                                    onClick = { viewModel.openUrl(linkUrl) }
+                                    outputText = it.removeUrlScheme().let { text -> if (text.length <= 22) text else "${text.take(22)}..." }
+                                    icon = R.drawable.icon_club_copy
+                                    onIconClick = { clipboard.setText(AnnotatedString(linkUrl)) }
+                                }
+                                DETAIL_OPEN_CHAT -> {
+                                    val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
+                                    linkUrl = if (url.isValidOpenChatUrl()) url else ""
+                                    onClick = { viewModel.openUrl(linkUrl) }
+                                    outputText = it.removeUrlScheme()
+                                    icon = R.drawable.icon_club_copy
+                                    onIconClick = { clipboard.setText(AnnotatedString(linkUrl)) }
+                                }
+                                DETAIL_PHONE_NUMBER -> {
+                                    outputText = if (it.isValidPhoneNumber) it.formatPhoneNumber() else it
+                                    icon = R.drawable.icon_club_copy
+                                    onIconClick = { clipboard.setText(AnnotatedString(it)) }
+                                }
+                                else -> outputText = it
+                            }
+                            if (
+                                it.isValidGoogleFormUrl() ||
+                                it.isValidOpenChatUrl()
+                            ) {
+                                linkUrl = it
+                                onClick = { if (linkUrl.isNotEmpty()) viewModel.openUrl(linkUrl) }
+                            }
+                        }
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            state.clubDetails?.hotStatus?.let {
-                                Row(
-                                    modifier = Modifier
-                                        .background(
-                                            color = KoinTheme.colors.primary100,
-                                            shape = KoinTheme.shapes.extraSmall
-                                        )
-                                        .padding(vertical = 7.dp, horizontal = 8.dp),
-                                    horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text(
-                                        text = stringResource(
-                                            R.string.detail_hotStatus_club_intro,
-                                            state.clubDetails?.hotStatus?.month ?: 0,
-                                            state.clubDetails?.hotStatus?.weekOfMonth ?: 0
-                                        ),
-                                        style = KoinTheme.typography.regular10.copy(fontSize = 11.sp),
-                                        color = KoinTheme.colors.neutral800
-                                    )
-                                }
-                            }
-                            Spacer(Modifier.width(8.dp))
-                            Image(
-                                painter = if (state.clubDetails?.isLiked == true) painterResource(id = R.drawable.icon_like_true) else painterResource(id = R.drawable.icon_like_false),
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .size(24.dp)
-                                    .padding(end = 4.dp)
-                                    .clickable {
-                                        state.userId?.let {
-                                            viewModel.changeClubLike()
-                                        } ?: viewModel.showLoginDialog()
-                                    }
+                            Text(
+                                text = if (intro.first != DETAIL_DESCRIPTION) stringResource(intro.first.strResId) else "",
+                                style = KoinTheme.typography.medium18,
+                                color = KoinTheme.colors.neutral800
                             )
-                            if (state.clubDetails?.isLikeHidden != true) {
-                                Text(
-                                    text = "${state.clubDetails?.likes}",
-                                    style = KoinTheme.typography.medium14
-                                )
-                            }
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        detailList.forEach { intro ->
-                            if (intro.second.isNullOrBlank()) return@forEach
-                            var outputText = ""
-                            var linkUrl = ""
-                            val showMore = remember { mutableStateOf(false) }
-                            var icon = -1
-                            var onClick = {}
-                            var onIconClick = {}
-                            val clipboard = LocalClipboardManager.current
-                            intro.second?.let {
-                                when (intro.first) {
-                                    DETAIL_DESCRIPTION -> {
-                                        outputText = stringResource(intro.first.strResId, it)
-                                        onClick = { showMore.value = !showMore.value }
-                                    }
-                                    DETAIL_INSTAGRAM -> {
-                                        val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
-                                        linkUrl = if (url.isValidInstagramUrl()) url else url.removeUrlScheme().toInstagramUrl()
-                                        onClick = { viewModel.openUrl(linkUrl) }
-                                        outputText = it.toInstagramLink()
-                                    }
-                                    DETAIL_GOOGLE_FORM -> {
-                                        val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
-                                        linkUrl = if (url.isValidGoogleFormUrl()) url else ""
-                                        onClick = { viewModel.openUrl(linkUrl) }
-                                        outputText = it.removeUrlScheme().let { text -> if (text.length <= 22) text else "${text.take(22)}..." }
-                                        icon = R.drawable.icon_club_copy
-                                        onIconClick = { clipboard.setText(AnnotatedString(linkUrl)) }
-                                    }
-                                    DETAIL_OPEN_CHAT -> {
-                                        val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
-                                        linkUrl = if (url.isValidOpenChatUrl()) url else ""
-                                        onClick = { viewModel.openUrl(linkUrl) }
-                                        outputText = it.removeUrlScheme()
-                                        icon = R.drawable.icon_club_copy
-                                        onIconClick = { clipboard.setText(AnnotatedString(linkUrl)) }
-                                    }
-                                    DETAIL_PHONE_NUMBER -> {
-                                        outputText = if (it.isValidPhoneNumber) it.formatPhoneNumber() else it
-                                        icon = R.drawable.icon_club_copy
-                                        onIconClick = { clipboard.setText(AnnotatedString(it)) }
-                                    }
-                                    else -> outputText = it
-                                }
-                                if (
-                                    it.isValidGoogleFormUrl() ||
-                                    it.isValidOpenChatUrl()
-                                ) {
-                                    linkUrl = it
-                                    onClick = { if (linkUrl.isNotEmpty()) viewModel.openUrl(linkUrl) }
-                                }
-                            }
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    text = if (intro.first != DETAIL_DESCRIPTION) stringResource(intro.first.strResId) else "",
-                                    style = KoinTheme.typography.medium18,
-                                    color = KoinTheme.colors.neutral800
-                                )
-                                Text(
-                                    text = outputText,
-                                    maxLines = if (intro.first == DETAIL_DESCRIPTION) if (showMore.value) 10 else 2 else 1,
-                                    style = KoinTheme.typography.medium18,
-                                    color = if (linkUrl.isEmpty()) KoinTheme.colors.neutral800 else KoinTheme.colors.info700,
-                                    overflow = TextOverflow.Ellipsis,
-                                    modifier = Modifier.clickable { onClick() }.weight(1f, fill = false)
-                                )
-                                if (icon != -1) {
-                                    Spacer(Modifier.width(8.dp))
-                                    Image(
-                                        painter = painterResource(id = icon),
-                                        contentDescription = "Phone Number Copy Icon",
-                                        modifier = Modifier
-                                            .size(24.dp)
-                                            .padding(end = 4.dp)
-                                            .clickable {
-                                                onIconClick()
-                                            }
-                                    )
-                                }
-                            }
-                        }
-                        if (state.clubDetails?.manager == false) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.detail_intro_notification),
-                                    style = KoinTheme.typography.medium18,
-                                    color = KoinTheme.colors.neutral800
-                                )
+                            Text(
+                                text = outputText,
+                                maxLines = if (intro.first == DETAIL_DESCRIPTION) if (showMore.value) 10 else 2 else 1,
+                                style = KoinTheme.typography.medium18,
+                                color = if (linkUrl.isEmpty()) KoinTheme.colors.neutral800 else KoinTheme.colors.info700,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.clickable { onClick() }.weight(1f, fill = false)
+                            )
+                            if (icon != -1) {
                                 Spacer(Modifier.width(8.dp))
                                 Image(
-                                    painter = if (state.clubDetails?.isRecruitSubscribed == true) {
-                                        painterResource(R.drawable.icon_notification_true)
-                                    } else {
-                                        painterResource(R.drawable.icon_notification_false)
-                                    },
-                                    contentDescription = "Notification Icon",
+                                    painter = painterResource(id = icon),
+                                    contentDescription = "Phone Number Copy Icon",
                                     modifier = Modifier
                                         .size(24.dp)
                                         .padding(end = 4.dp)
                                         .clickable {
-                                            EventLogger.logCampusClickEvent(
-                                                AnalyticsConstant.Label.Club.CLUB_RECRUITMENT_NOTI,
-                                                state.clubDetails?.name ?: "알 수 없는 동아리"
-                                            )
-                                            state.userId?.let {
-                                                viewModel.updateRecruitSubscribeDialog(true)
-                                            } ?: viewModel.showLoginDialog()
+                                            onIconClick()
                                         }
                                 )
                             }
                         }
                     }
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.icon_club_info),
-                            contentDescription = "picture",
-                            modifier = Modifier
-                                .size(17.dp)
-                                .padding(end = 4.dp)
-                        )
-                        Text(
-                            text = state.clubDetails?.updatedAt ?: "",
-                            style = KoinTheme.typography.regular12,
-                            color = KoinTheme.colors.neutral600
-                        )
-                        Text(
-                            text = stringResource(R.string.detail_date_text),
-                            style = KoinTheme.typography.regular12,
-                            color = KoinTheme.colors.neutral600
-                        )
+                    if (state.clubDetails?.manager == false) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = stringResource(R.string.detail_intro_notification),
+                                style = KoinTheme.typography.medium18,
+                                color = KoinTheme.colors.neutral800
+                            )
+                            Spacer(Modifier.width(8.dp))
+                            Image(
+                                painter = if (state.clubDetails?.isRecruitSubscribed == true) {
+                                    painterResource(R.drawable.icon_notification_true)
+                                } else {
+                                    painterResource(R.drawable.icon_notification_false)
+                                },
+                                contentDescription = "Notification Icon",
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .padding(end = 4.dp)
+                                    .clickable {
+                                        EventLogger.logCampusClickEvent(
+                                            AnalyticsConstant.Label.Club.CLUB_RECRUITMENT_NOTI,
+                                            state.clubDetails?.name ?: "알 수 없는 동아리"
+                                        )
+                                        state.userId?.let {
+                                            viewModel.updateRecruitSubscribeDialog(true)
+                                        } ?: viewModel.showLoginDialog()
+                                    }
+                            )
+                        }
                     }
                 }
+                Spacer(modifier = Modifier.height(12.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.icon_club_info),
+                        contentDescription = "picture",
+                        modifier = Modifier
+                            .size(17.dp)
+                            .padding(end = 4.dp)
+                    )
+                    Text(
+                        text = state.clubDetails?.updatedAt ?: "",
+                        style = KoinTheme.typography.regular12,
+                        color = KoinTheme.colors.neutral600
+                    )
+                    Text(
+                        text = stringResource(R.string.detail_date_text),
+                        style = KoinTheme.typography.regular12,
+                        color = KoinTheme.colors.neutral600
+                    )
+                }
             }
-            stickyHeader {
+
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Spacer(Modifier.height(animatedToolbarHeight))
+
                 DetailTabRow(
-                    modifier = Modifier.zIndex(2f).onGloballyPositioned {
-                        tabRowHeight = with(density) {
-                            it.size.height.toDp()
-                        }
-                    },
+                    modifier = Modifier.zIndex(2f),
                     selectedTabIndex = pagerState.currentPage,
                     onTabSelected = {
                         EventLogger.logCampusClickEvent(
@@ -738,13 +776,10 @@ fun ClubDetail(
                     },
                     titles = tabList.map { stringResource(it) }
                 )
-            }
-            item {
-                val deviceHeightDp = LocalConfiguration.current.screenHeightDp.dp - (contentPadding.calculateTopPadding().value.dp + 24.dp) - tabRowHeight
+
                 HorizontalPager(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .height(deviceHeightDp),
+                        .fillMaxSize(),
                     state = pagerState,
                     verticalAlignment = Alignment.Top
                 ) { page ->
@@ -756,7 +791,7 @@ fun ClubDetail(
                                 introduction = state.clubDetails?.introduction,
                                 modifier = Modifier
                                     .fillMaxSize()
-                                    .verticalScroll(introductionScrollState, enabled = isIntroductionScrollable.value),
+                                    .verticalScroll(introductionScrollState),
                                 onFixIntroClick = {
                                     scope.launch {
                                         val result = snackbarHostState.showSnackbar(
@@ -781,7 +816,7 @@ fun ClubDetail(
                             ClubDetailRecruit(
                                 modifier = Modifier
                                     .fillMaxSize()
-                                    .verticalScroll(recruitScrollState, enabled = isRecruitScrollable.value),
+                                    .verticalScroll(recruitScrollState),
                                 recruitment = state.clubRecruitment,
                                 showProgressBar = state.showRecruitProgressBar,
                                 onImageClick = viewModel::showImageDialog,
@@ -795,11 +830,10 @@ fun ClubDetail(
                             if (state.clubEventSelected && state.selectedEventIndex != -1) {
                                 val selectedEvent = state.clubEvents[state.selectedEventIndex]
                                 val eventInfoScrollState = rememberScrollState()
-                                val isEventInfoScrollable = remember { derivedStateOf { !listState.canScrollForward || eventInfoScrollState.value != 0 } }
                                 ClubDetailEventInfo(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .verticalScroll(eventInfoScrollState, enabled = isEventInfoScrollable.value),
+                                        .verticalScroll(eventInfoScrollState),
                                     clubEvent = selectedEvent,
                                     onBackPressed = viewModel::deselectEvent,
                                     onEventDeleteClick = {
@@ -817,7 +851,7 @@ fun ClubDetail(
                                 ClubDetailEvents(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .verticalScroll(eventsScrollState, enabled = isEventsScrollable.value),
+                                        .verticalScroll(eventsScrollState),
                                     isDropdownExpanded = state.isEventsDropdownExpanded,
                                     clubEvents = state.clubEvents,
                                     onDropdownExpandChange = viewModel::updateEventsDropdownExpanded,
@@ -837,7 +871,7 @@ fun ClubDetail(
                             ClubDetailQna(
                                 modifier = Modifier
                                     .fillMaxSize()
-                                    .verticalScroll(qnaScrollState, enabled = isQnaScrollable.value),
+                                    .verticalScroll(qnaScrollState),
                                 qnaList = qnaList,
                                 isManager = state.clubDetails?.manager ?: false,
                                 userId = state.userId,
