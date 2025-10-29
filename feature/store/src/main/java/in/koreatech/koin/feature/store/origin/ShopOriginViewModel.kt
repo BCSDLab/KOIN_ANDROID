@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopOriginInfoUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.store.model.DeliveryTipModel
 import `in`.koreatech.koin.feature.store.model.OriginModel
@@ -25,7 +26,8 @@ class ShopOriginViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
     private val getOrderShopOriginInfoUseCase: GetOrderShopOriginInfoUseCase,
-    private val getUserStatusUseCase: GetUserStatusUseCase
+    private val getUserStatusUseCase: GetUserStatusUseCase,
+    private val getStoreWithMenuUseCase: GetStoreWithMenuUseCase
 ) : ViewModel(), ContainerHost<ShopOriginState, Unit> {
     override val container = container<ShopOriginState, Unit>(ShopOriginState()) {
         val storeId = savedStateHandle.get<Int>(STORE_ID)
@@ -34,6 +36,8 @@ class ShopOriginViewModel @Inject constructor(
 
         if (isOrderableShop) {
             fetchOrderStoreNotice(storeId)
+        } else {
+            fetchShopInfo(storeId)
         }
     }
 
@@ -50,6 +54,7 @@ class ShopOriginViewModel @Inject constructor(
                         state.copy(isLoggedIn = true)
                     }
                 }
+
                 is User.Anonymous -> {
                     reduce {
                         state.copy(isLoggedIn = false)
@@ -110,6 +115,34 @@ class ShopOriginViewModel @Inject constructor(
                             result.address,
                             result.ownerInfo.companyRegistrationNumber ?: ""
                         )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun fetchShopInfo(id: Int) = intent {
+        getStoreWithMenuUseCase(id).also { result ->
+            reduce {
+                state.copy(
+                    isLoading = false,
+                    shopDescription = StoreDescriptionModel(
+                        id = id,
+                        storeName = result.name,
+                        address = result.address ?: "",
+                        description = result.description,
+                        notice = result.description,
+                        phone = result.phone,
+                        openTime = result.open.openTime,
+                        closeTime = result.open.closeTime,
+                        closedDays = emptyList(),
+                        deliveryTips = DeliveryTipModel(
+                            fromAmount = 0,
+                            toAmount = null,
+                            fee = result.deliveryPrice
+                        ).let { listOf(it) },
+                        origins = null,
+                        ownerInfo = null
                     )
                 )
             }
