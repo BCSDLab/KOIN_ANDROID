@@ -81,9 +81,15 @@ class ReviewViewModel @Inject constructor(
     }
 
     private fun fetchReviews() = intent {
+        reduce {
+            state.copy(isLoading = true)
+        }
         getStoreReviewUseCase(shopId = state.storeNavigationData.shopId).let { data ->
             reduce {
-                state.copy(reviewRatings = data.toLocalReviewRatings())
+                state.copy(
+                    isLoading = false,
+                    reviewRatings = data.toLocalReviewRatings()
+                )
             }
         }
     }
