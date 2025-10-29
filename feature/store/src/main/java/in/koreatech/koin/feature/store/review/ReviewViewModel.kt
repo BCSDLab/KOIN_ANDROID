@@ -4,10 +4,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.usecase.store.GetStoreReviewUseCase
 import `in`.koreatech.koin.feature.store.model.StoreNavigationData
 import `in`.koreatech.koin.feature.store.model.StoreNavigationDataType
 import `in`.koreatech.koin.feature.store.navigation.StoreReviewNavType
 import `in`.koreatech.koin.feature.store.review.model.ReviewOrderOption
+import `in`.koreatech.koin.feature.store.review.model.toLocalReviewRatings
 import javax.inject.Inject
 import kotlin.reflect.typeOf
 import org.orbitmvi.orbit.ContainerHost
@@ -18,7 +20,8 @@ import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
 class ReviewViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val getStoreReviewUseCase: GetStoreReviewUseCase
 ) : ViewModel(), ContainerHost<ReviewState, ReviewSideEffect> {
     override val container = container<ReviewState, ReviewSideEffect>(ReviewState()) {
         val storeNavigationData = savedStateHandle.toRoute<StoreReviewNavType.StoreReviewHome>(
@@ -32,6 +35,10 @@ class ReviewViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    init {
+        fetchReviews()
     }
 
     fun showReviewOrderOptionChooser() = intent {
@@ -70,6 +77,14 @@ class ReviewViewModel @Inject constructor(
             state.copy(
                 filterMyReview = filterMyReview
             )
+        }
+    }
+
+    private fun fetchReviews() = intent {
+        getStoreReviewUseCase(shopId = state.storeNavigationData.shopId).let { data ->
+            reduce {
+                state.copy(reviewRatings = data.toLocalReviewRatings())
+            }
         }
     }
 }
