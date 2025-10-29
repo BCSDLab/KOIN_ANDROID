@@ -40,6 +40,7 @@
 
     <!--가게 정보 및 원산지-->
     <string name="store_info_and_origin">가게정보·원산지</string>
+    <string name="store_info_detail">가게정보</string>
     <string name="store_info">가게 소개</string>
     <string name="store_notice">가게 알림</string>
     <string name="address">주소</string>

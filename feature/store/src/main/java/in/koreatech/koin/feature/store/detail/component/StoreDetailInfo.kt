@@ -37,6 +37,7 @@ fun StoreDetailInfo(
     storeReview: StoreReview,
     storeDescriptionModel: StoreDescriptionModel,
     modifier: Modifier = Modifier,
+    isOrderableShop: Boolean = true,
     navigateToReview: () -> Unit = {},
     navigateToDetailInfo: (selectedInfo: String) -> Unit = {}
 ) {
@@ -73,7 +74,8 @@ fun StoreDetailInfo(
                     .clip(RoundedCornerShape(50))
                     .clickable {
                         navigateToDetailInfo(StoreDetailInfoType.ORIGIN.name)
-                    }
+                    },
+                isOrderableShop = isOrderableShop
             )
         }
         Spacer(modifier = Modifier.height(12.dp))

@@ -222,6 +222,7 @@ fun StoreDetailScreen(
                             storeInfo = uiState.store,
                             storeReview = uiState.storeReview,
                             storeDescriptionModel = uiState.shopDescription,
+                            isOrderableShop = uiState.isOrderableShop,
                             navigateToReview = {
                                 navigateToReview(
                                     StoreNavigationData(
