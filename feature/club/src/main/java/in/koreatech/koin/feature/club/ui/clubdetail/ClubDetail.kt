@@ -204,11 +204,20 @@ fun ClubDetail(
         animationSpec = tween(durationMillis = 50)
     )
 
+    var toolBarFullScrollEvent by remember { mutableStateOf(false) }
+
+    LaunchedEffect(toolBarFullScrollEvent, maxToolbarHeight) {
+        if(maxToolbarHeight.value != 0f && toolBarFullScrollEvent) {
+            toolbarOffsetPx.floatValue = -maxToolbarHeightPx
+            toolBarFullScrollEvent = false
+        }
+    }
+
     viewModel.collectSideEffect { sideEffect ->
         handleSideEffect(sideEffect, context, snackbarHostState)
     }
 
-    LaunchedEffect(Unit, state.clubId) {
+    LaunchedEffect(state.clubId) {
         if (state.clubId != -1) {
             viewModel.fetchAllData()
         }
@@ -227,7 +236,7 @@ fun ClubDetail(
     LaunchedEffect(isRecruitEvent) {
         if (isRecruitEvent) {
             pagerState.animateScrollToPage(1)
-            toolbarOffsetPx.floatValue = minToolbarHeightPx
+            toolBarFullScrollEvent = true
         }
     }
 
@@ -237,7 +246,7 @@ fun ClubDetail(
             if (eventIndex != -1) {
                 viewModel.selectEvent(eventIndex)
                 pagerState.animateScrollToPage(2)
-                toolbarOffsetPx.floatValue = minToolbarHeightPx
+                toolBarFullScrollEvent = true
                 resetNorificationEventId()
             }
         }
@@ -259,8 +268,8 @@ fun ClubDetail(
                 shape = CircleShape,
                 onClick = {
                     scope.launch {
-                        toolbarOffsetPx.floatValue = maxToolbarHeightPx
-                        qnaScrollState.scrollTo(0)
+                        toolbarOffsetPx.floatValue = minToolbarHeightPx
+                        currentScrollState.value.scrollTo(0)
                     }
                 },
                 elevation = FloatingActionButtonDefaults.elevation(
