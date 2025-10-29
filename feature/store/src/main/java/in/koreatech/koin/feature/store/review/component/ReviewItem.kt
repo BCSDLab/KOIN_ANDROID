@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.store.review.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -27,6 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,7 +36,7 @@ import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreChip
-import `in`.koreatech.koin.feature.store.component.KoinStoreChipStyle
+import `in`.koreatech.koin.feature.store.component.KoinStoreChipDefaults
 
 @Composable
 fun ReviewItem(
@@ -50,13 +52,12 @@ fun ReviewItem(
     onEditClick: () -> Unit = { },
     onDeleteClick: () -> Unit = { }
 ) {
-    val chipStyle = KoinStoreChipStyle(
+    val chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
         textColor = RebrandKoinTheme.colors.neutral500,
         textStyle = RebrandKoinTheme.typography.bold12,
         containerColor = RebrandKoinTheme.colors.neutral200,
         elevation = 0.dp,
         borderWidth = 1.dp,
-        borderColor = RebrandKoinTheme.colors.neutral200,
         shape = CircleShape,
         paddingValues = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
         ambientColor = Color.Transparent,
@@ -84,7 +85,7 @@ fun ReviewItem(
                         tint = RebrandKoinTheme.colors.primary500
                     )
                     BasicText(
-                        text = "내가 작성한 리뷰",
+                        text = stringResource(R.string.review_mine),
                         style = RebrandKoinTheme.typography.regular12.copy(color = RebrandKoinTheme.colors.primary500)
                     )
                 }
@@ -101,19 +102,19 @@ fun ReviewItem(
                 if (isMyReview) {
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         KoinStoreChip(
-                            text = "수정",
+                            text = stringResource(R.string.edit),
                             chipStyle = chipStyle,
                             onClick = { onEditClick() }
                         )
                         KoinStoreChip(
-                            text = "삭제",
+                            text = stringResource(R.string.delete),
                             chipStyle = chipStyle,
                             onClick = { onDeleteClick() }
                         )
                     }
                 } else {
                     BasicText(
-                        text = "신고하기",
+                        text = stringResource(R.string.review_report),
                         style = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral500),
                         modifier = Modifier.clickable { onReportClick() }
                     )
@@ -166,11 +167,14 @@ fun ReviewItem(
         Spacer(modifier = Modifier.height(10.dp))
 
         menuTags?.let {
-            Column(modifier = Modifier.padding(horizontal = 24.dp)) {
+            Box(
+                modifier = Modifier
+                    .padding(horizontal = 24.dp)
+            ) {
                 MenuTagChipGroup(
                     menuTags = menuTags,
                     isIconVisibility = false,
-                    onClick = {}
+                    onClick = { }
                 )
             }
         }

@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreChip
+import `in`.koreatech.koin.feature.store.component.KoinStoreChipDefaults
 import `in`.koreatech.koin.feature.store.component.KoinStoreChipIconStyle
-import `in`.koreatech.koin.feature.store.component.KoinStoreChipStyle
 
 @Composable
 fun MenuTagChipGroup(
@@ -24,10 +24,9 @@ fun MenuTagChipGroup(
     onClick: (Int) -> Unit = { }
 ) {
     val menuTagChipIcon = painterResource(id = R.drawable.ic_close_thin)
-    val menuTagStyle = KoinStoreChipStyle(
+    val menuTagStyle = KoinStoreChipDefaults.koinStoreChipStyle(
         textColor = RebrandKoinTheme.colors.primary300,
         textStyle = RebrandKoinTheme.typography.regular12,
-        containerColor = RebrandKoinTheme.colors.neutral0,
         elevation = 0.dp,
         borderWidth = 1.dp,
         borderColor = RebrandKoinTheme.colors.primary300,
