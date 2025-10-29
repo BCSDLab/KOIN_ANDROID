@@ -79,7 +79,7 @@ fun LazyListScope.menuListSection(
                         if (index != menus.lastIndex) {
                             Divider(
                                 color = KoinTheme.colors.neutral300,
-                                thickness = 2.dp
+                                thickness = 1.dp
                             )
                         }
                     }
