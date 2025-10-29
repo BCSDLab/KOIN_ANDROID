@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.store.review
 
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -77,12 +78,16 @@ private fun ReviewScreen(
     setFilterMyReview: (Boolean) -> Unit = {}
 ) {
     val context = LocalContext.current
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
     Column(
         modifier = modifier
     ) {
         KoinStoreTopAppBar(
-            title = stringResource(R.string.store_title_review)
+            title = stringResource(R.string.store_title_review),
+            onNavigationIconClick = {
+                onBackPressedDispatcher?.onBackPressed()
+            }
         )
 
         Spacer(modifier = Modifier.height(30.dp))
