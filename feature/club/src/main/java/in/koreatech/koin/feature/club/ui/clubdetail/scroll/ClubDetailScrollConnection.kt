@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.club.ui.clubdetail.scroll
 
-import android.util.Log
 import androidx.compose.foundation.ScrollState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
