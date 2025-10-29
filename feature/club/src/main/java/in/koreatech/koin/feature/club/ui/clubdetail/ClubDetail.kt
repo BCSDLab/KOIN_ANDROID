@@ -207,7 +207,7 @@ fun ClubDetail(
     var toolBarFullScrollEvent by remember { mutableStateOf(false) }
 
     LaunchedEffect(toolBarFullScrollEvent, maxToolbarHeight) {
-        if(maxToolbarHeight.value != 0f && toolBarFullScrollEvent) {
+        if (maxToolbarHeight.value != 0f && toolBarFullScrollEvent) {
             toolbarOffsetPx.floatValue = -maxToolbarHeightPx
             toolBarFullScrollEvent = false
         }
