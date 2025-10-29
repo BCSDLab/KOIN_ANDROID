@@ -17,6 +17,7 @@ import `in`.koreatech.koin.feature.store.navigation.STORE_ID
 import `in`.koreatech.koin.feature.store.util.toKoreanWeek
 import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
@@ -33,6 +34,14 @@ class ShopOriginViewModel @Inject constructor(
         val storeId = savedStateHandle.get<Int>(STORE_ID)
         val isOrderableShop = savedStateHandle.get<Boolean>(IS_ORDERABLE_SHOP) ?: true
         checkNotNull(storeId)
+
+        blockingIntent {
+            reduce {
+                state.copy(
+                    isOrderableShop = isOrderableShop
+                )
+            }
+        }
 
         if (isOrderableShop) {
             fetchOrderStoreNotice(storeId)
