@@ -151,11 +151,11 @@ fun StoreDetailScreen(
         combine(
             snapshotFlow { rememberState.listState.firstVisibleItemIndex },
             snapshotFlow { rememberState.listState.layoutInfo.visibleItemsInfo.lastIndex }
-        ) { v1, v2 ->
-            Pair(v1, v2)
-        }.collect { (first, _) ->
+        ) { index, _ ->
+            index
+        }.collect { index ->
             val visibleCategory = if (!rememberState.listState.isScrolledToTheEnd()) {
-                uiState.categories.getOrNull(first - 2)
+                uiState.categories.getOrNull(index - 2)
             } else {
                 uiState.categories.lastOrNull()
             }
