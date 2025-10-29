@@ -115,33 +115,36 @@ fun MenuItem(
             )
         }
         Spacer(modifier = Modifier.width(16.dp))
-        Box(
-            modifier = Modifier
-                .align(Alignment.Bottom)
-                .size(88.dp)
-                .clip(KoinTheme.shapes.small)
-        ) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(menu.thumbnailImage)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = null,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier.matchParentSize()
-            )
 
-            if (menu.isSoldOut) {
-                Image(
-                    imageVector = ImageVector.vectorResource(R.drawable.ic_sold_out),
-                    contentDescription = "",
+        menu.thumbnailImage?.let {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.Bottom)
+                    .size(88.dp)
+                    .clip(KoinTheme.shapes.small)
+            ) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(it)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = null,
                     contentScale = ContentScale.Fit,
-                    modifier = Modifier
-                        .matchParentSize()
-                        .background(RebrandKoinTheme.colors.neutral800.copy(alpha = 0.6f))
-                        .padding(14.dp)
-
+                    modifier = Modifier.matchParentSize()
                 )
+
+                if (menu.isSoldOut) {
+                    Image(
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_sold_out),
+                        contentDescription = "",
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .matchParentSize()
+                            .background(RebrandKoinTheme.colors.neutral800.copy(alpha = 0.6f))
+                            .padding(14.dp)
+
+                    )
+                }
             }
         }
     }
