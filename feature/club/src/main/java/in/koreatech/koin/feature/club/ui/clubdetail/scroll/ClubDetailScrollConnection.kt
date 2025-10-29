@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.club.ui.clubdetail.scroll
 
+import android.util.Log
 import androidx.compose.foundation.ScrollState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -15,12 +16,12 @@ fun clubDetailScrollConnection(
 ) = object : NestedScrollConnection {
     override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
         var delta = available.y
-        if (available.y > 0) {
-            val scrollState = currentScrollState.value
+        val scrollState = currentScrollState.value
+        if (delta > 0) {
             if (scrollState.value <= delta) {
-                delta -= scrollState.value
+                delta += scrollState.value
             } else {
-                return Offset.Zero
+                delta = 0f
             }
         }
         val newOffset = toolbarOffsetPx.value + delta

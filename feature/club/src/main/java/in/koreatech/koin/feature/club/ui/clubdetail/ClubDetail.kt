@@ -20,11 +20,13 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -41,6 +43,8 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -55,6 +59,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -174,9 +179,9 @@ fun ClubDetail(
         derivedStateOf {
             when (tabList[pagerState.currentPage]) {
                 DetailTabType.DETAIL_INTRO.strResId -> introductionScrollState
-                DetailTabType.QNA.strResId -> recruitScrollState
+                DetailTabType.QNA.strResId -> qnaScrollState
                 DetailTabType.EVENT.strResId -> eventsScrollState
-                DetailTabType.RECRUIT.strResId -> qnaScrollState
+                DetailTabType.RECRUIT.strResId -> recruitScrollState
                 else -> introductionScrollState
             }
         }
@@ -203,7 +208,6 @@ fun ClubDetail(
         targetValue = toolbarHeight,
         animationSpec = tween(durationMillis = 50)
     )
-    Log.e("MYLOG","${animatedToolbarHeight} ${maxToolbarHeight}")
 
     viewModel.collectSideEffect { sideEffect ->
         handleSideEffect(sideEffect, context, snackbarHostState)
@@ -463,7 +467,7 @@ fun ClubDetail(
             )
         }
 
-        Box(
+        Column(
             modifier = Modifier
                 .padding(contentPadding)
                 .consumeWindowInsets(contentPadding)
@@ -471,288 +475,330 @@ fun ClubDetail(
                 .fillMaxSize()
                 .nestedScroll(nestedScrollConnection)
         ) {
-            Column(
+            /*
+             * LazyColumn can detect scroll gestures in nestedScrollConnection
+             * With 'reverseLayout = true', items can disappear starting from the top
+             */
+            LazyColumn(
                 modifier = Modifier
-                    .onGloballyPositioned {
-                        maxToolbarHeight = with(density) { it.size.height.toDp() }
-                    }
                     .fillMaxWidth()
-                    .offset(y = -(maxToolbarHeight - animatedToolbarHeight))
-                    .padding(
-                        horizontal = 24.dp,
-                        vertical = 16.dp
+                    .then(
+                        if(maxToolbarHeight.value == 0f) {
+                            Modifier.onSizeChanged{ size ->
+                                maxToolbarHeight = with(density) { size.height.toDp() }
+                            }
+                        }
+                        else {
+                            Modifier.height(animatedToolbarHeight)
+                        }
                     ),
-                horizontalAlignment = Alignment.CenterHorizontally
+                reverseLayout = true
             ) {
-                SubcomposeAsyncImage(
-                    modifier = Modifier
-                        .size(200.dp)
-                        .clickable {
-                            viewModel.showImageDialog(state.clubDetails?.imageUrl ?: "")
-                        },
-                    model = ImageRequest.Builder(context)
-                        .data(state.clubDetails?.imageUrl)
-                        .size(400)
-                        .build(),
-                    contentDescription = "Club Image",
-                    contentScale = ContentScale.Crop,
-                    alignment = Alignment.Center,
-                    loading = {
-                        Box(
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
-                        }
-                    },
-                    error = {
-                        Box(
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(stringResource(R.string.detail_club_image_error))
-                        }
-                    }
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    state.userId?.let {
-                        if (state.clubDetails?.manager == true) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                FilledButton(
-                                    text = stringResource(R.string.detail_empowerment_button),
-                                    onClick = {
-                                        viewModel.showEmpowermentDialog()
-                                        EventLogger.logCampusClickEvent(
-                                            AnalyticsConstant.Label.Club.CLUB_DELEGATION_AUTHORITY,
-                                            "권한위임"
-                                        )
-                                    },
-                                    contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp)
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                FilledButton(
-                                    text = stringResource(R.string.detail_fix_button),
-                                    onClick = {
-                                        EventLogger.logCampusClickEvent(
-                                            AnalyticsConstant.Label.Club.CLUB_CORRECTION,
-                                            "수정하기"
-                                        )
-                                        onModifyClick(state.clubId)
-                                    }, // 동아리 정보 수정 버튼 클릭
-                                    contentPadding = PaddingValues(horizontal = 25.dp, vertical = 5.dp)
-                                )
-                            }
-                        }
-                    }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = state.clubDetails?.name ?: "",
-                        style = KoinTheme.typography.bold20,
+                item {
+                    /*
+                     * Column in LazyColumn Because of `reverseLayout = true` option
+                     */
+                    Column(
                         modifier = Modifier
-                            .padding(end = 16.dp)
-                            .weight(1f, fill = false),
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
+                            .fillMaxWidth()
+                            .padding(
+                                horizontal = 24.dp,
+                                vertical = 16.dp
+                            ),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        state.clubDetails?.hotStatus?.let {
-                            Row(
-                                modifier = Modifier
-                                    .background(
-                                        color = KoinTheme.colors.primary100,
-                                        shape = KoinTheme.shapes.extraSmall
-                                    )
-                                    .padding(vertical = 7.dp, horizontal = 8.dp),
-                                horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    text = stringResource(
-                                        R.string.detail_hotStatus_club_intro,
-                                        state.clubDetails?.hotStatus?.month ?: 0,
-                                        state.clubDetails?.hotStatus?.weekOfMonth ?: 0
-                                    ),
-                                    style = KoinTheme.typography.regular10.copy(fontSize = 11.sp),
-                                    color = KoinTheme.colors.neutral800
-                                )
-                            }
-                        }
-                        Spacer(Modifier.width(8.dp))
-                        Image(
-                            painter = if (state.clubDetails?.isLiked == true) painterResource(id = R.drawable.icon_like_true) else painterResource(id = R.drawable.icon_like_false),
-                            contentDescription = "",
+                        SubcomposeAsyncImage(
                             modifier = Modifier
-                                .size(24.dp)
-                                .padding(end = 4.dp)
+                                .size(200.dp)
                                 .clickable {
-                                    state.userId?.let {
-                                        viewModel.changeClubLike()
-                                    } ?: viewModel.showLoginDialog()
+                                    viewModel.showImageDialog(state.clubDetails?.imageUrl ?: "")
+                                },
+                            model = ImageRequest.Builder(context)
+                                .data(state.clubDetails?.imageUrl)
+                                .size(400)
+                                .build(),
+                            contentDescription = "Club Image",
+                            contentScale = ContentScale.Crop,
+                            alignment = Alignment.Center,
+                            loading = {
+                                Box(
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    CircularProgressIndicator()
                                 }
+                            },
+                            error = {
+                                Box(
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(stringResource(R.string.detail_club_image_error))
+                                }
+                            }
                         )
-                        if (state.clubDetails?.isLikeHidden != true) {
-                            Text(
-                                text = "${state.clubDetails?.likes}",
-                                style = KoinTheme.typography.medium14
-                            )
-                        }
-                    }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    detailList.forEach { intro ->
-                        if (intro.second.isNullOrBlank()) return@forEach
-                        var outputText = ""
-                        var linkUrl = ""
-                        val showMore = remember { mutableStateOf(false) }
-                        var icon = -1
-                        var onClick = {}
-                        var onIconClick = {}
-                        val clipboard = LocalClipboardManager.current
-                        intro.second?.let {
-                            when (intro.first) {
-                                DETAIL_DESCRIPTION -> {
-                                    outputText = stringResource(intro.first.strResId, it)
-                                    onClick = { showMore.value = !showMore.value }
-                                }
-                                DETAIL_INSTAGRAM -> {
-                                    val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
-                                    linkUrl = if (url.isValidInstagramUrl()) url else url.removeUrlScheme().toInstagramUrl()
-                                    onClick = { viewModel.openUrl(linkUrl) }
-                                    outputText = it.toInstagramLink()
-                                }
-                                DETAIL_GOOGLE_FORM -> {
-                                    val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
-                                    linkUrl = if (url.isValidGoogleFormUrl()) url else ""
-                                    onClick = { viewModel.openUrl(linkUrl) }
-                                    outputText = it.removeUrlScheme().let { text -> if (text.length <= 22) text else "${text.take(22)}..." }
-                                    icon = R.drawable.icon_club_copy
-                                    onIconClick = { clipboard.setText(AnnotatedString(linkUrl)) }
-                                }
-                                DETAIL_OPEN_CHAT -> {
-                                    val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
-                                    linkUrl = if (url.isValidOpenChatUrl()) url else ""
-                                    onClick = { viewModel.openUrl(linkUrl) }
-                                    outputText = it.removeUrlScheme()
-                                    icon = R.drawable.icon_club_copy
-                                    onIconClick = { clipboard.setText(AnnotatedString(linkUrl)) }
-                                }
-                                DETAIL_PHONE_NUMBER -> {
-                                    outputText = if (it.isValidPhoneNumber) it.formatPhoneNumber() else it
-                                    icon = R.drawable.icon_club_copy
-                                    onIconClick = { clipboard.setText(AnnotatedString(it)) }
-                                }
-                                else -> outputText = it
-                            }
-                            if (
-                                it.isValidGoogleFormUrl() ||
-                                it.isValidOpenChatUrl()
-                            ) {
-                                linkUrl = it
-                                onClick = { if (linkUrl.isNotEmpty()) viewModel.openUrl(linkUrl) }
-                            }
-                        }
                         Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.End,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            state.userId?.let {
+                                if (state.clubDetails?.manager == true) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        FilledButton(
+                                            text = stringResource(R.string.detail_empowerment_button),
+                                            onClick = {
+                                                viewModel.showEmpowermentDialog()
+                                                EventLogger.logCampusClickEvent(
+                                                    AnalyticsConstant.Label.Club.CLUB_DELEGATION_AUTHORITY,
+                                                    "권한위임"
+                                                )
+                                            },
+                                            contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp)
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        FilledButton(
+                                            text = stringResource(R.string.detail_fix_button),
+                                            onClick = {
+                                                EventLogger.logCampusClickEvent(
+                                                    AnalyticsConstant.Label.Club.CLUB_CORRECTION,
+                                                    "수정하기"
+                                                )
+                                                onModifyClick(state.clubId)
+                                            }, // 동아리 정보 수정 버튼 클릭
+                                            contentPadding = PaddingValues(horizontal = 25.dp, vertical = 5.dp)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = if (intro.first != DETAIL_DESCRIPTION) stringResource(intro.first.strResId) else "",
-                                style = KoinTheme.typography.medium18,
-                                color = KoinTheme.colors.neutral800
+                                text = state.clubDetails?.name ?: "",
+                                style = KoinTheme.typography.bold20,
+                                modifier = Modifier
+                                    .padding(end = 16.dp)
+                                    .weight(1f, fill = false),
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
                             )
-                            Text(
-                                text = outputText,
-                                maxLines = if (intro.first == DETAIL_DESCRIPTION) if (showMore.value) 10 else 2 else 1,
-                                style = KoinTheme.typography.medium18,
-                                color = if (linkUrl.isEmpty()) KoinTheme.colors.neutral800 else KoinTheme.colors.info700,
-                                overflow = TextOverflow.Ellipsis,
-                                modifier = Modifier.clickable { onClick() }.weight(1f, fill = false)
-                            )
-                            if (icon != -1) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                state.clubDetails?.hotStatus?.let {
+                                    Row(
+                                        modifier = Modifier
+                                            .background(
+                                                color = KoinTheme.colors.primary100,
+                                                shape = KoinTheme.shapes.extraSmall
+                                            )
+                                            .padding(vertical = 7.dp, horizontal = 8.dp),
+                                        horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            text = stringResource(
+                                                R.string.detail_hotStatus_club_intro,
+                                                state.clubDetails?.hotStatus?.month ?: 0,
+                                                state.clubDetails?.hotStatus?.weekOfMonth ?: 0
+                                            ),
+                                            style = KoinTheme.typography.regular10.copy(fontSize = 11.sp),
+                                            color = KoinTheme.colors.neutral800
+                                        )
+                                    }
+                                }
                                 Spacer(Modifier.width(8.dp))
                                 Image(
-                                    painter = painterResource(id = icon),
-                                    contentDescription = "Phone Number Copy Icon",
+                                    painter = if (state.clubDetails?.isLiked == true) painterResource(id = R.drawable.icon_like_true) else painterResource(id = R.drawable.icon_like_false),
+                                    contentDescription = "",
                                     modifier = Modifier
                                         .size(24.dp)
                                         .padding(end = 4.dp)
                                         .clickable {
-                                            onIconClick()
+                                            state.userId?.let {
+                                                viewModel.changeClubLike()
+                                            } ?: viewModel.showLoginDialog()
                                         }
                                 )
+                                if (state.clubDetails?.isLikeHidden != true) {
+                                    Text(
+                                        text = "${state.clubDetails?.likes}",
+                                        style = KoinTheme.typography.medium14
+                                    )
+                                }
                             }
                         }
-                    }
-                    if (state.clubDetails?.manager == false) {
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            detailList.forEach { intro ->
+                                if (intro.second.isNullOrBlank()) return@forEach
+                                var outputText = ""
+                                var linkUrl = ""
+                                val showMore = remember { mutableStateOf(false) }
+                                var icon = -1
+                                var onClick = {}
+                                var onIconClick = {}
+                                val clipboard = LocalClipboardManager.current
+                                intro.second?.let {
+                                    when (intro.first) {
+                                        DETAIL_DESCRIPTION -> {
+                                            outputText = stringResource(intro.first.strResId, it)
+                                            onClick = { showMore.value = !showMore.value }
+                                        }
+                                        DETAIL_INSTAGRAM -> {
+                                            val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
+                                            linkUrl = if (url.isValidInstagramUrl()) url else url.removeUrlScheme().toInstagramUrl()
+                                            onClick = { viewModel.openUrl(linkUrl) }
+                                            outputText = it.toInstagramLink()
+                                        }
+                                        DETAIL_GOOGLE_FORM -> {
+                                            val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
+                                            linkUrl = if (url.isValidGoogleFormUrl()) url else ""
+                                            onClick = { viewModel.openUrl(linkUrl) }
+                                            outputText = it.removeUrlScheme().let { text -> if (text.length <= 22) text else "${text.take(22)}..." }
+                                            icon = R.drawable.icon_club_copy
+                                            onIconClick = { clipboard.setText(AnnotatedString(linkUrl)) }
+                                        }
+                                        DETAIL_OPEN_CHAT -> {
+                                            val url = if (it.isValidUrlScheme()) it else it.toHttpsUrl()
+                                            linkUrl = if (url.isValidOpenChatUrl()) url else ""
+                                            onClick = { viewModel.openUrl(linkUrl) }
+                                            outputText = it.removeUrlScheme()
+                                            icon = R.drawable.icon_club_copy
+                                            onIconClick = { clipboard.setText(AnnotatedString(linkUrl)) }
+                                        }
+                                        DETAIL_PHONE_NUMBER -> {
+                                            outputText = if (it.isValidPhoneNumber) it.formatPhoneNumber() else it
+                                            icon = R.drawable.icon_club_copy
+                                            onIconClick = { clipboard.setText(AnnotatedString(it)) }
+                                        }
+                                        else -> outputText = it
+                                    }
+                                    if (
+                                        it.isValidGoogleFormUrl() ||
+                                        it.isValidOpenChatUrl()
+                                    ) {
+                                        linkUrl = it
+                                        onClick = { if (linkUrl.isNotEmpty()) viewModel.openUrl(linkUrl) }
+                                    }
+                                }
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = if (intro.first != DETAIL_DESCRIPTION) stringResource(intro.first.strResId) else "",
+                                        style = KoinTheme.typography.medium18,
+                                        color = KoinTheme.colors.neutral800
+                                    )
+                                    Text(
+                                        text = outputText,
+                                        maxLines = if (intro.first == DETAIL_DESCRIPTION) if (showMore.value) 10 else 2 else 1,
+                                        style = KoinTheme.typography.medium18,
+                                        color = if (linkUrl.isEmpty()) KoinTheme.colors.neutral800 else KoinTheme.colors.info700,
+                                        overflow = TextOverflow.Ellipsis,
+                                        modifier = Modifier.clickable { onClick() }.weight(1f, fill = false)
+                                    )
+                                    if (icon != -1) {
+                                        Spacer(Modifier.width(8.dp))
+                                        Image(
+                                            painter = painterResource(id = icon),
+                                            contentDescription = "Phone Number Copy Icon",
+                                            modifier = Modifier
+                                                .size(24.dp)
+                                                .padding(end = 4.dp)
+                                                .clickable {
+                                                    onIconClick()
+                                                }
+                                        )
+                                    }
+                                }
+                            }
+                            if (state.clubDetails?.manager == false) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = stringResource(R.string.detail_intro_notification),
+                                        style = KoinTheme.typography.medium18,
+                                        color = KoinTheme.colors.neutral800
+                                    )
+                                    Spacer(Modifier.width(8.dp))
+                                    Image(
+                                        painter = if (state.clubDetails?.isRecruitSubscribed == true) {
+                                            painterResource(R.drawable.icon_notification_true)
+                                        } else {
+                                            painterResource(R.drawable.icon_notification_false)
+                                        },
+                                        contentDescription = "Notification Icon",
+                                        modifier = Modifier
+                                            .size(24.dp)
+                                            .padding(end = 4.dp)
+                                            .clickable {
+                                                EventLogger.logCampusClickEvent(
+                                                    AnalyticsConstant.Label.Club.CLUB_RECRUITMENT_NOTI,
+                                                    state.clubDetails?.name ?: "알 수 없는 동아리"
+                                                )
+                                                state.userId?.let {
+                                                    viewModel.updateRecruitSubscribeDialog(true)
+                                                } ?: viewModel.showLoginDialog()
+                                            }
+                                    )
+                                }
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(12.dp))
                         Row(
+                            modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(
-                                text = stringResource(R.string.detail_intro_notification),
-                                style = KoinTheme.typography.medium18,
-                                color = KoinTheme.colors.neutral800
-                            )
-                            Spacer(Modifier.width(8.dp))
                             Image(
-                                painter = if (state.clubDetails?.isRecruitSubscribed == true) {
-                                    painterResource(R.drawable.icon_notification_true)
-                                } else {
-                                    painterResource(R.drawable.icon_notification_false)
-                                },
-                                contentDescription = "Notification Icon",
+                                painter = painterResource(id = R.drawable.icon_club_info),
+                                contentDescription = "picture",
                                 modifier = Modifier
-                                    .size(24.dp)
+                                    .size(17.dp)
                                     .padding(end = 4.dp)
-                                    .clickable {
-                                        EventLogger.logCampusClickEvent(
-                                            AnalyticsConstant.Label.Club.CLUB_RECRUITMENT_NOTI,
-                                            state.clubDetails?.name ?: "알 수 없는 동아리"
-                                        )
-                                        state.userId?.let {
-                                            viewModel.updateRecruitSubscribeDialog(true)
-                                        } ?: viewModel.showLoginDialog()
-                                    }
+                            )
+                            Text(
+                                text = state.clubDetails?.updatedAt ?: "",
+                                style = KoinTheme.typography.regular12,
+                                color = KoinTheme.colors.neutral600
+                            )
+                            Text(
+                                text = stringResource(R.string.detail_date_text),
+                                style = KoinTheme.typography.regular12,
+                                color = KoinTheme.colors.neutral600
                             )
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(12.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.icon_club_info),
-                        contentDescription = "picture",
-                        modifier = Modifier
-                            .size(17.dp)
-                            .padding(end = 4.dp)
-                    )
-                    Text(
-                        text = state.clubDetails?.updatedAt ?: "",
-                        style = KoinTheme.typography.regular12,
-                        color = KoinTheme.colors.neutral600
-                    )
-                    Text(
-                        text = stringResource(R.string.detail_date_text),
-                        style = KoinTheme.typography.regular12,
-                        color = KoinTheme.colors.neutral600
+            }
+            /*
+             * LazyColumn can detect scroll gestures in nestedScrollConnection
+             */
+            LazyColumn {
+                item {
+                    DetailTabRow(
+                        modifier = Modifier.zIndex(2f),
+                        selectedTabIndex = pagerState.currentPage,
+                        onTabSelected = {
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.Club.CLUB_TAB_SELECT,
+                                context.getString(tabList[it])
+                            )
+                            scope.launch {
+                                pagerState.animateScrollToPage(it)
+                            }
+                        },
+                        titles = tabList.map { stringResource(it) }
                     )
                 }
             }
@@ -760,22 +806,6 @@ fun ClubDetail(
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
-                Spacer(Modifier.height(animatedToolbarHeight))
-
-                DetailTabRow(
-                    modifier = Modifier.zIndex(2f),
-                    selectedTabIndex = pagerState.currentPage,
-                    onTabSelected = {
-                        EventLogger.logCampusClickEvent(
-                            AnalyticsConstant.Label.Club.CLUB_TAB_SELECT,
-                            context.getString(tabList[it])
-                        )
-                        scope.launch {
-                            pagerState.animateScrollToPage(it)
-                        }
-                    },
-                    titles = tabList.map { stringResource(it) }
-                )
 
                 HorizontalPager(
                     modifier = Modifier
