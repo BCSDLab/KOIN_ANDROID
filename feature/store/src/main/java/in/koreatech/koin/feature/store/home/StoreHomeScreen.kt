@@ -329,7 +329,7 @@ private fun StoreHomeScreen(
                             imageLoader = KoinCoilImageLoader.getImageLoader(context)
                         ),
                         isSelected = storeCategories[index].id == categoryId,
-                        onClick = remember (key1 = category.id) { { onCategoryChange(storeCategories[index].id) } }
+                        onClick = remember(key1 = category.id) { { onCategoryChange(storeCategories[index].id) } }
                     )
                 }
             }
