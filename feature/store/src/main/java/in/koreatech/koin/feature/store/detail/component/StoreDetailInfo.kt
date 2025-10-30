@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
@@ -36,6 +37,7 @@ fun StoreDetailInfo(
     storeReview: StoreReview,
     storeDescriptionModel: StoreDescriptionModel,
     modifier: Modifier = Modifier,
+    isOrderableShop: Boolean = true,
     navigateToReview: () -> Unit = {},
     navigateToDetailInfo: (selectedInfo: String) -> Unit = {}
 ) {
@@ -47,7 +49,7 @@ fun StoreDetailInfo(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
-                modifier = Modifier.clickable { navigateToReview() },
+                modifier = Modifier.noRippleClickable { navigateToReview() },
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -72,7 +74,8 @@ fun StoreDetailInfo(
                     .clip(RoundedCornerShape(50))
                     .clickable {
                         navigateToDetailInfo(StoreDetailInfoType.ORIGIN.name)
-                    }
+                    },
+                isOrderableShop = isOrderableShop
             )
         }
         Spacer(modifier = Modifier.height(12.dp))

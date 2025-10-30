@@ -27,7 +27,8 @@ import `in`.koreatech.koin.feature.store.model.ShopInfoModel
 
 @Composable
 fun OriginInfoChips(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isOrderableShop: Boolean = true
 ) {
     Surface(
         modifier = modifier,
@@ -42,7 +43,7 @@ fun OriginInfoChips(
             modifier = Modifier.padding(horizontal = 12.dp)
         ) {
             Text(
-                text = stringResource(id = R.string.store_info_and_origin),
+                text = stringResource(id = if (isOrderableShop) R.string.store_info_and_origin else R.string.store_info_detail),
                 fontSize = 11.sp,
                 color = Color(0xFF333333)
             )
