@@ -35,6 +35,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -247,7 +248,12 @@ private fun StoreNearbyScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 contentPadding = PaddingValues(horizontal = 24.dp)
             ) {
-                itemsIndexed(storeCategories) { index, category ->
+                itemsIndexed(
+                    storeCategories,
+                    key = { index, category ->
+                        category.id
+                    }
+                ) { index, category ->
                     KoinStoreCategoryItem(
                         categoryName = category.name,
                         categoryIcon = rememberAsyncImagePainter(
@@ -363,7 +369,12 @@ private fun StoreNearbyScreen(
                         }
                     }
                 } else {
-                    items(storeList) {
+                    items(
+                        storeList,
+                        key = {
+                            it.shopId
+                        }
+                    ) {
                         KoinStoreCard(
                             modifier = Modifier.fillMaxWidth(),
                             storeName = it.name,

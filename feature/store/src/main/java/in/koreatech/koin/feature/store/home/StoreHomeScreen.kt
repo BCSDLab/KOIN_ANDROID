@@ -314,7 +314,12 @@ private fun StoreHomeScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 contentPadding = PaddingValues(horizontal = 24.dp)
             ) {
-                itemsIndexed(storeCategories) { index, category ->
+                itemsIndexed(
+                    storeCategories,
+                    key = { index, category ->
+                        category.id
+                    }
+                ) { index, category ->
                     KoinStoreCategoryItem(
                         categoryName = category.name,
                         categoryIcon = rememberAsyncImagePainter(
@@ -435,7 +440,12 @@ private fun StoreHomeScreen(
                         }
                     }
                 } else {
-                    items(storeList) {
+                    items(
+                        storeList,
+                        key = {
+                            it.shopId
+                        }
+                    ) {
                         KoinStoreCard(
                             modifier = Modifier.fillMaxWidth(),
                             storeName = it.name,
