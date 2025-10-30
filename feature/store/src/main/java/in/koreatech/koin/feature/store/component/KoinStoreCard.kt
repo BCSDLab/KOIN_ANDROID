@@ -90,7 +90,7 @@ fun KoinStoreCard(
                         CircularProgressIndicator()
                     }
                 },
-                contentScale = ContentScale.Fit,
+                contentScale = ContentScale.Crop,
                 contentDescription = null,
                 modifier = Modifier
                     .size(128.dp)

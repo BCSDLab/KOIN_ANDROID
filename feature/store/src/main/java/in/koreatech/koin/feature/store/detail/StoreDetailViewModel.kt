@@ -277,7 +277,6 @@ class StoreDetailViewModel @Inject constructor(
                 selectedCategoryId = categoryId
             )
         }
-        changeCategory(categoryId)
     }
 
     fun changeCategory(categoryId: Int) = blockingIntent {

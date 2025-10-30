@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -71,6 +72,7 @@ import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
 import `in`.koreatech.koin.feature.store.util.customCollapsingToolbarContent
 import kotlin.math.roundToInt
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -146,13 +148,21 @@ fun StoreDetailScreen(
     }
 
     LaunchedEffect(rememberState.listState) {
-        snapshotFlow { rememberState.listState.firstVisibleItemIndex }
-            .collect { index ->
-                val visibleCategory = uiState.categories.getOrNull(index - 2)
-                visibleCategory?.let {
-                    viewModel.changeCategory(it.menuGroupId)
-                }
+        combine(
+            snapshotFlow { rememberState.listState.firstVisibleItemIndex },
+            snapshotFlow { rememberState.listState.layoutInfo.visibleItemsInfo.lastIndex }
+        ) { index, _ ->
+            index
+        }.collect { index ->
+            val visibleCategory = if (!rememberState.listState.isScrolledToTheEnd()) {
+                uiState.categories.getOrNull(index - 2)
+            } else {
+                uiState.categories.lastOrNull()
             }
+            visibleCategory?.let {
+                viewModel.changeCategory(it.menuGroupId)
+            }
+        }
     }
 
     if (uiState.showSignInDialog) {
@@ -222,6 +232,7 @@ fun StoreDetailScreen(
                             storeInfo = uiState.store,
                             storeReview = uiState.storeReview,
                             storeDescriptionModel = uiState.shopDescription,
+                            isOrderableShop = uiState.isOrderableShop,
                             navigateToReview = {
                                 navigateToReview(
                                     StoreNavigationData(
@@ -357,3 +368,5 @@ fun handleSideEffect(
         }
     }
 }
+
+fun LazyListState.isScrolledToTheEnd() = layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount - 1
