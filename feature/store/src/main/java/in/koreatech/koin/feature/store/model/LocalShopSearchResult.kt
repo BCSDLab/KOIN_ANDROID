@@ -1,7 +1,10 @@
 package `in`.koreatech.koin.feature.store.model
 
 import `in`.koreatech.koin.domain.model.store.OrderableShopSearchRelated
+import `in`.koreatech.koin.domain.model.store.ShopSearchRelated
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class LocalShopSearchResult(
     val shopId: Int,
     val keyword: String,
@@ -21,3 +24,11 @@ fun OrderableShopSearchRelated.OrderableShopSearchMenuNameResult.toLocalShopSear
         keyword = "$orderableShopName | $menuName",
         isShop = false
     )
+
+fun ShopSearchRelated.toLocalShopSearchResult(): LocalShopSearchResult {
+    return LocalShopSearchResult(
+        shopId = shopId ?: shopIds[0],
+        keyword = keyword,
+        isShop = shopId != null
+    )
+}
