@@ -36,6 +36,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -327,10 +328,7 @@ private fun StoreHomeScreen(
                             imageLoader = KoinCoilImageLoader.getImageLoader(context)
                         ),
                         isSelected = storeCategories[index].id == categoryId,
-                        onClick = {
-                            if (storeCategories[index].id == categoryId) return@KoinStoreCategoryItem
-                            onCategoryChange(storeCategories[index].id) // Category IDs start from 1
-                        }
+                        onClick = remember (key1 = category.id) { { onCategoryChange(storeCategories[index].id) } }
                     )
                 }
             }
@@ -454,10 +452,9 @@ private fun StoreHomeScreen(
                             storeDeliveryFee = it.minimumDeliveryTip,
                             storeImageUrl = it.thumbnail,
                             isOpen = it.isOpen,
-                            filterBadgeList = it.filterBadgeList
-                        ) {
-                            navigateToDetail(it.orderableShopId)
-                        }
+                            filterBadgeList = it.filterBadgeList,
+                            onClick = remember(key1 = it.shopId) { { navigateToDetail(it.orderableShopId) } }
+                        )
                     }
                 }
 

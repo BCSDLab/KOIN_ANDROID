@@ -261,10 +261,7 @@ private fun StoreNearbyScreen(
                             imageLoader = KoinCoilImageLoader.getImageLoader(context)
                         ),
                         isSelected = index + 1 == categoryId,
-                        onClick = {
-                            if (index + 1 == categoryId) return@KoinStoreCategoryItem
-                            onCategoryChange(index + 1) // Category IDs start from 1
-                        }
+                        onClick = remember(key1 = category.id) { { onCategoryChange(index + 1) } }
                     )
                 }
             }
@@ -382,10 +379,9 @@ private fun StoreNearbyScreen(
                             storeReviewCount = it.reviewCount,
                             storeImageUrl = it.thumbnail,
                             isOpen = it.isOpen,
-                            filterBadgeList = it.filterBadgeList
-                        ) {
-                            navigateToDetail(it.shopId)
-                        }
+                            filterBadgeList = it.filterBadgeList,
+                            onClick = remember(key1 = it.shopId) { { navigateToDetail(it.shopId) } }
+                        )
                     }
                 }
 
