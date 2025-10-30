@@ -39,7 +39,6 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreChipDefaults
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ReviewItem(
@@ -49,8 +48,8 @@ fun ReviewItem(
     date: String,
     content: String,
     modifier: Modifier = Modifier,
-    imageUrls: ImmutableList<String> = persistentListOf(),
-    menuTags: ImmutableList<String> = persistentListOf(),
+    imageUrls: ImmutableList<String>,
+    menuTags: ImmutableList<String>,
     onReportClick: () -> Unit = { },
     onEditClick: () -> Unit = { },
     onDeleteClick: () -> Unit = { }
@@ -187,7 +186,7 @@ fun ReviewItem(
 @Preview(showBackground = true)
 @Composable
 private fun ReviewItemPreview() {
-    val tags = listOf("계란찜", "1인 매운 닭발").toPersistentList()
+    val tags = persistentListOf("계란찜", "1인 매운 닭발")
     ReviewItem(
         isMyReview = true,
         userName = "익명_123456",
@@ -204,8 +203,8 @@ private fun ReviewItemPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun ReviewItemGuestPreview() {
-    val tags = listOf("계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발").toPersistentList()
-    val imageUrls = listOf("").toPersistentList()
+    val tags = persistentListOf("계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발")
+    val imageUrls = persistentListOf("")
     ReviewItem(
         isMyReview = false,
         userName = "익명_123456",
