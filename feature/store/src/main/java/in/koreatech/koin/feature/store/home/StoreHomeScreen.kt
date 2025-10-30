@@ -80,6 +80,8 @@ import `in`.koreatech.koin.feature.store.model.LocalStoreCategories
 import `in`.koreatech.koin.feature.store.model.OrderStatus
 import `in`.koreatech.koin.feature.store.model.OrderType
 import java.time.format.DateTimeFormatter
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.combine
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -252,10 +254,10 @@ fun StoreHomeScreen(
 private fun StoreHomeScreen(
     isLoading: Boolean,
     categoryId: Int,
-    storeList: List<LocalShop>,
-    storeCategories: List<LocalStoreCategories>,
+    storeList: ImmutableList<LocalShop>,
+    storeCategories: ImmutableList<LocalStoreCategories>,
     selectedOrderOption: OrderOption,
-    selectedStoreFilter: List<StoreFilter>,
+    selectedStoreFilter: ImmutableList<StoreFilter>,
     selectedMinimumPriceOption: MinimumPriceOption,
     showOrderOptions: Boolean,
     showMinimumPriceOptions: Boolean,
@@ -493,12 +495,12 @@ private fun StoreHomeScreenPreview() {
             isLoading = false,
             showOrderOptions = false,
             categoryId = 0,
-            storeList = listOf(
+            storeList = persistentListOf(
                 LocalShop(
                     shopId = 1,
                     orderableShopId = 1,
                     name = "Sample Store",
-                    filterBadgeList = listOf(
+                    filterBadgeList = persistentListOf(
                         FilterBadge.PICKUP_AVAILABLE,
                         FilterBadge.DELIVERY_AVAILABLE,
                         FilterBadge.SERVICE
@@ -515,7 +517,7 @@ private fun StoreHomeScreenPreview() {
                     openStatus = OpenStatus.OPERATING
                 )
             ),
-            storeCategories = listOf(
+            storeCategories = persistentListOf(
                 LocalStoreCategories(
                     id = 0,
                     name = "Category 1",
@@ -528,7 +530,7 @@ private fun StoreHomeScreenPreview() {
                 )
             ),
             selectedOrderOption = OrderOption.NONE,
-            selectedStoreFilter = listOf(StoreFilter.IS_OPEN),
+            selectedStoreFilter = persistentListOf(StoreFilter.IS_OPEN),
             selectedMinimumPriceOption = MinimumPriceOption.ALL,
             showMinimumPriceOptions = false
         )

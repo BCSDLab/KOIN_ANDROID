@@ -25,10 +25,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,6 +42,8 @@ import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.enums.FilterBadge
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun KoinStoreCard(
@@ -49,7 +54,7 @@ fun KoinStoreCard(
     modifier: Modifier = Modifier,
     storeDeliveryFee: Int? = null,
     isOpen: Boolean = true,
-    filterBadgeList: List<FilterBadge> = emptyList(),
+    filterBadgeList: ImmutableList<FilterBadge> = persistentListOf(),
     onClick: () -> Unit = { }
 ) {
     Box(
@@ -58,7 +63,7 @@ fun KoinStoreCard(
             .width(IntrinsicSize.Max)
             .clip(RebrandKoinTheme.shapes.small)
             .background(RebrandKoinTheme.colors.neutral0, shape = RebrandKoinTheme.shapes.small)
-            .clickable { onClick() }
+            .clickable(onClick = onClick)
     ) {
         if (!isOpen) {
             Box(
@@ -113,7 +118,7 @@ fun KoinStoreCard(
                         modifier = Modifier
                             .size(16.dp)
                             .paint(
-                                painter = painterResource(R.drawable.ic_rating)
+                                painter = rememberVectorPainter(ImageVector.vectorResource(R.drawable.ic_rating))
                             )
                     )
 
@@ -139,7 +144,7 @@ fun KoinStoreCard(
                             modifier = Modifier
                                 .size(16.dp)
                                 .paint(
-                                    painter = painterResource(R.drawable.ic_delivery)
+                                    painter = rememberVectorPainter(ImageVector.vectorResource(R.drawable.ic_delivery))
                                 )
                         )
 
@@ -200,7 +205,7 @@ private fun KoinStoreCardPreview() {
             storeReviewCount = 5,
             storeDeliveryFee = 2500,
             isOpen = true,
-            filterBadgeList = listOf(
+            filterBadgeList = persistentListOf(
                 FilterBadge.SERVICE,
                 FilterBadge.DELIVERY_AVAILABLE
             )
