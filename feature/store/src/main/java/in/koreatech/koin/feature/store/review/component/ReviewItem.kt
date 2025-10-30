@@ -37,6 +37,9 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreChipDefaults
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ReviewItem(
@@ -46,8 +49,8 @@ fun ReviewItem(
     date: String,
     content: String,
     modifier: Modifier = Modifier,
-    imageUrls: List<String>?,
-    menuTags: List<String>?,
+    imageUrls: ImmutableList<String> = persistentListOf(),
+    menuTags: ImmutableList<String> = persistentListOf(),
     onReportClick: () -> Unit = { },
     onEditClick: () -> Unit = { },
     onDeleteClick: () -> Unit = { }
@@ -145,14 +148,14 @@ fun ReviewItem(
         }
         Spacer(modifier = Modifier.height(10.dp))
 
-        imageUrls?.takeIf { it.isNotEmpty() }?.let { urls ->
+        if (imageUrls.isNotEmpty()) {
             LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 24.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                itemsIndexed(urls) { index, imageUrl ->
+                itemsIndexed(imageUrls) { index, imageUrl ->
                     Image(
                         painter = rememberAsyncImagePainter(imageUrl),
                         contentDescription = "",
@@ -166,7 +169,7 @@ fun ReviewItem(
         }
         Spacer(modifier = Modifier.height(10.dp))
 
-        menuTags?.let {
+        if (menuTags.isNotEmpty()) {
             Box(
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
@@ -184,7 +187,7 @@ fun ReviewItem(
 @Preview(showBackground = true)
 @Composable
 private fun ReviewItemPreview() {
-    val tags = listOf("계란찜", "1인 매운 닭발")
+    val tags = listOf("계란찜", "1인 매운 닭발").toPersistentList()
     ReviewItem(
         isMyReview = true,
         userName = "익명_123456",
@@ -192,7 +195,7 @@ private fun ReviewItemPreview() {
         date = "2025.01.01",
         content = "내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요.",
         modifier = Modifier,
-        imageUrls = null,
+        imageUrls = persistentListOf(),
         menuTags = tags,
         onReportClick = {}
     )
@@ -201,8 +204,8 @@ private fun ReviewItemPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun ReviewItemGuestPreview() {
-    val tags = listOf("계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발")
-    val imageUrls = listOf("")
+    val tags = listOf("계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발").toPersistentList()
+    val imageUrls = listOf("").toPersistentList()
     ReviewItem(
         isMyReview = false,
         userName = "익명_123456",
