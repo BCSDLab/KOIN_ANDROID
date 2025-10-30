@@ -24,6 +24,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicText
@@ -81,6 +82,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun StoreNearbyScreen(
     modifier: Modifier = Modifier,
+    categoryId: Int = 1,
     viewModel: StoreNearbyViewModel = hiltViewModel(),
     navigateToDetail: (Int) -> Unit = { },
     navigateToCart: () -> Unit = { },
@@ -92,6 +94,12 @@ fun StoreNearbyScreen(
 
     viewModel.collectSideEffect {
         handleSideEffect(it, navigateToCart)
+    }
+
+    LaunchedEffect(Unit) {
+        if (uiState.categoryId == -1) {
+            viewModel.onCategoryChange(categoryId)
+        }
     }
 
     LaunchedEffect(Unit) {
@@ -211,6 +219,13 @@ private fun StoreNearbyScreen(
     onShowMinimumPriceOptionsChange: (Boolean) -> Unit = { }
 ) {
     val context = LocalContext.current
+    val categoryListState = rememberLazyListState()
+
+    LaunchedEffect(categoryId) {
+        if (categoryId != -1) {
+            categoryListState.animateScrollToItem(storeCategories.map { it.id }.indexOf(categoryId))
+        }
+    }
 
     Box(
         modifier = modifier.fillMaxSize()
@@ -241,6 +256,7 @@ private fun StoreNearbyScreen(
 
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
+                state = categoryListState,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 contentPadding = PaddingValues(horizontal = 24.dp)

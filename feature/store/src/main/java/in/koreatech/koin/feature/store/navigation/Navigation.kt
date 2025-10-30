@@ -308,6 +308,7 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
         )
     ) {
         StoreNearbyScreen(
+            categoryId = categoryId,
             navigateToDetail = { storeId ->
                 navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId/${false}")
             },
