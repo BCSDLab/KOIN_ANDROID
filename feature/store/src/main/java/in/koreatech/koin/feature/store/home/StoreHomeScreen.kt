@@ -36,14 +36,15 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.LineHeightStyle
@@ -345,51 +346,53 @@ private fun StoreHomeScreen(
             ) {
                 Spacer(modifier = Modifier.width(16.dp))
 
-                KoinStoreChip(
-                    modifier = Modifier.fillMaxHeight(),
-                    text = stringResource(selectedOrderOption.stringResId),
-                    chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
-                        textColor = RebrandKoinTheme.colors.primary500,
-                        borderWidth = 1.dp,
-                        borderColor = RebrandKoinTheme.colors.primary500,
-                        elevation = 0.dp
-                    ),
-                    trailingIcon = painterResource(R.drawable.ic_store_arrow_down),
-                    trailingIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(
-                        iconColor = RebrandKoinTheme.colors.primary500
-                    )
-                ) {
-                    onShowOrderOptionsChange(true)
+                key(selectedOrderOption) {
+                    KoinStoreChip(
+                        modifier = Modifier.fillMaxHeight(),
+                        text = stringResource(selectedOrderOption.stringResId),
+                        chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
+                            textColor = RebrandKoinTheme.colors.primary500,
+                            borderWidth = 1.dp,
+                            borderColor = RebrandKoinTheme.colors.primary500,
+                            elevation = 0.dp
+                        ),
+                        trailingIcon = rememberVectorPainter(ImageVector.vectorResource(R.drawable.ic_store_arrow_down)),
+                        trailingIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(
+                            iconColor = RebrandKoinTheme.colors.primary500
+                        )
+                    ) {
+                        onShowOrderOptionsChange(true)
+                    }
                 }
 
                 Spacer(modifier = Modifier.width(8.dp))
 
                 storeFilters.forEach {
-                    val isSelected = selectedStoreFilter.contains(it)
-                    KoinStoreChip(
-                        modifier = Modifier.fillMaxHeight(),
-                        text = stringResource(it.stringResId),
-                        leadingIcon = painterResource(it.iconResId),
-                        chipStyle = if (isSelected) {
-                            KoinStoreChipDefaults.koinStoreChipStyle(
-                                elevation = 0.dp,
-                                containerColor = RebrandKoinTheme.colors.primary500,
-                                textColor = RebrandKoinTheme.colors.neutral0
-                            )
-                        } else {
-                            KoinStoreChipDefaults.koinStoreChipStyle()
-                        },
-                        leadingIconStyle = if (isSelected) {
-                            KoinStoreChipDefaults.koinStoreIconStyle(
-                                iconColor = RebrandKoinTheme.colors.neutral0
-                            )
-                        } else {
-                            KoinStoreChipDefaults.koinStoreIconStyle()
-                        },
-                        onClick = {
-                            onSelectedStoreFilterChange(it)
-                        }
-                    )
+                    key(it) {
+                        val isSelected = selectedStoreFilter.contains(it)
+                        KoinStoreChip(
+                            modifier = Modifier.fillMaxHeight(),
+                            text = stringResource(it.stringResId),
+                            leadingIcon = rememberVectorPainter(ImageVector.vectorResource(it.iconResId)),
+                            chipStyle = if (isSelected) {
+                                KoinStoreChipDefaults.koinStoreChipStyle(
+                                    elevation = 0.dp,
+                                    containerColor = RebrandKoinTheme.colors.primary500,
+                                    textColor = RebrandKoinTheme.colors.neutral0
+                                )
+                            } else {
+                                KoinStoreChipDefaults.koinStoreChipStyle()
+                            },
+                            leadingIconStyle = if (isSelected) {
+                                KoinStoreChipDefaults.koinStoreIconStyle(
+                                    iconColor = RebrandKoinTheme.colors.neutral0
+                                )
+                            } else {
+                                KoinStoreChipDefaults.koinStoreIconStyle()
+                            },
+                            onClick = remember(key1 = it) { { onSelectedStoreFilterChange(it) } }
+                        )
+                    }
                 }
 
                 KoinStoreMinimumPriceChip(
