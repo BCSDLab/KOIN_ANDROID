@@ -220,10 +220,12 @@ private fun StoreNearbyScreen(
 ) {
     val context = LocalContext.current
     val categoryListState = rememberLazyListState()
+    val shopListState = rememberLazyListState()
 
     LaunchedEffect(categoryId) {
         if (categoryId != -1) {
             categoryListState.animateScrollToItem(storeCategories.map { it.id }.indexOf(categoryId))
+            shopListState.animateScrollToItem(0)
         }
     }
 
@@ -346,7 +348,8 @@ private fun StoreNearbyScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 24.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                state = shopListState
             ) {
                 if (!isLoading && storeList.isEmpty()) {
                     item {
