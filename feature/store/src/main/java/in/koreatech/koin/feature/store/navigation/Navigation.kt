@@ -182,12 +182,18 @@ fun NavGraphBuilder.koinStoreGraph(
     }
 
     composable(
-        route = StoreNavType.StoreSearch.route
+        route = "${StoreNavType.StoreSearch.route}/{$IS_ORDERABLE_SHOP}",
+        arguments = listOf(
+            navArgument(IS_ORDERABLE_SHOP) {
+                type = NavType.BoolType
+            }
+        )
     ) {
+        val isOrderableShop = it.arguments?.getBoolean(IS_ORDERABLE_SHOP) ?: true
         StoreSearchScreen(
             navigateToDetail = {
                 navController.navigateUp()
-                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$it/${true}")
+                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$it/$isOrderableShop")
             },
             onBackPressed = {
                 if (!navController.navigateUp()) {
@@ -287,7 +293,7 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
                 navController.navigate(StoreNavType.StoreCart.route)
             },
             navigateToSearch = {
-                navController.navigate(StoreNavType.StoreSearch.route)
+                navController.navigate("${StoreNavType.StoreSearch.route}/${true}")
             },
             navigateToOrderResult = { orderId ->
                 navController.navigate("${StoreNavType.StoreOrderResult.route}/$orderId")
@@ -315,7 +321,7 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
                 navController.navigate(StoreNavType.StoreCart.route)
             },
             navigateToSearch = {
-                navController.navigate(StoreNavType.StoreSearch.route)
+                navController.navigate("${StoreNavType.StoreSearch.route}/${false}")
             }
         ) {
             if (!navController.navigateUp()) {
