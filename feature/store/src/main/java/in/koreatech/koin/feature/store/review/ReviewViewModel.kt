@@ -9,9 +9,11 @@ import `in`.koreatech.koin.feature.store.model.StoreNavigationData
 import `in`.koreatech.koin.feature.store.model.StoreNavigationDataType
 import `in`.koreatech.koin.feature.store.navigation.StoreReviewNavType
 import `in`.koreatech.koin.feature.store.review.model.ReviewOrderOption
+import `in`.koreatech.koin.feature.store.review.model.toLocalReviewContent
 import `in`.koreatech.koin.feature.store.review.model.toLocalReviewRatings
 import javax.inject.Inject
 import kotlin.reflect.typeOf
+import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -88,7 +90,8 @@ class ReviewViewModel @Inject constructor(
             reduce {
                 state.copy(
                     isLoading = false,
-                    reviewRatings = data.toLocalReviewRatings()
+                    reviewRatings = data.toLocalReviewRatings(),
+                    reviews = data.reviews.map { it.toLocalReviewContent() }.toImmutableList()
                 )
             }
         }
