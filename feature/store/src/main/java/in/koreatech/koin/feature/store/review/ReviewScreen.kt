@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.store.review
 
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
@@ -32,11 +34,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreChipDefaults
+import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.SortBottomSheet
 import `in`.koreatech.koin.feature.store.review.component.ReviewCheckbox
@@ -53,6 +57,17 @@ fun ReviewScreen(
     viewModel: ReviewViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.collectAsState()
+
+    if (uiState.isLoading) {
+        Popup(
+            alignment = Alignment.Center
+        ) {
+            KoinStoreProgressIndicator(
+                modifier = Modifier.size(150.dp)
+            )
+        }
+        return
+    }
 
     ReviewScreen(
         reviewRatings = uiState.reviewRatings,
@@ -77,12 +92,16 @@ private fun ReviewScreen(
     setFilterMyReview: (Boolean) -> Unit = {}
 ) {
     val context = LocalContext.current
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
     Column(
         modifier = modifier
     ) {
         KoinStoreTopAppBar(
-            title = stringResource(R.string.store_title_review)
+            title = stringResource(R.string.store_title_review),
+            onNavigationIconClick = {
+                onBackPressedDispatcher?.onBackPressed()
+            }
         )
 
         Spacer(modifier = Modifier.height(30.dp))
