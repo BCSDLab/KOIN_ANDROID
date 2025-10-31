@@ -26,7 +26,9 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -56,6 +58,7 @@ import `in`.koreatech.koin.feature.store.review.model.ReviewOrderOption
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.distinctUntilChanged
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
@@ -75,11 +78,19 @@ fun ReviewScreen(
         return
     }
 
+    LaunchedEffect(Unit) {
+        snapshotFlow { uiState.orderOption.reviewOrderOption }
+            .distinctUntilChanged()
+            .collect {
+                viewModel.orderReviews(it)
+            }
+    }
+
     ReviewScreen(
         reviewRatings = uiState.reviewRatings,
         orderOption = uiState.orderOption,
         filterMyReview = uiState.filterMyReview,
-        reviews = uiState.reviews,
+        reviews = if (uiState.filterMyReview) uiState.reviews.filter { it.isMine }.toImmutableList() else uiState.reviews,
         showReviewOrderOptionChooser = viewModel::showReviewOrderOptionChooser,
         hideReviewOrderOptionChooser = viewModel::hideReviewOrderOptionChooser,
         setReviewOrderOption = viewModel::setReviewOrderOption,

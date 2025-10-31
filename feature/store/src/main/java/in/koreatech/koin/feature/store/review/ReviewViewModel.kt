@@ -82,6 +82,19 @@ class ReviewViewModel @Inject constructor(
         }
     }
 
+    fun orderReviews(reviewOrderOption: ReviewOrderOption) = intent {
+        reduce {
+            state.copy(
+                reviews = when (reviewOrderOption) {
+                    ReviewOrderOption.RECENT -> state.reviews.sortedByDescending { it.createdAt }
+                    ReviewOrderOption.LEAST_RECENT -> state.reviews.sortedBy { it.createdAt }
+                    ReviewOrderOption.HIGHER_RATING -> state.reviews.sortedByDescending { it.rating }
+                    ReviewOrderOption.LOWER_RATING -> state.reviews.sortedBy { it.rating }
+                }.toImmutableList()
+            )
+        }
+    }
+
     private fun fetchReviews() = intent {
         reduce {
             state.copy(isLoading = true)
