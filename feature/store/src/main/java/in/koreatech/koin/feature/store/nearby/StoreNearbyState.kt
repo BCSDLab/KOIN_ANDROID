@@ -10,7 +10,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 data class StoreNearbyState(
     val isLoading: Boolean = true,
-    val categoryId: Int = 1,
+    val categoryId: Int = -1,
     val showSearch: Boolean = false,
     val query: String = "",
     val storeCategories: ImmutableList<LocalStoreCategories> = persistentListOf(),
