@@ -166,7 +166,7 @@ private fun ReviewScreen(
                             borderWidth = 0.dp,
                             elevation = 0.dp,
                             containerColor = Color.Unspecified,
-                            paddingValues = PaddingValues(horizontal = 4.dp)
+                            paddingValues = PaddingValues(horizontal = 0.dp)
                         ),
                         trailingIcon = rememberVectorPainter(ImageVector.vectorResource(R.drawable.ic_store_arrow_down)),
                         trailingIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(
