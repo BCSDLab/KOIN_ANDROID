@@ -138,12 +138,15 @@ fun ReviewItem(
                     style = RebrandKoinTheme.typography.regular12.copy(color = RebrandKoinTheme.colors.neutral500)
                 )
             }
-            Spacer(modifier = Modifier.height(10.dp))
 
-            BasicText(
-                text = content,
-                modifier = Modifier.fillMaxWidth()
-            )
+            if (content.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(10.dp))
+
+                BasicText(
+                    text = content,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         }
         Spacer(modifier = Modifier.height(10.dp))
 

@@ -9,9 +9,11 @@ import `in`.koreatech.koin.feature.store.model.StoreNavigationData
 import `in`.koreatech.koin.feature.store.model.StoreNavigationDataType
 import `in`.koreatech.koin.feature.store.navigation.StoreReviewNavType
 import `in`.koreatech.koin.feature.store.review.model.ReviewOrderOption
+import `in`.koreatech.koin.feature.store.review.model.toLocalReviewContent
 import `in`.koreatech.koin.feature.store.review.model.toLocalReviewRatings
 import javax.inject.Inject
 import kotlin.reflect.typeOf
+import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -80,6 +82,19 @@ class ReviewViewModel @Inject constructor(
         }
     }
 
+    fun orderReviews(reviewOrderOption: ReviewOrderOption) = intent {
+        reduce {
+            state.copy(
+                reviews = when (reviewOrderOption) {
+                    ReviewOrderOption.RECENT -> state.reviews.sortedByDescending { it.createdAt }
+                    ReviewOrderOption.LEAST_RECENT -> state.reviews.sortedBy { it.createdAt }
+                    ReviewOrderOption.HIGHER_RATING -> state.reviews.sortedByDescending { it.rating }
+                    ReviewOrderOption.LOWER_RATING -> state.reviews.sortedBy { it.rating }
+                }.toImmutableList()
+            )
+        }
+    }
+
     private fun fetchReviews() = intent {
         reduce {
             state.copy(isLoading = true)
@@ -88,7 +103,8 @@ class ReviewViewModel @Inject constructor(
             reduce {
                 state.copy(
                     isLoading = false,
-                    reviewRatings = data.toLocalReviewRatings()
+                    reviewRatings = data.toLocalReviewRatings(),
+                    reviews = data.reviews.map { it.toLocalReviewContent() }.toImmutableList()
                 )
             }
         }

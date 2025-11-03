@@ -8,22 +8,27 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyItemScope
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,12 +49,16 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.SortBottomSheet
 import `in`.koreatech.koin.feature.store.review.component.ReviewCheckbox
+import `in`.koreatech.koin.feature.store.review.component.ReviewItem
 import `in`.koreatech.koin.feature.store.review.component.ReviewRatingHeader
+import `in`.koreatech.koin.feature.store.review.model.LocalReviewContent
 import `in`.koreatech.koin.feature.store.review.model.LocalReviewRating
 import `in`.koreatech.koin.feature.store.review.model.LocalReviewRatings
 import `in`.koreatech.koin.feature.store.review.model.ReviewOrderOption
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.distinctUntilChanged
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
@@ -69,10 +78,19 @@ fun ReviewScreen(
         return
     }
 
+    LaunchedEffect(Unit) {
+        snapshotFlow { uiState.orderOption.reviewOrderOption }
+            .distinctUntilChanged()
+            .collect {
+                viewModel.orderReviews(it)
+            }
+    }
+
     ReviewScreen(
         reviewRatings = uiState.reviewRatings,
         orderOption = uiState.orderOption,
         filterMyReview = uiState.filterMyReview,
+        reviews = if (uiState.filterMyReview) uiState.reviews.filter { it.isMine }.toImmutableList() else uiState.reviews,
         showReviewOrderOptionChooser = viewModel::showReviewOrderOptionChooser,
         hideReviewOrderOptionChooser = viewModel::hideReviewOrderOptionChooser,
         setReviewOrderOption = viewModel::setReviewOrderOption,
@@ -85,6 +103,7 @@ private fun ReviewScreen(
     reviewRatings: LocalReviewRatings,
     orderOption: ReviewState.OrderOption,
     filterMyReview: Boolean,
+    reviews: ImmutableList<LocalReviewContent>,
     modifier: Modifier = Modifier,
     showReviewOrderOptionChooser: () -> Unit = {},
     hideReviewOrderOptionChooser: () -> Unit = {},
@@ -107,7 +126,10 @@ private fun ReviewScreen(
         Spacer(modifier = Modifier.height(30.dp))
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.navigationBars)
+                .consumeWindowInsets(WindowInsets.systemBars)
         ) {
             item {
                 OutlinedButton(
@@ -144,7 +166,7 @@ private fun ReviewScreen(
                             borderWidth = 0.dp,
                             elevation = 0.dp,
                             containerColor = Color.Unspecified,
-                            paddingValues = PaddingValues(horizontal = 4.dp)
+                            paddingValues = PaddingValues(horizontal = 0.dp)
                         ),
                         trailingIcon = rememberVectorPainter(ImageVector.vectorResource(R.drawable.ic_store_arrow_down)),
                         trailingIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(
@@ -173,10 +195,12 @@ private fun ReviewScreen(
                 }
             }
 
-            reviewItems(
-                reviewRatings.reviews,
-                reviewItemCount = reviewRatings.totalReview,
-                emptyContent = {
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+
+            if (reviews.isEmpty()) {
+                item {
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
@@ -201,11 +225,34 @@ private fun ReviewScreen(
                             style = RebrandKoinTheme.typography.medium14.copy(color = RebrandKoinTheme.colors.neutral600)
                         )
                     }
-                },
-                itemContent = {
-                    // TODO
                 }
-            )
+            } else {
+                itemsIndexed(
+                    reviews,
+                    key = { index, review ->
+                        review.reviewId
+                    }
+                ) { index, review ->
+                    ReviewItem(
+                        modifier = Modifier
+                            .animateItem()
+                            .then(
+                                if (index != reviews.lastIndex) {
+                                    Modifier.padding(bottom = 24.dp)
+                                } else {
+                                    Modifier
+                                }
+                            ),
+                        isMyReview = review.isMine,
+                        userName = review.nickName,
+                        rating = review.rating,
+                        date = review.createdAt,
+                        content = review.content,
+                        imageUrls = review.imageUrls,
+                        menuTags = review.menuNames
+                    )
+                }
+            }
         }
     }
 
@@ -220,21 +267,6 @@ private fun ReviewScreen(
                 hideReviewOrderOptionChooser()
             }
         )
-    }
-}
-
-private inline fun <T> LazyListScope.reviewItems(
-    items: List<T>,
-    reviewItemCount: Int,
-    crossinline emptyContent: @Composable LazyItemScope.() -> Unit,
-    crossinline itemContent: @Composable LazyItemScope.(item: T) -> Unit
-) = if (reviewItemCount == 0) {
-    item {
-        emptyContent()
-    }
-} else {
-    items(items) {
-        itemContent(it)
     }
 }
 
@@ -270,6 +302,7 @@ private fun ReviewScreenPreview() {
             average = 4.0,
             totalReview = 76
         ),
+        reviews = persistentListOf(),
         orderOption = ReviewState.OrderOption()
     )
 }
