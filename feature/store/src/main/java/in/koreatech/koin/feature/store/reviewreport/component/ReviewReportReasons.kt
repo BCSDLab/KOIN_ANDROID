@@ -187,8 +187,7 @@ fun ReportTextField(
     }
 
     BasicTextField(
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .border(1.dp, color = KoinTheme.colors.neutral300, shape = KoinTheme.shapes.extraSmall)
             .padding(vertical = 12.dp, horizontal = 16.dp),

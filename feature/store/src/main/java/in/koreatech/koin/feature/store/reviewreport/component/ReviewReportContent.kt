@@ -38,8 +38,7 @@ fun ReviewReportContent(
     val scrollState = rememberScrollState()
 
     Column(
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxSize()
             .imePadding()
             .verticalScroll(scrollState)
@@ -57,7 +56,9 @@ fun ReviewReportContent(
         Spacer(modifier = Modifier.weight(1f))
 
         Button(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
             onClick = onReport,
             shape = RebrandKoinTheme.shapes.small,
             contentPadding = PaddingValues(vertical = 12.dp)
