@@ -437,7 +437,11 @@ internal fun NavGraphBuilder.koinStoreReviewGraph(
     composable<StoreReviewNavType.StoreReviewHome>(
         typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
     ) {
-        ReviewScreen()
+        ReviewScreen(
+            onReportClicked = { storeNavigationData, reviewId ->
+                navController.navigate(StoreReviewNavType.StoreReviewReport(storeNavigationData, reviewId))
+            }
+        )
     }
 
     composable<StoreReviewNavType.StoreReviewAdd> {
