@@ -1,8 +1,10 @@
 package `in`.koreatech.koin.feature.store.component
 
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -96,8 +99,12 @@ fun KoinStoreChip(
     leadingIconStyle: KoinStoreChipIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(),
     trailingIcon: Painter? = null,
     trailingIconStyle: KoinStoreChipIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(),
+    enabled: Boolean = true,
+    enableRipple: Boolean = true,
     onClick: () -> Unit = {}
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+
     Row(
         modifier = modifier
             .shadow(
@@ -109,7 +116,12 @@ fun KoinStoreChip(
             .border(chipStyle.borderWidth, chipStyle.borderColor, chipStyle.shape)
             .clip(chipStyle.shape)
             .background(chipStyle.containerColor, shape = chipStyle.shape)
-            .clickable { onClick() }
+            .clickable(
+                interactionSource = interactionSource,
+                indication = if (enableRipple) LocalIndication.current else null,
+                enabled = enabled,
+                onClick = onClick
+            )
             .padding(chipStyle.paddingValues),
         verticalAlignment = Alignment.CenterVertically
     ) {

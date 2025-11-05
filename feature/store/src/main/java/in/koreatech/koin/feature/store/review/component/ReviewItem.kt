@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.store.review.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -22,6 +21,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +41,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreChipDefaults
+import `in`.koreatech.koin.feature.store.review.component.dialog.ReviewImageDialog
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -54,6 +59,9 @@ fun ReviewItem(
     onEditClick: () -> Unit = { },
     onDeleteClick: () -> Unit = { }
 ) {
+    var dialogOpen by remember { mutableStateOf(false) }
+    var selectedIndex by remember { mutableIntStateOf(0) }
+
     val chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
         textColor = RebrandKoinTheme.colors.neutral500,
         textStyle = RebrandKoinTheme.typography.bold12,
@@ -165,6 +173,10 @@ fun ReviewItem(
                         modifier = Modifier
                             .size(148.dp)
                             .clip(RoundedCornerShape(10.dp))
+                            .clickable {
+                                selectedIndex = index
+                                dialogOpen = true
+                            }
                     )
                 }
             }
@@ -172,17 +184,22 @@ fun ReviewItem(
         Spacer(modifier = Modifier.height(10.dp))
 
         if (menuTags.isNotEmpty()) {
-            Box(
-                modifier = Modifier
-                    .padding(horizontal = 24.dp)
-            ) {
-                MenuTagChipGroup(
-                    menuTags = menuTags,
-                    isIconVisibility = false,
-                    onClick = { }
-                )
-            }
+            MenuTagChipGroup(
+                menuTags = menuTags,
+                modifier = Modifier.padding(horizontal = 24.dp),
+                isIconVisibility = false,
+                enabled = false,
+                enableRipple = false,
+                onClick = { }
+            )
         }
+    }
+    if (dialogOpen) {
+        ReviewImageDialog(
+            imageUrls = imageUrls,
+            initialPage = selectedIndex,
+            onDismiss = { dialogOpen = false }
+        )
     }
 }
 
