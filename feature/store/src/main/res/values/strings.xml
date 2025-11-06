@@ -37,7 +37,7 @@
     <string name="store_detail_notice_empty">등록된 공지가\n없습니다.</string>
     <string name="store_order_can_delivery">배달 가능</string>
     <string name="store_order_cant_delivery">배달 불가</string>
-    <string name="delivery_fee_won">%1$,d원/</string>
+    <string name="delivery_fee_won">%1$,d원</string>
     <string name="delivery_fee_won_with_min_max">%1$,d - %2$,d원</string>
 
     <!--가게 정보 및 원산지-->
