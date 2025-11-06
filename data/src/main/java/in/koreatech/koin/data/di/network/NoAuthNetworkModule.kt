@@ -24,7 +24,6 @@ import `in`.koreatech.koin.data.api.StoreApi
 import `in`.koreatech.koin.data.api.TimetableApi
 import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.VersionApi
-import `in`.koreatech.koin.data.di.interceptor.NetworkUnavailableInterceptor
 import `in`.koreatech.koin.data.util.EmptyStringToNullAdapter
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -43,7 +42,6 @@ object NoAuthNetworkModule {
     fun provideNoAuthOkHttpClient(
         @UserAgent userAgentInterceptor: Interceptor,
         httpLoggingInterceptor: HttpLoggingInterceptor,
-        networkUnavailableInterceptor: NetworkUnavailableInterceptor,
         @Inspection inspectionInterceptor: Interceptor
     ): OkHttpClient {
         return OkHttpClient.Builder().apply {
@@ -52,7 +50,6 @@ object NoAuthNetworkModule {
             writeTimeout(15, TimeUnit.SECONDS)
             addInterceptor(httpLoggingInterceptor)
             addInterceptor(userAgentInterceptor)
-            addInterceptor(networkUnavailableInterceptor)
         }.build()
     }
 

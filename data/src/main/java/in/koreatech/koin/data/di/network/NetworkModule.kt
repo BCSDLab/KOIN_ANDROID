@@ -8,7 +8,6 @@ import `in`.koreatech.koin.core.qualifier.NoAuth
 import `in`.koreatech.koin.core.qualifier.ServerUrl
 import `in`.koreatech.koin.data.BuildConfig
 import `in`.koreatech.koin.data.constant.URLConstant
-import `in`.koreatech.koin.data.di.interceptor.NetworkUnavailableInterceptor
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.stomp.KoinStomp
 import javax.inject.Singleton
@@ -34,10 +33,6 @@ object NetworkModule {
                     HttpLoggingInterceptor.Level.HEADERS
                 }
         }
-
-    @Provides
-    @Singleton
-    fun provideNetworkUnavailableInterceptor() = NetworkUnavailableInterceptor()
 
     @ServerUrl
     @Provides
