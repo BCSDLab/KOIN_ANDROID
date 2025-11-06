@@ -1,7 +1,13 @@
 package `in`.koreatech.koin.feature.store.detail
 
+import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -60,6 +66,8 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreSignInDialog
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.OrderBottomBar
+import `in`.koreatech.koin.feature.store.contract.StoreCallContract
+import `in`.koreatech.koin.feature.store.detail.component.CallDialog
 import `in`.koreatech.koin.feature.store.detail.component.MenuCategoryChips
 import `in`.koreatech.koin.feature.store.detail.component.StoreDetailImage
 import `in`.koreatech.koin.feature.store.detail.component.StoreDetailInfo
@@ -78,6 +86,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -93,8 +103,32 @@ fun StoreDetailScreen(
     navigateToMenuInfo: (menuId: Int) -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
+    val context = LocalContext.current
+
+    val callLauncher = rememberLauncherForActivityResult(StoreCallContract()) {}
+
+    val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
+        if (it) {
+            viewModel.setCallDialogState(true)
+        } else {
+            viewModel.intent {
+                postSideEffect(StoreDetailSideEffect.PermissionDenied)
+            }
+        }
+    }
+
     viewModel.collectSideEffect {
-        handleSideEffect(it, navigateToCart)
+        handleSideEffect(
+            sideEffect = it,
+            context = context,
+            checkPermission = {
+                permissionLauncher.launch(Manifest.permission.CALL_PHONE)
+            },
+            call = { phoneNumber ->
+                callLauncher.launch(phoneNumber)
+            },
+            navigateToCart = navigateToCart
+        )
     }
 
     val pagerState = rememberPagerState(0, 0f) {
@@ -113,7 +147,6 @@ fun StoreDetailScreen(
     val statusBarHeight = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
     val menuCategoryHeight = remember { mutableStateOf(0) }
     val coroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
 
     LaunchedEffect(isCartModified) {
         snapshotFlow { isCartModified }
@@ -163,6 +196,19 @@ fun StoreDetailScreen(
                 viewModel.changeCategory(it.menuGroupId)
             }
         }
+    }
+
+    if (uiState.showCallDialog) {
+        CallDialog(
+            phoneNumber = uiState.shopDescription.phone,
+            call = {
+                callLauncher.launch(it)
+                viewModel.setCallDialogState(false)
+            },
+            onDismissRequest = {
+                viewModel.setCallDialogState(false)
+            }
+        )
     }
 
     if (uiState.showSignInDialog) {
@@ -233,6 +279,7 @@ fun StoreDetailScreen(
                             storeReview = uiState.storeReview,
                             storeDescriptionModel = uiState.shopDescription,
                             isOrderableShop = uiState.isOrderableShop,
+                            phoneNumber = uiState.shopDescription.phone,
                             navigateToReview = {
                                 navigateToReview(
                                     StoreNavigationData(
@@ -244,6 +291,11 @@ fun StoreDetailScreen(
                             },
                             navigateToDetailInfo = { selectedInfo ->
                                 navigateToDetailInfo(selectedInfo)
+                            },
+                            call = {
+                                viewModel.intent {
+                                    postSideEffect(StoreDetailSideEffect.CheckCallPermission)
+                                }
                             }
                         )
                         HorizontalDivider(
@@ -360,11 +412,30 @@ fun StoreDetailScreen(
 
 fun handleSideEffect(
     sideEffect: StoreDetailSideEffect,
+    context: Context,
+    checkPermission: () -> Unit = {},
+    call: (phoneNumber: String) -> Unit = {},
     navigateToCart: () -> Unit = {}
 ) {
     when (sideEffect) {
         StoreDetailSideEffect.NavigateToCart -> {
             navigateToCart()
+        }
+
+        is StoreDetailSideEffect.CallToStore -> {
+            call(sideEffect.phoneNumber)
+        }
+
+        StoreDetailSideEffect.CheckCallPermission -> {
+            checkPermission()
+        }
+
+        StoreDetailSideEffect.PermissionDenied -> {
+            Toast.makeText(context, context.getString(R.string.call_permission_denied_message), Toast.LENGTH_SHORT).show()
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                data = Uri.fromParts("package", context.packageName, null)
+            }
+            context.startActivity(intent)
         }
     }
 }
