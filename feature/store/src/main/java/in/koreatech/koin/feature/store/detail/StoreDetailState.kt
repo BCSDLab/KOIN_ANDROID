@@ -32,7 +32,8 @@ data class StoreDetailState(
     val minimumOrderAmount: Int = 0,
     val cart: Cart = Cart.Empty,
     val cartType: CartType = CartType.DELIVERY,
-    val cartValidation: CartValidation = CartValidation.NONE
+    val cartValidation: CartValidation = CartValidation.NONE,
+    val showCallDialog: Boolean = false
 )
 fun OwnerInfoModel?.hasAnyInfo(): Boolean {
     return this?.let {
