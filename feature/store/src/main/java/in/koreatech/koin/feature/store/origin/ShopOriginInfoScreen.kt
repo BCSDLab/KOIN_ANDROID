@@ -207,26 +207,26 @@ fun ShopOriginInfoScreen(
                     Text(text = uiState.shopDescription.notice ?: stringResource(R.string.no_registered_information), style = RebrandKoinTheme.typography.regular14)
                 }
             )
-            Spacer(Modifier.height(6.dp))
-            HighlightSection(
-                isHighlighted = selectedInfo == StoreDetailInfoType.DELIVERY.name,
-                content = {
-                    Text(
-                        modifier = Modifier.padding(vertical = 8.dp),
-                        text = stringResource(R.string.total_delivery_tip_by_order_amount),
-                        style = RebrandKoinTheme.typography.bold15
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    DeliveryFeeTable(
-                        modifier = Modifier.fillMaxWidth(),
-                        deliveryFees = uiState.shopDescription.deliveryTips ?: emptyList()
-                    )
-                }
-            )
-
             if (uiState.isOrderableShop) {
+                Spacer(Modifier.height(6.dp))
+                HighlightSection(
+                    isHighlighted = selectedInfo == StoreDetailInfoType.DELIVERY.name,
+                    content = {
+                        Text(
+                            modifier = Modifier.padding(vertical = 8.dp),
+                            text = stringResource(R.string.total_delivery_tip_by_order_amount),
+                            style = RebrandKoinTheme.typography.bold15
+                        )
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        DeliveryFeeTable(
+                            modifier = Modifier.fillMaxWidth(),
+                            deliveryFees = uiState.shopDescription.deliveryTips ?: emptyList()
+                        )
+                    }
+                )
+
                 Spacer(Modifier.height(6.dp))
                 HighlightSection(
                     content = {
