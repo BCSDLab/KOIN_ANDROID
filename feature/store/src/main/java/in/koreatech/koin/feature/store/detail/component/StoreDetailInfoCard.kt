@@ -43,7 +43,7 @@ fun StoreDetailInfoCard(
 ) {
     Row(modifier = modifier) {
         DeliveryInfoCard(
-            modifier = Modifier.weight(1f),
+            modifier = if (storeInfo.isDeliveryAvailable) Modifier else Modifier.weight(1f),
             storeInfo = storeInfo,
             navigateToDetailInfo = { navigateToDetailInfo(StoreDetailInfoType.DELIVERY.name) }
         )
