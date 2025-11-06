@@ -102,7 +102,16 @@ fun DeliveryInfoCard(
                 Row {
                     Text(text = stringResource(R.string.delivery_fee), fontSize = 12.sp, lineHeight = 18.sp)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(stringResource(R.string.price_with_won, storeInfo.minimumDeliveryTip ?: 0), fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
+                    Text(
+                        text = if (storeInfo.maximumDeliveryTip == null) {
+                            stringResource(R.string.delivery_fee_won, storeInfo.minimumDeliveryTip ?: 0)
+                        } else {
+                            stringResource(R.string.delivery_fee_won_with_min_max, storeInfo.minimumDeliveryTip ?: 0, storeInfo.maximumDeliveryTip)
+                        },
+                        fontSize = 12.sp,
+                        lineHeight = 18.sp,
+                        color = KoinTheme.colors.neutral500
+                    )
                 }
             }
             Icon(painter = painterResource(id = R.drawable.ic_delivery_arrow_right), contentDescription = null, modifier = Modifier.size(10.dp))
