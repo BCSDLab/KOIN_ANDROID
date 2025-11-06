@@ -140,7 +140,7 @@ class ShopOriginViewModel @Inject constructor(
                         storeName = result.name,
                         address = result.address ?: "",
                         description = result.description,
-                        notice = result.description,
+                        notice = null,
                         phone = result.phone,
                         openTime = result.open.openTime,
                         closeTime = result.open.closeTime,
