@@ -207,7 +207,7 @@
     <string name="review_order_option_higher_rating">별점높은순</string>
     <string name="review_order_option_lower_rating">별점낮은순</string>
     <string name="review_mine">내가 작성한 리뷰</string>
-    <string name="review_image_page_indicator">%d/%d</string>
+    <string name="review_image_page_indicator">%1$d/%2$d</string>
     <string name="review_empty_title">작성된 리뷰가 없어요</string>
     <string name="review_empty_summary">첫 번째 리뷰를 작성해보세요!</string>
     <string name="review_report">신고하기</string>

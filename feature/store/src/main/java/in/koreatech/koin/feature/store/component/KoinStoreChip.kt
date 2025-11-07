@@ -100,7 +100,6 @@ fun KoinStoreChip(
     trailingIcon: Painter? = null,
     trailingIconStyle: KoinStoreChipIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(),
     enabled: Boolean = true,
-    enableRipple: Boolean = true,
     onClick: () -> Unit = {}
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -118,7 +117,7 @@ fun KoinStoreChip(
             .background(chipStyle.containerColor, shape = chipStyle.shape)
             .clickable(
                 interactionSource = interactionSource,
-                indication = if (enableRipple) LocalIndication.current else null,
+                indication = LocalIndication.current,
                 enabled = enabled,
                 onClick = onClick
             )

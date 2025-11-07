@@ -37,6 +37,7 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun ReviewImageDialog(
     imageUrls: ImmutableList<String>,
+    modifier: Modifier = Modifier,
     initialPage: Int = 0,
     onDismiss: () -> Unit = { }
 ) {
@@ -51,6 +52,7 @@ fun ReviewImageDialog(
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
         Scaffold(
+            modifier = modifier,
             topBar = {
                 CenterAlignedTopAppBar(
                     title = {

@@ -22,7 +22,6 @@ fun MenuTagChipGroup(
     modifier: Modifier = Modifier,
     isIconVisibility: Boolean = true,
     enabled: Boolean = true,
-    enableRipple: Boolean = true,
     onClick: (Int) -> Unit = { }
 ) {
     val menuTagChipIcon = painterResource(id = R.drawable.ic_close_thin)
@@ -57,7 +56,6 @@ fun MenuTagChipGroup(
                     trailingIcon = menuTagChipIcon,
                     trailingIconStyle = menuTagIconStyle,
                     enabled = enabled,
-                    enableRipple = enableRipple,
                     onClick = { onClick(i) }
                 )
             } else {
@@ -65,7 +63,6 @@ fun MenuTagChipGroup(
                     text = tag,
                     chipStyle = menuTagStyle,
                     enabled = enabled,
-                    enableRipple = enableRipple,
                     onClick = { onClick(i) }
                 )
             }

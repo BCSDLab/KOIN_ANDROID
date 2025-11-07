@@ -189,7 +189,6 @@ fun ReviewItem(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 isIconVisibility = false,
                 enabled = false,
-                enableRipple = false,
                 onClick = { }
             )
         }
