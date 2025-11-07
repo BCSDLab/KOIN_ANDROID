@@ -28,6 +28,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,6 +49,7 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreChipDefaults
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.SortBottomSheet
+import `in`.koreatech.koin.feature.store.model.StoreNavigationData
 import `in`.koreatech.koin.feature.store.review.component.ReviewCheckbox
 import `in`.koreatech.koin.feature.store.review.component.ReviewItem
 import `in`.koreatech.koin.feature.store.review.component.ReviewRatingHeader
@@ -63,7 +65,8 @@ import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun ReviewScreen(
-    viewModel: ReviewViewModel = hiltViewModel()
+    viewModel: ReviewViewModel = hiltViewModel(),
+    onReportClicked: (StoreNavigationData, Int) -> Unit = { _, _ -> }
 ) {
     val uiState by viewModel.collectAsState()
 
@@ -94,7 +97,8 @@ fun ReviewScreen(
         showReviewOrderOptionChooser = viewModel::showReviewOrderOptionChooser,
         hideReviewOrderOptionChooser = viewModel::hideReviewOrderOptionChooser,
         setReviewOrderOption = viewModel::setReviewOrderOption,
-        setFilterMyReview = viewModel::setFilterMyReview
+        setFilterMyReview = viewModel::setFilterMyReview,
+        onReportClicked = remember(uiState.storeNavigationData) { { onReportClicked(uiState.storeNavigationData, it) } }
     )
 }
 
@@ -108,7 +112,8 @@ private fun ReviewScreen(
     showReviewOrderOptionChooser: () -> Unit = {},
     hideReviewOrderOptionChooser: () -> Unit = {},
     setReviewOrderOption: (ReviewOrderOption) -> Unit = {},
-    setFilterMyReview: (Boolean) -> Unit = {}
+    setFilterMyReview: (Boolean) -> Unit = {},
+    onReportClicked: (Int) -> Unit = {}
 ) {
     val context = LocalContext.current
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
@@ -249,7 +254,8 @@ private fun ReviewScreen(
                         date = review.createdAt,
                         content = review.content,
                         imageUrls = review.imageUrls,
-                        menuTags = review.menuNames
+                        menuTags = review.menuNames,
+                        onReportClick = remember(review.reviewId) { { onReportClicked(review.reviewId) } }
                     )
                 }
             }

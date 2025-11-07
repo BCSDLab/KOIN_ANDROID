@@ -44,7 +44,7 @@ sealed class StoreReviewNavType {
     data object StoreReviewEdit : StoreReviewNavType()
 
     @Serializable
-    data object StoreReviewReport : StoreReviewNavType()
+    data class StoreReviewReport(val storeNavigationData: StoreNavigationData, val reviewId: Int) : StoreReviewNavType()
 }
 
 data class NavigationBarItem(
