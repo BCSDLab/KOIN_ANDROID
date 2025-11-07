@@ -17,6 +17,7 @@ import `in`.koreatech.koin.data.response.store.StoreCategoriesResponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
 import `in`.koreatech.koin.data.response.store.StoreEventResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
+import `in`.koreatech.koin.data.response.store.StoreItemWithMenusV2Response
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.data.response.store.StoreResponse
@@ -62,6 +63,11 @@ interface StoreApi {
     suspend fun getStore(
         @Path("id") uid: Int
     ): StoreItemWithMenusResponse
+
+    @GET("/v2/shops/{id}")
+    suspend fun getStoreV2(
+        @Path("id") uid: Int
+    ): StoreItemWithMenusV2Response
 
     @GET(URLConstant.SHOPS.SHOPID.MENUS.CATEGORIES)
     suspend fun getStoreMenuCategory(

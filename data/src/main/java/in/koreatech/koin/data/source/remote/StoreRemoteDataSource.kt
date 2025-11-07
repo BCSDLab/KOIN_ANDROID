@@ -32,6 +32,7 @@ import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
 import `in`.koreatech.koin.data.response.store.StoreEventItemReponse
 import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
+import `in`.koreatech.koin.data.response.store.StoreItemWithMenusV2Response
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.data.response.store.StoreResponse
@@ -94,6 +95,10 @@ class StoreRemoteDataSource @Inject constructor(
 
     suspend fun getStoreMenu(storeUid: Int): StoreItemWithMenusResponse {
         return storeApi.getStore(storeUid)
+    }
+
+    suspend fun getStoreMenuV2(storeUid: Int): StoreItemWithMenusV2Response {
+        return storeApi.getStoreV2(storeUid)
     }
 
     suspend fun getStoreMenuCategory(storeUid: Int): List<StoreMenuCategoryResponse.MenuCategory> {
