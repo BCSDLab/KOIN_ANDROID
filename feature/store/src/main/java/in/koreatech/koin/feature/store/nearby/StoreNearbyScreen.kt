@@ -58,6 +58,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.util.KoinCoilImageLoader
 import `in`.koreatech.koin.domain.model.store.OpenStatus
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_NEARBY
+import `in`.koreatech.koin.feature.store.LocalDeliveryDeveloperOption
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreCard
 import `in`.koreatech.koin.feature.store.component.KoinStoreCategoryItem
@@ -144,6 +145,7 @@ fun StoreNearbyScreen(
                 onBackPressed()
             },
             actions = {
+                if (!LocalDeliveryDeveloperOption.current) return@KoinStoreTopAppBar
                 Box(contentAlignment = Alignment.TopEnd) {
                     IconButton(onClick = viewModel::navigateToCart) {
                         Icon(

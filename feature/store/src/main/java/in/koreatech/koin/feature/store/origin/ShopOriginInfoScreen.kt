@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.store.LocalDeliveryDeveloperOption
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
@@ -100,6 +101,7 @@ fun ShopOriginInfoScreen(
                     onBackClick()
                 },
                 actions = {
+                    if (!LocalDeliveryDeveloperOption.current) return@KoinStoreTopAppBar
                     Box(contentAlignment = Alignment.TopEnd) {
                         IconButton(onClick = {
                             navigateToShoppingCart()
