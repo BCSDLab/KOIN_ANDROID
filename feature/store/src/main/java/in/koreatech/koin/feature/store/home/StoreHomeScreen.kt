@@ -289,6 +289,10 @@ private fun StoreHomeScreen(
         }
     }
 
+    LaunchedEffect(selectedOrderOption) {
+        shopListState.animateScrollToItem(0)
+    }
+
     Box(
         modifier = modifier.fillMaxSize()
     ) {

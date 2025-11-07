@@ -238,6 +238,10 @@ private fun StoreNearbyScreen(
         }
     }
 
+    LaunchedEffect(selectedOrderOption) {
+        shopListState.animateScrollToItem(0)
+    }
+
     Box(
         modifier = modifier.fillMaxSize()
     ) {
