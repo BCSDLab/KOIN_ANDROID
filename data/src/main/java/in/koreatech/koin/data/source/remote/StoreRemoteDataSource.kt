@@ -24,6 +24,7 @@ import `in`.koreatech.koin.data.response.store.ShopMenusGroupResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
 import `in`.koreatech.koin.data.response.store.ShopRelatedListResponse
 import `in`.koreatech.koin.data.response.store.ShopResponse
+import `in`.koreatech.koin.data.response.store.ShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopSummaryResponse
 import `in`.koreatech.koin.data.response.store.StoreBenefitResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
@@ -155,6 +156,10 @@ class StoreRemoteDataSource @Inject constructor(
 
     suspend fun getShopSearchRelated(query: String): ShopRelatedListResponse {
         return storeApi.getShopSearchRelated(query)
+    }
+
+    suspend fun getShopSearchRelatedV2(keyword: String): ShopSearchRelatedResponse {
+        return storeApi.getShopSearchRelatedV2(keyword)
     }
 
     suspend fun getOrderableShops(

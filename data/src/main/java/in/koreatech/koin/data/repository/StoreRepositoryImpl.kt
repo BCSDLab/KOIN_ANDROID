@@ -215,6 +215,22 @@ class StoreRepositoryImpl @Inject constructor(
         return storeRemoteDataSource.getShopSearchRelated(query).toShopSearchRelatedList()
     }
 
+    override suspend fun getShopSearchRelatedListV2(keyword: String): Result<OrderableShopSearchRelated> {
+        return runCatching {
+            storeRemoteDataSource.getShopSearchRelatedV2(keyword).toOrderableShopSearchRelated()
+        }.onFailure { e ->
+            return Result.failure(
+                when (e) {
+                    is HttpException -> {
+                        e.getErrorResponse().toKoinUnknownErrorException()
+                    }
+
+                    else -> e
+                }
+            )
+        }
+    }
+
     override suspend fun getOrderableShops(
         sorter: String?,
         filter: List<String>,
