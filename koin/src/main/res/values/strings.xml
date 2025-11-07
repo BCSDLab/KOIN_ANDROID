@@ -663,6 +663,6 @@
     <string name="go_to_main">메인 화면 바로가기</string>
 
     <!-- Developer setting -->
-    <string name="developer_setting_store_title">주문 스프린트 활성화</string>
+    <string name="developer_setting_store_title">주변상점 스프린트 활성화</string>
     <string name="developer_setting_delivery_title">배달 스프린트 활성화</string>
 </resources>
