@@ -24,11 +24,3 @@ fun OrderableShopSearchRelated.OrderableShopSearchMenuNameResult.toLocalShopSear
         keyword = "$orderableShopName | $menuName",
         isShop = false
     )
-
-fun ShopSearchRelated.toLocalShopSearchResult(): LocalShopSearchResult {
-    return LocalShopSearchResult(
-        shopId = shopId ?: shopIds[0],
-        keyword = keyword,
-        isShop = shopId != null
-    )
-}
