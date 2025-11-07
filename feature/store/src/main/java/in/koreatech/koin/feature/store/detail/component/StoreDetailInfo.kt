@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
@@ -59,14 +60,19 @@ fun StoreDetailInfo(
                     contentDescription = null,
                     tint = colorResource(id = R.color.star)
                 )
+
                 Text(
-                    modifier = Modifier.padding(start = 5.dp),
-                    text = storeReview.statistics.averageRating.toString(),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.SemiBold
+                    text = stringResource(R.string.review_count, storeReview.statistics.averageRating, storeReview.totalCount),
+                    style = RebrandKoinTheme.typography.bold12
                 )
-                Text(text = stringResource(R.string.review_count, storeReview.totalCount), fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                Icon(painter = painterResource(R.drawable.ic_right_arrow), contentDescription = null, modifier = Modifier.size(9.dp))
+
+                Icon(
+                    painter = painterResource(R.drawable.ic_right_arrow),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                        .size(9.dp)
+                )
             }
             OriginInfoChips(
                 modifier = Modifier
@@ -90,7 +96,7 @@ fun StoreDetailInfo(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun StoreDetailInfoPreview() {
     StoreDetailInfo(

@@ -119,7 +119,7 @@ interface UserAuthApi {
 
     @POST(URLConstant.SHOPS.SHOPID.REVIEWS.REVIEWID.REPORTS)
     suspend fun postStoreReviewReports(
-        @Path("storeId") storeId: Int,
+        @Path("shopId") shopId: Int,
         @Path("reviewId") reviewId: Int,
         @Body storeReviewReportsRequest: StoreReviewReportsRequest
     ): Response<Unit?>
