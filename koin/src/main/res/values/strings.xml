@@ -664,4 +664,5 @@
 
     <!-- Developer setting -->
     <string name="developer_setting_store_title">주문 스프린트 활성화</string>
+    <string name="developer_setting_delivery_title">배달 스프린트 활성화</string>
 </resources>
