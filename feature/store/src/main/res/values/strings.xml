@@ -210,4 +210,5 @@
     <string name="review_empty_title">작성된 리뷰가 없어요</string>
     <string name="review_empty_summary">첫 번째 리뷰를 작성해보세요!</string>
     <string name="review_report">신고하기</string>
+    <string name="review_reported">신고에 의해 숨김 처리 되었습니다.</string>
 </resources>
