@@ -22,6 +22,7 @@ import `in`.koreatech.koin.data.response.store.ShopMenusGroupResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
 import `in`.koreatech.koin.data.response.store.ShopRelatedListResponse
 import `in`.koreatech.koin.data.response.store.ShopResponse
+import `in`.koreatech.koin.data.response.store.ShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopSummaryResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
 import `in`.koreatech.koin.data.response.store.StoreDayOffResponse
@@ -605,6 +606,27 @@ fun OrderableShopSearchRelatedResponse.toOrderableShopSearchRelated() =
             OrderableShopSearchRelated.OrderableShopSearchMenuNameResult(
                 orderableShopId = result.orderableShopId,
                 orderableShopName = result.orderableShopName,
+                menuName = result.menuName
+            )
+        }
+    )
+
+fun ShopSearchRelatedResponse.toOrderableShopSearchRelated() =
+    OrderableShopSearchRelated(
+        searchKeyword = searchKeyword,
+        processedSearchKeyword = processedSearchKeyword,
+        shopNameSearchResultCount = shopNameSearchResultCount,
+        menuNameSearchResultCount = menuNameSearchResultCount,
+        shopNameSearchResults = shopNameSearchResults.map { result ->
+            OrderableShopSearchRelated.OrderableShopSearchShopNameResult(
+                orderableShopId = result.shopId,
+                orderableShopName = result.shopName
+            )
+        },
+        menuNameSearchResults = menuNameSearchResults.map { result ->
+            OrderableShopSearchRelated.OrderableShopSearchMenuNameResult(
+                orderableShopId = result.shopId,
+                orderableShopName = result.shopName,
                 menuName = result.menuName
             )
         }

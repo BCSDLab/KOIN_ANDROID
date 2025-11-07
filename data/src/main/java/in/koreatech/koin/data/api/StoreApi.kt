@@ -10,6 +10,7 @@ import `in`.koreatech.koin.data.response.store.ShopMenusGroupResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
 import `in`.koreatech.koin.data.response.store.ShopRelatedListResponse
 import `in`.koreatech.koin.data.response.store.ShopResponse
+import `in`.koreatech.koin.data.response.store.ShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopSummaryResponse
 import `in`.koreatech.koin.data.response.store.StoreBenefitResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesResponse
@@ -94,6 +95,11 @@ interface StoreApi {
     suspend fun getShopSearchRelated(
         @Path("query") query: String
     ): ShopRelatedListResponse
+
+    @GET("/v2/shops/search/related")
+    suspend fun getShopSearchRelatedV2(
+        @Query("keyword") keyword: String
+    ): ShopSearchRelatedResponse
 
     @GET("/order/shops")
     suspend fun getOrderableShops(
