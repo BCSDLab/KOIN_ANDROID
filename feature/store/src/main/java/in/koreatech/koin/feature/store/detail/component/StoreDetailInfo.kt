@@ -131,7 +131,12 @@ fun CallCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            Icon(ImageVector.vectorResource(id = R.drawable.ic_store_call), contentDescription = null, modifier = Modifier.size(16.dp), tint = colorResource(id = R.color.store_detail_chip))
+            Icon(
+                ImageVector.vectorResource(id = R.drawable.ic_store_call),
+                contentDescription = null,
+                modifier = Modifier.size(16.dp),
+                tint = colorResource(id = R.color.store_detail_chip)
+            )
 
             Spacer(modifier = Modifier.width(8.dp))
 
