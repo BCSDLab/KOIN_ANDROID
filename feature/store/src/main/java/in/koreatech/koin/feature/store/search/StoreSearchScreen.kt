@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.store.LocalDeliveryDeveloperOption
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.model.LocalShopSearchResult
@@ -76,6 +77,7 @@ fun StoreSearchScreen(
                 onBackPressed()
             },
             actions = {
+                if (!LocalDeliveryDeveloperOption.current) return@KoinStoreTopAppBar
                 IconButton(onClick = {}) {
                     Icon(
                         modifier = Modifier.size(25.dp),

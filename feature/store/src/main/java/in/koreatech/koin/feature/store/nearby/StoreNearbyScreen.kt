@@ -11,15 +11,18 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -58,6 +61,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.util.KoinCoilImageLoader
 import `in`.koreatech.koin.domain.model.store.OpenStatus
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_NEARBY
+import `in`.koreatech.koin.feature.store.LocalDeliveryDeveloperOption
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreCard
 import `in`.koreatech.koin.feature.store.component.KoinStoreCategoryItem
@@ -144,6 +148,7 @@ fun StoreNearbyScreen(
                 onBackPressed()
             },
             actions = {
+                if (!LocalDeliveryDeveloperOption.current) return@KoinStoreTopAppBar
                 Box(contentAlignment = Alignment.TopEnd) {
                     IconButton(onClick = viewModel::navigateToCart) {
                         Icon(
@@ -231,6 +236,10 @@ private fun StoreNearbyScreen(
             categoryListState.animateScrollToItem(storeCategories.map { it.id }.indexOf(categoryId))
             shopListState.animateScrollToItem(0)
         }
+    }
+
+    LaunchedEffect(selectedOrderOption) {
+        shopListState.animateScrollToItem(0)
     }
 
     Box(
@@ -408,7 +417,7 @@ private fun StoreNearbyScreen(
                 }
 
                 item {
-                    // Empty item for bottom spacing
+                    Spacer(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars))
                 }
             }
 

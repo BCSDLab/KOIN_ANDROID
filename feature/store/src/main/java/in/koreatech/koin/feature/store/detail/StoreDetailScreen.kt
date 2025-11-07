@@ -55,6 +55,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_DETAIL_MAIN
+import `in`.koreatech.koin.feature.store.LocalDeliveryDeveloperOption
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreSignInDialog
@@ -294,6 +295,7 @@ fun StoreDetailScreen(
                     navigateToBack()
                 },
                 actions = {
+                    if (!LocalDeliveryDeveloperOption.current) return@KoinStoreTopAppBar
                     Box(contentAlignment = Alignment.TopEnd) {
                         IconButton(onClick = viewModel::navigateToCart) {
                             Icon(

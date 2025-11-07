@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -76,55 +78,61 @@ class StoreActivity : ComponentActivity() {
                     }
                 }
 
-                Scaffold(
-                    bottomBar = {
-                        if (currentBackStack?.destination?.route?.startsWith(StoreNavType.StoreMain.route) == true) {
-                            KoinStoreNavigationBar {
-                                navigationBarItems.forEachIndexed { index, item ->
-                                    KoinStoreNavigationBarItem(
-                                        selected = currentRoute == index,
-                                        icon = painterResource(item.iconRes),
-                                        label = stringResource(item.stringRes),
-                                        onClick = {
-                                            navController.navigate(item.type.route) {
-                                                popUpTo(navController.graph.findStartDestination().id) {
-                                                    saveState = true
+                CompositionLocalProvider(LocalDeliveryDeveloperOption provides viewModel.deliveryDeveloperSetting.collectAsState().value) {
+                    val enableDelivery = LocalDeliveryDeveloperOption.current
+
+                    Scaffold(
+                        bottomBar = {
+                            if (!enableDelivery) return@Scaffold
+                            if (currentBackStack?.destination?.route?.startsWith(StoreNavType.StoreMain.route) == true) {
+                                KoinStoreNavigationBar {
+                                    navigationBarItems.forEachIndexed { index, item ->
+                                        KoinStoreNavigationBarItem(
+                                            selected = currentRoute == index,
+                                            icon = painterResource(item.iconRes),
+                                            label = stringResource(item.stringRes),
+                                            onClick = {
+                                                navController.navigate(item.type.route) {
+                                                    popUpTo(navController.graph.findStartDestination().id) {
+                                                        saveState = true
+                                                    }
+                                                    launchSingleTop = true
+                                                    restoreState = true
                                                 }
-                                                launchSingleTop = true
-                                                restoreState = true
                                             }
-                                        }
-                                    )
-                                }
-                            }
-                        }
-                    },
-                    containerColor = colorResource(id = R.color.store_detail_background),
-                    contentWindowInsets = WindowInsets(0, 0, 0, 0)
-                ) { innerPadding ->
-                    NavHost(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding)
-                            .consumeWindowInsets(innerPadding),
-                        navController = navController,
-                        startDestination = StoreNavType.StoreMain.route
-                    ) {
-                        koinStoreGraph(
-                            navController = navController,
-                            categoryId = categoryId,
-                            finish = {
-                                if (isStoreActivityOnTop) {
-                                    Intent(Intent.ACTION_VIEW).apply {
-                                        data = DEEPLINK_MAIN.toUri()
-                                    }.apply {
-                                        startActivity(this)
+                                        )
                                     }
-                                } else {
-                                    finish()
                                 }
                             }
-                        )
+                        },
+                        containerColor = colorResource(id = R.color.store_detail_background),
+                        contentWindowInsets = WindowInsets(0, 0, 0, 0)
+                    ) { innerPadding ->
+                        NavHost(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(innerPadding)
+                                .consumeWindowInsets(innerPadding),
+                            navController = navController,
+                            startDestination = StoreNavType.StoreMain.route
+                        ) {
+                            koinStoreGraph(
+                                navController = navController,
+                                categoryId = categoryId,
+                                enableDelivery = enableDelivery,
+                                finish = {
+                                    if (isStoreActivityOnTop) {
+                                        Intent(Intent.ACTION_VIEW).apply {
+                                            data = DEEPLINK_MAIN.toUri()
+                                        }.apply {
+                                            startActivity(this)
+                                        }
+                                    } else {
+                                        finish()
+                                    }
+                                }
+                            )
+                        }
                     }
                 }
             }
@@ -147,3 +155,5 @@ class StoreActivity : ComponentActivity() {
         const val STORE_CATEGORY = "STORE_CATEGORY"
     }
 }
+
+internal val LocalDeliveryDeveloperOption = staticCompositionLocalOf { false }

@@ -35,11 +35,12 @@ import kotlin.reflect.typeOf
 fun NavGraphBuilder.koinStoreGraph(
     navController: NavController,
     categoryId: Int,
+    enableDelivery: Boolean,
     finish: () -> Unit = { }
 ) {
     navigation(
         route = StoreNavType.StoreMain.route,
-        startDestination = StoreMainNavType.StoreMainHome.route
+        startDestination = if (enableDelivery) StoreMainNavType.StoreMainHome.route else StoreMainNavType.StoreMainNearby.route
     ) {
         koinStoreMainGraph(
             navController = navController,
