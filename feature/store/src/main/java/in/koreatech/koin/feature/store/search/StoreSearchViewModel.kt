@@ -13,6 +13,7 @@ import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
 @HiltViewModel
 class StoreSearchViewModel @Inject constructor(
@@ -58,6 +59,8 @@ class StoreSearchViewModel @Inject constructor(
                         searchResults = it.shopNameSearchResults.map { it.toLocalShopSearchResult() } + it.menuNameSearchResults.map { it.toLocalShopSearchResult() }
                     )
                 }
+            }.onFailure {
+                Timber.e(it)
             }
         } else {
             getRelatedStoreV2UseCase(
@@ -68,6 +71,8 @@ class StoreSearchViewModel @Inject constructor(
                         searchResults = it.shopNameSearchResults.map { it.toLocalShopSearchResult() } + it.menuNameSearchResults.map { it.toLocalShopSearchResult() }
                     )
                 }
+            }.onFailure {
+                Timber.e(it)
             }
         }
     }
