@@ -248,6 +248,7 @@ private fun ReviewScreen(
                                     Modifier
                                 }
                             ),
+                        isReported = review.isReported,
                         isMyReview = review.isMine,
                         userName = review.nickName,
                         rating = review.rating,
