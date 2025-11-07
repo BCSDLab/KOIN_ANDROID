@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.model.ShopInfoModel
 
@@ -44,13 +45,16 @@ fun OriginInfoChips(
         ) {
             Text(
                 text = stringResource(id = if (isOrderableShop) R.string.store_info_and_origin else R.string.store_info_detail),
-                fontSize = 11.sp,
-                color = Color(0xFF333333)
+                style = RebrandKoinTheme.typography.regular10,
+                color = RebrandKoinTheme.colors.neutral500
             )
             Icon(
                 painter = painterResource(id = R.drawable.ic_store_info_origin_arrow),
                 contentDescription = null,
-                modifier = Modifier.size(10.dp)
+                modifier = Modifier
+                    .size(20.dp)
+                    .padding(1.dp),
+                tint = RebrandKoinTheme.colors.neutral400
             )
         }
     }

@@ -29,14 +29,16 @@
     <!--상점 상세-->
     <string name="minimum_order">최소주문</string>
     <string name="delivery_fee">배달금액</string>
-    <string name="review_count"> · 리뷰 %1$d개</string>
+    <string name="review_count">%1$.1f · 리뷰 %2$d개</string>
     <string name="price_with_won">%1$,d원</string>
 
     <string name="option_price">%1$s : %2$,d원\n</string>
-    <string name="delivery_not_available">코인 주문이\n불가능한 매장이에요.</string>
+    <string name="delivery_not_available">배달 주문이\n불가능한 매장이에요.</string>
     <string name="store_detail_notice_empty">등록된 공지가\n없습니다.</string>
     <string name="store_order_can_delivery">배달 가능</string>
     <string name="store_order_cant_delivery">배달 불가</string>
+    <string name="delivery_fee_won">%1$,d원</string>
+    <string name="delivery_fee_won_with_min_max">%1$,d - %2$,d원</string>
 
     <!--가게 정보 및 원산지-->
     <string name="store_info_and_origin">가게정보·원산지</string>
