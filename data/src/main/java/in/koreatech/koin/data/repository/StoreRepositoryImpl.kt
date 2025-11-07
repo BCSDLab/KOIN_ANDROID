@@ -228,7 +228,8 @@ class StoreRepositoryImpl @Inject constructor(
                     else -> e
                 }
             )
-        }    }
+        }
+    }
 
     override suspend fun getOrderableShops(
         sorter: String?,
