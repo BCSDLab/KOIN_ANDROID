@@ -66,7 +66,6 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreSignInDialog
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.OrderBottomBar
-import `in`.koreatech.koin.feature.store.contract.StoreCallContract
 import `in`.koreatech.koin.feature.store.detail.component.CallDialog
 import `in`.koreatech.koin.feature.store.detail.component.MenuCategoryChips
 import `in`.koreatech.koin.feature.store.detail.component.StoreDetailImage
@@ -105,8 +104,6 @@ fun StoreDetailScreen(
     val uiState by viewModel.collectAsState()
     val context = LocalContext.current
 
-    val callLauncher = rememberLauncherForActivityResult(StoreCallContract()) {}
-
     val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
         if (it) {
             viewModel.setCallDialogState(true)
@@ -123,9 +120,6 @@ fun StoreDetailScreen(
             context = context,
             checkPermission = {
                 permissionLauncher.launch(Manifest.permission.CALL_PHONE)
-            },
-            call = { phoneNumber ->
-                callLauncher.launch(phoneNumber)
             },
             navigateToCart = navigateToCart
         )
@@ -202,7 +196,9 @@ fun StoreDetailScreen(
         CallDialog(
             phoneNumber = uiState.shopDescription.phone,
             call = {
-                callLauncher.launch(it)
+                Intent(Intent.ACTION_CALL, "tel:$it".toUri()).apply {
+                    context.startActivity(this)
+                }
                 viewModel.setCallDialogState(false)
             },
             onDismissRequest = {
@@ -414,16 +410,11 @@ fun handleSideEffect(
     sideEffect: StoreDetailSideEffect,
     context: Context,
     checkPermission: () -> Unit = {},
-    call: (phoneNumber: String) -> Unit = {},
     navigateToCart: () -> Unit = {}
 ) {
     when (sideEffect) {
         StoreDetailSideEffect.NavigateToCart -> {
             navigateToCart()
-        }
-
-        is StoreDetailSideEffect.CallToStore -> {
-            call(sideEffect.phoneNumber)
         }
 
         StoreDetailSideEffect.CheckCallPermission -> {

@@ -4,5 +4,4 @@ sealed class StoreDetailSideEffect {
     data object NavigateToCart : StoreDetailSideEffect()
     data object CheckCallPermission : StoreDetailSideEffect()
     data object PermissionDenied : StoreDetailSideEffect()
-    data class CallToStore(val phoneNumber: String) : StoreDetailSideEffect()
 }
