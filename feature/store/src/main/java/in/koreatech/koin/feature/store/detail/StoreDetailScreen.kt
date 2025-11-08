@@ -115,17 +115,6 @@ fun StoreDetailScreen(
         }
     }
 
-    viewModel.collectSideEffect {
-        handleSideEffect(
-            sideEffect = it,
-            context = context,
-            checkPermission = {
-                permissionLauncher.launch(Manifest.permission.CALL_PHONE)
-            },
-            navigateToCart = navigateToCart
-        )
-    }
-
     val pagerState = rememberPagerState(0, 0f) {
         uiState.store.imageUrls?.size ?: 0
     }
@@ -142,6 +131,18 @@ fun StoreDetailScreen(
     val statusBarHeight = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
     val menuCategoryHeight = remember { mutableStateOf(0) }
     val coroutineScope = rememberCoroutineScope()
+
+    viewModel.collectSideEffect {
+        handleSideEffect(
+            sideEffect = it,
+            context = context,
+            checkPermission = {
+                permissionLauncher.launch(Manifest.permission.CALL_PHONE)
+            },
+            navigateToCart = navigateToCart,
+            collapseToolbar = { rememberState.collapseToolbar(rememberState) }
+        )
+    }
 
     LaunchedEffect(isCartModified) {
         snapshotFlow { isCartModified }
@@ -311,12 +312,7 @@ fun StoreDetailScreen(
                             }
                             .heightIn(min = 66.dp),
                         menuCategories = uiState.categories,
-                        onCategoryClicked = { categoryId ->
-                            viewModel.clickMenuCategory(categoryId)
-                            rememberState.collapseToolbar(
-                                state = rememberState
-                            )
-                        }
+                        onCategoryClicked = viewModel::clickMenuCategory
                     )
                 }
                 uiState.categories.forEach { category ->
@@ -412,7 +408,8 @@ fun handleSideEffect(
     sideEffect: StoreDetailSideEffect,
     context: Context,
     checkPermission: () -> Unit = {},
-    navigateToCart: () -> Unit = {}
+    navigateToCart: () -> Unit = {},
+    collapseToolbar: () -> Unit = {}
 ) {
     when (sideEffect) {
         StoreDetailSideEffect.NavigateToCart -> {
@@ -429,6 +426,10 @@ fun handleSideEffect(
                 data = Uri.fromParts("package", context.packageName, null)
             }
             context.startActivity(intent)
+        }
+
+        StoreDetailSideEffect.CollapseToolbar -> {
+            collapseToolbar()
         }
     }
 }

@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.feature.store.model
 
+import kotlinx.collections.immutable.ImmutableList
+
 /**
  * 상점 메뉴 모델
  */
@@ -7,7 +9,7 @@ package `in`.koreatech.koin.feature.store.model
 data class MenuCategoryModel(
     val menuGroupId: Int,
     val menuGroupName: String,
-    val menus: List<MenuModel>,
+    val menus: ImmutableList<MenuModel>,
     val isChecked: Boolean = false
 )
 

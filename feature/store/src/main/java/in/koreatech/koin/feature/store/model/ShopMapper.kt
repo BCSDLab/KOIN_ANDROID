@@ -4,6 +4,8 @@ import `in`.koreatech.koin.domain.model.ordershop.OrderMenuList
 import `in`.koreatech.koin.domain.model.ordershop.OrderShopSummary
 import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 /**
  * 가게 정보 모델을 UI 모델로 변환하는 확장 함수들
@@ -67,7 +69,7 @@ fun StoreMenuCategories.toMenuCategoryModel(): MenuCategoryModel { // 기존 상
                 singlePrice = menu.singlePrice,
                 isSingle = menu.isSingle
             )
-        } ?: emptyList()
+        }?.toImmutableList() ?: persistentListOf()
     )
 }
 
@@ -92,6 +94,6 @@ fun OrderMenuList.toMenuCategoryModel(): MenuCategoryModel { // 주문 가능한
                 singlePrice = orderMenu.prices.getOrNull(0)?.price,
                 isSingle = menus.getOrNull(0)?.name == null // 옵션 이름이 null이면 단일 메뉴로 간주
             )
-        }
+        }.toImmutableList()
     )
 }
