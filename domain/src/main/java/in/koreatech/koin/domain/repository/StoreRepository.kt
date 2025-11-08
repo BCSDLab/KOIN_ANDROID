@@ -13,6 +13,7 @@ import `in`.koreatech.koin.domain.model.store.OrderHistoryRelated
 import `in`.koreatech.koin.domain.model.store.OrderInProgress
 import `in`.koreatech.koin.domain.model.store.OrderableShopSearchRelated
 import `in`.koreatech.koin.domain.model.store.Review
+import `in`.koreatech.koin.domain.model.store.ReviewDetail
 import `in`.koreatech.koin.domain.model.store.Shop
 import `in`.koreatech.koin.domain.model.store.ShopDeliveryAvailable
 import `in`.koreatech.koin.domain.model.store.ShopDetail
@@ -71,6 +72,11 @@ interface StoreRepository {
         shopId: Int,
         content: Review
     )
+
+    suspend fun searchReview(
+        reviewId: Int,
+        shopId: Int
+    ): ReviewDetail
 
     suspend fun reportReview(
         storeId: Int?,

@@ -12,6 +12,7 @@ import kotlinx.serialization.Serializable
 data class ReviewState(
     val isLoading: Boolean = false,
     val storeNavigationData: StoreNavigationData = StoreNavigationData(-1, -1, false),
+    val storeName: String = "",
     val reviewRatings: LocalReviewRatings = LocalReviewRatings.empty(),
     val reviews: ImmutableList<LocalReviewContent> = persistentListOf(),
     val orderOption: OrderOption = OrderOption(),

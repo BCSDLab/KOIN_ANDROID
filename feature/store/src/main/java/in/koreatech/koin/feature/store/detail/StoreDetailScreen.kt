@@ -89,7 +89,7 @@ fun StoreDetailScreen(
     navigateToCart: () -> Unit = {},
     navigateToBack: () -> Unit = {},
     navigateToDetailInfo: (selectedInfo: String) -> Unit = {},
-    navigateToReview: (StoreNavigationData) -> Unit = {},
+    navigateToReview: (StoreNavigationData, String) -> Unit = { _, _ -> },
     navigateToMenuInfo: (menuId: Int) -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
@@ -239,7 +239,8 @@ fun StoreDetailScreen(
                                         shopId = uiState.store.shopId,
                                         orderableShopId = uiState.store.orderableShopId ?: 0,
                                         isOrderableShop = uiState.isOrderableShop
-                                    )
+                                    ),
+                                    uiState.store.name
                                 )
                             },
                             navigateToDetailInfo = { selectedInfo ->

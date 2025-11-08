@@ -66,7 +66,9 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun ReviewScreen(
     viewModel: ReviewViewModel = hiltViewModel(),
-    onReportClicked: (StoreNavigationData, Int) -> Unit = { _, _ -> }
+    onReportClicked: (StoreNavigationData, Int) -> Unit = { _, _ -> },
+    onAddReviewClicked: (StoreNavigationData, String) -> Unit = { _, _ -> },
+    onEditReviewClicked: (StoreNavigationData, Int, String) -> Unit = { _, _, _ -> }
 ) {
     val uiState by viewModel.collectAsState()
 
@@ -98,7 +100,9 @@ fun ReviewScreen(
         hideReviewOrderOptionChooser = viewModel::hideReviewOrderOptionChooser,
         setReviewOrderOption = viewModel::setReviewOrderOption,
         setFilterMyReview = viewModel::setFilterMyReview,
-        onReportClicked = remember(uiState.storeNavigationData) { { onReportClicked(uiState.storeNavigationData, it) } }
+        onReportClicked = remember(uiState.storeNavigationData) { { onReportClicked(uiState.storeNavigationData, it) } },
+        onAddReviewClicked = remember(uiState.storeNavigationData, uiState.storeName) { { onAddReviewClicked(uiState.storeNavigationData, uiState.storeName) } },
+        onEditReviewClicked = remember(uiState.storeNavigationData, uiState.storeName) { { reviewId -> onEditReviewClicked(uiState.storeNavigationData, reviewId, uiState.storeName) } }
     )
 }
 
@@ -113,7 +117,9 @@ private fun ReviewScreen(
     hideReviewOrderOptionChooser: () -> Unit = {},
     setReviewOrderOption: (ReviewOrderOption) -> Unit = {},
     setFilterMyReview: (Boolean) -> Unit = {},
-    onReportClicked: (Int) -> Unit = {}
+    onReportClicked: (Int) -> Unit = {},
+    onAddReviewClicked: () -> Unit = {},
+    onEditReviewClicked: (Int) -> Unit = {}
 ) {
     val context = LocalContext.current
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
@@ -141,7 +147,7 @@ private fun ReviewScreen(
                     modifier = Modifier
                         .padding(horizontal = 24.dp)
                         .fillMaxWidth(),
-                    onClick = {},
+                    onClick = onAddReviewClicked,
                     shape = RebrandKoinTheme.shapes.small,
                     border = BorderStroke(width = 1.dp, color = RebrandKoinTheme.colors.primary500)
                 ) {
@@ -255,7 +261,8 @@ private fun ReviewScreen(
                         content = review.content,
                         imageUrls = review.imageUrls,
                         menuTags = review.menuNames,
-                        onReportClick = remember(review.reviewId) { { onReportClicked(review.reviewId) } }
+                        onReportClick = remember(review.reviewId) { { onReportClicked(review.reviewId) } },
+                        onEditClick = remember(review.reviewId) { { onEditReviewClicked(review.reviewId) } }
                     )
                 }
             }

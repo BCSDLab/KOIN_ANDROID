@@ -26,14 +26,15 @@ class ReviewViewModel @Inject constructor(
     private val getStoreReviewUseCase: GetStoreReviewUseCase
 ) : ViewModel(), ContainerHost<ReviewState, ReviewSideEffect> {
     override val container = container<ReviewState, ReviewSideEffect>(ReviewState()) {
-        val storeNavigationData = savedStateHandle.toRoute<StoreReviewNavType.StoreReviewHome>(
+        val route = savedStateHandle.toRoute<StoreReviewNavType.StoreReviewHome>(
             typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
-        ).storeNavigationData
+        )
 
         blockingIntent {
             reduce {
                 state.copy(
-                    storeNavigationData = storeNavigationData
+                    storeNavigationData = route.storeNavigationData,
+                    storeName = route.storeName
                 )
             }
         }

@@ -27,6 +27,8 @@ import `in`.koreatech.koin.feature.store.nearby.StoreNearbyScreen
 import `in`.koreatech.koin.feature.store.orderhistory.OrderHistoryScreen
 import `in`.koreatech.koin.feature.store.origin.ShopOriginInfoScreen
 import `in`.koreatech.koin.feature.store.review.ReviewScreen
+import `in`.koreatech.koin.feature.store.reviewEdit.ReviewEditScreen
+import `in`.koreatech.koin.feature.store.reviewadd.ReviewAddScreen
 import `in`.koreatech.koin.feature.store.reviewreport.ReviewReportScreen
 import `in`.koreatech.koin.feature.store.search.StoreSearchScreen
 import `in`.koreatech.koin.feature.store.webapp.StoreWebAppScreen
@@ -390,8 +392,13 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
             navigateToDetailInfo = { selectedInfoType ->
                 navController.navigate("${StoreDetailNavType.StoreDetailInfo.route}/$storeId/$isOrderableShop/$selectedInfoType")
             },
-            navigateToReview = {
-                navController.navigate(StoreReviewNavType.StoreReviewHome(it))
+            navigateToReview = { storeNavigationData, storeName ->
+                navController.navigate(
+                    StoreReviewNavType.StoreReviewHome(
+                        storeNavigationData = storeNavigationData,
+                        storeName = storeName
+                    )
+                )
             },
             navigateToMenuInfo = { menuId ->
                 it.savedStateHandle[IS_CART_ADDED] = false
@@ -440,14 +447,26 @@ internal fun NavGraphBuilder.koinStoreReviewGraph(
         ReviewScreen(
             onReportClicked = { storeNavigationData, reviewId ->
                 navController.navigate(StoreReviewNavType.StoreReviewReport(storeNavigationData, reviewId))
+            },
+            onAddReviewClicked = { storeNavigationData, storeName ->
+                navController.navigate(StoreReviewNavType.StoreReviewAdd(storeNavigationData, storeName))
+            },
+            onEditReviewClicked = { storeNavigationData, reviewId, storeName ->
+                navController.navigate(StoreReviewNavType.StoreReviewEdit(storeNavigationData, reviewId, storeName))
             }
         )
     }
 
-    composable<StoreReviewNavType.StoreReviewAdd> {
+    composable<StoreReviewNavType.StoreReviewAdd>(
+        typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
+    ) {
+        ReviewAddScreen(onNavigateBack = { navController.popBackStack() })
     }
 
-    composable<StoreReviewNavType.StoreReviewEdit> {
+    composable<StoreReviewNavType.StoreReviewEdit>(
+        typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
+    ) {
+        ReviewEditScreen(onNavigateBack = { navController.popBackStack() })
     }
 
     composable<StoreReviewNavType.StoreReviewReport>(
