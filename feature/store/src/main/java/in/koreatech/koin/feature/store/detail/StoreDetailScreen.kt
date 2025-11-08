@@ -140,7 +140,7 @@ fun StoreDetailScreen(
                 permissionLauncher.launch(Manifest.permission.CALL_PHONE)
             },
             navigateToCart = navigateToCart,
-            collapseToolbar = { rememberState.collapseToolbar(rememberState) }
+            collapseToolbar = rememberState::collapseToolbar
         )
     }
 
