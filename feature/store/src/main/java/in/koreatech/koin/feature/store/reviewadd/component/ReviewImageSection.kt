@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.store.reviewadd.component
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -77,8 +76,6 @@ fun ReviewImageSection(
                     }
                 }
             )
-
-
 
             imageUris.forEachIndexed { index, uriString ->
                 Box(modifier = Modifier.size(97.dp)) {
