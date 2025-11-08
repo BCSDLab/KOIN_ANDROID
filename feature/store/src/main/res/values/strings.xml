@@ -31,6 +31,10 @@
     <string name="delivery_fee">배달금액</string>
     <string name="review_count">%1$.1f · 리뷰 %2$d개</string>
     <string name="price_with_won">%1$,d원</string>
+    <string name="call_to_store">가게에 전화하기</string>
+    <string name="call_to_store_dialog_ok">%s에 통화연결</string>
+    <string name="call_to_store_dialog_cancel">취소</string>
+    <string name="call_permission_denied_message">통화 권한을 허용해 주세요.</string>
 
     <string name="option_price">%1$s : %2$,d원\n</string>
     <string name="delivery_not_available">배달 주문이\n불가능한 매장이에요.</string>
