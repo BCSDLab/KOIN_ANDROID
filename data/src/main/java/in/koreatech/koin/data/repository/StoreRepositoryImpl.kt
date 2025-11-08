@@ -27,6 +27,7 @@ import `in`.koreatech.koin.data.mapper.toStoreEvent
 import `in`.koreatech.koin.data.mapper.toStoreMenu
 import `in`.koreatech.koin.data.mapper.toStoreReview
 import `in`.koreatech.koin.data.mapper.toStoreWithMenu
+import `in`.koreatech.koin.data.mapper.toStoreWithMenuV2
 import `in`.koreatech.koin.data.request.user.ReviewRequest
 import `in`.koreatech.koin.data.source.local.StoreLocalDataSource
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
@@ -64,6 +65,7 @@ import `in`.koreatech.koin.domain.model.store.StoreReport
 import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
+import `in`.koreatech.koin.domain.model.store.StoreWithMenuV2
 import `in`.koreatech.koin.domain.repository.StoreRepository
 import javax.inject.Inject
 import retrofit2.HttpException
@@ -119,6 +121,10 @@ class StoreRepositoryImpl @Inject constructor(
 
     override suspend fun getStoreWithMenu(storeId: Int): StoreWithMenu {
         return storeRemoteDataSource.getStoreMenu(storeId).toStoreWithMenu()
+    }
+
+    override suspend fun getStoreWithMenuV2(storeId: Int): StoreWithMenuV2 {
+        return storeRemoteDataSource.getStoreMenuV2(storeId).toStoreWithMenuV2()
     }
 
     override suspend fun getStoreMenuCategory(storeId: Int): List<StoreMenuCategory> {
@@ -213,6 +219,22 @@ class StoreRepositoryImpl @Inject constructor(
 
     override suspend fun getShopSearchRelatedList(query: String): ShopSearchRelatedList {
         return storeRemoteDataSource.getShopSearchRelated(query).toShopSearchRelatedList()
+    }
+
+    override suspend fun getShopSearchRelatedListV2(keyword: String): Result<OrderableShopSearchRelated> {
+        return runCatching {
+            storeRemoteDataSource.getShopSearchRelatedV2(keyword).toOrderableShopSearchRelated()
+        }.onFailure { e ->
+            return Result.failure(
+                when (e) {
+                    is HttpException -> {
+                        e.getErrorResponse().toKoinUnknownErrorException()
+                    }
+
+                    else -> e
+                }
+            )
+        }
     }
 
     override suspend fun getOrderableShops(

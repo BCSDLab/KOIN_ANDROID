@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.store.model
 
 import `in`.koreatech.koin.domain.model.store.OrderableShopSearchRelated
-import `in`.koreatech.koin.domain.model.store.ShopSearchRelated
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -24,11 +23,3 @@ fun OrderableShopSearchRelated.OrderableShopSearchMenuNameResult.toLocalShopSear
         keyword = "$orderableShopName | $menuName",
         isShop = false
     )
-
-fun ShopSearchRelated.toLocalShopSearchResult(): LocalShopSearchResult {
-    return LocalShopSearchResult(
-        shopId = shopId ?: shopIds[0],
-        keyword = keyword,
-        isShop = shopId != null
-    )
-}

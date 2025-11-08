@@ -29,14 +29,20 @@
     <!--상점 상세-->
     <string name="minimum_order">최소주문</string>
     <string name="delivery_fee">배달금액</string>
-    <string name="review_count"> · 리뷰 %1$d개</string>
+    <string name="review_count">%1$.1f · 리뷰 %2$d개</string>
     <string name="price_with_won">%1$,d원</string>
+    <string name="call_to_store">가게에 전화하기</string>
+    <string name="call_to_store_dialog_ok">%s에 통화연결</string>
+    <string name="call_to_store_dialog_cancel">취소</string>
+    <string name="call_permission_denied_message">통화 권한을 허용해 주세요.</string>
 
     <string name="option_price">%1$s : %2$,d원\n</string>
-    <string name="delivery_not_available">코인 주문이\n불가능한 매장이에요.</string>
+    <string name="delivery_not_available">배달 주문이\n불가능한 매장이에요.</string>
     <string name="store_detail_notice_empty">등록된 공지가\n없습니다.</string>
     <string name="store_order_can_delivery">배달 가능</string>
     <string name="store_order_cant_delivery">배달 불가</string>
+    <string name="delivery_fee_won">%1$,d원</string>
+    <string name="delivery_fee_won_with_min_max">%1$,d - %2$,d원</string>
 
     <!--가게 정보 및 원산지-->
     <string name="store_info_and_origin">가게정보·원산지</string>
@@ -211,4 +217,9 @@
     <string name="review_empty_title">작성된 리뷰가 없어요</string>
     <string name="review_empty_summary">첫 번째 리뷰를 작성해보세요!</string>
     <string name="review_report">신고하기</string>
+    <string name="review_reported">신고에 의해 숨김 처리 되었습니다.</string>
+    <string name="review_report_header_title">신고 이유를 선택해주세요.</string>
+    <string name="review_report_header_description">접수된 신고는 관계자 확인 하에 블라인드 처리됩니다.\n블라인드 처리까지 시간이 소요될 수 있습니다. </string>
+    <string name="review_report_other_reason">신고 사유를 입력해주세요.</string>
+    <string name="review_report_success">리뷰가 신고되었어요</string>
 </resources>
