@@ -68,7 +68,7 @@ fun MenuCategoryChip(
     val borderColor = if (menuCategory.isChecked) colorResource(id = R.color.store_detail_chip) else Color.Transparent
     val textColor = if (menuCategory.isChecked) colorResource(id = R.color.store_detail_chip) else KoinTheme.colors.neutral400
 
-    val onClick = remember(menuCategory.menuGroupId) { {onCategoryClicked(menuCategory.menuGroupId)} }
+    val onClick = remember(menuCategory.menuGroupId) { { onCategoryClicked(menuCategory.menuGroupId) } }
 
     Surface(
         elevation = 1.dp,
