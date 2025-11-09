@@ -194,6 +194,12 @@ fun StoreDetailScreen(
         }
     }
 
+    val onMenuClick = if (uiState.isOrderableShop) {
+        navigateToMenuInfo
+    } else {
+        {}
+    }
+
     if (uiState.showCallDialog) {
         CallDialog(
             phoneNumber = uiState.shopDescription.phone,
@@ -321,12 +327,9 @@ fun StoreDetailScreen(
                         menus = category.menus,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                    ) {
-                        if (uiState.isOrderableShop) {
-                            navigateToMenuInfo(it)
-                        }
-                    }
+                            .padding(horizontal = 16.dp),
+                        onMenuClick = onMenuClick
+                    )
                 }
                 item {
                     Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))

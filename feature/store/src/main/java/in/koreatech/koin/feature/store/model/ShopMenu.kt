@@ -19,7 +19,7 @@ data class MenuModel(
     val description: String?,
     val thumbnailImage: String?,
     val isSoldOut: Boolean,
-    val prices: List<MenuPriceModel>,
+    val prices: ImmutableList<MenuPriceModel>,
     val isSingle: Boolean, // 단일 메뉴인지 여부
     val singlePrice: Int? = null // 단일 가격이 있는 경우에만 사용
 )

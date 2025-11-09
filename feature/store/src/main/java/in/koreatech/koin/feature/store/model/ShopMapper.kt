@@ -65,7 +65,7 @@ fun StoreMenuCategories.toMenuCategoryModel(): MenuCategoryModel { // 기존 상
                         name = price.option,
                         price = price.price
                     )
-                } ?: emptyList(),
+                }?.toImmutableList() ?: persistentListOf(),
                 singlePrice = menu.singlePrice,
                 isSingle = menu.isSingle
             )
@@ -90,7 +90,7 @@ fun OrderMenuList.toMenuCategoryModel(): MenuCategoryModel { // 주문 가능한
                         name = price.name,
                         price = price.price
                     )
-                },
+                }.toImmutableList(),
                 singlePrice = orderMenu.prices.getOrNull(0)?.price,
                 isSingle = menus.getOrNull(0)?.name == null // 옵션 이름이 null이면 단일 메뉴로 간주
             )
