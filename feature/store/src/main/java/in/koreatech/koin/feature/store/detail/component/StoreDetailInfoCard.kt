@@ -65,7 +65,9 @@ fun DeliveryInfoCard(
     navigateToDetailInfo: () -> Unit = {}
 ) {
     val navigate = remember {
-        if (storeInfo.isDeliveryAvailable) navigateToDetailInfo else {
+        if (storeInfo.isDeliveryAvailable) {
+            navigateToDetailInfo
+        } else {
             {}
         }
     }
