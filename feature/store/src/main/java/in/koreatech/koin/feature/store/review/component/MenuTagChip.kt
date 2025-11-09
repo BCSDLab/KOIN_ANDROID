@@ -21,6 +21,7 @@ fun MenuTagChipGroup(
     menuTags: List<String>,
     modifier: Modifier = Modifier,
     isIconVisibility: Boolean = true,
+    enabled: Boolean = true,
     onClick: (Int) -> Unit = { }
 ) {
     val menuTagChipIcon = painterResource(id = R.drawable.ic_close_thin)
@@ -54,12 +55,14 @@ fun MenuTagChipGroup(
                     chipStyle = menuTagStyle,
                     trailingIcon = menuTagChipIcon,
                     trailingIconStyle = menuTagIconStyle,
+                    enabled = enabled,
                     onClick = { onClick(i) }
                 )
             } else {
                 KoinStoreChip(
                     text = tag,
                     chipStyle = menuTagStyle,
+                    enabled = enabled,
                     onClick = { onClick(i) }
                 )
             }
