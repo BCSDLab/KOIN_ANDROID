@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,7 +50,7 @@ fun ImageUploadButton(
             )
 
             BasicText(
-                text = "$currentCount/$maxCount",
+                text = stringResource(R.string.progress_count, currentCount, maxCount),
                 style = RebrandKoinTheme.typography.medium14.copy(color = RebrandKoinTheme.colors.neutral500)
             )
         }

@@ -10,9 +10,11 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.review.component.RatingBar
 
 @Composable
@@ -34,7 +36,7 @@ fun ReviewHeaderSection(
         Spacer(modifier = Modifier.height(5.dp))
 
         BasicText(
-            text = "리뷰를 남겨주시면 사장님과 다른 분들에게 도움이 됩니다.\n또한, 악의적인 리뷰는 관리자에 의해 삭제될 수 있습니다.",
+            text = stringResource(R.string.review_submit_notice),
             style = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral500)
         )
 
@@ -48,7 +50,7 @@ fun ReviewHeaderSection(
             RatingBar(
                 rating = rating,
                 onRatingChanged = onRatingChange,
-                minRating = 0
+                minRating = 1
             )
 
             BasicText(

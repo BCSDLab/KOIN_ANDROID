@@ -138,7 +138,7 @@ class StoreRemoteDataSource @Inject constructor(
         reviewId: Int,
         shopId: Int
     ): StoreReviewDetailResponse {
-        return userAuthApi.searchReview(reviewId, shopId)
+        return storeApi.searchReview(reviewId, shopId)
     }
 
     suspend fun postReviewReports(

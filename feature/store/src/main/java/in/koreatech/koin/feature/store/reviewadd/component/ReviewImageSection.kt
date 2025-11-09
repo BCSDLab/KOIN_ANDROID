@@ -7,12 +7,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -22,62 +23,67 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.reviewadd.constants.MAX_IMAGE_COUNT
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun ReviewImageSection(
-    imageUris: List<String>,
+    imageUris: ImmutableList<String>,
     modifier: Modifier = Modifier,
     onAddImages: (List<String>) -> Unit = {},
     onRemoveImage: (Int) -> Unit = {}
 ) {
     val pickMultipleMediaLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickMultipleVisualMedia(maxItems = 3)
+        contract = ActivityResultContracts.PickMultipleVisualMedia(maxItems = MAX_IMAGE_COUNT)
     ) { uris ->
         if (uris.isNotEmpty()) {
-            val selectableCount = 3 - imageUris.size
+            val selectableCount = MAX_IMAGE_COUNT - imageUris.size
             val limitedUris = if (uris.size > selectableCount) uris.take(selectableCount) else uris
             onAddImages(limitedUris.map { it.toString() })
         }
     }
-    val maxItems = 3 - imageUris.size
+    val maxItems = MAX_IMAGE_COUNT - imageUris.size
 
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
         BasicText(
-            text = "사진",
+            text = stringResource(R.string.photo),
             style = RebrandKoinTheme.typography.medium16
         )
 
         BasicText(
-            text = "리뷰와 관련된 사진을 업로드해주세요.",
+            text = stringResource(R.string.review_image_upload_description),
             style = RebrandKoinTheme.typography.regular12
         )
 
         Spacer(modifier = Modifier.height(6.dp))
 
-        Row(
+        LazyRow(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            ImageUploadButton(
-                currentCount = imageUris.size,
-                maxCount = 3,
-                onClick = {
-                    if (maxItems > 0) {
-                        pickMultipleMediaLauncher.launch(
-                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                        )
+            item {
+                ImageUploadButton(
+                    currentCount = imageUris.size,
+                    maxCount = MAX_IMAGE_COUNT,
+                    onClick = {
+                        if (maxItems > 0) {
+                            pickMultipleMediaLauncher.launch(
+                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                            )
+                        }
                     }
-                }
-            )
-
-            imageUris.forEachIndexed { index, uriString ->
+                )
+            }
+            itemsIndexed(imageUris) { index, uriString ->
                 Box(modifier = Modifier.size(97.dp)) {
                     AsyncImage(
                         model = uriString,
@@ -109,7 +115,7 @@ fun ReviewImageSection(
 @Preview(showBackground = true)
 @Composable
 private fun ReviewImageSectionPreview() {
-    val imageUris = listOf("", "")
+    val imageUris = persistentListOf("", "")
     ReviewImageSection(
         imageUris = imageUris
     )

@@ -18,18 +18,24 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.review.component.MenuTagChipGroup
+import `in`.koreatech.koin.feature.store.reviewadd.constants.MAX_MENU_TAG_COUNT
+import `in`.koreatech.koin.feature.store.reviewadd.constants.MAX_REVIEW_CONTENT_LENGTH
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun ReviewTextFieldSection(
     modifier: Modifier = Modifier,
     content: String = "",
     menuTag: String = "",
-    menuTags: List<String> = emptyList(),
+    menuTags: ImmutableList<String> = persistentListOf(),
     onAddMenuTag: () -> Unit = { },
     onRemoveMenuTag: (Int) -> Unit = { },
     onContentChange: (String) -> Unit = { },
@@ -47,12 +53,12 @@ fun ReviewTextFieldSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             BasicText(
-                text = "내용",
+                text = stringResource(R.string.content),
                 style = RebrandKoinTheme.typography.medium16
             )
 
             BasicText(
-                text = "${content.length}/500",
+                text = stringResource(R.string.progress_count, content.length, MAX_REVIEW_CONTENT_LENGTH),
                 style = RebrandKoinTheme.typography.regular12.copy(color = RebrandKoinTheme.colors.neutral500)
             )
         }
@@ -62,7 +68,7 @@ fun ReviewTextFieldSection(
         BasicTextField(
             value = content,
             onValueChange = { newValue ->
-                if (newValue.length <= 500) {
+                if (newValue.length <= MAX_REVIEW_CONTENT_LENGTH) {
                     onContentChange(newValue)
                 }
             },
@@ -87,7 +93,7 @@ fun ReviewTextFieldSection(
                 ) {
                     if (content.isEmpty()) {
                         BasicText(
-                            text = "리뷰를 작성해주세요.",
+                            text = stringResource(R.string.review_placeholder),
                             style = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral400)
                         )
                     }
@@ -99,7 +105,7 @@ fun ReviewTextFieldSection(
         Spacer(modifier = Modifier.height(24.dp))
 
         BasicText(
-            text = "주문 메뉴",
+            text = stringResource(R.string.order_menu_label),
             style = RebrandKoinTheme.typography.medium16
         )
 
@@ -111,30 +117,32 @@ fun ReviewTextFieldSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             BasicText(
-                text = "입력한 메뉴가 태그로 추가돼요.",
+                text = stringResource(R.string.menu_tag_description),
                 style = RebrandKoinTheme.typography.regular12.copy(color = RebrandKoinTheme.colors.neutral500)
             )
 
             BasicText(
-                text = "${menuTags.size}/5",
+                text = stringResource(R.string.progress_count, menuTags.size, MAX_MENU_TAG_COUNT),
                 style = RebrandKoinTheme.typography.regular12.copy(color = RebrandKoinTheme.colors.neutral500)
             )
         }
 
+        Spacer(modifier = Modifier.height(12.dp))
+
         if (menuTags.isNotEmpty()) {
             MenuTagChipGroup(
                 menuTags = menuTags,
-                modifier = Modifier.padding(vertical = 12.dp),
+                modifier = Modifier.padding(bottom = 12.dp),
                 isIconVisibility = true,
                 onClick = onRemoveMenuTag
             )
         }
 
-        if (menuTags.size < 5) {
+        if (menuTags.size < MAX_MENU_TAG_COUNT) {
             BasicTextField(
                 value = menuTag,
                 onValueChange = { newValue ->
-                    if (newValue.length <= 500) {
+                    if (newValue.length <= MAX_REVIEW_CONTENT_LENGTH) {
                         onMenuTagChange(newValue)
                     }
                 },
@@ -167,7 +175,7 @@ fun ReviewTextFieldSection(
                     ) {
                         if (menuTag.isEmpty()) {
                             BasicText(
-                                text = "메뉴명을 입력해주세요.",
+                                text = stringResource(R.string.menu_tag_placeholder),
                                 style = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral400)
                             )
                         }
@@ -182,7 +190,7 @@ fun ReviewTextFieldSection(
 @Preview(showBackground = true)
 @Composable
 private fun ReviewTextFieldSectionPreview() {
-    val menuTags = listOf("1인 족발", "계란찜")
+    val menuTags = persistentListOf("1인 족발", "계란찜")
     ReviewTextFieldSection(
         content = "테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트",
         menuTag = "테스트",

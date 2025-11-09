@@ -12,6 +12,9 @@ import `in`.koreatech.koin.domain.usecase.store.WriteReviewUseCase
 import `in`.koreatech.koin.feature.store.model.StoreNavigationData
 import `in`.koreatech.koin.feature.store.model.StoreNavigationDataType
 import `in`.koreatech.koin.feature.store.navigation.StoreReviewNavType
+import `in`.koreatech.koin.feature.store.reviewadd.constants.MAX_IMAGE_COUNT
+import `in`.koreatech.koin.feature.store.reviewadd.constants.MAX_MENU_TAG_COUNT
+import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
 import kotlin.reflect.typeOf
 import kotlinx.coroutines.launch
@@ -46,75 +49,64 @@ class ReviewAddViewModel @Inject constructor(
         }
     }
 
-    fun updateReviewContent(content: String) {
-        intent {
-            reduce {
-                state.copy(reviewContent = content)
-            }
+    fun updateReviewContent(content: String) = intent {
+        reduce {
+            state.copy(reviewContent = content)
         }
     }
 
-    fun updateRating(newRating: Int) {
-        intent {
-            reduce {
-                state.copy(rating = newRating)
-            }
+    fun updateRating(newRating: Int) = intent {
+        reduce {
+            state.copy(rating = newRating)
         }
     }
 
-    fun updateMenuTag(menuTag: String) {
-        intent {
-            reduce {
-                state.copy(menuTag = menuTag)
-            }
+    fun updateMenuTag(menuTag: String) = intent {
+        reduce {
+            state.copy(menuTag = menuTag)
         }
     }
 
-    fun addMenuTag() {
-        intent {
-            val newTag = state.menuTag
-            if (newTag.isNotBlank() && !state.menuTags.contains(newTag) && state.menuTags.size < 5) {
-                reduce {
-                    state.copy(
-                        menuTags = state.menuTags + newTag,
-                        menuTag = ""
-                    )
-                }
-            }
-        }
-    }
-
-    fun removeMenuTag(index: Int) {
-        intent {
+    fun addMenuTag() = intent {
+        val newTag = state.menuTag
+        if (newTag.isNotBlank() && !state.menuTags.contains(newTag) && state.menuTags.size < MAX_MENU_TAG_COUNT) {
             reduce {
                 state.copy(
-                    menuTags = state.menuTags.filterIndexed { i, _ -> i != index }
+                    menuTags = (state.menuTags + newTag).toImmutableList(),
+                    menuTag = ""
                 )
             }
         }
     }
 
+    fun removeMenuTag(index: Int) = intent {
+        reduce {
+            state.copy(
+                menuTags = state.menuTags.filterIndexed { i, _ -> i != index }.toImmutableList()
+            )
+        }
+    }
+
     fun addImageUris(newUris: List<String>) = intent {
         val currentUris = state.imageUris.toMutableList()
-        val remain = 3 - currentUris.size
+        val remain = MAX_IMAGE_COUNT - currentUris.size
         val addUris = newUris.take(remain)
         addUris.forEach { uri ->
             fetchPreSignedUrlWithUrl(uri)
         }
-        reduce { state.copy(imageUris = (currentUris + addUris).take(3)) }
+        reduce { state.copy(imageUris = (currentUris + addUris).take(MAX_IMAGE_COUNT).toImmutableList()) }
     }
 
     fun removeImageUri(index: Int) = intent {
         reduce {
             state.copy(
-                imageUris = state.imageUris.filterIndexed { i, _ -> i != index },
-                presignedPairs = state.presignedPairs.filterIndexed { i, _ -> i != index }
+                imageUris = state.imageUris.filterIndexed { i, _ -> i != index }.toImmutableList(),
+                presignedPairs = state.presignedPairs.filterIndexed { i, _ -> i != index }.toImmutableList()
             )
         }
     }
 
-    private fun fetchPreSignedUrlWithUrl(imageUri: String) {
-        intent { reduce { state.copy(isLoading = true) } }
+    private fun fetchPreSignedUrlWithUrl(imageUri: String) = intent {
         viewModelScope.launch {
             val fileName = imageUri.substringAfterLast('/')
             val fileType = "image/${fileName.substringAfterLast('.', "jpg")}"
@@ -124,23 +116,22 @@ class ReviewAddViewModel @Inject constructor(
                     intent {
                         reduce {
                             state.copy(
-                                presignedPairs = state.presignedPairs + Triple(imageUri, preSignedUrl, fileUrl)
+                                presignedPairs = (state.presignedPairs + PresignedPair(imageUri, preSignedUrl, fileUrl)).toImmutableList()
                             )
                         }
                     }
                 }
                 .onFailure {
                     intent {
-                        postSideEffect(ReviewAddSideEffect.ShowToast("이미지 업로드 실패"))
+                        postSideEffect(ReviewAddSideEffect.ShowImageUploadFailedToast())
                     }
                 }
-            intent { reduce { state.copy(isLoading = false) } }
         }
     }
 
     fun submitReview() = intent {
         if (state.rating < 1) {
-            postSideEffect(ReviewAddSideEffect.ShowToast("별점을 1점 이상 선택해주세요."))
+            postSideEffect(ReviewAddSideEffect.ShowRatingValidationToast())
             return@intent
         }
 
@@ -151,7 +142,7 @@ class ReviewAddViewModel @Inject constructor(
             if (r.isSuccess) {
                 uploadResult.add(fileUrl)
             } else {
-                postSideEffect(ReviewAddSideEffect.ShowToast("이미지 업로드 실패"))
+                postSideEffect(ReviewAddSideEffect.ShowImageUploadFailedToast())
                 reduce { state.copy(isLoading = false) }
                 return@intent
             }
@@ -164,11 +155,11 @@ class ReviewAddViewModel @Inject constructor(
         )
         writeReviewUseCase(state.storeId, review)
             .onSuccess {
-                postSideEffect(ReviewAddSideEffect.ShowToast("리뷰가 작성되었어요"))
+                postSideEffect(ReviewAddSideEffect.ShowReviewWrittenToast())
                 postSideEffect(ReviewAddSideEffect.NavigateToReview)
             }
             .onFailure {
-                postSideEffect(ReviewAddSideEffect.ShowToast("한 상점에 하루에 한번만 리뷰를 남길 수 있습니다."))
+                postSideEffect(ReviewAddSideEffect.ShowOneReviewPerDayToast())
             }
         reduce { state.copy(isLoading = false) }
     }

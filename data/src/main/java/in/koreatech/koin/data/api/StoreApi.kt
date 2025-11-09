@@ -19,6 +19,7 @@ import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.data.response.store.StoreResponse
+import `in`.koreatech.koin.data.response.store.StoreReviewDetailResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -81,6 +82,12 @@ interface StoreApi {
     suspend fun getShopReviews(
         @Path("id") uid: Int
     ): StoreReviewResponse
+
+    @GET(URLConstant.SHOPS.SHOPID.REVIEWS.REVIEWID.REVIEWID)
+    suspend fun searchReview(
+        @Path("reviewId") reviewId: Int,
+        @Path("shopId") shopId: Int
+    ): StoreReviewDetailResponse
 
     @GET(URLConstant.BENEFIT.SHOPS)
     suspend fun getBenefitShopList(

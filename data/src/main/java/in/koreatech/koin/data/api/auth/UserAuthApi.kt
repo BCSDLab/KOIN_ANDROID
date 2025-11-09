@@ -10,7 +10,6 @@ import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.ReviewRequest
 import `in`.koreatech.koin.data.request.user.StudentUserRequest
 import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfoResponse
-import `in`.koreatech.koin.data.response.store.StoreReviewDetailResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
@@ -117,12 +116,6 @@ interface UserAuthApi {
         @Path("shopId") shopId: Int,
         @Body reviewRequest: ReviewRequest
     ): Response<Unit?>
-
-    @GET(URLConstant.SHOPS.SHOPID.REVIEWS.REVIEWID.REVIEWID)
-    suspend fun searchReview(
-        @Path("reviewId") reviewId: Int,
-        @Path("shopId") shopId: Int
-    ): StoreReviewDetailResponse
 
     @POST(URLConstant.SHOPS.SHOPID.REVIEWS.REVIEWID.REPORTS)
     suspend fun postStoreReviewReports(

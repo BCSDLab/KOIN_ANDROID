@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.reviewEdit
+package `in`.koreatech.koin.feature.store.reviewedit
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -19,22 +21,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.toast.ToastUtil
+import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.reviewadd.component.ReviewHeaderSection
 import `in`.koreatech.koin.feature.store.reviewadd.component.ReviewImageSection
 import `in`.koreatech.koin.feature.store.reviewadd.component.ReviewTextFieldSection
+import kotlinx.collections.immutable.ImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun ReviewEditScreen(
+    modifier: Modifier = Modifier,
     viewModel: ReviewEditViewModel = hiltViewModel(),
     onNavigateBack: () -> Unit = {}
 ) {
@@ -52,15 +58,7 @@ fun ReviewEditScreen(
     }
 
     viewModel.collectSideEffect { sideEffect ->
-        when (sideEffect) {
-            is ReviewEditSideEffect.ShowToast -> {
-                ToastUtil.getInstance().makeShort(sideEffect.message)
-            }
-
-            is ReviewEditSideEffect.NavigateToReview -> {
-                onNavigateBack()
-            }
-        }
+        handleSideEffect(sideEffect, onNavigateBack)
     }
 
     ReviewAddScreen(
@@ -70,6 +68,7 @@ fun ReviewEditScreen(
         menuTag = uiState.menuTag,
         menuTags = uiState.menuTags,
         imageUris = uiState.imageUris,
+        modifier = modifier,
         onRatingChange = viewModel::updateRating,
         onReviewContentChange = viewModel::updateReviewContent,
         onAddMenuTag = viewModel::addMenuTag,
@@ -88,8 +87,9 @@ private fun ReviewAddScreen(
     rating: Int,
     reviewContent: String,
     menuTag: String,
-    menuTags: List<String>,
-    imageUris: List<String>,
+    menuTags: ImmutableList<String>,
+    imageUris: ImmutableList<String>,
+    modifier: Modifier = Modifier,
     onRatingChange: (Int) -> Unit = { },
     onReviewContentChange: (String) -> Unit = { },
     onAddMenuTag: () -> Unit = { },
@@ -101,10 +101,10 @@ private fun ReviewAddScreen(
     onNavigationIconClick: () -> Unit = {}
 ) {
     Scaffold(
-        modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
+        modifier = modifier,
         topBar = {
             KoinStoreTopAppBar(
-                title = "리뷰 수정하기",
+                title = stringResource(R.string.review_edit),
                 onNavigationIconClick = onNavigationIconClick
             )
         },
@@ -112,6 +112,7 @@ private fun ReviewAddScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .windowInsetsPadding(WindowInsets.navigationBars)
                     .padding(horizontal = 24.dp)
                     .shadow(
                         elevation = 1.dp,
@@ -127,7 +128,7 @@ private fun ReviewAddScreen(
                 contentAlignment = Alignment.Center
             ) {
                 BasicText(
-                    text = "수정하기",
+                    text = stringResource(R.string.review_edit_label),
                     modifier = Modifier.padding(vertical = 11.dp),
                     style = RebrandKoinTheme.typography.bold15.copy(color = RebrandKoinTheme.colors.neutral0)
                 )
@@ -139,6 +140,7 @@ private fun ReviewAddScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .background(color = RebrandKoinTheme.colors.neutral50)
+                .verticalScroll(rememberScrollState())
         ) {
             Column(
                 modifier = Modifier
@@ -177,6 +179,32 @@ private fun ReviewAddScreen(
                     onMenuTagChange = onMenuTagChange
                 )
             }
+        }
+    }
+}
+
+private fun handleSideEffect(
+    sideEffect: ReviewEditSideEffect,
+    onNavigateBack: () -> Unit
+) {
+    when (sideEffect) {
+        is ReviewEditSideEffect.ShowToast -> {
+            ToastUtil.getInstance().makeShort(sideEffect.message)
+        }
+        is ReviewEditSideEffect.NavigateToReview -> {
+            onNavigateBack()
+        }
+        is ReviewEditSideEffect.ShowImageUploadFailedToast -> {
+            ToastUtil.getInstance().makeShort(sideEffect.message)
+        }
+        is ReviewEditSideEffect.ShowRatingValidationToast -> {
+            ToastUtil.getInstance().makeShort(sideEffect.message)
+        }
+        is ReviewEditSideEffect.ShowReviewModifiedToast -> {
+            ToastUtil.getInstance().makeShort(sideEffect.message)
+        }
+        is ReviewEditSideEffect.ShowReviewModifyFailedToast -> {
+            ToastUtil.getInstance().makeShort(sideEffect.message)
         }
     }
 }

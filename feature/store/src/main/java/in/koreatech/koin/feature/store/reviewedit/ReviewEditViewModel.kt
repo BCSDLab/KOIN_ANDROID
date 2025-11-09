@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.reviewEdit
+package `in`.koreatech.koin.feature.store.reviewedit
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -13,6 +13,9 @@ import `in`.koreatech.koin.domain.usecase.store.SearchReviewUseCase
 import `in`.koreatech.koin.feature.store.model.StoreNavigationData
 import `in`.koreatech.koin.feature.store.model.StoreNavigationDataType
 import `in`.koreatech.koin.feature.store.navigation.StoreReviewNavType
+import `in`.koreatech.koin.feature.store.reviewadd.constants.MAX_IMAGE_COUNT
+import `in`.koreatech.koin.feature.store.reviewadd.constants.MAX_MENU_TAG_COUNT
+import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
 import kotlin.reflect.typeOf
 import kotlinx.coroutines.launch
@@ -42,7 +45,9 @@ class ReviewEditViewModel @Inject constructor(
 
         blockingIntent {
             reduce { state.copy(isLoading = true) }
+        }
 
+        intent {
             val reviewDetail = searchReviewUseCase(reviewId, shopId)
             reduce {
                 state.copy(
@@ -52,83 +57,73 @@ class ReviewEditViewModel @Inject constructor(
                     storeName = route.storeName,
                     rating = reviewDetail.rating,
                     reviewContent = reviewDetail.content,
-                    menuTags = reviewDetail.menuNames.toList(),
-                    imageUris = reviewDetail.imageUrls.toList(),
+                    menuTags = reviewDetail.menuNames.toImmutableList(),
+                    imageUris = reviewDetail.imageUrls.toImmutableList(),
                     isLoading = false
                 )
             }
         }
     }
 
-    fun updateReviewContent(content: String) {
-        intent {
-            reduce {
-                state.copy(reviewContent = content)
-            }
+    fun updateReviewContent(content: String) = intent {
+        reduce {
+            state.copy(reviewContent = content)
         }
     }
 
-    fun updateRating(newRating: Int) {
-        intent {
-            reduce {
-                state.copy(rating = newRating)
-            }
+
+    fun updateRating(newRating: Int) = intent {
+        reduce {
+            state.copy(rating = newRating)
         }
     }
 
-    fun updateMenuTag(menuTag: String) {
-        intent {
-            reduce {
-                state.copy(menuTag = menuTag)
-            }
+    fun updateMenuTag(menuTag: String) = intent {
+        reduce {
+            state.copy(menuTag = menuTag)
         }
     }
 
-    fun addMenuTag() {
-        intent {
-            val newTag = state.menuTag
-            if (newTag.isNotBlank() && !state.menuTags.contains(newTag) && state.menuTags.size < 5) {
-                reduce {
-                    state.copy(
-                        menuTags = state.menuTags + newTag,
-                        menuTag = ""
-                    )
-                }
-            }
-        }
-    }
-
-    fun removeMenuTag(index: Int) {
-        intent {
+    fun addMenuTag() = intent {
+        val newTag = state.menuTag
+        if (newTag.isNotBlank() && !state.menuTags.contains(newTag) && state.menuTags.size < MAX_MENU_TAG_COUNT) {
             reduce {
                 state.copy(
-                    menuTags = state.menuTags.filterIndexed { i, _ -> i != index }
+                    menuTags = (state.menuTags + newTag).toImmutableList(),
+                    menuTag = ""
                 )
             }
         }
     }
 
+    fun removeMenuTag(index: Int) = intent {
+        reduce {
+            state.copy(
+                menuTags = state.menuTags.filterIndexed { i, _ -> i != index }.toImmutableList()
+            )
+        }
+    }
+
     fun addImageUris(newUris: List<String>) = intent {
         val currentUris = state.imageUris.toMutableList()
-        val remain = 3 - currentUris.size
+        val remain = MAX_IMAGE_COUNT - currentUris.size
         val addUris = newUris.take(remain)
         addUris.forEach { uri ->
             fetchPreSignedUrlWithUrl(uri)
         }
-        reduce { state.copy(imageUris = (currentUris + addUris).take(3)) }
+        reduce { state.copy(imageUris = (currentUris + addUris).take(MAX_IMAGE_COUNT).toImmutableList()) }
     }
 
     fun removeImageUri(index: Int) = intent {
         reduce {
             state.copy(
-                imageUris = state.imageUris.filterIndexed { i, _ -> i != index },
-                presignedPairs = state.presignedPairs.filterIndexed { i, _ -> i != index }
+                imageUris = state.imageUris.filterIndexed { i, _ -> i != index }.toImmutableList(),
+                presignedPairs = state.presignedPairs.filterIndexed { i, _ -> i != index }.toImmutableList()
             )
         }
     }
 
-    private fun fetchPreSignedUrlWithUrl(imageUri: String) {
-        intent { reduce { state.copy(isLoading = true) } }
+    private fun fetchPreSignedUrlWithUrl(imageUri: String) = intent {
         viewModelScope.launch {
             val fileName = imageUri.substringAfterLast('/')
             val fileType = "image/${fileName.substringAfterLast('.', "jpg")}"
@@ -138,25 +133,20 @@ class ReviewEditViewModel @Inject constructor(
                     intent {
                         reduce {
                             state.copy(
-                                presignedPairs = state.presignedPairs + Triple(imageUri, preSignedUrl, fileUrl)
+                                presignedPairs = (state.presignedPairs + PresignedPair(imageUri, preSignedUrl, fileUrl)).toImmutableList()
                             )
                         }
                     }
                 }
                 .onFailure {
                     intent {
-                        postSideEffect(ReviewEditSideEffect.ShowToast("이미지 업로드 실패"))
+                        postSideEffect(ReviewEditSideEffect.ShowImageUploadFailedToast())
                     }
                 }
-            intent { reduce { state.copy(isLoading = false) } }
         }
     }
 
     fun modifyReview() = intent {
-        if (state.rating < 1) {
-            postSideEffect(ReviewEditSideEffect.ShowToast("별점을 1점 이상 선택해주세요."))
-            return@intent
-        }
         reduce { state.copy(isLoading = true) }
         val uploadResult = mutableListOf<String>()
         for ((localUri, presignedUrl, fileUrl) in state.presignedPairs) {
@@ -164,7 +154,7 @@ class ReviewEditViewModel @Inject constructor(
             if (r.isSuccess) {
                 uploadResult.add(fileUrl)
             } else {
-                postSideEffect(ReviewEditSideEffect.ShowToast("이미지 업로드 실패"))
+                postSideEffect(ReviewEditSideEffect.ShowImageUploadFailedToast())
                 reduce { state.copy(isLoading = false) }
                 return@intent
             }
@@ -177,11 +167,11 @@ class ReviewEditViewModel @Inject constructor(
         )
         modifyReviewUseCase(state.reviewId, state.storeId, review)
             .onSuccess {
-                postSideEffect(ReviewEditSideEffect.ShowToast("리뷰가 수정되었어요"))
+                postSideEffect(ReviewEditSideEffect.ShowReviewModifiedToast())
                 postSideEffect(ReviewEditSideEffect.NavigateToReview)
             }
             .onFailure {
-                postSideEffect(ReviewEditSideEffect.ShowToast("리뷰 수정에 실패했습니다."))
+                postSideEffect(ReviewEditSideEffect.ShowReviewModifyFailedToast())
             }
         reduce { state.copy(isLoading = false) }
     }
