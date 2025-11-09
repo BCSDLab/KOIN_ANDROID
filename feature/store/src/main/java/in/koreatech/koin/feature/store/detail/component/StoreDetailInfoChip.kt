@@ -29,9 +29,11 @@ import `in`.koreatech.koin.feature.store.model.ShopInfoModel
 @Composable
 fun OriginInfoChips(
     modifier: Modifier = Modifier,
-    isOrderableShop: Boolean = true
+    isOrderableShop: Boolean = true,
+    onClick: () -> Unit = {}
 ) {
     Surface(
+        onClick = onClick,
         modifier = modifier,
         shape = RoundedCornerShape(50),
         border = BorderStroke(0.5.dp, Color(0xFFE0E0E0)),

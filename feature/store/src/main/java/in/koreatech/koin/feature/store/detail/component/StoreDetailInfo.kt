@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.store.detail.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -87,10 +86,8 @@ fun StoreDetailInfo(
             OriginInfoChips(
                 modifier = Modifier
                     .defaultMinSize(minHeight = 28.dp)
-                    .clip(RoundedCornerShape(50))
-                    .clickable {
-                        navigateToDetailInfo(StoreDetailInfoType.ORIGIN.name)
-                    },
+                    .clip(RoundedCornerShape(50)),
+                onClick = remember { { navigateToDetailInfo(StoreDetailInfoType.ORIGIN.name) } },
                 isOrderableShop = isOrderableShop
             )
         }
@@ -126,8 +123,8 @@ fun CallCard(
     Surface(
         shape = RebrandKoinTheme.shapes.medium,
         modifier = modifier
-            .fillMaxWidth()
-            .clickable(onClick = rememberedCall),
+            .fillMaxWidth(),
+        onClick = rememberedCall,
         shadowElevation = 1.dp,
         color = RebrandKoinTheme.colors.neutral0
     ) {
