@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
@@ -171,13 +172,14 @@ private fun ReviewScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     KoinStoreChip(
+                        modifier = Modifier.offset(x = (-8).dp),
                         text = stringResource(orderOption.reviewOrderOption.stringResId),
                         chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
                             textColor = RebrandKoinTheme.colors.neutral500,
                             borderWidth = 0.dp,
                             elevation = 0.dp,
                             containerColor = Color.Unspecified,
-                            paddingValues = PaddingValues(horizontal = 0.dp)
+                            paddingValues = PaddingValues(horizontal = 8.dp)
                         ),
                         trailingIcon = rememberVectorPainter(ImageVector.vectorResource(R.drawable.ic_store_arrow_down)),
                         trailingIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(
