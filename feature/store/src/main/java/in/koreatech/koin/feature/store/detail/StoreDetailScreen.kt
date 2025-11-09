@@ -43,6 +43,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
@@ -77,8 +78,8 @@ import `in`.koreatech.koin.feature.store.model.StoreNavigationData
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
 import `in`.koreatech.koin.feature.store.state.collapseToolbar
 import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
-import `in`.koreatech.koin.feature.store.util.customCollapsingToolbarContent
 import kotlin.math.roundToInt
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -385,12 +386,12 @@ fun StoreDetailScreen(
                             rememberState.toolbarMaxHeight + statusBarHeight
                         )
                         .fillMaxWidth()
-                        .customCollapsingToolbarContent(
-                            maxToolbarHeight = rememberState.toolbarMaxHeight,
-                            currentToolbarHeight = currentToolbarHeightDp.value,
-                            overlayAlpha = overlayAlpha.value
-                        ),
-                    imageUrls = uiState.store.imageUrls ?: emptyList(),
+                        .graphicsLayer {
+                            clip = true
+                            translationY = -(rememberState.toolbarMaxHeight.toPx() - currentToolbarHeightDp.value.toPx())
+                            alpha = 1f - overlayAlpha.value
+                        },
+                    imageUrls = uiState.store.imageUrls ?: persistentListOf(),
                     pagerState = pagerState
                 )
             }
