@@ -20,6 +20,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,10 +40,12 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.model.MenuModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 fun LazyListScope.menuListSection(
     category: String,
-    menus: List<MenuModel>,
+    menus: ImmutableList<MenuModel>,
     modifier: Modifier = Modifier,
     onMenuClick: (menuId: Int) -> Unit = { }
 ) {
@@ -70,14 +74,15 @@ fun LazyListScope.menuListSection(
             ) {
                 Column {
                     menus.forEachIndexed { index, menu ->
-                        MenuItem(
-                            modifier = Modifier
-                                .clickable { onMenuClick(menu.id) }
-                                .padding(16.dp),
-                            menu = menu
-                        )
-                        if (index != menus.lastIndex) {
-                            Divider(color = RebrandKoinTheme.colors.neutral300)
+                        key(menu) {
+                            MenuItem(
+                                modifier = Modifier.padding(16.dp),
+                                menu = menu,
+                                onClick = onMenuClick
+                            )
+                            if (index != menus.lastIndex) {
+                                Divider(color = RebrandKoinTheme.colors.neutral300)
+                            }
                         }
                     }
                 }
@@ -89,10 +94,13 @@ fun LazyListScope.menuListSection(
 @Composable
 fun MenuItem(
     menu: MenuModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: (id: Int) -> Unit = {}
 ) {
+    val rememberedOnClick = remember(menu.id) { { onClick(menu.id) } }
+
     Row(
-        modifier = modifier,
+        modifier = modifier.clickable(onClick = rememberedOnClick),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
@@ -183,14 +191,14 @@ private fun MenuListSectionPreview() {
             menuListSection(
                 modifier = Modifier.fillMaxWidth(),
                 category = "추천메뉴",
-                menus = listOf(
+                menus = persistentListOf(
                     MenuModel(
                         id = 1,
                         name = "아메리카노",
                         description = null,
                         thumbnailImage = null,
                         isSoldOut = false,
-                        prices = listOf(),
+                        prices = persistentListOf(),
                         isSingle = true
                     ),
                     MenuModel(
@@ -199,7 +207,7 @@ private fun MenuListSectionPreview() {
                         description = "부드러운 ��유와 커피의 조화.",
                         thumbnailImage = "https://example.com/cafelatte.jpg",
                         isSoldOut = false,
-                        prices = listOf(),
+                        prices = persistentListOf(),
                         isSingle = true
                     )
                 )

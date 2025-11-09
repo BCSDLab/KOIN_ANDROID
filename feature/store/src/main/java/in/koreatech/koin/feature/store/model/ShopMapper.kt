@@ -4,6 +4,8 @@ import `in`.koreatech.koin.domain.model.ordershop.OrderMenuList
 import `in`.koreatech.koin.domain.model.ordershop.OrderShopSummary
 import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 /**
  * 가게 정보 모델을 UI 모델로 변환하는 확장 함수들
@@ -13,7 +15,7 @@ fun StoreWithMenu.toStoreInfoModel(): ShopInfoModel { // 기존 상점 정보 �
         shopId = uid,
         orderableShopId = null,
         name = name,
-        imageUrls = imageUrls ?: emptyList(),
+        imageUrls = imageUrls?.toImmutableList() ?: persistentListOf(),
         isCardOk = isCardOk,
         isBankOk = isBankOk,
         bank = bank,
@@ -30,7 +32,7 @@ fun OrderShopSummary.toStoreIndoModel(): ShopInfoModel { // 주문 가능한 상
         shopId = shopId,
         orderableShopId = orderableShopId,
         name = name,
-        imageUrls = images,
+        imageUrls = images.toImmutableList(),
         isCardOk = payCard,
         isBankOk = payBank,
         bank = null,
@@ -63,11 +65,11 @@ fun StoreMenuCategories.toMenuCategoryModel(): MenuCategoryModel { // 기존 상
                         name = price.option,
                         price = price.price
                     )
-                } ?: emptyList(),
+                }?.toImmutableList() ?: persistentListOf(),
                 singlePrice = menu.singlePrice,
                 isSingle = menu.isSingle
             )
-        } ?: emptyList()
+        }?.toImmutableList() ?: persistentListOf()
     )
 }
 
@@ -88,10 +90,10 @@ fun OrderMenuList.toMenuCategoryModel(): MenuCategoryModel { // 주문 가능한
                         name = price.name,
                         price = price.price
                     )
-                },
+                }.toImmutableList(),
                 singlePrice = orderMenu.prices.getOrNull(0)?.price,
                 isSingle = menus.getOrNull(0)?.name == null // 옵션 이름이 null이면 단일 메뉴로 간주
             )
-        }
+        }.toImmutableList()
     )
 }

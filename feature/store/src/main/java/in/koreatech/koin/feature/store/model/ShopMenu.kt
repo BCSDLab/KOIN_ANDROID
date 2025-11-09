@@ -1,5 +1,8 @@
 package `in`.koreatech.koin.feature.store.model
 
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+
 /**
  * 상점 메뉴 모델
  */
@@ -7,7 +10,7 @@ package `in`.koreatech.koin.feature.store.model
 data class MenuCategoryModel(
     val menuGroupId: Int,
     val menuGroupName: String,
-    val menus: List<MenuModel>,
+    val menus: ImmutableList<MenuModel>,
     val isChecked: Boolean = false
 )
 
@@ -17,7 +20,7 @@ data class MenuModel(
     val description: String?,
     val thumbnailImage: String?,
     val isSoldOut: Boolean,
-    val prices: List<MenuPriceModel>,
+    val prices: ImmutableList<MenuPriceModel>,
     val isSingle: Boolean, // 단일 메뉴인지 여부
     val singlePrice: Int? = null // 단일 가격이 있는 경우에만 사용
 )
@@ -35,7 +38,7 @@ data class ShopInfoModel(
     val shopId: Int,
     val orderableShopId: Int?,
     val name: String,
-    val imageUrls: List<String>?,
+    val imageUrls: ImmutableList<String>?,
     val isCardOk: Boolean,
     val isBankOk: Boolean,
     val bank: String?,
@@ -50,7 +53,7 @@ data class ShopInfoModel(
             shopId = 0,
             orderableShopId = null,
             name = "",
-            imageUrls = emptyList(),
+            imageUrls = persistentListOf(),
             isCardOk = false,
             isBankOk = false,
             bank = null,

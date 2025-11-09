@@ -18,12 +18,13 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import kotlinx.collections.immutable.ImmutableList
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun StoreDetailImage(
     modifier: Modifier,
-    imageUrls: List<String>,
+    imageUrls: ImmutableList<String>,
     pagerState: PagerState
 ) {
     Box(
