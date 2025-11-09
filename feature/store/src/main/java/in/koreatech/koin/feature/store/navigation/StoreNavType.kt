@@ -35,13 +35,13 @@ sealed class StoreDetailNavType(val route: String) {
 @Serializable
 sealed class StoreReviewNavType {
     @Serializable
-    data class StoreReviewHome(val storeNavigationData: StoreNavigationData) : StoreReviewNavType()
+    data class StoreReviewHome(val storeNavigationData: StoreNavigationData, val storeName: String) : StoreReviewNavType()
 
     @Serializable
-    data object StoreReviewAdd : StoreReviewNavType()
+    data class StoreReviewAdd(val storeNavigationData: StoreNavigationData, val storeName: String) : StoreReviewNavType()
 
     @Serializable
-    data object StoreReviewEdit : StoreReviewNavType()
+    data class StoreReviewEdit(val storeNavigationData: StoreNavigationData, val reviewId: Int, val storeName: String) : StoreReviewNavType()
 
     @Serializable
     data class StoreReviewReport(val storeNavigationData: StoreNavigationData, val reviewId: Int) : StoreReviewNavType()

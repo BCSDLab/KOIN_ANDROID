@@ -36,6 +36,7 @@ import `in`.koreatech.koin.data.response.store.StoreItemWithMenusV2Response
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.data.response.store.StoreResponse
+import `in`.koreatech.koin.data.response.store.StoreReviewDetailResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
 import `in`.koreatech.koin.domain.model.store.StoreReport
 import `in`.koreatech.koin.domain.model.store.StoreSorter
@@ -137,6 +138,13 @@ class StoreRemoteDataSource @Inject constructor(
         reviewRequest: ReviewRequest
     ) {
         userAuthApi.modifyReview(reviewId, shopId, reviewRequest)
+    }
+
+    suspend fun searchReview(
+        reviewId: Int,
+        shopId: Int
+    ): StoreReviewDetailResponse {
+        return storeApi.searchReview(reviewId, shopId)
     }
 
     suspend fun postReviewReports(

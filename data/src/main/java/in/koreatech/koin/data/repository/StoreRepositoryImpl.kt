@@ -11,6 +11,7 @@ import `in`.koreatech.koin.data.mapper.toCategory
 import `in`.koreatech.koin.data.mapper.toOrderHistoryRelated
 import `in`.koreatech.koin.data.mapper.toOrderInProgress
 import `in`.koreatech.koin.data.mapper.toOrderableShopSearchRelated
+import `in`.koreatech.koin.data.mapper.toReviewDetail
 import `in`.koreatech.koin.data.mapper.toShop
 import `in`.koreatech.koin.data.mapper.toShopDeliveryAvailable
 import `in`.koreatech.koin.data.mapper.toShopDetail
@@ -47,6 +48,7 @@ import `in`.koreatech.koin.domain.model.store.OrderHistoryRelated
 import `in`.koreatech.koin.domain.model.store.OrderInProgress
 import `in`.koreatech.koin.domain.model.store.OrderableShopSearchRelated
 import `in`.koreatech.koin.domain.model.store.Review
+import `in`.koreatech.koin.domain.model.store.ReviewDetail
 import `in`.koreatech.koin.domain.model.store.Shop
 import `in`.koreatech.koin.domain.model.store.ShopDeliveryAvailable
 import `in`.koreatech.koin.domain.model.store.ShopDetail
@@ -184,6 +186,10 @@ class StoreRepositoryImpl @Inject constructor(
                 menuNames = content.menuNames
             )
         )
+    }
+
+    override suspend fun searchReview(reviewId: Int, shopId: Int): ReviewDetail {
+        return storeRemoteDataSource.searchReview(reviewId, shopId).toReviewDetail()
     }
 
     override suspend fun reportReview(

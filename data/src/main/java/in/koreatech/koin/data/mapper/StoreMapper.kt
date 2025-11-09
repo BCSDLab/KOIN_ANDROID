@@ -38,6 +38,7 @@ import `in`.koreatech.koin.data.response.store.StoreMenuRegisterResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewContentResponse
+import `in`.koreatech.koin.data.response.store.StoreReviewDetailResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewStatisticsResponse
 import `in`.koreatech.koin.domain.model.owner.OwnerGetStore
@@ -62,6 +63,7 @@ import `in`.koreatech.koin.domain.model.store.OrderHistoryOrders
 import `in`.koreatech.koin.domain.model.store.OrderHistoryRelated
 import `in`.koreatech.koin.domain.model.store.OrderInProgress
 import `in`.koreatech.koin.domain.model.store.OrderableShopSearchRelated
+import `in`.koreatech.koin.domain.model.store.ReviewDetail
 import `in`.koreatech.koin.domain.model.store.Shop
 import `in`.koreatech.koin.domain.model.store.ShopDeliveryAvailable
 import `in`.koreatech.koin.domain.model.store.ShopDetail
@@ -271,6 +273,19 @@ fun StoreReviewResponse.toStoreReview() =
         statistics = statistics.toStoreReviewStatistics(),
         reviews = reviews.toStoreReviewContentList()
     )
+
+fun StoreReviewDetailResponse.toReviewDetail(): ReviewDetail {
+    return ReviewDetail(
+        reviewId = reviewId,
+        rating = rating,
+        nickName = nickName,
+        content = content,
+        imageUrls = imageUrls,
+        menuNames = menuNames,
+        isModified = isModified,
+        createdAt = createdAt
+    )
+}
 
 fun List<OperatingTime>.toMyStoreDayOffResponse(): ArrayList<StoreDayOffResponse> {
     val responseList = ArrayList<StoreDayOffResponse>()
