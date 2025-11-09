@@ -10,21 +10,28 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
@@ -37,10 +44,14 @@ fun StoreDetailInfo(
     storeReview: StoreReview,
     storeDescriptionModel: StoreDescriptionModel,
     modifier: Modifier = Modifier,
+    phoneNumber: String? = null,
     isOrderableShop: Boolean = true,
     navigateToReview: () -> Unit = {},
-    navigateToDetailInfo: (selectedInfo: String) -> Unit = {}
+    navigateToDetailInfo: (selectedInfo: String) -> Unit = {},
+    call: (phoneNumber: String) -> Unit = {}
 ) {
+    if (!isOrderableShop) require(phoneNumber != null)
+
     Column(modifier = modifier.padding(horizontal = 24.dp)) {
         Text(modifier = Modifier.padding(vertical = 4.dp), text = storeInfo.name, fontWeight = FontWeight.Bold, fontSize = 20.sp)
         Row(
@@ -59,14 +70,19 @@ fun StoreDetailInfo(
                     contentDescription = null,
                     tint = colorResource(id = R.color.star)
                 )
+
                 Text(
-                    modifier = Modifier.padding(start = 5.dp),
-                    text = storeReview.statistics.averageRating.toString(),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.SemiBold
+                    text = stringResource(R.string.review_count, storeReview.statistics.averageRating, storeReview.totalCount),
+                    style = RebrandKoinTheme.typography.bold12
                 )
-                Text(text = stringResource(R.string.review_count, storeReview.totalCount), fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                Icon(painter = painterResource(R.drawable.ic_right_arrow), contentDescription = null, modifier = Modifier.size(9.dp))
+
+                Icon(
+                    painter = painterResource(R.drawable.ic_right_arrow),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                        .size(9.dp)
+                )
             }
             OriginInfoChips(
                 modifier = Modifier
@@ -87,10 +103,68 @@ fun StoreDetailInfo(
             storeDescriptionModel = storeDescriptionModel,
             navigateToDetailInfo = { type -> navigateToDetailInfo(type) }
         )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        if (!isOrderableShop) {
+            CallCard(
+                phoneNumber = phoneNumber!!, // Phone number shouldn't be null if !isOrderableShop
+                call = call
+            )
+        }
     }
 }
 
-@Preview
+@Composable
+fun CallCard(
+    phoneNumber: String,
+    modifier: Modifier = Modifier,
+    call: (phoneNumber: String) -> Unit = {}
+) {
+    val rememberedCall = remember(phoneNumber) { { call(phoneNumber) } }
+
+    Surface(
+        shape = RebrandKoinTheme.shapes.medium,
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(onClick = rememberedCall),
+        shadowElevation = 1.dp,
+        color = RebrandKoinTheme.colors.neutral0
+    ) {
+        Row(
+            modifier = Modifier.padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                ImageVector.vectorResource(id = R.drawable.ic_store_call),
+                contentDescription = null,
+                modifier = Modifier.size(16.dp),
+                tint = colorResource(id = R.color.store_detail_chip)
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            BasicText(
+                text = stringResource(R.string.call_to_store),
+                style = RebrandKoinTheme.typography.medium14.copy(
+                    color = RebrandKoinTheme.colors.primary500
+                )
+            )
+
+            Spacer(modifier = Modifier.width(20.dp))
+
+            BasicText(
+                text = phoneNumber,
+                style = RebrandKoinTheme.typography.regular12.copy(
+                    color = RebrandKoinTheme.colors.neutral700
+                )
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
 @Composable
 fun StoreDetailInfoPreview() {
     StoreDetailInfo(

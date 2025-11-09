@@ -19,8 +19,8 @@ fun StoreWithMenu.toStoreInfoModel(): ShopInfoModel { // 기존 상점 정보 �
         bank = bank,
         isDeliveryAvailable = isDeliveryOk,
         isTakeoutAvailable = false,
-        minimumOrderAmount = deliveryPrice,
-        minimumDeliveryTip = null,
+        minimumOrderAmount = null,
+        minimumDeliveryTip = deliveryPrice,
         maximumDeliveryTip = null
     )
 }

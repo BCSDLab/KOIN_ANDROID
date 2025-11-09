@@ -112,7 +112,7 @@ private fun handleSideEffect(
     when (sideEffect) {
         ReviewReportSideEffect.ReviewReportSuccess -> {
             onBackPressedDispatcher?.onBackPressed()
-            showToast.invoke(context.getString(R.string.review_reported))
+            showToast.invoke(context.getString(R.string.review_report_success))
         }
     }
 }

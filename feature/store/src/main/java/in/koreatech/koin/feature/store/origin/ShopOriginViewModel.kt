@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopOriginInfoUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
-import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuV2UseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.store.model.DeliveryTipModel
 import `in`.koreatech.koin.feature.store.model.OriginModel
@@ -28,7 +28,7 @@ class ShopOriginViewModel @Inject constructor(
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
     private val getOrderShopOriginInfoUseCase: GetOrderShopOriginInfoUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
-    private val getStoreWithMenuUseCase: GetStoreWithMenuUseCase
+    private val getStoreWithMenuV2UseCase: GetStoreWithMenuV2UseCase
 ) : ViewModel(), ContainerHost<ShopOriginState, Unit> {
     override val container = container<ShopOriginState, Unit>(ShopOriginState()) {
         val storeId = savedStateHandle.get<Int>(STORE_ID)
@@ -131,7 +131,7 @@ class ShopOriginViewModel @Inject constructor(
     }
 
     private fun fetchShopInfo(id: Int) = intent {
-        getStoreWithMenuUseCase(id).also { result ->
+        getStoreWithMenuV2UseCase(id).also { result ->
             reduce {
                 state.copy(
                     isLoading = false,
@@ -140,10 +140,10 @@ class ShopOriginViewModel @Inject constructor(
                         storeName = result.name,
                         address = result.address ?: "",
                         description = result.description,
-                        notice = result.description,
+                        notice = null,
                         phone = result.phone,
-                        openTime = result.open.openTime,
-                        closeTime = result.open.closeTime,
+                        openTime = result.openTime,
+                        closeTime = result.closeTime,
                         closedDays = emptyList(),
                         deliveryTips = DeliveryTipModel(
                             fromAmount = 0,

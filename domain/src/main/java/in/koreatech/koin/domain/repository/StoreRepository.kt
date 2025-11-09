@@ -32,6 +32,7 @@ import `in`.koreatech.koin.domain.model.store.StoreReport
 import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
+import `in`.koreatech.koin.domain.model.store.StoreWithMenuV2
 
 interface StoreRepository {
     suspend fun getStores(
@@ -46,6 +47,8 @@ interface StoreRepository {
     suspend fun getStoreCategories(): List<StoreCategories>
 
     suspend fun getStoreWithMenu(storeId: Int): StoreWithMenu
+
+    suspend fun getStoreWithMenuV2(storeId: Int): StoreWithMenuV2
 
     suspend fun getStoreMenuCategory(storeId: Int): List<StoreMenuCategory>
 
@@ -89,6 +92,8 @@ interface StoreRepository {
     suspend fun getStoreBenefitCategories(): BenefitCategoryList
 
     suspend fun getShopSearchRelatedList(query: String): ShopSearchRelatedList
+
+    suspend fun getShopSearchRelatedListV2(keyword: String): Result<OrderableShopSearchRelated>
 
     suspend fun getOrderableShops(
         sorter: String?,

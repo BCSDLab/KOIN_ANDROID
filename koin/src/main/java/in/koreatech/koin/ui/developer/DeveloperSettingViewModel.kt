@@ -18,6 +18,9 @@ class DeveloperSettingViewModel @Inject constructor(
     private val _storeDeveloperSetting = MutableStateFlow(false)
     val storeDeveloperSetting get() = _storeDeveloperSetting
 
+    private val _deliveryDeveloperSetting = MutableStateFlow(false)
+    val deliveryDeveloperSetting get() = _deliveryDeveloperSetting
+
     init {
         getDeveloperSettings()
     }
@@ -29,9 +32,11 @@ class DeveloperSettingViewModel @Inject constructor(
 
     fun getDeveloperSettings() = viewModelScope.launch {
         _storeDeveloperSetting.value = getDeveloperSettingUseCase(STORE_SPRINT)
+        _deliveryDeveloperSetting.value = getDeveloperSettingUseCase(DELIVERY_SPRINT)
     }
 
     companion object {
         const val STORE_SPRINT = "store_sprint"
+        const val DELIVERY_SPRINT = "delivery_sprint"
     }
 }

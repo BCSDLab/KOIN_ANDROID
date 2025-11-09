@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -21,6 +22,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,12 +51,30 @@ fun ReviewItem(
     date: String,
     content: String,
     modifier: Modifier = Modifier,
+    isReported: Boolean = false,
     imageUrls: ImmutableList<String>,
     menuTags: ImmutableList<String>,
     onReportClick: () -> Unit = { },
     onEditClick: () -> Unit = { },
     onDeleteClick: () -> Unit = { }
 ) {
+    if (isReported) {
+        Row(
+            modifier = modifier.fillMaxWidth().padding(horizontal = 24.dp)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_store_review_reported),
+                contentDescription = null
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = stringResource(id = R.string.review_reported),
+                color = RebrandKoinTheme.colors.neutral500,
+                style = RebrandKoinTheme.typography.regular14
+            )
+        }
+        return
+    }
     val chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
         textColor = RebrandKoinTheme.colors.neutral500,
         textStyle = RebrandKoinTheme.typography.bold12,
@@ -209,6 +230,7 @@ private fun ReviewItemGuestPreview() {
     val tags = persistentListOf("계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발")
     val imageUrls = persistentListOf("")
     ReviewItem(
+        isReported = true,
         isMyReview = false,
         userName = "익명_123456",
         rating = 2,
