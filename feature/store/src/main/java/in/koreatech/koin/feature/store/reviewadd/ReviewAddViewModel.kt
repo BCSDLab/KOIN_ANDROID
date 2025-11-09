@@ -108,7 +108,7 @@ class ReviewAddViewModel @Inject constructor(
     fun clearFileInfo() = intent {
         reduce {
             state.copy(
-                fileInfo = mutableListOf(),
+                fileInfo = persistentListOf(),
                 presignedPairs = persistentListOf()
             )
         }
