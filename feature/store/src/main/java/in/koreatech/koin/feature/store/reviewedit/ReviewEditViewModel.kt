@@ -19,6 +19,7 @@ import kotlin.reflect.typeOf
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -62,25 +63,25 @@ class ReviewEditViewModel @Inject constructor(
         return searchReviewUseCase(reviewId, shopId)
     }
 
-    fun updateReviewContent(content: String) = intent {
+    fun updateReviewContent(content: String) = blockingIntent {
         reduce {
             state.copy(reviewContent = content)
         }
     }
 
-    fun updateRating(newRating: Int) = intent {
+    fun updateRating(newRating: Int) = blockingIntent {
         reduce {
             state.copy(rating = newRating)
         }
     }
 
-    fun updateMenuTag(menuTag: String) = intent {
+    fun updateMenuTag(menuTag: String) = blockingIntent {
         reduce {
             state.copy(menuTag = menuTag)
         }
     }
 
-    fun addMenuTag() = intent {
+    fun addMenuTag() = blockingIntent {
         val newTag = state.menuTag
         if (newTag.isNotBlank() && !state.menuTags.contains(newTag) && state.menuTags.size < MAX_MENU_TAG_COUNT) {
             reduce {
@@ -92,7 +93,7 @@ class ReviewEditViewModel @Inject constructor(
         }
     }
 
-    fun removeMenuTag(index: Int) = intent {
+    fun removeMenuTag(index: Int) = blockingIntent {
         reduce {
             state.copy(
                 menuTags = state.menuTags.filterIndexed { i, _ -> i != index }.toImmutableList()
@@ -100,7 +101,7 @@ class ReviewEditViewModel @Inject constructor(
         }
     }
 
-    fun clearFileInfo() = intent {
+    fun clearFileInfo() = blockingIntent {
         reduce {
             state.copy(
                 presignedPairs = persistentListOf()
@@ -128,7 +129,7 @@ class ReviewEditViewModel @Inject constructor(
         }
     }
 
-    fun removeImageUri(index: Int) = intent {
+    fun removeImageUri(index: Int) = blockingIntent {
         reduce {
             state.copy(
                 imageUris = state.imageUris.filterIndexed { i, _ -> i != index }.toImmutableList(),
