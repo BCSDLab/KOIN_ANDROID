@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.feature.store.reviewadd
 
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -21,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,6 +37,8 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.reviewadd.component.ReviewHeaderSection
 import `in`.koreatech.koin.feature.store.reviewadd.component.ReviewImageSection
 import `in`.koreatech.koin.feature.store.reviewadd.component.ReviewTextFieldSection
+import `in`.koreatech.koin.feature.store.reviewadd.constants.MAX_IMAGE_COUNT
+import `in`.koreatech.koin.feature.store.util.launchImagePicker
 import kotlinx.collections.immutable.ImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -45,6 +50,22 @@ fun ReviewAddScreen(
     onNavigateBack: () -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
+    val context = LocalContext.current
+
+    val galleryLauncher = launchImagePicker(
+        contentResolver = context.contentResolver,
+        maxItem = MAX_IMAGE_COUNT,
+        initImageUrls = { viewModel.clearFileInfo() },
+        getPreSignedUrl = { fileInfoPair ->
+            val (fileDetail, fileMeta) = fileInfoPair
+            val fileSize = fileDetail.first
+            val fileType = fileDetail.second
+            val fileName = fileMeta.first
+            val imageUri = fileMeta.second
+            viewModel.requestPresignedUrl(fileSize, fileType, fileName, imageUri)
+        },
+        clearFileInfo = { viewModel.clearFileInfo() }
+    )
 
     if (uiState.isLoading) {
         Popup(
@@ -55,10 +76,6 @@ fun ReviewAddScreen(
             )
         }
         return
-    }
-
-    viewModel.collectSideEffect { sideEffect ->
-        handleSideEffect(sideEffect, onNavigateBack)
     }
 
     ReviewAddScreen(
@@ -75,10 +92,11 @@ fun ReviewAddScreen(
         onRemoveMenuTag = viewModel::removeMenuTag,
         onMenuTagChange = viewModel::updateMenuTag,
         onAddReview = viewModel::submitReview,
-        onAddImages = viewModel::addImageUris,
+        onAddImages = { galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
         onRemoveImage = viewModel::removeImageUri,
         onNavigationIconClick = onNavigateBack
     )
+    HandleSideEffects(viewModel, onNavigateBack)
 }
 
 @Composable
@@ -95,7 +113,7 @@ private fun ReviewAddScreen(
     onAddMenuTag: () -> Unit = { },
     onRemoveMenuTag: (Int) -> Unit = { },
     onMenuTagChange: (String) -> Unit = { },
-    onAddImages: (List<String>) -> Unit = {},
+    onAddImages: () -> Unit = {},
     onRemoveImage: (Int) -> Unit = {},
     onAddReview: () -> Unit = { },
     onNavigationIconClick: () -> Unit = {}
@@ -183,31 +201,26 @@ private fun ReviewAddScreen(
     }
 }
 
-private fun handleSideEffect(
-    sideEffect: ReviewAddSideEffect,
+@Composable
+private fun HandleSideEffects(
+    viewModel: ReviewAddViewModel,
     onNavigateBack: () -> Unit
 ) {
-    when (sideEffect) {
-        is ReviewAddSideEffect.ShowToast -> {
-            ToastUtil.getInstance().makeShort(sideEffect.message)
-        }
-        is ReviewAddSideEffect.NavigateToReview -> {
-            onNavigateBack()
-        }
-        is ReviewAddSideEffect.ShowImageUploadFailedToast -> {
-            ToastUtil.getInstance().makeShort(sideEffect.message)
-        }
-        is ReviewAddSideEffect.ShowOneReviewPerDayToast -> {
-            ToastUtil.getInstance().makeShort(sideEffect.message)
-        }
-        is ReviewAddSideEffect.ShowRatingValidationToast -> {
-            ToastUtil.getInstance().makeShort(sideEffect.message)
-        }
-        is ReviewAddSideEffect.ShowReviewWriteFailedToast -> {
-            ToastUtil.getInstance().makeShort(sideEffect.message)
-        }
-        is ReviewAddSideEffect.ShowReviewWrittenToast -> {
-            ToastUtil.getInstance().makeShort(sideEffect.message)
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            is ReviewAddSideEffect.NavigateToReview -> onNavigateBack()
+            is ReviewAddSideEffect.ShowImageUploadFailed -> {
+                ToastUtil.getInstance().makeShort(R.string.review_image_upload_failed)
+            }
+            is ReviewAddSideEffect.ShowReviewWritten -> {
+                ToastUtil.getInstance().makeShort(R.string.review_written)
+            }
+            is ReviewAddSideEffect.ShowReviewWriteFailed -> {
+                ToastUtil.getInstance().makeShort(R.string.review_write_failed)
+            }
+            is ReviewAddSideEffect.ShowOneReviewPerDay -> {
+                ToastUtil.getInstance().makeShort(R.string.one_review_per_day)
+            }
         }
     }
 }

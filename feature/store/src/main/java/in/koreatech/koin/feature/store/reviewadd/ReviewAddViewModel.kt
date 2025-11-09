@@ -2,7 +2,6 @@ package `in`.koreatech.koin.feature.store.reviewadd
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.store.Review
@@ -12,12 +11,11 @@ import `in`.koreatech.koin.domain.usecase.store.WriteReviewUseCase
 import `in`.koreatech.koin.feature.store.model.StoreNavigationData
 import `in`.koreatech.koin.feature.store.model.StoreNavigationDataType
 import `in`.koreatech.koin.feature.store.navigation.StoreReviewNavType
-import `in`.koreatech.koin.feature.store.reviewadd.constants.MAX_IMAGE_COUNT
 import `in`.koreatech.koin.feature.store.reviewadd.constants.MAX_MENU_TAG_COUNT
-import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
 import kotlin.reflect.typeOf
-import kotlinx.coroutines.launch
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -87,80 +85,57 @@ class ReviewAddViewModel @Inject constructor(
         }
     }
 
-    fun addImageUris(newUris: List<String>) = intent {
-        val currentUris = state.imageUris.toMutableList()
-        val remain = MAX_IMAGE_COUNT - currentUris.size
-        val addUris = newUris.take(remain)
-        addUris.forEach { uri ->
-            fetchPreSignedUrlWithUrl(uri)
+    fun requestPresignedUrl(fileSize: Long, fileType: String, fileName: String, imageUri: String) = intent {
+        getMarketPreSignedUrlUseCase(fileSize, fileType, fileName).onSuccess { (fileUrl, presignedUrl) ->
+            uploadFile(presignedUrl, fileType, fileSize, imageUri, fileUrl)
+        }.onFailure {
+            postSideEffect(ReviewAddSideEffect.ShowImageUploadFailed)
         }
-        reduce { state.copy(imageUris = (currentUris + addUris).take(MAX_IMAGE_COUNT).toImmutableList()) }
+    }
+
+    private fun uploadFile(presignedUrl: String, mediaType: String, mediaSize: Long, imageUri: String, fileUrl: String) = intent {
+        uploadFileUseCase(presignedUrl, mediaType, mediaSize, imageUri).onSuccess {
+            reduce {
+                state.copy(
+                    imageUris = (state.imageUris + fileUrl).toImmutableList()
+                )
+            }
+        }.onFailure {
+            postSideEffect(ReviewAddSideEffect.ShowImageUploadFailed)
+        }
+    }
+
+    fun clearFileInfo() = intent {
+        reduce {
+            state.copy(
+                fileInfo = mutableListOf(),
+                presignedPairs = persistentListOf()
+            )
+        }
     }
 
     fun removeImageUri(index: Int) = intent {
         reduce {
             state.copy(
-                imageUris = state.imageUris.filterIndexed { i, _ -> i != index }.toImmutableList(),
-                presignedPairs = state.presignedPairs.filterIndexed { i, _ -> i != index }.toImmutableList()
+                imageUris = state.imageUris.filterIndexed { i, _ -> i != index }.toImmutableList()
             )
         }
     }
 
-    private fun fetchPreSignedUrlWithUrl(imageUri: String) = intent {
-        viewModelScope.launch {
-            val fileName = imageUri.substringAfterLast('/')
-            val fileType = "image/${fileName.substringAfterLast('.', "jpg")}"
-            val fileSize = 1L
-            getMarketPreSignedUrlUseCase(fileSize, fileType, fileName)
-                .onSuccess { (fileUrl, preSignedUrl) ->
-                    intent {
-                        reduce {
-                            state.copy(
-                                presignedPairs = (state.presignedPairs + PresignedPair(imageUri, preSignedUrl, fileUrl)).toImmutableList()
-                            )
-                        }
-                    }
-                }
-                .onFailure {
-                    intent {
-                        postSideEffect(ReviewAddSideEffect.ShowImageUploadFailedToast())
-                    }
-                }
-        }
-    }
-
     fun submitReview() = intent {
-        if (state.rating < 1) {
-            postSideEffect(ReviewAddSideEffect.ShowRatingValidationToast())
-            return@intent
-        }
-
         reduce { state.copy(isLoading = true) }
-        val uploadResult = mutableListOf<String>()
-        for ((localUri, presignedUrl, fileUrl) in state.presignedPairs) {
-            val r = uploadFileUseCase(presignedUrl, "image/jpeg", 1L, localUri)
-            if (r.isSuccess) {
-                uploadResult.add(fileUrl)
-            } else {
-                postSideEffect(ReviewAddSideEffect.ShowImageUploadFailedToast())
-                reduce { state.copy(isLoading = false) }
-                return@intent
-            }
-        }
         val review = Review(
             rating = state.rating,
             content = state.reviewContent,
-            imageUrls = uploadResult,
+            imageUrls = state.imageUris,
             menuNames = state.menuTags
         )
-        writeReviewUseCase(state.storeId, review)
-            .onSuccess {
-                postSideEffect(ReviewAddSideEffect.ShowReviewWrittenToast())
-                postSideEffect(ReviewAddSideEffect.NavigateToReview)
-            }
-            .onFailure {
-                postSideEffect(ReviewAddSideEffect.ShowOneReviewPerDayToast())
-            }
+        writeReviewUseCase(state.storeId, review).onSuccess {
+            postSideEffect(ReviewAddSideEffect.ShowReviewWritten)
+            postSideEffect(ReviewAddSideEffect.NavigateToReview)
+        }.onFailure {
+            postSideEffect(ReviewAddSideEffect.ShowOneReviewPerDay)
+        }
         reduce { state.copy(isLoading = false) }
     }
 }

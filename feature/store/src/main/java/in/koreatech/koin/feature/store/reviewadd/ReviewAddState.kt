@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.store.reviewadd
 
+import `in`.koreatech.koin.domain.model.store.StoreUrl
 import `in`.koreatech.koin.feature.store.model.StoreNavigationData
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -15,16 +16,11 @@ data class ReviewAddState(
     val menuTags: ImmutableList<String> = persistentListOf(),
     val imageUris: ImmutableList<String> = persistentListOf(),
     val presignedPairs: ImmutableList<PresignedPair> = persistentListOf(),
-    val imageUploadUrls: ImmutableList<String> = persistentListOf()
+    val fileInfo: MutableList<StoreUrl> = mutableListOf()
 )
 
 data class PresignedPair(
     val imageUri: String,
     val preSignedUrl: String,
     val fileUrl: String
-)
-
-data class ImageData(
-    val uri: String,
-    val size: Long
 )

@@ -27,8 +27,8 @@ import `in`.koreatech.koin.feature.store.nearby.StoreNearbyScreen
 import `in`.koreatech.koin.feature.store.orderhistory.OrderHistoryScreen
 import `in`.koreatech.koin.feature.store.origin.ShopOriginInfoScreen
 import `in`.koreatech.koin.feature.store.review.ReviewScreen
-import `in`.koreatech.koin.feature.store.reviewedit.ReviewEditScreen
 import `in`.koreatech.koin.feature.store.reviewadd.ReviewAddScreen
+import `in`.koreatech.koin.feature.store.reviewedit.ReviewEditScreen
 import `in`.koreatech.koin.feature.store.reviewreport.ReviewReportScreen
 import `in`.koreatech.koin.feature.store.search.StoreSearchScreen
 import `in`.koreatech.koin.feature.store.webapp.StoreWebAppScreen

@@ -15,8 +15,7 @@ data class ReviewEditState(
     val menuTag: String = "",
     val menuTags: ImmutableList<String> = persistentListOf(),
     val imageUris: ImmutableList<String> = persistentListOf(),
-    val presignedPairs: ImmutableList<PresignedPair> = persistentListOf(),
-    val imageUploadUrls: ImmutableList<String> = persistentListOf()
+    val presignedPairs: ImmutableList<PresignedPair> = persistentListOf()
 )
 
 data class PresignedPair(

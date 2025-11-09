@@ -226,4 +226,10 @@
     <string name="menu_tag_description">입력한 메뉴가 태그로 추가돼요.</string>
     <string name="menu_tag_placeholder">메뉴명을 입력해주세요.</string>
     <string name="progress_count">%1$d/%2$d</string>
+    <string name="review_image_upload_failed">이미지 업로드 실패</string>
+    <string name="review_written">리뷰가 작성되었어요</string>
+    <string name="review_write_failed">리뷰 작성에 실패했습니다.</string>
+    <string name="review_modified">리뷰가 수정되었어요</string>
+    <string name="review_modify_failed">리뷰 수정에 실패했습니다.</string>
+    <string name="one_review_per_day">한 상점에 하루에 한번만 리뷰를 남길 수 있습니다.</string>
 </resources>

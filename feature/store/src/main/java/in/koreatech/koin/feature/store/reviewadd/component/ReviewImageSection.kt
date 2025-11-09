@@ -1,8 +1,5 @@
 package `in`.koreatech.koin.feature.store.reviewadd.component
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,18 +35,9 @@ import kotlinx.collections.immutable.persistentListOf
 fun ReviewImageSection(
     imageUris: ImmutableList<String>,
     modifier: Modifier = Modifier,
-    onAddImages: (List<String>) -> Unit = {},
+    onAddImages: () -> Unit = {},
     onRemoveImage: (Int) -> Unit = {}
 ) {
-    val pickMultipleMediaLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickMultipleVisualMedia(maxItems = MAX_IMAGE_COUNT)
-    ) { uris ->
-        if (uris.isNotEmpty()) {
-            val selectableCount = MAX_IMAGE_COUNT - imageUris.size
-            val limitedUris = if (uris.size > selectableCount) uris.take(selectableCount) else uris
-            onAddImages(limitedUris.map { it.toString() })
-        }
-    }
     val maxItems = MAX_IMAGE_COUNT - imageUris.size
 
     Column(
@@ -76,9 +64,7 @@ fun ReviewImageSection(
                     maxCount = MAX_IMAGE_COUNT,
                     onClick = {
                         if (maxItems > 0) {
-                            pickMultipleMediaLauncher.launch(
-                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                            )
+                            onAddImages()
                         }
                     }
                 )
