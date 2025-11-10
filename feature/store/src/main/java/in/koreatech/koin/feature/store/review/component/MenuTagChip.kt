@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.store.review.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,20 +13,21 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreChip
+import `in`.koreatech.koin.feature.store.component.KoinStoreChipDefaults
 import `in`.koreatech.koin.feature.store.component.KoinStoreChipIconStyle
-import `in`.koreatech.koin.feature.store.component.KoinStoreChipStyle
 
 @Composable
 fun MenuTagChipGroup(
     menuTags: List<String>,
     modifier: Modifier = Modifier,
+    isIconVisibility: Boolean = true,
+    enabled: Boolean = true,
     onClick: (Int) -> Unit = { }
 ) {
     val menuTagChipIcon = painterResource(id = R.drawable.ic_close_thin)
-    val menuTagStyle = KoinStoreChipStyle(
+    val menuTagStyle = KoinStoreChipDefaults.koinStoreChipStyle(
         textColor = RebrandKoinTheme.colors.primary300,
         textStyle = RebrandKoinTheme.typography.regular12,
-        containerColor = RebrandKoinTheme.colors.neutral0,
         elevation = 0.dp,
         borderWidth = 1.dp,
         borderColor = RebrandKoinTheme.colors.primary300,
@@ -44,19 +44,28 @@ fun MenuTagChipGroup(
     )
 
     FlowRow(
-        modifier = modifier
-            .padding(vertical = 24.dp),
+        modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         menuTags.forEachIndexed { i, tag ->
-            KoinStoreChip(
-                text = tag,
-                chipStyle = menuTagStyle,
-                trailingIcon = menuTagChipIcon,
-                trailingIconStyle = menuTagIconStyle,
-                onClick = { onClick(i) }
-            )
+            if (isIconVisibility) {
+                KoinStoreChip(
+                    text = tag,
+                    chipStyle = menuTagStyle,
+                    trailingIcon = menuTagChipIcon,
+                    trailingIconStyle = menuTagIconStyle,
+                    enabled = enabled,
+                    onClick = { onClick(i) }
+                )
+            } else {
+                KoinStoreChip(
+                    text = tag,
+                    chipStyle = menuTagStyle,
+                    enabled = enabled,
+                    onClick = { onClick(i) }
+                )
+            }
         }
     }
 }
@@ -73,6 +82,24 @@ private fun MenuTagChipGroupPreview() {
         MenuTagChipGroup(
             menuTags = tagList,
             modifier = Modifier,
+            onClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = false)
+@Composable
+private fun MenuTagChipGroupNoIconPreview() {
+    val tagList = listOf(
+        "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발", "닭발", "계란찜", "1인 매운 닭발",
+        "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발"
+    )
+
+    RebrandKoinTheme {
+        MenuTagChipGroup(
+            menuTags = tagList,
+            modifier = Modifier,
+            isIconVisibility = false,
             onClick = {}
         )
     }

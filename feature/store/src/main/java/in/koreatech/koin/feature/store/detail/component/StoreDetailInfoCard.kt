@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.store.detail.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -43,7 +43,7 @@ fun StoreDetailInfoCard(
 ) {
     Row(modifier = modifier) {
         DeliveryInfoCard(
-            modifier = Modifier.weight(1f),
+            modifier = if (storeInfo.isDeliveryAvailable) Modifier else Modifier.weight(1f),
             storeInfo = storeInfo,
             navigateToDetailInfo = { navigateToDetailInfo(StoreDetailInfoType.DELIVERY.name) }
         )
@@ -64,14 +64,19 @@ fun DeliveryInfoCard(
     storeInfo: ShopInfoModel,
     navigateToDetailInfo: () -> Unit = {}
 ) {
+    val navigate = remember {
+        if (storeInfo.isDeliveryAvailable) {
+            navigateToDetailInfo
+        } else {
+            {}
+        }
+    }
     Surface(
         shape = RoundedCornerShape(12.dp),
         modifier = modifier
             .widthIn(175.dp)
-            .heightIn(60.dp)
-            .clickable(enabled = storeInfo.isDeliveryAvailable) {
-                navigateToDetailInfo()
-            },
+            .heightIn(60.dp),
+        onClick = navigate,
         shadowElevation = 1.dp,
         color = KoinTheme.colors.neutral0
     ) {
@@ -102,7 +107,16 @@ fun DeliveryInfoCard(
                 Row {
                     Text(text = stringResource(R.string.delivery_fee), fontSize = 12.sp, lineHeight = 18.sp)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(stringResource(R.string.price_with_won, storeInfo.minimumDeliveryTip ?: 0), fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
+                    Text(
+                        text = if (storeInfo.maximumDeliveryTip == null) {
+                            stringResource(R.string.delivery_fee_won, storeInfo.minimumDeliveryTip ?: 0)
+                        } else {
+                            stringResource(R.string.delivery_fee_won_with_min_max, storeInfo.minimumDeliveryTip ?: 0, storeInfo.maximumDeliveryTip)
+                        },
+                        fontSize = 12.sp,
+                        lineHeight = 18.sp,
+                        color = KoinTheme.colors.neutral500
+                    )
                 }
             }
             Icon(painter = painterResource(id = R.drawable.ic_delivery_arrow_right), contentDescription = null, modifier = Modifier.size(10.dp))
@@ -120,8 +134,8 @@ fun NoticeCard(
         shape = RoundedCornerShape(12.dp),
         modifier = modifier
             .widthIn(175.dp)
-            .heightIn(60.dp)
-            .clickable { navigateToDetailInfo() },
+            .heightIn(60.dp),
+        onClick = navigateToDetailInfo,
         shadowElevation = 1.dp,
         color = KoinTheme.colors.neutral0
     ) {

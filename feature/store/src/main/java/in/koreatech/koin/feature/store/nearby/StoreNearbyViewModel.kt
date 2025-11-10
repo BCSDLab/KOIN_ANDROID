@@ -14,6 +14,7 @@ import `in`.koreatech.koin.feature.store.enums.toStoreSorter
 import `in`.koreatech.koin.feature.store.model.toLocalShop
 import `in`.koreatech.koin.feature.store.model.toLocalStoreCategories
 import javax.inject.Inject
+import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -35,7 +36,7 @@ class StoreNearbyViewModel @Inject constructor(
             getStoreCategoriesUseCase().let {
                 reduce {
                     state.copy(
-                        storeCategories = it.map { it.toLocalStoreCategories() }
+                        storeCategories = it.map { it.toLocalStoreCategories() }.toImmutableList()
                     )
                 }
             }
@@ -103,7 +104,7 @@ class StoreNearbyViewModel @Inject constructor(
         ).onSuccess {
             reduce {
                 state.copy(
-                    orderableShops = it.map { it.toLocalShop() },
+                    orderableShops = it.map { it.toLocalShop() }.toImmutableList(),
                     isLoading = false
                 )
             }
@@ -139,7 +140,7 @@ class StoreNearbyViewModel @Inject constructor(
                     state.selectedStoreFilter - selectedStoreFilter
                 } else {
                     state.selectedStoreFilter + selectedStoreFilter
-                }
+                }.toImmutableList()
             )
         }
     }

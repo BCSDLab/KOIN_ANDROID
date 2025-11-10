@@ -1,7 +1,9 @@
 package `in`.koreatech.koin.feature.store.model
 
 import `in`.koreatech.koin.domain.model.store.OrderableShopSearchRelated
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class LocalShopSearchResult(
     val shopId: Int,
     val keyword: String,

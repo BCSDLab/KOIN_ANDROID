@@ -11,19 +11,23 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicText
@@ -35,13 +39,15 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.LineHeightStyle
@@ -55,6 +61,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.util.KoinCoilImageLoader
 import `in`.koreatech.koin.domain.model.store.OpenStatus
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_NEARBY
+import `in`.koreatech.koin.feature.store.LocalDeliveryDeveloperOption
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreCard
 import `in`.koreatech.koin.feature.store.component.KoinStoreCategoryItem
@@ -73,6 +80,8 @@ import `in`.koreatech.koin.feature.store.enums.StoreFilter
 import `in`.koreatech.koin.feature.store.enums.minimumPriceOptions
 import `in`.koreatech.koin.feature.store.model.LocalShop
 import `in`.koreatech.koin.feature.store.model.LocalStoreCategories
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.combine
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -81,6 +90,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun StoreNearbyScreen(
     modifier: Modifier = Modifier,
+    categoryId: Int = 1,
     viewModel: StoreNearbyViewModel = hiltViewModel(),
     navigateToDetail: (Int) -> Unit = { },
     navigateToCart: () -> Unit = { },
@@ -92,6 +102,12 @@ fun StoreNearbyScreen(
 
     viewModel.collectSideEffect {
         handleSideEffect(it, navigateToCart)
+    }
+
+    LaunchedEffect(Unit) {
+        if (uiState.categoryId == -1) {
+            viewModel.onCategoryChange(categoryId)
+        }
     }
 
     LaunchedEffect(Unit) {
@@ -132,6 +148,7 @@ fun StoreNearbyScreen(
                 onBackPressed()
             },
             actions = {
+                if (!LocalDeliveryDeveloperOption.current) return@KoinStoreTopAppBar
                 Box(contentAlignment = Alignment.TopEnd) {
                     IconButton(onClick = viewModel::navigateToCart) {
                         Icon(
@@ -193,10 +210,10 @@ fun StoreNearbyScreen(
 private fun StoreNearbyScreen(
     isLoading: Boolean,
     categoryId: Int,
-    storeList: List<LocalShop>,
-    storeCategories: List<LocalStoreCategories>,
+    storeList: ImmutableList<LocalShop>,
+    storeCategories: ImmutableList<LocalStoreCategories>,
     selectedOrderOption: OrderOption,
-    selectedStoreFilter: List<StoreFilter>,
+    selectedStoreFilter: ImmutableList<StoreFilter>,
     selectedMinimumPriceOption: MinimumPriceOption,
     showOrderOptions: Boolean,
     showMinimumPriceOptions: Boolean,
@@ -211,6 +228,19 @@ private fun StoreNearbyScreen(
     onShowMinimumPriceOptionsChange: (Boolean) -> Unit = { }
 ) {
     val context = LocalContext.current
+    val categoryListState = rememberLazyListState()
+    val shopListState = rememberLazyListState()
+
+    LaunchedEffect(categoryId) {
+        if (categoryId != -1) {
+            categoryListState.animateScrollToItem(storeCategories.map { it.id }.indexOf(categoryId))
+            shopListState.animateScrollToItem(0)
+        }
+    }
+
+    LaunchedEffect(selectedOrderOption) {
+        shopListState.animateScrollToItem(0)
+    }
 
     Box(
         modifier = modifier.fillMaxSize()
@@ -241,11 +271,17 @@ private fun StoreNearbyScreen(
 
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
+                state = categoryListState,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 contentPadding = PaddingValues(horizontal = 24.dp)
             ) {
-                itemsIndexed(storeCategories) { index, category ->
+                itemsIndexed(
+                    storeCategories,
+                    key = { index, category ->
+                        category.id
+                    }
+                ) { index, category ->
                     KoinStoreCategoryItem(
                         categoryName = category.name,
                         categoryIcon = rememberAsyncImagePainter(
@@ -253,10 +289,7 @@ private fun StoreNearbyScreen(
                             imageLoader = KoinCoilImageLoader.getImageLoader(context)
                         ),
                         isSelected = index + 1 == categoryId,
-                        onClick = {
-                            if (index + 1 == categoryId) return@KoinStoreCategoryItem
-                            onCategoryChange(index + 1) // Category IDs start from 1
-                        }
+                        onClick = remember(key1 = category.id) { { onCategoryChange(index + 1) } }
                     )
                 }
             }
@@ -273,52 +306,54 @@ private fun StoreNearbyScreen(
             ) {
                 Spacer(modifier = Modifier.width(16.dp))
 
-                KoinStoreChip(
-                    modifier = Modifier.fillMaxHeight(),
-                    text = stringResource(selectedOrderOption.stringResId),
-                    chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
-                        textColor = RebrandKoinTheme.colors.primary500,
-                        borderWidth = 1.dp,
-                        borderColor = RebrandKoinTheme.colors.primary500,
-                        elevation = 0.dp
-                    ),
-                    trailingIcon = painterResource(R.drawable.ic_store_arrow_down),
-                    trailingIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(
-                        iconColor = RebrandKoinTheme.colors.primary500
-                    )
-                ) {
-                    onShowOrderOptionsChange(true)
+                key(selectedOrderOption) {
+                    KoinStoreChip(
+                        modifier = Modifier.fillMaxHeight(),
+                        text = stringResource(selectedOrderOption.stringResId),
+                        chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
+                            textColor = RebrandKoinTheme.colors.primary500,
+                            borderWidth = 1.dp,
+                            borderColor = RebrandKoinTheme.colors.primary500,
+                            elevation = 0.dp
+                        ),
+                        trailingIcon = rememberVectorPainter(ImageVector.vectorResource(R.drawable.ic_store_arrow_down)),
+                        trailingIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(
+                            iconColor = RebrandKoinTheme.colors.primary500
+                        )
+                    ) {
+                        onShowOrderOptionsChange(true)
+                    }
                 }
 
                 Spacer(modifier = Modifier.width(8.dp))
 
                 StoreFilter.IS_OPEN.let {
-                    val isSelected = selectedStoreFilter.contains(it)
+                    key(it) {
+                        val isSelected = selectedStoreFilter.contains(it)
 
-                    KoinStoreChip(
-                        modifier = Modifier.fillMaxHeight(),
-                        text = stringResource(it.stringResId),
-                        leadingIcon = painterResource(it.iconResId),
-                        chipStyle = if (isSelected) {
-                            KoinStoreChipDefaults.koinStoreChipStyle(
-                                elevation = 0.dp,
-                                containerColor = RebrandKoinTheme.colors.primary500,
-                                textColor = RebrandKoinTheme.colors.neutral0
-                            )
-                        } else {
-                            KoinStoreChipDefaults.koinStoreChipStyle()
-                        },
-                        leadingIconStyle = if (isSelected) {
-                            KoinStoreChipDefaults.koinStoreIconStyle(
-                                iconColor = RebrandKoinTheme.colors.neutral0
-                            )
-                        } else {
-                            KoinStoreChipDefaults.koinStoreIconStyle()
-                        },
-                        onClick = {
-                            onSelectedStoreFilterChange(it)
-                        }
-                    )
+                        KoinStoreChip(
+                            modifier = Modifier.fillMaxHeight(),
+                            text = stringResource(it.stringResId),
+                            leadingIcon = rememberVectorPainter(ImageVector.vectorResource(it.iconResId)),
+                            chipStyle = if (isSelected) {
+                                KoinStoreChipDefaults.koinStoreChipStyle(
+                                    elevation = 0.dp,
+                                    containerColor = RebrandKoinTheme.colors.primary500,
+                                    textColor = RebrandKoinTheme.colors.neutral0
+                                )
+                            } else {
+                                KoinStoreChipDefaults.koinStoreChipStyle()
+                            },
+                            leadingIconStyle = if (isSelected) {
+                                KoinStoreChipDefaults.koinStoreIconStyle(
+                                    iconColor = RebrandKoinTheme.colors.neutral0
+                                )
+                            } else {
+                                KoinStoreChipDefaults.koinStoreIconStyle()
+                            },
+                            onClick = remember(key1 = it) { { onSelectedStoreFilterChange(it) } }
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.width(16.dp))
@@ -330,7 +365,8 @@ private fun StoreNearbyScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 24.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                state = shopListState
             ) {
                 if (!isLoading && storeList.isEmpty()) {
                     item {
@@ -361,7 +397,12 @@ private fun StoreNearbyScreen(
                         }
                     }
                 } else {
-                    items(storeList) {
+                    items(
+                        storeList,
+                        key = {
+                            it.shopId
+                        }
+                    ) {
                         KoinStoreCard(
                             modifier = Modifier.fillMaxWidth(),
                             storeName = it.name,
@@ -369,15 +410,14 @@ private fun StoreNearbyScreen(
                             storeReviewCount = it.reviewCount,
                             storeImageUrl = it.thumbnail,
                             isOpen = it.isOpen,
-                            filterBadgeList = it.filterBadgeList
-                        ) {
-                            navigateToDetail(it.shopId)
-                        }
+                            filterBadgeList = it.filterBadgeList,
+                            onClick = remember(key1 = it.shopId) { { navigateToDetail(it.shopId) } }
+                        )
                     }
                 }
 
                 item {
-                    // Empty item for bottom spacing
+                    Spacer(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars))
                 }
             }
 
@@ -420,12 +460,12 @@ private fun StoreNearbyScreenPreview() {
             isLoading = false,
             showOrderOptions = false,
             categoryId = 0,
-            storeList = listOf(
+            storeList = persistentListOf(
                 LocalShop(
                     shopId = 1,
                     orderableShopId = 1,
                     name = "Sample Store",
-                    filterBadgeList = listOf(
+                    filterBadgeList = persistentListOf(
                         FilterBadge.PICKUP_AVAILABLE,
                         FilterBadge.DELIVERY_AVAILABLE,
                         FilterBadge.SERVICE
@@ -442,7 +482,7 @@ private fun StoreNearbyScreenPreview() {
                     openStatus = OpenStatus.OPERATING
                 )
             ),
-            storeCategories = listOf(
+            storeCategories = persistentListOf(
                 LocalStoreCategories(
                     id = 0,
                     name = "Category 1",
@@ -455,7 +495,7 @@ private fun StoreNearbyScreenPreview() {
                 )
             ),
             selectedOrderOption = OrderOption.NONE,
-            selectedStoreFilter = listOf(StoreFilter.IS_OPEN),
+            selectedStoreFilter = persistentListOf(StoreFilter.IS_OPEN),
             selectedMinimumPriceOption = MinimumPriceOption.ALL,
             showMinimumPriceOptions = false
         )

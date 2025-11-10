@@ -14,6 +14,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,11 +28,13 @@ import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.model.MenuCategoryModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun MenuCategoryChips(
     modifier: Modifier = Modifier,
-    menuCategories: List<MenuCategoryModel>,
+    menuCategories: ImmutableList<MenuCategoryModel>,
     onCategoryClicked: (Int) -> Unit = { }
 ) {
     val scrollState = rememberScrollState()
@@ -42,13 +46,15 @@ fun MenuCategoryChips(
             .padding(horizontal = 24.dp, vertical = 12.dp)
     ) {
         menuCategories.forEachIndexed { i, tag ->
-            MenuCategoryChip(
-                menuCategory = menuCategories[i],
-                modifier = Modifier.padding(end = 8.dp),
-                onCategoryClicked = {
-                    onCategoryClicked(it)
-                }
-            )
+            key(tag.menuGroupId) {
+                MenuCategoryChip(
+                    menuCategory = tag,
+                    modifier = Modifier.padding(end = 8.dp),
+                    onCategoryClicked = {
+                        onCategoryClicked(it)
+                    }
+                )
+            }
         }
     }
 }
@@ -62,6 +68,8 @@ fun MenuCategoryChip(
     val borderColor = if (menuCategory.isChecked) colorResource(id = R.color.store_detail_chip) else Color.Transparent
     val textColor = if (menuCategory.isChecked) colorResource(id = R.color.store_detail_chip) else KoinTheme.colors.neutral400
 
+    val onClick = remember(menuCategory.menuGroupId) { { onCategoryClicked(menuCategory.menuGroupId) } }
+
     Surface(
         elevation = 1.dp,
         shape = RoundedCornerShape(50),
@@ -74,9 +82,7 @@ fun MenuCategoryChip(
                 shape = RoundedCornerShape(50)
             )
             .clip(RoundedCornerShape(50))
-            .clickable {
-                onCategoryClicked(menuCategory.menuGroupId)
-            }
+            .clickable(onClick = onClick)
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -100,7 +106,7 @@ private fun MenuCategoryChipPreview() {
             menuCategory = MenuCategoryModel(
                 menuGroupId = 1,
                 menuGroupName = "음료",
-                menus = emptyList(),
+                menus = persistentListOf(),
                 isChecked = true
             ),
             modifier = Modifier.padding(8.dp)

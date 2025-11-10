@@ -1,21 +1,37 @@
 package `in`.koreatech.koin.feature.store.search
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.store.GetOrderableShopSearchRelatedUseCase
+import `in`.koreatech.koin.domain.usecase.store.search.GetRelatedStoreV2UseCase
 import `in`.koreatech.koin.feature.store.model.toLocalShopSearchResult
+import `in`.koreatech.koin.feature.store.navigation.IS_ORDERABLE_SHOP
 import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
 @HiltViewModel
 class StoreSearchViewModel @Inject constructor(
-    private val getOrderableShopSearchRelatedUseCase: GetOrderableShopSearchRelatedUseCase
+    savedStateHandle: SavedStateHandle,
+    private val getOrderableShopSearchRelatedUseCase: GetOrderableShopSearchRelatedUseCase,
+    private val getRelatedStoreV2UseCase: GetRelatedStoreV2UseCase
 ) : ViewModel(), ContainerHost<StoreSearchState, StoreSearchSideEffect> {
-    override val container = container<StoreSearchState, StoreSearchSideEffect>(StoreSearchState())
+    override val container = container<StoreSearchState, StoreSearchSideEffect>(StoreSearchState()) {
+        val isOrderableShop = savedStateHandle.get<Boolean>(IS_ORDERABLE_SHOP) ?: true
+
+        blockingIntent {
+            reduce {
+                state.copy(
+                    isOrderableShop = isOrderableShop
+                )
+            }
+        }
+    }
 
     fun updateSearchQuery(query: String) = blockingIntent {
         reduce {
@@ -34,14 +50,29 @@ class StoreSearchViewModel @Inject constructor(
             }
             return@intent
         }
-        getOrderableShopSearchRelatedUseCase(
-            query = state.searchQuery
-        ).onSuccess {
-            reduce {
-                state.copy(
-                    searchResults = it.shopNameSearchResults.map { it.toLocalShopSearchResult() } +
-                        it.menuNameSearchResults.map { it.toLocalShopSearchResult() }
-                )
+        if (state.isOrderableShop) {
+            getOrderableShopSearchRelatedUseCase(
+                query = state.searchQuery
+            ).onSuccess {
+                reduce {
+                    state.copy(
+                        searchResults = it.shopNameSearchResults.map { it.toLocalShopSearchResult() } + it.menuNameSearchResults.map { it.toLocalShopSearchResult() }
+                    )
+                }
+            }.onFailure {
+                Timber.e(it)
+            }
+        } else {
+            getRelatedStoreV2UseCase(
+                query = state.searchQuery
+            ).onSuccess {
+                reduce {
+                    state.copy(
+                        searchResults = it.shopNameSearchResults.map { it.toLocalShopSearchResult() } + it.menuNameSearchResults.map { it.toLocalShopSearchResult() }
+                    )
+                }
+            }.onFailure {
+                Timber.e(it)
             }
         }
     }

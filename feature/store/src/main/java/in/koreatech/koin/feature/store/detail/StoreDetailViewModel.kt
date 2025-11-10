@@ -31,6 +31,8 @@ import `in`.koreatech.koin.feature.store.navigation.IS_ORDERABLE_SHOP
 import `in`.koreatech.koin.feature.store.navigation.STORE_ID
 import `in`.koreatech.koin.feature.store.util.toKoreanWeek
 import javax.inject.Inject
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -161,7 +163,7 @@ class StoreDetailViewModel @Inject constructor(
                         it.toMenuCategoryModel().copy(
                             isChecked = result.indexOf(it) == 0
                         )
-                    }
+                    }.toImmutableList()
                 )
             }
         }
@@ -209,7 +211,7 @@ class StoreDetailViewModel @Inject constructor(
                             menus = storeMenuCategories.toMenuCategoryModel().menus,
                             isChecked = shop.menuCategories?.indexOf(storeMenuCategories) == 0
                         )
-                    } ?: emptyList()
+                    }?.toImmutableList() ?: persistentListOf()
                 )
             }
         }
@@ -239,6 +241,14 @@ class StoreDetailViewModel @Inject constructor(
                     storeReview = reviews
                 )
             }
+        }
+    }
+
+    fun setCallDialogState(newState: Boolean) = blockingIntent {
+        reduce {
+            state.copy(
+                showCallDialog = newState
+            )
         }
     }
 
@@ -277,7 +287,7 @@ class StoreDetailViewModel @Inject constructor(
                 selectedCategoryId = categoryId
             )
         }
-        changeCategory(categoryId)
+        postSideEffect(StoreDetailSideEffect.CollapseToolbar)
     }
 
     fun changeCategory(categoryId: Int) = blockingIntent {
@@ -289,7 +299,7 @@ class StoreDetailViewModel @Inject constructor(
                     } else {
                         it.copy(isChecked = false)
                     }
-                }
+                }.toImmutableList()
             )
         }
     }

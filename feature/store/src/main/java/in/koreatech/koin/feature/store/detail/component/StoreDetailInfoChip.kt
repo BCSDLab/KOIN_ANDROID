@@ -22,14 +22,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.model.ShopInfoModel
 
 @Composable
 fun OriginInfoChips(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isOrderableShop: Boolean = true,
+    onClick: () -> Unit = {}
 ) {
     Surface(
+        onClick = onClick,
         modifier = modifier,
         shape = RoundedCornerShape(50),
         border = BorderStroke(0.5.dp, Color(0xFFE0E0E0)),
@@ -42,14 +46,17 @@ fun OriginInfoChips(
             modifier = Modifier.padding(horizontal = 12.dp)
         ) {
             Text(
-                text = stringResource(id = R.string.store_info_and_origin),
-                fontSize = 11.sp,
-                color = Color(0xFF333333)
+                text = stringResource(id = if (isOrderableShop) R.string.store_info_and_origin else R.string.store_info_detail),
+                style = RebrandKoinTheme.typography.regular10,
+                color = RebrandKoinTheme.colors.neutral500
             )
             Icon(
                 painter = painterResource(id = R.drawable.ic_store_info_origin_arrow),
                 contentDescription = null,
-                modifier = Modifier.size(10.dp)
+                modifier = Modifier
+                    .size(20.dp)
+                    .padding(1.dp),
+                tint = RebrandKoinTheme.colors.neutral400
             )
         }
     }

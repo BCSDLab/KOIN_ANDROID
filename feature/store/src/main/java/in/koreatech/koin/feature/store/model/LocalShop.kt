@@ -4,6 +4,8 @@ import android.os.Parcelable
 import `in`.koreatech.koin.domain.model.store.OpenStatus
 import `in`.koreatech.koin.domain.model.store.Shop
 import `in`.koreatech.koin.feature.store.enums.FilterBadge
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -11,7 +13,7 @@ data class LocalShop(
     val shopId: Int,
     val orderableShopId: Int,
     val name: String,
-    val filterBadgeList: List<FilterBadge>,
+    val filterBadgeList: ImmutableList<FilterBadge>,
     val minimumOrderAmount: Int,
     val ratingAverage: Double,
     val reviewCount: Int,
@@ -41,7 +43,7 @@ internal fun Shop.toLocalShop(): LocalShop {
             if (isTakeoutAvailable) FilterBadge.PICKUP_AVAILABLE else null,
             if (isDeliveryAvailable) FilterBadge.DELIVERY_AVAILABLE else null,
             if (serviceEvent) FilterBadge.SERVICE else null
-        ),
+        ).toImmutableList(),
         minimumOrderAmount = minimumOrderAmount,
         ratingAverage = ratingAverage,
         reviewCount = reviewCount,
@@ -51,7 +53,7 @@ internal fun Shop.toLocalShop(): LocalShop {
         categoryIds = categoryIds,
         images = images.map {
             it.imageUrl
-        },
+        }.toImmutableList(),
         thumbnail = images.firstOrNull { it.isThumbnail }?.imageUrl ?: "",
         openStatus = openStatus
     )

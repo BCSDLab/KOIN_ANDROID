@@ -21,20 +21,28 @@ import `in`.koreatech.koin.feature.store.cartedit.CartEditScreen
 import `in`.koreatech.koin.feature.store.detail.StoreDetailScreen
 import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
 import `in`.koreatech.koin.feature.store.home.StoreHomeScreen
+import `in`.koreatech.koin.feature.store.model.StoreNavigationData
+import `in`.koreatech.koin.feature.store.model.StoreNavigationDataType
 import `in`.koreatech.koin.feature.store.nearby.StoreNearbyScreen
 import `in`.koreatech.koin.feature.store.orderhistory.OrderHistoryScreen
 import `in`.koreatech.koin.feature.store.origin.ShopOriginInfoScreen
+import `in`.koreatech.koin.feature.store.review.ReviewScreen
+import `in`.koreatech.koin.feature.store.reviewadd.ReviewAddScreen
+import `in`.koreatech.koin.feature.store.reviewedit.ReviewEditScreen
+import `in`.koreatech.koin.feature.store.reviewreport.ReviewReportScreen
 import `in`.koreatech.koin.feature.store.search.StoreSearchScreen
 import `in`.koreatech.koin.feature.store.webapp.StoreWebAppScreen
+import kotlin.reflect.typeOf
 
 fun NavGraphBuilder.koinStoreGraph(
     navController: NavController,
     categoryId: Int,
+    enableDelivery: Boolean,
     finish: () -> Unit = { }
 ) {
     navigation(
         route = StoreNavType.StoreMain.route,
-        startDestination = StoreMainNavType.StoreMainHome.route
+        startDestination = if (enableDelivery) StoreMainNavType.StoreMainHome.route else StoreMainNavType.StoreMainNearby.route
     ) {
         koinStoreMainGraph(
             navController = navController,
@@ -62,14 +70,9 @@ fun NavGraphBuilder.koinStoreGraph(
         )
     }
 
-    navigation(
-        route = "${StoreNavType.StoreReview.route}/{$STORE_ID}",
-        startDestination = "${StoreReviewNavType.StoreReviewHome.route}/{$STORE_ID}",
-        arguments = listOf(
-            navArgument(STORE_ID) {
-                type = NavType.IntType
-            }
-        )
+    navigation<StoreNavType.StoreReview>(
+        startDestination = StoreReviewNavType.StoreReviewHome::class,
+        typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
     ) {
         koinStoreReviewGraph(
             navController = navController
@@ -183,12 +186,18 @@ fun NavGraphBuilder.koinStoreGraph(
     }
 
     composable(
-        route = StoreNavType.StoreSearch.route
+        route = "${StoreNavType.StoreSearch.route}/{$IS_ORDERABLE_SHOP}",
+        arguments = listOf(
+            navArgument(IS_ORDERABLE_SHOP) {
+                type = NavType.BoolType
+            }
+        )
     ) {
+        val isOrderableShop = it.arguments?.getBoolean(IS_ORDERABLE_SHOP) ?: true
         StoreSearchScreen(
             navigateToDetail = {
                 navController.navigateUp()
-                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$it/${true}")
+                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$it/$isOrderableShop")
             },
             onBackPressed = {
                 if (!navController.navigateUp()) {
@@ -288,7 +297,7 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
                 navController.navigate(StoreNavType.StoreCart.route)
             },
             navigateToSearch = {
-                navController.navigate(StoreNavType.StoreSearch.route)
+                navController.navigate("${StoreNavType.StoreSearch.route}/${true}")
             },
             navigateToOrderResult = { orderId ->
                 navController.navigate("${StoreNavType.StoreOrderResult.route}/$orderId")
@@ -309,6 +318,7 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
         )
     ) {
         StoreNearbyScreen(
+            categoryId = categoryId,
             navigateToDetail = { storeId ->
                 navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId/${false}")
             },
@@ -316,7 +326,7 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
                 navController.navigate(StoreNavType.StoreCart.route)
             },
             navigateToSearch = {
-                navController.navigate(StoreNavType.StoreSearch.route)
+                navController.navigate("${StoreNavType.StoreSearch.route}/${false}")
             }
         ) {
             if (!navController.navigateUp()) {
@@ -383,8 +393,13 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
             navigateToDetailInfo = { selectedInfoType ->
                 navController.navigate("${StoreDetailNavType.StoreDetailInfo.route}/$storeId/$isOrderableShop/$selectedInfoType")
             },
-            navigateToReview = {
-                navController.navigate("${StoreReviewNavType.StoreReviewHome.route}/$storeId")
+            navigateToReview = { storeNavigationData, storeName ->
+                navController.navigate(
+                    StoreReviewNavType.StoreReviewHome(
+                        storeNavigationData = storeNavigationData,
+                        storeName = storeName
+                    )
+                )
             },
             navigateToMenuInfo = { menuId ->
                 it.savedStateHandle[IS_CART_ADDED] = false
@@ -427,44 +442,38 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
 internal fun NavGraphBuilder.koinStoreReviewGraph(
     navController: NavController
 ) {
-    composable(
-        route = "${StoreReviewNavType.StoreReviewHome.route}/{$STORE_ID}",
-        arguments = listOf(
-            navArgument(STORE_ID) {
-                type = NavType.IntType
+    composable<StoreReviewNavType.StoreReviewHome>(
+        typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
+    ) {
+        ReviewScreen(
+            onReportClicked = { storeNavigationData, reviewId ->
+                navController.navigate(StoreReviewNavType.StoreReviewReport(storeNavigationData, reviewId))
+            },
+            onAddReviewClicked = { storeNavigationData, storeName ->
+                navController.navigate(StoreReviewNavType.StoreReviewAdd(storeNavigationData, storeName))
+            },
+            onEditReviewClicked = { storeNavigationData, reviewId, storeName ->
+                navController.navigate(StoreReviewNavType.StoreReviewEdit(storeNavigationData, reviewId, storeName))
             }
         )
-    ) {
     }
 
-    composable(
-        route = "${StoreReviewNavType.StoreReviewAdd.route}/{$STORE_ID}",
-        arguments = listOf(
-            navArgument(STORE_ID) {
-                type = NavType.IntType
-            }
-        )
+    composable<StoreReviewNavType.StoreReviewAdd>(
+        typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
     ) {
+        ReviewAddScreen(onNavigateBack = { navController.popBackStack() })
     }
 
-    composable(
-        route = "${StoreReviewNavType.StoreReviewEdit.route}/{$STORE_ID}",
-        arguments = listOf(
-            navArgument(STORE_ID) {
-                type = NavType.IntType
-            }
-        )
+    composable<StoreReviewNavType.StoreReviewEdit>(
+        typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
     ) {
+        ReviewEditScreen(onNavigateBack = { navController.popBackStack() })
     }
 
-    composable(
-        route = "${StoreReviewNavType.StoreReviewReport.route}/{$STORE_ID}",
-        arguments = listOf(
-            navArgument(STORE_ID) {
-                type = NavType.IntType
-            }
-        )
+    composable<StoreReviewNavType.StoreReviewReport>(
+        typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
     ) {
+        ReviewReportScreen()
     }
 }
 
