@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.store.detail.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -64,14 +64,19 @@ fun DeliveryInfoCard(
     storeInfo: ShopInfoModel,
     navigateToDetailInfo: () -> Unit = {}
 ) {
+    val navigate = remember {
+        if (storeInfo.isDeliveryAvailable) {
+            navigateToDetailInfo
+        } else {
+            {}
+        }
+    }
     Surface(
         shape = RoundedCornerShape(12.dp),
         modifier = modifier
             .widthIn(175.dp)
-            .heightIn(60.dp)
-            .clickable(enabled = storeInfo.isDeliveryAvailable) {
-                navigateToDetailInfo()
-            },
+            .heightIn(60.dp),
+        onClick = navigate,
         shadowElevation = 1.dp,
         color = KoinTheme.colors.neutral0
     ) {
@@ -129,8 +134,8 @@ fun NoticeCard(
         shape = RoundedCornerShape(12.dp),
         modifier = modifier
             .widthIn(175.dp)
-            .heightIn(60.dp)
-            .clickable { navigateToDetailInfo() },
+            .heightIn(60.dp),
+        onClick = navigateToDetailInfo,
         shadowElevation = 1.dp,
         color = KoinTheme.colors.neutral0
     ) {

@@ -100,7 +100,9 @@ fun MenuItem(
     val rememberedOnClick = remember(menu.id) { { onClick(menu.id) } }
 
     Row(
-        modifier = modifier.clickable(onClick = rememberedOnClick),
+        modifier = Modifier
+            .clickable(onClick = rememberedOnClick)
+            .then(modifier),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
