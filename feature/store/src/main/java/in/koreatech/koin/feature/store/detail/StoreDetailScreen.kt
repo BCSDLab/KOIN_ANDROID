@@ -392,9 +392,6 @@ fun StoreDetailScreen(
             ) {
                 StoreDetailImage(
                     modifier = Modifier
-                        .clickable {
-                            viewModel.setImageDialogState(true)
-                        }
                         .heightIn(
                             rememberState.toolbarMinHeight,
                             rememberState.toolbarMaxHeight + statusBarHeight
@@ -404,6 +401,9 @@ fun StoreDetailScreen(
                             clip = true
                             translationY = -(rememberState.toolbarMaxHeight.toPx() - currentToolbarHeightDp.value.toPx())
                             alpha = 1f - overlayAlpha.value
+                        }
+                        .clickable {
+                            viewModel.setImageDialogState(true)
                         },
                     imageUrls = uiState.store.imageUrls ?: persistentListOf(),
                     pagerState = pagerState
