@@ -10,6 +10,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -75,6 +76,7 @@ import `in`.koreatech.koin.feature.store.detail.component.StoreDetailInfo
 import `in`.koreatech.koin.feature.store.detail.component.menuListSection
 import `in`.koreatech.koin.feature.store.enums.CartValidation
 import `in`.koreatech.koin.feature.store.model.StoreNavigationData
+import `in`.koreatech.koin.feature.store.component.dialog.StoreImageDialog
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
 import `in`.koreatech.koin.feature.store.state.collapseToolbar
 import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
@@ -214,6 +216,14 @@ fun StoreDetailScreen(
                 viewModel.setCallDialogState(false)
             }
         )
+    }
+
+    if (uiState.showImageDialog) {
+        StoreImageDialog(
+            imageUrls = uiState.store.imageUrls ?: persistentListOf()
+        ) {
+            viewModel.setImageDialogState(false)
+        }
     }
 
     if (uiState.showSignInDialog) {
@@ -382,6 +392,9 @@ fun StoreDetailScreen(
             ) {
                 StoreDetailImage(
                     modifier = Modifier
+                        .clickable {
+                            viewModel.setImageDialogState(true)
+                        }
                         .heightIn(
                             rememberState.toolbarMinHeight,
                             rememberState.toolbarMaxHeight + statusBarHeight
