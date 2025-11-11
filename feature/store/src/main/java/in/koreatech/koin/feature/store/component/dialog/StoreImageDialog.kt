@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.review.component.dialog
+package `in`.koreatech.koin.feature.store.component.dialog
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -35,7 +35,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReviewImageDialog(
+fun StoreImageDialog(
     imageUrls: ImmutableList<String>,
     modifier: Modifier = Modifier,
     initialPage: Int = 0,
@@ -119,9 +119,9 @@ fun ReviewImageDialog(
 
 @Preview(showBackground = false)
 @Composable
-private fun ReviewImageDialogPreview() {
+private fun StoreImageDialogPreview() {
     val imageUrls = persistentListOf("", "", "")
-    ReviewImageDialog(
+    StoreImageDialog(
         imageUrls = imageUrls,
         initialPage = 1,
         onDismiss = { }
