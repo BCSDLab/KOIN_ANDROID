@@ -69,6 +69,7 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreSignInDialog
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.OrderBottomBar
+import `in`.koreatech.koin.feature.store.component.dialog.StoreImageDialog
 import `in`.koreatech.koin.feature.store.detail.component.CallDialog
 import `in`.koreatech.koin.feature.store.detail.component.MenuCategoryChips
 import `in`.koreatech.koin.feature.store.detail.component.StoreDetailImage
@@ -76,7 +77,6 @@ import `in`.koreatech.koin.feature.store.detail.component.StoreDetailInfo
 import `in`.koreatech.koin.feature.store.detail.component.menuListSection
 import `in`.koreatech.koin.feature.store.enums.CartValidation
 import `in`.koreatech.koin.feature.store.model.StoreNavigationData
-import `in`.koreatech.koin.feature.store.component.dialog.StoreImageDialog
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
 import `in`.koreatech.koin.feature.store.state.collapseToolbar
 import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
