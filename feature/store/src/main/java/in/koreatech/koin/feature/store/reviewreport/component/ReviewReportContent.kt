@@ -58,7 +58,7 @@ fun ReviewReportContent(
         Button(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp),
+                .padding(horizontal = 24.dp, vertical = 8.dp),
             onClick = onReport,
             shape = RebrandKoinTheme.shapes.small,
             contentPadding = PaddingValues(vertical = 12.dp)
