@@ -61,7 +61,8 @@ fun ReviewReportContent(
                 .padding(horizontal = 24.dp, vertical = 8.dp),
             onClick = onReport,
             shape = RebrandKoinTheme.shapes.small,
-            contentPadding = PaddingValues(vertical = 12.dp)
+            contentPadding = PaddingValues(vertical = 12.dp),
+            enabled = selectedItem.isNotEmpty() || otherReason.isNotBlank()
         ) {
             BasicText(
                 text = stringResource(id = R.string.review_report),
