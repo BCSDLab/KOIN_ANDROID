@@ -123,7 +123,6 @@ class ReviewAddViewModel @Inject constructor(
     }
 
     fun submitReview() = intent {
-        reduce { state.copy(isLoading = true) }
         val review = Review(
             rating = state.rating,
             content = state.reviewContent,
@@ -136,6 +135,5 @@ class ReviewAddViewModel @Inject constructor(
         }.onFailure {
             postSideEffect(ReviewAddSideEffect.ShowOneReviewPerDay)
         }
-        reduce { state.copy(isLoading = false) }
     }
 }

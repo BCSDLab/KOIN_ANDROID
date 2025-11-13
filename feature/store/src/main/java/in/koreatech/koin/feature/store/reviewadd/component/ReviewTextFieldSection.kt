@@ -82,11 +82,11 @@ fun ReviewTextFieldSection(
                         .border(
                             width = 1.dp,
                             color = RebrandKoinTheme.colors.neutral300,
-                            shape = RoundedCornerShape(4.dp)
+                            shape = RebrandKoinTheme.shapes.extraSmall
                         )
                         .background(
                             color = RebrandKoinTheme.colors.neutral0,
-                            shape = RoundedCornerShape(4.dp)
+                            shape = RebrandKoinTheme.shapes.extraSmall
                         )
                         .padding(horizontal = 16.dp, vertical = 12.dp),
                     contentAlignment = Alignment.CenterStart
@@ -164,11 +164,11 @@ fun ReviewTextFieldSection(
                             .border(
                                 width = 1.dp,
                                 color = RebrandKoinTheme.colors.neutral300,
-                                shape = RoundedCornerShape(4.dp)
+                                shape = RebrandKoinTheme.shapes.extraSmall
                             )
                             .background(
                                 color = RebrandKoinTheme.colors.neutral0,
-                                shape = RoundedCornerShape(4.dp)
+                                shape = RebrandKoinTheme.shapes.extraSmall
                             )
                             .padding(horizontal = 16.dp, vertical = 12.dp),
                         contentAlignment = Alignment.CenterStart
