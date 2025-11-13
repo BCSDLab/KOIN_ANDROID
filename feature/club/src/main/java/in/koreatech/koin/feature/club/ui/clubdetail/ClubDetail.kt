@@ -51,6 +51,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
@@ -59,6 +60,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -146,8 +148,8 @@ fun ClubDetail(
         Pair(DETAIL_OPEN_CHAT, state.clubDetails?.openChat),
         Pair(DETAIL_PHONE_NUMBER, state.clubDetails?.phoneNumber)
     )
-    val qnaList = state.clubQnasInfo?.qnas
-    val tabList = DetailTabType.entries.map { it.strResId }
+    var qnaList by remember(state.clubQnasInfo) { mutableStateOf(state.clubQnasInfo?.qnas) }
+    var tabList by remember { mutableStateOf(DetailTabType.entries.map { it.strResId }) }
 
     val pagerState = rememberPagerState(initialPage = initialPage) { tabList.size }
     val scope = rememberCoroutineScope()
@@ -617,7 +619,7 @@ fun ClubDetail(
                                 }
                                 Spacer(Modifier.width(8.dp))
                                 Image(
-                                    painter = if (state.clubDetails?.isLiked == true) painterResource(id = R.drawable.icon_like_true) else painterResource(id = R.drawable.icon_like_false),
+                                    imageVector = if (state.clubDetails?.isLiked == true) ImageVector.vectorResource(id = R.drawable.icon_like_true) else ImageVector.vectorResource(id = R.drawable.icon_like_false),
                                     contentDescription = "",
                                     modifier = Modifier
                                         .size(24.dp)
@@ -630,7 +632,7 @@ fun ClubDetail(
                                 )
                                 if (state.clubDetails?.isLikeHidden != true) {
                                     Text(
-                                        text = "${state.clubDetails?.likes}",
+                                        text = state.clubDetails?.likes.toString(),
                                         style = KoinTheme.typography.medium14
                                     )
                                 }
@@ -644,12 +646,12 @@ fun ClubDetail(
                         ) {
                             detailList.forEach { intro ->
                                 if (intro.second.isNullOrBlank()) return@forEach
-                                var outputText = ""
-                                var linkUrl = ""
+                                var outputText by remember { mutableStateOf("") }
+                                var linkUrl by remember { mutableStateOf("") }
                                 val showMore = remember { mutableStateOf(false) }
-                                var icon = -1
-                                var onClick = {}
-                                var onIconClick = {}
+                                var icon by remember { mutableStateOf(-1) }
+                                var onClick by remember { mutableStateOf({}) }
+                                var onIconClick by remember { mutableStateOf({}) }
                                 val clipboard = LocalClipboardManager.current
                                 intro.second?.let {
                                     when (intro.first) {
@@ -708,13 +710,15 @@ fun ClubDetail(
                                         style = KoinTheme.typography.medium18,
                                         color = if (linkUrl.isEmpty()) KoinTheme.colors.neutral800 else KoinTheme.colors.info700,
                                         overflow = TextOverflow.Ellipsis,
-                                        modifier = Modifier.clickable { onClick() }.weight(1f, fill = false)
+                                        modifier = Modifier
+                                            .clickable { onClick() }
+                                            .weight(1f, fill = false)
                                     )
                                     if (icon != -1) {
                                         Spacer(Modifier.width(8.dp))
                                         Image(
-                                            painter = painterResource(id = icon),
-                                            contentDescription = "Phone Number Copy Icon",
+                                            imageVector = ImageVector.vectorResource(id = icon),
+                                            contentDescription = "Copy Icon",
                                             modifier = Modifier
                                                 .size(24.dp)
                                                 .padding(end = 4.dp)
@@ -736,10 +740,10 @@ fun ClubDetail(
                                     )
                                     Spacer(Modifier.width(8.dp))
                                     Image(
-                                        painter = if (state.clubDetails?.isRecruitSubscribed == true) {
-                                            painterResource(R.drawable.icon_notification_true)
+                                        imageVector = if (state.clubDetails?.isRecruitSubscribed == true) {
+                                            ImageVector.vectorResource(R.drawable.icon_notification_true)
                                         } else {
-                                            painterResource(R.drawable.icon_notification_false)
+                                            ImageVector.vectorResource(R.drawable.icon_notification_false)
                                         },
                                         contentDescription = "Notification Icon",
                                         modifier = Modifier
@@ -764,7 +768,7 @@ fun ClubDetail(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Image(
-                                painter = painterResource(id = R.drawable.icon_club_info),
+                                imageVector = ImageVector.vectorResource(id = R.drawable.icon_club_info),
                                 contentDescription = "picture",
                                 modifier = Modifier
                                     .size(17.dp)
