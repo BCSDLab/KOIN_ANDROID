@@ -61,7 +61,6 @@ import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
-import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -328,7 +327,7 @@ fun StoreDetailScreen(
                                 EventLogger.logClickEvent(
                                     EventAction.BUSINESS,
                                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_INFO,
-                                    uiState.store.name,
+                                    uiState.store.name
                                 )
                             },
                             call = {
