@@ -52,6 +52,9 @@ object AnalyticsConstant {
         const val SHOP_PICTURE = "shop_picture"
         const val SHOP_CALL = "shop_call"
         const val SHOP_CLICK = "shop_click"
+
+        const val SHOP_PICTURE_SWIPE = "shop_picture_swipe"
+        const val SHOP_DETAIL_VIEW_INFO = "shop_detail_view_info"
         const val SHOP_DETAIL_VIEW_BACK = "shop_detail_view_back"
         const val SHOP_DETAIL_VIEW_EVENT = "shop_detail_view_event"
 

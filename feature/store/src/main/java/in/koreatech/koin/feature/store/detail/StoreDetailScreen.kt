@@ -59,6 +59,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventExtra
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_DETAIL_MAIN
@@ -178,6 +182,18 @@ fun StoreDetailScreen(
     }
 
     LaunchedEffect(rememberState.listState) {
+        snapshotFlow { rememberState.listState.firstVisibleItemIndex }
+            .distinctUntilChanged()
+            .collect {
+                EventLogger.logScrollEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW,
+                    uiState.store.name
+                )
+            }
+    }
+
+    LaunchedEffect(rememberState.listState) {
         combine(
             snapshotFlow { rememberState.listState.firstVisibleItemIndex },
             snapshotFlow { rememberState.listState.layoutInfo.visibleItemsInfo.lastIndex }
@@ -193,6 +209,18 @@ fun StoreDetailScreen(
                 viewModel.changeCategory(it.menuGroupId)
             }
         }
+    }
+
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.currentPage }
+            .distinctUntilChanged()
+            .collect {
+                EventLogger.logSwipeEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_PICTURE_SWIPE,
+                    uiState.store.name
+                )
+            }
     }
 
     val onMenuClick = if (uiState.isOrderableShop) {
@@ -297,6 +325,11 @@ fun StoreDetailScreen(
                             },
                             navigateToDetailInfo = { selectedInfo ->
                                 navigateToDetailInfo(selectedInfo)
+                                EventLogger.logClickEvent(
+                                    EventAction.BUSINESS,
+                                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_INFO,
+                                    uiState.store.name,
+                                )
                             },
                             call = {
                                 viewModel.intent {
@@ -330,7 +363,14 @@ fun StoreDetailScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp),
-                        onMenuClick = onMenuClick
+                        onMenuClick = {
+                            onMenuClick(it)
+                            EventLogger.logClickEvent(
+                                EventAction.BUSINESS,
+                                AnalyticsConstant.Label.SHOP_DETAIL_VIEW,
+                                uiState.store.name
+                            )
+                        }
                     )
                 }
                 item {

@@ -541,7 +541,22 @@ private fun StoreHomeScreen(
                             storeImageUrl = it.thumbnail,
                             isOpen = it.isOpen,
                             filterBadgeList = it.filterBadgeList,
-                            onClick = remember(key1 = it.shopId) { { navigateToDetail(it.orderableShopId) } }
+                            onClick = remember(key1 = it.shopId) {
+                                {
+                                    navigateToDetail(it.orderableShopId)
+                                    EventLogger.logClickEvent(
+                                        EventAction.BUSINESS,
+                                        AnalyticsConstant.Label.SHOP_CLICK,
+                                        it.name,
+                                        EventExtra(AnalyticsConstant.PREVIOUS_PAGE, storeCategories.first { categoryId == initCategoryId }.name),
+                                        EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
+                                        EventExtra(
+                                            AnalyticsConstant.DURATION_TIME,
+                                            EventUtils.getElapsedTimeAndReset().toString()
+                                        )
+                                    )
+                                }
+                            }
                         )
                     }
                 }

@@ -472,7 +472,22 @@ private fun StoreNearbyScreen(
                             storeImageUrl = it.thumbnail,
                             isOpen = it.isOpen,
                             filterBadgeList = it.filterBadgeList,
-                            onClick = remember(key1 = it.shopId) { { navigateToDetail(it.shopId) } }
+                            onClick = remember(key1 = it.shopId) {
+                                {
+                                    navigateToDetail(it.shopId)
+                                    EventLogger.logClickEvent(
+                                        EventAction.BUSINESS,
+                                        AnalyticsConstant.Label.SHOP_CLICK,
+                                        it.name,
+                                        EventExtra(AnalyticsConstant.PREVIOUS_PAGE, storeCategories.first { categoryId == initCategoryId }.name),
+                                        EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
+                                        EventExtra(
+                                            AnalyticsConstant.DURATION_TIME,
+                                            EventUtils.getElapsedTimeAndReset().toString()
+                                        )
+                                    )
+                                }
+                            }
                         )
                     }
                 }
