@@ -57,6 +57,11 @@ import androidx.compose.ui.zIndex
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventExtra
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.util.KoinCoilImageLoader
 import `in`.koreatech.koin.domain.model.store.OpenStatus
@@ -83,6 +88,7 @@ import `in`.koreatech.koin.feature.store.model.LocalStoreCategories
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -146,6 +152,14 @@ fun StoreNearbyScreen(
             title = stringResource(R.string.store_title_home_nearby),
             onNavigationIconClick = {
                 onBackPressed()
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_CATEGORIES_BACK,
+                    "",
+                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, uiState.storeCategories.first { it.id == uiState.categoryId }.name),
+                    EventExtra(AnalyticsConstant.CURRENT_PAGE, "메인"),
+                    EventExtra(AnalyticsConstant.DURATION_TIME, "${EventUtils.getElapsedTime()}")
+                )
             },
             actions = {
                 if (!LocalDeliveryDeveloperOption.current) return@KoinStoreTopAppBar
@@ -189,13 +203,21 @@ fun StoreNearbyScreen(
             showOrderOptions = uiState.showOrderOptions,
             storeList = uiState.orderableShops,
             categoryId = uiState.categoryId,
+            initCategoryId = categoryId,
             storeCategories = uiState.storeCategories,
             selectedOrderOption = uiState.selectedOrderOption,
             selectedStoreFilter = uiState.selectedStoreFilter,
             selectedMinimumPriceOption = uiState.selectedMinimumPriceOption,
             showMinimumPriceOptions = uiState.showMinimumPriceOptions,
             navigateToDetail = navigateToDetail,
-            navigateToSearch = navigateToSearch,
+            navigateToSearch = {
+                navigateToSearch()
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_CATEGORIES_SEARCH,
+                    "search in ${uiState.storeCategories.first { it.id == categoryId }.name}"
+                )
+            },
             onCategoryChange = viewModel::onCategoryChange,
             onShowOrderOptionsChange = viewModel::onShowOrderOptionsChange,
             onSelectedOrderOptionChange = viewModel::onSelectedOrderOptionChange,
@@ -210,6 +232,7 @@ fun StoreNearbyScreen(
 private fun StoreNearbyScreen(
     isLoading: Boolean,
     categoryId: Int,
+    initCategoryId: Int,
     storeList: ImmutableList<LocalShop>,
     storeCategories: ImmutableList<LocalStoreCategories>,
     selectedOrderOption: OrderOption,
@@ -240,6 +263,18 @@ private fun StoreNearbyScreen(
 
     LaunchedEffect(selectedOrderOption) {
         shopListState.animateScrollToItem(0)
+    }
+
+    LaunchedEffect(categoryListState) {
+        snapshotFlow { categoryListState.firstVisibleItemIndex }
+            .distinctUntilChanged()
+            .collect {
+                EventLogger.logScrollEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_CATEGORIES,
+                    "scroll in ${storeCategories.first { it.id == categoryId }.name}"
+                )
+            }
     }
 
     Box(
@@ -289,7 +324,22 @@ private fun StoreNearbyScreen(
                             imageLoader = KoinCoilImageLoader.getImageLoader(context)
                         ),
                         isSelected = index + 1 == categoryId,
-                        onClick = remember(key1 = category.id) { { onCategoryChange(index + 1) } }
+                        onClick = remember(key1 = category.id) {
+                            {
+                                onCategoryChange(index + 1)
+                                EventLogger.logClickEvent(
+                                    EventAction.BUSINESS,
+                                    AnalyticsConstant.Label.MAIN_SHOP_BENEFIT,
+                                    storeCategories.first { it.id == initCategoryId }.name,
+                                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, storeCategories.first { it.id == categoryId }.name),
+                                    EventExtra(AnalyticsConstant.CURRENT_PAGE, storeCategories.first { it.id == index + 1 }.name),
+                                    EventExtra(
+                                        AnalyticsConstant.DURATION_TIME,
+                                        EventUtils.getElapsedTimeAndReset().toString()
+                                    )
+                                )
+                            }
+                        }
                     )
                 }
             }
@@ -351,7 +401,18 @@ private fun StoreNearbyScreen(
                             } else {
                                 KoinStoreChipDefaults.koinStoreIconStyle()
                             },
-                            onClick = remember(key1 = it) { { onSelectedStoreFilterChange(it) } }
+                            onClick = remember(key1 = it) {
+                                {
+                                    onSelectedStoreFilterChange(it)
+                                    if (isSelected) {
+                                        EventLogger.logClickEvent(
+                                            EventAction.BUSINESS,
+                                            AnalyticsConstant.Label.SHOP_CAN,
+                                            "check_open_${storeCategories.first { categoryId == initCategoryId }.name}"
+                                        )
+                                    }
+                                }
+                            }
                         )
                     }
                 }
@@ -428,6 +489,23 @@ private fun StoreNearbyScreen(
                     onSelect = { index ->
                         onSelectedOrderOptionChange(OrderOption.entries[index])
                         onShowOrderOptionsChange(false)
+                        EventLogger.logClickEvent(
+                            EventAction.BUSINESS,
+                            AnalyticsConstant.Label.SHOP_CAN,
+                            when (index) {
+                                0 -> {
+                                    "check_default_${storeCategories.first { it.id == categoryId }.name}"
+                                }
+
+                                1 -> {
+                                    "check_review_${storeCategories.first { it.id == categoryId }.name}"
+                                }
+
+                                else -> {
+                                    "check_star_${storeCategories.first { it.id == categoryId }.name}"
+                                }
+                            }
+                        )
                     },
                     onClose = {
                         onShowOrderOptionsChange(false)
@@ -459,6 +537,7 @@ private fun StoreNearbyScreenPreview() {
         StoreNearbyScreen(
             isLoading = false,
             showOrderOptions = false,
+            initCategoryId = 0,
             categoryId = 0,
             storeList = persistentListOf(
                 LocalShop(

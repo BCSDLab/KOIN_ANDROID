@@ -26,6 +26,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventExtra
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.KoinCoilImageLoader
 import `in`.koreatech.koin.domain.model.store.StoreCategories
@@ -65,6 +70,14 @@ fun MainStoreWidget(
                     categoryName = category.name,
                     onClick = {
                         onClick(category.id)
+                        EventLogger.logClickEvent(
+                            EventAction.BUSINESS,
+                            AnalyticsConstant.Label.MAIN_SHOP_CATEGORIES,
+                            category.name,
+                            EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
+                            EventExtra(AnalyticsConstant.CURRENT_PAGE, ""),
+                            EventExtra(AnalyticsConstant.DURATION_TIME, "${EventUtils.getElapsedTime()}")
+                        )
                     }
                 )
             }
