@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.feature.store.review
 
+import android.content.Context
+import android.widget.Toast
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -47,6 +49,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreChipDefaults
+import `in`.koreatech.koin.feature.store.component.KoinStoreDialog
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.SortBottomSheet
@@ -63,6 +66,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.distinctUntilChanged
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun ReviewScreen(
@@ -72,6 +76,11 @@ fun ReviewScreen(
     onEditReviewClicked: (StoreNavigationData, Int, String) -> Unit = { _, _, _ -> }
 ) {
     val uiState by viewModel.collectAsState()
+    val context = LocalContext.current
+
+    viewModel.collectSideEffect {
+        handleSideEffect(it, context)
+    }
 
     if (uiState.isLoading) {
         Popup(
@@ -82,6 +91,22 @@ fun ReviewScreen(
             )
         }
         return
+    }
+
+    val deleteReviewAction = remember(uiState.showDeleteDialog) {
+        {
+            viewModel.deleteReview((uiState.showDeleteDialog as ReviewState.DeleteDialogState.Show).reviewId)
+        }
+    }
+
+    if (uiState.showDeleteDialog is ReviewState.DeleteDialogState.Show) {
+        KoinStoreDialog(
+            message = stringResource(R.string.review_delete_message),
+            positiveText = stringResource(R.string.review_delete_confirm),
+            negativeText = stringResource(R.string.review_delete_cancel),
+            onPositiveClick = { deleteReviewAction() },
+            onDismissRequest = viewModel::hideDeleteDialog
+        )
     }
 
     LaunchedEffect(Unit) {
@@ -103,7 +128,8 @@ fun ReviewScreen(
         setFilterMyReview = viewModel::setFilterMyReview,
         onReportClicked = remember(uiState.storeNavigationData) { { onReportClicked(uiState.storeNavigationData, it) } },
         onAddReviewClicked = remember(uiState.storeNavigationData, uiState.storeName) { { onAddReviewClicked(uiState.storeNavigationData, uiState.storeName) } },
-        onEditReviewClicked = remember(uiState.storeNavigationData, uiState.storeName) { { reviewId -> onEditReviewClicked(uiState.storeNavigationData, reviewId, uiState.storeName) } }
+        onEditReviewClicked = remember(uiState.storeNavigationData, uiState.storeName) { { reviewId -> onEditReviewClicked(uiState.storeNavigationData, reviewId, uiState.storeName) } },
+        onDeleteReviewClicked = viewModel::showDeleteDialog
     )
 }
 
@@ -120,7 +146,8 @@ private fun ReviewScreen(
     setFilterMyReview: (Boolean) -> Unit = {},
     onReportClicked: (Int) -> Unit = {},
     onAddReviewClicked: () -> Unit = {},
-    onEditReviewClicked: (Int) -> Unit = {}
+    onEditReviewClicked: (Int) -> Unit = {},
+    onDeleteReviewClicked: (Int) -> Unit = {}
 ) {
     val context = LocalContext.current
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
@@ -265,7 +292,8 @@ private fun ReviewScreen(
                         imageUrls = review.imageUrls,
                         menuTags = review.menuNames,
                         onReportClick = remember(review.reviewId) { { onReportClicked(review.reviewId) } },
-                        onEditClick = remember(review.reviewId) { { onEditReviewClicked(review.reviewId) } }
+                        onEditClick = remember(review.reviewId) { { onEditReviewClicked(review.reviewId) } },
+                        onDeleteClick = remember(review.reviewId) { { onDeleteReviewClicked(review.reviewId) } }
                     )
                 }
             }
@@ -321,4 +349,15 @@ private fun ReviewScreenPreview() {
         reviews = persistentListOf(),
         orderOption = ReviewState.OrderOption()
     )
+}
+
+fun handleSideEffect(
+    sideEffect: ReviewSideEffect,
+    context: Context
+) {
+    when (sideEffect) {
+        ReviewSideEffect.ReviewDeleted -> {
+            Toast.makeText(context, context.getString(R.string.review_deleted), Toast.LENGTH_SHORT).show()
+        }
+    }
 }

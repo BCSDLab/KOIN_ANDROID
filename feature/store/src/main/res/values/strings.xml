@@ -210,6 +210,10 @@
     <string name="review_write_label">작성하기</string>
     <string name="review_edit">리뷰 수정하기</string>
     <string name="review_edit_label">수정하기</string>
+    <string name="review_delete_message">삭제한 리뷰는 되돌릴 수 없습니다.\n삭제 하시겠습니까?</string>
+    <string name="review_delete_confirm">삭제하기</string>
+    <string name="review_delete_cancel">취소하기</string>
+    <string name="review_deleted">리뷰가 삭제되었어요</string>
 
     <string name="review_order_option_recent">최신순</string>
     <string name="review_order_option_least_recent">오래된순</string>
