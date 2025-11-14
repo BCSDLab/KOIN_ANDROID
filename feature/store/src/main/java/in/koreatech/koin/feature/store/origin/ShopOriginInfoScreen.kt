@@ -185,6 +185,7 @@ fun ShopOriginInfoScreen(
             )
             Spacer(Modifier.height(6.dp))
             HighlightSection(
+                isHighlighted = selectedInfo == StoreDetailInfoType.DETAIL.name,
                 content = {
                     Text(
                         text = stringResource(R.string.store_info),
@@ -197,7 +198,6 @@ fun ShopOriginInfoScreen(
             )
             Spacer(Modifier.height(6.dp))
             HighlightSection(
-                isHighlighted = selectedInfo == StoreDetailInfoType.DETAIL.name,
                 content = {
                     Text(
                         text = stringResource(R.string.store_notice),
