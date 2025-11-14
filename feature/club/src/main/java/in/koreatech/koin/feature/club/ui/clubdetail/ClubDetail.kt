@@ -115,6 +115,7 @@ import `in`.koreatech.koin.feature.club.ui.clubdetail.intro.ClubDetailIntro
 import `in`.koreatech.koin.feature.club.ui.clubdetail.qna.ClubDetailQna
 import `in`.koreatech.koin.feature.club.ui.clubdetail.recruit.ClubDetailRecruit
 import `in`.koreatech.koin.feature.club.ui.clubdetail.scroll.clubDetailScrollConnection
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -139,15 +140,17 @@ fun ClubDetail(
     val state by viewModel.collectAsState()
     val density = LocalDensity.current
 
-    val detailList = listOf(
-        Pair(DETAIL_CATEGORY, state.clubDetails?.category),
-        Pair(DETAIL_LOCATION, state.clubDetails?.location),
-        Pair(DETAIL_DESCRIPTION, state.clubDetails?.description),
-        Pair(DETAIL_INSTAGRAM, state.clubDetails?.instagram),
-        Pair(DETAIL_GOOGLE_FORM, state.clubDetails?.googleForm),
-        Pair(DETAIL_OPEN_CHAT, state.clubDetails?.openChat),
-        Pair(DETAIL_PHONE_NUMBER, state.clubDetails?.phoneNumber)
-    )
+    val detailList = remember(state.clubDetails) {
+        persistentListOf(
+            Pair(DETAIL_CATEGORY, state.clubDetails?.category),
+            Pair(DETAIL_LOCATION, state.clubDetails?.location),
+            Pair(DETAIL_DESCRIPTION, state.clubDetails?.description),
+            Pair(DETAIL_INSTAGRAM, state.clubDetails?.instagram),
+            Pair(DETAIL_GOOGLE_FORM, state.clubDetails?.googleForm),
+            Pair(DETAIL_OPEN_CHAT, state.clubDetails?.openChat),
+            Pair(DETAIL_PHONE_NUMBER, state.clubDetails?.phoneNumber)
+        )
+    }
     var qnaList by remember(state.clubQnasInfo) { mutableStateOf(state.clubQnasInfo?.qnas) }
     var tabList by remember { mutableStateOf(DetailTabType.entries.map { it.strResId }) }
 
