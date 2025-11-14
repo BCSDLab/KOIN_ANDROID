@@ -93,6 +93,8 @@ fun ReviewScreen(
 
     if (uiState.showSignInDialog) {
         KoinStoreSignInDialog(
+            title = stringResource(R.string.review_sign_in_dialog_title),
+            message = stringResource(R.string.review_sign_in_dialog_message),
             onPositive = {
                 navigator.navigateToSignIn(
                     context = context,

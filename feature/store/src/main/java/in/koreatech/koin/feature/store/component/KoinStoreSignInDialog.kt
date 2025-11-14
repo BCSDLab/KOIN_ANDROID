@@ -32,6 +32,8 @@ import `in`.koreatech.koin.feature.store.R
 @Composable
 internal fun KoinStoreSignInDialog(
     modifier: Modifier = Modifier,
+    title: String = stringResource(R.string.store_sign_in_dialog_title),
+    message: String = stringResource(R.string.store_sign_in_dialog_message),
     onPositive: () -> Unit = {},
     onNegative: () -> Unit = {}
 ) {
@@ -50,11 +52,11 @@ internal fun KoinStoreSignInDialog(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             BasicText(
-                text = stringResource(R.string.store_sign_in_dialog_title),
+                text = title,
                 style = RebrandKoinTheme.typography.medium18.merge(textAlign = TextAlign.Center, color = RebrandKoinTheme.colors.neutral600)
             )
             BasicText(
-                text = stringResource(R.string.store_sign_in_dialog_message),
+                text = message,
                 style = RebrandKoinTheme.typography.regular14.merge(textAlign = TextAlign.Center, color = RebrandKoinTheme.colors.neutral500)
             )
             Spacer(modifier = Modifier.height(24.dp))
