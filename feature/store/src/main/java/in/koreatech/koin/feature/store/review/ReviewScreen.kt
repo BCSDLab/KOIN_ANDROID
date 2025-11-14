@@ -90,7 +90,6 @@ fun ReviewScreen(
                 modifier = Modifier.size(150.dp)
             )
         }
-        return
     }
 
     val deleteReviewAction = remember(uiState.showDeleteDialog) {
