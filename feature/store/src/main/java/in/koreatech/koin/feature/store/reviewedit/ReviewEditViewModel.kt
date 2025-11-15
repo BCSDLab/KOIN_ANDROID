@@ -102,11 +102,11 @@ class ReviewEditViewModel @Inject constructor(
     }
 
     fun showExitReviewDialog() = intent {
-        reduce { state.copy(showExitReviewDialog = ReviewEditState.ExitDialogState.Show) }
+        reduce { state.copy(showExitReviewDialog = true) }
     }
 
     fun hideExitReviewDialog() = intent {
-        reduce { state.copy(showExitReviewDialog = ReviewEditState.ExitDialogState.Hide) }
+        reduce { state.copy(showExitReviewDialog = false) }
     }
 
     fun clearFileInfo() = blockingIntent {

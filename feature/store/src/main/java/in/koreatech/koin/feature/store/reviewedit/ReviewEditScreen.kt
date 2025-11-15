@@ -58,10 +58,10 @@ fun ReviewEditScreen(
     val context = LocalContext.current
 
     BackHandler {
-        if (uiState.showExitReviewDialog is ReviewEditState.ExitDialogState.Hide) {
-            viewModel.showExitReviewDialog()
-        } else {
+        if (uiState.showExitReviewDialog) {
             viewModel.hideExitReviewDialog()
+        } else {
+            viewModel.showExitReviewDialog()
         }
     }
 
@@ -91,7 +91,7 @@ fun ReviewEditScreen(
         return
     }
 
-    if (uiState.showExitReviewDialog is ReviewEditState.ExitDialogState.Show) {
+    if (uiState.showExitReviewDialog) {
         KoinStoreDialog(
             message = stringResource(R.string.review_edit_message),
             positiveText = stringResource(R.string.review_edit_continue),
