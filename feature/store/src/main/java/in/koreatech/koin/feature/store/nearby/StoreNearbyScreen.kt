@@ -333,7 +333,7 @@ private fun StoreNearbyScreen(
                                 onCategoryChange(index + 1)
                                 EventLogger.logClickEvent(
                                     EventAction.BUSINESS,
-                                    AnalyticsConstant.Label.MAIN_SHOP_BENEFIT,
+                                    AnalyticsConstant.Label.SHOP_CATEGORIES,
                                     storeCategories.first { it.id == initCategoryId }.name,
                                     EventExtra(AnalyticsConstant.PREVIOUS_PAGE, storeCategories.first { it.id == categoryId }.name),
                                     EventExtra(AnalyticsConstant.CURRENT_PAGE, storeCategories.first { it.id == index + 1 }.name),
