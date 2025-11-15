@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.usecase.store.DeleteReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreReviewUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.store.model.StoreNavigationData
@@ -19,13 +20,16 @@ import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
 @HiltViewModel
 class ReviewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getStoreReviewUseCase: GetStoreReviewUseCase,
+    private val deleteReviewUseCase: DeleteReviewUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<ReviewState, ReviewSideEffect> {
     override val container = container<ReviewState, ReviewSideEffect>(ReviewState()) {
@@ -139,6 +143,27 @@ class ReviewViewModel @Inject constructor(
                     reviews = data.reviews.map { it.toLocalReviewContent() }.toImmutableList()
                 )
             }
+        }
+    }
+
+    fun showDeleteDialog(reviewId: Int) = intent {
+        reduce { state.copy(showDeleteDialog = ReviewState.DeleteDialogState.Show(reviewId)) }
+    }
+
+    fun hideDeleteDialog() = intent {
+        reduce { state.copy(showDeleteDialog = ReviewState.DeleteDialogState.Hide) }
+    }
+
+    fun deleteReview(reviewId: Int) = intent {
+        reduce { state.copy(isLoading = true) }
+        hideDeleteDialog()
+        deleteReviewUseCase(reviewId, state.storeNavigationData.shopId).onSuccess {
+            fetchReviews()
+            postSideEffect(ReviewSideEffect.ReviewDeleted)
+            reduce { state.copy(isLoading = false) }
+        }.onFailure {
+            Timber.e(it)
+            reduce { state.copy(isLoading = false) }
         }
     }
 }
