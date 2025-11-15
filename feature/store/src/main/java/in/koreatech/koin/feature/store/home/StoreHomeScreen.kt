@@ -95,6 +95,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -316,15 +317,18 @@ private fun StoreHomeScreen(
         shopListState.animateScrollToItem(0)
     }
 
-    LaunchedEffect(categoryListState) {
-        snapshotFlow { categoryListState.firstVisibleItemIndex }
-            .distinctUntilChanged()
+    LaunchedEffect(storeCategories) {
+        if (storeCategories.isEmpty()) return@LaunchedEffect
+        snapshotFlow { categoryListState.isScrollInProgress }
+            .filter { it }
             .collect {
-                EventLogger.logScrollEvent(
-                    EventAction.BUSINESS,
-                    AnalyticsConstant.Label.SHOP_CATEGORIES,
-                    "scroll in ${storeCategories.first { it.id == categoryId }.name}"
-                )
+                storeCategories.firstOrNull { it.id == categoryId }.let {
+                    EventLogger.logScrollEvent(
+                        EventAction.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_CATEGORIES,
+                        "scroll in ${it?.name}"
+                    )
+                }
             }
     }
 

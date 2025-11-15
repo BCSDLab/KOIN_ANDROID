@@ -88,9 +88,10 @@ import `in`.koreatech.koin.feature.store.model.LocalStoreCategories
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -265,15 +266,18 @@ private fun StoreNearbyScreen(
         shopListState.animateScrollToItem(0)
     }
 
-    LaunchedEffect(categoryListState) {
-        snapshotFlow { categoryListState.firstVisibleItemIndex }
-            .distinctUntilChanged()
+    LaunchedEffect(storeCategories) {
+        if (storeCategories.isEmpty()) return@LaunchedEffect
+        snapshotFlow { categoryListState.isScrollInProgress }
+            .filter { it }
             .collect {
-                EventLogger.logScrollEvent(
-                    EventAction.BUSINESS,
-                    AnalyticsConstant.Label.SHOP_CATEGORIES,
-                    "scroll in ${storeCategories.first { it.id == categoryId }.name}"
-                )
+                storeCategories.firstOrNull { it.id == categoryId }.let {
+                    EventLogger.logScrollEvent(
+                        EventAction.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_CATEGORIES,
+                        "scroll in ${it?.name}"
+                    )
+                }
             }
     }
 
@@ -408,7 +412,7 @@ private fun StoreNearbyScreen(
                                         EventLogger.logClickEvent(
                                             EventAction.BUSINESS,
                                             AnalyticsConstant.Label.SHOP_CAN,
-                                            "check_open_${storeCategories.first { categoryId == initCategoryId }.name}"
+                                            "check_open_${storeCategories.first { categoryId == it.id }.name}"
                                         )
                                     }
                                 }
