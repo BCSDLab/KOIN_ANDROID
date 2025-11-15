@@ -172,7 +172,7 @@ fun StoreHomeScreen(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_CATEGORIES_BACK,
                     "",
-                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, uiState.storeCategories.first { it.id == uiState.categoryId }.name),
+                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, uiState.storeCategories.firstOrNull { it.id == uiState.categoryId }?.name ?: ""),
                     EventExtra(AnalyticsConstant.CURRENT_PAGE, "메인"),
                     EventExtra(AnalyticsConstant.DURATION_TIME, "${EventUtils.getElapsedTime()}")
                 )
@@ -235,7 +235,7 @@ fun StoreHomeScreen(
                     EventLogger.logClickEvent(
                         EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CATEGORIES_SEARCH,
-                        "search in ${uiState.storeCategories.first { it.id == uiState.categoryId }.name}"
+                        "search in ${uiState.storeCategories.firstOrNull { it.id == uiState.categoryId }?.name}"
                     )
                 },
                 onCategoryChange = viewModel::onCategoryChange,
@@ -385,7 +385,7 @@ private fun StoreHomeScreen(
                                 EventLogger.logClickEvent(
                                     EventAction.BUSINESS,
                                     AnalyticsConstant.Label.SHOP_CATEGORIES,
-                                    storeCategories.first { it.id == initCategoryId }.name,
+                                    storeCategories.firstOrNull { it.id == initCategoryId }?.name ?: "",
                                     EventExtra(AnalyticsConstant.PREVIOUS_PAGE, storeCategories.first { it.id == categoryId }.name),
                                     EventExtra(AnalyticsConstant.CURRENT_PAGE, storeCategories.first { it.id == index + 1 }.name),
                                     EventExtra(
@@ -463,10 +463,10 @@ private fun StoreHomeScreen(
                                             EventAction.BUSINESS,
                                             AnalyticsConstant.Label.SHOP_CAN,
                                             when (it) {
-                                                StoreFilter.IS_OPEN -> "check_open_${storeCategories.first { categoryId == initCategoryId }.name}"
-                                                StoreFilter.DELIVERY_AVAILABLE -> "check_delivery_${storeCategories.first { categoryId == initCategoryId }.name}"
-                                                StoreFilter.TAKEOUT_AVAILABLE -> "check_takeout_${storeCategories.first { categoryId == initCategoryId }.name}"
-                                                StoreFilter.FREE_DELIVERY_TIP -> "check_free_delivery_${storeCategories.first { categoryId == initCategoryId }.name}"
+                                                StoreFilter.IS_OPEN -> "check_open_${storeCategories.firstOrNull { categoryId == it.id }?.name}"
+                                                StoreFilter.DELIVERY_AVAILABLE -> "check_delivery_${storeCategories.firstOrNull { categoryId == it.id }?.name}"
+                                                StoreFilter.TAKEOUT_AVAILABLE -> "check_takeout_${storeCategories.firstOrNull { categoryId == it.id }?.name}"
+                                                StoreFilter.FREE_DELIVERY_TIP -> "check_free_delivery_${storeCategories.firstOrNull { categoryId == it.id }?.name}"
                                             }
                                         )
                                     }
@@ -552,7 +552,7 @@ private fun StoreHomeScreen(
                                         EventAction.BUSINESS,
                                         AnalyticsConstant.Label.SHOP_CLICK,
                                         it.name,
-                                        EventExtra(AnalyticsConstant.PREVIOUS_PAGE, storeCategories.first { categoryId == initCategoryId }.name),
+                                        EventExtra(AnalyticsConstant.PREVIOUS_PAGE, storeCategories.firstOrNull { categoryId == initCategoryId }?.name ?: ""),
                                         EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
                                         EventExtra(
                                             AnalyticsConstant.DURATION_TIME,
@@ -582,15 +582,15 @@ private fun StoreHomeScreen(
                             AnalyticsConstant.Label.SHOP_CAN,
                             when (index) {
                                 0 -> {
-                                    "check_default_${storeCategories.first { it.id == categoryId }.name}"
+                                    "check_default_${storeCategories.firstOrNull { it.id == categoryId }?.name}"
                                 }
 
                                 1 -> {
-                                    "check_review_${storeCategories.first { it.id == categoryId }.name}"
+                                    "check_review_${storeCategories.firstOrNull { it.id == categoryId }?.name}"
                                 }
 
                                 else -> {
-                                    "check_star_${storeCategories.first { it.id == categoryId }.name}"
+                                    "check_star_${storeCategories.firstOrNull { it.id == categoryId }?.name}"
                                 }
                             }
                         )

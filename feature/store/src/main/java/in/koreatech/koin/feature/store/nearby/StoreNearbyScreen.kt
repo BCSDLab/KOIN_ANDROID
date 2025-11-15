@@ -88,7 +88,9 @@ import `in`.koreatech.koin.feature.store.model.LocalStoreCategories
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.zip
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import timber.log.Timber
@@ -157,7 +159,7 @@ fun StoreNearbyScreen(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_CATEGORIES_BACK,
                     "",
-                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, uiState.storeCategories.first { it.id == uiState.categoryId }.name),
+                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, uiState.storeCategories.firstOrNull { it.id == uiState.categoryId }?.name ?: ""),
                     EventExtra(AnalyticsConstant.CURRENT_PAGE, "메인"),
                     EventExtra(AnalyticsConstant.DURATION_TIME, "${EventUtils.getElapsedTime()}")
                 )
@@ -216,7 +218,7 @@ fun StoreNearbyScreen(
                 EventLogger.logClickEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_CATEGORIES_SEARCH,
-                    "search in ${uiState.storeCategories.first { it.id == uiState.categoryId }.name}"
+                    "search in ${uiState.storeCategories.firstOrNull { it.id == uiState.categoryId }?.name}"
                 )
             },
             onCategoryChange = viewModel::onCategoryChange,
@@ -334,9 +336,9 @@ private fun StoreNearbyScreen(
                                 EventLogger.logClickEvent(
                                     EventAction.BUSINESS,
                                     AnalyticsConstant.Label.SHOP_CATEGORIES,
-                                    storeCategories.first { it.id == initCategoryId }.name,
-                                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, storeCategories.first { it.id == categoryId }.name),
-                                    EventExtra(AnalyticsConstant.CURRENT_PAGE, storeCategories.first { it.id == index + 1 }.name),
+                                    storeCategories.firstOrNull { it.id == initCategoryId }?.name ?: "",
+                                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, storeCategories.firstOrNull { it.id == categoryId }?.name ?: ""),
+                                    EventExtra(AnalyticsConstant.CURRENT_PAGE, storeCategories.firstOrNull { it.id == index + 1 }?.name ?: ""),
                                     EventExtra(
                                         AnalyticsConstant.DURATION_TIME,
                                         EventUtils.getElapsedTimeAndReset().toString()
@@ -412,7 +414,7 @@ private fun StoreNearbyScreen(
                                         EventLogger.logClickEvent(
                                             EventAction.BUSINESS,
                                             AnalyticsConstant.Label.SHOP_CAN,
-                                            "check_open_${storeCategories.first { categoryId == it.id }.name}"
+                                            "check_open_${storeCategories.firstOrNull { categoryId == it.id }?.name}"
                                         )
                                     }
                                 }
@@ -483,7 +485,7 @@ private fun StoreNearbyScreen(
                                         EventAction.BUSINESS,
                                         AnalyticsConstant.Label.SHOP_CLICK,
                                         it.name,
-                                        EventExtra(AnalyticsConstant.PREVIOUS_PAGE, storeCategories.first { categoryId == initCategoryId }.name),
+                                        EventExtra(AnalyticsConstant.PREVIOUS_PAGE, storeCategories.firstOrNull { categoryId == initCategoryId }?.name ?: ""),
                                         EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
                                         EventExtra(
                                             AnalyticsConstant.DURATION_TIME,
@@ -513,15 +515,15 @@ private fun StoreNearbyScreen(
                             AnalyticsConstant.Label.SHOP_CAN,
                             when (index) {
                                 0 -> {
-                                    "check_default_${storeCategories.first { it.id == categoryId }.name}"
+                                    "check_default_${storeCategories.firstOrNull { it.id == categoryId }?.name}"
                                 }
 
                                 1 -> {
-                                    "check_review_${storeCategories.first { it.id == categoryId }.name}"
+                                    "check_review_${storeCategories.firstOrNull { it.id == categoryId }?.name}"
                                 }
 
                                 else -> {
-                                    "check_star_${storeCategories.first { it.id == categoryId }.name}"
+                                    "check_star_${storeCategories.firstOrNull { it.id == categoryId }?.name}"
                                 }
                             }
                         )
