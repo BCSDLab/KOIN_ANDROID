@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -82,11 +81,11 @@ fun ReviewTextFieldSection(
                         .border(
                             width = 1.dp,
                             color = RebrandKoinTheme.colors.neutral300,
-                            shape = RoundedCornerShape(4.dp)
+                            shape = RebrandKoinTheme.shapes.extraSmall
                         )
                         .background(
                             color = RebrandKoinTheme.colors.neutral0,
-                            shape = RoundedCornerShape(4.dp)
+                            shape = RebrandKoinTheme.shapes.extraSmall
                         )
                         .padding(horizontal = 16.dp, vertical = 12.dp),
                     contentAlignment = Alignment.CenterStart
@@ -164,11 +163,11 @@ fun ReviewTextFieldSection(
                             .border(
                                 width = 1.dp,
                                 color = RebrandKoinTheme.colors.neutral300,
-                                shape = RoundedCornerShape(4.dp)
+                                shape = RebrandKoinTheme.shapes.extraSmall
                             )
                             .background(
                                 color = RebrandKoinTheme.colors.neutral0,
-                                shape = RoundedCornerShape(4.dp)
+                                shape = RebrandKoinTheme.shapes.extraSmall
                             )
                             .padding(horizontal = 16.dp, vertical = 12.dp),
                         contentAlignment = Alignment.CenterStart
