@@ -235,7 +235,7 @@ fun StoreHomeScreen(
                     EventLogger.logClickEvent(
                         EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CATEGORIES_SEARCH,
-                        "search in ${uiState.storeCategories.first { it.id == categoryId }.name}"
+                        "search in ${uiState.storeCategories.first { it.id == uiState.categoryId }.name}"
                     )
                 },
                 onCategoryChange = viewModel::onCategoryChange,
