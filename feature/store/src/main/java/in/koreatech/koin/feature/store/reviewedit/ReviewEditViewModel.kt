@@ -139,6 +139,7 @@ class ReviewEditViewModel @Inject constructor(
     }
 
     fun modifyReview() = intent {
+        reduce { state.copy(isLoading = true) }
         val review = Review(
             rating = state.rating,
             content = state.reviewContent,
@@ -153,5 +154,6 @@ class ReviewEditViewModel @Inject constructor(
             .onFailure {
                 postSideEffect(ReviewEditSideEffect.ShowReviewModifyFailed)
             }
+        reduce { state.copy(isLoading = false) }
     }
 }

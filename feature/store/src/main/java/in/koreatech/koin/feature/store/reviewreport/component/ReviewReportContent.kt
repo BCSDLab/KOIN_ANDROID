@@ -62,7 +62,11 @@ fun ReviewReportContent(
             onClick = onReport,
             shape = RebrandKoinTheme.shapes.small,
             contentPadding = PaddingValues(vertical = 12.dp),
-            enabled = selectedItem.isNotEmpty() || otherReason.isNotBlank()
+            enabled = if (selectedItem.contains(ReportReason.OTHER)) {
+                otherReason.isNotBlank()
+            } else {
+                selectedItem.isNotEmpty()
+            }
         ) {
             BasicText(
                 text = stringResource(id = R.string.review_report),
