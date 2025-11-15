@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -61,7 +62,9 @@ import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_DETAIL_MAIN
@@ -220,6 +223,16 @@ fun StoreDetailScreen(
                     uiState.store.name
                 )
             }
+    }
+
+    BackHandler {
+        navigateToBack()
+        EventLogger.logClickEvent(
+            EventAction.BUSINESS,
+            AnalyticsConstant.Label.SHOP_DETAIL_VIEW_BACK,
+            uiState.store.name,
+            EventExtra(AnalyticsConstant.DURATION_TIME, "${EventUtils.getElapsedTime()}")
+        )
     }
 
     val onMenuClick = if (uiState.isOrderableShop) {
@@ -381,6 +394,12 @@ fun StoreDetailScreen(
                 title = uiState.store.name,
                 onNavigationIconClick = {
                     navigateToBack()
+                    EventLogger.logClickEvent(
+                        EventAction.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_DETAIL_VIEW_BACK,
+                        uiState.store.name,
+                        EventExtra(AnalyticsConstant.DURATION_TIME, "${EventUtils.getElapsedTime()}")
+                    )
                 },
                 actions = {
                     if (!LocalDeliveryDeveloperOption.current) return@KoinStoreTopAppBar
