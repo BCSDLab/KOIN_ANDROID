@@ -11,6 +11,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -74,6 +75,7 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreSignInDialog
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.OrderBottomBar
+import `in`.koreatech.koin.feature.store.component.dialog.StoreImageDialog
 import `in`.koreatech.koin.feature.store.detail.component.CallDialog
 import `in`.koreatech.koin.feature.store.detail.component.MenuCategoryChips
 import `in`.koreatech.koin.feature.store.detail.component.StoreDetailImage
@@ -254,6 +256,14 @@ fun StoreDetailScreen(
                 viewModel.setCallDialogState(false)
             }
         )
+    }
+
+    if (uiState.showImageDialog) {
+        StoreImageDialog(
+            imageUrls = uiState.store.imageUrls ?: persistentListOf()
+        ) {
+            viewModel.setImageDialogState(false)
+        }
     }
 
     if (uiState.showSignInDialog) {
@@ -454,6 +464,9 @@ fun StoreDetailScreen(
                             clip = true
                             translationY = -(rememberState.toolbarMaxHeight.toPx() - currentToolbarHeightDp.value.toPx())
                             alpha = 1f - overlayAlpha.value
+                        }
+                        .clickable {
+                            viewModel.setImageDialogState(true)
                         },
                     imageUrls = uiState.store.imageUrls ?: persistentListOf(),
                     pagerState = pagerState
