@@ -15,6 +15,7 @@ import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_ADD_CART
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_DETAIL_MAIN
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_HOME
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_NEARBY
+import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_REVIEW
 import `in`.koreatech.koin.feature.store.cart.ShoppingCartScreen
 import `in`.koreatech.koin.feature.store.cartadd.CartAddScreen
 import `in`.koreatech.koin.feature.store.cartedit.CartEditScreen
@@ -443,7 +444,13 @@ internal fun NavGraphBuilder.koinStoreReviewGraph(
     navController: NavController
 ) {
     composable<StoreReviewNavType.StoreReviewHome>(
-        typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
+        typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType),
+        deepLinks = listOf(
+            navDeepLink<StoreReviewNavType.StoreReviewHome>(
+                basePath = DEEPLINK_STORE_REVIEW,
+                typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
+            )
+        )
     ) {
         ReviewScreen(
             onReportClicked = { storeNavigationData, reviewId ->

@@ -44,10 +44,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
+import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_REVIEW
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreChipDefaults
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
+import `in`.koreatech.koin.feature.store.component.KoinStoreSignInDialog
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.SortBottomSheet
 import `in`.koreatech.koin.feature.store.model.StoreNavigationData
@@ -62,6 +65,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
@@ -71,7 +76,9 @@ fun ReviewScreen(
     onAddReviewClicked: (StoreNavigationData, String) -> Unit = { _, _ -> },
     onEditReviewClicked: (StoreNavigationData, Int, String) -> Unit = { _, _, _ -> }
 ) {
+    val context = LocalContext.current
     val uiState by viewModel.collectAsState()
+    val navigator = rememberNavigator()
 
     if (uiState.isLoading) {
         Popup(
@@ -82,6 +89,22 @@ fun ReviewScreen(
             )
         }
         return
+    }
+
+    if (uiState.showSignInDialog) {
+        KoinStoreSignInDialog(
+            title = stringResource(R.string.review_sign_in_dialog_title),
+            message = stringResource(R.string.review_sign_in_dialog_message),
+            onPositive = {
+                navigator.navigateToSignIn(
+                    context = context,
+                    redirectUrl = "$DEEPLINK_STORE_REVIEW/${Json.encodeToString(uiState.storeNavigationData)}/${uiState.storeName}"
+                ).apply {
+                    context.startActivity(this)
+                }
+            },
+            onNegative = viewModel::hideSignInDialog
+        )
     }
 
     LaunchedEffect(Unit) {
@@ -102,7 +125,15 @@ fun ReviewScreen(
         setReviewOrderOption = viewModel::setReviewOrderOption,
         setFilterMyReview = viewModel::setFilterMyReview,
         onReportClicked = remember(uiState.storeNavigationData) { { onReportClicked(uiState.storeNavigationData, it) } },
-        onAddReviewClicked = remember(uiState.storeNavigationData, uiState.storeName) { { onAddReviewClicked(uiState.storeNavigationData, uiState.storeName) } },
+        onAddReviewClicked = remember(uiState.storeNavigationData, uiState.storeName, uiState.isLoggedIn) {
+            {
+                if (uiState.isLoggedIn) {
+                    onAddReviewClicked(uiState.storeNavigationData, uiState.storeName)
+                } else {
+                    viewModel.showSignInDialog()
+                }
+            }
+        },
         onEditReviewClicked = remember(uiState.storeNavigationData, uiState.storeName) { { reviewId -> onEditReviewClicked(uiState.storeNavigationData, reviewId, uiState.storeName) } }
     )
 }
