@@ -16,6 +16,7 @@ data class ReviewState(
     val reviewRatings: LocalReviewRatings = LocalReviewRatings.empty(),
     val reviews: ImmutableList<LocalReviewContent> = persistentListOf(),
     val orderOption: OrderOption = OrderOption(),
+    val showDeleteDialog: DeleteDialogState = DeleteDialogState.Hide,
     val filterMyReview: Boolean = false,
     val isLoggedIn: Boolean = false,
     val showSignInDialog: Boolean = false
@@ -25,4 +26,10 @@ data class ReviewState(
         val showOrderOptionChooser: Boolean = false,
         val reviewOrderOption: ReviewOrderOption = ReviewOrderOption.RECENT
     )
+
+    @Serializable
+    sealed class DeleteDialogState {
+        data object Hide : DeleteDialogState()
+        data class Show(val reviewId: Int) : DeleteDialogState()
+    }
 }

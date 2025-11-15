@@ -68,7 +68,7 @@ interface StoreRepository {
     suspend fun deleteReview(
         reviewId: Int,
         shopId: Int
-    )
+    ): Result<Unit>
 
     suspend fun modifyReview(
         reviewId: Int,
