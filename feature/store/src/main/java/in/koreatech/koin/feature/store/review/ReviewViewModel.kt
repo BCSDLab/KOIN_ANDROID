@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.store.DeleteReviewUseCase
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.store.GetStoreReviewUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.store.model.StoreNavigationData
 import `in`.koreatech.koin.feature.store.model.StoreNavigationDataType
 import `in`.koreatech.koin.feature.store.navigation.StoreReviewNavType
@@ -27,7 +29,8 @@ import timber.log.Timber
 class ReviewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getStoreReviewUseCase: GetStoreReviewUseCase,
-    private val deleteReviewUseCase: DeleteReviewUseCase
+    private val deleteReviewUseCase: DeleteReviewUseCase,
+    private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<ReviewState, ReviewSideEffect> {
     override val container = container<ReviewState, ReviewSideEffect>(ReviewState()) {
         val route = savedStateHandle.toRoute<StoreReviewNavType.StoreReviewHome>(
@@ -46,6 +49,26 @@ class ReviewViewModel @Inject constructor(
 
     init {
         fetchReviews()
+        getUserType()
+    }
+
+    private fun getUserType() = intent {
+        getUserStatusUseCase().collect {
+            when (it) {
+                is User.Student,
+                is User.General -> {
+                    reduce {
+                        state.copy(isLoggedIn = true)
+                    }
+                }
+
+                is User.Anonymous -> {
+                    reduce {
+                        state.copy(isLoggedIn = false)
+                    }
+                }
+            }
+        }
     }
 
     fun showReviewOrderOptionChooser() = intent {
@@ -66,6 +89,14 @@ class ReviewViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    fun showSignInDialog() = intent {
+        reduce { state.copy(showSignInDialog = true) }
+    }
+
+    fun hideSignInDialog() = intent {
+        reduce { state.copy(showSignInDialog = false) }
     }
 
     fun setReviewOrderOption(reviewOrderOption: ReviewOrderOption) = intent {

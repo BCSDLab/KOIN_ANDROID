@@ -252,6 +252,14 @@ class StoreDetailViewModel @Inject constructor(
         }
     }
 
+    fun setImageDialogState(newState: Boolean) = blockingIntent {
+        reduce {
+            state.copy(
+                showImageDialog = newState
+            )
+        }
+    }
+
     fun getCartItemsCount() = intent {
         reduce {
             state.copy(isLoading = true)

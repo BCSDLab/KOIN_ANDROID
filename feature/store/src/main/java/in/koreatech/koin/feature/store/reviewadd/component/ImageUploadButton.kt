@@ -6,9 +6,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
-import androidx.compose.material.Icon
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,10 +31,10 @@ fun ImageUploadButton(
         modifier = modifier
             .dashedBorder(
                 color = RebrandKoinTheme.colors.neutral300,
-                shape = RoundedCornerShape(size = 8.dp)
+                shape = RebrandKoinTheme.shapes.small
             )
             .background(RebrandKoinTheme.colors.neutral0)
-            .clickable { onClick() },
+            .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Column(
