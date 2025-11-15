@@ -452,7 +452,12 @@ internal fun NavGraphBuilder.koinStoreReviewGraph(
             )
         )
     ) {
+        val isReviewUpdated by it.savedStateHandle.getStateFlow(IS_REVIEW_UPDATED, initialValue = false).collectAsStateWithLifecycle()
         ReviewScreen(
+            isReviewUpdated = isReviewUpdated,
+            onResetReviewUpdated = {
+                navController.currentBackStackEntry?.savedStateHandle?.set(IS_REVIEW_UPDATED, false)
+            },
             onReportClicked = { storeNavigationData, reviewId ->
                 navController.navigate(StoreReviewNavType.StoreReviewReport(storeNavigationData, reviewId))
             },
@@ -468,13 +473,23 @@ internal fun NavGraphBuilder.koinStoreReviewGraph(
     composable<StoreReviewNavType.StoreReviewAdd>(
         typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
     ) {
-        ReviewAddScreen(onNavigateBack = { navController.popBackStack() })
+        ReviewAddScreen(
+            onNavigateBack = { navController.popBackStack() },
+            onReviewUpdated = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(IS_REVIEW_UPDATED, true)
+            }
+        )
     }
 
     composable<StoreReviewNavType.StoreReviewEdit>(
         typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
     ) {
-        ReviewEditScreen(onNavigateBack = { navController.popBackStack() })
+        ReviewEditScreen(
+            onNavigateBack = { navController.popBackStack() },
+            onReviewUpdated = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(IS_REVIEW_UPDATED, true)
+            }
+        )
     }
 
     composable<StoreReviewNavType.StoreReviewReport>(
@@ -495,3 +510,4 @@ const val CART_TYPE = "cartType"
 const val SELECTED_INFO = "selectedInfo"
 const val CART_DATA = "cartData"
 const val ORDER_ID = "orderId"
+const val IS_REVIEW_UPDATED = "isReviewUpdated"

@@ -15,8 +15,14 @@ data class ReviewEditState(
     val menuTag: String = "",
     val menuTags: ImmutableList<String> = persistentListOf(),
     val imageUris: ImmutableList<String> = persistentListOf(),
-    val presignedPairs: ImmutableList<PresignedPair> = persistentListOf()
-)
+    val presignedPairs: ImmutableList<PresignedPair> = persistentListOf(),
+    val showExitReviewDialog: ExitDialogState = ExitDialogState.Hide
+) {
+    sealed class ExitDialogState {
+        data object Hide : ExitDialogState()
+        data object Show : ExitDialogState()
+    }
+}
 
 data class PresignedPair(
     val imageUri: String,

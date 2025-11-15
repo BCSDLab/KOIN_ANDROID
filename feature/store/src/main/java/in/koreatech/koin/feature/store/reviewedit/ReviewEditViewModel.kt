@@ -101,6 +101,14 @@ class ReviewEditViewModel @Inject constructor(
         }
     }
 
+    fun showExitReviewDialog() = intent {
+        reduce { state.copy(showExitReviewDialog = ReviewEditState.ExitDialogState.Show) }
+    }
+
+    fun hideExitReviewDialog() = intent {
+        reduce { state.copy(showExitReviewDialog = ReviewEditState.ExitDialogState.Hide) }
+    }
+
     fun clearFileInfo() = blockingIntent {
         reduce {
             state.copy(
@@ -139,6 +147,10 @@ class ReviewEditViewModel @Inject constructor(
     }
 
     fun modifyReview() = intent {
+        if (state.reviewContent.isBlank()) {
+            postSideEffect(ReviewEditSideEffect.ShowReviewModifyIsNotBlank)
+            return@intent
+        }
         reduce { state.copy(isLoading = true) }
         val review = Review(
             rating = state.rating,
@@ -149,7 +161,7 @@ class ReviewEditViewModel @Inject constructor(
         modifyReviewUseCase(state.reviewId, state.storeId, review)
             .onSuccess {
                 postSideEffect(ReviewEditSideEffect.ShowReviewModified)
-                postSideEffect(ReviewEditSideEffect.NavigateToReview)
+                postSideEffect(ReviewEditSideEffect.ReviewUpdated)
             }
             .onFailure {
                 postSideEffect(ReviewEditSideEffect.ShowReviewModifyFailed)
