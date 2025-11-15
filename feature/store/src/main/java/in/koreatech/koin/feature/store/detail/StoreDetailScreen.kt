@@ -334,6 +334,11 @@ fun StoreDetailScreen(
                                     ),
                                     uiState.store.name
                                 )
+                                EventLogger.logClickEvent(
+                                    EventAction.BUSINESS,
+                                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW,
+                                    uiState.store.name
+                                )
                             },
                             navigateToDetailInfo = { selectedInfo ->
                                 navigateToDetailInfo(selectedInfo)
