@@ -74,6 +74,8 @@ object AnalyticsConstant {
         const val SHOP_DETAIL_VIEW_REVIEW_REPORT_LOGIN = "shop_detail_view_review_report_login"
         const val SHOP_DETAIL_VIEW_REVIEW_REPORT_CANCEL = "shop_detail_view_review_report_cancel"
 
+        const val SHOP_DETAIL_VIEW_REVIEW_CAN = "shop_detail_view_review_can"
+
         const val SHOP_DETAIL_VIEW = "shop_detail_view"
 
         const val SHOP_DETAIL_VIEW_REVIEW_BACK = "shop_detail_view_review_back"

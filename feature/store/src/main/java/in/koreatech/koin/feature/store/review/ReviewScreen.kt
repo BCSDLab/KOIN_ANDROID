@@ -114,8 +114,24 @@ fun ReviewScreen(
             message = stringResource(R.string.review_delete_message),
             positiveText = stringResource(R.string.review_delete_confirm),
             negativeText = stringResource(R.string.review_delete_cancel),
-            onPositiveClick = { deleteReviewAction() },
-            onDismissRequest = viewModel::hideDeleteDialog
+            onPositiveClick = {
+                deleteReviewAction()
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE_DONE,
+                    "O"
+                )
+            },
+            onDismissRequest = remember(viewModel) {
+                {
+                    viewModel.hideDeleteDialog()
+                    EventLogger.logClickEvent(
+                        EventAction.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE_DONE,
+                        "X"
+                    )
+                }
+            }
         )
     }
 
@@ -348,6 +364,11 @@ private fun ReviewScreen(
             options = ReviewOrderOption.entries.map { context.getString(it.stringResId) }.toImmutableList(),
             onSelect = { index ->
                 setReviewOrderOption(ReviewOrderOption.entries[index])
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_CAN,
+                    context.getString(ReviewOrderOption.entries[index].stringResId)
+                )
             },
             onClose = {
                 hideReviewOrderOptionChooser()
