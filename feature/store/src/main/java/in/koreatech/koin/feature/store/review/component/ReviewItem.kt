@@ -44,7 +44,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreChip
 import `in`.koreatech.koin.feature.store.component.KoinStoreChipDefaults
-import `in`.koreatech.koin.feature.store.review.component.dialog.ReviewImageDialog
+import `in`.koreatech.koin.feature.store.component.dialog.StoreImageDialog
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -215,7 +215,7 @@ fun ReviewItem(
         }
     }
     if (dialogOpen) {
-        ReviewImageDialog(
+        StoreImageDialog(
             imageUrls = imageUrls,
             initialPage = selectedIndex,
             onDismiss = { dialogOpen = false }
