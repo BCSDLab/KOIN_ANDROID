@@ -15,6 +15,7 @@ import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_ADD_CART
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_DETAIL_MAIN
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_HOME
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_NEARBY
+import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_REVIEW
 import `in`.koreatech.koin.feature.store.cart.ShoppingCartScreen
 import `in`.koreatech.koin.feature.store.cartadd.CartAddScreen
 import `in`.koreatech.koin.feature.store.cartedit.CartEditScreen
@@ -107,7 +108,7 @@ fun NavGraphBuilder.koinStoreGraph(
                 navController.navigate(StoreNavType.StoreMain.route)
             },
             navigateBack = {
-                if (!navController.navigateUp()) {
+                if (!navController.popBackStack()) {
                     finish()
                 }
             }
@@ -154,7 +155,7 @@ fun NavGraphBuilder.koinStoreGraph(
                     IS_CART_MODIFIED,
                     true
                 )
-                if (!navController.navigateUp()) {
+                if (!navController.popBackStack()) {
                     finish()
                 }
             }
@@ -178,7 +179,7 @@ fun NavGraphBuilder.koinStoreGraph(
                     IS_CART_MODIFIED,
                     true
                 )
-                if (!navController.navigateUp()) {
+                if (!navController.popBackStack()) {
                     finish()
                 }
             }
@@ -196,11 +197,11 @@ fun NavGraphBuilder.koinStoreGraph(
         val isOrderableShop = it.arguments?.getBoolean(IS_ORDERABLE_SHOP) ?: true
         StoreSearchScreen(
             navigateToDetail = {
-                navController.navigateUp()
+                navController.popBackStack()
                 navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$it/$isOrderableShop")
             },
             onBackPressed = {
-                if (!navController.navigateUp()) {
+                if (!navController.popBackStack()) {
                     finish()
                 }
             }
@@ -303,7 +304,7 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
                 navController.navigate("${StoreNavType.StoreOrderResult.route}/$orderId")
             }
         ) {
-            if (!navController.navigateUp()) {
+            if (!navController.popBackStack()) {
                 finish()
             }
         }
@@ -329,7 +330,7 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
                 navController.navigate("${StoreNavType.StoreSearch.route}/${false}")
             }
         ) {
-            if (!navController.navigateUp()) {
+            if (!navController.popBackStack()) {
                 finish()
             }
         }
@@ -346,7 +347,7 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
                 navController.navigate("${StoreNavType.StoreOrderResult.route}/$orderId")
             }
         ) {
-            if (!navController.navigateUp()) {
+            if (!navController.popBackStack()) {
                 finish()
             }
         }
@@ -382,7 +383,7 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
             isCartAdded = isCartAdded,
             isCartModified = isCartModified,
             navigateToBack = {
-                if (!navController.navigateUp()) {
+                if (!navController.popBackStack()) {
                     finish()
                 }
             },
@@ -428,7 +429,7 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
         ShopOriginInfoScreen(
             selectedInfo = selectedInfo,
             onBackClick = {
-                if (!navController.navigateUp()) {
+                if (!navController.popBackStack()) {
                     finish()
                 }
             },
@@ -443,7 +444,13 @@ internal fun NavGraphBuilder.koinStoreReviewGraph(
     navController: NavController
 ) {
     composable<StoreReviewNavType.StoreReviewHome>(
-        typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
+        typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType),
+        deepLinks = listOf(
+            navDeepLink<StoreReviewNavType.StoreReviewHome>(
+                basePath = DEEPLINK_STORE_REVIEW,
+                typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
+            )
+        )
     ) {
         ReviewScreen(
             onReportClicked = { storeNavigationData, reviewId ->

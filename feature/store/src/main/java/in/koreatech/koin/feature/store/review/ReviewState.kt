@@ -16,7 +16,9 @@ data class ReviewState(
     val reviewRatings: LocalReviewRatings = LocalReviewRatings.empty(),
     val reviews: ImmutableList<LocalReviewContent> = persistentListOf(),
     val orderOption: OrderOption = OrderOption(),
-    val filterMyReview: Boolean = false
+    val filterMyReview: Boolean = false,
+    val isLoggedIn: Boolean = false,
+    val showSignInDialog: Boolean = false
 ) {
     @Serializable
     data class OrderOption(
