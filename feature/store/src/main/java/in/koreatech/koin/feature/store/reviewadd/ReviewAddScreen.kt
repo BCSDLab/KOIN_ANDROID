@@ -29,10 +29,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
-import `in`.koreatech.koin.core.analytics.EventAction
-import `in`.koreatech.koin.core.analytics.EventExtra
-import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.feature.store.R

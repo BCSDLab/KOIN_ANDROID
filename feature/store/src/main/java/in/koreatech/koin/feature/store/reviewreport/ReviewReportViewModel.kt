@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.store.reviewreport
 
-import androidx.compose.runtime.Immutable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
@@ -105,7 +104,6 @@ class ReviewReportViewModel @Inject constructor(
             } else {
                 log.append(reason.title)
                 log.append(" ")
-
             }
         }
 
