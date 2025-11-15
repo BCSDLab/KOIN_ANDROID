@@ -27,6 +27,7 @@ import `in`.koreatech.koin.feature.store.R
 @Composable
 fun KoinStoreDialog(
     message: String,
+    modifier: Modifier = Modifier,
     buttonText: String = stringResource(R.string.ok),
     onDismissRequest: () -> Unit = {},
     onClick: () -> Unit = { onDismissRequest() }
@@ -35,7 +36,7 @@ fun KoinStoreDialog(
         onDismissRequest = onDismissRequest
     ) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .clip(RebrandKoinTheme.shapes.small)
                 .background(RebrandKoinTheme.colors.neutral0, RebrandKoinTheme.shapes.small)
                 .padding(vertical = 24.dp, horizontal = 32.dp),
@@ -77,6 +78,7 @@ fun KoinStoreDialog(
 @Composable
 fun KoinStoreDialog(
     message: String,
+    modifier: Modifier = Modifier,
     positiveText: String = stringResource(R.string.ok),
     negativeText: String = stringResource(R.string.cancel),
     onDismissRequest: () -> Unit = {},
@@ -87,7 +89,7 @@ fun KoinStoreDialog(
         onDismissRequest = onDismissRequest
     ) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .clip(RebrandKoinTheme.shapes.small)
                 .background(RebrandKoinTheme.colors.neutral0, RebrandKoinTheme.shapes.small)
                 .padding(vertical = 24.dp, horizontal = 32.dp),
