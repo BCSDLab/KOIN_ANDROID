@@ -11,7 +11,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.ui.developer.DeveloperSettingViewModel.Companion.DELIVERY_SPRINT
-import `in`.koreatech.koin.ui.developer.DeveloperSettingViewModel.Companion.STORE_SPRINT
 import `in`.koreatech.koin.ui.developer.component.DeveloperSettingItem
 
 @Composable
@@ -19,20 +18,11 @@ fun DeveloperSettingScreen(
     modifier: Modifier = Modifier,
     developerSettingViewModel: DeveloperSettingViewModel = hiltViewModel()
 ) {
-    val storeDeveloperSetting by developerSettingViewModel.storeDeveloperSetting.collectAsState()
     val deliveryDeveloperSetting by developerSettingViewModel.deliveryDeveloperSetting.collectAsState()
 
     Column(
         modifier = modifier
     ) {
-        DeveloperSettingItem(
-            modifier = Modifier.padding(vertical = 16.dp, horizontal = 24.dp),
-            title = stringResource(R.string.developer_setting_store_title),
-            key = STORE_SPRINT,
-            value = storeDeveloperSetting,
-            onValueChange = developerSettingViewModel::setDeveloperSetting
-        )
-
         DeveloperSettingItem(
             modifier = Modifier.padding(vertical = 16.dp, horizontal = 24.dp),
             title = stringResource(R.string.developer_setting_delivery_title),

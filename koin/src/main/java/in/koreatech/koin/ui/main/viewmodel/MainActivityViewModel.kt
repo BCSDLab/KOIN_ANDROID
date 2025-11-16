@@ -168,9 +168,6 @@ class MainActivityViewModel @Inject constructor(
     private val _hotClub = MutableStateFlow<ClubHot?>(null)
     val hotClub: StateFlow<ClubHot?> get() = _hotClub
 
-    private val _isStoreSprintEnabled = MutableStateFlow<Boolean?>(null)
-    val isStoreSprintEnabled: StateFlow<Boolean?> get() = _isStoreSprintEnabled
-
     init {
         checkBannerRefusal()
         updateDining()
@@ -252,12 +249,7 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun getStoreSprintEnabled() = viewModelScope.launch {
-        _isStoreSprintEnabled.value = getDeveloperSettingUseCase(STORE_SPRINT)
-    }
-
     companion object {
         private const val HOT_ARTICLE_COUNT = 4
-        private const val STORE_SPRINT = "store_sprint"
     }
 }
