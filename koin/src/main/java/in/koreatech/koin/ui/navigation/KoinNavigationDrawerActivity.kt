@@ -44,6 +44,7 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.feature.chat.ui.list.ChatListActivity
 import `in`.koreatech.koin.feature.club.ui.ClubActivity
 import `in`.koreatech.koin.feature.dining.ui.DiningActivity
+import `in`.koreatech.koin.feature.store.StoreActivity
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import `in`.koreatech.koin.feature.user.ui.signup.SignUpActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity
@@ -53,7 +54,6 @@ import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.navigation.viewmodel.KoinNavigationDrawerViewModel
 import `in`.koreatech.koin.ui.operating.OperatingInfoActivity
 import `in`.koreatech.koin.ui.setting.SettingActivity
-import `in`.koreatech.koin.ui.store.activity.StoreActivity
 import `in`.koreatech.koin.util.ext.addDrawerListener
 import `in`.koreatech.koin.util.ext.closeDrawer
 import `in`.koreatech.koin.util.ext.isDrawerOpened
@@ -497,12 +497,6 @@ abstract class KoinNavigationDrawerActivity :
                 }
             }
         }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                getStoreSprintEnabled()
-            }
-        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -555,10 +549,7 @@ abstract class KoinNavigationDrawerActivity :
     }
 
     private fun goToStoreActivity(bundle: Bundle? = bundleOf()) {
-        val intent = Intent(
-            this,
-            if (koinNavigationDrawerViewModel.isStoreSprintEnabled.value == true) `in`.koreatech.koin.feature.store.StoreActivity::class.java else StoreActivity::class.java
-        )
+        val intent = Intent(this, StoreActivity::class.java)
         intent.putExtras(bundle!!)
 
         if (menuState != MenuState.Main) {

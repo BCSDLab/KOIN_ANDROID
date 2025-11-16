@@ -67,9 +67,10 @@ fun ShopOriginInfoScreen(
     navigateToShoppingCart: () -> Unit = {}
 ) {
     val uiState by shopOriginViewModel.collectAsState()
+    val deliverySprintEnabled = LocalDeliveryDeveloperOption.current
 
     LaunchedEffect(Unit) {
-        if (uiState.isLoggedIn) {
+        if (uiState.isLoggedIn && deliverySprintEnabled) {
             shopOriginViewModel.getCartItemsCount()
         }
     }
