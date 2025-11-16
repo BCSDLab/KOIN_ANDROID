@@ -557,7 +557,7 @@ abstract class KoinNavigationDrawerActivity :
     private fun goToStoreActivity(bundle: Bundle? = bundleOf()) {
         val intent = Intent(
             this,
-            if (koinNavigationDrawerViewModel.isStoreSprintEnabled.value == true) `in`.koreatech.koin.feature.store.StoreActivity::class.java else StoreActivity::class.java
+            if (koinNavigationDrawerViewModel.isStoreSprintEnabled.value == false) `in`.koreatech.koin.feature.store.StoreActivity::class.java else StoreActivity::class.java
         )
         intent.putExtras(bundle!!)
 

@@ -98,7 +98,7 @@ fun ReviewEditScreen(
             negativeText = stringResource(R.string.review_edit_stop),
             onPositiveClick = viewModel::hideExitReviewDialog,
             onDismissRequest = {
-                viewModel::hideExitReviewDialog
+                viewModel.hideExitReviewDialog()
                 onNavigateBack()
             }
         )
@@ -120,9 +120,7 @@ fun ReviewEditScreen(
         onAddReview = viewModel::modifyReview,
         onAddImages = { galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
         onRemoveImage = viewModel::removeImageUri,
-        onNavigationIconClick = {
-            viewModel.showExitReviewDialog()
-        }
+        onNavigationIconClick = viewModel::showExitReviewDialog
     )
     HandleSideEffects(viewModel, onNavigateBack, onReviewUpdated)
 }
