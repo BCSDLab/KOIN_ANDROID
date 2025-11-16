@@ -45,6 +45,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventExtra
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_REVIEW
@@ -111,8 +116,24 @@ fun ReviewScreen(
             message = stringResource(R.string.review_delete_message),
             positiveText = stringResource(R.string.review_delete_confirm),
             negativeText = stringResource(R.string.review_delete_cancel),
-            onPositiveClick = { deleteReviewAction() },
-            onDismissRequest = viewModel::hideDeleteDialog
+            onPositiveClick = {
+                deleteReviewAction()
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE_DONE,
+                    "O"
+                )
+            },
+            onDismissRequest = remember(viewModel) {
+                {
+                    viewModel.hideDeleteDialog()
+                    EventLogger.logClickEvent(
+                        EventAction.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE_DONE,
+                        "X"
+                    )
+                }
+            }
         )
     }
 
@@ -148,6 +169,7 @@ fun ReviewScreen(
     }
 
     ReviewScreen(
+        storeName = uiState.storeName,
         reviewRatings = uiState.reviewRatings,
         orderOption = uiState.orderOption,
         filterMyReview = uiState.filterMyReview,
@@ -173,6 +195,7 @@ fun ReviewScreen(
 
 @Composable
 private fun ReviewScreen(
+    storeName: String,
     reviewRatings: LocalReviewRatings,
     orderOption: ReviewState.OrderOption,
     filterMyReview: Boolean,
@@ -197,6 +220,12 @@ private fun ReviewScreen(
             title = stringResource(R.string.store_title_review),
             onNavigationIconClick = {
                 onBackPressedDispatcher?.onBackPressed()
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
+                    storeName,
+                    EventExtra(AnalyticsConstant.DURATION_TIME, "${EventUtils.getElapsedTime()}")
+                )
             }
         )
 
@@ -344,6 +373,11 @@ private fun ReviewScreen(
             options = ReviewOrderOption.entries.map { context.getString(it.stringResId) }.toImmutableList(),
             onSelect = { index ->
                 setReviewOrderOption(ReviewOrderOption.entries[index])
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_CAN,
+                    context.getString(ReviewOrderOption.entries[index].stringResId)
+                )
             },
             onClose = {
                 hideReviewOrderOptionChooser()
@@ -357,6 +391,7 @@ private fun ReviewScreen(
 private fun ReviewScreenPreview() {
     ReviewScreen(
         modifier = Modifier.padding(horizontal = 24.dp),
+        storeName = "",
         filterMyReview = false,
         reviewRatings = LocalReviewRatings(
             reviews = persistentListOf(

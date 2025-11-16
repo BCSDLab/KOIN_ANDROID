@@ -4,6 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.store.DeleteReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreReviewUseCase
@@ -147,6 +150,11 @@ class ReviewViewModel @Inject constructor(
     }
 
     fun showDeleteDialog(reviewId: Int) = intent {
+        EventLogger.logClickEvent(
+            EventAction.BUSINESS,
+            AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE,
+            state.storeName
+        )
         reduce { state.copy(showDeleteDialog = ReviewState.DeleteDialogState.Show(reviewId)) }
     }
 

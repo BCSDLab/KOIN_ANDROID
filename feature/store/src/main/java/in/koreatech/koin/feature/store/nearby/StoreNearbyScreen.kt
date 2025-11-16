@@ -57,6 +57,11 @@ import androidx.compose.ui.zIndex
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventExtra
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.util.KoinCoilImageLoader
 import `in`.koreatech.koin.domain.model.store.OpenStatus
@@ -83,6 +88,7 @@ import `in`.koreatech.koin.feature.store.model.LocalStoreCategories
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -146,6 +152,14 @@ fun StoreNearbyScreen(
             title = stringResource(R.string.store_title_home_nearby),
             onNavigationIconClick = {
                 onBackPressed()
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_CATEGORIES_BACK,
+                    "",
+                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, uiState.storeCategories.firstOrNull { it.id == uiState.categoryId }?.name ?: ""),
+                    EventExtra(AnalyticsConstant.CURRENT_PAGE, "메인"),
+                    EventExtra(AnalyticsConstant.DURATION_TIME, "${EventUtils.getElapsedTime()}")
+                )
             },
             actions = {
                 if (!LocalDeliveryDeveloperOption.current) return@KoinStoreTopAppBar
@@ -189,13 +203,21 @@ fun StoreNearbyScreen(
             showOrderOptions = uiState.showOrderOptions,
             storeList = uiState.orderableShops,
             categoryId = uiState.categoryId,
+            initCategoryId = categoryId,
             storeCategories = uiState.storeCategories,
             selectedOrderOption = uiState.selectedOrderOption,
             selectedStoreFilter = uiState.selectedStoreFilter,
             selectedMinimumPriceOption = uiState.selectedMinimumPriceOption,
             showMinimumPriceOptions = uiState.showMinimumPriceOptions,
             navigateToDetail = navigateToDetail,
-            navigateToSearch = navigateToSearch,
+            navigateToSearch = {
+                navigateToSearch()
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_CATEGORIES_SEARCH,
+                    "search in ${uiState.storeCategories.firstOrNull { it.id == uiState.categoryId }?.name}"
+                )
+            },
             onCategoryChange = viewModel::onCategoryChange,
             onShowOrderOptionsChange = viewModel::onShowOrderOptionsChange,
             onSelectedOrderOptionChange = viewModel::onSelectedOrderOptionChange,
@@ -210,6 +232,7 @@ fun StoreNearbyScreen(
 private fun StoreNearbyScreen(
     isLoading: Boolean,
     categoryId: Int,
+    initCategoryId: Int,
     storeList: ImmutableList<LocalShop>,
     storeCategories: ImmutableList<LocalStoreCategories>,
     selectedOrderOption: OrderOption,
@@ -240,6 +263,21 @@ private fun StoreNearbyScreen(
 
     LaunchedEffect(selectedOrderOption) {
         shopListState.animateScrollToItem(0)
+    }
+
+    LaunchedEffect(storeCategories) {
+        if (storeCategories.isEmpty()) return@LaunchedEffect
+        snapshotFlow { categoryListState.isScrollInProgress }
+            .filter { it }
+            .collect {
+                storeCategories.firstOrNull { it.id == categoryId }.let {
+                    EventLogger.logScrollEvent(
+                        EventAction.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_CATEGORIES,
+                        "scroll in ${it?.name}"
+                    )
+                }
+            }
     }
 
     Box(
@@ -289,7 +327,22 @@ private fun StoreNearbyScreen(
                             imageLoader = KoinCoilImageLoader.getImageLoader(context)
                         ),
                         isSelected = index + 1 == categoryId,
-                        onClick = remember(key1 = category.id) { { onCategoryChange(index + 1) } }
+                        onClick = remember(key1 = category.id) {
+                            {
+                                onCategoryChange(index + 1)
+                                EventLogger.logClickEvent(
+                                    EventAction.BUSINESS,
+                                    AnalyticsConstant.Label.SHOP_CATEGORIES,
+                                    storeCategories.firstOrNull { it.id == initCategoryId }?.name ?: "",
+                                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, storeCategories.firstOrNull { it.id == categoryId }?.name ?: ""),
+                                    EventExtra(AnalyticsConstant.CURRENT_PAGE, storeCategories.firstOrNull { it.id == index + 1 }?.name ?: ""),
+                                    EventExtra(
+                                        AnalyticsConstant.DURATION_TIME,
+                                        EventUtils.getElapsedTimeAndReset().toString()
+                                    )
+                                )
+                            }
+                        }
                     )
                 }
             }
@@ -351,7 +404,18 @@ private fun StoreNearbyScreen(
                             } else {
                                 KoinStoreChipDefaults.koinStoreIconStyle()
                             },
-                            onClick = remember(key1 = it) { { onSelectedStoreFilterChange(it) } }
+                            onClick = remember(key1 = it) {
+                                {
+                                    onSelectedStoreFilterChange(it)
+                                    if (isSelected) {
+                                        EventLogger.logClickEvent(
+                                            EventAction.BUSINESS,
+                                            AnalyticsConstant.Label.SHOP_CAN,
+                                            "check_open_${storeCategories.firstOrNull { categoryId == it.id }?.name}"
+                                        )
+                                    }
+                                }
+                            }
                         )
                     }
                 }
@@ -411,7 +475,22 @@ private fun StoreNearbyScreen(
                             storeImageUrl = it.thumbnail,
                             isOpen = it.isOpen,
                             filterBadgeList = it.filterBadgeList,
-                            onClick = remember(key1 = it.shopId) { { navigateToDetail(it.shopId) } }
+                            onClick = remember(key1 = it.shopId) {
+                                {
+                                    navigateToDetail(it.shopId)
+                                    EventLogger.logClickEvent(
+                                        EventAction.BUSINESS,
+                                        AnalyticsConstant.Label.SHOP_CLICK,
+                                        it.name,
+                                        EventExtra(AnalyticsConstant.PREVIOUS_PAGE, storeCategories.firstOrNull { categoryId == initCategoryId }?.name ?: ""),
+                                        EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
+                                        EventExtra(
+                                            AnalyticsConstant.DURATION_TIME,
+                                            EventUtils.getElapsedTimeAndReset().toString()
+                                        )
+                                    )
+                                }
+                            }
                         )
                     }
                 }
@@ -428,6 +507,23 @@ private fun StoreNearbyScreen(
                     onSelect = { index ->
                         onSelectedOrderOptionChange(OrderOption.entries[index])
                         onShowOrderOptionsChange(false)
+                        EventLogger.logClickEvent(
+                            EventAction.BUSINESS,
+                            AnalyticsConstant.Label.SHOP_CAN,
+                            when (index) {
+                                0 -> {
+                                    "check_default_${storeCategories.firstOrNull { it.id == categoryId }?.name}"
+                                }
+
+                                1 -> {
+                                    "check_review_${storeCategories.firstOrNull { it.id == categoryId }?.name}"
+                                }
+
+                                else -> {
+                                    "check_star_${storeCategories.firstOrNull { it.id == categoryId }?.name}"
+                                }
+                            }
+                        )
                     },
                     onClose = {
                         onShowOrderOptionsChange(false)
@@ -459,6 +555,7 @@ private fun StoreNearbyScreenPreview() {
         StoreNearbyScreen(
             isLoading = false,
             showOrderOptions = false,
+            initCategoryId = 0,
             categoryId = 0,
             storeList = persistentListOf(
                 LocalShop(

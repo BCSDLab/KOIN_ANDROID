@@ -4,6 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventExtra
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
@@ -42,6 +46,16 @@ class ReviewAddViewModel @Inject constructor(
                     storeNavigationData = route.storeNavigationData,
                     storeId = route.storeNavigationData.shopId,
                     storeName = route.storeName
+                )
+            }
+        }
+    }
+
+    init {
+        intent {
+            reduce {
+                state.copy(
+                    startTime = System.currentTimeMillis()
                 )
             }
         }
@@ -127,6 +141,12 @@ class ReviewAddViewModel @Inject constructor(
             postSideEffect(ReviewAddSideEffect.ShowReviewWriteIsNotBlank)
             return@intent
         }
+        EventLogger.logClickEvent(
+            EventAction.BUSINESS,
+            AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_DONE,
+            state.storeName,
+            EventExtra(AnalyticsConstant.DURATION_TIME, ((System.currentTimeMillis() - state.startTime) / 1000.0).toString())
+        )
         reduce { state.copy(isLoading = true) }
         val review = Review(
             rating = state.rating,
