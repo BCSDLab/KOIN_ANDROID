@@ -104,10 +104,7 @@ fun KoinStoreGrid(
 
                 placeable.first.place(0, leftHeightStart)
                 placeable.second.place(
-                    x = constraints.maxWidth - minOf(
-                        rightMaxSize.width,
-                        constraints.maxWidth - leftMaxSize.width
-                    ) + with(density) { innerPadding.toPx() }.roundToInt(),
+                    x = leftMaxSize.width + with(density) { innerPadding.toPx() }.roundToInt(),
                     y = rightHeightStart
                 )
             }
