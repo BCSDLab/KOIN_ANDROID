@@ -13,6 +13,7 @@ object AnalyticsConstant {
         const val MAIN_SHOP_BENEFIT = "main_shop_benefit"
         const val SHOP_CATEGORIES = "shop_categories"
         const val SHOP_CATEGORIES_SEARCH = "shop_categories_search"
+        const val SHOP_CATEGORIES_SEARCH_CLICK = "shop_categories_search_click"
         const val SHOP_CATEGORIES_EVENT = "shop_categories_event"
         const val SHOP_CATEGORIES_BENEFIT = "shop_categories_benefit"
         const val SHOP_CATEGORIES_BACK = "shop_categories_back"
