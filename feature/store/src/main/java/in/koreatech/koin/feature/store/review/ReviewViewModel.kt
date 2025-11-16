@@ -131,7 +131,7 @@ class ReviewViewModel @Inject constructor(
         }
     }
 
-    private fun fetchReviews() = intent {
+    fun fetchReviews() = intent {
         reduce {
             state.copy(isLoading = true)
         }

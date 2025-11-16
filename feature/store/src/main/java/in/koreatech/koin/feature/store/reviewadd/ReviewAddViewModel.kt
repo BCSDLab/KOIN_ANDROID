@@ -123,6 +123,10 @@ class ReviewAddViewModel @Inject constructor(
     }
 
     fun submitReview() = intent {
+        if (state.reviewContent.isBlank()) {
+            postSideEffect(ReviewAddSideEffect.ShowReviewWriteIsNotBlank)
+            return@intent
+        }
         reduce { state.copy(isLoading = true) }
         val review = Review(
             rating = state.rating,
@@ -132,7 +136,7 @@ class ReviewAddViewModel @Inject constructor(
         )
         writeReviewUseCase(state.storeId, review).onSuccess {
             postSideEffect(ReviewAddSideEffect.ShowReviewWritten)
-            postSideEffect(ReviewAddSideEffect.NavigateToReview)
+            postSideEffect(ReviewAddSideEffect.ReviewUpdated)
         }.onFailure {
             postSideEffect(ReviewAddSideEffect.ShowOneReviewPerDay)
         }
