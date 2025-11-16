@@ -81,6 +81,8 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun ReviewScreen(
     viewModel: ReviewViewModel = hiltViewModel(),
+    isReviewUpdated: Boolean = false,
+    onResetReviewUpdated: () -> Unit = {},
     onReportClicked: (StoreNavigationData, Int) -> Unit = { _, _ -> },
     onAddReviewClicked: (StoreNavigationData, String) -> Unit = { _, _ -> },
     onEditReviewClicked: (StoreNavigationData, Int, String) -> Unit = { _, _, _ -> }
@@ -157,6 +159,13 @@ fun ReviewScreen(
             .collect {
                 viewModel.orderReviews(it)
             }
+    }
+
+    LaunchedEffect(isReviewUpdated) {
+        if (isReviewUpdated) {
+            viewModel.fetchReviews()
+            onResetReviewUpdated()
+        }
     }
 
     ReviewScreen(

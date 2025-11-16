@@ -240,10 +240,14 @@
     <string name="review_image_upload_failed">이미지 업로드 실패</string>
     <string name="review_written">리뷰가 작성되었어요</string>
     <string name="review_write_failed">리뷰 작성에 실패했습니다.</string>
+    <string name="review_content_is_not_blank">리뷰 내용은 한 글자 이상 입력해주세요.</string>
     <string name="review_modified">리뷰가 수정되었어요</string>
     <string name="review_modify_failed">리뷰 수정에 실패했습니다.</string>
     <string name="one_review_per_day">한 상점에 하루에 한번만 리뷰를 남길 수 있습니다.</string>
     <string name="review_report_success">리뷰가 신고되었어요</string>
+    <string name="review_edit_message">리뷰 수정을 그만하시겠어요?</string>
+    <string name="review_edit_continue">계속쓰기</string>
+    <string name="review_edit_stop">그만하기</string>
 
     <string name="review_sign_in_dialog_title">리뷰를 작성하기 위해\n로그인이 필요해요.</string>
     <string name="review_sign_in_dialog_message">리뷰작성은 회원만 사용 가능합니다.</string>

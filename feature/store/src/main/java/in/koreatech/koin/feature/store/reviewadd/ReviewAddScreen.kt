@@ -6,18 +6,19 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -47,7 +48,8 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun ReviewAddScreen(
     modifier: Modifier = Modifier,
     viewModel: ReviewAddViewModel = hiltViewModel(),
-    onNavigateBack: () -> Unit = {}
+    onNavigateBack: () -> Unit = {},
+    onReviewUpdated: () -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
     val context = LocalContext.current
@@ -96,7 +98,7 @@ fun ReviewAddScreen(
         onRemoveImage = viewModel::removeImageUri,
         onNavigationIconClick = onNavigateBack
     )
-    HandleSideEffects(viewModel, onNavigateBack)
+    HandleSideEffects(viewModel, onNavigateBack, onReviewUpdated)
 }
 
 @Composable
@@ -118,20 +120,62 @@ private fun ReviewAddScreen(
     onAddReview: () -> Unit = { },
     onNavigationIconClick: () -> Unit = {}
 ) {
-    Scaffold(
-        modifier = modifier,
-        topBar = {
-            KoinStoreTopAppBar(
-                title = stringResource(R.string.review_write),
-                onNavigationIconClick = onNavigationIconClick
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.systemBars)
+    ) {
+        KoinStoreTopAppBar(
+            title = stringResource(R.string.review_write),
+            onNavigationIconClick = onNavigationIconClick
+        )
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = RebrandKoinTheme.colors.neutral50)
+                .imePadding()
+                .verticalScroll(rememberScrollState())
+        ) {
+            ReviewHeaderSection(
+                storeName = shopName,
+                rating = rating,
+                modifier = Modifier.padding(start = 24.dp, top = 24.dp, end = 50.dp),
+                onRatingChange = onRatingChange
             )
-        },
-        bottomBar = {
+
+            HorizontalDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 24.dp),
+                thickness = 1.dp,
+                color = RebrandKoinTheme.colors.neutral300
+            )
+
+            ReviewImageSection(
+                imageUris = imageUris,
+                modifier = Modifier.padding(start = 24.dp, bottom = 24.dp),
+                onAddImages = onAddImages,
+                onRemoveImage = onRemoveImage
+            )
+
+            ReviewTextFieldSection(
+                modifier = Modifier.padding(horizontal = 24.dp),
+                content = reviewContent,
+                menuTag = menuTag,
+                menuTags = menuTags,
+                onAddMenuTag = onAddMenuTag,
+                onRemoveMenuTag = onRemoveMenuTag,
+                onContentChange = onReviewContentChange,
+                onMenuTagChange = onMenuTagChange
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .windowInsetsPadding(WindowInsets.navigationBars)
-                    .padding(horizontal = 24.dp)
+                    .padding(horizontal = 24.dp, vertical = 8.dp)
                     .shadow(
                         elevation = 1.dp,
                         shape = RebrandKoinTheme.shapes.small
@@ -152,63 +196,22 @@ private fun ReviewAddScreen(
                 )
             }
         }
-    ) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .background(color = RebrandKoinTheme.colors.neutral50)
-                .verticalScroll(rememberScrollState())
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                ReviewHeaderSection(
-                    storeName = shopName,
-                    rating = rating,
-                    modifier = Modifier.padding(start = 24.dp, top = 24.dp, end = 50.dp),
-                    onRatingChange = onRatingChange
-                )
-
-                HorizontalDivider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 24.dp),
-                    thickness = 1.dp,
-                    color = RebrandKoinTheme.colors.neutral300
-                )
-
-                ReviewImageSection(
-                    imageUris = imageUris,
-                    modifier = Modifier.padding(start = 24.dp, bottom = 24.dp),
-                    onAddImages = onAddImages,
-                    onRemoveImage = onRemoveImage
-                )
-
-                ReviewTextFieldSection(
-                    modifier = Modifier.padding(horizontal = 24.dp),
-                    content = reviewContent,
-                    menuTag = menuTag,
-                    menuTags = menuTags,
-                    onAddMenuTag = onAddMenuTag,
-                    onRemoveMenuTag = onRemoveMenuTag,
-                    onContentChange = onReviewContentChange,
-                    onMenuTagChange = onMenuTagChange
-                )
-            }
-        }
     }
 }
 
 @Composable
 private fun HandleSideEffects(
     viewModel: ReviewAddViewModel,
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit,
+    onReviewUpdated: () -> Unit
 ) {
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             is ReviewAddSideEffect.NavigateToReview -> onNavigateBack()
+            is ReviewAddSideEffect.ReviewUpdated -> {
+                onReviewUpdated()
+                onNavigateBack()
+            }
             is ReviewAddSideEffect.ShowImageUploadFailed -> {
                 ToastUtil.getInstance().makeShort(R.string.review_image_upload_failed)
             }
@@ -219,6 +222,10 @@ private fun HandleSideEffects(
 
             is ReviewAddSideEffect.ShowReviewWriteFailed -> {
                 ToastUtil.getInstance().makeShort(R.string.review_write_failed)
+            }
+
+            is ReviewAddSideEffect.ShowReviewWriteIsNotBlank -> {
+                ToastUtil.getInstance().makeShort(R.string.review_content_is_not_blank)
             }
 
             is ReviewAddSideEffect.ShowOneReviewPerDay -> {

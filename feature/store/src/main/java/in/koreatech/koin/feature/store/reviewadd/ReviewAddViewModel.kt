@@ -137,6 +137,10 @@ class ReviewAddViewModel @Inject constructor(
     }
 
     fun submitReview() = intent {
+        if (state.reviewContent.isBlank()) {
+            postSideEffect(ReviewAddSideEffect.ShowReviewWriteIsNotBlank)
+            return@intent
+        }
         EventLogger.logClickEvent(
             EventAction.BUSINESS,
             AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_DONE,
@@ -152,7 +156,7 @@ class ReviewAddViewModel @Inject constructor(
         )
         writeReviewUseCase(state.storeId, review).onSuccess {
             postSideEffect(ReviewAddSideEffect.ShowReviewWritten)
-            postSideEffect(ReviewAddSideEffect.NavigateToReview)
+            postSideEffect(ReviewAddSideEffect.ReviewUpdated)
         }.onFailure {
             postSideEffect(ReviewAddSideEffect.ShowOneReviewPerDay)
         }
