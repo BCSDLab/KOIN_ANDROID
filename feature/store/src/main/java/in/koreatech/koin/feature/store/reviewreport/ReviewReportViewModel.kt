@@ -95,18 +95,5 @@ class ReviewReportViewModel @Inject constructor(
         }
     }
 
-    private fun ImmutableList<ReportReason>.appendLoggingString(otherReason: String): String {
-        val log = StringBuilder()
-        for (reason in this) {
-            if (reason == ReportReason.OTHER) {
-                log.append(otherReason)
-                log.append(" ")
-            } else {
-                log.append(reason.title)
-                log.append(" ")
-            }
-        }
-
-        return log.toString()
-    }
+    private fun ImmutableList<ReportReason>.appendLoggingString(otherReason: String) = joinToString(separator = " ") { reason -> if (reason == ReportReason.OTHER) otherReason else reason.title }
 }
