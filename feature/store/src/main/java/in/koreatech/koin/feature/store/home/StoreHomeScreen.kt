@@ -118,6 +118,10 @@ fun StoreHomeScreen(
     }
 
     LaunchedEffect(Unit) {
+        EventLogger.logScreenName("StoreActivity")
+    }
+
+    LaunchedEffect(Unit) {
         if (uiState.categoryId == -1) {
             viewModel.onCategoryChange(categoryId)
         }

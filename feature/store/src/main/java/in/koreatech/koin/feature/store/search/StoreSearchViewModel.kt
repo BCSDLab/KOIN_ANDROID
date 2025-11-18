@@ -4,10 +4,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.store.GetOrderableShopSearchRelatedUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import `in`.koreatech.koin.domain.usecase.store.search.GetRelatedStoreV2UseCase
 import `in`.koreatech.koin.feature.store.model.toLocalShopSearchResult
+import `in`.koreatech.koin.feature.store.model.toLocalStoreCategories
 import `in`.koreatech.koin.feature.store.navigation.IS_ORDERABLE_SHOP
 import javax.inject.Inject
+import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -19,7 +22,8 @@ import timber.log.Timber
 class StoreSearchViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getOrderableShopSearchRelatedUseCase: GetOrderableShopSearchRelatedUseCase,
-    private val getRelatedStoreV2UseCase: GetRelatedStoreV2UseCase
+    private val getRelatedStoreV2UseCase: GetRelatedStoreV2UseCase,
+    private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase
 ) : ViewModel(), ContainerHost<StoreSearchState, StoreSearchSideEffect> {
     override val container = container<StoreSearchState, StoreSearchSideEffect>(StoreSearchState()) {
         val isOrderableShop = savedStateHandle.get<Boolean>(IS_ORDERABLE_SHOP) ?: true
@@ -29,6 +33,18 @@ class StoreSearchViewModel @Inject constructor(
                 state.copy(
                     isOrderableShop = isOrderableShop
                 )
+            }
+        }
+    }
+
+    init {
+        intent {
+            getStoreCategoriesUseCase().let {
+                reduce {
+                    state.copy(
+                        storeCategories = it.map { it.toLocalStoreCategories() }.toImmutableList()
+                    )
+                }
             }
         }
     }

@@ -153,6 +153,10 @@ fun StoreDetailScreen(
         )
     }
 
+    LaunchedEffect(Unit) {
+        EventLogger.logScreenName("StoreDetailActivity")
+    }
+
     LaunchedEffect(isCartModified) {
         snapshotFlow { isCartModified }
             .distinctUntilChanged()
@@ -250,6 +254,15 @@ fun StoreDetailScreen(
                 Intent(Intent.ACTION_CALL, "tel:$it".toUri()).apply {
                     context.startActivity(this)
                 }
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_CALL,
+                    uiState.store.name,
+                    EventExtra(
+                        AnalyticsConstant.DURATION_TIME,
+                        "${EventUtils.getElapsedTimeAndReset()}"
+                    )
+                )
                 viewModel.setCallDialogState(false)
             },
             onDismissRequest = {
