@@ -9,6 +9,7 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopMenuUseCase
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopOriginInfoUseCase
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopSummaryUseCase
+import `in`.koreatech.koin.domain.usecase.setting.GetDeveloperSettingUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartSummaryUseCase
@@ -55,7 +56,8 @@ class StoreDetailViewModel @Inject constructor(
     private val getStoreReviewUseCase: GetStoreReviewUseCase,
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
     private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase,
-    private val getUserStatusUseCase: GetUserStatusUseCase
+    private val getUserStatusUseCase: GetUserStatusUseCase,
+    private val getDeveloperSettingUseCase: GetDeveloperSettingUseCase
 ) : ViewModel(), ContainerHost<StoreDetailState, StoreDetailSideEffect> {
     override val container =
         container<StoreDetailState, StoreDetailSideEffect>(StoreDetailState()) {
@@ -82,6 +84,14 @@ class StoreDetailViewModel @Inject constructor(
             fetchReview(storeId)
             checkToken()
         }
+
+    init {
+        intent {
+            getDeveloperSettingUseCase(DELIVERY_SPRINT).let {
+                reduce { state.copy(deliverySprintEnabled = it) }
+            }
+        }
+    }
 
     private fun getUserType() = intent {
         getUserStatusUseCase().collect {
@@ -261,6 +271,7 @@ class StoreDetailViewModel @Inject constructor(
     }
 
     fun getCartItemsCount() = intent {
+        if (!state.deliverySprintEnabled) return@intent
         reduce {
             state.copy(isLoading = true)
         }
@@ -313,6 +324,7 @@ class StoreDetailViewModel @Inject constructor(
     }
 
     fun getCart(type: CartType): Job = intent {
+        if (!state.deliverySprintEnabled) return@intent
         reduce { state.copy(isLoading = true) }
         getCartItemUseCase(type.name).onSuccess {
             reduce { state.copy(cart = it, cartType = type, isLoading = false) }
@@ -327,6 +339,7 @@ class StoreDetailViewModel @Inject constructor(
     }
 
     fun getCartValidate() = intent {
+        if (!state.deliverySprintEnabled) return@intent
         reduce { state.copy(isLoading = true) }
         validateCartItemsUseCase(state.cartType.name).onSuccess {
             reduce {
@@ -352,6 +365,7 @@ class StoreDetailViewModel @Inject constructor(
     }
 
     private fun getCartSummary() = intent {
+        if (!state.deliverySprintEnabled) return@intent
         if (state.cart.orderableShopId == null) return@intent
         getCartSummaryUseCase(state.cart.orderableShopId!!).onSuccess {
             reduce {
@@ -367,5 +381,9 @@ class StoreDetailViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    companion object {
+        const val DELIVERY_SPRINT = "delivery_sprint"
     }
 }

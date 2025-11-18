@@ -157,6 +157,10 @@ fun StoreDetailScreen(
         EventLogger.logScreenName("StoreDetailActivity")
     }
 
+    LaunchedEffect(Unit) {
+        EventUtils.getElapsedTimeAndReset() // Reset elapsed time
+    }
+
     LaunchedEffect(isCartModified) {
         snapshotFlow { isCartModified }
             .distinctUntilChanged()
@@ -258,10 +262,7 @@ fun StoreDetailScreen(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_CALL,
                     uiState.store.name,
-                    EventExtra(
-                        AnalyticsConstant.DURATION_TIME,
-                        "${EventUtils.getElapsedTimeAndReset()}"
-                    )
+                    EventExtra(AnalyticsConstant.DURATION_TIME, "${EventUtils.getElapsedTimeAndReset()}")
                 )
                 viewModel.setCallDialogState(false)
             },
