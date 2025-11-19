@@ -69,10 +69,6 @@ fun StoreSearchScreen(
             }
     }
 
-    LaunchedEffect(Unit) {
-        EventLogger.logScreenName("StoreSearchScreen")
-    }
-
     Column(
         modifier = modifier
             .fillMaxSize()

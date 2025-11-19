@@ -154,10 +154,6 @@ fun ReviewScreen(
     }
 
     LaunchedEffect(Unit) {
-        EventLogger.logScreenName("ReviewScreen")
-    }
-
-    LaunchedEffect(Unit) {
         snapshotFlow { uiState.orderOption.reviewOrderOption }
             .distinctUntilChanged()
             .collect {

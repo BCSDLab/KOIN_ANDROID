@@ -55,10 +55,6 @@ fun ReviewReportScreen(
         }
     }
 
-    LaunchedEffect(Unit) {
-        EventLogger.logScreenName("ReviewReportScreen")
-    }
-
     ReviewReportScreen(
         modifier = modifier,
         selectedReasons = uiState.selectedReasons,

@@ -127,6 +127,8 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
         window.blueStatusBar()
 
+        EventLogger.logScreenName("HomeActivity") // DA requirement
+
         fixTabRowSize()
         initView()
         initViewModel()

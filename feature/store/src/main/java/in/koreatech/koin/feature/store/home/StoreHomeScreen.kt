@@ -118,7 +118,7 @@ fun StoreHomeScreen(
     }
 
     LaunchedEffect(Unit) {
-        EventLogger.logScreenName("StoreActivity")
+        EventLogger.logScreenName("ShopActivity") // DA requirement
     }
 
     LaunchedEffect(Unit) {

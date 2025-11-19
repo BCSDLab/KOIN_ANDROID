@@ -76,10 +76,6 @@ fun ShopOriginInfoScreen(
         }
     }
 
-    LaunchedEffect(Unit) {
-        EventLogger.logScreenName("ShopOriginInfoScreen")
-    }
-
     if (uiState.isLoading) {
         Box(
             modifier = Modifier

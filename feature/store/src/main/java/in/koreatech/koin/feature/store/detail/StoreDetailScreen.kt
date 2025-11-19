@@ -154,7 +154,7 @@ fun StoreDetailScreen(
     }
 
     LaunchedEffect(Unit) {
-        EventLogger.logScreenName("StoreDetailActivity")
+        EventLogger.logScreenName("ShopDetailActivity") // DA requirement
     }
 
     LaunchedEffect(Unit) {

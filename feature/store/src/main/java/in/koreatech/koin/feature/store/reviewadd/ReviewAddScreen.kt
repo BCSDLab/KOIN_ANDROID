@@ -82,10 +82,6 @@ fun ReviewAddScreen(
         return
     }
 
-    LaunchedEffect(Unit) {
-        EventLogger.logScreenName("ReviewAddScreen")
-    }
-
     ReviewAddScreen(
         shopName = uiState.storeName,
         rating = uiState.rating,
