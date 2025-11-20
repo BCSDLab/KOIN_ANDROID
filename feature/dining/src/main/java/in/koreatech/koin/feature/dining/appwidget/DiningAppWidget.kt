@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.ui.dining.appwidget
+package `in`.koreatech.koin.feature.dining.appwidget
 
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
@@ -12,12 +12,12 @@ import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.koin.R
-import `in`.koreatech.koin.constant.DINING
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
+import `in`.koreatech.koin.feature.dining.R
+import `in`.koreatech.koin.feature.dining.constants.DINING
 import java.util.Date
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
