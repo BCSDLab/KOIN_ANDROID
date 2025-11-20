@@ -154,6 +154,10 @@ fun StoreDetailScreen(
     }
 
     LaunchedEffect(Unit) {
+        EventLogger.logScreenName("ShopDetailActivity") // DA requirement
+    }
+
+    LaunchedEffect(Unit) {
         EventUtils.getElapsedTimeAndReset() // Reset elapsed time
     }
 

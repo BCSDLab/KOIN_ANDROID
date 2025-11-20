@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 data class LocalShopSearchResult(
     val shopId: Int,
     val keyword: String,
+    val shopName: String,
     val isShop: Boolean
 )
 
@@ -14,6 +15,7 @@ fun OrderableShopSearchRelated.OrderableShopSearchShopNameResult.toLocalShopSear
     LocalShopSearchResult(
         shopId = orderableShopId,
         keyword = orderableShopName,
+        shopName = orderableShopName,
         isShop = true
     )
 
@@ -21,5 +23,6 @@ fun OrderableShopSearchRelated.OrderableShopSearchMenuNameResult.toLocalShopSear
     LocalShopSearchResult(
         shopId = orderableShopId,
         keyword = "$orderableShopName | $menuName",
+        shopName = orderableShopName,
         isShop = false
     )

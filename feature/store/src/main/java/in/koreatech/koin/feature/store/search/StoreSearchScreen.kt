@@ -147,7 +147,7 @@ private fun StoreSearchScreen(
                             EventLogger.logClickEvent(
                                 EventAction.BUSINESS,
                                 AnalyticsConstant.Label.SHOP_CATEGORIES_SEARCH_CLICK,
-                                it.keyword
+                                it.shopName
                             )
                         }
                         .padding(vertical = 12.dp, horizontal = 8.dp),

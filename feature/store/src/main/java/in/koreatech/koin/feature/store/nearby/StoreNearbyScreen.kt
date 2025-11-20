@@ -88,6 +88,7 @@ import `in`.koreatech.koin.feature.store.model.LocalStoreCategories
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -111,6 +112,10 @@ fun StoreNearbyScreen(
     }
 
     LaunchedEffect(Unit) {
+        EventLogger.logScreenName("ShopActivity") // DA requirement
+    }
+
+    LaunchedEffect(Unit) {
         if (uiState.categoryId == -1) {
             viewModel.onCategoryChange(categoryId)
         }
@@ -129,6 +134,18 @@ fun StoreNearbyScreen(
 
     LaunchedEffect(Unit) {
         viewModel.getUserType()
+    }
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { uiState.selectedStoreFilter }.distinctUntilChanged().collect {
+            if (it.contains(StoreFilter.IS_OPEN)) {
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_CAN,
+                    "check_open_${uiState.storeCategories.firstOrNull { uiState.categoryId == it.id }?.name}"
+                )
+            }
+        }
     }
 
     if (uiState.showSignInDialog) {
@@ -407,13 +424,6 @@ private fun StoreNearbyScreen(
                             onClick = remember(key1 = it) {
                                 {
                                     onSelectedStoreFilterChange(it)
-                                    if (isSelected) {
-                                        EventLogger.logClickEvent(
-                                            EventAction.BUSINESS,
-                                            AnalyticsConstant.Label.SHOP_CAN,
-                                            "check_open_${storeCategories.firstOrNull { categoryId == it.id }?.name}"
-                                        )
-                                    }
                                 }
                             }
                         )
