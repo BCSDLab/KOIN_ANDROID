@@ -26,7 +26,6 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -331,28 +330,28 @@ private fun StoreNearbyScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 contentPadding = PaddingValues(horizontal = 24.dp)
             ) {
-                itemsIndexed(
+                items(
                     storeCategories,
-                    key = { index, category ->
+                    key = { category ->
                         category.id
                     }
-                ) { index, category ->
+                ) { category ->
                     KoinStoreCategoryItem(
                         categoryName = category.name,
                         categoryIcon = rememberAsyncImagePainter(
                             model = category.imageUrl,
                             imageLoader = KoinCoilImageLoader.getImageLoader(context)
                         ),
-                        isSelected = index + 1 == categoryId,
+                        isSelected = category.id == categoryId,
                         onClick = remember(key1 = category.id) {
                             {
-                                onCategoryChange(index + 1)
+                                onCategoryChange(category.id)
                                 EventLogger.logClickEvent(
                                     EventAction.BUSINESS,
                                     AnalyticsConstant.Label.SHOP_CATEGORIES,
                                     storeCategories.firstOrNull { it.id == initCategoryId }?.name ?: "",
                                     EventExtra(AnalyticsConstant.PREVIOUS_PAGE, storeCategories.firstOrNull { it.id == categoryId }?.name ?: ""),
-                                    EventExtra(AnalyticsConstant.CURRENT_PAGE, storeCategories.firstOrNull { it.id == index + 1 }?.name ?: ""),
+                                    EventExtra(AnalyticsConstant.CURRENT_PAGE, storeCategories.firstOrNull { it.id == category.id }?.name ?: ""),
                                     EventExtra(
                                         AnalyticsConstant.DURATION_TIME,
                                         EventUtils.getElapsedTimeAndReset().toString()
