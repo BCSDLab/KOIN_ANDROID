@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.Intent
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.utils.buildIntent
+import `in`.koreatech.koin.feature.store.StoreActivity
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.notification.NotificationActivity
 import `in`.koreatech.koin.ui.splash.SplashActivity
-import `in`.koreatech.koin.feature.store.StoreActivity
 import javax.inject.Inject
 import kotlin.jvm.java
 
