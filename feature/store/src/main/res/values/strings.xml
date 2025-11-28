@@ -29,17 +29,24 @@
     <!--상점 상세-->
     <string name="minimum_order">최소주문</string>
     <string name="delivery_fee">배달금액</string>
-    <string name="review_count"> · 리뷰 %1$d개</string>
+    <string name="review_count">%1$.1f · 리뷰 %2$d개</string>
     <string name="price_with_won">%1$,d원</string>
+    <string name="call_to_store">가게에 전화하기</string>
+    <string name="call_to_store_dialog_ok">%s에 통화연결</string>
+    <string name="call_to_store_dialog_cancel">취소</string>
+    <string name="call_permission_denied_message">통화 권한을 허용해 주세요.</string>
 
     <string name="option_price">%1$s : %2$,d원\n</string>
-    <string name="delivery_not_available">코인 주문이\n불가능한 매장이에요.</string>
+    <string name="delivery_not_available">배달 주문이\n불가능한 매장이에요.</string>
     <string name="store_detail_notice_empty">등록된 공지가\n없습니다.</string>
     <string name="store_order_can_delivery">배달 가능</string>
     <string name="store_order_cant_delivery">배달 불가</string>
+    <string name="delivery_fee_won">%1$,d원</string>
+    <string name="delivery_fee_won_with_min_max">%1$,d - %2$,d원</string>
 
     <!--가게 정보 및 원산지-->
     <string name="store_info_and_origin">가게정보·원산지</string>
+    <string name="store_info_detail">가게정보</string>
     <string name="store_info">가게 소개</string>
     <string name="store_notice">가게 알림</string>
     <string name="address">주소</string>
@@ -82,6 +89,9 @@
     <string name="store_quantity_minus">감소</string>
     <string name="store_quantity_plus">증가</string>
 
+    <string name="edit">수정</string>
+    <string name="delete">삭제</string>
+
     <string name="filter_badge_pickup_available">픽업가능</string>
     <string name="filter_badge_delivery_available">배달비 무료</string>
     <string name="filter_badge_service">서비스 증정</string>
@@ -94,6 +104,7 @@
     <string name="store_title_home_nearby">주변상점</string>
     <string name="store_title_home_history">주문 내역</string>
     <string name="store_title_home_search">검색</string>
+    <string name="store_title_review">리뷰</string>
 
     <string name="store_order_option_none">기본순</string>
     <string name="store_order_option_review_count_desc">리뷰순</string>
@@ -193,4 +204,51 @@
     <string name="view_order_details">주문 상세 보기</string>
     <string name="order_history">주문 내역</string>
     <string name="order_ongoing_topbar">진행 중</string>
+
+    <string name="review_rating">%d점</string>
+    <string name="review_write">리뷰 작성하기</string>
+    <string name="review_write_label">작성하기</string>
+    <string name="review_edit">리뷰 수정하기</string>
+    <string name="review_edit_label">수정하기</string>
+    <string name="review_delete_message">삭제한 리뷰는 되돌릴 수 없습니다.\n삭제 하시겠습니까?</string>
+    <string name="review_delete_confirm">삭제하기</string>
+    <string name="review_delete_cancel">취소하기</string>
+    <string name="review_deleted">리뷰가 삭제되었어요</string>
+
+    <string name="review_order_option_recent">최신순</string>
+    <string name="review_order_option_least_recent">오래된순</string>
+    <string name="review_order_option_higher_rating">별점높은순</string>
+    <string name="review_order_option_lower_rating">별점낮은순</string>
+    <string name="review_mine">내가 작성한 리뷰</string>
+    <string name="review_image_page_indicator">%1$d/%2$d</string>
+    <string name="review_empty_title">작성된 리뷰가 없어요</string>
+    <string name="review_empty_summary">첫 번째 리뷰를 작성해보세요!</string>
+    <string name="review_report">신고하기</string>
+    <string name="review_reported">신고에 의해 숨김 처리 되었습니다.</string>
+    <string name="review_report_header_title">신고 이유를 선택해주세요.</string>
+    <string name="review_report_header_description">접수된 신고는 관계자 확인 하에 블라인드 처리됩니다.\n블라인드 처리까지 시간이 소요될 수 있습니다. </string>
+    <string name="review_report_other_reason">신고 사유를 입력해주세요.</string>
+    <string name="review_submit_notice">리뷰를 남겨주시면 사장님과 다른 분들에게 도움이 됩니다.\n또한, 악의적인 리뷰는 관리자에 의해 삭제될 수 있습니다.</string>
+    <string name="photo">사진</string>
+    <string name="review_image_upload_description">리뷰와 관련된 사진을 업로드해주세요.</string>
+    <string name="content">내용</string>
+    <string name="review_placeholder">리뷰를 작성해주세요.</string>
+    <string name="order_menu_label">주문 메뉴</string>
+    <string name="menu_tag_description">입력한 메뉴가 태그로 추가돼요.</string>
+    <string name="menu_tag_placeholder">메뉴명을 입력해주세요.</string>
+    <string name="progress_count">%1$d/%2$d</string>
+    <string name="review_image_upload_failed">이미지 업로드 실패</string>
+    <string name="review_written">리뷰가 작성되었어요</string>
+    <string name="review_write_failed">리뷰 작성에 실패했습니다.</string>
+    <string name="review_content_is_not_blank">리뷰 내용은 한 글자 이상 입력해주세요.</string>
+    <string name="review_modified">리뷰가 수정되었어요</string>
+    <string name="review_modify_failed">리뷰 수정에 실패했습니다.</string>
+    <string name="one_review_per_day">한 상점에 하루에 한번만 리뷰를 남길 수 있습니다.</string>
+    <string name="review_report_success">리뷰가 신고되었어요</string>
+    <string name="review_edit_message">리뷰 수정을 그만하시겠어요?</string>
+    <string name="review_edit_continue">계속쓰기</string>
+    <string name="review_edit_stop">그만하기</string>
+
+    <string name="review_sign_in_dialog_title">리뷰를 작성하기 위해\n로그인이 필요해요.</string>
+    <string name="review_sign_in_dialog_message">리뷰작성은 회원만 사용 가능합니다.</string>
 </resources>

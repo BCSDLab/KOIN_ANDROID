@@ -11,6 +11,7 @@ import `in`.koreatech.koin.data.mapper.toCategory
 import `in`.koreatech.koin.data.mapper.toOrderHistoryRelated
 import `in`.koreatech.koin.data.mapper.toOrderInProgress
 import `in`.koreatech.koin.data.mapper.toOrderableShopSearchRelated
+import `in`.koreatech.koin.data.mapper.toReviewDetail
 import `in`.koreatech.koin.data.mapper.toShop
 import `in`.koreatech.koin.data.mapper.toShopDeliveryAvailable
 import `in`.koreatech.koin.data.mapper.toShopDetail
@@ -27,6 +28,7 @@ import `in`.koreatech.koin.data.mapper.toStoreEvent
 import `in`.koreatech.koin.data.mapper.toStoreMenu
 import `in`.koreatech.koin.data.mapper.toStoreReview
 import `in`.koreatech.koin.data.mapper.toStoreWithMenu
+import `in`.koreatech.koin.data.mapper.toStoreWithMenuV2
 import `in`.koreatech.koin.data.request.user.ReviewRequest
 import `in`.koreatech.koin.data.source.local.StoreLocalDataSource
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
@@ -46,6 +48,7 @@ import `in`.koreatech.koin.domain.model.store.OrderHistoryRelated
 import `in`.koreatech.koin.domain.model.store.OrderInProgress
 import `in`.koreatech.koin.domain.model.store.OrderableShopSearchRelated
 import `in`.koreatech.koin.domain.model.store.Review
+import `in`.koreatech.koin.domain.model.store.ReviewDetail
 import `in`.koreatech.koin.domain.model.store.Shop
 import `in`.koreatech.koin.domain.model.store.ShopDeliveryAvailable
 import `in`.koreatech.koin.domain.model.store.ShopDetail
@@ -64,6 +67,7 @@ import `in`.koreatech.koin.domain.model.store.StoreReport
 import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
+import `in`.koreatech.koin.domain.model.store.StoreWithMenuV2
 import `in`.koreatech.koin.domain.repository.StoreRepository
 import javax.inject.Inject
 import retrofit2.HttpException
@@ -121,6 +125,10 @@ class StoreRepositoryImpl @Inject constructor(
         return storeRemoteDataSource.getStoreMenu(storeId).toStoreWithMenu()
     }
 
+    override suspend fun getStoreWithMenuV2(storeId: Int): StoreWithMenuV2 {
+        return storeRemoteDataSource.getStoreMenuV2(storeId).toStoreWithMenuV2()
+    }
+
     override suspend fun getStoreMenuCategory(storeId: Int): List<StoreMenuCategory> {
         return storeRemoteDataSource.getStoreMenuCategory(storeId).toCategory()
     }
@@ -159,8 +167,13 @@ class StoreRepositoryImpl @Inject constructor(
     override suspend fun deleteReview(
         reviewId: Int,
         shopId: Int
-    ) {
-        storeRemoteDataSource.deleteReview(reviewId, shopId)
+    ): Result<Unit> {
+        return try {
+            storeRemoteDataSource.deleteReview(reviewId, shopId)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     override suspend fun modifyReview(
@@ -178,6 +191,10 @@ class StoreRepositoryImpl @Inject constructor(
                 menuNames = content.menuNames
             )
         )
+    }
+
+    override suspend fun searchReview(reviewId: Int, shopId: Int): ReviewDetail {
+        return storeRemoteDataSource.searchReview(reviewId, shopId).toReviewDetail()
     }
 
     override suspend fun reportReview(
@@ -213,6 +230,22 @@ class StoreRepositoryImpl @Inject constructor(
 
     override suspend fun getShopSearchRelatedList(query: String): ShopSearchRelatedList {
         return storeRemoteDataSource.getShopSearchRelated(query).toShopSearchRelatedList()
+    }
+
+    override suspend fun getShopSearchRelatedListV2(keyword: String): Result<OrderableShopSearchRelated> {
+        return runCatching {
+            storeRemoteDataSource.getShopSearchRelatedV2(keyword).toOrderableShopSearchRelated()
+        }.onFailure { e ->
+            return Result.failure(
+                when (e) {
+                    is HttpException -> {
+                        e.getErrorResponse().toKoinUnknownErrorException()
+                    }
+
+                    else -> e
+                }
+            )
+        }
     }
 
     override suspend fun getOrderableShops(

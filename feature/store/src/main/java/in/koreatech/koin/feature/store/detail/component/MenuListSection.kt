@@ -20,6 +20,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,10 +40,12 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.model.MenuModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 fun LazyListScope.menuListSection(
     category: String,
-    menus: List<MenuModel>,
+    menus: ImmutableList<MenuModel>,
     modifier: Modifier = Modifier,
     onMenuClick: (menuId: Int) -> Unit = { }
 ) {
@@ -70,17 +74,15 @@ fun LazyListScope.menuListSection(
             ) {
                 Column {
                     menus.forEachIndexed { index, menu ->
-                        MenuItem(
-                            modifier = Modifier
-                                .clickable { onMenuClick(menu.id) }
-                                .padding(16.dp),
-                            menu = menu
-                        )
-                        if (index != menus.lastIndex) {
-                            Divider(
-                                color = KoinTheme.colors.neutral300,
-                                thickness = 2.dp
+                        key(menu) {
+                            MenuItem(
+                                modifier = Modifier.padding(16.dp),
+                                menu = menu,
+                                onClick = onMenuClick
                             )
+                            if (index != menus.lastIndex) {
+                                Divider(color = RebrandKoinTheme.colors.neutral300)
+                            }
                         }
                     }
                 }
@@ -92,10 +94,15 @@ fun LazyListScope.menuListSection(
 @Composable
 fun MenuItem(
     menu: MenuModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: (id: Int) -> Unit = {}
 ) {
+    val rememberedOnClick = remember(menu.id) { { onClick(menu.id) } }
+
     Row(
-        modifier = modifier,
+        modifier = Modifier
+            .clickable(onClick = rememberedOnClick)
+            .then(modifier),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
@@ -115,33 +122,36 @@ fun MenuItem(
             )
         }
         Spacer(modifier = Modifier.width(16.dp))
-        Box(
-            modifier = Modifier
-                .align(Alignment.Bottom)
-                .size(88.dp)
-                .clip(KoinTheme.shapes.small)
-        ) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(menu.thumbnailImage)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = null,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier.matchParentSize()
-            )
 
-            if (menu.isSoldOut) {
-                Image(
-                    imageVector = ImageVector.vectorResource(R.drawable.ic_sold_out),
-                    contentDescription = "",
+        menu.thumbnailImage?.let {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.Bottom)
+                    .size(88.dp)
+                    .clip(KoinTheme.shapes.small)
+            ) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(it)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = null,
                     contentScale = ContentScale.Fit,
-                    modifier = Modifier
-                        .matchParentSize()
-                        .background(RebrandKoinTheme.colors.neutral800.copy(alpha = 0.6f))
-                        .padding(14.dp)
-
+                    modifier = Modifier.matchParentSize()
                 )
+
+                if (menu.isSoldOut) {
+                    Image(
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_sold_out),
+                        contentDescription = "",
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .matchParentSize()
+                            .background(RebrandKoinTheme.colors.neutral800.copy(alpha = 0.6f))
+                            .padding(14.dp)
+
+                    )
+                }
             }
         }
     }
@@ -183,14 +193,14 @@ private fun MenuListSectionPreview() {
             menuListSection(
                 modifier = Modifier.fillMaxWidth(),
                 category = "추천메뉴",
-                menus = listOf(
+                menus = persistentListOf(
                     MenuModel(
                         id = 1,
                         name = "아메리카노",
                         description = null,
                         thumbnailImage = null,
                         isSoldOut = false,
-                        prices = listOf(),
+                        prices = persistentListOf(),
                         isSingle = true
                     ),
                     MenuModel(
@@ -199,7 +209,7 @@ private fun MenuListSectionPreview() {
                         description = "부드러운 ��유와 커피의 조화.",
                         thumbnailImage = "https://example.com/cafelatte.jpg",
                         isSoldOut = false,
-                        prices = listOf(),
+                        prices = persistentListOf(),
                         isSingle = true
                     )
                 )

@@ -13,6 +13,7 @@ import `in`.koreatech.koin.domain.model.store.OrderHistoryRelated
 import `in`.koreatech.koin.domain.model.store.OrderInProgress
 import `in`.koreatech.koin.domain.model.store.OrderableShopSearchRelated
 import `in`.koreatech.koin.domain.model.store.Review
+import `in`.koreatech.koin.domain.model.store.ReviewDetail
 import `in`.koreatech.koin.domain.model.store.Shop
 import `in`.koreatech.koin.domain.model.store.ShopDeliveryAvailable
 import `in`.koreatech.koin.domain.model.store.ShopDetail
@@ -31,6 +32,7 @@ import `in`.koreatech.koin.domain.model.store.StoreReport
 import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
+import `in`.koreatech.koin.domain.model.store.StoreWithMenuV2
 
 interface StoreRepository {
     suspend fun getStores(
@@ -45,6 +47,8 @@ interface StoreRepository {
     suspend fun getStoreCategories(): List<StoreCategories>
 
     suspend fun getStoreWithMenu(storeId: Int): StoreWithMenu
+
+    suspend fun getStoreWithMenuV2(storeId: Int): StoreWithMenuV2
 
     suspend fun getStoreMenuCategory(storeId: Int): List<StoreMenuCategory>
 
@@ -64,13 +68,18 @@ interface StoreRepository {
     suspend fun deleteReview(
         reviewId: Int,
         shopId: Int
-    )
+    ): Result<Unit>
 
     suspend fun modifyReview(
         reviewId: Int,
         shopId: Int,
         content: Review
     )
+
+    suspend fun searchReview(
+        reviewId: Int,
+        shopId: Int
+    ): ReviewDetail
 
     suspend fun reportReview(
         storeId: Int?,
@@ -83,6 +92,8 @@ interface StoreRepository {
     suspend fun getStoreBenefitCategories(): BenefitCategoryList
 
     suspend fun getShopSearchRelatedList(query: String): ShopSearchRelatedList
+
+    suspend fun getShopSearchRelatedListV2(keyword: String): Result<OrderableShopSearchRelated>
 
     suspend fun getOrderableShops(
         sorter: String?,

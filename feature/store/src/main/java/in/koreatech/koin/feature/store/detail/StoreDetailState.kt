@@ -11,13 +11,15 @@ import `in`.koreatech.koin.feature.store.model.MenuCategoryModel
 import `in`.koreatech.koin.feature.store.model.OwnerInfoModel
 import `in`.koreatech.koin.feature.store.model.ShopInfoModel
 import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 data class StoreDetailState(
     val store: ShopInfoModel = ShopInfoModel.empty(),
     val isOrderableShop: Boolean = true,
     val shopDescription: StoreDescriptionModel = StoreDescriptionModel.empty(),
     val orderableStore: OrderShop = OrderShop.empty(),
-    val categories: List<MenuCategoryModel> = emptyList(),
+    val categories: ImmutableList<MenuCategoryModel> = persistentListOf(),
     val storeMenu: List<ShopMenus> = emptyList(),
     val storeReview: StoreReview = StoreReview.empty(),
     val scrollUp: StoreDetailScrollType = StoreDetailScrollType.NONE,
@@ -32,7 +34,10 @@ data class StoreDetailState(
     val minimumOrderAmount: Int = 0,
     val cart: Cart = Cart.Empty,
     val cartType: CartType = CartType.DELIVERY,
-    val cartValidation: CartValidation = CartValidation.NONE
+    val cartValidation: CartValidation = CartValidation.NONE,
+    val showCallDialog: Boolean = false,
+    val showImageDialog: Boolean = false,
+    val deliverySprintEnabled: Boolean = false // TODO: Remove after delivery sprint complete
 )
 fun OwnerInfoModel?.hasAnyInfo(): Boolean {
     return this?.let {

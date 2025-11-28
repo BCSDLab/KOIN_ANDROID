@@ -54,7 +54,6 @@ import `in`.koreatech.koin.core.util.blueStatusBar
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityMainBinding
 import `in`.koreatech.koin.domain.model.article.ArticleNotiType
-import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.feature.banner.ui.BannerActivity
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetA
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetB
@@ -127,6 +126,8 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         setContentView(binding.root)
 
         window.blueStatusBar()
+
+        EventLogger.logScreenName("HomeActivity") // DA requirement
 
         fixTabRowSize()
         initView()
@@ -400,26 +401,11 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         }
 
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                getStoreSprintEnabled()
-            }
-        }
-
-        lifecycleScope.launch {
-            isStoreSprintEnabled.filterNotNull().collect {
-                if (it) {
-                    getStoreCategories()
-                    binding.textViewStore.visibility = View.GONE
-                    binding.storeButtonLayout.visibility = View.GONE
-                    binding.recyclerViewStoreCategory.visibility = View.GONE
-                    binding.shopComposeView.visibility = View.VISIBLE
-                } else {
-                    getStoreCategoriesWithBenefit(StoreCategories(-1, R.drawable.ic_benefit_icon, "혜택"))
-                    binding.textViewStore.visibility = View.VISIBLE
-                    binding.shopComposeView.visibility = View.GONE
-                    observeOldStoreABTest()
-                }
-            }
+            getStoreCategories()
+            binding.textViewStore.visibility = View.GONE
+            binding.storeButtonLayout.visibility = View.GONE
+            binding.recyclerViewStoreCategory.visibility = View.GONE
+            binding.shopComposeView.visibility = View.VISIBLE
         }
     }
 

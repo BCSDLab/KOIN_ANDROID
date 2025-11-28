@@ -3,8 +3,10 @@ package `in`.koreatech.koin.feature.store.model
 import android.os.Parcelable
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
 @Parcelize
+@Serializable
 data class LocalStoreCategories(
     val id: Int,
     val imageUrl: String,

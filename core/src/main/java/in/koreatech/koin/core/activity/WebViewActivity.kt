@@ -96,6 +96,7 @@ class WebViewActivity : ActivityBase(R.layout.activity_webview) {
                 )
             settings.javaScriptEnabled = true
             settings.setSupportMultipleWindows(true)
+            settings.domStorageEnabled = true
             webViewClient =
                 KoinWebViewClient(
                     context = this@WebViewActivity,

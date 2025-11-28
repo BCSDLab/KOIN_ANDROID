@@ -22,6 +22,7 @@ import `in`.koreatech.koin.data.response.store.ShopMenusGroupResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
 import `in`.koreatech.koin.data.response.store.ShopRelatedListResponse
 import `in`.koreatech.koin.data.response.store.ShopResponse
+import `in`.koreatech.koin.data.response.store.ShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopSummaryResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
 import `in`.koreatech.koin.data.response.store.StoreDayOffResponse
@@ -29,6 +30,7 @@ import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
 import `in`.koreatech.koin.data.response.store.StoreEventItemReponse
 import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
+import `in`.koreatech.koin.data.response.store.StoreItemWithMenusV2Response
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoriesResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuInfoResponse
@@ -36,6 +38,7 @@ import `in`.koreatech.koin.data.response.store.StoreMenuRegisterResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewContentResponse
+import `in`.koreatech.koin.data.response.store.StoreReviewDetailResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewStatisticsResponse
 import `in`.koreatech.koin.domain.model.owner.OwnerGetStore
@@ -60,6 +63,7 @@ import `in`.koreatech.koin.domain.model.store.OrderHistoryOrders
 import `in`.koreatech.koin.domain.model.store.OrderHistoryRelated
 import `in`.koreatech.koin.domain.model.store.OrderInProgress
 import `in`.koreatech.koin.domain.model.store.OrderableShopSearchRelated
+import `in`.koreatech.koin.domain.model.store.ReviewDetail
 import `in`.koreatech.koin.domain.model.store.Shop
 import `in`.koreatech.koin.domain.model.store.ShopDeliveryAvailable
 import `in`.koreatech.koin.domain.model.store.ShopDetail
@@ -81,6 +85,7 @@ import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.domain.model.store.StoreReviewContent
 import `in`.koreatech.koin.domain.model.store.StoreReviewStatistics
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
+import `in`.koreatech.koin.domain.model.store.StoreWithMenuV2
 import `in`.koreatech.koin.domain.util.DateFormatUtil
 import `in`.koreatech.koin.domain.util.ext.HHMM
 import `in`.koreatech.koin.domain.util.ext.localDayOfWeekName
@@ -156,6 +161,28 @@ fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu =
         menuCategories = menuCategories?.map { it.toCategory() }.orEmpty(),
         bank = bank ?: null,
         accountNumber = accountNumber ?: null
+    )
+
+fun StoreItemWithMenusV2Response.toStoreWithMenuV2(): StoreWithMenuV2 =
+    StoreWithMenuV2(
+        uid = uid,
+        name = name,
+        phone = phone ?: "",
+        address = address ?: "",
+        description = description?.replace("\\n", System.lineSeparator() ?: "\n"),
+        isDeliveryOk = isDeliveryOk ?: false,
+        deliveryPrice = deliveryPrice ?: 0,
+        isCardOk = isCardOk ?: false,
+        isBankOk = isBankOk ?: false,
+        updateAt = updateAt,
+        isEvent = isEvent ?: false,
+        imageUrls = imageUrls ?: emptyList(),
+        shopCategories = shopCategories?.map { it.toCategory() }.orEmpty(),
+        menuCategories = menuCategories?.map { it.toCategory() }.orEmpty(),
+        bank = bank,
+        accountNumber = accountNumber,
+        openTime = openTime,
+        closeTime = closeTime
     )
 
 fun List<StoreMenuCategoryResponse.MenuCategory>.toCategory(): List<StoreMenuCategory> {
@@ -246,6 +273,19 @@ fun StoreReviewResponse.toStoreReview() =
         statistics = statistics.toStoreReviewStatistics(),
         reviews = reviews.toStoreReviewContentList()
     )
+
+fun StoreReviewDetailResponse.toReviewDetail(): ReviewDetail {
+    return ReviewDetail(
+        reviewId = reviewId,
+        rating = rating,
+        nickName = nickName,
+        content = content,
+        imageUrls = imageUrls,
+        menuNames = menuNames,
+        isModified = isModified,
+        createdAt = createdAt
+    )
+}
 
 fun List<OperatingTime>.toMyStoreDayOffResponse(): ArrayList<StoreDayOffResponse> {
     val responseList = ArrayList<StoreDayOffResponse>()
@@ -605,6 +645,27 @@ fun OrderableShopSearchRelatedResponse.toOrderableShopSearchRelated() =
             OrderableShopSearchRelated.OrderableShopSearchMenuNameResult(
                 orderableShopId = result.orderableShopId,
                 orderableShopName = result.orderableShopName,
+                menuName = result.menuName
+            )
+        }
+    )
+
+fun ShopSearchRelatedResponse.toOrderableShopSearchRelated() =
+    OrderableShopSearchRelated(
+        searchKeyword = searchKeyword,
+        processedSearchKeyword = processedSearchKeyword,
+        shopNameSearchResultCount = shopNameSearchResultCount,
+        menuNameSearchResultCount = menuNameSearchResultCount,
+        shopNameSearchResults = shopNameSearchResults.map { result ->
+            OrderableShopSearchRelated.OrderableShopSearchShopNameResult(
+                orderableShopId = result.shopId,
+                orderableShopName = result.shopName
+            )
+        },
+        menuNameSearchResults = menuNameSearchResults.map { result ->
+            OrderableShopSearchRelated.OrderableShopSearchMenuNameResult(
+                orderableShopId = result.shopId,
+                orderableShopName = result.shopName,
                 menuName = result.menuName
             )
         }

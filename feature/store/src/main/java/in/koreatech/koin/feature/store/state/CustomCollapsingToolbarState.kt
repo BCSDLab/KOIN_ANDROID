@@ -68,8 +68,6 @@ fun rememberCollapsingToolbarState(
     )
 }
 
-fun CustomCollapsingToolbarState.collapseToolbar(
-    state: CustomCollapsingToolbarState
-) {
-    state.toolbarOffsetPx.value = -toolbarHeightPx + minHeightPx
+fun CustomCollapsingToolbarState.collapseToolbar() {
+    toolbarOffsetPx.value = -toolbarHeightPx + minHeightPx
 }

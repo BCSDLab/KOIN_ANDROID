@@ -15,26 +15,35 @@ import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_ADD_CART
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_DETAIL_MAIN
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_HOME
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_NEARBY
+import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_REVIEW
 import `in`.koreatech.koin.feature.store.cart.ShoppingCartScreen
 import `in`.koreatech.koin.feature.store.cartadd.CartAddScreen
 import `in`.koreatech.koin.feature.store.cartedit.CartEditScreen
 import `in`.koreatech.koin.feature.store.detail.StoreDetailScreen
 import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
 import `in`.koreatech.koin.feature.store.home.StoreHomeScreen
+import `in`.koreatech.koin.feature.store.model.StoreNavigationData
+import `in`.koreatech.koin.feature.store.model.StoreNavigationDataType
 import `in`.koreatech.koin.feature.store.nearby.StoreNearbyScreen
 import `in`.koreatech.koin.feature.store.orderhistory.OrderHistoryScreen
 import `in`.koreatech.koin.feature.store.origin.ShopOriginInfoScreen
+import `in`.koreatech.koin.feature.store.review.ReviewScreen
+import `in`.koreatech.koin.feature.store.reviewadd.ReviewAddScreen
+import `in`.koreatech.koin.feature.store.reviewedit.ReviewEditScreen
+import `in`.koreatech.koin.feature.store.reviewreport.ReviewReportScreen
 import `in`.koreatech.koin.feature.store.search.StoreSearchScreen
 import `in`.koreatech.koin.feature.store.webapp.StoreWebAppScreen
+import kotlin.reflect.typeOf
 
 fun NavGraphBuilder.koinStoreGraph(
     navController: NavController,
     categoryId: Int,
+    enableDelivery: Boolean,
     finish: () -> Unit = { }
 ) {
     navigation(
         route = StoreNavType.StoreMain.route,
-        startDestination = StoreMainNavType.StoreMainHome.route
+        startDestination = if (enableDelivery) StoreMainNavType.StoreMainHome.route else StoreMainNavType.StoreMainNearby.route
     ) {
         koinStoreMainGraph(
             navController = navController,
@@ -59,6 +68,15 @@ fun NavGraphBuilder.koinStoreGraph(
         koinStoreDetailGraph(
             navController = navController,
             finish = finish
+        )
+    }
+
+    navigation<StoreNavType.StoreReview>(
+        startDestination = StoreReviewNavType.StoreReviewHome::class,
+        typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
+    ) {
+        koinStoreReviewGraph(
+            navController = navController
         )
     }
 
@@ -90,7 +108,7 @@ fun NavGraphBuilder.koinStoreGraph(
                 navController.navigate(StoreNavType.StoreMain.route)
             },
             navigateBack = {
-                if (!navController.navigateUp()) {
+                if (!navController.popBackStack()) {
                     finish()
                 }
             }
@@ -137,7 +155,7 @@ fun NavGraphBuilder.koinStoreGraph(
                     IS_CART_MODIFIED,
                     true
                 )
-                if (!navController.navigateUp()) {
+                if (!navController.popBackStack()) {
                     finish()
                 }
             }
@@ -161,7 +179,7 @@ fun NavGraphBuilder.koinStoreGraph(
                     IS_CART_MODIFIED,
                     true
                 )
-                if (!navController.navigateUp()) {
+                if (!navController.popBackStack()) {
                     finish()
                 }
             }
@@ -169,15 +187,21 @@ fun NavGraphBuilder.koinStoreGraph(
     }
 
     composable(
-        route = StoreNavType.StoreSearch.route
+        route = "${StoreNavType.StoreSearch.route}/{$IS_ORDERABLE_SHOP}",
+        arguments = listOf(
+            navArgument(IS_ORDERABLE_SHOP) {
+                type = NavType.BoolType
+            }
+        )
     ) {
+        val isOrderableShop = it.arguments?.getBoolean(IS_ORDERABLE_SHOP) ?: true
         StoreSearchScreen(
             navigateToDetail = {
-                navController.navigateUp()
-                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$it/${true}")
+                navController.popBackStack()
+                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$it/$isOrderableShop")
             },
             onBackPressed = {
-                if (!navController.navigateUp()) {
+                if (!navController.popBackStack()) {
                     finish()
                 }
             }
@@ -274,13 +298,13 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
                 navController.navigate(StoreNavType.StoreCart.route)
             },
             navigateToSearch = {
-                navController.navigate(StoreNavType.StoreSearch.route)
+                navController.navigate("${StoreNavType.StoreSearch.route}/${true}")
             },
             navigateToOrderResult = { orderId ->
                 navController.navigate("${StoreNavType.StoreOrderResult.route}/$orderId")
             }
         ) {
-            if (!navController.navigateUp()) {
+            if (!navController.popBackStack()) {
                 finish()
             }
         }
@@ -295,6 +319,7 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
         )
     ) {
         StoreNearbyScreen(
+            categoryId = categoryId,
             navigateToDetail = { storeId ->
                 navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId/${false}")
             },
@@ -302,10 +327,10 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
                 navController.navigate(StoreNavType.StoreCart.route)
             },
             navigateToSearch = {
-                navController.navigate(StoreNavType.StoreSearch.route)
+                navController.navigate("${StoreNavType.StoreSearch.route}/${false}")
             }
         ) {
-            if (!navController.navigateUp()) {
+            if (!navController.popBackStack()) {
                 finish()
             }
         }
@@ -322,7 +347,7 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
                 navController.navigate("${StoreNavType.StoreOrderResult.route}/$orderId")
             }
         ) {
-            if (!navController.navigateUp()) {
+            if (!navController.popBackStack()) {
                 finish()
             }
         }
@@ -358,7 +383,7 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
             isCartAdded = isCartAdded,
             isCartModified = isCartModified,
             navigateToBack = {
-                if (!navController.navigateUp()) {
+                if (!navController.popBackStack()) {
                     finish()
                 }
             },
@@ -369,8 +394,13 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
             navigateToDetailInfo = { selectedInfoType ->
                 navController.navigate("${StoreDetailNavType.StoreDetailInfo.route}/$storeId/$isOrderableShop/$selectedInfoType")
             },
-            navigateToReview = {
-                // Navigate to review screen if implemented
+            navigateToReview = { storeNavigationData, storeName ->
+                navController.navigate(
+                    StoreReviewNavType.StoreReviewHome(
+                        storeNavigationData = storeNavigationData,
+                        storeName = storeName
+                    )
+                )
             },
             navigateToMenuInfo = { menuId ->
                 it.savedStateHandle[IS_CART_ADDED] = false
@@ -399,7 +429,7 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
         ShopOriginInfoScreen(
             selectedInfo = selectedInfo,
             onBackClick = {
-                if (!navController.navigateUp()) {
+                if (!navController.popBackStack()) {
                     finish()
                 }
             },
@@ -407,6 +437,65 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
                 navController.navigate(StoreNavType.StoreCart.route)
             }
         )
+    }
+}
+
+internal fun NavGraphBuilder.koinStoreReviewGraph(
+    navController: NavController
+) {
+    composable<StoreReviewNavType.StoreReviewHome>(
+        typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType),
+        deepLinks = listOf(
+            navDeepLink<StoreReviewNavType.StoreReviewHome>(
+                basePath = DEEPLINK_STORE_REVIEW,
+                typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
+            )
+        )
+    ) {
+        val isReviewUpdated by it.savedStateHandle.getStateFlow(IS_REVIEW_UPDATED, initialValue = false).collectAsStateWithLifecycle()
+        ReviewScreen(
+            isReviewUpdated = isReviewUpdated,
+            onResetReviewUpdated = {
+                navController.currentBackStackEntry?.savedStateHandle?.set(IS_REVIEW_UPDATED, false)
+            },
+            onReportClicked = { storeNavigationData, reviewId ->
+                navController.navigate(StoreReviewNavType.StoreReviewReport(storeNavigationData, reviewId))
+            },
+            onAddReviewClicked = { storeNavigationData, storeName ->
+                navController.navigate(StoreReviewNavType.StoreReviewAdd(storeNavigationData, storeName))
+            },
+            onEditReviewClicked = { storeNavigationData, reviewId, storeName ->
+                navController.navigate(StoreReviewNavType.StoreReviewEdit(storeNavigationData, reviewId, storeName))
+            }
+        )
+    }
+
+    composable<StoreReviewNavType.StoreReviewAdd>(
+        typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
+    ) {
+        ReviewAddScreen(
+            onNavigateBack = { navController.popBackStack() },
+            onReviewUpdated = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(IS_REVIEW_UPDATED, true)
+            }
+        )
+    }
+
+    composable<StoreReviewNavType.StoreReviewEdit>(
+        typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
+    ) {
+        ReviewEditScreen(
+            onNavigateBack = { navController.popBackStack() },
+            onReviewUpdated = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(IS_REVIEW_UPDATED, true)
+            }
+        )
+    }
+
+    composable<StoreReviewNavType.StoreReviewReport>(
+        typeMap = mapOf(typeOf<StoreNavigationData>() to StoreNavigationDataType)
+    ) {
+        ReviewReportScreen()
     }
 }
 
@@ -421,3 +510,4 @@ const val CART_TYPE = "cartType"
 const val SELECTED_INFO = "selectedInfo"
 const val CART_DATA = "cartData"
 const val ORDER_ID = "orderId"
+const val IS_REVIEW_UPDATED = "isReviewUpdated"

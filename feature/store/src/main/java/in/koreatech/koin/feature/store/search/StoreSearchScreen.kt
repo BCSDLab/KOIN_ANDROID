@@ -7,13 +7,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicText
@@ -35,8 +38,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.store.LocalDeliveryDeveloperOption
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.model.LocalShopSearchResult
@@ -73,6 +80,7 @@ fun StoreSearchScreen(
                 onBackPressed()
             },
             actions = {
+                if (!LocalDeliveryDeveloperOption.current) return@KoinStoreTopAppBar
                 IconButton(onClick = {}) {
                     Icon(
                         modifier = Modifier.size(25.dp),
@@ -134,7 +142,14 @@ private fun StoreSearchScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { navigateToDetail(it.shopId) }
+                        .clickable {
+                            navigateToDetail(it.shopId)
+                            EventLogger.logClickEvent(
+                                EventAction.BUSINESS,
+                                AnalyticsConstant.Label.SHOP_CATEGORIES_SEARCH_CLICK,
+                                it.shopName
+                            )
+                        }
                         .padding(vertical = 12.dp, horizontal = 8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -170,6 +185,10 @@ private fun StoreSearchScreen(
                 HorizontalDivider(
                     color = RebrandKoinTheme.colors.neutral300
                 )
+            }
+
+            item {
+                Spacer(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars))
             }
         }
     }

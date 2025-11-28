@@ -9,6 +9,7 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopMenuUseCase
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopOriginInfoUseCase
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopSummaryUseCase
+import `in`.koreatech.koin.domain.usecase.setting.GetDeveloperSettingUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartSummaryUseCase
@@ -31,6 +32,8 @@ import `in`.koreatech.koin.feature.store.navigation.IS_ORDERABLE_SHOP
 import `in`.koreatech.koin.feature.store.navigation.STORE_ID
 import `in`.koreatech.koin.feature.store.util.toKoreanWeek
 import javax.inject.Inject
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -53,7 +56,8 @@ class StoreDetailViewModel @Inject constructor(
     private val getStoreReviewUseCase: GetStoreReviewUseCase,
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
     private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase,
-    private val getUserStatusUseCase: GetUserStatusUseCase
+    private val getUserStatusUseCase: GetUserStatusUseCase,
+    private val getDeveloperSettingUseCase: GetDeveloperSettingUseCase
 ) : ViewModel(), ContainerHost<StoreDetailState, StoreDetailSideEffect> {
     override val container =
         container<StoreDetailState, StoreDetailSideEffect>(StoreDetailState()) {
@@ -80,6 +84,14 @@ class StoreDetailViewModel @Inject constructor(
             fetchReview(storeId)
             checkToken()
         }
+
+    init {
+        intent {
+            getDeveloperSettingUseCase(DELIVERY_SPRINT).let {
+                reduce { state.copy(deliverySprintEnabled = it) }
+            }
+        }
+    }
 
     private fun getUserType() = intent {
         getUserStatusUseCase().collect {
@@ -161,7 +173,7 @@ class StoreDetailViewModel @Inject constructor(
                         it.toMenuCategoryModel().copy(
                             isChecked = result.indexOf(it) == 0
                         )
-                    }
+                    }.toImmutableList()
                 )
             }
         }
@@ -209,7 +221,7 @@ class StoreDetailViewModel @Inject constructor(
                             menus = storeMenuCategories.toMenuCategoryModel().menus,
                             isChecked = shop.menuCategories?.indexOf(storeMenuCategories) == 0
                         )
-                    } ?: emptyList()
+                    }?.toImmutableList() ?: persistentListOf()
                 )
             }
         }
@@ -242,7 +254,24 @@ class StoreDetailViewModel @Inject constructor(
         }
     }
 
+    fun setCallDialogState(newState: Boolean) = blockingIntent {
+        reduce {
+            state.copy(
+                showCallDialog = newState
+            )
+        }
+    }
+
+    fun setImageDialogState(newState: Boolean) = blockingIntent {
+        reduce {
+            state.copy(
+                showImageDialog = newState
+            )
+        }
+    }
+
     fun getCartItemsCount() = intent {
+        if (!state.deliverySprintEnabled) return@intent
         reduce {
             state.copy(isLoading = true)
         }
@@ -277,7 +306,7 @@ class StoreDetailViewModel @Inject constructor(
                 selectedCategoryId = categoryId
             )
         }
-        changeCategory(categoryId)
+        postSideEffect(StoreDetailSideEffect.CollapseToolbar)
     }
 
     fun changeCategory(categoryId: Int) = blockingIntent {
@@ -289,12 +318,13 @@ class StoreDetailViewModel @Inject constructor(
                     } else {
                         it.copy(isChecked = false)
                     }
-                }
+                }.toImmutableList()
             )
         }
     }
 
     fun getCart(type: CartType): Job = intent {
+        if (!state.deliverySprintEnabled) return@intent
         reduce { state.copy(isLoading = true) }
         getCartItemUseCase(type.name).onSuccess {
             reduce { state.copy(cart = it, cartType = type, isLoading = false) }
@@ -309,6 +339,7 @@ class StoreDetailViewModel @Inject constructor(
     }
 
     fun getCartValidate() = intent {
+        if (!state.deliverySprintEnabled) return@intent
         reduce { state.copy(isLoading = true) }
         validateCartItemsUseCase(state.cartType.name).onSuccess {
             reduce {
@@ -334,6 +365,7 @@ class StoreDetailViewModel @Inject constructor(
     }
 
     private fun getCartSummary() = intent {
+        if (!state.deliverySprintEnabled) return@intent
         if (state.cart.orderableShopId == null) return@intent
         getCartSummaryUseCase(state.cart.orderableShopId!!).onSuccess {
             reduce {
@@ -349,5 +381,9 @@ class StoreDetailViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    companion object {
+        const val DELIVERY_SPRINT = "delivery_sprint"
     }
 }

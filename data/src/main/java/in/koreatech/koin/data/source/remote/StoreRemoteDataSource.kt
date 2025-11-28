@@ -24,6 +24,7 @@ import `in`.koreatech.koin.data.response.store.ShopMenusGroupResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
 import `in`.koreatech.koin.data.response.store.ShopRelatedListResponse
 import `in`.koreatech.koin.data.response.store.ShopResponse
+import `in`.koreatech.koin.data.response.store.ShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopSummaryResponse
 import `in`.koreatech.koin.data.response.store.StoreBenefitResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
@@ -31,9 +32,11 @@ import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
 import `in`.koreatech.koin.data.response.store.StoreEventItemReponse
 import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
+import `in`.koreatech.koin.data.response.store.StoreItemWithMenusV2Response
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.data.response.store.StoreResponse
+import `in`.koreatech.koin.data.response.store.StoreReviewDetailResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
 import `in`.koreatech.koin.domain.model.store.StoreReport
 import `in`.koreatech.koin.domain.model.store.StoreSorter
@@ -95,6 +98,10 @@ class StoreRemoteDataSource @Inject constructor(
         return storeApi.getStore(storeUid)
     }
 
+    suspend fun getStoreMenuV2(storeUid: Int): StoreItemWithMenusV2Response {
+        return storeApi.getStoreV2(storeUid)
+    }
+
     suspend fun getStoreMenuCategory(storeUid: Int): List<StoreMenuCategoryResponse.MenuCategory> {
         return storeApi.getStoreMenuCategory(storeUid).menuCategories
     }
@@ -133,6 +140,13 @@ class StoreRemoteDataSource @Inject constructor(
         userAuthApi.modifyReview(reviewId, shopId, reviewRequest)
     }
 
+    suspend fun searchReview(
+        reviewId: Int,
+        shopId: Int
+    ): StoreReviewDetailResponse {
+        return storeApi.searchReview(reviewId, shopId)
+    }
+
     suspend fun postReviewReports(
         storeUid: Int,
         reviewId: Int,
@@ -155,6 +169,10 @@ class StoreRemoteDataSource @Inject constructor(
 
     suspend fun getShopSearchRelated(query: String): ShopRelatedListResponse {
         return storeApi.getShopSearchRelated(query)
+    }
+
+    suspend fun getShopSearchRelatedV2(keyword: String): ShopSearchRelatedResponse {
+        return storeApi.getShopSearchRelatedV2(keyword)
     }
 
     suspend fun getOrderableShops(

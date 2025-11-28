@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopOriginInfoUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuV2UseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.store.model.DeliveryTipModel
 import `in`.koreatech.koin.feature.store.model.OriginModel
@@ -16,6 +17,7 @@ import `in`.koreatech.koin.feature.store.navigation.STORE_ID
 import `in`.koreatech.koin.feature.store.util.toKoreanWeek
 import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
@@ -25,15 +27,26 @@ class ShopOriginViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
     private val getOrderShopOriginInfoUseCase: GetOrderShopOriginInfoUseCase,
-    private val getUserStatusUseCase: GetUserStatusUseCase
+    private val getUserStatusUseCase: GetUserStatusUseCase,
+    private val getStoreWithMenuV2UseCase: GetStoreWithMenuV2UseCase
 ) : ViewModel(), ContainerHost<ShopOriginState, Unit> {
     override val container = container<ShopOriginState, Unit>(ShopOriginState()) {
         val storeId = savedStateHandle.get<Int>(STORE_ID)
         val isOrderableShop = savedStateHandle.get<Boolean>(IS_ORDERABLE_SHOP) ?: true
         checkNotNull(storeId)
 
+        blockingIntent {
+            reduce {
+                state.copy(
+                    isOrderableShop = isOrderableShop
+                )
+            }
+        }
+
         if (isOrderableShop) {
             fetchOrderStoreNotice(storeId)
+        } else {
+            fetchShopInfo(storeId)
         }
     }
 
@@ -50,6 +63,7 @@ class ShopOriginViewModel @Inject constructor(
                         state.copy(isLoggedIn = true)
                     }
                 }
+
                 is User.Anonymous -> {
                     reduce {
                         state.copy(isLoggedIn = false)
@@ -110,6 +124,34 @@ class ShopOriginViewModel @Inject constructor(
                             result.address,
                             result.ownerInfo.companyRegistrationNumber ?: ""
                         )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun fetchShopInfo(id: Int) = intent {
+        getStoreWithMenuV2UseCase(id).also { result ->
+            reduce {
+                state.copy(
+                    isLoading = false,
+                    shopDescription = StoreDescriptionModel(
+                        id = id,
+                        storeName = result.name,
+                        address = result.address ?: "",
+                        description = result.description,
+                        notice = null,
+                        phone = result.phone,
+                        openTime = result.openTime,
+                        closeTime = result.closeTime,
+                        closedDays = emptyList(),
+                        deliveryTips = DeliveryTipModel(
+                            fromAmount = 0,
+                            toAmount = null,
+                            fee = result.deliveryPrice
+                        ).let { listOf(it) },
+                        origins = null,
+                        ownerInfo = null
                     )
                 )
             }

@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.store.LocalDeliveryDeveloperOption
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreProgressIndicator
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
@@ -66,9 +67,10 @@ fun ShopOriginInfoScreen(
     navigateToShoppingCart: () -> Unit = {}
 ) {
     val uiState by shopOriginViewModel.collectAsState()
+    val deliverySprintEnabled = LocalDeliveryDeveloperOption.current
 
     LaunchedEffect(Unit) {
-        if (uiState.isLoggedIn) {
+        if (uiState.isLoggedIn && deliverySprintEnabled) {
             shopOriginViewModel.getCartItemsCount()
         }
     }
@@ -100,6 +102,7 @@ fun ShopOriginInfoScreen(
                     onBackClick()
                 },
                 actions = {
+                    if (!LocalDeliveryDeveloperOption.current) return@KoinStoreTopAppBar
                     Box(contentAlignment = Alignment.TopEnd) {
                         IconButton(onClick = {
                             navigateToShoppingCart()
@@ -183,6 +186,7 @@ fun ShopOriginInfoScreen(
             )
             Spacer(Modifier.height(6.dp))
             HighlightSection(
+                isHighlighted = selectedInfo == StoreDetailInfoType.DETAIL.name,
                 content = {
                     Text(
                         text = stringResource(R.string.store_info),
@@ -195,7 +199,6 @@ fun ShopOriginInfoScreen(
             )
             Spacer(Modifier.height(6.dp))
             HighlightSection(
-                isHighlighted = selectedInfo == StoreDetailInfoType.DETAIL.name,
                 content = {
                     Text(
                         text = stringResource(R.string.store_notice),
@@ -207,72 +210,75 @@ fun ShopOriginInfoScreen(
                     Text(text = uiState.shopDescription.notice ?: stringResource(R.string.no_registered_information), style = RebrandKoinTheme.typography.regular14)
                 }
             )
-            Spacer(Modifier.height(6.dp))
-            HighlightSection(
-                isHighlighted = selectedInfo == StoreDetailInfoType.DELIVERY.name,
-                content = {
-                    Text(
-                        modifier = Modifier.padding(vertical = 8.dp),
-                        text = stringResource(R.string.total_delivery_tip_by_order_amount),
-                        style = RebrandKoinTheme.typography.bold15
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    DeliveryFeeTable(
-                        modifier = Modifier.fillMaxWidth(),
-                        deliveryFees = uiState.shopDescription.deliveryTips ?: emptyList()
-                    )
-                }
-            )
-            Spacer(Modifier.height(6.dp))
-            HighlightSection(
-                content = {
-                    Text(
-                        text = stringResource(R.string.business_info),
-                        style = RebrandKoinTheme.typography.bold15
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    if (uiState.shopDescription.ownerInfo.hasAnyInfo()) {
-                        KoinStoreGrid(
-                            modifier = Modifier
-                                .wrapContentHeight(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            leftContent = {
-                                Text(text = stringResource(R.string.owner_name))
-                                Text(text = stringResource(R.string.trade_name))
-                                Text(text = stringResource(R.string.business_address))
-                                Text(stringResource(R.string.business_registration_number))
-                            },
-                            rightContent = {
-                                uiState.shopDescription.ownerInfo?.name?.let { Text(it) }
-                                uiState.shopDescription.ownerInfo?.shopName?.let { Text(it) }
-                                uiState.shopDescription.ownerInfo?.address?.let { Text(it) }
-                                uiState.shopDescription.ownerInfo?.companyRegistrationNumber?.let { Text(it) }
-                            }
+            if (uiState.isOrderableShop) {
+                Spacer(Modifier.height(6.dp))
+                HighlightSection(
+                    isHighlighted = selectedInfo == StoreDetailInfoType.DELIVERY.name,
+                    content = {
+                        Text(
+                            modifier = Modifier.padding(vertical = 8.dp),
+                            text = stringResource(R.string.total_delivery_tip_by_order_amount),
+                            style = RebrandKoinTheme.typography.bold15
                         )
-                    } else {
-                        Text(text = stringResource(R.string.no_registered_information))
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        DeliveryFeeTable(
+                            modifier = Modifier.fillMaxWidth(),
+                            deliveryFees = uiState.shopDescription.deliveryTips ?: emptyList()
+                        )
                     }
-                }
-            )
-            Spacer(Modifier.height(6.dp))
-            HighlightSection(
-                content = {
-                    Text(
-                        text = stringResource(R.string.origin_marking),
-                        style = RebrandKoinTheme.typography.bold18
-                    )
-                    Text(
-                        text = uiState.shopDescription.origins?.joinToString(separator = ", ") {
-                            "${it.ingredients} (${it.origin})"
-                        } ?: stringResource(R.string.no_registered_information),
-                        style = RebrandKoinTheme.typography.regular14
-                    )
-                }
-            )
+                )
+
+                Spacer(Modifier.height(6.dp))
+                HighlightSection(
+                    content = {
+                        Text(
+                            text = stringResource(R.string.business_info),
+                            style = RebrandKoinTheme.typography.bold15
+                        )
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        if (uiState.shopDescription.ownerInfo.hasAnyInfo()) {
+                            KoinStoreGrid(
+                                modifier = Modifier
+                                    .wrapContentHeight(),
+                                verticalAlignment = Alignment.CenterVertically,
+                                leftContent = {
+                                    Text(text = stringResource(R.string.owner_name))
+                                    Text(text = stringResource(R.string.trade_name))
+                                    Text(text = stringResource(R.string.business_address))
+                                    Text(stringResource(R.string.business_registration_number))
+                                },
+                                rightContent = {
+                                    uiState.shopDescription.ownerInfo?.name?.let { Text(it) }
+                                    uiState.shopDescription.ownerInfo?.shopName?.let { Text(it) }
+                                    uiState.shopDescription.ownerInfo?.address?.let { Text(it) }
+                                    uiState.shopDescription.ownerInfo?.companyRegistrationNumber?.let { Text(it) }
+                                }
+                            )
+                        } else {
+                            Text(text = stringResource(R.string.no_registered_information))
+                        }
+                    }
+                )
+                Spacer(Modifier.height(6.dp))
+                HighlightSection(
+                    content = {
+                        Text(
+                            text = stringResource(R.string.origin_marking),
+                            style = RebrandKoinTheme.typography.bold18
+                        )
+                        Text(
+                            text = uiState.shopDescription.origins?.joinToString(separator = ", ") {
+                                "${it.ingredients} (${it.origin})"
+                            } ?: stringResource(R.string.no_registered_information),
+                            style = RebrandKoinTheme.typography.regular14
+                        )
+                    }
+                )
+            }
         }
     }
 }

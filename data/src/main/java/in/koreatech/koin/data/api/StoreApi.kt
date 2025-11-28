@@ -10,15 +10,18 @@ import `in`.koreatech.koin.data.response.store.ShopMenusGroupResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
 import `in`.koreatech.koin.data.response.store.ShopRelatedListResponse
 import `in`.koreatech.koin.data.response.store.ShopResponse
+import `in`.koreatech.koin.data.response.store.ShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopSummaryResponse
 import `in`.koreatech.koin.data.response.store.StoreBenefitResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesResponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
 import `in`.koreatech.koin.data.response.store.StoreEventResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
+import `in`.koreatech.koin.data.response.store.StoreItemWithMenusV2Response
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.data.response.store.StoreResponse
+import `in`.koreatech.koin.data.response.store.StoreReviewDetailResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -62,6 +65,11 @@ interface StoreApi {
         @Path("id") uid: Int
     ): StoreItemWithMenusResponse
 
+    @GET("/v2/shops/{id}")
+    suspend fun getStoreV2(
+        @Path("id") uid: Int
+    ): StoreItemWithMenusV2Response
+
     @GET(URLConstant.SHOPS.SHOPID.MENUS.CATEGORIES)
     suspend fun getStoreMenuCategory(
         @Path("shopId") uid: Int
@@ -82,6 +90,12 @@ interface StoreApi {
         @Path("id") uid: Int
     ): StoreReviewResponse
 
+    @GET(URLConstant.SHOPS.SHOPID.REVIEWS.REVIEWID.REVIEWID)
+    suspend fun searchReview(
+        @Path("reviewId") reviewId: Int,
+        @Path("shopId") shopId: Int
+    ): StoreReviewDetailResponse
+
     @GET(URLConstant.BENEFIT.SHOPS)
     suspend fun getBenefitShopList(
         @Path("id") uid: Int
@@ -94,6 +108,11 @@ interface StoreApi {
     suspend fun getShopSearchRelated(
         @Path("query") query: String
     ): ShopRelatedListResponse
+
+    @GET("/v2/shops/search/related")
+    suspend fun getShopSearchRelatedV2(
+        @Query("keyword") keyword: String
+    ): ShopSearchRelatedResponse
 
     @GET("/order/shops")
     suspend fun getOrderableShops(

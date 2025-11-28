@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.store.nearby
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.usecase.setting.GetDeveloperSettingUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetNearbyShopUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
@@ -14,6 +15,7 @@ import `in`.koreatech.koin.feature.store.enums.toStoreSorter
 import `in`.koreatech.koin.feature.store.model.toLocalShop
 import `in`.koreatech.koin.feature.store.model.toLocalStoreCategories
 import javax.inject.Inject
+import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -26,7 +28,8 @@ class StoreNearbyViewModel @Inject constructor(
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
     private val getNearbyShopUseCase: GetNearbyShopUseCase,
-    private val getUserStatusUseCase: GetUserStatusUseCase
+    private val getUserStatusUseCase: GetUserStatusUseCase,
+    private val getDeveloperSettingUseCase: GetDeveloperSettingUseCase
 ) : ViewModel(), ContainerHost<StoreNearbyState, StoreNearbySideEffect> {
     override val container = container<StoreNearbyState, StoreNearbySideEffect>(StoreNearbyState())
 
@@ -35,9 +38,12 @@ class StoreNearbyViewModel @Inject constructor(
             getStoreCategoriesUseCase().let {
                 reduce {
                     state.copy(
-                        storeCategories = it.map { it.toLocalStoreCategories() }
+                        storeCategories = it.map { it.toLocalStoreCategories() }.toImmutableList()
                     )
                 }
+            }
+            getDeveloperSettingUseCase(DELIVERY_SPRINT).let {
+                reduce { state.copy(deliverySprintEnabled = it) }
             }
         }
     }
@@ -62,6 +68,7 @@ class StoreNearbyViewModel @Inject constructor(
     }
 
     private fun getCartItemsCount() = intent {
+        if (!state.deliverySprintEnabled) return@intent
         reduce {
             state.copy(isLoading = true)
         }
@@ -103,7 +110,7 @@ class StoreNearbyViewModel @Inject constructor(
         ).onSuccess {
             reduce {
                 state.copy(
-                    orderableShops = it.map { it.toLocalShop() },
+                    orderableShops = it.map { it.toLocalShop() }.toImmutableList(),
                     isLoading = false
                 )
             }
@@ -139,7 +146,7 @@ class StoreNearbyViewModel @Inject constructor(
                     state.selectedStoreFilter - selectedStoreFilter
                 } else {
                     state.selectedStoreFilter + selectedStoreFilter
-                }
+                }.toImmutableList()
             )
         }
     }
@@ -187,5 +194,9 @@ class StoreNearbyViewModel @Inject constructor(
 
     fun onSearch() = intent {
         // TODO
+    }
+
+    companion object {
+        const val DELIVERY_SPRINT = "delivery_sprint"
     }
 }
