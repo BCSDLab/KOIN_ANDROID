@@ -274,11 +274,7 @@ class StoreRepositoryImpl @Inject constructor(
 
     override suspend fun getNearbyShops(): Result<List<Shop>> {
         return runCatching {
-            storeLocalDataSource.getCachedNearbyShops()?.map { it.toShop() } ?: storeRemoteDataSource.getNearbyShops().shops.also {
-                storeLocalDataSource.setCachedNearbyShops(it)
-            }.map {
-                it.toShop()
-            }
+            storeRemoteDataSource.getNearbyShops().shops.map { it.toShop() }
         }.onFailure { e ->
             return Result.failure(
                 when (e) {
