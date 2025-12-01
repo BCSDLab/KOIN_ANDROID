@@ -15,12 +15,4 @@ class StoreLocalDataSource @Inject constructor() {
     fun getCachedStoreCategories(): List<StoreCategoriesItemResponse>? {
         return this.storeCategories.ifEmpty { null }
     }
-
-    fun setCachedNearbyShops(nearbyShops: List<StoreItemResponse>) {
-        this.nearbyShops = nearbyShops
-    }
-
-    fun getCachedNearbyShops(): List<StoreItemResponse>? {
-        return this.nearbyShops.ifEmpty { null }
-    }
 }
