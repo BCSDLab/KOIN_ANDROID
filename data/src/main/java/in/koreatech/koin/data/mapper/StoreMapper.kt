@@ -87,10 +87,8 @@ import `in`.koreatech.koin.domain.model.store.StoreReviewStatistics
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.domain.model.store.StoreWithMenuV2
 import `in`.koreatech.koin.domain.util.DateFormatUtil
-import `in`.koreatech.koin.domain.util.ext.HHMM
 import `in`.koreatech.koin.domain.util.ext.localDateTimeNow
 import `in`.koreatech.koin.domain.util.ext.localDayOfWeekName
-import `in`.koreatech.koin.domain.util.ext.localTimeNow
 import `in`.koreatech.koin.domain.util.ext.prevDayOfWeekName
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -517,36 +515,6 @@ private fun isBetweenDate(now: LocalDateTime, openTime: String?, closeTime: Stri
         end = end.plusDays(1)
     }
     return !start.isAfter(now) && !end.isBefore(now)
-}
-
-fun StoreItemResponse.OpenResponseDTO.toOpenStatus(): OpenStatus {
-    return if (closed == true) {
-        val closeTime = LocalTime.parse(closeTime)
-        val currentTime = LocalTime.parse(localTimeNow.HHMM)
-
-        if (closeTime.isBefore(currentTime)) {
-            OpenStatus.CLOSED
-        } else {
-            OpenStatus.PREPARING
-        }
-    } else {
-        OpenStatus.OPERATING
-    }
-}
-
-fun ShopResponse.OrderStoreShopsOpenResponse.toOpenStatus(): OpenStatus {
-    return if (closed) {
-        val closeTime = LocalTime.parse(closeTime)
-        val currentTime = LocalTime.parse(localTimeNow.HHMM)
-
-        if (closeTime.isBefore(currentTime)) {
-            OpenStatus.CLOSED
-        } else {
-            OpenStatus.PREPARING
-        }
-    } else {
-        OpenStatus.OPERATING
-    }
 }
 
 fun ShopSummaryResponse.toShopSummary() = ShopSummary(
