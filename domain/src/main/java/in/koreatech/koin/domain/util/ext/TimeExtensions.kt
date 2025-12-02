@@ -19,6 +19,19 @@ val localDayOfWeekName get() =
         else -> ""
     }
 
+val prevDateTimeNow: LocalDateTime get() = LocalDateTime.now(ZoneId.of("Asia/Seoul")).minusDays(1)
+val prevDayOfWeekName get() =
+    when (prevDateTimeNow.dayOfWeek.value) {
+        1 -> "MONDAY"
+        2 -> "TUESDAY"
+        3 -> "WEDNESDAY"
+        4 -> "THURSDAY"
+        5 -> "FRIDAY"
+        6 -> "SATURDAY"
+        7 -> "SUNDAY"
+        else -> ""
+    }
+
 val LocalTime.HHMM get() = this.format(DateTimeFormatter.ofPattern("HH:mm"))
 
 // this >= time (17:00 >= 15:00)
