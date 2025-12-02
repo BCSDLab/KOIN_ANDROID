@@ -94,7 +94,6 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
-
 fun StoreItemResponse.toStore(): Store =
     Store(
         uid = uid ?: 0,
@@ -454,7 +453,7 @@ fun ShopResponse.toShop(): Shop {
 }
 
 fun StoreItemResponse.toShop(): Shop {
-    val isShopOpen = open?.isOpen(localDateTimeNow)?: false
+    val isShopOpen = open?.isOpen(localDateTimeNow) ?: false
 
     return Shop(
         shopId = uid ?: 0,
