@@ -87,9 +87,11 @@ import `in`.koreatech.koin.domain.model.store.StoreReviewStatistics
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.domain.model.store.StoreWithMenuV2
 import `in`.koreatech.koin.domain.util.DateFormatUtil
-import `in`.koreatech.koin.domain.util.ext.HHMM
+import `in`.koreatech.koin.domain.util.ext.localDateTimeNow
 import `in`.koreatech.koin.domain.util.ext.localDayOfWeekName
-import `in`.koreatech.koin.domain.util.ext.localTimeNow
+import `in`.koreatech.koin.domain.util.ext.prevDayOfWeekName
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 fun StoreItemResponse.toStore(): Store =
@@ -451,6 +453,8 @@ fun ShopResponse.toShop(): Shop {
 }
 
 fun StoreItemResponse.toShop(): Shop {
+    val isShopOpen = open?.isOpen(localDateTimeNow) ?: false
+
     return Shop(
         shopId = uid ?: 0,
         orderableShopId = 0, // Legacy store API does not have orderableShopId
@@ -463,7 +467,7 @@ fun StoreItemResponse.toShop(): Shop {
         reviewCount = reviewCount,
         minimumDeliveryTip = 0, // Legacy store API does not have minimumDeliveryTip
         maximumDeliveryTip = 0, // Legacy store API does not have maximumDeliveryTip
-        isOpen = isOpen ?: false,
+        isOpen = isShopOpen,
         categoryIds = categoryIds,
         images = images?.mapIndexed { index, s ->
             Shop.ShopImageUrls(
@@ -471,7 +475,7 @@ fun StoreItemResponse.toShop(): Shop {
                 isThumbnail = index == 0
             )
         } ?: emptyList(),
-        openStatus = if (isOpen == true) {
+        openStatus = if (isShopOpen) {
             OpenStatus.OPERATING
         } else {
             OpenStatus.CLOSED
@@ -479,34 +483,37 @@ fun StoreItemResponse.toShop(): Shop {
     )
 }
 
-fun StoreItemResponse.OpenResponseDTO.toOpenStatus(): OpenStatus {
-    return if (closed == true) {
-        val closeTime = LocalTime.parse(closeTime)
-        val currentTime = LocalTime.parse(localTimeNow.HHMM)
-
-        if (closeTime.isBefore(currentTime)) {
-            OpenStatus.CLOSED
-        } else {
-            OpenStatus.PREPARING
+private fun List<StoreItemResponse.OpenResponseDTO>.isOpen(now: LocalDateTime): Boolean {
+    for (openResponse in this) {
+        if (openResponse.closed == true) {
+            continue
         }
-    } else {
-        OpenStatus.OPERATING
+        if (openResponse.dayOfWeek.equals(localDayOfWeekName) &&
+            isBetweenDate(now, openResponse.openTime, openResponse.closeTime, now.toLocalDate())
+        ) {
+            return true
+        }
+        if (openResponse.dayOfWeek.equals(prevDayOfWeekName) &&
+            isBetweenDate(now, openResponse.openTime, openResponse.closeTime, now.minusDays(1).toLocalDate())
+        ) {
+            return true
+        }
     }
+    return false
 }
 
-fun ShopResponse.OrderStoreShopsOpenResponse.toOpenStatus(): OpenStatus {
-    return if (closed) {
-        val closeTime = LocalTime.parse(closeTime)
-        val currentTime = LocalTime.parse(localTimeNow.HHMM)
+private fun isBetweenDate(now: LocalDateTime, openTime: String?, closeTime: String?, criteriaDate: LocalDate): Boolean {
+    if (openTime == null || closeTime == null) return false
 
-        if (closeTime.isBefore(currentTime)) {
-            OpenStatus.CLOSED
-        } else {
-            OpenStatus.PREPARING
-        }
-    } else {
-        OpenStatus.OPERATING
+    val localOpenTime = LocalTime.parse(openTime)
+    val localCloseTime = LocalTime.parse(closeTime)
+
+    val start = LocalDateTime.of(criteriaDate, localOpenTime)
+    var end = LocalDateTime.of(criteriaDate, localCloseTime)
+    if (!localCloseTime.isAfter(localOpenTime)) {
+        end = end.plusDays(1)
     }
+    return !start.isAfter(now) && !end.isBefore(now)
 }
 
 fun ShopSummaryResponse.toShopSummary() = ShopSummary(
