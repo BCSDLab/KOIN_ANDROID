@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -29,7 +28,7 @@ fun DeveloperSettingScreen(
                     title = stringResource(it.title),
                     description = it.description?.let { res -> stringResource(res) },
                     key = it,
-                    value = DeveloperOptionUtil.getDeveloperOption(it).collectAsState(false).value,
+                    value = DeveloperOptionUtil.getDeveloperOptionFlow(it).collectAsState(false).value,
                     onValueChange = developerSettingViewModel::setDeveloperSetting
                 )
             }

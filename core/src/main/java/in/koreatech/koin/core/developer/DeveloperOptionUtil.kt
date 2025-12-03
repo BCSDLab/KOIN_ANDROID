@@ -9,8 +9,12 @@ import kotlinx.coroutines.flow.update
 object DeveloperOptionUtil {
     private val _developerOptions = MutableStateFlow(mapOf<DeveloperOption, Boolean>())
 
-    fun getDeveloperOption(developerOption: DeveloperOption): Flow<Boolean> {
+    fun getDeveloperOptionFlow(developerOption: DeveloperOption): Flow<Boolean> {
         return _developerOptions.map { it[developerOption] ?: false }.distinctUntilChanged()
+    }
+
+    fun getDeveloperOption(developerOption: DeveloperOption): Boolean {
+        return _developerOptions.value[developerOption] ?: false
     }
 
     fun setDeveloperOption(developerOption: DeveloperOption, value: Boolean) {
