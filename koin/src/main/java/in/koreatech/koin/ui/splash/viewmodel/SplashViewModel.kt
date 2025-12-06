@@ -5,21 +5,26 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.developer.DeveloperOptionUtil
+import `in`.koreatech.koin.core.developer.developerOptionList
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.model.version.Version
 import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
+import `in`.koreatech.koin.domain.usecase.setting.GetDeveloperSettingUseCase
 import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
 import `in`.koreatech.koin.domain.usecase.version.GetVersionInformationUseCase
 import `in`.koreatech.koin.domain.usecase.version.UpdateLatestVersionUseCase
 import `in`.koreatech.koin.ui.splash.state.TokenState
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val getVersionInformationUseCase: GetVersionInformationUseCase,
     private val updateLatestVersionUseCase: UpdateLatestVersionUseCase,
-    private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase
+    private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase,
+    private val getDeveloperSettingUseCase: GetDeveloperSettingUseCase
 ) : BaseViewModel() {
     private val _version = MutableLiveData<Version>()
     val version: LiveData<Version> get() = _version
@@ -29,6 +34,10 @@ class SplashViewModel @Inject constructor(
 
     private val _tokenState = SingleLiveEvent<TokenState>()
     val tokenState: LiveData<TokenState> get() = _tokenState
+
+    init {
+        getDeveloperSettings()
+    }
 
     fun checkUpdate() {
         viewModelScope.launchIgnoreCancellation {
@@ -68,6 +77,12 @@ class SplashViewModel @Inject constructor(
                 .onFailure {
                     Log.d("SplashViewModel", "Fail to update latest version: ${it.message}")
                 }
+        }
+    }
+
+    private fun getDeveloperSettings() = viewModelScope.launch {
+        developerOptionList.forEach {
+            DeveloperOptionUtil.setDeveloperOption(it, getDeveloperSettingUseCase(it.key))
         }
     }
 }

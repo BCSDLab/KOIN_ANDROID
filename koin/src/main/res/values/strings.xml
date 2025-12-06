@@ -645,8 +645,4 @@
     <string name="inspection_title">개발 중인 페이지입니다</string>
     <string name="inspection_content">죄송합니다. 현재 개발 중인 페이지입니다.\n최대한 빠르게 오픈하도록 하겠습니다.</string>
     <string name="go_to_main">메인 화면 바로가기</string>
-
-    <!-- Developer setting -->
-    <string name="developer_setting_store_title">주변상점 스프린트 활성화</string>
-    <string name="developer_setting_delivery_title">배달 스프린트 활성화</string>
 </resources>

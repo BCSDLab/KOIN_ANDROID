@@ -3,6 +3,8 @@ package `in`.koreatech.koin.feature.store.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.developer.DeveloperOption
+import `in`.koreatech.koin.core.developer.DeveloperOptionUtil
 import `in`.koreatech.koin.domain.error.store.KoinStoreException
 import `in`.koreatech.koin.domain.model.cart.CartType
 import `in`.koreatech.koin.domain.model.user.User
@@ -84,14 +86,6 @@ class StoreDetailViewModel @Inject constructor(
             fetchReview(storeId)
             checkToken()
         }
-
-    init {
-        intent {
-            getDeveloperSettingUseCase(DELIVERY_SPRINT).let {
-                reduce { state.copy(deliverySprintEnabled = it) }
-            }
-        }
-    }
 
     private fun getUserType() = intent {
         getUserStatusUseCase().collect {
@@ -271,7 +265,7 @@ class StoreDetailViewModel @Inject constructor(
     }
 
     fun getCartItemsCount() = intent {
-        if (!state.deliverySprintEnabled) return@intent
+        if (!DeveloperOptionUtil.getDeveloperOption(DeveloperOption.DeliverySprint)) return@intent
         reduce {
             state.copy(isLoading = true)
         }
@@ -324,7 +318,7 @@ class StoreDetailViewModel @Inject constructor(
     }
 
     fun getCart(type: CartType): Job = intent {
-        if (!state.deliverySprintEnabled) return@intent
+        if (!DeveloperOptionUtil.getDeveloperOption(DeveloperOption.DeliverySprint)) return@intent
         reduce { state.copy(isLoading = true) }
         getCartItemUseCase(type.name).onSuccess {
             reduce { state.copy(cart = it, cartType = type, isLoading = false) }
@@ -339,7 +333,7 @@ class StoreDetailViewModel @Inject constructor(
     }
 
     fun getCartValidate() = intent {
-        if (!state.deliverySprintEnabled) return@intent
+        if (!DeveloperOptionUtil.getDeveloperOption(DeveloperOption.DeliverySprint)) return@intent
         reduce { state.copy(isLoading = true) }
         validateCartItemsUseCase(state.cartType.name).onSuccess {
             reduce {
@@ -365,7 +359,7 @@ class StoreDetailViewModel @Inject constructor(
     }
 
     private fun getCartSummary() = intent {
-        if (!state.deliverySprintEnabled) return@intent
+        if (!DeveloperOptionUtil.getDeveloperOption(DeveloperOption.DeliverySprint)) return@intent
         if (state.cart.orderableShopId == null) return@intent
         getCartSummaryUseCase(state.cart.orderableShopId!!).onSuccess {
             reduce {
@@ -381,9 +375,5 @@ class StoreDetailViewModel @Inject constructor(
                 )
             }
         }
-    }
-
-    companion object {
-        const val DELIVERY_SPRINT = "delivery_sprint"
     }
 }

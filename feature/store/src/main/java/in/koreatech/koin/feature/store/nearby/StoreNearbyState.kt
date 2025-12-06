@@ -22,6 +22,5 @@ data class StoreNearbyState(
     val selectedMinimumPriceOption: MinimumPriceOption = MinimumPriceOption.ALL,
     val cartItemCount: Int = 0,
     val isLoggedIn: Boolean = false,
-    val showSignInDialog: Boolean = false,
-    val deliverySprintEnabled: Boolean = false // TODO: Remove after delivery sprint complete
+    val showSignInDialog: Boolean = false
 )

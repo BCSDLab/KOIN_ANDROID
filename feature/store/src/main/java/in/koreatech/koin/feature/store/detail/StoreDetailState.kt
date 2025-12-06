@@ -36,8 +36,7 @@ data class StoreDetailState(
     val cartType: CartType = CartType.DELIVERY,
     val cartValidation: CartValidation = CartValidation.NONE,
     val showCallDialog: Boolean = false,
-    val showImageDialog: Boolean = false,
-    val deliverySprintEnabled: Boolean = false // TODO: Remove after delivery sprint complete
+    val showImageDialog: Boolean = false
 )
 fun OwnerInfoModel?.hasAnyInfo(): Boolean {
     return this?.let {
