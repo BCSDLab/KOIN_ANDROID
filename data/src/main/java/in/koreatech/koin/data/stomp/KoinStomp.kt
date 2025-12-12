@@ -1,12 +1,12 @@
 package `in`.koreatech.koin.data.stomp
 
-import javax.inject.Inject
-import kotlinx.coroutines.CancellationException
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
+import kotlinx.coroutines.channels.ClosedReceiveChannelException
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.retryWhen
 import kotlinx.serialization.DeserializationStrategy
-import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.json.Json.Default.serializersModule
 import kotlinx.serialization.serializer
 import org.hildan.krossbow.stomp.StompClient
@@ -48,33 +48,21 @@ class KoinStomp @Inject constructor(
         destination: String,
         deserializer: DeserializationStrategy<T>
     ): Flow<T> {
-        return flow {
-            while (true) {
-                try {
-                    jsonStompSession.subscribe(destination, deserializer)
-                        .collect { emit(it) }
-                } catch (e: WebSocketException) {
-                    Timber.d("WebSocketException, reconnecting...")
-                    connect(true)
-                    Timber.d("Reconnected. Retrying subscription...")
-                } catch (e: CancellationException) {
-                    throw e
-                } catch (e: Exception) {
-                    throw e
-                }
-            }
+        val subscriptionFlow = flow {
+            jsonStompSession.subscribe(destination, deserializer)
+                .collect { emit(it) }
         }
-    }
-
-    suspend fun <T : Any> convertAndSend(
-        headers: String,
-        body: T? = null,
-        serializer: SerializationStrategy<T>
-    ) {
-        try {
-            jsonStompSession.convertAndSend(StompSendHeaders(headers), body, serializer)
-        } catch (e: UninitializedPropertyAccessException) {
-            throw e
+        return subscriptionFlow.retryWhen { cause, attempt ->
+            if (cause is WebSocketException || cause is ClosedReceiveChannelException) {
+                Timber.w("WebSocketException: attempting reconnect...")
+                disconnect()
+                connect(retry = true)
+                val delayTime = (1000L * attempt.coerceAtMost(5)).coerceAtMost(16000L)
+                delay(delayTime)
+                Timber.w("Re-subscribing to $destination")
+                return@retryWhen true
+            }
+            return@retryWhen false
         }
     }
 
@@ -83,10 +71,6 @@ class KoinStomp @Inject constructor(
         body: T
     ) {
         val serializer = serializersModule.serializer<T>()
-        try {
-            jsonStompSession.convertAndSend(StompSendHeaders(headers), body, serializer)
-        } catch (e: UninitializedPropertyAccessException) {
-            throw e
-        }
+        jsonStompSession.convertAndSend(StompSendHeaders(headers), body, serializer)
     }
 }
