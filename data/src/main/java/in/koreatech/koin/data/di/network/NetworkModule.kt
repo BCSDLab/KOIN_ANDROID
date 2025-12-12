@@ -59,8 +59,8 @@ object NetworkModule {
         return StompClient(okHttpWebSocketClient) {
             heartBeat =
                 HeartBeat(
-                    minSendPeriod = 4000.milliseconds, // Follow backend recommendation
-                    expectedPeriod = 4000.milliseconds
+                    minSendPeriod = 30000.milliseconds, // Follow backend recommendation
+                    expectedPeriod = 30000.milliseconds
                 )
         }
     }
