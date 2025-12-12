@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.stomp
 
 import javax.inject.Inject
 import kotlinx.coroutines.CancellationException
+import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.DeserializationStrategy
@@ -16,16 +17,18 @@ import org.hildan.krossbow.stomp.conversions.kxserialization.subscribe
 import org.hildan.krossbow.stomp.headers.StompSendHeaders
 import org.hildan.krossbow.websocket.WebSocketException
 import timber.log.Timber
+import javax.inject.Inject
 
 class KoinStomp @Inject constructor(
     private val baseUrl: String,
-    private val authToken: String,
+    private val tokenLocalDataSource: TokenLocalDataSource,
     private val stompClient: StompClient
 ) {
     var stompSession: StompSession? = null
     lateinit var jsonStompSession: StompSessionWithKxSerialization
 
     suspend fun connect(retry: Boolean) {
+        val authToken = tokenLocalDataSource.getAccessToken() ?: throw IllegalStateException("No Auth Token")
         if (stompSession == null || retry) {
             stompSession =
                 stompClient.connect(

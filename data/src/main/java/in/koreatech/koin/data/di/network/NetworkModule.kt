@@ -72,9 +72,6 @@ object NetworkModule {
         tokenLocalDataSource: TokenLocalDataSource,
         stompClient: StompClient
     ): KoinStomp {
-        return runBlocking {
-            val authToken = tokenLocalDataSource.getAccessToken() ?: ""
-            KoinStomp(baseUrl, authToken, stompClient)
-        }
+        return KoinStomp(baseUrl, tokenLocalDataSource, stompClient)
     }
 }
