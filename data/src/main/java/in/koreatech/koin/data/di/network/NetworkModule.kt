@@ -12,7 +12,6 @@ import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.stomp.KoinStomp
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.milliseconds
-import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.hildan.krossbow.stomp.StompClient

@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.stomp
 
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
+import javax.inject.Inject
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +18,6 @@ import org.hildan.krossbow.stomp.conversions.kxserialization.subscribe
 import org.hildan.krossbow.stomp.headers.StompSendHeaders
 import org.hildan.krossbow.websocket.WebSocketException
 import timber.log.Timber
-import javax.inject.Inject
 
 class KoinStomp @Inject constructor(
     private val baseUrl: String,
