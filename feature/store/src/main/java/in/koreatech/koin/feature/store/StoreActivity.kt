@@ -31,6 +31,8 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
+import `in`.koreatech.koin.core.developer.DeveloperOption
+import `in`.koreatech.koin.core.developer.DeveloperOptionUtil
 import `in`.koreatech.koin.feature.store.component.KoinStoreNavigationBar
 import `in`.koreatech.koin.feature.store.component.KoinStoreNavigationBarItem
 import `in`.koreatech.koin.feature.store.navigation.StoreNavType
@@ -78,7 +80,7 @@ class StoreActivity : ComponentActivity() {
                     }
                 }
 
-                CompositionLocalProvider(LocalDeliveryDeveloperOption provides viewModel.deliveryDeveloperSetting.collectAsState().value) {
+                CompositionLocalProvider(LocalDeliveryDeveloperOption provides DeveloperOptionUtil.getDeveloperOption(DeveloperOption.DeliverySprint)) {
                     val enableDelivery = LocalDeliveryDeveloperOption.current
 
                     Scaffold(

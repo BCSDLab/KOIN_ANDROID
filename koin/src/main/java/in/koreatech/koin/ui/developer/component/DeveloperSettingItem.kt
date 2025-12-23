@@ -17,15 +17,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.developer.DeveloperOption
 
 @Composable
 fun DeveloperSettingItem(
     title: String,
-    key: String,
+    key: DeveloperOption,
     value: Boolean,
     modifier: Modifier = Modifier,
     description: String? = null,
-    onValueChange: (String, Boolean) -> Unit = { _, _ -> }
+    onValueChange: (DeveloperOption, Boolean) -> Unit = { _, _ -> }
 ) {
     val backgroundColor by animateColorAsState(
         if (value) KoinTheme.colors.primary500 else KoinTheme.colors.neutral300,

@@ -41,6 +41,10 @@ fun StoreImageDialog(
     initialPage: Int = 0,
     onDismiss: () -> Unit = { }
 ) {
+    if (imageUrls.isEmpty()) {
+        onDismiss()
+        return
+    }
     val pagerState = rememberPagerState(
         initialPage = initialPage.coerceIn(0, imageUrls.size - 1)
     ) {
