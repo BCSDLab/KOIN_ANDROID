@@ -1,19 +1,17 @@
-package com.example.network.service
+package `in`.koreatech.koin.core.network.service
 
 import android.net.ConnectivityManager
-import android.net.ConnectivityManager.NetworkCallback
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import `in`.koreatech.koin.domain.service.NetworkConnectivityService
-import `in`.koreatech.koin.domain.state.network.NetworkStatus
-import javax.inject.Inject
+import `in`.koreatech.koin.core.network.state.NetworkStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
 
 class NetworkConnectivityServiceImpl @Inject constructor(
     private val connectivityManager: ConnectivityManager
@@ -36,7 +34,7 @@ class NetworkConnectivityServiceImpl @Inject constructor(
     }
 
     override val networkStatus: Flow<NetworkStatus> = callbackFlow {
-        val connectivityCallback = object : NetworkCallback() {
+        val connectivityCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
                 latestStatus = NetworkStatus.Connected
                 trySend(latestStatus)
