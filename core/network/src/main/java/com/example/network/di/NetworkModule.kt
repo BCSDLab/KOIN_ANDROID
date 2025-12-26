@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkMoudule {
+object NetworkModule {
     @Singleton
     @Provides
     fun provideConnectivityManager(
