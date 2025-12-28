@@ -1,7 +1,5 @@
 package `in`.koreatech.koin.data.constant
 
-import `in`.koreatech.koin.data.constant.URLConstant.USER.USER
-
 /**
  * KOIN API URL
  */
@@ -20,7 +18,10 @@ object URLConstant {
     const val COOPSHOP = "coopshop"
 
     object DINING {
+        const val DINING = "dining"
         const val DININGS = "dinings"
+        const val LIKE = "$DINING/like"
+        const val UNLIKE = "$LIKE/cancel"
     }
 
     // external url
@@ -34,7 +35,6 @@ object URLConstant {
         }
         const val SHOPS = "shops"
         const val SHOPS_V2 = "/v2/shops"
-        const val SHOPS_V3 = "/v3/shops"
         const val EVENTS = "$SHOPS/events"
         const val CATERGORIES = "$SHOPS/categories"
         const val NOTIFICATION = "$SHOPS/${PATH.SHOPID}/call-notification"
@@ -70,17 +70,12 @@ object URLConstant {
         const val FINDPASSWORD: String = "$USER/find/password"
         const val ME: String = "$USER/student/me"
         const val REFRESH: String = "$USER/refresh"
-
-        const val CHECKUSERID: String = "$USER/check/id"
-
         const val AUTH: String = "$USER/auth"
         const val EMAIL = "email"
         const val PW = "password"
         const val NOTIFICATION = "/notification"
         const val SUBSCRIBE = "$NOTIFICATION/subscribe"
         const val DETAIL = "$NOTIFICATION/subscribe/detail"
-        const val LOGIN_ID = "login_id"
-        const val LOGIN_PW = "login_pw"
         object CHECK {
             const val CHECK = "$USER/check"
             const val NICKNAME: String = "$CHECK/nickname"
