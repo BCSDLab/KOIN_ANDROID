@@ -1,19 +1,19 @@
-package com.example.network.di
+package `in`.koreatech.koin.core.network.di
 
 import android.content.Context
 import android.net.ConnectivityManager
-import com.example.network.service.NetworkConnectivityServiceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import `in`.koreatech.koin.domain.service.NetworkConnectivityService
+import `in`.koreatech.koin.core.network.service.NetworkConnectivityService
+import `in`.koreatech.koin.core.network.service.NetworkConnectivityServiceImpl
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkMoudule {
+object NetworkModule {
     @Singleton
     @Provides
     fun provideConnectivityManager(

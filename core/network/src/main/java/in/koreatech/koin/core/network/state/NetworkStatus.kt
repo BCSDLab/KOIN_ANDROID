@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.domain.state.network
+package `in`.koreatech.koin.core.network.state
 
 sealed class NetworkStatus {
     data object Connected : NetworkStatus()
