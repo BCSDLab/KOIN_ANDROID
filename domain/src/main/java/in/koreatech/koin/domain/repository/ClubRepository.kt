@@ -31,10 +31,10 @@ interface ClubRepository {
         clubManagers: List<String>,
         clubCategoryId: Int,
         location: String,
-        description: String,
-        instagram: String,
-        googleForm: String,
-        openChat: String,
+        description: String?,
+        instagram: String?,
+        googleForm: String?,
+        openChat: String?,
         phoneNumber: String,
         role: String,
         isLikeHidden: Boolean
@@ -46,10 +46,10 @@ interface ClubRepository {
         imageUrl: String,
         clubCategoryId: Int,
         location: String,
-        description: String,
-        instagram: String,
-        googleForm: String,
-        openChat: String,
+        description: String?,
+        instagram: String?,
+        googleForm: String?,
+        openChat: String?,
         phoneNumber: String,
         isLikeHidden: Boolean
     ): Result<Unit>
@@ -92,7 +92,7 @@ interface ClubRepository {
         endDate: String?,
         isAlwaysRecruiting: Boolean,
         imageUrl: String,
-        content: String
+        content: String?
     ): Result<Unit>
 
     suspend fun deleteClubRecruitment(
@@ -105,7 +105,7 @@ interface ClubRepository {
         endDate: String?,
         isAlwaysRecruiting: Boolean,
         imageUrl: String,
-        content: String
+        content: String?
     ): Result<Unit>
 
     suspend fun getClubEvents(
