@@ -57,13 +57,12 @@ class ChatRoomViewModel @Inject constructor(
     private val uploadFilesUseCase: UploadFileUseCase,
     private val chatBlockUserUseCase: ChatBlockUserUseCase
 ) : ViewModel(), ContainerHost<ChatRoomState, ChatRoomSideEffect> {
-    override val container =
-        container<ChatRoomState, ChatRoomSideEffect>(ChatRoomState(), savedStateHandle) {
-            val articleId = savedStateHandle.get<Int>(ARTICLE_ID)
-            val chatRoomId = savedStateHandle.get<Int>(CHAT_ROOM_ID)
-            checkNotNull(articleId)
-            getChatRoom(articleId, chatRoomId)
-        }
+    override val container = container<ChatRoomState, ChatRoomSideEffect>(ChatRoomState(), savedStateHandle) {
+        val articleId = savedStateHandle.get<Int>(ARTICLE_ID)
+        val chatRoomId = savedStateHandle.get<Int>(CHAT_ROOM_ID)
+        checkNotNull(articleId)
+        getChatRoom(articleId, chatRoomId)
+    }
 
     private val job = SupervisorJob()
     private val coroutineScope = CoroutineScope(Dispatchers.IO + job)
@@ -89,6 +88,7 @@ class ChatRoomViewModel @Inject constructor(
                                 )
                             }
                         }
+
                         is User.General -> {
                             reduce {
                                 state.copy(
@@ -97,6 +97,7 @@ class ChatRoomViewModel @Inject constructor(
                                 )
                             }
                         }
+
                         is User.Anonymous -> throw IllegalAccessException()
                     }
                 }
@@ -176,8 +177,7 @@ class ChatRoomViewModel @Inject constructor(
                 if (state.chatMessage.isEmpty()) {
                     reduce {
                         state.copy(
-                            chatMessage =
-                            listOf(
+                            chatMessage = listOf(
                                 Pair(
                                     LocalDateTime.parse(message.timestamp).toLocalDate(),
                                     listOf(message.toConvertedChatMessage(state.userId))
@@ -193,8 +193,7 @@ class ChatRoomViewModel @Inject constructor(
                 ) {
                     reduce {
                         state.copy(
-                            chatMessage =
-                            state.chatMessage.plus(
+                            chatMessage = state.chatMessage.plus(
                                 Pair(
                                     LocalDateTime.parse(message.timestamp).toLocalDate(),
                                     listOf(
@@ -207,8 +206,7 @@ class ChatRoomViewModel @Inject constructor(
                 } else {
                     reduce {
                         state.copy(
-                            chatMessage =
-                            state.chatMessage.dropLast(1).plus(
+                            chatMessage = state.chatMessage.dropLast(1).plus(
                                 Pair(
                                     state.chatMessage.last().first,
                                     state.chatMessage.last().second.plus(
@@ -243,8 +241,7 @@ class ChatRoomViewModel @Inject constructor(
                     if (messages.isEmpty()) {
                         state.copy(
                             isLoading = false,
-                            chatMessage =
-                            listOf(
+                            chatMessage = listOf(
                                 Pair(
                                     LocalDateTime.now().toLocalDate(),
                                     emptyList()
@@ -254,8 +251,7 @@ class ChatRoomViewModel @Inject constructor(
                     } else {
                         state.copy(
                             isLoading = false,
-                            chatMessage =
-                            messages.map { it.toConvertedChatMessage(state.userId) }
+                            chatMessage = messages.map { it.toConvertedChatMessage(state.userId) }
                                 .groupBy { it.timestamp.toLocalDate() }.toList()
                         )
                     }
@@ -332,8 +328,7 @@ class ChatRoomViewModel @Inject constructor(
         intent {
             reduce {
                 state.copy(
-                    uploadingImage =
-                    state.uploadingImage.plus(
+                    uploadingImage = state.uploadingImage.plus(
                         ConvertedChatMessage(
                             userId = state.userId,
                             userNickname = state.userNickName,

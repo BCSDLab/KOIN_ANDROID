@@ -21,5 +21,5 @@ data class ChatRoomState(
     val showBlockDialog: Boolean = false,
     val uploadingImage: List<ConvertedChatMessage> = emptyList(),
     val showImage: Pair<Boolean, Uri> = Pair(false, Uri.EMPTY),
-    val isBlocked: Boolean = false,
+    val isBlocked: Boolean = false
 ) : Parcelable
