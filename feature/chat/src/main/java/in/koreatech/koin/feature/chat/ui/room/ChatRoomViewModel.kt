@@ -80,7 +80,6 @@ class ChatRoomViewModel @Inject constructor(
                     is User.Student -> {
                         reduce {
                             state.copy(
-                                isLoading = true,
                                 userNickName = it.nickname ?: it.anonymousNickname ?: ""
                             )
                         }
@@ -89,7 +88,6 @@ class ChatRoomViewModel @Inject constructor(
                     is User.General -> {
                         reduce {
                             state.copy(
-                                isLoading = true,
                                 userNickName = it.nickname ?: it.anonymousNickname ?: ""
                             )
                         }
@@ -104,6 +102,7 @@ class ChatRoomViewModel @Inject constructor(
         articleId: Int,
         chatRoomId: Int?
     ) = intent {
+        reduce { state.copy(isLoading = true) }
         getChatRoomUseCase(articleId, chatRoomId).onSuccess { data ->
             reduce {
                 state.copy(
@@ -216,6 +215,7 @@ class ChatRoomViewModel @Inject constructor(
         articleId: Int,
         chatRoomId: Int
     ) = intent {
+        reduce { state.copy(isLoading = true) }
         getChatMessageUseCase(articleId, chatRoomId).onSuccess { messages ->
             reduce {
                 if (messages.isEmpty()) {
