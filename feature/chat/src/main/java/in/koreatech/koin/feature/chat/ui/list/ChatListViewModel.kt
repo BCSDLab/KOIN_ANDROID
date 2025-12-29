@@ -68,16 +68,15 @@ class ChatListViewModel @Inject constructor(
         }
     }
 
-    fun fetchChatList() =
-        viewModelScope.launch {
-            getChatListUseCase().collect { data ->
-                intent {
-                    reduce {
-                        state.copy(chatList = data, isLoading = false)
-                    }
+    fun fetchChatList() = viewModelScope.launch {
+        getChatListUseCase().collect { data ->
+            intent {
+                reduce {
+                    state.copy(chatList = data, isLoading = false)
                 }
             }
         }
+    }
 
     fun connectToWS() = intent {
         if (state.userId == -1) return@intent // If userId is not set, don't connect websocket

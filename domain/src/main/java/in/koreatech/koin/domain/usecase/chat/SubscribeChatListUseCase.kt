@@ -7,6 +7,6 @@ class SubscribeChatListUseCase @Inject constructor(
     private val chatRepository: ChatRepository
 ) {
     operator fun invoke(
-        userId: Int,
+        userId: Int
     ) = chatRepository.subscribeChatList(userId)
 }
