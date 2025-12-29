@@ -3,14 +3,17 @@ package `in`.koreatech.koin.data.repository
 import `in`.koreatech.koin.data.mapper.toChatMessageRequest
 import `in`.koreatech.koin.data.response.chat.toChatListItem
 import `in`.koreatech.koin.data.source.remote.ChatRemoteDataSource
+import `in`.koreatech.koin.domain.error.chat.KoinChatException
 import `in`.koreatech.koin.domain.model.chat.ChatListItem
 import `in`.koreatech.koin.domain.model.chat.ChatMessage
 import `in`.koreatech.koin.domain.model.chat.ChatRoom
 import `in`.koreatech.koin.domain.repository.ChatRepository
 import javax.inject.Inject
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import retrofit2.HttpException
 
 class ChatRepositoryImpl @Inject constructor(
     private val chatRemoteDataSource: ChatRemoteDataSource
@@ -29,18 +32,33 @@ class ChatRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getChatRoomFromArticleId(articleId: Int): Flow<ChatRoom> {
-        return flow {
-            emit(chatRemoteDataSource.getChatRoomFromArticleId(articleId).toChatRoom())
+    override suspend fun getChatRoomFromArticleId(articleId: Int): Result<ChatRoom> {
+        return runCatching {
+            chatRemoteDataSource.getChatRoomFromArticleId(articleId).toChatRoom()
+        }.onFailure {
+            return Result.failure(
+                when (it) {
+                    is HttpException -> {
+                        if (it.code() == 403) {
+                            KoinChatException.BlockedException()
+                        } else {
+                            it
+                        }
+                    }
+
+                    is CancellationException -> throw it
+                    else -> it
+                }
+            )
         }
     }
 
     override suspend fun getChatRoom(
         articleId: Int,
         chatRoomId: Int
-    ): Flow<ChatRoom> {
-        return flow {
-            emit(chatRemoteDataSource.getChatRoom(articleId, chatRoomId).toChatRoom())
+    ): Result<ChatRoom> {
+        return runCatching {
+            chatRemoteDataSource.getChatRoom(articleId, chatRoomId).toChatRoom()
         }
     }
 

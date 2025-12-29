@@ -1,10 +1,12 @@
 package `in`.koreatech.koin.feature.chat.ui.room
 
 import android.net.Uri
+import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.error.chat.KoinChatException
 import `in`.koreatech.koin.domain.model.chat.ChatMessage
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
@@ -12,7 +14,6 @@ import `in`.koreatech.koin.domain.usecase.chat.ChatBlockUserUseCase
 import `in`.koreatech.koin.domain.usecase.chat.ChatWSConnectUseCase
 import `in`.koreatech.koin.domain.usecase.chat.ChatWSDisconnectUseCase
 import `in`.koreatech.koin.domain.usecase.chat.GetChatMessageUseCase
-import `in`.koreatech.koin.domain.usecase.chat.GetChatRoomFromArticleIdUseCase
 import `in`.koreatech.koin.domain.usecase.chat.GetChatRoomUseCase
 import `in`.koreatech.koin.domain.usecase.chat.SendMessageUseCase
 import `in`.koreatech.koin.domain.usecase.chat.SubscribeChatRoomUseCase
@@ -40,7 +41,6 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import retrofit2.HttpException
 import timber.log.Timber
 
 @HiltViewModel
@@ -48,7 +48,6 @@ class ChatRoomViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val chatWSConnectUseCase: ChatWSConnectUseCase,
     private val chatWSDisconnectUseCase: ChatWSDisconnectUseCase,
-    private val getChatRoomFromArticleIdUseCase: GetChatRoomFromArticleIdUseCase,
     private val getChatRoomUseCase: GetChatRoomUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
     private val subscribeChatRoomUseCase: SubscribeChatRoomUseCase,
@@ -63,11 +62,7 @@ class ChatRoomViewModel @Inject constructor(
             val articleId = savedStateHandle.get<Int>(ARTICLE_ID)
             val chatRoomId = savedStateHandle.get<Int>(CHAT_ROOM_ID)
             checkNotNull(articleId)
-            if (chatRoomId == null) {
-                createAndGetChatRoom(articleId)
-            } else {
-                getChatRoom(articleId, chatRoomId)
-            }
+            getChatRoom(articleId, chatRoomId)
         }
 
     private val job = SupervisorJob()
@@ -108,70 +103,33 @@ class ChatRoomViewModel @Inject constructor(
             }
         }
 
-    private fun createAndGetChatRoom(articleId: Int) =
-        viewModelScope.launch {
-            getChatRoomFromArticleIdUseCase(articleId).catch {
-                if (it is HttpException) {
-                    if (it.code() == 403) {
-                        intent {
-                            reduce {
-                                state.copy(isBlocked = true)
-                            }
-                            postSideEffect(ChatRoomSideEffect.BlockedByUser)
-                        }
-                    }
-                } else {
-                    Timber.e(it)
-                }
-            }.collectLatest { data ->
-                intent {
-                    reduce {
-                        state.copy(
-                            articleId = data.articleId,
-                            chatRoomId = data.chatRoomId,
-                            userId = data.userId,
-                            articleTitle = data.articleTitle,
-                            chatPartnerProfileImage = Uri.parse(data.chatPartnerProfileImage ?: "")
-                        )
-                    }
-                    getChatMessages(data.articleId, data.chatRoomId)
-                }
-            }
-            _connectChannel.send(true)
-        }
-
     private fun getChatRoom(
         articleId: Int,
-        chatRoomId: Int
-    ) = viewModelScope.launch {
-        getChatRoomUseCase(articleId, chatRoomId).catch {
-            if (it is HttpException) {
-                if (it.code() == 403) {
-                    intent {
-                        reduce {
-                            state.copy(isBlocked = true)
-                        }
-                        postSideEffect(ChatRoomSideEffect.BlockedByUser)
-                    }
-                }
-            } else {
-                Timber.e(it)
+        chatRoomId: Int?
+    ) = intent {
+        getChatRoomUseCase(articleId, chatRoomId).onSuccess { data ->
+            reduce {
+                state.copy(
+                    articleId = data.articleId,
+                    chatRoomId = data.chatRoomId,
+                    userId = data.userId,
+                    articleTitle = data.articleTitle,
+                    chatPartnerProfileImage = (data.chatPartnerProfileImage ?: "").toUri(),
+                    isLoading = false
+                )
             }
-        }.collectLatest { data ->
-            intent {
-                reduce {
-                    state.copy(
-                        articleId = data.articleId,
-                        chatRoomId = data.chatRoomId,
-                        userId = data.userId,
-                        articleTitle = data.articleTitle,
-                        chatPartnerProfileImage = Uri.parse(data.chatPartnerProfileImage ?: "")
-                    )
+            getChatMessages(data.articleId, data.chatRoomId)
+            _connectChannel.send(true)
+        }.onFailure { e ->
+            when (e) {
+                is KoinChatException.BlockedException -> {
+                    reduce { state.copy(isBlocked = true) }
+                    postSideEffect(ChatRoomSideEffect.BlockedByUser)
                 }
-                getChatMessages(data.articleId, data.chatRoomId)
+
+                else -> Timber.e(e)
             }
         }
-        _connectChannel.send(true)
     }
 
     fun connectToWS() =
