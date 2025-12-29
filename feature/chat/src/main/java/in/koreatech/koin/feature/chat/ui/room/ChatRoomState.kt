@@ -3,7 +3,7 @@ package `in`.koreatech.koin.feature.chat.ui.room
 import android.net.Uri
 import android.os.Parcelable
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
-import java.time.LocalDate
+import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessages
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -15,7 +15,7 @@ data class ChatRoomState(
     val userNickName: String = "",
     val articleTitle: String = "",
     val chatPartnerProfileImage: Uri? = null,
-    val chatMessage: List<Pair<LocalDate, List<ConvertedChatMessage>>> = emptyList(),
+    val chatMessage: List<ConvertedChatMessages> = emptyList(),
     val chatInputValue: String = "",
     val showMenu: Boolean = false,
     val showBlockDialog: Boolean = false,

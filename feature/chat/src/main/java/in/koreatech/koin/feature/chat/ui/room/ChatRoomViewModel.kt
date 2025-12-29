@@ -19,8 +19,8 @@ import `in`.koreatech.koin.domain.usecase.chat.SubscribeChatRoomUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetLostAndFoundPreSignedUrlUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
-import `in`.koreatech.koin.feature.chat.ui.room.mapper.appendMessage
-import `in`.koreatech.koin.feature.chat.ui.room.mapper.mapToConvertedChatMessage
+import `in`.koreatech.koin.feature.chat.ui.model.appendMessage
+import `in`.koreatech.koin.feature.chat.ui.model.mapToConvertedChatMessages
 import java.net.UnknownHostException
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -183,7 +183,7 @@ class ChatRoomViewModel @Inject constructor(
             reduce {
                 state.copy(
                     isLoading = false,
-                    chatMessage = messages.mapToConvertedChatMessage(state.userId)
+                    chatMessage = messages.mapToConvertedChatMessages(state.userId)
                 )
             }
         }.onFailure {
