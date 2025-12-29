@@ -74,30 +74,30 @@ class ChatRoomViewModel @Inject constructor(
     }
 
     private fun getUserInfo() = intent {
-            getUserStatusUseCase().catch {
-                Timber.e(it)
-            }.collectLatest {
-                when (it) {
-                    is User.Student -> {
-                        reduce {
-                            state.copy(
-                                userNickName = it.nickname ?: it.anonymousNickname ?: ""
-                            )
-                        }
+        getUserStatusUseCase().catch {
+            Timber.e(it)
+        }.collectLatest {
+            when (it) {
+                is User.Student -> {
+                    reduce {
+                        state.copy(
+                            userNickName = it.nickname ?: it.anonymousNickname ?: ""
+                        )
                     }
-
-                    is User.General -> {
-                        reduce {
-                            state.copy(
-                                userNickName = it.nickname ?: it.anonymousNickname ?: ""
-                            )
-                        }
-                    }
-
-                    is User.Anonymous -> throw IllegalAccessException()
                 }
+
+                is User.General -> {
+                    reduce {
+                        state.copy(
+                            userNickName = it.nickname ?: it.anonymousNickname ?: ""
+                        )
+                    }
+                }
+
+                is User.Anonymous -> throw IllegalAccessException()
             }
         }
+    }
 
     private fun getChatRoom(
         articleId: Int,
@@ -274,7 +274,6 @@ class ChatRoomViewModel @Inject constructor(
                 state.copy(
                     uploadingImage = state.uploadingImage.filter { it.content != imageUri.toString() }
                 )
-
             }
         }.onFailure {
             postSideEffect(ChatRoomSideEffect.FailedToUploadImage)
@@ -337,7 +336,6 @@ class ChatRoomViewModel @Inject constructor(
             state.copy(chatInputValue = "")
         }
     }
-
 
     fun blockUser() = intent {
         chatBlockUserUseCase(state.articleId, state.chatRoomId).onSuccess {
