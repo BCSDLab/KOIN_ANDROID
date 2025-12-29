@@ -210,7 +210,6 @@ class ChatRoomViewModel @Inject constructor(
                 }
             }
         }
-        getChatMessages(articleId, chatRoomId)
     }
 
     private fun getChatMessages(
