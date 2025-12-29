@@ -20,6 +20,7 @@ import `in`.koreatech.koin.domain.usecase.presignedurl.GetLostAndFoundPreSignedU
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
 import `in`.koreatech.koin.feature.chat.ui.model.toConvertedChatMessage
+import `in`.koreatech.koin.feature.chat.ui.room.mapper.mapToConvertedChatMessage
 import java.net.UnknownHostException
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -218,23 +219,10 @@ class ChatRoomViewModel @Inject constructor(
         reduce { state.copy(isLoading = true) }
         getChatMessageUseCase(articleId, chatRoomId).onSuccess { messages ->
             reduce {
-                if (messages.isEmpty()) {
-                    state.copy(
-                        isLoading = false,
-                        chatMessage = listOf(
-                            Pair(
-                                LocalDateTime.now().toLocalDate(),
-                                emptyList()
-                            )
-                        )
-                    )
-                } else {
-                    state.copy(
-                        isLoading = false,
-                        chatMessage = messages.map { it.toConvertedChatMessage(state.userId) }
-                            .groupBy { it.timestamp.toLocalDate() }.toList()
-                    )
-                }
+                state.copy(
+                    isLoading = false,
+                    chatMessage = messages.mapToConvertedChatMessage(state.userId)
+                )
             }
         }.onFailure {
             Timber.e(it)
