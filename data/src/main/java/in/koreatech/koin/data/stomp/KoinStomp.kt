@@ -9,7 +9,6 @@ import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.serializer
 import org.hildan.krossbow.stomp.StompClient
 import org.hildan.krossbow.stomp.StompSession
-import org.hildan.krossbow.stomp.conversions.kxserialization.StompSessionWithKxSerialization
 import org.hildan.krossbow.stomp.conversions.kxserialization.json.withJsonConversions
 import org.hildan.krossbow.stomp.conversions.kxserialization.subscribe
 import org.hildan.krossbow.stomp.headers.StompSendHeaders
@@ -22,17 +21,20 @@ class KoinStomp @Inject constructor(
     private val stompClient: StompClient
 ) {
     var stompSession: StompSession? = null
-    lateinit var jsonStompSession: StompSessionWithKxSerialization
 
-    suspend fun connect(retry: Boolean) {
-        if (stompSession == null || retry) {
-            stompSession =
-                stompClient.connect(
-                    url = "${baseUrl.replaceFirst("https", "wss")}/ws-stomp",
-                    customStompConnectHeaders = mapOf("Authorization" to authToken)
-                )
-            jsonStompSession = stompSession!!.withJsonConversions()
+    suspend fun connect(): StompSession {
+        Timber.d("Connecting to STOMP...")
+        return stompClient.connect(
+            url = "${baseUrl.replaceFirst("https", "wss")}/ws-stomp",
+            customStompConnectHeaders = mapOf("Authorization" to authToken)
+        ).also {
+            stompSession = it
+            Timber.d("STOMP connected.")
         }
+    }
+
+    private suspend fun getSession(): StompSession {
+        return stompSession ?: connect()
     }
 
     suspend fun disconnect() {
@@ -47,11 +49,11 @@ class KoinStomp @Inject constructor(
         return flow {
             while (true) {
                 try {
-                    jsonStompSession.subscribe(destination, deserializer)
+                    getSession().withJsonConversions().subscribe(destination, deserializer)
                         .collect { emit(it) }
                 } catch (e: WebSocketException) {
                     Timber.d("WebSocketException, reconnecting...")
-                    connect(true)
+                    connect()
                     Timber.d("Reconnected. Retrying subscription...")
                 } catch (e: CancellationException) {
                     throw e
@@ -68,9 +70,9 @@ class KoinStomp @Inject constructor(
         serializer: SerializationStrategy<T>
     ) {
         try {
-            jsonStompSession.convertAndSend(StompSendHeaders(headers), body, serializer)
-        } catch (e: UninitializedPropertyAccessException) {
-            throw e
+            getSession().withJsonConversions().convertAndSend(StompSendHeaders(headers), body, serializer)
+        } catch (e: Exception) {
+            Timber.e(e)
         }
     }
 
