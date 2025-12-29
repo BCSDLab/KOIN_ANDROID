@@ -11,16 +11,5 @@ class SendMessageUseCase @Inject constructor(
         articleId: Int,
         chatRoomId: Int,
         message: ChatMessage
-    ): Result<Unit> = chatRepository.sendMessage(articleId, chatRoomId, message).onFailure {
-        when (it) {
-            is UninitializedPropertyAccessException -> {
-                chatRepository.connectWS(retry = true)
-                invoke(articleId, chatRoomId, message)
-            }
-
-            else -> {
-                throw it
-            }
-        }
-    }
+    ): Result<Unit> = chatRepository.sendMessage(articleId, chatRoomId, message)
 }

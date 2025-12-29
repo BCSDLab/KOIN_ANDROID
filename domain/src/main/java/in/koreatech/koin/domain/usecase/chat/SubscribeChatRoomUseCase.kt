@@ -10,15 +10,5 @@ class SubscribeChatRoomUseCase @Inject constructor(
     operator fun invoke(
         articleId: Int,
         chatRoomId: Int
-    ) = chatRepository.subscribeChatRoom(articleId, chatRoomId).catch {
-        when (it) {
-            is UninitializedPropertyAccessException -> {
-                chatRepository.connectWS(retry = true)
-            }
-
-            else -> {
-                throw it
-            }
-        }
-    }
+    ) = chatRepository.subscribeChatRoom(articleId, chatRoomId)
 }
