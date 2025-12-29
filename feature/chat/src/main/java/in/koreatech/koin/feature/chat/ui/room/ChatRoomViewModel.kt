@@ -225,38 +225,29 @@ class ChatRoomViewModel @Inject constructor(
     private fun getChatMessages(
         articleId: Int,
         chatRoomId: Int
-    ) = viewModelScope.launch {
-        getChatMessageUseCase(articleId, chatRoomId).catch {
-            if (it is UnknownHostException) {
-                // Android OS disconnect network when the device enter idle.
-                // So, we set shouldReconnect to true
-                // And reconnect websocket when activity is resumed
-                _connectChannel.send(true)
-            } else {
-                Timber.e(it)
-            }
-        }.collect { messages ->
-            intent {
-                reduce {
-                    if (messages.isEmpty()) {
-                        state.copy(
-                            isLoading = false,
-                            chatMessage = listOf(
-                                Pair(
-                                    LocalDateTime.now().toLocalDate(),
-                                    emptyList()
-                                )
+    ) = intent {
+        getChatMessageUseCase(articleId, chatRoomId).onSuccess { messages ->
+            reduce {
+                if (messages.isEmpty()) {
+                    state.copy(
+                        isLoading = false,
+                        chatMessage = listOf(
+                            Pair(
+                                LocalDateTime.now().toLocalDate(),
+                                emptyList()
                             )
                         )
-                    } else {
-                        state.copy(
-                            isLoading = false,
-                            chatMessage = messages.map { it.toConvertedChatMessage(state.userId) }
-                                .groupBy { it.timestamp.toLocalDate() }.toList()
-                        )
-                    }
+                    )
+                } else {
+                    state.copy(
+                        isLoading = false,
+                        chatMessage = messages.map { it.toConvertedChatMessage(state.userId) }
+                            .groupBy { it.timestamp.toLocalDate() }.toList()
+                    )
                 }
             }
+        }.onFailure {
+            Timber.e(it)
         }
     }
 

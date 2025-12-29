@@ -65,12 +65,15 @@ class ChatRepositoryImpl @Inject constructor(
     override suspend fun getChatMessages(
         articleId: Int,
         chatRoomId: Int
-    ): Flow<List<ChatMessage>> {
-        return flow {
-            emit(
-                chatRemoteDataSource.getChatMessages(articleId, chatRoomId)
-                    .map { it.toChatMessage() }
-            )
+    ): Result<List<ChatMessage>> {
+        return runCatching {
+            chatRemoteDataSource.getChatMessages(articleId, chatRoomId).map { it.toChatMessage() }
+        }.onFailure {
+            if (it is CancellationException) {
+                throw it
+            } else {
+                return Result.failure(it)
+            }
         }
     }
 

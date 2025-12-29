@@ -22,7 +22,7 @@ interface ChatRepository {
     suspend fun getChatMessages(
         articleId: Int,
         chatRoomId: Int
-    ): Flow<List<ChatMessage>>
+    ): Result<List<ChatMessage>>
 
     fun subscribeChatRoom(
         articleId: Int,
