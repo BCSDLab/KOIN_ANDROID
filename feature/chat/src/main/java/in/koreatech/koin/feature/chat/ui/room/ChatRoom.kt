@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.provider.OpenableColumns
 import android.widget.Toast
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -85,6 +86,7 @@ fun ChatRoom(
 
     val uiState by viewModel.collectAsState()
     val lifecycleOwner = LocalLifecycleOwner.current
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
     LaunchedEffect(Unit) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -138,7 +140,7 @@ fun ChatRoom(
                     }
                 },
                 onNavigationIconClick = {
-                    (context as Activity).finish()
+                    onBackPressedDispatcher?.onBackPressed()
                 }
             )
         },
