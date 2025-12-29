@@ -19,7 +19,7 @@ import `in`.koreatech.koin.domain.usecase.chat.SubscribeChatRoomUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetLostAndFoundPreSignedUrlUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
-import `in`.koreatech.koin.feature.chat.ui.model.toConvertedChatMessage
+import `in`.koreatech.koin.feature.chat.ui.room.mapper.appendMessage
 import `in`.koreatech.koin.feature.chat.ui.room.mapper.mapToConvertedChatMessage
 import java.net.UnknownHostException
 import java.time.LocalDateTime
@@ -166,48 +166,10 @@ class ChatRoomViewModel @Inject constructor(
                 Timber.e(it)
             }
         }.collect { message ->
-            if (state.chatMessage.isEmpty()) {
-                reduce {
-                    state.copy(
-                        chatMessage = listOf(
-                            Pair(
-                                LocalDateTime.parse(message.timestamp).toLocalDate(),
-                                listOf(message.toConvertedChatMessage(state.userId))
-                            )
-                        )
-                    )
-                }
-                return@collect
-            }
-            if (state.chatMessage.last().first <
-                LocalDateTime.parse(message.timestamp)
-                    .toLocalDate()
-            ) {
-                reduce {
-                    state.copy(
-                        chatMessage = state.chatMessage.plus(
-                            Pair(
-                                LocalDateTime.parse(message.timestamp).toLocalDate(),
-                                listOf(
-                                    message.toConvertedChatMessage(state.userId)
-                                )
-                            )
-                        )
-                    )
-                }
-            } else {
-                reduce {
-                    state.copy(
-                        chatMessage = state.chatMessage.dropLast(1).plus(
-                            Pair(
-                                state.chatMessage.last().first,
-                                state.chatMessage.last().second.plus(
-                                    message.toConvertedChatMessage(state.userId)
-                                )
-                            )
-                        )
-                    )
-                }
+            reduce {
+                state.copy(
+                    chatMessage = state.chatMessage.appendMessage(message, state.userId)
+                )
             }
         }
     }
