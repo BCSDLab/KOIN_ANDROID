@@ -26,13 +26,13 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.chat.R
 import `in`.koreatech.koin.feature.chat.ui.component.ChatProgressIndicator
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
-import java.time.LocalDate
+import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessages
 import kotlinx.coroutines.launch
 
 @Composable
 fun ChatRoomContent(
     isLoading: Boolean,
-    messages: List<Pair<LocalDate, List<ConvertedChatMessage>>>,
+    messages: List<ConvertedChatMessages>,
     uploadingImage: List<ConvertedChatMessage>,
     chatPartnerProfileImage: Uri?,
     chatInputValue: String,
@@ -59,16 +59,16 @@ fun ChatRoomContent(
         }
         Box(
             modifier =
-            modifier
-                .fillMaxSize(),
+                modifier
+                    .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             SubcomposeAsyncImage(
                 model =
-                ImageRequest.Builder(LocalContext.current)
-                    .data(showImage.second)
-                    .crossfade(true)
-                    .build(),
+                    ImageRequest.Builder(LocalContext.current)
+                        .data(showImage.second)
+                        .crossfade(true)
+                        .build(),
                 loading = {
                     Box(
                         modifier = Modifier.fillMaxSize(),
@@ -93,10 +93,10 @@ fun ChatRoomContent(
         ) {
             LazyColumn(
                 modifier =
-                Modifier
-                    .fillMaxSize()
-                    .background(KoinTheme.colors.neutral0)
-                    .weight(1f),
+                    Modifier
+                        .fillMaxSize()
+                        .background(KoinTheme.colors.neutral0)
+                        .weight(1f),
                 state = scrollState,
                 reverseLayout = true,
                 verticalArrangement = Arrangement.Top
