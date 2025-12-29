@@ -1,9 +1,9 @@
 package `in`.koreatech.koin.data.stomp
 
 import javax.inject.Inject
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.retry
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.serializer
@@ -47,19 +47,15 @@ class KoinStomp @Inject constructor(
         deserializer: DeserializationStrategy<T>
     ): Flow<T> {
         return flow {
-            while (true) {
-                try {
-                    getSession().withJsonConversions().subscribe(destination, deserializer)
-                        .collect { emit(it) }
-                } catch (e: WebSocketException) {
-                    Timber.d("WebSocketException, reconnecting...")
-                    connect()
-                    Timber.d("Reconnected. Retrying subscription...")
-                } catch (e: CancellationException) {
-                    throw e
-                } catch (e: Exception) {
-                    throw e
-                }
+            getSession().withJsonConversions().subscribe(destination, deserializer).collect { emit(it) }
+        }.retry { e ->
+            if (e is WebSocketException) {
+                Timber.d("WebSocketException, reconnecting...")
+                connect()
+                Timber.d("Reconnected. Retrying subscription...")
+                return@retry true
+            } else {
+                return@retry false
             }
         }
     }
