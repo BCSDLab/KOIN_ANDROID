@@ -22,5 +22,4 @@ data class ChatRoomState(
     val uploadingImage: List<ConvertedChatMessage> = emptyList(),
     val showImage: Pair<Boolean, Uri> = Pair(false, Uri.EMPTY),
     val isBlocked: Boolean = false,
-    val shouldReconnect: Boolean = false
 ) : Parcelable

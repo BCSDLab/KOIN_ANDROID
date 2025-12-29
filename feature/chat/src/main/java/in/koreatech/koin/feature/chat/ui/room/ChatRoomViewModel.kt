@@ -26,10 +26,11 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.hildan.krossbow.stomp.LostReceiptException
 import org.hildan.krossbow.websocket.WebSocketConnectionException
 import org.hildan.krossbow.websocket.reconnection.WebSocketReconnectionException
@@ -71,6 +72,8 @@ class ChatRoomViewModel @Inject constructor(
 
     private val job = SupervisorJob()
     private val coroutineScope = CoroutineScope(Dispatchers.IO + job)
+    private val _connectChannel = Channel<Boolean>()
+    val connectChannel = _connectChannel.receiveAsFlow()
 
     init {
         getUserInfo()
@@ -134,7 +137,7 @@ class ChatRoomViewModel @Inject constructor(
                     getChatMessages(data.articleId, data.chatRoomId)
                 }
             }
-            connectToWS()
+            _connectChannel.send(true)
         }
 
     private fun getChatRoom(
@@ -168,10 +171,10 @@ class ChatRoomViewModel @Inject constructor(
                 getChatMessages(data.articleId, data.chatRoomId)
             }
         }
-        connectToWS()
+        _connectChannel.send(true)
     }
 
-    private fun connectToWS() =
+    fun connectToWS() =
         viewModelScope.launch {
             intent {
                 chatWSConnectUseCase().onSuccess {
@@ -197,13 +200,13 @@ class ChatRoomViewModel @Inject constructor(
                 // Android OS disconnect network when the device enter idle.
                 // So, we set shouldReconnect to true
                 // And reconnect websocket when activity is resumed
-                setShouldReconnectState(true)
+                _connectChannel.send(true)
             } else if (it is WebSocketConnectionException) {
                 if (it.cause is UnknownHostException) {
                     // Android OS disconnect network when the device enter idle.
                     // So, we set shouldReconnect to true
                     // And reconnect websocket when activity is resumed
-                    setShouldReconnectState(true)
+                    _connectChannel.send(true)
                 } else {
                     Timber.e(it)
                 }
@@ -272,7 +275,7 @@ class ChatRoomViewModel @Inject constructor(
                 // Android OS disconnect network when the device enter idle.
                 // So, we set shouldReconnect to true
                 // And reconnect websocket when activity is resumed
-                setShouldReconnectState(true)
+                _connectChannel.send(true)
             } else {
                 Timber.e(it)
             }
@@ -313,12 +316,6 @@ class ChatRoomViewModel @Inject constructor(
                     Timber.e(it)
                 }
             }
-        }
-
-    fun reconnect() =
-        intent {
-            getChatRoom(state.articleId, state.chatRoomId)
-            setShouldReconnectState(false)
         }
 
     fun onChatInputValueChange(value: String) =
@@ -476,15 +473,6 @@ class ChatRoomViewModel @Inject constructor(
             state.copy(showImage = Pair(showImageState, url))
         }
     }
-
-    fun setShouldReconnectState(shouldReconnect: Boolean) =
-        intent {
-            withContext(Dispatchers.Main) {
-                reduce {
-                    state.copy(shouldReconnect = shouldReconnect)
-                }
-            }
-        }
 
     companion object {
         const val ARTICLE_ID = "article_id"
