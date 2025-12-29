@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerializationStrategy
-import kotlinx.serialization.json.Json.Default.serializersModule
 import kotlinx.serialization.serializer
 import org.hildan.krossbow.stomp.StompClient
 import org.hildan.krossbow.stomp.StompSession
@@ -79,11 +78,6 @@ class KoinStomp @Inject constructor(
         headers: String,
         body: T
     ) {
-        val serializer = serializersModule.serializer<T>()
-        try {
-            jsonStompSession.convertAndSend(StompSendHeaders(headers), body, serializer)
-        } catch (e: UninitializedPropertyAccessException) {
-            throw e
-        }
+        convertAndSend(headers, body, serializer())
     }
 }
