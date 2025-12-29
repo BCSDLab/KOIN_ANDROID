@@ -84,6 +84,10 @@ class ChatRepositoryImpl @Inject constructor(
         return chatRemoteDataSource.subscribeChatRoom(articleId, chatRoomId).map { it.toChatMessage() }
     }
 
+    override fun subscribeChatList(userId: Int): Flow<List<ChatListItem>> {
+        return chatRemoteDataSource.subscribeChatList(userId).map { it.map { it.toChatListItem() } }
+    }
+
     override suspend fun sendMessage(
         articleId: Int,
         chatRoomId: Int,
