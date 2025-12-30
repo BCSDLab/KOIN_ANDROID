@@ -1,16 +1,14 @@
 package `in`.koreatech.koin.data.stomp
 
 import javax.inject.Inject
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.retry
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerializationStrategy
-import kotlinx.serialization.json.Json.Default.serializersModule
 import kotlinx.serialization.serializer
 import org.hildan.krossbow.stomp.StompClient
 import org.hildan.krossbow.stomp.StompSession
-import org.hildan.krossbow.stomp.conversions.kxserialization.StompSessionWithKxSerialization
 import org.hildan.krossbow.stomp.conversions.kxserialization.json.withJsonConversions
 import org.hildan.krossbow.stomp.conversions.kxserialization.subscribe
 import org.hildan.krossbow.stomp.headers.StompSendHeaders
@@ -22,18 +20,21 @@ class KoinStomp @Inject constructor(
     private val authToken: String,
     private val stompClient: StompClient
 ) {
-    var stompSession: StompSession? = null
-    lateinit var jsonStompSession: StompSessionWithKxSerialization
+    private var stompSession: StompSession? = null
 
-    suspend fun connect(retry: Boolean) {
-        if (stompSession == null || retry) {
-            stompSession =
-                stompClient.connect(
-                    url = "${baseUrl.replaceFirst("https", "wss")}/ws-stomp",
-                    customStompConnectHeaders = mapOf("Authorization" to authToken)
-                )
-            jsonStompSession = stompSession!!.withJsonConversions()
+    suspend fun connect(): StompSession {
+        Timber.d("Connecting to STOMP...")
+        return stompClient.connect(
+            url = "${baseUrl.replaceFirst("https", "wss")}/ws-stomp",
+            customStompConnectHeaders = mapOf("Authorization" to authToken)
+        ).also {
+            stompSession = it
+            Timber.d("STOMP connected.")
         }
+    }
+
+    private suspend fun getSession(): StompSession {
+        return stompSession ?: connect()
     }
 
     suspend fun disconnect() {
@@ -46,19 +47,15 @@ class KoinStomp @Inject constructor(
         deserializer: DeserializationStrategy<T>
     ): Flow<T> {
         return flow {
-            while (true) {
-                try {
-                    jsonStompSession.subscribe(destination, deserializer)
-                        .collect { emit(it) }
-                } catch (e: WebSocketException) {
-                    Timber.d("WebSocketException, reconnecting...")
-                    connect(true)
-                    Timber.d("Reconnected. Retrying subscription...")
-                } catch (e: CancellationException) {
-                    throw e
-                } catch (e: Exception) {
-                    throw e
-                }
+            getSession().withJsonConversions().subscribe(destination, deserializer).collect { emit(it) }
+        }.retry { e ->
+            if (e is WebSocketException) {
+                Timber.d("WebSocketException, reconnecting...")
+                connect()
+                Timber.d("Reconnected. Retrying subscription...")
+                return@retry true
+            } else {
+                return@retry false
             }
         }
     }
@@ -69,9 +66,9 @@ class KoinStomp @Inject constructor(
         serializer: SerializationStrategy<T>
     ) {
         try {
-            jsonStompSession.convertAndSend(StompSendHeaders(headers), body, serializer)
-        } catch (e: UninitializedPropertyAccessException) {
-            throw e
+            getSession().withJsonConversions().convertAndSend(StompSendHeaders(headers), body, serializer)
+        } catch (e: Exception) {
+            Timber.e(e)
         }
     }
 
@@ -79,11 +76,6 @@ class KoinStomp @Inject constructor(
         headers: String,
         body: T
     ) {
-        val serializer = serializersModule.serializer<T>()
-        try {
-            jsonStompSession.convertAndSend(StompSendHeaders(headers), body, serializer)
-        } catch (e: UninitializedPropertyAccessException) {
-            throw e
-        }
+        convertAndSend(headers, body, serializer())
     }
 }

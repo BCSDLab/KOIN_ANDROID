@@ -15,8 +15,8 @@ import kotlinx.coroutines.flow.map
 class ChatRepositoryImpl @Inject constructor(
     private val chatRemoteDataSource: ChatRemoteDataSource
 ) : ChatRepository {
-    override suspend fun connectWS(retry: Boolean) {
-        chatRemoteDataSource.connectWS(retry)
+    override suspend fun connectWS() {
+        chatRemoteDataSource.connectWS()
     }
 
     override suspend fun disconnectWS() {

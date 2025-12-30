@@ -16,8 +16,8 @@ class ChatRemoteDataSource @Inject constructor(
     private val chatAuthApi: ChatAuthApi,
     private val koinStomp: KoinStomp
 ) {
-    suspend fun connectWS(retry: Boolean) {
-        koinStomp.connect(retry)
+    suspend fun connectWS() {
+        koinStomp.connect()
     }
 
     suspend fun disconnectWS() {

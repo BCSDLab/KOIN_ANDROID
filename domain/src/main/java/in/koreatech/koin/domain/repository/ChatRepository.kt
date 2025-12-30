@@ -6,7 +6,7 @@ import `in`.koreatech.koin.domain.model.chat.ChatRoom
 import kotlinx.coroutines.flow.Flow
 
 interface ChatRepository {
-    suspend fun connectWS(retry: Boolean = false)
+    suspend fun connectWS()
 
     suspend fun disconnectWS()
 
