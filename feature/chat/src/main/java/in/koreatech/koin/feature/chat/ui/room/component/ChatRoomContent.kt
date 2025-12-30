@@ -26,13 +26,13 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.chat.R
 import `in`.koreatech.koin.feature.chat.ui.component.ChatProgressIndicator
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
-import java.time.LocalDate
+import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessages
 import kotlinx.coroutines.launch
 
 @Composable
 fun ChatRoomContent(
     isLoading: Boolean,
-    messages: List<Pair<LocalDate, List<ConvertedChatMessage>>>,
+    messages: List<ConvertedChatMessages>,
     uploadingImage: List<ConvertedChatMessage>,
     chatPartnerProfileImage: Uri?,
     chatInputValue: String,
