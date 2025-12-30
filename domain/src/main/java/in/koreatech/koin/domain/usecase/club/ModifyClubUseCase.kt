@@ -25,10 +25,10 @@ class ModifyClubUseCase @Inject constructor(
             imageUrl = imageUrl,
             clubCategoryId = clubCategoryId,
             location = location,
-            description = description,
-            instagram = instagram,
-            googleForm = googleForm,
-            openChat = openChat,
+            description = description.ifEmpty { null },
+            instagram = instagram.ifEmpty { null },
+            googleForm = googleForm.ifEmpty { null },
+            openChat = openChat.ifEmpty { null },
             phoneNumber = phoneNumber,
             isLikeHidden = isLikeHidden
         )
