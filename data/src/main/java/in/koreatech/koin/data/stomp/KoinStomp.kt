@@ -20,7 +20,7 @@ class KoinStomp @Inject constructor(
     private val authToken: String,
     private val stompClient: StompClient
 ) {
-    var stompSession: StompSession? = null
+    private var stompSession: StompSession? = null
 
     suspend fun connect(): StompSession {
         Timber.d("Connecting to STOMP...")
