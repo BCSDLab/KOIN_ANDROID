@@ -10,6 +10,7 @@ import `in`.koreatech.koin.data.stomp.KoinStomp
 import javax.inject.Inject
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
+import kotlinx.serialization.builtins.ListSerializer
 
 class ChatRemoteDataSource @Inject constructor(
     private val chatApi: ChatApi,
@@ -53,6 +54,15 @@ class ChatRemoteDataSource @Inject constructor(
         return koinStomp.subscribe(
             "/topic/chat/$articleId/$chatRoomId",
             ChatMessageResponse.serializer()
+        )
+    }
+
+    fun subscribeChatList(
+        userId: Int
+    ): Flow<List<ChatListItemResponse>> {
+        return koinStomp.subscribe(
+            "/topic/chatroom/list/$userId",
+            ListSerializer(ChatListItemResponse.serializer())
         )
     }
 

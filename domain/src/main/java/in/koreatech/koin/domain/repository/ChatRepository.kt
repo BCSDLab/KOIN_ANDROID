@@ -29,6 +29,10 @@ interface ChatRepository {
         chatRoomId: Int
     ): Flow<ChatMessage>
 
+    fun subscribeChatList(
+        userId: Int
+    ): Flow<List<ChatListItem>>
+
     suspend fun sendMessage(
         articleId: Int,
         chatRoomId: Int,
