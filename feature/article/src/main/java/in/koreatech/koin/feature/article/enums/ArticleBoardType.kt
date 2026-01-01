@@ -1,9 +1,5 @@
 package `in`.koreatech.koin.feature.article.enums
 
-/*
- Included from main koin module because we can't access ArticleBoardType from lostandfound module
- */
-
 import androidx.annotation.StringRes
 import `in`.koreatech.koin.feature.article.R
 
