@@ -7,6 +7,8 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.children
@@ -68,7 +70,7 @@ class ArticleListFragment : Fragment() {
 
     private val viewModel by viewModels<ArticleListViewModel>()
 
-    private var scrollPercentage = 0.0f     // for GA4
+    private var scrollPercentage = 0.0f // for GA4
 
     private val onTabSelectedListener =
         object : TabLayout.OnTabSelectedListener {
@@ -173,7 +175,18 @@ class ArticleListFragment : Fragment() {
         })
 
         binding.composeViewLostandfoundList.setContent {
+            val myKeywords by viewModel.myKeywords.collectAsState()
+            val selectedKeyword by viewModel.selectedKeyword.collectAsState()
+            val selectedType by viewModel.lostAndFoundType.collectAsState()
+            val currentPage by viewModel.currentPage.collectAsState()
+            val lostAndFoundPaginationState by viewModel.lostAndFoundPagination.collectAsState()
+
             LostAndFoundList(
+                myKeywords = myKeywords,
+                selectedKeyword = selectedKeyword,
+                selectedType = selectedType,
+                lostAndFoundPaginationState = lostAndFoundPaginationState,
+                currentPage = currentPage,
                 navigateToWriteFoundItem = {
                     when (it) {
                         "LOST" ->
@@ -205,7 +218,10 @@ class ArticleListFragment : Fragment() {
                         requireContext(),
                         "koin://article/activity?fragment=article_lost_and_found"
                     ).let(::startActivity)
-                }
+                },
+                onKeywordChange = viewModel::selectKeyword,
+                onLostOrFoundChange = viewModel::setLostOrFoundType,
+                onPageChange = viewModel::setCurrentPage
             )
         }
 
@@ -233,15 +249,16 @@ class ArticleListFragment : Fragment() {
                 }
             }
         }
-
     }
 
     private fun addCategoryTabs() {
         ArticleBoardType.entries.forEach {
-            binding.tabLayoutArticleBoard.addTab(binding.tabLayoutArticleBoard.newTab().apply {
-                id = View.generateViewId()
-                text = getString(it.simpleKoreanName)
-            })
+            binding.tabLayoutArticleBoard.addTab(
+                binding.tabLayoutArticleBoard.newTab().apply {
+                    id = View.generateViewId()
+                    text = getString(it.simpleKoreanName)
+                }
+            )
         }
     }
 
@@ -303,7 +320,7 @@ class ArticleListFragment : Fragment() {
                         if (keyword.isEmpty()) {
                             binding.chipSeeAll.isChecked = true
                             isKeywordSelected = true
-                        } else
+                        } else {
                             binding.chipGroupMyKeywords.children.forEach {
                                 if ("#$keyword" == (it as? Chip)?.text.toString()) {
                                     (it as? Chip)?.isChecked = true
@@ -311,7 +328,8 @@ class ArticleListFragment : Fragment() {
                                     return@forEach
                                 }
                             }
-                        if (isKeywordSelected.not()) {      // 원래 선택된 상태였던 키워드가 삭제된 경우 "모두보기" 선택
+                        }
+                        if (isKeywordSelected.not()) { // 원래 선택된 상태였던 키워드가 삭제된 경우 "모두보기" 선택
                             viewModel.selectKeyword("")
                             binding.chipSeeAll.isChecked = true
                         }
@@ -323,9 +341,11 @@ class ArticleListFragment : Fragment() {
 
     private fun removeKeywordChip(keywords: List<String>) {
         binding.chipGroupMyKeywords.children.forEachIndexed { i, chip ->
-            if (i != 0)
-                if (keywords.contains((chip as? Chip)?.text.toString().substring(1)).not())
+            if (i != 0) {
+                if (keywords.contains((chip as? Chip)?.text.toString().substring(1)).not()) {
                     binding.chipGroupMyKeywords.removeView(chip)
+                }
+            }
         }
     }
 
@@ -336,15 +356,18 @@ class ArticleListFragment : Fragment() {
                         "#",
                         keyword
                     )
-                }.not())
+                }.not()
+            ) {
                 binding.chipGroupMyKeywords.addView(
                     createChip(
-                        TextUtils.concat("#", keyword).toString(), true,
+                        TextUtils.concat("#", keyword).toString(),
+                        true,
                         onChipClicked = {
                             viewModel.selectKeyword(keyword)
                         }
                     )
                 )
+            }
         }
     }
 
@@ -464,4 +487,3 @@ class ArticleListFragment : Fragment() {
         _binding = null
     }
 }
-
