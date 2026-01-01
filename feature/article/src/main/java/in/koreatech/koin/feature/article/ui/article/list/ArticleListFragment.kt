@@ -25,6 +25,7 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
+import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.onboarding.ArrowDirection
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
@@ -33,10 +34,21 @@ import `in`.koreatech.koin.core.util.withLoading
 import `in`.koreatech.koin.feature.article.R
 import `in`.koreatech.koin.feature.article.databinding.FragmentArticleListBinding
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
+import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.ALL
+import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.IPP
+import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.KOIN
+import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.LOSTANDFOUND
+import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.NORMAL
+import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.RECRUIT
+import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.SCHOLARSHIP
+import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.SCHOOL
+import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.STUDENT
 import `in`.koreatech.koin.feature.article.model.ArticleHeaderState
 import `in`.koreatech.koin.feature.article.ui.article.adapter.ArticleAdapter
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
+import `in`.koreatech.koin.feature.article.ui.lostandfound.list.LostAndFoundList
+import `in`.koreatech.koin.feature.article.ui.lostandfound.write.LostAndFoundWriteArticleViewModel.Companion.LOST_OR_FOUND_TYPE
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -46,6 +58,9 @@ class ArticleListFragment : Fragment() {
 
     @Inject
     lateinit var onboardingManager: OnboardingManager
+
+    @Inject
+    lateinit var navigator: Navigator
 
     private var _binding: FragmentArticleListBinding? = null
     private val binding get() = _binding!!
@@ -156,6 +171,69 @@ class ArticleListFragment : Fragment() {
                 drawArticleDivider(c, parent)
             }
         })
+
+        binding.composeViewLostandfoundList.setContent {
+            LostAndFoundList(
+                navigateToWriteFoundItem = {
+                    when (it) {
+                        "LOST" ->
+                            navController.navigate(
+                                R.id.articleLostAndFoundWriteLostFragment,
+                                bundleOf(LOST_OR_FOUND_TYPE to "LOST")
+                            )
+
+                        "FOUND" ->
+                            navController.navigate(
+                                R.id.articleLostAndFoundWriteFoundFragment,
+                                bundleOf(LOST_OR_FOUND_TYPE to "FOUND")
+                            )
+                    }
+                },
+                navigateToLostAndFoundDetail = { articleId ->
+                    navController.navigate(
+                        R.id.articleLostAndFoundDetailFragment,
+                        bundleOf(ARTICLE_ID to articleId)
+                    )
+                },
+                navigateToKeywordFragment = {
+                    navController.navigate(
+                        R.id.action_articleListFragment_to_articleKeywordFragment
+                    )
+                },
+                navigateToLoginActivity = {
+                    navigator.navigateToSignIn(
+                        requireContext(),
+                        "koin://article/activity?fragment=article_lost_and_found"
+                    ).let(::startActivity)
+                }
+            )
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.currentBoard.collect {
+                    when (it) {
+                        ALL,
+                        NORMAL,
+                        SCHOLARSHIP,
+                        SCHOOL,
+                        RECRUIT,
+                        IPP,
+                        STUDENT,
+                        KOIN -> {
+                            binding.nestedScrollViewArticleList.visibility = View.VISIBLE
+                            binding.composeViewLostandfoundList.visibility = View.GONE
+                        }
+
+                        LOSTANDFOUND -> {
+                            binding.composeViewLostandfoundList.visibility = View.VISIBLE
+                            binding.nestedScrollViewArticleList.visibility = View.INVISIBLE
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     private fun addCategoryTabs() {
