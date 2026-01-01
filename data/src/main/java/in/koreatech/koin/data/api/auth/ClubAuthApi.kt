@@ -20,7 +20,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ClubAuthApi {
-    @GET(URLConstant.CLUBS.CLUBS)
+    @GET("clubs")
     suspend fun getClubs(
         @Query("categoryId") id: Int?,
         @Query("sortType") sortType: String?,
@@ -33,12 +33,12 @@ interface ClubAuthApi {
         @Path("clubId") clubId: Int
     ): ClubDetailsResponse
 
-    @POST(URLConstant.CLUBS.CLUBS)
+    @POST("clubs")
     suspend fun createClub(
         @Body request: ClubCreateRequest
     )
 
-    @PUT("${URLConstant.CLUBS.CLUBS}/{clubId}")
+    @PUT("clubs/{clubId}")
     suspend fun modifyClub(
         @Path("clubId") clubId: Int,
         @Body request: ClubModifyRequest
@@ -71,65 +71,65 @@ interface ClubAuthApi {
         @Path("clubId") clubId: Int
     )
 
-    @POST(URLConstant.CLUBS.CLUBID.RECRUITMENT.RECRUITMENT)
+    @POST("clubs/{clubId}/recruitment")
     suspend fun createClubRecruitment(
         @Path("clubId") clubId: Int,
         @Body request: ClubRecruitmentRequest
     )
 
-    @DELETE(URLConstant.CLUBS.CLUBID.RECRUITMENT.RECRUITMENT)
+    @DELETE("clubs/{clubId}/recruitment")
     suspend fun deleteClubRecruitment(
         @Path("clubId") clubId: Int
     ): Response<Unit>
 
-    @PUT(URLConstant.CLUBS.CLUBID.RECRUITMENT.RECRUITMENT)
+    @PUT("clubs/{clubId}/recruitment")
     suspend fun modifyClubRecruitment(
         @Path("clubId") clubId: Int,
         @Body request: ClubRecruitmentRequest
     ): Response<Unit>
 
-    @GET(URLConstant.CLUBS.CLUBID.EVENT.EVENTS)
+    @GET("clubs/{clubId}/events")
     suspend fun getClubEvents(
         @Path("clubId") clubId: Int,
         @Query("eventType") eventType: String
     ): List<ClubEventResponse>
 
-    @POST(URLConstant.CLUBS.CLUBID.EVENT.EVENT)
+    @POST("clubs/{clubId}/event")
     suspend fun createClubEvent(
         @Path("clubId") clubId: Int,
         @Body request: ClubEventRequest
     ): Response<Unit>
 
-    @PUT(URLConstant.CLUBS.CLUBID.EVENT.EVENTID.EVENTID)
+    @PUT("clubs/{clubId}/event/{eventId}")
     suspend fun modifyClubEvent(
         @Path("clubId") clubId: Int,
         @Path("eventId") eventId: Int,
         @Body request: ClubEventRequest
     ): Response<Unit>
 
-    @DELETE(URLConstant.CLUBS.CLUBID.EVENT.EVENTID.EVENTID)
+    @DELETE("clubs/{clubId}/event/{eventId}")
     suspend fun deleteClubEvent(
         @Path("clubId") clubId: Int,
         @Path("eventId") eventId: Int
     ): Response<Unit>
 
-    @POST(URLConstant.CLUBS.CLUBID.RECRUITMENT.NOTIFICATION)
+    @POST("clubs/{clubId}/recruitment/notification")
     suspend fun subscribeClubRecruitment(
         @Path("clubId") clubId: Int
     ): Response<Unit>
 
-    @DELETE(URLConstant.CLUBS.CLUBID.RECRUITMENT.NOTIFICATION)
+    @DELETE("clubs/{clubId}/recruitment/notification")
     suspend fun unsubscribeClubRecruitment(
         @Path("clubId") clubId: Int
     ): Response<Unit>
 
-    @POST(URLConstant.CLUBS.CLUBID.EVENT.EVENTID.NOTIFICATION)
+    @POST("clubs/{clubId}/event/{eventId}/notification")
     suspend fun subscribeClubEvent(
         @Path("clubId") clubId: Int,
         @Path("eventId") eventId: Int
     ): Response<Unit>
 
-    @DELETE(URLConstant.CLUBS.CLUBID.EVENT.EVENTID.NOTIFICATION)
+    @DELETE("clubs/{clubId}/event/{eventId}/notification")
     suspend fun unsubscribeClubEvent(
         @Path("clubId") clubId: Int,
         @Path("eventId") eventId: Int
