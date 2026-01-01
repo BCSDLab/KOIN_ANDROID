@@ -12,10 +12,10 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ClubApi {
-    @GET(URLConstant.CLUBS.CATEGORIES)
+    @GET("clubs/categories")
     suspend fun getClubsCategories(): ClubCategoriesResponse
 
-    @GET(URLConstant.CLUBS.HOT)
+    @GET("clubs/hot")
     suspend fun getClubHot(): ClubHotResponse
 
     @GET("clubs/{clubId}/qna")
@@ -23,18 +23,18 @@ interface ClubApi {
         @Path("clubId") clubId: Int
     ): ClubQnasResponse
 
-    @GET(URLConstant.CLUBS.CLUBID.RECRUITMENT.RECRUITMENT)
+    @GET("clubs/{clubId}/recruitment")
     suspend fun getClubRecruitment(
         @Path("clubId") clubId: Int
     ): ClubRecruitmentResponse
 
-    @GET(URLConstant.CLUBS.CLUBID.EVENT.EVENTID.EVENTID)
+    @GET("clubs/{clubId}/event/{eventId}")
     suspend fun getClubEvent(
         @Path("clubId") clubId: Int,
         @Path("eventId") eventId: Int
     ): ClubEventResponse
 
-    @GET(URLConstant.CLUBS.SEARCH)
+    @GET("clubs/search/related")
     suspend fun searchClubs(
         @Query("query") query: String
     ): ClubSearchResponse
