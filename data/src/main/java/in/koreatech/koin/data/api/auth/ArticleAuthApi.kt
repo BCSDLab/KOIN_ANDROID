@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.api.auth
 
-import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.article.ArticleKeywordRequest
 import `in`.koreatech.koin.data.request.article.ArticleLostAndFoundReportRequest
 import `in`.koreatech.koin.data.request.article.ArticleLostAndFoundRequest

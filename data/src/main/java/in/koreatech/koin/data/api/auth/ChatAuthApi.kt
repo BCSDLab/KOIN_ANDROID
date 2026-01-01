@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.api.auth
 
-import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.response.chat.ChatListItemResponse
 import `in`.koreatech.koin.data.response.chat.ChatMessageResponse
 import `in`.koreatech.koin.data.response.chat.ChatRoomResponse

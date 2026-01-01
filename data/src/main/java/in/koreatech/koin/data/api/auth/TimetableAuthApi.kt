@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.api.auth
 
-import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.timetable.LecturesQueryRequest
 import `in`.koreatech.koin.data.request.timetable.TimetableFrameCreateQueryRequest
 import `in`.koreatech.koin.data.request.timetable.TimetableFrameQueryRequest

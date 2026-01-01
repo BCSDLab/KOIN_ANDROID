@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.api.auth
 
-import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.response.owner.OwnerEventResponse
 import `in`.koreatech.koin.data.response.owner.OwnerStoreResponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse

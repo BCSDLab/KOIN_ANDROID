@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.api
 
-import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.response.club.ClubCategoriesResponse
 import `in`.koreatech.koin.data.response.club.ClubEventResponse
 import `in`.koreatech.koin.data.response.club.ClubHotResponse

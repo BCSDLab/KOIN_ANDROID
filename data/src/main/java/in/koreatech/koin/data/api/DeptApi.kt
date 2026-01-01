@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.api
 
-import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.response.dept.DeptResponse
 import `in`.koreatech.koin.data.response.dept.DetailDeptResponse
 import retrofit2.http.GET
