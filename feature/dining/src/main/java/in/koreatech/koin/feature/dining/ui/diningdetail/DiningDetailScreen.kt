@@ -4,16 +4,24 @@ import android.content.Context
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.VectorConverter
+import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateValue
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,11 +33,13 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -59,7 +69,9 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -81,6 +93,7 @@ import com.kakao.sdk.template.model.Link
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
@@ -97,6 +110,7 @@ import `in`.koreatech.koin.feature.dining.R
 import `in`.koreatech.koin.feature.dining.component.DiningDateItem
 import `in`.koreatech.koin.feature.dining.component.DiningItem
 import `in`.koreatech.koin.feature.dining.component.DiningItemOriginal
+import `in`.koreatech.koin.feature.dining.component.abTeset.DiningAbTestFloatingButton
 import `in`.koreatech.koin.feature.dining.component.bottomsheet.DiningBottomSheet
 import `in`.koreatech.koin.feature.dining.component.dialog.DiningImageDialog
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_DATE
@@ -112,7 +126,8 @@ fun DiningDetailScreen(
     viewModel: DiningViewModel = hiltViewModel(),
     initialPage: Int = -1,
     onTopbarBackClick: () -> Unit = {},
-    onTopbarActionClick: () -> Unit = {}
+    onTopbarActionClick: () -> Unit = {},
+    onNavigateToStore: () -> Unit = {}
 ) {
     val userState by viewModel.userState.collectAsState()
 
@@ -130,8 +145,13 @@ fun DiningDetailScreen(
 
     val abTestExperimentGroup by viewModel.abTestExperimentGroup.collectAsState()
 
+    val diningStoreAbTestExperimentGroup by viewModel.diningStoreAbTestExperimentGroup.collectAsState()
+
+    val sessionId by viewModel.sessionId.collectAsState()
+
     LaunchedEffect(Unit) { // userState NPE error in viewModel init{}; Flow is null
         viewModel.getDining()
+        viewModel.getDiningSessionId()
         snapshotFlow { userState }
             .collect { state ->
                 if (!state.isAnonymous) {
@@ -183,6 +203,8 @@ fun DiningDetailScreen(
             selectedDate = TimeUtil.stringToDateYYMMDD(selectedDate),
             showBottomSheet = showBottomSheet,
             experimentGroup = abTestExperimentGroup,
+            diningStoreExperimentGroup = diningStoreAbTestExperimentGroup,
+            sessionId = sessionId,
             isAnonymous = userState.isAnonymous,
             isDiningRefreshing = isDiningRefreshing,
             initialPage = if (initialPage != -1) initialPage else viewModel.getInitialPage(),
@@ -192,7 +214,8 @@ fun DiningDetailScreen(
             onDateClick = viewModel::setSelectedDate,
             changeSoldOutSubscribe = viewModel::changeIsSoldOutSubscribed,
             changeDiningImageSubscribe = viewModel::changeIsDiningImageSubscribed,
-            getNotificationPermitInfo = viewModel::getNotificationPermissionInfo
+            getNotificationPermitInfo = viewModel::getNotificationPermissionInfo,
+            onNavigateToStore = onNavigateToStore
         )
     }
 }
@@ -205,6 +228,8 @@ private fun DiningDetailScreenImpl(
     selectedDate: Date,
     showBottomSheet: Boolean,
     experimentGroup: String,
+    diningStoreExperimentGroup: String,
+    sessionId: String,
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
     isSoldOutSubscribed: Boolean = false,
@@ -216,7 +241,8 @@ private fun DiningDetailScreenImpl(
     onDateClick: (Date) -> Unit = {},
     changeSoldOutSubscribe: (Boolean) -> Unit = {},
     changeDiningImageSubscribe: (Boolean) -> Unit = {},
-    getNotificationPermitInfo: () -> Unit = {}
+    getNotificationPermitInfo: () -> Unit = {},
+    onNavigateToStore: () -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current
@@ -365,176 +391,253 @@ private fun DiningDetailScreenImpl(
         )
     }
 
-    Column(
+    Box(
         modifier = modifier
             .padding(contentPadding)
-            .navigationBarsPadding()
             .fillMaxSize()
             .nestedScroll(nestedScrollConnection)
     ) {
-        Row(
-            modifier = Modifier
-                .height(animatedToolbarHeight)
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-                .offset(y = -(maxToolbarHeight - animatedToolbarHeight) / 2),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            dates.forEachIndexed { index, date ->
-                DiningDateItem(
-                    modifier = Modifier
-                        .requiredHeight(maxToolbarHeight)
-                        .padding(top = 24.dp, bottom = 16.dp),
-                    date = date,
-                    isSelected = selectedPosition == index,
-                    onClick = onDateClick
-                )
-            }
-        }
-        KoinTabRow(
-            selectedTabIndex = pagerState.currentPage,
-            onTabSelected = {
-                EventLogger.logClickEvent(
-                    EventAction.CAMPUS,
-                    AnalyticsConstant.Label.MENU_TIME,
-                    tabList[it]
-                )
-                isUserScrolling = false
-                scope.launch {
-                    pagerState.animateScrollToPage(it)
-                }
-            },
-            titles = tabList.map { it }
-        )
-        HorizontalPager(
-            modifier = Modifier
+        Column(
+            modifier = modifier
                 .fillMaxSize()
-                .background(color = KoinTheme.colors.neutral200),
-            state = pagerState,
-            verticalAlignment = Alignment.Top
-        ) { page ->
-            val state = rememberPullToRefreshState()
-            PullToRefreshBox(
-                isRefreshing = isDiningRefreshing,
-                onRefresh = refreshDining,
-                state = state,
-                indicator = {
-                    Indicator(
-                        modifier = Modifier.align(Alignment.TopCenter),
-                        isRefreshing = isDiningRefreshing,
-                        containerColor = KoinTheme.colors.neutral0,
-                        color = KoinTheme.colors.neutral800,
-                        state = state
+        ) {
+            Row(
+                modifier = Modifier
+                    .height(animatedToolbarHeight)
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+                    .offset(y = -(maxToolbarHeight - animatedToolbarHeight) / 2),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                dates.forEachIndexed { index, date ->
+                    DiningDateItem(
+                        modifier = Modifier
+                            .requiredHeight(maxToolbarHeight)
+                            .padding(top = 24.dp, bottom = 16.dp),
+                        date = date,
+                        isSelected = selectedPosition == index,
+                        onClick = onDateClick
                     )
                 }
-            ) {
-                if (isDiningRefreshing) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .zIndex(2f)
-                            .background(color = KoinTheme.colors.neutral200),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
+            }
+            KoinTabRow(
+                selectedTabIndex = pagerState.currentPage,
+                onTabSelected = {
+                    EventLogger.logClickEvent(
+                        EventAction.CAMPUS,
+                        AnalyticsConstant.Label.MENU_TIME,
+                        tabList[it]
+                    )
+                    isUserScrolling = false
+                    scope.launch {
+                        pagerState.animateScrollToPage(it)
                     }
-                }
-                val diningFilterList by remember(diningList, page) {
-                    derivedStateOf {
-                        when (tabList[page]) {
-                            DiningType.Breakfast.typeKorean -> diningList.filter { it.type == DiningType.Breakfast.typeEnglish }
-                            DiningType.Lunch.typeKorean -> diningList.filter { it.type == DiningType.Lunch.typeEnglish }
-                            DiningType.Dinner.typeKorean -> diningList.filter { it.type == DiningType.Dinner.typeEnglish }
-                            else -> listOf()
+                },
+                titles = tabList.map { it }
+            )
+            HorizontalPager(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = KoinTheme.colors.neutral200),
+                state = pagerState,
+                verticalAlignment = Alignment.Top
+            ) { page ->
+                val state = rememberPullToRefreshState()
+                PullToRefreshBox(
+                    isRefreshing = isDiningRefreshing,
+                    onRefresh = refreshDining,
+                    state = state,
+                    indicator = {
+                        Indicator(
+                            modifier = Modifier.align(Alignment.TopCenter),
+                            isRefreshing = isDiningRefreshing,
+                            containerColor = KoinTheme.colors.neutral0,
+                            color = KoinTheme.colors.neutral800,
+                            state = state
+                        )
+                    }
+                ) {
+                    if (isDiningRefreshing) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .zIndex(2f)
+                                .background(color = KoinTheme.colors.neutral200),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
                         }
                     }
-                }
-                Column(
-                    modifier = Modifier
-                        .verticalScroll(
-                            when (tabList[page]) { // Can't use currentScrollState.value; because all pages have to give each other scroll state, not same currentScrollState
-                                DiningType.Breakfast.typeKorean -> breakfastScrollState
-                                DiningType.Lunch.typeKorean -> lunchScrollState
-                                DiningType.Dinner.typeKorean -> dinnerScrollState
-                                else -> breakfastScrollState
+                    val diningFilterList by remember(diningList, page) {
+                        derivedStateOf {
+                            when (tabList[page]) {
+                                DiningType.Breakfast.typeKorean -> diningList.filter { it.type == DiningType.Breakfast.typeEnglish }
+                                DiningType.Lunch.typeKorean -> diningList.filter { it.type == DiningType.Lunch.typeEnglish }
+                                DiningType.Dinner.typeKorean -> diningList.filter { it.type == DiningType.Dinner.typeEnglish }
+                                else -> listOf()
                             }
-                        )
-                        .padding(vertical = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    diningFilterList.forEachIndexed { index, dining ->
-                        Box(
-                            contentAlignment = Alignment.BottomCenter
-                        ) {
-                            DiningItemByABTest(
-                                experimentGroup = experimentGroup,
-                                dining = dining,
-                                isWeekend = isWeekend,
-                                onImageClick = {
-                                    EventLogger.logClickEvent(
-                                        EventAction.CAMPUS,
-                                        AnalyticsConstant.Label.MENU_IMAGE,
-                                        DiningUtil.getKoreanName(dining.type) + "_" + dining.place
-                                    )
-                                    selectedImage = dining.imageUrl
-                                    showImageDialog = true
-                                },
-                                onShareClick = {
-                                    EventLogger.logClickEvent(
-                                        EventAction.CAMPUS,
-                                        AnalyticsConstant.Label.MENU_SHARE,
-                                        "공유하기"
-                                    )
-                                    val messageTemplate = createFeedMessageTemplate(dining)
-
-                                    if (ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
-                                        ShareClient.instance.shareDefault(
-                                            context,
-                                            messageTemplate
-                                        ) { sharingResult, error ->
-                                            error?.printStackTrace()
-                                            sharingResult?.let {
-                                                context.startActivity(it.intent)
-                                            }
-                                        }
-                                    } else {
-                                        Toast.makeText(context, context.getString(R.string.kakao_share_unable), Toast.LENGTH_SHORT).show()
-                                    }
+                        }
+                    }
+                    Column(
+                        modifier = Modifier
+                            .verticalScroll(
+                                when (tabList[page]) { // Can't use currentScrollState.value; because all pages have to give each other scroll state, not same currentScrollState
+                                    DiningType.Breakfast.typeKorean -> breakfastScrollState
+                                    DiningType.Lunch.typeKorean -> lunchScrollState
+                                    DiningType.Dinner.typeKorean -> dinnerScrollState
+                                    else -> breakfastScrollState
                                 }
                             )
-                            if (index == 0 && showToolTip) {
-                                val infiniteTransition = rememberInfiniteTransition()
-                                val offsetY by infiniteTransition.animateValue(
-                                    initialValue = 15.dp,
-                                    targetValue = 20.dp,
-                                    typeConverter = Dp.VectorConverter,
-                                    animationSpec = infiniteRepeatable(
-                                        animation = tween(1000, easing = LinearEasing),
-                                        repeatMode = RepeatMode.Reverse
-                                    )
+                            .padding(vertical = 16.dp)
+                            .navigationBarsPadding(),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        diningFilterList.forEachIndexed { index, dining ->
+                            Box(
+                                contentAlignment = Alignment.BottomCenter
+                            ) {
+                                DiningItemByABTest(
+                                    experimentGroup = experimentGroup,
+                                    dining = dining,
+                                    isWeekend = isWeekend,
+                                    onImageClick = {
+                                        EventLogger.logClickEvent(
+                                            EventAction.CAMPUS,
+                                            AnalyticsConstant.Label.MENU_IMAGE,
+                                            DiningUtil.getKoreanName(dining.type) + "_" + dining.place
+                                        )
+                                        selectedImage = dining.imageUrl
+                                        showImageDialog = true
+                                    },
+                                    onShareClick = {
+                                        EventLogger.logClickEvent(
+                                            EventAction.CAMPUS,
+                                            AnalyticsConstant.Label.MENU_SHARE,
+                                            "공유하기"
+                                        )
+                                        val messageTemplate = createFeedMessageTemplate(dining)
+
+                                        if (ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
+                                            ShareClient.instance.shareDefault(
+                                                context,
+                                                messageTemplate
+                                            ) { sharingResult, error ->
+                                                error?.printStackTrace()
+                                                sharingResult?.let {
+                                                    context.startActivity(it.intent)
+                                                }
+                                            }
+                                        } else {
+                                            Toast.makeText(context, context.getString(R.string.kakao_share_unable), Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
                                 )
-                                Box(
-                                    modifier = Modifier.offset(y = -(offsetY))
-                                ) {
-                                    with(onboardingManager) {
-                                        ShowOnboardingTooltipIfNeeded(
-                                            type = OnboardingType.DINING_SHARE,
-                                            arrowDirection = ArrowDirection.TOP
-                                        ) {
-                                            Spacer(modifier = Modifier.fillMaxWidth())
+                                if (index == 0 && showToolTip) {
+                                    val infiniteTransition = rememberInfiniteTransition()
+                                    val offsetY by infiniteTransition.animateValue(
+                                        initialValue = 15.dp,
+                                        targetValue = 20.dp,
+                                        typeConverter = Dp.VectorConverter,
+                                        animationSpec = infiniteRepeatable(
+                                            animation = tween(1000, easing = LinearEasing),
+                                            repeatMode = RepeatMode.Reverse
+                                        )
+                                    )
+                                    Box(
+                                        modifier = Modifier.offset(y = -(offsetY))
+                                    ) {
+                                        with(onboardingManager) {
+                                            ShowOnboardingTooltipIfNeeded(
+                                                type = OnboardingType.DINING_SHARE,
+                                                arrowDirection = ArrowDirection.TOP
+                                            ) {
+                                                Spacer(modifier = Modifier.fillMaxWidth())
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
+                        Text(
+                            modifier = Modifier.padding(horizontal = 24.dp),
+                            text = stringResource(R.string.caution_dining_changeable),
+                            style = KoinTheme.typography.medium13,
+                            color = KoinTheme.colors.neutral400
+                        )
+                        Spacer(Modifier.height(75.dp))
                     }
-                    Text(
-                        modifier = Modifier.padding(horizontal = 24.dp),
-                        text = stringResource(R.string.caution_dining_changeable),
-                        style = KoinTheme.typography.medium13,
-                        color = KoinTheme.colors.neutral400
+                }
+            }
+        }
+
+        if (diningStoreExperimentGroup == ExperimentGroup.VARIANT) {
+            var isButtonVisible by remember { mutableStateOf(true) }
+            var boxHeight by remember { mutableFloatStateOf(0f) }
+            var offsetY by remember { mutableFloatStateOf(0f) }
+
+            AnimatedVisibility(
+                visible = isButtonVisible,
+                modifier = Modifier.align(Alignment.BottomCenter),
+                enter = slideInVertically(initialOffsetY = { it }),
+                exit = slideOutVertically(targetOffsetY = { it })
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .onSizeChanged { size ->
+                            if (size.height > 0) {
+                                boxHeight = size.height.toFloat()
+                            }
+                        }
+                        .windowInsetsPadding(WindowInsets.navigationBars)
+                        .padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
+                ) {
+                    val buttonVisibilityLimit = maxOf(boxHeight * 0.4f, 100f)
+
+                    DiningAbTestFloatingButton(
+                        contentText = stringResource(R.string.dining_menu_dislike),
+                        buttonText = stringResource(R.string.view_nearby_stores),
+                        modifier = Modifier
+                            .graphicsLayer(translationY = offsetY)
+                            .draggable(
+                                orientation = Orientation.Vertical,
+                                state = rememberDraggableState { delta ->
+                                    offsetY = (offsetY + delta).coerceAtLeast(0f)
+                                },
+                                onDragStopped = {
+                                    scope.launch {
+                                        if (offsetY > buttonVisibilityLimit) {
+                                            isButtonVisible = false
+
+                                            EventLogger.logSessionEvent(
+                                                action = EventAction.ABTEST,
+                                                category = EventCategory.SWIPE,
+                                                label = "dining_to_shop_close",
+                                                value = tabList[pagerState.currentPage],
+                                                customSessionId = sessionId
+                                            )
+                                        } else {
+                                            animate(
+                                                initialValue = offsetY,
+                                                targetValue = 0f,
+                                                animationSpec = spring(),
+                                                block = { value, _ -> offsetY = value }
+                                            )
+                                        }
+                                    }
+                                }
+                            ),
+                        onClick = {
+                            EventLogger.logSessionEvent(
+                                action = EventAction.ABTEST,
+                                category = EventCategory.CLICK,
+                                label = "dining_to_shop",
+                                value = tabList[pagerState.currentPage],
+                                customSessionId = sessionId
+                            )
+                            onNavigateToStore()
+                        }
                     )
-                    Spacer(Modifier.height(75.dp))
                 }
             }
         }
@@ -559,6 +662,7 @@ private fun DiningItemByABTest(
                 onShareClick = onShareClick
             )
         }
+
         ExperimentGroup.SHARE_ORIGINAL -> {
             DiningItemOriginal(
                 dining = dining,
@@ -675,11 +779,13 @@ private fun DiningScreenPreview() {
                 changedAt = "2025.05.17"
             )
         ),
+        sessionId = "",
         isAnonymous = true,
         contentPadding = PaddingValues(),
         context = LocalContext.current,
         selectedDate = TimeUtil.getNextDayDate(TimeUtil.getCurrentTime()),
         showBottomSheet = false,
-        experimentGroup = ExperimentGroup.SHARE_NEW
+        experimentGroup = ExperimentGroup.SHARE_NEW,
+        diningStoreExperimentGroup = ExperimentGroup.VARIANT
     )
 }

@@ -7,6 +7,8 @@ import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.chat.GetChatListUseCase
+import `in`.koreatech.koin.domain.usecase.session.GetSessionIdUseCase
+import `in`.koreatech.koin.domain.usecase.setting.GetDeveloperSettingUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.usecase.user.UpdateDeviceTokenUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLogoutUseCase
@@ -28,7 +30,9 @@ class KoinNavigationDrawerViewModel @Inject constructor(
     private val updateDeviceTokenUseCase: UpdateDeviceTokenUseCase,
     private val userLogoutUseCase: UserLogoutUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
-    private val getChatListUseCase: GetChatListUseCase
+    private val getChatListUseCase: GetChatListUseCase,
+    private val getDeveloperSettingUseCase: GetDeveloperSettingUseCase,
+    private val getSessionIdUseCase: GetSessionIdUseCase
 ) : BaseViewModel() {
     private val _menuEvent = SingleLiveEvent<MenuState>()
     val menuEvent: LiveData<MenuState> get() = _menuEvent
@@ -76,5 +80,13 @@ class KoinNavigationDrawerViewModel @Inject constructor(
         userLogoutUseCase().onFailure {
             _errorToast.value = it.message
         }
+    }
+
+    fun getSignUpSessionId(): String {
+        return getSessionIdUseCase(
+            sessionName = "sign_up",
+            isLoggedIn = false,
+            shouldExpireOtherSessions = true
+        )
     }
 }

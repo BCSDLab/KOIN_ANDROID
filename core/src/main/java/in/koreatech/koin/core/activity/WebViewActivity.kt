@@ -9,7 +9,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Message
 import android.view.Menu
-import android.view.MenuItem
 import android.view.ViewGroup.MarginLayoutParams
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceError
@@ -25,6 +24,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import `in`.koreatech.koin.core.R
+import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.databinding.ActivityWebviewBinding
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
@@ -62,14 +62,6 @@ class WebViewActivity : ActivityBase(R.layout.activity_webview) {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.home -> onBackPressedDispatcher.onBackPressed()
-            R.id.menu_webview_finish -> finish()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     @SuppressLint("SetJavaScriptEnabled")
     private fun init(
         title: String?,
@@ -80,10 +72,15 @@ class WebViewActivity : ActivityBase(R.layout.activity_webview) {
         ViewCompat.setOnApplyWindowInsetsListener(binding.webView) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.updateLayoutParams<MarginLayoutParams> {
-                topMargin = systemBars.top
                 bottomMargin = systemBars.bottom
             }
-            WindowInsetsCompat.CONSUMED
+            insets
+        }
+
+        binding.koinBaseAppBar.setOnClickListener {
+            when (it.id) {
+                AppBarBase.getLeftButtonId() -> onBackPressedDispatcher.onBackPressed()
+            }
         }
 
         binding.webView.apply {
@@ -99,6 +96,7 @@ class WebViewActivity : ActivityBase(R.layout.activity_webview) {
                 )
             settings.javaScriptEnabled = true
             settings.setSupportMultipleWindows(true)
+            settings.domStorageEnabled = true
             webViewClient =
                 KoinWebViewClient(
                     context = this@WebViewActivity,

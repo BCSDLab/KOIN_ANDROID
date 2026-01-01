@@ -7,15 +7,6 @@ object URL {
     const val KOIN_ASK_FORM = "https://forms.gle/Yo1WNR5mLQdi1pMh6"
 }
 
-// Dining
-object DINING {
-    const val WIDGET_ACTION_CLICKED = "dining_place"
-    const val WIDGET_ACTION_REFRESH_CLICKED = "REFRESH Clicked"
-    const val WIDGET_MAX_MENU_NUMBERS = 8
-    const val WIDGET_MENU_TEXT_VIEW_ID = "dining_widget_menu_textview"
-    const val WIDGET_PLACE_NUMBERS = 4
-}
-
 // Land
 object LAND {
     const val INITIAL_LATITUDE = 36.763695

@@ -114,10 +114,10 @@ class ClubRepositoryImpl @Inject constructor(
         clubManagers: List<String>,
         clubCategoryId: Int,
         location: String,
-        description: String,
-        instagram: String,
-        googleForm: String,
-        openChat: String,
+        description: String?,
+        instagram: String?,
+        googleForm: String?,
+        openChat: String?,
         phoneNumber: String,
         role: String,
         isLikeHidden: Boolean
@@ -161,10 +161,10 @@ class ClubRepositoryImpl @Inject constructor(
         imageUrl: String,
         clubCategoryId: Int,
         location: String,
-        description: String,
-        instagram: String,
-        googleForm: String,
-        openChat: String,
+        description: String?,
+        instagram: String?,
+        googleForm: String?,
+        openChat: String?,
         phoneNumber: String,
         isLikeHidden: Boolean
     ): Result<Unit> {
@@ -326,7 +326,7 @@ class ClubRepositoryImpl @Inject constructor(
         endDate: String?,
         isAlwaysRecruiting: Boolean,
         imageUrl: String,
-        content: String
+        content: String?
     ): Result<Unit> {
         return runCatching {
             clubRemoteDataSource.createClubRecruitment(
@@ -386,7 +386,7 @@ class ClubRepositoryImpl @Inject constructor(
         endDate: String?,
         isAlwaysRecruiting: Boolean,
         imageUrl: String,
-        content: String
+        content: String?
     ): Result<Unit> {
         return runCatching {
             val response = clubRemoteDataSource.modifyClubRecruitment(

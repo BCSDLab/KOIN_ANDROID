@@ -7,10 +7,10 @@ data class ClubModifyRequest(
     @SerializedName("image_url") val imageUrl: String,
     @SerializedName("club_category_id") val clubCategoryId: Int,
     @SerializedName("location") val location: String,
-    @SerializedName("description") val description: String,
-    @SerializedName("instagram") val instagram: String,
-    @SerializedName("google_form_url") val googleForm: String,
-    @SerializedName("open_chat") val openChat: String,
-    @SerializedName("phone_number") val phoneNumber: String,
+    @SerializedName("description") val description: String?,
+    @SerializedName("instagram") val instagram: String?,
+    @SerializedName("google_form_url") val googleForm: String?,
+    @SerializedName("open_chat") val openChat: String?,
+    @SerializedName("phone_number") val phoneNumber: String?,
     @SerializedName("is_like_hidden") val isLikeHidden: Boolean
 )

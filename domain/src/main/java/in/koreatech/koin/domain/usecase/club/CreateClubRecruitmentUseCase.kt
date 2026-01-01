@@ -20,7 +20,7 @@ class CreateClubRecruitmentUseCase @Inject constructor(
             endDate,
             isAlwaysRecruiting,
             imageUrl,
-            content
+            content.ifEmpty { null }
         )
     }
 }

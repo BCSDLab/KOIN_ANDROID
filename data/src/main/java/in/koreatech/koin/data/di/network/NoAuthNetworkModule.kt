@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.di.network
 
-import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,12 +17,12 @@ import `in`.koreatech.koin.data.api.CoopShopApi
 import `in`.koreatech.koin.data.api.DeptApi
 import `in`.koreatech.koin.data.api.DiningApi
 import `in`.koreatech.koin.data.api.LandApi
+import `in`.koreatech.koin.data.api.OrderShopApi
 import `in`.koreatech.koin.data.api.OwnerApi
 import `in`.koreatech.koin.data.api.StoreApi
 import `in`.koreatech.koin.data.api.TimetableApi
 import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.VersionApi
-import `in`.koreatech.koin.data.util.EmptyStringToNullAdapter
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import okhttp3.Interceptor
@@ -59,12 +58,10 @@ object NoAuthNetworkModule {
         @ServerUrl baseUrl: String,
         @NoAuth okHttpClient: OkHttpClient
     ): Retrofit {
-        val gson = GsonBuilder().registerTypeAdapter(String::class.java, EmptyStringToNullAdapter()).create()
-
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
@@ -179,5 +176,13 @@ object NoAuthNetworkModule {
         @NoAuth retrofit: Retrofit
     ): ClubApi {
         return retrofit.create(ClubApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOrderShopApi(
+        @NoAuth retrofit: Retrofit
+    ): OrderShopApi {
+        return retrofit.create(OrderShopApi::class.java)
     }
 }

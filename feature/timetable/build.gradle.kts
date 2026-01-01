@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.koin.library)
+    alias(libs.plugins.koin.feature)
     alias(libs.plugins.koin.hilt)
     alias(libs.plugins.koin.library.orbit)
     alias(libs.plugins.koin.library.paparazzi)
@@ -8,14 +8,6 @@ plugins {
 
 android {
     namespace = "in.koreatech.koin.feature.timetable"
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.10"
-    }
-
-    buildFeatures {
-        compose = true
-    }
 }
 
 dependencies {
@@ -29,9 +21,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.lifecycle.runtime.compose)
 
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.material2)
-    implementation(libs.bundles.compose.m3)
+    implementation(libs.bundles.compose)
     implementation(libs.kotlinx.collections.immutable)
 
     implementation(libs.timber)

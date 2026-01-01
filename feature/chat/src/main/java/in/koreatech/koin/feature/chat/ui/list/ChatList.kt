@@ -23,6 +23,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
@@ -50,6 +52,18 @@ fun ChatList(
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(Unit) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.connectChannel.collect { shouldConnect ->
+                if (shouldConnect) {
+                    viewModel.connectToWS()
+                }
+            }
+        }
+    }
+
     LaunchedEffect(showBlockedMessage) {
         if (showBlockedMessage) {
             scope.launch {
@@ -60,8 +74,16 @@ fun ChatList(
         }
     }
 
+    LifecycleEventEffect(Lifecycle.Event.ON_START) {
+        viewModel.connectToWS()
+    }
+
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
         viewModel.fetchChatList()
+    }
+
+    LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
+        viewModel.disconnectWS()
     }
 
     Scaffold(

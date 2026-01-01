@@ -4,8 +4,6 @@ import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.plugins.ExtensionAware
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
-
 
 internal fun configureAndroidProject(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
@@ -21,7 +19,7 @@ internal fun configureAndroidProject(
         }
         defaultConfig {
             minSdk = 28
-            testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             vectorDrawables.useSupportLibrary = true
         }
 
@@ -29,14 +27,5 @@ internal fun configureAndroidProject(
             sourceCompatibility = JavaVersion.VERSION_17
             targetCompatibility = JavaVersion.VERSION_17
         }
-
-        kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_17.toString()
-        }
     }
-
-}
-
-fun CommonExtension<*, *, *, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) {
-    (this as ExtensionAware).extensions.configure("kotlinOptions", block)
 }

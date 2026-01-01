@@ -16,7 +16,8 @@ data class StoreItemResponse(
     @SerializedName("average_rate") val averageRate: Double,
     @SerializedName("review_count") val reviewCount: Int,
     @SerializedName("benefit_details") val benefitDetails: List<String>?,
-    @SerializedName("benefit_detail") val benefitDetail: String?
+    @SerializedName("benefit_detail") val benefitDetail: String?,
+    @SerializedName("images") val images: List<String>?
 ) {
     data class OpenResponseDTO(
         @SerializedName("day_of_week")

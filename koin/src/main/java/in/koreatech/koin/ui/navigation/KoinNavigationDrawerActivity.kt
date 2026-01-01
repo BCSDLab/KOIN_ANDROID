@@ -15,6 +15,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -33,6 +34,7 @@ import `in`.koreatech.koin.constant.URL
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.blueStatusBar
@@ -43,6 +45,7 @@ import `in`.koreatech.koin.feature.article.ArticleActivity
 import `in`.koreatech.koin.feature.chat.ui.list.ChatListActivity
 import `in`.koreatech.koin.feature.club.ui.ClubActivity
 import `in`.koreatech.koin.feature.dining.ui.DiningActivity
+import `in`.koreatech.koin.feature.store.StoreActivity
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import `in`.koreatech.koin.feature.user.ui.signup.SignUpActivity
 import `in`.koreatech.koin.ui.land.LandActivity
@@ -51,7 +54,6 @@ import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.navigation.viewmodel.KoinNavigationDrawerViewModel
 import `in`.koreatech.koin.ui.operating.OperatingInfoActivity
 import `in`.koreatech.koin.ui.setting.SettingActivity
-import `in`.koreatech.koin.ui.store.activity.StoreActivity
 import `in`.koreatech.koin.util.ext.addDrawerListener
 import `in`.koreatech.koin.util.ext.closeDrawer
 import `in`.koreatech.koin.util.ext.isDrawerOpened
@@ -309,10 +311,12 @@ abstract class KoinNavigationDrawerActivity :
                             }
 
                             MenuState.SignUp -> {
-                                EventLogger.logClickEvent(
-                                    EventAction.USER,
-                                    AnalyticsConstant.Label.HAMBURGER,
-                                    "회원가입 시작"
+                                EventLogger.logSessionEvent(
+                                    action = EventAction.USER,
+                                    category = EventCategory.CLICK,
+                                    label = AnalyticsConstant.Label.HAMBURGER,
+                                    value = "회원가입 시작",
+                                    customSessionId = koinNavigationDrawerViewModel.getSignUpSessionId()
                                 )
                             }
 
@@ -544,11 +548,14 @@ abstract class KoinNavigationDrawerActivity :
         goToActivityFinish(Intent(this, MainActivity::class.java))
     }
 
-    private fun goToStoreActivity() {
+    private fun goToStoreActivity(bundle: Bundle? = bundleOf()) {
+        val intent = Intent(this, StoreActivity::class.java)
+        intent.putExtras(bundle!!)
+
         if (menuState != MenuState.Main) {
-            goToActivityFinish(Intent(this, StoreActivity::class.java))
+            goToActivityFinish(intent)
         } else {
-            startActivity(Intent(this, StoreActivity::class.java))
+            startActivity(intent)
         }
     }
 
@@ -581,17 +588,6 @@ abstract class KoinNavigationDrawerActivity :
             goToActivityFinish(Intent(this, OperatingInfoActivity::class.java))
         } else {
             startActivity(Intent(this, OperatingInfoActivity::class.java))
-        }
-    }
-
-    private fun goToStoreActivity(bundle: Bundle?) {
-        val intent = Intent(this, StoreActivity::class.java)
-        intent.putExtras(bundle!!)
-
-        if (menuState != MenuState.Main) {
-            goToActivityFinish(intent)
-        } else {
-            startActivity(intent)
         }
     }
 

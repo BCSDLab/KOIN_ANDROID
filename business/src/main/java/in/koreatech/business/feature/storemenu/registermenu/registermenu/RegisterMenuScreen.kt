@@ -257,7 +257,10 @@ fun RegisterMenuScreenImpl(
                         .padding(top = 16.dp, bottom = 48.dp)
                         .clickable {
                             takePictureUri = FileUtil.getInstance().createImageFile()
-                            takePhotoFromCameraLauncher.launch(takePictureUri)
+                            takePictureUri?.let { uri ->
+                                takePhotoFromCameraLauncher.launch(uri)
+                            }
+
                             coroutineScope.launch {
                                 sheetState.hide()
                             }

@@ -13,8 +13,10 @@ object AnalyticsConstant {
         const val MAIN_SHOP_BENEFIT = "main_shop_benefit"
         const val SHOP_CATEGORIES = "shop_categories"
         const val SHOP_CATEGORIES_SEARCH = "shop_categories_search"
+        const val SHOP_CATEGORIES_SEARCH_CLICK = "shop_categories_search_click"
         const val SHOP_CATEGORIES_EVENT = "shop_categories_event"
         const val SHOP_CATEGORIES_BENEFIT = "shop_categories_benefit"
+        const val SHOP_CATEGORIES_BACK = "shop_categories_back"
         const val CAFETERIA_INFO = "cafeteria_info"
         const val HAMBURGER = "hamburger"
         const val HAMBURGER_SHOP = HAMBURGER
@@ -47,9 +49,13 @@ object AnalyticsConstant {
         const val SIGN_UP_COMPLETED = "sign_up_completed"
         const val USER_INFO = "user_info"
         const val SHOP_CAN = "shop_can"
+        const val MIN_AMOUNT_SET = "min_amount_set"
         const val SHOP_PICTURE = "shop_picture"
         const val SHOP_CALL = "shop_call"
         const val SHOP_CLICK = "shop_click"
+
+        const val SHOP_PICTURE_SWIPE = "shop_picture_swipe"
+        const val SHOP_DETAIL_VIEW_INFO = "shop_detail_view_info"
         const val SHOP_DETAIL_VIEW_BACK = "shop_detail_view_back"
         const val SHOP_DETAIL_VIEW_EVENT = "shop_detail_view_event"
 
@@ -68,6 +74,8 @@ object AnalyticsConstant {
 
         const val SHOP_DETAIL_VIEW_REVIEW_REPORT_LOGIN = "shop_detail_view_review_report_login"
         const val SHOP_DETAIL_VIEW_REVIEW_REPORT_CANCEL = "shop_detail_view_review_report_cancel"
+
+        const val SHOP_DETAIL_VIEW_REVIEW_CAN = "shop_detail_view_review_can"
 
         const val SHOP_DETAIL_VIEW = "shop_detail_view"
 
@@ -158,6 +166,11 @@ object AnalyticsConstant {
             const val CLUB_RECRUITMENT_NOTI = "club_recruitment_noti"
             const val CLUB_RECRUITMENT_ACCEPT = "club_recruitment_accept"
             const val CLUB_RECRUITMENT_CANCEL = "club_recruitment_cancel"
+        }
+
+        object Dining {
+            const val DINING_AB_TEST_DESIGN_A = "design_A"
+            const val DINING_AB_TEST_DESIGN_B = "design_B"
         }
     }
 

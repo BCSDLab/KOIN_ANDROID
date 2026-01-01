@@ -15,6 +15,7 @@ object EventLogger {
     private const val USER_GENDER = "gender"
     private const val USER_MAJOR = "major"
 
+    private const val SCREEN_NAME = "screen_name"
     private const val EVENT_CATEGORY = "event_category"
     private const val EVENT_LABEL = "event_label"
     private const val VALUE = "value"
@@ -230,6 +231,23 @@ object EventLogger {
         Log.d("EventLogger", "logEvent: action=$action, category=$category, label=$label, value=$value, extras=$extras")
     }
 
+    fun logScreenName(
+        screenName: String
+    ) {
+        if (BuildConfig.IS_DEBUG) {
+            Firebase.analytics.setUserId(loggerUserData.userId)
+            Firebase.analytics.logEvent("${SCREEN_NAME}_debug") {
+                param(SCREEN_NAME, "${screenName}_debug")
+            }
+        } else {
+            Firebase.analytics.setUserId(loggerUserData.userId)
+            Firebase.analytics.logEvent(SCREEN_NAME) {
+                param(SCREEN_NAME, screenName)
+            }
+        }
+        Log.d("EventLogger", "logEvent: screenName=$screenName")
+    }
+
     /**
      * @param action 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
      * @param category 이벤트 종류(click, scroll, ...)
@@ -242,7 +260,7 @@ object EventLogger {
      * logEvent(EventAction.CAMPUS, EventCategory.CLICK, "main_shop_categories", "전체보기")
      * ```
      */
-    private fun logSessionEvent(
+    fun logSessionEvent(
         action: EventAction,
         category: EventCategory,
         label: String,
@@ -297,7 +315,8 @@ enum class EventCategory(val value: String) {
     SCROLL("scroll"),
     SWIPE("swipe"), // 하단 뒤로가기(아이폰의 swipe 뒤로가기와 대응)
     NOTIFICATION("notification"),
-    ENTRY("entry")
+    ENTRY("entry"),
+    DINING_AB_TEST_CATEGORY("a/b test 로깅(메인화면 식단 진입)")
 }
 
 data class EventExtra(val key: String, val value: String)

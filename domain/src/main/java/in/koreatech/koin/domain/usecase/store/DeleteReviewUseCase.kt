@@ -9,7 +9,7 @@ class DeleteReviewUseCase @Inject constructor(
     suspend operator fun invoke(
         reviewId: Int,
         storeId: Int
-    ) {
-        storeRepository.deleteReview(reviewId, storeId)
+    ): Result<Unit> {
+        return storeRepository.deleteReview(reviewId, storeId)
     }
 }

@@ -34,7 +34,10 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_1
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_TEST_CATEGORY
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_TEST_DESIGN_A
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_TEST_DESIGN_B
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Dining.DINING_AB_TEST_DESIGN_A
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Dining.DINING_AB_TEST_DESIGN_B
 import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
@@ -51,11 +54,11 @@ import `in`.koreatech.koin.core.util.blueStatusBar
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityMainBinding
 import `in`.koreatech.koin.domain.model.article.ArticleNotiType
-import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.feature.article.ArticleActivity
 import `in`.koreatech.koin.feature.banner.ui.BannerActivity
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetA
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetB
+import `in`.koreatech.koin.feature.store.MainStoreWidget
 import `in`.koreatech.koin.navigation.SchemeType
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
 import `in`.koreatech.koin.ui.main.compose.HotArticlePager
@@ -68,6 +71,8 @@ import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.util.ext.observeLiveData
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -121,6 +126,8 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         setContentView(binding.root)
 
         window.blueStatusBar()
+
+        EventLogger.logScreenName("HomeActivity") // DA requirement
 
         fixTabRowSize()
         initView()
@@ -202,6 +209,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             val intent = Intent(this@MainActivity, CallBenefitStoreActivity::class.java)
             startActivity(intent)
         }
+
         buttonCategory.setOnClickListener {
             toggleNavigationDrawer()
         }
@@ -316,6 +324,16 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             }
         }
 
+        shopComposeView.setContent {
+            val storeCategories by viewModel.storeCategories.collectAsState()
+
+            MainStoreWidget(
+                categories = storeCategories
+            ) { categoryId ->
+                gotoStoreActivity(categoryId)
+            }
+        }
+
         recyclerViewStoreCategory.apply {
             layoutManager = GridLayoutManager(this@MainActivity, 6)
             adapter = storeCategoriesRecyclerAdapter
@@ -345,8 +363,53 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     }
 
     private fun initViewModel() = with(viewModel) {
-        getStoreCategories(StoreCategories(-1, R.drawable.ic_benefit_icon, "혜택"))
+        lifecycleScope.launch {
+            viewModel.diningStoreAbTestExperimentGroup
+                .filterNotNull()
+                .first()
+                .let { group ->
+                    val sessionId = viewModel.getDiningToShopSessionId()
 
+                    if (group == ExperimentGroup.CONTROL) {
+                        EventLogger.logSessionEvent(
+                            action = EventAction.ABTEST,
+                            category = EventCategory.DINING_AB_TEST_CATEGORY,
+                            label = "dining2shop_1",
+                            value = DINING_AB_TEST_DESIGN_A,
+                            customSessionId = sessionId
+                        )
+                    } else if (group == ExperimentGroup.VARIANT) {
+                        EventLogger.logSessionEvent(
+                            action = EventAction.ABTEST,
+                            category = EventCategory.DINING_AB_TEST_CATEGORY,
+                            label = "dining2shop_1",
+                            value = DINING_AB_TEST_DESIGN_B,
+                            customSessionId = sessionId
+                        )
+                    }
+                }
+        }
+
+        observeLiveData(isLoading) {
+            binding.mainSwipeRefreshLayout.isRefreshing = it
+        }
+
+        lifecycleScope.launch {
+            storeCategories.collect {
+                storeCategoriesRecyclerAdapter.submitList(it)
+            }
+        }
+
+        lifecycleScope.launch {
+            getStoreCategories()
+            binding.textViewStore.visibility = View.GONE
+            binding.storeButtonLayout.visibility = View.GONE
+            binding.recyclerViewStoreCategory.visibility = View.GONE
+            binding.shopComposeView.visibility = View.VISIBLE
+        }
+    }
+
+    private fun observeOldStoreABTest() = with(viewModel) {
         observeLiveData(variableName) {
             when (viewModel.variableName.value) {
                 ExperimentGroup.A -> {
@@ -365,15 +428,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 }
             }
         }
-        observeLiveData(isLoading) {
-            binding.mainSwipeRefreshLayout.isRefreshing = it
-        }
-
-        observeLiveData(storeCategories) {
-            storeCategoriesRecyclerAdapter.submitList(it)
-        }
-        binding.recyclerViewStoreCategory.visibility = View.GONE
-        binding.storeButtonLayout.visibility = View.VISIBLE
     }
 
     private fun initBanner() {

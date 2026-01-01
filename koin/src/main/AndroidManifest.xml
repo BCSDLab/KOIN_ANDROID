@@ -36,6 +36,20 @@
             android:name=".ui.error.InspectionActivity"
             android:launchMode="singleTask"
             android:exported="false" />
+
+        <activity
+            android:name=".storev2.StoreDetailActivity"
+            android:theme="@style/KAPTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true"/>
+
+        <activity
+            android:name=".storev2.ShoppingCartActivity"
+            android:theme="@style/KAPTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true"/>
+
+
         <activity
             android:name=".ui.timetablev2.TimetableActivity"
             android:exported="true"
@@ -90,18 +104,6 @@
             android:exported="false"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.businesssignup.BusinessSignUpCompleteActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.businesssignup.BusinessSignUpCheckActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.businesslogin.BusinessLoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.businesssignup.BusinessSignupBaseActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.main.activity.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
@@ -112,24 +114,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-            <data
-                android:host="main"
-                android:pathPrefix="/activity"
-                android:scheme="koin" />
+                <data
+                    android:host="main"
+                    android:pathPrefix="/activity"
+                    android:scheme="koin" />
             </intent-filter>
         </activity>
-
-        <receiver
-            android:name=".ui.dining.appwidget.DiningAppWidget"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/dining_widget_info" />
-        </receiver>
 
         <meta-data
             android:name="com.naver.maps.map.NCP_KEY_ID"
@@ -185,16 +175,6 @@
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.dining.DiningActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:theme="@style/KAPTheme.NoActionBar">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".ui.dining.DiningNoticeActivity"
             android:exported="false"
             android:label="@string/app_name"
@@ -230,6 +210,10 @@
             android:name=".ui.setting.SettingActivity"
             android:exported="false"
             android:label="설정"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".ui.developer.DeveloperSettingActivity"
+            android:exported="false"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.term.TermActivity"

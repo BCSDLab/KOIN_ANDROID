@@ -7,11 +7,15 @@ import android.os.Bundle
 import android.provider.OpenableColumns
 import android.text.InputFilter
 import android.view.View
+import android.view.ViewGroup
 import android.widget.RatingBar
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -23,6 +27,7 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
 import `in`.koreatech.koin.core.util.withLoading
 import `in`.koreatech.koin.databinding.ActivityWriteReviewBinding
 import `in`.koreatech.koin.domain.model.store.Review
@@ -36,6 +41,7 @@ import kotlin.properties.Delegates
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -82,6 +88,7 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdgeWithDarkStatusBar()
         super.onCreate(savedInstanceState)
         binding = ActivityWriteReviewBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -94,6 +101,16 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
         val storeId = intent.getIntExtra("storeId", -1)
         val review = intent.intentSerializable("review", StoreReviewContent::class.java)
         with(binding) {
+            ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+                view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    bottomMargin = systemBars.bottom
+                }
+
+                insets
+            }
+
             koinBaseAppBar.leftButton.setOnClickListener {
                 finish()
             }
@@ -189,7 +206,6 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                     (storeName ?: "Unknown"),
                     EventExtra(AnalyticsConstant.DURATION_TIME, (elapsedTime / 1000.0).toString())
                 )
-                finish()
             }
         }
     }
@@ -248,6 +264,14 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.toastEvent.collect {
                     showToast(getString(R.string.write_review_error))
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                shouldFinish.collectLatest {
+                    if (it) finish()
                 }
             }
         }

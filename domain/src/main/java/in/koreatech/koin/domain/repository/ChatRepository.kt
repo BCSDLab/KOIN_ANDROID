@@ -6,28 +6,32 @@ import `in`.koreatech.koin.domain.model.chat.ChatRoom
 import kotlinx.coroutines.flow.Flow
 
 interface ChatRepository {
-    suspend fun connectWS(retry: Boolean = false)
+    suspend fun connectWS()
 
     suspend fun disconnectWS()
 
     suspend fun getChatRoomList(): Flow<List<ChatListItem>>
 
-    suspend fun getChatRoomFromArticleId(articleId: Int): Flow<ChatRoom>
+    suspend fun getChatRoomFromArticleId(articleId: Int): Result<ChatRoom>
 
     suspend fun getChatRoom(
         articleId: Int,
         chatRoomId: Int
-    ): Flow<ChatRoom>
+    ): Result<ChatRoom>
 
     suspend fun getChatMessages(
         articleId: Int,
         chatRoomId: Int
-    ): Flow<List<ChatMessage>>
+    ): Result<List<ChatMessage>>
 
     fun subscribeChatRoom(
         articleId: Int,
         chatRoomId: Int
     ): Flow<ChatMessage>
+
+    fun subscribeChatList(
+        userId: Int
+    ): Flow<List<ChatListItem>>
 
     suspend fun sendMessage(
         articleId: Int,
