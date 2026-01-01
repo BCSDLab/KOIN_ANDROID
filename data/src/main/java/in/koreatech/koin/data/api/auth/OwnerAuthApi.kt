@@ -23,54 +23,54 @@ interface OwnerAuthApi {
         @Body storeRegisterResponse: StoreRegisterResponse
     )
 
-    @GET(URLConstant.SHOPS.OWNERSHOPS.OWNERSHOPS)
+    @GET(URLConstant.SHOPS.OWNERSHOPS)
     suspend fun getMyShopList(): OwnerStoreResponse
 
-    @GET(URLConstant.SHOPS.OWNERSHOPS.ID)
+    @GET(URLConstant.SHOPS.OWNERSHOPS + "/{id}")
     suspend fun getOwnerShopInfo(
         @Path("id") uid: Int
     ): StoreRegisterResponse
 
-    @GET(URLConstant.SHOPS.OWNERSHOPS.MENUS.MENUS)
+    @GET(URLConstant.SHOPS.OWNERSHOPS + "/menus")
     suspend fun getOwnerShopMenus(
         @Query("shopId") uid: Int
     ): StoreMenuResponse
 
-    @POST(URLConstant.SHOPS.OWNERSHOPS.MENUS.ID_MENUS)
+    @POST(URLConstant.SHOPS.OWNERSHOPS + "/{id}" + "/menus")
     suspend fun postShopMenu(
         @Path("id") storeId: Int,
         @Body storeRegisterResponse: StoreMenuRegisterResponse
     )
 
-    @PUT(URLConstant.SHOPS.OWNERSHOPS.MENUS.MENUID)
+    @PUT(URLConstant.SHOPS.OWNERSHOPS + "/menus" + "/{menuId}")
     suspend fun putShopModifiedMenu(
         @Path("menuId") menuId: Int,
         @Body storeRegisterResponse: StoreMenuRegisterResponse
     )
 
-    @GET(URLConstant.SHOPS.OWNERSHOPS.MENUS.MENUID)
+    @GET(URLConstant.SHOPS.OWNERSHOPS + "/menus" + "/{menuId}")
     suspend fun getMenuInfo(
         @Path("menuId") menuId: Int
     ): StoreMenuInfoResponse
 
-    @GET(URLConstant.SHOPS.OWNERSHOPS.EVENT.EVENT)
+    @GET(URLConstant.SHOPS.OWNERSHOPS + "/{shopId}" + "/event")
     suspend fun getOwnerShopEvents(
         @Path("shopId") uid: Int
     ): StoreDetailEventResponse
 
-    @DELETE(URLConstant.SHOPS.OWNERSHOPS.EVENT.EVENTID)
+    @DELETE(URLConstant.SHOPS.OWNERSHOPS + "/{shopId}" + "/events" + "/{eventId}")
     suspend fun deleteOwnerShopEvent(
         @Path("shopId") uid: Int,
         @Path("eventId") eventId: Int
     ): Response<Unit>
 
-    @PUT(URLConstant.SHOPS.OWNERSHOPS.SHOPID)
+    @PUT(URLConstant.SHOPS.OWNERSHOPS + "/{shopId}")
     suspend fun modifyOwnerShopInfo(
         @Path("shopId") uid: Int,
         @Body storeInfo: StoreRegisterResponse
     )
 
-    @POST(URLConstant.SHOPS.OWNERSHOPS.EVENT.ID_EVENT)
+    @POST(URLConstant.SHOPS.OWNERSHOPS + "/{id}" + "/event")
     suspend fun postOwnerShopEvent(
         @Path("id") uid: Int,
         @Body storeRegisterResponse: OwnerEventResponse
