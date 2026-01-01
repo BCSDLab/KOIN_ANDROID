@@ -10,27 +10,27 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ChatAuthApi {
-    @GET(URLConstant.CHAT.CHATROOM)
+    @GET("chatroom/lost-item")
     suspend fun getChatRoomList(): List<ChatListItemResponse>
 
-    @POST(URLConstant.CHAT.ARTICLEID)
+    @POST("chatroom/lost-item/{article_id}")
     suspend fun getChatRoomFromArticleId(
         @Path("article_id") articleId: Int
     ): ChatRoomResponse
 
-    @GET(URLConstant.CHAT.ARTICLEID_ROOMID)
+    @GET("chatroom/lost-item/{article_id}/{chat_room_id}")
     suspend fun getChatRoom(
         @Path("article_id") articleId: Int,
         @Path("chat_room_id") chatRoomId: Int
     ): ChatRoomResponse
 
-    @GET(URLConstant.CHAT.MESSAGES)
+    @GET("chatroom/lost-item/{article_id}/{chat_room_id}/messages")
     suspend fun getChatMessages(
         @Path("article_id") articleId: Int,
         @Path("chat_room_id") chatRoomId: Int
     ): List<ChatMessageResponse>
 
-    @POST(URLConstant.CHAT.BLOCK)
+    @POST("chatroom/lost-item/{article_id}/{chat_room_id}/block")
     suspend fun blockUser(
         @Path("article_id") articleId: Int,
         @Path("chat_room_id") chatRoomId: Int
