@@ -13,13 +13,19 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.feature.article.LostAndFoundReportActivity
 import `in`.koreatech.koin.feature.article.R
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
 import `in`.koreatech.koin.feature.article.ui.lostandfound.detail.LostAndFoundDetail
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ArticleLostAndFoundDetailFragment : Fragment() {
+
+    @Inject
+    lateinit var navigator: Navigator
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,13 +55,9 @@ class ArticleLostAndFoundDetailFragment : Fragment() {
                         )
                     },
                     navigateToChatRoom = { articleId ->
-                        /** TODO
-                         Intent(requireContext(), ChatRoomActivity::class.java).apply {
-                         putExtra(ARTICLE_ID, articleId)
-                         }.also {
-                         startActivity(it)
-                         }
-                         **/
+                        val intent = navigator.navigateToChatRoom(requireContext())
+                        intent.putExtra(ARTICLE_ID, articleId)
+                        startActivity(intent)
                     },
                     navigateToReport = { articleId ->
                         Intent(requireContext(), LostAndFoundReportActivity::class.java).apply {
