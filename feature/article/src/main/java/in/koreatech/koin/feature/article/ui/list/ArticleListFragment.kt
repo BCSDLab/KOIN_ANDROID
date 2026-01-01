@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.article.ui.article.list
+package `in`.koreatech.koin.feature.article.ui.list
 
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -49,7 +49,7 @@ import `in`.koreatech.koin.feature.article.model.ArticleHeaderState
 import `in`.koreatech.koin.feature.article.ui.article.adapter.ArticleAdapter
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
-import `in`.koreatech.koin.feature.article.ui.lostandfound.list.LostAndFoundList
+import `in`.koreatech.koin.feature.article.ui.lostandfound.LostAndFoundList
 import `in`.koreatech.koin.feature.article.ui.lostandfound.write.LostAndFoundWriteArticleViewModel.Companion.LOST_OR_FOUND_TYPE
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest

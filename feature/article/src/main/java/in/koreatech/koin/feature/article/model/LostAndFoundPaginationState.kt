@@ -1,9 +1,7 @@
-package `in`.koreatech.koin.feature.article.ui.article.state
+package `in`.koreatech.koin.feature.article.model
 
 import androidx.compose.runtime.Immutable
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundPagination
-import `in`.koreatech.koin.feature.article.ui.lostandfound.list.LostAndFoundItemState
-import `in`.koreatech.koin.feature.article.ui.lostandfound.list.toLostAndFoundItemState
 
 @Immutable
 data class LostAndFoundPaginationState(

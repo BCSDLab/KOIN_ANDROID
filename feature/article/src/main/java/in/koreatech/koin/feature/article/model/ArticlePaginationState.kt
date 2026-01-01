@@ -1,8 +1,6 @@
-package `in`.koreatech.koin.feature.article.ui.article.state
+package `in`.koreatech.koin.feature.article.model
 
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
-import `in`.koreatech.koin.feature.article.model.ArticleHeaderState
-import `in`.koreatech.koin.feature.article.model.toArticleHeaderState
 
 data class ArticlePaginationState(
     val articles: List<ArticleHeaderState>,

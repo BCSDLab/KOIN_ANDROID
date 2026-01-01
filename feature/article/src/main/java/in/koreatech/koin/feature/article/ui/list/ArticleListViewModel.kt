@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.article.ui.article.list
+package `in`.koreatech.koin.feature.article.ui.list
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -9,10 +9,10 @@ import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFound
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchSearchedLostAndFoundArticlesUseCase
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
 import `in`.koreatech.koin.feature.article.enums.LostOrFoundType
-import `in`.koreatech.koin.feature.article.ui.article.state.ArticlePaginationState
-import `in`.koreatech.koin.feature.article.ui.article.state.LostAndFoundPaginationState
-import `in`.koreatech.koin.feature.article.ui.article.state.toArticlePaginationState
-import `in`.koreatech.koin.feature.article.ui.article.state.toLostAndFoundPaginationState
+import `in`.koreatech.koin.feature.article.model.ArticlePaginationState
+import `in`.koreatech.koin.feature.article.model.LostAndFoundPaginationState
+import `in`.koreatech.koin.feature.article.model.toArticlePaginationState
+import `in`.koreatech.koin.feature.article.model.toLostAndFoundPaginationState
 import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview

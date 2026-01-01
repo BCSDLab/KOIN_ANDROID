@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.article.ui.article.search
+package `in`.koreatech.koin.feature.article.ui.search
 
 import android.os.Bundle
 import android.view.LayoutInflater

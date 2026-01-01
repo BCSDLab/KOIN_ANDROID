@@ -10,9 +10,9 @@ import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
 import `in`.koreatech.koin.feature.article.model.ArticleHeaderState
+import `in`.koreatech.koin.feature.article.model.ArticleState
 import `in`.koreatech.koin.feature.article.model.toArticleHeaderState
-import `in`.koreatech.koin.feature.article.ui.article.state.ArticleState
-import `in`.koreatech.koin.feature.article.ui.article.state.toArticleState
+import `in`.koreatech.koin.feature.article.model.toArticleState
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map

@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.article.ui.article.state
+package `in`.koreatech.koin.feature.article.model
 
 import `in`.koreatech.koin.core.util.RegexPatterns
 import `in`.koreatech.koin.domain.model.article.Attachment

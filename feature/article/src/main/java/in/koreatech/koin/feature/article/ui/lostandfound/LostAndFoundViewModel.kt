@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.article.ui.lostandfound.list
+package `in`.koreatech.koin.feature.article.ui.lostandfound
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

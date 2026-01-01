@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import `in`.koreatech.koin.feature.article.databinding.ItemAttachmentBinding
-import `in`.koreatech.koin.feature.article.ui.article.state.AttachmentState
+import `in`.koreatech.koin.feature.article.model.AttachmentState
 
 class AttachmentAdapter(
     private val onClick: (AttachmentState) -> Unit,

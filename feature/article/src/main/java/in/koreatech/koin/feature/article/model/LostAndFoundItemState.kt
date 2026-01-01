@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.article.ui.lostandfound.list
+package `in`.koreatech.koin.feature.article.model
 
 import android.os.Parcelable
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundHeader

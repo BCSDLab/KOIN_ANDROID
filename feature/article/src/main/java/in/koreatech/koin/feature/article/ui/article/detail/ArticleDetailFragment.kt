@@ -35,10 +35,10 @@ import `in`.koreatech.koin.feature.article.R
 import `in`.koreatech.koin.feature.article.databinding.FragmentArticleDetailBinding
 import `in`.koreatech.koin.feature.article.enums.LinkType
 import `in`.koreatech.koin.feature.article.model.ArticleHeaderState
+import `in`.koreatech.koin.feature.article.model.ArticleState
+import `in`.koreatech.koin.feature.article.model.AttachmentState
 import `in`.koreatech.koin.feature.article.ui.article.adapter.AttachmentAdapter
 import `in`.koreatech.koin.feature.article.ui.article.adapter.HotArticleAdapter
-import `in`.koreatech.koin.feature.article.ui.article.state.ArticleState
-import `in`.koreatech.koin.feature.article.ui.article.state.AttachmentState
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

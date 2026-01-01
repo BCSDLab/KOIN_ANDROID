@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.article.ui.lostandfound.list
+package `in`.koreatech.koin.feature.article.ui.lostandfound
 
 import android.widget.Toast
 import androidx.compose.animation.core.animateDpAsState
@@ -38,14 +38,14 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.article.R
 import `in`.koreatech.koin.feature.article.component.LoadingDialog
 import `in`.koreatech.koin.feature.article.enums.LostOrFoundType
-import `in`.koreatech.koin.feature.article.ui.article.state.LostAndFoundPaginationState
-import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.LostAndFoundDialog
-import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.LostAndFoundDropdownGroup
-import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.LostAndFoundFAB
-import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.LostAndFoundItem
-import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.LostAndFoundKeywordGroup
-import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.LostAndFoundPagination
-import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.lostAndFoundDialogStyle
+import `in`.koreatech.koin.feature.article.model.LostAndFoundPaginationState
+import `in`.koreatech.koin.feature.article.ui.lostandfound.component.LostAndFoundDialog
+import `in`.koreatech.koin.feature.article.ui.lostandfound.component.LostAndFoundDropdownGroup
+import `in`.koreatech.koin.feature.article.ui.lostandfound.component.LostAndFoundFAB
+import `in`.koreatech.koin.feature.article.ui.lostandfound.component.LostAndFoundItem
+import `in`.koreatech.koin.feature.article.ui.lostandfound.component.LostAndFoundKeywordGroup
+import `in`.koreatech.koin.feature.article.ui.lostandfound.component.LostAndFoundPagination
+import `in`.koreatech.koin.feature.article.ui.lostandfound.component.lostAndFoundDialogStyle
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
