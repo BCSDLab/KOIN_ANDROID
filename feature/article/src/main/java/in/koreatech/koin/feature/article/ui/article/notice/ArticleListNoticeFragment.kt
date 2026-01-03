@@ -255,10 +255,10 @@ class ArticleListNoticeFragment : Fragment() {
         keywords.forEach { keyword ->
             if (binding.chipGroupMyKeywords.children.any {
                     (it as? Chip)?.text ==
-                            TextUtils.concat(
-                                "#",
-                                keyword
-                            )
+                        TextUtils.concat(
+                            "#",
+                            keyword
+                        )
                 }.not()
             ) {
                 binding.chipGroupMyKeywords.addView(

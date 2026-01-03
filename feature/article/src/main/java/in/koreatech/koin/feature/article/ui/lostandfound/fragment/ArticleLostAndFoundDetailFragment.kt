@@ -15,7 +15,6 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.feature.article.LostAndFoundReportActivity
 import `in`.koreatech.koin.feature.article.R
-import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
 import `in`.koreatech.koin.feature.article.ui.lostandfound.detail.LostAndFoundDetail
 

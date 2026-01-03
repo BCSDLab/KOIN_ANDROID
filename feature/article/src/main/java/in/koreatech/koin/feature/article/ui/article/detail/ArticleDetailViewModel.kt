@@ -13,7 +13,6 @@ import `in`.koreatech.koin.feature.article.model.ArticleHeaderState
 import `in`.koreatech.koin.feature.article.model.toArticleHeaderState
 import `in`.koreatech.koin.feature.article.ui.article.state.ArticleState
 import `in`.koreatech.koin.feature.article.ui.article.state.toArticleState
-import java.time.LocalDate
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map

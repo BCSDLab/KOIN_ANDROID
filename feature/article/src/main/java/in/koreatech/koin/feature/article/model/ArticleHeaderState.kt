@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.article.model
 import android.os.Parcelable
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
-import java.time.LocalDate
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
