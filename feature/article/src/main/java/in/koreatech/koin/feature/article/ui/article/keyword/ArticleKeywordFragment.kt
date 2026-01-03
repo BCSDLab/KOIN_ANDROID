@@ -25,6 +25,7 @@ import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.permission.checkNotificationPermission
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.SnackbarUtil
+import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.feature.article.R
 import `in`.koreatech.koin.feature.article.databinding.FragmentArticleKeywordBinding
 import javax.inject.Inject
@@ -36,8 +37,6 @@ class ArticleKeywordFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<ArticleKeywordViewModel>()
-    // FIXME
-    // private val notificationViewModel by viewModels<NotificationViewModel>()
 
     @Inject
     lateinit var navigator: Navigator
@@ -320,8 +319,7 @@ class ArticleKeywordFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.user.collect { user ->
                     if (user.isAnonymous.not()) {
-                        // FIXME
-                        // notificationViewModel.getPermissionInfo()
+                        viewModel.getPermissionInfo()
                     }
                 }
             }
@@ -346,21 +344,20 @@ class ArticleKeywordFragment : Fragment() {
                     AnalyticsConstant.Label.KEYWORD_NOTIFICATION,
                     "on"
                 )
-                // notificationViewModel.updateSubscription(SubscribesType.ARTICLE_KEYWORD)
+                viewModel.updateSubscription(SubscribesType.ARTICLE_KEYWORD)
             } else {
                 EventLogger.logClickEvent(
                     EventAction.CAMPUS,
                     AnalyticsConstant.Label.KEYWORD_NOTIFICATION,
                     "off"
                 )
-                // notificationViewModel.deleteSubscription(SubscribesType.ARTICLE_KEYWORD)
+                viewModel.deleteSubscription(SubscribesType.ARTICLE_KEYWORD)
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                /* FIXME
-                notificationViewModel.notificationUiState.collect { uiState ->
+                viewModel.notificationUiState.collect { uiState ->
                     if (uiState is NotificationUiState.Success) {
                         uiState.notificationPermissionInfo.subscribes.forEach {
                             if (it.type == SubscribesType.ARTICLE_KEYWORD) {
@@ -374,7 +371,6 @@ class ArticleKeywordFragment : Fragment() {
                         }
                     }
                 }
-                 */
             }
         }
     }
