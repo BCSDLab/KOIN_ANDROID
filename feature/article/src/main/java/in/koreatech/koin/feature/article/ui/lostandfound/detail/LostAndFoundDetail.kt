@@ -155,7 +155,7 @@ private fun handleSideEffect(
             context.findActivity()?.finish()
             val intent =
                 Intent(Intent.ACTION_VIEW).apply {
-                    Intent.setData = Uri.parse("koin://article/activity?fragment=article_lost_and_found")
+                    data = Uri.parse("koin://article/activity?fragment=article_lost_and_found")
                 }
             context.startActivity(intent)
             Toast.makeText(

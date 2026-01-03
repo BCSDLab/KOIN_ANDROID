@@ -29,28 +29,23 @@ fun Modifier.horizontalFadingEdge(
         drawContent()
 
         drawRect(
-            brush =
-            Brush.horizontalGradient(
-                colors =
-                listOf(
+            brush = Brush.horizontalGradient(
+                colors = listOf(
                     color,
                     Color.Transparent
                 ),
                 startX = 0f,
                 endX = startFadingEdgeStrength
             ),
-            size =
-            Size(
+            size = Size(
                 startFadingEdgeStrength,
                 this.size.height
             )
         )
 
         drawRect(
-            brush =
-            Brush.horizontalGradient(
-                colors =
-                listOf(
+            brush = Brush.horizontalGradient(
+                colors = listOf(
                     Color.Transparent,
                     color
                 ),

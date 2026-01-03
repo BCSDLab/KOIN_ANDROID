@@ -52,8 +52,7 @@ fun DetailDialog(
     negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral
 ) {
     BasicAlertDialog(
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .background(
