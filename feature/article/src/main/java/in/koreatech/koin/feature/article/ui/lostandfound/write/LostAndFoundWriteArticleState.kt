@@ -1,0 +1,12 @@
+package `in`.koreatech.koin.feature.article.ui.lostandfound.write
+
+import android.os.Parcelable
+import `in`.koreatech.koin.feature.article.enums.LostOrFoundType
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class LostAndFoundWriteArticleState(
+    val lostOrFoundType: LostOrFoundType = LostOrFoundType.FOUND,
+    val itemList: List<LostAndFoundWriteArticleItemState> = emptyList(),
+    val isAllFieldValid: Boolean = false
+) : Parcelable

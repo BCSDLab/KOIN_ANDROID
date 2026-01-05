@@ -14,8 +14,8 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.feature.article.ui.lostandfound.detail.LostAndFoundDetail
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
-import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetail
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
 
 @AndroidEntryPoint

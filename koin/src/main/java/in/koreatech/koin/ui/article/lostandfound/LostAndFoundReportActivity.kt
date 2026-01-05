@@ -7,7 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.core.os.bundleOf
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
-import `in`.koreatech.koin.feature.lostandfound.ui.report.LostAndFoundReport
+import `in`.koreatech.koin.feature.article.ui.lostandfound.report.LostAndFoundReport
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.BUNDLE_ARTICLE_EXTRA_KEY
 import `in`.koreatech.koin.ui.article.ArticleBoardType
