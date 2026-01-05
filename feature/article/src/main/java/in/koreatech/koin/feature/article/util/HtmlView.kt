@@ -20,7 +20,7 @@ import `in`.koreatech.koin.domain.model.article.html.CssAttribute
 import `in`.koreatech.koin.domain.model.article.html.HtmlAttribute
 import `in`.koreatech.koin.domain.model.article.html.HtmlTag
 import `in`.koreatech.koin.feature.article.R
-import `in`.koreatech.koin.feature.article.ui.article.state.HtmlElement
+import `in`.koreatech.koin.feature.article.model.HtmlElement
 
 class HtmlView @JvmOverloads constructor(
     context: Context,

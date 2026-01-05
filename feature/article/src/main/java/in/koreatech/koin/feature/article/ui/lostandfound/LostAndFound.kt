@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.article.ui.lostandfound.list
+package `in`.koreatech.koin.feature.article.ui.lostandfound
 
 import android.widget.Toast
 import androidx.compose.animation.core.animateDpAsState
@@ -31,34 +31,39 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.article.R
 import `in`.koreatech.koin.feature.article.component.LoadingDialog
 import `in`.koreatech.koin.feature.article.enums.LostOrFoundType
-import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.LostAndFoundDialog
-import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.LostAndFoundDropdownGroup
-import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.LostAndFoundFAB
-import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.LostAndFoundItem
-import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.LostAndFoundKeywordGroup
-import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.LostAndFoundPagination
-import `in`.koreatech.koin.feature.article.ui.lostandfound.list.component.lostAndFoundDialogStyle
-import kotlinx.coroutines.launch
+import `in`.koreatech.koin.feature.article.model.LostAndFoundPaginationState
+import `in`.koreatech.koin.feature.article.ui.lostandfound.component.LostAndFoundDialog
+import `in`.koreatech.koin.feature.article.ui.lostandfound.component.LostAndFoundDropdownGroup
+import `in`.koreatech.koin.feature.article.ui.lostandfound.component.LostAndFoundFAB
+import `in`.koreatech.koin.feature.article.ui.lostandfound.component.LostAndFoundItem
+import `in`.koreatech.koin.feature.article.ui.lostandfound.component.LostAndFoundKeywordGroup
+import `in`.koreatech.koin.feature.article.ui.lostandfound.component.LostAndFoundPagination
+import `in`.koreatech.koin.feature.article.ui.lostandfound.component.lostAndFoundDialogStyle
 import org.orbitmvi.orbit.compose.collectAsState
-import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun LostAndFoundList(
-    viewModel: LostAndFoundViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
+    viewModel: LostAndFoundViewModel = hiltViewModel(),
+    myKeywords: List<String>,
+    selectedKeyword: String,
+    selectedType: LostOrFoundType?,
+    lostAndFoundPaginationState: LostAndFoundPaginationState,
+    currentPage: Int,
     navigateToWriteFoundItem: (lostOrFoundType: String) -> Unit = {},
     navigateToLostAndFoundDetail: (articleId: Int) -> Unit = {},
     navigateToKeywordFragment: () -> Unit = {},
-    navigateToLoginActivity: () -> Unit = {}
+    navigateToLoginActivity: () -> Unit = {},
+    onKeywordChange: (String) -> Unit = {},
+    onLostOrFoundChange: (LostOrFoundType?) -> Unit = {},
+    onPageChange: (Int) -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
     val isLoading = uiState.isLoading
@@ -73,22 +78,6 @@ fun LostAndFoundList(
             0.dp
         }
     )
-
-    viewModel.collectSideEffect { sideEffect ->
-        handleSideEffect(
-            sideEffect = sideEffect,
-            viewModel = viewModel,
-            scrollToTop = {
-                coroutineScope.launch {
-                    lazyListState.scrollToItem(0)
-                }
-            }
-        )
-    }
-
-    LifecycleEventEffect(Lifecycle.Event.ON_START) {
-        viewModel.fetchLostAndFoundList()
-    }
 
     val context = LocalContext.current
 
@@ -150,7 +139,6 @@ fun LostAndFoundList(
             },
             contentWindowInsets = WindowInsets(0, 0, 0, 0)
         ) { contentPadding ->
-            val myKeywords = uiState.myKeywords
             Column(
                 modifier = modifier
                     .padding(contentPadding)
@@ -163,17 +151,15 @@ fun LostAndFoundList(
                     item {
                         LostAndFoundKeywordGroup(
                             keyWords = myKeywords,
-                            selectedKeywordIndex = when (uiState.selectedKeyword) {
+                            selectedKeywordIndex = when (selectedKeyword) {
                                 "" -> 0
-                                else -> myKeywords.indexOf(uiState.selectedKeyword) + 1
+                                else -> myKeywords.indexOf(selectedKeyword) + 1
                             },
-                            navigateToKeywordFragment = navigateToKeywordFragment
-                        ) {
-                            viewModel.selectKeyword(it)
-                            viewModel.changePage(1)
-                        }
+                            navigateToKeywordFragment = navigateToKeywordFragment,
+                            selectKeyword = onKeywordChange
+                        )
                         LostAndFoundDropdownGroup(
-                            selectedType = uiState.selectedType,
+                            selectedType = selectedType,
                             isDropdownExpanded = uiState.isDropdownExpanded,
                             onDropdownExpandChange = {
                                 viewModel.setDropdownExpanded(it)
@@ -188,7 +174,7 @@ fun LostAndFoundList(
                                         else -> ""
                                     }
                                 )
-                                viewModel.setSelectedType(
+                                onLostOrFoundChange(
                                     when (it) {
                                         0 -> null
                                         1 -> LostOrFoundType.FOUND
@@ -196,12 +182,10 @@ fun LostAndFoundList(
                                         else -> null
                                     }
                                 )
-                                viewModel.changePage(1)
-                                viewModel.fetchLostAndFoundList()
                             }
                         )
                     }
-                    if (uiState.lostAndFoundList.isEmpty()) {
+                    if (lostAndFoundPaginationState.articleLostAndFoundHeader.isEmpty()) {
                         item {
                             Text(
                                 modifier = modifier
@@ -213,7 +197,7 @@ fun LostAndFoundList(
                             )
                         }
                     } else {
-                        items(uiState.lostAndFoundList) {
+                        items(lostAndFoundPaginationState.articleLostAndFoundHeader) {
                             LostAndFoundItem(
                                 lostOrFound = it.lostOrFound,
                                 lostItemCategory = it.category,
@@ -242,11 +226,10 @@ fun LostAndFoundList(
                             LostAndFoundPagination(
                                 modifier = Modifier
                                     .fillMaxWidth(),
-                                currentPage = uiState.currentPage,
-                                totalPage = uiState.totalPage
-                            ) {
-                                viewModel.changePage(it)
-                            }
+                                currentPage = currentPage,
+                                totalPage = lostAndFoundPaginationState.totalPage,
+                                onPageChange = onPageChange
+                            )
                         }
                         item {
                             Spacer(modifier = Modifier.height(32.dp))
@@ -284,23 +267,6 @@ fun LostAndFoundList(
                     )
                 }
             }
-        }
-    }
-}
-
-fun handleSideEffect(
-    sideEffect: LostAndFoundSideEffect,
-    viewModel: LostAndFoundViewModel,
-    scrollToTop: () -> Unit = {}
-) {
-    when (sideEffect) {
-        is LostAndFoundSideEffect.PageChanged -> {
-            viewModel.fetchLostAndFoundList()
-            scrollToTop()
-        }
-
-        LostAndFoundSideEffect.KeywordUpdated -> {
-            viewModel.fetchLostAndFoundList()
         }
     }
 }

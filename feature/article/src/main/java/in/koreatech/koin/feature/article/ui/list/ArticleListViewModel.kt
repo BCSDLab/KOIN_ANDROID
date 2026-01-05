@@ -1,14 +1,21 @@
-package `in`.koreatech.koin.feature.article.ui.article.notice
+package `in`.koreatech.koin.feature.article.ui.list
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.repository.ArticleRepository
+import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticlePaginationUseCase
+import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchSearchedLostAndFoundArticlesUseCase
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
-import `in`.koreatech.koin.feature.article.ui.article.state.ArticlePaginationState
-import `in`.koreatech.koin.feature.article.ui.article.state.toArticlePaginationState
+import `in`.koreatech.koin.feature.article.enums.LostOrFoundType
+import `in`.koreatech.koin.feature.article.model.ArticlePaginationState
+import `in`.koreatech.koin.feature.article.model.LostAndFoundPaginationState
+import `in`.koreatech.koin.feature.article.model.toArticlePaginationState
+import `in`.koreatech.koin.feature.article.model.toLostAndFoundPaginationState
 import javax.inject.Inject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -18,28 +25,32 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 
+@OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 @HiltViewModel
-class ArticleListNoticeViewModel @Inject constructor(
+class ArticleListViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
+    private val fetchLostAndFoundArticlePaginationUseCase: FetchLostAndFoundArticlePaginationUseCase,
+    private val fetchSearchedLostAndFoundArticlesUseCase: FetchSearchedLostAndFoundArticlesUseCase,
     articleRepository: ArticleRepository
 ) : BaseViewModel() {
+
     val currentBoard = savedStateHandle.getStateFlow(BOARD_TYPE, ArticleBoardType.ALL)
     val currentPage = savedStateHandle.getStateFlow(CURRENT_PAGE, 1)
     val selectedKeyword = savedStateHandle.getStateFlow(SELECTED_KEYWORD, "")
 
-    val pageNumbers =
-        savedStateHandle.getStateFlow(
-            PAGE_NUMBERS,
-            IntArray(PAGE_NUMBER_COUNT)
-        ) // 값이 0일 경우 존재하지 않는 페이지
+    val pageNumbers = savedStateHandle.getStateFlow(
+        PAGE_NUMBERS,
+        IntArray(PAGE_NUMBER_COUNT)
+    ) // 값이 0일 경우 존재하지 않는 페이지
 
-    val myKeywords: StateFlow<List<String>> =
-        articleRepository.fetchMyKeyword()
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = listOf()
-            )
+    val myKeywords: StateFlow<List<String>> = articleRepository.fetchMyKeyword()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = listOf()
+        )
+
+    val lostAndFoundType: StateFlow<LostOrFoundType?> = savedStateHandle.getStateFlow(LOST_OR_FOUND_TYPE, null)
 
     val articlePagination: StateFlow<ArticlePaginationState> =
         combine(currentBoard, currentPage, selectedKeyword) { board, page, query ->
@@ -47,12 +58,7 @@ class ArticleListNoticeViewModel @Inject constructor(
             if (query.isEmpty()) {
                 articleRepository.fetchArticlePagination(board.id, page, ARTICLES_PER_PAGE)
             } else {
-                articleRepository.fetchSearchedArticles(
-                    query,
-                    board.id,
-                    page,
-                    ARTICLES_PER_PAGE
-                )
+                articleRepository.fetchSearchedArticles(query, board.id, page, ARTICLES_PER_PAGE)
             }
         }.debounce(10).flatMapLatest {
             it.mapLatest { articlePagination ->
@@ -66,6 +72,25 @@ class ArticleListNoticeViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = ArticlePaginationState(emptyList(), 0, 0, 5, 1)
         )
+
+    val lostAndFoundPagination: StateFlow<LostAndFoundPaginationState> = combine(currentPage, lostAndFoundType, selectedKeyword) { page, type, query ->
+        _isLoading.value = true
+        if (query.isEmpty()) {
+            fetchLostAndFoundArticlePaginationUseCase(page, ARTICLES_PER_PAGE, type?.name)
+        } else {
+            fetchSearchedLostAndFoundArticlesUseCase(query, page, ARTICLES_PER_PAGE)
+        }
+    }.debounce(10).flatMapLatest {
+        it.mapLatest { articlePagination ->
+            articlePagination.toLostAndFoundPaginationState()
+        }
+    }.onEach {
+        _isLoading.value = false
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = LostAndFoundPaginationState(emptyList(), 0, 0, 5, 1)
+    )
 
     fun setCurrentBoard(board: ArticleBoardType) {
         if (currentBoard.value == board) return
@@ -81,6 +106,11 @@ class ArticleListNoticeViewModel @Inject constructor(
         if (selectedKeyword.value == keyword) return
         savedStateHandle[SELECTED_KEYWORD] = keyword
         setCurrentPage(1)
+    }
+
+    fun setLostOrFoundType(type: LostOrFoundType?) {
+        if (lostAndFoundType.value == type) return
+        savedStateHandle[LOST_OR_FOUND_TYPE] = type
     }
 
     private fun calculatePageNumber(totalPage: Int) {
@@ -107,5 +137,6 @@ class ArticleListNoticeViewModel @Inject constructor(
         private const val CURRENT_PAGE = "current_page"
         private const val PAGE_NUMBERS = "page_numbers"
         private const val SELECTED_KEYWORD = "selected_keyword"
+        private const val LOST_OR_FOUND_TYPE = "lost_or_found_type"
     }
 }

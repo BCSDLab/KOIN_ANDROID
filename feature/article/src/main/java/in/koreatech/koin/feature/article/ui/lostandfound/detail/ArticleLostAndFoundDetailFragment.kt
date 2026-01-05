@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.article.ui.lostandfound.fragment
+package `in`.koreatech.koin.feature.article.ui.lostandfound.detail
 
 import android.content.Intent
 import android.os.Bundle
@@ -17,7 +17,6 @@ import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.feature.article.LostAndFoundReportActivity
 import `in`.koreatech.koin.feature.article.R
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
-import `in`.koreatech.koin.feature.article.ui.lostandfound.detail.LostAndFoundDetail
 import javax.inject.Inject
 
 @AndroidEntryPoint

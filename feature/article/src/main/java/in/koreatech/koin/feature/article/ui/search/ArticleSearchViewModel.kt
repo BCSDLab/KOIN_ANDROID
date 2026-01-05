@@ -1,12 +1,12 @@
-package `in`.koreatech.koin.feature.article.ui.article.search
+package `in`.koreatech.koin.feature.article.ui.search
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.repository.ArticleRepository
-import `in`.koreatech.koin.feature.article.ui.article.state.ArticlePaginationState
-import `in`.koreatech.koin.feature.article.ui.article.state.toArticlePaginationState
+import `in`.koreatech.koin.feature.article.model.ArticlePaginationState
+import `in`.koreatech.koin.feature.article.model.toArticlePaginationState
 import javax.inject.Inject
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow

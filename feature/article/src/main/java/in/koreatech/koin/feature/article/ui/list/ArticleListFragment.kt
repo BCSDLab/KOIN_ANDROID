@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.article.ui.article.notice
+package `in`.koreatech.koin.feature.article.ui.list
 
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -7,12 +7,11 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.children
-import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -22,37 +21,73 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
+import `in`.koreatech.koin.core.navigation.Navigator
+import `in`.koreatech.koin.core.onboarding.ArrowDirection
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
+import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.core.util.withLoading
 import `in`.koreatech.koin.feature.article.R
-import `in`.koreatech.koin.feature.article.databinding.FragmentArticleListNoticeBinding
+import `in`.koreatech.koin.feature.article.databinding.FragmentArticleListBinding
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
+import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.ALL
+import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.IPP
+import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.KOIN
+import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.LOSTANDFOUND
+import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.NORMAL
+import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.RECRUIT
+import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.SCHOLARSHIP
+import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.SCHOOL
+import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.STUDENT
 import `in`.koreatech.koin.feature.article.model.ArticleHeaderState
 import `in`.koreatech.koin.feature.article.ui.article.adapter.ArticleAdapter
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
+import `in`.koreatech.koin.feature.article.ui.lostandfound.LostAndFoundList
+import `in`.koreatech.koin.feature.article.ui.lostandfound.write.LostAndFoundWriteArticleViewModel.Companion.LOST_OR_FOUND_TYPE
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ArticleListNoticeFragment : Fragment() {
+class ArticleListFragment : Fragment() {
+
     @Inject
     lateinit var onboardingManager: OnboardingManager
 
-    private var _binding: FragmentArticleListNoticeBinding? = null
+    @Inject
+    lateinit var navigator: Navigator
+
+    private var _binding: FragmentArticleListBinding? = null
     private val binding get() = _binding!!
     private val navController by lazy { findNavController() }
 
-    private val viewModel: ArticleListNoticeViewModel by viewModels()
+    private val viewModel by viewModels<ArticleListViewModel>()
 
     private var scrollPercentage = 0.0f // for GA4
+
+    private val onTabSelectedListener =
+        object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.let {
+                    EventLogger.logClickEvent(
+                        EventAction.CAMPUS,
+                        AnalyticsConstant.Label.NOTICE_TAB,
+                        it.text.toString()
+                    )
+                    viewModel.setCurrentBoard(ArticleBoardType.entries[it.position])
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        }
 
     private val articleAdapter = ArticleAdapter(onClick = ::onArticleClicked)
     private lateinit var pageChips: ArrayList<Chip>
@@ -63,18 +98,17 @@ class ArticleListNoticeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         if (_binding == null) {
-            _binding = FragmentArticleListNoticeBinding.inflate(inflater, container, false)
-            initArgument()
+            _binding = FragmentArticleListBinding.inflate(inflater, container, false)
             initArticleRecyclerView()
             initPageButtonSelectedListener()
-            pageChips =
-                arrayListOf(
-                    binding.chipPage1,
-                    binding.chipPage2,
-                    binding.chipPage3,
-                    binding.chipPage4,
-                    binding.chipPage5
-                )
+            addCategoryTabs()
+            pageChips = arrayListOf(
+                binding.chipPage1,
+                binding.chipPage2,
+                binding.chipPage3,
+                binding.chipPage4,
+                binding.chipPage5
+            )
             binding.textViewNextPage.setOnClickListener {
                 viewModel.setCurrentPage(viewModel.currentPage.value + 1)
             }
@@ -104,38 +138,21 @@ class ArticleListNoticeFragment : Fragment() {
                 scrollPercentage = 100.0f * offset / (range - extent)
             }
         }
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.nestedScrollViewArticleList) { v, insets ->
-            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-
-            v.updatePadding(
-                bottom = imeInsets.bottom or systemBars.bottom
-            )
-            WindowInsetsCompat.CONSUMED
-        }
-    }
-
-    private fun initArgument() {
-        arguments?.getInt("boardId")?.let {
-            viewModel.setCurrentBoard(
-                ArticleBoardType.entries.find { board -> board.id == it } ?: ArticleBoardType.ALL
-            )
-        }
+        binding.tabLayoutArticleBoard.addOnTabSelectedListener(onTabSelectedListener)
     }
 
     private fun initKeywordTooltip() {
         with(onboardingManager) {
-            showOnboardingTooltipIfNeeded(
-                type = `in`.koreatech.koin.core.onboarding.OnboardingType.ARTICLE_KEYWORD,
+            viewLifecycleOwner.showOnboardingTooltipIfNeeded(
+                type = OnboardingType.ARTICLE_KEYWORD,
                 view = binding.imageViewToKeywordAddPage,
                 arrowPosition = 0.135f,
-                arrowDirection = `in`.koreatech.koin.core.onboarding.ArrowDirection.TOP
+                arrowDirection = ArrowDirection.TOP
             )
         }
     }
@@ -150,18 +167,99 @@ class ArticleListNoticeFragment : Fragment() {
 
     private fun initArticleRecyclerView() {
         binding.recyclerViewArticleList.adapter = articleAdapter
-        binding.recyclerViewArticleList.addItemDecoration(
-            object :
-                DividerItemDecoration(requireContext(), VERTICAL) {
-                override fun onDrawOver(
-                    c: Canvas,
-                    parent: RecyclerView,
-                    state: RecyclerView.State
-                ) {
-                    drawArticleDivider(c, parent)
+        binding.recyclerViewArticleList.addItemDecoration(object :
+            DividerItemDecoration(requireContext(), VERTICAL) {
+            override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+                drawArticleDivider(c, parent)
+            }
+        })
+
+        binding.composeViewLostandfoundList.setContent {
+            val myKeywords by viewModel.myKeywords.collectAsState()
+            val selectedKeyword by viewModel.selectedKeyword.collectAsState()
+            val selectedType by viewModel.lostAndFoundType.collectAsState()
+            val currentPage by viewModel.currentPage.collectAsState()
+            val lostAndFoundPaginationState by viewModel.lostAndFoundPagination.collectAsState()
+
+            LostAndFoundList(
+                myKeywords = myKeywords,
+                selectedKeyword = selectedKeyword,
+                selectedType = selectedType,
+                lostAndFoundPaginationState = lostAndFoundPaginationState,
+                currentPage = currentPage,
+                navigateToWriteFoundItem = {
+                    when (it) {
+                        "LOST" ->
+                            navController.navigate(
+                                R.id.articleLostAndFoundWriteLostFragment,
+                                bundleOf(LOST_OR_FOUND_TYPE to "LOST")
+                            )
+
+                        "FOUND" ->
+                            navController.navigate(
+                                R.id.articleLostAndFoundWriteFoundFragment,
+                                bundleOf(LOST_OR_FOUND_TYPE to "FOUND")
+                            )
+                    }
+                },
+                navigateToLostAndFoundDetail = { articleId ->
+                    navController.navigate(
+                        R.id.articleLostAndFoundDetailFragment,
+                        bundleOf(ARTICLE_ID to articleId)
+                    )
+                },
+                navigateToKeywordFragment = {
+                    navController.navigate(
+                        R.id.action_articleListFragment_to_articleKeywordFragment
+                    )
+                },
+                navigateToLoginActivity = {
+                    navigator.navigateToSignIn(
+                        requireContext(),
+                        "koin://article/activity?fragment=article_lost_and_found"
+                    ).let(::startActivity)
+                },
+                onKeywordChange = viewModel::selectKeyword,
+                onLostOrFoundChange = viewModel::setLostOrFoundType,
+                onPageChange = viewModel::setCurrentPage
+            )
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.currentBoard.collect {
+                    when (it) {
+                        ALL,
+                        NORMAL,
+                        SCHOLARSHIP,
+                        SCHOOL,
+                        RECRUIT,
+                        IPP,
+                        STUDENT,
+                        KOIN -> {
+                            binding.nestedScrollViewArticleList.visibility = View.VISIBLE
+                            binding.composeViewLostandfoundList.visibility = View.GONE
+                        }
+
+                        LOSTANDFOUND -> {
+                            binding.composeViewLostandfoundList.visibility = View.VISIBLE
+                            binding.nestedScrollViewArticleList.visibility = View.INVISIBLE
+                        }
+                    }
                 }
             }
-        )
+        }
+    }
+
+    private fun addCategoryTabs() {
+        ArticleBoardType.entries.forEach {
+            binding.tabLayoutArticleBoard.addTab(
+                binding.tabLayoutArticleBoard.newTab().apply {
+                    id = View.generateViewId()
+                    text = getString(it.simpleKoreanName)
+                }
+            )
+        }
     }
 
     private fun onArticleClicked(article: ArticleHeaderState) {
@@ -191,7 +289,7 @@ class ArticleListNoticeFragment : Fragment() {
             )
             viewModel.selectKeyword("")
         }
-        lifecycleScope.run {
+        viewLifecycleOwner.lifecycleScope.run {
             launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.myKeywords.collect { keywords ->
@@ -217,7 +315,7 @@ class ArticleListNoticeFragment : Fragment() {
             launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.selectedKeyword.collect { keyword ->
-                        // 다른 화면을 갔다가 돌아와도 키워드 선택 상태 유지
+                        /* 다른 화면을 갔다가 돌아와도 키워드 선택 상태 유지 */
                         var isKeywordSelected = false
                         if (keyword.isEmpty()) {
                             binding.chipSeeAll.isChecked = true
@@ -254,11 +352,10 @@ class ArticleListNoticeFragment : Fragment() {
     private fun addKeywordChip(keywords: List<String>) {
         keywords.forEach { keyword ->
             if (binding.chipGroupMyKeywords.children.any {
-                    (it as? Chip)?.text ==
-                        TextUtils.concat(
-                            "#",
-                            keyword
-                        )
+                    (it as? Chip)?.text == TextUtils.concat(
+                        "#",
+                        keyword
+                    )
                 }.not()
             ) {
                 binding.chipGroupMyKeywords.addView(
@@ -280,11 +377,7 @@ class ArticleListNoticeFragment : Fragment() {
 
     private fun createChip(text: String, isCheckable: Boolean, onChipClicked: () -> Unit): Chip? {
         val chip =
-            layoutInflater.inflate(
-                R.layout.chip_layout,
-                binding.chipGroupMyKeywords,
-                false
-            ) as? Chip
+            layoutInflater.inflate(R.layout.chip_layout, binding.chipGroupMyKeywords, false) as? Chip
         return chip?.apply {
             id = View.generateViewId()
             this.isCheckable = isCheckable
@@ -295,8 +388,19 @@ class ArticleListNoticeFragment : Fragment() {
     }
 
     private fun collectData() {
-        (requireActivity() as IProgressDialog).withLoading(this, viewModel)
-        lifecycleScope.run {
+        (requireActivity() as IProgressDialog).withLoading(viewLifecycleOwner, viewModel)
+        viewLifecycleOwner.lifecycleScope.run {
+            this.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.currentBoard.collect { board ->
+                        binding.tabLayoutArticleBoard.getTabAt(
+                            ArticleBoardType.entries.indexOf(
+                                board
+                            )
+                        )?.select()
+                    }
+                }
+            }
             this.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.articlePagination.collectLatest {
@@ -377,8 +481,9 @@ class ArticleListNoticeFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.tabLayoutArticleBoard.removeOnTabSelectedListener(onTabSelectedListener)
         _binding = null
     }
 }
