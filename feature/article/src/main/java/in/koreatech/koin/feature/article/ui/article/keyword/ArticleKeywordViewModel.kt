@@ -4,15 +4,24 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
+import `in`.koreatech.koin.domain.model.notification.NotificationPermissionInfo
+import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
+import `in`.koreatech.koin.domain.usecase.notification.DeleteNotificationSubscriptionUseCase
+import `in`.koreatech.koin.domain.usecase.notification.GetNotificationPermissionInfoUseCase
+import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
+import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.domain.util.onSuccess
 import javax.inject.Inject
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -20,16 +29,24 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 
 @HiltViewModel
 class ArticleKeywordViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val articleRepository: ArticleRepository,
+    private val getNotificationPermissionInfoUseCase: GetNotificationPermissionInfoUseCase,
+    private val updateNotificationSubscriptionUseCase: UpdateNotificationSubscriptionUseCase,
+    private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase,
     getUserStatusUseCase: GetUserStatusUseCase
 ) : BaseViewModel() {
     val user: StateFlow<User> =
         getUserStatusUseCase()
             .stateIn(viewModelScope, SharingStarted.Eagerly, User.Anonymous)
+
+    private val _notificationUiState =
+        MutableStateFlow<NotificationUiState>(NotificationUiState.Nothing)
+    val notificationUiState = _notificationUiState.asStateFlow()
 
     val keywordInputUiState: StateFlow<KeywordInputUiState> =
         savedStateHandle.getStateFlow(KEYWORD_INPUT, "").map {
@@ -103,6 +120,30 @@ class ArticleKeywordViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    fun getPermissionInfo() {
+        viewModelScope.launchWithLoading {
+            getNotificationPermissionInfoUseCase().onSuccess { info ->
+                _notificationUiState.update {
+                    NotificationUiState.Success(info)
+                }
+            }.onFailure {
+                _notificationUiState.update { NotificationUiState.Failed }
+            }
+        }
+    }
+
+    fun updateSubscription(type: SubscribesType) {
+        viewModelScope.launchWithLoading {
+            updateNotificationSubscriptionUseCase(type)
+        }
+    }
+
+    fun deleteSubscription(type: SubscribesType) {
+        viewModelScope.launchWithLoading {
+            deleteNotificationSubscriptionUseCase(type)
+        }
+    }
+
     fun deleteKeyword(keyword: String) {
         articleRepository.deleteKeyword(keyword).onEach {
             _keywordAddUiState.emit(KeywordAddUiState.Success(keyword))
@@ -149,4 +190,14 @@ sealed interface KeywordInputUiState {
     data object Empty : KeywordInputUiState
 
     data class Valid(val keyword: String) : KeywordInputUiState
+}
+
+sealed class NotificationUiState {
+    data class Success(
+        val notificationPermissionInfo: NotificationPermissionInfo
+    ) : NotificationUiState()
+
+    data object Failed : NotificationUiState()
+
+    data object Nothing : NotificationUiState()
 }
