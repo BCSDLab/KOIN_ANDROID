@@ -56,8 +56,7 @@ fun LostAndFoundReportReasons(
                 )
             } else {
                 LostAndFoundReportReasonItem(
-                    modifier =
-                    Modifier.noRippleClickable {
+                    modifier = Modifier.noRippleClickable {
                         onSelectedItemChange(index)
                     },
                     reportReason = reportReason,
@@ -113,8 +112,7 @@ fun LostAndFoundReportReasonOtherItem(
     isSelected: Boolean = false
 ) {
     Column(
-        modifier =
-        modifier
+        modifier = modifier
             .padding(vertical = 14.dp)
             .noRippleClickable {
                 onFocused()
@@ -125,8 +123,7 @@ fun LostAndFoundReportReasonOtherItem(
         ) {
             Image(
                 modifier = Modifier.padding(horizontal = 8.dp),
-                painter =
-                painterResource(
+                painter = painterResource(
                     id = if (isSelected) R.drawable.ic_report_item_selected else R.drawable.ic_report_item_unselected
                 ),
                 contentDescription = null
@@ -184,8 +181,7 @@ fun ReportTextField(
     }
 
     BasicTextField(
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .border(1.dp, color = KoinTheme.colors.neutral300, shape = KoinTheme.shapes.extraSmall)
             .padding(vertical = 12.dp, horizontal = 16.dp),

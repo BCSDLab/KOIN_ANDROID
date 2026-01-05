@@ -1,0 +1,17 @@
+package `in`.koreatech.koin.feature.article.model
+
+import androidx.annotation.MenuRes
+import androidx.annotation.StringRes
+import `in`.koreatech.koin.feature.article.R
+
+enum class ArticleToolbarState(
+    @StringRes val title: Int,
+    @MenuRes val menuRes: Int? = null
+) {
+    ARTICLE_LIST(R.string.navigation_title_article, R.menu.menu_article_list),
+    ARTICLE_DETAIL(R.string.navigation_title_article),
+    ARTICLE_SEARCH(R.string.navigation_title_article_search),
+    ARTICLE_KEYWORD(R.string.navigation_title_article_keyword),
+    ARTICLE_LOSTANDFOUND_LOST_ITEM(R.string.navigation_title_article_write_lost_item),
+    ARTICLE_LOSTANDFOUND_FOUND_ITEM(R.string.navigation_title_article_write_found_item)
+}
