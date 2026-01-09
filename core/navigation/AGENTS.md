@@ -64,8 +64,9 @@ interface Navigator {
 
 **Rules**:
 - **MUST** return `Intent` objects (not start activities directly)
-- **MUST** use `Pair<String, Any?>` for flexible argument passing
-- **MUST** support vararg for additional extras
+- **MAY** use `Pair<String, Any?>` for flexible argument passing when navigation requires dynamic parameters
+- **MAY** use simple `Context`-only parameters for straightforward navigation methods (e.g., `navigateToStore`, `navigateToChatRoom`)
+- **SHOULD** support vararg for methods that need multiple extras
 - **Note**: Most navigation happens via Intent in `koin/` module, not through this interface
 
 ### NavigatorType Enum (ACTUAL)
