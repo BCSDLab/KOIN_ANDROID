@@ -51,7 +51,7 @@
 
                 <data
                     android:host="login"
-                    android:pathPrefix="/login"
+                    android:pathPrefix="/activity"
                     android:scheme="koin" />
             </intent-filter>
         </activity>
