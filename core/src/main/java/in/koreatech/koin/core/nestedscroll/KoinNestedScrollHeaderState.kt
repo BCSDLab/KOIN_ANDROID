@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.dp
 @Stable
 open class KoinNestedScrollHeaderState(
     val headerOffsetAnimatable: Animatable<Float, *>,
-    val headerMaxHeightPx: Float = 0f,
-    val headerMinHeightPx: Float = 0f
+    val headerExpandedHeightPx: Float = 0f,
+    val headerCollapsedHeightPx: Float = 0f
 ) {
     val headerOffsetPx: Float
         get() = headerOffsetAnimatable.value
@@ -26,7 +26,7 @@ open class KoinNestedScrollHeaderState(
     fun progress(): State<Float> = remember {
         derivedStateOf {
             val offset = headerOffsetAnimatable.value
-            val range = headerMaxHeightPx - headerMinHeightPx
+            val range = headerExpandedHeightPx - headerCollapsedHeightPx
             ((-offset) / range).coerceIn(0f, 1f)
         }
     }
@@ -37,7 +37,7 @@ open class KoinNestedScrollHeaderState(
         return remember(headerOffsetAnimatable) {
             derivedStateOf {
                 with(density) {
-                    (headerMaxHeightPx + headerOffsetAnimatable.value).toDp()
+                    (headerExpandedHeightPx + headerOffsetAnimatable.value).toDp()
                 }
             }
         }
@@ -45,7 +45,7 @@ open class KoinNestedScrollHeaderState(
 
     suspend fun collapseHeader() {
         headerOffsetAnimatable.animateTo(
-            targetValue = -headerMaxHeightPx + headerMinHeightPx,
+            targetValue = -headerExpandedHeightPx + headerCollapsedHeightPx,
             animationSpec = spring(
                 dampingRatio = Spring.DampingRatioNoBouncy,
                 stiffness = Spring.StiffnessLow
@@ -70,18 +70,18 @@ open class KoinNestedScrollHeaderState(
 
 @Composable
 fun rememberKoinNestedScrollHeaderState(
-    headerMinHeight: Dp = 60.dp,
-    headerMaxHeight: Dp = 300.dp
+    headerCollapsedHeight: Dp = 60.dp,
+    headerExpandedHeight: Dp = 300.dp
 ): KoinNestedScrollHeaderState {
     val headerOffsetAnimatable = remember { Animatable(0f) }
-    val headerMaxHeightPx = with(LocalDensity.current) { headerMaxHeight.toPx() }
-    val headerMinHeightPx = with(LocalDensity.current) { headerMinHeight.toPx() }
+    val headerExpandedHeightPx = with(LocalDensity.current) { headerExpandedHeight.toPx() }
+    val headerCollapsedHeightPx = with(LocalDensity.current) { headerCollapsedHeight.toPx() }
 
-    return remember(headerOffsetAnimatable, headerMaxHeightPx, headerMinHeightPx) {
+    return remember(headerOffsetAnimatable, headerExpandedHeightPx, headerCollapsedHeightPx) {
         KoinNestedScrollHeaderState(
             headerOffsetAnimatable = headerOffsetAnimatable,
-            headerMaxHeightPx = headerMaxHeightPx,
-            headerMinHeightPx = headerMinHeightPx
+            headerExpandedHeightPx = headerExpandedHeightPx,
+            headerCollapsedHeightPx = headerCollapsedHeightPx
         )
     }
 }

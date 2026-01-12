@@ -28,9 +28,9 @@ open class KoinNestedScrollConnection(
     override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
         val delta = available.y
         val currentOffset = state.headerOffsetPx
-        val headerMaxHeightPx = state.headerMaxHeightPx
-        val headerMinHeightPx = state.headerMinHeightPx
-        val collapsedOffset = -headerMaxHeightPx + headerMinHeightPx
+        val headerExpandedHeightPx = state.headerExpandedHeightPx
+        val headerCollapsedHeightPx = state.headerCollapsedHeightPx
+        val collapsedOffset = -headerExpandedHeightPx + headerCollapsedHeightPx
 
         val isScrollingUp = delta > 0
 
@@ -58,9 +58,9 @@ open class KoinNestedScrollConnection(
     ): Offset {
         val delta = available.y
         val currentOffset = state.headerOffsetPx
-        val headerMaxHeightPx = state.headerMaxHeightPx
-        val headerMinHeightPx = state.headerMinHeightPx
-        val collapsedOffset = -headerMaxHeightPx + headerMinHeightPx
+        val headerExpandedHeightPx = state.headerExpandedHeightPx
+        val headerCollapsedHeightPx = state.headerCollapsedHeightPx
+        val collapsedOffset = -headerExpandedHeightPx + headerCollapsedHeightPx
 
         val isScrollingUp = delta > 0
 
@@ -80,12 +80,11 @@ open class KoinNestedScrollConnection(
     }
 
     override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
-        val collapsedOffset = -state.headerMaxHeightPx + state.headerMinHeightPx
+        val collapsedOffset = -state.headerExpandedHeightPx + state.headerCollapsedHeightPx
         val expandedOffset = 0f
         val halfwayOffset = collapsedOffset / 2f
 
-        val isHeaderPartiallyOpen = state.headerOffsetPx > collapsedOffset &&
-                state.headerOffsetPx < expandedOffset
+        val isHeaderPartiallyOpen = state.headerOffsetPx > collapsedOffset && state.headerOffsetPx < expandedOffset
         val isExpandedMoreThanHalf = state.headerOffsetPx > halfwayOffset
 
         if (isHeaderPartiallyOpen) {
