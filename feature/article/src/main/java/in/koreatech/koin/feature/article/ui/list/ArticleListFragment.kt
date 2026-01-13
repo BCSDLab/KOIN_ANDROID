@@ -7,8 +7,6 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.children
@@ -39,7 +37,6 @@ import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.ALL
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.IPP
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.KOIN
-import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.LOSTANDFOUND
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.NORMAL
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.RECRUIT
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.SCHOLARSHIP
@@ -49,8 +46,6 @@ import `in`.koreatech.koin.feature.article.model.ArticleHeaderState
 import `in`.koreatech.koin.feature.article.ui.article.adapter.ArticleAdapter
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
-import `in`.koreatech.koin.feature.article.ui.lostandfound.LostAndFoundList
-import `in`.koreatech.koin.feature.article.ui.lostandfound.write.LostAndFoundWriteArticleViewModel.Companion.LOST_OR_FOUND_TYPE
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -174,57 +169,6 @@ class ArticleListFragment : Fragment() {
             }
         })
 
-        binding.composeViewLostandfoundList.setContent {
-            val myKeywords by viewModel.myKeywords.collectAsState()
-            val selectedKeyword by viewModel.selectedKeyword.collectAsState()
-            val selectedType by viewModel.lostAndFoundType.collectAsState()
-            val currentPage by viewModel.currentPage.collectAsState()
-            val lostAndFoundPaginationState by viewModel.lostAndFoundPagination.collectAsState()
-
-            LostAndFoundList(
-                myKeywords = myKeywords,
-                selectedKeyword = selectedKeyword,
-                selectedType = selectedType,
-                lostAndFoundPaginationState = lostAndFoundPaginationState,
-                currentPage = currentPage,
-                navigateToWriteFoundItem = {
-                    when (it) {
-                        "LOST" ->
-                            navController.navigate(
-                                R.id.articleLostAndFoundWriteLostFragment,
-                                bundleOf(LOST_OR_FOUND_TYPE to "LOST")
-                            )
-
-                        "FOUND" ->
-                            navController.navigate(
-                                R.id.articleLostAndFoundWriteFoundFragment,
-                                bundleOf(LOST_OR_FOUND_TYPE to "FOUND")
-                            )
-                    }
-                },
-                navigateToLostAndFoundDetail = { articleId ->
-                    navController.navigate(
-                        R.id.articleLostAndFoundDetailFragment,
-                        bundleOf(ARTICLE_ID to articleId)
-                    )
-                },
-                navigateToKeywordFragment = {
-                    navController.navigate(
-                        R.id.action_articleListFragment_to_articleKeywordFragment
-                    )
-                },
-                navigateToLoginActivity = {
-                    navigator.navigateToSignIn(
-                        requireContext(),
-                        "koin://article/activity?fragment=article_lost_and_found"
-                    ).let(::startActivity)
-                },
-                onKeywordChange = viewModel::selectKeyword,
-                onLostOrFoundChange = viewModel::setLostOrFoundType,
-                onPageChange = viewModel::setCurrentPage
-            )
-        }
-
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.currentBoard.collect {
@@ -238,12 +182,6 @@ class ArticleListFragment : Fragment() {
                         STUDENT,
                         KOIN -> {
                             binding.nestedScrollViewArticleList.visibility = View.VISIBLE
-                            binding.composeViewLostandfoundList.visibility = View.GONE
-                        }
-
-                        LOSTANDFOUND -> {
-                            binding.composeViewLostandfoundList.visibility = View.VISIBLE
-                            binding.nestedScrollViewArticleList.visibility = View.INVISIBLE
                         }
                     }
                 }

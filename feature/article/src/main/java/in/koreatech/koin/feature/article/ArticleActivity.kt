@@ -114,7 +114,7 @@ class ArticleActivity : ActivityBase() {
                 )
             }
             "article_lost_and_found" -> {
-                setNavigationGraph(ArticleBoardType.LOSTANDFOUND.id)
+                //setNavigationGraph(ArticleBoardType.LOSTANDFOUND.id) Todo delete LostAndFound Type
             }
             null -> {
                 val bundle = intent.getBundleExtra(BUNDLE_ARTICLE_EXTRA_KEY)
@@ -130,6 +130,7 @@ class ArticleActivity : ActivityBase() {
         mIntent?.getIntExtra(EXTRA_ID, -1).let {
             Timber.d("article id : $it")
             if (it == -1) return
+            /* Todo delete LostAndFound Type
             val boardId = mIntent?.getIntExtra(EXTRA_BOARD_ID, ArticleBoardType.ALL.id)
             if (boardId == ArticleBoardType.LOSTANDFOUND.id) {
                 setNavigationGraph(ArticleBoardType.LOSTANDFOUND.id)
@@ -141,16 +142,17 @@ class ArticleActivity : ActivityBase() {
                     )
                 )
             } else {
-                setNavigationGraph()
-
-                navController.navigate(
-                    R.id.articleDetailFragment,
-                    bundleOf(
-                        ARTICLE_ID to it,
-                        NAVIGATED_BOARD_ID to ArticleBoardType.ALL.id
-                    )
-                )
             }
+             */
+            setNavigationGraph()
+
+            navController.navigate(
+                R.id.articleDetailFragment,
+                bundleOf(
+                    ARTICLE_ID to it,
+                    NAVIGATED_BOARD_ID to ArticleBoardType.ALL.id
+                )
+            )
         }
     }
 
