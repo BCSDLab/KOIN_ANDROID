@@ -8,13 +8,13 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 
 @AndroidEntryPoint
-class LostAndFoundActivity: ComponentActivity() {
+class LostAndFoundActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdgeWithLightStatusBar()
         setContent {
             KoinTheme {
-                //TODO navigation
+                // TODO navigation
             }
         }
     }
