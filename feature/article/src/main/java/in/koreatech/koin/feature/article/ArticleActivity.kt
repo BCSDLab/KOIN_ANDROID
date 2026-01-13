@@ -15,7 +15,6 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.ToolbarMenu
-import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.util.whiteStatusBar
@@ -114,7 +113,7 @@ class ArticleActivity : ActivityBase() {
                 )
             }
             "article_lost_and_found" -> {
-                //setNavigationGraph(ArticleBoardType.LOSTANDFOUND.id) Todo delete LostAndFound Type
+                // setNavigationGraph(ArticleBoardType.LOSTANDFOUND.id) Todo delete LostAndFound Type
             }
             null -> {
                 val bundle = intent.getBundleExtra(BUNDLE_ARTICLE_EXTRA_KEY)
