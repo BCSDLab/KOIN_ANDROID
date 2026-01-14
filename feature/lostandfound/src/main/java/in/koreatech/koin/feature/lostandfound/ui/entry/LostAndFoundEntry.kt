@@ -22,6 +22,7 @@ import `in`.koreatech.koin.feature.lostandfound.R
 @Composable
 fun LostAndFoundEntry(
     modifier: Modifier = Modifier,
+    postCount: Int = -1,
     onClick: () -> Unit = {}
 ) {
     Column(
@@ -48,7 +49,7 @@ fun LostAndFoundEntry(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = stringResource(R.string.lost_and_found_entry),
+                text = stringResource(R.string.lost_and_found_entry, postCount),
                 style = KoinTheme.typography.medium14
             )
         }
