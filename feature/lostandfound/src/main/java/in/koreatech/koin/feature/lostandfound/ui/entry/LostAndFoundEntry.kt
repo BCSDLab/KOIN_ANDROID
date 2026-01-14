@@ -21,8 +21,10 @@ import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.SlideUpText
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import okhttp3.internal.immutableListOf
 
+private const val SHOW_FOUND_TEXT_COUNT = 50
 @Composable
 fun LostAndFoundEntry(
     modifier: Modifier = Modifier,
@@ -30,10 +32,13 @@ fun LostAndFoundEntry(
     foundCount: Int = -1,
     onClick: () -> Unit = {}
 ) {
-    val textList = persistentListOf(
-        stringResource(R.string.lost_and_found_entry_post_count, postCount),
-        stringResource(R.string.lost_and_found_entry_found_count, foundCount)
-    )
+    val textList = buildList {
+        add(stringResource(R.string.lost_and_found_entry_post_count, postCount))
+        if (foundCount >= SHOW_FOUND_TEXT_COUNT) {
+            add(stringResource(R.string.lost_and_found_entry_found_count, foundCount))
+        }
+    }.toPersistentList()
+
     Column(
         modifier = modifier
             .fillMaxWidth()
