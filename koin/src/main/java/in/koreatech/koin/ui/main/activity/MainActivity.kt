@@ -58,6 +58,7 @@ import `in`.koreatech.koin.feature.article.ArticleActivity
 import `in`.koreatech.koin.feature.banner.ui.BannerActivity
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetA
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetB
+import `in`.koreatech.koin.feature.lostandfound.ui.LostAndFoundActivity
 import `in`.koreatech.koin.feature.lostandfound.ui.entry.LostAndFoundEntry
 import `in`.koreatech.koin.feature.store.MainStoreWidget
 import `in`.koreatech.koin.navigation.SchemeType
@@ -330,7 +331,8 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 KoinTheme {
                     LostAndFoundEntry(
                         onClick = {
-                            //TODO connect LostAndFoundActivity
+                            val intent = Intent(this@MainActivity, LostAndFoundActivity::class.java)
+                            startActivity(intent)
                         }
                     )
                 }
