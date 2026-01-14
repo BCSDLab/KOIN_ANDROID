@@ -58,6 +58,7 @@ import `in`.koreatech.koin.feature.article.ArticleActivity
 import `in`.koreatech.koin.feature.banner.ui.BannerActivity
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetA
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetB
+import `in`.koreatech.koin.feature.lostandfound.ui.entry.LostAndFoundEntry
 import `in`.koreatech.koin.feature.store.MainStoreWidget
 import `in`.koreatech.koin.navigation.SchemeType
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
@@ -319,6 +320,18 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                     MainClubWidgetB(
                         hotClubId = hotClub?.clubId ?: -1,
                         hotClubImageUrl = hotClub?.imageUrl ?: ""
+                    )
+                }
+            }
+        }
+
+        lostandfoundComposeView.apply {
+            setContent {
+                KoinTheme {
+                    LostAndFoundEntry(
+                        onClick = {
+                            //TODO connect LostAndFoundActivity
+                        }
                     )
                 }
             }
