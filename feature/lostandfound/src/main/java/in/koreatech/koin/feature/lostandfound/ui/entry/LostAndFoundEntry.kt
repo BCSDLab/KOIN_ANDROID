@@ -18,13 +18,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
+import `in`.koreatech.koin.feature.lostandfound.component.SlideUpText
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import okhttp3.internal.immutableListOf
 
 @Composable
 fun LostAndFoundEntry(
     modifier: Modifier = Modifier,
     postCount: Int = -1,
+    foundCount: Int = -1,
     onClick: () -> Unit = {}
 ) {
+    val textList = persistentListOf(
+        stringResource(R.string.lost_and_found_entry_post_count, postCount),
+        stringResource(R.string.lost_and_found_entry_found_count, foundCount)
+    )
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -48,8 +57,8 @@ fun LostAndFoundEntry(
                 ),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = stringResource(R.string.lost_and_found_entry, postCount),
+            SlideUpText(
+                textList = textList,
                 style = KoinTheme.typography.medium14
             )
         }
