@@ -21,12 +21,14 @@ open class KoinNestedScrollHeaderState(
     val headerOffsetPx: Float
         get() = headerOffsetAnimatable.value
 
+    val range: Float
+        get() = headerExpandedHeightPx - headerCollapsedHeightPx
+
     @Stable
     @Composable
     fun progress(): State<Float> = remember {
         derivedStateOf {
             val offset = headerOffsetAnimatable.value
-            val range = headerExpandedHeightPx - headerCollapsedHeightPx
             ((-offset) / range).coerceIn(0f, 1f)
         }
     }
@@ -45,7 +47,7 @@ open class KoinNestedScrollHeaderState(
 
     suspend fun collapseHeader() {
         headerOffsetAnimatable.animateTo(
-            targetValue = -headerExpandedHeightPx + headerCollapsedHeightPx,
+            targetValue = -range,
             animationSpec = spring(
                 dampingRatio = Spring.DampingRatioNoBouncy,
                 stiffness = Spring.StiffnessLow
