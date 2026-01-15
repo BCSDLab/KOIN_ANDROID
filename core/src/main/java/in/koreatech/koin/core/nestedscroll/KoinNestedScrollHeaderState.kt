@@ -36,10 +36,10 @@ open class KoinNestedScrollHeaderState(
     @Composable
     fun currentHeaderHeightDp(): State<Dp> {
         val density = LocalDensity.current
-        return remember(headerOffsetAnimatable) {
+        return remember(headerOffsetPx) {
             derivedStateOf {
                 with(density) {
-                    (headerExpandedHeightPx + headerOffsetAnimatable.value).toDp()
+                    (headerExpandedHeightPx + headerOffsetPx).toDp()
                 }
             }
         }
