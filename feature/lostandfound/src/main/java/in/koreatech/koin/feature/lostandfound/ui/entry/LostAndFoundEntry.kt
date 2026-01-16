@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.SlideUpText
@@ -44,7 +45,7 @@ fun LostAndFoundEntry(
     ) {
         Text(
             text = stringResource(R.string.lost_and_found),
-            style = KoinTheme.typography.medium18,
+            style = KoinTheme.typography.bold15,
             color = KoinTheme.colors.primary500
         )
         Spacer(Modifier.height(12.dp))
