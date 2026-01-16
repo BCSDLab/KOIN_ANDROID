@@ -159,6 +159,7 @@
     <string name="forgotpassword_sent_email_message">학교 메일로 비밀번호 초기화를 완료해 주세요. 이동하실래요?</string>
 
     <!--lost and found-->
+    <string name="navigation_item_lost_and_found">분실물</string>
     <string name="lost_and_found_created">생성되었습니다.</string>
     <string name="lost_and_found_edited">수정되었습니다.</string>
     <string name="lost_and_found_deleted">삭제되었습니다.</string>
