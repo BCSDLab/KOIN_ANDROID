@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.api.auth
 
-import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.response.chat.ChatListItemResponse
 import `in`.koreatech.koin.data.response.chat.ChatMessageResponse
 import `in`.koreatech.koin.data.response.chat.ChatRoomResponse
@@ -10,27 +9,27 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ChatAuthApi {
-    @GET(URLConstant.CHAT.CHATROOM)
+    @GET("chatroom/lost-item")
     suspend fun getChatRoomList(): List<ChatListItemResponse>
 
-    @POST(URLConstant.CHAT.ARTICLEID.ARTICLEID)
+    @POST("chatroom/lost-item/{article_id}")
     suspend fun getChatRoomFromArticleId(
         @Path("article_id") articleId: Int
     ): ChatRoomResponse
 
-    @GET(URLConstant.CHAT.ARTICLEID.ROOMID.ROOMID)
+    @GET("chatroom/lost-item/{article_id}/{chat_room_id}")
     suspend fun getChatRoom(
         @Path("article_id") articleId: Int,
         @Path("chat_room_id") chatRoomId: Int
     ): ChatRoomResponse
 
-    @GET(URLConstant.CHAT.ARTICLEID.ROOMID.MESSAGES)
+    @GET("chatroom/lost-item/{article_id}/{chat_room_id}/messages")
     suspend fun getChatMessages(
         @Path("article_id") articleId: Int,
         @Path("chat_room_id") chatRoomId: Int
     ): List<ChatMessageResponse>
 
-    @POST(URLConstant.CHAT.ARTICLEID.ROOMID.BLOCK)
+    @POST("chatroom/lost-item/{article_id}/{chat_room_id}/block")
     suspend fun blockUser(
         @Path("article_id") articleId: Int,
         @Path("chat_room_id") chatRoomId: Int
