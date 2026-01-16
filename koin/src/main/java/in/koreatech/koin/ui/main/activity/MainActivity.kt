@@ -329,7 +329,12 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         lostandfoundComposeView.apply {
             setContent {
                 KoinTheme {
+                    val lostAndFoundStats by viewModel.articleLostAndFoundStats.collectAsStateWithLifecycle()
                     LostAndFoundEntry(
+                        postCount = lostAndFoundStats?.let{
+                            it.foundCount + it.notFoundCount
+                        } ?: -1,
+                        foundCount = lostAndFoundStats?.foundCount ?: -1,
                         onClick = {
                             val intent = Intent(this@MainActivity, LostAndFoundActivity::class.java)
                             startActivity(intent)

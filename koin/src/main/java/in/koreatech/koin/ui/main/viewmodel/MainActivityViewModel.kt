@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
+import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundStats
 import `in`.koreatech.koin.domain.model.article.articleNotiContent
 import `in`.koreatech.koin.domain.model.club.ClubHot
 import `in`.koreatech.koin.domain.model.dining.Dining
@@ -14,6 +15,7 @@ import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
+import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchArticleLostAndFoundStatsUseCase
 import `in`.koreatech.koin.domain.usecase.banner.CheckBannerRefusalUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubHotUseCase
 import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
@@ -52,7 +54,8 @@ class MainActivityViewModel @Inject constructor(
     private val getClubHotUseCase: GetClubHotUseCase,
     private val getSessionIdUseCase: GetSessionIdUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
-    private val getDeveloperSettingUseCase: GetDeveloperSettingUseCase
+    private val getDeveloperSettingUseCase: GetDeveloperSettingUseCase,
+    private val fetchArticleLostAndFoundStatsUseCase: FetchArticleLostAndFoundStatsUseCase
 ) : BaseViewModel() {
     private val _variableName = MutableLiveData<String>()
     val variableName: LiveData<String> get() = _variableName
@@ -171,6 +174,7 @@ class MainActivityViewModel @Inject constructor(
         checkBannerRefusal()
         updateDining()
         getClubHot()
+        getLostAndFoundState()
     }
 
     fun postABTestAssign(title: String) = viewModelScope.launchWithLoading {
@@ -244,6 +248,19 @@ class MainActivityViewModel @Inject constructor(
             if (clubABTestExperimentGroup.first() == ExperimentGroup.CATEGORY) return@launchWithLoading
             getClubHotUseCase().onSuccess { clubHot ->
                 _hotClub.value = clubHot
+            }
+        }
+    }
+
+    private val _articleLostAndFoundStats = MutableStateFlow<ArticleLostAndFoundStats?>(null)
+    val articleLostAndFoundStats: StateFlow<ArticleLostAndFoundStats?> get() = _articleLostAndFoundStats
+
+    private fun getLostAndFoundState() {
+        viewModelScope.launchWithLoading {
+            fetchArticleLostAndFoundStatsUseCase().let {
+                it.onSuccess { stats ->
+                    _articleLostAndFoundStats.value = stats
+                }
             }
         }
     }
