@@ -3,7 +3,9 @@ package `in`.koreatech.koin.navigation
 import android.content.Context
 import android.content.Intent
 import `in`.koreatech.koin.core.navigation.Navigator
+import `in`.koreatech.koin.core.navigation.utils.buildDeepLinkIntent
 import `in`.koreatech.koin.core.navigation.utils.buildIntent
+import `in`.koreatech.koin.core.navigation.utils.isValidDeepLink
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
 import `in`.koreatech.koin.feature.store.StoreActivity
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
@@ -11,7 +13,6 @@ import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.notification.NotificationActivity
 import `in`.koreatech.koin.ui.splash.SplashActivity
 import javax.inject.Inject
-import kotlin.jvm.java
 
 class NavigatorImpl @Inject constructor() : Navigator {
     override fun navigateToSplash(
@@ -30,7 +31,11 @@ class NavigatorImpl @Inject constructor() : Navigator {
         type: Pair<String, String?>,
         vararg args: Pair<String, Any?>
     ): Intent {
-        val className = SchemeType.fromType(type.second)?.className ?: return context.buildIntent(MainActivity::class.java)
+        val className = SchemeType.fromType(type.second)?.className ?: return if (context.isValidDeepLink(type.second)) {
+            buildDeepLinkIntent(type.second ?: "")
+        } else {
+            context.buildIntent(MainActivity::class.java)
+        }
         val intent = context.buildIntent(className, type, *args)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         return intent

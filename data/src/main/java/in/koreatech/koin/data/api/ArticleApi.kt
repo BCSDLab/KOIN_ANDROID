@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.api
 
-import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundPaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundResponse
 import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
@@ -17,7 +16,7 @@ interface ArticleApi {
      * @param page 페이지 번호
      * @param limit 페이지 당 게시글 수
      */
-    @GET(URLConstant.ARTICLES.ARTICLES)
+    @GET("articles")
     suspend fun fetchArticlePagination(
         @Query("boardId") boardId: Int,
         @Query("page") page: Int,
@@ -29,13 +28,13 @@ interface ArticleApi {
      * @param id 게시글 아이디
      * @param boardId 게시판 아이디, 이전 및 다음 게시글을 판별하기 위함
      */
-    @GET(URLConstant.ARTICLES.ID)
+    @GET("articles/{id}")
     suspend fun fetchArticle(
         @Path("id") articleId: Int,
         @Query("boardId") boardId: Int
     ): ArticleResponse
 
-    @GET(URLConstant.ARTICLES.HOT.HOT)
+    @GET("articles/hot")
     suspend fun fetchHotArticles(): List<ArticleResponse>
 
     /**
@@ -44,7 +43,7 @@ interface ArticleApi {
      * @param page 페이지 번호
      * @param limit 페이지 당 게시글 수
      */
-    @GET(URLConstant.ARTICLES.SEARCH)
+    @GET("articles/search")
     suspend fun fetchSearchedArticles(
         @Query("query") query: String,
         @Query("boardId") boardId: Int?,
@@ -56,7 +55,7 @@ interface ArticleApi {
      * 많이 검색되는 키워드
      * @param count 키워드 수
      */
-    @GET(URLConstant.ARTICLES.HOT.KEYWORD)
+    @GET("articles/hot/keyword")
     suspend fun fetchMostSearchedKeywords(
         @Query("count") count: Int
     ): KeywordsResponse
@@ -66,7 +65,7 @@ interface ArticleApi {
      * @param page 페이지 번호
      * @param limit 페이지 당 게시글 수
      */
-    @GET(URLConstant.ARTICLES.LOSTITEM.LOSTITEM)
+    @GET("articles/lost-item")
     suspend fun fetchArticleLostAndFoundPagination(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
@@ -79,7 +78,7 @@ interface ArticleApi {
      * @param page 페이지 번호
      * @param limit 페이지 당 게시글 수
      */
-    @GET(URLConstant.ARTICLES.LOSTITEM.SEARCH)
+    @GET("articles/lost-item/search")
     suspend fun fetchSearchedLostAndFoundArticles(
         @Query("query") query: String,
         @Query("page") page: Int,
@@ -90,7 +89,7 @@ interface ArticleApi {
      * 분실물 게시글 조회
      * @param id 게시글 아이디
      */
-    @GET(URLConstant.ARTICLES.LOSTITEM.ID)
+    @GET("articles/lost-item/{id}")
     suspend fun fetchArticleLostAndFound(
         @Path("id") id: Int
     ): ArticleLostAndFoundResponse
