@@ -331,7 +331,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 KoinTheme {
                     val lostAndFoundStats by viewModel.articleLostAndFoundStats.collectAsStateWithLifecycle()
                     LostAndFoundEntry(
-                        postCount = lostAndFoundStats?.let{
+                        postCount = lostAndFoundStats?.let {
                             it.foundCount + it.notFoundCount
                         } ?: -1,
                         foundCount = lostAndFoundStats?.foundCount ?: -1,

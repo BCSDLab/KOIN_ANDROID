@@ -19,12 +19,10 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.SlideUpText
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
-import okhttp3.internal.immutableListOf
 
 private const val SHOW_FOUND_TEXT_COUNT = 50
+
 @Composable
 fun LostAndFoundEntry(
     modifier: Modifier = Modifier,
