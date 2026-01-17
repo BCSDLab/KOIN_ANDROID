@@ -29,7 +29,9 @@ import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.domain.util.ext.arrange
 import `in`.koreatech.koin.domain.util.ext.typeFilter
 import `in`.koreatech.koin.ui.main.state.ArticleMainState
+import `in`.koreatech.koin.ui.main.state.LostAndFoundEntryState
 import `in`.koreatech.koin.ui.main.state.toContent
+import `in`.koreatech.koin.ui.main.state.toLostAndFoundEntryState
 import `in`.koreatech.koin.ui.main.state.toNoti
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -252,13 +254,13 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    private val _articleLostAndFoundStats = MutableStateFlow<ArticleLostAndFoundStats?>(null)
-    val articleLostAndFoundStats: StateFlow<ArticleLostAndFoundStats?> get() = _articleLostAndFoundStats
+    private val _articleLostAndFoundStats = MutableStateFlow<LostAndFoundEntryState?>(null)
+    val articleLostAndFoundStats: StateFlow<LostAndFoundEntryState?> get() = _articleLostAndFoundStats
 
     private fun getLostAndFoundState() {
         viewModelScope.launchWithLoading {
             fetchArticleLostAndFoundStatsUseCase().onSuccess { stats ->
-                _articleLostAndFoundStats.value = stats
+                _articleLostAndFoundStats.value = stats.toLostAndFoundEntryState()
             }
         }
     }
