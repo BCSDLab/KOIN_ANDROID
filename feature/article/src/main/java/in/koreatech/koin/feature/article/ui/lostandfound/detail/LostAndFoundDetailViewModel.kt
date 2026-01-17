@@ -140,6 +140,15 @@ class LostAndFoundDetailViewModel @Inject constructor(
             }
         }
 
+    fun setShowFoundDialog(show: Boolean) =
+        intent {
+            reduce {
+                state.copy(
+                    showFoundDialog = show
+                )
+            }
+        }
+
     companion object {
         const val HOT_ARTICLE_COUNT = 4
         const val ARTICLE_ID = "article_id"

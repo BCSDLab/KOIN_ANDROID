@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.article.ui.lostandfound.detail.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +28,7 @@ fun DetailHeader(
     foundDate: LocalDate,
     author: String,
     registeredAt: LocalDate,
+    isFound: Boolean,
     modifier: Modifier = Modifier
 ) {
     val registeredAtFormatType = DateTimeFormatter.ofPattern("MM.dd")
@@ -62,6 +64,12 @@ fun DetailHeader(
                 text = headerText,
                 fontWeight = FontWeight(500),
                 style = KoinTheme.typography.medium14
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            LostAndFoundStatusChip(
+                isFound = isFound
             )
         }
         Row(

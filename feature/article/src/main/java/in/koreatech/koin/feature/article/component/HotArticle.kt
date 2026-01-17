@@ -20,7 +20,9 @@ import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.article.R
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
+import `in`.koreatech.koin.feature.article.enums.LostItemCategory
 import `in`.koreatech.koin.feature.article.model.ArticleHeaderState
+import `in`.koreatech.koin.feature.article.ui.lostandfound.detail.component.LostAndFoundStatusChip
 
 @Composable
 fun HotArticle(
@@ -32,7 +34,7 @@ fun HotArticle(
         Text(
             modifier = Modifier.padding(vertical = 14.dp, horizontal = 24.dp),
             style = KoinTheme.typography.bold16,
-            text = stringResource(R.string.hot_article_title)
+            text = stringResource(R.string.recent_article_title)
         )
 
         hotArticleList.forEach { hotArticle ->
@@ -43,6 +45,8 @@ fun HotArticle(
                     articleTitle = hotArticle.title,
                     board = hotArticle.board
                 ),
+                // API 추가 후 수정
+                category = LostItemCategory.CARD,
                 navigateToHotArticle = navigateToHotArticle
             )
             HorizontalDivider(color = KoinTheme.colors.neutral100)
@@ -53,6 +57,7 @@ fun HotArticle(
 @Composable
 fun HotArticleItem(
     hotArticleData: HotArticleData,
+    category: LostItemCategory,
     modifier: Modifier = Modifier,
     navigateToHotArticle: (HotArticleData) -> Unit
 ) {
@@ -73,6 +78,8 @@ fun HotArticleItem(
             )
         )
         Spacer(modifier = Modifier.width(8.dp))
+        LostItemTypeChip(category = category)
+        Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = hotArticleData.articleTitle,
             maxLines = 1,
@@ -83,6 +90,9 @@ fun HotArticleItem(
                 color = Color.Black
             )
         )
+        Spacer(modifier = Modifier.weight(1f))
+        // API 추가 후 수정
+        LostAndFoundStatusChip(isFound = false)
     }
 }
 

@@ -15,6 +15,7 @@ data class LostAndFoundDetailState(
     val isLoggedIn: Boolean = false,
     val currentLoggedInUser: String = "",
     val showDeleteDialog: Boolean = false,
+    val showFoundDialog: Boolean = false,
     val lostOrFound: LostOrFoundType = LostOrFoundType.FOUND,
     val id: Int = 0,
     val category: LostItemCategory = LostItemCategory.NONE,
@@ -28,6 +29,7 @@ data class LostAndFoundDetailState(
     val isWriterCouncil: Boolean = false,
     val isMine: Boolean = false,
     val isAuthorWithdraw: Boolean = false,
+    val isFound: Boolean = false,
     val hotArticles: List<ArticleHeaderState> = emptyList()
 ) : Parcelable
 
