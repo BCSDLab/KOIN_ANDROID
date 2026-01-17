@@ -330,14 +330,16 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             setContent {
                 KoinTheme {
                     val lostAndFoundState by viewModel.lostAndFoundEntryState.collectAsStateWithLifecycle()
-                    LostAndFoundEntry(
-                        postCount = lostAndFoundState?.postCount ?: -1,
-                        foundCount = lostAndFoundState?.foundCount ?: -1,
-                        onClick = {
-                            val intent = Intent(this@MainActivity, LostAndFoundActivity::class.java)
-                            startActivity(intent)
-                        }
-                    )
+                    lostAndFoundState?.let {
+                        LostAndFoundEntry(
+                            postCount = it.postCount,
+                            foundCount = it.foundCount,
+                            onClick = {
+                                val intent = Intent(this@MainActivity, LostAndFoundActivity::class.java)
+                                startActivity(intent)
+                            }
+                        )
+                    }
                 }
             }
         }
