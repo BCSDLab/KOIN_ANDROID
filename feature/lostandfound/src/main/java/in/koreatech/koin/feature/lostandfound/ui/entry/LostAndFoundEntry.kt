@@ -54,10 +54,7 @@ fun LostAndFoundEntry(
                 .clip(shape = KoinTheme.shapes.small)
                 .background(color = KoinTheme.colors.neutral100)
                 .clickable(onClick = onClick)
-                .padding(
-                    vertical = 10.dp,
-                    horizontal = 10.dp
-                ),
+                .padding(10.dp),
             contentAlignment = Alignment.Center
         ) {
             SlideUpText(
