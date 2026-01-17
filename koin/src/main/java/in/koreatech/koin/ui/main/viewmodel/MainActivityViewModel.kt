@@ -253,13 +253,13 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    private val _articleLostAndFoundStats = MutableStateFlow<LostAndFoundEntryState?>(null)
-    val articleLostAndFoundStats: StateFlow<LostAndFoundEntryState?> get() = _articleLostAndFoundStats
+    private val _lostAndFoundEntryState = MutableStateFlow<LostAndFoundEntryState?>(null)
+    val lostAndFoundEntryState: StateFlow<LostAndFoundEntryState?> get() = _lostAndFoundEntryState
 
     private fun getLostAndFoundState() {
         viewModelScope.launchWithLoading {
             fetchArticleLostAndFoundStatsUseCase().onSuccess { stats ->
-                _articleLostAndFoundStats.value = stats.toLostAndFoundEntryState()
+                _lostAndFoundEntryState.value = stats.toLostAndFoundEntryState()
             }
         }
     }
