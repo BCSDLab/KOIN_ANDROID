@@ -257,10 +257,8 @@ class MainActivityViewModel @Inject constructor(
 
     private fun getLostAndFoundState() {
         viewModelScope.launchWithLoading {
-            fetchArticleLostAndFoundStatsUseCase().let {
-                it.onSuccess { stats ->
-                    _articleLostAndFoundStats.value = stats
-                }
+            fetchArticleLostAndFoundStatsUseCase().onSuccess { stats ->
+                _articleLostAndFoundStats.value = stats
             }
         }
     }
