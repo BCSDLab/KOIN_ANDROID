@@ -38,11 +38,11 @@ import `in`.koreatech.koin.feature.article.component.HotArticle
 import `in`.koreatech.koin.feature.article.component.HotArticleData
 import `in`.koreatech.koin.feature.article.component.LoadingDialog
 import `in`.koreatech.koin.feature.article.enums.LostOrFoundType
-import `in`.koreatech.koin.feature.article.ui.lostandfound.detail.component.LostAndFoundDetailCustomSwitch
 import `in`.koreatech.koin.feature.article.ui.lostandfound.detail.component.DetailButtonGroup
 import `in`.koreatech.koin.feature.article.ui.lostandfound.detail.component.DetailContent
 import `in`.koreatech.koin.feature.article.ui.lostandfound.detail.component.DetailDialog
 import `in`.koreatech.koin.feature.article.ui.lostandfound.detail.component.DetailHeader
+import `in`.koreatech.koin.feature.article.ui.lostandfound.detail.component.LostAndFoundDetailCustomSwitch
 import `in`.koreatech.koin.feature.article.util.findActivity
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
