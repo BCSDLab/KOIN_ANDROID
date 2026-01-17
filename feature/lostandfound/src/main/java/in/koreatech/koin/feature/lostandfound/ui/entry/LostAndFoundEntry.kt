@@ -68,5 +68,8 @@ fun LostAndFoundEntry(
 @Preview(showBackground = true)
 @Composable
 private fun LostAndFoundEntryPreview() {
-    LostAndFoundEntry()
+    LostAndFoundEntry(
+        postCount = 50,
+        foundCount = 50
+    )
 }
