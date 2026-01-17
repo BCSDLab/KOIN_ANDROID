@@ -25,9 +25,9 @@ private const val SHOW_FOUND_TEXT_COUNT = 50
 
 @Composable
 fun LostAndFoundEntry(
+    postCount: Int,
+    foundCount: Int,
     modifier: Modifier = Modifier,
-    postCount: Int = -1,
-    foundCount: Int = -1,
     onClick: () -> Unit = {}
 ) {
     val textList = buildList {
