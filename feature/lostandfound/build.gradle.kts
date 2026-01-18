@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.koin.feature)
     alias(libs.plugins.koin.hilt)
     alias(libs.plugins.koin.library.orbit)
+    alias(libs.plugins.kotlinx.serialization)
 }
 android {
     namespace = "in.koreatech.koin.feature.lostandfound"

@@ -23,7 +23,7 @@ class LostAndFoundActivity : ComponentActivity() {
         enableEdgeToEdgeWithLightStatusBar()
         setContent {
             KoinTheme {
-                var startDestination by remember { mutableStateOf(LostAndFoundNavType.LostAndFoundList.route) }
+                var startDestination by remember { mutableStateOf<LostAndFoundNavType>(LostAndFoundNavType.LostAndFoundListRoute) }
                 val navController = rememberNavController()
 
                 NavHost(
