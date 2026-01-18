@@ -31,7 +31,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.feature.store.R
@@ -75,7 +74,7 @@ fun ReviewEditScreen(
             val fileType = fileDetail.second
             val fileName = fileMeta.first
             val imageUri = fileMeta.second
-            viewModel.requestPresignedUrl(fileSize, fileType, fileName, imageUri)
+            viewModel.uploadPresignedUrl(fileSize, fileType, fileName, imageUri)
         },
         clearFileInfo = { viewModel.clearFileInfo() }
     )

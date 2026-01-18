@@ -6,8 +6,8 @@ import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.model.store.ReviewDetail
-import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
-import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
+import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
+import `in`.koreatech.koin.domain.usecase.presignedurl.UploadPreSignedUrlV2UseCase
 import `in`.koreatech.koin.domain.usecase.store.ModifyReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.SearchReviewUseCase
 import `in`.koreatech.koin.feature.store.model.StoreNavigationData
@@ -30,8 +30,7 @@ class ReviewEditViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val searchReviewUseCase: SearchReviewUseCase,
     private val modifyReviewUseCase: ModifyReviewUseCase,
-    private val getMarketPreSignedUrlUseCase: GetMarketPreSignedUrlUseCase,
-    private val uploadFileUseCase: UploadFileUseCase
+    private val uploadPreSignedUrlV2UseCase: UploadPreSignedUrlV2UseCase
 ) : ViewModel(), ContainerHost<ReviewEditState, ReviewEditSideEffect> {
     override val container = container<ReviewEditState, ReviewEditSideEffect>(
         ReviewEditState()
@@ -117,19 +116,17 @@ class ReviewEditViewModel @Inject constructor(
         }
     }
 
-    fun requestPresignedUrl(fileSize: Long, fileType: String, fileName: String, imageUri: String) = intent {
-        getMarketPreSignedUrlUseCase(fileSize, fileType, fileName).onSuccess { (fileUrl, presignedUrl) ->
-            uploadFile(presignedUrl, fileType, fileSize, imageUri, fileUrl)
-        }.onFailure {
-            postSideEffect(ReviewEditSideEffect.ShowImageUploadFailed)
-        }
-    }
-
-    private fun uploadFile(presignedUrl: String, mediaType: String, mediaSize: Long, imageUri: String, fileUrl: String) = intent {
-        uploadFileUseCase(presignedUrl, mediaType, mediaSize, imageUri).onSuccess {
+    fun uploadPresignedUrl(fileSize: Long, fileType: String, fileName: String, imageUri: String) = intent {
+        uploadPreSignedUrlV2UseCase(
+            domain = PreSignedUrlDomain.MARKET,
+            contentLength = fileSize,
+            contentType = fileType,
+            fileName = fileName,
+            imageUri = imageUri
+        ).onSuccess {
             reduce {
                 state.copy(
-                    imageUris = (state.imageUris + fileUrl).toImmutableList()
+                    imageUris = (state.imageUris + it).toImmutableList()
                 )
             }
         }.onFailure {

@@ -9,8 +9,8 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.model.store.Review
-import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
-import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
+import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
+import `in`.koreatech.koin.domain.usecase.presignedurl.UploadPreSignedUrlV2UseCase
 import `in`.koreatech.koin.domain.usecase.store.WriteReviewUseCase
 import `in`.koreatech.koin.feature.store.model.StoreNavigationData
 import `in`.koreatech.koin.feature.store.model.StoreNavigationDataType
@@ -31,8 +31,7 @@ import org.orbitmvi.orbit.viewmodel.container
 class ReviewAddViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val writeReviewUseCase: WriteReviewUseCase,
-    private val getMarketPreSignedUrlUseCase: GetMarketPreSignedUrlUseCase,
-    private val uploadFileUseCase: UploadFileUseCase
+    private val uploadPreSignedUrlV2UseCase: UploadPreSignedUrlV2UseCase
 ) : ViewModel(), ContainerHost<ReviewAddState, ReviewAddSideEffect> {
     override val container = container<ReviewAddState, ReviewAddSideEffect>(
         ReviewAddState()
@@ -99,19 +98,17 @@ class ReviewAddViewModel @Inject constructor(
         }
     }
 
-    fun requestPresignedUrl(fileSize: Long, fileType: String, fileName: String, imageUri: String) = intent {
-        getMarketPreSignedUrlUseCase(fileSize, fileType, fileName).onSuccess { (fileUrl, presignedUrl) ->
-            uploadFile(presignedUrl, fileType, fileSize, imageUri, fileUrl)
-        }.onFailure {
-            postSideEffect(ReviewAddSideEffect.ShowImageUploadFailed)
-        }
-    }
-
-    private fun uploadFile(presignedUrl: String, mediaType: String, mediaSize: Long, imageUri: String, fileUrl: String) = intent {
-        uploadFileUseCase(presignedUrl, mediaType, mediaSize, imageUri).onSuccess {
+    fun uploadPresignedUrl(fileSize: Long, fileType: String, fileName: String, imageUri: String) = intent {
+        uploadPreSignedUrlV2UseCase(
+            domain = PreSignedUrlDomain.MARKET,
+            contentLength = fileSize,
+            contentType = fileType,
+            fileName = fileName,
+            imageUri = imageUri
+        ).onSuccess {
             reduce {
                 state.copy(
-                    imageUris = (state.imageUris + fileUrl).toImmutableList()
+                    imageUris = (state.imageUris + it).toImmutableList()
                 )
             }
         }.onFailure {
