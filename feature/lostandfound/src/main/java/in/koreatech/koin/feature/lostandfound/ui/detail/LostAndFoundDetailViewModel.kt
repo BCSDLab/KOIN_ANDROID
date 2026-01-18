@@ -195,6 +195,14 @@ class LostAndFoundDetailViewModel @Inject constructor(
             }
         }
 
+    fun setFound() = intent { // TODO connect api
+        reduce {
+            state.copy(
+                isFound = true
+            )
+        }
+    }
+
     companion object {
         const val PAGE_SIZE = 10
         const val ARTICLE_ID = "article_id"
