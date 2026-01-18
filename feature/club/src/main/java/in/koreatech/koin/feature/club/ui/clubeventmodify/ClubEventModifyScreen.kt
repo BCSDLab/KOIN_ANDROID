@@ -119,7 +119,7 @@ fun ClubEventModifyScreen(
             eventStartDateTime = uiState.eventStartDateTime,
             eventEndDateTime = uiState.eventEndDateTime,
             imageUrls = uiState.eventImageUrls,
-            uploadImage = viewModel::getPreSignedUrl,
+            uploadImage = viewModel::uploadImage,
             onMaxImageError = viewModel::postMaxImageLimitError,
             maxImageLimit = MAX_IMAGE_LIMIT,
             isLoading = uiState.isEventLoading,

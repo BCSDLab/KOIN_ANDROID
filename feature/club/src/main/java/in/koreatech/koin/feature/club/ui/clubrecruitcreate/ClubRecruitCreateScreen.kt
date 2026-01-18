@@ -98,7 +98,7 @@ fun ClubRecruitCreateScreen(
                 .padding(contentPadding),
             imageUrl = uiState.recruitImageUrl,
             uploadImage = { fileSize, fileType, fileName, fileUri ->
-                viewModel.getPreSignedUrl(
+                viewModel.uploadImage(
                     fileSize = fileSize,
                     fileType = fileType,
                     fileName = fileName,

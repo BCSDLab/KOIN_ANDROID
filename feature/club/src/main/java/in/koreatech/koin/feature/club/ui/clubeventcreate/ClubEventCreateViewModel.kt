@@ -4,9 +4,9 @@ import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
+import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
 import `in`.koreatech.koin.domain.usecase.club.CreateClubEventUseCase
-import `in`.koreatech.koin.domain.usecase.presignedurl.GetClubPreSignedUrlUseCase
+import `in`.koreatech.koin.domain.usecase.presignedurl.UploadPreSignedUrlV2UseCase
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
 import java.time.LocalDate
 import java.time.LocalTime
@@ -23,8 +23,7 @@ import org.orbitmvi.orbit.viewmodel.container
 @HiltViewModel
 class ClubEventCreateViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getClubPreSignedUrlUseCase: GetClubPreSignedUrlUseCase,
-    private val uploadFilesUseCase: UploadFileUseCase,
+    private val uploadPreSignedUrlV2UseCase: UploadPreSignedUrlV2UseCase,
     private val createClubEventUseCase: CreateClubEventUseCase
 ) : ViewModel(), ContainerHost<ClubEventCreateState, ClubEventCreateSideEffect> {
 
@@ -151,53 +150,31 @@ class ClubEventCreateViewModel @Inject constructor(
         reduce { state.copy(eventEndDateTime = newDate) }
     }
 
-    fun getPreSignedUrl(
+    fun uploadImage(
         fileSize: Long,
         fileType: String,
         fileName: String,
         imageUri: Uri
     ) = blockingIntent {
         reduce { state.copy(isLoading = true) }
-        getClubPreSignedUrlUseCase(
-            fileSize,
-            fileType,
-            fileName
+        uploadPreSignedUrlV2UseCase(
+            domain = PreSignedUrlDomain.CLUB,
+            contentLength = fileSize,
+            contentType = fileType,
+            fileName = fileName,
+            imageUri = imageUri.toString()
         ).onSuccess {
-            uploadImage(
-                preSignedUrl = it.preSignedUrl,
-                fileUrl = it.fileUrl,
-                mediaType = fileType,
-                mediaSize = fileSize,
-                imageUri = imageUri
-            )
-        }.onFailure {
-            reduce { state.copy(isLoading = false) }
-            postSideEffect(ClubEventCreateSideEffect.ClubImageUploadFailure)
-        }
-    }
-
-    private fun uploadImage(
-        preSignedUrl: String,
-        fileUrl: String,
-        mediaType: String,
-        mediaSize: Long,
-        imageUri: Uri
-    ) = blockingIntent {
-        uploadFilesUseCase(
-            preSignedUrl,
-            mediaType,
-            mediaSize,
-            imageUri.toString()
-        ).onSuccess {
-            reduce {
-                state.copy(
-                    eventImageUrls = if (state.eventImageUrls.size < MAX_IMAGE_LIMIT) {
-                        state.eventImageUrls.toPersistentList().add(fileUrl)
-                    } else {
-                        state.eventImageUrls
-                    },
-                    isLoading = false
-                )
+            intent {
+                reduce {
+                    state.copy(
+                        eventImageUrls = if (state.eventImageUrls.size < MAX_IMAGE_LIMIT) {
+                            state.eventImageUrls.toPersistentList().add(it)
+                        } else {
+                            state.eventImageUrls
+                        },
+                        isLoading = false
+                    )
+                }
             }
         }.onFailure {
             reduce { state.copy(isLoading = false) }

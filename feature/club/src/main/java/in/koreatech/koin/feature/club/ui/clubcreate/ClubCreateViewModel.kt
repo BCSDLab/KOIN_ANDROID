@@ -4,10 +4,10 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.club.CreateClubUseCase
-import `in`.koreatech.koin.domain.usecase.presignedurl.GetClubPreSignedUrlUseCase
+import `in`.koreatech.koin.domain.usecase.presignedurl.UploadPreSignedUrlV2UseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.club.model.ClubCategories
 import javax.inject.Inject
@@ -23,8 +23,7 @@ import org.orbitmvi.orbit.viewmodel.container
 class ClubCreateViewModel @Inject constructor(
     private val getUserStatusUseCase: GetUserStatusUseCase,
     private val createClubUseCase: CreateClubUseCase,
-    private val getClubPreSignedUrlUseCase: GetClubPreSignedUrlUseCase,
-    private val uploadFilesUseCase: UploadFileUseCase
+    private val uploadPreSignedUrlV2UseCase: UploadPreSignedUrlV2UseCase
 ) : ViewModel(), ContainerHost<ClubCreateState, ClubCreateSideEffect> {
     override val container = container<ClubCreateState, ClubCreateSideEffect>(ClubCreateState())
 
@@ -167,38 +166,7 @@ class ClubCreateViewModel @Inject constructor(
         }
     }
 
-    private fun uploadImage(
-        preSignedUrl: String,
-        fileUrl: String,
-        mediaType: String,
-        mediaSize: Long,
-        imageUri: Uri
-    ) = viewModelScope.launch {
-        uploadFilesUseCase(
-            preSignedUrl,
-            mediaType,
-            mediaSize,
-            imageUri.toString()
-        ).onSuccess {
-            intent {
-                reduce {
-                    state.copy(
-                        clubImageUrl = fileUrl,
-                        isLoading = false
-                    )
-                }
-            }
-        }.onFailure {
-            intent {
-                reduce {
-                    state.copy(isLoading = false)
-                }
-                postSideEffect(ClubCreateSideEffect.ClubImageUploadFailure)
-            }
-        }
-    }
-
-    fun getPreSignedUrl(
+    fun uploadImage(
         fileSize: Long,
         fileType: String,
         fileName: String,
@@ -210,18 +178,21 @@ class ClubCreateViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
-            getClubPreSignedUrlUseCase(
-                fileSize,
-                fileType,
-                fileName
+            uploadPreSignedUrlV2UseCase(
+                domain = PreSignedUrlDomain.CLUB,
+                contentLength = fileSize,
+                contentType = fileType,
+                fileName = fileName,
+                imageUri = imageUri.toString()
             ).onSuccess {
-                uploadImage(
-                    preSignedUrl = it.preSignedUrl,
-                    fileUrl = it.fileUrl,
-                    mediaType = fileType,
-                    mediaSize = fileSize,
-                    imageUri = imageUri
-                )
+                intent {
+                    reduce {
+                        state.copy(
+                            clubImageUrl = it,
+                            isLoading = false
+                        )
+                    }
+                }
             }.onFailure {
                 intent {
                     reduce {
