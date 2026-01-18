@@ -3,35 +3,26 @@ package `in`.koreatech.koin.feature.lostandfound.navigation
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import `in`.koreatech.koin.core.navigation.Navigator
+import androidx.navigation.toRoute
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetail
 import `in`.koreatech.koin.feature.lostandfound.ui.list.LostAndFoundList
 import `in`.koreatech.koin.feature.lostandfound.ui.report.LostAndFoundReport
-
 
 fun NavGraphBuilder.koinLostAndFoundGraph(
     navController: NavController,
     navigator: Navigator
 ) {
-    composable(
-        route = LostAndFoundNavType.LostAndFoundList.route,
-    ) {
+    composable<LostAndFoundNavType.LostAndFoundListRoute> {
         LostAndFoundList()
     }
 
-    composable(
-        route = "${LostAndFoundNavType.LostAndFoundDetail.route}/{$ARTICLE_ID}",
-        arguments = listOf(
-            navArgument(ARTICLE_ID) { type = NavType.IntType }
-        )
-    ) {
+    composable<LostAndFoundNavType.LostAndFoundDetailRoute> { backStackEntry ->
         val context = LocalContext.current
         LostAndFoundDetail(
             navigateToArticleList = {
-                navController.navigate(LostAndFoundNavType.LostAndFoundList.route)
+                navController.navigate(LostAndFoundNavType.LostAndFoundListRoute)
             },
             onTopbarBackClick = {
                 navController.navigateUp()
@@ -42,33 +33,25 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
                 context.startActivity(intent)
             },
             navigateToRecentArticle = { articleId ->
-                navController.navigate("${LostAndFoundNavType.LostAndFoundDetail.route}/$articleId")
+                navController.navigate(LostAndFoundNavType.LostAndFoundDetailRoute(articleId))
             },
             navigateToReport = { articleId ->
-                navController.navigate("${LostAndFoundNavType.LostAndFoundReport.route}/$articleId")
+                navController.navigate(LostAndFoundNavType.LostAndFoundReportRoute(articleId))
             }
         )
     }
 
-    composable(
-        route = "${LostAndFoundNavType.LostAndFoundReport.route}/{$ARTICLE_ID}",
-        arguments = listOf(
-            navArgument(ARTICLE_ID) { type = NavType.IntType }
-        )
-    ) {
-        val articleId = it.arguments?.getInt(ARTICLE_ID) ?: -1
+    composable<LostAndFoundNavType.LostAndFoundReportRoute> { backStackEntry ->
+        val route = backStackEntry.toRoute<LostAndFoundNavType.LostAndFoundDetailRoute>()
         LostAndFoundReport(
-            articleId = articleId,
+            articleId = route.articleId,
             onSuccess = { navController.navigateUp() }
         )
     }
 
-    composable(
-        route = LostAndFoundNavType.LostAndFoundWrite.route,
-    ) {
-
+    composable<LostAndFoundNavType.LostAndFoundWriteRoute> {
     }
 
 }
 
-const val ARTICLE_ID = "article_id"
+const val ARTICLE_ID = "articleId"

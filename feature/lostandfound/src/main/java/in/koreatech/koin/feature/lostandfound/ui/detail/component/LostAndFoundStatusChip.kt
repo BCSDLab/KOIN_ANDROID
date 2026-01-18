@@ -12,7 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 
 @Composable
@@ -23,28 +23,28 @@ fun LostAndFoundStatusChip(
     val chipState = if (isFound) {
         ChipState(
             text = stringResource(id = R.string.lost_and_found_found),
-            backgroundColor = RebrandKoinTheme.colors.neutral100,
-            textColor = RebrandKoinTheme.colors.neutral400,
+            backgroundColor = KoinTheme.colors.neutral100,
+            textColor = KoinTheme.colors.neutral400,
             horizontalPadding = 9.5.dp
         )
     } else {
         ChipState(
             text = stringResource(id = R.string.lost_and_found_finding),
             backgroundColor = Color(0xFFFFA928),
-            textColor = RebrandKoinTheme.colors.neutral0,
+            textColor = KoinTheme.colors.neutral0,
             horizontalPadding = 4.dp
         )
     }
 
     Box(
         modifier = modifier
-            .clip(RebrandKoinTheme.shapes.extraSmall)
+            .clip(KoinTheme.shapes.extraSmall)
             .background(chipState.backgroundColor)
     ) {
         BasicText(
             text = chipState.text,
             modifier = Modifier.padding(horizontal = chipState.horizontalPadding, vertical = 2.dp),
-            style = RebrandKoinTheme.typography.medium12.copy(color = chipState.textColor)
+            style = KoinTheme.typography.medium12.copy(color = chipState.textColor)
         )
     }
 }

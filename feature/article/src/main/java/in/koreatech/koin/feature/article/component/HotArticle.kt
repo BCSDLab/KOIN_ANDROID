@@ -20,9 +20,7 @@ import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.article.R
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
-import `in`.koreatech.koin.feature.article.enums.LostItemCategory
 import `in`.koreatech.koin.feature.article.model.ArticleHeaderState
-import `in`.koreatech.koin.feature.article.ui.lostandfound.detail.component.LostAndFoundStatusChip
 
 @Composable
 fun HotArticle(
@@ -34,7 +32,7 @@ fun HotArticle(
         Text(
             modifier = Modifier.padding(vertical = 14.dp, horizontal = 24.dp),
             style = KoinTheme.typography.bold16,
-            text = stringResource(R.string.recent_article_title)
+            text = stringResource(R.string.hot_article_title)
         )
 
         hotArticleList.forEach { hotArticle ->
@@ -43,9 +41,7 @@ fun HotArticle(
                 HotArticleData(
                     articleId = hotArticle.id,
                     articleTitle = hotArticle.title,
-                    board = hotArticle.board,
-                    category = hotArticle.category,
-                    isFound = hotArticle.isFound
+                    board = hotArticle.board
                 ),
                 navigateToHotArticle = navigateToHotArticle
             )
@@ -60,8 +56,6 @@ fun HotArticleItem(
     modifier: Modifier = Modifier,
     navigateToHotArticle: (HotArticleData) -> Unit
 ) {
-    val isLostAndFound = hotArticleData.board == ArticleBoardType.LOSTANDFOUND
-
     Row(
         modifier =
         modifier
@@ -79,10 +73,6 @@ fun HotArticleItem(
             )
         )
         Spacer(modifier = Modifier.width(8.dp))
-        if (isLostAndFound) {
-            LostItemTypeChip(category = hotArticleData.category)
-            Spacer(modifier = Modifier.width(4.dp))
-        }
         Text(
             text = hotArticleData.articleTitle,
             maxLines = 1,
@@ -91,20 +81,13 @@ fun HotArticleItem(
             KoinTheme.typography.bold14.copy(
                 fontWeight = FontWeight.SemiBold,
                 color = Color.Black
-            ),
-            modifier = if (isLostAndFound) Modifier else Modifier.weight(1f)
+            )
         )
-        if (isLostAndFound) {
-            Spacer(modifier = Modifier.weight(1f))
-            LostAndFoundStatusChip(isFound = hotArticleData.isFound)
-        }
     }
 }
 
 data class HotArticleData(
     val articleId: Int,
     val articleTitle: String,
-    val board: ArticleBoardType,
-    val category: LostItemCategory = LostItemCategory.NONE,
-    val isFound: Boolean = false
+    val board: ArticleBoardType
 )

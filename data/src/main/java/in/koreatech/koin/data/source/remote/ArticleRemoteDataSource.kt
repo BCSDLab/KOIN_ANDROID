@@ -80,14 +80,6 @@ class ArticleRemoteDataSource @Inject constructor(
         return articleApi.fetchMostSearchedKeywords(count)
     }
 
-    suspend fun fetchArticleLostAndFoundPagination(
-        page: Int,
-        limit: Int,
-        type: String?
-    ): ArticleLostAndFoundPaginationResponse {
-        return articleApi.fetchArticleLostAndFoundPagination(page, limit, type)
-    }
-
     suspend fun fetchArticleLostAndFoundPaginationV2(
         type: String?,
         page: Int,

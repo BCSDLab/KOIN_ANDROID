@@ -231,19 +231,6 @@ class ArticleRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun fetchArticleLostAndFoundPagination(
-        page: Int,
-        limit: Int,
-        type: String?
-    ): Flow<ArticleLostAndFoundPagination> {
-        return flow {
-            emit(
-                articleRemoteDataSource.fetchArticleLostAndFoundPagination(page, limit, type)
-                    .toArticleLostAndFoundPagination()
-            )
-        }
-    }
-
     override fun fetchArticleLostAndFoundPaginationV2(
         filterParams: LostAndFoundFilterParams
     ): Flow<ArticleLostAndFoundPagination> {
