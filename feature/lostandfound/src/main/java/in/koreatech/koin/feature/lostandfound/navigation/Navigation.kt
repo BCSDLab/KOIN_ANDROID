@@ -24,7 +24,7 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
         )
     }
 
-    composable<LostAndFoundNavType.LostAndFoundReportRoute> {  backStackEntry ->
+    composable<LostAndFoundNavType.LostAndFoundReportRoute> { backStackEntry ->
         val route = backStackEntry.toRoute<LostAndFoundNavType.LostAndFoundDetailRoute>()
         LostAndFoundReport(
             articleId = route.articleId,
