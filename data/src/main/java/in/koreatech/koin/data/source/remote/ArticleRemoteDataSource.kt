@@ -148,4 +148,8 @@ class ArticleRemoteDataSource @Inject constructor(
     }
 
     suspend fun fetchArticleLostAndFoundStats() = articleApi.fetchArticleLostAndFoundStats()
+
+    suspend fun updateItemFound(
+        articleId: Int
+    ) = articleAuthApi.updateItemFound(articleId)
 }

@@ -51,6 +51,7 @@ fun ArticleLostAndFound.toLostAndFoundDetailState(): LostAndFoundDetailState {
         registeredAt = LocalDate.parse(registeredAt),
         updatedAt = updatedAt,
         isWriterCouncil = isCouncil,
-        isMine = isMine
+        isMine = isMine,
+        isFound = isFound
     )
 }

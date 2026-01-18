@@ -45,4 +45,9 @@ interface ArticleAuthApi {
         @Path("id") id: Int,
         @Body reportReasons: ArticleLostAndFoundReportRequest
     ): Response<Unit>
+
+    @POST("articles/lost-item/{id}/found")
+    suspend fun updateItemFound(
+        @Path("id") id: Int
+    ): Response<Unit>
 }

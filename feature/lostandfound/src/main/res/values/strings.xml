@@ -187,4 +187,6 @@
     <string name="lost_and_found_lost_message">물건을 찾았나요?</string>
     <string name="lost_and_found_found_message">주인을 찾았나요?</string>
     <string name="lost_and_found_dialog_message">상태 변경 시 되돌릴 수 없습니다.\n찾음으로 변경하시겠습니까?</string>
+
+    <string name="lost_and_found_update_found_fail">찾음으로 변경하지 못했습니다.</string>
 </resources>

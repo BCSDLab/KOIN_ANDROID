@@ -6,4 +6,6 @@ sealed class LostAndFoundDetailSideEffect {
     data object DeleteArticleFailed : LostAndFoundDetailSideEffect()
 
     data object DeletedArticle : LostAndFoundDetailSideEffect()
+
+    data object UpdateFoundFail : LostAndFoundDetailSideEffect()
 }

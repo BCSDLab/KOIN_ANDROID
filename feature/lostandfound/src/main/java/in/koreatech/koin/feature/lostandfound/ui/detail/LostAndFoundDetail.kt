@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.lostandfound.ui.detail
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
@@ -73,8 +73,6 @@ fun LostAndFoundDetail(
         val recentArticles = uiState.recentArticles
         val context = LocalContext.current
         val isLoading = uiState.isLoading
-
-        var isFound by remember(uiState.isFound) { mutableStateOf(uiState.isFound) }
 
         if (uiState.showFoundDialog) {
             DetailDialog(
@@ -134,7 +132,7 @@ fun LostAndFoundDetail(
                             foundPlace = uiState.foundPlace,
                             foundDate = uiState.foundDate,
                             author = uiState.author,
-                            isFound = isFound
+                            isFound = uiState.isFound
                         )
 
                         HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
@@ -145,10 +143,10 @@ fun LostAndFoundDetail(
                             isWriterAdmin = uiState.isWriterCouncil
                         )
 
-                        if (uiState.isMine) {
+                        if (uiState.isMine && !uiState.isFound) {
                             DetailFoundSwitch(
                                 lostOrFoundType = uiState.lostOrFound,
-                                isFound = isFound,
+                                isFound = uiState.isFound,
                                 onCheckedChange = { viewModel.setShowFoundDialog(true) }
                             )
                         }
@@ -266,6 +264,14 @@ private fun handleSideEffect(
             Toast.makeText(
                 context,
                 context.getString(R.string.detail_deleted_article),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        LostAndFoundDetailSideEffect.UpdateFoundFail -> {
+            Toast.makeText(
+                context,
+                context.getString(R.string.lost_and_found_update_found_fail),
                 Toast.LENGTH_SHORT
             ).show()
         }

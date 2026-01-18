@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.detail
 
+import android.util.Log
 import android.webkit.URLUtil
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,7 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.DeleteArticleLostAndFoundUseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticlePaginationV2UseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticleUseCase
+import `in`.koreatech.koin.domain.usecase.article.lostandfound.UpdateItemFoundUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundSortType
 import `in`.koreatech.koin.feature.lostandfound.model.toLostAndFoundItemState
@@ -33,7 +35,8 @@ class LostAndFoundDetailViewModel @Inject constructor(
     private val fetchLostAndFoundArticleUseCase: FetchLostAndFoundArticleUseCase,
     private val fetchLostAndFoundArticlePaginationV2UseCase: FetchLostAndFoundArticlePaginationV2UseCase,
     private val deleteArticleLostAndFoundUseCase: DeleteArticleLostAndFoundUseCase,
-    private val getUserStatusUseCase: GetUserStatusUseCase
+    private val getUserStatusUseCase: GetUserStatusUseCase,
+    private val updateItemFoundUseCase: UpdateItemFoundUseCase
 ) : ViewModel(), ContainerHost<LostAndFoundDetailState, LostAndFoundDetailSideEffect> {
     override val container =
         container<LostAndFoundDetailState, LostAndFoundDetailSideEffect>(LostAndFoundDetailState(), savedStateHandle) {
@@ -53,13 +56,15 @@ class LostAndFoundDetailViewModel @Inject constructor(
                     is User.Student -> reduce {
                         state.copy(
                             isLoggedIn = true,
-                            currentLoggedInUser = it.nickname ?: ""
+                            currentLoggedInUser = it.nickname ?: "",
+                            isMine = it.nickname == state.author,
                         )
                     }
                     is User.General -> reduce {
                         state.copy(
                             isLoggedIn = true,
-                            currentLoggedInUser = it.nickname ?: ""
+                            currentLoggedInUser = it.nickname ?: "",
+                            isMine = it.nickname == state.author,
                         )
                     }
                     is User.Anonymous -> reduce {
@@ -98,7 +103,8 @@ class LostAndFoundDetailViewModel @Inject constructor(
                     isWriterCouncil = article.isWriterCouncil,
                     isMine = state.currentLoggedInUser == article.author,
                     isAuthorWithdraw = article.author == "탈퇴한 사용자",
-                    isLoading = false
+                    isLoading = false,
+                    isFound = article.isFound
                 )
             }
             fetchRecentArticles()
@@ -200,10 +206,15 @@ class LostAndFoundDetailViewModel @Inject constructor(
     }
 
     fun setFound() = intent { // TODO connect api
-        reduce {
-            state.copy(
-                isFound = true
-            )
+        updateItemFoundUseCase(state.id).onSuccess {
+            reduce {
+                state.copy(
+                    isFound = true
+                )
+            }
+        }.onFailure {
+            postSideEffect(LostAndFoundDetailSideEffect.UpdateFoundFail)
+            Timber.e(it)
         }
     }
 
