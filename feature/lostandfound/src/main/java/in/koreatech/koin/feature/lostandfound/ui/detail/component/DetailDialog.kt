@@ -45,7 +45,7 @@ fun DetailDialog(
     onPositive: () -> Unit = {},
     onNegative: () -> Unit = {},
     modifier: Modifier = Modifier,
-    titleStyle: TextStyle = KoinTheme.typography.medium14,
+    titleStyle: TextStyle = KoinTheme.typography.medium16,
     positiveButtonText: String = stringResource(id = R.string.common_confirmation),
     negativeButtonText: String = stringResource(id = R.string.common_cancellation),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
