@@ -34,7 +34,7 @@ class LostAndFoundDetailViewModel @Inject constructor(
 ) : ViewModel(), ContainerHost<LostAndFoundDetailState, LostAndFoundDetailSideEffect> {
     override val container =
         container<LostAndFoundDetailState, LostAndFoundDetailSideEffect>(LostAndFoundDetailState(), savedStateHandle) {
-            val articleId = savedStateHandle.get<Int>(ARTICLE_ID) ?: 17951 // TODO delete ?: 17956 or 17957(Mine) or 17951(image) or 17827(council)
+            val articleId = savedStateHandle.get<Int>(ARTICLE_ID)
             checkNotNull(articleId)
             fetchLostAndFoundDetail(articleId)
         }
