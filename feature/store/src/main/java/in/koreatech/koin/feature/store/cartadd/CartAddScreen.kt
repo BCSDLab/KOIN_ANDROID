@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.store.cartadd
 
-import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -42,10 +41,10 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.core.nestedscroll.rememberKoinNestedScrollConnection
 import `in`.koreatech.koin.core.nestedscroll.rememberKoinNestedScrollHeaderState
 import `in`.koreatech.koin.core.util.pxToDp
@@ -85,6 +84,7 @@ fun CartAddScreen(
 ) {
     val uiState by viewModel.collectAsState()
     val context = LocalContext.current
+    val navigator = rememberNavigator()
 
     viewModel.collectSideEffect {
         handleSideEffect(it, navigateBack)
@@ -126,9 +126,7 @@ fun CartAddScreen(
         )
         KoinStoreSignInDialog(
             onPositive = {
-                Intent(Intent.ACTION_VIEW).apply {
-                    data = "koin://login/login?link=$DEEPLINK_STORE_ADD_CART/${uiState.orderableShopId}/${uiState.orderableShopMenuId}/$cartData".toUri()
-                }.apply {
+                navigator.navigateToSignIn(context, "$DEEPLINK_STORE_ADD_CART/${uiState.orderableShopId}/${uiState.orderableShopMenuId}/$cartData").apply {
                     context.startActivity(this)
                 }
             },

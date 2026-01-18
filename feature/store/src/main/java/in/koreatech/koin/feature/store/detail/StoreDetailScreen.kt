@@ -69,6 +69,7 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.core.nestedscroll.rememberKoinNestedScrollConnection
 import `in`.koreatech.koin.core.nestedscroll.rememberKoinNestedScrollHeaderState
 import `in`.koreatech.koin.core.util.pxToDp
@@ -115,6 +116,7 @@ fun StoreDetailScreen(
 ) {
     val uiState by viewModel.collectAsState()
     val context = LocalContext.current
+    val navigator = rememberNavigator()
 
     val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
         if (it) {
@@ -285,9 +287,7 @@ fun StoreDetailScreen(
     if (uiState.showSignInDialog) {
         KoinStoreSignInDialog(
             onPositive = {
-                Intent(Intent.ACTION_VIEW).apply {
-                    data = "koin://login/login?link=$DEEPLINK_STORE_DETAIL_MAIN/${uiState.storeId}/${uiState.isOrderableShop}".toUri()
-                }.apply {
+                navigator.navigateToSignIn(context, "$DEEPLINK_STORE_DETAIL_MAIN/${uiState.storeId}/${uiState.isOrderableShop}").apply {
                     context.startActivity(this)
                 }
             },
