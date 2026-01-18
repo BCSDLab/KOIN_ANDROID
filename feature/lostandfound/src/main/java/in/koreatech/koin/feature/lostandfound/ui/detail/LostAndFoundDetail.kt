@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.lostandfound.ui.detail
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -169,7 +168,7 @@ fun LostAndFoundDetail(
                                 viewModel.deleteArticle()
                             },
                             onEditArticleClick = {
-                                //TODO wait new api
+                                // TODO wait new api
                             },
                             onShowDeleteDialogChange = {
                                 viewModel.setShowDeleteDialog(it)
@@ -183,10 +182,9 @@ fun LostAndFoundDetail(
                                         loggingFoundMessageSend
                                     }
                                 )
-                                if(uiState.isLoggedIn) {
+                                if (uiState.isLoggedIn) {
                                     navigateToChatRoom(uiState.id)
-                                }
-                                else {
+                                } else {
                                     viewModel.setShowLoginDialog(true)
                                 }
                             },

@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.detail
 
-import android.util.Log
 import android.webkit.URLUtil
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -57,14 +56,14 @@ class LostAndFoundDetailViewModel @Inject constructor(
                         state.copy(
                             isLoggedIn = true,
                             currentLoggedInUser = it.nickname ?: "",
-                            isMine = it.nickname == state.author,
+                            isMine = it.nickname == state.author
                         )
                     }
                     is User.General -> reduce {
                         state.copy(
                             isLoggedIn = true,
                             currentLoggedInUser = it.nickname ?: "",
-                            isMine = it.nickname == state.author,
+                            isMine = it.nickname == state.author
                         )
                     }
                     is User.Anonymous -> reduce {
