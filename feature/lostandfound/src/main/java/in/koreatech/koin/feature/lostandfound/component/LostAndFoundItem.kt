@@ -54,10 +54,7 @@ fun LostAndFoundItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) = Column(
-    modifier =
-        modifier.noRippleClickable {
-            onClick()
-        }
+    modifier = modifier.noRippleClickable { onClick() }
 ) {
     val registeredAtFormatType = DateTimeFormatter.ofPattern("MM.dd")
     val convertedRegisteredAt by remember {

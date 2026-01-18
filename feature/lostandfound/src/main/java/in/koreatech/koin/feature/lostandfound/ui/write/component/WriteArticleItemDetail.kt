@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.lostandfound.write.component
+package `in`.koreatech.koin.feature.lostandfound.ui.write.component
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image

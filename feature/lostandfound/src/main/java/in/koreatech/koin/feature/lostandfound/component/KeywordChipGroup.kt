@@ -55,8 +55,8 @@ fun KeywordChipGroup(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun LostAndFoundTextChipFlowGroup(
-    modifier: Modifier = Modifier,
     titles: List<String>,
+    modifier: Modifier = Modifier,
     shape: Shape,
     onChipSelected: (index: Int) -> Unit = {},
     selectedChipIndexes: List<Int>,
@@ -179,9 +179,7 @@ fun LostAndFoundTextChip(
                             onSelect()
                         }
                     } else {
-                        Modifier.noRippleClickable {
-                            onSelect()
-                        }
+                        Modifier.noRippleClickable(onClick = onSelect)
                     }
                 )
                 .background(if (isSelected) chipColors.selectedContainerColor else chipColors.unselectedContainerColor)

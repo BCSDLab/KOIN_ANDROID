@@ -7,16 +7,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
@@ -53,7 +51,7 @@ fun LostAndFoundFABContent(
             )
             IconButton(onClick = onDismissRequest) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_bottomsheet_close),
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_bottomsheet_close),
                     contentDescription = stringResource(R.string.bottom_sheet_close)
                 )
             }
@@ -74,13 +72,13 @@ fun LostAndFoundFABContent(
         ) {
             LostAndFoundSheetButton(
                 text = stringResource(R.string.finding_btn),
-                icon = painterResource(R.drawable.ic_found),
+                icon = ImageVector.vectorResource(R.drawable.ic_found),
                 onClick = onFindOwnerClick
             )
             Spacer(modifier = Modifier.height(16.dp))
             LostAndFoundSheetButton(
                 text = stringResource(R.string.lost_btn),
-                icon = painterResource(R.drawable.ic_lost),
+                icon = ImageVector.vectorResource(R.drawable.ic_lost),
                 onClick = onLostItemClick
             )
         }
@@ -90,26 +88,26 @@ fun LostAndFoundFABContent(
 @Composable
 private fun LostAndFoundSheetButton(
     text: String,
-    icon: Painter,
+    icon: ImageVector,
     onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(49.dp)
-            .background(color = KoinTheme.colors.neutral0, shape = RoundedCornerShape(8.dp))
+            .background(color = KoinTheme.colors.neutral0, shape = KoinTheme.shapes.small)
             .border(
                 width = 1.dp,
                 color = KoinTheme.colors.neutral300,
-                shape = RoundedCornerShape(8.dp)
+                shape = KoinTheme.shapes.small
             )
-            .clickable { onClick() }
+            .clickable(onClick = onClick)
             .padding(horizontal = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
         Icon(
-            painter = icon,
+            imageVector = icon,
             contentDescription = text,
             modifier = Modifier.size(24.dp),
             tint = Color.Unspecified

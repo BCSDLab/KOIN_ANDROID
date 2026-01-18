@@ -7,14 +7,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun ItemTypeChip(
-    chipItemList: List<LostItemCategory>,
+    chipItemList: ImmutableList<LostItemCategory>,
     modifier: Modifier = Modifier,
     selectedChipIndexes: Int? = null,
     onChipSelected: (index: Int) -> Unit = {}

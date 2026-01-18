@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.lostandfound.write.component
+package `in`.koreatech.koin.feature.lostandfound.ui.write.component
 
 import android.net.Uri
 import androidx.compose.foundation.Image

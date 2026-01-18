@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,34 +27,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
+import kotlinx.collections.immutable.persistentListOf
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LostAndFoundFilterBottomSheet(
-    onDismissRequest: () -> Unit,
-    onApply: (String, String, String, String) -> Unit
-) {
-    ModalBottomSheet(
-        onDismissRequest = onDismissRequest,
-        containerColor = KoinTheme.colors.neutral0,
-        dragHandle = null
-    ) {
-        FilterBottomSheetContent(
-            onDismissRequest = onDismissRequest,
-            onApply = onApply
-        )
-    }
-}
-
-@Composable
-fun FilterBottomSheetContent(
     onDismissRequest: () -> Unit,
     onApply: (String, String, String, String) -> Unit
 ) {
@@ -66,6 +50,61 @@ fun FilterBottomSheetContent(
     var selectedCategory by remember { mutableStateOf(detailOption) }
     var selectedItemType by remember { mutableStateOf(detailOption) }
     var selectedStatus by remember { mutableStateOf(detailOption) }
+
+
+    ModalBottomSheet(
+        onDismissRequest = onDismissRequest,
+        containerColor = KoinTheme.colors.neutral0,
+        dragHandle = null
+    ) {
+        FilterBottomSheetContent(
+            selectedListType = selectedListType,
+            selectedCategory = selectedCategory,
+            selectedItemType = selectedItemType,
+            selectedStatus = selectedStatus,
+
+            onListTypeChange = { selectedListType = it },
+            onCategoryChange = { selectedCategory = it },
+            onItemTypeChange = { selectedItemType = it },
+            onStatusChange = { selectedStatus = it },
+
+            onReset = {
+                selectedListType = detailOption
+                selectedCategory = detailOption
+                selectedItemType = detailOption
+                selectedStatus = detailOption
+            },
+
+            onApplyClick = {
+                onApply(
+                    selectedListType,
+                    selectedCategory,
+                    selectedItemType,
+                    selectedStatus
+                )
+            },
+
+            onDismissRequest = onDismissRequest
+        )
+    }
+}
+
+@Composable
+fun FilterBottomSheetContent(
+    selectedListType: String,
+    selectedCategory: String,
+    selectedItemType: String,
+    selectedStatus: String,
+
+    onListTypeChange: (String) -> Unit,
+    onCategoryChange: (String) -> Unit,
+    onItemTypeChange: (String) -> Unit,
+    onStatusChange: (String) -> Unit,
+
+    onReset: () -> Unit,
+    onApplyClick: () -> Unit,
+    onDismissRequest: () -> Unit
+) {
 
     Column(
         modifier = Modifier
@@ -94,7 +133,7 @@ fun FilterBottomSheetContent(
             }
         }
 
-        HorizontalDivider(color = KoinTheme.colors.neutral300, thickness = 1.dp)
+        HorizontalDivider(color = KoinTheme.colors.neutral300)
 
         Column(
             modifier = Modifier
@@ -102,28 +141,28 @@ fun FilterBottomSheetContent(
         ) {
             FilterSection(
                 title = stringResource(R.string.filter_list_index),
-                items = listOf(
+                items = persistentListOf(
                     stringResource(R.string.filter_list_all),
                     stringResource(R.string.filter_list_my_post)
             ),
                 selectedItem = selectedListType,
-                onItemSelected = { selectedListType = it }
+                onItemSelected = onListTypeChange
             )
-            HorizontalDivider(color = KoinTheme.colors.neutral300, thickness = 1.dp)
+            HorizontalDivider(color = KoinTheme.colors.neutral300)
             FilterSection(
                 title = stringResource(R.string.filter_list_category),
-                items = listOf(
+                items = persistentListOf(
                     stringResource(R.string.filter_list_all),
                     stringResource(R.string.filter_list_find),
                     stringResource(R.string.filter_list_lost)
                 ),
                 selectedItem = selectedCategory,
-                onItemSelected = { selectedCategory = it }
+                onItemSelected = onCategoryChange
             )
-            HorizontalDivider(color = KoinTheme.colors.neutral300, thickness = 1.dp)
+            HorizontalDivider(color = KoinTheme.colors.neutral300)
             FilterSection(
                 title = stringResource(R.string.filter_list_type),
-                items = listOf(
+                items = persistentListOf(
                     stringResource(R.string.filter_list_all),
                     stringResource(R.string.filter_list_card),
                     stringResource(R.string.filter_list_id_card),
@@ -132,18 +171,18 @@ fun FilterBottomSheetContent(
                     stringResource(R.string.filter_list_other)
                 ),
                 selectedItem = selectedItemType,
-                onItemSelected = { selectedItemType = it }
+                onItemSelected = onItemTypeChange
             )
-            HorizontalDivider(color = KoinTheme.colors.neutral300, thickness = 1.dp)
+            HorizontalDivider(color = KoinTheme.colors.neutral300)
             FilterSection(
                 title = stringResource(R.string.filter_list_condition),
-                items = listOf(
+                items = persistentListOf(
                     stringResource(R.string.filter_list_all),
                     stringResource(R.string.filter_list_finding),
                     stringResource(R.string.filter_list_found)
                 ),
                 selectedItem = selectedStatus,
-                onItemSelected = { selectedStatus = it }
+                onItemSelected = onStatusChange
             )
             HorizontalDivider(color = KoinTheme.colors.neutral300, thickness = 1.dp)
         }
@@ -155,13 +194,8 @@ fun FilterBottomSheetContent(
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             OutlinedButton(
-                onClick = {
-                    selectedListType = detailOption
-                    selectedCategory = detailOption
-                    selectedItemType = detailOption
-                    selectedStatus = detailOption
-                },
-                shape = RoundedCornerShape(12.dp),
+                onClick = onReset,
+                shape = KoinTheme.shapes.medium,
                 border = BorderStroke(1.dp, KoinTheme.colors.neutral300),
                 modifier = Modifier
                     .weight(1f)
@@ -175,22 +209,15 @@ fun FilterBottomSheetContent(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Icon(
-                    painter = painterResource(R.drawable.uim_process),
+                    imageVector = ImageVector.vectorResource(R.drawable.uim_process),
                     contentDescription = null,
                     modifier = Modifier.size(16.dp),
                     tint = KoinTheme.colors.neutral500
                 )
             }
             Button(
-                onClick = {
-                    onApply(
-                        selectedListType,
-                        selectedCategory,
-                        selectedItemType,
-                        selectedStatus
-                    )
-                },
-                shape = RoundedCornerShape(12.dp),
+                onClick = onApplyClick,
+                shape = KoinTheme.shapes.medium,
                 colors = ButtonDefaults.buttonColors(containerColor = KoinTheme.colors.primary500),
                 modifier = Modifier
                     .weight(2f)
@@ -220,7 +247,7 @@ fun FilterSection(
             color = KoinTheme.colors.neutral800,
             modifier = Modifier.padding(bottom = 12.dp)
         )
-        val chunkedItems = items.chunked(3)
+        val chunkedItems = remember(items) {items.chunked(3)}
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             chunkedItems.forEach { rowItems ->
                 Row(

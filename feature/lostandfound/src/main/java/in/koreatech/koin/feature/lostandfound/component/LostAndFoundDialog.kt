@@ -49,8 +49,8 @@ fun LostAndFoundDialog(
     description: String,
     onPositive: () -> Unit = {},
     onNegative: () -> Unit = {},
-    modifier: Modifier = Modifier,
-    lostAndFoundDialogStyle: LostAndFoundDialogStyle = lostAndFoundDialogStyle()
+    lostAndFoundDialogStyle: LostAndFoundDialogStyle = lostAndFoundDialogStyle(),
+    modifier: Modifier = Modifier
 ) {
     BasicAlertDialog(
         modifier =

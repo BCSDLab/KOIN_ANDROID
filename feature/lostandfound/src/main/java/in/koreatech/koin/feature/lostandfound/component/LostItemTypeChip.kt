@@ -26,7 +26,7 @@ fun LostItemTypeChip(
     ReadOnlyTextChip(
         title = stringResource(category.stringRes),
         contentPadding = PaddingValues(vertical = 0.dp, horizontal = 8.dp),
-        chipColor = Color(0xFF175C8E),
+        chipColor = KoinTheme.colors.primary500,
         textColor = Color.White,
         modifier = modifier
     )

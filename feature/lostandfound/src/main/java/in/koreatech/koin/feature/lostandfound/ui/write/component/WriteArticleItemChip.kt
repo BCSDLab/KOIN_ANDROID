@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.lostandfound.write.component
+package `in`.koreatech.koin.feature.lostandfound.ui.write.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

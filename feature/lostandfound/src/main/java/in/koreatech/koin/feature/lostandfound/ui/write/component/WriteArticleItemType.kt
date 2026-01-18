@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.lostandfound.write.component
+package `in`.koreatech.koin.feature.lostandfound.ui.write.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,6 +20,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.ItemTypeChip
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun WriteArticleItemType(
@@ -63,7 +64,9 @@ fun WriteArticleItemType(
 
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             ItemTypeChip(
-                chipItemList = LostItemCategory.entries.filter { it != LostItemCategory.NONE },
+                chipItemList = LostItemCategory.entries
+                    .filter { it != LostItemCategory.NONE }
+                    .toImmutableList(),
                 selectedChipIndexes = if (selectedChipIndex != -1) selectedChipIndex else null,
                 onChipSelected = {
                     onItemSelected(it)
