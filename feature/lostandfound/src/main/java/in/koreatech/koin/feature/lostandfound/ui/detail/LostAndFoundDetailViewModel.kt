@@ -69,71 +69,71 @@ class LostAndFoundDetailViewModel @Inject constructor(
     }
 
     fun fetchLostAndFoundDetail(articleId: Int) = intent {
+        reduce {
+            state.copy(
+                isLoading = true
+            )
+        }
+        fetchLostAndFoundArticleUseCase(articleId).catch {
+            if (it is HttpException && it.code() == 404) {
+                postSideEffect(LostAndFoundDetailSideEffect.DeletedArticle)
+            }
+        }.map {
+            it.toLostAndFoundDetailState()
+        }.collectLatest { article ->
             reduce {
                 state.copy(
-                    isLoading = true
+                    lostOrFound = article.lostOrFound,
+                    id = article.id,
+                    category = article.category,
+                    foundPlace = article.foundPlace,
+                    foundDate = article.foundDate,
+                    content = article.content,
+                    author = article.author,
+                    images = article.images?.filter { URLUtil.isValidUrl(it.toString()) },
+                    registeredAt = article.registeredAt,
+                    updatedAt = article.updatedAt,
+                    isWriterCouncil = article.isWriterCouncil,
+                    isMine = state.currentLoggedInUser == article.author,
+                    isAuthorWithdraw = article.author == "탈퇴한 사용자",
+                    isLoading = false
                 )
             }
-            fetchLostAndFoundArticleUseCase(articleId).catch {
-                if (it is HttpException && it.code() == 404) {
-                    postSideEffect(LostAndFoundDetailSideEffect.DeletedArticle)
-                }
-            }.map {
-                it.toLostAndFoundDetailState()
-            }.collectLatest { article ->
-                reduce {
-                    state.copy(
-                        lostOrFound = article.lostOrFound,
-                        id = article.id,
-                        category = article.category,
-                        foundPlace = article.foundPlace,
-                        foundDate = article.foundDate,
-                        content = article.content,
-                        author = article.author,
-                        images = article.images?.filter { URLUtil.isValidUrl(it.toString()) },
-                        registeredAt = article.registeredAt,
-                        updatedAt = article.updatedAt,
-                        isWriterCouncil = article.isWriterCouncil,
-                        isMine = state.currentLoggedInUser == article.author,
-                        isAuthorWithdraw = article.author == "탈퇴한 사용자",
-                        isLoading = false
-                    )
-                }
-                fetchRecentArticles()
-            }
+            fetchRecentArticles()
         }
+    }
 
     fun fetchRecentArticles() = intent {
-            reduce {
-                state.copy(isLoadingMoreArticles = true)
-            }
-            val filterParams = LostAndFoundFilterParams(
-                page = 1,
-                limit = PAGE_SIZE,
-                sort = LostAndFoundSortType.LATEST.value
-            )
-            fetchLostAndFoundArticlePaginationV2UseCase(filterParams)
-                .catch {
-                    reduce {
-                        state.copy(isLoadingMoreArticles = false)
-                    }
-                }
-                .collectLatest { pagination ->
-                    val currentArticleId = state.id
-                    val filteredArticles = pagination.articleLostAndFoundHeader
-                        .filter { it.id != currentArticleId }
-                        .map { it.toLostAndFoundItemState() }
-                    reduce {
-                        state.copy(
-                            recentArticles = filteredArticles,
-                            recentArticlesCurrentPage = pagination.currentPage,
-                            recentArticlesTotalPage = pagination.totalPage,
-                            hasMoreArticles = pagination.currentPage < pagination.totalPage,
-                            isLoadingMoreArticles = false
-                        )
-                    }
-                }
+        reduce {
+            state.copy(isLoadingMoreArticles = true)
         }
+        val filterParams = LostAndFoundFilterParams(
+            page = 1,
+            limit = PAGE_SIZE,
+            sort = LostAndFoundSortType.LATEST.value
+        )
+        fetchLostAndFoundArticlePaginationV2UseCase(filterParams)
+            .catch {
+                reduce {
+                    state.copy(isLoadingMoreArticles = false)
+                }
+            }
+            .collectLatest { pagination ->
+                val currentArticleId = state.id
+                val filteredArticles = pagination.articleLostAndFoundHeader
+                    .filter { it.id != currentArticleId }
+                    .map { it.toLostAndFoundItemState() }
+                reduce {
+                    state.copy(
+                        recentArticles = filteredArticles,
+                        recentArticlesCurrentPage = pagination.currentPage,
+                        recentArticlesTotalPage = pagination.totalPage,
+                        hasMoreArticles = pagination.currentPage < pagination.totalPage,
+                        isLoadingMoreArticles = false
+                    )
+                }
+            }
+    }
 
     fun loadMoreRecentArticles() = intent {
         if (state.isLoadingMoreArticles || !state.hasMoreArticles) return@intent
@@ -181,20 +181,20 @@ class LostAndFoundDetailViewModel @Inject constructor(
     }
 
     fun setShowDeleteDialog(show: Boolean) = intent {
-            reduce {
-                state.copy(
-                    showDeleteDialog = show
-                )
-            }
+        reduce {
+            state.copy(
+                showDeleteDialog = show
+            )
         }
+    }
 
     fun setShowFoundDialog(show: Boolean) = intent {
-            reduce {
-                state.copy(
-                    showFoundDialog = show
-                )
-            }
+        reduce {
+            state.copy(
+                showFoundDialog = show
+            )
         }
+    }
 
     fun setFound() = intent { // TODO connect api
         reduce {

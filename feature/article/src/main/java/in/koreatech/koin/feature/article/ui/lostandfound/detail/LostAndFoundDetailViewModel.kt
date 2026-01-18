@@ -5,15 +5,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.model.article.LostAndFoundFilterParams
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.DeleteArticleLostAndFoundUseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchHotArticlesUseCase
-import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticlePaginationV2UseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticleUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.article.model.toArticleHeaderState
-import `in`.koreatech.koin.feature.article.model.toLostAndFoundItemState
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailViewModel.Companion.HOT_ARTICLE_COUNT
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
@@ -109,7 +106,6 @@ class LostAndFoundDetailViewModel @Inject constructor(
             }
         }
 
-
     fun fetchHotArticles() =
         viewModelScope.launch {
             intent {
@@ -117,8 +113,8 @@ class LostAndFoundDetailViewModel @Inject constructor(
                     reduce {
                         state.copy(
                             hotArticles =
-                                it.filterIndexed { index, _ -> index < HOT_ARTICLE_COUNT }
-                                    .map { it.toArticleHeaderState() }
+                            it.filterIndexed { index, _ -> index < HOT_ARTICLE_COUNT }
+                                .map { it.toArticleHeaderState() }
                         )
                     }
                 }

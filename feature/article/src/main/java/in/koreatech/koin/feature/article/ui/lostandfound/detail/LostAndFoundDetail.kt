@@ -49,7 +49,6 @@ fun LostAndFoundDetail(
         val context = LocalContext.current
         val isLoading = uiState.isLoading
 
-
         viewModel.collectSideEffect {
             handleSideEffect(it, context, navigateToArticleList)
         }

@@ -64,7 +64,6 @@ interface ArticleRepository {
 
     fun clearSearchHistory(): Flow<Unit>
 
-
     fun fetchArticleLostAndFoundPaginationV2(
         filterParams: LostAndFoundFilterParams
     ): Flow<ArticleLostAndFoundPagination>

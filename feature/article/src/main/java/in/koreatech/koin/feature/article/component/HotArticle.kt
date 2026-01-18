@@ -56,7 +56,6 @@ fun HotArticleItem(
     modifier: Modifier = Modifier,
     navigateToHotArticle: (HotArticleData) -> Unit
 ) {
-
     Row(
         modifier =
         modifier

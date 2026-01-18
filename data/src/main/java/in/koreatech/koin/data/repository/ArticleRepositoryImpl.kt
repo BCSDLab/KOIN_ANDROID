@@ -231,7 +231,6 @@ class ArticleRepositoryImpl @Inject constructor(
         }
     }
 
-
     override fun fetchArticleLostAndFoundPaginationV2(
         filterParams: LostAndFoundFilterParams
     ): Flow<ArticleLostAndFoundPagination> {
