@@ -210,7 +210,7 @@ class LostAndFoundDetailViewModel @Inject constructor(
     fun setShowLoginDialog(show: Boolean) = intent {
         reduce {
             state.copy(
-                showFoundDialog = show
+                showLoginDialog = show
             )
         }
     }
