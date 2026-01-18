@@ -43,157 +43,143 @@ class LostAndFoundDetailViewModel @Inject constructor(
         initUserInfo()
     }
 
-    private fun initUserInfo() =
-        viewModelScope.launch {
-            getUserStatusUseCase().collectLatest {
-                intent {
-                    when (it) {
-                        is User.Student -> reduce {
-                            state.copy(
-                                isLoggedIn = true,
-                                currentLoggedInUser = it.nickname ?: ""
-                            )
-                        }
-                        is User.General -> reduce {
-                            state.copy(
-                                isLoggedIn = true,
-                                currentLoggedInUser = it.nickname ?: ""
-                            )
-                        }
-                        is User.Anonymous -> reduce {
-                            state.copy(isLoggedIn = false)
-                        }
-                    }
-                }
-            }
-        }
-
-    fun fetchLostAndFoundDetail(articleId: Int) =
-        viewModelScope.launch {
+    private fun initUserInfo() = viewModelScope.launch {
+        getUserStatusUseCase().collectLatest {
             intent {
-                reduce {
-                    state.copy(
-                        isLoading = true
-                    )
-                }
-                fetchLostAndFoundArticleUseCase(articleId).catch {
-                    if (it is HttpException && it.code() == 404) {
-                        postSideEffect(LostAndFoundDetailSideEffect.DeletedArticle)
-                    }
-                }.map {
-                    it.toLostAndFoundDetailState()
-                }.collectLatest { article ->
-                    reduce {
+                when (it) {
+                    is User.Student -> reduce {
                         state.copy(
-                            lostOrFound = article.lostOrFound,
-                            id = article.id,
-                            category = article.category,
-                            foundPlace = article.foundPlace,
-                            foundDate = article.foundDate,
-                            content = article.content,
-                            author = article.author,
-                            images = article.images?.filter { URLUtil.isValidUrl(it.toString()) },
-                            registeredAt = article.registeredAt,
-                            updatedAt = article.updatedAt,
-                            isWriterCouncil = article.isWriterCouncil,
-                            isMine = state.currentLoggedInUser == article.author,
-                            isAuthorWithdraw = article.author == "탈퇴한 사용자",
-                            isLoading = false
+                            isLoggedIn = true,
+                            currentLoggedInUser = it.nickname ?: ""
                         )
                     }
-                    fetchRecentArticles()
+                    is User.General -> reduce {
+                        state.copy(
+                            isLoggedIn = true,
+                            currentLoggedInUser = it.nickname ?: ""
+                        )
+                    }
+                    is User.Anonymous -> reduce {
+                        state.copy(isLoggedIn = false)
+                    }
                 }
             }
         }
+    }
 
-    fun fetchRecentArticles() =
-        viewModelScope.launch {
-            intent {
-                reduce {
-                    state.copy(isLoadingMoreArticles = true)
-                }
-                val filterParams = LostAndFoundFilterParams(
-                    page = 1,
-                    limit = PAGE_SIZE,
-                    sort = "LATEST"
+    fun fetchLostAndFoundDetail(articleId: Int) = intent {
+            reduce {
+                state.copy(
+                    isLoading = true
                 )
-                fetchLostAndFoundArticlePaginationV2UseCase(filterParams)
-                    .catch {
-                        reduce {
-                            state.copy(isLoadingMoreArticles = false)
-                        }
-                    }
-                    .collectLatest { pagination ->
-                        val currentArticleId = state.id
-                        val filteredArticles = pagination.articleLostAndFoundHeader
-                            .filter { it.id != currentArticleId }
-                            .map { it.toLostAndFoundItemState() }
-                        reduce {
-                            state.copy(
-                                recentArticles = filteredArticles,
-                                recentArticlesCurrentPage = pagination.currentPage,
-                                recentArticlesTotalPage = pagination.totalPage,
-                                hasMoreArticles = pagination.currentPage < pagination.totalPage,
-                                isLoadingMoreArticles = false
-                            )
-                        }
-                    }
             }
-        }
-
-    fun loadMoreRecentArticles() =
-        viewModelScope.launch {
-            intent {
-                if (state.isLoadingMoreArticles || !state.hasMoreArticles) return@intent
-
+            fetchLostAndFoundArticleUseCase(articleId).catch {
+                if (it is HttpException && it.code() == 404) {
+                    postSideEffect(LostAndFoundDetailSideEffect.DeletedArticle)
+                }
+            }.map {
+                it.toLostAndFoundDetailState()
+            }.collectLatest { article ->
                 reduce {
-                    state.copy(isLoadingMoreArticles = true)
+                    state.copy(
+                        lostOrFound = article.lostOrFound,
+                        id = article.id,
+                        category = article.category,
+                        foundPlace = article.foundPlace,
+                        foundDate = article.foundDate,
+                        content = article.content,
+                        author = article.author,
+                        images = article.images?.filter { URLUtil.isValidUrl(it.toString()) },
+                        registeredAt = article.registeredAt,
+                        updatedAt = article.updatedAt,
+                        isWriterCouncil = article.isWriterCouncil,
+                        isMine = state.currentLoggedInUser == article.author,
+                        isAuthorWithdraw = article.author == "탈퇴한 사용자",
+                        isLoading = false
+                    )
                 }
-
-                val nextPage = state.recentArticlesCurrentPage + 1
-                val filterParams = LostAndFoundFilterParams(
-                    page = nextPage,
-                    limit = PAGE_SIZE,
-                    sort = "LATEST"
-                )
-
-                fetchLostAndFoundArticlePaginationV2UseCase(filterParams)
-                    .catch {
-                        reduce {
-                            state.copy(isLoadingMoreArticles = false)
-                        }
-                    }
-                    .collectLatest { pagination ->
-                        val currentArticleId = state.id
-                        val filteredArticles = pagination.articleLostAndFoundHeader
-                            .filter { it.id != currentArticleId }
-                            .map { it.toLostAndFoundItemState() }
-                        reduce {
-                            state.copy(
-                                recentArticles = state.recentArticles + filteredArticles,
-                                recentArticlesCurrentPage = pagination.currentPage,
-                                recentArticlesTotalPage = pagination.totalPage,
-                                hasMoreArticles = pagination.currentPage < pagination.totalPage,
-                                isLoadingMoreArticles = false
-                            )
-                        }
-                    }
+                fetchRecentArticles()
             }
         }
 
-    fun deleteArticle() =
-        viewModelScope.launch {
-            intent {
-                deleteArticleLostAndFoundUseCase(state.id).onSuccess {
-                    postSideEffect(LostAndFoundDetailSideEffect.DeleteArticle(state.id))
-                }.onFailure {
-                    postSideEffect(LostAndFoundDetailSideEffect.DeleteArticleFailed)
-                }
+    fun fetchRecentArticles() = intent {
+            reduce {
+                state.copy(isLoadingMoreArticles = true)
             }
+            val filterParams = LostAndFoundFilterParams(
+                page = 1,
+                limit = PAGE_SIZE,
+                sort = "LATEST"
+            )
+            fetchLostAndFoundArticlePaginationV2UseCase(filterParams)
+                .catch {
+                    reduce {
+                        state.copy(isLoadingMoreArticles = false)
+                    }
+                }
+                .collectLatest { pagination ->
+                    val currentArticleId = state.id
+                    val filteredArticles = pagination.articleLostAndFoundHeader
+                        .filter { it.id != currentArticleId }
+                        .map { it.toLostAndFoundItemState() }
+                    reduce {
+                        state.copy(
+                            recentArticles = filteredArticles,
+                            recentArticlesCurrentPage = pagination.currentPage,
+                            recentArticlesTotalPage = pagination.totalPage,
+                            hasMoreArticles = pagination.currentPage < pagination.totalPage,
+                            isLoadingMoreArticles = false
+                        )
+                    }
+                }
         }
 
-    fun setShowDeleteDialog(show: Boolean) =
-        intent {
+    fun loadMoreRecentArticles() = intent {
+        if (state.isLoadingMoreArticles || !state.hasMoreArticles) return@intent
+
+        reduce {
+            state.copy(isLoadingMoreArticles = true)
+        }
+
+        val nextPage = state.recentArticlesCurrentPage + 1
+        val filterParams = LostAndFoundFilterParams(
+            page = nextPage,
+            limit = PAGE_SIZE,
+            sort = "LATEST"
+        )
+
+        fetchLostAndFoundArticlePaginationV2UseCase(filterParams)
+            .catch {
+                reduce {
+                    state.copy(isLoadingMoreArticles = false)
+                }
+            }
+            .collectLatest { pagination ->
+                val currentArticleId = state.id
+                val filteredArticles = pagination.articleLostAndFoundHeader
+                    .filter { it.id != currentArticleId }
+                    .map { it.toLostAndFoundItemState() }
+                reduce {
+                    state.copy(
+                        recentArticles = state.recentArticles + filteredArticles,
+                        recentArticlesCurrentPage = pagination.currentPage,
+                        recentArticlesTotalPage = pagination.totalPage,
+                        hasMoreArticles = pagination.currentPage < pagination.totalPage,
+                        isLoadingMoreArticles = false
+                    )
+                }
+            }
+    }
+
+    fun deleteArticle() = intent {
+        deleteArticleLostAndFoundUseCase(state.id).onSuccess {
+            postSideEffect(LostAndFoundDetailSideEffect.DeleteArticle(state.id))
+        }.onFailure {
+            postSideEffect(LostAndFoundDetailSideEffect.DeleteArticleFailed)
+        }
+    }
+
+    fun setShowDeleteDialog(show: Boolean) = intent {
             reduce {
                 state.copy(
                     showDeleteDialog = show
@@ -201,8 +187,7 @@ class LostAndFoundDetailViewModel @Inject constructor(
             }
         }
 
-    fun setShowFoundDialog(show: Boolean) =
-        intent {
+    fun setShowFoundDialog(show: Boolean) = intent {
             reduce {
                 state.copy(
                     showFoundDialog = show
