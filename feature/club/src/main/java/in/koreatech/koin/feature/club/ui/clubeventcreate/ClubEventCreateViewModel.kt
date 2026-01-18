@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
 import `in`.koreatech.koin.domain.usecase.club.CreateClubEventUseCase
-import `in`.koreatech.koin.domain.usecase.presignedurl.UploadPreSignedUrlV2UseCase
+import `in`.koreatech.koin.domain.usecase.presignedurl.UploadImageUseCase
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
 import java.time.LocalDate
 import java.time.LocalTime
@@ -23,7 +23,7 @@ import org.orbitmvi.orbit.viewmodel.container
 @HiltViewModel
 class ClubEventCreateViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val uploadPreSignedUrlV2UseCase: UploadPreSignedUrlV2UseCase,
+    private val uploadImageUseCase: UploadImageUseCase,
     private val createClubEventUseCase: CreateClubEventUseCase
 ) : ViewModel(), ContainerHost<ClubEventCreateState, ClubEventCreateSideEffect> {
 
@@ -157,7 +157,7 @@ class ClubEventCreateViewModel @Inject constructor(
         imageUri: Uri
     ) = blockingIntent {
         reduce { state.copy(isLoading = true) }
-        uploadPreSignedUrlV2UseCase(
+        uploadImageUseCase(
             domain = PreSignedUrlDomain.CLUB,
             contentLength = fileSize,
             contentType = fileType,

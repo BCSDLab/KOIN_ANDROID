@@ -10,7 +10,7 @@ import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
-import `in`.koreatech.koin.domain.usecase.presignedurl.UploadPreSignedUrlV2UseCase
+import `in`.koreatech.koin.domain.usecase.presignedurl.UploadImageUseCase
 import `in`.koreatech.koin.domain.usecase.store.WriteReviewUseCase
 import `in`.koreatech.koin.feature.store.model.StoreNavigationData
 import `in`.koreatech.koin.feature.store.model.StoreNavigationDataType
@@ -31,7 +31,7 @@ import org.orbitmvi.orbit.viewmodel.container
 class ReviewAddViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val writeReviewUseCase: WriteReviewUseCase,
-    private val uploadPreSignedUrlV2UseCase: UploadPreSignedUrlV2UseCase
+    private val uploadImageUseCase: UploadImageUseCase
 ) : ViewModel(), ContainerHost<ReviewAddState, ReviewAddSideEffect> {
     override val container = container<ReviewAddState, ReviewAddSideEffect>(
         ReviewAddState()
@@ -99,7 +99,7 @@ class ReviewAddViewModel @Inject constructor(
     }
 
     fun uploadPresignedUrl(fileSize: Long, fileType: String, fileName: String, imageUri: String) = intent {
-        uploadPreSignedUrlV2UseCase(
+        uploadImageUseCase(
             domain = PreSignedUrlDomain.MARKET,
             contentLength = fileSize,
             contentType = fileType,

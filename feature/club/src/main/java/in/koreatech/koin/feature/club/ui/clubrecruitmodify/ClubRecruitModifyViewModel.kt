@@ -8,7 +8,7 @@ import `in`.koreatech.koin.domain.error.club.KoinClubException
 import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
 import `in`.koreatech.koin.domain.usecase.club.GetClubRecruitmentUseCase
 import `in`.koreatech.koin.domain.usecase.club.ModifyClubRecruitmentUseCase
-import `in`.koreatech.koin.domain.usecase.presignedurl.UploadPreSignedUrlV2UseCase
+import `in`.koreatech.koin.domain.usecase.presignedurl.UploadImageUseCase
 import `in`.koreatech.koin.feature.club.model.RecruitmentStatus
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubRecruitment
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
@@ -24,7 +24,7 @@ import org.orbitmvi.orbit.viewmodel.container
 @HiltViewModel
 class ClubRecruitModifyViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val uploadPreSignedUrlV2UseCase: UploadPreSignedUrlV2UseCase,
+    private val uploadImageUseCase: UploadImageUseCase,
     private val getClubRecruitmentUseCase: GetClubRecruitmentUseCase,
     private val modifyClubRecruitmentUseCase: ModifyClubRecruitmentUseCase
 ) : ViewModel(), ContainerHost<ClubRecruitModifyState, ClubRecruitModifySideEffect> {
@@ -196,7 +196,7 @@ class ClubRecruitModifyViewModel @Inject constructor(
         reduce {
             state.copy(isLoading = true)
         }
-        uploadPreSignedUrlV2UseCase(
+        uploadImageUseCase(
             domain = PreSignedUrlDomain.CLUB,
             contentLength = fileSize,
             contentType = fileType,

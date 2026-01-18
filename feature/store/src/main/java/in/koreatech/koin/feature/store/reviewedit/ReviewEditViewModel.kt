@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.model.store.ReviewDetail
 import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
-import `in`.koreatech.koin.domain.usecase.presignedurl.UploadPreSignedUrlV2UseCase
+import `in`.koreatech.koin.domain.usecase.presignedurl.UploadImageUseCase
 import `in`.koreatech.koin.domain.usecase.store.ModifyReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.SearchReviewUseCase
 import `in`.koreatech.koin.feature.store.model.StoreNavigationData
@@ -30,7 +30,7 @@ class ReviewEditViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val searchReviewUseCase: SearchReviewUseCase,
     private val modifyReviewUseCase: ModifyReviewUseCase,
-    private val uploadPreSignedUrlV2UseCase: UploadPreSignedUrlV2UseCase
+    private val uploadImageUseCase: UploadImageUseCase
 ) : ViewModel(), ContainerHost<ReviewEditState, ReviewEditSideEffect> {
     override val container = container<ReviewEditState, ReviewEditSideEffect>(
         ReviewEditState()
@@ -117,7 +117,7 @@ class ReviewEditViewModel @Inject constructor(
     }
 
     fun uploadPresignedUrl(fileSize: Long, fileType: String, fileName: String, imageUri: String) = intent {
-        uploadPreSignedUrlV2UseCase(
+        uploadImageUseCase(
             domain = PreSignedUrlDomain.MARKET,
             contentLength = fileSize,
             contentType = fileType,

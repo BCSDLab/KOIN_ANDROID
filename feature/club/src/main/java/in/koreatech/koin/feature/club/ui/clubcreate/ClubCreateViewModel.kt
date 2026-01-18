@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.club.CreateClubUseCase
-import `in`.koreatech.koin.domain.usecase.presignedurl.UploadPreSignedUrlV2UseCase
+import `in`.koreatech.koin.domain.usecase.presignedurl.UploadImageUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.club.model.ClubCategories
 import javax.inject.Inject
@@ -23,7 +23,7 @@ import org.orbitmvi.orbit.viewmodel.container
 class ClubCreateViewModel @Inject constructor(
     private val getUserStatusUseCase: GetUserStatusUseCase,
     private val createClubUseCase: CreateClubUseCase,
-    private val uploadPreSignedUrlV2UseCase: UploadPreSignedUrlV2UseCase
+    private val uploadImageUseCase: UploadImageUseCase
 ) : ViewModel(), ContainerHost<ClubCreateState, ClubCreateSideEffect> {
     override val container = container<ClubCreateState, ClubCreateSideEffect>(ClubCreateState())
 
@@ -178,7 +178,7 @@ class ClubCreateViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
-            uploadPreSignedUrlV2UseCase(
+            uploadImageUseCase(
                 domain = PreSignedUrlDomain.CLUB,
                 contentLength = fileSize,
                 contentType = fileType,

@@ -8,7 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
 import `in`.koreatech.koin.domain.usecase.club.GetClubDetailsUseCase
 import `in`.koreatech.koin.domain.usecase.club.ModifyClubUseCase
-import `in`.koreatech.koin.domain.usecase.presignedurl.UploadPreSignedUrlV2UseCase
+import `in`.koreatech.koin.domain.usecase.presignedurl.UploadImageUseCase
 import `in`.koreatech.koin.feature.club.model.ClubCategories
 import `in`.koreatech.koin.feature.club.model.toClubCategory
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
@@ -27,7 +27,7 @@ class ClubModifyViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getClubDetailsUseCase: GetClubDetailsUseCase,
     private val modifyClubUseCase: ModifyClubUseCase,
-    private val uploadPreSignedUrlV2UseCase: UploadPreSignedUrlV2UseCase
+    private val uploadImageUseCase: UploadImageUseCase
 ) : ViewModel(), ContainerHost<ClubModifyState, ClubModifySideEffect> {
     override val container = container<ClubModifyState, ClubModifySideEffect>(ClubModifyState(), savedStateHandle) {
         val clubId = savedStateHandle.get<Int>(CLUB_ID)
@@ -169,7 +169,7 @@ class ClubModifyViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
-            uploadPreSignedUrlV2UseCase(
+            uploadImageUseCase(
                 domain = PreSignedUrlDomain.CLUB,
                 contentLength = fileSize,
                 contentType = fileType,

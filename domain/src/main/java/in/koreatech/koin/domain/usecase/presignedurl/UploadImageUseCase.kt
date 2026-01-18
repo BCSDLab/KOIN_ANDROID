@@ -5,7 +5,7 @@ import `in`.koreatech.koin.domain.repository.PreSignedUrlRepository
 import `in`.koreatech.koin.domain.repository.UploadUrlRepository
 import javax.inject.Inject
 
-class UploadPreSignedUrlV2UseCase @Inject constructor(
+class UploadImageUseCase @Inject constructor(
     private val preSignedUrlRepository: PreSignedUrlRepository,
     private val uploadUrlRepository: UploadUrlRepository
 ) {
