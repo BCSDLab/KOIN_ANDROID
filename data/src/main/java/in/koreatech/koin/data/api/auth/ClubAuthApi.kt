@@ -63,7 +63,7 @@ interface ClubAuthApi {
     suspend fun deleteClubQna(
         @Path("clubId") clubId: Int,
         @Path("qnaId") qnaId: Int
-    )
+    ): Response<Unit>
 
     @DELETE("clubs/{clubId}/like/cancel")
     suspend fun cancelClubLike(
