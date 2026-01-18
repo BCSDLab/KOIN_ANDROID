@@ -70,7 +70,9 @@ fun DetailContent(
                 state = pagerState
             ) { page ->
                 SubcomposeAsyncImage(
-                    modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally),
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(imageUris[page])
                         .crossfade(true)
