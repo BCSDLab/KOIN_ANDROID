@@ -205,6 +205,14 @@ class LostAndFoundDetailViewModel @Inject constructor(
         }
     }
 
+    fun setShowLoginDialog(show: Boolean) = intent {
+        reduce {
+            state.copy(
+                showFoundDialog = show
+            )
+        }
+    }
+
     companion object {
         const val PAGE_SIZE = 10
     }
