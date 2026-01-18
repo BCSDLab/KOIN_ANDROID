@@ -34,7 +34,7 @@ class LostAndFoundActivity : ComponentActivity() {
                 NavHost(
                     modifier = Modifier,
                     navController = navController,
-                    startDestination = detailRoute
+                    startDestination = startDestination
                 ) {
                     koinLostAndFoundGraph(
                         navController = navController,
