@@ -30,6 +30,7 @@ fun DetailButtonGroup(
     showDeleteDialog: Boolean = false,
     isLoggedIn: Boolean = false,
     isAuthorWithdraw: Boolean = false,
+    isWriterAdmin: Boolean = false,
     onShowDeleteDialogChange: (Boolean) -> Unit = {},
     onArticleListClick: () -> Unit = {},
     onDeleteArticleClick: () -> Unit = {},
@@ -148,7 +149,7 @@ fun DetailButtonGroup(
                     }
                 }
 
-                if (isLoggedIn) {
+                if (isLoggedIn && !isWriterAdmin) {
                     Button(
                         modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
                         contentPadding = PaddingValues(10.dp, 6.dp),
