@@ -72,7 +72,7 @@ fun DetailHeader(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "$headerText • $author",
+                text = "${foundDate.format(foundDateFormatType)} • $author",
                 color = KoinTheme.colors.neutral500,
                 style = KoinTheme.typography.regular12
             )
