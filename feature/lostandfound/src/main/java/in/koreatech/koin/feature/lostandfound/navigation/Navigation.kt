@@ -9,12 +9,11 @@ import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetail
 import `in`.koreatech.koin.feature.lostandfound.ui.list.LostAndFoundList
 import `in`.koreatech.koin.feature.lostandfound.ui.report.LostAndFoundReport
 
-
 fun NavGraphBuilder.koinLostAndFoundGraph(
     navController: NavController
 ) {
     composable(
-        route = LostAndFoundNavType.LostAndFoundList.route,
+        route = LostAndFoundNavType.LostAndFoundList.route
     ) {
         LostAndFoundList()
     }
@@ -46,11 +45,9 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
     }
 
     composable(
-        route = LostAndFoundNavType.LostAndFoundWrite.route,
+        route = LostAndFoundNavType.LostAndFoundWrite.route
     ) {
-
     }
-
 }
 
 const val ARTICLE_ID = "articleId"
