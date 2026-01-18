@@ -13,11 +13,16 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
+import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.feature.lostandfound.navigation.LostAndFoundNavType
 import `in`.koreatech.koin.feature.lostandfound.navigation.koinLostAndFoundGraph
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LostAndFoundActivity : ComponentActivity() {
+    @Inject
+    lateinit var navigator: Navigator
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdgeWithLightStatusBar()
@@ -32,7 +37,8 @@ class LostAndFoundActivity : ComponentActivity() {
                     startDestination = startDestination
                 ) {
                     koinLostAndFoundGraph(
-                        navController = navController
+                        navController = navController,
+                        navigator = navigator
                     )
                 }
             }
