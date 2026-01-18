@@ -24,6 +24,7 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import retrofit2.HttpException
+import timber.log.Timber
 
 @HiltViewModel
 class LostAndFoundDetailViewModel @Inject constructor(
@@ -117,6 +118,7 @@ class LostAndFoundDetailViewModel @Inject constructor(
                 reduce {
                     state.copy(isLoadingMoreArticles = false)
                 }
+                Timber.e(it)
             }
             .collectLatest { pagination ->
                 val currentArticleId = state.id
