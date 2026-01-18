@@ -119,52 +119,52 @@ fun DetailButtonGroup(
                 )
             }
         } else {
-            if (isLoggedIn) {
-                if (!isAuthorWithdraw) {
-                    Button(
-                        modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                        contentPadding = PaddingValues(10.dp, 6.dp),
-                        onClick = onChatRoomClick,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = KoinTheme.colors.neutral300,
-                            contentColor = KoinTheme.colors.neutral600
-                        ),
-                        shape = KoinTheme.shapes.extraSmall
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Image(
-                                modifier = Modifier.size(20.dp),
-                                painter = painterResource(id = R.drawable.ic_chat),
-                                contentDescription = null
-                            )
-
-                            Spacer(modifier = Modifier.width(4.dp))
-
-                            Text(
-                                style = KoinTheme.typography.regular12,
-                                text = stringResource(R.string.detail_chat_room_button)
-                            )
-                        }
-                    }
-                }
-
+            if (!isAuthorWithdraw) {
                 Button(
                     modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
                     contentPadding = PaddingValues(10.dp, 6.dp),
-                    onClick = onReportArticleClick,
+                    onClick = onChatRoomClick,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = KoinTheme.colors.neutral300,
                         contentColor = KoinTheme.colors.neutral600
                     ),
                     shape = KoinTheme.shapes.extraSmall
                 ) {
-                    Image(
-                        modifier = Modifier.size(20.dp),
-                        painter = painterResource(id = R.drawable.ic_article_report),
-                        contentDescription = null
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            modifier = Modifier.size(20.dp),
+                            painter = painterResource(id = R.drawable.ic_chat),
+                            contentDescription = null
+                        )
+
+                        Spacer(modifier = Modifier.width(4.dp))
+
+                        Text(
+                            style = KoinTheme.typography.regular12,
+                            text = stringResource(R.string.detail_chat_room_button)
+                        )
+                    }
+                }
+
+                if (isLoggedIn) {
+                    Button(
+                        modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
+                        contentPadding = PaddingValues(10.dp, 6.dp),
+                        onClick = onReportArticleClick,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = KoinTheme.colors.neutral300,
+                            contentColor = KoinTheme.colors.neutral600
+                        ),
+                        shape = KoinTheme.shapes.extraSmall
+                    ) {
+                        Image(
+                            modifier = Modifier.size(20.dp),
+                            painter = painterResource(id = R.drawable.ic_article_report),
+                            contentDescription = null
+                        )
+                    }
                 }
             }
         }
