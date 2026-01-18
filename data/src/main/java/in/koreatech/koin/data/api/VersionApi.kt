@@ -5,7 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface VersionApi {
-    @GET("v2/{type}")
+    @GET("version/{type}")
     suspend fun getVersion(
         @Path("type") type: String
     ): VersionResponse
