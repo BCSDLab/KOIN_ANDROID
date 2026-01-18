@@ -187,7 +187,7 @@ fun LostAndFoundDetail(
 
             RecentArticleList(
                 modifier = Modifier
-                    .heightIn(min = 400.dp, max = screenHeightDp)
+                    .heightIn(min = 300.dp, max = screenHeightDp)
                     .height(enableRecentArticleHeight.value),
                 recentArticles = recentArticles,
                 isLoadingMore = uiState.isLoadingMoreArticles,
