@@ -4,21 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
@@ -27,7 +21,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -44,8 +37,8 @@ import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailButtonGroup
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailContent
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailDialog
+import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailFoundSwitch
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailHeader
-import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.LostAndFoundDetailCustomSwitch
 import `in`.koreatech.koin.feature.lostandfound.util.findActivity
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -118,25 +111,11 @@ fun LostAndFoundDetail(
             )
 
             if (uiState.isMine) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    BasicText(
-                        text = if (uiState.lostOrFound == LostOrFoundType.LOST) stringResource(id = R.string.lost_and_found_lost_message) else stringResource(id = R.string.lost_and_found_found_message),
-                        style = KoinTheme.typography.regular12.copy(color = KoinTheme.colors.neutral500)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    LostAndFoundDetailCustomSwitch(
-                        checked = isFound,
-                        onCheckedChange = { viewModel.setShowFoundDialog(true) },
-                        enabled = !isFound
-                    )
-                }
-                Spacer(modifier = Modifier.height(8.dp))
+                DetailFoundSwitch(
+                    lostOrFoundType = uiState.lostOrFound,
+                    isFound = isFound,
+                    onCheckedChange = { viewModel.setShowFoundDialog(true) }
+                )
             }
 
             val loggingLostMessageSend = stringResource(id = R.string.logging_lost_message_send)
