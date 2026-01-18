@@ -1,9 +1,11 @@
-package `in`.koreatech.koin.feature.lostandfound.component
+package `in`.koreatech.koin.feature.lostandfound.ui.detail.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -28,9 +30,9 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
+import `in`.koreatech.koin.feature.lostandfound.component.LostItemTypeChip
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.model.LostAndFoundItemState
-import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.LostAndFoundStatusChip
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 
@@ -77,7 +79,7 @@ fun RecentArticleList(
 
         LazyColumn(
             state = listState,
-            modifier = Modifier.height(400.dp)
+            modifier = Modifier.fillMaxSize()
         ) {
             items(
                 items = recentArticles,

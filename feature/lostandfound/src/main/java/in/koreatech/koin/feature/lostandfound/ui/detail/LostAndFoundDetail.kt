@@ -3,11 +3,14 @@ package `in`.koreatech.koin.feature.lostandfound.ui.detail
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -22,6 +25,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -32,7 +37,7 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.LoadingDialog
-import `in`.koreatech.koin.feature.lostandfound.component.RecentArticleList
+import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.RecentArticleList
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailButtonGroup
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailContent
@@ -73,7 +78,7 @@ fun LostAndFoundDetail(
             DetailDialog(
                 title = stringResource(id = R.string.lost_and_found_dialog_message),
                 onPositive = {
-                    isFound = true
+                    isFound = true //TODO connect api
                     viewModel.setShowFoundDialog(false)
                 },
                 onNegative = {
@@ -86,6 +91,7 @@ fun LostAndFoundDetail(
         viewModel.collectSideEffect {
             handleSideEffect(it, context, navigateToArticleList)
         }
+
         Column(
             modifier = modifier
                 .padding(contentPadding)
@@ -93,75 +99,96 @@ fun LostAndFoundDetail(
                 .systemBarsPadding()
                 .verticalScroll(rememberScrollState())
         ) {
-            DetailHeader(
-                lostOrFound = uiState.lostOrFound,
-                category = uiState.category,
-                foundPlace = uiState.foundPlace,
-                foundDate = uiState.foundDate,
-                author = uiState.author,
-                isFound = isFound
-            )
+            val configuration = LocalConfiguration.current
+            val screenHeightDp = remember { configuration.screenHeightDp.dp }
+            val layoutHeightDp = remember { mutableStateOf(0.dp) }
+            val enableRecentArticleHeight = remember(layoutHeightDp.value) {
+                mutableStateOf(screenHeightDp - (contentPadding.calculateTopPadding() + contentPadding.calculateBottomPadding()) - layoutHeightDp.value)
+            }
+            Layout(
+                content = {
+                    Column {
+                        DetailHeader(
+                            lostOrFound = uiState.lostOrFound,
+                            category = uiState.category,
+                            foundPlace = uiState.foundPlace,
+                            foundDate = uiState.foundDate,
+                            author = uiState.author,
+                            isFound = isFound
+                        )
 
-            HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
+                        HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
 
-            DetailContent(
-                imageUris = uiState.images,
-                content = uiState.content,
-                isWriterAdmin = uiState.isWriterCouncil
-            )
+                        DetailContent(
+                            imageUris = uiState.images,
+                            content = uiState.content,
+                            isWriterAdmin = uiState.isWriterCouncil
+                        )
 
-            if (uiState.isMine) {
-                DetailFoundSwitch(
-                    lostOrFoundType = uiState.lostOrFound,
-                    isFound = isFound,
-                    onCheckedChange = { viewModel.setShowFoundDialog(true) }
-                )
+                        if (uiState.isMine) {
+                            DetailFoundSwitch(
+                                lostOrFoundType = uiState.lostOrFound,
+                                isFound = isFound,
+                                onCheckedChange = { viewModel.setShowFoundDialog(true) }
+                            )
+                        }
+
+                        val loggingLostMessageSend = stringResource(id = R.string.logging_lost_message_send)
+                        val loggingFoundMessageSend = stringResource(id = R.string.logging_found_message_send)
+                        val loggingReport = stringResource(id = R.string.logging_report)
+
+                        DetailButtonGroup(
+                            showDeleteButton = uiState.isMine,
+                            showDeleteDialog = uiState.showDeleteDialog,
+                            isLoggedIn = uiState.isLoggedIn,
+                            isAuthorWithdraw = uiState.isAuthorWithdraw,
+                            isWriterAdmin = uiState.isWriterCouncil,
+                            onArticleListClick = {
+                                navigateToArticleList()
+                            },
+                            onDeleteArticleClick = {
+                                viewModel.deleteArticle()
+                            },
+                            onEditArticleClick = {
+                            },
+                            onShowDeleteDialogChange = {
+                                viewModel.setShowDeleteDialog(it)
+                            },
+                            onChatRoomClick = {
+                                EventLogger.logCampusClickEvent(
+                                    AnalyticsConstant.Label.LostAndFound.ITEM_MESSAGE_SEND,
+                                    if (uiState.lostOrFound == LostOrFoundType.LOST) {
+                                        loggingLostMessageSend
+                                    } else {
+                                        loggingFoundMessageSend
+                                    }
+                                )
+                                navigateToChatRoom(uiState.id)
+                            },
+                            onReportArticleClick = {
+                                EventLogger.logCampusClickEvent(
+                                    AnalyticsConstant.Label.LostAndFound.ITEM_POST_REPORT,
+                                    loggingReport
+                                )
+                                navigateToReport(uiState.id)
+                            }
+                        )
+
+                        HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
+                    }
+                }
+            ) { measurables, constraints ->
+                val placeable = measurables.first().measure(constraints)
+                layoutHeightDp.value = placeable.height.toDp()
+                layout(placeable.width, placeable.height) {
+                    placeable.place(0, 0)
+                }
             }
 
-            val loggingLostMessageSend = stringResource(id = R.string.logging_lost_message_send)
-            val loggingFoundMessageSend = stringResource(id = R.string.logging_found_message_send)
-            val loggingReport = stringResource(id = R.string.logging_report)
-
-            DetailButtonGroup(
-                showDeleteButton = uiState.isMine,
-                showDeleteDialog = uiState.showDeleteDialog,
-                isLoggedIn = uiState.isLoggedIn,
-                isAuthorWithdraw = uiState.isAuthorWithdraw,
-                isWriterAdmin = uiState.isWriterCouncil,
-                onArticleListClick = {
-                    navigateToArticleList()
-                },
-                onDeleteArticleClick = {
-                    viewModel.deleteArticle()
-                },
-                onEditArticleClick = {
-                },
-                onShowDeleteDialogChange = {
-                    viewModel.setShowDeleteDialog(it)
-                },
-                onChatRoomClick = {
-                    EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LostAndFound.ITEM_MESSAGE_SEND,
-                        if (uiState.lostOrFound == LostOrFoundType.LOST) {
-                            loggingLostMessageSend
-                        } else {
-                            loggingFoundMessageSend
-                        }
-                    )
-                    navigateToChatRoom(uiState.id)
-                },
-                onReportArticleClick = {
-                    EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LostAndFound.ITEM_POST_REPORT,
-                        loggingReport
-                    )
-                    navigateToReport(uiState.id)
-                }
-            )
-
-            HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
-
             RecentArticleList(
+                modifier = Modifier
+                    .heightIn(min = 400.dp, max = screenHeightDp)
+                    .height(enableRecentArticleHeight.value),
                 recentArticles = recentArticles,
                 isLoadingMore = uiState.isLoadingMoreArticles,
                 hasMoreArticles = uiState.hasMoreArticles,
