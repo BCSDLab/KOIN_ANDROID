@@ -16,7 +16,6 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
     }
 
     composable<LostAndFoundNavType.LostAndFoundDetailRoute> { backStackEntry ->
-        val route = backStackEntry.toRoute<LostAndFoundNavType.LostAndFoundDetailRoute>()
         LostAndFoundDetail(
             onTopbarBackClick = {
                 navController.navigateUp()
