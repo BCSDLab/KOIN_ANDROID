@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipDefaults
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.feature.article.enums.LostItemCategory
+import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 
 /**
  * 분실물 종류 칩

@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.feature.article.R
+import `in`.koreatech.koin.feature.lostandfound.R
 
 @Composable
 fun LoadingDialog() {
