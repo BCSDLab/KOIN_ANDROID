@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
@@ -67,7 +68,8 @@ fun DetailDialog(
         ) {
             Text(
                 text = title,
-                style = titleStyle
+                style = titleStyle,
+                textAlign = TextAlign.Center,
             )
             Spacer(modifier = Modifier.height(24.dp))
             Row(
