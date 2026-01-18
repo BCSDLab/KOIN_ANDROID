@@ -100,4 +100,27 @@ class UploadUrlRepositoryImpl @Inject constructor(
             Result.failure(t)
         }
     }
+
+    override suspend fun getUploadUrlV2(domain: String, contentLength: Long, contentType: String, fileName: String): Result<PreSignedUrl> {
+        return try {
+            val dataSource = uploadUrlRemoteDataSource.postUploadUrlV2(
+                domain = domain,
+                uploadUrlRequest = UploadUrlRequest(contentLength, contentType, fileName)
+            )
+
+            val preSignedUrl = dataSource.preSignedUrl
+            val fileUrl = dataSource.fileUrl
+
+            Result.success(
+                PreSignedUrl(
+                    fileUrl = fileUrl,
+                    preSignedUrl = preSignedUrl
+                )
+            )
+        } catch (e: CancellationException) {
+            throw e
+        } catch (t: Throwable) {
+            Result.failure(t)
+        }
+    }
 }

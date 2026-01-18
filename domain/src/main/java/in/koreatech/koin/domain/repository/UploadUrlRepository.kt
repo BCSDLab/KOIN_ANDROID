@@ -26,4 +26,11 @@ interface UploadUrlRepository {
         contentType: String,
         fileName: String
     ): Result<PreSignedUrl>
+
+    suspend fun getUploadUrlV2(
+        domain: String,
+        contentLength: Long,
+        contentType: String,
+        fileName: String
+    ): Result<PreSignedUrl>
 }

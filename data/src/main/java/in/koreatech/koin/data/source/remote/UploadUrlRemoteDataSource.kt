@@ -21,4 +21,6 @@ class UploadUrlRemoteDataSource @Inject constructor(
         )
 
     suspend fun postUploadClubUrl(uploadUrlRequest: UploadUrlRequest): UploadUrlResponse = uploadUrl.postUploadClubUrl(uploadUrlRequest)
+
+    suspend fun postUploadUrlV2(domain: String, uploadUrlRequest: UploadUrlRequest): UploadUrlResponse = uploadUrl.postUploadUrlV2(domain, uploadUrlRequest)
 }
