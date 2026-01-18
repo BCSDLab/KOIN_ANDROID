@@ -66,7 +66,7 @@ open class KoinNestedScrollHeaderState(
     }
 
     suspend fun snapOffset(offset: Float) {
-        headerOffsetAnimatable.snapTo(offset)
+        headerOffsetAnimatable.snapTo(offset.coerceIn(-range, 0f))
     }
 }
 
