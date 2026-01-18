@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.article.ui.lostandfound.detail
+package `in`.koreatech.koin.feature.lostandfound.ui.detail
 
 import android.content.Context
 import android.content.Intent
@@ -33,17 +33,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.feature.article.R
-import `in`.koreatech.koin.feature.article.component.HotArticleData
-import `in`.koreatech.koin.feature.article.component.LoadingDialog
-import `in`.koreatech.koin.feature.article.component.RecentArticleList
-import `in`.koreatech.koin.feature.article.enums.LostOrFoundType
-import `in`.koreatech.koin.feature.article.ui.lostandfound.detail.component.DetailButtonGroup
-import `in`.koreatech.koin.feature.article.ui.lostandfound.detail.component.DetailContent
-import `in`.koreatech.koin.feature.article.ui.lostandfound.detail.component.DetailDialog
-import `in`.koreatech.koin.feature.article.ui.lostandfound.detail.component.DetailHeader
-import `in`.koreatech.koin.feature.article.ui.lostandfound.detail.component.LostAndFoundDetailCustomSwitch
-import `in`.koreatech.koin.feature.article.util.findActivity
+import `in`.koreatech.koin.feature.lostandfound.R
+import `in`.koreatech.koin.feature.lostandfound.component.HotArticleData
+import `in`.koreatech.koin.feature.lostandfound.component.LoadingDialog
+import `in`.koreatech.koin.feature.lostandfound.component.RecentArticleList
+import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
+import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailButtonGroup
+import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailContent
+import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailDialog
+import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailHeader
+import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.LostAndFoundDetailCustomSwitch
+import `in`.koreatech.koin.feature.lostandfound.util.findActivity
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -176,7 +176,7 @@ fun LostAndFoundDetail(
                         HotArticleData(
                             articleId = article.id,
                             articleTitle = article.content.ifEmpty { article.foundPlace },
-                            board = `in`.koreatech.koin.feature.article.enums.ArticleBoardType.LOSTANDFOUND,
+                            board = `in`.koreatech.koin.feature.lostandfound.enums.ArticleBoardType.LOSTANDFOUND,
                             category = article.category,
                             isFound = article.isFound
                         )

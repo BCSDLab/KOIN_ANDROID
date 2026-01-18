@@ -73,6 +73,29 @@ interface ArticleApi {
     ): ArticleLostAndFoundPaginationResponse
 
     /**
+     * 분실물 게시글 목록과 페이지 정보를 가져옴 (v2)
+     * @param type 분실물 타입 (LOST: 분실물, FOUND: 습득물)
+     * @param page 페이지 번호
+     * @param limit 페이지 당 게시글 수
+     * @param category 카테고리 (ALL, CARD, ID, WALLET, ELECTRONICS, ETC)
+     * @param foundStatus 물품 상태 (ALL, FOUND, NOT_FOUND)
+     * @param sort 정렬 순서 (LATEST, OLDEST)
+     * @param author 작성자 필터 (ALL, MY)
+     * @param title 게시글 제목 검색
+     */
+    @GET("articles/lost-item/v2")
+    suspend fun fetchArticleLostAndFoundPaginationV2(
+        @Query("type") type: String?,
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("category") category: String?,
+        @Query("foundStatus") foundStatus: String?,
+        @Query("sort") sort: String?,
+        @Query("author") author: String?,
+        @Query("title") title: String?
+    ): ArticleLostAndFoundPaginationResponse
+
+    /**
      * 검색된 분실물 게시글 목록과 페이지 정보를 가져옴
      * @param query 검색어
      * @param page 페이지 번호

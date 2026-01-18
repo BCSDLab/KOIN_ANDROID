@@ -16,7 +16,6 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.feature.article.LostAndFoundReportActivity
 import `in`.koreatech.koin.feature.article.R
-import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -46,10 +45,9 @@ class ArticleLostAndFoundDetailFragment : Fragment() {
                             hotArticleData.articleTitle
                         )
                         navController.navigate(
-                            R.id.articleLostAndFoundDetailFragment_to_articleDetailFragment,
+                            R.id.articleLostAndFoundDetailFragment_self,
                             Bundle().apply {
                                 putInt(ARTICLE_ID, hotArticleData.articleId)
-                                putInt(NAVIGATED_BOARD_ID, hotArticleData.board.id)
                             }
                         )
                     },

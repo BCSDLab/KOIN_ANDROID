@@ -7,6 +7,7 @@ import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundPagination
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundReportItem
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
+import `in`.koreatech.koin.domain.model.article.LostAndFoundFilterParams
 import kotlinx.coroutines.flow.Flow
 
 interface ArticleRepository {
@@ -66,6 +67,10 @@ interface ArticleRepository {
         page: Int,
         limit: Int,
         type: String?
+    ): Flow<ArticleLostAndFoundPagination>
+
+    fun fetchArticleLostAndFoundPaginationV2(
+        filterParams: LostAndFoundFilterParams
     ): Flow<ArticleLostAndFoundPagination>
 
     fun fetchSearchedLostAndFoundArticles(

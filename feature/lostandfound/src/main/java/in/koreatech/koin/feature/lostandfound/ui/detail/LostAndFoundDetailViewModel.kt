@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.article.ui.lostandfound.detail
+package `in`.koreatech.koin.feature.lostandfound.ui.detail
 
 import android.webkit.URLUtil
 import androidx.lifecycle.SavedStateHandle
@@ -11,7 +11,7 @@ import `in`.koreatech.koin.domain.usecase.article.lostandfound.DeleteArticleLost
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticlePaginationV2UseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticleUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
-import `in`.koreatech.koin.feature.article.model.toLostAndFoundItemState
+import `in`.koreatech.koin.feature.lostandfound.model.toLostAndFoundItemState
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest

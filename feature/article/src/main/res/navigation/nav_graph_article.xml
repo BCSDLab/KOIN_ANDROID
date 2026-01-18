@@ -74,11 +74,12 @@
         android:name="in.koreatech.koin.feature.article.ui.lostandfound.detail.ArticleLostAndFoundDetailFragment"
         android:label="ArticleLostAndFoundDetailFragment">
         <action
-            android:id="@+id/articleLostAndFoundDetailFragment_to_articleDetailFragment"
-            app:destination="@id/articleDetailFragment"
+            android:id="@+id/articleLostAndFoundDetailFragment_self"
+            app:destination="@id/articleLostAndFoundDetailFragment"
             app:launchSingleTop="false"
             app:enterAnim="@anim/slide_in_from_left_in"
             app:exitAnim="@anim/fade_out"
             app:popExitAnim="@anim/fade_out" />
     </fragment>
+
 </navigation>

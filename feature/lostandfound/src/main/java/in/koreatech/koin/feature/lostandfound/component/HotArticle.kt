@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.article.component
+package `in`.koreatech.koin.feature.lostandfound.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +23,7 @@ import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
 import `in`.koreatech.koin.feature.article.enums.LostItemCategory
 import `in`.koreatech.koin.feature.article.model.ArticleHeaderState
 import `in`.koreatech.koin.feature.article.ui.lostandfound.detail.component.LostAndFoundStatusChip
+import kotlin.collections.forEach
 
 @Composable
 fun HotArticle(

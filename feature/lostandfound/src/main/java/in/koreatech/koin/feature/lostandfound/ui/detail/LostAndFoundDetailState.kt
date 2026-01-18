@@ -1,11 +1,11 @@
-package `in`.koreatech.koin.feature.article.ui.lostandfound.detail
+package `in`.koreatech.koin.feature.lostandfound.ui.detail
 
 import android.net.Uri
 import android.os.Parcelable
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFound
-import `in`.koreatech.koin.feature.article.enums.LostItemCategory
-import `in`.koreatech.koin.feature.article.enums.LostOrFoundType
-import `in`.koreatech.koin.feature.article.model.LostAndFoundItemState
+import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
+import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
+import `in`.koreatech.koin.feature.lostandfound.model.LostAndFoundItemState
 import java.time.LocalDate
 import kotlinx.parcelize.Parcelize
 
