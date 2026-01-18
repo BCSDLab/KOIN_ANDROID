@@ -9,6 +9,7 @@ import androidx.navigation.toRoute
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetail
 import `in`.koreatech.koin.feature.lostandfound.ui.list.LostAndFoundList
 import `in`.koreatech.koin.feature.lostandfound.ui.report.LostAndFoundReport
+import kotlinx.serialization.encodeToString
 
 fun NavGraphBuilder.koinLostAndFoundGraph(
     navController: NavController,
@@ -37,6 +38,11 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
             },
             navigateToReport = { articleId ->
                 navController.navigate(LostAndFoundNavType.LostAndFoundReportRoute(articleId))
+            },
+            navigateToLogin = {
+                navigator.navigateToSignIn(context = context).apply { //TODO Add redirect url
+                    context.startActivity(this)
+                }
             }
         )
     }
