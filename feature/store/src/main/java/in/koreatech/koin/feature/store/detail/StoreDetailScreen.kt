@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -68,6 +69,9 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.nestedscroll.rememberKoinNestedScrollConnection
+import `in`.koreatech.koin.core.nestedscroll.rememberKoinNestedScrollHeaderState
+import `in`.koreatech.koin.core.util.pxToDp
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_DETAIL_MAIN
 import `in`.koreatech.koin.feature.store.LocalDeliveryDeveloperOption
 import `in`.koreatech.koin.feature.store.R
@@ -83,9 +87,6 @@ import `in`.koreatech.koin.feature.store.detail.component.StoreDetailInfo
 import `in`.koreatech.koin.feature.store.detail.component.menuListSection
 import `in`.koreatech.koin.feature.store.enums.CartValidation
 import `in`.koreatech.koin.feature.store.model.StoreNavigationData
-import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
-import `in`.koreatech.koin.feature.store.state.collapseToolbar
-import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
 import kotlin.math.roundToInt
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.collectLatest
@@ -93,6 +94,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -128,15 +130,11 @@ fun StoreDetailScreen(
         uiState.store.imageUrls?.size ?: 0
     }
 
-    val rememberState = rememberCollapsingToolbarState()
+    val rememberState = rememberKoinNestedScrollHeaderState()
     val overlayAlpha = rememberState.progress()
-    val nestedScrollConnection = storeCollapsingToolbarConnection(
-        listState = rememberState.listState,
-        toolbarOffsetPx = rememberState.toolbarOffsetPx,
-        toolbarHeightPx = rememberState.toolbarHeightPx,
-        minHeightPx = rememberState.minHeightPx
-    )
-    val currentToolbarHeightDp = rememberState.currentToolbarHeightDp()
+    val nestedScrollConnection = rememberKoinNestedScrollConnection(rememberState)
+    val listState = rememberLazyListState()
+    val currentToolbarHeightDp = rememberState.currentHeaderHeightDp()
     val statusBarHeight = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
     val menuCategoryHeight = remember { mutableStateOf(0) }
     val coroutineScope = rememberCoroutineScope()
@@ -149,7 +147,11 @@ fun StoreDetailScreen(
                 permissionLauncher.launch(Manifest.permission.CALL_PHONE)
             },
             navigateToCart = navigateToCart,
-            collapseToolbar = rememberState::collapseToolbar
+            collapseToolbar = {
+                coroutineScope.launch {
+                    rememberState.collapseHeader()
+                }
+            }
         )
     }
 
@@ -173,8 +175,8 @@ fun StoreDetailScreen(
     }
 
     LaunchedEffect(uiState.selectedCategoryId) {
-        if (currentToolbarHeightDp.value != rememberState.toolbarMinHeight) return@LaunchedEffect // Don't scroll if toolbar not collapsed
-        rememberState.listState.animateScrollToItem(uiState.categories.indexOfFirst { it.menuGroupId == uiState.selectedCategoryId } + 2)
+        if (currentToolbarHeightDp.value != rememberState.headerCollapsedHeightPx.pxToDp) return@LaunchedEffect // Don't scroll if toolbar not collapsed
+        listState.animateScrollToItem(uiState.categories.indexOfFirst { it.menuGroupId == uiState.selectedCategoryId } + 2)
     }
 
     LaunchedEffect(Unit) {
@@ -193,8 +195,8 @@ fun StoreDetailScreen(
         }
     }
 
-    LaunchedEffect(rememberState.listState) {
-        snapshotFlow { rememberState.listState.firstVisibleItemIndex }
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.firstVisibleItemIndex }
             .distinctUntilChanged()
             .collect {
                 EventLogger.logScrollEvent(
@@ -205,14 +207,14 @@ fun StoreDetailScreen(
             }
     }
 
-    LaunchedEffect(rememberState.listState) {
+    LaunchedEffect(listState) {
         combine(
-            snapshotFlow { rememberState.listState.firstVisibleItemIndex },
-            snapshotFlow { rememberState.listState.layoutInfo.visibleItemsInfo.lastIndex }
+            snapshotFlow { listState.firstVisibleItemIndex },
+            snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastIndex }
         ) { index, _ ->
             index
         }.collect { index ->
-            val visibleCategory = if (!rememberState.listState.isScrolledToTheEnd()) {
+            val visibleCategory = if (!listState.isScrolledToTheEnd()) {
                 uiState.categories.getOrNull(index - 2)
             } else {
                 uiState.categories.lastOrNull()
@@ -326,7 +328,7 @@ fun StoreDetailScreen(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = rememberState.toolbarMinHeight + statusBarHeight)
+                    .padding(bottom = rememberState.headerCollapsedHeightPx.pxToDp + statusBarHeight)
                     .offset {
                         IntOffset(
                             0,
@@ -337,7 +339,7 @@ fun StoreDetailScreen(
                                 .roundToInt()
                         )
                     },
-                state = rememberState.listState
+                state = listState
             ) {
                 item {
                     Column(
@@ -470,13 +472,13 @@ fun StoreDetailScreen(
                 StoreDetailImage(
                     modifier = Modifier
                         .heightIn(
-                            rememberState.toolbarMinHeight,
-                            rememberState.toolbarMaxHeight + statusBarHeight
+                            rememberState.headerCollapsedHeightPx.pxToDp,
+                            rememberState.headerExpandedHeightPx.pxToDp + statusBarHeight
                         )
                         .fillMaxWidth()
                         .graphicsLayer {
                             clip = true
-                            translationY = -(rememberState.toolbarMaxHeight.toPx() - currentToolbarHeightDp.value.toPx())
+                            translationY = -(rememberState.headerExpandedHeightPx - currentToolbarHeightDp.value.toPx())
                             alpha = 1f - overlayAlpha.value
                         }
                         .clickable {
