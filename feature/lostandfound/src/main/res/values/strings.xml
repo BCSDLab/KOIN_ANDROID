@@ -1,5 +1,10 @@
 <resources>
-    <string name="app_name">lostandfound</string>
+    <string name="lost_and_found">분실물</string>
+
+    <!-- Entry -->
+    <string name="lost_and_found_entry_post_count">%1$d개의 분실물이 주인을 찾고 있어요.</string>
+    <string name="lost_and_found_entry_found_count">지금까지 %1$d명이 분실물을 찾았어요.</string>
+
     <string name="lost_item">분실물</string>
     <string name="found_item">습득물</string>
 

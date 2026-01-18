@@ -5,6 +5,7 @@ import `in`.koreatech.koin.domain.model.article.ArticleHeader
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFound
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundPagination
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundReportItem
+import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundStats
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
 import `in`.koreatech.koin.domain.model.article.LostAndFoundFilterParams
@@ -89,4 +90,6 @@ interface ArticleRepository {
         articleId: Int,
         articleLostAndFoundList: List<ArticleLostAndFoundReportItem>
     ): Result<Unit>
+
+    suspend fun fetchArticleLostAndFoundStats(): Result<ArticleLostAndFoundStats>
 }

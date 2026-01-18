@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.api
 
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundPaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundResponse
+import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundStatsResponse
 import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleResponse
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
@@ -116,4 +117,10 @@ interface ArticleApi {
     suspend fun fetchArticleLostAndFound(
         @Path("id") id: Int
     ): ArticleLostAndFoundResponse
+
+    /**
+     * 분실물 게시글 통계 조회
+     */
+    @GET("articles/lost-item/stats")
+    suspend fun fetchArticleLostAndFoundStats(): ArticleLostAndFoundStatsResponse
 }

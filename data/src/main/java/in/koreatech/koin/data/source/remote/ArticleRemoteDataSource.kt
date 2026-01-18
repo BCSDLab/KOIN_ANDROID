@@ -154,4 +154,6 @@ class ArticleRemoteDataSource @Inject constructor(
             Result.failure(t)
         }
     }
+
+    suspend fun fetchArticleLostAndFoundStats() = articleApi.fetchArticleLostAndFoundStats()
 }
