@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.lostandfound.ui.detail
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -37,13 +36,13 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.LoadingDialog
-import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.RecentArticleList
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailButtonGroup
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailContent
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailDialog
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailFoundSwitch
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailHeader
+import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.RecentArticleList
 import `in`.koreatech.koin.feature.lostandfound.util.findActivity
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -78,7 +77,7 @@ fun LostAndFoundDetail(
             DetailDialog(
                 title = stringResource(id = R.string.lost_and_found_dialog_message),
                 onPositive = {
-                    isFound = true //TODO connect api
+                    isFound = true // TODO connect api
                     viewModel.setShowFoundDialog(false)
                 },
                 onNegative = {

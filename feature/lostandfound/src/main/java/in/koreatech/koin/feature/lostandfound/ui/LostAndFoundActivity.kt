@@ -16,8 +16,7 @@ class LostAndFoundActivity : ComponentActivity() {
         setContent {
             KoinTheme {
                 // TODO navigation
-                LostAndFoundDetail(
-                )
+                LostAndFoundDetail()
             }
         }
     }

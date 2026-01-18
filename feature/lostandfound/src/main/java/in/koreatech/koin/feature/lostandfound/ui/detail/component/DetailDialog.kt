@@ -69,7 +69,7 @@ fun DetailDialog(
             Text(
                 text = title,
                 style = titleStyle,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(24.dp))
             Row(

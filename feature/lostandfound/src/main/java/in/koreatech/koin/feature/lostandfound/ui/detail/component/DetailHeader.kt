@@ -16,7 +16,6 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.component.LostItemTypeChip
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
-import `in`.koreatech.koin.feature.lostandfound.util.getKoreanDayOfWeekShortName
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
