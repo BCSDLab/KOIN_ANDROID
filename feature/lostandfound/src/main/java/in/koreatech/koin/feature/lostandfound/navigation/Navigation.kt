@@ -29,7 +29,7 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
             },
             navigateToChatRoom = { articleId ->
                 val intent = navigator.navigateToChatRoom(context)
-                intent.putExtra(ARTICLE_ID, articleId)
+                intent.putExtra(CHAT_ARTICLE_ID, articleId)
                 context.startActivity(intent)
             },
             navigateToRecentArticle = { articleId ->
@@ -53,5 +53,3 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
     }
 
 }
-
-const val ARTICLE_ID = "articleId"
