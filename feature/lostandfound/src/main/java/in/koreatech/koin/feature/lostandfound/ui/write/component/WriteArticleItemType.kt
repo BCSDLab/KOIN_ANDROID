@@ -14,6 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -42,7 +45,12 @@ fun WriteArticleItemType(
         ) {
             Text(
                 style = KoinTheme.typography.medium14,
-                text = stringResource(id = R.string.item_type)
+                text = buildAnnotatedString {
+                    append(stringResource(id = R.string.item_type))
+                    withStyle(style = SpanStyle(color = Color(0xFFC82A2A))) {
+                        append("*")
+                    }
+                }
             )
 
             if (itemTypeRequired) {

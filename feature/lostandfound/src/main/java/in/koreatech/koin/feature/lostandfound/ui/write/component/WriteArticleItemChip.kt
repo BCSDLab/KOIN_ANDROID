@@ -20,7 +20,9 @@ import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 fun WriteArticleItemChip(
     type: LostOrFoundType,
     index: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    shouldShowDelete: Boolean = false,
+    onDeleteItemClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier.padding(bottom = 16.dp),

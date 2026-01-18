@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.article.ui.lostandfound.write
+package `in`.koreatech.koin.feature.lostandfound.ui.write
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
@@ -8,9 +8,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.UploadLostAndFoundArticleUseCase
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetLostAndFoundPreSignedUrlUseCase
-import `in`.koreatech.koin.feature.article.IMAGE_MAX_COUNT
-import `in`.koreatech.koin.feature.article.enums.LostItemCategory
-import `in`.koreatech.koin.feature.article.enums.LostOrFoundType
+import `in`.koreatech.koin.feature.lostandfound.IMAGE_MAX_COUNT
+import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
+import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import java.time.LocalDate
 import javax.inject.Inject
 import kotlinx.coroutines.launch

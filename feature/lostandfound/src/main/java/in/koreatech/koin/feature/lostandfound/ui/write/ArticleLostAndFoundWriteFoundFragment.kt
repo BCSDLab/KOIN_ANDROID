@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.article.ui.lostandfound.write
+package `in`.koreatech.koin.feature.lostandfound.ui.write
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,10 +9,10 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.koin.feature.article.R
+import `in`.koreatech.koin.feature.lostandfound.R
 
 @AndroidEntryPoint
-class ArticleLostAndFoundWriteLostFragment : Fragment() {
+class ArticleLostAndFoundWriteFoundFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

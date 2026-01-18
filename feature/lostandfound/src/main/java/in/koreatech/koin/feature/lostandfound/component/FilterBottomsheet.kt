@@ -202,7 +202,7 @@ fun FilterBottomSheetContent(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.uim_process),
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_process),
                     contentDescription = null,
                     modifier = Modifier.size(16.dp),
                     tint = KoinTheme.colors.neutral500

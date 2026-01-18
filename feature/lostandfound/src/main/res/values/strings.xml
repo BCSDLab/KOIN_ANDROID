@@ -27,18 +27,19 @@
     <string name="filter_list_reset">초기화</string>
     <string name="filter_list_adapt">적용하기</string>
 
-
     <string name="write_btn">글쓰기</string>
     <string name="bottom_sheet_title">유형을 선택해주세요</string>
     <string name="bottom_sheet_close">닫기</string>
     <string name="finding_btn">주인을 찾아요</string>
     <string name="lost_btn">잃어버렸어요</string>
 
+    <string name="top_container_text">분실물 신고</string>
+    <string name="top_container_icon">뒤로가기</string>
+
     <string name="header_lost_title">잃어버렸어요</string>
     <string name="header_found_title">주인을 찾아요</string>
     <string name="header_lost_description">분실한 물건을 자세히 설명해주세요!</string>
     <string name="header_found_description">습득한 물건을 자세히 설명해주세요!</string>
-    <string name="header_alert">* </string>
     <string name="header_alert_text">표시는 필수 입력 항목입니다.</string>
 
     <string name="item_type_electronic_device">전자제품</string>
@@ -53,7 +54,6 @@
     <string name="dropdown_item_all">모두보기</string>
     <string name="dropdown_item_lost">분실물</string>
     <string name="dropdown_item_found">습득물</string>
-
     <string name="upload_image_of_found_item">습득물 사진을 업로드해주세요.</string>
     <string name="upload_image_of_lost_item">분실물 사진을 업로드해주세요.</string>
     <string name="upload_image">사진 등록하기</string>
@@ -85,6 +85,7 @@
 
     <string name="add_item">물품 추가</string>
     <string name="write_done">작성 완료</string>
+    <string name="write_failed">글 작성에 실패했습니다.</string>
 
     <string name="report_failed">게시글 신고에 실패하였습니다</string>
     <string name="article_reported">신고에 의해 숨김 처리 되었습니다. </string>

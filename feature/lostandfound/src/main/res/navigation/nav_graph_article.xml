@@ -59,13 +59,13 @@
 
     <fragment
         android:id="@+id/articleLostAndFoundWriteFoundFragment"
-        android:name="in.koreatech.koin.feature.article.ui.lostandfound.write.ArticleLostAndFoundWriteFoundFragment"
+        android:name="in.koreatech.koin.feature.lostandfound.ui.write.ArticleLostAndFoundWriteFoundFragment"
         android:label="ArticleLostAndFoundWriteFoundFragment">
     </fragment>
 
     <fragment
         android:id="@+id/articleLostAndFoundWriteLostFragment"
-        android:name="in.koreatech.koin.feature.article.ui.lostandfound.write.ArticleLostAndFoundWriteLostFragment"
+        android:name="in.koreatech.koin.feature.lostandfound.ui.write.ArticleLostAndFoundWriteLostFragment"
         android:label="ArticleLostAndFoundWriteLostFragment">
     </fragment>
 

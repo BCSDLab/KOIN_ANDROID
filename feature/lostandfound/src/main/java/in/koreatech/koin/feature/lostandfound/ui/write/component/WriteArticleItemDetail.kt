@@ -31,7 +31,10 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
@@ -93,10 +96,16 @@ fun WriteArticleItemDetail(
         ) {
             Text(
                 style = KoinTheme.typography.medium14,
-                text =
-                when (type) {
-                    LostOrFoundType.LOST -> stringResource(id = R.string.lost_date)
-                    LostOrFoundType.FOUND -> stringResource(id = R.string.found_date)
+                text = buildAnnotatedString {
+                    append(
+                        when (type) {
+                            LostOrFoundType.LOST -> stringResource(id = R.string.lost_date)
+                            LostOrFoundType.FOUND -> stringResource(id = R.string.found_date)
+                        }
+                    )
+                    withStyle(style = SpanStyle(color = Color(0xFFC82A2A))) {
+                        append("*")
+                    }
                 }
             )
 
@@ -324,10 +333,16 @@ fun WriteArticleItemDetail(
     ) {
         Text(
             style = KoinTheme.typography.medium14,
-            text =
-            when (type) {
-                LostOrFoundType.LOST -> stringResource(id = R.string.lost_location)
-                LostOrFoundType.FOUND -> stringResource(id = R.string.found_location)
+            text = buildAnnotatedString {
+                append(
+                    when (type) {
+                        LostOrFoundType.LOST -> stringResource(id = R.string.lost_location)
+                        LostOrFoundType.FOUND -> stringResource(id = R.string.found_location)
+                    }
+                )
+                withStyle(style = SpanStyle(color = Color(0xFFC82A2A))) {
+                    append("*")
+                }
             }
         )
 
