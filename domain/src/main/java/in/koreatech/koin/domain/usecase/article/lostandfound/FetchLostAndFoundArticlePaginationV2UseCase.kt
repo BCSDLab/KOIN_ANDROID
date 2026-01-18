@@ -1,16 +1,15 @@
 package `in`.koreatech.koin.domain.usecase.article.lostandfound
 
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundPagination
+import `in`.koreatech.koin.domain.model.article.LostAndFoundFilterParams
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
-class FetchLostAndFoundArticlePaginationUseCase @Inject constructor(
+class FetchLostAndFoundArticlePaginationV2UseCase @Inject constructor(
     private val articleRepository: ArticleRepository
 ) {
     operator fun invoke(
-        page: Int,
-        limit: Int,
-        type: String?
-    ): Flow<ArticleLostAndFoundPagination> = articleRepository.fetchArticleLostAndFoundPagination(page, limit, type)
+        filterParams: LostAndFoundFilterParams
+    ): Flow<ArticleLostAndFoundPagination> = articleRepository.fetchArticleLostAndFoundPaginationV2(filterParams)
 }

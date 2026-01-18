@@ -14,6 +14,7 @@ import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundReportItem
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundStats
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
+import `in`.koreatech.koin.domain.model.article.LostAndFoundFilterParams
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
@@ -230,15 +231,21 @@ class ArticleRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun fetchArticleLostAndFoundPagination(
-        page: Int,
-        limit: Int,
-        type: String?
+    override fun fetchArticleLostAndFoundPaginationV2(
+        filterParams: LostAndFoundFilterParams
     ): Flow<ArticleLostAndFoundPagination> {
         return flow {
             emit(
-                articleRemoteDataSource.fetchArticleLostAndFoundPagination(page, limit, type)
-                    .toArticleLostAndFoundPagination()
+                articleRemoteDataSource.fetchArticleLostAndFoundPaginationV2(
+                    type = filterParams.type,
+                    page = filterParams.page,
+                    limit = filterParams.limit,
+                    category = filterParams.category,
+                    foundStatus = filterParams.foundStatus,
+                    sort = filterParams.sort,
+                    author = filterParams.author,
+                    title = filterParams.title
+                ).toArticleLostAndFoundPagination()
             )
         }
     }

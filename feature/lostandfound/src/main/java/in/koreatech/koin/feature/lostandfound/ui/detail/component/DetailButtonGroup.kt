@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.article.ui.lostandfound.detail.component
+package `in`.koreatech.koin.feature.lostandfound.ui.detail.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.feature.article.R
+import `in`.koreatech.koin.feature.lostandfound.R
 
 @Composable
 fun DetailButtonGroup(
@@ -30,6 +30,7 @@ fun DetailButtonGroup(
     showDeleteDialog: Boolean = false,
     isLoggedIn: Boolean = false,
     isAuthorWithdraw: Boolean = false,
+    isWriterAdmin: Boolean = false,
     onShowDeleteDialogChange: (Boolean) -> Unit = {},
     onArticleListClick: () -> Unit = {},
     onDeleteArticleClick: () -> Unit = {},
@@ -119,52 +120,52 @@ fun DetailButtonGroup(
                 )
             }
         } else {
-            if (isLoggedIn) {
-                if (!isAuthorWithdraw) {
-                    Button(
-                        modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                        contentPadding = PaddingValues(10.dp, 6.dp),
-                        onClick = onChatRoomClick,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = KoinTheme.colors.neutral300,
-                            contentColor = KoinTheme.colors.neutral600
-                        ),
-                        shape = KoinTheme.shapes.extraSmall
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Image(
-                                modifier = Modifier.size(20.dp),
-                                painter = painterResource(id = R.drawable.ic_chat),
-                                contentDescription = null
-                            )
-
-                            Spacer(modifier = Modifier.width(4.dp))
-
-                            Text(
-                                style = KoinTheme.typography.regular12,
-                                text = stringResource(R.string.detail_chat_room_button)
-                            )
-                        }
-                    }
-                }
-
+            if (!isAuthorWithdraw) {
                 Button(
                     modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
                     contentPadding = PaddingValues(10.dp, 6.dp),
-                    onClick = onReportArticleClick,
+                    onClick = onChatRoomClick,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = KoinTheme.colors.neutral300,
                         contentColor = KoinTheme.colors.neutral600
                     ),
                     shape = KoinTheme.shapes.extraSmall
                 ) {
-                    Image(
-                        modifier = Modifier.size(20.dp),
-                        painter = painterResource(id = R.drawable.ic_article_report),
-                        contentDescription = null
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            modifier = Modifier.size(20.dp),
+                            painter = painterResource(id = R.drawable.ic_chat),
+                            contentDescription = null
+                        )
+
+                        Spacer(modifier = Modifier.width(4.dp))
+
+                        Text(
+                            style = KoinTheme.typography.regular12,
+                            text = stringResource(R.string.detail_chat_room_button)
+                        )
+                    }
+                }
+
+                if (isLoggedIn && !isWriterAdmin) {
+                    Button(
+                        modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
+                        contentPadding = PaddingValues(10.dp, 6.dp),
+                        onClick = onReportArticleClick,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = KoinTheme.colors.neutral300,
+                            contentColor = KoinTheme.colors.neutral600
+                        ),
+                        shape = KoinTheme.shapes.extraSmall
+                    ) {
+                        Image(
+                            modifier = Modifier.size(20.dp),
+                            painter = painterResource(id = R.drawable.ic_article_report),
+                            contentDescription = null
+                        )
+                    }
                 }
             }
         }
