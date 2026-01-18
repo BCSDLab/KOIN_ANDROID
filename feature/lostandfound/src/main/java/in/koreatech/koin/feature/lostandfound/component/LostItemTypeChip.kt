@@ -48,13 +48,12 @@ fun ReadOnlyTextChip(
         showClickRipple = false,
         onSelect = {},
         contentPadding = contentPadding,
-        chipColors =
-            TextChipDefaults.chipColors(
-                selectedContainerColor = chipColor,
-                unselectedContainerColor = chipColor,
-                selectedContentColor = textColor,
-                unselectedContentColor = textColor
-            ),
+        chipColors = TextChipDefaults.chipColors(
+            selectedContainerColor = chipColor,
+            unselectedContainerColor = chipColor,
+            selectedContentColor = textColor,
+            unselectedContentColor = textColor
+        ),
         modifier = modifier
     )
 }

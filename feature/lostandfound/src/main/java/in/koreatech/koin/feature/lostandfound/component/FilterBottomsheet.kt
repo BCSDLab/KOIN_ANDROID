@@ -36,21 +36,17 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import kotlinx.collections.immutable.persistentListOf
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LostAndFoundFilterBottomSheet(
     onDismissRequest: () -> Unit,
     onApply: (String, String, String, String) -> Unit
 ) {
-
     val detailOption = stringResource(R.string.filter_list_all)
-
     var selectedListType by remember { mutableStateOf(detailOption) }
     var selectedCategory by remember { mutableStateOf(detailOption) }
     var selectedItemType by remember { mutableStateOf(detailOption) }
     var selectedStatus by remember { mutableStateOf(detailOption) }
-
 
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
@@ -143,11 +139,11 @@ fun FilterBottomSheetContent(
                 items = persistentListOf(
                     stringResource(R.string.filter_list_all),
                     stringResource(R.string.filter_list_my_post)
-            ),
+                ),
                 selectedItem = selectedListType,
                 onItemSelected = onListTypeChange
             )
-            HorizontalDivider(color = KoinTheme.colors.neutral300)
+                HorizontalDivider(color = KoinTheme.colors.neutral300)
             FilterSection(
                 title = stringResource(R.string.filter_list_category),
                 items = persistentListOf(
@@ -246,7 +242,7 @@ fun FilterSection(
             color = KoinTheme.colors.neutral800,
             modifier = Modifier.padding(bottom = 12.dp)
         )
-        val chunkedItems = remember(items) {items.chunked(3)}
+        val chunkedItems = remember(items) { items.chunked(3) }
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             chunkedItems.forEach { rowItems ->
                 Row(

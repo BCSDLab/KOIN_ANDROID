@@ -95,7 +95,6 @@ fun LostAndFoundItem(
                     text = "${foundPlace.replace("\n", " ")} | ${foundDate.format(foundDateFormatType)}",
                     style = KoinTheme.typography.medium14
                 )
-
             }
             Spacer(modifier = Modifier.height(4.dp))
             Text(
