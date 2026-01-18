@@ -62,7 +62,7 @@
     <string name="detail_student_association_info_2">학생회관 320호 총학생회 사무실</string>
     <string name="detail_student_association_info_3">로 방문해 주시기 바랍니다.\n재실 시간은 공지 사항을 참고해 주시기 바랍니다.</string>
 
-    <string name="detail_chat_login_dialog_title">쪽지를 보내려면\n로그인이 필요해요.</string>
+    <string name="detail_chat_login_dialog_title">쪽지를 보내려면 \n로그인이 필요해요.</string>
     <string name="detail_chat_login_dialog_description">로그인 후 대화를 시작하세요!</string>
     <string name="detail_chat_login_dialog_positive">로그인하기</string>
     <string name="detail_chat_login_dialog_negative">닫기</string>

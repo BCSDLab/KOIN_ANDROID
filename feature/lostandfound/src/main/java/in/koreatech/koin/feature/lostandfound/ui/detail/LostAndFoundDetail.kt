@@ -29,6 +29,7 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
@@ -101,7 +102,7 @@ fun LostAndFoundDetail(
                 onNegative = {
                     viewModel.setShowLoginDialog(false)
                 },
-                titleStyle = KoinTheme.typography.medium18.copy(color = KoinTheme.colors.neutral600),
+                titleStyle = KoinTheme.typography.medium18.copy(color = KoinTheme.colors.neutral600, textAlign = TextAlign.Center),
                 descriptionStyle = KoinTheme.typography.regular14.copy(color = Color(0xFF8E8E8E))
             )
         }
