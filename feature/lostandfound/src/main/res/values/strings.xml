@@ -54,10 +54,10 @@
     <string name="dropdown_item_all">모두보기</string>
     <string name="dropdown_item_lost">분실물</string>
     <string name="dropdown_item_found">습득물</string>
+
     <string name="upload_image_of_found_item">습득물 사진을 업로드해주세요.</string>
     <string name="upload_image_of_lost_item">분실물 사진을 업로드해주세요.</string>
     <string name="upload_image">사진 등록하기</string>
-    <string name="upload_image_add">사진 추가하기</string>
     <string name="upload_image_failed">사진 업로드에 실패했습니다.</string>
 
     <string name="item_type">품목</string>
@@ -87,7 +87,128 @@
     <string name="write_done">작성 완료</string>
     <string name="write_failed">글 작성에 실패했습니다.</string>
 
+    <string name="detail_student_association_info_1">분실물 수령을 희망하시는 분은 재실 시간 내에\n</string>
+    <string name="detail_student_association_info_2">학생회관 320호 총학생회 사무실</string>
+    <string name="detail_student_association_info_3">로 방문해 주시기 바랍니다.\n재실 시간은 공지 사항을 참고해 주시기 바랍니다.</string>
+
+    <string name="detail_article_list_button">목록</string>
+    <string name="detail_delete_button">삭제</string>
+    <string name="detail_edit_button">수정</string>
+    <string name="detail_delete_dialog_title">삭제 시 되돌릴 수 없습니다.\n게시글을 삭제하시겠습니까?</string>
+    <string name="detail_delete_toast">게시글이 삭제되었습니다.</string>
+    <string name="detail_delete_failed_toast">게시글 삭제에 실패했습니다.</string>
+    <string name="detail_deleted_article">삭제된 게시글입니다.</string>
+
+    <string name="hot_article_title">인기있는 공지</string>
+    <string name="recent_article_title">최근 게시물</string>
+
+    <string name="article_more">더보기</string>
+    <string name="article_free">자유게시판</string>
+    <string name="article_employment">취업게시판</string>
+    <string name="article_anonymous">익명게시판</string>
+    <string name="article_all">전체공지</string>
+    <string name="article_lost_and_found">분실물</string>
+    <string name="article_normal">일반공지</string>
+    <string name="article_normal_simple">일반</string>
+    <string name="article_school">학사공지</string>
+    <string name="article_school_simple">학사</string>
+    <string name="article_scholarship">장학공지</string>
+    <string name="article_scholarship_simple">장학</string>
+    <string name="article_recruit">취업공지</string>
+    <string name="article_recruit_simple">취업</string>
+    <string name="article_koin">코인</string>
+    <string name="article_qna">질문게시판</string>
+    <string name="article_promotion">홍보게시판</string>
+    <string name="article_ipp">현장실습</string>
+    <string name="article_ipp_simple">현장실습</string>
+    <string name="article_student">학생생활</string>
+    <string name="article_student_simple">학생</string>
+    <string name="request_login_dialog_title">게시글을 작성 하려면\n로그인이 필요해요.</string>
+    <string name="request_login_dialog_description">로그인 후 분실물 주인을 찾아주세요!</string>
+
+    <string name="fab_write">글쓰기</string>
+    <string name="fab_found">주인을 찾아요</string>
+    <string name="fab_lost">잃어버렸어요</string>
+
+    <string name="keyword_see_all">모두보기</string>
+    <string name="keyword_add_new">새 키워드 추가</string>
+
+    <string name="dialog_loading">로딩 중…</string>
+
+    <string name="pagination_prev">이전</string>
+    <string name="pagination_next">다음</string>
+
+    <string name="detail_chat_room_button">쪽지 보내기</string>
+
+    <string name="report_title">게시글 신고하기</string>
+    <string name="report_reason_other_placeholder">신고 사유를 입력해주세요.</string>
+
+    <string name="report_header_title">신고 이유를 선택해주세요.</string>
+    <string name="report_header_description">접수된 신고는 관계자 확인 하에 블라인드 처리됩니다.\n블라인드 처리까지 시간이 소요될 수 있습니다.</string>
+
+    <string name="report_submit">신고하기</string>
+
     <string name="report_failed">게시글 신고에 실패하였습니다</string>
     <string name="article_reported">신고에 의해 숨김 처리 되었습니다. </string>
 
+    <string name="reported_article_click_toast">신고된 게시글은 더 이상 볼 수 없습니다.</string>
+
+    <string name="logging_lost_message_send">분실물 쪽지 보내기</string>
+    <string name="logging_found_message_send">습득물 쪽지 보내기</string>
+    <string name="logging_report">신고하기</string>
+
+    <string name="attachment">첨부파일</string>
+    <string name="search">검색</string>
+    <string name="download_complete">다운로드가 완료되었습니다.</string>
+    <string name="link_to_original_article">원본 글 바로가기</string>
+    <string name="link_to_portal">아우누리 바로가기</string>
+    <string name="link_to_stems">학생종합경력개발 바로가기</string>
+    <string name="downloading">다운로드 중</string>
+    <string name="start_download">파일을 다운로드합니다.</string>
+    <string name="recommend_login_to_get_keyword_notification_title">키워드 알림을 받으려면\n로그인이 필요해요.</string>
+    <string name="recommend_login_to_get_keyword_notification_message">로그인 후 간편하게 공지사항 키워드\n알림을 받아보세요!</string>
+    <string name="title_article">게시판</string>
+    <string name="navigation_title_article">공지사항</string>
+    <string name="navigation_title_article_search">공지글 검색</string>
+    <string name="navigation_title_article_keyword">키워드 관리</string>
+    <string name="navigation_title_article_write_lost_item">분실물 신고</string>
+    <string name="navigation_title_article_write_found_item">습득물 신고</string>
+    <string name="article_lost_and_found_detail_report">신고하기</string>
+    <string name="previous_page">이전</string>
+    <string name="next_page">다음</string>
+    <string name="divider_dot">•</string>
+    <string name="list">목록</string>
+    <string name="next_article">다음 글</string>
+    <string name="prev_article">이전 글</string>
+    <string name="hot_articles">인기있는 게시글</string>
+    <string name="see_all_article">모두보기</string>
+    <string name="my_keyword">내 키워드</string>
+    <string name="keyword_notice_description">키워드는 최대 10개까지 추가 가능합니다.</string>
+    <string name="add_keyword">추가</string>
+    <string name="suggestion_keywords">추천 키워드</string>
+    <string name="keyword_notification">키워드 알림</string>
+    <string name="keyword_notification_notice_description">키워드가 포함된 게시물의 알림을 받을 수 있습니다.</string>
+    <string name="get_keyword_notification">키워드 알림받기</string>
+    <string name="hint_input_keyword">알림받을 키워드를 입력해 주세요.</string>
+    <string name="keyword_add_require_input">키워드를 입력해주세요.</string>
+    <string name="keyword_add_limit_exceeded">키워드는 최대 10개까지 추가 가능합니다.</string>
+    <string name="keyword_add_already_exist">이미 추가되어 있는 키워드입니다.</string>
+    <string name="keyword_add_invalid_length">키워드 길이는 2글자 이상, 20글자 이하입니다.</string>
+    <string name="keyword_add_blank_not_allowed">키워드에 공백은 포함할 수 없습니다.</string>
+    <string name="add_new_keyword">새 키워드 추가</string>
+    <string name="empty_articles">게시글이 존재하지 않습니다.</string>
+    <string name="most_searched_keyword">많이 검색된 키워드</string>
+    <string name="recent_searched_keyword">최근 검색기록</string>
+    <string name="clear_all">전체 삭제</string>
+    <string name="search_input_required">검색어를 입력해주세요.</string>
+    <string name="empty_search_result">일치하는 공지글이 없습니다.\n다른 키워드로 다시 시도해주세요.</string>
+
+    <string name="error_network_unknown">알 수 없는 오류가 발생했습니다.</string>
+    <string name="request_notification_permission">설정에서 알림 권한을 허용해주세요</string>
+
+    <string name="lost_and_found_finding">찾는중</string>
+    <string name="lost_and_found_found">찾음</string>
+    <string name="lost_and_found_lost_message">물건을 찾았나요?</string>
+    <string name="lost_and_found_found_message">주인을 찾았나요?</string>
+    <string name="lost_and_found_dialog_message">상태 변경 시 되돌릴 수 없습니다.\n찾음으로 변경하시겠습니까?</string>
 </resources>

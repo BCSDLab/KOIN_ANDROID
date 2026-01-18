@@ -11,6 +11,7 @@ import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchHotArticlesU
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticleUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.article.model.toArticleHeaderState
+import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailViewModel.Companion.HOT_ARTICLE_COUNT
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
@@ -140,8 +141,17 @@ class LostAndFoundDetailViewModel @Inject constructor(
             }
         }
 
+    fun setShowFoundDialog(show: Boolean) =
+        intent {
+            reduce {
+                state.copy(
+                    showFoundDialog = show
+                )
+            }
+        }
+
     companion object {
-        const val HOT_ARTICLE_COUNT = 4
+        const val PAGE_SIZE = 10
         const val ARTICLE_ID = "article_id"
     }
 }

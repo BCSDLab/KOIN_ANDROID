@@ -55,8 +55,8 @@ fun KeywordChipGroup(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun LostAndFoundTextChipFlowGroup(
-    titles: List<String>,
     modifier: Modifier = Modifier,
+    titles: List<String>,
     shape: Shape,
     onChipSelected: (index: Int) -> Unit = {},
     selectedChipIndexes: List<Int>,

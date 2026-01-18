@@ -18,6 +18,7 @@ data class LostAndFoundItemState(
     val content: String,
     val author: String,
     val isReported: Boolean,
+    val isFound: Boolean,
     val registeredAt: LocalDate,
     val updatedAt: String
 ) : Parcelable
@@ -26,13 +27,14 @@ fun ArticleLostAndFoundHeader.toLostAndFoundItemState() =
     LostAndFoundItemState(
         id = id,
         boardId = boardId,
-        lostOrFound = LostOrFoundType.entries.find { it.name == type } ?: LostOrFoundType.FOUND, // Hardcode value to FOUND for now
+        lostOrFound = LostOrFoundType.entries.find { it.name == type } ?: LostOrFoundType.FOUND,
         category = LostItemCategory.safeValueOf(category),
         foundPlace = foundPlace,
         foundDate = LocalDate.parse(foundDate),
         content = content ?: "",
         author = author,
         isReported = isReported,
+        isFound = isFound,
         registeredAt = LocalDate.parse(registeredAt),
         updatedAt = updatedAt
     )

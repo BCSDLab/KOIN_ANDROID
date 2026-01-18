@@ -33,6 +33,7 @@ fun DetailButtonGroup(
     onShowDeleteDialogChange: (Boolean) -> Unit = {},
     onArticleListClick: () -> Unit = {},
     onDeleteArticleClick: () -> Unit = {},
+    onEditArticleClick: () -> Unit = {},
     onChatRoomClick: () -> Unit = {},
     onReportArticleClick: () -> Unit = {}
 ) {
@@ -56,7 +57,7 @@ fun DetailButtonGroup(
 
     Row(
         modifier = modifier
-            .padding(horizontal = 24.dp, vertical = 16.dp)
+            .padding(start = 24.dp, end = 24.dp, bottom = 16.dp)
             .fillMaxWidth()
     ) {
         Button(
@@ -82,6 +83,22 @@ fun DetailButtonGroup(
             Button(
                 modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
                 contentPadding = PaddingValues(10.dp, 6.dp),
+                onClick = onEditArticleClick,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = KoinTheme.colors.neutral300,
+                    contentColor = KoinTheme.colors.neutral600
+                ),
+                shape = KoinTheme.shapes.extraSmall
+            ) {
+                Text(
+                    style = KoinTheme.typography.regular12,
+                    text = stringResource(R.string.detail_edit_button)
+                )
+            }
+
+            Button(
+                modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
+                contentPadding = PaddingValues(10.dp, 6.dp),
                 onClick = {
                     onShowDeleteDialogChange(true)
                     EventLogger.logCampusClickEvent(
@@ -95,21 +112,11 @@ fun DetailButtonGroup(
                 ),
                 shape = KoinTheme.shapes.extraSmall
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                        style = KoinTheme.typography.regular12,
-                        text = stringResource(R.string.detail_delete_button)
-                    )
-                    Spacer(modifier = Modifier.width(2.dp))
-                    Image(
-                        modifier = Modifier.size(16.dp),
-                        painter = painterResource(id = R.drawable.ic_article_delete),
-                        contentDescription = null
-                    )
-                }
+                Text(
+                    modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
+                    style = KoinTheme.typography.regular12,
+                    text = stringResource(R.string.detail_delete_button)
+                )
             }
         } else {
             if (isLoggedIn) {

@@ -4,8 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
+import `in`.koreatech.koin.domain.model.article.LostAndFoundFilterParams
 import `in`.koreatech.koin.domain.repository.ArticleRepository
-import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticlePaginationUseCase
+import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticlePaginationV2UseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchSearchedLostAndFoundArticlesUseCase
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
 import `in`.koreatech.koin.feature.article.enums.LostOrFoundType
@@ -29,7 +30,7 @@ import kotlinx.coroutines.flow.stateIn
 @HiltViewModel
 class ArticleListViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val fetchLostAndFoundArticlePaginationUseCase: FetchLostAndFoundArticlePaginationUseCase,
+    private val fetchLostAndFoundArticlePaginationV2UseCase: FetchLostAndFoundArticlePaginationV2UseCase,
     private val fetchSearchedLostAndFoundArticlesUseCase: FetchSearchedLostAndFoundArticlesUseCase,
     articleRepository: ArticleRepository
 ) : BaseViewModel() {
@@ -76,7 +77,13 @@ class ArticleListViewModel @Inject constructor(
     val lostAndFoundPagination: StateFlow<LostAndFoundPaginationState> = combine(currentPage, lostAndFoundType, selectedKeyword) { page, type, query ->
         _isLoading.value = true
         if (query.isEmpty()) {
-            fetchLostAndFoundArticlePaginationUseCase(page, ARTICLES_PER_PAGE, type?.name)
+            fetchLostAndFoundArticlePaginationV2UseCase(
+                LostAndFoundFilterParams(
+                    page = page,
+                    limit = ARTICLES_PER_PAGE,
+                    type = type?.name
+                )
+            )
         } else {
             fetchSearchedLostAndFoundArticlesUseCase(query, page, ARTICLES_PER_PAGE)
         }
