@@ -30,7 +30,7 @@ fun DetailHeader(
     isFound: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val foundDateFormatType = DateTimeFormatter.ofPattern("yy-MM-dd")
+    val foundDateFormatType = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     val headerText = remember(key1 = foundPlace, key2 = foundDate) {
         "${
             foundPlace.replace(
