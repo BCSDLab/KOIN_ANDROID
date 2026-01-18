@@ -71,13 +71,13 @@ fun LostAndFoundDetail(
         val context = LocalContext.current
         val isLoading = uiState.isLoading
 
-        var isFound by remember { mutableStateOf(uiState.isFound) }
+        var isFound by remember(uiState.isFound) { mutableStateOf(uiState.isFound) }
 
         if (uiState.showFoundDialog) {
             DetailDialog(
                 title = stringResource(id = R.string.lost_and_found_dialog_message),
                 onPositive = {
-                    isFound = true // TODO connect api
+                    viewModel.setFound()
                     viewModel.setShowFoundDialog(false)
                 },
                 onNegative = {
