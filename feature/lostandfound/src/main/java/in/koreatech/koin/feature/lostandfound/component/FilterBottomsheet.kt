@@ -91,12 +91,10 @@ fun FilterBottomSheetContent(
     selectedCategory: String,
     selectedItemType: String,
     selectedStatus: String,
-
     onListTypeChange: (String) -> Unit,
     onCategoryChange: (String) -> Unit,
     onItemTypeChange: (String) -> Unit,
     onStatusChange: (String) -> Unit,
-
     onReset: () -> Unit,
     onApplyClick: () -> Unit,
     onDismissRequest: () -> Unit
@@ -143,7 +141,7 @@ fun FilterBottomSheetContent(
                 selectedItem = selectedListType,
                 onItemSelected = onListTypeChange
             )
-                HorizontalDivider(color = KoinTheme.colors.neutral300)
+            HorizontalDivider(color = KoinTheme.colors.neutral300)
             FilterSection(
                 title = stringResource(R.string.filter_list_category),
                 items = persistentListOf(

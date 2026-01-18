@@ -59,10 +59,10 @@ fun WriteArticleHeader(
                 color = KoinTheme.colors.neutral500,
                 style = KoinTheme.typography.regular12,
                 text =
-                    when (type) {
-                        LostOrFoundType.LOST -> stringResource(R.string.header_lost_description)
-                        LostOrFoundType.FOUND -> stringResource(R.string.header_found_description)
-                    }
+                when (type) {
+                    LostOrFoundType.LOST -> stringResource(R.string.header_lost_description)
+                    LostOrFoundType.FOUND -> stringResource(R.string.header_found_description)
+                }
             )
             Text(
                 text = buildAnnotatedString {
