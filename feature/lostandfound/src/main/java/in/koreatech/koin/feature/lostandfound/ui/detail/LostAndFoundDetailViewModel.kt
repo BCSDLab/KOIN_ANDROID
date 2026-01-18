@@ -12,6 +12,7 @@ import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFound
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticleUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.lostandfound.model.toLostAndFoundItemState
+import `in`.koreatech.koin.feature.lostandfound.navigation.ARTICLE_ID
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
@@ -212,6 +213,5 @@ class LostAndFoundDetailViewModel @Inject constructor(
 
     companion object {
         const val PAGE_SIZE = 10
-        const val ARTICLE_ID = "article_id"
     }
 }

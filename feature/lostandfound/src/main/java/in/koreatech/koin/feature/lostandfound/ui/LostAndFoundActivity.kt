@@ -3,10 +3,18 @@ package `in`.koreatech.koin.feature.lostandfound.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
-import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetail
+import `in`.koreatech.koin.feature.lostandfound.navigation.LostAndFoundNavType
+import `in`.koreatech.koin.feature.lostandfound.navigation.koinLostAndFoundGraph
 
 @AndroidEntryPoint
 class LostAndFoundActivity : ComponentActivity() {
@@ -15,7 +23,18 @@ class LostAndFoundActivity : ComponentActivity() {
         enableEdgeToEdgeWithLightStatusBar()
         setContent {
             KoinTheme {
-                // TODO navigation
+                var startDestination by remember { mutableStateOf(LostAndFoundNavType.LostAndFoundList.route) }
+                val navController = rememberNavController()
+
+                NavHost(
+                    modifier = Modifier,
+                    navController = navController,
+                    startDestination = startDestination
+                ) {
+                    koinLostAndFoundGraph(
+                        navController = navController
+                    )
+                }
             }
         }
     }
