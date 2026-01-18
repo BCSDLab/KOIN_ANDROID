@@ -11,6 +11,7 @@ import `in`.koreatech.koin.domain.usecase.article.lostandfound.DeleteArticleLost
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticlePaginationV2UseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticleUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
+import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundSortType
 import `in`.koreatech.koin.feature.lostandfound.model.toLostAndFoundItemState
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
@@ -109,7 +110,7 @@ class LostAndFoundDetailViewModel @Inject constructor(
             val filterParams = LostAndFoundFilterParams(
                 page = 1,
                 limit = PAGE_SIZE,
-                sort = "LATEST"
+                sort = LostAndFoundSortType.LATEST.value
             )
             fetchLostAndFoundArticlePaginationV2UseCase(filterParams)
                 .catch {
@@ -145,7 +146,7 @@ class LostAndFoundDetailViewModel @Inject constructor(
         val filterParams = LostAndFoundFilterParams(
             page = nextPage,
             limit = PAGE_SIZE,
-            sort = "LATEST"
+            sort = LostAndFoundSortType.LATEST.value
         )
 
         fetchLostAndFoundArticlePaginationV2UseCase(filterParams)
