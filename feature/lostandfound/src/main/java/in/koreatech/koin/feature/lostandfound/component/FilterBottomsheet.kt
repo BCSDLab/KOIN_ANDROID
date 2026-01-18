@@ -105,7 +105,6 @@ fun FilterBottomSheetContent(
     onApplyClick: () -> Unit,
     onDismissRequest: () -> Unit
 ) {
-
     Column(
         modifier = Modifier
             .fillMaxWidth()

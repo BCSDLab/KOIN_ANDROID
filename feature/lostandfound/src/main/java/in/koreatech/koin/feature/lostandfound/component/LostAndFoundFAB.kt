@@ -58,7 +58,7 @@ fun LostAndFoundFAB(
                     shape = RoundedCornerShape(50)
                 )
                 .padding(vertical = 8.dp, horizontal = 12.dp)
-                .noRippleClickable {onClick()}
+                .noRippleClickable { onClick() }
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(

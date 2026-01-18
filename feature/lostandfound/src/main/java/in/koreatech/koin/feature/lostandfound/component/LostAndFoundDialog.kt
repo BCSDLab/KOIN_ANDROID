@@ -53,15 +53,14 @@ fun LostAndFoundDialog(
     modifier: Modifier = Modifier
 ) {
     BasicAlertDialog(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .background(
-                    color = KoinTheme.colors.neutral0,
-                    shape = KoinTheme.shapes.small
-                )
-                .padding(horizontal = 32.dp, vertical = 24.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(
+                color = KoinTheme.colors.neutral0,
+                shape = KoinTheme.shapes.small
+            )
+            .padding(horizontal = 32.dp, vertical = 24.dp),
         onDismissRequest = { onNegative() }
     ) {
         Column(
