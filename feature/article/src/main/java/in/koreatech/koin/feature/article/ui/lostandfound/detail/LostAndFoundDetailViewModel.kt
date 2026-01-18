@@ -8,10 +8,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.article.LostAndFoundFilterParams
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.DeleteArticleLostAndFoundUseCase
+import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchHotArticlesUseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticlePaginationV2UseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticleUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
+import `in`.koreatech.koin.feature.article.model.toArticleHeaderState
 import `in`.koreatech.koin.feature.article.model.toLostAndFoundItemState
+import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailViewModel.Companion.HOT_ARTICLE_COUNT
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
@@ -28,7 +31,7 @@ import retrofit2.HttpException
 class LostAndFoundDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val fetchLostAndFoundArticleUseCase: FetchLostAndFoundArticleUseCase,
-    private val fetchLostAndFoundArticlePaginationV2UseCase: FetchLostAndFoundArticlePaginationV2UseCase,
+    private val fetchHotArticlesUseCase: FetchHotArticlesUseCase,
     private val deleteArticleLostAndFoundUseCase: DeleteArticleLostAndFoundUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<LostAndFoundDetailState, LostAndFoundDetailSideEffect> {
@@ -41,6 +44,7 @@ class LostAndFoundDetailViewModel @Inject constructor(
 
     init {
         initUserInfo()
+        fetchHotArticles()
     }
 
     private fun initUserInfo() =
@@ -101,84 +105,23 @@ class LostAndFoundDetailViewModel @Inject constructor(
                             isLoading = false
                         )
                     }
-                    fetchRecentArticles()
                 }
             }
         }
 
 
-    fun fetchRecentArticles() =
+    fun fetchHotArticles() =
         viewModelScope.launch {
             intent {
-                reduce {
-                    state.copy(isLoadingMoreArticles = true)
+                fetchHotArticlesUseCase().collectLatest {
+                    reduce {
+                        state.copy(
+                            hotArticles =
+                                it.filterIndexed { index, _ -> index < HOT_ARTICLE_COUNT }
+                                    .map { it.toArticleHeaderState() }
+                        )
+                    }
                 }
-                val filterParams = LostAndFoundFilterParams(
-                    page = 1,
-                    limit = PAGE_SIZE,
-                    sort = "LATEST"
-                )
-                fetchLostAndFoundArticlePaginationV2UseCase(filterParams)
-                    .catch {
-                        reduce {
-                            state.copy(isLoadingMoreArticles = false)
-                        }
-                    }
-                    .collectLatest { pagination ->
-                        val currentArticleId = state.id
-                        val filteredArticles = pagination.articleLostAndFoundHeader
-                            .filter { it.id != currentArticleId }
-                            .map { it.toLostAndFoundItemState() }
-                        reduce {
-                            state.copy(
-                                recentArticles = filteredArticles,
-                                recentArticlesCurrentPage = pagination.currentPage,
-                                recentArticlesTotalPage = pagination.totalPage,
-                                hasMoreArticles = pagination.currentPage < pagination.totalPage,
-                                isLoadingMoreArticles = false
-                            )
-                        }
-                    }
-            }
-        }
-
-    fun loadMoreRecentArticles() =
-        viewModelScope.launch {
-            intent {
-                if (state.isLoadingMoreArticles || !state.hasMoreArticles) return@intent
-
-                reduce {
-                    state.copy(isLoadingMoreArticles = true)
-                }
-
-                val nextPage = state.recentArticlesCurrentPage + 1
-                val filterParams = LostAndFoundFilterParams(
-                    page = nextPage,
-                    limit = PAGE_SIZE,
-                    sort = "LATEST"
-                )
-
-                fetchLostAndFoundArticlePaginationV2UseCase(filterParams)
-                    .catch {
-                        reduce {
-                            state.copy(isLoadingMoreArticles = false)
-                        }
-                    }
-                    .collectLatest { pagination ->
-                        val currentArticleId = state.id
-                        val filteredArticles = pagination.articleLostAndFoundHeader
-                            .filter { it.id != currentArticleId }
-                            .map { it.toLostAndFoundItemState() }
-                        reduce {
-                            state.copy(
-                                recentArticles = state.recentArticles + filteredArticles,
-                                recentArticlesCurrentPage = pagination.currentPage,
-                                recentArticlesTotalPage = pagination.totalPage,
-                                hasMoreArticles = pagination.currentPage < pagination.totalPage,
-                                isLoadingMoreArticles = false
-                            )
-                        }
-                    }
             }
         }
 

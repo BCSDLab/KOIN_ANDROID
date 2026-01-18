@@ -28,7 +28,6 @@ fun DetailHeader(
     foundDate: LocalDate,
     author: String,
     registeredAt: LocalDate,
-    isFound: Boolean,
     modifier: Modifier = Modifier
 ) {
     val registeredAtFormatType = DateTimeFormatter.ofPattern("MM.dd")
@@ -64,12 +63,6 @@ fun DetailHeader(
                 text = headerText,
                 fontWeight = FontWeight(500),
                 style = KoinTheme.typography.medium14
-            )
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            LostAndFoundStatusChip(
-                isFound = isFound
             )
         }
         Row(
