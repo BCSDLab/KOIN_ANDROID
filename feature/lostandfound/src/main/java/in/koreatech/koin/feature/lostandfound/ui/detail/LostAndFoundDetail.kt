@@ -9,16 +9,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,9 +35,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
-import `in`.koreatech.koin.feature.lostandfound.component.HotArticleData
 import `in`.koreatech.koin.feature.lostandfound.component.LoadingDialog
 import `in`.koreatech.koin.feature.lostandfound.component.RecentArticleList
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
@@ -52,11 +55,20 @@ fun LostAndFoundDetail(
     viewModel: LostAndFoundDetailViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
     navigateToArticleList: () -> Unit = {},
-    navigateToHotArticle: (HotArticleData) -> Unit,
+    onTopbarBackClick: () -> Unit = {},
+    navigateToRecentArticle: (articleId: Int) -> Unit = {},
     navigateToChatRoom: (articleId: Int) -> Unit = {},
     navigateToReport: (articleId: Int) -> Unit = {}
 ) {
-    KoinTheme {
+    Scaffold(
+        containerColor = KoinTheme.colors.neutral0,
+        topBar = {
+            KoinTopAppBar(
+                title = stringResource(R.string.lost_and_found),
+                onNavigationIconClick = onTopbarBackClick
+            )
+        }
+    ) { contentPadding ->
         val uiState by viewModel.collectAsState()
         val recentArticles = uiState.recentArticles
         val context = LocalContext.current
@@ -82,7 +94,11 @@ fun LostAndFoundDetail(
             handleSideEffect(it, context, navigateToArticleList)
         }
         Column(
-            modifier = modifier.verticalScroll(rememberScrollState())
+            modifier = modifier
+                .padding(contentPadding)
+                .consumeWindowInsets(contentPadding)
+                .systemBarsPadding()
+                .verticalScroll(rememberScrollState())
         ) {
             DetailHeader(
                 lostOrFound = uiState.lostOrFound,
@@ -90,7 +106,6 @@ fun LostAndFoundDetail(
                 foundPlace = uiState.foundPlace,
                 foundDate = uiState.foundDate,
                 author = uiState.author,
-                registeredAt = uiState.registeredAt,
                 isFound = isFound
             )
 
@@ -172,15 +187,7 @@ fun LostAndFoundDetail(
                 hasMoreArticles = uiState.hasMoreArticles,
                 onLoadMore = { viewModel.loadMoreRecentArticles() },
                 onArticleClick = { article ->
-                    navigateToHotArticle(
-                        HotArticleData(
-                            articleId = article.id,
-                            articleTitle = article.content.ifEmpty { article.foundPlace },
-                            board = `in`.koreatech.koin.feature.lostandfound.enums.ArticleBoardType.LOSTANDFOUND,
-                            category = article.category,
-                            isFound = article.isFound
-                        )
-                    )
+                    navigateToRecentArticle(article.id)
                 }
             )
 
@@ -199,8 +206,6 @@ private fun handleSideEffect(
     navigateToArticleList: () -> Unit = {}
 ) {
     when (sideEffect) {
-        // is LostAndFoundDetailSideEffect.FetchDetail -> {}
-        // LostAndFoundDetailSideEffect.FetchHotArticles -> {}
         is LostAndFoundDetailSideEffect.DeleteArticle -> {
             Toast.makeText(
                 context,
