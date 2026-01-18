@@ -27,14 +27,10 @@ fun DetailHeader(
     foundPlace: String,
     foundDate: LocalDate,
     author: String,
-    registeredAt: LocalDate,
     isFound: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val registeredAtFormatType = DateTimeFormatter.ofPattern("MM.dd")
-    val convertedRegisteredAt = remember(key1 = registeredAt) { "${registeredAt.format(registeredAtFormatType)} ${registeredAt.getKoreanDayOfWeekShortName()}" }
-
-    val foundDateFormatType = DateTimeFormatter.ofPattern("yy.MM.dd")
+    val foundDateFormatType = DateTimeFormatter.ofPattern("yy-MM-dd")
     val headerText = remember(key1 = foundPlace, key2 = foundDate) {
         "${
             foundPlace.replace(
@@ -76,7 +72,7 @@ fun DetailHeader(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "$author • $convertedRegisteredAt",
+                text = "$headerText • $author",
                 color = KoinTheme.colors.neutral500,
                 style = KoinTheme.typography.regular12
             )
