@@ -9,11 +9,8 @@ import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticlePaginationV2UseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchSearchedLostAndFoundArticlesUseCase
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
-import `in`.koreatech.koin.feature.article.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.article.model.ArticlePaginationState
-import `in`.koreatech.koin.feature.article.model.LostAndFoundPaginationState
 import `in`.koreatech.koin.feature.article.model.toArticlePaginationState
-import `in`.koreatech.koin.feature.article.model.toLostAndFoundPaginationState
 import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -50,8 +47,6 @@ class ArticleListViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = listOf()
         )
-
-    val lostAndFoundType: StateFlow<LostOrFoundType?> = savedStateHandle.getStateFlow(LOST_OR_FOUND_TYPE, null)
 
     val articlePagination: StateFlow<ArticlePaginationState> =
         combine(currentBoard, currentPage, selectedKeyword) { board, page, query ->
@@ -115,11 +110,6 @@ class ArticleListViewModel @Inject constructor(
         setCurrentPage(1)
     }
 
-    fun setLostOrFoundType(type: LostOrFoundType?) {
-        if (lostAndFoundType.value == type) return
-        savedStateHandle[LOST_OR_FOUND_TYPE] = type
-    }
-
     private fun calculatePageNumber(totalPage: Int) {
         val newPageNumbers = pageNumbers.value.copyOf()
         repeat(PAGE_NUMBER_COUNT) { index ->
@@ -144,6 +134,5 @@ class ArticleListViewModel @Inject constructor(
         private const val CURRENT_PAGE = "current_page"
         private const val PAGE_NUMBERS = "page_numbers"
         private const val SELECTED_KEYWORD = "selected_keyword"
-        private const val LOST_OR_FOUND_TYPE = "lost_or_found_type"
     }
 }

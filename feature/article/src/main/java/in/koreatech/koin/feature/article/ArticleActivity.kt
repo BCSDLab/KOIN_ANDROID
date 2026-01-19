@@ -15,7 +15,6 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.ToolbarMenu
-import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.util.whiteStatusBar
@@ -114,7 +113,7 @@ class ArticleActivity : ActivityBase() {
                 )
             }
             "article_lost_and_found" -> {
-                setNavigationGraph(ArticleBoardType.LOSTANDFOUND.id)
+                // setNavigationGraph(ArticleBoardType.LOSTANDFOUND.id) Todo delete LostAndFound in article
             }
             null -> {
                 val bundle = intent.getBundleExtra(BUNDLE_ARTICLE_EXTRA_KEY)
@@ -130,27 +129,15 @@ class ArticleActivity : ActivityBase() {
         mIntent?.getIntExtra(EXTRA_ID, -1).let {
             Timber.d("article id : $it")
             if (it == -1) return
-            val boardId = mIntent?.getIntExtra(EXTRA_BOARD_ID, ArticleBoardType.ALL.id)
-            if (boardId == ArticleBoardType.LOSTANDFOUND.id) {
-                setNavigationGraph(ArticleBoardType.LOSTANDFOUND.id)
+            setNavigationGraph()
 
-                navController.navigate(
-                    R.id.articleLostAndFoundDetailFragment,
-                    bundleOf(
-                        ARTICLE_ID to it
-                    )
+            navController.navigate(
+                R.id.articleDetailFragment,
+                bundleOf(
+                    ARTICLE_ID to it,
+                    NAVIGATED_BOARD_ID to ArticleBoardType.ALL.id
                 )
-            } else {
-                setNavigationGraph()
-
-                navController.navigate(
-                    R.id.articleDetailFragment,
-                    bundleOf(
-                        ARTICLE_ID to it,
-                        NAVIGATED_BOARD_ID to ArticleBoardType.ALL.id
-                    )
-                )
-            }
+            )
         }
     }
 

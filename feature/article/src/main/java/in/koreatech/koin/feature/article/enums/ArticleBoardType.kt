@@ -11,7 +11,6 @@ enum class ArticleBoardType(
     val exposedInAll: Boolean = true
 ) {
     ALL(4, R.string.article_all, R.string.article_all, LinkType.NONE),
-    LOSTANDFOUND(14, R.string.article_lost_and_found, R.string.article_lost_and_found, LinkType.NONE),
     NORMAL(5, R.string.article_normal, R.string.article_normal_simple, LinkType.ARTICLE),
     SCHOLARSHIP(6, R.string.article_scholarship, R.string.article_scholarship_simple, LinkType.ARTICLE),
     SCHOOL(7, R.string.article_school, R.string.article_school_simple, LinkType.ARTICLE),
@@ -24,7 +23,6 @@ enum class ArticleBoardType(
         fun fromId(id: Int): ArticleBoardType {
             return when (id) {
                 4 -> ALL
-                14 -> LOSTANDFOUND
                 5 -> NORMAL
                 6 -> SCHOLARSHIP
                 7 -> SCHOOL
