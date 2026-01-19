@@ -32,7 +32,7 @@ fun LostAndFoundList(
     viewModel: LostAndFoundListViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {},
     onSearchClick: () -> Unit = {},
-    onArticleClick: (Int) -> Unit = {}
+    navigateArticleDetail: (Int) -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
 
@@ -98,7 +98,7 @@ fun LostAndFoundList(
                 isLoadingMore = uiState.isLoadingMoreArticles,
                 hasMoreArticles = uiState.hasMoreArticles,
                 onLoadMore = { viewModel.loadMoreLostAndFoundItem() },
-                onArticleClick = onArticleClick,
+                onArticleClick = navigateArticleDetail,
             )
         }
 
