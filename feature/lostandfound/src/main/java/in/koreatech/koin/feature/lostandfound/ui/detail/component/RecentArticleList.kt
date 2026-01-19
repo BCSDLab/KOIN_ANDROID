@@ -143,10 +143,7 @@ private fun RecentArticleItem(
             text = formatLostAndFoundTitle(foundPlace = article.foundPlace, foundDate = article.foundDate),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            style = KoinTheme.typography.bold14.copy(
-                fontWeight = FontWeight.SemiBold,
-                color = Color.Black
-            ),
+            style = KoinTheme.typography.medium14.copy(color = Color.Black),
             modifier = Modifier.weight(1f)
         )
 
