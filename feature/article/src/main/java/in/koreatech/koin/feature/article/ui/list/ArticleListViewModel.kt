@@ -4,10 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
-import `in`.koreatech.koin.domain.model.article.LostAndFoundFilterParams
 import `in`.koreatech.koin.domain.repository.ArticleRepository
-import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticlePaginationV2UseCase
-import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchSearchedLostAndFoundArticlesUseCase
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
 import `in`.koreatech.koin.feature.article.model.ArticlePaginationState
 import `in`.koreatech.koin.feature.article.model.toArticlePaginationState
@@ -27,8 +24,6 @@ import kotlinx.coroutines.flow.stateIn
 @HiltViewModel
 class ArticleListViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val fetchLostAndFoundArticlePaginationV2UseCase: FetchLostAndFoundArticlePaginationV2UseCase,
-    private val fetchSearchedLostAndFoundArticlesUseCase: FetchSearchedLostAndFoundArticlesUseCase,
     articleRepository: ArticleRepository
 ) : BaseViewModel() {
 
@@ -68,31 +63,6 @@ class ArticleListViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = ArticlePaginationState(emptyList(), 0, 0, 5, 1)
         )
-
-    val lostAndFoundPagination: StateFlow<LostAndFoundPaginationState> = combine(currentPage, lostAndFoundType, selectedKeyword) { page, type, query ->
-        _isLoading.value = true
-        if (query.isEmpty()) {
-            fetchLostAndFoundArticlePaginationV2UseCase(
-                LostAndFoundFilterParams(
-                    page = page,
-                    limit = ARTICLES_PER_PAGE,
-                    type = type?.name
-                )
-            )
-        } else {
-            fetchSearchedLostAndFoundArticlesUseCase(query, page, ARTICLES_PER_PAGE)
-        }
-    }.debounce(10).flatMapLatest {
-        it.mapLatest { articlePagination ->
-            articlePagination.toLostAndFoundPaginationState()
-        }
-    }.onEach {
-        _isLoading.value = false
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = LostAndFoundPaginationState(emptyList(), 0, 0, 5, 1)
-    )
 
     fun setCurrentBoard(board: ArticleBoardType) {
         if (currentBoard.value == board) return
