@@ -35,19 +35,29 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
+import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType
+import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.AuthorFilterType
+import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.LostOrFoundFilterType
+import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.FoundFilterType
+import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.CategoryFilterType
+import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.ALL
 import kotlinx.collections.immutable.persistentListOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LostAndFoundFilterBottomSheet(
     onDismissRequest: () -> Unit,
-    onApply: (String, String, String, String) -> Unit
+    selectedListTypeInit: LostAndFoundFilterType,
+    selectedCategoryInit: LostAndFoundFilterType,
+    selectedItemTypeInit: LostAndFoundFilterType,
+    selectedStatusInit: LostAndFoundFilterType,
+    onApply: (LostAndFoundFilterType, LostAndFoundFilterType, LostAndFoundFilterType, LostAndFoundFilterType) -> Unit
 ) {
-    val detailOption = stringResource(R.string.filter_list_all)
-    var selectedListType by remember { mutableStateOf(detailOption) }
-    var selectedCategory by remember { mutableStateOf(detailOption) }
-    var selectedItemType by remember { mutableStateOf(detailOption) }
-    var selectedStatus by remember { mutableStateOf(detailOption) }
+    var defaultOption by remember { mutableStateOf(ALL) }
+    var selectedAuthorType by remember { mutableStateOf(selectedListTypeInit) }
+    var selectedLostOrFoundType by remember { mutableStateOf(selectedCategoryInit) }
+    var selectedCategoryType by remember { mutableStateOf(selectedItemTypeInit) }
+    var selectedFoundType by remember { mutableStateOf(selectedStatusInit) }
 
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
@@ -60,29 +70,29 @@ fun LostAndFoundFilterBottomSheet(
         dragHandle = null
     ) {
         FilterBottomSheetContent(
-            selectedListType = selectedListType,
-            selectedCategory = selectedCategory,
-            selectedItemType = selectedItemType,
-            selectedStatus = selectedStatus,
+            selectedAuthorType = selectedAuthorType,
+            selectedLostOrFoundType = selectedLostOrFoundType,
+            selectedCategoryType = selectedCategoryType,
+            selectedFoundType = selectedFoundType,
 
-            onListTypeChange = { selectedListType = it },
-            onCategoryChange = { selectedCategory = it },
-            onItemTypeChange = { selectedItemType = it },
-            onStatusChange = { selectedStatus = it },
+            onAuthorTypeChange = { selectedAuthorType = it },
+            onLostOrFoundTypeChange = { selectedLostOrFoundType = it },
+            onCategoryTypeChange = { selectedCategoryType = it },
+            onFoundTypeChange = { selectedFoundType = it },
 
             onReset = {
-                selectedListType = detailOption
-                selectedCategory = detailOption
-                selectedItemType = detailOption
-                selectedStatus = detailOption
+                selectedAuthorType = defaultOption
+                selectedLostOrFoundType = defaultOption
+                selectedCategoryType = defaultOption
+                selectedFoundType = defaultOption
             },
 
             onApplyClick = {
                 onApply(
-                    selectedListType,
-                    selectedCategory,
-                    selectedItemType,
-                    selectedStatus
+                    selectedAuthorType,
+                    selectedLostOrFoundType,
+                    selectedCategoryType,
+                    selectedFoundType
                 )
             },
 
@@ -93,14 +103,14 @@ fun LostAndFoundFilterBottomSheet(
 
 @Composable
 fun FilterBottomSheetContent(
-    selectedListType: String,
-    selectedCategory: String,
-    selectedItemType: String,
-    selectedStatus: String,
-    onListTypeChange: (String) -> Unit,
-    onCategoryChange: (String) -> Unit,
-    onItemTypeChange: (String) -> Unit,
-    onStatusChange: (String) -> Unit,
+    selectedAuthorType: LostAndFoundFilterType,
+    selectedLostOrFoundType: LostAndFoundFilterType,
+    selectedCategoryType: LostAndFoundFilterType,
+    selectedFoundType: LostAndFoundFilterType,
+    onAuthorTypeChange: (LostAndFoundFilterType) -> Unit,
+    onLostOrFoundTypeChange: (LostAndFoundFilterType) -> Unit,
+    onCategoryTypeChange: (LostAndFoundFilterType) -> Unit,
+    onFoundTypeChange: (LostAndFoundFilterType) -> Unit,
     onReset: () -> Unit,
     onApplyClick: () -> Unit,
     onDismissRequest: () -> Unit
@@ -141,47 +151,47 @@ fun FilterBottomSheetContent(
             FilterSection(
                 title = stringResource(R.string.filter_list_index),
                 items = persistentListOf(
-                    stringResource(R.string.filter_list_all),
-                    stringResource(R.string.filter_list_my_post)
+                    ALL,
+                    AuthorFilterType.MY
                 ),
-                selectedItem = selectedListType,
-                onItemSelected = onListTypeChange
+                selectedItem = selectedAuthorType,
+                onItemSelected = onAuthorTypeChange
             )
             HorizontalDivider(color = KoinTheme.colors.neutral300)
             FilterSection(
                 title = stringResource(R.string.filter_list_category),
                 items = persistentListOf(
-                    stringResource(R.string.filter_list_all),
-                    stringResource(R.string.filter_list_find),
-                    stringResource(R.string.filter_list_lost)
+                    ALL,
+                    LostOrFoundFilterType.FIND,
+                    LostOrFoundFilterType.LOST
                 ),
-                selectedItem = selectedCategory,
-                onItemSelected = onCategoryChange
+                selectedItem = selectedLostOrFoundType,
+                onItemSelected = onLostOrFoundTypeChange
             )
             HorizontalDivider(color = KoinTheme.colors.neutral300)
             FilterSection(
                 title = stringResource(R.string.filter_list_type),
                 items = persistentListOf(
-                    stringResource(R.string.filter_list_all),
-                    stringResource(R.string.filter_list_card),
-                    stringResource(R.string.filter_list_id_card),
-                    stringResource(R.string.filter_list_wallet),
-                    stringResource(R.string.filter_list_electronic),
-                    stringResource(R.string.filter_list_other)
+                    ALL,
+                    CategoryFilterType.CARD,
+                    CategoryFilterType.ID,
+                    CategoryFilterType.WALLET,
+                    CategoryFilterType.ELECTRONIC,
+                    CategoryFilterType.OTHER
                 ),
-                selectedItem = selectedItemType,
-                onItemSelected = onItemTypeChange
+                selectedItem = selectedCategoryType,
+                onItemSelected = onCategoryTypeChange
             )
             HorizontalDivider(color = KoinTheme.colors.neutral300)
             FilterSection(
                 title = stringResource(R.string.filter_list_condition),
                 items = persistentListOf(
-                    stringResource(R.string.filter_list_all),
-                    stringResource(R.string.filter_list_finding),
-                    stringResource(R.string.filter_list_found)
+                    ALL,
+                    FoundFilterType.FINDING,
+                    FoundFilterType.FOUND
                 ),
-                selectedItem = selectedStatus,
-                onItemSelected = onStatusChange
+                selectedItem = selectedFoundType,
+                onItemSelected = onFoundTypeChange
             )
         }
 
@@ -234,9 +244,9 @@ fun FilterBottomSheetContent(
 @Composable
 fun FilterSection(
     title: String,
-    items: List<String>,
-    selectedItem: String,
-    onItemSelected: (String) -> Unit
+    items: List<LostAndFoundFilterType>,
+    selectedItem: LostAndFoundFilterType,
+    onItemSelected: (LostAndFoundFilterType) -> Unit
 ) {
     Column(modifier = Modifier.padding(vertical = 12.dp)) {
         Text(
@@ -254,7 +264,7 @@ fun FilterSection(
                 ) {
                     rowItems.forEach { item ->
                         FilterChipCustom(
-                            text = item,
+                            text = stringResource(item.stringRes),
                             isSelected = item == selectedItem,
                             onClick = { onItemSelected(item) }
                         )
