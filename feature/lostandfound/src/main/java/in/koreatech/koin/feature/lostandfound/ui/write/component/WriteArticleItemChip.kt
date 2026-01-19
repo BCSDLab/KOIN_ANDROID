@@ -47,7 +47,6 @@ fun WriteArticleItemChip(
                 } ${index + 1}",
                 color = KoinTheme.colors.primary600,
                 style = KoinTheme.typography.medium14,
-                fontWeight = FontWeight(500),
                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
             )
         }

@@ -36,7 +36,7 @@ fun WriteArticleAddItemButton(
             ButtonDefaults.buttonColors(
                 containerColor = KoinTheme.colors.info200
             ),
-            shape = RoundedCornerShape(8.dp),
+            shape = KoinTheme.shapes.small,
             contentPadding = PaddingValues(12.dp, 8.dp)
         ) {
             Row(

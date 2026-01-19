@@ -57,7 +57,7 @@ fun BottomSheetCustomExtraContent(
                     .size(24.dp)
             ) {
                 StableIcon(
-                    drawableResId = R.drawable.ic_bottomsheet_close
+                    drawableResId = R.drawable.ic_close
                 )
             }
         }

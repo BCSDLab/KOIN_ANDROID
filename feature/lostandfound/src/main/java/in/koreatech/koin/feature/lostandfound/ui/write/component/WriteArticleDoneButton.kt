@@ -58,7 +58,7 @@ fun WriteArticleDoneButton(
             onClick = onClick,
             modifier = Modifier
                 .padding(vertical = 8.dp, horizontal = 24.dp)
-                .width(326.dp)
+                .fillMaxWidth()
                 .height(48.dp),
             colors = ButtonDefaults.buttonColors(containerColor = KoinTheme.colors.primary500),
             shape = RoundedCornerShape(8.dp)

@@ -92,7 +92,7 @@ fun WriteArticleUploadImage(
                 modifier =
                 Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(shape = KoinTheme.shapes.small)
                     .background(KoinTheme.colors.neutral100)
                     .height(123.dp),
                 contentPadding = PaddingValues(12.dp),
@@ -118,7 +118,7 @@ fun WriteArticleUploadImage(
                 containerColor = KoinTheme.colors.info200
             ),
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+            shape = KoinTheme.shapes.small,
             contentPadding = PaddingValues(8.dp)
         ) {
             Row {
