@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipDefaults
@@ -21,12 +22,14 @@ import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 @Composable
 fun LostItemTypeChip(
     category: LostItemCategory,
+    textStyle: TextStyle = KoinTheme.typography.medium14,
     modifier: Modifier = Modifier
 ) {
     ReadOnlyTextChip(
         title = stringResource(category.stringRes),
         contentPadding = PaddingValues(vertical = 0.dp, horizontal = 8.dp),
         chipColor = KoinTheme.colors.primary500,
+        textStyle = textStyle,
         textColor = Color.White,
         modifier = modifier
     )
@@ -37,6 +40,7 @@ fun ReadOnlyTextChip(
     title: String,
     modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(50),
+    textStyle: TextStyle = KoinTheme.typography.medium14,
     contentPadding: PaddingValues = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
     chipColor: Color = KoinTheme.colors.primary500,
     textColor: Color = Color.White
@@ -54,13 +58,14 @@ fun ReadOnlyTextChip(
             selectedContentColor = textColor,
             unselectedContentColor = textColor
         ),
+        textStyle = textStyle,
         modifier = modifier
     )
 }
 
 @Preview
 @Composable
-fun LostItemTypeChipPreview() {
+private fun LostItemTypeChipPreview() {
     KoinTheme {
         LostItemTypeChip(category = LostItemCategory.NONE)
     }
