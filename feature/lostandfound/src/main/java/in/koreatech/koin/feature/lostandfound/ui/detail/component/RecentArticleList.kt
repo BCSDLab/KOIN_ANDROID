@@ -31,6 +31,7 @@ import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.LostItemTypeChip
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.model.LostAndFoundItemState
+import `in`.koreatech.koin.feature.lostandfound.util.formatLostAndFoundTitle
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 
@@ -139,7 +140,7 @@ private fun RecentArticleItem(
         Spacer(modifier = Modifier.width(4.dp))
 
         Text(
-            text = article.foundPlace,
+            text = formatLostAndFoundTitle(foundPlace = article.foundPlace, foundDate = article.foundDate),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = KoinTheme.typography.bold14.copy(

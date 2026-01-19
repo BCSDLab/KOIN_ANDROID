@@ -16,6 +16,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.component.LostItemTypeChip
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
+import `in`.koreatech.koin.feature.lostandfound.util.formatLostAndFoundTitle
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -31,12 +32,7 @@ fun DetailHeader(
 ) {
     val foundDateFormatType = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     val headerText = remember(key1 = foundPlace, key2 = foundDate) {
-        "${
-            foundPlace.replace(
-                "\n",
-                " "
-            )
-        } | ${foundDate.format(foundDateFormatType)}"
+        formatLostAndFoundTitle(foundPlace = foundPlace, foundDate = foundDate)
     }
 
     Column(
