@@ -217,7 +217,7 @@ private fun SelectYearDialog(
                     onClick = onDismiss
                 ) {
                     StableIcon(
-                        drawableResId = R.drawable.ic_bottomsheet_close
+                        drawableResId = R.drawable.ic_close
                     )
                 }
             }
