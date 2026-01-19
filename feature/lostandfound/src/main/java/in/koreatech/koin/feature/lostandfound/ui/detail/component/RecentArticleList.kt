@@ -139,7 +139,7 @@ private fun RecentArticleItem(
         Spacer(modifier = Modifier.width(4.dp))
 
         Text(
-            text = article.content.ifEmpty { article.foundPlace },
+            text = article.foundPlace,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = KoinTheme.typography.bold14.copy(
