@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.lostandfound.util
 
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 fun LocalDate.getKoreanDayOfWeekName(): String {
     return when (dayOfWeek) {
@@ -18,4 +19,9 @@ fun LocalDate.getKoreanDayOfWeekName(): String {
 
 fun LocalDate.getKoreanDayOfWeekShortName(): String {
     return this.getKoreanDayOfWeekName().substring(0, 1)
+}
+
+fun LocalDate.getKoreanMMddEForm(): String {
+    val formatType = DateTimeFormatter.ofPattern("MM.dd")
+    return "${this.format(formatType)} ${this.getKoreanDayOfWeekName().substring(0, 1)}"
 }
