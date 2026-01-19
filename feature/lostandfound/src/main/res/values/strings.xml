@@ -8,10 +8,39 @@
     <string name="lost_item">분실물</string>
     <string name="found_item">습득물</string>
 
+    <string name="filter_container">필터</string>
+    <string name="filter_list_index">목록</string>
+    <string name="filter_list_all">전체</string>
+    <string name="filter_list_my_post">내 게시물</string>
+    <string name="filter_list_category">물품 카테고리</string>
+    <string name="filter_list_find">습득물</string>
+    <string name="filter_list_lost">분실물</string>
+    <string name="filter_list_type">물품 종류</string>
+    <string name="filter_list_card">카드</string>
+    <string name="filter_list_id_card">신분증</string>
+    <string name="filter_list_wallet">지갑</string>
+    <string name="filter_list_electronic">전자제품</string>
+    <string name="filter_list_other">기타</string>
+    <string name="filter_list_condition">물품 상태</string>
+    <string name="filter_list_finding">찾는중</string>
+    <string name="filter_list_found">찾음</string>
+    <string name="filter_list_reset">초기화</string>
+    <string name="filter_list_adapt">적용하기</string>
+
+    <string name="write_btn">글쓰기</string>
+    <string name="bottom_sheet_title">유형을 선택해주세요</string>
+    <string name="bottom_sheet_close">닫기</string>
+    <string name="finding_btn">주인을 찾아요</string>
+    <string name="lost_btn">잃어버렸어요</string>
+
+    <string name="top_container_text">분실물 신고</string>
+    <string name="top_container_icon">뒤로가기</string>
+
     <string name="header_lost_title">잃어버렸어요</string>
     <string name="header_found_title">주인을 찾아요</string>
     <string name="header_lost_description">분실한 물건을 자세히 설명해주세요!</string>
     <string name="header_found_description">습득한 물건을 자세히 설명해주세요!</string>
+    <string name="header_alert_text">표시는 필수 입력 항목입니다.</string>
 
     <string name="item_type_electronic_device">전자제품</string>
     <string name="item_type_card">카드</string>
@@ -48,7 +77,7 @@
     <string name="found_location_required">습득장소가 입력되지 않았습니다.</string>
 
     <string name="lost_location">분실 장소</string>
-    <string name="lost_location_hint">예상되는 분실 장소가 있다면 입력해주세요.</string>
+    <string name="lost_location_hint">분실 장소를 입력해주세요.</string>
     <string name="lost_location_required" />
 
     <string name="more_description">내용</string>
