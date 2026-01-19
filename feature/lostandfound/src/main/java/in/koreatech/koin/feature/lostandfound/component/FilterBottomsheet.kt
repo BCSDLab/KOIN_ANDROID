@@ -183,7 +183,6 @@ fun FilterBottomSheetContent(
                 selectedItem = selectedStatus,
                 onItemSelected = onStatusChange
             )
-            HorizontalDivider(color = KoinTheme.colors.neutral300, thickness = 1.dp)
         }
 
         Row(
