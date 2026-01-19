@@ -15,9 +15,9 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.feature.lostandfound.navigation.LostAndFoundNavType
 import `in`.koreatech.koin.feature.lostandfound.navigation.koinLostAndFoundGraph
-
 @AndroidEntryPoint
 class LostAndFoundActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdgeWithLightStatusBar()

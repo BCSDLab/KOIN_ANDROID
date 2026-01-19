@@ -22,16 +22,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
@@ -55,6 +57,7 @@ fun LostAndFoundDetail(
     onTopbarBackClick: () -> Unit = {},
     navigateToRecentArticle: (articleId: Int) -> Unit = {},
     navigateToChatRoom: (articleId: Int) -> Unit = {},
+    navigateToLogin: () -> Unit = {},
     navigateToReport: (articleId: Int) -> Unit = {}
 ) {
     Scaffold(
@@ -71,8 +74,6 @@ fun LostAndFoundDetail(
         val context = LocalContext.current
         val isLoading = uiState.isLoading
 
-        var isFound by remember(uiState.isFound) { mutableStateOf(uiState.isFound) }
-
         if (uiState.showFoundDialog) {
             DetailDialog(
                 title = stringResource(id = R.string.lost_and_found_dialog_message),
@@ -84,6 +85,24 @@ fun LostAndFoundDetail(
                     viewModel.setShowFoundDialog(false)
                 },
                 titleStyle = KoinTheme.typography.medium16.copy(color = KoinTheme.colors.neutral600)
+            )
+        }
+
+        if (uiState.showLoginDialog) {
+            ChoiceDialog(
+                title = stringResource(id = R.string.detail_chat_login_dialog_title),
+                description = stringResource(id = R.string.detail_chat_login_dialog_description),
+                positiveButtonText = stringResource(id = R.string.detail_chat_login_dialog_positive),
+                negativeButtonText = stringResource(id = R.string.detail_chat_login_dialog_negative),
+                onPositive = {
+                    navigateToLogin()
+                    viewModel.setShowLoginDialog(false)
+                },
+                onNegative = {
+                    viewModel.setShowLoginDialog(false)
+                },
+                titleStyle = KoinTheme.typography.medium18.copy(color = KoinTheme.colors.neutral600, textAlign = TextAlign.Center),
+                descriptionStyle = KoinTheme.typography.regular14.copy(color = Color(0xFF8E8E8E))
             )
         }
 
@@ -113,7 +132,7 @@ fun LostAndFoundDetail(
                             foundPlace = uiState.foundPlace,
                             foundDate = uiState.foundDate,
                             author = uiState.author,
-                            isFound = isFound
+                            isFound = uiState.isFound
                         )
 
                         HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
@@ -124,10 +143,10 @@ fun LostAndFoundDetail(
                             isWriterAdmin = uiState.isWriterCouncil
                         )
 
-                        if (uiState.isMine) {
+                        if (uiState.isMine && !uiState.isFound) {
                             DetailFoundSwitch(
                                 lostOrFoundType = uiState.lostOrFound,
-                                isFound = isFound,
+                                isFound = uiState.isFound,
                                 onCheckedChange = { viewModel.setShowFoundDialog(true) }
                             )
                         }
@@ -149,6 +168,7 @@ fun LostAndFoundDetail(
                                 viewModel.deleteArticle()
                             },
                             onEditArticleClick = {
+                                // TODO wait new api
                             },
                             onShowDeleteDialogChange = {
                                 viewModel.setShowDeleteDialog(it)
@@ -162,7 +182,11 @@ fun LostAndFoundDetail(
                                         loggingFoundMessageSend
                                     }
                                 )
-                                navigateToChatRoom(uiState.id)
+                                if (uiState.isLoggedIn) {
+                                    navigateToChatRoom(uiState.id)
+                                } else {
+                                    viewModel.setShowLoginDialog(true)
+                                }
                             },
                             onReportArticleClick = {
                                 EventLogger.logCampusClickEvent(
@@ -239,6 +263,14 @@ private fun handleSideEffect(
             Toast.makeText(
                 context,
                 context.getString(R.string.detail_deleted_article),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        LostAndFoundDetailSideEffect.UpdateFoundFail -> {
+            Toast.makeText(
+                context,
+                context.getString(R.string.lost_and_found_update_found_fail),
                 Toast.LENGTH_SHORT
             ).show()
         }

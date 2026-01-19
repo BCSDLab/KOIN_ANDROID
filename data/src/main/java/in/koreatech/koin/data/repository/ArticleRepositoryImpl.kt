@@ -296,4 +296,24 @@ class ArticleRepositoryImpl @Inject constructor(
             )
         }
     }
+
+    override suspend fun updateItemFound(
+        articleId: Int
+    ): Result<Unit> {
+        return runCatching {
+            val response = articleRemoteDataSource.updateItemFound(articleId)
+            if (response.isSuccessful) {
+                Unit
+            } else {
+                throw HttpException(response)
+            }
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> exception.getErrorResponse().toKoinUnknownErrorException()
+                    else -> exception
+                }
+            )
+        }
+    }
 }

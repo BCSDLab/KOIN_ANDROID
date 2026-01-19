@@ -62,6 +62,11 @@
     <string name="detail_student_association_info_2">학생회관 320호 총학생회 사무실</string>
     <string name="detail_student_association_info_3">로 방문해 주시기 바랍니다.\n재실 시간은 공지 사항을 참고해 주시기 바랍니다.</string>
 
+    <string name="detail_chat_login_dialog_title">쪽지를 보내려면 \n로그인이 필요해요.</string>
+    <string name="detail_chat_login_dialog_description">로그인 후 대화를 시작하세요!</string>
+    <string name="detail_chat_login_dialog_positive">로그인하기</string>
+    <string name="detail_chat_login_dialog_negative">닫기</string>
+
     <string name="detail_article_list_button">목록</string>
     <string name="detail_delete_button">삭제</string>
     <string name="detail_edit_button">수정</string>
@@ -182,4 +187,6 @@
     <string name="lost_and_found_lost_message">물건을 찾았나요?</string>
     <string name="lost_and_found_found_message">주인을 찾았나요?</string>
     <string name="lost_and_found_dialog_message">상태 변경 시 되돌릴 수 없습니다.\n찾음으로 변경하시겠습니까?</string>
+
+    <string name="lost_and_found_update_found_fail">찾음으로 변경하지 못했습니다.</string>
 </resources>
