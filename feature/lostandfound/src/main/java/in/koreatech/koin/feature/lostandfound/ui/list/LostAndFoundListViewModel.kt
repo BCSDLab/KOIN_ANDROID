@@ -1,14 +1,20 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.list
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.article.LostAndFoundFilterParams
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticlePaginationV2UseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
+import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundSortType
 import `in`.koreatech.koin.feature.lostandfound.model.toLostAndFoundItemState
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetailViewModel.Companion.PAGE_SIZE
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -20,13 +26,37 @@ import kotlin.collections.plus
 @HiltViewModel
 class LostAndFoundListViewModel @Inject constructor(
     private val fetchLostAndFoundArticlePaginationV2UseCase: FetchLostAndFoundArticlePaginationV2UseCase,
+    private val getUserStatusUseCase: GetUserStatusUseCase
 ): ViewModel(), ContainerHost<LostAndFoundListState, Nothing>  {
     override val container = container<LostAndFoundListState, Nothing>(
         initialState = LostAndFoundListState()
     )
 
     init {
+        initUserInfo()
         fetchLostAndFoundItem()
+    }
+
+    private fun initUserInfo() = viewModelScope.launch {
+        getUserStatusUseCase().collectLatest {
+            intent {
+                when (it) {
+                    is User.Student -> reduce {
+                        state.copy(
+                            isLoggedIn = true
+                        )
+                    }
+                    is User.General -> reduce {
+                        state.copy(
+                            isLoggedIn = true
+                        )
+                    }
+                    is User.Anonymous -> reduce {
+                        state.copy(isLoggedIn = false)
+                    }
+                }
+            }
+        }
     }
 
     fun fetchLostAndFoundItem() = intent {
@@ -34,20 +64,34 @@ class LostAndFoundListViewModel @Inject constructor(
         reduce {
             state.copy(
                 isLoading = true,
+                isFirstPageLoading = true,
                 isLoadingMoreArticles = true
             )
+        }
+        val type = if (state.lostOrFoundFilterType == LostAndFoundFilterType.ALL) {
+            null
+        } else {
+            state.lostOrFoundFilterType.value
         }
         val filterParams = LostAndFoundFilterParams(
             page = 1,
             limit = PAGE_SIZE,
+            category = state.categoryFilterType.value,
+            foundStatus = state.foundFilterType.value,
+            author = state.authorFilterType.value,
+            type = type,
             sort = LostAndFoundSortType.LATEST.value
         )
+        Log.e("MYLOG", "${filterParams}")
         fetchLostAndFoundArticlePaginationV2UseCase(filterParams)
             .catch {
                 reduce {
                     state.copy(
+                        searchedArticles = listOf(),
+                        hasMoreArticles = false,
                         isLoadingMoreArticles = false,
-                        isLoading = false
+                        isLoading = false,
+                        isFirstPageLoading = false,
                     )
                 }
                 Timber.e(it)
@@ -60,7 +104,8 @@ class LostAndFoundListViewModel @Inject constructor(
                         searchedArticlesTotalPage = pagination.totalPage,
                         hasMoreArticles = pagination.currentPage < pagination.totalPage,
                         isLoadingMoreArticles = false,
-                        isLoading = false
+                        isLoading = false,
+                        isFirstPageLoading = false,
                     )
                 }
             }
@@ -74,9 +119,18 @@ class LostAndFoundListViewModel @Inject constructor(
         }
 
         val nextPage = state.searchedArticlesCurrentPage + 1
+        val type = if (state.lostOrFoundFilterType == LostAndFoundFilterType.ALL) {
+            null
+        } else {
+            state.lostOrFoundFilterType.value
+        }
         val filterParams = LostAndFoundFilterParams(
             page = nextPage,
             limit = PAGE_SIZE,
+            category = state.categoryFilterType.value,
+            foundStatus = state.foundFilterType.value,
+            author = state.authorFilterType.value,
+            type = type,
             sort = LostAndFoundSortType.LATEST.value
         )
 
@@ -100,6 +154,22 @@ class LostAndFoundListViewModel @Inject constructor(
             }
     }
 
+    fun setSearchFilter(
+        authorFilterType: LostAndFoundFilterType,
+        lostOrFoundFilterType: LostAndFoundFilterType,
+        categoryFilterType: LostAndFoundFilterType,
+        foundFilterType: LostAndFoundFilterType,
+    ) = intent {
+        reduce {
+            state.copy(
+                authorFilterType = authorFilterType,
+                lostOrFoundFilterType = lostOrFoundFilterType,
+                categoryFilterType = categoryFilterType,
+                foundFilterType = foundFilterType
+            )
+        }
+    }
+
     fun setShowFilterBottomSheet(value: Boolean) = intent {
         reduce {
             state.copy(
@@ -112,6 +182,14 @@ class LostAndFoundListViewModel @Inject constructor(
         reduce {
             state.copy(
                 showWriteBottomSheet = value
+            )
+        }
+    }
+
+    fun setShowLoginDialog(show: Boolean) = intent {
+        reduce {
+            state.copy(
+                showLoginDialog = show
             )
         }
     }

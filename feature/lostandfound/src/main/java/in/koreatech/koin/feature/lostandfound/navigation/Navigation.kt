@@ -15,6 +15,7 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
     navController: NavController
 ) {
     composable<LostAndFoundNavType.LostAndFoundListRoute> {
+        val navigator = rememberNavigator()
         val context = LocalContext.current
         LostAndFoundList(
             onTopbarBackClick = {
@@ -24,6 +25,11 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
             },
             navigateArticleDetail = { articleId ->
                 navController.navigate(LostAndFoundNavType.LostAndFoundDetailRoute(articleId))
+            },
+            navigateToLogin = {
+                navigator.navigateToSignIn(context = context).apply { // TODO Add redirect url
+                    context.startActivity(this)
+                }
             }
         )
     }
@@ -35,13 +41,15 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
             navigateToArticleList = {
                 navController.navigate(LostAndFoundNavType.LostAndFoundListRoute) {
                     popUpTo(navController.graph.startDestinationId) {
-                        inclusive = true
+                        inclusive = false
                     }
                     launchSingleTop = true
                 }
             },
             onTopbarBackClick = {
-                navController.navigateUp()
+                if (!navController.popBackStack()) {
+                    (context as? Activity)?.finish()
+                }
             },
             navigateToChatRoom = { articleId ->
                 val intent = navigator.navigateToChatRoom(context)
