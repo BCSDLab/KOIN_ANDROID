@@ -149,7 +149,7 @@ private fun RecentArticleItem(
             modifier = Modifier.weight(1f)
         )
 
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.weight(1f))
 
         LostAndFoundStatusChip(isFound = article.isFound)
     }
