@@ -23,13 +23,16 @@ import `in`.koreatech.koin.feature.lostandfound.component.LostAndFoundContainer
 import `in`.koreatech.koin.feature.lostandfound.component.LostAndFoundFAB
 import `in`.koreatech.koin.feature.lostandfound.component.LostAndFoundFABBottomSheet
 import `in`.koreatech.koin.feature.lostandfound.component.LostAndFoundFilterBottomSheet
+import `in`.koreatech.koin.feature.lostandfound.ui.list.component.ListColumn
+import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun LostAndFoundList(
     viewModel: LostAndFoundListViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {},
-    onSearchClick: () -> Unit = {}
+    onSearchClick: () -> Unit = {},
+    onArticleClick: (Int) -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
 
@@ -88,6 +91,14 @@ fun LostAndFoundList(
                 onFilterClick = {
                     viewModel.setShowFilterBottomSheet(true)
                 }
+            )
+
+            ListColumn(
+                searchedArticles = uiState.searchedArticles.toPersistentList(),
+                isLoadingMore = uiState.isLoadingMoreArticles,
+                hasMoreArticles = uiState.hasMoreArticles,
+                onLoadMore = { viewModel.loadMoreLostAndFoundItem() },
+                onArticleClick = onArticleClick,
             )
         }
 
