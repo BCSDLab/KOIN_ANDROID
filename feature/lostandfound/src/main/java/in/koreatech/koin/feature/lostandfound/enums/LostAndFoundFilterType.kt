@@ -49,9 +49,9 @@ sealed class LostAndFoundFilterType: Parcelable {
         override val value: String
     ): LostAndFoundFilterType() {
         @Parcelize
-        object FINDING : CategoryFilterType(stringRes = R.string.filter_list_finding, value = "FOUND")
+        object FINDING : CategoryFilterType(stringRes = R.string.filter_list_finding, value = "NOT_FOUND")
         @Parcelize
-        object FOUND : CategoryFilterType(stringRes = R.string.filter_list_found, value = "NOT_FOUND")
+        object FOUND : CategoryFilterType(stringRes = R.string.filter_list_found, value = "FOUND")
     }
     @Parcelize
 
