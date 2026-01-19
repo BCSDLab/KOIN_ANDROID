@@ -224,7 +224,10 @@ fun FilterBottomSheetContent(
                 )
             }
             Button(
-                onClick = onApplyClick,
+                onClick = {
+                    onApplyClick
+                    onDismissRequest
+                },
                 shape = KoinTheme.shapes.medium,
                 colors = ButtonDefaults.buttonColors(containerColor = KoinTheme.colors.primary500),
                 modifier = Modifier
