@@ -47,17 +47,17 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun LostAndFoundFilterBottomSheet(
     onDismissRequest: () -> Unit,
-    selectedListTypeInit: LostAndFoundFilterType,
-    selectedCategoryInit: LostAndFoundFilterType,
-    selectedItemTypeInit: LostAndFoundFilterType,
-    selectedStatusInit: LostAndFoundFilterType,
+    selectedAuthorType: LostAndFoundFilterType,
+    selectedLostOrFoundType: LostAndFoundFilterType,
+    selectedCategoryType: LostAndFoundFilterType,
+    selectedFoundType: LostAndFoundFilterType,
     onApply: (LostAndFoundFilterType, LostAndFoundFilterType, LostAndFoundFilterType, LostAndFoundFilterType) -> Unit
 ) {
     var defaultOption by remember { mutableStateOf(ALL) }
-    var selectedAuthorType by remember { mutableStateOf(selectedListTypeInit) }
-    var selectedLostOrFoundType by remember { mutableStateOf(selectedCategoryInit) }
-    var selectedCategoryType by remember { mutableStateOf(selectedItemTypeInit) }
-    var selectedFoundType by remember { mutableStateOf(selectedStatusInit) }
+    var selectedAuthorType by remember { mutableStateOf(selectedAuthorType) }
+    var selectedLostOrFoundType by remember { mutableStateOf(selectedLostOrFoundType) }
+    var selectedCategoryType by remember { mutableStateOf(selectedCategoryType) }
+    var selectedFoundType by remember { mutableStateOf(selectedFoundType) }
 
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
