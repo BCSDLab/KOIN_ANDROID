@@ -3,7 +3,7 @@ package `in`.koreatech.koin.feature.lostandfound.util
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-fun toLostAndFoundTitleForm(
+fun formatLostAndFoundTitle(
     foundPlace: String,
     foundDate: LocalDate
 ): String {
