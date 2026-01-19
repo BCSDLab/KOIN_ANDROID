@@ -6,19 +6,20 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import `in`.koreatech.koin.core.navigation.Navigator
+import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetail
 import `in`.koreatech.koin.feature.lostandfound.ui.list.LostAndFoundList
 import `in`.koreatech.koin.feature.lostandfound.ui.report.LostAndFoundReport
 
 fun NavGraphBuilder.koinLostAndFoundGraph(
-    navController: NavController,
-    navigator: Navigator
+    navController: NavController
 ) {
     composable<LostAndFoundNavType.LostAndFoundListRoute> {
         LostAndFoundList()
     }
 
     composable<LostAndFoundNavType.LostAndFoundDetailRoute> { backStackEntry ->
+        val navigator = rememberNavigator()
         val context = LocalContext.current
         LostAndFoundDetail(
             navigateToArticleList = {
@@ -28,6 +29,7 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
                 navController.navigateUp()
             },
             navigateToChatRoom = { articleId ->
+
                 val intent = navigator.navigateToChatRoom(context)
                 intent.putExtra(CHAT_ARTICLE_ID, articleId)
                 context.startActivity(intent)

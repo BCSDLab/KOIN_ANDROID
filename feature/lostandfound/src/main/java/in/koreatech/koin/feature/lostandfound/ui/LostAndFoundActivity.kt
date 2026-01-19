@@ -20,8 +20,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class LostAndFoundActivity : ComponentActivity() {
-    @Inject
-    lateinit var navigator: Navigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +35,7 @@ class LostAndFoundActivity : ComponentActivity() {
                     startDestination = startDestination
                 ) {
                     koinLostAndFoundGraph(
-                        navController = navController,
-                        navigator = navigator
+                        navController = navController
                     )
                 }
             }
