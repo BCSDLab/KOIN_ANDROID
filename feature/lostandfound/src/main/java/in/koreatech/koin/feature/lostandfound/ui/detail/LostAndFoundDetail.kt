@@ -233,7 +233,7 @@ fun LostAndFoundDetail(
 private fun handleSideEffect(
     sideEffect: LostAndFoundDetailSideEffect,
     context: Context,
-    navigateToArticleList: () -> Unit = {}
+    navigateToArticleList: () -> Unit = {},
 ) {
     when (sideEffect) {
         is LostAndFoundDetailSideEffect.DeleteArticle -> {
@@ -254,17 +254,12 @@ private fun handleSideEffect(
         }
 
         LostAndFoundDetailSideEffect.DeletedArticle -> {
-            context.findActivity()?.finish()
-            val intent =
-                Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse("koin://article/activity?fragment=article_lost_and_found")
-                }
-            context.startActivity(intent)
             Toast.makeText(
                 context,
                 context.getString(R.string.detail_deleted_article),
                 Toast.LENGTH_SHORT
             ).show()
+            navigateToArticleList()
         }
 
         LostAndFoundDetailSideEffect.UpdateFoundFail -> {
