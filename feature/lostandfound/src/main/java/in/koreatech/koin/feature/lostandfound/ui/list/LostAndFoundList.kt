@@ -32,6 +32,7 @@ import `in`.koreatech.koin.feature.lostandfound.component.LostAndFoundFAB
 import `in`.koreatech.koin.feature.lostandfound.component.LostAndFoundFABBottomSheet
 import `in`.koreatech.koin.feature.lostandfound.component.LostAndFoundFilterBottomSheet
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.AuthorFilterType.MY
+import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.ListColumn
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.compose.collectAsState
@@ -41,8 +42,9 @@ fun LostAndFoundList(
     viewModel: LostAndFoundListViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {},
     onSearchClick: () -> Unit = {},
+    navigateToLogin: () -> Unit = {},
     navigateArticleDetail: (Int) -> Unit = {},
-    navigateToLogin: () -> Unit = {}
+    navigateToWrite: (String) -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
 
@@ -76,8 +78,12 @@ fun LostAndFoundList(
             onDismissRequest = {
                 viewModel.setShowWriteBottomSheet(false)
             },
-            onFindOwnerClick = {}, //TODO connect viewModel
-            onLostItemClick = {} //TODO connect viewModel
+            onFindOwnerClick = {
+                navigateToWrite(LostOrFoundType.FOUND.name)
+            },
+            onLostItemClick = {
+                navigateToWrite(LostOrFoundType.LOST.name)
+            }
         )
     }
 

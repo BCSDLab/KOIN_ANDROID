@@ -11,6 +11,7 @@ import `in`.koreatech.koin.domain.usecase.presignedurl.GetLostAndFoundPreSignedU
 import `in`.koreatech.koin.feature.lostandfound.IMAGE_MAX_COUNT
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
+import `in`.koreatech.koin.feature.lostandfound.navigation.LOST_OR_FOUND_TYPE
 import java.time.LocalDate
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -298,7 +299,4 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
             }
         }
 
-    companion object {
-        const val LOST_OR_FOUND_TYPE = "lost_or_found_type"
-    }
 }
