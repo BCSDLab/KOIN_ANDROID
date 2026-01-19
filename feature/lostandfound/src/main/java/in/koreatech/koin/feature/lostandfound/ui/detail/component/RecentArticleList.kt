@@ -124,7 +124,7 @@ private fun RecentArticleItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = if (article.lostOrFound == LostOrFoundType.LOST) "분실물" else "습득물",
+            text = if (article.lostOrFound == LostOrFoundType.LOST) stringResource(R.string.lost_item) else stringResource(R.string.found_item),
             style = KoinTheme.typography.bold12.copy(
                 fontWeight = FontWeight.SemiBold,
                 color = KoinTheme.colors.primary600
@@ -132,7 +132,10 @@ private fun RecentArticleItem(
         )
         Spacer(modifier = Modifier.width(8.dp))
 
-        LostItemTypeChip(category = article.category)
+        LostItemTypeChip(
+            category = article.category,
+            textStyle = KoinTheme.typography.medium12
+        )
         Spacer(modifier = Modifier.width(4.dp))
 
         Text(
