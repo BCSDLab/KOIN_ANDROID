@@ -1,10 +1,10 @@
-package `in`.koreatech.koin.feature.article.ui.lostandfound.write
+package `in`.koreatech.koin.feature.lostandfound.ui.write
 
 import android.os.Parcelable
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
-import `in`.koreatech.koin.feature.article.enums.LostItemCategory
-import `in`.koreatech.koin.feature.article.enums.LostItemCategory.Companion.getCategoryKoreanWord
-import `in`.koreatech.koin.feature.article.enums.LostOrFoundType
+import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
+import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory.Companion.getCategoryKoreanWord
+import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import java.time.LocalDate
 import kotlinx.parcelize.Parcelize
 

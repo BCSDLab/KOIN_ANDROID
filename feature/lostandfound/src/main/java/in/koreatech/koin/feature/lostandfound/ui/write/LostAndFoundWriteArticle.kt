@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.article.ui.lostandfound.write
+package `in`.koreatech.koin.feature.lostandfound.ui.write
 
 import android.content.Context
 import android.net.Uri
@@ -32,28 +32,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.feature.article.MAX_ITEM_COUNT
-import `in`.koreatech.koin.feature.article.R
-import `in`.koreatech.koin.feature.article.enums.LostItemCategory
-import `in`.koreatech.koin.feature.article.enums.LostItemCategory.Companion.getCategoryKoreanWord
-import `in`.koreatech.koin.feature.article.enums.LostOrFoundType
-import `in`.koreatech.koin.feature.article.ui.lostandfound.write.component.WriteArticleAddItemButton
-import `in`.koreatech.koin.feature.article.ui.lostandfound.write.component.WriteArticleDoneButton
-import `in`.koreatech.koin.feature.article.ui.lostandfound.write.component.WriteArticleHeader
-import `in`.koreatech.koin.feature.article.ui.lostandfound.write.component.WriteArticleItemChip
-import `in`.koreatech.koin.feature.article.ui.lostandfound.write.component.WriteArticleItemDetail
-import `in`.koreatech.koin.feature.article.ui.lostandfound.write.component.WriteArticleItemType
-import `in`.koreatech.koin.feature.article.ui.lostandfound.write.component.WriteArticleUploadImage
+import `in`.koreatech.koin.feature.lostandfound.MAX_ITEM_COUNT
+import `in`.koreatech.koin.feature.lostandfound.R
+import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
+import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory.Companion.getCategoryKoreanWord
+import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
+import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleAddItemButton
+import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleDoneButton
+import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleHeader
+import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleItemChip
+import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleItemDetail
+import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleItemType
+import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleUploadImage
 import java.time.LocalDate
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun LostAndFoundWriteArticle(
+    modifier: Modifier = Modifier,
     viewModel: LostAndFoundWriteArticleViewModel = hiltViewModel(),
     onWriteComplete: (articleId: Int) -> Unit = {}
 ) {
@@ -65,7 +66,7 @@ fun LostAndFoundWriteArticle(
 
     KoinTheme {
         Scaffold(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .consumeWindowInsets(WindowInsets.navigationBars)
                 .imePadding(),

@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.article.ui.lostandfound.write
+package `in`.koreatech.koin.feature.lostandfound.ui.write
 
 import android.net.Uri
 

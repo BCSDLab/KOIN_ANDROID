@@ -1,7 +1,7 @@
-package `in`.koreatech.koin.feature.article.ui.lostandfound.write
+package `in`.koreatech.koin.feature.lostandfound.ui.write
 
 import android.os.Parcelable
-import `in`.koreatech.koin.feature.article.enums.LostOrFoundType
+import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
