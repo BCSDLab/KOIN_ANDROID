@@ -58,14 +58,14 @@ fun WriteArticleItemDetail(
     onMoreDescriptionChange: (String) -> Unit = {},
     date: LocalDate?,
     dateRequired: Boolean = false,
-    showDatePicker: Boolean = false,
-    onShowDatePickerChange: (Boolean) -> Unit = {},
     onDateChange: (date: LocalDate) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val dayPickerState = rememberPickerState()
     val monthPickerState = rememberPickerState()
     val yearPickerState = rememberPickerState()
+
+    var isPickerExpanded by remember { mutableStateOf(false) }
 
     val now = LocalDate.now()
 
@@ -134,7 +134,7 @@ fun WriteArticleItemDetail(
                 .background(KoinTheme.colors.neutral100)
                 .padding(vertical = 8.dp, horizontal = 16.dp)
                 .noRippleClickable {
-                    onShowDatePickerChange(!showDatePicker)
+                    isPickerExpanded = !isPickerExpanded
                 }
                 .onGloballyPositioned {
                     dateComposablePosition = it.positionInParent() +
@@ -169,7 +169,7 @@ fun WriteArticleItemDetail(
                 }
 
                 val rotateDegree: Float by animateFloatAsState(
-                    targetValue = if (showDatePicker) 180f else 0f,
+                    targetValue = if (isPickerExpanded) 180f else 0f,
                     label = "degree"
                 )
 
@@ -208,7 +208,7 @@ fun WriteArticleItemDetail(
             }
         }
 
-        LaunchedEffect(showDatePicker) {
+        LaunchedEffect(isPickerExpanded) {
             if (date == null) {
                 yearPickerState.selectedItemIndex = yearList.indexOf(now.year.toString())
                 monthPickerState.selectedItemIndex = monthList.indexOf(now.monthValue.toString())
@@ -216,7 +216,7 @@ fun WriteArticleItemDetail(
             }
         }
 
-        if (showDatePicker) {
+        if (isPickerExpanded) {
             LaunchedEffect(yearPickerState.selectedItem, monthPickerState.selectedItem) {
                 if (yearPickerState.selectedItem == "") return@LaunchedEffect
                 if (monthPickerState.selectedItem == "") return@LaunchedEffect
