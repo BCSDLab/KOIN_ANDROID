@@ -27,8 +27,8 @@ object WriteArticleDoneButtonDefaults {
     val windowInsets: WindowInsets
         @Composable
         get() = WindowInsets.systemBars.only(
-                WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
-            )
+            WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
+        )
 }
 
 @Composable
