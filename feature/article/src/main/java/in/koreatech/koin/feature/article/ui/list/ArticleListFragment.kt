@@ -34,14 +34,6 @@ import `in`.koreatech.koin.core.util.withLoading
 import `in`.koreatech.koin.feature.article.R
 import `in`.koreatech.koin.feature.article.databinding.FragmentArticleListBinding
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
-import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.ALL
-import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.IPP
-import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.KOIN
-import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.NORMAL
-import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.RECRUIT
-import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.SCHOLARSHIP
-import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.SCHOOL
-import `in`.koreatech.koin.feature.article.enums.ArticleBoardType.STUDENT
 import `in`.koreatech.koin.feature.article.model.ArticleHeaderState
 import `in`.koreatech.koin.feature.article.ui.article.adapter.ArticleAdapter
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.ARTICLE_ID
@@ -168,25 +160,6 @@ class ArticleListFragment : Fragment() {
                 drawArticleDivider(c, parent)
             }
         })
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.currentBoard.collect {
-                    when (it) {
-                        ALL,
-                        NORMAL,
-                        SCHOLARSHIP,
-                        SCHOOL,
-                        RECRUIT,
-                        IPP,
-                        STUDENT,
-                        KOIN -> {
-                            binding.nestedScrollViewArticleList.visibility = View.VISIBLE
-                        }
-                    }
-                }
-            }
-        }
     }
 
     private fun addCategoryTabs() {

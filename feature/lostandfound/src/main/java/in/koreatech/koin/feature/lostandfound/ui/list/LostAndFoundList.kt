@@ -46,7 +46,7 @@ fun LostAndFoundList(
 ) {
     val uiState by viewModel.collectAsState()
 
-    if(uiState.showFilterBottomSheet) {
+    if (uiState.showFilterBottomSheet) {
         LostAndFoundFilterBottomSheet(
             onDismissRequest = {
                 viewModel.setShowFilterBottomSheet(false)
@@ -71,13 +71,13 @@ fun LostAndFoundList(
         )
     }
 
-    if(uiState.showWriteBottomSheet) {
+    if (uiState.showWriteBottomSheet) {
         LostAndFoundFABBottomSheet(
             onDismissRequest = {
                 viewModel.setShowWriteBottomSheet(false)
             },
-            onFindOwnerClick = {}, //TODO connect viewModel
-            onLostItemClick = {} //TODO connect viewModel
+            onFindOwnerClick = {}, // TODO connect viewModel
+            onLostItemClick = {} // TODO connect viewModel
         )
     }
 
@@ -114,7 +114,7 @@ fun LostAndFoundList(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_search_vector),
                         contentDescription = ""
                     )
-                },
+                }
             )
         },
         floatingActionButton = {
@@ -174,6 +174,5 @@ fun LostAndFoundList(
                 }
             }
         }
-
     }
 }

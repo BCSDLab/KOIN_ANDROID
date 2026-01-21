@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.list
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -82,7 +81,6 @@ class LostAndFoundListViewModel @Inject constructor(
             type = type,
             sort = LostAndFoundSortType.LATEST.value
         )
-        Log.e("MYLOG", "${filterParams}")
         fetchLostAndFoundArticlePaginationV2UseCase(filterParams)
             .catch {
                 reduce {

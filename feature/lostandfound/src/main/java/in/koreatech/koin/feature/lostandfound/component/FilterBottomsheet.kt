@@ -41,6 +41,7 @@ import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.Los
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.FoundFilterType
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.CategoryFilterType
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.ALL
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -247,7 +248,7 @@ fun FilterBottomSheetContent(
 @Composable
 fun FilterSection(
     title: String,
-    items: List<LostAndFoundFilterType>,
+    items: ImmutableList<LostAndFoundFilterType>,
     selectedItem: LostAndFoundFilterType,
     onItemSelected: (LostAndFoundFilterType) -> Unit
 ) {

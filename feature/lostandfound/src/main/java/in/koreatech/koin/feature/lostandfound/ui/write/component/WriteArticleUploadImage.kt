@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -92,7 +91,7 @@ fun WriteArticleUploadImage(
                 modifier =
                 Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(shape = KoinTheme.shapes.small)
                     .background(KoinTheme.colors.neutral100)
                     .height(123.dp),
                 contentPadding = PaddingValues(12.dp),
@@ -118,7 +117,7 @@ fun WriteArticleUploadImage(
                 containerColor = KoinTheme.colors.info200
             ),
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+            shape = KoinTheme.shapes.small,
             contentPadding = PaddingValues(8.dp)
         ) {
             Row {
