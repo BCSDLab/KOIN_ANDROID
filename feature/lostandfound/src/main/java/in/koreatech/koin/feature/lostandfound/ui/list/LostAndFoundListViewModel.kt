@@ -11,6 +11,8 @@ import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundSortType
 import `in`.koreatech.koin.feature.lostandfound.model.toLostAndFoundItemState
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetailViewModel.Companion.PAGE_SIZE
+import javax.inject.Inject
+import kotlin.collections.plus
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -19,14 +21,12 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
-import javax.inject.Inject
-import kotlin.collections.plus
 
 @HiltViewModel
 class LostAndFoundListViewModel @Inject constructor(
     private val fetchLostAndFoundArticlePaginationV2UseCase: FetchLostAndFoundArticlePaginationV2UseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase
-): ViewModel(), ContainerHost<LostAndFoundListState, Nothing>  {
+) : ViewModel(), ContainerHost<LostAndFoundListState, Nothing> {
     override val container = container<LostAndFoundListState, Nothing>(
         initialState = LostAndFoundListState()
     )
@@ -59,7 +59,7 @@ class LostAndFoundListViewModel @Inject constructor(
     }
 
     fun fetchLostAndFoundItem() = intent {
-        if(state.isLoading) return@intent
+        if (state.isLoading) return@intent
         reduce {
             state.copy(
                 isLoading = true,
@@ -89,7 +89,7 @@ class LostAndFoundListViewModel @Inject constructor(
                         hasMoreArticles = false,
                         isLoadingMoreArticles = false,
                         isLoading = false,
-                        isFirstPageLoading = false,
+                        isFirstPageLoading = false
                     )
                 }
                 Timber.e(it)
@@ -103,7 +103,7 @@ class LostAndFoundListViewModel @Inject constructor(
                         hasMoreArticles = pagination.currentPage < pagination.totalPage,
                         isLoadingMoreArticles = false,
                         isLoading = false,
-                        isFirstPageLoading = false,
+                        isFirstPageLoading = false
                     )
                 }
             }
@@ -156,7 +156,7 @@ class LostAndFoundListViewModel @Inject constructor(
         authorFilterType: LostAndFoundFilterType,
         lostOrFoundFilterType: LostAndFoundFilterType,
         categoryFilterType: LostAndFoundFilterType,
-        foundFilterType: LostAndFoundFilterType,
+        foundFilterType: LostAndFoundFilterType
     ) = intent {
         reduce {
             state.copy(
