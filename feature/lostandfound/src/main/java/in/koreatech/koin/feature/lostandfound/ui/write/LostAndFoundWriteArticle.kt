@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -105,6 +104,7 @@ fun LostAndFoundWriteArticle(
         )
     }
 }
+
 @Composable
 fun LostAndFoundWriteArticleImpl(
     modifier: Modifier = Modifier,
