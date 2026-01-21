@@ -35,6 +35,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -101,9 +102,9 @@ fun FilterBottomSheetContent(
     onCategoryChange: (String) -> Unit,
     onItemTypeChange: (String) -> Unit,
     onStatusChange: (String) -> Unit,
-    onReset: () -> Unit,
-    onApplyClick: () -> Unit,
-    onDismissRequest: () -> Unit
+    onReset: () -> Unit = {},
+    onApplyClick: () -> Unit = {},
+    onDismissRequest: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -234,7 +235,7 @@ fun FilterBottomSheetContent(
 @Composable
 fun FilterSection(
     title: String,
-    items: List<String>,
+    items: ImmutableList<String>,
     selectedItem: String,
     onItemSelected: (String) -> Unit
 ) {

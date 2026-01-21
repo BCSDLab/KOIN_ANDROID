@@ -168,25 +168,6 @@ class ArticleListFragment : Fragment() {
                 drawArticleDivider(c, parent)
             }
         })
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.currentBoard.collect {
-                    when (it) {
-                        ALL,
-                        NORMAL,
-                        SCHOLARSHIP,
-                        SCHOOL,
-                        RECRUIT,
-                        IPP,
-                        STUDENT,
-                        KOIN -> {
-                            binding.nestedScrollViewArticleList.visibility = View.VISIBLE
-                        }
-                    }
-                }
-            }
-        }
     }
 
     private fun addCategoryTabs() {
