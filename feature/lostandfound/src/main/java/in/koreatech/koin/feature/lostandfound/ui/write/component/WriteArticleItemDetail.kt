@@ -50,6 +50,7 @@ import java.time.LocalDate
 
 @Composable
 fun WriteArticleItemDetail(
+    modifier: Modifier = Modifier,
     type: LostOrFoundType,
     location: String,
     locationRequired: Boolean = false,
@@ -59,13 +60,19 @@ fun WriteArticleItemDetail(
     date: LocalDate?,
     dateRequired: Boolean = false,
     onDateChange: (date: LocalDate) -> Unit = {},
-    modifier: Modifier = Modifier
+    shouldCollapse: Boolean = false
 ) {
     val dayPickerState = rememberPickerState()
     val monthPickerState = rememberPickerState()
     val yearPickerState = rememberPickerState()
 
     var isPickerExpanded by remember { mutableStateOf(false) }
+
+    LaunchedEffect(shouldCollapse) {
+        if (shouldCollapse) {
+            isPickerExpanded = false
+        }
+    }
 
     val now = LocalDate.now()
 
@@ -85,9 +92,7 @@ fun WriteArticleItemDetail(
     }
 
     Column(
-        modifier =
-        modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -128,8 +133,7 @@ fun WriteArticleItemDetail(
         var dateComposablePosition by remember { mutableStateOf(Offset.Zero) }
 
         Box(
-            modifier =
-            Modifier
+            modifier = Modifier
                 .clip(RoundedCornerShape(8.dp))
                 .background(KoinTheme.colors.neutral100)
                 .padding(vertical = 8.dp, horizontal = 16.dp)
@@ -254,16 +258,14 @@ fun WriteArticleItemDetail(
                 )
             ) {
                 Box(
-                    modifier =
-                    Modifier
+                    modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 12.dp, horizontal = 24.dp)
                         .clip(RoundedCornerShape(8.dp))
                         .background(KoinTheme.colors.neutral100)
                 ) {
                     Row(
-                        modifier =
-                        Modifier
+                        modifier = Modifier
                             .padding(vertical = 12.dp, horizontal = 32.dp)
                             .fillMaxWidth()
                     ) {

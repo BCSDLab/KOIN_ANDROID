@@ -101,15 +101,9 @@ fun LostAndFoundWriteArticle(
                 shouldShowItemAddButton = itemList.size < MAX_ITEM_COUNT
             }
 
-            var shouldShowDatePicker by remember { mutableStateOf(false) }
-
             val lazyColumnState = rememberLazyListState()
 
-            LaunchedEffect(lazyColumnState.isScrollInProgress) {
-                if (lazyColumnState.isScrollInProgress) {
-                    shouldShowDatePicker = false
-                }
-            }
+            val isScrolling = lazyColumnState.isScrollInProgress
 
             LazyColumn(
                 state = lazyColumnState,
@@ -127,7 +121,7 @@ fun LostAndFoundWriteArticle(
                         shouldShowDelete = shouldShowItemRemoveButton,
                         articleData = item,
                         lostOrFoundType = item.lostOrFoundType,
-                        showDatePicker = shouldShowDatePicker,
+                        isScrolling = isScrolling,
                         onAddImageClick = { uri ->
                             viewModel.addImage(itemIndex, uri)
                         },
@@ -152,9 +146,6 @@ fun LostAndFoundWriteArticle(
                         },
                         onUpdateLocation = { foundPlace ->
                             viewModel.updateLocation(itemIndex, foundPlace)
-                        },
-                        onShowDatePickerChange = { showDatePicker ->
-                            shouldShowDatePicker = showDatePicker
                         },
                         onDateChange = { date ->
                             viewModel.updateDate(itemIndex, date)
@@ -189,19 +180,18 @@ fun LostAndFoundWriteArticle(
 
 @Composable
 fun WriteFoundItemArticleImpl(
+    modifier: Modifier = Modifier,
     index: Int,
     shouldShowDelete: Boolean = false,
     articleData: LostAndFoundWriteArticleItemState,
     lostOrFoundType: LostOrFoundType,
-    showDatePicker: Boolean,
-    modifier: Modifier = Modifier,
+    isScrolling: Boolean,
     onAddImageClick: (uri: Uri) -> Unit = {},
     onRemoveImageClick: (index: Int) -> Unit = {},
     onRemoveItemClick: (index: Int) -> Unit = {},
     onChangeItemType: (itemType: LostItemCategory) -> Unit = {},
     onUpdateDescription: (description: String) -> Unit = {},
     onUpdateLocation: (location: String) -> Unit = {},
-    onShowDatePickerChange: (showDatePicker: Boolean) -> Unit = {},
     onDateChange: (date: LocalDate?) -> Unit = {}
 ) {
     val pickMultipleMedia =
@@ -256,8 +246,7 @@ fun WriteFoundItemArticleImpl(
             onLocationChange = { onUpdateLocation(it) },
             date = articleData.foundDate,
             dateRequired = articleData.dateRequired,
-            showDatePicker = showDatePicker,
-            onShowDatePickerChange = onShowDatePickerChange,
+            shouldCollapse = isScrolling,
             onDateChange = { onDateChange(it) }
         )
     }
