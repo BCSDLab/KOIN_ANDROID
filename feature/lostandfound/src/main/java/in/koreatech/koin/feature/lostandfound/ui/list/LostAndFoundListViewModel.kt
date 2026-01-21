@@ -11,6 +11,8 @@ import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundSortType
 import `in`.koreatech.koin.feature.lostandfound.model.toLostAndFoundItemState
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetailViewModel.Companion.PAGE_SIZE
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import javax.inject.Inject
 import kotlin.collections.plus
 import kotlinx.coroutines.flow.catch
@@ -85,7 +87,7 @@ class LostAndFoundListViewModel @Inject constructor(
             .catch {
                 reduce {
                     state.copy(
-                        searchedArticles = listOf(),
+                        searchedArticles = persistentListOf(),
                         hasMoreArticles = false,
                         isLoadingMoreArticles = false,
                         isLoading = false,
@@ -97,7 +99,7 @@ class LostAndFoundListViewModel @Inject constructor(
             .collectLatest { pagination ->
                 reduce {
                     state.copy(
-                        searchedArticles = pagination.articleLostAndFoundHeader.map { it.toLostAndFoundItemState() },
+                        searchedArticles = pagination.articleLostAndFoundHeader.map { it.toLostAndFoundItemState() }.toPersistentList(),
                         searchedArticlesCurrentPage = pagination.currentPage,
                         searchedArticlesTotalPage = pagination.totalPage,
                         hasMoreArticles = pagination.currentPage < pagination.totalPage,
@@ -142,7 +144,7 @@ class LostAndFoundListViewModel @Inject constructor(
                 val filteredArticles = pagination.articleLostAndFoundHeader.map { it.toLostAndFoundItemState() }
                 reduce {
                     state.copy(
-                        searchedArticles = state.searchedArticles + filteredArticles,
+                        searchedArticles = (state.searchedArticles + filteredArticles).toPersistentList(),
                         searchedArticlesCurrentPage = pagination.currentPage,
                         searchedArticlesTotalPage = pagination.totalPage,
                         hasMoreArticles = pagination.currentPage < pagination.totalPage,
