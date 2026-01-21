@@ -298,5 +298,4 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
                 }
             }
         }
-
 }
