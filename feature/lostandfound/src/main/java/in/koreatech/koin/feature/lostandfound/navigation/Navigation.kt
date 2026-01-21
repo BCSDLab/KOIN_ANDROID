@@ -13,16 +13,14 @@ import `in`.koreatech.koin.feature.lostandfound.ui.list.LostAndFoundList
 import `in`.koreatech.koin.feature.lostandfound.ui.report.LostAndFoundReport
 
 fun NavGraphBuilder.koinLostAndFoundGraph(
-    navController: NavController
+    navController: NavController,
+    onBackPressed: () -> Unit
 ) {
     composable<LostAndFoundNavType.LostAndFoundListRoute> {
         val navigator = rememberNavigator()
-        val dispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
         val context = LocalContext.current
         LostAndFoundList(
-            onTopbarBackClick = {
-                dispatcher?.onBackPressed()
-            },
+            onTopbarBackClick = onBackPressed,
             navigateArticleDetail = { articleId ->
                 navController.navigate(LostAndFoundNavType.LostAndFoundDetailRoute(articleId))
             },
@@ -36,7 +34,6 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
 
     composable<LostAndFoundNavType.LostAndFoundDetailRoute> { backStackEntry ->
         val navigator = rememberNavigator()
-        val dispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
         val context = LocalContext.current
         LostAndFoundDetail(
             navigateToArticleList = {
@@ -47,9 +44,7 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
                     launchSingleTop = true
                 }
             },
-            onTopbarBackClick = {
-                dispatcher?.onBackPressed()
-            },
+            onTopbarBackClick = onBackPressed,
             navigateToChatRoom = { articleId ->
                 val intent = navigator.navigateToChatRoom(context)
                 intent.putExtra(CHAT_ARTICLE_ID, articleId)

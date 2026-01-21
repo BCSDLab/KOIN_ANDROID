@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.lostandfound.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,13 +27,20 @@ class LostAndFoundActivity : ComponentActivity() {
                 var startDestination by remember { mutableStateOf<LostAndFoundNavType>(LostAndFoundNavType.LostAndFoundListRoute) }
                 val navController = rememberNavController()
 
+                val dispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+
+                val onBackPressed = remember(dispatcher) {
+                    { dispatcher?.onBackPressed() ?: Unit }
+                }
+
                 NavHost(
                     modifier = Modifier,
                     navController = navController,
                     startDestination = startDestination
                 ) {
                     koinLostAndFoundGraph(
-                        navController = navController
+                        navController = navController,
+                        onBackPressed = onBackPressed
                     )
                 }
             }
