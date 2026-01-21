@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -31,8 +32,12 @@ fun ItemSearchTextField(
     Row (
         modifier = modifier
             .fillMaxWidth()
-            .background(color = KoinTheme.colors.neutral300)
-            .padding(vertical = 8.dp, horizontal = 16.dp)
+            .background(
+                color = KoinTheme.colors.neutral100,
+                shape = KoinTheme.shapes.extraSmall
+            )
+            .padding(vertical = 8.dp, horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         BasicTextField(
             modifier = Modifier.weight(1f),
@@ -58,9 +63,6 @@ fun ItemSearchTextField(
             }
         )
         Icon(
-            modifier = Modifier
-                .size(16.dp)
-                .padding(4.dp),
             imageVector = ImageVector.vectorResource(R.drawable.ic_search_vector),
             contentDescription = ""
         )

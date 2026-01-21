@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -124,6 +126,7 @@ fun LostAndFoundList(
                 .padding(contentPadding)
                 .consumeWindowInsets(contentPadding)
                 .systemBarsPadding()
+                .imePadding()
         ) {
             Row(
                 modifier = Modifier
@@ -132,6 +135,9 @@ fun LostAndFoundList(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 ItemSearchTextField(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 12.dp),
                     value = uiState.searchQuery,
                     onValueChange = viewModel::setSearchQuery
                 )
