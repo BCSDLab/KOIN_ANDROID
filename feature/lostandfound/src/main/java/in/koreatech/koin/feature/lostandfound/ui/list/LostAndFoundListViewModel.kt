@@ -11,10 +11,10 @@ import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundSortType
 import `in`.koreatech.koin.feature.lostandfound.model.toLostAndFoundItemState
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetailViewModel.Companion.PAGE_SIZE
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
 import javax.inject.Inject
 import kotlin.collections.plus
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
