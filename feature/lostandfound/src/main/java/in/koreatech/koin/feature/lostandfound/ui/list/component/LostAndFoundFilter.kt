@@ -1,8 +1,7 @@
-package `in`.koreatech.koin.feature.lostandfound.component
+package `in`.koreatech.koin.feature.lostandfound.ui.list.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,22 +19,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
-
-@Composable
-fun LostAndFoundContainer(
-    modifier: Modifier = Modifier,
-    onFilterClick: () -> Unit = {}
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp),
-        horizontalArrangement = Arrangement.End,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        LostAndFoundChip(onClick = onFilterClick)
-    }
-}
 
 @Composable
 fun LostAndFoundChip(onClick: () -> Unit) {
