@@ -71,7 +71,8 @@ fun WriteArticleHeader(
                         append("*")
                     }
                     append(stringResource(R.string.header_alert_text))
-                }
+                },
+                style = KoinTheme.typography.regular12
             )
         }
     }

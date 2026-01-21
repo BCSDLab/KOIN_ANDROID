@@ -19,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -102,7 +101,6 @@ private fun LostAndFoundSheetButton(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(49.dp)
             .background(color = KoinTheme.colors.neutral0, shape = KoinTheme.shapes.small)
             .border(
                 width = 1.dp,
@@ -110,7 +108,7 @@ private fun LostAndFoundSheetButton(
                 shape = KoinTheme.shapes.small
             )
             .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp),
+            .padding(vertical = 8.dp, horizontal = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -118,7 +116,7 @@ private fun LostAndFoundSheetButton(
             imageVector = icon,
             contentDescription = text,
             modifier = Modifier.size(24.dp),
-            tint = Color.Unspecified
+            tint = KoinTheme.colors.neutral600
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
