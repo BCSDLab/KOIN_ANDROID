@@ -31,6 +31,7 @@ import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LostAndFoundFA
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LostAndFoundFilterBottomSheet
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.AuthorFilterType.MY
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
+import `in`.koreatech.koin.feature.lostandfound.ui.list.component.ItemSearchTextField
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.ListColumn
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.compose.collectAsState
@@ -39,7 +40,6 @@ import org.orbitmvi.orbit.compose.collectAsState
 fun LostAndFoundList(
     viewModel: LostAndFoundListViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {},
-    onSearchClick: () -> Unit = {},
     navigateToLogin: () -> Unit = {},
     navigateArticleDetail: (Int) -> Unit = {},
     navigateToWrite: (String) -> Unit = {}
@@ -131,6 +131,10 @@ fun LostAndFoundList(
                     .padding(horizontal = 24.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                ItemSearchTextField(
+                    value = uiState.searchQuery,
+                    onValueChange = viewModel::setSearchQuery
+                )
                 LostAndFoundChip(
                     onClick = {
                         viewModel.setShowFilterBottomSheet(true)

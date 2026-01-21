@@ -193,4 +193,12 @@ class LostAndFoundListViewModel @Inject constructor(
             )
         }
     }
+
+    fun setSearchQuery(query: String) = intent {
+        reduce {
+            state.copy(
+                searchQuery = query
+            )
+        }
+    }
 }

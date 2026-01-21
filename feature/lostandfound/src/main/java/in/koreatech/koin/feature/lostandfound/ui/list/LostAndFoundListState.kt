@@ -16,6 +16,7 @@ data class LostAndFoundListState(
     val isFirstPageLoading: Boolean = false,
     val showFilterBottomSheet: Boolean = false,
     val showWriteBottomSheet: Boolean = false,
+    val searchQuery: String = "",
     val categoryFilterType: LostAndFoundFilterType = ALL,
     val lostOrFoundFilterType: LostAndFoundFilterType = ALL,
     val foundFilterType: LostAndFoundFilterType = ALL,
