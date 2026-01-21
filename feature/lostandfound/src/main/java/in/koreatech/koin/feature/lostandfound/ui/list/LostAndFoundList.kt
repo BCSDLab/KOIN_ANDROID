@@ -31,8 +31,6 @@ fun LostAndFoundList(
                 .consumeWindowInsets(contentPadding)
                 .systemBarsPadding()
         ) {
-
         }
-
     }
 }
