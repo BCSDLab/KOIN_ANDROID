@@ -2,13 +2,14 @@ package `in`.koreatech.koin.feature.lostandfound.ui.list
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,21 +17,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
-import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
-import `in`.koreatech.koin.feature.lostandfound.component.LostAndFoundContainer
-import `in`.koreatech.koin.feature.lostandfound.component.LostAndFoundFAB
-import `in`.koreatech.koin.feature.lostandfound.component.LostAndFoundFABBottomSheet
-import `in`.koreatech.koin.feature.lostandfound.component.LostAndFoundFilterBottomSheet
+import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LostAndFoundChip
+import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LostAndFoundFAB
+import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LostAndFoundFABBottomSheet
+import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LostAndFoundFilterBottomSheet
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.AuthorFilterType.MY
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.ListColumn
@@ -110,17 +108,7 @@ fun LostAndFoundList(
         topBar = {
             KoinTopAppBar(
                 title = stringResource(R.string.lost_and_found),
-                onNavigationIconClick = onTopbarBackClick,
-                actions = {
-                    Icon(
-                        modifier = Modifier
-                            .padding(end = 10.dp)
-                            .size(24.dp)
-                            .noRippleClickable(onClick = onSearchClick),
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_search_vector),
-                        contentDescription = ""
-                    )
-                }
+                onNavigationIconClick = onTopbarBackClick
             )
         },
         floatingActionButton = {
@@ -137,11 +125,18 @@ fun LostAndFoundList(
                 .consumeWindowInsets(contentPadding)
                 .systemBarsPadding()
         ) {
-            LostAndFoundContainer(
-                onFilterClick = {
-                    viewModel.setShowFilterBottomSheet(true)
-                }
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                LostAndFoundChip(
+                    onClick = {
+                        viewModel.setShowFilterBottomSheet(true)
+                    }
+                )
+            }
             if (!uiState.isFirstPageLoading) {
                 if (uiState.searchedArticles.isEmpty()) {
                     Box(
