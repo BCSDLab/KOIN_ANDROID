@@ -142,7 +142,7 @@ fun ClubCreateScreen(
             onShouldShowPermissionDialogChange = viewModel::updateShowPermissionDialog,
             onUserRoleChange = viewModel::updateUserRole,
             uploadImage = { fileSize, fileType, fileName, fileUri ->
-                viewModel.getPreSignedUrl(
+                viewModel.uploadImage(
                     fileSize = fileSize,
                     fileType = fileType,
                     fileName = fileName,
