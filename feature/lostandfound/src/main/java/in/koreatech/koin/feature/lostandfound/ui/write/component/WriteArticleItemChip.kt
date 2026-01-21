@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
@@ -47,7 +46,6 @@ fun WriteArticleItemChip(
                 } ${index + 1}",
                 color = KoinTheme.colors.primary600,
                 style = KoinTheme.typography.medium14,
-                fontWeight = FontWeight(500),
                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
             )
         }

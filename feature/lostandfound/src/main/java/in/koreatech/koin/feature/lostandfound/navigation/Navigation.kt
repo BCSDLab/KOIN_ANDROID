@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.lostandfound.navigation
 
-import android.app.Activity
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -13,17 +12,14 @@ import `in`.koreatech.koin.feature.lostandfound.ui.report.LostAndFoundReport
 import `in`.koreatech.koin.feature.lostandfound.ui.write.LostAndFoundWriteArticle
 
 fun NavGraphBuilder.koinLostAndFoundGraph(
-    navController: NavController
+    navController: NavController,
+    onBackPressed: () -> Unit
 ) {
     composable<LostAndFoundNavType.LostAndFoundListRoute> {
         val navigator = rememberNavigator()
         val context = LocalContext.current
         LostAndFoundList(
-            onTopbarBackClick = {
-                if (!navController.popBackStack()) {
-                    (context as? Activity)?.finish()
-                }
-            },
+            onTopbarBackClick = onBackPressed,
             navigateArticleDetail = { articleId ->
                 navController.navigate(LostAndFoundNavType.LostAndFoundDetailRoute(articleId))
             },
@@ -50,11 +46,7 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
                     launchSingleTop = true
                 }
             },
-            onTopbarBackClick = {
-                if (!navController.popBackStack()) {
-                    (context as? Activity)?.finish()
-                }
-            },
+            onTopbarBackClick = onBackPressed,
             navigateToChatRoom = { articleId ->
                 val intent = navigator.navigateToChatRoom(context)
                 intent.putExtra(CHAT_ARTICLE_ID, articleId)
@@ -83,13 +75,8 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
     }
 
     composable<LostAndFoundNavType.LostAndFoundWriteRoute> { backStackEntry ->
-        val context = LocalContext.current
         LostAndFoundWriteArticle(
-            onBackClick = {
-                if (!navController.popBackStack()) {
-                    (context as? Activity)?.finish()
-                }
-            },
+            onBackClick = onBackPressed,
             onComplete = {
                 navController.navigate(LostAndFoundNavType.LostAndFoundListRoute) {
                     popUpTo(navController.graph.startDestinationId) {

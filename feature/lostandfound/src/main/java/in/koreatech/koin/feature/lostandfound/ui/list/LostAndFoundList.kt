@@ -48,7 +48,7 @@ fun LostAndFoundList(
 ) {
     val uiState by viewModel.collectAsState()
 
-    if(uiState.showFilterBottomSheet) {
+    if (uiState.showFilterBottomSheet) {
         LostAndFoundFilterBottomSheet(
             onDismissRequest = {
                 viewModel.setShowFilterBottomSheet(false)
@@ -58,14 +58,14 @@ fun LostAndFoundList(
             selectedCategoryType = uiState.categoryFilterType,
             selectedFoundType = uiState.foundFilterType,
             onApply = { first, second, third, fourth ->
-                if(!uiState.isLoggedIn && first == MY) {
+                if (!uiState.isLoggedIn && first == MY) {
                     viewModel.setShowLoginDialog(true)
                 } else {
                     viewModel.setSearchFilter(
                         authorFilterType = first,
-                        lostOrFoundFilterType =  second,
+                        lostOrFoundFilterType = second,
                         categoryFilterType = third,
-                        foundFilterType =  fourth
+                        foundFilterType = fourth
                     )
                     viewModel.fetchLostAndFoundItem()
                 }
@@ -73,7 +73,7 @@ fun LostAndFoundList(
         )
     }
 
-    if(uiState.showWriteBottomSheet) {
+    if (uiState.showWriteBottomSheet) {
         LostAndFoundFABBottomSheet(
             onDismissRequest = {
                 viewModel.setShowWriteBottomSheet(false)
@@ -120,7 +120,7 @@ fun LostAndFoundList(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_search_vector),
                         contentDescription = ""
                     )
-                },
+                }
             )
         },
         floatingActionButton = {
@@ -142,8 +142,8 @@ fun LostAndFoundList(
                     viewModel.setShowFilterBottomSheet(true)
                 }
             )
-            if(!uiState.isFirstPageLoading) {
-                if(uiState.searchedArticles.isEmpty()) {
+            if (!uiState.isFirstPageLoading) {
+                if (uiState.searchedArticles.isEmpty()) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -161,11 +161,10 @@ fun LostAndFoundList(
                         isLoadingMore = uiState.isLoadingMoreArticles,
                         hasMoreArticles = uiState.hasMoreArticles,
                         onLoadMore = { viewModel.loadMoreLostAndFoundItem() },
-                        onArticleClick = navigateArticleDetail,
+                        onArticleClick = navigateArticleDetail
                     )
                 }
-            }
-            else {
+            } else {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -180,6 +179,5 @@ fun LostAndFoundList(
                 }
             }
         }
-
     }
 }

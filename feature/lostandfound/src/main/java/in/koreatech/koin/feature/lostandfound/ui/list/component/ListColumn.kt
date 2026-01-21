@@ -31,7 +31,7 @@ fun ListColumn(
     hasMoreArticles: Boolean,
     onLoadMore: () -> Unit,
     onArticleClick: (Int) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val listState = rememberLazyListState()
 

@@ -112,9 +112,6 @@ class ArticleActivity : ActivityBase() {
                     )
                 )
             }
-            "article_lost_and_found" -> {
-                // setNavigationGraph(ArticleBoardType.LOSTANDFOUND.id) Todo delete LostAndFound in article
-            }
             null -> {
                 val bundle = intent.getBundleExtra(BUNDLE_ARTICLE_EXTRA_KEY)
                 bundle?.getInt(START_BOARD)?.let {
