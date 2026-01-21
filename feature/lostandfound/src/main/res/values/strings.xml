@@ -218,4 +218,9 @@
     <string name="lost_and_found_dialog_message">상태 변경 시 되돌릴 수 없습니다.\n찾음으로 변경하시겠습니까?</string>
 
     <string name="lost_and_found_update_found_fail">찾음으로 변경하지 못했습니다.</string>
+
+    <string name="lost_and_found_my_filter_can_use_logged_in">내 개시물 필터는\n로그인이 필요해요.</string>
+    <string name="lost_and_found_my_filter_can_use_logged_in_description">로그인 후 이용하세요!</string>
+    <string name="lost_and_found_my_filter_can_use_logged_in_positive">로그인하기</string>
+    <string name="lost_and_found_my_filter_can_use_logged_in_negative">닫기</string>
 </resources>

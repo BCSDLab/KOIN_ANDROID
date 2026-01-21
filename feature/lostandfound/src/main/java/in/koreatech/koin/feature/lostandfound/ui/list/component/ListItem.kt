@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.list.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,7 +21,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.LostItemTypeChip
@@ -62,7 +62,7 @@ fun ListItem(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .noRippleClickable { onArticleClick(articleId) }
+            .clickable { onArticleClick(articleId) }
             .padding(vertical = 12.dp, horizontal = 24.dp)
     ) {
         Text(
