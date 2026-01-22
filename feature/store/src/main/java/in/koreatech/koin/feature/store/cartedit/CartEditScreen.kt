@@ -41,7 +41,10 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.nestedscroll.rememberKoinNestedScrollConnection
+import `in`.koreatech.koin.core.nestedscroll.rememberKoinNestedScrollHeaderState
 import `in`.koreatech.koin.core.toast.ToastUtil
+import `in`.koreatech.koin.core.util.pxToDp
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.AddMenuBottomCard
 import `in`.koreatech.koin.feature.store.component.KoinCartOptionItem
@@ -52,8 +55,6 @@ import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.component.QuantitySelectorSection
 import `in`.koreatech.koin.feature.store.model.LocalShopMenuOptionGroup
 import `in`.koreatech.koin.feature.store.model.LocalShopPrice
-import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
-import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
 import kotlin.math.roundToInt
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -71,15 +72,10 @@ fun CartEditScreen(
         handleSideEffect(it, navigateBack)
     }
 
-    val rememberState = rememberCollapsingToolbarState()
+    val rememberState = rememberKoinNestedScrollHeaderState()
     val overlayAlpha = rememberState.progress()
-    val nestedScrollConnection = storeCollapsingToolbarConnection(
-        listState = rememberState.listState,
-        toolbarOffsetPx = rememberState.toolbarOffsetPx,
-        toolbarHeightPx = rememberState.toolbarHeightPx,
-        minHeightPx = rememberState.minHeightPx
-    )
-    val currentToolbarHeightDp = rememberState.currentToolbarHeightDp()
+    val nestedScrollConnection = rememberKoinNestedScrollConnection(rememberState)
+    val currentToolbarHeightDp = rememberState.currentHeaderHeightDp()
     val statusBarHeight = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
 
     if (uiState.showErrorDialog) {
@@ -123,7 +119,7 @@ fun CartEditScreen(
                 onQuantityChange = viewModel::updateQuantity,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = rememberState.toolbarMinHeight + statusBarHeight)
+                    .padding(bottom = rememberState.headerCollapsedHeightPx.pxToDp + statusBarHeight)
                     .offset {
                         IntOffset(
                             0,
@@ -176,10 +172,10 @@ fun CartEditScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(rememberState.toolbarMinHeight, rememberState.toolbarMaxHeight + statusBarHeight)
+                        .heightIn(rememberState.headerCollapsedHeightPx.pxToDp, rememberState.headerExpandedHeightPx.pxToDp + statusBarHeight)
                         .graphicsLayer {
                             clip = true
-                            translationY = -(rememberState.toolbarMaxHeight.toPx() - currentToolbarHeightDp.value.toPx())
+                            translationY = -(rememberState.headerExpandedHeightPx - currentToolbarHeightDp.value.toPx())
                             alpha = 1f - overlayAlpha.value
                         }
                         .zIndex(1f)
