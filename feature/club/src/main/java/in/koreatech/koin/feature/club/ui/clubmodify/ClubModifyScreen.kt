@@ -135,7 +135,7 @@ fun ClubModifyScreen(
             onCancelModifyClub = onNavigateUp,
             onShouldShowModifyDialogChange = viewModel::updateShowModifyDialog,
             uploadImage = { fileSize, fileType, fileName, fileUri ->
-                viewModel.getPreSignedUrl(
+                viewModel.uploadImage(
                     fileSize = fileSize,
                     fileType = fileType,
                     fileName = fileName,
