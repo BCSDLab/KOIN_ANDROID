@@ -340,14 +340,14 @@ class ArticleRepositoryImpl @Inject constructor(
                     deleteImageIds
                 )
             )
-            if(response.isSuccessful) {
+            if (response.isSuccessful) {
                 Unit
             } else {
                 throw HttpException(response)
             }
         }.onFailure { exception ->
             return Result.failure(
-                when (exception){
+                when (exception) {
                     is HttpException -> {
                         when (exception.code()) {
                             400 -> KoinArticleException.CanNotFoundItemException()
