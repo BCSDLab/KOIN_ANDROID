@@ -1,8 +1,6 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.detail
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -45,7 +43,6 @@ import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailDialog
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailFoundSwitch
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailHeader
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.RecentArticleList
-import `in`.koreatech.koin.feature.lostandfound.util.findActivity
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -254,17 +251,12 @@ private fun handleSideEffect(
         }
 
         LostAndFoundDetailSideEffect.DeletedArticle -> {
-            context.findActivity()?.finish()
-            val intent =
-                Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse("koin://article/activity?fragment=article_lost_and_found")
-                }
-            context.startActivity(intent)
             Toast.makeText(
                 context,
                 context.getString(R.string.detail_deleted_article),
                 Toast.LENGTH_SHORT
             ).show()
+            navigateToArticleList()
         }
 
         LostAndFoundDetailSideEffect.UpdateFoundFail -> {
