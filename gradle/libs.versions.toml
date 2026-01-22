@@ -71,7 +71,6 @@ strictVersionMatcherPlugin = "1.2.4"
 timber = "5.0.1"
 toolbarCompose = "2.3.2"
 turbine = "1.2.0"
-runtime = "1.10.1"
 
 [libraries]
 accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
@@ -188,7 +187,6 @@ strict-version-matcher-plugin = { module = "com.google.android.gms:strict-versio
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 toolbar-compose = { module = "me.onebone:toolbar-compose", version.ref = "toolbarCompose" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
-androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradle" }

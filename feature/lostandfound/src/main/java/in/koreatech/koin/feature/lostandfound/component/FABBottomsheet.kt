@@ -13,9 +13,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +28,31 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LostAndFoundFABBottomSheet(
+    onDismissRequest: () -> Unit,
+    onFindOwnerClick: () -> Unit,
+    onLostItemClick: () -> Unit
+) {
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+
+    ModalBottomSheet(
+        sheetState = sheetState,
+        onDismissRequest = onDismissRequest,
+        containerColor = KoinTheme.colors.neutral0,
+        dragHandle = null
+    ) {
+        LostAndFoundFABContent(
+            onDismissRequest = onDismissRequest,
+            onFindOwnerClick = onFindOwnerClick,
+            onLostItemClick = onLostItemClick
+        )
+    }
+}
 
 @Composable
 fun LostAndFoundFABContent(

@@ -31,6 +31,7 @@ import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.LostItemTypeChip
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.model.LostAndFoundItemState
+import `in`.koreatech.koin.feature.lostandfound.util.formatLostAndFoundTitle
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 
@@ -124,7 +125,7 @@ private fun RecentArticleItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = if (article.lostOrFound == LostOrFoundType.LOST) "분실물" else "습득물",
+            text = if (article.lostOrFound == LostOrFoundType.LOST) stringResource(R.string.lost_item) else stringResource(R.string.found_item),
             style = KoinTheme.typography.bold12.copy(
                 fontWeight = FontWeight.SemiBold,
                 color = KoinTheme.colors.primary600
@@ -132,17 +133,17 @@ private fun RecentArticleItem(
         )
         Spacer(modifier = Modifier.width(8.dp))
 
-        LostItemTypeChip(category = article.category)
+        LostItemTypeChip(
+            category = article.category,
+            textStyle = KoinTheme.typography.medium12
+        )
         Spacer(modifier = Modifier.width(4.dp))
 
         Text(
-            text = article.content.ifEmpty { article.foundPlace },
+            text = formatLostAndFoundTitle(foundPlace = article.foundPlace, foundDate = article.foundDate),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            style = KoinTheme.typography.bold14.copy(
-                fontWeight = FontWeight.SemiBold,
-                color = Color.Black
-            ),
+            style = KoinTheme.typography.medium14.copy(color = Color.Black),
             modifier = Modifier.weight(1f)
         )
 

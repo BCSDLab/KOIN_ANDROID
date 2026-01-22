@@ -91,7 +91,7 @@ class ArticleRemoteDataSource @Inject constructor(
         author: String?,
         title: String?
     ): ArticleLostAndFoundPaginationResponse {
-        return articleApi.fetchArticleLostAndFoundPaginationV2(
+        return articleAuthApi.fetchArticleLostAndFoundPaginationV2(
             type = type,
             page = page,
             limit = limit,
