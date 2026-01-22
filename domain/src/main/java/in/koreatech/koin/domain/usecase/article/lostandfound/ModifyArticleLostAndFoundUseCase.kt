@@ -5,7 +5,7 @@ import javax.inject.Inject
 
 class ModifyArticleLostAndFoundUseCase @Inject constructor(
     private val articleRepository: ArticleRepository
-){
+) {
     suspend operator fun invoke(
         articleId: Int,
         category: String,

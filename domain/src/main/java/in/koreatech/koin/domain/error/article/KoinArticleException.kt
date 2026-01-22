@@ -8,21 +8,24 @@ import `in`.koreatech.koin.domain.error.KoinErrorException
  * Every exceptions should ends with Exception.
  */
 
-sealed class KoinArticleException: KoinErrorException() {
+sealed class KoinArticleException : KoinErrorException() {
     /*
-    * Exceptions for 400 Bad Request
-    */
+     * Exceptions for 400 Bad Request
+     */
     class CanNotFoundItemException : KoinArticleException()
+
     /*
-    * Exceptions for 401 Bad Request
-    */
+     * Exceptions for 401 Bad Request
+     */
     class UnauthorizedUserException : KoinArticleException()
+
     /*
-    * Exceptions for 403 Bad Request
-    */
+     * Exceptions for 403 Bad Request
+     */
     class ForbiddenAuthor : KoinArticleException()
+
     /*
-    * Exceptions for 404 Bad Request
-    */
+     * Exceptions for 404 Bad Request
+     */
     class NotFoundImage : KoinArticleException()
 }
