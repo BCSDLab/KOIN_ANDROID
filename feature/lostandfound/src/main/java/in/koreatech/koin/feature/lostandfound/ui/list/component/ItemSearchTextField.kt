@@ -18,12 +18,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
+import `in`.koreatech.koin.feature.lostandfound.TEXT_FIELD_MAX_LENGTH
 
 @Composable
 fun ItemSearchTextField(
     value: String,
     modifier: Modifier = Modifier,
-    maxLength: Int = 255,
+    maxLength: Int = TEXT_FIELD_MAX_LENGTH,
     hint: String = stringResource(R.string.lost_and_found_search_hint),
     textStyle: TextStyle = KoinTheme.typography.regular14.copy(color = KoinTheme.colors.neutral600),
     onValueChange: (String) -> Unit = {}
