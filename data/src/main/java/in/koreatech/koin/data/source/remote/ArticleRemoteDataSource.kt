@@ -5,6 +5,7 @@ import `in`.koreatech.koin.data.api.auth.ArticleAuthApi
 import `in`.koreatech.koin.data.mapper.toArticleLostAndFoundRequest
 import `in`.koreatech.koin.data.request.article.ArticleKeywordRequest
 import `in`.koreatech.koin.data.request.article.ArticleLostAndFoundReportRequest
+import `in`.koreatech.koin.data.request.article.ArticleModifyRequest
 import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundPaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundResponse
@@ -152,4 +153,9 @@ class ArticleRemoteDataSource @Inject constructor(
     suspend fun updateItemFound(
         articleId: Int
     ) = articleAuthApi.updateItemFound(articleId)
+
+    suspend fun modifyArticleLostAndFound(
+        articleId: Int,
+        request: ArticleModifyRequest
+    ) = articleAuthApi.modifyArticleLostAndFound(articleId, request)
 }
