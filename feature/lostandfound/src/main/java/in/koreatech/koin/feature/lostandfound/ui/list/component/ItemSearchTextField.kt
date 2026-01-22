@@ -43,7 +43,6 @@ fun ItemSearchTextField(
             modifier = Modifier.weight(1f),
             value = value,
             textStyle = textStyle,
-            maxLines = 1,
             singleLine = true,
             onValueChange = {
                 if (it.length < maxLength) {
