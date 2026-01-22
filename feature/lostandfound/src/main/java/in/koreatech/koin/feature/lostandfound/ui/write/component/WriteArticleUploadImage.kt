@@ -129,7 +129,7 @@ fun WriteArticleUploadImage(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     color = KoinTheme.colors.primary600,
-                    style = KoinTheme.typography.regular14,
+                    style = KoinTheme.typography.medium14,
                     text = stringResource(id = R.string.upload_image)
                 )
             }

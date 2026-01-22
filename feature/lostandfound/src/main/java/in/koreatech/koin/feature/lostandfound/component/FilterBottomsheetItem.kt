@@ -2,7 +2,6 @@ package `in`.koreatech.koin.feature.lostandfound.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
@@ -27,11 +26,11 @@ fun FilterChipCustom(
             color = if (isSelected) KoinTheme.colors.primary500 else KoinTheme.colors.neutral300
         ),
         color = KoinTheme.colors.neutral0,
-        modifier = Modifier.height(34.dp)
+        modifier = Modifier.padding(end = 8.dp)
     ) {
         Box(
             contentAlignment = Alignment.Center,
-            modifier = Modifier.padding(horizontal = 12.dp)
+            modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp)
         ) {
             Text(
                 text = text,

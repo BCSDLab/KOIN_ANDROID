@@ -88,4 +88,14 @@ interface ArticleRepository {
     suspend fun fetchArticleLostAndFoundStats(): Result<ArticleLostAndFoundStats>
 
     suspend fun updateItemFound(articleId: Int): Result<Unit>
+
+    suspend fun modifyArticleLostAndFound(
+        articleId: Int,
+        category: String,
+        foundPlace: String,
+        foundDate: String,
+        content: String?,
+        newImage: List<String>?,
+        deleteImageIds: List<String>?
+    ): Result<Unit>
 }
