@@ -92,7 +92,7 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
         )
     }
 
-    composable<LostAndFoundNavType.LostAndFoundModifyRoute> { backStackEntry ->
+    composable<LostAndFoundNavType.LostAndFoundModifyRoute> {
         LostAndFoundModify(
             onBackClick = onBackPressed,
             onComplete = { articleId ->
