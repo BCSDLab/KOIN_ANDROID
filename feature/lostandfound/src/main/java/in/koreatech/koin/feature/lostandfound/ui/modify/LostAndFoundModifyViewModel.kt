@@ -35,8 +35,7 @@ class LostAndFoundModifyViewModel @Inject constructor(
     private val uploadImageUseCase: UploadImageUseCase
 ) : ViewModel(),
     ContainerHost<LostAndFoundModifyState, LostAndFoundModifySideEffect> {
-    override val container =
-        container<LostAndFoundModifyState, LostAndFoundModifySideEffect>(
+    override val container = container<LostAndFoundModifyState, LostAndFoundModifySideEffect>(
             LostAndFoundModifyState(),
             savedStateHandle
         ) {
