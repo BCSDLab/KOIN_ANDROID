@@ -134,7 +134,7 @@ object AnalyticsConstant {
             const val LOST_ITEM_POST_ENTRY = "lost_item_post_entry"
             const val LOST_ITEM_MESSAGE_LOGIN_REQUEST = "lost_item_message_login_request"
             const val LOST_ITEM_WRITE_LOGIN_REQUEST = "lost_item_write_login_request"
-            const val LOST_ITEM_STATE_CHANGE =  "lost_item_state_change"
+            const val LOST_ITEM_STATE_CHANGE = "lost_item_state_change"
             const val LOST_ITEM_FOUND = "lost_item_found"
             const val LOST_ITEM_MODIFY = "lost_item_modify"
             const val LOST_ITEM_MODIFY_COMPLETE = "lost_item_modify_complete"
