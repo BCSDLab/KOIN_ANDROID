@@ -179,12 +179,14 @@ fun LostAndFoundWriteArticleImpl(
                                             context.contentResolver.getType(uri)
                                                 ?: "image/${fileName.split(".").last()}"
 
-                                        viewModel.uploadImage(
-                                            fileName,
-                                            fileType,
-                                            fileSize,
-                                            uri
-                                        )
+                                        if (fileType.startsWith("image/")) {
+                                            viewModel.uploadImage(
+                                                fileName,
+                                                fileType,
+                                                fileSize,
+                                                uri
+                                            )
+                                        }
                                     }
                                 }
                             }

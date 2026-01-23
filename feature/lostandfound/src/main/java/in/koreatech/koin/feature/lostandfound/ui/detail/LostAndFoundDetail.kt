@@ -174,6 +174,9 @@ fun LostAndFoundDetail(
                         val loggingLostMessageSend = stringResource(id = R.string.logging_lost_message_send)
                         val loggingFoundMessageSend = stringResource(id = R.string.logging_found_message_send)
                         val loggingReport = stringResource(id = R.string.logging_report)
+                        val onModifyClick = remember(uiState.id) {
+                            { navigateToModify(uiState.id) }
+                        }
 
                         DetailButtonGroup(
                             lostOrFound = uiState.lostOrFound,
@@ -189,9 +192,7 @@ fun LostAndFoundDetail(
                             onDeleteArticleClick = {
                                 viewModel.deleteArticle()
                             },
-                            onModifyArticleClick = {
-                                navigateToModify(uiState.id)
-                            },
+                            onModifyArticleClick = onModifyClick,
                             onShowDeleteDialogChange = {
                                 viewModel.setShowDeleteDialog(it)
                             },
