@@ -52,6 +52,7 @@ fun LostAndFoundDetail(
     modifier: Modifier = Modifier,
     navigateToArticleList: () -> Unit = {},
     onTopbarBackClick: () -> Unit = {},
+    refreshLostAndFoundList: () -> Unit = {},
     navigateToRecentArticle: (articleId: Int) -> Unit = {},
     navigateToChatRoom: (articleId: Int) -> Unit = {},
     navigateToLogin: () -> Unit = {},
@@ -78,6 +79,7 @@ fun LostAndFoundDetail(
                 onPositive = {
                     viewModel.setFound()
                     viewModel.setShowFoundDialog(false)
+                    refreshLostAndFoundList()
                 },
                 onNegative = {
                     viewModel.setShowFoundDialog(false)
@@ -105,7 +107,7 @@ fun LostAndFoundDetail(
         }
 
         viewModel.collectSideEffect {
-            handleSideEffect(it, context, navigateToArticleList)
+            handleSideEffect(it, context, navigateToArticleList, refreshLostAndFoundList)
         }
 
         Column(
@@ -161,7 +163,7 @@ fun LostAndFoundDetail(
                             isAuthorWithdraw = uiState.isAuthorWithdraw,
                             isWriterAdmin = uiState.isWriterCouncil,
                             onArticleListClick = {
-                                navigateToArticleList()
+                                navigateToArticleList
                             },
                             onDeleteArticleClick = {
                                 viewModel.deleteArticle()
@@ -232,7 +234,8 @@ fun LostAndFoundDetail(
 private fun handleSideEffect(
     sideEffect: LostAndFoundDetailSideEffect,
     context: Context,
-    navigateToArticleList: () -> Unit = {}
+    navigateToArticleList: () -> Unit = {},
+    refreshLostAndFoundList: () -> Unit = {}
 ) {
     when (sideEffect) {
         is LostAndFoundDetailSideEffect.DeleteArticle -> {
@@ -241,6 +244,7 @@ private fun handleSideEffect(
                 context.getString(R.string.detail_delete_toast),
                 Toast.LENGTH_SHORT
             ).show()
+            refreshLostAndFoundList()
             navigateToArticleList()
         }
 
@@ -258,6 +262,7 @@ private fun handleSideEffect(
                 context.getString(R.string.detail_deleted_article),
                 Toast.LENGTH_SHORT
             ).show()
+            refreshLostAndFoundList()
             navigateToArticleList()
         }
 

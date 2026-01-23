@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.lostandfound.navigation
 
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -16,10 +17,12 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
     navController: NavController,
     onBackPressed: () -> Unit
 ) {
-    composable<LostAndFoundNavType.LostAndFoundListRoute> {
+    composable<LostAndFoundNavType.LostAndFoundListRoute> { backStackEntry ->
+        val refreshFlow = backStackEntry.savedStateHandle.getStateFlow("refresh_list", false).collectAsStateWithLifecycle()
         val navigator = rememberNavigator()
         val context = LocalContext.current
         LostAndFoundList(
+            doRefresh = refreshFlow.value,
             onTopbarBackClick = onBackPressed,
             navigateArticleDetail = { articleId ->
                 navController.navigate(LostAndFoundNavType.LostAndFoundDetailRoute(articleId))
@@ -39,6 +42,11 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
         val navigator = rememberNavigator()
         val context = LocalContext.current
         LostAndFoundDetail(
+            refreshLostAndFoundList = {
+                navController.getBackStackEntry(LostAndFoundNavType.LostAndFoundListRoute)
+                    ?.savedStateHandle
+                    ?.set("refresh_list", true)
+            },
             navigateToArticleList = {
                 navController.navigate(LostAndFoundNavType.LostAndFoundListRoute) {
                     popUpTo(navController.graph.startDestinationId) {
