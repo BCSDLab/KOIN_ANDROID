@@ -174,8 +174,14 @@ fun LostAndFoundDetail(
                         val loggingLostMessageSend = stringResource(id = R.string.logging_lost_message_send)
                         val loggingFoundMessageSend = stringResource(id = R.string.logging_found_message_send)
                         val loggingReport = stringResource(id = R.string.logging_report)
-                        val onModifyClick = remember(uiState.id) {
-                            { navigateToModify(uiState.id) }
+                        val onModifyClick = remember(uiState.id, loggingLostOrFound) {
+                            {
+                                EventLogger.logCampusClickEvent(
+                                    AnalyticsConstant.Label.LostAndFound.LOST_ITEM_MODIFY,
+                                    loggingLostOrFound
+                                )
+                                navigateToModify(uiState.id)
+                            }
                         }
 
                         DetailButtonGroup(
