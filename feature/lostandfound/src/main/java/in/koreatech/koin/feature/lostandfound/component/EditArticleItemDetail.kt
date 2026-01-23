@@ -369,15 +369,15 @@ fun EditArticleItemDetail(
         onValueChange = onLocationChange,
         singleLine = true,
         hint =
-            when (type) {
-                LostOrFoundType.LOST -> stringResource(id = R.string.lost_location_hint)
-                LostOrFoundType.FOUND -> stringResource(id = R.string.found_location_hint)
-            },
+        when (type) {
+            LostOrFoundType.LOST -> stringResource(id = R.string.lost_location_hint)
+            LostOrFoundType.FOUND -> stringResource(id = R.string.found_location_hint)
+        },
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(8.dp))
-                .background(KoinTheme.colors.neutral100),
+        Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .background(KoinTheme.colors.neutral100),
         textPaddingValues = PaddingValues(16.dp, 8.dp)
     )
 
@@ -412,10 +412,10 @@ fun EditArticleItemDetail(
         },
         hint = stringResource(id = R.string.more_description_hint),
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(8.dp))
-                .background(KoinTheme.colors.neutral100),
+        Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .background(KoinTheme.colors.neutral100),
         textPaddingValues = PaddingValues(16.dp, 8.dp, 16.dp, 32.dp)
     )
 

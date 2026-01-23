@@ -14,18 +14,18 @@ import `in`.koreatech.koin.feature.lostandfound.IMAGE_MAX_COUNT
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory.Companion.getCategoryKoreanWord
 import `in`.koreatech.koin.feature.lostandfound.navigation.ARTICLE_ID
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import java.time.LocalDate
-import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import retrofit2.HttpException
-import java.time.format.DateTimeFormatter
 
 @HiltViewModel
 class LostAndFoundModifyViewModel @Inject constructor(
@@ -57,7 +57,7 @@ class LostAndFoundModifyViewModel @Inject constructor(
                 postSideEffect(LostAndFoundModifySideEffect.DeletedArticle)
             }
         }.collectLatest { article ->
-            originImages =  article.images?.filter { URLUtil.isValidUrl(it.imageUrl) } ?: emptyList()
+            originImages = article.images?.filter { URLUtil.isValidUrl(it.imageUrl) } ?: emptyList()
             val articleState = article.toLostAndFoundModifyState()
             reduce {
                 state.copy(
@@ -69,7 +69,7 @@ class LostAndFoundModifyViewModel @Inject constructor(
                     content = articleState.content,
                     images = articleState.images,
                     refreshDatePicker = !state.refreshDatePicker,
-                    isLoading = false,
+                    isLoading = false
                 )
             }
         }
@@ -99,7 +99,7 @@ class LostAndFoundModifyViewModel @Inject constructor(
                 isLoading = true
             )
         }
-        if(IMAGE_MAX_COUNT < state.images.size + 1) {
+        if (IMAGE_MAX_COUNT < state.images.size + 1) {
             postSideEffect(LostAndFoundModifySideEffect.UploadedMaxImage)
             return@intent
         }
@@ -178,9 +178,9 @@ class LostAndFoundModifyViewModel @Inject constructor(
     }
 
     private fun modifyArticle() = intent {
-        if(state.itemTypeRequired || state.locationRequired) return@intent
+        if (state.itemTypeRequired || state.locationRequired) return@intent
         val newImageList = state.images.filterNot {
-            it in originImages.map { origin ->  origin.imageUrl }
+            it in originImages.map { origin -> origin.imageUrl }
         }
         val deleteImageIds = originImages.filterNot {
             it.imageUrl in state.images
