@@ -17,6 +17,11 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -33,9 +38,14 @@ class LostAndFoundListViewModel @Inject constructor(
         initialState = LostAndFoundListState()
     )
 
+    companion object {
+        const val SEARCH_DEBOUNCE_MS = 300L
+    }
+
     init {
         initUserInfo()
         fetchLostAndFoundItem()
+        observeQuery()
     }
 
     private fun initUserInfo() = viewModelScope.launch {
@@ -81,7 +91,8 @@ class LostAndFoundListViewModel @Inject constructor(
             foundStatus = state.foundFilterType.value,
             author = state.authorFilterType.value,
             type = type,
-            sort = LostAndFoundSortType.LATEST.value
+            sort = LostAndFoundSortType.LATEST.value,
+            title = state.searchQuery
         )
         fetchLostAndFoundArticlePaginationV2UseCase(filterParams)
             .catch {
@@ -131,7 +142,8 @@ class LostAndFoundListViewModel @Inject constructor(
             foundStatus = state.foundFilterType.value,
             author = state.authorFilterType.value,
             type = type,
-            sort = LostAndFoundSortType.LATEST.value
+            sort = LostAndFoundSortType.LATEST.value,
+            title = state.searchQuery
         )
 
         fetchLostAndFoundArticlePaginationV2UseCase(filterParams)
@@ -186,11 +198,38 @@ class LostAndFoundListViewModel @Inject constructor(
         }
     }
 
-    fun setShowLoginDialog(show: Boolean) = intent {
+    fun setShowFilterLoginDialog(show: Boolean) = intent {
         reduce {
             state.copy(
-                showLoginDialog = show
+                showFilterLoginDialog = show
             )
         }
+    }
+
+    fun setShowWriteLoginDialog(show: Boolean) = intent {
+        reduce {
+            state.copy(
+                showWriteLoginDialog = show
+            )
+        }
+    }
+
+    fun setSearchQuery(query: String) = intent {
+        reduce {
+            state.copy(
+                searchQuery = query
+            )
+        }
+    }
+
+    private fun observeQuery() {
+        container.stateFlow
+            .map { it.searchQuery }
+            .debounce(SEARCH_DEBOUNCE_MS)
+            .distinctUntilChanged()
+            .onEach { query ->
+                fetchLostAndFoundItem()
+            }
+            .launchIn(viewModelScope)
     }
 }
