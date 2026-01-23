@@ -11,6 +11,7 @@ data class ArticleLostAndFound(
     val author: String,
     val isCouncil: Boolean,
     val isMine: Boolean,
+    val isFound: Boolean,
     val images: List<ArticleLostAndFoundImage>?,
     val registeredAt: String,
     val updatedAt: String

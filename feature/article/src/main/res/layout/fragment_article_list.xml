@@ -18,14 +18,6 @@
 
         </com.google.android.material.tabs.TabLayout>
 
-        <androidx.compose.ui.platform.ComposeView
-            android:id="@+id/compose_view_lostandfound_list"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tab_layout_article_board" />
-
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nested_scroll_view_article_list"
             android:layout_width="match_parent"

@@ -62,18 +62,6 @@ interface ArticleApi {
     ): KeywordsResponse
 
     /**
-     * 분실물 게시글 목록과 페이지 정보를 가져옴
-     * @param page 페이지 번호
-     * @param limit 페이지 당 게시글 수
-     */
-    @GET("articles/lost-item")
-    suspend fun fetchArticleLostAndFoundPagination(
-        @Query("page") page: Int,
-        @Query("limit") limit: Int,
-        @Query("type") type: String?
-    ): ArticleLostAndFoundPaginationResponse
-
-    /**
      * 검색된 분실물 게시글 목록과 페이지 정보를 가져옴
      * @param query 검색어
      * @param page 페이지 번호
