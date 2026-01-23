@@ -182,17 +182,21 @@ fun LostAndFoundWriteArticleImpl(
                                     if (fileNameIndex != -1 && fileSizeIndex != -1) {
                                         val fileName = cursor.getString(fileNameIndex)
                                         val fileSize = cursor.getLong(fileSizeIndex)
-                                        val fileType =
-                                            context.contentResolver.getType(uri)
-                                                ?: "image/${fileName.split(".").last()}"
+                                        val fileType = context.contentResolver.getType(uri)
 
-                                        if (fileType.startsWith("image/")) {
+                                        if (fileType?.startsWith("image/") ?: false) {
                                             viewModel.uploadImage(
                                                 fileName,
                                                 fileType,
                                                 fileSize,
                                                 uri
                                             )
+                                        } else {
+                                            Toast.makeText(
+                                                context,
+                                                context.getString(R.string.upload_not_image),
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                         }
                                     }
                                 }
