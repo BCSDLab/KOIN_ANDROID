@@ -232,7 +232,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                             Intent(Intent.ACTION_VIEW).apply {
                                 data = when (it.type) {
                                     ArticleNotiType.KEYWORD -> Uri.parse("koin://article/activity?fragment=article_keyword")
-                                    ArticleNotiType.LOST_AND_FOUND -> Uri.parse("koin://article/activity?fragment=article_lost_and_found")
+                                    ArticleNotiType.LOST_AND_FOUND -> Uri.parse("koin://articles/lost-item/activity")
                                 }
                             }
                         startActivity(intent)

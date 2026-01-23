@@ -55,7 +55,7 @@ fun LostAndFoundDetail(
     refreshLostAndFoundList: () -> Unit = {},
     navigateToRecentArticle: (articleId: Int) -> Unit = {},
     navigateToChatRoom: (articleId: Int) -> Unit = {},
-    navigateToLogin: () -> Unit = {},
+    navigateToLogin: (articleId: Int) -> Unit = {},
     navigateToReport: (articleId: Int) -> Unit = {},
     navigateToModify: (articleId: Int) -> Unit = {}
 ) {
@@ -95,7 +95,7 @@ fun LostAndFoundDetail(
                 positiveButtonText = stringResource(id = R.string.detail_chat_login_dialog_positive),
                 negativeButtonText = stringResource(id = R.string.detail_chat_login_dialog_negative),
                 onPositive = {
-                    navigateToLogin()
+                    navigateToLogin(uiState.id)
                     viewModel.setShowLoginDialog(false)
                 },
                 onNegative = {
