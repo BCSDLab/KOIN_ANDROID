@@ -12,7 +12,8 @@ import kotlinx.parcelize.Parcelize
 data class LostAndFoundListState(
     val isLoading: Boolean = false,
     val isLoggedIn: Boolean = false,
-    val showLoginDialog: Boolean = false,
+    val showFilterLoginDialog: Boolean = false,
+    val showWriteLoginDialog: Boolean = false,
     val isFirstPageLoading: Boolean = false,
     val showFilterBottomSheet: Boolean = false,
     val showWriteBottomSheet: Boolean = false,

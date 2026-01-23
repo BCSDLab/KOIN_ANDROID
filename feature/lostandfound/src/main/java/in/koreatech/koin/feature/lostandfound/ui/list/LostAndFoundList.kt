@@ -17,12 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
@@ -30,6 +27,7 @@ import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.Aut
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.ItemSearchTextField
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.ListColumn
+import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LoginDialog
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LostAndFoundChip
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LostAndFoundFAB
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LostAndFoundFABBottomSheet
@@ -58,7 +56,7 @@ fun LostAndFoundList(
             selectedFoundType = uiState.foundFilterType,
             onApply = { first, second, third, fourth ->
                 if (!uiState.isLoggedIn && first == MY) {
-                    viewModel.setShowLoginDialog(true)
+                    viewModel.setShowFilterLoginDialog(true)
                 } else {
                     viewModel.setSearchFilter(
                         authorFilterType = first,
@@ -86,21 +84,31 @@ fun LostAndFoundList(
         )
     }
 
-    if (uiState.showLoginDialog) {
-        ChoiceDialog(
+    if (uiState.showFilterLoginDialog) {
+        LoginDialog(
             title = stringResource(id = R.string.lost_and_found_my_filter_can_use_logged_in),
             description = stringResource(id = R.string.lost_and_found_my_filter_can_use_logged_in_description),
-            positiveButtonText = stringResource(id = R.string.lost_and_found_my_filter_can_use_logged_in_positive),
-            negativeButtonText = stringResource(id = R.string.lost_and_found_my_filter_can_use_logged_in_negative),
             onPositive = {
                 navigateToLogin()
-                viewModel.setShowLoginDialog(false)
+                viewModel.setShowFilterLoginDialog(false)
             },
             onNegative = {
-                viewModel.setShowLoginDialog(false)
+                viewModel.setShowFilterLoginDialog(false)
+            }
+        )
+    }
+
+    if (uiState.showWriteLoginDialog) {
+        LoginDialog(
+            title = stringResource(id = R.string.request_login_dialog_title),
+            description = stringResource(id = R.string.request_login_dialog_description),
+            onPositive = {
+                navigateToLogin()
+                viewModel.setShowWriteLoginDialog(false)
             },
-            titleStyle = KoinTheme.typography.medium18.copy(color = KoinTheme.colors.neutral600, textAlign = TextAlign.Center),
-            descriptionStyle = KoinTheme.typography.regular14.copy(color = Color(0xFF8E8E8E))
+            onNegative = {
+                viewModel.setShowWriteLoginDialog(false)
+            }
         )
     }
 
@@ -115,7 +123,11 @@ fun LostAndFoundList(
         floatingActionButton = {
             LostAndFoundFAB(
                 onClick = {
-                    viewModel.setShowWriteBottomSheet(true)
+                    if (uiState.isLoggedIn) {
+                        viewModel.setShowWriteBottomSheet(true)
+                    } else {
+                        viewModel.setShowWriteLoginDialog(true)
+                    }
                 }
             )
         }
