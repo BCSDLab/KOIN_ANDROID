@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.lostandfound.component
+package `in`.koreatech.koin.feature.lostandfound.ui.list.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -108,13 +108,19 @@ fun LostAndFoundFABContent(
             LostAndFoundSheetButton(
                 text = stringResource(R.string.finding_btn),
                 icon = ImageVector.vectorResource(R.drawable.ic_found),
-                onClick = onFindOwnerClick
+                onClick = {
+                    onFindOwnerClick()
+                    onDismissRequest()
+                }
             )
             Spacer(modifier = Modifier.height(16.dp))
             LostAndFoundSheetButton(
                 text = stringResource(R.string.lost_btn),
                 icon = ImageVector.vectorResource(R.drawable.ic_lost),
-                onClick = onLostItemClick
+                onClick = {
+                    onLostItemClick()
+                    onDismissRequest()
+                }
             )
         }
     }
