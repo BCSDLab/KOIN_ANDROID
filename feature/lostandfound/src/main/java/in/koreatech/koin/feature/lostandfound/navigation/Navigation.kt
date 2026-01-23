@@ -34,7 +34,7 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
         )
     }
 
-    composable<LostAndFoundNavType.LostAndFoundDetailRoute> { backStackEntry ->
+    composable<LostAndFoundNavType.LostAndFoundDetailRoute> {
         val navigator = rememberNavigator()
         val context = LocalContext.current
         LostAndFoundDetail(
@@ -74,7 +74,7 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
         )
     }
 
-    composable<LostAndFoundNavType.LostAndFoundWriteRoute> { backStackEntry ->
+    composable<LostAndFoundNavType.LostAndFoundWriteRoute> {
         LostAndFoundWriteArticle(
             onBackClick = onBackPressed,
             onComplete = {
