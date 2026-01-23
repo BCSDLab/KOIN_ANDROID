@@ -59,6 +59,7 @@
     <string name="upload_image_of_lost_item">분실물 사진을 업로드해주세요.</string>
     <string name="upload_image">사진 등록하기</string>
     <string name="upload_image_failed">사진 업로드에 실패했습니다.</string>
+    <string name="upload_not_image">이미지가 아닙니다.</string>
     <string name="upload_image_failed_by_max">더 이상 사진을 추가할 수 없습니다.</string>
 
     <string name="item_type">품목</string>
