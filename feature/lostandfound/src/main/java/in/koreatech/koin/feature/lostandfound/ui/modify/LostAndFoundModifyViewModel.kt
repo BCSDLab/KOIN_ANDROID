@@ -35,15 +35,14 @@ class LostAndFoundModifyViewModel @Inject constructor(
     private val uploadImageUseCase: UploadImageUseCase
 ) : ViewModel(),
     ContainerHost<LostAndFoundModifyState, LostAndFoundModifySideEffect> {
-    override val container =
-        container<LostAndFoundModifyState, LostAndFoundModifySideEffect>(
-            LostAndFoundModifyState(),
-            savedStateHandle
-        ) {
-            val articleId = savedStateHandle.get<Int>(ARTICLE_ID)
-            checkNotNull(articleId)
-            fetchLostAndFoundDetail(articleId)
-        }
+    override val container = container<LostAndFoundModifyState, LostAndFoundModifySideEffect>(
+        LostAndFoundModifyState(),
+        savedStateHandle
+    ) {
+        val articleId = savedStateHandle.get<Int>(ARTICLE_ID)
+        checkNotNull(articleId)
+        fetchLostAndFoundDetail(articleId)
+    }
     private var originImages: List<ArticleLostAndFound.ArticleLostAndFoundImage> = emptyList()
 
     private fun fetchLostAndFoundDetail(articleId: Int) = intent {
