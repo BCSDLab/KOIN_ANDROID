@@ -198,10 +198,18 @@ class LostAndFoundListViewModel @Inject constructor(
         }
     }
 
-    fun setShowLoginDialog(show: Boolean) = intent {
+    fun setShowFilterLoginDialog(show: Boolean) = intent {
         reduce {
             state.copy(
-                showLoginDialog = show
+                showFilterLoginDialog = show
+            )
+        }
+    }
+
+    fun setShowWriteLoginDialog(show: Boolean) = intent {
+        reduce {
+            state.copy(
+                showWriteLoginDialog = show
             )
         }
     }
