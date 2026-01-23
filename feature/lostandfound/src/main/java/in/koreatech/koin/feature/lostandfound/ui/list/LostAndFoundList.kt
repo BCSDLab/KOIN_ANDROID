@@ -67,15 +67,15 @@ fun LostAndFoundList(
             selectedLostOrFoundType = uiState.lostOrFoundFilterType,
             selectedCategoryType = uiState.categoryFilterType,
             selectedFoundType = uiState.foundFilterType,
-            onApply = { first, second, third, fourth ->
-                if (!uiState.isLoggedIn && first == MY) {
+            onApply = { author , lostOrFound, category, found ->
+                if (!uiState.isLoggedIn && author == MY) {
                     viewModel.setShowFilterLoginDialog(true)
                 } else {
                     viewModel.setSearchFilter(
-                        authorFilterType = first,
-                        lostOrFoundFilterType = second,
-                        categoryFilterType = third,
-                        foundFilterType = fourth
+                        authorFilterType = author,
+                        lostOrFoundFilterType = lostOrFound,
+                        categoryFilterType = category,
+                        foundFilterType = found
                     )
                     viewModel.fetchLostAndFoundItem()
                 }

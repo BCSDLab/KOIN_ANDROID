@@ -1,7 +1,5 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.list
 
-import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,8 +7,11 @@ import `in`.koreatech.koin.domain.model.article.LostAndFoundFilterParams
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticlePaginationV2UseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
-import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType
+import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.AuthorFilterType
+import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.CategoryFilterType
+import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.FoundFilterType
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundSortType
+import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.LostOrFoundFilterType
 import `in`.koreatech.koin.feature.lostandfound.model.toLostAndFoundItemState
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetailViewModel.Companion.PAGE_SIZE
 import javax.inject.Inject
@@ -81,7 +82,7 @@ class LostAndFoundListViewModel @Inject constructor(
                 isLoadingMoreArticles = true
             )
         }
-        val type = if (state.lostOrFoundFilterType == LostAndFoundFilterType.ALL) {
+        val type = if (state.lostOrFoundFilterType == LostOrFoundFilterType.ALL) {
             null
         } else {
             state.lostOrFoundFilterType.value
@@ -132,7 +133,7 @@ class LostAndFoundListViewModel @Inject constructor(
         }
 
         val nextPage = state.searchedArticlesCurrentPage + 1
-        val type = if (state.lostOrFoundFilterType == LostAndFoundFilterType.ALL) {
+        val type = if (state.lostOrFoundFilterType == LostOrFoundFilterType.ALL) {
             null
         } else {
             state.lostOrFoundFilterType.value
@@ -169,10 +170,10 @@ class LostAndFoundListViewModel @Inject constructor(
     }
 
     fun setSearchFilter(
-        authorFilterType: LostAndFoundFilterType,
-        lostOrFoundFilterType: LostAndFoundFilterType,
-        categoryFilterType: LostAndFoundFilterType,
-        foundFilterType: LostAndFoundFilterType
+        authorFilterType: AuthorFilterType,
+        lostOrFoundFilterType: LostOrFoundFilterType,
+        categoryFilterType: CategoryFilterType,
+        foundFilterType: FoundFilterType
     ) = intent {
         reduce {
             state.copy(
