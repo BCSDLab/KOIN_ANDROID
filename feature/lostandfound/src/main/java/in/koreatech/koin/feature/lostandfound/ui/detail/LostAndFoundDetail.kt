@@ -156,6 +156,7 @@ fun LostAndFoundDetail(
                         DetailButtonGroup(
                             showDeleteButton = uiState.isMine,
                             showDeleteDialog = uiState.showDeleteDialog,
+                            showModifyButton = !uiState.isFound,
                             isLoggedIn = uiState.isLoggedIn,
                             isAuthorWithdraw = uiState.isAuthorWithdraw,
                             isWriterAdmin = uiState.isWriterCouncil,

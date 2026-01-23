@@ -27,6 +27,7 @@ import `in`.koreatech.koin.feature.lostandfound.R
 fun DetailButtonGroup(
     modifier: Modifier = Modifier,
     showDeleteButton: Boolean = false,
+    showModifyButton: Boolean = true,
     showDeleteDialog: Boolean = false,
     isLoggedIn: Boolean = false,
     isAuthorWithdraw: Boolean = false,
@@ -81,20 +82,22 @@ fun DetailButtonGroup(
         Spacer(modifier = Modifier.weight(1f))
 
         if (showDeleteButton) {
-            Button(
-                modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                contentPadding = PaddingValues(10.dp, 6.dp),
-                onClick = onModifyArticleClick,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = KoinTheme.colors.neutral300,
-                    contentColor = KoinTheme.colors.neutral600
-                ),
-                shape = KoinTheme.shapes.extraSmall
-            ) {
-                Text(
-                    style = KoinTheme.typography.regular12,
-                    text = stringResource(R.string.detail_edit_button)
-                )
+            if (showModifyButton) {
+                Button(
+                    modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
+                    contentPadding = PaddingValues(10.dp, 6.dp),
+                    onClick = onModifyArticleClick,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = KoinTheme.colors.neutral300,
+                        contentColor = KoinTheme.colors.neutral600
+                    ),
+                    shape = KoinTheme.shapes.extraSmall
+                ) {
+                    Text(
+                        style = KoinTheme.typography.regular12,
+                        text = stringResource(R.string.detail_edit_button)
+                    )
+                }
             }
 
             Button(
