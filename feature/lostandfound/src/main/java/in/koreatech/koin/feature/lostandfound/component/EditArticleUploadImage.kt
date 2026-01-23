@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.lostandfound.ui.write.component
+package `in`.koreatech.koin.feature.lostandfound.component
 
 import android.net.Uri
 import androidx.compose.foundation.Image
@@ -49,7 +49,7 @@ import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 
 @Composable
-fun WriteArticleUploadImage(
+fun EditArticleUploadImage(
     type: LostOrFoundType,
     uploadedImageCount: Int = 0,
     imageList: List<String> = listOf(),
@@ -98,7 +98,7 @@ fun WriteArticleUploadImage(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 itemsIndexed(imageList) { index, imageUrl ->
-                    WriteArticleUploadImageThumbnail(
+                    EditArticleUploadImageThumbnail(
                         index = index,
                         imageUrl = Uri.parse(imageUrl)
                     ) {
@@ -138,7 +138,7 @@ fun WriteArticleUploadImage(
 }
 
 @Composable
-fun WriteArticleUploadImageThumbnail(
+fun EditArticleUploadImageThumbnail(
     index: Int,
     imageUrl: Uri,
     modifier: Modifier = Modifier,

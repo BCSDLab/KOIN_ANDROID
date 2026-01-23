@@ -13,7 +13,7 @@ class ModifyArticleLostAndFoundUseCase @Inject constructor(
         foundDate: String,
         content: String?,
         newImage: List<String>?,
-        deleteImageIds: List<String>?
+        deleteImageIds: List<Int>?
     ): Result<Unit> {
         return articleRepository.modifyArticleLostAndFound(
             articleId,

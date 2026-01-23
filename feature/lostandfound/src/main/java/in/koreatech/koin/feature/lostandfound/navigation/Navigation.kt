@@ -8,6 +8,7 @@ import androidx.navigation.toRoute
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetail
 import `in`.koreatech.koin.feature.lostandfound.ui.list.LostAndFoundList
+import `in`.koreatech.koin.feature.lostandfound.ui.modify.LostAndFoundModify
 import `in`.koreatech.koin.feature.lostandfound.ui.report.LostAndFoundReport
 import `in`.koreatech.koin.feature.lostandfound.ui.write.LostAndFoundWriteArticle
 
@@ -62,6 +63,9 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
                 navigator.navigateToSignIn(context = context).apply { // TODO Add redirect url
                     context.startActivity(this)
                 }
+            },
+            navigateToModify = { articleId ->
+                navController.navigate(LostAndFoundNavType.LostAndFoundModifyRoute(articleId))
             }
         )
     }
@@ -84,6 +88,20 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
                     }
                     launchSingleTop = true
                 }
+            }
+        )
+    }
+
+    composable<LostAndFoundNavType.LostAndFoundModifyRoute> {
+        LostAndFoundModify(
+            onBackClick = onBackPressed,
+            onComplete = { articleId ->
+                navController.navigate(LostAndFoundNavType.LostAndFoundListRoute) {
+                    popUpTo<LostAndFoundNavType.LostAndFoundDetailRoute> {
+                        inclusive = true
+                    }
+                }
+                navController.navigate(LostAndFoundNavType.LostAndFoundDetailRoute(articleId))
             }
         )
     }

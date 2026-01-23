@@ -96,6 +96,6 @@ interface ArticleRepository {
         foundDate: String,
         content: String?,
         newImage: List<String>?,
-        deleteImageIds: List<String>?
+        deleteImageIds: List<Int>?
     ): Result<Unit>
 }

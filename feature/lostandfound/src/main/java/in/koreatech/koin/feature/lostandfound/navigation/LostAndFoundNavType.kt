@@ -14,6 +14,9 @@ sealed class LostAndFoundNavType {
 
     @Serializable
     data class LostAndFoundWriteRoute(val lostOrFoundType: String) : LostAndFoundNavType()
+
+    @Serializable
+    data class LostAndFoundModifyRoute(val articleId: Int) : LostAndFoundNavType()
 }
 
 const val ARTICLE_ID = "articleId"

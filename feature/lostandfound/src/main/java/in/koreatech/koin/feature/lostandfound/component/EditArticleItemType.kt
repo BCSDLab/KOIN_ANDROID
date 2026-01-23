@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.lostandfound.ui.write.component
+package `in`.koreatech.koin.feature.lostandfound.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,12 +21,11 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
-import `in`.koreatech.koin.feature.lostandfound.component.ItemTypeChip
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-fun WriteArticleItemType(
+fun EditArticleItemType(
     selectedChipIndex: Int,
     modifier: Modifier = Modifier,
     itemTypeRequired: Boolean = false,

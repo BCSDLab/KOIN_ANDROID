@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.lostandfound.ui.write.component
+package `in`.koreatech.koin.feature.lostandfound.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -25,7 +25,7 @@ import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 
 @Composable
-fun WriteArticleHeader(
+fun EditArticleHeader(
     type: LostOrFoundType,
     modifier: Modifier = Modifier
 ) {

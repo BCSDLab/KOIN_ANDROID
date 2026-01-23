@@ -59,6 +59,7 @@
     <string name="upload_image_of_lost_item">분실물 사진을 업로드해주세요.</string>
     <string name="upload_image">사진 등록하기</string>
     <string name="upload_image_failed">사진 업로드에 실패했습니다.</string>
+    <string name="upload_image_failed_by_max">더 이상 사진을 추가할 수 없습니다.</string>
 
     <string name="item_type">품목</string>
     <string name="item_type_description">품목을 선택해주세요.</string>
@@ -86,6 +87,9 @@
     <string name="add_item">물품 추가</string>
     <string name="write_done">작성 완료</string>
     <string name="write_failed">글 작성에 실패했습니다.</string>
+    <string name="modify_done">수정 완료</string>
+    <string name="modify_failed">글 수정에 실패했습니다.</string>
+    <string name="modify_success">글 수정에 성공했습니다.</string>
 
     <string name="detail_student_association_info_1">분실물 수령을 희망하시는 분은 재실 시간 내에\n</string>
     <string name="detail_student_association_info_2">학생회관 320호 총학생회 사무실</string>
