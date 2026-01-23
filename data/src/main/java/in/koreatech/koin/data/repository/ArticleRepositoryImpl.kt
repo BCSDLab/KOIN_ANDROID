@@ -326,7 +326,7 @@ class ArticleRepositoryImpl @Inject constructor(
         foundDate: String,
         content: String?,
         newImage: List<String>?,
-        deleteImageIds: List<String>?
+        deleteImageIds: List<Int>?
     ): Result<Unit> {
         return runCatching {
             val response = articleRemoteDataSource.modifyArticleLostAndFound(
