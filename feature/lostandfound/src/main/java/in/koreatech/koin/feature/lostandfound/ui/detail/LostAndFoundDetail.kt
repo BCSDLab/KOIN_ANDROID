@@ -55,7 +55,8 @@ fun LostAndFoundDetail(
     navigateToRecentArticle: (articleId: Int) -> Unit = {},
     navigateToChatRoom: (articleId: Int) -> Unit = {},
     navigateToLogin: () -> Unit = {},
-    navigateToReport: (articleId: Int) -> Unit = {}
+    navigateToReport: (articleId: Int) -> Unit = {},
+    navigateToModify: (articleId: Int) -> Unit = {}
 ) {
     Scaffold(
         containerColor = KoinTheme.colors.neutral0,
@@ -164,8 +165,8 @@ fun LostAndFoundDetail(
                             onDeleteArticleClick = {
                                 viewModel.deleteArticle()
                             },
-                            onEditArticleClick = {
-                                // TODO wait new api
+                            onModifyArticleClick = {
+                                navigateToModify(uiState.id)
                             },
                             onShowDeleteDialogChange = {
                                 viewModel.setShowDeleteDialog(it)

@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.lostandfound.ui.write.component
+package `in`.koreatech.koin.feature.lostandfound.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 @Composable
-fun WriteArticleTextField(
+fun EditArticleTextField(
     value: String,
     hint: String,
     modifier: Modifier = Modifier,

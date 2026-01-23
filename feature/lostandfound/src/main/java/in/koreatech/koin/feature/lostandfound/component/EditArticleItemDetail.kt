@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.lostandfound.ui.write.component
+package `in`.koreatech.koin.feature.lostandfound.component
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
@@ -49,7 +49,7 @@ import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import java.time.LocalDate
 
 @Composable
-fun WriteArticleItemDetail(
+fun EditArticleItemDetail(
     modifier: Modifier = Modifier,
     type: LostOrFoundType,
     location: String,
@@ -364,20 +364,20 @@ fun WriteArticleItemDetail(
 
     Spacer(modifier = Modifier.height(8.dp))
 
-    WriteArticleTextField(
+    EditArticleTextField(
         value = location,
         onValueChange = onLocationChange,
         singleLine = true,
         hint =
-        when (type) {
-            LostOrFoundType.LOST -> stringResource(id = R.string.lost_location_hint)
-            LostOrFoundType.FOUND -> stringResource(id = R.string.found_location_hint)
-        },
+            when (type) {
+                LostOrFoundType.LOST -> stringResource(id = R.string.lost_location_hint)
+                LostOrFoundType.FOUND -> stringResource(id = R.string.found_location_hint)
+            },
         modifier =
-        Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .background(KoinTheme.colors.neutral100),
+            Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(8.dp))
+                .background(KoinTheme.colors.neutral100),
         textPaddingValues = PaddingValues(16.dp, 8.dp)
     )
 
@@ -401,7 +401,7 @@ fun WriteArticleItemDetail(
 
     Spacer(modifier = Modifier.height(8.dp))
 
-    WriteArticleTextField(
+    EditArticleTextField(
         value = moreDescription,
         onValueChange = {
             if (moreDescription.length < DESCRIPTION_MAX_LENGTH) {
@@ -412,10 +412,10 @@ fun WriteArticleItemDetail(
         },
         hint = stringResource(id = R.string.more_description_hint),
         modifier =
-        Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .background(KoinTheme.colors.neutral100),
+            Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(8.dp))
+                .background(KoinTheme.colors.neutral100),
         textPaddingValues = PaddingValues(16.dp, 8.dp, 16.dp, 32.dp)
     )
 

@@ -34,7 +34,7 @@ fun DetailButtonGroup(
     onShowDeleteDialogChange: (Boolean) -> Unit = {},
     onArticleListClick: () -> Unit = {},
     onDeleteArticleClick: () -> Unit = {},
-    onEditArticleClick: () -> Unit = {},
+    onModifyArticleClick: () -> Unit = {},
     onChatRoomClick: () -> Unit = {},
     onReportArticleClick: () -> Unit = {}
 ) {
@@ -84,7 +84,7 @@ fun DetailButtonGroup(
             Button(
                 modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
                 contentPadding = PaddingValues(10.dp, 6.dp),
-                onClick = onEditArticleClick,
+                onClick = onModifyArticleClick,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = KoinTheme.colors.neutral300,
                     contentColor = KoinTheme.colors.neutral600
