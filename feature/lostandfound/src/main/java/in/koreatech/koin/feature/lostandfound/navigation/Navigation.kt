@@ -74,7 +74,7 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
             navigateToLogin = { articleId ->
                 navigator.navigateToSignIn(
                     context = context,
-                    redirectUrl = "$DEEP_LINK_LOST_AND_FOUND_BASE?id=${articleId}"
+                    redirectUrl = "$DEEP_LINK_LOST_AND_FOUND_BASE?id=$articleId"
                 ).apply {
                     context.startActivity(this)
                 }
