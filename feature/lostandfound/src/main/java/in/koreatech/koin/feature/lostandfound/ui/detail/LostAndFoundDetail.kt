@@ -140,7 +140,7 @@ fun LostAndFoundDetail(
                         DetailContent(
                             imageUris = uiState.images,
                             content = uiState.content,
-                            isWriterAdmin = uiState.isWriterCouncil
+                            organization = uiState.organization
                         )
 
                         if (uiState.isMine && !uiState.isFound) {
@@ -161,7 +161,7 @@ fun LostAndFoundDetail(
                             showModifyButton = !uiState.isFound,
                             isLoggedIn = uiState.isLoggedIn,
                             isAuthorWithdraw = uiState.isAuthorWithdraw,
-                            isWriterAdmin = uiState.isWriterCouncil,
+                            isWriterAdmin = uiState.organization != null,
                             onArticleListClick = {
                                 navigateToArticleList
                             },

@@ -78,8 +78,8 @@ interface ArticleApi {
      * 분실물 게시글 조회
      * @param id 게시글 아이디
      */
-    @GET("articles/lost-item/{id}")
-    suspend fun fetchArticleLostAndFound(
+    @GET("articles/lost-item/v2/{id}")
+    suspend fun fetchArticleLostAndFoundV2(
         @Path("id") id: Int
     ): ArticleLostAndFoundResponse
 

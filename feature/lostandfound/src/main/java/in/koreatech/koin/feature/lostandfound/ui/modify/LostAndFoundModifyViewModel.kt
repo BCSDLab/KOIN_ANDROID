@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFound
 import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
-import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticleUseCase
+import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticleV2UseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.ModifyArticleLostAndFoundUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.UploadImageUseCase
 import `in`.koreatech.koin.feature.lostandfound.IMAGE_MAX_COUNT
@@ -30,7 +30,7 @@ import retrofit2.HttpException
 @HiltViewModel
 class LostAndFoundModifyViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val fetchLostAndFoundArticleUseCase: FetchLostAndFoundArticleUseCase,
+    private val fetchLostAndFoundArticleV2UseCase: FetchLostAndFoundArticleV2UseCase,
     private val modifyArticleLostAndFoundUseCase: ModifyArticleLostAndFoundUseCase,
     private val uploadImageUseCase: UploadImageUseCase
 ) : ViewModel(),
@@ -52,7 +52,7 @@ class LostAndFoundModifyViewModel @Inject constructor(
                 isLoading = true
             )
         }
-        fetchLostAndFoundArticleUseCase(articleId).catch {
+        fetchLostAndFoundArticleV2UseCase(articleId).catch {
             if (it is HttpException && it.code() == 404) {
                 postSideEffect(LostAndFoundModifySideEffect.DeletedArticle)
             }

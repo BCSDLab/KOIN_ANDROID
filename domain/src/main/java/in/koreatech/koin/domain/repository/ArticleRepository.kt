@@ -74,7 +74,7 @@ interface ArticleRepository {
         limit: Int
     ): Flow<ArticleLostAndFoundPagination>
 
-    fun fetchArticleLostAndFound(articleId: Int): Flow<ArticleLostAndFound>
+    fun fetchArticleLostAndFoundV2(articleId: Int): Flow<ArticleLostAndFound>
 
     suspend fun uploadArticleLostAndFound(articleLostAndFoundList: List<ArticleLostAndFoundUpload>): Result<ArticleLostAndFound>
 
