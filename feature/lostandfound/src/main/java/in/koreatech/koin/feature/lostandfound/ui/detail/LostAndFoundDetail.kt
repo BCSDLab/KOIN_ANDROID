@@ -145,6 +145,7 @@ fun LostAndFoundDetail(
                             category = uiState.category,
                             foundPlace = uiState.foundPlace,
                             foundDate = uiState.foundDate,
+                            createdDate = uiState.registeredAt,
                             author = uiState.author,
                             isFound = uiState.isFound
                         )
