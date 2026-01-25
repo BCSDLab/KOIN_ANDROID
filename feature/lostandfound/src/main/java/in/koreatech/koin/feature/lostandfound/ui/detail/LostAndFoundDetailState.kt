@@ -27,7 +27,7 @@ data class LostAndFoundDetailState(
     val images: List<Uri>? = null,
     val registeredAt: LocalDate = LocalDate.MIN,
     val updatedAt: String = "",
-    val isWriterCouncil: Boolean = false,
+    val organization: Organization? = null,
     val isMine: Boolean = false,
     val isAuthorWithdraw: Boolean = false,
     val isFound: Boolean = false,
@@ -37,6 +37,17 @@ data class LostAndFoundDetailState(
     val isLoadingMoreArticles: Boolean = false,
     val hasMoreArticles: Boolean = true
 ) : Parcelable
+
+@Parcelize
+data class Organization(
+    val name: String,
+    val location: String
+) : Parcelable
+
+private fun ArticleLostAndFound.ArticleLostAndFoundOrganization.toOrganization() = Organization(
+    name = name,
+    location = location
+)
 
 fun ArticleLostAndFound.toLostAndFoundDetailState(): LostAndFoundDetailState {
     return LostAndFoundDetailState(
@@ -50,7 +61,7 @@ fun ArticleLostAndFound.toLostAndFoundDetailState(): LostAndFoundDetailState {
         images = images?.map { Uri.parse(it.imageUrl) },
         registeredAt = LocalDate.parse(registeredAt),
         updatedAt = updatedAt,
-        isWriterCouncil = isCouncil,
+        organization = organization?.toOrganization(),
         isMine = isMine,
         isFound = isFound
     )

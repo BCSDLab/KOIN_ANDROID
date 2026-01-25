@@ -13,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -22,9 +23,11 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
+import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 
 @Composable
 fun DetailButtonGroup(
+    lostOrFound: LostOrFoundType,
     modifier: Modifier = Modifier,
     showDeleteButton: Boolean = false,
     showModifyButton: Boolean = true,
@@ -39,6 +42,8 @@ fun DetailButtonGroup(
     onChatRoomClick: () -> Unit = {},
     onReportArticleClick: () -> Unit = {}
 ) {
+    val loggingLostOrFound = remember(lostOrFound) { if (lostOrFound == LostOrFoundType.FOUND) "습득물" else "분실물" }
+
     if (showDeleteDialog) {
         DetailDialog(
             title = stringResource(R.string.detail_delete_dialog_title),
@@ -107,7 +112,7 @@ fun DetailButtonGroup(
                     onShowDeleteDialogChange(true)
                     EventLogger.logCampusClickEvent(
                         AnalyticsConstant.Label.LostAndFound.FIND_USER_DELETE,
-                        "삭제"
+                        loggingLostOrFound
                     )
                 },
                 colors = ButtonDefaults.buttonColors(

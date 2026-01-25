@@ -335,6 +335,10 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                             postCount = it.postCount,
                             foundCount = it.foundCount,
                             onClick = {
+                                EventLogger.logCampusClickEvent(
+                                    label = "lost_item_entry",
+                                    value = "분실물"
+                                )
                                 val intent = Intent(this@MainActivity, LostAndFoundActivity::class.java)
                                 startActivity(intent)
                             }

@@ -23,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
@@ -116,10 +118,18 @@ fun LostAndFoundList(
             title = stringResource(id = R.string.request_login_dialog_title),
             description = stringResource(id = R.string.request_login_dialog_description),
             onPositive = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.LostAndFound.LOST_ITEM_WRITE_LOGIN_REQUEST,
+                    "로그인하기"
+                )
                 navigateToLogin()
                 viewModel.setShowWriteLoginDialog(false)
             },
             onNegative = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.LostAndFound.LOST_ITEM_WRITE_LOGIN_REQUEST,
+                    "닫기"
+                )
                 viewModel.setShowWriteLoginDialog(false)
             }
         )

@@ -261,10 +261,10 @@ class ArticleRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun fetchArticleLostAndFound(articleId: Int): Flow<ArticleLostAndFound> {
+    override fun fetchArticleLostAndFoundV2(articleId: Int): Flow<ArticleLostAndFound> {
         return flow {
             emit(
-                articleRemoteDataSource.fetchArticleLostAndFound(articleId).toArticleLostAndFound()
+                articleRemoteDataSource.fetchArticleLostAndFoundV2(articleId).toArticleLostAndFound()
             )
         }
     }
