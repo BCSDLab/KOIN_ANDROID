@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -21,6 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.LostItemTypeChip
@@ -59,10 +62,17 @@ fun ListItem(
     modifier: Modifier = Modifier,
     onArticleClick: (Int) -> Unit
 ) {
+    val loggingEntry = remember(lostOrFound) { if (lostOrFound == LostOrFoundType.FOUND) "습득물" else "분실물" }
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onArticleClick(articleId) }
+            .clickable {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.LostAndFound.LOST_ITEM_POST_ENTRY,
+                    loggingEntry
+                )
+                onArticleClick(articleId)
+            }
             .padding(vertical = 12.dp, horizontal = 24.dp)
     ) {
         Text(

@@ -33,6 +33,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType
@@ -224,6 +226,10 @@ fun FilterBottomSheetContent(
             }
             Button(
                 onClick = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_FILTER_APPLY,
+                        "분실물"
+                    )
                     onApplyClick()
                     onDismissRequest()
                 },

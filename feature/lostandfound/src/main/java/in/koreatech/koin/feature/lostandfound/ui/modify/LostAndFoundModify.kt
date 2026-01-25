@@ -28,6 +28,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -105,11 +106,17 @@ fun LostAndFoundWriteArticleImpl(
 
     val uiState by viewModel.collectAsState()
 
+    val loggingLostOrFound = remember(uiState.lostOrFoundType) { if (uiState.lostOrFoundType == LostOrFoundType.FOUND) "습득물" else "분실물" }
+
     viewModel.collectSideEffect {
         handleSideEffect(
             sideEffect = it,
             context = context,
             onComplete = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.LostAndFound.LOST_ITEM_MODIFY_COMPLETE,
+                    loggingLostOrFound
+                )
                 onComplete(uiState.articleId)
             },
             onBackClick = onBackClick
