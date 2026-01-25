@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.list
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +22,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -91,7 +89,7 @@ class LostAndFoundListViewModel @Inject constructor(
         val filterParams = LostAndFoundFilterParams(
             page = 1,
             limit = PAGE_SIZE,
-            category = state.categoryFilterType.value,
+            category = state.categoryFilterType.map { it.value },
             foundStatus = state.foundFilterType.value,
             author = state.authorFilterType.value,
             type = type,
@@ -142,7 +140,7 @@ class LostAndFoundListViewModel @Inject constructor(
         val filterParams = LostAndFoundFilterParams(
             page = nextPage,
             limit = PAGE_SIZE,
-            category = state.categoryFilterType.value,
+            category = state.categoryFilterType.map { it.value },
             foundStatus = state.foundFilterType.value,
             author = state.authorFilterType.value,
             type = type,
@@ -173,14 +171,14 @@ class LostAndFoundListViewModel @Inject constructor(
     fun setSearchFilter(
         authorFilterType: AuthorFilterType,
         lostOrFoundFilterType: LostOrFoundFilterType,
-        categoryFilterType: CategoryFilterType,
+        categoryFilterType: List<CategoryFilterType>,
         foundFilterType: FoundFilterType
     ) = intent {
         reduce {
             state.copy(
                 authorFilterType = authorFilterType,
                 lostOrFoundFilterType = lostOrFoundFilterType,
-                categoryFilterType = categoryFilterType,
+                categoryFilterType = categoryFilterType.toPersistentList(),
                 foundFilterType = foundFilterType
             )
         }

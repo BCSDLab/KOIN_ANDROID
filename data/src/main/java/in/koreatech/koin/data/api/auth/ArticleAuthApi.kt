@@ -77,7 +77,7 @@ interface ArticleAuthApi {
         @Query("type") type: String?,
         @Query("page") page: Int,
         @Query("limit") limit: Int,
-        @Query("category") category: String?,
+        @Query("category") category: List<String>,
         @Query("foundStatus") foundStatus: String?,
         @Query("sort") sort: String?,
         @Query("author") author: String?,

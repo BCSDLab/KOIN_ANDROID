@@ -20,7 +20,7 @@ data class LostAndFoundListState(
     val showFilterBottomSheet: Boolean = false,
     val showWriteBottomSheet: Boolean = false,
     val searchQuery: String = "",
-    val categoryFilterType: CategoryFilterType = CategoryFilterType.ALL,
+    val categoryFilterType: ImmutableList<CategoryFilterType> = persistentListOf(CategoryFilterType.ALL),
     val lostOrFoundFilterType: LostOrFoundFilterType = LostOrFoundFilterType.ALL,
     val foundFilterType: FoundFilterType = FoundFilterType.ALL,
     val authorFilterType: AuthorFilterType = AuthorFilterType.ALL,

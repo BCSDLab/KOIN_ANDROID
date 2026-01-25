@@ -85,7 +85,7 @@ class ArticleRemoteDataSource @Inject constructor(
         type: String?,
         page: Int,
         limit: Int,
-        category: String?,
+        category: List<String>,
         foundStatus: String?,
         sort: String?,
         author: String?,
