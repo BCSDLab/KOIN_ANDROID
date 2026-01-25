@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.list
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -40,6 +42,8 @@ class LostAndFoundListViewModel @Inject constructor(
     override val container = container<LostAndFoundListState, Nothing>(
         initialState = LostAndFoundListState()
     )
+
+    private var doneFirstEmit = false
 
     companion object {
         const val SEARCH_DEBOUNCE_MS = 300L
@@ -231,7 +235,11 @@ class LostAndFoundListViewModel @Inject constructor(
             .debounce(SEARCH_DEBOUNCE_MS)
             .distinctUntilChanged()
             .onEach { query ->
-                fetchLostAndFoundItem()
+                if (!doneFirstEmit) {
+                    doneFirstEmit = true
+                } else {
+                    fetchLostAndFoundItem()
+                }
             }
             .launchIn(viewModelScope)
     }
