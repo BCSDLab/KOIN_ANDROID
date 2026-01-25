@@ -62,7 +62,7 @@ fun ListItem(
     modifier: Modifier = Modifier,
     onArticleClick: (Int) -> Unit
 ) {
-    val loggingEntry = remember(lostOrFound) { if(lostOrFound == LostOrFoundType.FOUND) "습득물" else "분실물" }
+    val loggingEntry = remember(lostOrFound) { if (lostOrFound == LostOrFoundType.FOUND) "습득물" else "분실물" }
     Column(
         modifier = modifier
             .fillMaxWidth()

@@ -58,13 +58,13 @@ fun WriteArticleItemChip(
         if (shouldShowDelete) {
             Icon(
                 modifier =
-                    Modifier
-                        .width(36.dp)
-                        .height(28.dp)
-                        .padding(vertical = 4.dp, horizontal = 8.dp)
-                        .noRippleClickable {
-                            onDeleteItemClick()
-                        },
+                Modifier
+                    .width(36.dp)
+                    .height(28.dp)
+                    .padding(vertical = 4.dp, horizontal = 8.dp)
+                    .noRippleClickable {
+                        onDeleteItemClick()
+                    },
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_item_delete),
                 contentDescription = null
             )

@@ -42,7 +42,7 @@ fun DetailButtonGroup(
     onChatRoomClick: () -> Unit = {},
     onReportArticleClick: () -> Unit = {}
 ) {
-    val loggingLostOrFound = remember(lostOrFound) { if(lostOrFound == LostOrFoundType.FOUND) "습득물" else "분실물" }
+    val loggingLostOrFound = remember(lostOrFound) { if (lostOrFound == LostOrFoundType.FOUND) "습득물" else "분실물" }
 
     if (showDeleteDialog) {
         DetailDialog(

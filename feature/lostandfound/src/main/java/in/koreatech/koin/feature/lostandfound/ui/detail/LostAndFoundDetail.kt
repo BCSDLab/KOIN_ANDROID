@@ -73,7 +73,7 @@ fun LostAndFoundDetail(
         val context = LocalContext.current
         val isLoading = uiState.isLoading
 
-        val loggingLostOrFound = remember(uiState.lostOrFound) { if(uiState.lostOrFound == LostOrFoundType.FOUND) "습득물" else "분실물" }
+        val loggingLostOrFound = remember(uiState.lostOrFound) { if (uiState.lostOrFound == LostOrFoundType.FOUND) "습득물" else "분실물" }
 
         if (uiState.showFoundDialog) {
             DetailDialog(

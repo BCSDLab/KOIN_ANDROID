@@ -106,7 +106,7 @@ fun LostAndFoundWriteArticleImpl(
 
     val uiState by viewModel.collectAsState()
 
-    val loggingLostOrFound = remember(uiState.lostOrFoundType) { if(uiState.lostOrFoundType == LostOrFoundType.FOUND) "습득물" else "분실물" }
+    val loggingLostOrFound = remember(uiState.lostOrFoundType) { if (uiState.lostOrFoundType == LostOrFoundType.FOUND) "습득물" else "분실물" }
 
     viewModel.collectSideEffect {
         handleSideEffect(
