@@ -282,7 +282,7 @@ fun ModifyFoundItemArticleImpl(
             EditArticleItemDetail(
                 type = lostOrFoundType,
                 moreDescription = articleData.content ?: "",
-                onMoreDescriptionChange = { onUpdateDescription(it) },
+                onMoreDescriptionChange = onUpdateDescription,
                 location = articleData.foundPlace,
                 locationRequired = if (lostOrFoundType == LostOrFoundType.FOUND) articleData.locationRequired else false, // Lost item doesn't require location
                 onLocationChange = { onUpdateLocation(it) },
