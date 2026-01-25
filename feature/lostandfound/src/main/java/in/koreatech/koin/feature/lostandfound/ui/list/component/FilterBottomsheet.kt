@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +45,7 @@ import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.Fou
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.LostOrFoundFilterType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,6 +65,7 @@ fun LostAndFoundFilterBottomSheet(
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
+    val scope = rememberCoroutineScope()
 
     ModalBottomSheet(
         sheetState = sheetState,
@@ -97,7 +100,10 @@ fun LostAndFoundFilterBottomSheet(
                 )
             },
 
-            onDismissRequest = onDismissRequest
+            onDismissRequest = {
+                scope.launch { sheetState.hide() }
+                onDismissRequest()
+            }
         )
     }
 }

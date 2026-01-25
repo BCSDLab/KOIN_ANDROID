@@ -13,13 +13,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -28,6 +31,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,6 +43,7 @@ fun LostAndFoundFABBottomSheet(
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
+    val scope = rememberCoroutineScope()
 
     ModalBottomSheet(
         sheetState = sheetState,
@@ -47,13 +52,17 @@ fun LostAndFoundFABBottomSheet(
         dragHandle = null
     ) {
         LostAndFoundFABContent(
-            onDismissRequest = onDismissRequest,
+            onDismissRequest = {
+                scope.launch { sheetState.hide() }
+                onDismissRequest()
+            },
             onFindOwnerClick = onFindOwnerClick,
             onLostItemClick = onLostItemClick
         )
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LostAndFoundFABContent(
     onDismissRequest: () -> Unit,
@@ -109,8 +118,8 @@ fun LostAndFoundFABContent(
                 text = stringResource(R.string.finding_btn),
                 icon = ImageVector.vectorResource(R.drawable.ic_found),
                 onClick = {
-                    onFindOwnerClick()
                     onDismissRequest()
+                    onFindOwnerClick()
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -118,8 +127,8 @@ fun LostAndFoundFABContent(
                 text = stringResource(R.string.lost_btn),
                 icon = ImageVector.vectorResource(R.drawable.ic_lost),
                 onClick = {
-                    onLostItemClick()
                     onDismissRequest()
+                    onLostItemClick()
                 }
             )
         }
