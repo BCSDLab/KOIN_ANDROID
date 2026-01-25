@@ -193,9 +193,7 @@ fun LostAndFoundDetail(
                             isLoggedIn = uiState.isLoggedIn,
                             isAuthorWithdraw = uiState.isAuthorWithdraw,
                             isWriterAdmin = uiState.organization != null,
-                            onArticleListClick = {
-                                navigateToArticleList
-                            },
+                            onArticleListClick = navigateToArticleList,
                             onDeleteArticleClick = {
                                 viewModel.deleteArticle()
                             },
