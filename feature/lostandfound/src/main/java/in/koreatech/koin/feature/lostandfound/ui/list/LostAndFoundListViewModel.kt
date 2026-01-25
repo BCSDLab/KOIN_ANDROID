@@ -42,9 +42,6 @@ class LostAndFoundListViewModel @Inject constructor(
     override val container = container<LostAndFoundListState, Nothing>(
         initialState = LostAndFoundListState()
     )
-
-    private var doneFirstEmit = false
-
     companion object {
         const val SEARCH_DEBOUNCE_MS = 300L
     }
@@ -228,6 +225,8 @@ class LostAndFoundListViewModel @Inject constructor(
             )
         }
     }
+
+    private var doneFirstEmit = false
 
     private fun observeQuery() {
         container.stateFlow
