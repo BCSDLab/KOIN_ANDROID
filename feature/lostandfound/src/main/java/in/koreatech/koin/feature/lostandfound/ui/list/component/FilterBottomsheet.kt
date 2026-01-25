@@ -330,8 +330,12 @@ fun FilterDuplicateSection(
                             isSelected = item in selectedItems,
                             onClick = {
                                 onItemSelected(
-                                    if (item in selectedItems && selectedItems.size > AT_LEAST_COUNT) {
-                                        (selectedItems - item).toPersistentList()
+                                    if (item in selectedItems) {
+                                        if (selectedItems.size > AT_LEAST_COUNT) {
+                                            (selectedItems - item).toPersistentList()
+                                        } else {
+                                            return@FilterChipCustom
+                                        }
                                     } else {
                                         (selectedItems + item).toPersistentList()
                                     }
