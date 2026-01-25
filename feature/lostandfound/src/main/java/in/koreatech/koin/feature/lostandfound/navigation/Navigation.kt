@@ -19,7 +19,7 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
     onBackPressed: () -> Unit
 ) {
     composable<LostAndFoundNavType.LostAndFoundListRoute> { backStackEntry ->
-        val refreshFlow = backStackEntry.savedStateHandle.getStateFlow("refresh_list", false).collectAsStateWithLifecycle()
+        val refreshFlow = backStackEntry.savedStateHandle.getStateFlow(REFRESH_LIST, false).collectAsStateWithLifecycle()
         val navigator = rememberNavigator()
         val context = LocalContext.current
         LostAndFoundList(
@@ -49,7 +49,7 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
             refreshLostAndFoundList = {
                 navController.getBackStackEntry(LostAndFoundNavType.LostAndFoundListRoute)
                     ?.savedStateHandle
-                    ?.set("refresh_list", true)
+                    ?.set(REFRESH_LIST, true)
             },
             navigateToArticleList = {
                 navController.navigate(LostAndFoundNavType.LostAndFoundListRoute) {

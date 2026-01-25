@@ -21,5 +21,5 @@ sealed class LostAndFoundNavType {
 
 const val ARTICLE_ID = "articleId"
 const val CHAT_ARTICLE_ID = "article_id"
-
 const val LOST_OR_FOUND_TYPE = "lostOrFoundType"
+const val REFRESH_LIST = "refresh_list"
