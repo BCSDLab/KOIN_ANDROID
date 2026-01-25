@@ -33,10 +33,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType
-import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.ALL
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.AuthorFilterType
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.CategoryFilterType
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.FoundFilterType
@@ -48,13 +49,12 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun LostAndFoundFilterBottomSheet(
     onDismissRequest: () -> Unit,
-    selectedAuthorType: LostAndFoundFilterType,
-    selectedLostOrFoundType: LostAndFoundFilterType,
-    selectedCategoryType: LostAndFoundFilterType,
-    selectedFoundType: LostAndFoundFilterType,
-    onApply: (LostAndFoundFilterType, LostAndFoundFilterType, LostAndFoundFilterType, LostAndFoundFilterType) -> Unit
+    selectedAuthorType: AuthorFilterType,
+    selectedLostOrFoundType: LostOrFoundFilterType,
+    selectedCategoryType: CategoryFilterType,
+    selectedFoundType: FoundFilterType,
+    onApply: (AuthorFilterType, LostOrFoundFilterType, CategoryFilterType, FoundFilterType) -> Unit
 ) {
-    var defaultOption by remember { mutableStateOf(ALL) }
     var selectedAuthorType by remember { mutableStateOf(selectedAuthorType) }
     var selectedLostOrFoundType by remember { mutableStateOf(selectedLostOrFoundType) }
     var selectedCategoryType by remember { mutableStateOf(selectedCategoryType) }
@@ -76,16 +76,16 @@ fun LostAndFoundFilterBottomSheet(
             selectedCategoryType = selectedCategoryType,
             selectedFoundType = selectedFoundType,
 
-            onAuthorTypeChange = { selectedAuthorType = it },
-            onLostOrFoundTypeChange = { selectedLostOrFoundType = it },
-            onCategoryTypeChange = { selectedCategoryType = it },
-            onFoundTypeChange = { selectedFoundType = it },
+            onAuthorTypeChange = { selectedAuthorType = it as AuthorFilterType },
+            onLostOrFoundTypeChange = { selectedLostOrFoundType = it as LostOrFoundFilterType },
+            onCategoryTypeChange = { selectedCategoryType = it as CategoryFilterType },
+            onFoundTypeChange = { selectedFoundType = it as FoundFilterType },
 
             onReset = {
-                selectedAuthorType = defaultOption
-                selectedLostOrFoundType = defaultOption
-                selectedCategoryType = defaultOption
-                selectedFoundType = defaultOption
+                selectedAuthorType = AuthorFilterType.ALL
+                selectedLostOrFoundType = LostOrFoundFilterType.ALL
+                selectedCategoryType = CategoryFilterType.ALL
+                selectedFoundType = FoundFilterType.ALL
             },
 
             onApplyClick = {
@@ -104,10 +104,10 @@ fun LostAndFoundFilterBottomSheet(
 
 @Composable
 fun FilterBottomSheetContent(
-    selectedAuthorType: LostAndFoundFilterType,
-    selectedLostOrFoundType: LostAndFoundFilterType,
-    selectedCategoryType: LostAndFoundFilterType,
-    selectedFoundType: LostAndFoundFilterType,
+    selectedAuthorType: AuthorFilterType,
+    selectedLostOrFoundType: LostOrFoundFilterType,
+    selectedCategoryType: CategoryFilterType,
+    selectedFoundType: FoundFilterType,
     onAuthorTypeChange: (LostAndFoundFilterType) -> Unit,
     onLostOrFoundTypeChange: (LostAndFoundFilterType) -> Unit,
     onCategoryTypeChange: (LostAndFoundFilterType) -> Unit,
@@ -152,7 +152,7 @@ fun FilterBottomSheetContent(
             FilterSection(
                 title = stringResource(R.string.filter_list_index),
                 items = persistentListOf(
-                    ALL,
+                    AuthorFilterType.ALL,
                     AuthorFilterType.MY
                 ),
                 selectedItem = selectedAuthorType,
@@ -162,7 +162,7 @@ fun FilterBottomSheetContent(
             FilterSection(
                 title = stringResource(R.string.filter_list_category),
                 items = persistentListOf(
-                    ALL,
+                    LostOrFoundFilterType.ALL,
                     LostOrFoundFilterType.FIND,
                     LostOrFoundFilterType.LOST
                 ),
@@ -173,7 +173,7 @@ fun FilterBottomSheetContent(
             FilterSection(
                 title = stringResource(R.string.filter_list_type),
                 items = persistentListOf(
-                    ALL,
+                    CategoryFilterType.ALL,
                     CategoryFilterType.CARD,
                     CategoryFilterType.ID,
                     CategoryFilterType.WALLET,
@@ -187,7 +187,7 @@ fun FilterBottomSheetContent(
             FilterSection(
                 title = stringResource(R.string.filter_list_condition),
                 items = persistentListOf(
-                    ALL,
+                    FoundFilterType.ALL,
                     FoundFilterType.FINDING,
                     FoundFilterType.FOUND
                 ),
@@ -226,6 +226,10 @@ fun FilterBottomSheetContent(
             }
             Button(
                 onClick = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_FILTER_APPLY,
+                        "분실물"
+                    )
                     onApplyClick()
                     onDismissRequest()
                 },

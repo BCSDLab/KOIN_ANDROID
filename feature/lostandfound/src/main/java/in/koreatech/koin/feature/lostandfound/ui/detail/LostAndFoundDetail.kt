@@ -52,9 +52,10 @@ fun LostAndFoundDetail(
     modifier: Modifier = Modifier,
     navigateToArticleList: () -> Unit = {},
     onTopbarBackClick: () -> Unit = {},
+    refreshLostAndFoundList: () -> Unit = {},
     navigateToRecentArticle: (articleId: Int) -> Unit = {},
     navigateToChatRoom: (articleId: Int) -> Unit = {},
-    navigateToLogin: () -> Unit = {},
+    navigateToLogin: (articleId: Int) -> Unit = {},
     navigateToReport: (articleId: Int) -> Unit = {},
     navigateToModify: (articleId: Int) -> Unit = {}
 ) {
@@ -72,12 +73,19 @@ fun LostAndFoundDetail(
         val context = LocalContext.current
         val isLoading = uiState.isLoading
 
+        val loggingLostOrFound = remember(uiState.lostOrFound) { if (uiState.lostOrFound == LostOrFoundType.FOUND) "습득물" else "분실물" }
+
         if (uiState.showFoundDialog) {
             DetailDialog(
                 title = stringResource(id = R.string.lost_and_found_dialog_message),
                 onPositive = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_FOUND,
+                        loggingLostOrFound
+                    )
                     viewModel.setFound()
                     viewModel.setShowFoundDialog(false)
+                    refreshLostAndFoundList()
                 },
                 onNegative = {
                     viewModel.setShowFoundDialog(false)
@@ -93,10 +101,18 @@ fun LostAndFoundDetail(
                 positiveButtonText = stringResource(id = R.string.detail_chat_login_dialog_positive),
                 negativeButtonText = stringResource(id = R.string.detail_chat_login_dialog_negative),
                 onPositive = {
-                    navigateToLogin()
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_MESSAGE_LOGIN_REQUEST,
+                        "로그인하기"
+                    )
+                    navigateToLogin(uiState.id)
                     viewModel.setShowLoginDialog(false)
                 },
                 onNegative = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_MESSAGE_LOGIN_REQUEST,
+                        "닫기"
+                    )
                     viewModel.setShowLoginDialog(false)
                 },
                 titleStyle = KoinTheme.typography.medium18.copy(color = KoinTheme.colors.neutral600, textAlign = TextAlign.Center),
@@ -105,7 +121,7 @@ fun LostAndFoundDetail(
         }
 
         viewModel.collectSideEffect {
-            handleSideEffect(it, context, navigateToArticleList)
+            handleSideEffect(it, context, navigateToArticleList, refreshLostAndFoundList)
         }
 
         Column(
@@ -129,6 +145,7 @@ fun LostAndFoundDetail(
                             category = uiState.category,
                             foundPlace = uiState.foundPlace,
                             foundDate = uiState.foundDate,
+                            createdDate = uiState.registeredAt,
                             author = uiState.author,
                             isFound = uiState.isFound
                         )
@@ -138,33 +155,46 @@ fun LostAndFoundDetail(
                         DetailContent(
                             imageUris = uiState.images,
                             content = uiState.content,
-                            isWriterAdmin = uiState.isWriterCouncil
+                            organization = uiState.organization
                         )
 
                         if (uiState.isMine && !uiState.isFound) {
                             DetailFoundSwitch(
                                 lostOrFoundType = uiState.lostOrFound,
                                 isFound = uiState.isFound,
-                                onCheckedChange = { viewModel.setShowFoundDialog(true) }
+                                onCheckedChange = {
+                                    EventLogger.logCampusClickEvent(
+                                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_STATE_CHANGE,
+                                        loggingLostOrFound
+                                    )
+                                    viewModel.setShowFoundDialog(true)
+                                }
                             )
                         }
 
                         val loggingLostMessageSend = stringResource(id = R.string.logging_lost_message_send)
                         val loggingFoundMessageSend = stringResource(id = R.string.logging_found_message_send)
                         val loggingReport = stringResource(id = R.string.logging_report)
-                        val onModifyClick = remember(uiState.id) {
-                            { navigateToModify(uiState.id) }
+                        val onModifyClick = remember(uiState.id, loggingLostOrFound) {
+                            {
+                                EventLogger.logCampusClickEvent(
+                                    AnalyticsConstant.Label.LostAndFound.LOST_ITEM_MODIFY,
+                                    loggingLostOrFound
+                                )
+                                navigateToModify(uiState.id)
+                            }
                         }
 
                         DetailButtonGroup(
+                            lostOrFound = uiState.lostOrFound,
                             showDeleteButton = uiState.isMine,
                             showDeleteDialog = uiState.showDeleteDialog,
                             showModifyButton = !uiState.isFound,
                             isLoggedIn = uiState.isLoggedIn,
                             isAuthorWithdraw = uiState.isAuthorWithdraw,
-                            isWriterAdmin = uiState.isWriterCouncil,
+                            isWriterAdmin = uiState.organization != null,
                             onArticleListClick = {
-                                navigateToArticleList()
+                                navigateToArticleList
                             },
                             onDeleteArticleClick = {
                                 viewModel.deleteArticle()
@@ -233,7 +263,8 @@ fun LostAndFoundDetail(
 private fun handleSideEffect(
     sideEffect: LostAndFoundDetailSideEffect,
     context: Context,
-    navigateToArticleList: () -> Unit = {}
+    navigateToArticleList: () -> Unit = {},
+    refreshLostAndFoundList: () -> Unit = {}
 ) {
     when (sideEffect) {
         is LostAndFoundDetailSideEffect.DeleteArticle -> {
@@ -242,6 +273,7 @@ private fun handleSideEffect(
                 context.getString(R.string.detail_delete_toast),
                 Toast.LENGTH_SHORT
             ).show()
+            refreshLostAndFoundList()
             navigateToArticleList()
         }
 
@@ -259,6 +291,7 @@ private fun handleSideEffect(
                 context.getString(R.string.detail_deleted_article),
                 Toast.LENGTH_SHORT
             ).show()
+            refreshLostAndFoundList()
             navigateToArticleList()
         }
 

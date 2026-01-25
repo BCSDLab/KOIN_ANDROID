@@ -111,8 +111,8 @@ class ArticleRemoteDataSource @Inject constructor(
         return articleApi.fetchSearchedLostAndFoundArticles(query, page, limit)
     }
 
-    suspend fun fetchArticleLostAndFound(articleId: Int): ArticleLostAndFoundResponse {
-        return articleApi.fetchArticleLostAndFound(articleId)
+    suspend fun fetchArticleLostAndFoundV2(articleId: Int): ArticleLostAndFoundResponse {
+        return articleApi.fetchArticleLostAndFoundV2(articleId)
     }
 
     suspend fun uploadArticleLostAndFound(articleLostAndFound: List<ArticleLostAndFoundUpload>): Result<ArticleLostAndFoundResponse> {

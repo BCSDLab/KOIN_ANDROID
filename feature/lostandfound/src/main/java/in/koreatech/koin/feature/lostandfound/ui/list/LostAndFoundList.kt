@@ -14,12 +14,17 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
@@ -37,6 +42,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun LostAndFoundList(
+    doRefresh: Boolean,
     viewModel: LostAndFoundListViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {},
     navigateToLogin: () -> Unit = {},
@@ -44,6 +50,15 @@ fun LostAndFoundList(
     navigateToWrite: (String) -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
+
+    val refresh = remember(doRefresh) { mutableStateOf(doRefresh) }
+
+    LaunchedEffect(refresh) {
+        if (doRefresh) {
+            viewModel.fetchLostAndFoundItem()
+            refresh.value = false
+        }
+    }
 
     if (uiState.showFilterBottomSheet) {
         LostAndFoundFilterBottomSheet(
@@ -54,15 +69,15 @@ fun LostAndFoundList(
             selectedLostOrFoundType = uiState.lostOrFoundFilterType,
             selectedCategoryType = uiState.categoryFilterType,
             selectedFoundType = uiState.foundFilterType,
-            onApply = { first, second, third, fourth ->
-                if (!uiState.isLoggedIn && first == MY) {
+            onApply = { author, lostOrFound, category, found ->
+                if (!uiState.isLoggedIn && author == MY) {
                     viewModel.setShowFilterLoginDialog(true)
                 } else {
                     viewModel.setSearchFilter(
-                        authorFilterType = first,
-                        lostOrFoundFilterType = second,
-                        categoryFilterType = third,
-                        foundFilterType = fourth
+                        authorFilterType = author,
+                        lostOrFoundFilterType = lostOrFound,
+                        categoryFilterType = category,
+                        foundFilterType = found
                     )
                     viewModel.fetchLostAndFoundItem()
                 }
@@ -103,10 +118,18 @@ fun LostAndFoundList(
             title = stringResource(id = R.string.request_login_dialog_title),
             description = stringResource(id = R.string.request_login_dialog_description),
             onPositive = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.LostAndFound.LOST_ITEM_WRITE_LOGIN_REQUEST,
+                    "로그인하기"
+                )
                 navigateToLogin()
                 viewModel.setShowWriteLoginDialog(false)
             },
             onNegative = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.LostAndFound.LOST_ITEM_WRITE_LOGIN_REQUEST,
+                    "닫기"
+                )
                 viewModel.setShowWriteLoginDialog(false)
             }
         )

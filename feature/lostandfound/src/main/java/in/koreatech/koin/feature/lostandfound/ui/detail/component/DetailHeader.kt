@@ -26,6 +26,7 @@ fun DetailHeader(
     category: LostItemCategory,
     foundPlace: String,
     foundDate: LocalDate,
+    createdDate: LocalDate,
     author: String,
     isFound: Boolean,
     modifier: Modifier = Modifier
@@ -67,7 +68,7 @@ fun DetailHeader(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "${foundDate.format(foundDateFormatType)} • $author",
+                text = "${createdDate.format(foundDateFormatType)} • $author",
                 color = KoinTheme.colors.neutral500,
                 style = KoinTheme.typography.regular12
             )

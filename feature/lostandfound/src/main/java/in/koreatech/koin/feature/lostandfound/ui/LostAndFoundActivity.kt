@@ -22,10 +22,17 @@ class LostAndFoundActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdgeWithLightStatusBar()
+
+        val id = intent.data?.getQueryParameter("id")
+
         setContent {
             KoinTheme {
                 var startDestination by remember { mutableStateOf<LostAndFoundNavType>(LostAndFoundNavType.LostAndFoundListRoute) }
                 val navController = rememberNavController()
+
+                id?.let {
+                    startDestination = LostAndFoundNavType.LostAndFoundDetailRoute(it.toInt())
+                }
 
                 val dispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
