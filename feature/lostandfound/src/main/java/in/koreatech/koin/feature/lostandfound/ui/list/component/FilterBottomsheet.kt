@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -317,33 +318,30 @@ fun FilterDuplicateSection(
             color = KoinTheme.colors.neutral800,
             modifier = Modifier.padding(bottom = 12.dp)
         )
-        val chunkedItems = remember(items) { items.chunked(3) }
-        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            chunkedItems.forEach { rowItems ->
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    rowItems.forEach { item ->
-                        FilterChipCustom(
-                            text = stringResource(item.stringRes),
-                            isSelected = item in selectedItems,
-                            onClick = {
-                                onItemSelected(
-                                    if (item in selectedItems) {
-                                        if (selectedItems.size > AT_LEAST_COUNT) {
-                                            (selectedItems - item).toPersistentList()
-                                        } else {
-                                            return@FilterChipCustom
-                                        }
-                                    } else {
-                                        (selectedItems + item).toPersistentList()
-                                    }
-                                )
+        FlowRow(
+            modifier = Modifier.fillMaxWidth(),
+            maxItemsInEachRow = 3,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            items.forEach { item ->
+                FilterChipCustom(
+                    text = stringResource(item.stringRes),
+                    isSelected = item in selectedItems,
+                    onClick = {
+                        onItemSelected(
+                            if (item in selectedItems) {
+                                if (selectedItems.size > AT_LEAST_COUNT) {
+                                    (selectedItems - item).toPersistentList()
+                                } else {
+                                    return@FilterChipCustom
+                                }
+                            } else {
+                                (selectedItems + item).toPersistentList()
                             }
                         )
                     }
-                }
+                )
             }
         }
     }
