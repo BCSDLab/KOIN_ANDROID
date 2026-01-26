@@ -158,7 +158,7 @@ class LostAndFoundListViewModel @Inject constructor(
                 val filteredArticles = pagination.articleLostAndFoundHeader.map { it.toLostAndFoundItemState() }
                 reduce {
                     state.copy(
-                        searchedArticles = (state.searchedArticles + filteredArticles).toPersistentList(),
+                        searchedArticles = (state.searchedArticles + filteredArticles).distinctBy { it.id }.toPersistentList(),
                         searchedArticlesCurrentPage = pagination.currentPage,
                         searchedArticlesTotalPage = pagination.totalPage,
                         hasMoreArticles = pagination.currentPage < pagination.totalPage,
