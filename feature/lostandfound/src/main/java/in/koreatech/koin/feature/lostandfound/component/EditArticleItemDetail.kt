@@ -336,14 +336,14 @@ fun EditArticleItemDetail(
         Text(
             style = KoinTheme.typography.medium14,
             text = buildAnnotatedString {
-                append(
-                    when (type) {
-                        LostOrFoundType.LOST -> stringResource(id = R.string.lost_location)
-                        LostOrFoundType.FOUND -> stringResource(id = R.string.found_location)
+                when (type) {
+                    LostOrFoundType.LOST -> append(stringResource(id = R.string.lost_location))
+                    LostOrFoundType.FOUND -> {
+                        append(stringResource(id = R.string.found_location))
+                        withStyle(style = SpanStyle(color = Color(0xFFC82A2A))) {
+                            append("*")
+                        }
                     }
-                )
-                withStyle(style = SpanStyle(color = Color(0xFFC82A2A))) {
-                    append("*")
                 }
             }
         )
