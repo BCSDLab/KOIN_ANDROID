@@ -13,7 +13,6 @@ import `in`.koreatech.koin.domain.usecase.presignedurl.UploadImageUseCase
 import `in`.koreatech.koin.feature.lostandfound.IMAGE_MAX_COUNT
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory.Companion.getCategoryKoreanWord
-import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.navigation.ARTICLE_ID
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -186,11 +185,6 @@ class LostAndFoundModifyViewModel @Inject constructor(
             it.imageUrl in state.images
         }.map { it.id }
         val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        if (state.lostOrFoundType == LostOrFoundType.LOST && state.foundPlace.isEmpty()) {
-            reduce {
-                state.copy(foundPlace = "장소 미상")
-            }
-        }
         modifyArticleLostAndFoundUseCase(
             articleId = state.articleId,
             category = state.category.getCategoryKoreanWord(),
