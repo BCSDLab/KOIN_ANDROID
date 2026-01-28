@@ -10,8 +10,8 @@ import `in`.koreatech.koin.data.entity.CacheMetadataEntity
 @Dao
 interface CacheMetadataDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(cacheMetadata: CacheMetadataEntity)
+    suspend fun insert(cacheMetadata: CacheMetadataEntity)
 
     @Query("SELECT updated_time from ${DBConstant.CACHE_METADATA} where cacheKey = :cacheKey LIMIT 1")
-    fun getUpdatedTime(cacheKey: String): Long?
+    suspend fun getUpdatedTime(cacheKey: String): Long?
 }

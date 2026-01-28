@@ -10,8 +10,8 @@ import `in`.koreatech.koin.data.entity.StoreCategoriesEntity
 @Dao
 interface StoreCategoriesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(storeCategories: List<StoreCategoriesEntity>)
+    suspend fun insert(storeCategories: List<StoreCategoriesEntity>)
 
     @Query("SELECT * FROM ${DBConstant.STORE_CATEGORIES}")
-    fun getAll(): List<StoreCategoriesEntity>
+    suspend fun getAll(): List<StoreCategoriesEntity>?
 }
