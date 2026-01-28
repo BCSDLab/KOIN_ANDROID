@@ -345,7 +345,7 @@ fun EditArticleItemDetail(
                             modifier = Modifier
                                 .clickable {
                                     yearPickerState.selectedItemIndex = yearList.indexOf(now.year.toString())
-                                    monthPickerState.selectedItemIndex =monthList.indexOf(now.month.toString())
+                                    monthPickerState.selectedItemIndex = monthList.indexOf(now.month.toString())
                                     dayPickerState.selectedItemIndex = dayList.indexOf(now.dayOfMonth.toString())
                                 }
                                 .padding(all = 4.dp)
