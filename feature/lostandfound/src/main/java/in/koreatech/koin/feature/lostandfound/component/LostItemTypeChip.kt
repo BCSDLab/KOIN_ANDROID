@@ -67,6 +67,6 @@ fun ReadOnlyTextChip(
 @Composable
 private fun LostItemTypeChipPreview() {
     KoinTheme {
-        LostItemTypeChip(category = LostItemCategory.NONE)
+        LostItemTypeChip(category = LostItemCategory.OTHER)
     }
 }

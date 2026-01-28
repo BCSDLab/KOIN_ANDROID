@@ -137,6 +137,14 @@ fun LostAndFoundDetail(
             val enableRecentArticleHeight = remember(layoutHeightDp.value) {
                 mutableStateOf(screenHeightDp - (contentPadding.calculateTopPadding() + contentPadding.calculateBottomPadding()) - layoutHeightDp.value)
             }
+
+            val itemHeightDp = 48.dp
+            val headerHeight = 54.dp
+            val finalRecentArticleHeight = remember(enableRecentArticleHeight.value) {
+                val availableHeight = enableRecentArticleHeight.value - headerHeight
+                val visibleItemCount = (availableHeight / itemHeightDp).toInt()
+                headerHeight + (itemHeightDp * (visibleItemCount + 0.65f))
+            }
             Layout(
                 content = {
                     Column {
@@ -238,8 +246,8 @@ fun LostAndFoundDetail(
 
             RecentArticleList(
                 modifier = Modifier
-                    .heightIn(min = 300.dp, max = screenHeightDp)
-                    .height(enableRecentArticleHeight.value),
+                    .heightIn(min = 275.dp, max = screenHeightDp)
+                    .height(finalRecentArticleHeight),
                 recentArticles = recentArticles,
                 isLoadingMore = uiState.isLoadingMoreArticles,
                 hasMoreArticles = uiState.hasMoreArticles,
