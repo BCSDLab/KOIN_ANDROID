@@ -36,6 +36,8 @@ dependencies {
 
     // Dependency - androidx
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
     // Dependency - kotlin
     implementation(libs.kotlinx.coroutines.android)
