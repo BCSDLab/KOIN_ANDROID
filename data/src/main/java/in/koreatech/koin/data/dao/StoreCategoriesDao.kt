@@ -13,5 +13,5 @@ interface StoreCategoriesDao {
     suspend fun insert(storeCategories: List<StoreCategoriesEntity>)
 
     @Query("SELECT * FROM ${DBConstant.STORE_CATEGORIES}")
-    suspend fun getAll(): List<StoreCategoriesEntity>?
+    suspend fun getAll(): List<StoreCategoriesEntity>
 }
