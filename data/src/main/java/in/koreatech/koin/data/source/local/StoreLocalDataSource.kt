@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.data.source.local
 
 import `in`.koreatech.koin.data.dao.StoreCategoriesDao
-import `in`.koreatech.koin.data.db.AppDatabase
 import `in`.koreatech.koin.data.mapper.toStoreCategoriesEntity
 import `in`.koreatech.koin.data.mapper.toStoreCategoriesItemResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse

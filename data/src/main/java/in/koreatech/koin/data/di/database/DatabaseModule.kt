@@ -21,7 +21,9 @@ object DatabaseModule {
         @ApplicationContext context: Context
     ): AppDatabase {
         return Room.databaseBuilder(
-            context, AppDatabase::class.java, "koin_database"
+            context,
+            AppDatabase::class.java,
+            "koin_database"
         ).build()
     }
 
