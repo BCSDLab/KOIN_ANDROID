@@ -23,7 +23,7 @@ enum class LostItemCategory(
                 "지갑" -> WALLET
                 "전자제품" -> ELECTRONIC_DEVICE
                 "기타" -> OTHER
-                else -> NONE
+                else -> OTHER
             }
         }
 
@@ -34,7 +34,7 @@ enum class LostItemCategory(
                 WALLET -> "지갑"
                 ELECTRONIC_DEVICE -> "전자제품"
                 OTHER -> "기타"
-                NONE -> ""
+                NONE -> "기타"
             }
         }
     }
