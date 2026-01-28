@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.repository
 
+import `in`.koreatech.koin.data.constant.DBConstant
 import `in`.koreatech.koin.data.mapper.toCart
 import `in`.koreatech.koin.data.mapper.toCartAddRequest
 import `in`.koreatech.koin.data.mapper.toCartItemEdit
@@ -30,6 +31,7 @@ import `in`.koreatech.koin.data.mapper.toStoreReview
 import `in`.koreatech.koin.data.mapper.toStoreWithMenu
 import `in`.koreatech.koin.data.mapper.toStoreWithMenuV2
 import `in`.koreatech.koin.data.request.user.ReviewRequest
+import `in`.koreatech.koin.data.source.local.CacheLocalDataSource
 import `in`.koreatech.koin.data.source.local.StoreLocalDataSource
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
 import `in`.koreatech.koin.data.util.getErrorResponse
@@ -74,7 +76,8 @@ import retrofit2.HttpException
 
 class StoreRepositoryImpl @Inject constructor(
     private val storeRemoteDataSource: StoreRemoteDataSource,
-    private val storeLocalDataSource: StoreLocalDataSource
+    private val storeLocalDataSource: StoreLocalDataSource,
+    private val cacheLocalDataSource: CacheLocalDataSource
 ) : StoreRepository {
     private var stores: List<Store>? = null
     private var storeEvents: List<StoreEvent>? = null
@@ -112,13 +115,22 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getStoreCategories(): List<StoreCategories> {
-        return storeLocalDataSource.getCachedStoreCategories().let { cachedCategories ->
-            cachedCategories?.map { it.toStoreCategories() } ?: run {
-                storeRemoteDataSource.getStoreCategories().also {
-                    storeLocalDataSource.setCachedStoreCategories(it)
-                }.map { it.toStoreCategories() }
+        val cachedStoreCategories = storeLocalDataSource.getCachedStoreCategories()
+        val cachedTime = cacheLocalDataSource.getCachedTime(DBConstant.STORE_CATEGORIES)
+        val now = System.currentTimeMillis()
+
+        val cacheShouldExpire = cachedTime == null || (now - cachedTime) > 7 * 24 * 60 * 60 * 1000L
+
+        val shouldFetch = cachedStoreCategories.isEmpty() || cacheShouldExpire
+
+        return if (!shouldFetch) {
+            cachedStoreCategories
+        } else {
+            storeRemoteDataSource.getStoreCategories().also {
+                storeLocalDataSource.setCachedStoreCategories(it)
+                cacheLocalDataSource.updateCachedTime(DBConstant.STORE_CATEGORIES)
             }
-        }
+        }.map { it.toStoreCategories() }
     }
 
     override suspend fun getStoreWithMenu(storeId: Int): StoreWithMenu {
