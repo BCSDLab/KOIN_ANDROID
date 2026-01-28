@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.lostandfound.component
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,7 +14,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -319,6 +322,46 @@ fun EditArticleItemDetail(
                             KoinTheme.typography.medium16.copy(
                                 textAlign = TextAlign.Center
                             )
+                        )
+                    }
+                }
+                HorizontalDivider(color = KoinTheme.colors.neutral300, thickness = 1.dp)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = KoinTheme.colors.neutral100)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 2.dp, horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "초기화",
+                            style = KoinTheme.typography.medium14,
+                            color = KoinTheme.colors.primary600,
+                            modifier = Modifier
+                                .clickable {
+                                    yearPickerState.selectedItemIndex = yearList.indexOf(now.year.toString())
+                                    monthPickerState.selectedItemIndex =monthList.indexOf(now.month.toString())
+                                    dayPickerState.selectedItemIndex = dayList.indexOf(now.dayOfMonth.toString())
+                                }
+                                .padding(all = 4.dp)
+                        )
+                        Spacer(
+                            modifier = Modifier.width(24.dp)
+                        )
+                        Text(
+                            text = "확인",
+                            style = KoinTheme.typography.medium14,
+                            color = KoinTheme.colors.primary600,
+                            modifier = Modifier
+                                .clickable {
+                                    isPickerExpanded = false
+                                }
+                                .padding(all = 4.dp)
                         )
                     }
                 }
