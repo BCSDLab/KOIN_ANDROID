@@ -325,7 +325,7 @@ fun EditArticleItemDetail(
                         )
                     }
                 }
-                HorizontalDivider(color = KoinTheme.colors.neutral300, thickness = 1.dp)
+                HorizontalDivider(color = KoinTheme.colors.neutral300)
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -339,7 +339,7 @@ fun EditArticleItemDetail(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "초기화",
+                            text = stringResource(id = R.string.date_reset),
                             style = KoinTheme.typography.medium14,
                             color = KoinTheme.colors.primary600,
                             modifier = Modifier
@@ -354,7 +354,7 @@ fun EditArticleItemDetail(
                             modifier = Modifier.width(24.dp)
                         )
                         Text(
-                            text = "확인",
+                            text = stringResource(id = R.string.date_confirm),
                             style = KoinTheme.typography.medium14,
                             color = KoinTheme.colors.primary600,
                             modifier = Modifier
