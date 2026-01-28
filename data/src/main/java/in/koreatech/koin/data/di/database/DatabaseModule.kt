@@ -7,6 +7,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.koin.data.dao.CacheMetadataDao
+import `in`.koreatech.koin.data.dao.StoreCategoriesDao
 import `in`.koreatech.koin.data.db.AppDatabase
 import javax.inject.Singleton
 
@@ -21,5 +23,17 @@ object DatabaseModule {
         return Room.databaseBuilder(
             context, AppDatabase::class.java, "koin_database"
         ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCacheMetadataDao(appDatabase: AppDatabase): CacheMetadataDao {
+        return appDatabase.cacheMetadataDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideStoreCategoriesDao(appDatabase: AppDatabase): StoreCategoriesDao {
+        return appDatabase.storeCategoriesDao()
     }
 }
