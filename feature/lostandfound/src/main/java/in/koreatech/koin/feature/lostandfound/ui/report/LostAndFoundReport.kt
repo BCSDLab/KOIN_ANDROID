@@ -29,6 +29,7 @@ import timber.log.Timber
 @Composable
 fun LostAndFoundReport(
     articleId: Int,
+    onTopbarBackClick: () -> Unit = {},
     onSuccess: () -> Unit,
     viewModel: LostAndFoundReportViewModel = hiltViewModel()
 ) {
@@ -45,7 +46,7 @@ fun LostAndFoundReport(
             topBar = {
                 KoinTopAppBar(
                     title = stringResource(R.string.report_title),
-                    onNavigationIconClick = { (context as Activity).finish() },
+                    onNavigationIconClick = onTopbarBackClick,
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors().copy(
                         containerColor = KoinTheme.colors.primary500,
                         navigationIconContentColor = KoinTheme.colors.neutral0,
