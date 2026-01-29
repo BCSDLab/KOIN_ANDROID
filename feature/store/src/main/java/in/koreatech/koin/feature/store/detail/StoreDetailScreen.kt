@@ -170,7 +170,7 @@ fun StoreDetailScreen(
         snapshotFlow { isCartModified }
             .distinctUntilChanged()
             .onEach {
-                if (it && uiState.isLoggedIn) {
+                if (it && uiState.isLogin) {
                     viewModel.getCart(uiState.cartType)
                 }
             }

@@ -7,7 +7,6 @@ import `in`.koreatech.koin.core.developer.DeveloperOption
 import `in`.koreatech.koin.core.developer.DeveloperOptionUtil
 import `in`.koreatech.koin.domain.error.store.KoinStoreException
 import `in`.koreatech.koin.domain.model.cart.CartType
-import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopMenuUseCase
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopOriginInfoUseCase
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopSummaryUseCase
@@ -67,8 +66,6 @@ class StoreDetailViewModel @Inject constructor(
             val isOrderableShop = savedStateHandle.get<Boolean>(IS_ORDERABLE_SHOP) ?: true
             checkNotNull(storeId)
 
-            getUserType()
-
             intent {
                 reduce {
                     state.copy(
@@ -86,25 +83,6 @@ class StoreDetailViewModel @Inject constructor(
             fetchReview(storeId)
             checkToken()
         }
-
-    private fun getUserType() = intent {
-        getUserStatusUseCase().collect {
-            when (it) {
-                is User.Student,
-                is User.General -> {
-                    reduce {
-                        state.copy(isLoggedIn = true)
-                    }
-                }
-
-                is User.Anonymous -> {
-                    reduce {
-                        state.copy(isLoggedIn = false)
-                    }
-                }
-            }
-        }
-    }
 
     private fun fetchOrderStoreNotice(id: Int) = intent {
         getOrderShopOriginInfoUseCase(id).also { result ->
@@ -281,7 +259,7 @@ class StoreDetailViewModel @Inject constructor(
     }
 
     fun navigateToCart() = intent {
-        if (state.isLoggedIn) {
+        if (state.isLogin) {
             postSideEffect(StoreDetailSideEffect.NavigateToCart)
         } else {
             reduce {
