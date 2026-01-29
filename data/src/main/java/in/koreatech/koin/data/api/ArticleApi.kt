@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.data.api
 
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundPaginationResponse
-import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundResponse
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundStatsResponse
 import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleResponse
