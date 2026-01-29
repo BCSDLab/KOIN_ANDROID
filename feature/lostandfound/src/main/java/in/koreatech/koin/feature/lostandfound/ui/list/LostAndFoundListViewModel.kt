@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -230,6 +231,7 @@ class LostAndFoundListViewModel @Inject constructor(
             .map { it.searchQuery }
             .debounce(SEARCH_DEBOUNCE_MS)
             .distinctUntilChanged()
+            .drop(1)
             .onEach { query ->
                 fetchLostAndFoundItem()
             }
