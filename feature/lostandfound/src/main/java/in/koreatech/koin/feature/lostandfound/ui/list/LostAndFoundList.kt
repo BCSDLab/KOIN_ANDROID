@@ -167,7 +167,10 @@ fun LostAndFoundList(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
+                    .padding(
+                        horizontal = 24.dp,
+                        vertical = 4.dp
+                    ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 ItemSearchTextField(
