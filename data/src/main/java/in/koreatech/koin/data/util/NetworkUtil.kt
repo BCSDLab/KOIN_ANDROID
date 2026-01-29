@@ -14,7 +14,6 @@ fun ErrorResponse.toKoinUnknownErrorException(): KoinUnknownErrorException {
     return KoinUnknownErrorException(this.code, this.message, this.errorTraceId)
 }
 
-
 fun <T> Result<T>.mapHttpFailure(
     e400: KoinErrorException? = null,
     e401: KoinErrorException? = null,
