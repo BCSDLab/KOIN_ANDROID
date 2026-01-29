@@ -89,7 +89,14 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
         val route = backStackEntry.toRoute<LostAndFoundNavType.LostAndFoundDetailRoute>()
         LostAndFoundReport(
             articleId = route.articleId,
-            onSuccess = { navController.navigateUp() }
+            onSuccess = {
+                navController.navigate(LostAndFoundNavType.LostAndFoundListRoute) {
+                    popUpTo(navController.graph.startDestinationId) {
+                        inclusive = true
+                    }
+                    launchSingleTop = true
+                }
+            }
         )
     }
 
