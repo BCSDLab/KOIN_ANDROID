@@ -12,6 +12,6 @@ interface CacheMetadataDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(cacheMetadata: CacheMetadataEntity)
 
-    @Query("SELECT updated_time from ${DBConstant.CACHE_METADATA} where cacheKey = :cacheKey LIMIT 1")
+    @Query("SELECT updated_time from ${DBConstant.CACHE_METADATA} WHERE cacheKey = :cacheKey LIMIT 1")
     suspend fun getUpdatedTime(cacheKey: String): Long?
 }
