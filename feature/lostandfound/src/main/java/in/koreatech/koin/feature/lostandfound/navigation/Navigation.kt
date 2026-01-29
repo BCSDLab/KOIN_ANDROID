@@ -91,9 +91,12 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
             articleId = route.articleId,
             onTopbarBackClick = onBackPressed,
             onSuccess = {
+                navController.getBackStackEntry(LostAndFoundNavType.LostAndFoundListRoute)
+                    ?.savedStateHandle
+                    ?.set(REFRESH_LIST, true)
                 navController.navigate(LostAndFoundNavType.LostAndFoundListRoute) {
                     popUpTo(navController.graph.startDestinationId) {
-                        inclusive = true
+                        inclusive = false
                     }
                     launchSingleTop = true
                 }
