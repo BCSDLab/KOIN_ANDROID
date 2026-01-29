@@ -141,17 +141,18 @@ fun StoreDetailScreen(
     val menuCategoryHeight = remember { mutableStateOf(0) }
     val coroutineScope = rememberCoroutineScope()
 
-    viewModel.collectSideEffect {
+    viewModel.collectSideEffect { sideEffect ->
         handleSideEffect(
-            sideEffect = it,
+            sideEffect = sideEffect,
             context = context,
             checkPermission = {
                 permissionLauncher.launch(Manifest.permission.CALL_PHONE)
             },
             navigateToCart = navigateToCart,
-            collapseToolbar = {
+            scrollToMenuCategory = { categoryId ->
                 coroutineScope.launch {
-                    rememberState.collapseHeader()
+                    rememberState.snapOffset(-rememberState.range)
+                    listState.animateScrollToItem(uiState.categories.indexOfFirst { it.menuGroupId == categoryId } + 2, -menuCategoryHeight.value)
                 }
             }
         )
@@ -169,16 +170,11 @@ fun StoreDetailScreen(
         snapshotFlow { isCartModified }
             .distinctUntilChanged()
             .onEach {
-                if (it && uiState.isLoggedIn) {
+                if (it && uiState.isLogin) {
                     viewModel.getCart(uiState.cartType)
                 }
             }
             .launchIn(coroutineScope)
-    }
-
-    LaunchedEffect(uiState.selectedCategoryId) {
-        if (currentToolbarHeightDp.value != rememberState.headerCollapsedHeightPx.pxToDp) return@LaunchedEffect // Don't scroll if toolbar not collapsed
-        listState.animateScrollToItem(uiState.categories.indexOfFirst { it.menuGroupId == uiState.selectedCategoryId } + 2)
     }
 
     LaunchedEffect(Unit) {
@@ -214,7 +210,7 @@ fun StoreDetailScreen(
             snapshotFlow { listState.firstVisibleItemIndex },
             snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastIndex }
         ) { index, _ ->
-            index
+            index + 1
         }.collect { index ->
             val visibleCategory = if (!listState.isScrolledToTheEnd()) {
                 uiState.categories.getOrNull(index - 2)
@@ -506,7 +502,7 @@ fun handleSideEffect(
     context: Context,
     checkPermission: () -> Unit = {},
     navigateToCart: () -> Unit = {},
-    collapseToolbar: () -> Unit = {}
+    scrollToMenuCategory: (categoryId: Int) -> Unit = {}
 ) {
     when (sideEffect) {
         StoreDetailSideEffect.NavigateToCart -> {
@@ -525,8 +521,8 @@ fun handleSideEffect(
             context.startActivity(intent)
         }
 
-        StoreDetailSideEffect.CollapseToolbar -> {
-            collapseToolbar()
+        is StoreDetailSideEffect.ScrollToMenuCategory -> {
+            scrollToMenuCategory(sideEffect.categoryId)
         }
     }
 }
