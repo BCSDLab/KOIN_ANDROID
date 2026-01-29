@@ -134,7 +134,7 @@
     <string name="article_student">학생생활</string>
     <string name="article_student_simple">학생</string>
     <string name="request_login_dialog_title">게시글을 작성 하려면\n로그인이 필요해요.</string>
-    <string name="request_login_dialog_description">로그인 후 분실물 주인을 찾아주세요!</string>
+    <string name="request_login_dialog_description">로그인 후 글을 작성해주세요!</string>
 
     <string name="fab_write">글쓰기</string>
     <string name="fab_found">주인을 찾아요</string>
