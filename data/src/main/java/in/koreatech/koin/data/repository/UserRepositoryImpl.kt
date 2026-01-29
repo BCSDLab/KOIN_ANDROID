@@ -16,8 +16,8 @@ import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.util.getErrorResponse
+import `in`.koreatech.koin.data.util.mapHttpFailure
 import `in`.koreatech.koin.data.util.toKoinUnknownErrorException
-import `in`.koreatech.koin.domain.error.KoinUnknownErrorException
 import `in`.koreatech.koin.domain.error.user.KoinUserException
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
@@ -163,38 +163,27 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateUser(user: User) {
-        runCatching {
-            when (user) {
-                User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
-                is User.Student -> {
-                    userRemoteDataSource.updateStudentUser(user.toUserRequest())
-                    userLocalDataSource.updateUserInfo(user)
-                }
-
-                is User.General -> {
-                    userRemoteDataSource.updateGeneralUser(user.toUserRequest())
-                    userLocalDataSource.updateUserInfo(user)
-                }
+    override suspend fun updateUser(user: User): Result<Unit> = runCatching {
+        when (user) {
+            User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
+            is User.Student -> {
+                userRemoteDataSource.updateStudentUser(user.toUserRequest())
+                userLocalDataSource.updateUserInfo(user)
             }
-        }.onSuccess {
-            userLocalDataSource.updateUserInfo(user)
-        }.onFailure {
-            throw if (it is HttpException) {
-                when (it.code()) {
-                    400 -> KoinUserException.DataInvalidException()
-                    401 -> KoinUserException.UnauthorizedException()
-                    404 -> KoinUserException.UserNotFoundException()
-                    409 -> KoinUserException.NicknameOrEmailConflictException()
-                    else -> it.getErrorResponse().let { errorResponse ->
-                        KoinUnknownErrorException(errorResponse.code, errorResponse.message, errorResponse.errorTraceId)
-                    }
-                }
-            } else {
-                it
+
+            is User.General -> {
+                userRemoteDataSource.updateGeneralUser(user.toUserRequest())
+                userLocalDataSource.updateUserInfo(user)
             }
         }
-    }
+    }.onSuccess {
+        userLocalDataSource.updateUserInfo(user)
+    }.mapHttpFailure(
+        e400 = KoinUserException.DataInvalidException(),
+        e401 = KoinUserException.UnauthorizedException(),
+        e404 = KoinUserException.UserNotFoundException(),
+        e409 = KoinUserException.NicknameOrEmailConflictException()
+    )
 
     override suspend fun deleteDeviceToken() {
         tokenLocalDataSource.removeDeviceToken()
