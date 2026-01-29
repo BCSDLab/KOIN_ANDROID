@@ -89,6 +89,11 @@ fun handleSideEffect(
     when (sideEffect) {
         is LostAndFoundReportSideEffect.ReportSuccess -> {
             onSuccess()
+            Toast.makeText(
+                context,
+                context.getString(R.string.report_success),
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         is LostAndFoundReportSideEffect.ReportFailure -> {

@@ -158,6 +158,7 @@
 
     <string name="report_submit">신고하기</string>
 
+    <string name="report_success">게시글이 신고되었습니다.</string>
     <string name="report_failed">게시글 신고에 실패하였습니다</string>
     <string name="article_reported">신고에 의해 숨김 처리 되었습니다. </string>
 
