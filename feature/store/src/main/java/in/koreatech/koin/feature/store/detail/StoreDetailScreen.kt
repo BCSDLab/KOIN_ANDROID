@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -178,7 +179,7 @@ fun StoreDetailScreen(
 
     LaunchedEffect(uiState.selectedCategoryId) {
         if (currentToolbarHeightDp.value != rememberState.headerCollapsedHeightPx.pxToDp) return@LaunchedEffect // Don't scroll if toolbar not collapsed
-        listState.animateScrollToItem(uiState.categories.indexOfFirst { it.menuGroupId == uiState.selectedCategoryId } + 2)
+        listState.animateScrollToItem(uiState.categories.indexOfFirst { it.menuGroupId == uiState.selectedCategoryId } + 2, -menuCategoryHeight.value)
     }
 
     LaunchedEffect(Unit) {
