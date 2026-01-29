@@ -72,6 +72,7 @@ import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.domain.model.store.StoreWithMenuV2
 import `in`.koreatech.koin.domain.repository.StoreRepository
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.days
 import retrofit2.HttpException
 
 class StoreRepositoryImpl @Inject constructor(
@@ -119,7 +120,7 @@ class StoreRepositoryImpl @Inject constructor(
         val cachedTime = cacheLocalDataSource.getCachedTime(DBConstant.STORE_CATEGORIES)
         val now = System.currentTimeMillis()
 
-        val cacheShouldExpire = cachedTime == null || (now - cachedTime) > 7 * 24 * 60 * 60 * 1000L
+        val cacheShouldExpire = cachedTime == null || (now - cachedTime) > 7.days.inWholeMilliseconds
 
         val shouldFetch = cachedStoreCategories.isEmpty() || cacheShouldExpire
 
