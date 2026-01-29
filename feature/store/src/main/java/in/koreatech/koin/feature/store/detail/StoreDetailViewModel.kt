@@ -300,7 +300,7 @@ class StoreDetailViewModel @Inject constructor(
                 selectedCategoryId = categoryId
             )
         }
-        postSideEffect(StoreDetailSideEffect.CollapseToolbar)
+        postSideEffect(StoreDetailSideEffect.ScrollToMenuCategory(categoryId))
     }
 
     fun changeCategory(categoryId: Int) = blockingIntent {

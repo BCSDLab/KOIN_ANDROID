@@ -12,7 +12,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -142,17 +141,18 @@ fun StoreDetailScreen(
     val menuCategoryHeight = remember { mutableStateOf(0) }
     val coroutineScope = rememberCoroutineScope()
 
-    viewModel.collectSideEffect {
+    viewModel.collectSideEffect { sideEffect ->
         handleSideEffect(
-            sideEffect = it,
+            sideEffect = sideEffect,
             context = context,
             checkPermission = {
                 permissionLauncher.launch(Manifest.permission.CALL_PHONE)
             },
             navigateToCart = navigateToCart,
-            collapseToolbar = {
+            scrollToMenuCategory = { categoryId ->
                 coroutineScope.launch {
-                    rememberState.collapseHeader()
+                    rememberState.snapOffset(-rememberState.range)
+                    listState.animateScrollToItem(uiState.categories.indexOfFirst { it.menuGroupId == categoryId } + 2, -menuCategoryHeight.value)
                 }
             }
         )
@@ -175,11 +175,6 @@ fun StoreDetailScreen(
                 }
             }
             .launchIn(coroutineScope)
-    }
-
-    LaunchedEffect(uiState.selectedCategoryId) {
-        if (currentToolbarHeightDp.value != rememberState.headerCollapsedHeightPx.pxToDp) return@LaunchedEffect // Don't scroll if toolbar not collapsed
-        listState.animateScrollToItem(uiState.categories.indexOfFirst { it.menuGroupId == uiState.selectedCategoryId } + 2, -menuCategoryHeight.value)
     }
 
     LaunchedEffect(Unit) {
@@ -507,7 +502,7 @@ fun handleSideEffect(
     context: Context,
     checkPermission: () -> Unit = {},
     navigateToCart: () -> Unit = {},
-    collapseToolbar: () -> Unit = {}
+    scrollToMenuCategory: (categoryId: Int) -> Unit = {}
 ) {
     when (sideEffect) {
         StoreDetailSideEffect.NavigateToCart -> {
@@ -526,8 +521,8 @@ fun handleSideEffect(
             context.startActivity(intent)
         }
 
-        StoreDetailSideEffect.CollapseToolbar -> {
-            collapseToolbar()
+        is StoreDetailSideEffect.ScrollToMenuCategory -> {
+            scrollToMenuCategory(sideEffect.categoryId)
         }
     }
 }
