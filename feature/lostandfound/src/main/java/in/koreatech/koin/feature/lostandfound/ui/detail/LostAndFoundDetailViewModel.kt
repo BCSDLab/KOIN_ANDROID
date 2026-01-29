@@ -54,16 +54,12 @@ class LostAndFoundDetailViewModel @Inject constructor(
                 when (it) {
                     is User.Student -> reduce {
                         state.copy(
-                            isLoggedIn = true,
-                            currentLoggedInUser = it.nickname ?: "",
-                            isMine = it.nickname == state.author
+                            isLoggedIn = true
                         )
                     }
                     is User.General -> reduce {
                         state.copy(
-                            isLoggedIn = true,
-                            currentLoggedInUser = it.nickname ?: "",
-                            isMine = it.nickname == state.author
+                            isLoggedIn = true
                         )
                     }
                     is User.Anonymous -> reduce {
@@ -100,7 +96,7 @@ class LostAndFoundDetailViewModel @Inject constructor(
                     registeredAt = article.registeredAt,
                     updatedAt = article.updatedAt,
                     organization = article.organization,
-                    isMine = state.currentLoggedInUser == article.author,
+                    isMine = article.isMine,
                     isAuthorWithdraw = article.author == "탈퇴한 사용자",
                     isLoading = false,
                     isFound = article.isFound
