@@ -84,9 +84,7 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
         LostAndFoundDetail(
             navigateToArticleList = navigateToList,
             onTopbarBackClick = onBackPressed,
-            refreshList = {
-                cancelRefreshList(false)
-            },
+            refreshList = { cancelRefreshList(false) },
             navigateToChatRoom = { articleId ->
                 val intent = navigator.navigateToChatRoom(context)
                 intent.putExtra(CHAT_ARTICLE_ID, articleId)
@@ -117,17 +115,7 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
         LostAndFoundReport(
             articleId = route.articleId,
             onTopbarBackClick = onBackPressed,
-            onSuccess = {
-                navController.getBackStackEntry(LostAndFoundNavType.LostAndFoundListRoute)
-                    ?.savedStateHandle
-                    ?.set(REFRESH_LIST, true)
-                navController.navigate(LostAndFoundNavType.LostAndFoundListRoute) {
-                    popUpTo(navController.graph.startDestinationId) {
-                        inclusive = false
-                    }
-                    launchSingleTop = true
-                }
-            }
+            onSuccess = { navigateToList(false) }
         )
     }
 
