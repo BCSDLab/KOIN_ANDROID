@@ -73,6 +73,9 @@
     <string name="lost_date">분실 일자</string>
     <string name="lost_date_hint">분실 일자를 입력해주세요.</string>
     <string name="lost_date_required">분실일자가 입력되지 않았습니다.</string>
+    
+    <string name="date_reset">초기화</string>
+    <string name="date_confirm">확인</string>
 
     <string name="found_location">습득 장소</string>
     <string name="found_location_hint">습득 장소를 입력해주세요.</string>
