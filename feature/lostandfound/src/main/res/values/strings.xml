@@ -137,7 +137,7 @@
     <string name="article_student">학생생활</string>
     <string name="article_student_simple">학생</string>
     <string name="request_login_dialog_title">게시글을 작성 하려면\n로그인이 필요해요.</string>
-    <string name="request_login_dialog_description">로그인 후 분실물 주인을 찾아주세요!</string>
+    <string name="request_login_dialog_description">로그인 후 글을 작성해주세요!</string>
 
     <string name="fab_write">글쓰기</string>
     <string name="fab_found">주인을 찾아요</string>
@@ -161,6 +161,7 @@
 
     <string name="report_submit">신고하기</string>
 
+    <string name="report_success">게시글이 신고되었습니다.</string>
     <string name="report_failed">게시글 신고에 실패하였습니다</string>
     <string name="article_reported">신고에 의해 숨김 처리 되었습니다. </string>
 
@@ -227,7 +228,7 @@
 
     <string name="lost_and_found_update_found_fail">찾음으로 변경하지 못했습니다.</string>
 
-    <string name="lost_and_found_my_filter_can_use_logged_in">내 개시물 필터는\n로그인이 필요해요.</string>
+    <string name="lost_and_found_my_filter_can_use_logged_in">내 게시물 필터는\n로그인이 필요해요.</string>
     <string name="lost_and_found_my_filter_can_use_logged_in_description">로그인 후 이용하세요!</string>
     <string name="lost_and_found_my_filter_can_use_logged_in_positive">로그인하기</string>
     <string name="lost_and_found_my_filter_can_use_logged_in_negative">닫기</string>

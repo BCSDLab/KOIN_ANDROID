@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -151,6 +152,7 @@ fun LostAndFoundList(
         },
         floatingActionButton = {
             LostAndFoundFAB(
+                modifier = Modifier.offset(y = 10.dp),
                 onClick = {
                     if (uiState.isLoggedIn) {
                         viewModel.setShowWriteBottomSheet(true)
@@ -171,7 +173,10 @@ fun LostAndFoundList(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
+                    .padding(
+                        horizontal = 24.dp,
+                        vertical = 4.dp
+                    ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 ItemSearchTextField(

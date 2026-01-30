@@ -66,7 +66,7 @@ fun ListItem(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clickable {
+            .clickable(enabled = !isReported) {
                 EventLogger.logCampusClickEvent(
                     AnalyticsConstant.Label.LostAndFound.LOST_ITEM_POST_ENTRY,
                     loggingEntry
