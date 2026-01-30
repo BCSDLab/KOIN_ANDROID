@@ -54,6 +54,7 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
             if (backStackEntry.savedStateHandle.contains(CANCEL_REFRESH_LIST)) {
                 isCancelRefresh = backStackEntry.savedStateHandle[CANCEL_REFRESH_LIST] ?: false
             }
+            backStackEntry.savedStateHandle.remove<Boolean>(CANCEL_REFRESH_LIST)
         }
         val navigator = rememberNavigator()
         val context = LocalContext.current
