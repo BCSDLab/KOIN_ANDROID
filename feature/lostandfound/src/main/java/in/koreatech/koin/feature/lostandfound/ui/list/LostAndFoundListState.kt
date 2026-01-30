@@ -16,7 +16,7 @@ data class LostAndFoundListState(
     val isLoggedIn: Boolean = false,
     val showFilterLoginDialog: Boolean = false,
     val showWriteLoginDialog: Boolean = false,
-    val isFirstPageLoading: Boolean = false,
+    val isFirstPageLoading: Boolean = true,
     val showFilterBottomSheet: Boolean = false,
     val showWriteBottomSheet: Boolean = false,
     val searchQuery: String = "",

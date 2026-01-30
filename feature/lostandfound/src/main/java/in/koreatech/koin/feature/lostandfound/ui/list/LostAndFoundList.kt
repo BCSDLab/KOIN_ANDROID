@@ -16,8 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -38,11 +37,13 @@ import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LostAndFoundFA
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LostAndFoundFABBottomSheet
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LostAndFoundFilterBottomSheet
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun LostAndFoundList(
-    doRefresh: Boolean,
+    cancelRefresh: Boolean,
     viewModel: LostAndFoundListViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {},
     navigateToLogin: () -> Unit = {},
@@ -51,13 +52,18 @@ fun LostAndFoundList(
 ) {
     val uiState by viewModel.collectAsState()
 
-    val refresh = remember(doRefresh) { mutableStateOf(doRefresh) }
-
-    LaunchedEffect(refresh) {
-        if (doRefresh) {
-            viewModel.fetchLostAndFoundItem()
-            refresh.value = false
-        }
+    LaunchedEffect(Unit, cancelRefresh) {
+        var cancelRefresh = cancelRefresh
+        snapshotFlow { uiState.searchQuery }
+            .debounce(SEARCH_DEBOUNCE_MS)
+            .distinctUntilChanged()
+            .collect {
+                if(cancelRefresh) {
+                    cancelRefresh = false
+                } else {
+                    viewModel.fetchLostAndFoundItem()
+                }
+            }
     }
 
     if (uiState.showFilterBottomSheet) {
@@ -220,3 +226,5 @@ fun LostAndFoundList(
         }
     }
 }
+
+const val SEARCH_DEBOUNCE_MS = 250L
