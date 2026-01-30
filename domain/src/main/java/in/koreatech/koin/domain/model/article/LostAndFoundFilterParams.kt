@@ -4,7 +4,7 @@ data class LostAndFoundFilterParams(
     val type: String? = null,
     val page: Int = 1,
     val limit: Int = 10,
-    val category: String = "ALL",
+    val category: List<String> = emptyList(),
     val foundStatus: String = "ALL",
     val sort: String = "LATEST",
     val author: String = "ALL",

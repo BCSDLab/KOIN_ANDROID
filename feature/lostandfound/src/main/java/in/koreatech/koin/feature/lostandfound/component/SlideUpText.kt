@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import kotlinx.collections.immutable.ImmutableList
@@ -44,6 +45,7 @@ fun SlideUpText(
 
     AnimatedContent(
         targetState = text.value,
+        contentAlignment = Alignment.Center,
         transitionSpec = {
             slideInVertically { height -> height } + fadeIn() togetherWith
                 slideOutVertically { height -> -height } + fadeOut()
@@ -52,6 +54,7 @@ fun SlideUpText(
         Text(
             modifier = modifier,
             text = showedText,
+            maxLines = 1,
             style = style
         )
     }

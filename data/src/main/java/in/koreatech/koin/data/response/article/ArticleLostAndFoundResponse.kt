@@ -77,7 +77,7 @@ data class ArticleLostAndFoundResponse(
             content = content,
             author = author,
             organization = organization?.toArticleLostAndFoundOrganization(),
-            isMine = isMine!!, // Should not be null
+            isMine = isMine ?: false, // Should not be null
             isFound = isFound,
             images = images?.map { it.toArticleLostAndFoundImage() },
             registeredAt = registeredAt,

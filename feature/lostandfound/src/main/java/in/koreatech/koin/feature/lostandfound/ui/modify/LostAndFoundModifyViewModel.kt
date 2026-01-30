@@ -13,6 +13,7 @@ import `in`.koreatech.koin.domain.usecase.presignedurl.UploadImageUseCase
 import `in`.koreatech.koin.feature.lostandfound.IMAGE_MAX_COUNT
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory.Companion.getCategoryKoreanWord
+import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.navigation.ARTICLE_ID
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -151,7 +152,7 @@ class LostAndFoundModifyViewModel @Inject constructor(
         reduce {
             state.copy(
                 foundPlace = foundPlace,
-                locationRequired = foundPlace.isEmpty()
+                locationRequired = foundPlace.isEmpty() && state.lostOrFoundType == LostOrFoundType.FOUND
             )
         }
     }
@@ -170,7 +171,7 @@ class LostAndFoundModifyViewModel @Inject constructor(
         reduce {
             state.copy(
                 itemTypeRequired = state.category == LostItemCategory.NONE,
-                locationRequired = state.foundPlace.isEmpty()
+                locationRequired = state.foundPlace.isEmpty() && state.lostOrFoundType == LostOrFoundType.FOUND
             )
         }
         modifyArticle()

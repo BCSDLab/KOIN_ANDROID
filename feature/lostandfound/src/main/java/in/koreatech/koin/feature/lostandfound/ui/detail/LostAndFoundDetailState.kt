@@ -13,7 +13,6 @@ import kotlinx.parcelize.Parcelize
 data class LostAndFoundDetailState(
     val isLoading: Boolean = false,
     val isLoggedIn: Boolean = false,
-    val currentLoggedInUser: String = "",
     val showDeleteDialog: Boolean = false,
     val showFoundDialog: Boolean = false,
     val showLoginDialog: Boolean = false,

@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +46,8 @@ import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.Fou
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.LostOrFoundFilterType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,9 +55,9 @@ fun LostAndFoundFilterBottomSheet(
     onDismissRequest: () -> Unit,
     selectedAuthorType: AuthorFilterType,
     selectedLostOrFoundType: LostOrFoundFilterType,
-    selectedCategoryType: CategoryFilterType,
+    selectedCategoryType: ImmutableList<CategoryFilterType>,
     selectedFoundType: FoundFilterType,
-    onApply: (AuthorFilterType, LostOrFoundFilterType, CategoryFilterType, FoundFilterType) -> Unit
+    onApply: (AuthorFilterType, LostOrFoundFilterType, ImmutableList<CategoryFilterType>, FoundFilterType) -> Unit
 ) {
     var selectedAuthorType by remember { mutableStateOf(selectedAuthorType) }
     var selectedLostOrFoundType by remember { mutableStateOf(selectedLostOrFoundType) }
@@ -63,6 +67,7 @@ fun LostAndFoundFilterBottomSheet(
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
+    val scope = rememberCoroutineScope()
 
     ModalBottomSheet(
         sheetState = sheetState,
@@ -78,13 +83,25 @@ fun LostAndFoundFilterBottomSheet(
 
             onAuthorTypeChange = { selectedAuthorType = it as AuthorFilterType },
             onLostOrFoundTypeChange = { selectedLostOrFoundType = it as LostOrFoundFilterType },
-            onCategoryTypeChange = { selectedCategoryType = it as CategoryFilterType },
+            onCategoryTypeChange = {
+                val newSelectedCategories = it.map { type -> type as CategoryFilterType }
+                selectedCategoryType = if (
+                    selectedCategoryType.size == 1 &&
+                    selectedCategoryType.first() == CategoryFilterType.ALL
+                ) {
+                    (newSelectedCategories - CategoryFilterType.ALL).toPersistentList()
+                } else if (CategoryFilterType.ALL in newSelectedCategories) {
+                    persistentListOf(CategoryFilterType.ALL)
+                } else {
+                    newSelectedCategories.toPersistentList()
+                }
+            },
             onFoundTypeChange = { selectedFoundType = it as FoundFilterType },
 
             onReset = {
                 selectedAuthorType = AuthorFilterType.ALL
                 selectedLostOrFoundType = LostOrFoundFilterType.ALL
-                selectedCategoryType = CategoryFilterType.ALL
+                selectedCategoryType = persistentListOf(CategoryFilterType.ALL)
                 selectedFoundType = FoundFilterType.ALL
             },
 
@@ -97,7 +114,10 @@ fun LostAndFoundFilterBottomSheet(
                 )
             },
 
-            onDismissRequest = onDismissRequest
+            onDismissRequest = {
+                scope.launch { sheetState.hide() }
+                onDismissRequest()
+            }
         )
     }
 }
@@ -106,11 +126,11 @@ fun LostAndFoundFilterBottomSheet(
 fun FilterBottomSheetContent(
     selectedAuthorType: AuthorFilterType,
     selectedLostOrFoundType: LostOrFoundFilterType,
-    selectedCategoryType: CategoryFilterType,
+    selectedCategoryType: ImmutableList<CategoryFilterType>,
     selectedFoundType: FoundFilterType,
     onAuthorTypeChange: (LostAndFoundFilterType) -> Unit,
     onLostOrFoundTypeChange: (LostAndFoundFilterType) -> Unit,
-    onCategoryTypeChange: (LostAndFoundFilterType) -> Unit,
+    onCategoryTypeChange: (ImmutableList<LostAndFoundFilterType>) -> Unit,
     onFoundTypeChange: (LostAndFoundFilterType) -> Unit,
     onReset: () -> Unit,
     onApplyClick: () -> Unit,
@@ -170,7 +190,7 @@ fun FilterBottomSheetContent(
                 onItemSelected = onLostOrFoundTypeChange
             )
             HorizontalDivider(color = KoinTheme.colors.neutral300)
-            FilterSection(
+            FilterDuplicateSection(
                 title = stringResource(R.string.filter_list_type),
                 items = persistentListOf(
                     CategoryFilterType.ALL,
@@ -180,7 +200,7 @@ fun FilterBottomSheetContent(
                     CategoryFilterType.ELECTRONIC,
                     CategoryFilterType.OTHER
                 ),
-                selectedItem = selectedCategoryType,
+                selectedItems = selectedCategoryType,
                 onItemSelected = onCategoryTypeChange
             )
             HorizontalDivider(color = KoinTheme.colors.neutral300)
@@ -278,6 +298,50 @@ fun FilterSection(
                         )
                     }
                 }
+            }
+        }
+    }
+}
+private const val AT_LEAST_COUNT = 1
+
+@Composable
+fun FilterDuplicateSection(
+    title: String,
+    items: ImmutableList<LostAndFoundFilterType>,
+    selectedItems: ImmutableList<LostAndFoundFilterType>,
+    onItemSelected: (ImmutableList<LostAndFoundFilterType>) -> Unit
+) {
+    Column(modifier = Modifier.padding(vertical = 12.dp)) {
+        Text(
+            text = title,
+            style = KoinTheme.typography.bold16,
+            color = KoinTheme.colors.neutral800,
+            modifier = Modifier.padding(bottom = 12.dp)
+        )
+        FlowRow(
+            modifier = Modifier.fillMaxWidth(),
+            maxItemsInEachRow = 3,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            items.forEach { item ->
+                FilterChipCustom(
+                    text = stringResource(item.stringRes),
+                    isSelected = item in selectedItems,
+                    onClick = {
+                        onItemSelected(
+                            if (item in selectedItems) {
+                                if (selectedItems.size > AT_LEAST_COUNT) {
+                                    (selectedItems - item).toPersistentList()
+                                } else {
+                                    return@FilterChipCustom
+                                }
+                            } else {
+                                (selectedItems + item).toPersistentList()
+                            }
+                        )
+                    }
+                )
             }
         }
     }

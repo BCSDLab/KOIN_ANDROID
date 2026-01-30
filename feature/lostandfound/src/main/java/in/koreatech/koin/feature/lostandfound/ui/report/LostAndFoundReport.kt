@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.report
 
-import android.app.Activity
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -29,6 +28,7 @@ import timber.log.Timber
 @Composable
 fun LostAndFoundReport(
     articleId: Int,
+    onTopbarBackClick: () -> Unit = {},
     onSuccess: () -> Unit,
     viewModel: LostAndFoundReportViewModel = hiltViewModel()
 ) {
@@ -45,7 +45,7 @@ fun LostAndFoundReport(
             topBar = {
                 KoinTopAppBar(
                     title = stringResource(R.string.report_title),
-                    onNavigationIconClick = { (context as Activity).finish() },
+                    onNavigationIconClick = onTopbarBackClick,
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors().copy(
                         containerColor = KoinTheme.colors.primary500,
                         navigationIconContentColor = KoinTheme.colors.neutral0,
@@ -89,6 +89,11 @@ fun handleSideEffect(
     when (sideEffect) {
         is LostAndFoundReportSideEffect.ReportSuccess -> {
             onSuccess()
+            Toast.makeText(
+                context,
+                context.getString(R.string.report_success),
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         is LostAndFoundReportSideEffect.ReportFailure -> {

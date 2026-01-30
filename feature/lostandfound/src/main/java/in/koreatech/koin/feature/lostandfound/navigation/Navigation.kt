@@ -1,7 +1,11 @@
 package `in`.koreatech.koin.feature.lostandfound.navigation
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -18,12 +22,44 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
     navController: NavController,
     onBackPressed: () -> Unit
 ) {
+    val cancelRefreshList = { cancelRefresh: Boolean ->
+        navController.getBackStackEntry(LostAndFoundNavType.LostAndFoundListRoute)
+            ?.savedStateHandle
+            ?.let { handle ->
+                if (handle.get<Boolean>(CANCEL_REFRESH_LIST) != false) {
+                    handle[CANCEL_REFRESH_LIST] = cancelRefresh
+                }
+            }
+    }
+
+    val navigateToList = { cancelRefresh: Boolean ->
+        cancelRefreshList(cancelRefresh)
+        navController.navigate(LostAndFoundNavType.LostAndFoundListRoute) {
+            popUpTo(navController.graph.startDestinationId) {
+                inclusive = false
+            }
+            launchSingleTop = true
+        }
+    }
+
+    val onBackPressed = {
+        cancelRefreshList(true)
+        onBackPressed()
+    }
+
     composable<LostAndFoundNavType.LostAndFoundListRoute> { backStackEntry ->
-        val refreshFlow = backStackEntry.savedStateHandle.getStateFlow("refresh_list", false).collectAsStateWithLifecycle()
+        var isCancelRefresh by remember { mutableStateOf(false) }
+
+        LaunchedEffect(Unit) {
+            if (backStackEntry.savedStateHandle.contains(CANCEL_REFRESH_LIST)) {
+                isCancelRefresh = backStackEntry.savedStateHandle[CANCEL_REFRESH_LIST] ?: false
+            }
+            backStackEntry.savedStateHandle.remove<Boolean>(CANCEL_REFRESH_LIST)
+        }
         val navigator = rememberNavigator()
         val context = LocalContext.current
         LostAndFoundList(
-            doRefresh = refreshFlow.value,
+            cancelRefresh = isCancelRefresh,
             onTopbarBackClick = onBackPressed,
             navigateArticleDetail = { articleId ->
                 navController.navigate(LostAndFoundNavType.LostAndFoundDetailRoute(articleId))
@@ -46,20 +82,9 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
         val navigator = rememberNavigator()
         val context = LocalContext.current
         LostAndFoundDetail(
-            refreshLostAndFoundList = {
-                navController.getBackStackEntry(LostAndFoundNavType.LostAndFoundListRoute)
-                    ?.savedStateHandle
-                    ?.set("refresh_list", true)
-            },
-            navigateToArticleList = {
-                navController.navigate(LostAndFoundNavType.LostAndFoundListRoute) {
-                    popUpTo(navController.graph.startDestinationId) {
-                        inclusive = false
-                    }
-                    launchSingleTop = true
-                }
-            },
+            navigateToArticleList = navigateToList,
             onTopbarBackClick = onBackPressed,
+            refreshList = { cancelRefreshList(false) },
             navigateToChatRoom = { articleId ->
                 val intent = navigator.navigateToChatRoom(context)
                 intent.putExtra(CHAT_ARTICLE_ID, articleId)
@@ -89,21 +114,15 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
         val route = backStackEntry.toRoute<LostAndFoundNavType.LostAndFoundDetailRoute>()
         LostAndFoundReport(
             articleId = route.articleId,
-            onSuccess = { navController.navigateUp() }
+            onTopbarBackClick = onBackPressed,
+            onSuccess = { navigateToList(false) }
         )
     }
 
     composable<LostAndFoundNavType.LostAndFoundWriteRoute> {
         LostAndFoundWriteArticle(
             onBackClick = onBackPressed,
-            onComplete = {
-                navController.navigate(LostAndFoundNavType.LostAndFoundListRoute) {
-                    popUpTo(navController.graph.startDestinationId) {
-                        inclusive = true
-                    }
-                    launchSingleTop = true
-                }
-            }
+            onComplete = { navigateToList(false) }
         )
     }
 
@@ -111,11 +130,7 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
         LostAndFoundModify(
             onBackClick = onBackPressed,
             onComplete = { articleId ->
-                navController.navigate(LostAndFoundNavType.LostAndFoundListRoute) {
-                    popUpTo<LostAndFoundNavType.LostAndFoundDetailRoute> {
-                        inclusive = true
-                    }
-                }
+                navigateToList(false)
                 navController.navigate(LostAndFoundNavType.LostAndFoundDetailRoute(articleId))
             }
         )

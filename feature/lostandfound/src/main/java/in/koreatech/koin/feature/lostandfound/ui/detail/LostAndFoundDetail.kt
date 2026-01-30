@@ -50,9 +50,9 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun LostAndFoundDetail(
     viewModel: LostAndFoundDetailViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
-    navigateToArticleList: () -> Unit = {},
     onTopbarBackClick: () -> Unit = {},
-    refreshLostAndFoundList: () -> Unit = {},
+    refreshList: () -> Unit = {},
+    navigateToArticleList: (cancelRefresh: Boolean) -> Unit = {},
     navigateToRecentArticle: (articleId: Int) -> Unit = {},
     navigateToChatRoom: (articleId: Int) -> Unit = {},
     navigateToLogin: (articleId: Int) -> Unit = {},
@@ -64,7 +64,9 @@ fun LostAndFoundDetail(
         topBar = {
             KoinTopAppBar(
                 title = stringResource(R.string.lost_and_found),
-                onNavigationIconClick = onTopbarBackClick
+                onNavigationIconClick = {
+                    onTopbarBackClick()
+                }
             )
         }
     ) { contentPadding ->
@@ -84,8 +86,8 @@ fun LostAndFoundDetail(
                         loggingLostOrFound
                     )
                     viewModel.setFound()
+                    refreshList()
                     viewModel.setShowFoundDialog(false)
-                    refreshLostAndFoundList()
                 },
                 onNegative = {
                     viewModel.setShowFoundDialog(false)
@@ -121,7 +123,7 @@ fun LostAndFoundDetail(
         }
 
         viewModel.collectSideEffect {
-            handleSideEffect(it, context, navigateToArticleList, refreshLostAndFoundList)
+            handleSideEffect(it, context, navigateToArticleList)
         }
 
         Column(
@@ -136,6 +138,14 @@ fun LostAndFoundDetail(
             val layoutHeightDp = remember { mutableStateOf(0.dp) }
             val enableRecentArticleHeight = remember(layoutHeightDp.value) {
                 mutableStateOf(screenHeightDp - (contentPadding.calculateTopPadding() + contentPadding.calculateBottomPadding()) - layoutHeightDp.value)
+            }
+
+            val itemHeightDp = 48.dp
+            val headerHeight = 54.dp
+            val finalRecentArticleHeight = remember(enableRecentArticleHeight.value) {
+                val availableHeight = enableRecentArticleHeight.value - headerHeight
+                val visibleItemCount = (availableHeight / itemHeightDp).toInt()
+                headerHeight + (itemHeightDp * (visibleItemCount + 0.65f))
             }
             Layout(
                 content = {
@@ -194,7 +204,7 @@ fun LostAndFoundDetail(
                             isAuthorWithdraw = uiState.isAuthorWithdraw,
                             isWriterAdmin = uiState.organization != null,
                             onArticleListClick = {
-                                navigateToArticleList
+                                navigateToArticleList(true)
                             },
                             onDeleteArticleClick = {
                                 viewModel.deleteArticle()
@@ -240,8 +250,8 @@ fun LostAndFoundDetail(
 
             RecentArticleList(
                 modifier = Modifier
-                    .heightIn(min = 300.dp, max = screenHeightDp)
-                    .height(enableRecentArticleHeight.value),
+                    .heightIn(min = 275.dp, max = screenHeightDp)
+                    .height(finalRecentArticleHeight),
                 recentArticles = recentArticles,
                 isLoadingMore = uiState.isLoadingMoreArticles,
                 hasMoreArticles = uiState.hasMoreArticles,
@@ -263,8 +273,7 @@ fun LostAndFoundDetail(
 private fun handleSideEffect(
     sideEffect: LostAndFoundDetailSideEffect,
     context: Context,
-    navigateToArticleList: () -> Unit = {},
-    refreshLostAndFoundList: () -> Unit = {}
+    navigateToArticleList: (cancelRefresh: Boolean) -> Unit = {}
 ) {
     when (sideEffect) {
         is LostAndFoundDetailSideEffect.DeleteArticle -> {
@@ -273,8 +282,7 @@ private fun handleSideEffect(
                 context.getString(R.string.detail_delete_toast),
                 Toast.LENGTH_SHORT
             ).show()
-            refreshLostAndFoundList()
-            navigateToArticleList()
+            navigateToArticleList(false)
         }
 
         LostAndFoundDetailSideEffect.DeleteArticleFailed -> {
@@ -291,8 +299,7 @@ private fun handleSideEffect(
                 context.getString(R.string.detail_deleted_article),
                 Toast.LENGTH_SHORT
             ).show()
-            refreshLostAndFoundList()
-            navigateToArticleList()
+            navigateToArticleList(true)
         }
 
         LostAndFoundDetailSideEffect.UpdateFoundFail -> {
