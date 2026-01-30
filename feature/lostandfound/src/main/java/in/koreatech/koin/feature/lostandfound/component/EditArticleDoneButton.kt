@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.lostandfound.ui.write.component
+package `in`.koreatech.koin.feature.lostandfound.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,12 +18,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.feature.lostandfound.R
 
-object WriteArticleDoneButtonDefaults {
+object EditArticleDoneButtonDefaults {
     val windowInsets: WindowInsets
         @Composable
         get() = WindowInsets.systemBars.only(
@@ -32,9 +30,10 @@ object WriteArticleDoneButtonDefaults {
 }
 
 @Composable
-fun WriteArticleDoneButton(
+fun EditArticleDoneButton(
+    text: String,
     modifier: Modifier = Modifier,
-    windowInsets: WindowInsets = WriteArticleDoneButtonDefaults.windowInsets,
+    windowInsets: WindowInsets = EditArticleDoneButtonDefaults.windowInsets,
     onClick: () -> Unit = {}
 ) = Column(
     modifier = modifier.windowInsetsPadding(windowInsets),
@@ -63,7 +62,7 @@ fun WriteArticleDoneButton(
         ) {
             Text(
                 style = KoinTheme.typography.bold15,
-                text = stringResource(id = R.string.write_done)
+                text = text
             )
         }
     }

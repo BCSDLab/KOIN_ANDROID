@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -14,12 +15,16 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
@@ -33,10 +38,13 @@ import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LostAndFoundFA
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LostAndFoundFABBottomSheet
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LostAndFoundFilterBottomSheet
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun LostAndFoundList(
+    cancelRefresh: Boolean,
     viewModel: LostAndFoundListViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {},
     navigateToLogin: () -> Unit = {},
@@ -44,6 +52,20 @@ fun LostAndFoundList(
     navigateToWrite: (String) -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
+
+    LaunchedEffect(Unit, cancelRefresh) {
+        var cancelRefresh = cancelRefresh
+        snapshotFlow { uiState.searchQuery }
+            .debounce(SEARCH_DEBOUNCE_MS)
+            .distinctUntilChanged()
+            .collect {
+                if (cancelRefresh) {
+                    cancelRefresh = false
+                } else {
+                    viewModel.fetchLostAndFoundItem()
+                }
+            }
+    }
 
     if (uiState.showFilterBottomSheet) {
         LostAndFoundFilterBottomSheet(
@@ -54,15 +76,15 @@ fun LostAndFoundList(
             selectedLostOrFoundType = uiState.lostOrFoundFilterType,
             selectedCategoryType = uiState.categoryFilterType,
             selectedFoundType = uiState.foundFilterType,
-            onApply = { first, second, third, fourth ->
-                if (!uiState.isLoggedIn && first == MY) {
+            onApply = { author, lostOrFound, category, found ->
+                if (!uiState.isLoggedIn && author == MY) {
                     viewModel.setShowFilterLoginDialog(true)
                 } else {
                     viewModel.setSearchFilter(
-                        authorFilterType = first,
-                        lostOrFoundFilterType = second,
-                        categoryFilterType = third,
-                        foundFilterType = fourth
+                        authorFilterType = author,
+                        lostOrFoundFilterType = lostOrFound,
+                        categoryFilterType = category,
+                        foundFilterType = found
                     )
                     viewModel.fetchLostAndFoundItem()
                 }
@@ -103,10 +125,18 @@ fun LostAndFoundList(
             title = stringResource(id = R.string.request_login_dialog_title),
             description = stringResource(id = R.string.request_login_dialog_description),
             onPositive = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.LostAndFound.LOST_ITEM_WRITE_LOGIN_REQUEST,
+                    "로그인하기"
+                )
                 navigateToLogin()
                 viewModel.setShowWriteLoginDialog(false)
             },
             onNegative = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.LostAndFound.LOST_ITEM_WRITE_LOGIN_REQUEST,
+                    "닫기"
+                )
                 viewModel.setShowWriteLoginDialog(false)
             }
         )
@@ -122,6 +152,7 @@ fun LostAndFoundList(
         },
         floatingActionButton = {
             LostAndFoundFAB(
+                modifier = Modifier.offset(y = 10.dp),
                 onClick = {
                     if (uiState.isLoggedIn) {
                         viewModel.setShowWriteBottomSheet(true)
@@ -142,7 +173,10 @@ fun LostAndFoundList(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
+                    .padding(
+                        horizontal = 24.dp,
+                        vertical = 4.dp
+                    ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 ItemSearchTextField(
@@ -197,3 +231,5 @@ fun LostAndFoundList(
         }
     }
 }
+
+const val SEARCH_DEBOUNCE_MS = 250L

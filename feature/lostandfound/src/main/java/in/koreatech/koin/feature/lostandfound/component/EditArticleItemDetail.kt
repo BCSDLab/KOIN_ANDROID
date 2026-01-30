@@ -1,8 +1,9 @@
-package `in`.koreatech.koin.feature.lostandfound.ui.write.component
+package `in`.koreatech.koin.feature.lostandfound.component
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,7 +14,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -49,7 +52,7 @@ import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import java.time.LocalDate
 
 @Composable
-fun WriteArticleItemDetail(
+fun EditArticleItemDetail(
     modifier: Modifier = Modifier,
     type: LostOrFoundType,
     location: String,
@@ -322,6 +325,46 @@ fun WriteArticleItemDetail(
                         )
                     }
                 }
+                HorizontalDivider(color = KoinTheme.colors.neutral300)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = KoinTheme.colors.neutral100)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 2.dp, horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.date_reset),
+                            style = KoinTheme.typography.medium14,
+                            color = KoinTheme.colors.primary600,
+                            modifier = Modifier
+                                .clickable {
+                                    yearPickerState.selectedItemIndex = yearList.indexOf(now.year.toString())
+                                    monthPickerState.selectedItemIndex = monthList.indexOf(now.month.toString())
+                                    dayPickerState.selectedItemIndex = dayList.indexOf(now.dayOfMonth.toString())
+                                }
+                                .padding(all = 4.dp)
+                        )
+                        Spacer(
+                            modifier = Modifier.width(24.dp)
+                        )
+                        Text(
+                            text = stringResource(id = R.string.date_confirm),
+                            style = KoinTheme.typography.medium14,
+                            color = KoinTheme.colors.primary600,
+                            modifier = Modifier
+                                .clickable {
+                                    isPickerExpanded = false
+                                }
+                                .padding(all = 4.dp)
+                        )
+                    }
+                }
             }
         }
     }
@@ -336,14 +379,14 @@ fun WriteArticleItemDetail(
         Text(
             style = KoinTheme.typography.medium14,
             text = buildAnnotatedString {
-                append(
-                    when (type) {
-                        LostOrFoundType.LOST -> stringResource(id = R.string.lost_location)
-                        LostOrFoundType.FOUND -> stringResource(id = R.string.found_location)
+                when (type) {
+                    LostOrFoundType.LOST -> append(stringResource(id = R.string.lost_location))
+                    LostOrFoundType.FOUND -> {
+                        append(stringResource(id = R.string.found_location))
+                        withStyle(style = SpanStyle(color = Color(0xFFC82A2A))) {
+                            append("*")
+                        }
                     }
-                )
-                withStyle(style = SpanStyle(color = Color(0xFFC82A2A))) {
-                    append("*")
                 }
             }
         )
@@ -364,7 +407,7 @@ fun WriteArticleItemDetail(
 
     Spacer(modifier = Modifier.height(8.dp))
 
-    WriteArticleTextField(
+    EditArticleTextField(
         value = location,
         onValueChange = onLocationChange,
         singleLine = true,
@@ -401,7 +444,7 @@ fun WriteArticleItemDetail(
 
     Spacer(modifier = Modifier.height(8.dp))
 
-    WriteArticleTextField(
+    EditArticleTextField(
         value = moreDescription,
         onValueChange = {
             if (moreDescription.length < DESCRIPTION_MAX_LENGTH) {

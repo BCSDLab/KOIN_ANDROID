@@ -7,7 +7,10 @@ import `in`.koreatech.koin.domain.model.article.LostAndFoundFilterParams
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticlePaginationV2UseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
-import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType
+import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.AuthorFilterType
+import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.CategoryFilterType
+import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.FoundFilterType
+import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.LostOrFoundFilterType
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundSortType
 import `in`.koreatech.koin.feature.lostandfound.model.toLostAndFoundItemState
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetailViewModel.Companion.PAGE_SIZE
@@ -17,11 +20,6 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -38,14 +36,8 @@ class LostAndFoundListViewModel @Inject constructor(
         initialState = LostAndFoundListState()
     )
 
-    companion object {
-        const val SEARCH_DEBOUNCE_MS = 300L
-    }
-
     init {
         initUserInfo()
-        fetchLostAndFoundItem()
-        observeQuery()
     }
 
     private fun initUserInfo() = viewModelScope.launch {
@@ -79,7 +71,7 @@ class LostAndFoundListViewModel @Inject constructor(
                 isLoadingMoreArticles = true
             )
         }
-        val type = if (state.lostOrFoundFilterType == LostAndFoundFilterType.ALL) {
+        val type = if (state.lostOrFoundFilterType == LostOrFoundFilterType.ALL) {
             null
         } else {
             state.lostOrFoundFilterType.value
@@ -87,7 +79,7 @@ class LostAndFoundListViewModel @Inject constructor(
         val filterParams = LostAndFoundFilterParams(
             page = 1,
             limit = PAGE_SIZE,
-            category = state.categoryFilterType.value,
+            category = state.categoryFilterType.map { it.value },
             foundStatus = state.foundFilterType.value,
             author = state.authorFilterType.value,
             type = type,
@@ -130,7 +122,7 @@ class LostAndFoundListViewModel @Inject constructor(
         }
 
         val nextPage = state.searchedArticlesCurrentPage + 1
-        val type = if (state.lostOrFoundFilterType == LostAndFoundFilterType.ALL) {
+        val type = if (state.lostOrFoundFilterType == LostOrFoundFilterType.ALL) {
             null
         } else {
             state.lostOrFoundFilterType.value
@@ -138,7 +130,7 @@ class LostAndFoundListViewModel @Inject constructor(
         val filterParams = LostAndFoundFilterParams(
             page = nextPage,
             limit = PAGE_SIZE,
-            category = state.categoryFilterType.value,
+            category = state.categoryFilterType.map { it.value },
             foundStatus = state.foundFilterType.value,
             author = state.authorFilterType.value,
             type = type,
@@ -156,7 +148,7 @@ class LostAndFoundListViewModel @Inject constructor(
                 val filteredArticles = pagination.articleLostAndFoundHeader.map { it.toLostAndFoundItemState() }
                 reduce {
                     state.copy(
-                        searchedArticles = (state.searchedArticles + filteredArticles).toPersistentList(),
+                        searchedArticles = (state.searchedArticles + filteredArticles).distinctBy { it.id }.toPersistentList(),
                         searchedArticlesCurrentPage = pagination.currentPage,
                         searchedArticlesTotalPage = pagination.totalPage,
                         hasMoreArticles = pagination.currentPage < pagination.totalPage,
@@ -167,16 +159,16 @@ class LostAndFoundListViewModel @Inject constructor(
     }
 
     fun setSearchFilter(
-        authorFilterType: LostAndFoundFilterType,
-        lostOrFoundFilterType: LostAndFoundFilterType,
-        categoryFilterType: LostAndFoundFilterType,
-        foundFilterType: LostAndFoundFilterType
+        authorFilterType: AuthorFilterType,
+        lostOrFoundFilterType: LostOrFoundFilterType,
+        categoryFilterType: List<CategoryFilterType>,
+        foundFilterType: FoundFilterType
     ) = intent {
         reduce {
             state.copy(
                 authorFilterType = authorFilterType,
                 lostOrFoundFilterType = lostOrFoundFilterType,
-                categoryFilterType = categoryFilterType,
+                categoryFilterType = categoryFilterType.toPersistentList(),
                 foundFilterType = foundFilterType
             )
         }
@@ -220,16 +212,5 @@ class LostAndFoundListViewModel @Inject constructor(
                 searchQuery = query
             )
         }
-    }
-
-    private fun observeQuery() {
-        container.stateFlow
-            .map { it.searchQuery }
-            .debounce(SEARCH_DEBOUNCE_MS)
-            .distinctUntilChanged()
-            .onEach { query ->
-                fetchLostAndFoundItem()
-            }
-            .launchIn(viewModelScope)
     }
 }

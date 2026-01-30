@@ -9,7 +9,7 @@ import `in`.koreatech.koin.domain.model.article.LostAndFoundFilterParams
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.DeleteArticleLostAndFoundUseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticlePaginationV2UseCase
-import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticleUseCase
+import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticleV2UseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.UpdateItemFoundUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundSortType
@@ -31,7 +31,7 @@ import timber.log.Timber
 @HiltViewModel
 class LostAndFoundDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val fetchLostAndFoundArticleUseCase: FetchLostAndFoundArticleUseCase,
+    private val fetchLostAndFoundArticleV2UseCase: FetchLostAndFoundArticleV2UseCase,
     private val fetchLostAndFoundArticlePaginationV2UseCase: FetchLostAndFoundArticlePaginationV2UseCase,
     private val deleteArticleLostAndFoundUseCase: DeleteArticleLostAndFoundUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
@@ -54,16 +54,12 @@ class LostAndFoundDetailViewModel @Inject constructor(
                 when (it) {
                     is User.Student -> reduce {
                         state.copy(
-                            isLoggedIn = true,
-                            currentLoggedInUser = it.nickname ?: "",
-                            isMine = it.nickname == state.author
+                            isLoggedIn = true
                         )
                     }
                     is User.General -> reduce {
                         state.copy(
-                            isLoggedIn = true,
-                            currentLoggedInUser = it.nickname ?: "",
-                            isMine = it.nickname == state.author
+                            isLoggedIn = true
                         )
                     }
                     is User.Anonymous -> reduce {
@@ -80,7 +76,7 @@ class LostAndFoundDetailViewModel @Inject constructor(
                 isLoading = true
             )
         }
-        fetchLostAndFoundArticleUseCase(articleId).catch {
+        fetchLostAndFoundArticleV2UseCase(articleId).catch {
             if (it is HttpException && it.code() == 404) {
                 postSideEffect(LostAndFoundDetailSideEffect.DeletedArticle)
             }
@@ -99,8 +95,8 @@ class LostAndFoundDetailViewModel @Inject constructor(
                     images = article.images?.filter { URLUtil.isValidUrl(it.toString()) },
                     registeredAt = article.registeredAt,
                     updatedAt = article.updatedAt,
-                    isWriterCouncil = article.isWriterCouncil,
-                    isMine = state.currentLoggedInUser == article.author,
+                    organization = article.organization,
+                    isMine = article.isMine,
                     isAuthorWithdraw = article.author == "탈퇴한 사용자",
                     isLoading = false,
                     isFound = article.isFound

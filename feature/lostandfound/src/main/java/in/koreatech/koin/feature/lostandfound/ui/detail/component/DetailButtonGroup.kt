@@ -13,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -22,11 +23,14 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
+import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 
 @Composable
 fun DetailButtonGroup(
+    lostOrFound: LostOrFoundType,
     modifier: Modifier = Modifier,
     showDeleteButton: Boolean = false,
+    showModifyButton: Boolean = true,
     showDeleteDialog: Boolean = false,
     isLoggedIn: Boolean = false,
     isAuthorWithdraw: Boolean = false,
@@ -34,10 +38,12 @@ fun DetailButtonGroup(
     onShowDeleteDialogChange: (Boolean) -> Unit = {},
     onArticleListClick: () -> Unit = {},
     onDeleteArticleClick: () -> Unit = {},
-    onEditArticleClick: () -> Unit = {},
+    onModifyArticleClick: () -> Unit = {},
     onChatRoomClick: () -> Unit = {},
     onReportArticleClick: () -> Unit = {}
 ) {
+    val loggingLostOrFound = remember(lostOrFound) { if (lostOrFound == LostOrFoundType.FOUND) "습득물" else "분실물" }
+
     if (showDeleteDialog) {
         DetailDialog(
             title = stringResource(R.string.detail_delete_dialog_title),
@@ -81,20 +87,22 @@ fun DetailButtonGroup(
         Spacer(modifier = Modifier.weight(1f))
 
         if (showDeleteButton) {
-            Button(
-                modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                contentPadding = PaddingValues(10.dp, 6.dp),
-                onClick = onEditArticleClick,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = KoinTheme.colors.neutral300,
-                    contentColor = KoinTheme.colors.neutral600
-                ),
-                shape = KoinTheme.shapes.extraSmall
-            ) {
-                Text(
-                    style = KoinTheme.typography.regular12,
-                    text = stringResource(R.string.detail_edit_button)
-                )
+            if (showModifyButton) {
+                Button(
+                    modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
+                    contentPadding = PaddingValues(10.dp, 6.dp),
+                    onClick = onModifyArticleClick,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = KoinTheme.colors.neutral300,
+                        contentColor = KoinTheme.colors.neutral600
+                    ),
+                    shape = KoinTheme.shapes.extraSmall
+                ) {
+                    Text(
+                        style = KoinTheme.typography.regular12,
+                        text = stringResource(R.string.detail_edit_button)
+                    )
+                }
             }
 
             Button(
@@ -104,7 +112,7 @@ fun DetailButtonGroup(
                     onShowDeleteDialogChange(true)
                     EventLogger.logCampusClickEvent(
                         AnalyticsConstant.Label.LostAndFound.FIND_USER_DELETE,
-                        "삭제"
+                        loggingLostOrFound
                     )
                 },
                 colors = ButtonDefaults.buttonColors(

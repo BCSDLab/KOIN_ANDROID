@@ -38,12 +38,13 @@ import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
+import `in`.koreatech.koin.feature.lostandfound.ui.detail.Organization
 
 @Composable
 fun DetailContent(
     imageUris: List<Uri>?,
     content: String,
-    isWriterAdmin: Boolean,
+    organization: Organization?,
     modifier: Modifier = Modifier
 ) {
     val imageLoader = ImageLoader.Builder(LocalContext.current)
@@ -128,7 +129,7 @@ fun DetailContent(
             color = KoinTheme.colors.neutral800
         )
 
-        if (isWriterAdmin) {
+        organization?.let {
             Spacer(modifier = Modifier.height(24.dp))
 
             Box(
@@ -147,7 +148,7 @@ fun DetailContent(
                         KoinTheme.typography.regular12.copy(fontWeight = FontWeight.Bold)
                             .toSpanStyle()
                     ) {
-                        append(stringResource(R.string.detail_student_association_info_2))
+                        append(it.location)
                     }
                     withStyle(KoinTheme.typography.regular12.toSpanStyle()) {
                         append(stringResource(R.string.detail_student_association_info_3))

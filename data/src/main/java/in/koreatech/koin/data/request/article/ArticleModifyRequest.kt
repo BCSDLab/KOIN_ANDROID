@@ -7,6 +7,6 @@ data class ArticleModifyRequest(
     @SerializedName("found_place") val foundPlace: String,
     @SerializedName("found_date") val foundDate: String,
     @SerializedName("content") val content: String?,
-    @SerializedName("new_image") val newImage: List<String>?,
-    @SerializedName("delete_image_ids") val deleteImageIds: List<String>?
+    @SerializedName("new_images") val newImage: List<String>?,
+    @SerializedName("delete_image_ids") val deleteImageIds: List<Int>?
 )

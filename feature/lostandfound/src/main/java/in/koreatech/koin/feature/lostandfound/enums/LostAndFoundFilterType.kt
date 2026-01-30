@@ -6,21 +6,18 @@ import `in`.koreatech.koin.feature.lostandfound.R
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-sealed class LostAndFoundFilterType : Parcelable {
-    abstract val stringRes: Int
-    abstract val value: String
-
-    @Parcelize
-    object ALL : LostAndFoundFilterType() {
-        override val stringRes: Int = R.string.filter_list_all
-        override val value: String = "ALL"
-    }
-
+sealed class LostAndFoundFilterType(
+    @StringRes open val stringRes: Int,
+    open val value: String
+) : Parcelable {
     @Parcelize
     sealed class CategoryFilterType(
         @StringRes override val stringRes: Int,
         override val value: String
-    ) : LostAndFoundFilterType() {
+    ) : LostAndFoundFilterType(stringRes, value) {
+        @Parcelize
+        object ALL : CategoryFilterType(stringRes = R.string.filter_list_all, value = "ALL")
+
         @Parcelize
         object CARD : CategoryFilterType(stringRes = R.string.filter_list_card, value = "CARD")
 
@@ -41,32 +38,41 @@ sealed class LostAndFoundFilterType : Parcelable {
     sealed class LostOrFoundFilterType(
         @StringRes override val stringRes: Int,
         override val value: String
-    ) : LostAndFoundFilterType() {
+    ) : LostAndFoundFilterType(stringRes, value) {
         @Parcelize
-        object LOST : CategoryFilterType(stringRes = R.string.filter_list_lost, value = "LOST")
+        object ALL : LostOrFoundFilterType(stringRes = R.string.filter_list_all, value = "ALL")
 
         @Parcelize
-        object FIND : CategoryFilterType(stringRes = R.string.filter_list_find, value = "FOUND")
+        object LOST : LostOrFoundFilterType(stringRes = R.string.filter_list_lost, value = "LOST")
+
+        @Parcelize
+        object FIND : LostOrFoundFilterType(stringRes = R.string.filter_list_find, value = "FOUND")
     }
 
     @Parcelize
     sealed class FoundFilterType(
         @StringRes override val stringRes: Int,
         override val value: String
-    ) : LostAndFoundFilterType() {
+    ) : LostAndFoundFilterType(stringRes, value) {
         @Parcelize
-        object FINDING : CategoryFilterType(stringRes = R.string.filter_list_finding, value = "NOT_FOUND")
+        object ALL : FoundFilterType(stringRes = R.string.filter_list_all, value = "ALL")
 
         @Parcelize
-        object FOUND : CategoryFilterType(stringRes = R.string.filter_list_found, value = "FOUND")
+        object FINDING : FoundFilterType(stringRes = R.string.filter_list_finding, value = "NOT_FOUND")
+
+        @Parcelize
+        object FOUND : FoundFilterType(stringRes = R.string.filter_list_found, value = "FOUND")
     }
 
     @Parcelize
     sealed class AuthorFilterType(
         @StringRes override val stringRes: Int,
         override val value: String
-    ) : LostAndFoundFilterType() {
+    ) : LostAndFoundFilterType(stringRes, value) {
         @Parcelize
-        object MY : CategoryFilterType(stringRes = R.string.filter_list_my_post, value = "MY")
+        object ALL : AuthorFilterType(stringRes = R.string.filter_list_all, value = "ALL")
+
+        @Parcelize
+        object MY : AuthorFilterType(stringRes = R.string.filter_list_my_post, value = "MY")
     }
 }

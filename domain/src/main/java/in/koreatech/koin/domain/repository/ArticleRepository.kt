@@ -74,7 +74,7 @@ interface ArticleRepository {
         limit: Int
     ): Flow<ArticleLostAndFoundPagination>
 
-    fun fetchArticleLostAndFound(articleId: Int): Flow<ArticleLostAndFound>
+    fun fetchArticleLostAndFoundV2(articleId: Int): Flow<ArticleLostAndFound>
 
     suspend fun uploadArticleLostAndFound(articleLostAndFoundList: List<ArticleLostAndFoundUpload>): Result<ArticleLostAndFound>
 
@@ -96,6 +96,6 @@ interface ArticleRepository {
         foundDate: String,
         content: String?,
         newImage: List<String>?,
-        deleteImageIds: List<String>?
+        deleteImageIds: List<Int>?
     ): Result<Unit>
 }

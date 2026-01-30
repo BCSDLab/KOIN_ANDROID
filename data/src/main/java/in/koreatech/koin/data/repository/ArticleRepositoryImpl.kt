@@ -261,10 +261,10 @@ class ArticleRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun fetchArticleLostAndFound(articleId: Int): Flow<ArticleLostAndFound> {
+    override fun fetchArticleLostAndFoundV2(articleId: Int): Flow<ArticleLostAndFound> {
         return flow {
             emit(
-                articleRemoteDataSource.fetchArticleLostAndFound(articleId).toArticleLostAndFound()
+                articleRemoteDataSource.fetchArticleLostAndFoundV2(articleId).toArticleLostAndFound()
             )
         }
     }
@@ -326,7 +326,7 @@ class ArticleRepositoryImpl @Inject constructor(
         foundDate: String,
         content: String?,
         newImage: List<String>?,
-        deleteImageIds: List<String>?
+        deleteImageIds: List<Int>?
     ): Result<Unit> {
         return runCatching {
             val response = articleRemoteDataSource.modifyArticleLostAndFound(
