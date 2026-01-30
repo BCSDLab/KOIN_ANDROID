@@ -16,16 +16,14 @@ class UpdateGeneralUserInfoUseCase @Inject constructor(
         gender: Gender,
         phoneNumber: String
     ): Result<Unit> {
-        return runCatching {
-            val user = (beforeUser as User.General).copy(
-                email = email.ifEmpty { null },
-                name = name,
-                nickname = nickname.ifEmpty { null },
-                gender = gender,
-                phoneNumber = phoneNumber
-            )
+        val user = (beforeUser as User.General).copy(
+            email = email.ifEmpty { null },
+            name = name,
+            nickname = nickname.ifEmpty { null },
+            gender = gender,
+            phoneNumber = phoneNumber
+        )
 
-            userRepository.updateUser(user)
-        }
+        return userRepository.updateUser(user)
     }
 }
