@@ -30,7 +30,6 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
                     handle[CANCEL_REFRESH_LIST] = cancelRefresh
                 }
             }
-
     }
 
     val navigateToList = { cancelRefresh: Boolean ->

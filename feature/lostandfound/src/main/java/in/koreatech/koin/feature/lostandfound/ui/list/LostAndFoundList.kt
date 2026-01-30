@@ -58,7 +58,7 @@ fun LostAndFoundList(
             .debounce(SEARCH_DEBOUNCE_MS)
             .distinctUntilChanged()
             .collect {
-                if(cancelRefresh) {
+                if (cancelRefresh) {
                     cancelRefresh = false
                 } else {
                     viewModel.fetchLostAndFoundItem()
