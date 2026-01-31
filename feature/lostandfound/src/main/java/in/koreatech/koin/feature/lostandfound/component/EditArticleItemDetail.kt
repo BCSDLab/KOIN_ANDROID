@@ -145,10 +145,10 @@ fun EditArticleItemDetail(
                 }
                 .onGloballyPositioned {
                     dateComposablePosition = it.positionInParent() +
-                            Offset(
-                                0f,
-                                it.size.height.toFloat()
-                            )
+                        Offset(
+                            0f,
+                            it.size.height.toFloat()
+                        )
                 }
         ) {
             Row(
@@ -286,13 +286,13 @@ fun EditArticleItemDetail(
                                 startIndex = yearPickerState.selectedItemIndex,
                                 infiniteScroll = false,
                                 selectedTextStyle =
-                                    KoinTheme.typography.medium16.copy(
-                                        textAlign = TextAlign.Center
-                                    ),
+                                KoinTheme.typography.medium16.copy(
+                                    textAlign = TextAlign.Center
+                                ),
                                 unselectedTextStyle =
-                                    KoinTheme.typography.medium16.copy(
-                                        textAlign = TextAlign.Center
-                                    )
+                                KoinTheme.typography.medium16.copy(
+                                    textAlign = TextAlign.Center
+                                )
                             )
                             KoinPicker(
                                 modifier = Modifier.weight(1f),
@@ -303,13 +303,13 @@ fun EditArticleItemDetail(
                                 startIndex = monthPickerState.selectedItemIndex,
                                 infiniteScroll = false,
                                 selectedTextStyle =
-                                    KoinTheme.typography.medium16.copy(
-                                        textAlign = TextAlign.Center
-                                    ),
+                                KoinTheme.typography.medium16.copy(
+                                    textAlign = TextAlign.Center
+                                ),
                                 unselectedTextStyle =
-                                    KoinTheme.typography.medium16.copy(
-                                        textAlign = TextAlign.Center
-                                    )
+                                KoinTheme.typography.medium16.copy(
+                                    textAlign = TextAlign.Center
+                                )
                             )
                             KoinPicker(
                                 modifier = Modifier.weight(1f),
@@ -320,13 +320,13 @@ fun EditArticleItemDetail(
                                 startIndex = dayPickerState.selectedItemIndex,
                                 infiniteScroll = false,
                                 selectedTextStyle =
-                                    KoinTheme.typography.medium16.copy(
-                                        textAlign = TextAlign.Center
-                                    ),
+                                KoinTheme.typography.medium16.copy(
+                                    textAlign = TextAlign.Center
+                                ),
                                 unselectedTextStyle =
-                                    KoinTheme.typography.medium16.copy(
-                                        textAlign = TextAlign.Center
-                                    )
+                                KoinTheme.typography.medium16.copy(
+                                    textAlign = TextAlign.Center
+                                )
                             )
                         }
                     }
