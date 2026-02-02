@@ -333,7 +333,7 @@ class ArticleRepositoryImpl @Inject constructor(
                 articleId,
                 ArticleModifyRequest(
                     category,
-                    foundPlace.ifBlank { "장소 미상" },
+                    foundPlace,
                     foundDate,
                     content,
                     newImage,

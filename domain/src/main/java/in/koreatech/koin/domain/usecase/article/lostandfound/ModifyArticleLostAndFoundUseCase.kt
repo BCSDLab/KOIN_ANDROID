@@ -18,7 +18,7 @@ class ModifyArticleLostAndFoundUseCase @Inject constructor(
         return articleRepository.modifyArticleLostAndFound(
             articleId,
             category,
-            foundPlace,
+            foundPlace.ifBlank { "장소 미상" },
             foundDate,
             content,
             newImage,
