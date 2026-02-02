@@ -56,7 +56,7 @@ fun KoinPicker(
     infiniteScroll: Boolean = true,
     brushVerticalGradient: Brush = verticalGradient(),
     startIndex: Int = 0,
-    fetchStartIndexEvent : Boolean = false,
+    fetchStartIndexEvent: Boolean = false,
     contentPadding: PaddingValues = PaddingValues(vertical = 2.dp),
     selectedTextStyle: TextStyle = KoinTheme.typography.medium16,
     unselectedTextStyle: TextStyle = KoinTheme.typography.medium16,
