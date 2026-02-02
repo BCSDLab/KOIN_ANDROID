@@ -72,6 +72,8 @@ fun EditArticleItemDetail(
 
     var isPickerExpanded by remember { mutableStateOf(false) }
 
+    var isPickerResetEvent by remember { mutableStateOf(false) }
+
     LaunchedEffect(shouldCollapse) {
         if (shouldCollapse) {
             isPickerExpanded = false
@@ -284,6 +286,7 @@ fun EditArticleItemDetail(
                             contentPadding = PaddingValues(vertical = 3.dp, horizontal = 12.dp),
                             startIndex = yearPickerState.selectedItemIndex,
                             infiniteScroll = false,
+                            fetchStartIndexEvent = isPickerResetEvent,
                             selectedTextStyle =
                             KoinTheme.typography.medium16.copy(
                                 textAlign = TextAlign.Center
@@ -301,6 +304,7 @@ fun EditArticleItemDetail(
                             contentPadding = PaddingValues(vertical = 3.dp, horizontal = 12.dp),
                             startIndex = monthPickerState.selectedItemIndex,
                             infiniteScroll = false,
+                            fetchStartIndexEvent = isPickerResetEvent,
                             selectedTextStyle =
                             KoinTheme.typography.medium16.copy(
                                 textAlign = TextAlign.Center
@@ -318,6 +322,7 @@ fun EditArticleItemDetail(
                             contentPadding = PaddingValues(vertical = 3.dp, horizontal = 12.dp),
                             startIndex = dayPickerState.selectedItemIndex,
                             infiniteScroll = false,
+                            fetchStartIndexEvent = isPickerResetEvent,
                             selectedTextStyle =
                             KoinTheme.typography.medium16.copy(
                                 textAlign = TextAlign.Center
@@ -342,12 +347,10 @@ fun EditArticleItemDetail(
                             color = KoinTheme.colors.primary600,
                             modifier = Modifier
                                 .clickable {
-                                    yearPickerState.selectedItem = now.year.toString()
-                                    monthPickerState.selectedItem = now.monthValue.toString()
-                                    dayPickerState.selectedItem = now.dayOfMonth.toString()
                                     yearPickerState.selectedItemIndex = yearList.indexOf(now.year.toString())
                                     monthPickerState.selectedItemIndex = monthList.indexOf(now.monthValue.toString())
                                     dayPickerState.selectedItemIndex = dayList.indexOf(now.dayOfMonth.toString())
+                                    isPickerResetEvent = !isPickerResetEvent
                                 }
                                 .padding(vertical = 2.dp)
                         )
