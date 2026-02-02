@@ -41,6 +41,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import `in`.koreatech.koin.core.designsystem.component.picker.KoinPicker
 import `in`.koreatech.koin.core.designsystem.component.picker.rememberPickerState
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
@@ -147,7 +148,7 @@ fun EditArticleItemDetail(
                     dateComposablePosition = it.positionInParent() +
                         Offset(
                             0f,
-                            it.size.height.toFloat()
+                            - it.size.height.toFloat() / 2
                         )
                 }
         ) {
@@ -258,117 +259,109 @@ fun EditArticleItemDetail(
                 IntOffset(
                     dateComposablePosition.x.toInt(),
                     dateComposablePosition.y.toInt()
-                )
+                ),
+                onDismissRequest = { isPickerExpanded = false },
+                properties = PopupProperties(focusable = true)
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(horizontal = 24.dp)
                         .clip(KoinTheme.shapes.small)
-                        .background(KoinTheme.colors.neutral100)
-
+                        .background(KoinTheme.colors.neutral100),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Box(
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 12.dp, horizontal = 24.dp)
+                            .padding(top = 12.dp, start = 24.dp, end = 24.dp)
                     ) {
-                        Row(
-                            modifier = Modifier
-                                .padding(vertical = 12.dp, horizontal = 32.dp)
-                                .fillMaxWidth()
-                        ) {
-                            KoinPicker(
-                                modifier = Modifier.weight(1f),
-                                items = yearList,
-                                pickerState = yearPickerState,
-                                visibleItemsCount = 3,
-                                contentPadding = PaddingValues(vertical = 3.dp, horizontal = 12.dp),
-                                startIndex = yearPickerState.selectedItemIndex,
-                                infiniteScroll = false,
-                                selectedTextStyle =
+                        KoinPicker(
+                            modifier = Modifier.weight(1f),
+                            items = yearList,
+                            pickerState = yearPickerState,
+                            visibleItemsCount = 3,
+                            contentPadding = PaddingValues(vertical = 3.dp, horizontal = 12.dp),
+                            startIndex = yearPickerState.selectedItemIndex,
+                            infiniteScroll = false,
+                            selectedTextStyle =
                                 KoinTheme.typography.medium16.copy(
                                     textAlign = TextAlign.Center
                                 ),
-                                unselectedTextStyle =
+                            unselectedTextStyle =
                                 KoinTheme.typography.medium16.copy(
                                     textAlign = TextAlign.Center
                                 )
-                            )
-                            KoinPicker(
-                                modifier = Modifier.weight(1f),
-                                items = monthList,
-                                pickerState = monthPickerState,
-                                visibleItemsCount = 3,
-                                contentPadding = PaddingValues(vertical = 3.dp, horizontal = 12.dp),
-                                startIndex = monthPickerState.selectedItemIndex,
-                                infiniteScroll = false,
-                                selectedTextStyle =
+                        )
+                        KoinPicker(
+                            modifier = Modifier.weight(1f),
+                            items = monthList,
+                            pickerState = monthPickerState,
+                            visibleItemsCount = 3,
+                            contentPadding = PaddingValues(vertical = 3.dp, horizontal = 12.dp),
+                            startIndex = monthPickerState.selectedItemIndex,
+                            infiniteScroll = false,
+                            selectedTextStyle =
                                 KoinTheme.typography.medium16.copy(
                                     textAlign = TextAlign.Center
                                 ),
-                                unselectedTextStyle =
+                            unselectedTextStyle =
                                 KoinTheme.typography.medium16.copy(
                                     textAlign = TextAlign.Center
                                 )
-                            )
-                            KoinPicker(
-                                modifier = Modifier.weight(1f),
-                                items = dayList,
-                                pickerState = dayPickerState,
-                                visibleItemsCount = 3,
-                                contentPadding = PaddingValues(vertical = 3.dp, horizontal = 12.dp),
-                                startIndex = dayPickerState.selectedItemIndex,
-                                infiniteScroll = false,
-                                selectedTextStyle =
+                        )
+                        KoinPicker(
+                            modifier = Modifier.weight(1f),
+                            items = dayList,
+                            pickerState = dayPickerState,
+                            visibleItemsCount = 3,
+                            contentPadding = PaddingValues(vertical = 3.dp, horizontal = 12.dp),
+                            startIndex = dayPickerState.selectedItemIndex,
+                            infiniteScroll = false,
+                            selectedTextStyle =
                                 KoinTheme.typography.medium16.copy(
                                     textAlign = TextAlign.Center
                                 ),
-                                unselectedTextStyle =
+                            unselectedTextStyle =
                                 KoinTheme.typography.medium16.copy(
                                     textAlign = TextAlign.Center
                                 )
-                            )
-                        }
+                        )
                     }
                     HorizontalDivider(color = KoinTheme.colors.neutral300)
-                    Box(
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(color = KoinTheme.colors.neutral100)
+                            .padding(bottom = 12.dp, end = 40.dp),
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Row(
+                        Text(
+                            text = stringResource(id = R.string.date_reset),
+                            style = KoinTheme.typography.medium14,
+                            color = KoinTheme.colors.primary600,
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 2.dp, horizontal = 16.dp),
-                            horizontalArrangement = Arrangement.End,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.date_reset),
-                                style = KoinTheme.typography.medium14,
-                                color = KoinTheme.colors.primary600,
-                                modifier = Modifier
-                                    .clickable {
-                                        yearPickerState.selectedItemIndex = yearList.indexOf(now.year.toString())
-                                        monthPickerState.selectedItemIndex = monthList.indexOf(now.month.toString())
-                                        dayPickerState.selectedItemIndex = dayList.indexOf(now.dayOfMonth.toString())
-                                    }
-                                    .padding(all = 4.dp)
-                            )
-                            Spacer(
-                                modifier = Modifier.width(24.dp)
-                            )
-                            Text(
-                                text = stringResource(id = R.string.date_confirm),
-                                style = KoinTheme.typography.medium14,
-                                color = KoinTheme.colors.primary600,
-                                modifier = Modifier
-                                    .clickable {
-                                        isPickerExpanded = false
-                                    }
-                                    .padding(all = 4.dp)
-                            )
-                        }
+                                .clickable {
+                                    yearPickerState.selectedItem = now.year.toString()
+                                    monthPickerState.selectedItem = now.monthValue.toString()
+                                    dayPickerState.selectedItem = now.dayOfMonth.toString()
+                                    yearPickerState.selectedItemIndex = yearList.indexOf(now.year.toString())
+                                    monthPickerState.selectedItemIndex = monthList.indexOf(now.monthValue.toString())
+                                    dayPickerState.selectedItemIndex = dayList.indexOf(now.dayOfMonth.toString())
+                                }
+                                .padding(vertical = 2.dp)
+                        )
+                        Spacer(modifier = Modifier.width(24.dp))
+                        Text(
+                            text = stringResource(id = R.string.date_confirm),
+                            style = KoinTheme.typography.medium14,
+                            color = KoinTheme.colors.primary600,
+                            modifier = Modifier
+                                .clickable {
+                                    isPickerExpanded = false
+                                }
+                                .padding(vertical = 2.dp)
+                        )
                     }
                 }
             }
