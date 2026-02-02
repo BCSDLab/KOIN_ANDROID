@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.lostandfound.ui
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
@@ -22,6 +23,11 @@ class LostAndFoundActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdgeWithLightStatusBar()
+
+        try {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        } catch (ignore: IllegalStateException) {
+        }
 
         val id = intent.data?.getQueryParameter("id")
 
