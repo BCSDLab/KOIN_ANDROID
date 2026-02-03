@@ -12,7 +12,7 @@ fun List<ArticleLostAndFoundUpload>.toArticleLostAndFoundRequest(): ArticleLostA
 fun ArticleLostAndFoundUpload.toArticleLostAndFoundBody(): ArticleLostAndFoundRequest.ArticleLostAndFoundBody {
     return ArticleLostAndFoundRequest.ArticleLostAndFoundBody(
         category = category,
-        foundPlace = foundPlace.ifEmpty { "장소 미상" },
+        foundPlace = foundPlace.ifBlank { "장소 미상" },
         foundDate = foundDate,
         content = content,
         images = images,
