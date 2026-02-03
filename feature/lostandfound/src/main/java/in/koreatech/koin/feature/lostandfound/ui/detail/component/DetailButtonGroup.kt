@@ -13,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -22,20 +23,27 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
+import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 
 @Composable
 fun DetailButtonGroup(
+    lostOrFound: LostOrFoundType,
     modifier: Modifier = Modifier,
     showDeleteButton: Boolean = false,
+    showModifyButton: Boolean = true,
     showDeleteDialog: Boolean = false,
     isLoggedIn: Boolean = false,
     isAuthorWithdraw: Boolean = false,
+    isWriterAdmin: Boolean = false,
     onShowDeleteDialogChange: (Boolean) -> Unit = {},
     onArticleListClick: () -> Unit = {},
     onDeleteArticleClick: () -> Unit = {},
+    onModifyArticleClick: () -> Unit = {},
     onChatRoomClick: () -> Unit = {},
     onReportArticleClick: () -> Unit = {}
 ) {
+    val loggingLostOrFound = remember(lostOrFound) { if (lostOrFound == LostOrFoundType.FOUND) "습득물" else "분실물" }
+
     if (showDeleteDialog) {
         DetailDialog(
             title = stringResource(R.string.detail_delete_dialog_title),
@@ -56,7 +64,7 @@ fun DetailButtonGroup(
 
     Row(
         modifier = modifier
-            .padding(horizontal = 24.dp, vertical = 16.dp)
+            .padding(start = 24.dp, end = 24.dp, bottom = 16.dp)
             .fillMaxWidth()
     ) {
         Button(
@@ -79,6 +87,24 @@ fun DetailButtonGroup(
         Spacer(modifier = Modifier.weight(1f))
 
         if (showDeleteButton) {
+            if (showModifyButton) {
+                Button(
+                    modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
+                    contentPadding = PaddingValues(10.dp, 6.dp),
+                    onClick = onModifyArticleClick,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = KoinTheme.colors.neutral300,
+                        contentColor = KoinTheme.colors.neutral600
+                    ),
+                    shape = KoinTheme.shapes.extraSmall
+                ) {
+                    Text(
+                        style = KoinTheme.typography.regular12,
+                        text = stringResource(R.string.detail_edit_button)
+                    )
+                }
+            }
+
             Button(
                 modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
                 contentPadding = PaddingValues(10.dp, 6.dp),
@@ -86,7 +112,7 @@ fun DetailButtonGroup(
                     onShowDeleteDialogChange(true)
                     EventLogger.logCampusClickEvent(
                         AnalyticsConstant.Label.LostAndFound.FIND_USER_DELETE,
-                        "삭제"
+                        loggingLostOrFound
                     )
                 },
                 colors = ButtonDefaults.buttonColors(
@@ -95,69 +121,59 @@ fun DetailButtonGroup(
                 ),
                 shape = KoinTheme.shapes.extraSmall
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                        style = KoinTheme.typography.regular12,
-                        text = stringResource(R.string.detail_delete_button)
-                    )
-                    Spacer(modifier = Modifier.width(2.dp))
-                    Image(
-                        modifier = Modifier.size(16.dp),
-                        painter = painterResource(id = R.drawable.ic_article_delete),
-                        contentDescription = null
-                    )
-                }
+                Text(
+                    modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
+                    style = KoinTheme.typography.regular12,
+                    text = stringResource(R.string.detail_delete_button)
+                )
             }
         } else {
-            if (isLoggedIn) {
-                if (!isAuthorWithdraw) {
-                    Button(
-                        modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                        contentPadding = PaddingValues(10.dp, 6.dp),
-                        onClick = onChatRoomClick,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = KoinTheme.colors.neutral300,
-                            contentColor = KoinTheme.colors.neutral600
-                        ),
-                        shape = KoinTheme.shapes.extraSmall
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Image(
-                                modifier = Modifier.size(20.dp),
-                                painter = painterResource(id = R.drawable.ic_chat),
-                                contentDescription = null
-                            )
-
-                            Spacer(modifier = Modifier.width(4.dp))
-
-                            Text(
-                                style = KoinTheme.typography.regular12,
-                                text = stringResource(R.string.detail_chat_room_button)
-                            )
-                        }
-                    }
-                }
-
+            if (!isAuthorWithdraw) {
                 Button(
                     modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
                     contentPadding = PaddingValues(10.dp, 6.dp),
-                    onClick = onReportArticleClick,
+                    onClick = onChatRoomClick,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = KoinTheme.colors.neutral300,
                         contentColor = KoinTheme.colors.neutral600
                     ),
                     shape = KoinTheme.shapes.extraSmall
                 ) {
-                    Image(
-                        modifier = Modifier.size(20.dp),
-                        painter = painterResource(id = R.drawable.ic_article_report),
-                        contentDescription = null
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            modifier = Modifier.size(20.dp),
+                            painter = painterResource(id = R.drawable.ic_chat),
+                            contentDescription = null
+                        )
+
+                        Spacer(modifier = Modifier.width(4.dp))
+
+                        Text(
+                            style = KoinTheme.typography.regular12,
+                            text = stringResource(R.string.detail_chat_room_button)
+                        )
+                    }
+                }
+
+                if (isLoggedIn && !isWriterAdmin) {
+                    Button(
+                        modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
+                        contentPadding = PaddingValues(10.dp, 6.dp),
+                        onClick = onReportArticleClick,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = KoinTheme.colors.neutral300,
+                            contentColor = KoinTheme.colors.neutral600
+                        ),
+                        shape = KoinTheme.shapes.extraSmall
+                    ) {
+                        Image(
+                            modifier = Modifier.size(20.dp),
+                            painter = painterResource(id = R.drawable.ic_article_report),
+                            contentDescription = null
+                        )
+                    }
                 }
             }
         }

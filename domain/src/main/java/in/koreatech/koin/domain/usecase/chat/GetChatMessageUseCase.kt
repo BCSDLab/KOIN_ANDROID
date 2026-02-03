@@ -1,8 +1,8 @@
 package `in`.koreatech.koin.domain.usecase.chat
 
+import `in`.koreatech.koin.domain.model.chat.ChatMessage
 import `in`.koreatech.koin.domain.repository.ChatRepository
 import javax.inject.Inject
-import kotlinx.coroutines.flow.retryWhen
 
 class GetChatMessageUseCase @Inject constructor(
     private val chatRepository: ChatRepository
@@ -10,11 +10,7 @@ class GetChatMessageUseCase @Inject constructor(
     suspend operator fun invoke(
         articleId: Int,
         chatRoomId: Int
-    ) = chatRepository.getChatMessages(articleId, chatRoomId).retryWhen { cause, attempt ->
-        if (attempt < 3) {
-            true
-        } else {
-            throw cause
-        }
+    ): Result<List<ChatMessage>> {
+        return chatRepository.getChatMessages(articleId, chatRoomId)
     }
 }

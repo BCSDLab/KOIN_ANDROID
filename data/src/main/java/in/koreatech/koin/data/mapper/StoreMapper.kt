@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.mapper
 
+import `in`.koreatech.koin.data.entity.StoreCategoriesEntity
 import `in`.koreatech.koin.data.request.store.CartAddRequest
 import `in`.koreatech.koin.data.request.store.CartItemRequest
 import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
@@ -136,6 +137,18 @@ fun StoreCategoriesItemResponse.toStoreCategories(): StoreCategories =
         imageUrl = imageUrl,
         name = name
     )
+
+fun StoreCategoriesItemResponse.toStoreCategoriesEntity(): StoreCategoriesEntity = StoreCategoriesEntity(
+    id = id,
+    imageUrl = imageUrl,
+    name = name
+)
+
+fun StoreCategoriesEntity.toStoreCategoriesItemResponse(): StoreCategoriesItemResponse = StoreCategoriesItemResponse(
+    id = id,
+    imageUrl = imageUrl,
+    name = name
+)
 
 fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu =
     StoreWithMenu(

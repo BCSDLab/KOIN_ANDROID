@@ -1,16 +1,22 @@
 package `in`.koreatech.koin.data.repository
 
+import `in`.koreatech.koin.data.request.article.ArticleModifyRequest
 import `in`.koreatech.koin.data.request.article.toRequest
 import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
 import `in`.koreatech.koin.data.source.local.ArticleLocalDataSource
 import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
+import `in`.koreatech.koin.data.util.getErrorResponse
+import `in`.koreatech.koin.data.util.toKoinUnknownErrorException
+import `in`.koreatech.koin.domain.error.article.KoinArticleException
 import `in`.koreatech.koin.domain.model.article.Article
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFound
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundPagination
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundReportItem
+import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundStats
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
+import `in`.koreatech.koin.domain.model.article.LostAndFoundFilterParams
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
@@ -27,6 +33,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import retrofit2.HttpException
 
 class ArticleRepositoryImpl @Inject constructor(
     private val articleRemoteDataSource: ArticleRemoteDataSource,
@@ -226,15 +233,21 @@ class ArticleRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun fetchArticleLostAndFoundPagination(
-        page: Int,
-        limit: Int,
-        type: String?
+    override fun fetchArticleLostAndFoundPaginationV2(
+        filterParams: LostAndFoundFilterParams
     ): Flow<ArticleLostAndFoundPagination> {
         return flow {
             emit(
-                articleRemoteDataSource.fetchArticleLostAndFoundPagination(page, limit, type)
-                    .toArticleLostAndFoundPagination()
+                articleRemoteDataSource.fetchArticleLostAndFoundPaginationV2(
+                    type = filterParams.type,
+                    page = filterParams.page,
+                    limit = filterParams.limit,
+                    category = filterParams.category,
+                    foundStatus = filterParams.foundStatus,
+                    sort = filterParams.sort,
+                    author = filterParams.author,
+                    title = filterParams.title
+                ).toArticleLostAndFoundPagination()
             )
         }
     }
@@ -248,10 +261,10 @@ class ArticleRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun fetchArticleLostAndFound(articleId: Int): Flow<ArticleLostAndFound> {
+    override fun fetchArticleLostAndFoundV2(articleId: Int): Flow<ArticleLostAndFound> {
         return flow {
             emit(
-                articleRemoteDataSource.fetchArticleLostAndFound(articleId).toArticleLostAndFound()
+                articleRemoteDataSource.fetchArticleLostAndFoundV2(articleId).toArticleLostAndFound()
             )
         }
     }
@@ -271,5 +284,82 @@ class ArticleRepositoryImpl @Inject constructor(
         articleLostAndFoundList: List<ArticleLostAndFoundReportItem>
     ): Result<Unit> {
         return articleRemoteDataSource.reportLostAndFoundArticle(articleId, articleLostAndFoundList.toRequest())
+    }
+
+    override suspend fun fetchArticleLostAndFoundStats(): Result<ArticleLostAndFoundStats> {
+        return runCatching {
+            articleRemoteDataSource.fetchArticleLostAndFoundStats().toArticleLostAndFoundStats()
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> exception.getErrorResponse().toKoinUnknownErrorException()
+                    else -> exception
+                }
+            )
+        }
+    }
+
+    override suspend fun updateItemFound(
+        articleId: Int
+    ): Result<Unit> {
+        return runCatching {
+            val response = articleRemoteDataSource.updateItemFound(articleId)
+            if (response.isSuccessful) {
+                Unit
+            } else {
+                throw HttpException(response)
+            }
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> exception.getErrorResponse().toKoinUnknownErrorException()
+                    else -> exception
+                }
+            )
+        }
+    }
+
+    override suspend fun modifyArticleLostAndFound(
+        articleId: Int,
+        category: String,
+        foundPlace: String,
+        foundDate: String,
+        content: String?,
+        newImage: List<String>?,
+        deleteImageIds: List<Int>?
+    ): Result<Unit> {
+        return runCatching {
+            val response = articleRemoteDataSource.modifyArticleLostAndFound(
+                articleId,
+                ArticleModifyRequest(
+                    category,
+                    foundPlace,
+                    foundDate,
+                    content,
+                    newImage,
+                    deleteImageIds
+                )
+            )
+            if (response.isSuccessful) {
+                Unit
+            } else {
+                throw HttpException(response)
+            }
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            400 -> KoinArticleException.CanNotFoundItemException()
+                            401 -> KoinArticleException.UnauthorizedUserException()
+                            403 -> KoinArticleException.ForbiddenAuthor()
+                            404 -> KoinArticleException.NotFoundImage()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+                    else -> exception
+                }
+            )
+        }
     }
 }

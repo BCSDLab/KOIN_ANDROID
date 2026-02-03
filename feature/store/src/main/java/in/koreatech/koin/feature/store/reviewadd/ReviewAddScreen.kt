@@ -64,7 +64,7 @@ fun ReviewAddScreen(
             val fileType = fileDetail.second
             val fileName = fileMeta.first
             val imageUri = fileMeta.second
-            viewModel.requestPresignedUrl(fileSize, fileType, fileName, imageUri)
+            viewModel.uploadPresignedUrl(fileSize, fileType, fileName, imageUri)
         },
         clearFileInfo = { viewModel.clearFileInfo() }
     )

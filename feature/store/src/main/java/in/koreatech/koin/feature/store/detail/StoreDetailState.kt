@@ -29,7 +29,6 @@ data class StoreDetailState(
     val isLoading: Boolean = true,
     val storeId: Int = -1,
     val cartItemCount: Int = 0,
-    val isLoggedIn: Boolean = false,
     val showSignInDialog: Boolean = false,
     val minimumOrderAmount: Int = 0,
     val cart: Cart = Cart.Empty,

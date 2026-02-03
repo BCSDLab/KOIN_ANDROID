@@ -2,7 +2,6 @@ package `in`.koreatech.koin.ui.splash
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -35,7 +34,8 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
-import `in`.koreatech.koin.ui.article.ArticleActivity
+import `in`.koreatech.koin.feature.article.ArticleActivity
+import `in`.koreatech.koin.feature.lostandfound.ui.LostAndFoundActivity
 import `in`.koreatech.koin.ui.forceupdate.ForceUpdateActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.splash.state.TokenState
@@ -209,9 +209,7 @@ class SplashActivity : ActivityBase() {
             val intent =
                 when (path) {
                     "lost-item" -> {
-                        Intent(Intent.ACTION_VIEW).apply {
-                            data = Uri.parse("koin://article/activity?fragment=article_lost_and_found")
-                        }
+                        Intent(this@SplashActivity, LostAndFoundActivity::class.java)
                     }
                     else -> {
                         Intent(this@SplashActivity, ArticleActivity::class.java)

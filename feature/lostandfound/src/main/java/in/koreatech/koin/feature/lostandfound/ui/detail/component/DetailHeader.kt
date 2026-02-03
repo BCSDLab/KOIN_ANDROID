@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.lostandfound.ui.detail.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,7 +16,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.component.LostItemTypeChip
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
-import `in`.koreatech.koin.feature.lostandfound.util.getKoreanDayOfWeekShortName
+import `in`.koreatech.koin.feature.lostandfound.util.formatLostAndFoundTitle
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -25,24 +26,15 @@ fun DetailHeader(
     category: LostItemCategory,
     foundPlace: String,
     foundDate: LocalDate,
+    createdDate: LocalDate,
     author: String,
-    registeredAt: LocalDate,
+    isFound: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val registeredAtFormatType = DateTimeFormatter.ofPattern("MM.dd")
-    val convertedRegisteredAt =
-        remember(key1 = registeredAt) { "${registeredAt.format(registeredAtFormatType)} ${registeredAt.getKoreanDayOfWeekShortName()}" }
-
-    val foundDateFormatType = DateTimeFormatter.ofPattern("yy.MM.dd")
-    val headerText =
-        remember(key1 = foundPlace, key2 = foundDate) {
-            "${
-                foundPlace.replace(
-                    "\n",
-                    " "
-                )
-            } | ${foundDate.format(foundDateFormatType)}"
-        }
+    val foundDateFormatType = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    val headerText = remember(key1 = foundPlace, key2 = foundDate) {
+        formatLostAndFoundTitle(foundPlace = foundPlace, foundDate = foundDate)
+    }
 
     Column(
         modifier = modifier.padding(vertical = 12.dp, horizontal = 24.dp)
@@ -65,12 +57,18 @@ fun DetailHeader(
                 fontWeight = FontWeight(500),
                 style = KoinTheme.typography.medium14
             )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            LostAndFoundStatusChip(
+                isFound = isFound
+            )
         }
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "$author • $convertedRegisteredAt",
+                text = "${createdDate.format(foundDateFormatType)} • $author",
                 color = KoinTheme.colors.neutral500,
                 style = KoinTheme.typography.regular12
             )

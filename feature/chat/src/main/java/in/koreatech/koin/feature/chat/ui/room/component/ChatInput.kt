@@ -132,9 +132,8 @@ fun ChatTextField(
                         style = KoinTheme.typography.regular12,
                         color = KoinTheme.colors.neutral500
                     )
-                } else {
-                    innerTextField()
                 }
+                innerTextField()
             }
         }
     )

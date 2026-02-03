@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.provider.OpenableColumns
 import android.widget.Toast
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -31,6 +32,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.chat.R
@@ -81,10 +85,16 @@ fun ChatRoom(
     }
 
     val uiState by viewModel.collectAsState()
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
-    LaunchedEffect(uiState.shouldReconnect) {
-        if (uiState.shouldReconnect) {
-            viewModel.reconnect()
+    LaunchedEffect(Unit) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.connectChannel.collect { shouldConnect ->
+                if (shouldConnect) {
+                    viewModel.connectToWS()
+                }
+            }
         }
     }
 
@@ -130,7 +140,7 @@ fun ChatRoom(
                     }
                 },
                 onNavigationIconClick = {
-                    (context as Activity).finish()
+                    onBackPressedDispatcher?.onBackPressed()
                 }
             )
         },

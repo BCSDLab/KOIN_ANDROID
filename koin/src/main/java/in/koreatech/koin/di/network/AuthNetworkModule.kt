@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.di.network
 
 import android.content.Context
-import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,7 +24,6 @@ import `in`.koreatech.koin.data.api.auth.StoreAuthApi
 import `in`.koreatech.koin.data.api.auth.TimetableAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
-import `in`.koreatech.koin.data.util.EmptyStringToNullAdapter
 import `in`.koreatech.koin.di.userAgent.UserAgentInterceptor
 import `in`.koreatech.koin.di.userAgent.UserAgentProvider
 import `in`.koreatech.koin.domain.usecase.user.DeleteUserRefreshTokenUseCase
@@ -122,12 +120,10 @@ object AuthNetworkModule {
         @ServerUrl baseUrl: String,
         @Auth okHttpClient: OkHttpClient
     ): Retrofit {
-        val gson = GsonBuilder().registerTypeAdapter(String::class.java, EmptyStringToNullAdapter()).create()
-
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 

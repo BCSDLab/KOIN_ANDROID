@@ -106,13 +106,14 @@ dependencies {
     implementation(projects.core.onboarding)
     implementation(projects.feature.timetable)
     implementation(projects.feature.bus)
-    implementation(projects.feature.lostandfound)
+    implementation(projects.feature.article)
     implementation(projects.feature.chat)
     implementation(projects.feature.banner)
     implementation(projects.feature.store)
     implementation(projects.feature.user)
     implementation(projects.feature.club)
     implementation(projects.feature.dining)
+    implementation(projects.feature.lostandfound)
 
     implementation(libs.guava)
 

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
@@ -18,8 +19,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
@@ -29,31 +36,77 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.MAX_ITEM_COUNT
 import `in`.koreatech.koin.feature.lostandfound.R
+import `in`.koreatech.koin.feature.lostandfound.component.EditArticleDoneButton
+import `in`.koreatech.koin.feature.lostandfound.component.EditArticleHeader
+import `in`.koreatech.koin.feature.lostandfound.component.EditArticleItemDetail
+import `in`.koreatech.koin.feature.lostandfound.component.EditArticleItemType
+import `in`.koreatech.koin.feature.lostandfound.component.EditArticleUploadImage
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory.Companion.getCategoryKoreanWord
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleAddItemButton
-import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleDoneButton
-import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleHeader
 import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleItemChip
-import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleItemDetail
-import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleItemType
-import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleUploadImage
 import java.time.LocalDate
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LostAndFoundWriteArticle(
+    onBackClick: () -> Unit,
+    onComplete: (Int) -> Unit
+) {
+    Scaffold(
+        modifier = Modifier.fillMaxWidth(),
+        containerColor = KoinTheme.colors.neutral0,
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(R.string.top_container_text),
+                        style = KoinTheme.typography.medium18,
+                        color = KoinTheme.colors.neutral800
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_back),
+                            contentDescription = stringResource(R.string.top_container_icon),
+                            tint = KoinTheme.colors.neutral800
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = KoinTheme.colors.neutral0
+                )
+            )
+        }
+    ) { innerPadding ->
+        LostAndFoundWriteArticleImpl(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            onWriteComplete = onComplete
+        )
+    }
+}
+
+@Composable
+fun LostAndFoundWriteArticleImpl(
+    modifier: Modifier = Modifier,
     viewModel: LostAndFoundWriteArticleViewModel = hiltViewModel(),
     onWriteComplete: (articleId: Int) -> Unit = {}
 ) {
@@ -65,13 +118,15 @@ fun LostAndFoundWriteArticle(
 
     KoinTheme {
         Scaffold(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .consumeWindowInsets(WindowInsets.navigationBars)
                 .imePadding(),
             containerColor = KoinTheme.colors.neutral0,
             bottomBar = {
-                WriteArticleDoneButton {
+                EditArticleDoneButton(
+                    text = stringResource(id = R.string.write_done)
+                ) {
                     when (uiState.lostOrFoundType) {
                         LostOrFoundType.FOUND ->
                             EventLogger.logCampusClickEvent(
@@ -100,15 +155,9 @@ fun LostAndFoundWriteArticle(
                 shouldShowItemAddButton = itemList.size < MAX_ITEM_COUNT
             }
 
-            var shouldShowDatePicker by remember { mutableStateOf(false) }
-
             val lazyColumnState = rememberLazyListState()
 
-            LaunchedEffect(lazyColumnState.isScrollInProgress) {
-                if (lazyColumnState.isScrollInProgress) {
-                    shouldShowDatePicker = false
-                }
-            }
+            val isScrolling = lazyColumnState.isScrollInProgress
 
             LazyColumn(
                 state = lazyColumnState,
@@ -117,7 +166,7 @@ fun LostAndFoundWriteArticle(
                     .consumeWindowInsets(contentPadding)
             ) {
                 item {
-                    WriteArticleHeader(type = uiState.lostOrFoundType)
+                    EditArticleHeader(type = uiState.lostOrFoundType)
                 }
 
                 itemsIndexed(itemList) { itemIndex, item ->
@@ -126,7 +175,7 @@ fun LostAndFoundWriteArticle(
                         shouldShowDelete = shouldShowItemRemoveButton,
                         articleData = item,
                         lostOrFoundType = item.lostOrFoundType,
-                        showDatePicker = shouldShowDatePicker,
+                        isScrolling = isScrolling,
                         onAddImageClick = { uri ->
                             viewModel.addImage(itemIndex, uri)
                         },
@@ -151,9 +200,6 @@ fun LostAndFoundWriteArticle(
                         },
                         onUpdateLocation = { foundPlace ->
                             viewModel.updateLocation(itemIndex, foundPlace)
-                        },
-                        onShowDatePickerChange = { showDatePicker ->
-                            shouldShowDatePicker = showDatePicker
                         },
                         onDateChange = { date ->
                             viewModel.updateDate(itemIndex, date)
@@ -188,19 +234,18 @@ fun LostAndFoundWriteArticle(
 
 @Composable
 fun WriteFoundItemArticleImpl(
+    modifier: Modifier = Modifier,
     index: Int,
     shouldShowDelete: Boolean = false,
     articleData: LostAndFoundWriteArticleItemState,
     lostOrFoundType: LostOrFoundType,
-    showDatePicker: Boolean,
-    modifier: Modifier = Modifier,
+    isScrolling: Boolean,
     onAddImageClick: (uri: Uri) -> Unit = {},
     onRemoveImageClick: (index: Int) -> Unit = {},
     onRemoveItemClick: (index: Int) -> Unit = {},
     onChangeItemType: (itemType: LostItemCategory) -> Unit = {},
     onUpdateDescription: (description: String) -> Unit = {},
     onUpdateLocation: (location: String) -> Unit = {},
-    onShowDatePickerChange: (showDatePicker: Boolean) -> Unit = {},
     onDateChange: (date: LocalDate?) -> Unit = {}
 ) {
     val pickMultipleMedia =
@@ -227,7 +272,7 @@ fun WriteFoundItemArticleImpl(
             onRemoveItemClick(index)
         }
 
-        WriteArticleUploadImage(
+        EditArticleUploadImage(
             type = lostOrFoundType,
             imageList = imageList,
             uploadedImageCount = imageList.size,
@@ -239,14 +284,14 @@ fun WriteFoundItemArticleImpl(
             }
         )
 
-        WriteArticleItemType(
+        EditArticleItemType(
             selectedChipIndex = articleData.category.id,
             itemTypeRequired = articleData.itemTypeRequired
         ) {
             onChangeItemType(LostItemCategory.entries[it])
         }
 
-        WriteArticleItemDetail(
+        EditArticleItemDetail(
             type = lostOrFoundType,
             moreDescription = articleData.content ?: "",
             onMoreDescriptionChange = { onUpdateDescription(it) },
@@ -255,8 +300,7 @@ fun WriteFoundItemArticleImpl(
             onLocationChange = { onUpdateLocation(it) },
             date = articleData.foundDate,
             dateRequired = articleData.dateRequired,
-            showDatePicker = showDatePicker,
-            onShowDatePickerChange = onShowDatePickerChange,
+            shouldCollapse = isScrolling,
             onDateChange = { onDateChange(it) }
         )
     }

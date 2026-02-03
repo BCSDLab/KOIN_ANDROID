@@ -118,7 +118,7 @@ fun ClubEventCreateScreen(
             eventStartDateTime = uiState.eventStartDateTime,
             eventEndDateTime = uiState.eventEndDateTime,
             imageUrls = uiState.eventImageUrls,
-            uploadImage = viewModel::getPreSignedUrl,
+            uploadImage = viewModel::uploadImage,
             onMaxImageError = viewModel::postMaxImageLimitError,
             onImageDeleteClick = viewModel::deleteImageUrl,
             maxImageLimit = MAX_IMAGE_LIMIT,

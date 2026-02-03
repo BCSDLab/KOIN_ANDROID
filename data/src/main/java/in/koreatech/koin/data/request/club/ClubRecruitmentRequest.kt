@@ -7,5 +7,5 @@ data class ClubRecruitmentRequest(
     @SerializedName("end_date") val endDate: String?,
     @SerializedName("is_always_recruiting") val isAlwaysRecruiting: Boolean,
     @SerializedName("image_url") val imageUrl: String,
-    @SerializedName("content") val content: String
+    @SerializedName("content") val content: String?
 )

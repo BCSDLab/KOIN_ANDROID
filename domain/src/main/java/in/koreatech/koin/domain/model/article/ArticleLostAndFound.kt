@@ -9,8 +9,9 @@ data class ArticleLostAndFound(
     val foundDate: String,
     val content: String?,
     val author: String,
-    val isCouncil: Boolean,
+    val organization: ArticleLostAndFoundOrganization?,
     val isMine: Boolean,
+    val isFound: Boolean,
     val images: List<ArticleLostAndFoundImage>?,
     val registeredAt: String,
     val updatedAt: String
@@ -18,5 +19,10 @@ data class ArticleLostAndFound(
     data class ArticleLostAndFoundImage(
         val id: Int,
         val imageUrl: String
+    )
+
+    data class ArticleLostAndFoundOrganization(
+        val name: String,
+        val location: String
     )
 }

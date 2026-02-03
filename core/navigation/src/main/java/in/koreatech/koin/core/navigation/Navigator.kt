@@ -29,4 +29,8 @@ interface Navigator {
     fun navigateToStore(
         context: Context
     ): Intent
+
+    fun navigateToChatRoom(
+        context: Context
+    ): Intent
 }

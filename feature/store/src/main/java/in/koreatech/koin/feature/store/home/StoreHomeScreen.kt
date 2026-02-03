@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.store.home
 
-import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -54,7 +53,6 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
@@ -63,6 +61,7 @@ import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.core.util.KoinCoilImageLoader
 import `in`.koreatech.koin.domain.model.store.OpenStatus
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_MAIN_HOME
@@ -112,6 +111,7 @@ fun StoreHomeScreen(
 ) {
     val uiState by viewModel.collectAsState()
     val context = LocalContext.current
+    val navigator = rememberNavigator()
 
     viewModel.collectSideEffect {
         handleSideEffect(it, navigateToCart)
@@ -153,9 +153,7 @@ fun StoreHomeScreen(
     if (uiState.showSignInDialog) {
         KoinStoreSignInDialog(
             onPositive = {
-                Intent(Intent.ACTION_VIEW).apply {
-                    data = "koin://login/login?link=$DEEPLINK_STORE_MAIN_HOME".toUri()
-                }.apply {
+                navigator.navigateToSignIn(context, DEEPLINK_STORE_MAIN_HOME).apply {
                     context.startActivity(this)
                 }
             },

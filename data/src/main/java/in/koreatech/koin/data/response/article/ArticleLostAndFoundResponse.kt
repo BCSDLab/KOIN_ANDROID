@@ -13,9 +13,10 @@ data class ArticleLostAndFoundResponse(
     @SerializedName("found_date") val foundDate: String,
     @SerializedName("content") val content: String?,
     @SerializedName("author") val author: String,
-    @SerializedName("is_council") val isCouncil: Boolean?, // Set nullable because /articles/lost-item API doesn't have this field
+    @SerializedName("organization") val organization: ArticleLostAndFoundOrganizationResponse?,
     @SerializedName("is_mine") val isMine: Boolean?, // Set nullable because /articles/lost-item API doesn't have this field
     @SerializedName("is_reported") val isReported: Boolean,
+    @SerializedName("is_found") val isFound: Boolean,
     @SerializedName("images") val images: List<ArticleLostAndFoundImageResponse>?,
     @SerializedName("prev_id") val prevArticleId: Int?,
     @SerializedName("next_id") val nextArticleId: Int?,
@@ -33,6 +34,17 @@ data class ArticleLostAndFoundResponse(
             )
     }
 
+    data class ArticleLostAndFoundOrganizationResponse(
+        @SerializedName("name") val name: String,
+        @SerializedName("location") val location: String
+    ) {
+        fun toArticleLostAndFoundOrganization() =
+            ArticleLostAndFound.ArticleLostAndFoundOrganization(
+                name = name,
+                location = location
+            )
+    }
+
     fun toArticleLostAndFoundHeader() =
         ArticleLostAndFoundHeader(
             id = id,
@@ -44,6 +56,7 @@ data class ArticleLostAndFoundResponse(
             content = content,
             author = author,
             isReported = isReported,
+            isFound = isFound,
             registeredAt = registeredAt,
             updatedAt = updatedAt ?: "" // updatedAt is not available on /articles/lost-item API
         )
@@ -63,8 +76,9 @@ data class ArticleLostAndFoundResponse(
             foundDate = foundDate,
             content = content,
             author = author,
-            isCouncil = isCouncil!!, // Should not be null
-            isMine = isMine!!, // Should not be null
+            organization = organization?.toArticleLostAndFoundOrganization(),
+            isMine = isMine ?: false, // Should not be null
+            isFound = isFound,
             images = images?.map { it.toArticleLostAndFoundImage() },
             registeredAt = registeredAt,
             updatedAt = updatedAt ?: "" // updatedAt is not available on /articles/lost-item API

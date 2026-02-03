@@ -130,7 +130,7 @@
     <string name="store_banner_title">에서</string>
     <string name="store_banner_subtitle">코인 전용 할인혜택 받기!</string>
 
-    <string name="store_main_widget">주문</string>
+    <string name="store_main_widget">주변상점</string>
     <string name="store_cart_min_select">%1$d가지 선택</string>
     <string name="store_cart_add_menu">장바구니 추가</string>
     <string name="store_cart_price">가격 : %1$,d원</string>

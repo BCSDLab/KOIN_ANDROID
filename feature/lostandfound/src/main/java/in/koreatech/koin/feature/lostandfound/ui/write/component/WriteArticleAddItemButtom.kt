@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -36,7 +35,7 @@ fun WriteArticleAddItemButton(
             ButtonDefaults.buttonColors(
                 containerColor = KoinTheme.colors.info200
             ),
-            shape = RoundedCornerShape(8.dp),
+            shape = KoinTheme.shapes.small,
             contentPadding = PaddingValues(12.dp, 8.dp)
         ) {
             Row(

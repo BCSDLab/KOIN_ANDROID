@@ -33,8 +33,7 @@ fun LostAndFoundReportContent(
     val scrollState = rememberScrollState()
 
     Column(
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxSize()
             .imePadding()
             .verticalScroll(scrollState)
@@ -54,8 +53,7 @@ fun LostAndFoundReportContent(
         FilledButton(
             text = stringResource(id = R.string.report_submit),
             onClick = onReport,
-            modifier =
-            Modifier
+            modifier = Modifier
                 .padding(vertical = 20.dp, horizontal = 24.dp)
                 .fillMaxWidth()
         )

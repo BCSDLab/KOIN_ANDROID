@@ -56,6 +56,7 @@ fun KoinPicker(
     infiniteScroll: Boolean = true,
     brushVerticalGradient: Brush = verticalGradient(),
     startIndex: Int = 0,
+    fetchStartIndexEvent: Boolean = false,
     contentPadding: PaddingValues = PaddingValues(vertical = 2.dp),
     selectedTextStyle: TextStyle = KoinTheme.typography.medium16,
     unselectedTextStyle: TextStyle = KoinTheme.typography.medium16,
@@ -84,6 +85,13 @@ fun KoinPicker(
     val density = LocalDensity.current
 
     val fadingEdgeGradient = remember { brushVerticalGradient }
+
+    LaunchedEffect(fetchStartIndexEvent) {
+        selectedItemIndex = (listScrollMiddle - listScrollMiddle % newItems.size - visibleItemsMiddle + startIndex).coerceAtLeast(startIndex)
+        pickerState.selectedItem = newItems.getItem(selectedItemIndex)
+        pickerState.selectedItemIndex = selectedItemIndex % newItems.size - if (infiniteScroll.not()) visibleItemsMiddle else 0
+        listState.scrollToItem(selectedItemIndex)
+    }
 
     LazyColumn(
         state = listState,

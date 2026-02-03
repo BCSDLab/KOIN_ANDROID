@@ -133,6 +133,12 @@
                                 android:layout_marginTop="24dp"
                                 android:layout_height="wrap_content" />
 
+                            <androidx.compose.ui.platform.ComposeView
+                                android:id="@+id/lostandfound_compose_view"
+                                android:layout_width="match_parent"
+                                android:layout_marginTop="24dp"
+                                android:layout_height="wrap_content" />
+
                             <TextView
                                 android:id="@+id/text_view_store"
                                 android:layout_width="wrap_content"

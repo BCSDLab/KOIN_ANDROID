@@ -32,6 +32,7 @@ import `in`.koreatech.koin.data.repository.UserRepositoryImpl
 import `in`.koreatech.koin.data.repository.VersionRepositoryImpl
 import `in`.koreatech.koin.data.source.local.ArticleLocalDataSource
 import `in`.koreatech.koin.data.source.local.BannerLocalDataSource
+import `in`.koreatech.koin.data.source.local.CacheLocalDataSource
 import `in`.koreatech.koin.data.source.local.DeptLocalDataSource
 import `in`.koreatech.koin.data.source.local.SessionLocalDataSource
 import `in`.koreatech.koin.data.source.local.SettingLocalDataSource
@@ -184,8 +185,12 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideStoreRepository(storeRemoteDataSource: StoreRemoteDataSource, storeLocalDataSource: StoreLocalDataSource): StoreRepository {
-        return StoreRepositoryImpl(storeRemoteDataSource, storeLocalDataSource)
+    fun provideStoreRepository(
+        storeRemoteDataSource: StoreRemoteDataSource,
+        storeLocalDataSource: StoreLocalDataSource,
+        cacheLocalDataSource: CacheLocalDataSource
+    ): StoreRepository {
+        return StoreRepositoryImpl(storeRemoteDataSource, storeLocalDataSource, cacheLocalDataSource)
     }
 
     @Provides

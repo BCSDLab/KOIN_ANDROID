@@ -1,36 +1,48 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.detail
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
-import `in`.koreatech.koin.feature.lostandfound.component.HotArticle
-import `in`.koreatech.koin.feature.lostandfound.component.HotArticleData
 import `in`.koreatech.koin.feature.lostandfound.component.LoadingDialog
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailButtonGroup
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailContent
+import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailDialog
+import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailFoundSwitch
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailHeader
-import `in`.koreatech.koin.feature.lostandfound.util.findActivity
+import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.RecentArticleList
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -38,83 +50,215 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun LostAndFoundDetail(
     viewModel: LostAndFoundDetailViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
-    navigateToArticleList: () -> Unit = {},
-    navigateToHotArticle: (HotArticleData) -> Unit,
+    onTopbarBackClick: () -> Unit = {},
+    refreshList: () -> Unit = {},
+    navigateToArticleList: (cancelRefresh: Boolean) -> Unit = {},
+    navigateToRecentArticle: (articleId: Int) -> Unit = {},
     navigateToChatRoom: (articleId: Int) -> Unit = {},
-    navigateToReport: (articleId: Int) -> Unit = {}
+    navigateToLogin: (articleId: Int) -> Unit = {},
+    navigateToReport: (articleId: Int) -> Unit = {},
+    navigateToModify: (articleId: Int) -> Unit = {}
 ) {
-    KoinTheme {
+    Scaffold(
+        containerColor = KoinTheme.colors.neutral0,
+        topBar = {
+            KoinTopAppBar(
+                title = stringResource(R.string.lost_and_found),
+                onNavigationIconClick = {
+                    onTopbarBackClick()
+                }
+            )
+        }
+    ) { contentPadding ->
         val uiState by viewModel.collectAsState()
-        val hotArticle = uiState.hotArticles
+        val recentArticles = uiState.recentArticles
         val context = LocalContext.current
         val isLoading = uiState.isLoading
+
+        val loggingLostOrFound = remember(uiState.lostOrFound) { if (uiState.lostOrFound == LostOrFoundType.FOUND) "습득물" else "분실물" }
+
+        if (uiState.showFoundDialog) {
+            DetailDialog(
+                title = stringResource(id = R.string.lost_and_found_dialog_message),
+                onPositive = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_FOUND,
+                        loggingLostOrFound
+                    )
+                    viewModel.setFound()
+                    refreshList()
+                    viewModel.setShowFoundDialog(false)
+                },
+                onNegative = {
+                    viewModel.setShowFoundDialog(false)
+                },
+                titleStyle = KoinTheme.typography.medium16.copy(color = KoinTheme.colors.neutral600)
+            )
+        }
+
+        if (uiState.showLoginDialog) {
+            ChoiceDialog(
+                title = stringResource(id = R.string.detail_chat_login_dialog_title),
+                description = stringResource(id = R.string.detail_chat_login_dialog_description),
+                positiveButtonText = stringResource(id = R.string.detail_chat_login_dialog_positive),
+                negativeButtonText = stringResource(id = R.string.detail_chat_login_dialog_negative),
+                onPositive = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_MESSAGE_LOGIN_REQUEST,
+                        "로그인하기"
+                    )
+                    navigateToLogin(uiState.id)
+                    viewModel.setShowLoginDialog(false)
+                },
+                onNegative = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_MESSAGE_LOGIN_REQUEST,
+                        "닫기"
+                    )
+                    viewModel.setShowLoginDialog(false)
+                },
+                titleStyle = KoinTheme.typography.medium18.copy(color = KoinTheme.colors.neutral600, textAlign = TextAlign.Center),
+                descriptionStyle = KoinTheme.typography.regular14.copy(color = Color(0xFF8E8E8E))
+            )
+        }
 
         viewModel.collectSideEffect {
             handleSideEffect(it, context, navigateToArticleList)
         }
+
         Column(
-            modifier = modifier.verticalScroll(rememberScrollState())
+            modifier = modifier
+                .padding(contentPadding)
+                .consumeWindowInsets(contentPadding)
+                .systemBarsPadding()
+                .verticalScroll(rememberScrollState())
         ) {
-            DetailHeader(
-                lostOrFound = uiState.lostOrFound,
-                category = uiState.category,
-                foundPlace = uiState.foundPlace,
-                foundDate = uiState.foundDate,
-                author = uiState.author,
-                registeredAt = uiState.registeredAt
-            )
+            val configuration = LocalConfiguration.current
+            val screenHeightDp = remember { configuration.screenHeightDp.dp }
+            val layoutHeightDp = remember { mutableStateOf(0.dp) }
+            val enableRecentArticleHeight = remember(layoutHeightDp.value) {
+                mutableStateOf(screenHeightDp - (contentPadding.calculateTopPadding() + contentPadding.calculateBottomPadding()) - layoutHeightDp.value)
+            }
 
-            HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
+            val itemHeightDp = 48.dp
+            val headerHeight = 54.dp
+            val finalRecentArticleHeight = remember(enableRecentArticleHeight.value) {
+                val availableHeight = enableRecentArticleHeight.value - headerHeight
+                val visibleItemCount = (availableHeight / itemHeightDp).toInt()
+                headerHeight + (itemHeightDp * (visibleItemCount + 0.65f))
+            }
+            Layout(
+                content = {
+                    Column {
+                        DetailHeader(
+                            lostOrFound = uiState.lostOrFound,
+                            category = uiState.category,
+                            foundPlace = uiState.foundPlace,
+                            foundDate = uiState.foundDate,
+                            createdDate = uiState.registeredAt,
+                            author = uiState.author,
+                            isFound = uiState.isFound
+                        )
 
-            DetailContent(
-                imageUris = uiState.images,
-                content = uiState.content,
-                isWriterAdmin = uiState.isWriterCouncil
-            )
+                        HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
 
-            val loggingLostMessageSend = stringResource(id = R.string.logging_lost_message_send)
-            val loggingFoundMessageSend = stringResource(id = R.string.logging_found_message_send)
-            val loggingReport = stringResource(id = R.string.logging_report)
+                        DetailContent(
+                            imageUris = uiState.images,
+                            content = uiState.content,
+                            organization = uiState.organization
+                        )
 
-            DetailButtonGroup(
-                showDeleteButton = uiState.isMine,
-                showDeleteDialog = uiState.showDeleteDialog,
-                isLoggedIn = uiState.isLoggedIn,
-                isAuthorWithdraw = uiState.isAuthorWithdraw,
-                onArticleListClick = {
-                    navigateToArticleList()
-                },
-                onDeleteArticleClick = {
-                    viewModel.deleteArticle()
-                },
-                onShowDeleteDialogChange = {
-                    viewModel.setShowDeleteDialog(it)
-                },
-                onChatRoomClick = {
-                    EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LostAndFound.ITEM_MESSAGE_SEND,
-                        if (uiState.lostOrFound == LostOrFoundType.LOST) {
-                            loggingLostMessageSend
-                        } else {
-                            loggingFoundMessageSend
+                        if (uiState.isMine && !uiState.isFound) {
+                            DetailFoundSwitch(
+                                lostOrFoundType = uiState.lostOrFound,
+                                isFound = uiState.isFound,
+                                onCheckedChange = {
+                                    EventLogger.logCampusClickEvent(
+                                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_STATE_CHANGE,
+                                        loggingLostOrFound
+                                    )
+                                    viewModel.setShowFoundDialog(true)
+                                }
+                            )
                         }
-                    )
-                    navigateToChatRoom(uiState.id)
-                },
-                onReportArticleClick = {
-                    EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LostAndFound.ITEM_POST_REPORT,
-                        loggingReport
-                    )
-                    navigateToReport(uiState.id)
+
+                        val loggingLostMessageSend = stringResource(id = R.string.logging_lost_message_send)
+                        val loggingFoundMessageSend = stringResource(id = R.string.logging_found_message_send)
+                        val loggingReport = stringResource(id = R.string.logging_report)
+                        val onModifyClick = remember(uiState.id, loggingLostOrFound) {
+                            {
+                                EventLogger.logCampusClickEvent(
+                                    AnalyticsConstant.Label.LostAndFound.LOST_ITEM_MODIFY,
+                                    loggingLostOrFound
+                                )
+                                navigateToModify(uiState.id)
+                            }
+                        }
+
+                        DetailButtonGroup(
+                            lostOrFound = uiState.lostOrFound,
+                            showDeleteButton = uiState.isMine,
+                            showDeleteDialog = uiState.showDeleteDialog,
+                            showModifyButton = !uiState.isFound,
+                            isLoggedIn = uiState.isLoggedIn,
+                            isAuthorWithdraw = uiState.isAuthorWithdraw,
+                            isWriterAdmin = uiState.organization != null,
+                            onArticleListClick = {
+                                navigateToArticleList(true)
+                            },
+                            onDeleteArticleClick = {
+                                viewModel.deleteArticle()
+                            },
+                            onModifyArticleClick = onModifyClick,
+                            onShowDeleteDialogChange = {
+                                viewModel.setShowDeleteDialog(it)
+                            },
+                            onChatRoomClick = {
+                                EventLogger.logCampusClickEvent(
+                                    AnalyticsConstant.Label.LostAndFound.ITEM_MESSAGE_SEND,
+                                    if (uiState.lostOrFound == LostOrFoundType.LOST) {
+                                        loggingLostMessageSend
+                                    } else {
+                                        loggingFoundMessageSend
+                                    }
+                                )
+                                if (uiState.isLoggedIn) {
+                                    navigateToChatRoom(uiState.id)
+                                } else {
+                                    viewModel.setShowLoginDialog(true)
+                                }
+                            },
+                            onReportArticleClick = {
+                                EventLogger.logCampusClickEvent(
+                                    AnalyticsConstant.Label.LostAndFound.ITEM_POST_REPORT,
+                                    loggingReport
+                                )
+                                navigateToReport(uiState.id)
+                            }
+                        )
+
+                        HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
+                    }
                 }
-            )
+            ) { measurables, constraints ->
+                val placeable = measurables.first().measure(constraints)
+                layoutHeightDp.value = placeable.height.toDp()
+                layout(placeable.width, placeable.height) {
+                    placeable.place(0, 0)
+                }
+            }
 
-            HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
-
-            HotArticle(
-                hotArticleList = hotArticle,
-                navigateToHotArticle = navigateToHotArticle
+            RecentArticleList(
+                modifier = Modifier
+                    .heightIn(min = 275.dp, max = screenHeightDp)
+                    .height(finalRecentArticleHeight),
+                recentArticles = recentArticles,
+                isLoadingMore = uiState.isLoadingMoreArticles,
+                hasMoreArticles = uiState.hasMoreArticles,
+                onLoadMore = { viewModel.loadMoreRecentArticles() },
+                onArticleClick = { article ->
+                    navigateToRecentArticle(article.id)
+                }
             )
 
             Spacer(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars))
@@ -129,18 +273,16 @@ fun LostAndFoundDetail(
 private fun handleSideEffect(
     sideEffect: LostAndFoundDetailSideEffect,
     context: Context,
-    navigateToArticleList: () -> Unit = {}
+    navigateToArticleList: (cancelRefresh: Boolean) -> Unit = {}
 ) {
     when (sideEffect) {
-        // is LostAndFoundDetailSideEffect.FetchDetail -> {}
-        // LostAndFoundDetailSideEffect.FetchHotArticles -> {}
         is LostAndFoundDetailSideEffect.DeleteArticle -> {
             Toast.makeText(
                 context,
                 context.getString(R.string.detail_delete_toast),
                 Toast.LENGTH_SHORT
             ).show()
-            navigateToArticleList()
+            navigateToArticleList(false)
         }
 
         LostAndFoundDetailSideEffect.DeleteArticleFailed -> {
@@ -152,15 +294,18 @@ private fun handleSideEffect(
         }
 
         LostAndFoundDetailSideEffect.DeletedArticle -> {
-            context.findActivity()?.finish()
-            val intent =
-                Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse("koin://article/activity?fragment=article_lost_and_found")
-                }
-            context.startActivity(intent)
             Toast.makeText(
                 context,
                 context.getString(R.string.detail_deleted_article),
+                Toast.LENGTH_SHORT
+            ).show()
+            navigateToArticleList(true)
+        }
+
+        LostAndFoundDetailSideEffect.UpdateFoundFail -> {
+            Toast.makeText(
+                context,
+                context.getString(R.string.lost_and_found_update_found_fail),
                 Toast.LENGTH_SHORT
             ).show()
         }

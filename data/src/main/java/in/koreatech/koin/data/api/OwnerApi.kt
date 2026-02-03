@@ -93,7 +93,7 @@ interface OwnerApi {
         @Body storeRegisterResponse: StoreRegisterResponse
     ): StoreRegisterResponse
 
-    @POST(URLConstant.OWNER.COMPANYNUMBER)
+    @POST(URLConstant.OWNER.OWNERS + "/exists/company-number")
     suspend fun checkExistsCompanyNumber(
         @Body companyNumber: CheckCompanyNumberResponse
     )
