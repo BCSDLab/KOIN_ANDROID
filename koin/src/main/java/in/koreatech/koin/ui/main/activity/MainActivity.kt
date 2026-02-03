@@ -58,6 +58,8 @@ import `in`.koreatech.koin.feature.article.ArticleActivity
 import `in`.koreatech.koin.feature.banner.ui.BannerActivity
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetA
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetB
+import `in`.koreatech.koin.feature.lostandfound.ui.LostAndFoundActivity
+import `in`.koreatech.koin.feature.lostandfound.ui.entry.LostAndFoundEntry
 import `in`.koreatech.koin.feature.store.MainStoreWidget
 import `in`.koreatech.koin.navigation.SchemeType
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
@@ -230,7 +232,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                             Intent(Intent.ACTION_VIEW).apply {
                                 data = when (it.type) {
                                     ArticleNotiType.KEYWORD -> Uri.parse("koin://article/activity?fragment=article_keyword")
-                                    ArticleNotiType.LOST_AND_FOUND -> Uri.parse("koin://article/activity?fragment=article_lost_and_found")
+                                    ArticleNotiType.LOST_AND_FOUND -> Uri.parse("koin://articles/lost-item/activity")
                                 }
                             }
                         startActivity(intent)
@@ -320,6 +322,28 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         hotClubId = hotClub?.clubId ?: -1,
                         hotClubImageUrl = hotClub?.imageUrl ?: ""
                     )
+                }
+            }
+        }
+
+        lostandfoundComposeView.apply {
+            setContent {
+                KoinTheme {
+                    val lostAndFoundState by viewModel.lostAndFoundEntryState.collectAsStateWithLifecycle()
+                    lostAndFoundState?.let {
+                        LostAndFoundEntry(
+                            postCount = it.postCount,
+                            foundCount = it.foundCount,
+                            onClick = {
+                                EventLogger.logCampusClickEvent(
+                                    label = "lost_item_entry",
+                                    value = "분실물"
+                                )
+                                val intent = Intent(this@MainActivity, LostAndFoundActivity::class.java)
+                                startActivity(intent)
+                            }
+                        )
+                    }
                 }
             }
         }

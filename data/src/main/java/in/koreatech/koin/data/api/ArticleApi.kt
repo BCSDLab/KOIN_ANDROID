@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.data.api
 
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundPaginationResponse
-import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundResponse
+import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundStatsResponse
 import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleResponse
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
@@ -61,18 +61,6 @@ interface ArticleApi {
     ): KeywordsResponse
 
     /**
-     * 분실물 게시글 목록과 페이지 정보를 가져옴
-     * @param page 페이지 번호
-     * @param limit 페이지 당 게시글 수
-     */
-    @GET("articles/lost-item")
-    suspend fun fetchArticleLostAndFoundPagination(
-        @Query("page") page: Int,
-        @Query("limit") limit: Int,
-        @Query("type") type: String?
-    ): ArticleLostAndFoundPaginationResponse
-
-    /**
      * 검색된 분실물 게시글 목록과 페이지 정보를 가져옴
      * @param query 검색어
      * @param page 페이지 번호
@@ -86,11 +74,8 @@ interface ArticleApi {
     ): ArticleLostAndFoundPaginationResponse
 
     /**
-     * 분실물 게시글 조회
-     * @param id 게시글 아이디
+     * 분실물 게시글 통계 조회
      */
-    @GET("articles/lost-item/{id}")
-    suspend fun fetchArticleLostAndFound(
-        @Path("id") id: Int
-    ): ArticleLostAndFoundResponse
+    @GET("articles/lost-item/stats")
+    suspend fun fetchArticleLostAndFoundStats(): ArticleLostAndFoundStatsResponse
 }

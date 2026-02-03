@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_article"
+    app:startDestination="@id/articleListFragment">
+
+    <fragment
+        android:id="@+id/articleListFragment"
+        android:name="in.koreatech.koin.feature.article.ui.list.ArticleListFragment"
+        android:label="fragment_article_list"
+        tools:layout="@layout/fragment_article_list">
+        <action
+            android:id="@+id/action_articleListFragment_to_articleKeywordFragment"
+            app:destination="@id/articleKeywordFragment"
+            app:enterAnim="@anim/slide_in_from_left_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_in_from_right_fade_in"
+            app:popExitAnim="@anim/fade_out" />
+        <action
+            android:id="@+id/action_articleListFragment_to_articleDetailFragment"
+            app:destination="@id/articleDetailFragment"/>
+        <action
+            android:id="@+id/action_articleListFragment_to_articleSearchFragment"
+            app:destination="@id/articleSearchFragment"
+            app:enterAnim="@anim/slide_in_from_left_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_in_from_right_fade_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/articleKeywordFragment"
+        android:name="in.koreatech.koin.feature.article.ui.keyword.ArticleKeywordFragment"
+        android:label="ArticleKeywordFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/articleDetailFragment"
+        android:name="in.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment"
+        android:label="ArticleDetailFragment">
+        <action
+            android:id="@+id/action_articleDetailFragment_to_articleDetailFragment"
+            app:destination="@id/articleDetailFragment"
+            app:launchSingleTop="false"
+            app:enterAnim="@anim/slide_in_from_left_in"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/articleSearchFragment"
+        android:name="in.koreatech.koin.feature.article.ui.search.ArticleSearchFragment"
+        android:label="ArticleSearchFragment">
+        <action
+            android:id="@+id/action_articleSearchFragment_to_articleDetailFragment"
+            app:destination="@id/articleDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/articleLostAndFoundWriteFoundFragment"
+        android:name="in.koreatech.koin.feature.lostandfound.ui.write.ArticleLostAndFoundWriteFoundFragment"
+        android:label="ArticleLostAndFoundWriteFoundFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/articleLostAndFoundWriteLostFragment"
+        android:name="in.koreatech.koin.feature.lostandfound.ui.write.ArticleLostAndFoundWriteLostFragment"
+        android:label="ArticleLostAndFoundWriteLostFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/articleLostAndFoundDetailFragment"
+        android:name="in.koreatech.koin.feature.article.ui.lostandfound.detail.ArticleLostAndFoundDetailFragment"
+        android:label="ArticleLostAndFoundDetailFragment">
+        <action
+            android:id="@+id/articleLostAndFoundDetailFragment_to_articleDetailFragment"
+            app:destination="@id/articleDetailFragment"
+            app:launchSingleTop="false"
+            app:enterAnim="@anim/slide_in_from_left_in"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
+</navigation>

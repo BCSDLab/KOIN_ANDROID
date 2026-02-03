@@ -5,6 +5,7 @@ import `in`.koreatech.koin.data.api.auth.ArticleAuthApi
 import `in`.koreatech.koin.data.mapper.toArticleLostAndFoundRequest
 import `in`.koreatech.koin.data.request.article.ArticleKeywordRequest
 import `in`.koreatech.koin.data.request.article.ArticleLostAndFoundReportRequest
+import `in`.koreatech.koin.data.request.article.ArticleModifyRequest
 import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundPaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundResponse
@@ -80,12 +81,26 @@ class ArticleRemoteDataSource @Inject constructor(
         return articleApi.fetchMostSearchedKeywords(count)
     }
 
-    suspend fun fetchArticleLostAndFoundPagination(
+    suspend fun fetchArticleLostAndFoundPaginationV2(
+        type: String?,
         page: Int,
         limit: Int,
-        type: String?
+        category: List<String>,
+        foundStatus: String?,
+        sort: String?,
+        author: String?,
+        title: String?
     ): ArticleLostAndFoundPaginationResponse {
-        return articleApi.fetchArticleLostAndFoundPagination(page, limit, type)
+        return articleAuthApi.fetchArticleLostAndFoundPaginationV2(
+            type = type,
+            page = page,
+            limit = limit,
+            category = category,
+            foundStatus = foundStatus,
+            sort = sort,
+            author = author,
+            title = title?.takeIf { it.isNotBlank() }
+        )
     }
 
     suspend fun fetchSearchedLostAndFoundArticles(
@@ -96,8 +111,8 @@ class ArticleRemoteDataSource @Inject constructor(
         return articleApi.fetchSearchedLostAndFoundArticles(query, page, limit)
     }
 
-    suspend fun fetchArticleLostAndFound(articleId: Int): ArticleLostAndFoundResponse {
-        return articleApi.fetchArticleLostAndFound(articleId)
+    suspend fun fetchArticleLostAndFoundV2(articleId: Int): ArticleLostAndFoundResponse {
+        return articleAuthApi.fetchArticleLostAndFoundV2(articleId)
     }
 
     suspend fun uploadArticleLostAndFound(articleLostAndFound: List<ArticleLostAndFoundUpload>): Result<ArticleLostAndFoundResponse> {
@@ -132,4 +147,15 @@ class ArticleRemoteDataSource @Inject constructor(
             Result.failure(t)
         }
     }
+
+    suspend fun fetchArticleLostAndFoundStats() = articleApi.fetchArticleLostAndFoundStats()
+
+    suspend fun updateItemFound(
+        articleId: Int
+    ) = articleAuthApi.updateItemFound(articleId)
+
+    suspend fun modifyArticleLostAndFound(
+        articleId: Int,
+        request: ArticleModifyRequest
+    ) = articleAuthApi.modifyArticleLostAndFound(articleId, request)
 }

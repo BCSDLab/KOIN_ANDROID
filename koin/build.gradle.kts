@@ -113,6 +113,7 @@ dependencies {
     implementation(projects.feature.user)
     implementation(projects.feature.club)
     implementation(projects.feature.dining)
+    implementation(projects.feature.lostandfound)
 
     implementation(libs.guava)
 

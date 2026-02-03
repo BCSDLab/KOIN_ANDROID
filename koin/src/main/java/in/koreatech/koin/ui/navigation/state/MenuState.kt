@@ -31,6 +31,8 @@ sealed class MenuState {
 
     data object Article : MenuState()
 
+    data object LostAndFound : MenuState()
+
     data object Contact : MenuState()
 
     data object BenefitStore : MenuState()

@@ -5,8 +5,10 @@ import `in`.koreatech.koin.domain.model.article.ArticleHeader
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFound
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundPagination
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundReportItem
+import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundStats
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
+import `in`.koreatech.koin.domain.model.article.LostAndFoundFilterParams
 import kotlinx.coroutines.flow.Flow
 
 interface ArticleRepository {
@@ -62,10 +64,8 @@ interface ArticleRepository {
 
     fun clearSearchHistory(): Flow<Unit>
 
-    fun fetchArticleLostAndFoundPagination(
-        page: Int,
-        limit: Int,
-        type: String?
+    fun fetchArticleLostAndFoundPaginationV2(
+        filterParams: LostAndFoundFilterParams
     ): Flow<ArticleLostAndFoundPagination>
 
     fun fetchSearchedLostAndFoundArticles(
@@ -74,7 +74,7 @@ interface ArticleRepository {
         limit: Int
     ): Flow<ArticleLostAndFoundPagination>
 
-    fun fetchArticleLostAndFound(articleId: Int): Flow<ArticleLostAndFound>
+    fun fetchArticleLostAndFoundV2(articleId: Int): Flow<ArticleLostAndFound>
 
     suspend fun uploadArticleLostAndFound(articleLostAndFoundList: List<ArticleLostAndFoundUpload>): Result<ArticleLostAndFound>
 
@@ -83,5 +83,19 @@ interface ArticleRepository {
     suspend fun reportLostAndFoundArticle(
         articleId: Int,
         articleLostAndFoundList: List<ArticleLostAndFoundReportItem>
+    ): Result<Unit>
+
+    suspend fun fetchArticleLostAndFoundStats(): Result<ArticleLostAndFoundStats>
+
+    suspend fun updateItemFound(articleId: Int): Result<Unit>
+
+    suspend fun modifyArticleLostAndFound(
+        articleId: Int,
+        category: String,
+        foundPlace: String,
+        foundDate: String,
+        content: String?,
+        newImage: List<String>?,
+        deleteImageIds: List<Int>?
     ): Result<Unit>
 }
