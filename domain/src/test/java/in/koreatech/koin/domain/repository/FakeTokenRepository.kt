@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.domain.repository
 
-class FakeTokenRepository: TokenRepository {
+class FakeTokenRepository : TokenRepository {
     private var accessToken: String? = null
     private var refreshToken: String? = null
 
