@@ -193,14 +193,21 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
-    fun disconnectWS() = coroutineScope.launch { // We need to disconnect websocket on onCleared. So, we need to use coroutineScope instead of viewModelScope
-        chatWSDisconnectUseCase().onFailure {
-            // Sometimes the server closes the connection too quickly to send a RECEIPT, which is not really an error
-            // So, we can ignore LostReceiptException
-            // http://stomp.github.io/stomp-specification-1.2.html#Connection_Lingering
-            if (it !is LostReceiptException) {
-                Timber.e(it)
+    private suspend fun disconnectWS() {
+        // We need to disconnect websocket on onCleared. So, we need to use coroutineScope instead of viewModelScope
+        try {
+            withTimeout(DISCONNECT_TIMEOUT_MS) {
+                chatWSDisconnectUseCase().onFailure {
+                    // Sometimes the server closes the connection too quickly to send a RECEIPT, which is not really an error
+                    // So, we can ignore LostReceiptException
+                    // http://stomp.github.io/stomp-specification-1.2.html#Connection_Lingering
+                    if (it !is LostReceiptException) {
+                        Timber.e(it)
+                    }
+                }
             }
+        } catch (e: TimeoutCancellationException) {
+            Timber.w("WebSocket disconnect timed out after ${DISCONNECT_TIMEOUT_MS}ms, continuing cleanup")
         }
     }
 
@@ -326,7 +333,13 @@ class ChatRoomViewModel @Inject constructor(
 
     override fun onCleared() {
         super.onCleared()
-        disconnectWS() // We need to disconnect websocket on onCleared. So, don't call job.cancel() manually.
+        coroutineScope.launch {
+            try {
+                disconnectWS()
+            } finally {
+                job.cancel()
+            }
+        }
     }
 
     fun changeBlockDialogState(dialogState: Boolean) = intent {
@@ -350,5 +363,6 @@ class ChatRoomViewModel @Inject constructor(
     companion object {
         const val ARTICLE_ID = "article_id"
         const val CHAT_ROOM_ID = "chat_room_id"
+        private const val DISCONNECT_TIMEOUT_MS = 5000L
     }
 }
