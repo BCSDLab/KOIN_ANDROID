@@ -13,8 +13,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data
-                    android:host="articles"
-                    android:pathPrefix="/lost-item/activity"
+                    android:host="lost-item"
                     android:scheme="koin" />
             </intent-filter>
         </activity>
