@@ -20,7 +20,7 @@ import timber.log.Timber
 
 class KoinStomp @Inject constructor(
     private val baseUrl: String,
-    private val authToken: String,
+    private val tokenProvider: suspend () -> String,
     private val stompClient: StompClient
 ) {
     private val mutex = Mutex()
@@ -34,6 +34,7 @@ class KoinStomp @Inject constructor(
             }
 
             Timber.d("Connecting to STOMP...")
+            val authToken = tokenProvider()
             stompClient.connect(
                 url = "${baseUrl.replaceFirst("https", "wss")}/ws-stomp",
                 customStompConnectHeaders = mapOf("Authorization" to authToken)
