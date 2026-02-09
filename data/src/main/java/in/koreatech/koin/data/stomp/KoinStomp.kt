@@ -1,9 +1,12 @@
 package `in`.koreatech.koin.data.stomp
 
 import javax.inject.Inject
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.retry
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.serializer
@@ -20,26 +23,37 @@ class KoinStomp @Inject constructor(
     private val authToken: String,
     private val stompClient: StompClient
 ) {
+    private val mutex = Mutex()
     private var stompSession: StompSession? = null
 
     suspend fun connect(): StompSession {
-        Timber.d("Connecting to STOMP...")
-        return stompClient.connect(
-            url = "${baseUrl.replaceFirst("https", "wss")}/ws-stomp",
-            customStompConnectHeaders = mapOf("Authorization" to authToken)
-        ).also {
-            stompSession = it
-            Timber.d("STOMP connected.")
+        return mutex.withLock {
+            val session = stompSession
+            if (session != null) {
+                return@withLock session
+            }
+
+            Timber.d("Connecting to STOMP...")
+            stompClient.connect(
+                url = "${baseUrl.replaceFirst("https", "wss")}/ws-stomp",
+                customStompConnectHeaders = mapOf("Authorization" to authToken)
+            ).also {
+                stompSession = it
+                Timber.d("STOMP connected.")
+            }
         }
     }
 
     private suspend fun getSession(): StompSession {
-        return stompSession ?: connect()
+        val session = mutex.withLock { stompSession }
+        return session ?: connect()
     }
 
     suspend fun disconnect() {
-        stompSession?.disconnect()
-        stompSession = null
+        mutex.withLock {
+            stompSession?.disconnect()
+            stompSession = null
+        }
     }
 
     fun <T : Any> subscribe(
@@ -51,6 +65,7 @@ class KoinStomp @Inject constructor(
         }.retry { e ->
             if (e is WebSocketException) {
                 Timber.d("WebSocketException, reconnecting...")
+                mutex.withLock { stompSession = null }
                 connect()
                 Timber.d("Reconnected. Retrying subscription...")
                 return@retry true
@@ -68,7 +83,13 @@ class KoinStomp @Inject constructor(
         try {
             getSession().withJsonConversions().convertAndSend(StompSendHeaders(headers), body, serializer)
         } catch (e: Exception) {
-            Timber.e(e)
+            if (e is CancellationException) {
+                throw e
+            }
+            Timber.e("Websocket send failed: ${e.message}")
+            mutex.withLock { stompSession = null }
+            connect()
+            getSession().withJsonConversions().convertAndSend(StompSendHeaders(headers), body, serializer)
         }
     }
 
