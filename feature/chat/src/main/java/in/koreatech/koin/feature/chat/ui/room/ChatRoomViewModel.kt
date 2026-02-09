@@ -27,11 +27,13 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 import org.hildan.krossbow.stomp.LostReceiptException
 import org.hildan.krossbow.websocket.WebSocketConnectionException
 import org.hildan.krossbow.websocket.reconnection.WebSocketReconnectionException
@@ -231,11 +233,15 @@ class ChatRoomViewModel @Inject constructor(
                     timestamp = LocalDateTime.now().toString(),
                     isImage = true
                 )
-            )
-            reduce {
-                state.copy(
-                    uploadingImage = state.uploadingImage.filter { it.content != imageUri.toString() }
-                )
+            ).onSuccess {
+                reduce {
+                    state.copy(
+                        uploadingImage = state.uploadingImage.filter { it.content != imageUri.toString() }
+                    )
+                }
+            }.onFailure {
+                Timber.e(it)
+                postSideEffect(ChatRoomSideEffect.FailedToSendMessage)
             }
         }.onFailure {
             postSideEffect(ChatRoomSideEffect.FailedToUploadImage)
@@ -293,9 +299,13 @@ class ChatRoomViewModel @Inject constructor(
                 timestamp = LocalDateTime.now().toString(),
                 isImage = false
             )
-        )
-        reduce {
-            state.copy(chatInputValue = "")
+        ).onSuccess {
+            reduce {
+                state.copy(chatInputValue = "")
+            }
+        }.onFailure {
+            Timber.e(it)
+            postSideEffect(ChatRoomSideEffect.FailedToSendMessage)
         }
     }
 
