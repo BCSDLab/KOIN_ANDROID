@@ -170,6 +170,9 @@ class SplashActivity : ActivityBase() {
             "articles" -> {
                 gotoArticleActivityOrDelay(state)
             }
+            "lost-item" -> {
+                gotoLostAndFoundActivityOrDelay(state)
+            }
             else -> {
                 gotoMainActivityOrDelay(state)
             }
@@ -203,18 +206,26 @@ class SplashActivity : ActivityBase() {
     }
 
     private fun gotoArticleActivityOrDelay(state: TokenState) {
-        val path = intent.data?.path?.split("/")?.getOrNull(2)
         lifecycleScope.launch {
             delay()
-            val intent =
-                when (path) {
-                    "lost-item" -> {
-                        Intent(this@SplashActivity, LostAndFoundActivity::class.java)
-                    }
-                    else -> {
-                        Intent(this@SplashActivity, ArticleActivity::class.java)
-                    }
-                }
+            val intent = Intent(this@SplashActivity, ArticleActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.fade, R.anim.hold)
+            if (state == TokenState.Valid) {
+                gotoInfoRequiredActivity()
+            }
+            finish()
+            firebasePerformanceUtil.stop()
+        }
+    }
+
+    private fun gotoLostAndFoundActivityOrDelay(state: TokenState) {
+        lifecycleScope.launch {
+            delay()
+            val intent = Intent(this@SplashActivity, LostAndFoundActivity::class.java)
+            intent.data?.getQueryParameter("id")?.let {
+                intent.putExtra("id", it)
+            }
             startActivity(intent)
             overridePendingTransition(R.anim.fade, R.anim.hold)
             if (state == TokenState.Valid) {
