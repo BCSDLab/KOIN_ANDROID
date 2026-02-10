@@ -222,11 +222,11 @@ class SplashActivity : ActivityBase() {
     private fun gotoLostAndFoundActivityOrDelay(state: TokenState) {
         lifecycleScope.launch {
             delay()
-            val intent = Intent(this@SplashActivity, LostAndFoundActivity::class.java)
+            val newIntent = Intent(this@SplashActivity, LostAndFoundActivity::class.java)
             intent.data?.getQueryParameter("id")?.let {
-                intent.putExtra("id", it)
+                newIntent.putExtra("id", it)
             }
-            startActivity(intent)
+            startActivity(newIntent)
             overridePendingTransition(R.anim.fade, R.anim.hold)
             if (state == TokenState.Valid) {
                 gotoInfoRequiredActivity()
