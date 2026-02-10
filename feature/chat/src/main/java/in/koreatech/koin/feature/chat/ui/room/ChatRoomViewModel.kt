@@ -27,11 +27,13 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 import org.hildan.krossbow.stomp.LostReceiptException
 import org.hildan.krossbow.websocket.WebSocketConnectionException
 import org.hildan.krossbow.websocket.reconnection.WebSocketReconnectionException
@@ -191,14 +193,21 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
-    fun disconnectWS() = coroutineScope.launch { // We need to disconnect websocket on onCleared. So, we need to use coroutineScope instead of viewModelScope
-        chatWSDisconnectUseCase().onFailure {
-            // Sometimes the server closes the connection too quickly to send a RECEIPT, which is not really an error
-            // So, we can ignore LostReceiptException
-            // http://stomp.github.io/stomp-specification-1.2.html#Connection_Lingering
-            if (it !is LostReceiptException) {
-                Timber.e(it)
+    private suspend fun disconnectWS() {
+        // We need to disconnect websocket on onCleared. So, we need to use coroutineScope instead of viewModelScope
+        try {
+            withTimeout(DISCONNECT_TIMEOUT_MS) {
+                chatWSDisconnectUseCase().onFailure {
+                    // Sometimes the server closes the connection too quickly to send a RECEIPT, which is not really an error
+                    // So, we can ignore LostReceiptException
+                    // http://stomp.github.io/stomp-specification-1.2.html#Connection_Lingering
+                    if (it !is LostReceiptException) {
+                        Timber.e(it)
+                    }
+                }
             }
+        } catch (e: TimeoutCancellationException) {
+            Timber.w("WebSocket disconnect timed out after ${DISCONNECT_TIMEOUT_MS}ms, continuing cleanup")
         }
     }
 
@@ -231,11 +240,15 @@ class ChatRoomViewModel @Inject constructor(
                     timestamp = LocalDateTime.now().toString(),
                     isImage = true
                 )
-            )
-            reduce {
-                state.copy(
-                    uploadingImage = state.uploadingImage.filter { it.content != imageUri.toString() }
-                )
+            ).onSuccess {
+                reduce {
+                    state.copy(
+                        uploadingImage = state.uploadingImage.filter { it.content != imageUri.toString() }
+                    )
+                }
+            }.onFailure {
+                Timber.e(it)
+                postSideEffect(ChatRoomSideEffect.FailedToSendMessage)
             }
         }.onFailure {
             postSideEffect(ChatRoomSideEffect.FailedToUploadImage)
@@ -293,9 +306,13 @@ class ChatRoomViewModel @Inject constructor(
                 timestamp = LocalDateTime.now().toString(),
                 isImage = false
             )
-        )
-        reduce {
-            state.copy(chatInputValue = "")
+        ).onSuccess {
+            reduce {
+                state.copy(chatInputValue = "")
+            }
+        }.onFailure {
+            Timber.e(it)
+            postSideEffect(ChatRoomSideEffect.FailedToSendMessage)
         }
     }
 
@@ -316,7 +333,13 @@ class ChatRoomViewModel @Inject constructor(
 
     override fun onCleared() {
         super.onCleared()
-        disconnectWS() // We need to disconnect websocket on onCleared. So, don't call job.cancel() manually.
+        coroutineScope.launch {
+            try {
+                disconnectWS()
+            } finally {
+                job.cancel()
+            }
+        }
     }
 
     fun changeBlockDialogState(dialogState: Boolean) = intent {
@@ -340,5 +363,6 @@ class ChatRoomViewModel @Inject constructor(
     companion object {
         const val ARTICLE_ID = "article_id"
         const val CHAT_ROOM_ID = "chat_room_id"
+        private const val DISCONNECT_TIMEOUT_MS = 5000L
     }
 }
