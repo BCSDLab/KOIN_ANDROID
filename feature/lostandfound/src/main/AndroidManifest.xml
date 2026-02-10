@@ -14,7 +14,8 @@
 
                 <data
                     android:host="lost-item"
-                    android:scheme="koin" />
+                    android:scheme="koin"
+                    android:pathPrefix="/activity" />
             </intent-filter>
         </activity>
     </application>
