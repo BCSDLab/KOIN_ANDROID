@@ -82,10 +82,6 @@ fun ChatList(
         viewModel.fetchChatList()
     }
 
-    LifecycleEventEffect(Lifecycle.Event.ON_PAUSE) {
-        viewModel.disconnectWS()
-    }
-
     Scaffold(
         snackbarHost = {
             SnackbarHost(

@@ -192,6 +192,14 @@ fun handleSideEffect(
             ).show()
         }
 
+        ChatRoomSideEffect.FailedToSendMessage -> {
+            Toast.makeText(
+                context,
+                context.getString(R.string.failed_to_send_message),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
         ChatRoomSideEffect.FailedToUploadImage -> {
             Toast.makeText(
                 context,
