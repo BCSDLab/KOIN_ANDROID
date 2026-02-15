@@ -207,6 +207,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 oss-license-plugin = { id = "com.google.android.gms.oss-licenses-plugin", version.ref = "ossLicensesPlugin" }
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
+room = { id = "androidx.room", version.ref = "androidxRoom"}
 
 koin-application = { id = "in.koreatech.plugin.application" }
 koin-feature = { id = "in.koreatech.plugin.feature" }
