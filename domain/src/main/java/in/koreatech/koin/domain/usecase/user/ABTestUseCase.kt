@@ -20,6 +20,8 @@ class ABTestUseCase @Inject constructor(
                 }
             }
             userRepository.postABTestAssign(title).variableName
+        }.recoverCatching {
+            userRepository.getCachedABTest(title).variableName
         }
     }
 }

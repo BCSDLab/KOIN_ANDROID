@@ -49,6 +49,8 @@ interface UserRepository {
 
     suspend fun postABTestAssign(title: String): ABTest
 
+    suspend fun getCachedABTest(title: String): ABTest
+
     suspend fun requestSmsVerification(phoneNumber: String): Result<CodeCount>
 
     suspend fun requestEmailVerification(email: String): Result<CodeCount>

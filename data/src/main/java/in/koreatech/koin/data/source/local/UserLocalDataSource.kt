@@ -9,10 +9,14 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
+import `in`.koreatech.koin.data.dao.ABTestDao
+import `in`.koreatech.koin.data.entity.ABTestEntity
+import `in`.koreatech.koin.data.mapper.toABTest
 import `in`.koreatech.koin.data.mapper.toInt
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.response.user.GeneralUserResponse
 import `in`.koreatech.koin.data.response.user.StudentUserResponse
+import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserType
 import javax.inject.Inject
@@ -20,7 +24,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class UserLocalDataSource @Inject constructor(
-    @ApplicationContext applicationContext: Context
+    @ApplicationContext applicationContext: Context,
+    private val abTestDao: ABTestDao
 ) {
     private val Context.userDataStore: DataStore<Preferences> by preferencesDataStore(
         name = PREF_NAME
@@ -130,6 +135,14 @@ class UserLocalDataSource @Inject constructor(
                     }
                 }
         }
+    }
+
+    suspend fun getCachedABTest(title: String, accessHistoryId: String): ABTest {
+        return abTestDao.getABTest(title, accessHistoryId)?.toABTest() ?: throw IllegalStateException("No cached AB Test")
+    }
+
+    suspend fun insertCachedABTest(title: String, accessHistoryId: String, variableName: String) {
+        abTestDao.insert(ABTestEntity(title, accessHistoryId, variableName))
     }
 
     private companion object {

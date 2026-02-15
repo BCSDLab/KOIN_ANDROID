@@ -200,8 +200,14 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun postABTestAssign(title: String): ABTest {
         userRemoteDataSource.postABTestAssign(ABTestRequest(title)).let {
+            userLocalDataSource.insertCachedABTest(title, it.accessHistoryId, it.variableName)
             return ABTest(it.variableName, it.accessHistoryId)
         }
+    }
+
+    override suspend fun getCachedABTest(title: String): ABTest {
+        val accessHistoryId = tokenLocalDataSource.getAccessHistoryId() ?: throw IllegalStateException("Access history id is not found")
+        return userLocalDataSource.getCachedABTest(title, accessHistoryId)
     }
 
     override suspend fun updateUserPassword(
