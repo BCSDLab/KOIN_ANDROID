@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "b91f6eee3368376b81c32f62251f2baa",
+    "identityHash": "eb860deac68dac11585d27f75248f720",
     "entities": [
       {
         "tableName": "cache_metadata",
@@ -60,7 +60,7 @@
       },
       {
         "tableName": "abtest",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`title` TEXT NOT NULL, `access_history_id` TEXT NOT NULL, `variable_name` TEXT NOT NULL, PRIMARY KEY(`title`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`title` TEXT NOT NULL, `access_history_id` TEXT NOT NULL, `variable_name` TEXT NOT NULL, PRIMARY KEY(`title`, `access_history_id`))",
         "fields": [
           {
             "fieldPath": "title",
@@ -84,14 +84,15 @@
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "title"
+            "title",
+            "access_history_id"
           ]
         }
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b91f6eee3368376b81c32f62251f2baa')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'eb860deac68dac11585d27f75248f720')"
     ]
   }
 }
