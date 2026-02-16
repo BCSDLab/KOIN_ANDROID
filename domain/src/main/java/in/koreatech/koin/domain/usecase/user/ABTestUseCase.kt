@@ -3,6 +3,7 @@ package `in`.koreatech.koin.domain.usecase.user
 import `in`.koreatech.koin.domain.repository.TokenRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -22,6 +23,8 @@ class ABTestUseCase @Inject constructor(
             userRepository.postABTestAssign(title).variableName
         }.recoverCatching {
             userRepository.getCachedABTest(title).variableName
+        }.onFailure {
+            if (it is CancellationException) throw it
         }
     }
 }
