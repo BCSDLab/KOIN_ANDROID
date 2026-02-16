@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -38,9 +37,10 @@ import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LostAndFoundFA
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LostAndFoundFABBottomSheet
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LostAndFoundFilterBottomSheet
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 
 @Composable
 fun LostAndFoundList(
@@ -53,18 +53,19 @@ fun LostAndFoundList(
 ) {
     val uiState by viewModel.collectAsState()
 
-    LaunchedEffect(Unit, cancelRefresh) {
-        var cancelRefresh = cancelRefresh
-        snapshotFlow { uiState.searchQuery }
-            .debounce(SEARCH_DEBOUNCE_MS)
-            .distinctUntilChanged()
-            .collect {
-                if (cancelRefresh) {
-                    cancelRefresh = false
-                } else {
-                    viewModel.fetchLostAndFoundItem()
-                }
+    viewModel.collectSideEffect { sideEffect ->
+        handleSideEffect(
+            sideEffect = sideEffect,
+            fetchData = viewModel::fetchLostAndFoundItem
+        )
+    }
+
+    LaunchedEffect(cancelRefresh) {
+        if (!cancelRefresh) {
+            viewModel.intent {
+                postSideEffect(LostAndFoundListSideEffect.FetchData)
             }
+        }
     }
 
     if (uiState.showFilterBottomSheet) {
@@ -86,7 +87,6 @@ fun LostAndFoundList(
                         categoryFilterType = category,
                         foundFilterType = found
                     )
-                    viewModel.fetchLostAndFoundItem()
                 }
             }
         )
@@ -232,4 +232,13 @@ fun LostAndFoundList(
     }
 }
 
-const val SEARCH_DEBOUNCE_MS = 250L
+private fun handleSideEffect(
+    sideEffect: LostAndFoundListSideEffect,
+    fetchData: () -> Unit
+) {
+    when (sideEffect) {
+        LostAndFoundListSideEffect.FetchData -> {
+            fetchData()
+        }
+    }
+}
