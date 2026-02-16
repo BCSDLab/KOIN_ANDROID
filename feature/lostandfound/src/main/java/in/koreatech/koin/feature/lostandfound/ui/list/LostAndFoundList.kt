@@ -27,7 +27,6 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
-import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.AuthorFilterType.MY
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.ItemSearchTextField
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.ListColumn
@@ -56,7 +55,10 @@ fun LostAndFoundList(
     viewModel.collectSideEffect { sideEffect ->
         handleSideEffect(
             sideEffect = sideEffect,
-            fetchData = viewModel::fetchLostAndFoundItem
+            fetchData = viewModel::fetchLostAndFoundItem,
+            updateSignInDialog = {
+                viewModel.setShowFilterLoginDialog(it)
+            }
         )
     }
 
@@ -77,18 +79,7 @@ fun LostAndFoundList(
             selectedLostOrFoundType = uiState.lostOrFoundFilterType,
             selectedCategoryType = uiState.categoryFilterType,
             selectedFoundType = uiState.foundFilterType,
-            onApply = { author, lostOrFound, category, found ->
-                if (!uiState.isLoggedIn && author == MY) {
-                    viewModel.setShowFilterLoginDialog(true)
-                } else {
-                    viewModel.setSearchFilter(
-                        authorFilterType = author,
-                        lostOrFoundFilterType = lostOrFound,
-                        categoryFilterType = category,
-                        foundFilterType = found
-                    )
-                }
-            }
+            onApply = viewModel::setSearchFilter
         )
     }
 
@@ -112,10 +103,10 @@ fun LostAndFoundList(
             description = stringResource(id = R.string.lost_and_found_my_filter_can_use_logged_in_description),
             onPositive = {
                 navigateToLogin()
-                viewModel.setShowFilterLoginDialog(false)
+                viewModel.intent { postSideEffect(LostAndFoundListSideEffect.UpdateSignInDialog(false)) }
             },
             onNegative = {
-                viewModel.setShowFilterLoginDialog(false)
+                viewModel.intent { postSideEffect(LostAndFoundListSideEffect.UpdateSignInDialog(false)) }
             }
         )
     }
@@ -234,11 +225,16 @@ fun LostAndFoundList(
 
 private fun handleSideEffect(
     sideEffect: LostAndFoundListSideEffect,
-    fetchData: () -> Unit
+    fetchData: () -> Unit,
+    updateSignInDialog: (visible: Boolean) -> Unit
 ) {
     when (sideEffect) {
         LostAndFoundListSideEffect.FetchData -> {
             fetchData()
+        }
+
+        is LostAndFoundListSideEffect.UpdateSignInDialog -> {
+            updateSignInDialog(sideEffect.visible)
         }
     }
 }

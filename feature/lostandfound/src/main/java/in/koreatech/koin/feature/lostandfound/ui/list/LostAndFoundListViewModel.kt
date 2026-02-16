@@ -173,6 +173,11 @@ class LostAndFoundListViewModel @Inject constructor(
         categoryFilterType: List<CategoryFilterType>,
         foundFilterType: FoundFilterType
     ) = intent {
+        if (!state.isLoggedIn && authorFilterType == AuthorFilterType.MY) {
+            postSideEffect(LostAndFoundListSideEffect.UpdateSignInDialog(true))
+            return@intent
+        }
+
         reduce {
             state.copy(
                 authorFilterType = authorFilterType,
