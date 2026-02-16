@@ -129,7 +129,6 @@ class StoreNearbyViewModel @Inject constructor(
                 showOrderOptions = showOrderOptions
             )
         }
-        postSideEffect(StoreNearbySideEffect.FetchData)
     }
 
     fun onSelectedOrderOptionChange(orderOption: OrderOption) = intent {
@@ -160,7 +159,6 @@ class StoreNearbyViewModel @Inject constructor(
                 showMinimumPriceOptions = showMinimumPriceOptions
             )
         }
-        postSideEffect(StoreNearbySideEffect.FetchData)
     }
 
     fun onSelectedMinimumPriceOptionChange(selectedMinimumPriceOption: MinimumPriceOption) = intent {
