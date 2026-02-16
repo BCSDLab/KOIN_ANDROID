@@ -23,7 +23,6 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import timber.log.Timber
 
 @HiltViewModel
 class StoreNearbyViewModel @Inject constructor(
@@ -57,6 +56,7 @@ class StoreNearbyViewModel @Inject constructor(
                         state.copy(isLoggedIn = true)
                     }
                 }
+
                 is User.Anonymous -> {
                     reduce {
                         state.copy(isLoggedIn = false)
@@ -97,7 +97,6 @@ class StoreNearbyViewModel @Inject constructor(
     }
 
     fun fetchData() = intent {
-        Timber.d("fetch data")
         reduce {
             state.copy(
                 isLoading = true
