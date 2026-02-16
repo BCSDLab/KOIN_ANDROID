@@ -199,10 +199,13 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun postABTestAssign(title: String): ABTest {
-        userRemoteDataSource.postABTestAssign(ABTestRequest(title)).let {
-            userLocalDataSource.insertCachedABTest(title, it.accessHistoryId, it.variableName)
-            return ABTest(it.variableName, it.accessHistoryId)
+        val (variableName, accessHistoryId) = userRemoteDataSource.postABTestAssign(ABTestRequest(title))
+
+        runCatching {
+            userLocalDataSource.insertCachedABTest(title, accessHistoryId, variableName)
         }
+
+        return ABTest(variableName, accessHistoryId)
     }
 
     override suspend fun getCachedABTest(title: String): ABTest {
