@@ -85,7 +85,6 @@ import `in`.koreatech.koin.feature.store.model.LocalShop
 import `in`.koreatech.koin.feature.store.model.LocalStoreCategories
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import org.orbitmvi.orbit.compose.collectAsState
@@ -107,7 +106,7 @@ fun StoreNearbyScreen(
     val navigator = rememberNavigator()
 
     viewModel.collectSideEffect {
-        handleSideEffect(it, navigateToCart)
+        handleSideEffect(it, navigateToCart, viewModel::fetchData)
     }
 
     LaunchedEffect(Unit) {
@@ -117,17 +116,6 @@ fun StoreNearbyScreen(
     LaunchedEffect(Unit) {
         if (uiState.categoryId == -1) {
             viewModel.onCategoryChange(categoryId)
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        combine(
-            snapshotFlow { uiState.selectedStoreFilter },
-            snapshotFlow { uiState.selectedOrderOption },
-            snapshotFlow { uiState.categoryId },
-            snapshotFlow { uiState.selectedMinimumPriceOption }
-        ) { _, _, _, _ -> }.collect {
-            viewModel.fetchData()
         }
     }
 
@@ -608,11 +596,16 @@ private fun StoreNearbyScreenPreview() {
 
 private fun handleSideEffect(
     sideEffect: StoreNearbySideEffect,
-    navigateToCart: () -> Unit
+    navigateToCart: () -> Unit,
+    fetchData: () -> Unit
 ) {
     when (sideEffect) {
         StoreNearbySideEffect.NavigateToCart -> {
             navigateToCart()
+        }
+
+        StoreNearbySideEffect.FetchData -> {
+            fetchData()
         }
     }
 }

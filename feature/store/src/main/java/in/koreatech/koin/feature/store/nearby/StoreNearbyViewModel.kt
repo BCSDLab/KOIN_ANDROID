@@ -23,6 +23,7 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
 @HiltViewModel
 class StoreNearbyViewModel @Inject constructor(
@@ -34,6 +35,7 @@ class StoreNearbyViewModel @Inject constructor(
     override val container = container<StoreNearbyState, StoreNearbySideEffect>(StoreNearbyState())
 
     init {
+        fetchData()
         intent {
             getStoreCategoriesUseCase().let {
                 reduce {
@@ -95,6 +97,7 @@ class StoreNearbyViewModel @Inject constructor(
     }
 
     fun fetchData() = intent {
+        Timber.d("fetch data")
         reduce {
             state.copy(
                 isLoading = true
@@ -126,6 +129,7 @@ class StoreNearbyViewModel @Inject constructor(
                 showOrderOptions = showOrderOptions
             )
         }
+        postSideEffect(StoreNearbySideEffect.FetchData)
     }
 
     fun onSelectedOrderOptionChange(orderOption: OrderOption) = intent {
@@ -134,6 +138,7 @@ class StoreNearbyViewModel @Inject constructor(
                 selectedOrderOption = orderOption
             )
         }
+        postSideEffect(StoreNearbySideEffect.FetchData)
     }
 
     fun onSelectedStoreFilterChange(selectedStoreFilter: StoreFilter) = intent {
@@ -146,6 +151,7 @@ class StoreNearbyViewModel @Inject constructor(
                 }.toImmutableList()
             )
         }
+        postSideEffect(StoreNearbySideEffect.FetchData)
     }
 
     fun onShowMinimumPriceOptionsChange(showMinimumPriceOptions: Boolean) = intent {
@@ -154,6 +160,7 @@ class StoreNearbyViewModel @Inject constructor(
                 showMinimumPriceOptions = showMinimumPriceOptions
             )
         }
+        postSideEffect(StoreNearbySideEffect.FetchData)
     }
 
     fun onSelectedMinimumPriceOptionChange(selectedMinimumPriceOption: MinimumPriceOption) = intent {
@@ -162,6 +169,7 @@ class StoreNearbyViewModel @Inject constructor(
                 selectedMinimumPriceOption = selectedMinimumPriceOption
             )
         }
+        postSideEffect(StoreNearbySideEffect.FetchData)
     }
 
     fun onShowSearchChange(showSearch: Boolean) = intent {
@@ -179,6 +187,7 @@ class StoreNearbyViewModel @Inject constructor(
                 categoryId = categoryId
             )
         }
+        postSideEffect(StoreNearbySideEffect.FetchData)
     }
 
     fun onQueryChange(query: String) = blockingIntent {
