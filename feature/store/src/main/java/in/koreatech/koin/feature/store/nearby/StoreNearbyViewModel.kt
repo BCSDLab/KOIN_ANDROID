@@ -114,6 +114,7 @@ class StoreNearbyViewModel @Inject constructor(
                     isLoading = false
                 )
             }
+            postSideEffect(StoreNearbySideEffect.ScrollToTop)
         }.onFailure {
             reduce {
                 state.copy(
@@ -188,6 +189,7 @@ class StoreNearbyViewModel @Inject constructor(
             )
         }
         postSideEffect(StoreNearbySideEffect.FetchData)
+        postSideEffect(StoreNearbySideEffect.ScrollCategory(categoryId))
     }
 
     fun onQueryChange(query: String) = blockingIntent {
