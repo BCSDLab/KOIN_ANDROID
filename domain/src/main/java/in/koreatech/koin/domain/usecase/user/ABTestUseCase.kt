@@ -21,6 +21,8 @@ class ABTestUseCase @Inject constructor(
                 }
             }
             userRepository.postABTestAssign(title).variableName
+        }.onFailure {
+            if (it is CancellationException) throw it
         }.recoverCatching {
             userRepository.getCachedABTest(title).variableName
         }.onFailure {
