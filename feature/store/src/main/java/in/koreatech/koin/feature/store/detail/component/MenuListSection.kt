@@ -30,7 +30,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -171,6 +173,22 @@ private fun OptionPriceText(
                 style = KoinTheme.typography.bold14
             )
         } else {
+            val menuPrices = buildAnnotatedString {
+                menu.prices.forEachIndexed { index, it ->
+                    if (it.name != null) {
+                        withStyle(KoinTheme.typography.regular14.toSpanStyle()) {
+                            append("${it.name} : ")
+                        }
+                    }
+                    withStyle(KoinTheme.typography.bold14.toSpanStyle()) {
+                        append(stringResource(R.string.price_with_won, it.price ?: 0))
+                    }
+                    if (menu.prices.lastIndex != index) {
+                        append("\n")
+                    }
+                }
+            }
+
             val options = menu.prices.fold("") { acc, menu ->
                 acc + if (menu.name != null) {
                     stringResource(R.string.option_price, menu.name, menu.price ?: 0)
@@ -178,7 +196,7 @@ private fun OptionPriceText(
                     stringResource(R.string.price_with_won, menu.price ?: 0)
                 }
             }.trim()
-            Text(text = options, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+            Text(text = menuPrices, fontSize = 14.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
