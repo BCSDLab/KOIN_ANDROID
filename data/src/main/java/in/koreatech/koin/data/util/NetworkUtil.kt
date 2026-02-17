@@ -41,3 +41,41 @@ fun <T> Result<T>.mapHttpFailure(
     }
     return this
 }
+
+fun <T> Result<T>.mapHttpFailure(
+    block: HttpExceptionMapper.() -> Unit
+): Result<T> {
+    val exception = exceptionOrNull() ?: return this
+    if (exception !is HttpException) return this
+    val mapper = HttpExceptionMapper(exception)
+    mapper.block()
+
+    return Result.failure(mapper.map())
+}
+
+class HttpExceptionMapper(private val exception: HttpException) {
+    val exceptions = mutableMapOf<Pair<Int, String?>, KoinErrorException>()
+
+    inner class OnBuilder(val statusCode: Int, val errorCode: String? = null) {
+        infix fun throws(exception: KoinErrorException) {
+            exceptions[statusCode to errorCode] = exception
+        }
+    }
+
+    inner class OnRangeBuilder(val statusCodes: IntRange, val errorCode: String? = null) {
+        infix fun throws(exception: KoinErrorException) {
+            for (statusCode in statusCodes) {
+                exceptions[statusCode to errorCode] = exception
+            }
+        }
+    }
+
+    fun on(statusCode: Int, errorCode: String? = null) = OnBuilder(statusCode, errorCode)
+
+    fun on(statusCodes: IntRange, errorCode: String? = null) = OnRangeBuilder(statusCodes, errorCode)
+
+    internal fun map(): KoinErrorException = with(exception) {
+        val errorResponse = getErrorResponse()
+        return exceptions[code() to errorResponse.code] ?: exceptions[code() to null] ?: errorResponse.toKoinUnknownErrorException()
+    }
+}
