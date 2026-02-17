@@ -32,7 +32,9 @@ class NavigatorImpl @Inject constructor() : Navigator {
         vararg args: Pair<String, Any?>
     ): Intent {
         val className = SchemeType.fromType(type.second)?.className ?: return if (context.isValidDeepLink(type.second)) {
-            buildDeepLinkIntent(type.second ?: "")
+            buildDeepLinkIntent(type.second ?: "").apply {
+                `package` = context.packageName
+            }
         } else {
             context.buildIntent(MainActivity::class.java)
         }
