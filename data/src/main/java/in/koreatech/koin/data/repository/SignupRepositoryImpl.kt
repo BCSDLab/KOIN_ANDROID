@@ -10,6 +10,7 @@ import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.util.getErrorResponse
+import `in`.koreatech.koin.data.util.mapHttpFailure
 import `in`.koreatech.koin.data.util.toKoinUnknownErrorException
 import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
 import `in`.koreatech.koin.domain.error.user.KoinUserException
@@ -89,40 +90,18 @@ class SignupRepositoryImpl @Inject constructor(
     override suspend fun isUsernameDuplicatedV2(nickname: String): Result<Unit> {
         return runCatching {
             userRemoteDataSource.checkNicknameV2(nickname)
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            409 -> KoinUserException.NicknameConflictException()
-                            400 -> KoinUserException.NicknameInvalidException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(400) throws KoinUserException.NicknameInvalidException()
+            on(409) throws KoinUserException.NicknameConflictException()
         }
     }
 
     override suspend fun isPhoneDuplicated(phone: String): Result<Unit> {
         return runCatching {
             userRemoteDataSource.checkPhoneNumberDuplicate(phone)
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            409 -> KoinUserException.PhoneNumberConflictException()
-                            400 -> KoinUserException.PhoneNumberInvalidException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(400) throws KoinUserException.PhoneNumberInvalidException()
+            on(409) throws KoinUserException.PhoneNumberConflictException()
         }
     }
 
@@ -160,40 +139,18 @@ class SignupRepositoryImpl @Inject constructor(
     override suspend fun isLoginIdDuplicated(loginId: String): Result<Unit> {
         return runCatching {
             userRemoteDataSource.checkLoginId(loginId)
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            409 -> KoinUserException.LoginIdConflictException()
-                            400 -> KoinUserException.LoginIdInvalidException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(400) throws KoinUserException.LoginIdInvalidException()
+            on(409) throws KoinUserException.LoginIdConflictException()
         }
     }
 
     override suspend fun isEmailDuplicated(email: String): Result<Unit> {
         return runCatching {
             userRemoteDataSource.checkEmail(email)
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            409 -> KoinUserException.EmailConflictException()
-                            400 -> KoinUserException.EmailInvalidException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(400) throws KoinUserException.EmailInvalidException()
+            on(409) throws KoinUserException.EmailConflictException()
         }
     }
 
