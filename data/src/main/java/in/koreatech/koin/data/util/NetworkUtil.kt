@@ -46,6 +46,24 @@ fun <T> Result<T>.mapHttpFailure(
     return this
 }
 
+/**
+ * HttpException을 KoinErrorException으로 매핑하는 Result 확장 함수
+ *
+ * ```kotlin
+ * mapHttpFailure {
+ *     on(400, "ERROR_CODE") throws KoinException.AnotherException() // HTTP 상태 코드 및 에러 코드로 분기 처리
+ *     on(400) throws KoinException.Exception() // HTTP 상태 코드만으로 분기 처리, 에러 코드 없음
+ *     on(500..599, "ERROR_CODE") throws KoinException.AnotherServerException() // HTTP 상태 코드 범위 및 에러 코드 분기 처리
+ *     on(500..599) throws KoinException.ServerException() // HTTP 상태 코드 범위로 분기 처리
+ * }
+ * ```
+ *
+ * 모든 에러코드 중 가장 마지막 `on` 함수의 우선순위가 제일 높다.
+ * 동일한 HTTP 상태 코드에 에러 코드가 있는 경우와 없는 경우가 모두 존재할 때, 에러 코드가 없는 경우를 반드시 마지막에 선언해야 한다.
+ *
+ * @param block 매핑 로직
+ * @return 매핑된 Result
+ */
 fun <T> Result<T>.mapHttpFailure(
     block: HttpExceptionMapper.() -> Unit
 ): Result<T> {
