@@ -5,9 +5,7 @@ import `in`.koreatech.koin.data.request.article.toRequest
 import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
 import `in`.koreatech.koin.data.source.local.ArticleLocalDataSource
 import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
-import `in`.koreatech.koin.data.util.getErrorResponse
 import `in`.koreatech.koin.data.util.mapHttpFailure
-import `in`.koreatech.koin.data.util.toKoinUnknownErrorException
 import `in`.koreatech.koin.domain.error.article.KoinArticleException
 import `in`.koreatech.koin.domain.model.article.Article
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
@@ -290,7 +288,7 @@ class ArticleRepositoryImpl @Inject constructor(
     override suspend fun fetchArticleLostAndFoundStats(): Result<ArticleLostAndFoundStats> {
         return runCatching {
             articleRemoteDataSource.fetchArticleLostAndFoundStats().toArticleLostAndFoundStats()
-        }.mapHttpFailure {  }
+        }.mapHttpFailure { }
     }
 
     override suspend fun updateItemFound(
@@ -303,7 +301,7 @@ class ArticleRepositoryImpl @Inject constructor(
             } else {
                 throw HttpException(response)
             }
-        }.mapHttpFailure {  }
+        }.mapHttpFailure { }
     }
 
     override suspend fun modifyArticleLostAndFound(

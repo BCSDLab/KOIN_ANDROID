@@ -34,9 +34,7 @@ import `in`.koreatech.koin.data.request.user.ReviewRequest
 import `in`.koreatech.koin.data.source.local.CacheLocalDataSource
 import `in`.koreatech.koin.data.source.local.StoreLocalDataSource
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
-import `in`.koreatech.koin.data.util.getErrorResponse
 import `in`.koreatech.koin.data.util.mapHttpFailure
-import `in`.koreatech.koin.data.util.toKoinUnknownErrorException
 import `in`.koreatech.koin.domain.error.store.KoinStoreException
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import `in`.koreatech.koin.domain.model.store.BenefitCategoryList
@@ -249,7 +247,7 @@ class StoreRepositoryImpl @Inject constructor(
     override suspend fun getShopSearchRelatedListV2(keyword: String): Result<OrderableShopSearchRelated> {
         return runCatching {
             storeRemoteDataSource.getShopSearchRelatedV2(keyword).toOrderableShopSearchRelated()
-        }.mapHttpFailure {  }
+        }.mapHttpFailure { }
     }
 
     override suspend fun getOrderableShops(
@@ -328,7 +326,7 @@ class StoreRepositoryImpl @Inject constructor(
     override suspend fun getOrderableShopSearchRelated(query: String): Result<OrderableShopSearchRelated> {
         return runCatching {
             storeRemoteDataSource.getOrderableShopSearchRelated(query).toOrderableShopSearchRelated()
-        }.mapHttpFailure {  }
+        }.mapHttpFailure { }
     }
 
     override suspend fun updateCartItem(cartMenuItemId: Int, cartItem: CartItem): Result<Unit> {
@@ -453,7 +451,7 @@ class StoreRepositoryImpl @Inject constructor(
     override suspend fun getOrderInProgress(): Result<List<OrderInProgress>> {
         return runCatching {
             storeRemoteDataSource.getOrderInProgress().map { it.toOrderInProgress() }
-        }.mapHttpFailure {  }
+        }.mapHttpFailure { }
     }
 
     override suspend fun getOrderHistories(
@@ -466,6 +464,6 @@ class StoreRepositoryImpl @Inject constructor(
     ): Result<OrderHistoryRelated> {
         return runCatching {
             storeRemoteDataSource.getOrderHistories(page, limit, period, status, type, query).toOrderHistoryRelated()
-        }.mapHttpFailure {  }
+        }.mapHttpFailure { }
     }
 }
