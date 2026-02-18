@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.repository
 import `in`.koreatech.koin.data.mapper.toChatMessageRequest
 import `in`.koreatech.koin.data.response.chat.toChatListItem
 import `in`.koreatech.koin.data.source.remote.ChatRemoteDataSource
+import `in`.koreatech.koin.data.util.mapHttpFailure
 import `in`.koreatech.koin.domain.error.chat.KoinChatException
 import `in`.koreatech.koin.domain.model.chat.ChatListItem
 import `in`.koreatech.koin.domain.model.chat.ChatMessage
@@ -35,17 +36,11 @@ class ChatRepositoryImpl @Inject constructor(
     override suspend fun getChatRoomFromArticleId(articleId: Int): Result<ChatRoom> {
         return runCatching {
             chatRemoteDataSource.getChatRoomFromArticleId(articleId).toChatRoom()
+        }.mapHttpFailure {
+            on(403) throws KoinChatException.BlockedException()
         }.onFailure {
             return Result.failure(
                 when (it) {
-                    is HttpException -> {
-                        if (it.code() == 403) {
-                            KoinChatException.BlockedException()
-                        } else {
-                            it
-                        }
-                    }
-
                     is CancellationException -> throw it
                     else -> it
                 }
