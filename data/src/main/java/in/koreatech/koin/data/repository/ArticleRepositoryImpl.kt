@@ -6,6 +6,7 @@ import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
 import `in`.koreatech.koin.data.source.local.ArticleLocalDataSource
 import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
 import `in`.koreatech.koin.data.util.getErrorResponse
+import `in`.koreatech.koin.data.util.mapHttpFailure
 import `in`.koreatech.koin.data.util.toKoinUnknownErrorException
 import `in`.koreatech.koin.domain.error.article.KoinArticleException
 import `in`.koreatech.koin.domain.model.article.Article
@@ -289,14 +290,7 @@ class ArticleRepositoryImpl @Inject constructor(
     override suspend fun fetchArticleLostAndFoundStats(): Result<ArticleLostAndFoundStats> {
         return runCatching {
             articleRemoteDataSource.fetchArticleLostAndFoundStats().toArticleLostAndFoundStats()
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> exception.getErrorResponse().toKoinUnknownErrorException()
-                    else -> exception
-                }
-            )
-        }
+        }.mapHttpFailure {  }
     }
 
     override suspend fun updateItemFound(
@@ -309,14 +303,7 @@ class ArticleRepositoryImpl @Inject constructor(
             } else {
                 throw HttpException(response)
             }
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> exception.getErrorResponse().toKoinUnknownErrorException()
-                    else -> exception
-                }
-            )
-        }
+        }.mapHttpFailure {  }
     }
 
     override suspend fun modifyArticleLostAndFound(
@@ -345,21 +332,11 @@ class ArticleRepositoryImpl @Inject constructor(
             } else {
                 throw HttpException(response)
             }
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            400 -> KoinArticleException.CanNotFoundItemException()
-                            401 -> KoinArticleException.UnauthorizedUserException()
-                            403 -> KoinArticleException.ForbiddenAuthor()
-                            404 -> KoinArticleException.NotFoundImage()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(400) throws KoinArticleException.CanNotFoundItemException()
+            on(401) throws KoinArticleException.UnauthorizedUserException()
+            on(403) throws KoinArticleException.ForbiddenAuthor()
+            on(404) throws KoinArticleException.NotFoundImage()
         }
     }
 }
