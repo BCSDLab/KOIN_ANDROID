@@ -35,6 +35,7 @@ import `in`.koreatech.koin.data.source.local.CacheLocalDataSource
 import `in`.koreatech.koin.data.source.local.StoreLocalDataSource
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
 import `in`.koreatech.koin.data.util.getErrorResponse
+import `in`.koreatech.koin.data.util.mapHttpFailure
 import `in`.koreatech.koin.data.util.toKoinUnknownErrorException
 import `in`.koreatech.koin.domain.error.store.KoinStoreException
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
@@ -248,17 +249,7 @@ class StoreRepositoryImpl @Inject constructor(
     override suspend fun getShopSearchRelatedListV2(keyword: String): Result<OrderableShopSearchRelated> {
         return runCatching {
             storeRemoteDataSource.getShopSearchRelatedV2(keyword).toOrderableShopSearchRelated()
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        e.getErrorResponse().toKoinUnknownErrorException()
-                    }
-
-                    else -> e
-                }
-            )
-        }
+        }.mapHttpFailure {  }
     }
 
     override suspend fun getOrderableShops(
@@ -269,19 +260,8 @@ class StoreRepositoryImpl @Inject constructor(
     ): Result<List<Shop>> {
         return runCatching {
             storeRemoteDataSource.getOrderableShops(sorter, filter, categoryFilter, minimumOrderAmount).map { it.toShop() }
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        when (e.code()) {
-                            404 -> KoinStoreException.ShopNotFoundException()
-                            else -> e.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> e
-                }
-            )
+        }.mapHttpFailure {
+            on(404) throws KoinStoreException.ShopNotFoundException()
         }
     }
 
@@ -292,359 +272,152 @@ class StoreRepositoryImpl @Inject constructor(
             }.map {
                 it.toShop()
             }
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        when (e.code()) {
-                            404 -> KoinStoreException.ShopNotFoundException()
-                            else -> e.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> e
-                }
-            )
+        }.mapHttpFailure {
+            on(404) throws KoinStoreException.ShopNotFoundException()
         }
     }
 
     override suspend fun getOrderableShopSummary(shopId: Int): Result<ShopSummary> {
         return runCatching {
             storeRemoteDataSource.getOrderableShopSummary(shopId).toShopSummary()
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        when (e.code()) {
-                            404 -> KoinStoreException.ShopNotFoundException()
-                            else -> e.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> e
-                }
-            )
+        }.mapHttpFailure {
+            on(404) throws KoinStoreException.ShopNotFoundException()
         }
     }
 
     override suspend fun getOrderableShopDetail(shopId: Int): Result<ShopDetail> {
         return runCatching {
             storeRemoteDataSource.getOrderableShopDetail(shopId).toShopDetail()
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        when (e.code()) {
-                            404 -> KoinStoreException.ShopNotFoundException()
-                            else -> e.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> e
-                }
-            )
+        }.mapHttpFailure {
+            on(404) throws KoinStoreException.ShopNotFoundException()
         }
     }
 
     override suspend fun getOrderableShopDelivery(shopId: Int): Result<ShopDeliveryAvailable> {
         return runCatching {
             storeRemoteDataSource.getOrderableShopDelivery(shopId).toShopDeliveryAvailable()
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        when (e.code()) {
-                            404 -> KoinStoreException.ShopNotFoundException()
-                            else -> e.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> e
-                }
-            )
+        }.mapHttpFailure {
+            on(404) throws KoinStoreException.ShopNotFoundException()
         }
     }
 
     override suspend fun getOrderableShopMenus(shopId: Int): Result<List<ShopMenus>> {
         return runCatching {
             storeRemoteDataSource.getOrderableShopMenus(shopId).map { it.toShopMenus() }
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        when (e.code()) {
-                            404 -> KoinStoreException.ShopNotFoundException()
-                            else -> e.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> e
-                }
-            )
+        }.mapHttpFailure {
+            on(404) throws KoinStoreException.ShopNotFoundException()
         }
     }
 
     override suspend fun getOrderableShopMenu(shopId: Int, menuId: Int): Result<ShopMenu> {
         return runCatching {
             storeRemoteDataSource.getOrderableShopMenu(shopId, menuId).toShopMenu()
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        when (e.code()) {
-                            404 -> KoinStoreException.MenuNotFoundException()
-                            else -> e.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> e
-                }
-            )
+        }.mapHttpFailure {
+            on(404) throws KoinStoreException.MenuNotFoundException()
         }
     }
 
     override suspend fun getOrderableShopMenuGroups(shopId: Int): Result<List<ShopMenusGroup>> {
         return runCatching {
             storeRemoteDataSource.getOrderableShopMenuGroups(shopId).map { it.toShopMenusGroup() }
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        when (e.code()) {
-                            404 -> KoinStoreException.ShopNotFoundException()
-                            else -> e.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> e
-                }
-            )
+        }.mapHttpFailure {
+            on(404) throws KoinStoreException.ShopNotFoundException()
         }
     }
 
     override suspend fun getOrderableShopSearchRelated(query: String): Result<OrderableShopSearchRelated> {
         return runCatching {
             storeRemoteDataSource.getOrderableShopSearchRelated(query).toOrderableShopSearchRelated()
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        e.getErrorResponse().toKoinUnknownErrorException()
-                    }
-
-                    else -> e
-                }
-            )
-        }
+        }.mapHttpFailure {  }
     }
 
     override suspend fun updateCartItem(cartMenuItemId: Int, cartItem: CartItem): Result<Unit> {
         return runCatching {
             storeRemoteDataSource.updateCartItem(cartMenuItemId, cartItem.toCartItemRequest())
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        when (e.code()) {
-                            400 -> when (e.getErrorResponse().code) {
-                                "REQUIRED_OPTION_GROUP_MISSING" -> KoinStoreException.RequiredOptionGroupMissingException()
-                                "MIN_SELECTION_NOT_MET" -> KoinStoreException.MinimumSelectionNotMetException()
-                                "MAX_SELECTION_EXCEEDED" -> KoinStoreException.MaxSelectionExceededException()
-                                "INVALID_OPTION_IN_GROUP" -> KoinStoreException.InvalidOptionInGroupException()
-                                else -> KoinStoreException.BadRequestException()
-                            }
-
-                            401 -> KoinStoreException.UnauthorizedException()
-                            404 -> when (e.getErrorResponse().code) {
-                                "CART_MENU_ITEM_NOT_FOUND" -> KoinStoreException.CartItemNotFoundException()
-                                "MENU_OPTION_NOT_FOUND" -> KoinStoreException.MenuOptionNotFoundException()
-                                "MENU_PRICE_NOT_FOUND" -> KoinStoreException.MenuPriceNotFoundException()
-                                else -> e.getErrorResponse().toKoinUnknownErrorException()
-                            }
-
-                            else -> e.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> e
-                }
-            )
+        }.mapHttpFailure {
+            on(400, "REQUIRED_OPTION_GROUP_MISSING") throws KoinStoreException.RequiredOptionGroupMissingException()
+            on(400, "MIN_SELECTION_NOT_MET") throws KoinStoreException.MinimumSelectionNotMetException()
+            on(400, "MAX_SELECTION_EXCEEDED") throws KoinStoreException.MaxSelectionExceededException()
+            on(400, "INVALID_OPTION_IN_GROUP") throws KoinStoreException.InvalidOptionInGroupException()
+            on(401) throws KoinStoreException.UnauthorizedException()
+            on(404, "CART_MENU_ITEM_NOT_FOUND") throws KoinStoreException.CartItemNotFoundException()
+            on(404, "MENU_OPTION_NOT_FOUND") throws KoinStoreException.MenuOptionNotFoundException()
+            on(404, "MENU_PRICE_NOT_FOUND") throws KoinStoreException.MenuPriceNotFoundException()
         }
     }
 
     override suspend fun updateCartItemQuantity(cartMenuItemId: Int, quantity: Int): Result<Unit> {
         return runCatching {
             storeRemoteDataSource.updateCartItemQuantity(cartMenuItemId, quantity)
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        when (e.code()) {
-                            400 -> KoinStoreException.InvalidQuantityException()
-                            401 -> KoinStoreException.UnauthorizedException()
-                            404 -> when (e.getErrorResponse().code) {
-                                "CART_MENU_ITEM_NOT_FOUND" -> KoinStoreException.CartItemNotFoundException()
-                                "CART_NOT_FOUND" -> KoinStoreException.CartNotFoundException()
-                                else -> e.getErrorResponse().toKoinUnknownErrorException()
-                            }
-
-                            else -> e.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> e
-                }
-            )
+        }.mapHttpFailure {
+            on(400) throws KoinStoreException.InvalidQuantityException()
+            on(401) throws KoinStoreException.UnauthorizedException()
+            on(404, "CART_MENU_ITEM_NOT_FOUND") throws KoinStoreException.CartItemNotFoundException()
+            on(404, "CART_NOT_FOUND") throws KoinStoreException.CartNotFoundException()
         }
     }
 
     override suspend fun addCartItem(cartAdd: CartAdd): Result<Unit> {
         return runCatching {
             storeRemoteDataSource.addCartItem(cartAdd.toCartAddRequest())
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        when (e.code()) {
-                            400 -> when (e.getErrorResponse().code) {
-                                "DIFFERENT_SHOP_ITEM_IN_CART" -> KoinStoreException.DifferentShopItemInCartException()
-                                "MENU_SOLD_OUT" -> KoinStoreException.MenuSoldOutException()
-                                "REQUIRED_OPTION_GROUP_MISSING" -> KoinStoreException.RequiredOptionGroupMissingException()
-                                "MAX_SELECTION_EXCEEDED" -> KoinStoreException.MaxSelectionExceededException()
-                                "INVALID_MENU_IN_SHOP" -> KoinStoreException.InvalidMenuInShopException()
-                                "SHOP_CLOSED" -> KoinStoreException.ShopClosedException()
-                                else -> KoinStoreException.BadRequestException()
-                            }
-
-                            401 -> KoinStoreException.UnauthorizedException()
-                            404 -> when (e.getErrorResponse().code) {
-                                "NOT_FOUND_ORDERABLE_SHOP_MENU_PRICE" -> KoinStoreException.MenuPriceNotFoundException()
-                                "NOT_FOUND_ORDERABLE_SHOP_MENU_OPTION" -> KoinStoreException.MenuOptionNotFoundException()
-                                else -> e.getErrorResponse().toKoinUnknownErrorException()
-                            }
-
-                            else -> e.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> e
-                }
-            )
+        }.mapHttpFailure {
+            on(400, "DIFFERENT_SHOP_ITEM_IN_CART") throws KoinStoreException.DifferentShopItemInCartException()
+            on(400, "MENU_SOLD_OUT") throws KoinStoreException.MenuSoldOutException()
+            on(400, "REQUIRED_OPTION_GROUP_MISSING") throws KoinStoreException.RequiredOptionGroupMissingException()
+            on(400, "MAX_SELECTION_EXCEEDED") throws KoinStoreException.MaxSelectionExceededException()
+            on(400, "INVALID_MENU_IN_SHOP") throws KoinStoreException.InvalidMenuInShopException()
+            on(400, "SHOP_CLOSED") throws KoinStoreException.ShopClosedException()
+            on(401) throws KoinStoreException.UnauthorizedException()
+            on(404, "NOT_FOUND_ORDERABLE_SHOP_MENU_PRICE") throws KoinStoreException.MenuPriceNotFoundException()
+            on(404, "NOT_FOUND_ORDERABLE_SHOP_MENU_OPTION") throws KoinStoreException.MenuOptionNotFoundException()
         }
     }
 
     override suspend fun getCartItems(type: String): Result<Cart> {
         return runCatching {
             storeRemoteDataSource.getCartItems(type).toCart()
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        when (e.code()) {
-                            400 -> when (e.getErrorResponse().code) {
-                                "SHOP_NOT_DELIVERABLE" -> KoinStoreException.ShopNotDeliverableException()
-                                "SHOP_NOT_TAKEOUT_AVAILABLE" -> KoinStoreException.ShopNotTakeoutAvailableException()
-                                else -> e.getErrorResponse().toKoinUnknownErrorException()
-                            }
-
-                            401 -> KoinStoreException.UnauthorizedException()
-                            else -> e.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> e
-                }
-            )
+        }.mapHttpFailure {
+            on(400, "SHOP_NOT_DELIVERABLE") throws KoinStoreException.ShopNotDeliverableException()
+            on(400, "SHOP_NOT_TAKEOUT_AVAILABLE") throws KoinStoreException.ShopNotTakeoutAvailableException()
+            on(401) throws KoinStoreException.UnauthorizedException()
         }
     }
 
     override suspend fun validateCartItems(orderType: String): Result<Unit> {
         return runCatching {
             storeRemoteDataSource.validateCartItems(orderType)
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        when (e.code()) {
-                            400 -> when (e.getErrorResponse().code) {
-                                "ORDER_AMOUNT_BELOW_MINIMUM" -> KoinStoreException.OrderAmountBelowMinimumException()
-                                "SHOP_CLOSED" -> KoinStoreException.ShopClosedException()
-                                else -> e.getErrorResponse().toKoinUnknownErrorException()
-                            }
-
-                            401 -> KoinStoreException.UnauthorizedException()
-                            404 -> KoinStoreException.CartNotFoundException()
-                            else -> e.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> e
-                }
-            )
+        }.mapHttpFailure {
+            on(400, "ORDER_AMOUNT_BELOW_MINIMUM") throws KoinStoreException.OrderAmountBelowMinimumException()
+            on(400, "SHOP_CLOSED") throws KoinStoreException.ShopClosedException()
+            on(401) throws KoinStoreException.UnauthorizedException()
+            on(404) throws KoinStoreException.CartNotFoundException()
         }
     }
 
     override suspend fun getCartSummary(orderableShopId: Int): Result<CartSummary> {
         return runCatching {
             storeRemoteDataSource.getCartSummary(orderableShopId).toCartSummary()
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        when (e.code()) {
-                            401 -> KoinStoreException.UnauthorizedException()
-                            else -> e.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> e
-                }
-            )
+        }.mapHttpFailure {
+            on(401) throws KoinStoreException.UnauthorizedException()
         }
     }
 
     override suspend fun getCartPaymentSummary(type: String): Result<CartPaymentSummary> {
         return runCatching {
             storeRemoteDataSource.getCartPaymentSummary(type).toCartPaymentSummary()
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        when (e.code()) {
-                            400 -> when (e.getErrorResponse().code) {
-                                "SHOP_NOT_DELIVERABLE" -> KoinStoreException.ShopNotDeliverableException()
-                                "SHOP_NOT_TAKEOUT_AVAILABLE" -> KoinStoreException.ShopNotTakeoutAvailableException()
-                                else -> e.getErrorResponse().toKoinUnknownErrorException()
-                            }
-
-                            401 -> KoinStoreException.UnauthorizedException()
-                            else -> e.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> e
-                }
-            )
+        }.mapHttpFailure {
+            on(400, "SHOP_NOT_DELIVERABLE") throws KoinStoreException.ShopNotDeliverableException()
+            on(400, "SHOP_NOT_TAKEOUT_AVAILABLE") throws KoinStoreException.ShopNotTakeoutAvailableException()
+            on(401) throws KoinStoreException.UnauthorizedException()
         }
     }
 
     override suspend fun getCartItemEdit(cartMenuItemId: Int): Result<CartItemEdit> {
         return runCatching {
             storeRemoteDataSource.getCartItemEdit(cartMenuItemId).toCartItemEdit()
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        when (e.code()) {
-                            401 -> KoinStoreException.UnauthorizedException()
-                            404 -> KoinStoreException.CartItemNotFoundException()
-                            else -> e.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> e
-                }
-            )
+        }.mapHttpFailure {
+            on(401) throws KoinStoreException.UnauthorizedException()
+            on(404) throws KoinStoreException.CartItemNotFoundException()
         }
     }
 
@@ -652,24 +425,9 @@ class StoreRepositoryImpl @Inject constructor(
         return runCatching {
             storeRemoteDataSource.resetCart()
             Unit
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        when (e.code()) {
-                            401 -> KoinStoreException.UnauthorizedException()
-                            404 -> when (e.getErrorResponse().code) {
-                                "CART_NOT_FOUND" -> KoinStoreException.CartNotFoundException()
-                                else -> e.getErrorResponse().toKoinUnknownErrorException()
-                            }
-
-                            else -> e.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> e
-                }
-            )
+        }.mapHttpFailure {
+            on(401) throws KoinStoreException.UnauthorizedException()
+            on(404, "CART_NOT_FOUND") throws KoinStoreException.CartNotFoundException()
         }
     }
 
@@ -677,58 +435,25 @@ class StoreRepositoryImpl @Inject constructor(
         return runCatching {
             storeRemoteDataSource.deleteCartItem(cartMenuItemId)
             Unit
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        when (e.code()) {
-                            401 -> KoinStoreException.UnauthorizedException()
-                            404 -> when (e.getErrorResponse().code) {
-                                "CART_MENU_ITEM_NOT_FOUND" -> KoinStoreException.CartNotFoundException()
-                                "CART_NOT_FOUND" -> KoinStoreException.CartNotFoundException()
-                                else -> e.getErrorResponse().toKoinUnknownErrorException()
-                            }
-
-                            else -> e.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> e
-                }
-            )
+        }.mapHttpFailure {
+            on(401) throws KoinStoreException.UnauthorizedException()
+            on(404, "CART_MENU_ITEM_NOT_FOUND") throws KoinStoreException.CartItemNotFoundException()
+            on(404, "CART_NOT_FOUND") throws KoinStoreException.CartNotFoundException()
         }
     }
 
     override suspend fun getCartItemsCount(): Result<CartItemsCount> {
         return runCatching {
             storeRemoteDataSource.getCartItemsCount().toCartItemsCount()
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        when (e.code()) {
-                            401 -> KoinStoreException.UnauthorizedException()
-                            else -> e.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> e
-                }
-            )
+        }.mapHttpFailure {
+            on(401) throws KoinStoreException.UnauthorizedException()
         }
     }
 
     override suspend fun getOrderInProgress(): Result<List<OrderInProgress>> {
         return runCatching {
             storeRemoteDataSource.getOrderInProgress().map { it.toOrderInProgress() }
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> e.getErrorResponse().toKoinUnknownErrorException()
-                    else -> e
-                }
-            )
-        }
+        }.mapHttpFailure {  }
     }
 
     override suspend fun getOrderHistories(
@@ -741,16 +466,6 @@ class StoreRepositoryImpl @Inject constructor(
     ): Result<OrderHistoryRelated> {
         return runCatching {
             storeRemoteDataSource.getOrderHistories(page, limit, period, status, type, query).toOrderHistoryRelated()
-        }.onFailure { e ->
-            return Result.failure(
-                when (e) {
-                    is HttpException -> {
-                        e.getErrorResponse().toKoinUnknownErrorException()
-                    }
-
-                    else -> e
-                }
-            )
-        }
+        }.mapHttpFailure {  }
     }
 }
