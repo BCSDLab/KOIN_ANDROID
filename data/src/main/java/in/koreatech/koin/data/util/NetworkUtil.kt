@@ -58,28 +58,22 @@ fun <T> Result<T>.mapHttpFailure(
 }
 
 class HttpExceptionMapper(private val exception: HttpException) {
-    val exceptions = mutableMapOf<Pair<Int, String?>, KoinErrorException>()
+    val errorResponse: ErrorResponse by lazy { exception.getErrorResponse() }
+    var mappedException: KoinErrorException? = null
 
-    inner class OnBuilder(val statusCode: Int, val errorCode: String? = null) {
+    inner class OnBuilder(val matched: Boolean) {
         infix fun throws(exception: KoinErrorException) {
-            exceptions[statusCode to errorCode] = exception
+            if (matched) mappedException = exception
         }
     }
 
-    inner class OnRangeBuilder(val statusCodes: IntRange, val errorCode: String? = null) {
-        infix fun throws(exception: KoinErrorException) {
-            for (statusCode in statusCodes) {
-                exceptions[statusCode to errorCode] = exception
-            }
-        }
-    }
+    fun on(statusCode: Int) = OnBuilder(exception.code() == statusCode)
 
-    fun on(statusCode: Int, errorCode: String? = null) = OnBuilder(statusCode, errorCode)
+    fun on(statusCodes: IntRange) = OnBuilder(exception.code() in statusCodes)
 
-    fun on(statusCodes: IntRange, errorCode: String? = null) = OnRangeBuilder(statusCodes, errorCode)
+    fun on(statusCode: Int, errorCode: String) = OnBuilder(exception.code() == statusCode && errorCode == errorResponse.code)
 
-    internal fun map(): KoinErrorException = with(exception) {
-        val errorResponse = getErrorResponse()
-        return exceptions[code() to errorResponse.code] ?: exceptions[code() to null] ?: errorResponse.toKoinUnknownErrorException()
-    }
+    fun on(statusCodes: IntRange, errorCode: String) = OnBuilder(exception.code() in statusCodes && errorCode == errorResponse.code)
+
+    internal fun map(): KoinErrorException = mappedException ?: errorResponse.toKoinUnknownErrorException()
 }
