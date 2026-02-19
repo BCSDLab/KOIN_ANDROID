@@ -235,6 +235,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                                     ArticleNotiType.LOST_AND_FOUND -> Uri.parse("koin://articles/lost-item/activity")
                                 }
                             }
+                        intent.`package` = packageName
                         startActivity(intent)
                     },
                     onArticleClick = {
@@ -247,6 +248,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                             Intent(Intent.ACTION_VIEW).apply {
                                 data = Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.boardId}")
                             }
+                        intent.`package` = packageName
                         startActivity(intent)
                     }
                 )

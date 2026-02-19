@@ -126,6 +126,7 @@ class StoreActivity : ComponentActivity() {
                                     if (isStoreActivityOnTop) {
                                         Intent(Intent.ACTION_VIEW).apply {
                                             data = DEEPLINK_MAIN.toUri()
+                                            `package` = packageName
                                         }.apply {
                                             startActivity(this)
                                         }
@@ -143,6 +144,7 @@ class StoreActivity : ComponentActivity() {
                 if (isStoreActivityOnTop) {
                     Intent(Intent.ACTION_VIEW).apply {
                         data = DEEPLINK_MAIN.toUri()
+                        `package` = packageName
                     }.apply {
                         startActivity(this)
                     }

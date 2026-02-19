@@ -193,6 +193,7 @@ class SplashActivity : ActivityBase() {
         val intent = Intent(Intent.ACTION_VIEW, INFO_REQUIRED_URI.toUri())
             .putExtra(EXTRA_IS_FULL, check)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.`package` = packageName
         this@SplashActivity.startActivity(intent)
         finishWithTransition()
     }

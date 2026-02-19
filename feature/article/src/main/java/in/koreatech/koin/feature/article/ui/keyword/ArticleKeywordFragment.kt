@@ -55,6 +55,7 @@ class ArticleKeywordFragment : Fragment() {
                     "키워드 알림 팝업"
                 )
                 val intent = navigator.navigateToSignIn(this.requireContext(), redirectUrl = "koin://article/activity?fragment=article_keyword")
+                intent.setPackage(requireContext().packageName)
                 it.dismiss()
                 startActivity(intent)
             },

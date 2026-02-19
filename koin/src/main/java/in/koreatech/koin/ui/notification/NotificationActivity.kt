@@ -90,6 +90,7 @@ class NotificationActivity : ActivityBase() {
                 Intent(Intent.ACTION_VIEW).apply {
                     data = Uri.parse("koin://article/activity?fragment=article_keyword")
                 }
+            intent.`package` = packageName
             startActivity(intent)
         }
     }
