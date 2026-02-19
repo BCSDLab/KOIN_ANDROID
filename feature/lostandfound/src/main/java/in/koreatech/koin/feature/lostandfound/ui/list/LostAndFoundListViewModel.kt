@@ -20,8 +20,6 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
@@ -38,15 +36,8 @@ class LostAndFoundListViewModel @Inject constructor(
         initialState = LostAndFoundListState()
     )
 
-    private val mutex = Mutex()
-    private var lastSearchedTime = System.currentTimeMillis()
-
     init {
         initUserInfo()
-
-        intent {
-            postSideEffect(LostAndFoundListSideEffect.FetchData)
-        }
     }
 
     private fun initUserInfo() = viewModelScope.launch {
@@ -227,15 +218,5 @@ class LostAndFoundListViewModel @Inject constructor(
                 searchQuery = query
             )
         }
-        mutex.withLock {
-            val currentMillis = System.currentTimeMillis()
-            if (currentMillis - lastSearchedTime <= SEARCH_DEBOUNCE_MS) return@intent
-            postSideEffect(LostAndFoundListSideEffect.FetchData)
-            lastSearchedTime = currentMillis
-        }
-    }
-
-    companion object {
-        private const val SEARCH_DEBOUNCE_MS = 250L
     }
 }
