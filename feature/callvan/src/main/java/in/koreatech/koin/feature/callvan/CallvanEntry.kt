@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.feature.callvan
 
+import android.content.Intent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,6 +31,8 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 fun CallvanEntry(
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -47,6 +51,9 @@ fun CallvanEntry(
                 modifier = Modifier.weight(1f),
                 title = stringResource(R.string.callvan_entry_find_title),
                 description = stringResource(R.string.callvan_entry_find_description),
+                onClick = {
+                    context.startActivity(Intent(context, CallvanActivity::class.java))
+                }
             )
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -54,7 +61,10 @@ fun CallvanEntry(
             CallvanEntryCard(
                 modifier = Modifier.weight(1f),
                 title = stringResource(R.string.callvan_entry_recruit_title),
-                description = stringResource(R.string.callvan_entry_recruit_description)
+                description = stringResource(R.string.callvan_entry_recruit_description),
+                onClick = {
+                    context.startActivity(Intent(context, CallvanActivity::class.java)) // TODO: Navigate to create
+                }
             )
         }
     }
@@ -70,7 +80,7 @@ private fun CallvanEntryCard(
     Row(
         modifier = modifier
             .clip(KoinTheme.shapes.small)
-            .noRippleClickable(onClick = onClick)
+            .clickable(onClick = onClick)
             .background(color = KoinTheme.colors.neutral50)
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
