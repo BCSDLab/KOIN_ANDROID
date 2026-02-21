@@ -42,7 +42,6 @@ import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.developer.DeveloperOption
 import `in`.koreatech.koin.core.developer.DeveloperOptionUtil
 import `in`.koreatech.koin.core.navigation.Navigator
@@ -448,7 +447,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     private fun observeDeveloperOption() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
-            DeveloperOptionUtil.getDeveloperOptionFlow(DeveloperOption.CallvanSprint).collectLatest {enabled ->
+            DeveloperOptionUtil.getDeveloperOptionFlow(DeveloperOption.CallvanSprint).collectLatest { enabled ->
                 if (enabled) {
                     binding.callvanComposeView.visibility = View.VISIBLE
                     binding.clubComposeView.visibility = View.GONE

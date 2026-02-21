@@ -8,26 +8,20 @@ fun NavGraphBuilder.koinCallvanGraph(
     navController: NavController
 ) {
     composable<CallvanNavType.CallvanMain> {
-
     }
 
     composable<CallvanNavType.CallvanDetail> {
-
     }
 
     composable<CallvanNavType.CallvanCreate> {
-
     }
 
     composable<CallvanNavType.CallvanChat> {
-
     }
 
     composable<CallvanNavType.CallvanNotifications> {
-
     }
 
     composable<CallvanNavType.CallvanReport> {
-
     }
 }
