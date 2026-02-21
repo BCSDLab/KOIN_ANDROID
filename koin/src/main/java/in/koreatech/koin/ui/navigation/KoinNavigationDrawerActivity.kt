@@ -42,6 +42,7 @@ import `in`.koreatech.koin.core.util.whiteStatusBar
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.feature.article.ArticleActivity
+import `in`.koreatech.koin.feature.callvan.CallvanActivity
 import `in`.koreatech.koin.feature.chat.ui.list.ChatListActivity
 import `in`.koreatech.koin.feature.club.ui.ClubActivity
 import `in`.koreatech.koin.feature.dining.ui.DiningActivity
@@ -91,6 +92,7 @@ abstract class KoinNavigationDrawerActivity :
             R.id.navi_item_login_or_logout,
             R.id.navi_item_store,
             R.id.navi_item_bus_timetable,
+            R.id.navi_item_callvan,
             R.id.navi_item_bus_search,
             R.id.navi_item_dining,
             R.id.navi_item_operating_information,
@@ -111,6 +113,7 @@ abstract class KoinNavigationDrawerActivity :
                 MenuState.LoginOrLogout,
                 MenuState.Store,
                 MenuState.BusTimetable,
+                MenuState.Callvan,
                 MenuState.BusSearch,
                 MenuState.Dining,
                 MenuState.OperatingInfo,
@@ -373,6 +376,7 @@ abstract class KoinNavigationDrawerActivity :
                 MenuState.Store -> goToStoreActivity()
                 MenuState.Chat -> goToChatActivity()
                 MenuState.SignUp -> goToSignUpActivity()
+                MenuState.Callvan -> goToCallvanActivity()
                 MenuState.Setting -> {
                     goToSettingActivity()
                     return@observeLiveData
@@ -577,6 +581,14 @@ abstract class KoinNavigationDrawerActivity :
             goToActivityFinish(Intent(this, BusSearchActivity::class.java))
         } else {
             startActivity(Intent(this, BusSearchActivity::class.java))
+        }
+    }
+
+    private fun goToCallvanActivity() {
+        if (menuState != MenuState.Main) {
+            goToActivityFinish(Intent(this, CallvanActivity::class.java))
+        } else {
+            startActivity(Intent(this, CallvanActivity::class.java))
         }
     }
 
