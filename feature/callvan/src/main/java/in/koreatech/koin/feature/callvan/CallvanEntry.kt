@@ -103,7 +103,7 @@ private fun CallvanEntryCard(
 
 @Preview(showBackground = true)
 @Composable
-fun CallvanEntryPreview() {
+private fun CallvanEntryPreview() {
     KoinTheme {
         CallvanEntry()
     }
