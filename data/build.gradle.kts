@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.koin.library)
     alias(libs.plugins.koin.hilt)
     alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.room)
 }
 
 android {
@@ -27,6 +28,11 @@ android {
             )
             buildConfigField("Boolean", "IS_DEBUG", "false")
         }
+    }
+
+    room {
+        schemaDirectory("debug", "$projectDir/schemas/debug")
+        schemaDirectory("$projectDir/schemas")
     }
 }
 

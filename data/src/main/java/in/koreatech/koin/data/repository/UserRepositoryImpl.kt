@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.repository
 
+import `in`.koreatech.koin.data.mapper.safeApiCall
 import `in`.koreatech.koin.data.mapper.toCodeCount
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
@@ -199,9 +200,18 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun postABTestAssign(title: String): ABTest {
-        userRemoteDataSource.postABTestAssign(ABTestRequest(title)).let {
-            return ABTest(it.variableName, it.accessHistoryId)
+        val (variableName, accessHistoryId) = userRemoteDataSource.postABTestAssign(ABTestRequest(title))
+
+        safeApiCall {
+            userLocalDataSource.insertCachedABTest(title, accessHistoryId, variableName)
         }
+
+        return ABTest(variableName, accessHistoryId)
+    }
+
+    override suspend fun getCachedABTest(title: String): ABTest {
+        val accessHistoryId = tokenLocalDataSource.getAccessHistoryId() ?: throw IllegalStateException("Access history id is not found")
+        return userLocalDataSource.getCachedABTest(title, accessHistoryId)
     }
 
     override suspend fun updateUserPassword(

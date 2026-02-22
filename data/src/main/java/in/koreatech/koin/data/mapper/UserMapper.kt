@@ -1,11 +1,13 @@
 package `in`.koreatech.koin.data.mapper
 
+import `in`.koreatech.koin.data.entity.ABTestEntity
 import `in`.koreatech.koin.data.request.user.GeneralUserRequest
 import `in`.koreatech.koin.data.request.user.StudentUserRequest
 import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
 import `in`.koreatech.koin.data.response.user.GeneralUserResponse
 import `in`.koreatech.koin.data.response.user.RefreshResponse
 import `in`.koreatech.koin.data.response.user.StudentUserResponse
+import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.CodeCount
 import `in`.koreatech.koin.domain.model.user.Gender
@@ -141,3 +143,8 @@ fun CodeRequestCountResponse.toCodeCount() =
         remainingCount = this.remainingCount,
         currentCount = this.currentCount
     )
+
+fun ABTestEntity.toABTest() = ABTest(
+    variableName = variableName,
+    accessHistoryId = accessHistoryId
+)
