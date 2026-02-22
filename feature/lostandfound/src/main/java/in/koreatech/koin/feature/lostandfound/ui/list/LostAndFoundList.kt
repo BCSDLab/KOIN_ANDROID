@@ -28,7 +28,6 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
-import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.AuthorFilterType.MY
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.ItemSearchTextField
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.ListColumn
@@ -41,6 +40,9 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 
 @Composable
 fun LostAndFoundList(
@@ -53,7 +55,17 @@ fun LostAndFoundList(
 ) {
     val uiState by viewModel.collectAsState()
 
-    LaunchedEffect(Unit, cancelRefresh) {
+    viewModel.collectSideEffect { sideEffect ->
+        handleSideEffect(
+            sideEffect = sideEffect,
+            fetchData = viewModel::fetchLostAndFoundItem,
+            updateSignInDialog = {
+                viewModel.setShowFilterLoginDialog(it)
+            }
+        )
+    }
+
+    LaunchedEffect(cancelRefresh) {
         var cancelRefresh = cancelRefresh
         snapshotFlow { uiState.searchQuery }
             .debounce(SEARCH_DEBOUNCE_MS)
@@ -62,7 +74,7 @@ fun LostAndFoundList(
                 if (cancelRefresh) {
                     cancelRefresh = false
                 } else {
-                    viewModel.fetchLostAndFoundItem()
+                    viewModel.intent { postSideEffect(LostAndFoundListSideEffect.FetchData) }
                 }
             }
     }
@@ -76,19 +88,7 @@ fun LostAndFoundList(
             selectedLostOrFoundType = uiState.lostOrFoundFilterType,
             selectedCategoryType = uiState.categoryFilterType,
             selectedFoundType = uiState.foundFilterType,
-            onApply = { author, lostOrFound, category, found ->
-                if (!uiState.isLoggedIn && author == MY) {
-                    viewModel.setShowFilterLoginDialog(true)
-                } else {
-                    viewModel.setSearchFilter(
-                        authorFilterType = author,
-                        lostOrFoundFilterType = lostOrFound,
-                        categoryFilterType = category,
-                        foundFilterType = found
-                    )
-                    viewModel.fetchLostAndFoundItem()
-                }
-            }
+            onApply = viewModel::setSearchFilter
         )
     }
 
@@ -112,10 +112,10 @@ fun LostAndFoundList(
             description = stringResource(id = R.string.lost_and_found_my_filter_can_use_logged_in_description),
             onPositive = {
                 navigateToLogin()
-                viewModel.setShowFilterLoginDialog(false)
+                viewModel.intent { postSideEffect(LostAndFoundListSideEffect.UpdateSignInDialog(false)) }
             },
             onNegative = {
-                viewModel.setShowFilterLoginDialog(false)
+                viewModel.intent { postSideEffect(LostAndFoundListSideEffect.UpdateSignInDialog(false)) }
             }
         )
     }
@@ -232,4 +232,20 @@ fun LostAndFoundList(
     }
 }
 
-const val SEARCH_DEBOUNCE_MS = 250L
+private fun handleSideEffect(
+    sideEffect: LostAndFoundListSideEffect,
+    fetchData: () -> Unit,
+    updateSignInDialog: (visible: Boolean) -> Unit
+) {
+    when (sideEffect) {
+        LostAndFoundListSideEffect.FetchData -> {
+            fetchData()
+        }
+
+        is LostAndFoundListSideEffect.UpdateSignInDialog -> {
+            updateSignInDialog(sideEffect.visible)
+        }
+    }
+}
+
+private const val SEARCH_DEBOUNCE_MS = 250L
