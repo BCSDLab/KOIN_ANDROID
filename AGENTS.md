@@ -150,7 +150,7 @@ Each module has its own detailed AGENTS.md file with module-specific patterns an
 
 ### Package & Import Organization
 
-**MUST** use backtick-escaped `in` package and group imports in this order:
+**MUST** use backtick-escaped `in` package names.
 
 ```kotlin
 package `in`.koreatech.koin.feature.user.ui.signin
@@ -165,12 +165,11 @@ import org.orbitmvi.orbit.ContainerHost
 ```
 
 **Import grouping order**:
-1. Android/AndroidX imports
-2. Dagger/Hilt imports
-3. Internal project imports (backtick-escaped `in`)
-4. javax imports
-5. kotlinx imports
-6. Third-party libraries (Orbit, etc.)
+- Follow the module-specific AGENTS.md when it defines an import order.
+- If the module has no specific guidance, keep Android Studio's default ordering
+  (`ktlint_code_style = android_studio`) and avoid manual reordering.
+- This repo does not enforce a single global import order in ktlint or IDE settings,
+  so do not churn imports unless a module rule explicitly requires it.
 
 ### Naming Conventions
 
