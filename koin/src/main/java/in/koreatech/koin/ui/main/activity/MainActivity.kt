@@ -42,6 +42,8 @@ import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.developer.DeveloperOption
+import `in`.koreatech.koin.core.developer.DeveloperOptionUtil
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
@@ -56,6 +58,7 @@ import `in`.koreatech.koin.databinding.ActivityMainBinding
 import `in`.koreatech.koin.domain.model.article.ArticleNotiType
 import `in`.koreatech.koin.feature.article.ArticleActivity
 import `in`.koreatech.koin.feature.banner.ui.BannerActivity
+import `in`.koreatech.koin.feature.callvan.CallvanEntry
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetA
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetB
 import `in`.koreatech.koin.feature.lostandfound.ui.LostAndFoundActivity
@@ -135,6 +138,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         initView()
         initViewModel()
         handleIntent()
+        observeDeveloperOption()
     }
 
     override fun onResume() {
@@ -328,6 +332,12 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             }
         }
 
+        callvanComposeView.setContent {
+            KoinTheme {
+                CallvanEntry()
+            }
+        }
+
         lostandfoundComposeView.apply {
             setContent {
                 KoinTheme {
@@ -432,6 +442,20 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             binding.storeButtonLayout.visibility = View.GONE
             binding.recyclerViewStoreCategory.visibility = View.GONE
             binding.shopComposeView.visibility = View.VISIBLE
+        }
+    }
+
+    private fun observeDeveloperOption() = lifecycleScope.launch {
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
+            DeveloperOptionUtil.getDeveloperOptionFlow(DeveloperOption.CallvanSprint).collectLatest { enabled ->
+                if (enabled) {
+                    binding.callvanComposeView.visibility = View.VISIBLE
+                    binding.clubComposeView.visibility = View.GONE
+                } else {
+                    binding.callvanComposeView.visibility = View.GONE
+                    binding.clubComposeView.visibility = View.VISIBLE
+                }
+            }
         }
     }
 

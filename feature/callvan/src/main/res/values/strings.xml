@@ -1,0 +1,7 @@
+<resources>
+    <string name="callvan_entry_title">콜밴팟 모집</string>
+    <string name="callvan_entry_find_title">콜밴팟 찾기</string>
+    <string name="callvan_entry_find_description">바로가기</string>
+    <string name="callvan_entry_recruit_title">콜밴팟 모집</string>
+    <string name="callvan_entry_recruit_description">글 작성하기</string>
+</resources>
