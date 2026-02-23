@@ -6,37 +6,55 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+object ChatDateTitleDefaults {
+    @Composable
+    fun colors(
+        containerColor: Color = KoinTheme.colors.neutral200.copy(alpha = 0.8f),
+        contentColor: Color = KoinTheme.colors.primary600
+    ): ChatDateTitleColors = ChatDateTitleColors(
+        containerColor = containerColor,
+        contentColor = contentColor
+    )
+}
+
+@Immutable
+class ChatDateTitleColors(
+    val containerColor: Color,
+    val contentColor: Color
+)
+
 @Composable
 fun ChatDateTitle(
     date: LocalDate,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    colors: ChatDateTitleColors = ChatDateTitleDefaults.colors()
 ) {
     Box(
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp, horizontal = 24.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
-            modifier =
-            Modifier
+            modifier = Modifier
                 .background(
-                    color = KoinTheme.colors.neutral200.copy(alpha = 0.8f),
+                    color = colors.containerColor,
                     shape = KoinTheme.shapes.medium
                 )
                 .padding(vertical = 4.dp, horizontal = 12.dp),
             text = date.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")),
             style = KoinTheme.typography.medium12,
-            color = KoinTheme.colors.primary600
+            color = colors.contentColor
         )
     }
 }
