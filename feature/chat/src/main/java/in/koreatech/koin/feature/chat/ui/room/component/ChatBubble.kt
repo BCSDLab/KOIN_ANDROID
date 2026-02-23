@@ -331,27 +331,25 @@ fun ChatBubblePreview() {
     KoinSurface {
         Column {
             ChatBubble(
-                message =
-                    ConvertedChatMessage(
-                        userId = 0,
-                        userNickname = "Me",
-                        content = "투명 케이스가 끼워져 있었어요! \n담헌실학관 401호 앞에 떨어져있었어요",
-                        timestamp = LocalDateTime.now(),
-                        isImage = false,
-                        isSentByMe = true
-                    )
+                message = ConvertedChatMessage(
+                    userId = 0,
+                    userNickname = "Me",
+                    content = "투명 케이스가 끼워져 있었어요! \n담헌실학관 401호 앞에 떨어져있었어요",
+                    timestamp = LocalDateTime.now(),
+                    isImage = false,
+                    isSentByMe = true
+                )
             )
 
             ChatBubble(
-                message =
-                    ConvertedChatMessage(
-                        userId = 0,
-                        userNickname = "Me",
-                        content = "투명 케이스가 끼워져 있었어요! \n담헌실학관 401호 앞에 떨어져있었어요",
-                        timestamp = LocalDateTime.now(),
-                        isImage = false,
-                        isSentByMe = false
-                    )
+                message = ConvertedChatMessage(
+                    userId = 0,
+                    userNickname = "Me",
+                    content = "투명 케이스가 끼워져 있었어요! \n담헌실학관 401호 앞에 떨어져있었어요",
+                    timestamp = LocalDateTime.now(),
+                    isImage = false,
+                    isSentByMe = false
+                )
             )
         }
     }
