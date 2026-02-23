@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.chat.R
 import `in`.koreatech.koin.feature.chat.ui.CHAT_MESSAGE_MAX_LENGTH
 
@@ -49,6 +50,23 @@ object ChatInputDefaults {
         textContainerColor: Color = KoinTheme.colors.neutral0,
         placeholderContentColor: Color = KoinTheme.colors.neutral500,
         backgroundColor: Color = KoinTheme.colors.neutral100
+    ): ChatInputColors = ChatInputColors(
+        iconContentColor = iconContentColor,
+        iconContainerColor = iconContainerColor,
+        textContentColor = textContentColor,
+        textContainerColor = textContainerColor,
+        placeholderContentColor = placeholderContentColor,
+        backgroundColor = backgroundColor
+    )
+
+    @Composable
+    fun purpleColors(
+        iconContentColor: Color = RebrandKoinTheme.colors.primary600,
+        iconContainerColor: Color = RebrandKoinTheme.colors.neutral0,
+        textContentColor: Color = RebrandKoinTheme.colors.neutral800,
+        textContainerColor: Color = RebrandKoinTheme.colors.neutral0,
+        placeholderContentColor: Color = RebrandKoinTheme.colors.neutral500,
+        backgroundColor: Color = RebrandKoinTheme.colors.neutral100
     ): ChatInputColors = ChatInputColors(
         iconContentColor = iconContentColor,
         iconContainerColor = iconContainerColor,
@@ -176,7 +194,8 @@ fun ChatInputPreview() {
             value = "",
             onValueChange = {},
             onImageButtonClick = {},
-            onSendClick = {}
+            onSendClick = {},
+            colors = ChatInputDefaults.purpleColors()
         )
     }
 }
