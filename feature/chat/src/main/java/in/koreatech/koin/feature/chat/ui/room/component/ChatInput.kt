@@ -133,7 +133,8 @@ fun ChatInput(
                     )
                     .padding(vertical = 8.dp, horizontal = 12.dp)
                     .fillMaxHeight()
-                    .weight(1f)
+                    .weight(1f),
+                colors = colors
             )
 
             Icon(
