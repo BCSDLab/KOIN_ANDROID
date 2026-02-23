@@ -134,7 +134,7 @@ private fun ChatBubbleFromMe(
         Text(
             text = message.timestamp.format(DateTimeFormatter.ofPattern("HH:mm")),
             style = KoinTheme.typography.regular12,
-            color = colors.bubbleContentColor
+            color = colors.timeStampColor
         )
         Spacer(modifier = Modifier.width(12.dp))
         Box(
