@@ -61,6 +61,25 @@ object ChatBubbleDefaults {
         iconContainerColor = iconContainerColor,
         iconBorderColor = iconBorderColor
     )
+
+    @Composable
+    fun purpleColors(
+        bubbleContainerColorFromMe: Color = KoinTheme.colors.neutral200,
+        bubbleContainerColorFromOther: Color = KoinTheme.colors.neutral100,
+        bubbleContentColor: Color = KoinTheme.colors.neutral800,
+        bubbleTimeStampColor: Color = KoinTheme.colors.neutral500,
+        userNicknameColor: Color = KoinTheme.colors.neutral600,
+        iconContainerColor: Color = Color.Unspecified,
+        iconBorderColor: Color = Color.Unspecified
+    ): ChatBubbleColors = ChatBubbleColors(
+        bubbleContainerColorFromMe = bubbleContainerColorFromMe,
+        bubbleContainerColorFromOther = bubbleContainerColorFromOther,
+        bubbleContentColor = bubbleContentColor,
+        timeStampColor = bubbleTimeStampColor,
+        userNicknameColor = userNicknameColor,
+        iconContainerColor = iconContainerColor,
+        iconBorderColor = iconBorderColor
+    )
 }
 
 @Immutable
