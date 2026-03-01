@@ -41,5 +41,4 @@ class GetDeptNamesUseCaseTest {
 
         assertTrue(result.isEmpty())
     }
-
 }
