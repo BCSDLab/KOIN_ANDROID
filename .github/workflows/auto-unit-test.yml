@@ -1,0 +1,24 @@
+name: Anto Unit Test
+
+on:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # JDK 17 설치
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: gradle
+
+      # Unit Test 실행
+      - name: Run Unit Tests
+        run: ./gradlew test --no-daemon --parallel
