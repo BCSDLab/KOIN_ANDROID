@@ -66,34 +66,90 @@ class FakeStoreRepository : StoreRepository {
 
     var lastCapturedMinimumOrderAmount: Int? = Int.MIN_VALUE
 
-    fun setFakeShops(shops: List<Shop>) { fakeShops = shops }
-    fun setFakeStores(stores: List<Store>) { fakeStores = stores }
-    fun setFakeStoreEvents(events: List<StoreEvent>) { fakeStoreEvents = events }
-    fun setFakeStoreCategories(categories: List<StoreCategories>) { fakeStoreCategories = categories }
-    fun setFakeStoreWithMenu(storeWithMenu: StoreWithMenu) { fakeStoreWithMenu = storeWithMenu }
-    fun setFakeStoreWithMenuV2(storeWithMenuV2: StoreWithMenuV2) { fakeStoreWithMenuV2 = storeWithMenuV2 }
-    fun setFakeStoreMenuCategories(categories: List<StoreMenuCategory>) { fakeStoreMenuCategories = categories }
-    fun setFakeStoreMenu(storeMenu: StoreMenu) { fakeStoreMenu = storeMenu }
-    fun setFakeShopEvents(shopEvents: ShopEvents) { fakeShopEvents = shopEvents }
-    fun setFakeStoreReview(storeReview: StoreReview) { fakeStoreReview = storeReview }
-    fun setFakeReviewDetail(reviewDetail: ReviewDetail) { fakeReviewDetail = reviewDetail }
-    fun setFakeStoreBenefit(storeBenefit: StoreBenefit) { fakeStoreBenefit = storeBenefit }
-    fun setFakeBenefitCategoryList(list: BenefitCategoryList) { fakeBenefitCategoryList = list }
-    fun setFakeShopSearchRelatedList(list: ShopSearchRelatedList) { fakeShopSearchRelatedList = list }
-    fun setFakeOrderableShopSearchRelated(related: OrderableShopSearchRelated) { fakeOrderableShopSearchRelated = related }
-    fun setFakeShopSummary(summary: ShopSummary) { fakeShopSummary = summary }
-    fun setFakeShopDetail(detail: ShopDetail) { fakeShopDetail = detail }
-    fun setFakeShopDeliveryAvailable(delivery: ShopDeliveryAvailable) { fakeShopDeliveryAvailable = delivery }
-    fun setFakeShopMenusList(menus: List<ShopMenus>) { fakeShopMenusList = menus }
-    fun setFakeShopMenu(menu: ShopMenu) { fakeShopMenu = menu }
-    fun setFakeShopMenusGroups(groups: List<ShopMenusGroup>) { fakeShopMenusGroups = groups }
-    fun setFakeOrderHistoryRelated(history: OrderHistoryRelated) { fakeOrderHistoryRelated = history }
-    fun setFakeCart(cart: Cart) { fakeCart = cart }
-    fun setFakeCartSummary(summary: CartSummary) { fakeCartSummary = summary }
-    fun setFakeCartPaymentSummary(summary: CartPaymentSummary) { fakeCartPaymentSummary = summary }
-    fun setFakeCartItemEdit(edit: CartItemEdit) { fakeCartItemEdit = edit }
-    fun setFakeCartItemsCount(count: CartItemsCount) { fakeCartItemsCount = count }
-    fun setFakeOrdersInProgress(orders: List<OrderInProgress>) { fakeOrdersInProgress = orders }
+    fun setFakeShops(shops: List<Shop>) {
+        fakeShops = shops
+    }
+    fun setFakeStores(stores: List<Store>) {
+        fakeStores = stores
+    }
+    fun setFakeStoreEvents(events: List<StoreEvent>) {
+        fakeStoreEvents = events
+    }
+    fun setFakeStoreCategories(categories: List<StoreCategories>) {
+        fakeStoreCategories = categories
+    }
+    fun setFakeStoreWithMenu(storeWithMenu: StoreWithMenu) {
+        fakeStoreWithMenu = storeWithMenu
+    }
+    fun setFakeStoreWithMenuV2(storeWithMenuV2: StoreWithMenuV2) {
+        fakeStoreWithMenuV2 = storeWithMenuV2
+    }
+    fun setFakeStoreMenuCategories(categories: List<StoreMenuCategory>) {
+        fakeStoreMenuCategories = categories
+    }
+    fun setFakeStoreMenu(storeMenu: StoreMenu) {
+        fakeStoreMenu = storeMenu
+    }
+    fun setFakeShopEvents(shopEvents: ShopEvents) {
+        fakeShopEvents = shopEvents
+    }
+    fun setFakeStoreReview(storeReview: StoreReview) {
+        fakeStoreReview = storeReview
+    }
+    fun setFakeReviewDetail(reviewDetail: ReviewDetail) {
+        fakeReviewDetail = reviewDetail
+    }
+    fun setFakeStoreBenefit(storeBenefit: StoreBenefit) {
+        fakeStoreBenefit = storeBenefit
+    }
+    fun setFakeBenefitCategoryList(list: BenefitCategoryList) {
+        fakeBenefitCategoryList = list
+    }
+    fun setFakeShopSearchRelatedList(list: ShopSearchRelatedList) {
+        fakeShopSearchRelatedList = list
+    }
+    fun setFakeOrderableShopSearchRelated(related: OrderableShopSearchRelated) {
+        fakeOrderableShopSearchRelated = related
+    }
+    fun setFakeShopSummary(summary: ShopSummary) {
+        fakeShopSummary = summary
+    }
+    fun setFakeShopDetail(detail: ShopDetail) {
+        fakeShopDetail = detail
+    }
+    fun setFakeShopDeliveryAvailable(delivery: ShopDeliveryAvailable) {
+        fakeShopDeliveryAvailable = delivery
+    }
+    fun setFakeShopMenusList(menus: List<ShopMenus>) {
+        fakeShopMenusList = menus
+    }
+    fun setFakeShopMenu(menu: ShopMenu) {
+        fakeShopMenu = menu
+    }
+    fun setFakeShopMenusGroups(groups: List<ShopMenusGroup>) {
+        fakeShopMenusGroups = groups
+    }
+    fun setFakeOrderHistoryRelated(history: OrderHistoryRelated) {
+        fakeOrderHistoryRelated = history
+    }
+    fun setFakeCart(cart: Cart) {
+        fakeCart = cart
+    }
+    fun setFakeCartSummary(summary: CartSummary) {
+        fakeCartSummary = summary
+    }
+    fun setFakeCartPaymentSummary(summary: CartPaymentSummary) {
+        fakeCartPaymentSummary = summary
+    }
+    fun setFakeCartItemEdit(edit: CartItemEdit) {
+        fakeCartItemEdit = edit
+    }
+    fun setFakeCartItemsCount(count: CartItemsCount) {
+        fakeCartItemsCount = count
+    }
+    fun setFakeOrdersInProgress(orders: List<OrderInProgress>) {
+        fakeOrdersInProgress = orders
+    }
 
     override suspend fun getStores(storeSorter: StoreSorter?, isOperating: Boolean?, isDelivery: Boolean?, query: String?): List<Store> =
         fakeStores

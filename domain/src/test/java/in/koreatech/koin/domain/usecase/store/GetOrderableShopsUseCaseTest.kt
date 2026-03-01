@@ -2,7 +2,6 @@ package `in`.koreatech.koin.domain.usecase.store
 
 import `in`.koreatech.koin.domain.model.store.OpenStatus
 import `in`.koreatech.koin.domain.model.store.Shop
-import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.domain.repository.FakeStoreRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
