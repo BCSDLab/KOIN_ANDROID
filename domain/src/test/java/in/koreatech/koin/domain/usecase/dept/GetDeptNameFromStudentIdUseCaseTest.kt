@@ -95,6 +95,14 @@ class GetDeptNameFromStudentIdUseCaseTest {
     }
 
     @Test
+    fun `존재하지 않는 학과 코드일 때 null과 ErrorHandler를 반환한다`() = runTest {
+        val result = GetDeptNameFromStudentIdUseCase(deptRepository, deptErrorHandler)(validStudentId10)
+
+        assertNull(result.first)
+        assertNotNull(result.second)
+    }
+
+    @Test
     fun `저장소 호출 실패 시 null과 ErrorHandler를 반환한다`() = runTest {
         deptRepository.setShouldThrow(true)
 

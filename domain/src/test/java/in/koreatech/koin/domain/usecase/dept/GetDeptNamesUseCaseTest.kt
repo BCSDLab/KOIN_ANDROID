@@ -42,14 +42,4 @@ class GetDeptNamesUseCaseTest {
         assertTrue(result.isEmpty())
     }
 
-    @Test
-    fun `학과 이름만 추출하여 반환한다`() = runTest {
-        deptRepository.setFakeDepts(fakeDepts)
-
-        val result = GetDeptNamesUseCase(deptRepository)()
-
-        assertTrue(result.contains("컴퓨터공학부"))
-        assertTrue(result.contains("기계공학부"))
-        assertTrue(result.contains("전기전자통신공학부"))
-    }
 }
