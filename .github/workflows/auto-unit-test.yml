@@ -19,6 +19,12 @@ jobs:
           java-version: '17'
           cache: gradle
 
+      # local.properties 생성
+      - name: Create local.properties
+        env:
+          PROPERTIES: ${{ secrets.PROPERTIES }}
+        run: echo $PROPERTIES | base64 -di > ./local.properties
+
       # Unit Test 실행
       - name: Run Unit Tests
         run: ./gradlew test --no-daemon --parallel
