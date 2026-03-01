@@ -1,4 +1,4 @@
-name: Anto Unit Test
+name: Auto Unit Test
 
 on:
   pull_request:
