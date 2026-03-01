@@ -3,6 +3,8 @@ package `in`.koreatech.koin.domain.repository
 class FakeTokenRepository : TokenRepository {
     private var accessToken: String? = null
     private var refreshToken: String? = null
+    private var accessHistoryId: String? = null
+    private var ownerAccessToken: String? = null
 
     override suspend fun saveAccessToken(token: String) {
         accessToken = token
@@ -13,46 +15,35 @@ class FakeTokenRepository : TokenRepository {
     }
 
     override suspend fun saveAccessHistoryId(token: String) {
-        TODO("Not yet implemented")
+        accessHistoryId = token
     }
 
-    override suspend fun getAccessToken(): String? {
-        return accessToken
-    }
+    override suspend fun getAccessToken(): String? = accessToken
 
-    override suspend fun getRefreshToken(): String? {
-        return refreshToken
-    }
+    override suspend fun getRefreshToken(): String? = refreshToken
 
-    override suspend fun getAccessHistoryId(): String? {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getAccessHistoryId(): String? = accessHistoryId
 
-    override fun getAccessTokenBlocking(): String? {
-        TODO("Not yet implemented")
-    }
+    override fun getAccessTokenBlocking(): String? = accessToken
 
     override suspend fun removeToken() {
-        TODO("Not yet implemented")
+        accessToken = null
+        refreshToken = null
     }
 
     override suspend fun saveOwnerAccessToken(token: String) {
-        TODO("Not yet implemented")
+        ownerAccessToken = token
     }
 
-    override suspend fun getOwnerAccessToken(): String? {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getOwnerAccessToken(): String? = ownerAccessToken
 
-    override fun getAccessOwnerTokenBlocking(): String? {
-        TODO("Not yet implemented")
-    }
+    override fun getAccessOwnerTokenBlocking(): String? = ownerAccessToken
 
     override suspend fun removeOwnerAccessToken() {
-        TODO("Not yet implemented")
+        ownerAccessToken = null
     }
 
     override suspend fun removeRefreshToken() {
-        TODO("Not yet implemented")
+        refreshToken = null
     }
 }
