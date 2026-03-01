@@ -5,6 +5,7 @@ import `in`.koreatech.koin.domain.model.store.Shop
 import `in`.koreatech.koin.domain.repository.FakeStoreRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -105,13 +106,14 @@ class GetOrderableShopsUseCaseTest {
     @Test
     fun `정렬 옵션 없이 가져오면 기본값(NONE)으로 저장소에 전달된다`() = runTest {
         val getOrderableShopsUseCase = GetOrderableShopsUseCase(storeRepository)
-        val result = getOrderableShopsUseCase()
 
-        assertTrue(result.isSuccess)
+        getOrderableShopsUseCase()
+
+        assertEquals("NONE", storeRepository.lastCapturedSorter)
     }
 
     @Test
-    fun `저장소 호출 실패 시 실패 결과를 반환한다`() = runTest {
+    fun `저장소가 비어있을 때 빈 리스트를 반환한다`() = runTest {
         storeRepository.setFakeShops(emptyList())
         val getOrderableShopsUseCase = GetOrderableShopsUseCase(storeRepository)
 
@@ -119,5 +121,15 @@ class GetOrderableShopsUseCaseTest {
 
         assertTrue(result.isSuccess)
         assertTrue(result.getOrThrow().isEmpty())
+    }
+
+    @Test
+    fun `저장소 호출 실패 시 실패 결과를 반환한다`() = runTest {
+        storeRepository.setShouldFail(true)
+        val getOrderableShopsUseCase = GetOrderableShopsUseCase(storeRepository)
+
+        val result = getOrderableShopsUseCase()
+
+        assertFalse(result.isSuccess)
     }
 }

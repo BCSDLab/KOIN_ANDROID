@@ -64,7 +64,9 @@ class FakeStoreRepository : StoreRepository {
     private var fakeCartItemsCount: CartItemsCount? = null
     private var fakeOrdersInProgress: List<OrderInProgress> = emptyList()
 
-    var lastCapturedMinimumOrderAmount: Int? = Int.MIN_VALUE
+    var lastCapturedMinimumOrderAmount: Int? = null
+    var lastCapturedSorter: String? = null
+    private var shouldFail = false
 
     fun setFakeShops(shops: List<Shop>) {
         fakeShops = shops
@@ -150,6 +152,9 @@ class FakeStoreRepository : StoreRepository {
     fun setFakeOrdersInProgress(orders: List<OrderInProgress>) {
         fakeOrdersInProgress = orders
     }
+    fun setShouldFail(value: Boolean) {
+        shouldFail = value
+    }
 
     override suspend fun getStores(storeSorter: StoreSorter?, isOperating: Boolean?, isDelivery: Boolean?, query: String?): List<Store> =
         fakeStores
@@ -206,6 +211,8 @@ class FakeStoreRepository : StoreRepository {
 
     override suspend fun getOrderableShops(sorter: String?, filter: List<String>, categoryFilter: Int?, minimumOrderAmount: Int?): Result<List<Shop>> {
         lastCapturedMinimumOrderAmount = minimumOrderAmount
+        lastCapturedSorter = sorter
+        if (shouldFail) return Result.failure(RuntimeException("Network error"))
         return Result.success(fakeShops)
     }
 
