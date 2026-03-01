@@ -36,168 +36,189 @@ import `in`.koreatech.koin.domain.model.store.StoreWithMenuV2
 
 class FakeStoreRepository : StoreRepository {
     private var fakeShops: List<Shop> = emptyList()
+    private var fakeStores: List<Store> = emptyList()
+    private var fakeStoreEvents: List<StoreEvent> = emptyList()
+    private var fakeStoreCategories: List<StoreCategories> = emptyList()
+    private var fakeStoreWithMenu: StoreWithMenu? = null
+    private var fakeStoreWithMenuV2: StoreWithMenuV2? = null
+    private var fakeStoreMenuCategories: List<StoreMenuCategory> = emptyList()
+    private var fakeStoreMenu: StoreMenu? = null
+    private var fakeShopEvents: ShopEvents? = null
+    private var fakeStoreReview: StoreReview? = null
+    private var fakeReviewDetail: ReviewDetail? = null
+    private var fakeStoreBenefit: StoreBenefit? = null
+    private var fakeBenefitCategoryList: BenefitCategoryList? = null
+    private var fakeShopSearchRelatedList: ShopSearchRelatedList? = null
+    private var fakeOrderableShopSearchRelated: OrderableShopSearchRelated? = null
+    private var fakeShopSummary: ShopSummary? = null
+    private var fakeShopDetail: ShopDetail? = null
+    private var fakeShopDeliveryAvailable: ShopDeliveryAvailable? = null
+    private var fakeShopMenusList: List<ShopMenus> = emptyList()
+    private var fakeShopMenu: ShopMenu? = null
+    private var fakeShopMenusGroups: List<ShopMenusGroup> = emptyList()
+    private var fakeOrderHistoryRelated: OrderHistoryRelated? = null
+    private var fakeCart: Cart? = null
+    private var fakeCartSummary: CartSummary? = null
+    private var fakeCartPaymentSummary: CartPaymentSummary? = null
+    private var fakeCartItemEdit: CartItemEdit? = null
+    private var fakeCartItemsCount: CartItemsCount? = null
+    private var fakeOrdersInProgress: List<OrderInProgress> = emptyList()
 
-    fun setFakeShops(shops: List<Shop>) {
-        fakeShops = shops
+    var lastCapturedMinimumOrderAmount: Int? = Int.MIN_VALUE
+
+    fun setFakeShops(shops: List<Shop>) { fakeShops = shops }
+    fun setFakeStores(stores: List<Store>) { fakeStores = stores }
+    fun setFakeStoreEvents(events: List<StoreEvent>) { fakeStoreEvents = events }
+    fun setFakeStoreCategories(categories: List<StoreCategories>) { fakeStoreCategories = categories }
+    fun setFakeStoreWithMenu(storeWithMenu: StoreWithMenu) { fakeStoreWithMenu = storeWithMenu }
+    fun setFakeStoreWithMenuV2(storeWithMenuV2: StoreWithMenuV2) { fakeStoreWithMenuV2 = storeWithMenuV2 }
+    fun setFakeStoreMenuCategories(categories: List<StoreMenuCategory>) { fakeStoreMenuCategories = categories }
+    fun setFakeStoreMenu(storeMenu: StoreMenu) { fakeStoreMenu = storeMenu }
+    fun setFakeShopEvents(shopEvents: ShopEvents) { fakeShopEvents = shopEvents }
+    fun setFakeStoreReview(storeReview: StoreReview) { fakeStoreReview = storeReview }
+    fun setFakeReviewDetail(reviewDetail: ReviewDetail) { fakeReviewDetail = reviewDetail }
+    fun setFakeStoreBenefit(storeBenefit: StoreBenefit) { fakeStoreBenefit = storeBenefit }
+    fun setFakeBenefitCategoryList(list: BenefitCategoryList) { fakeBenefitCategoryList = list }
+    fun setFakeShopSearchRelatedList(list: ShopSearchRelatedList) { fakeShopSearchRelatedList = list }
+    fun setFakeOrderableShopSearchRelated(related: OrderableShopSearchRelated) { fakeOrderableShopSearchRelated = related }
+    fun setFakeShopSummary(summary: ShopSummary) { fakeShopSummary = summary }
+    fun setFakeShopDetail(detail: ShopDetail) { fakeShopDetail = detail }
+    fun setFakeShopDeliveryAvailable(delivery: ShopDeliveryAvailable) { fakeShopDeliveryAvailable = delivery }
+    fun setFakeShopMenusList(menus: List<ShopMenus>) { fakeShopMenusList = menus }
+    fun setFakeShopMenu(menu: ShopMenu) { fakeShopMenu = menu }
+    fun setFakeShopMenusGroups(groups: List<ShopMenusGroup>) { fakeShopMenusGroups = groups }
+    fun setFakeOrderHistoryRelated(history: OrderHistoryRelated) { fakeOrderHistoryRelated = history }
+    fun setFakeCart(cart: Cart) { fakeCart = cart }
+    fun setFakeCartSummary(summary: CartSummary) { fakeCartSummary = summary }
+    fun setFakeCartPaymentSummary(summary: CartPaymentSummary) { fakeCartPaymentSummary = summary }
+    fun setFakeCartItemEdit(edit: CartItemEdit) { fakeCartItemEdit = edit }
+    fun setFakeCartItemsCount(count: CartItemsCount) { fakeCartItemsCount = count }
+    fun setFakeOrdersInProgress(orders: List<OrderInProgress>) { fakeOrdersInProgress = orders }
+
+    override suspend fun getStores(storeSorter: StoreSorter?, isOperating: Boolean?, isDelivery: Boolean?, query: String?): List<Store> =
+        fakeStores
+
+    override suspend fun getStoreEvents(): List<StoreEvent> = fakeStoreEvents
+
+    override suspend fun getStoreCategories(): List<StoreCategories> = fakeStoreCategories
+
+    override suspend fun getStoreWithMenu(storeId: Int): StoreWithMenu =
+        fakeStoreWithMenu ?: throw IllegalStateException("No StoreWithMenu set")
+
+    override suspend fun getStoreWithMenuV2(storeId: Int): StoreWithMenuV2 =
+        fakeStoreWithMenuV2 ?: throw IllegalStateException("No StoreWithMenuV2 set")
+
+    override suspend fun getStoreMenuCategory(storeId: Int): List<StoreMenuCategory> =
+        fakeStoreMenuCategories
+
+    override suspend fun getShopMenus(storeId: Int): StoreMenu =
+        fakeStoreMenu ?: throw IllegalStateException("No StoreMenu set")
+
+    override suspend fun getShopEvents(storeId: Int): ShopEvents =
+        fakeShopEvents ?: throw IllegalStateException("No ShopEvents set")
+
+    override suspend fun getStoreReviews(storeId: Int): StoreReview =
+        fakeStoreReview ?: throw IllegalStateException("No StoreReview set")
+
+    override suspend fun invalidateStores() {}
+
+    override suspend fun writeReview(shopId: Int, content: Review) {}
+
+    override suspend fun deleteReview(reviewId: Int, shopId: Int): Result<Unit> =
+        Result.success(Unit)
+
+    override suspend fun modifyReview(reviewId: Int, shopId: Int, content: Review) {}
+
+    override suspend fun searchReview(reviewId: Int, shopId: Int): ReviewDetail =
+        fakeReviewDetail ?: throw IllegalStateException("No ReviewDetail set")
+
+    override suspend fun reportReview(storeId: Int?, reviewId: Int?, reportList: List<StoreReport>?): Result<Unit> =
+        Result.success(Unit)
+
+    override suspend fun getStoreBenefitShopList(uid: Int): StoreBenefit =
+        fakeStoreBenefit ?: throw IllegalStateException("No StoreBenefit set")
+
+    override suspend fun getStoreBenefitCategories(): BenefitCategoryList =
+        fakeBenefitCategoryList ?: throw IllegalStateException("No BenefitCategoryList set")
+
+    override suspend fun getShopSearchRelatedList(query: String): ShopSearchRelatedList =
+        fakeShopSearchRelatedList ?: throw IllegalStateException("No ShopSearchRelatedList set")
+
+    override suspend fun getShopSearchRelatedListV2(keyword: String): Result<OrderableShopSearchRelated> =
+        fakeOrderableShopSearchRelated?.let { Result.success(it) }
+            ?: throw IllegalStateException("No OrderableShopSearchRelated set")
+
+    override suspend fun getOrderableShops(sorter: String?, filter: List<String>, categoryFilter: Int?, minimumOrderAmount: Int?): Result<List<Shop>> {
+        lastCapturedMinimumOrderAmount = minimumOrderAmount
+        return Result.success(fakeShops)
     }
-
-    override suspend fun getStores(storeSorter: StoreSorter?, isOperating: Boolean?, isDelivery: Boolean?, query: String?): List<Store> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getStoreEvents(): List<StoreEvent> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getStoreCategories(): List<StoreCategories> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getStoreWithMenu(storeId: Int): StoreWithMenu {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getStoreWithMenuV2(storeId: Int): StoreWithMenuV2 {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getStoreMenuCategory(storeId: Int): List<StoreMenuCategory> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getShopMenus(storeId: Int): StoreMenu {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getShopEvents(storeId: Int): ShopEvents {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getStoreReviews(storeId: Int): StoreReview {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun invalidateStores() {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun writeReview(shopId: Int, content: Review) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun deleteReview(reviewId: Int, shopId: Int): Result<Unit> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun modifyReview(reviewId: Int, shopId: Int, content: Review) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun searchReview(reviewId: Int, shopId: Int): ReviewDetail {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun reportReview(storeId: Int?, reviewId: Int?, reportList: List<StoreReport>?): Result<Unit> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getStoreBenefitShopList(uid: Int): StoreBenefit {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getStoreBenefitCategories(): BenefitCategoryList {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getShopSearchRelatedList(query: String): ShopSearchRelatedList {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getShopSearchRelatedListV2(keyword: String): Result<OrderableShopSearchRelated> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getOrderableShops(sorter: String?, filter: List<String>, categoryFilter: Int?, minimumOrderAmount: Int?): Result<List<Shop>> = Result.success(fakeShops)
 
     override suspend fun getNearbyShops(): Result<List<Shop>> = Result.success(fakeShops)
 
-    override suspend fun getOrderableShopSummary(shopId: Int): Result<ShopSummary> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getOrderableShopSummary(shopId: Int): Result<ShopSummary> =
+        fakeShopSummary?.let { Result.success(it) }
+            ?: throw IllegalStateException("No ShopSummary set")
 
-    override suspend fun getOrderableShopDetail(shopId: Int): Result<ShopDetail> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getOrderableShopDetail(shopId: Int): Result<ShopDetail> =
+        fakeShopDetail?.let { Result.success(it) }
+            ?: throw IllegalStateException("No ShopDetail set")
 
-    override suspend fun getOrderableShopDelivery(shopId: Int): Result<ShopDeliveryAvailable> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getOrderableShopDelivery(shopId: Int): Result<ShopDeliveryAvailable> =
+        fakeShopDeliveryAvailable?.let { Result.success(it) }
+            ?: throw IllegalStateException("No ShopDeliveryAvailable set")
 
-    override suspend fun getOrderableShopMenus(shopId: Int): Result<List<ShopMenus>> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getOrderableShopMenus(shopId: Int): Result<List<ShopMenus>> =
+        Result.success(fakeShopMenusList)
 
-    override suspend fun getOrderableShopMenu(shopId: Int, menuId: Int): Result<ShopMenu> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getOrderableShopMenu(shopId: Int, menuId: Int): Result<ShopMenu> =
+        fakeShopMenu?.let { Result.success(it) }
+            ?: throw IllegalStateException("No ShopMenu set")
 
-    override suspend fun getOrderableShopMenuGroups(shopId: Int): Result<List<ShopMenusGroup>> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getOrderableShopMenuGroups(shopId: Int): Result<List<ShopMenusGroup>> =
+        Result.success(fakeShopMenusGroups)
 
-    override suspend fun getOrderableShopSearchRelated(query: String): Result<OrderableShopSearchRelated> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getOrderableShopSearchRelated(query: String): Result<OrderableShopSearchRelated> =
+        fakeOrderableShopSearchRelated?.let { Result.success(it) }
+            ?: throw IllegalStateException("No OrderableShopSearchRelated set")
 
-    override suspend fun getOrderHistories(page: Int?, limit: Int?, period: String?, status: String?, type: String?, query: String?): Result<OrderHistoryRelated> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getOrderHistories(page: Int?, limit: Int?, period: String?, status: String?, type: String?, query: String?): Result<OrderHistoryRelated> =
+        fakeOrderHistoryRelated?.let { Result.success(it) }
+            ?: throw IllegalStateException("No OrderHistoryRelated set")
 
-    override suspend fun updateCartItem(cartMenuItemId: Int, cartItem: CartItem): Result<Unit> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun updateCartItem(cartMenuItemId: Int, cartItem: CartItem): Result<Unit> =
+        Result.success(Unit)
 
-    override suspend fun updateCartItemQuantity(cartMenuItemId: Int, quantity: Int): Result<Unit> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun updateCartItemQuantity(cartMenuItemId: Int, quantity: Int): Result<Unit> =
+        Result.success(Unit)
 
-    override suspend fun addCartItem(cartAdd: CartAdd): Result<Unit> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun addCartItem(cartAdd: CartAdd): Result<Unit> = Result.success(Unit)
 
-    override suspend fun getCartItems(type: String): Result<Cart> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getCartItems(type: String): Result<Cart> =
+        fakeCart?.let { Result.success(it) }
+            ?: throw IllegalStateException("No Cart set")
 
-    override suspend fun validateCartItems(orderType: String): Result<Unit> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun validateCartItems(orderType: String): Result<Unit> = Result.success(Unit)
 
-    override suspend fun getCartSummary(orderableShopId: Int): Result<CartSummary> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getCartSummary(orderableShopId: Int): Result<CartSummary> =
+        fakeCartSummary?.let { Result.success(it) }
+            ?: throw IllegalStateException("No CartSummary set")
 
-    override suspend fun getCartPaymentSummary(type: String): Result<CartPaymentSummary> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getCartPaymentSummary(type: String): Result<CartPaymentSummary> =
+        fakeCartPaymentSummary?.let { Result.success(it) }
+            ?: throw IllegalStateException("No CartPaymentSummary set")
 
-    override suspend fun getCartItemEdit(cartMenuItemId: Int): Result<CartItemEdit> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getCartItemEdit(cartMenuItemId: Int): Result<CartItemEdit> =
+        fakeCartItemEdit?.let { Result.success(it) }
+            ?: throw IllegalStateException("No CartItemEdit set")
 
-    override suspend fun resetCart(): Result<Unit> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun resetCart(): Result<Unit> = Result.success(Unit)
 
-    override suspend fun deleteCartItem(cartMenuItemId: Int): Result<Unit> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun deleteCartItem(cartMenuItemId: Int): Result<Unit> = Result.success(Unit)
 
-    override suspend fun getCartItemsCount(): Result<CartItemsCount> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getCartItemsCount(): Result<CartItemsCount> =
+        fakeCartItemsCount?.let { Result.success(it) }
+            ?: throw IllegalStateException("No CartItemsCount set")
 
-    override suspend fun getOrderInProgress(): Result<List<OrderInProgress>> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getOrderInProgress(): Result<List<OrderInProgress>> =
+        Result.success(fakeOrdersInProgress)
 }
