@@ -25,6 +25,10 @@ jobs:
           PROPERTIES: ${{ secrets.PROPERTIES }}
         run: echo $PROPERTIES | base64 -di > ./local.properties
 
+      # Gradle 에 실행 권한 부여
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
       # Unit Test 실행
       - name: Run Unit Tests
         run: ./gradlew test --no-daemon --parallel
