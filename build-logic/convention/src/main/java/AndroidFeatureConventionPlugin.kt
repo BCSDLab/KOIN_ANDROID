@@ -2,8 +2,10 @@ import com.android.build.api.dsl.LibraryExtension
 import `in`.koreatech.convention.configureAndroidCompose
 import `in`.koreatech.convention.configureAndroidProject
 import `in`.koreatech.convention.configureAndroidTest
+import `in`.koreatech.convention.configureDetekt
 import `in`.koreatech.convention.configureTest
 import `in`.koreatech.convention.libs
+import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -18,6 +20,7 @@ internal class AndroidFeatureConventionPlugin : Plugin<Project> {
                 apply(libs.findPlugin("ksp").get().get().pluginId)
                 apply(libs.findPlugin("ktlint").get().get().pluginId)
                 apply(libs.findPlugin("compose-compiler").get().get().pluginId)
+                apply(libs.findPlugin("detekt").get().get().pluginId)
             }
 
             extensions.configure<LibraryExtension> {
@@ -25,6 +28,10 @@ internal class AndroidFeatureConventionPlugin : Plugin<Project> {
                 configureAndroidCompose(this)
                 configureTest()
                 configureAndroidTest()
+            }
+
+            extensions.configure<DetektExtension> {
+                configureDetekt(this)
             }
         }
     }
