@@ -7,6 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.IoDispatcher
 import `in`.koreatech.koin.data.repository.ArticleRepositoryImpl
 import `in`.koreatech.koin.data.repository.BannerRepositoryImpl
+import `in`.koreatech.koin.data.repository.CallvanRepositoryImpl
 import `in`.koreatech.koin.data.repository.CartRepositoryImpl
 import `in`.koreatech.koin.data.repository.ChatRepositoryImpl
 import `in`.koreatech.koin.data.repository.ClubRepositoryImpl
@@ -44,6 +45,7 @@ import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.local.VersionLocalDataSource
 import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.BannerRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.CallvanRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.CartRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.ChatRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.ClubRemoteDataSource
@@ -61,6 +63,7 @@ import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.VersionRemoteDataSource
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.repository.BannerRepository
+import `in`.koreatech.koin.domain.repository.CallvanRepository
 import `in`.koreatech.koin.domain.repository.CartRepository
 import `in`.koreatech.koin.domain.repository.ChatRepository
 import `in`.koreatech.koin.domain.repository.ClubRepository
@@ -304,5 +307,13 @@ object RepositoryModule {
         settingLocalDataSource: SettingLocalDataSource
     ): SettingRepository {
         return SettingRepositoryImpl(settingLocalDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCallvanRepository(
+        callvanRemoteDataSource: CallvanRemoteDataSource
+    ): CallvanRepository {
+        return CallvanRepositoryImpl(callvanRemoteDataSource)
     }
 }
