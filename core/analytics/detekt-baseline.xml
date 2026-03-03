@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>LongParameterList:EventLogger.kt$EventLogger$( action: EventAction, category: EventCategory, label: String, value: String, customSessionId: String, vararg extras: EventExtra )</ID>
+    <ID>TooManyFunctions:EventLogger.kt$EventLogger</ID>
+  </CurrentIssues>
+</SmellBaseline>
