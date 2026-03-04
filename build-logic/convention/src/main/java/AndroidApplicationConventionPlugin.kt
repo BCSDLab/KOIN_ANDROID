@@ -23,7 +23,6 @@ internal class AndroidApplicationConventionPlugin : Plugin<Project> {
                 apply(libs.findPlugin("ktlint").get().get().pluginId)
                 apply(libs.findPlugin("compose-compiler").get().get().pluginId)
                 apply(libs.findPlugin("detekt").get().get().pluginId)
-                apply(libs.findPlugin("kover").get().get().pluginId)
             }
             val extension = extensions.getByType<BaseAppModuleExtension>()
             extensions.configure<ApplicationExtension> {
