@@ -5,6 +5,30 @@
     <string name="callvan_entry_recruit_title">콜밴팟 모집</string>
     <string name="callvan_entry_recruit_description">글 작성하기</string>
 
+    <string name="filter_container">필터</string>
+    <string name="write_btn">모집하기</string>
+    <string name="callvan_search_hint">검색어를 입력해주세요.</string>
+    <string name="bottom_sheet_close">닫기</string>
+
+    <string name="filter_list_reset">초기화</string>
+    <string name="filter_list_adapt">적용하기</string>
+    <string name="filter_list_sort_order">정렬</string>
+    <string name="filter_list_recruitment_status">모집 상태</string>
+    <string name="filter_list_origin">출발지</string>
+    <string name="filter_list_destination">도착지</string>
+    <string name="filter_list_all">전체</string>
+    <string name="filter_list_school">학교</string>
+    <string name="filter_list_terminal">천안터미널</string>
+    <string name="filter_list_downtown">병천 시내</string>
+    <string name="filter_list_singyeri">신계리</string>
+    <string name="filter_list_ochang">오창</string>
+    <string name="filter_list_cheonan">천안역</string>
+    <string name="filter_list_asan">천안아산역</string>
+    <string name="filter_list_recruiting">모집중</string>
+    <string name="filter_list_completed">모집마감</string>
+    <string name="filter_list_latest">최신순</string>
+    <string name="filter_list_departure">출발시각순</string>
+
     <string name="callvan_notification_mark_as_read_all">모두 읽음으로 표시</string>
     <string name="callvan_notification_delete_all">알림 전체 삭제</string>
     <string name="callvan_notification_top_bar">알림</string>
