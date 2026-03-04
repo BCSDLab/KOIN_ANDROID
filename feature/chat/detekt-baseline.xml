@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>LongMethod:ChatBubble.kt$@Composable private fun ChatBubbleFromOther( message: ConvertedChatMessage, modifier: Modifier = Modifier, chatPartnerProfileImage: Uri? = null, onShowImageChange: (Boolean, Uri) -&gt; Unit = { _, _ -&gt; } )</ID>
+    <ID>LongMethod:ChatList.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun ChatList( viewModel: ChatListViewModel = hiltViewModel(), showBlockedMessage: Boolean = false )</ID>
+    <ID>LongMethod:ChatListItem.kt$@Composable fun ChatListItem( title: String, recentMessage: String, imageUrl: String, lastMessageAt: LocalTime, unReadMessageCount: Int, modifier: Modifier = Modifier )</ID>
+    <ID>LongMethod:ChatRoom.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun ChatRoom( viewModel: ChatRoomViewModel = hiltViewModel(), navigateToChatList: (isBlocked: Boolean) -&gt; Unit )</ID>
+    <ID>LongMethod:ChatRoomContent.kt$@Composable fun ChatRoomContent( isLoading: Boolean, messages: List&lt;ConvertedChatMessages&gt;, uploadingImage: List&lt;ConvertedChatMessage&gt;, chatPartnerProfileImage: Uri?, chatInputValue: String, showBlockDialog: Boolean, showImage: Pair&lt;Boolean, Uri&gt;, onBlockUser: () -&gt; Unit, onBlockCancel: () -&gt; Unit, onChatInputValueChange: (String) -&gt; Unit, onImageButtonClick: () -&gt; Unit, onSendClick: () -&gt; Unit, onShowImageChange: (Boolean, Uri) -&gt; Unit, modifier: Modifier = Modifier )</ID>
+    <ID>LongParameterList:ChatInput.kt$( value: String, onValueChange: (String) -&gt; Unit, onImageButtonClick: () -&gt; Unit, onSendClick: () -&gt; Unit, modifier: Modifier = Modifier, windowInsets: WindowInsets = ChatInputDefaults.windowInsets )</ID>
+    <ID>LongParameterList:ChatListItem.kt$( title: String, recentMessage: String, imageUrl: String, lastMessageAt: LocalTime, unReadMessageCount: Int, modifier: Modifier = Modifier )</ID>
+    <ID>LongParameterList:ChatRoomContent.kt$( isLoading: Boolean, messages: List&lt;ConvertedChatMessages&gt;, uploadingImage: List&lt;ConvertedChatMessage&gt;, chatPartnerProfileImage: Uri?, chatInputValue: String, showBlockDialog: Boolean, showImage: Pair&lt;Boolean, Uri&gt;, onBlockUser: () -&gt; Unit, onBlockCancel: () -&gt; Unit, onChatInputValueChange: (String) -&gt; Unit, onImageButtonClick: () -&gt; Unit, onSendClick: () -&gt; Unit, onShowImageChange: (Boolean, Uri) -&gt; Unit, modifier: Modifier = Modifier )</ID>
+    <ID>LongParameterList:ChatRoomViewModel.kt$ChatRoomViewModel$( savedStateHandle: SavedStateHandle, private val chatWSConnectUseCase: ChatWSConnectUseCase, private val chatWSDisconnectUseCase: ChatWSDisconnectUseCase, private val getChatRoomUseCase: GetChatRoomUseCase, private val getUserStatusUseCase: GetUserStatusUseCase, private val subscribeChatRoomUseCase: SubscribeChatRoomUseCase, private val getChatMessageUseCase: GetChatMessageUseCase, private val sendMessageUseCase: SendMessageUseCase, private val getLostAndFoundPreSignedUrlUseCase: GetLostAndFoundPreSignedUrlUseCase, private val uploadFilesUseCase: UploadFileUseCase, private val chatBlockUserUseCase: ChatBlockUserUseCase )</ID>
+    <ID>MatchingDeclarationName:ChatInput.kt$ChatInputDefaults</ID>
+    <ID>SwallowedException:ChatRoomViewModel.kt$ChatRoomViewModel$e: TimeoutCancellationException</ID>
+    <ID>TooManyFunctions:ChatRoomViewModel.kt$ChatRoomViewModel : ViewModelContainerHost</ID>
+    <ID>TopLevelPropertyNaming:Constant.kt$const val CHAT_MESSAGE_MAX_LENGTH = 1500</ID>
+  </CurrentIssues>
+</SmellBaseline>

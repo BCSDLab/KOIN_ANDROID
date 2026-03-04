@@ -27,6 +27,7 @@ coil = "2.6.0"
 colorpicker = "1.1.1"
 composeNumberPicker = "1.0.3"
 desugarJdkLibs = "2.0.3"
+detekt = "1.23.8"
 firebaseAppdistributionGradle = "4.2.0"
 firebaseBom = "32.5.0"
 firebaseCrashlyticsBuildtools = "2.9.9"
@@ -125,6 +126,7 @@ coil-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coil" }
 colorpicker = { module = "com.github.duanhong169:colorpicker", version.ref = "colorpicker" }
 compose-numberPicker = { module = "com.chargemap.compose:numberpicker", version.ref = "composeNumberPicker" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugarJdkLibs" }
+detekt-gradle-plugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 firebase-analytics-ktx = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 firebase-appdistribution-gradle = { group = "com.google.firebase", name = "firebase-appdistribution-gradle", version.ref = "firebaseAppdistributionGradle" }
@@ -195,6 +197,7 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 android-application = { id = "com.android.application", version.ref = "androidGradle" }
 androidLibrary = { id = "com.android.library", version.ref = "androidGradle" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 firebase-appdistribution = { id = "com.google.firebase.appdistribution", version.ref = "firebaseAppdistributionGradle" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseGradle" }
 google-service = { id = "com.google.gms.google-services", version.ref = "googleServiceVersion" }

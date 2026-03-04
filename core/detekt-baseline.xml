@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>EmptyCatchBlock:BaseViewModel.kt${ }</ID>
+    <ID>EmptyDefaultConstructor:BaseViewModel.kt$BaseViewModel$()</ID>
+    <ID>MatchingDeclarationName:ActivityDataBinding.kt$ActivityDataBindingProperty&lt;T : ViewDataBinding&gt; : ReadOnlyProperty</ID>
+    <ID>MatchingDeclarationName:FragmentDataBinding.kt$FragmentDataBindingProperty&lt;T : ViewDataBinding&gt; : ReadOnlyProperty</ID>
+    <ID>NestedBlockDepth:ImageZoomableDialog.kt$ImageZoomableDialog$override fun onTouchEvent(event: MotionEvent): Boolean</ID>
+    <ID>NestedBlockDepth:WebViewActivity.kt$KoinWebViewClient$override fun shouldOverrideUrlLoading( view: WebView?, request: WebResourceRequest? ): Boolean</ID>
+    <ID>SwallowedException:BaseViewModel.kt$e: CancellationException</ID>
+    <ID>SwallowedException:WebViewActivity.kt$KoinWebViewClient$e: ActivityNotFoundException</ID>
+    <ID>VariableNaming:BaseViewModel.kt$BaseViewModel$protected val _errorToast = SingleLiveEvent&lt;String&gt;()</ID>
+    <ID>VariableNaming:BaseViewModel.kt$BaseViewModel$protected val _isLoading = MutableLiveData(false)</ID>
+  </CurrentIssues>
+</SmellBaseline>
