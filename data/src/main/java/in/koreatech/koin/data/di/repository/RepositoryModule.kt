@@ -305,5 +305,4 @@ object RepositoryModule {
     ): SettingRepository {
         return SettingRepositoryImpl(settingLocalDataSource)
     }
-
 }
