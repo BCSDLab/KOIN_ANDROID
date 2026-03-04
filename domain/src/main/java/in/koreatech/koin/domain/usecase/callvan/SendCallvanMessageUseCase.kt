@@ -3,7 +3,7 @@ package `in`.koreatech.koin.domain.usecase.callvan
 import `in`.koreatech.koin.domain.repository.CallvanRepository
 import javax.inject.Inject
 
-class SendMessageUseCase @Inject constructor(
+class SendCallvanMessageUseCase @Inject constructor(
     private val callvanRepository: CallvanRepository
 ) {
     suspend operator fun invoke(
