@@ -60,22 +60,6 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Update Firebase
-        env:
-          FIREBASE: ${{ secrets.FIREBASE }}
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-        run: |
-          echo $FIREBASE | base64 -di > ./koin/google-services.json  
-          echo $GOOGLE_CREDENTIALS | base64 -di > ./google-credentials.json  
-          for file in $(find . -name 'google-services.json')
-          do
-           echo $file
-          done
-          for file in $(find . -name 'google-credentials.json  ')
-          do
-           echo $file
-          done
-
       - name: Kover - Unit Test with Coverage
         run: ./gradlew koverXmlReport
 
