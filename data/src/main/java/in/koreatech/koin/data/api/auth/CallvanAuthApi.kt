@@ -24,16 +24,16 @@ interface CallvanAuthApi {
 
     @GET("/callvan")
     suspend fun getCallvanPosts(
-        @Query("author") author: String?,
-        @Query("departures") departures: List<String>?,
-        @Query("departure_keyword") departureKeyword: String?,
-        @Query("arrivals") arrivals: List<String>?,
-        @Query("arrival_keyword") arrivalKeyword: String?,
-        @Query("statuses") statuses: List<String>?,
-        @Query("title") title: String?,
-        @Query("sort") sort: String?,
-        @Query("page") page: Int?,
-        @Query("limit") limit: Int?
+        @Query("author") author: String? = "ALL",
+        @Query("departures") departures: List<String>? = null,
+        @Query("departure_keyword") departureKeyword: String? = null,
+        @Query("arrivals") arrivals: List<String>? = null,
+        @Query("arrival_keyword") arrivalKeyword: String? = null,
+        @Query("statuses") statuses: List<String>? = null,
+        @Query("title") title: String? = null,
+        @Query("sort") sort: String? = "LATEST_DESC",
+        @Query("page") page: Int? = 1,
+        @Query("limit") limit: Int? = 10
     ): CallvanPostSearchResponse
 
     @POST("/callvan/posts/{postId}/chat")
