@@ -1,0 +1,135 @@
+language: ko-KR
+early_access: true
+reviews:
+  profile: chill
+  request_changes_workflow: true # Approve when all comments resolved
+  high_level_summary: true
+  high_level_summary_placeholder: "@coderabbitai summary"
+  changed_files_summary: true
+  sequence_diagrams: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  path_filters:
+    - "**"
+    - "!**/.gradle/**"
+    - "!**/build/**"
+    - "!**/*.generated.*"
+    - "!**/gradlew"
+    - "!**/gradlew.bat"
+  auto_review:
+    enabled: false # Trigger manually after ci finish via @coderabbit
+    drafts: false
+    ignore_title_keywords:
+      - "release" # Do not review release PR
+    base_branches:
+      - develop
+      - production
+  tools:
+    shellcheck:
+      enabled: false
+    ruff:
+      enabled: false
+    biome:
+      enabled: false
+    github-checks:
+      enabled: true
+      timeout_ms: 120000
+    gitleaks:
+      enabled: true
+  path_instructions:
+    - path: domain/**
+      instructions: |
+        1. 순수 Kotlin/Java만 허용 (android.*, androidx.* 등 금지)
+        2. Kotlin 공식 스타일 및 안드로이드 공식 스타일 준수 확인
+        3. Clean Architecture:
+          - data/feature/koin/core 모듈 의존 금지
+        4. UseCase는 단일 책임 원칙 준수 (execute/invoke 메서드 하나)
+        5. Repository는 interface만 정의 (구현체 금지)
+        6. return이 Unit인 경우 반환 타입 선언 생략
+
+    - path: data/**
+      instructions: |
+        1. Kotlin 공식 스타일 및 안드로이드 공식 스타일 준수 확인
+        2. Clean Architecture:
+          - domain 이외 모듈 의존 금지
+        3. Api 엔드포인트에 따로 @Header 로 인증을 넣을 필요 없음:
+          - retrofit build 과정에서 인증 정보 주입 중
+        4. DataSource, Repository, RepositoryImpl 에 @Singleton 어노테이션 추가 필요 없음
+        5. return이 Unit인 경우 반환 타입 선언 생략
+
+    - path: koin/**
+      instructions: |
+        1. XML 컨벤션 준수
+        2. ui 관련 문자열은 반드시 strings.xml로 분리
+        3. ViewModel에서 Context 사용 금지
+        4. Clean Architecture:
+          - Repository 직접 접근 금지
+        5. return이 Unit인 경우 반환 타입 선언 생략
+
+    - path: feature/**
+      instructions: |
+        1. XML 컨벤션 준수
+        2. ui 관련 문자열은 반드시 strings.xml로 분리
+        3. ViewModel에서 Context 사용 금지
+        4. Clean Architecture:
+          - data 모듈 의존 금지
+          - Repository 직접 접근 금지
+        5. Compose 최적화를 위해 State 클래스에 @Immutable 및 ImmutableList 사용 필수
+        6. return이 Unit인 경우 반환 타입 선언 생략
+
+    - path: feature/article/**
+      instructions: |
+        1. ArticleBoardType ID는 백엔드 계약값으로 절대 변경 금지:
+          ALL=4, NORMAL=5, SCHOLARSHIP=6, SCHOOL=7, RECRUIT=8, KOIN=9, IPP=12, STUDENT=13, LOSTANDFOUND=14
+          (비연속 값이므로 순서 가정 금지)
+
+    - path: feature/banner/**
+      instructions: |
+        1. 배너 버전 비교 방향 고정: banner.version > currentKoinVersion 일 때만 외부 이동 (부등호 방향 변경 금지)
+
+    - path: feature/bus/**
+      instructions: |
+        1. 버스 모듈은 UseCase 레이어 없이 BusRepository 직접 호출
+
+    - path: feature/chat/**
+      instructions: |
+        1. WebSocket 해제(disconnectWS)는 반드시 별도 CoroutineScope에서 실행 - viewModelScope로 변경 시 화면 종료 후 연결 해제 안 됨
+
+    - path: feature/club/**
+      instructions: |
+        1. postClubQnaUseCase의 parentId: 새 질문이면 null, 답글이면 non-null (의미 변경 금지)
+
+    - path: feature/dining/**
+      instructions: |
+        1. 날짜 API 파라미터 형식은 YYMMDD(String) 고정 - YYYY-MM-DD 등 다른 형식으로 변경 시 API 오류 발생
+        2. 비운영 필터링 문자열은 정확히 "미운영"
+
+    - path: feature/lostandfound/**
+      instructions: |
+
+    - path: feature/store/**
+      instructions: |
+
+    - path: feature/user/**
+      instructions: |
+        1. 비밀번호 해싱은 UserLoginUseCase 내부에서 처리 - ViewModel에서 직접 해싱 후 전달 시 이중 해싱 발생
+        2. 토큰 저장은 UserLoginUseCase 내부에서 처리 - ViewModel에서 직접 저장 금지
+
+    - path: core/designsystem/**
+      instructions: |
+        1. 기존의 컴포넌트 수정 시, 하위 호환성 반드시 유지
+        2. 컴포넌트 설계 시, 확장 가능성 고려
+
+chat:
+  auto_reply: true
+
+knowledge_base:
+  web_search:
+    enabled: true
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - "**/AGENTS.md"
+  learnings:
+    scope: local
