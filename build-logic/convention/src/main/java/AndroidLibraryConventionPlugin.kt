@@ -19,6 +19,7 @@ internal class AndroidLibraryConventionPlugin : Plugin<Project> {
                 apply(libs.findPlugin("ksp").get().get().pluginId)
                 apply(libs.findPlugin("ktlint").get().get().pluginId)
                 apply(libs.findPlugin("detekt").get().get().pluginId)
+                apply(libs.findPlugin("kover").get().get().pluginId)
             }
             extensions.configure<LibraryExtension> {
                 configureAndroidLibrary(this)

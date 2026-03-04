@@ -49,6 +49,9 @@ kotlinxSerialization = "1.6.3"
 krossbow = "7.0.0"
 kspVersion = "2.2.20-2.0.3"
 ktlint = "12.1.2"
+kover = "0.9.1"
+sonarqube = "7.2.3.7755"
+spotless = "6.25.0"
 laserNativeEditor = "3.0.4"
 leakcanary = "2.12"
 lottie = "6.4.0"
@@ -208,6 +211,9 @@ kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref =
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 oss-license-plugin = { id = "com.google.android.gms.oss-licenses-plugin", version.ref = "ossLicensesPlugin" }
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 room = { id = "androidx.room", version.ref = "androidxRoom" }
