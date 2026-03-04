@@ -2,9 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>LongMethod:BannerA.kt$@Composable fun BannerA( bannerList: ImmutableList&lt;LocalBanner&gt;, currentKoinVersion: Int, modifier: Modifier = Modifier, dismiss: () -&gt; Unit = {}, dismissWithRefusal: () -&gt; Unit = {} )</ID>
     <ID>LongMethod:BannerActivity.kt$BannerActivity$override fun onCreate(savedInstanceState: Bundle?)</ID>
-    <ID>LongMethod:BannerB.kt$@Composable fun BannerB( bannerList: ImmutableList&lt;LocalBanner&gt;, currentKoinVersion: Int, modifier: Modifier = Modifier, dismiss: () -&gt; Unit = {}, dismissWithRefusal: () -&gt; Unit = {} )</ID>
     <ID>TopLevelPropertyNaming:Constant.kt$const val BANNER_AUTO_SCROLL_MILLISECONDS = 3000L</ID>
   </CurrentIssues>
 </SmellBaseline>

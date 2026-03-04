@@ -31,8 +31,6 @@
     <ID>FunctionParameterNaming:ExceptionHandlerUtil.kt$ExceptionHandlerUtil$ErrorMessage: String</ID>
     <ID>ImplicitDefaultLocale:StoreDetailReviewFragment.kt$StoreDetailReviewFragment$String.format("%.1f", it.statistics.averageRating)</ID>
     <ID>ImplicitDefaultLocale:StoreRecyclerAdapter.kt$StoreRecyclerAdapter.ViewHolder$String.format("%.1f", store.averageRate)</ID>
-    <ID>LongMethod:DiningWidget.kt$@Composable fun DiningContent( diningData: Dining, selectedType: DiningType, modifier: Modifier = Modifier )</ID>
-    <ID>LongMethod:DiningWidget.kt$@Composable fun DiningWidget( diningData: List&lt;Dining&gt;, selectedPosition: Int?, selectedType: DiningType, diningABTestExperimentGroup: String, modifier: Modifier = Modifier )</ID>
     <ID>LongMethod:KoinNavigationDrawerActivity.kt$KoinNavigationDrawerActivity$override fun onPostCreate(savedInstanceState: Bundle?)</ID>
     <ID>LongMethod:KoinNavigationDrawerActivity.kt$KoinNavigationDrawerActivity$private fun initDrawerViewModel()</ID>
     <ID>LongMethod:LandDetailActivity.kt$LandDetailActivity$private fun setRoomOption(landDetail: LandDetail)</ID>
