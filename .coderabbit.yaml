@@ -42,7 +42,7 @@ reviews:
       instructions: |
         1. Kotlin 공식 스타일 및 안드로이드 공식 스타일 준수 확인
         2. return이 Unit인 경우 반환 타입 선언 생략
-        3. Jetpack Compose에서 람다 내부에 ViewModel의 변수/함수를 직접 참조(캡처)하는 경우, 클로저로 인한 메모리 누수 가능성을 경고하고 rememberUpdatedState 사용 또는 필요한 값/함수만 파라미터로 전달하도록 권고
+        3. 람다가 불필요하게 재생성되지 않도록, 내부에 선언된 외부 변수는 직접 참조하여 접근하는 방식으로 수정
 
     - path: domain/**
       instructions: |
