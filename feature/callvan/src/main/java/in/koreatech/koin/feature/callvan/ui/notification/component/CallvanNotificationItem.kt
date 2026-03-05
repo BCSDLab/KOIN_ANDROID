@@ -17,11 +17,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 data class CallvanNotificationUiItem(
     val id: Int,
@@ -38,7 +40,7 @@ fun CallvanNotificationItem(
 ) {
     val titleColor = if (notification.isRead) KoinTheme.colors.neutral500 else KoinTheme.colors.neutral800
     val titleStyle = if (notification.isRead) KoinTheme.typography.regular14 else KoinTheme.typography.medium14
-    val routeColor = if (notification.isRead) KoinTheme.colors.neutral500 else KoinTheme.colors.primary500
+    val routeColor = if (notification.isRead) KoinTheme.colors.neutral500 else RebrandKoinTheme.colors.primary500
 
     Row(
         modifier = modifier
@@ -53,7 +55,7 @@ fun CallvanNotificationItem(
                 .clip(CircleShape)
                 .background(
                     if (notification.isRead) KoinTheme.colors.neutral0
-                    else KoinTheme.colors.primary500
+                    else RebrandKoinTheme.colors.primary500
                 )
         )
 
