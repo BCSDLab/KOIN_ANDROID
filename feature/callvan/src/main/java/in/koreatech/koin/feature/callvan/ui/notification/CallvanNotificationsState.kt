@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.feature.callvan.ui.notification
 
-import `in`.koreatech.koin.feature.callvan.ui.notification.component.CallvanNotificationUiItem
+import `in`.koreatech.koin.feature.callvan.ui.notification.model.CallvanNotificationUiItem
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 

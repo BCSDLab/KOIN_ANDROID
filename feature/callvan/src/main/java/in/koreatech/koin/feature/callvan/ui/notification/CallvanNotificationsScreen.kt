@@ -26,8 +26,8 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.notification.component.CallvanNotificationDropdownMenu
 import `in`.koreatech.koin.feature.callvan.ui.notification.component.CallvanNotificationItem
-import `in`.koreatech.koin.feature.callvan.ui.notification.component.CallvanNotificationUiItem
 import `in`.koreatech.koin.feature.callvan.ui.notification.component.DropdownMenuItem
+import `in`.koreatech.koin.feature.callvan.ui.notification.model.CallvanNotificationUiItem
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.compose.collectAsState

@@ -19,14 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
-
-data class CallvanNotificationUiItem(
-    val id: Int,
-    val title: String,
-    val routeInfo: String,
-    val message: String,
-    val isRead: Boolean
-)
+import `in`.koreatech.koin.feature.callvan.ui.notification.model.CallvanNotificationUiItem
 
 @Composable
 fun CallvanNotificationItem(
