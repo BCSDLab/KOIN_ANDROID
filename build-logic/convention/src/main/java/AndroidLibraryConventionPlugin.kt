@@ -1,5 +1,5 @@
-import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.LibraryExtension
+import `in`.koreatech.convention.configureAndroidLint
 import `in`.koreatech.convention.configureAndroidLibrary
 import `in`.koreatech.convention.configureAndroidTest
 import `in`.koreatech.convention.configureDetekt
@@ -25,6 +25,7 @@ internal class AndroidLibraryConventionPlugin : Plugin<Project> {
                 configureAndroidLibrary(this)
                 configureTest()
                 configureAndroidTest()
+                configureAndroidLint(this)
             }
 
             extensions.configure<DetektExtension> {
