@@ -131,7 +131,10 @@ jobs:
            echo $file
           done
 
+      - name: Build & Lint
+        run: ./gradlew assembleDebug lintDebug
+
       - name: SonarCloud Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build sonar
+        run: ./gradlew sonar
