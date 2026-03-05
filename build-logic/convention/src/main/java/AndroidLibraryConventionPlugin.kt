@@ -1,5 +1,5 @@
-import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.LibraryExtension
+import `in`.koreatech.convention.configureAndroidLint
 import `in`.koreatech.convention.configureAndroidLibrary
 import `in`.koreatech.convention.configureAndroidTest
 import `in`.koreatech.convention.configureDetekt
@@ -19,11 +19,13 @@ internal class AndroidLibraryConventionPlugin : Plugin<Project> {
                 apply(libs.findPlugin("ksp").get().get().pluginId)
                 apply(libs.findPlugin("ktlint").get().get().pluginId)
                 apply(libs.findPlugin("detekt").get().get().pluginId)
+                apply(libs.findPlugin("kover").get().get().pluginId)
             }
             extensions.configure<LibraryExtension> {
                 configureAndroidLibrary(this)
                 configureTest()
                 configureAndroidTest()
+                configureAndroidLint(this)
             }
 
             extensions.configure<DetektExtension> {

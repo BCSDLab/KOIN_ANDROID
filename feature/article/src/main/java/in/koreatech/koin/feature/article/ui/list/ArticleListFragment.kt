@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.article.ui.list
 
+import android.annotation.SuppressLint
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.Bundle
@@ -79,6 +80,7 @@ class ArticleListFragment : Fragment() {
     private val articleAdapter = ArticleAdapter(onClick = ::onArticleClicked)
     private lateinit var pageChips: ArrayList<Chip>
 
+    @SuppressLint("RestrictedApi")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
