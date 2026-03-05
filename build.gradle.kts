@@ -48,6 +48,8 @@ sonar {
     properties {
         property("sonar.projectKey", "BCSDLab_KOIN_ANDROID")
         property("sonar.organization", "bcsdlab")
+        property("sonar.coverage.jacoco.xmlReportPaths", "**/build/reports/kover/report.xml")
+        property("sonar.androidLint.reportPaths", "**/build/reports/lint-results*.xml")
     }
 }
 
