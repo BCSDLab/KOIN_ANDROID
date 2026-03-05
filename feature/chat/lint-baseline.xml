@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.13.0" type="baseline" client="gradle" dependencies="false" name="AGP (8.13.0)" variant="all" version="8.13.0">
+
+    <issue
+        id="SourceLockedOrientationActivity"
+        message="You should not lock orientation of your activities, so that you can support a good user experience for any device or orientation"
+        errorLine1="                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/in/koreatech/koin/feature/chat/ui/list/ChatListActivity.kt"
+            line="19"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="SourceLockedOrientationActivity"
+        message="You should not lock orientation of your activities, so that you can support a good user experience for any device or orientation"
+        errorLine1="                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/in/koreatech/koin/feature/chat/ui/room/ChatRoomActivity.kt"
+            line="25"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="                    onShowImageChange(true, Uri.parse(imageUrl))"
+        errorLine2="                                            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/in/koreatech/koin/feature/chat/ui/room/component/ChatBubble.kt"
+            line="275"
+            column="45"/>
+    </issue>
+
+</issues>

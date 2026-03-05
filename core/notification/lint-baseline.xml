@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.13.0" type="baseline" client="gradle" dependencies="false" name="AGP (8.13.0)" variant="all" version="8.13.0">
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 33 (current min is 28): `android.Manifest.permission#POST_NOTIFICATIONS`"
+        errorLine1="            Manifest.permission.POST_NOTIFICATIONS"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/in/koreatech/koin/core/notification/NotifierImpl.kt"
+            line="127"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="InefficientWeight"
+        message="Use a `layout_width` of `0dp` instead of `wrap_content` for better performance"
+        errorLine1="        android:layout_width=&quot;wrap_content&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/layout_small_content.xml"
+            line="11"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/ic_notification_koin_logo.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/ic_notification_koin_logo.png"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/layout_big_content.xml"
+            line="23"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/layout_small_content.xml"
+            line="38"
+            column="6"/>
+    </issue>
+
+</issues>
