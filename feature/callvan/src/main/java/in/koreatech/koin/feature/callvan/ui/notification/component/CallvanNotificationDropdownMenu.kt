@@ -9,12 +9,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
@@ -31,13 +34,16 @@ fun CallvanNotificationDropdownMenu(
 ) {
     if (!expanded) return
 
+    val density = LocalDensity.current
+
     Popup(
+        alignment = Alignment.TopEnd,
+        offset = IntOffset(0, with(density) { topPadding.roundToPx() }),
         onDismissRequest = onDismissRequest,
         properties = PopupProperties(focusable = true)
     ) {
         Box(
             modifier = modifier
-                .padding(top = topPadding)
                 .shadow(elevation = 4.dp, shape = KoinTheme.shapes.medium)
                 .clip(KoinTheme.shapes.medium)
                 .background(KoinTheme.colors.neutral50)

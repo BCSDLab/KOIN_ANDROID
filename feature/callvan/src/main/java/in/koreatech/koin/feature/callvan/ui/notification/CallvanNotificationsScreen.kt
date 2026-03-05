@@ -19,7 +19,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
@@ -32,6 +31,7 @@ import `in`.koreatech.koin.feature.callvan.ui.notification.component.DropdownMen
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun CallvanNotificationsScreen(
@@ -40,7 +40,9 @@ fun CallvanNotificationsScreen(
 ) {
     val state by viewModel.collectAsState()
 
-    CallvanNotificationsContent(
+    viewModel.collectSideEffect { }
+
+    CallvanNotificationsScreenImpl(
         notifications = state.notifications,
         onMarkAllAsRead = viewModel::markAllAsRead,
         onDeleteAll = viewModel::deleteAll,
@@ -49,7 +51,7 @@ fun CallvanNotificationsScreen(
 }
 
 @Composable
-fun CallvanNotificationsContent(
+fun CallvanNotificationsScreenImpl(
     notifications: ImmutableList<CallvanNotificationUiItem>,
     onMarkAllAsRead: () -> Unit = {},
     onDeleteAll: () -> Unit = {},
@@ -74,11 +76,11 @@ fun CallvanNotificationsContent(
     Scaffold(
         topBar = {
             KoinTopAppBar(
-                title = "알림",
+                title = stringResource(R.string.callvan_notification_top_bar),
                 onNavigationIconClick = onTopbarBackClick,
                 actions = {
                     val density = LocalDensity.current
-                    var iconButtonHeight by remember { mutableStateOf(Dp.Unspecified) }
+                    var iconButtonHeight by remember { mutableStateOf(0.dp) }
                     Box {
                         IconButton(
                             onClick = { isMenuExpanded = true },
@@ -88,7 +90,7 @@ fun CallvanNotificationsContent(
                         ) {
                             Icon(
                                 imageVector = ImageVector.vectorResource(R.drawable.ic_menu),
-                                contentDescription = "더보기"
+                                contentDescription = null
                             )
                         }
                         CallvanNotificationDropdownMenu(
@@ -149,7 +151,7 @@ private fun CallvanNotificationsScreenPreview() {
             isRead = true
         )
     )
-    CallvanNotificationsContent(
+    CallvanNotificationsScreenImpl(
         notifications = sampleNotifications.toPersistentList()
     )
 }
