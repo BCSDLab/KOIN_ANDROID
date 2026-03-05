@@ -104,6 +104,18 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
+      - name: Update Firebase
+        env:
+          FIREBASE: ${{ secrets.FIREBASE }}
+          FIREBASE_DEBUG: ${{ secrets.FIREBASE_DEBUG }}
+        run: |
+          echo $FIREBASE | base64 -di > ./koin/google-services.json
+          echo $FIREBASE_DEBUG | base64 -di > ./koin/src/debug/google-services.json
+          for file in $(find . -name 'google-services.json')
+          do
+           echo $file
+          done
+
       - name: SonarCloud Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
