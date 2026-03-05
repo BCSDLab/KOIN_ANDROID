@@ -1,5 +1,6 @@
 import com.android.build.api.dsl.LibraryExtension
 import `in`.koreatech.convention.configureAndroidCompose
+import `in`.koreatech.convention.configureAndroidLint
 import `in`.koreatech.convention.configureAndroidProject
 import `in`.koreatech.convention.configureAndroidTest
 import `in`.koreatech.convention.configureDetekt
@@ -29,6 +30,7 @@ internal class AndroidFeatureConventionPlugin : Plugin<Project> {
                 configureAndroidCompose(this)
                 configureTest()
                 configureAndroidTest()
+                configureAndroidLint(this)
             }
 
             extensions.configure<DetektExtension> {

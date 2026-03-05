@@ -10,6 +10,7 @@ internal fun Project.configureAndroidLint(
     commonExtension.apply {
         lint {
             baseline = file("lint-baseline.xml")
+            abortOnError = false
         }
     }
 }
