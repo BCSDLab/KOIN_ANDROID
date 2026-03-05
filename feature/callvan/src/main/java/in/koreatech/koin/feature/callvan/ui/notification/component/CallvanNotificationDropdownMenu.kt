@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.HorizontalDivider
@@ -28,13 +27,13 @@ fun CallvanNotificationDropdownMenu(
     items: List<DropdownMenuItem>,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit = {},
-    topPadding: Dp = 0.dp,
+    topPadding: Dp = 0.dp
 ) {
     if (!expanded) return
 
     Popup(
         onDismissRequest = onDismissRequest,
-        properties = PopupProperties(focusable = true),
+        properties = PopupProperties(focusable = true)
     ) {
         Box(
             modifier = modifier
@@ -48,7 +47,7 @@ fun CallvanNotificationDropdownMenu(
                     if (index > 0) {
                         HorizontalDivider(
                             color = KoinTheme.colors.neutral200,
-                            modifier = Modifier.padding(horizontal = 12.dp),
+                            modifier = Modifier.padding(horizontal = 12.dp)
                         )
                     }
                     Text(
@@ -71,12 +70,12 @@ fun CallvanNotificationDropdownMenu(
 class DropdownMenuItem(
     val text: @Composable () -> String,
     val color: @Composable () -> Color = { KoinTheme.colors.neutral800 },
-    val onClick: () -> Unit,
+    val onClick: () -> Unit
 ) {
     constructor(
         text: String,
         color: Color? = null,
-        onClick: () -> Unit,
+        onClick: () -> Unit
     ) : this({ text }, { color ?: KoinTheme.colors.neutral800 }, onClick)
 }
 
@@ -91,7 +90,7 @@ private fun CallvanNotificationDropdownMenuPreview() {
         DropdownMenuItem(
             text = "알림 전체 삭제",
             onClick = {}
-        ),
+        )
     )
     CallvanNotificationDropdownMenu(
         expanded = true,

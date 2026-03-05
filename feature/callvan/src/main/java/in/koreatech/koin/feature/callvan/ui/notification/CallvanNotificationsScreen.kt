@@ -16,11 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -36,7 +36,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun CallvanNotificationsScreen(
     viewModel: CallvanNotificationViewModel = hiltViewModel(),
-    onTopbarBackClick: () -> Unit = {},
+    onTopbarBackClick: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
 
@@ -53,7 +53,7 @@ fun CallvanNotificationsContent(
     notifications: ImmutableList<CallvanNotificationUiItem>,
     onMarkAllAsRead: () -> Unit = {},
     onDeleteAll: () -> Unit = {},
-    onTopbarBackClick: () -> Unit = {},
+    onTopbarBackClick: () -> Unit = {}
 ) {
     var isMenuExpanded by remember { mutableStateOf(false) }
 
@@ -67,7 +67,7 @@ fun CallvanNotificationsContent(
                 text = { stringResource(R.string.callvan_notification_delete_all) },
                 color = { KoinTheme.colors.danger700 },
                 onClick = onDeleteAll
-            ),
+            )
         )
     }
 
@@ -96,7 +96,7 @@ fun CallvanNotificationsContent(
                             items = menuItems,
                             modifier = Modifier.padding(end = 16.dp),
                             onDismissRequest = { isMenuExpanded = false },
-                            topPadding = iconButtonHeight,
+                            topPadding = iconButtonHeight
                         )
                     }
                 }

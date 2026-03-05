@@ -6,5 +6,5 @@ import kotlinx.collections.immutable.persistentListOf
 
 data class CallvanNotificationsState(
     val notifications: ImmutableList<CallvanNotificationUiItem> = persistentListOf(),
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = false
 )
