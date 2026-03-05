@@ -11,6 +11,7 @@ internal fun Project.configureAndroidLint(
         lint {
             baseline = file("lint-baseline.xml")
             abortOnError = false
+            xmlReport = true
         }
     }
 }
