@@ -51,7 +51,7 @@ This is a **Clean Architecture** Android app with **MVVM + MVI (Orbit)** pattern
 ```
 koin/          - Main student app (in.koreatech.koin)
 business/      - Business app (in.koreatech.business)
-domain/        - Repository interfaces, use cases, business models (pure Kotlin)
+domain/        - Repository interfaces, use cases, business models (kotlin & java)
 data/          - Repository implementations, API services, DTOs
 core/          - Shared utilities (designsystem, network, analytics, navigation, notification)
 feature/       - Feature modules (timetable, bus, store, chat, club, dining, lostandfound, banner)
