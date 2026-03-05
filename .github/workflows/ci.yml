@@ -132,7 +132,7 @@ jobs:
           done
 
       - name: Build & Lint
-        run: ./gradlew assembleDebug lintDebug
+        run: ./gradlew assembleDebug lintDebug koverXmlReport
 
       - name: SonarCloud Scan
         env:
