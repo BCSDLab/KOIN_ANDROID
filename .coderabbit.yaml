@@ -90,7 +90,6 @@ reviews:
 
     - path: feature/bus/**
       instructions: |
-        1. 버스 모듈은 UseCase 레이어 없이 BusRepository 직접 호출
 
     - path: feature/chat/**
       instructions: |
