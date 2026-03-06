@@ -42,7 +42,7 @@ fun CallvanPersonIcon(
 }
 
 @Composable
-fun callvanPersonIconColor(index: Int): Color = when (index % 8) {
+fun callvanPersonIconColor(value: Int): Color = when (value % 8) {
     0 -> RebrandKoinTheme.colors.primary200
     1 -> Color(0xFFD39AFE)
     2 -> RebrandKoinTheme.colors.primary300
