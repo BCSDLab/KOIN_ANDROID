@@ -1,0 +1,77 @@
+name: Claude Review
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  claude:
+    if: github.event.label.name == 'coderabbit:complete'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          track_progress: true
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+
+            당신은 10년차 안드로이드 시니어 개발자입니다.
+            다음 내용에 주의해서 코드 리뷰를 진행해주세요:
+            - Kotlin 코딩 컨벤션
+            - Jetpack Compose 패턴 (remember, derivedStateOf, key 사용, side effect 처리)
+            - Clean Architecture 위반 여부 (레이어 간 의존성 방향)
+            - 잠재적인 버그 및 보안 이슈 (null 처리, 예외 처리, API 키 및 Credential 노출)
+            - Recomposition을 비롯한 성능 이슈 (불필요한 recomposition, LazyList 최적화)
+            - 코루틴 사용 패턴 (스코프 관리, 예외 처리, 취소 처리)
+            - 테스트 가능성 (의존성 주입, 인터페이스 분리)
+
+            리뷰 규칙:
+            - 중요도를 Critical, Major, Minor, Trivial, Info 표시할 것
+            - 치명적 버그나 보안 이슈는 반드시 지적할 것
+            - 단순 스타일 지적보다 구체적인 개선 코드를 제시할 것
+            - 잘 작성된 코드는 칭찬할 것
+            - 영어로 생각 후 리뷰는 한국어로 작성할 것
+            - 인라인 코멘트로 구체적인 코드 위치를 지목할 것
+
+          claude_args: |
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*)"
+            --model claude-sonnet-4-6
+
+      - name: Generate App Token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ github.event.repository.name }}
+
+      - name: Add Claude Label
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            try {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                name: 'claude:complete'
+              });
+            } catch (e) {}
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['claude:complete']
+            });
