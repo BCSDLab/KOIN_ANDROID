@@ -25,6 +25,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.callvan.R
+import `in`.koreatech.koin.feature.callvan.ui.component.CallvanConfirmBottomSheet
 import `in`.koreatech.koin.feature.callvan.ui.notification.component.CallvanNotificationDropdownMenu
 import `in`.koreatech.koin.feature.callvan.ui.notification.component.CallvanNotificationItem
 import `in`.koreatech.koin.feature.callvan.ui.notification.component.DropdownMenuItem
@@ -61,8 +62,9 @@ fun CallvanNotificationsScreenImpl(
     onTopbarBackClick: () -> Unit = {}
 ) {
     var isMenuExpanded by remember { mutableStateOf(false) }
+    var isDeleteAllBottomSheetVisible by remember { mutableStateOf(false) }
 
-    val menuItems = remember(onMarkAllAsRead, onDeleteAll) {
+    val menuItems = remember(onMarkAllAsRead) {
         listOf(
             DropdownMenuItem(
                 text = { stringResource(R.string.callvan_notification_mark_as_read_all) },
@@ -71,8 +73,22 @@ fun CallvanNotificationsScreenImpl(
             DropdownMenuItem(
                 text = { stringResource(R.string.callvan_notification_delete_all) },
                 color = { KoinTheme.colors.danger700 },
-                onClick = onDeleteAll
+                onClick = { isDeleteAllBottomSheetVisible = true }
             )
+        )
+    }
+
+    if (isDeleteAllBottomSheetVisible) {
+        CallvanConfirmBottomSheet(
+            title = stringResource(R.string.callvan_notification_delete_all_title),
+            description = stringResource(R.string.callvan_notification_delete_all_message),
+            confirmText = stringResource(R.string.callvan_notification_delete_all_confirm),
+            cancelText = stringResource(R.string.callvan_notification_delete_all_cancel),
+            onConfirm = {
+                onDeleteAll()
+                isDeleteAllBottomSheetVisible = false
+            },
+            onDismiss = { isDeleteAllBottomSheetVisible = false }
         )
     }
 

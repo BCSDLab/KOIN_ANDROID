@@ -13,4 +13,8 @@
     <string name="callvan_notification_title_member_joined">콜밴팟 인원 참여</string>
     <string name="callvan_notification_title_new_message">새 메시지 도착</string>
     <string name="callvan_notification_title_departure_imminent">콜밴팟 출발 시간 임박</string>
+    <string name="callvan_notification_delete_all_title">알림을 모두 삭제할까요?</string>
+    <string name="callvan_notification_delete_all_message">삭제한 알림은 되돌릴 수 없습니다.</string>
+    <string name="callvan_notification_delete_all_confirm">예</string>
+    <string name="callvan_notification_delete_all_cancel">아니요</string>
 </resources>
