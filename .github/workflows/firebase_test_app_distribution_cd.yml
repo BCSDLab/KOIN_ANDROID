@@ -16,23 +16,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - uses: ./.github/actions/gradle-setup
         with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: 'gradle'
-
-      - name: Grant Execute Permission for Gradlew
-        run: chmod +x ./gradlew
+          properties: ${{ secrets.PROPERTIES }}
 
       - name: Restore secrets
         env:
-          PROPERTIES: ${{ secrets.PROPERTIES }}
           GOOGLE_SERVICES_JSON: ${{ secrets.FIREBASE_STAGE }}
           GCP_KEY : ${{ secrets.GCP_KEY_STAGE }}
         run: |
-          echo $PROPERTIES | base64 --decode > ./local.properties
           echo $GOOGLE_SERVICES_JSON | base64 --decode >  ./koin/google-services.json
           echo $GCP_KEY | base64 --decode > ./koin/gcp-key.json
 

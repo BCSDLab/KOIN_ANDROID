@@ -16,6 +16,8 @@
     <ID>LongMethod:ArticleResponse.kt$fun Node.toHtmlModel(parentStyles: Map&lt;CssAttribute, String&gt;): HtmlModel</ID>
     <ID>LongParameterList:ArticleAuthApi.kt$ArticleAuthApi$( @Query("type") type: String?, @Query("page") page: Int, @Query("limit") limit: Int, @Query("category") category: List&lt;String&gt;, @Query("foundStatus") foundStatus: String?, @Query("sort") sort: String?, @Query("author") author: String?, @Query("title") title: String? )</ID>
     <ID>LongParameterList:ArticleRemoteDataSource.kt$ArticleRemoteDataSource$( type: String?, page: Int, limit: Int, category: List&lt;String&gt;, foundStatus: String?, sort: String?, author: String?, title: String? )</ID>
+    <ID>LongParameterList:CallvanAuthApi.kt$CallvanAuthApi$( @Query("author") author: String? = "ALL", @Query("departures") departures: List&lt;String&gt;? = null, @Query("departure_keyword") departureKeyword: String? = null, @Query("arrivals") arrivals: List&lt;String&gt;? = null, @Query("arrival_keyword") arrivalKeyword: String? = null, @Query("statuses") statuses: List&lt;String&gt;? = null, @Query("title") title: String? = null, @Query("sort") sort: String? = "LATEST_DESC", @Query("page") page: Int? = 1, @Query("limit") limit: Int? = 10 )</ID>
+    <ID>LongParameterList:CallvanRemoteDataSource.kt$CallvanRemoteDataSource$( author: String?, departures: List&lt;String&gt;?, departureKeyword: String?, arrivals: List&lt;String&gt;?, arrivalKeyword: String?, statuses: List&lt;String&gt;?, title: String?, sort: String?, page: Int?, limit: Int? )</ID>
     <ID>LongParameterList:NetworkUtil.kt$( e400: KoinErrorException? = null, e401: KoinErrorException? = null, e403: KoinErrorException? = null, e404: KoinErrorException? = null, e409: KoinErrorException? = null, e429: KoinErrorException? = null, e500: KoinErrorException? = null )</ID>
     <ID>LongParameterList:StoreAuthApi.kt$StoreAuthApi$( @Query("page") page: Int?, @Query("limit") limit: Int?, @Query("period") period: String?, @Query("status") status: String?, @Query("type") type: String?, @Query("query") query: String? )</ID>
     <ID>LongParameterList:StoreRemoteDataSource.kt$StoreRemoteDataSource$( page: Int?, limit: Int?, period: String?, status: String?, type: String?, query: String? )</ID>
@@ -105,6 +107,9 @@
     <ID>TooManyFunctions:ArticleAuthApi.kt$ArticleAuthApi</ID>
     <ID>TooManyFunctions:ArticleRemoteDataSource.kt$ArticleRemoteDataSource</ID>
     <ID>TooManyFunctions:ArticleRepositoryImpl.kt$ArticleRepositoryImpl : ArticleRepository</ID>
+    <ID>TooManyFunctions:CallvanAuthApi.kt$CallvanAuthApi</ID>
+    <ID>TooManyFunctions:CallvanRemoteDataSource.kt$CallvanRemoteDataSource</ID>
+    <ID>TooManyFunctions:CallvanRepositoryImpl.kt$CallvanRepositoryImpl : CallvanRepository</ID>
     <ID>TooManyFunctions:ClubAuthApi.kt$ClubAuthApi</ID>
     <ID>TooManyFunctions:ClubMapper.kt$in.koreatech.koin.data.mapper.ClubMapper.kt</ID>
     <ID>TooManyFunctions:ClubRemoteDataSource.kt$ClubRemoteDataSource</ID>
