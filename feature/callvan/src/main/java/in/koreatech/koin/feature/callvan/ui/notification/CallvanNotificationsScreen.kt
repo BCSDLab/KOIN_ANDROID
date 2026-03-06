@@ -35,7 +35,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun CallvanNotificationsScreen(
-    viewModel: CallvanNotificationViewModel = hiltViewModel(),
+    viewModel: CallvanNotificationsViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
