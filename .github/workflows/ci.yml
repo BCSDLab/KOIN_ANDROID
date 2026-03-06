@@ -5,8 +5,64 @@ on:
     types: [opened, reopened, synchronize]
 
 jobs:
+  get-affected-modules:
+    name: Get Affected Modules
+    runs-on: ubuntu-latest
+    outputs:
+      lint-tasks: ${{ steps.affected.outputs.lint-tasks }}
+      coverage-tasks: ${{ steps.affected.outputs.coverage-tasks }}
+      has-changes: ${{ steps.affected.outputs.has-changes }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect affected modules
+        id: affected
+        run: |
+          CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+
+          # 빌드 설정 변경 시 전체 실행
+          if echo "$CHANGED" | grep -qE '^(\.github/|gradle/|build\.gradle|settings\.gradle|build-logic/)'; then
+            echo "lint-tasks=ktlintCheck spotlessCheck detekt" >> $GITHUB_OUTPUT
+            echo "coverage-tasks=koverXmlReport" >> $GITHUB_OUTPUT
+            echo "has-changes=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # 변경된 파일에서 모듈 추출
+          MODULES=$(echo "$CHANGED" | \
+            grep -E '^(koin|core|data|domain|business|feature)/' | \
+            while IFS= read -r file; do
+              part1=$(echo "$file" | cut -d'/' -f1)
+              part2=$(echo "$file" | cut -d'/' -f2)
+              if grep -qF "':${part1}:${part2}'" settings.gradle 2>/dev/null; then
+                echo ":${part1}:${part2}"
+              else
+                echo ":${part1}"
+              fi
+            done | sort -u)
+
+          if [ -z "$MODULES" ]; then
+            echo "has-changes=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          LINT_TASKS=$(echo "$MODULES" | while read -r mod; do
+            printf "%s:ktlintCheck %s:spotlessCheck %s:detekt " "$mod" "$mod" "$mod"
+          done)
+          COVERAGE_TASKS=$(echo "$MODULES" | while read -r mod; do
+            printf "%s:koverXmlReport " "$mod"
+          done)
+
+          echo "lint-tasks=$LINT_TASKS" >> $GITHUB_OUTPUT
+          echo "coverage-tasks=$COVERAGE_TASKS" >> $GITHUB_OUTPUT
+          echo "has-changes=true" >> $GITHUB_OUTPUT
+
   lint:
     name: Lint & Format Check
+    needs: get-affected-modules
+    if: needs.get-affected-modules.outputs.has-changes == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,17 +71,13 @@ jobs:
         with:
           properties: ${{ secrets.PROPERTIES }}
 
-      - name: ktlint
-        run: ./gradlew ktlintCheck
-
-      - name: spotless
-        run: ./gradlew spotlessCheck
-
-      - name: detekt
-        run: ./gradlew detekt
+      - name: ktlint / spotless / detekt (affected modules)
+        run: ./gradlew ${{ needs.get-affected-modules.outputs.lint-tasks }}
 
   coverage:
     name: Code Coverage
+    needs: get-affected-modules
+    if: needs.get-affected-modules.outputs.has-changes == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -34,8 +86,8 @@ jobs:
         with:
           properties: ${{ secrets.PROPERTIES }}
 
-      - name: Kover - Unit Test with Coverage
-        run: ./gradlew koverXmlReport
+      - name: Kover - Unit Test with Coverage (affected modules)
+        run: ./gradlew ${{ needs.get-affected-modules.outputs.coverage-tasks }}
 
       - name: Upload Coverage Report
         uses: actions/upload-artifact@v4
@@ -48,6 +100,10 @@ jobs:
   sonarcloud:
     name: SonarCloud
     needs: [lint, coverage]
+    if: |
+      always() &&
+      (needs.lint.result == 'success' || needs.lint.result == 'skipped') &&
+      (needs.coverage.result == 'success' || needs.coverage.result == 'skipped')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
