@@ -19,5 +19,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: `✅ CI 완료. CodeRabbit 리뷰를 요청합니다.\n@coderabbitai review`
+              body: `@coderabbitai review`
             });
