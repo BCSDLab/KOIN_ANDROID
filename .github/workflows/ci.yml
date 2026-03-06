@@ -101,12 +101,16 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: kover-report
-          path: .
+          path: ./artifacts/kover
 
       - name: SonarCloud Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew sonar -Dsonar.qualitygate.wait=true
+        run: |
+          REPORT_PATHS=$(find ./artifacts/kover -name "report.xml" | paste -sd,)
+          ./gradlew sonar \
+            -Dsonar.coverage.jacoco.xmlReportPaths="$REPORT_PATHS" \
+            -Dsonar.qualitygate.wait=true
 
   label:
     name: Add CI Label
