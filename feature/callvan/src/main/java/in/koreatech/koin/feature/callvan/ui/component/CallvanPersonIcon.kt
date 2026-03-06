@@ -50,7 +50,8 @@ fun callvanPersonIconColor(value: Int): Color = when (value % 8) {
     4 -> RebrandKoinTheme.colors.primary400
     5 -> RebrandKoinTheme.colors.primary500
     6 -> RebrandKoinTheme.colors.primary600
-    else -> RebrandKoinTheme.colors.primary700
+    7 -> RebrandKoinTheme.colors.primary700
+    else -> RebrandKoinTheme.colors.primary500
 }
 
 @Preview
