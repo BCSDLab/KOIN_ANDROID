@@ -1,24 +1,32 @@
 package `in`.koreatech.koin.feature.callvan.ui.notification
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -125,20 +133,50 @@ fun CallvanNotificationsScreenImpl(
         },
         containerColor = KoinTheme.colors.neutral0
     ) { contentPadding ->
-        LazyColumn(
-            modifier = Modifier.padding(contentPadding)
-        ) {
-            itemsIndexed(notifications) { index, item ->
-                if (index > 0) {
-                    HorizontalDivider(
-                        modifier = Modifier.padding(horizontal = 24.dp),
-                        color = KoinTheme.colors.neutral200
+        if (notifications.isEmpty()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(contentPadding),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_bcsd_logo_symbol),
+                    contentDescription = null,
+                    modifier = Modifier.size(120.dp),
+                    tint = androidx.compose.ui.graphics.Color.Unspecified
+                )
+                Text(
+                    text = stringResource(R.string.callvan_notification_empty_title),
+                    style = KoinTheme.typography.bold18.copy(fontWeight = FontWeight(600)),
+                    color = KoinTheme.colors.primary500,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(top = 12.dp)
+                )
+                Text(
+                    text = stringResource(R.string.callvan_notification_empty_description),
+                    style = KoinTheme.typography.medium14.copy(color = KoinTheme.colors.neutral600),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(top = 2.dp)
+                )
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier.padding(contentPadding)
+            ) {
+                itemsIndexed(notifications) { index, item ->
+                    if (index > 0) {
+                        HorizontalDivider(
+                            modifier = Modifier.padding(horizontal = 24.dp),
+                            color = KoinTheme.colors.neutral200
+                        )
+                    }
+                    CallvanNotificationItem(
+                        notification = item,
+                        onClick = onMarkAsRead
                     )
                 }
-                CallvanNotificationItem(
-                    notification = item,
-                    onClick = onMarkAsRead
-                )
             }
         }
     }
@@ -185,6 +223,15 @@ private fun CallvanNotificationsScreenPreview() {
             isRead = true
         )
     )
+    CallvanNotificationsScreenImpl(
+        notifications = sampleNotifications.toPersistentList()
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CallvanNotificationsScreenEmptyPreview() {
+    val sampleNotifications = emptyList<CallvanNotificationUiItem>()
     CallvanNotificationsScreenImpl(
         notifications = sampleNotifications.toPersistentList()
     )
