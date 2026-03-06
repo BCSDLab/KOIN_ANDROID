@@ -89,7 +89,7 @@ fun CallvanDetailParticipantItem(
 
 @Preview(showBackground = true)
 @Composable
-fun CallvanDetailParticipantItemPreview() {
+private fun CallvanDetailParticipantItemPreview() {
     CallvanDetailParticipantItem(
         participant = CallvanDetailParticipantUiItem(
             id = 1,
@@ -102,7 +102,7 @@ fun CallvanDetailParticipantItemPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun CallvanDetailParticipantItemIsMinePreview() {
+private fun CallvanDetailParticipantItemIsMinePreview() {
     CallvanDetailParticipantItem(
         participant = CallvanDetailParticipantUiItem(
             id = 1,
