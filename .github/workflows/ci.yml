@@ -9,8 +9,7 @@ jobs:
     name: Get Affected Modules
     runs-on: ubuntu-latest
     outputs:
-      lint-tasks: ${{ steps.affected.outputs.lint-tasks }}
-      coverage-tasks: ${{ steps.affected.outputs.coverage-tasks }}
+      modules: ${{ steps.affected.outputs.modules }}
       has-changes: ${{ steps.affected.outputs.has-changes }}
     steps:
       - uses: actions/checkout@v4
@@ -22,10 +21,12 @@ jobs:
         run: |
           CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
 
-          # 빌드 설정 변경 시 전체 실행
+          # 빌드 설정 변경 시 전체 모듈 실행
           if echo "$CHANGED" | grep -qE '^(\.github/|gradle/|build\.gradle|settings\.gradle|build-logic/)'; then
-            echo "lint-tasks=ktlintCheck spotlessCheck detekt" >> $GITHUB_OUTPUT
-            echo "coverage-tasks=koverXmlReport" >> $GITHUB_OUTPUT
+            ALL=$(grep "include '" settings.gradle | sed "s/.*include '://;s/'//" | \
+              sed 's|:|/|g' | \
+              jq -R -s -c 'split("\n") | map(select(length > 0))')
+            echo "modules=$ALL" >> $GITHUB_OUTPUT
             echo "has-changes=true" >> $GITHUB_OUTPUT
             exit 0
           fi
@@ -37,33 +38,29 @@ jobs:
               part1=$(echo "$file" | cut -d'/' -f1)
               part2=$(echo "$file" | cut -d'/' -f2)
               if grep -qF "':${part1}:${part2}'" settings.gradle 2>/dev/null; then
-                echo ":${part1}:${part2}"
+                echo "${part1}:${part2}"
               else
-                echo ":${part1}"
+                echo "${part1}"
               fi
-            done | sort -u)
+            done | sort -u | \
+            jq -R -s -c 'split("\n") | map(select(length > 0))')
 
-          if [ -z "$MODULES" ]; then
+          if [ "$MODULES" = "[]" ] || [ -z "$MODULES" ]; then
             echo "has-changes=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
-          LINT_TASKS=$(echo "$MODULES" | while read -r mod; do
-            printf "%s:ktlintCheck %s:spotlessCheck %s:detekt " "$mod" "$mod" "$mod"
-          done)
-          COVERAGE_TASKS=$(echo "$MODULES" | while read -r mod; do
-            printf "%s:koverXmlReport " "$mod"
-          done)
-
-          echo "lint-tasks=$LINT_TASKS" >> $GITHUB_OUTPUT
-          echo "coverage-tasks=$COVERAGE_TASKS" >> $GITHUB_OUTPUT
+          echo "modules=$MODULES" >> $GITHUB_OUTPUT
           echo "has-changes=true" >> $GITHUB_OUTPUT
 
   lint:
-    name: Lint & Format Check
+    name: Lint (${{ matrix.module }})
     needs: get-affected-modules
     if: needs.get-affected-modules.outputs.has-changes == 'true'
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: ${{ fromJson(needs.get-affected-modules.outputs.modules) }}
     steps:
       - uses: actions/checkout@v4
 
@@ -71,14 +68,17 @@ jobs:
         with:
           properties: ${{ secrets.PROPERTIES }}
 
-      - name: ktlint / spotless / detekt (affected modules)
-        run: ./gradlew ${{ needs.get-affected-modules.outputs.lint-tasks }}
+      - name: ktlint / spotless / detekt
+        run: ./gradlew :${{ matrix.module }}:ktlintCheck :${{ matrix.module }}:spotlessCheck :${{ matrix.module }}:detekt
 
   coverage:
-    name: Code Coverage
+    name: Coverage (${{ matrix.module }})
     needs: get-affected-modules
     if: needs.get-affected-modules.outputs.has-changes == 'true'
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: ${{ fromJson(needs.get-affected-modules.outputs.modules) }}
     steps:
       - uses: actions/checkout@v4
 
@@ -86,14 +86,14 @@ jobs:
         with:
           properties: ${{ secrets.PROPERTIES }}
 
-      - name: Kover - Unit Test with Coverage (affected modules)
-        run: ./gradlew ${{ needs.get-affected-modules.outputs.coverage-tasks }}
+      - name: Kover - Unit Test with Coverage
+        run: ./gradlew :${{ matrix.module }}:koverXmlReport
 
       - name: Upload Coverage Report
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: kover-report
+          name: kover-report-${{ matrix.module }}
           path: '**/build/reports/kover/**'
           retention-days: 7
 
@@ -153,11 +153,12 @@ jobs:
       - name: Lint
         run: ./gradlew lintDebug
 
-      - name: Download Coverage Report
+      - name: Download Coverage Reports
         uses: actions/download-artifact@v4
         with:
-          name: kover-report
+          pattern: kover-report-*
           path: ./artifacts/kover
+          merge-multiple: true
 
       - name: SonarCloud Scan
         env:
