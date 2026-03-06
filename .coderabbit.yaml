@@ -67,7 +67,7 @@ reviews:
         3. ViewModel에서 Context 사용 금지
         4. Clean Architecture:
           - Repository 직접 접근 금지
-        5. compose 함수의 parameter 에서 기본값이 존재하는 parameter 는 후반부에 선언, parameter 에 modifier 가 존재하면 기본값 parameter 중 최상단은 modifier 가 위치, 기본값이 없는 lambda 는 최하단에 선언해도 통과
+        5. @composable 함수의 파라미터는 기본값이 없는 필수 파라미터, modifier, 기본값이 있는 파라미터 순서로 선언, 기본값이 없는 lambda 는 최하단에 선언해도 통과
         6. @Preview 가 선언된 composable 함수는 private 필수
         7. androidx.hilt:hilt-navigation-compose.hiltViewModel 가 아닌 androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel 를 사용
 
