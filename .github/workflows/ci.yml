@@ -131,10 +131,19 @@ jobs:
            echo $file
           done
 
+      - name: Download Coverage Report
+        uses: actions/download-artifact@v4
+        with:
+          name: kover-report
+          path: ./artifacts/kover
+
+      - name: Show downloaded coverage files
+        run: find ./artifacts/kover -type f
+
       - name: Build & Lint
         run: ./gradlew assembleDebug lintDebug
 
       - name: SonarCloud Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew sonar
+        run: ./gradlew sonar -Dsonar.coverage.jacoco.xmlReportPaths="./artifacts/kover/**/build/reports/kover/report.xml"
