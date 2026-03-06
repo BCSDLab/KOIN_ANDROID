@@ -8,4 +8,9 @@
     <string name="callvan_notification_mark_as_read_all">모두 읽음으로 표시</string>
     <string name="callvan_notification_delete_all">알림 전체 삭제</string>
     <string name="callvan_notification_top_bar">알림</string>
+    <string name="callvan_notification_participants_form">%1$d/%2$d</string>
+    <string name="callvan_notification_title_recruitment_complete">콜밴팟 인원 모집 완료</string>
+    <string name="callvan_notification_title_member_joined">콜밴팟 인원 참여</string>
+    <string name="callvan_notification_title_new_message">새 메시지 도착</string>
+    <string name="callvan_notification_title_departure_imminent">콜밴팟 출발 시간 임박</string>
 </resources>
