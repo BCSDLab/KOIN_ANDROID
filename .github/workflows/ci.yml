@@ -94,8 +94,8 @@ jobs:
            echo $file
           done
 
-      - name: Build & Lint
-        run: ./gradlew assembleDebug lintDebug
+      - name: Lint
+        run: ./gradlew lintDebug
 
       - name: Download Coverage Report
         uses: actions/download-artifact@v4
