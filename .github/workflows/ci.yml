@@ -100,9 +100,6 @@ jobs:
           name: kover-report
           path: .
 
-      - name: Show downloaded coverage files
-        run: find ./artifacts/kover -type f
-
       - name: Build & Lint
         run: ./gradlew assembleDebug lintDebug
 
