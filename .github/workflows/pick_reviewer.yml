@@ -15,6 +15,7 @@ jobs:
         id: pick_reviewer
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
         run: kotlinc -script ./.github/scripts/pick_reviewer.kts "$PR_TITLE"
 
       - name: Add Reviewer
