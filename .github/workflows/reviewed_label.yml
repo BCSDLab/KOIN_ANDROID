@@ -26,15 +26,6 @@ jobs:
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
-            try {
-              await github.rest.issues.removeLabel({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                name: 'coderabbit:complete'
-              });
-            } catch (e) {}
-            
             await github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
