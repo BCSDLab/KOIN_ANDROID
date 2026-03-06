@@ -124,29 +124,37 @@ private fun CallvanNotificationsScreenPreview() {
     val sampleNotifications = listOf(
         CallvanNotificationUiItem(
             id = 1,
-            title = "콜밴팟 인원 모집 완료",
-            routeInfo = "02.02(월) 16:00 인경관 - 천안터미널 용 8/8",
+            titleRes = R.string.callvan_notification_title_recruitment_complete,
+            routeInfo = "02.02(월) 16:00 인경관 - 천안터미널",
+            maxParticipants = 8,
+            currentParticipants = 8,
             message = "해당 콜밴팟 인원이 모두 모집되었어요. 콜밴을 예약할까요?",
             isRead = false
         ),
         CallvanNotificationUiItem(
             id = 2,
-            title = "새 메시지 도착",
-            routeInfo = "02.02(월) 16:00 인경관 - 천안터미널 용 7/8",
+            titleRes = R.string.callvan_notification_title_member_joined,
+            routeInfo = "02.02(월) 16:00 인경관 - 천안터미널",
+            maxParticipants = 8,
+            currentParticipants = 7,
             message = "김철수: 인경 어디로 가면 되나요?",
             isRead = false
         ),
         CallvanNotificationUiItem(
             id = 3,
-            title = "콜밴팟 인원 참여",
-            routeInfo = "02.02(월) 16:00 인경관 - 천안터미널 용 7/8",
+            titleRes = R.string.callvan_notification_title_new_message,
+            routeInfo = "02.02(월) 16:00 인경관 - 천안터미널",
+            maxParticipants = 8,
+            currentParticipants = 7,
             message = "이훈이 님이 콜밴팟에 참여했어요.",
             isRead = true
         ),
         CallvanNotificationUiItem(
             id = 4,
-            title = "콜밴팟 출발 시간 임박",
-            routeInfo = "02.02(월) 16:00 인경관 - 천안터미널 용 6/8",
+            titleRes = R.string.callvan_notification_title_departure_imminent,
+            routeInfo = "02.02(월) 16:00 인경관 - 천안터미널",
+            maxParticipants = 8,
+            currentParticipants = 6,
             message = "해당 콜밴팟 출발 시간이 30분 남았어요.",
             isRead = true
         )
