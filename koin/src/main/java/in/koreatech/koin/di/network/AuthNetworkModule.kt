@@ -17,6 +17,7 @@ import `in`.koreatech.koin.data.api.PreSignedUrlApi
 import `in`.koreatech.koin.data.api.UploadUrlApi
 import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.auth.ArticleAuthApi
+import `in`.koreatech.koin.data.api.auth.CallvanAuthApi
 import `in`.koreatech.koin.data.api.auth.CartAuthApi
 import `in`.koreatech.koin.data.api.auth.ChatAuthApi
 import `in`.koreatech.koin.data.api.auth.ClubAuthApi
@@ -174,6 +175,12 @@ object AuthNetworkModule {
     @Singleton
     fun provideCartAuthApi(@Auth retrofit: Retrofit): CartAuthApi {
         return retrofit.create(CartAuthApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCallvanAuthApi(@Auth retrofit: Retrofit): CallvanAuthApi {
+        return retrofit.create(CallvanAuthApi::class.java)
     }
 }
 
