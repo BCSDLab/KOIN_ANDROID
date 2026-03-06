@@ -11,19 +11,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - uses: ./.github/actions/gradle-setup
         with:
-          distribution: 'zulu'
-          java-version: '17'
-
-      - name: Create local.properties
-        env:
-          PROPERTIES: ${{ secrets.PROPERTIES }}
-        run: echo $PROPERTIES | base64 -di > ./local.properties
-
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
+          properties: ${{ secrets.PROPERTIES }}
 
       - name: ktlint
         run: ./gradlew ktlintCheck
@@ -40,19 +30,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - uses: ./.github/actions/gradle-setup
         with:
-          distribution: 'zulu'
-          java-version: '17'
-
-      - name: Create local.properties
-        env:
-          PROPERTIES: ${{ secrets.PROPERTIES }}
-        run: echo $PROPERTIES | base64 -di > ./local.properties
-
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
+          properties: ${{ secrets.PROPERTIES }}
 
       - name: Kover - Unit Test with Coverage
         run: ./gradlew koverXmlReport
@@ -74,24 +54,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - uses: ./.github/actions/gradle-setup
         with:
-          distribution: 'zulu'
-          java-version: '17'
-
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
-
-      - name: Gradle cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+          properties: ${{ secrets.PROPERTIES }}
 
       - name: Cache SonarQube packages
         uses: actions/cache@v4
@@ -105,9 +70,7 @@ jobs:
           KOIN_STORE_PASSWORD: ${{ secrets.KOIN_STORE_PASSWORD}}
           NAVER_MAP_KEY: ${{ secrets.NAVER_MAP_KEY}}
           SECRET_KEY : ${{ secrets.SECRET_KEY }}
-          PROPERTIES : ${{ secrets.PROPERTIES }}
         run: |
-          echo $PROPERTIES | base64 -di > ./local.properties
           echo $SECRET_KEY | base64 -di > ./koin/team_kap_android.jks
           for file in $(find . -name 'local.properties')
           do
