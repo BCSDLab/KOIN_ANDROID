@@ -1,3 +1,5 @@
+name: CodeRabbit Review
+
 on:
   pull_request:
     types: [labeled]
