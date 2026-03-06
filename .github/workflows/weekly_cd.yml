@@ -12,44 +12,17 @@ jobs:
        with:
         ref: 'develop'
 
-     - name: set up JDK 17
-       uses: actions/setup-java@v4
+     - uses: ./.github/actions/gradle-setup
        with:
-          distribution: 'zulu'
-          java-version: '17'
-
-     - name: Make gradlew executable
-       run: chmod +x ./gradlew
-
-     - name: Set current date
-       id: date
-       uses: Kaven-Universe/github-action-current-date-time@v1
-       with:
-          format: "YYYY-MM-DD"
-
-     - name: Gradle cache
-       uses: actions/cache@v4
-       with:
-         path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-         restore-keys: |
-          ${{ runner.os }}-gradle-
+         properties: ${{ secrets.PROPERTIES }}
 
      - name: Update Secrets
        env:
           KOIN_STORE_PASSWORD: ${{ secrets.KOIN_STORE_PASSWORD}}
           NAVER_MAP_KEY: ${{ secrets.NAVER_MAP_KEY}}
           SECRET_KEY : ${{ secrets.SECRET_KEY }}
-          PROPERTIES : ${{ secrets.PROPERTIES }}
        run: |
-            echo $PROPERTIES | base64 -di > ./local.properties
             echo $SECRET_KEY | base64 -di > ./koin/team_kap_android.jks
-            for file in $(find . -name 'local.properties')
-            do
-             echo $file
-            done
             for file in $(find . -name 'team_kap_android.jks')
             do
              echo $file
