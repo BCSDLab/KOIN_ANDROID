@@ -5,6 +5,7 @@ on:
 
 jobs:
   pick-reviewer:
+    if: github.event.label.name == 'claude:complete'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
