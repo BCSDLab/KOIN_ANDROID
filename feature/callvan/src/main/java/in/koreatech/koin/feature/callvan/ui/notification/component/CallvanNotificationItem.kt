@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.callvan.ui.notification.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,7 +31,8 @@ import `in`.koreatech.koin.feature.callvan.ui.notification.model.CallvanNotifica
 @Composable
 fun CallvanNotificationItem(
     notification: CallvanNotificationUiItem,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: (Int) -> Unit = {},
 ) {
     val titleColor = if (notification.isRead) KoinTheme.colors.neutral500 else KoinTheme.colors.neutral800
     val titleStyle = if (notification.isRead) KoinTheme.typography.regular14 else KoinTheme.typography.medium14
@@ -39,6 +41,7 @@ fun CallvanNotificationItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .clickable { onClick(notification.id) }
             .padding(horizontal = 24.dp, vertical = 16.dp),
         verticalAlignment = Alignment.Top
     ) {

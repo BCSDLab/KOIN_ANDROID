@@ -3,7 +3,8 @@ package `in`.koreatech.koin.feature.callvan.ui.notification
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -44,6 +45,7 @@ fun CallvanNotificationsScreen(
 
     CallvanNotificationsScreenImpl(
         notifications = state.notifications,
+        onMarkAsRead = viewModel::markAsRead,
         onMarkAllAsRead = viewModel::markAllAsRead,
         onDeleteAll = viewModel::deleteAll,
         onTopbarBackClick = onTopbarBackClick
@@ -53,6 +55,7 @@ fun CallvanNotificationsScreen(
 @Composable
 fun CallvanNotificationsScreenImpl(
     notifications: ImmutableList<CallvanNotificationUiItem>,
+    onMarkAsRead: (Int) -> Unit = {},
     onMarkAllAsRead: () -> Unit = {},
     onDeleteAll: () -> Unit = {},
     onTopbarBackClick: () -> Unit = {}
@@ -109,9 +112,16 @@ fun CallvanNotificationsScreenImpl(
         LazyColumn(
             modifier = Modifier.padding(contentPadding)
         ) {
-            items(notifications) { item ->
+            itemsIndexed(notifications) { index, item ->
+                if (index > 0) {
+                    HorizontalDivider(
+                        modifier = Modifier.padding(horizontal = 24.dp),
+                        color = KoinTheme.colors.neutral200
+                    )
+                }
                 CallvanNotificationItem(
-                    notification = item
+                    notification = item,
+                    onClick = onMarkAsRead
                 )
             }
         }
