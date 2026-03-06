@@ -23,7 +23,7 @@ import `in`.koreatech.koin.feature.callvan.R
 fun CallvanRouteInfo(
     departure: String,
     destination: String,
-    modifier:Modifier = Modifier
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier,
@@ -57,6 +57,6 @@ fun CallvanRouteInfo(
 fun CallvanRouteInfoPreview() {
     CallvanRouteInfo(
         departure = "테니스장",
-        destination = "천안 시외터미널",
+        destination = "천안 시외터미널"
     )
 }

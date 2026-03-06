@@ -87,7 +87,7 @@ class CallvanDropdownMenuItem(
     val text: @Composable () -> String,
     val color: @Composable () -> Color = { KoinTheme.colors.neutral800 },
     val onClick: () -> Unit,
-    val icon: (@Composable () -> Unit)? = null,
+    val icon: (@Composable () -> Unit)? = null
 ) {
     constructor(
         text: String,

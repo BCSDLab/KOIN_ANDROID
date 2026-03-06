@@ -19,6 +19,7 @@
     <string name="callvan_notification_delete_all_cancel">아니요</string>
     <string name="callvan_notification_empty_title">아직 알림이 없어요</string>
     <string name="callvan_notification_empty_description">콜밴팟 관련 알림이 오면 여기에 표시돼요</string>
+
     <string name="callvan_detail_top_bar">콜밴팟</string>
     <string name="callvan_detail_participants_header">참여자 리스트</string>
     <string name="callvan_detail_participants_count">%1$d/%2$d</string>
@@ -26,4 +27,5 @@
     <string name="callvan_detail_destination">도착: %1$s</string>
     <string name="callvan_detail_me_suffix">(나)</string>
     <string name="callvan_detail_enter_chat">단체 채팅방 입장</string>
+    <string name="callvan_detail_participant_report">신고하기</string>
 </resources>
