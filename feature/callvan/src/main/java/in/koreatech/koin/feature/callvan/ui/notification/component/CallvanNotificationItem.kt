@@ -32,7 +32,7 @@ import `in`.koreatech.koin.feature.callvan.ui.notification.model.CallvanNotifica
 fun CallvanNotificationItem(
     notification: CallvanNotificationUiItem,
     modifier: Modifier = Modifier,
-    onClick: (Int) -> Unit = {},
+    onClick: (Int) -> Unit = {}
 ) {
     val titleColor = if (notification.isRead) KoinTheme.colors.neutral500 else KoinTheme.colors.neutral800
     val titleStyle = if (notification.isRead) KoinTheme.typography.regular14 else KoinTheme.typography.medium14
@@ -68,7 +68,7 @@ fun CallvanNotificationItem(
                 color = titleColor
             )
             Spacer(modifier = Modifier.height(2.dp))
-            Row (
+            Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
