@@ -35,9 +35,9 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanConfirmBottomSheet
-import `in`.koreatech.koin.feature.callvan.ui.notification.component.CallvanNotificationDropdownMenu
+import `in`.koreatech.koin.feature.callvan.ui.component.CallvanDropdownMenu
+import `in`.koreatech.koin.feature.callvan.ui.component.CallvanDropdownMenuItem
 import `in`.koreatech.koin.feature.callvan.ui.notification.component.CallvanNotificationItem
-import `in`.koreatech.koin.feature.callvan.ui.notification.component.DropdownMenuItem
 import `in`.koreatech.koin.feature.callvan.ui.notification.model.CallvanNotificationUiItem
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -75,11 +75,11 @@ fun CallvanNotificationsScreenImpl(
 
     val menuItems = remember(onMarkAllAsRead) {
         listOf(
-            DropdownMenuItem(
+            CallvanDropdownMenuItem(
                 text = { stringResource(R.string.callvan_notification_mark_as_read_all) },
                 onClick = onMarkAllAsRead
             ),
-            DropdownMenuItem(
+            CallvanDropdownMenuItem(
                 text = { stringResource(R.string.callvan_notification_delete_all) },
                 color = { KoinTheme.colors.danger700 },
                 onClick = { isDeleteAllBottomSheetVisible = true }
@@ -121,7 +121,7 @@ fun CallvanNotificationsScreenImpl(
                                 contentDescription = null
                             )
                         }
-                        CallvanNotificationDropdownMenu(
+                        CallvanDropdownMenu(
                             expanded = isMenuExpanded,
                             items = menuItems,
                             modifier = Modifier.padding(end = 16.dp),

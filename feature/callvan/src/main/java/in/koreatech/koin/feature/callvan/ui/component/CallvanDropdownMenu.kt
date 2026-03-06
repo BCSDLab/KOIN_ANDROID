@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.callvan.ui.notification.component
+package `in`.koreatech.koin.feature.callvan.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -25,9 +25,9 @@ import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 @Composable
-fun CallvanNotificationDropdownMenu(
+fun CallvanDropdownMenu(
     expanded: Boolean,
-    items: List<DropdownMenuItem>,
+    items: List<CallvanDropdownMenuItem>,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit = {},
     topPadding: Dp = 0.dp
@@ -73,7 +73,7 @@ fun CallvanNotificationDropdownMenu(
     }
 }
 
-class DropdownMenuItem(
+class CallvanDropdownMenuItem(
     val text: @Composable () -> String,
     val color: @Composable () -> Color = { KoinTheme.colors.neutral800 },
     val onClick: () -> Unit
@@ -87,18 +87,18 @@ class DropdownMenuItem(
 
 @Preview
 @Composable
-private fun CallvanNotificationDropdownMenuPreview() {
+private fun CallvanDropdownMenuPreview() {
     val items = listOf(
-        DropdownMenuItem(
+        CallvanDropdownMenuItem(
             text = "모두 읽음으로 표시",
             onClick = {}
         ),
-        DropdownMenuItem(
+        CallvanDropdownMenuItem(
             text = "알림 전체 삭제",
             onClick = {}
         )
     )
-    CallvanNotificationDropdownMenu(
+    CallvanDropdownMenu(
         expanded = true,
         items = items,
         onDismissRequest = {}
