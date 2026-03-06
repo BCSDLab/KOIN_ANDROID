@@ -98,7 +98,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: kover-report
-          path: ./artifacts/kover
+          path: .
 
       - name: Show downloaded coverage files
         run: find ./artifacts/kover -type f
@@ -109,4 +109,4 @@ jobs:
       - name: SonarCloud Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew sonar -Dsonar.coverage.jacoco.xmlReportPaths="./artifacts/kover/**/build/reports/kover/report.xml"
+        run: ./gradlew sonar
