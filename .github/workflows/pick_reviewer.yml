@@ -13,7 +13,9 @@ jobs:
 
       - name: Pick reviewer
         id: pick_reviewer
-        run: kotlinc -script ./.github/scripts/pick_reviewer.kts "${{ github.event.pull_request.title }}"
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: kotlinc -script ./.github/scripts/pick_reviewer.kts "$PR_TITLE"
 
       - name: Add Reviewer
         uses: madrapps/add-reviewers@v1
