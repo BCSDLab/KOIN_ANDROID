@@ -19,6 +19,7 @@ import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
+@Suppress("LongParameterList")
 @Composable
 fun CallvanConfirmBottomSheet(
     title: String,
