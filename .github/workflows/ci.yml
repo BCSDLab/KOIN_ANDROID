@@ -94,14 +94,14 @@ jobs:
            echo $file
           done
 
+      - name: Build & Lint
+        run: ./gradlew assembleDebug lintDebug
+
       - name: Download Coverage Report
         uses: actions/download-artifact@v4
         with:
           name: kover-report
           path: .
-
-      - name: Build & Lint
-        run: ./gradlew assembleDebug lintDebug
 
       - name: SonarCloud Scan
         env:
