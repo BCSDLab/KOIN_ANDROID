@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanConfirmBottomSheet
 import `in`.koreatech.koin.feature.callvan.ui.notification.component.CallvanNotificationDropdownMenu
@@ -150,7 +151,7 @@ fun CallvanNotificationsScreenImpl(
                 Text(
                     text = stringResource(R.string.callvan_notification_empty_title),
                     style = KoinTheme.typography.bold18.copy(fontWeight = FontWeight(600)),
-                    color = KoinTheme.colors.primary500,
+                    color = RebrandKoinTheme.colors.primary500,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(top = 12.dp)
                 )
