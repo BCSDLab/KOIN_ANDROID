@@ -38,8 +38,36 @@ plugins {
     alias(libs.plugins.ktlint) apply false
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.room) apply false
+    alias(libs.plugins.detekt) apply false
+    alias(libs.plugins.spotless)
+    alias(libs.plugins.kover) apply false
+    alias(libs.plugins.sonarqube)
 }
 
-tasks.register<Delete>("clean") {
+sonar {
+    properties {
+        property("sonar.projectKey", "BCSDLab_KOIN_ANDROID")
+        property("sonar.organization", "bcsdlab")
+        property("sonar.coverage.jacoco.xmlReportPaths", "**/build/reports/kover/report.xml")
+        property("sonar.androidLint.reportPaths", "**/build/reports/lint-results*.xml")
+    }
+}
+
+spotless {
+    kotlin {
+        target("**/*.kt")
+        targetExclude("**/build/**")
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    kotlinGradle {
+        target("**/*.kts")
+        targetExclude("**/build/**")
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
+
+tasks.named<Delete>("clean") {
     delete(rootProject.buildDir)
 }

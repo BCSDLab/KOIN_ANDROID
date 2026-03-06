@@ -89,6 +89,10 @@ class FakeUserRepository : UserRepository {
         TODO("Not yet implemented")
     }
 
+    override suspend fun getCachedABTest(title: String): ABTest {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun requestSmsVerification(phoneNumber: String): Result<CodeCount> {
         TODO("Not yet implemented")
     }

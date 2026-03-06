@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.13.0" type="baseline" client="gradle" dependencies="false" name="AGP (8.13.0)" variant="all" version="8.13.0">
+
+    <issue
+        id="SourceLockedOrientationActivity"
+        message="You should not lock orientation of your activities, so that you can support a good user experience for any device or orientation"
+        errorLine1="            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/in/koreatech/koin/feature/lostandfound/ui/LostAndFoundActivity.kt"
+            line="28"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ConfigurationScreenWidthHeight"
+        message="Using Configuration.screenHeightDp instead of LocalWindowInfo.current.containerSize"
+        errorLine1="            val screenHeightDp = remember { configuration.screenHeightDp.dp }"
+        errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/in/koreatech/koin/feature/lostandfound/ui/detail/LostAndFoundDetail.kt"
+            line="137"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="ModifierParameter"
+        message="Modifier parameter should be the first optional parameter"
+        errorLine1="    modifier: Modifier = Modifier,"
+        errorLine2="    ~~~~~~~~">
+        <location
+            file="src/main/java/in/koreatech/koin/feature/lostandfound/ui/detail/component/DetailDialog.kt"
+            line="48"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="ModifierParameter"
+        message="Modifier parameter should be the first optional parameter"
+        errorLine1="    modifier: Modifier = Modifier,"
+        errorLine2="    ~~~~~~~~">
+        <location
+            file="src/main/java/in/koreatech/koin/feature/lostandfound/component/EditArticleUploadImage.kt"
+            line="56"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="ModifierParameter"
+        message="Modifier parameter should be the first optional parameter"
+        errorLine1="    modifier: Modifier = Modifier,"
+        errorLine2="    ~~~~~~~~">
+        <location
+            file="src/main/java/in/koreatech/koin/feature/lostandfound/ui/detail/LostAndFoundDetail.kt"
+            line="52"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="ModifierParameter"
+        message="Modifier parameter should be the first optional parameter"
+        errorLine1="    modifier: Modifier = Modifier"
+        errorLine2="    ~~~~~~~~">
+        <location
+            file="src/main/java/in/koreatech/koin/feature/lostandfound/component/LostAndFoundDialog.kt"
+            line="53"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="ModifierParameter"
+        message="Modifier parameter should be the first optional parameter"
+        errorLine1="    modifier: Modifier = Modifier"
+        errorLine2="    ~~~~~~~~">
+        <location
+            file="src/main/java/in/koreatech/koin/feature/lostandfound/ui/report/component/LostAndFoundReportContent.kt"
+            line="31"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="ModifierParameter"
+        message="Modifier parameter should be the first optional parameter"
+        errorLine1="    modifier: Modifier = Modifier"
+        errorLine2="    ~~~~~~~~">
+        <location
+            file="src/main/java/in/koreatech/koin/feature/lostandfound/ui/report/component/LostAndFoundReportReasons.kt"
+            line="42"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="ModifierParameter"
+        message="Modifier parameter should be the first optional parameter"
+        errorLine1="    modifier: Modifier = Modifier,"
+        errorLine2="    ~~~~~~~~">
+        <location
+            file="src/main/java/in/koreatech/koin/feature/lostandfound/ui/report/component/LostAndFoundReportReasons.kt"
+            line="110"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="ModifierParameter"
+        message="Modifier parameter should be the first optional parameter"
+        errorLine1="    modifier: Modifier = Modifier"
+        errorLine2="    ~~~~~~~~">
+        <location
+            file="src/main/java/in/koreatech/koin/feature/lostandfound/component/LostItemTypeChip.kt"
+            line="26"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; `SDK_INT` is always >= 28"
+        errorLine1="            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/in/koreatech/koin/feature/lostandfound/ui/detail/component/DetailContent.kt"
+            line="52"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="UseOfNonLambdaOffsetOverload"
+        message="State backed values should use the lambda overload of Modifier.offset"
+        errorLine1="                    .offset("
+        errorLine2="                     ~~~~~~">
+        <location
+            file="src/main/java/in/koreatech/koin/feature/lostandfound/component/EditArticleUploadImage.kt"
+            line="189"
+            column="22"/>
+    </issue>
+
+    <issue
+        id="UseOfNonLambdaOffsetOverload"
+        message="State backed values should use the lambda overload of Modifier.offset"
+        errorLine1="                .offset(x = thumbOffset)"
+        errorLine2="                 ~~~~~~">
+        <location
+            file="src/main/java/in/koreatech/koin/feature/lostandfound/ui/detail/component/LostAndFoundDetailCustomSwitch.kt"
+            line="46"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="                        imageUrl = Uri.parse(imageUrl)"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/in/koreatech/koin/feature/lostandfound/component/EditArticleUploadImage.kt"
+            line="103"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        images = images?.map { Uri.parse(it.imageUrl) },"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/in/koreatech/koin/feature/lostandfound/ui/detail/LostAndFoundDetailState.kt"
+            line="60"
+            column="32"/>
+    </issue>
+
+</issues>

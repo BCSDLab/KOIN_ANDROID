@@ -51,7 +51,7 @@ This is a **Clean Architecture** Android app with **MVVM + MVI (Orbit)** pattern
 ```
 koin/          - Main student app (in.koreatech.koin)
 business/      - Business app (in.koreatech.business)
-domain/        - Repository interfaces, use cases, business models (pure Kotlin)
+domain/        - Repository interfaces, use cases, business models (kotlin & java)
 data/          - Repository implementations, API services, DTOs
 core/          - Shared utilities (designsystem, network, analytics, navigation, notification)
 feature/       - Feature modules (timetable, bus, store, chat, club, dining, lostandfound, banner)
@@ -62,7 +62,7 @@ build-logic/   - Custom Gradle convention plugins
 
 **MUST** respect these boundaries:
 
-- **Domain Layer** (`domain/`): Pure Kotlin. Repository interfaces, use cases, business models. Uses `Result<T>` or Flow for new code. Legacy code uses `Pair<T?, ErrorHandler?>` pattern.
+- **Domain Layer** (`domain/`): Kotlin & Java. Repository interfaces, use cases, business models. Uses `Result<T>` or Flow for new code. Legacy code uses `Pair<T?, ErrorHandler?>` pattern.
 - **Data Layer** (`data/`): Repository implementations, Retrofit API services, data sources. Handles network/local data.
 - **Presentation Layer** (`koin/`, `business/`, `feature/`): ViewModels with Orbit MVI, Jetpack Compose UI, legacy XML views.
 

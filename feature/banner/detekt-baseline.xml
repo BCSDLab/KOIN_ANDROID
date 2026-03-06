@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>LongMethod:BannerActivity.kt$BannerActivity$override fun onCreate(savedInstanceState: Bundle?)</ID>
+    <ID>TopLevelPropertyNaming:Constant.kt$const val BANNER_AUTO_SCROLL_MILLISECONDS = 3000L</ID>
+  </CurrentIssues>
+</SmellBaseline>

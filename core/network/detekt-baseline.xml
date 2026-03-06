@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>InvalidPackageDeclaration:ExampleUnitTest.kt$package `in`.koreatech.koin.core.navigation</ID>
+  </CurrentIssues>
+</SmellBaseline>
