@@ -17,6 +17,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -37,21 +39,25 @@ import `in`.koreatech.koin.feature.callvan.ui.detail.component.CallvanDetailRout
 import `in`.koreatech.koin.feature.callvan.ui.detail.model.CallvanDetailParticipantUiItem
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun CallvanDetailScreen(
+    viewModel: CallvanDetailViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {},
     onNotificationClick: () -> Unit = {},
     onEnterChatClick: () -> Unit = {},
     onReportClick: (userId: Int) -> Unit = {}
 ) {
+    val state by viewModel.collectAsState()
+
     CallvanDetailScreenImpl(
-        departure = "",
-        destination = "",
-        dateTime = "",
-        currentParticipants = 0,
-        maxParticipants = 0,
-        participants = persistentListOf(),
+        departure = state.departure,
+        destination = state.destination,
+        dateTime = state.dateTime,
+        currentParticipants = state.currentParticipants,
+        maxParticipants = state.maxParticipants,
+        participants = state.participants,
         onTopbarBackClick = onTopbarBackClick,
         onNotificationClick = onNotificationClick,
         onEnterChatClick = onEnterChatClick,
