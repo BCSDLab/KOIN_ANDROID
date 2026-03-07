@@ -26,6 +26,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import kotlin.math.roundToInt
 import kotlinx.coroutines.flow.filter
 
+@Suppress("LongParameterList")
 @Composable
 fun CallvanScrollPicker(
     items: List<String>,
