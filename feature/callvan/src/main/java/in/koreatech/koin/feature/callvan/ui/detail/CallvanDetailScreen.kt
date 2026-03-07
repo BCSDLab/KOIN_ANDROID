@@ -33,6 +33,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanDropdownMenuItem
+import `in`.koreatech.koin.feature.callvan.ui.component.CallvanNotificationIcon
 import `in`.koreatech.koin.feature.callvan.ui.component.callvanPersonIconColor
 import `in`.koreatech.koin.feature.callvan.ui.detail.component.CallvanDetailParticipantItem
 import `in`.koreatech.koin.feature.callvan.ui.detail.component.CallvanDetailRouteCard
@@ -74,6 +75,7 @@ fun CallvanDetailScreenImpl(
     currentParticipants: Int,
     maxParticipants: Int,
     participants: ImmutableList<CallvanDetailParticipantUiItem>,
+    hasNewNotification: Boolean = false,
     onTopbarBackClick: () -> Unit = {},
     onNotificationClick: () -> Unit = {},
     onEnterChatClick: () -> Unit = {},
@@ -86,10 +88,7 @@ fun CallvanDetailScreenImpl(
                 onNavigationIconClick = onTopbarBackClick,
                 actions = {
                     IconButton(onClick = onNotificationClick) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_callvan_notification),
-                            contentDescription = null
-                        )
+                        CallvanNotificationIcon(hasNewNotification = hasNewNotification)
                     }
                 }
             )
@@ -107,7 +106,7 @@ fun CallvanDetailScreenImpl(
         },
         containerColor = KoinTheme.colors.neutral0
     ) { contentPadding ->
-        val indexedList = remember(participants) {
+        val participantColorIndices = remember(participants) {
             var count = 0
             participants.map { item ->
                 if (item.isMe) {
@@ -144,7 +143,7 @@ fun CallvanDetailScreenImpl(
                 }
                 CallvanDetailParticipantItem(
                     participant = participant,
-                    tint = callvanPersonIconColor(indexedList[index]),
+                    tint = callvanPersonIconColor(participantColorIndices[index]),
                     menuItems = persistentListOf(
                         CallvanDropdownMenuItem(
                             text = { stringResource(R.string.callvan_detail_participant_report) },
@@ -200,6 +199,27 @@ private fun CallvanDetailScreenPreview() {
         dateTime = "02.05 (월) 14:00",
         currentParticipants = 6,
         maxParticipants = 8,
+        participants = persistentListOf(
+            CallvanDetailParticipantUiItem(id = 1, name = "홍길동", isMe = true),
+            CallvanDetailParticipantUiItem(id = 2, name = "신짱구", isMe = false),
+            CallvanDetailParticipantUiItem(id = 3, name = "김철수", isMe = false),
+            CallvanDetailParticipantUiItem(id = 4, name = "한유리", isMe = false),
+            CallvanDetailParticipantUiItem(id = 5, name = "이훈이", isMe = false),
+            CallvanDetailParticipantUiItem(id = 6, name = "맹구", isMe = false)
+        )
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CallvanDetailScreenNotificationPreview() {
+    CallvanDetailScreenImpl(
+        departure = "테니스장",
+        destination = "천안 시외터미널",
+        dateTime = "02.05 (월) 14:00",
+        currentParticipants = 6,
+        maxParticipants = 8,
+        hasNewNotification = true,
         participants = persistentListOf(
             CallvanDetailParticipantUiItem(id = 1, name = "홍길동", isMe = true),
             CallvanDetailParticipantUiItem(id = 2, name = "신짱구", isMe = false),
