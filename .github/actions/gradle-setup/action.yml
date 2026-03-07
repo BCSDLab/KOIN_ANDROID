@@ -4,12 +4,6 @@ inputs:
   properties:
     required: true
     description: local.properties secret
-  firebase:
-    required: true
-    description: google-services.json release
-  firebase_stage:
-    required: true
-    description: google-services.json debug
 
 runs:
   using: "composite"
@@ -25,20 +19,6 @@ runs:
       env:
         PROPERTIES: ${{ inputs.properties }}
       run: echo "$PROPERTIES" | base64 -di > ./local.properties
-
-    - name: Update Firebase
-      shell: bash
-      env:
-        FIREBASE: ${{ inputs.firebase }}
-        FIREBASE_STAGE: ${{ inputs.firebase_stage }}
-      run: |
-        mkdir -p ./koin/src/debug
-        echo $FIREBASE | base64 -di > ./koin/google-services.json
-        echo $FIREBASE_STAGE | base64 -di > ./koin/src/debug/google-services.json
-        for file in $(find . -name 'google-services.json')
-        do
-         echo $file
-        done
 
     - name: Gradle cache
       uses: actions/cache@v4
