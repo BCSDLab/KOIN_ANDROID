@@ -134,15 +134,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: kover-report
-          path: ./artifacts/kover
+          path: .
 
       - name: SonarCloud Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          REPORT_PATHS=$(find ./artifacts/kover -name "report.xml" | paste -sd,)
           ./gradlew sonar \
-            -Dsonar.coverage.jacoco.xmlReportPaths="$REPORT_PATHS" \
             -Dsonar.qualitygate.wait=true
 
   label:
