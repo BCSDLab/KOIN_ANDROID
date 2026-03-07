@@ -65,6 +65,14 @@ jobs:
       - name: detekt
         run: ./gradlew detekt
 
+      - name: Upload detekt Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: detekt-report
+          path: 'build/reports/detekt/detekt.xml'
+          retention-days: 7
+
   coverage:
     name: Code Coverage
     runs-on: ubuntu-latest
@@ -96,7 +104,7 @@ jobs:
         if: always()
         with:
           name: kover-report
-          path: '**/build/reports/kover/**'
+          path: 'build/reports/kover/report.xml'
           retention-days: 7
 
   sonarcloud:
@@ -155,6 +163,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: kover-report
+          path: .
+
+      - name: Download detekt Report
+        uses: actions/download-artifact@v4
+        with:
+          name: detekt-report
           path: .
 
       - name: SonarCloud Scan
