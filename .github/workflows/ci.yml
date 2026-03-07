@@ -149,7 +149,7 @@ jobs:
           done
 
       - name: Lint
-        run: ./gradlew lintDebug
+        run: ./gradlew koin:lintDebug
 
       - name: Download Coverage Report
         uses: actions/download-artifact@v4
