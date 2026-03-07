@@ -32,6 +32,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
 
+@Suppress("LongParameterList")
 @Composable
 fun CallvanLocationSection(
     departureLocation: CallvanLocationOption?,
@@ -69,6 +70,7 @@ fun CallvanLocationSection(
     }
 }
 
+@Suppress("LongParameterList")
 @Composable
 private fun CallvanLocationItem(
     label: String,
