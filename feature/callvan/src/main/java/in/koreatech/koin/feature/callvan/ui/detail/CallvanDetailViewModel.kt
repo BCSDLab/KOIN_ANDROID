@@ -2,11 +2,9 @@ package `in`.koreatech.koin.feature.callvan.ui.detail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.callvan.GetCallvanPostDetailUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.GetNotificationsUseCase
-import `in`.koreatech.koin.feature.callvan.navigation.CallvanNavType
 import `in`.koreatech.koin.feature.callvan.ui.detail.model.toUiItem
 import `in`.koreatech.koin.feature.callvan.util.formatDateTime
 import javax.inject.Inject
@@ -27,7 +25,7 @@ class CallvanDetailViewModel @Inject constructor(
         CallvanDetailState()
     )
 
-    private val postId: Int = savedStateHandle.toRoute<CallvanNavType.CallvanDetail>().postId
+    private val postId: Int = checkNotNull(savedStateHandle["postId"])
 
     init {
         fetchPostDetail()
