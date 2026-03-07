@@ -16,7 +16,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 
 @Composable
-fun CallvanPersonCount(
+fun CallvanRouteCount(
     currentCount: Int,
     maxCount: Int,
     modifier: Modifier = Modifier
@@ -43,7 +43,7 @@ fun CallvanPersonCount(
 @Preview(showBackground = true)
 @Composable
 private fun CallvanPersonCountPreview() {
-    CallvanPersonCount(
+    CallvanRouteCount(
         currentCount = 1,
         maxCount = 8
     )
@@ -52,7 +52,7 @@ private fun CallvanPersonCountPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun CallvanPersonCountFullPreview() {
-    CallvanPersonCount(
+    CallvanRouteCount(
         currentCount = 8,
         maxCount = 8
     )

@@ -1,0 +1,170 @@
+package `in`.koreatech.koin.feature.callvan.ui.list.component
+
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.callvan.ui.component.CallvanRouteCount
+import `in`.koreatech.koin.feature.callvan.ui.component.CallvanRouteDate
+import `in`.koreatech.koin.feature.callvan.ui.component.CallvanRouteInfo
+
+enum class CallvanRouteState {
+    DEFAULT,
+    JOINED,
+    CLOSED,
+    OWNER_ACTIVE,
+    OWNER_CLOSED
+}
+
+@Composable
+fun CallvanRouteListItem(
+    departure: String,
+    destination: String,
+    date: String,
+    dayOfWeek: String,
+    time: String,
+    currentCount: Int,
+    maxCount: Int,
+    state: CallvanRouteState,
+    modifier: Modifier = Modifier,
+    onJoin: () -> Unit = {},
+    onCancelJoin: () -> Unit = {},
+    onClose: () -> Unit = {},
+    onReRecruit: () -> Unit = {},
+    onComplete: () -> Unit = {},
+    onCall: () -> Unit = {},
+    onChat: () -> Unit = {}
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .border(
+                width = 0.5.dp,
+                color = KoinTheme.colors.neutral400,
+                shape = KoinTheme.shapes.small
+            )
+            .padding(horizontal = 24.dp, vertical = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            CallvanRouteInfo(departure = departure, destination = destination)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                CallvanRouteDate(date = date, dayOfWeek = dayOfWeek, time = time)
+                Text(text = "|", color = KoinTheme.colors.neutral300)
+                CallvanRouteCount(currentCount = currentCount, maxCount = maxCount)
+            }
+        }
+
+        CallvanRouteListItemButtons(
+            state = state,
+            onJoin = onJoin,
+            onCancelJoin = onCancelJoin,
+            onClose = onClose,
+            onReRecruit = onReRecruit,
+            onComplete = onComplete,
+            onCall = onCall,
+            onChat = onChat
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CallvanRouteListItemDefaultPreview() {
+    RebrandKoinTheme {
+        CallvanRouteListItem(
+            departure = "테니스장",
+            destination = "천안 시외터미널",
+            date = "02.05",
+            dayOfWeek = "월",
+            time = "14:00",
+            currentCount = 1,
+            maxCount = 8,
+            state = CallvanRouteState.DEFAULT
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CallvanRouteListItemJoinedPreview() {
+    RebrandKoinTheme {
+        CallvanRouteListItem(
+            departure = "정문",
+            destination = "천안 시외터미널",
+            date = "02.05",
+            dayOfWeek = "월",
+            time = "14:00",
+            currentCount = 1,
+            maxCount = 8,
+            state = CallvanRouteState.JOINED
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CallvanRouteListItemClosedPreview() {
+    RebrandKoinTheme {
+        CallvanRouteListItem(
+            departure = "테니스장",
+            destination = "천안역",
+            date = "02.05",
+            dayOfWeek = "월",
+            time = "14:00",
+            currentCount = 1,
+            maxCount = 8,
+            state = CallvanRouteState.CLOSED
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CallvanRouteListItemOwnerActivePreview() {
+    RebrandKoinTheme {
+        CallvanRouteListItem(
+            departure = "정문",
+            destination = "천안 시외터미널",
+            date = "02.05",
+            dayOfWeek = "월",
+            time = "14:00",
+            currentCount = 1,
+            maxCount = 8,
+            state = CallvanRouteState.OWNER_ACTIVE
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CallvanRouteListItemOwnerClosedPreview() {
+    RebrandKoinTheme {
+        CallvanRouteListItem(
+            departure = "정문",
+            destination = "천안 시외터미널",
+            date = "02.05",
+            dayOfWeek = "월",
+            time = "14:00",
+            currentCount = 1,
+            maxCount = 8,
+            state = CallvanRouteState.OWNER_CLOSED
+        )
+    }
+}

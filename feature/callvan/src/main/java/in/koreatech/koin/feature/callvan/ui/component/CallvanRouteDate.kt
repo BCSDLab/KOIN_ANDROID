@@ -7,7 +7,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 @Composable
-fun CallvanDateText(
+fun CallvanRouteDate(
     date: String,
     dayOfWeek: String,
     time: String,
@@ -23,8 +23,8 @@ fun CallvanDateText(
 
 @Preview(showBackground = true)
 @Composable
-private fun CallvanDateTextPreview() {
-    CallvanDateText(
+private fun CallvanDatePreview() {
+    CallvanRouteDate(
         date = "02.05",
         dayOfWeek = "월",
         time = "14:00"
