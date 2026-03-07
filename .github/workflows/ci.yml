@@ -163,13 +163,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: kover-report
-          path: .
+          path: build/reports/kover
 
       - name: Download detekt Report
         uses: actions/download-artifact@v4
         with:
           name: detekt-report
-          path: .
+          path: build/reports/detekt
 
       - name: SonarCloud Scan
         env:
