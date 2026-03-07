@@ -4,6 +4,12 @@ inputs:
   properties:
     required: true
     description: local.properties secret
+  firebase:
+    required: true
+    description: google-services.json release
+  firebase_stage:
+    required: true
+    description: google-services.json debug
 
 runs:
   using: "composite"
@@ -23,8 +29,8 @@ runs:
     - name: Update Firebase
       shell: bash
       env:
-        FIREBASE: ${{ secrets.FIREBASE }}
-        FIREBASE_STAGE: ${{ secrets.FIREBASE_STAGE }}
+        FIREBASE: ${{ inputs.firebase }}
+        FIREBASE_STAGE: ${{ inputs.firebase_stage }}
       run: |
         mkdir -p ./koin/src/debug
         echo $FIREBASE | base64 -di > ./koin/google-services.json
