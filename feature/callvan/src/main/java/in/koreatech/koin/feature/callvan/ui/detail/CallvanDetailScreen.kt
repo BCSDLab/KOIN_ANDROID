@@ -100,7 +100,7 @@ fun CallvanDetailScreenImpl(
         },
         containerColor = KoinTheme.colors.neutral0
     ) { contentPadding ->
-        val indexedList = remember(participants) {
+        val participantColorIndices = remember(participants) {
             var count = 0
             participants.map { item ->
                 if (item.isMe) {
@@ -137,7 +137,7 @@ fun CallvanDetailScreenImpl(
                 }
                 CallvanDetailParticipantItem(
                     participant = participant,
-                    tint = callvanPersonIconColor(indexedList[index]),
+                    tint = callvanPersonIconColor(participantColorIndices[index]),
                     menuItems = persistentListOf(
                         CallvanDropdownMenuItem(
                             text = { stringResource(R.string.callvan_detail_participant_report) },
