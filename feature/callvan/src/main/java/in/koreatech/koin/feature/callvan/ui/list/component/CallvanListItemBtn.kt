@@ -45,7 +45,7 @@ fun CallvanRouteListItemButtons(
             IconButton(onClick = onChat, modifier = Modifier.size(24.dp)) {
                 Image(
                     painter = painterResource(R.drawable.ic_callvan_chat),
-                    contentDescription = "",
+                    contentDescription = ""
                 )
             }
         }
@@ -53,7 +53,7 @@ fun CallvanRouteListItemButtons(
             IconButton(onClick = onCall, modifier = Modifier.size(24.dp)) {
                 Image(
                     painter = painterResource(R.drawable.ic_callvan_call),
-                    contentDescription = "",
+                    contentDescription = ""
                 )
             }
         }
