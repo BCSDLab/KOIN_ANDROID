@@ -33,6 +33,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import java.util.Calendar
 
+@Suppress("LongParameterList")
 @Composable
 fun CallvanDateField(
     formattedDate: String,
@@ -101,6 +102,7 @@ fun CallvanDateField(
     }
 }
 
+@Suppress("LongParameterList")
 @Composable
 private fun CallvanDatePickerCard(
     selectedYear: Int,
