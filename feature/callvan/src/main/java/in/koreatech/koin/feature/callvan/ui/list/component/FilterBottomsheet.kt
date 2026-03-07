@@ -51,7 +51,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CallvanFilterBottomSheet(
+fun FilterBottomSheet(
     onDismissRequest: () -> Unit,
     selectedSortOrderType: SortOrderType,
     selectedRecruitmentStatusType: RecruitmentStatusType,
@@ -306,7 +306,7 @@ fun FilterSection(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     rowItems.forEach { item ->
-                        FilterChipCustom(
+                        FilterBottomSheetItem(
                             text = stringResource(item.stringRes),
                             isSelected = item == selectedItem,
                             onClick = { onItemSelected(item) }
@@ -340,7 +340,7 @@ fun FilterDuplicateSection(
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items.forEach { item ->
-                FilterChipCustom(
+                FilterBottomSheetItem(
                     text = stringResource(item.stringRes),
                     isSelected = item in selectedItems,
                     onClick = {
@@ -349,7 +349,7 @@ fun FilterDuplicateSection(
                                 if (selectedItems.size > AT_LEAST_COUNT) {
                                     (selectedItems - item).toPersistentList()
                                 } else {
-                                    return@FilterChipCustom
+                                    return@FilterBottomSheetItem
                                 }
                             } else {
                                 (selectedItems + item).toPersistentList()

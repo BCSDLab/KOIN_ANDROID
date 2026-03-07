@@ -14,7 +14,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
-fun FilterChipCustom(
+fun FilterBottomSheetItem(
     text: String,
     isSelected: Boolean,
     onClick: () -> Unit

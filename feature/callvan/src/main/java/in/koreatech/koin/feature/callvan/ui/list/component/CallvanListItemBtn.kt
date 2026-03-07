@@ -25,7 +25,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 
 @Composable
-fun CallvanRouteListItemButtons(
+fun CallvanListItemButtons(
     state: CallvanRouteState,
     modifier: Modifier = Modifier,
     onJoin: () -> Unit = {},
@@ -174,40 +174,40 @@ fun CallvanRouteListItemButtons(
 
 @Preview(showBackground = true)
 @Composable
-private fun CallvanRouteListItemButtonsDefaultPreview() {
+private fun CallvanListItemButtonsDefaultPreview() {
     RebrandKoinTheme {
-        CallvanRouteListItemButtons(state = CallvanRouteState.DEFAULT)
+        CallvanListItemButtons(state = CallvanRouteState.DEFAULT)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun CallvanRouteListItemButtonsJoinedPreview() {
+private fun CallvanListItemButtonsJoinedPreview() {
     RebrandKoinTheme {
-        CallvanRouteListItemButtons(state = CallvanRouteState.JOINED)
+        CallvanListItemButtons(state = CallvanRouteState.JOINED)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun CallvanRouteListItemButtonsClosedPreview() {
+private fun CallvanListItemButtonsClosedPreview() {
     RebrandKoinTheme {
-        CallvanRouteListItemButtons(state = CallvanRouteState.CLOSED)
+        CallvanListItemButtons(state = CallvanRouteState.CLOSED)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun CallvanRouteListItemButtonsOwnerActivePreview() {
+private fun CallvanListItemButtonsOwnerActivePreview() {
     RebrandKoinTheme {
-        CallvanRouteListItemButtons(state = CallvanRouteState.OWNER_ACTIVE)
+        CallvanListItemButtons(state = CallvanRouteState.OWNER_ACTIVE)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun CallvanRouteListItemButtonsOwnerClosedPreview() {
+private fun CallvanListItemButtonsOwnerClosedPreview() {
     RebrandKoinTheme {
-        CallvanRouteListItemButtons(state = CallvanRouteState.OWNER_CLOSED)
+        CallvanListItemButtons(state = CallvanRouteState.OWNER_CLOSED)
     }
 }

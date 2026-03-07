@@ -22,7 +22,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 
 @Composable
-fun CallvanChip(onClick: () -> Unit) {
+fun CallvanFilterChip(onClick: () -> Unit) {
     Surface(
         onClick = {
             onClick()
@@ -55,8 +55,8 @@ fun CallvanChip(onClick: () -> Unit) {
 
 @Preview(showBackground = true)
 @Composable
-private fun CallvanChipPreview() {
+private fun CallvanFilterChipPreview() {
     KoinTheme {
-        CallvanChip(onClick = {})
+        CallvanFilterChip(onClick = {})
     }
 }

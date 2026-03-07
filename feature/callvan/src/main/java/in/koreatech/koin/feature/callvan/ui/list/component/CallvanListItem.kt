@@ -27,7 +27,7 @@ enum class CallvanRouteState {
 }
 
 @Composable
-fun CallvanRouteListItem(
+fun CallvanListItem(
     departure: String,
     destination: String,
     date: String,
@@ -71,7 +71,7 @@ fun CallvanRouteListItem(
             }
         }
 
-        CallvanRouteListItemButtons(
+        CallvanListItemButtons(
             state = state,
             onJoin = onJoin,
             onCancelJoin = onCancelJoin,
@@ -86,9 +86,9 @@ fun CallvanRouteListItem(
 
 @Preview(showBackground = true)
 @Composable
-private fun CallvanRouteListItemDefaultPreview() {
+private fun CallvanListItemDefaultPreview() {
     RebrandKoinTheme {
-        CallvanRouteListItem(
+        CallvanListItem(
             departure = "테니스장",
             destination = "천안 시외터미널",
             date = "02.05",
@@ -103,9 +103,9 @@ private fun CallvanRouteListItemDefaultPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun CallvanRouteListItemJoinedPreview() {
+private fun CallvanListItemJoinedPreview() {
     RebrandKoinTheme {
-        CallvanRouteListItem(
+        CallvanListItem(
             departure = "정문",
             destination = "천안 시외터미널",
             date = "02.05",
@@ -120,9 +120,9 @@ private fun CallvanRouteListItemJoinedPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun CallvanRouteListItemClosedPreview() {
+private fun CallvanListItemClosedPreview() {
     RebrandKoinTheme {
-        CallvanRouteListItem(
+        CallvanListItem(
             departure = "테니스장",
             destination = "천안역",
             date = "02.05",
@@ -137,9 +137,9 @@ private fun CallvanRouteListItemClosedPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun CallvanRouteListItemOwnerActivePreview() {
+private fun CallvanListItemOwnerActivePreview() {
     RebrandKoinTheme {
-        CallvanRouteListItem(
+        CallvanListItem(
             departure = "정문",
             destination = "천안 시외터미널",
             date = "02.05",
@@ -154,9 +154,9 @@ private fun CallvanRouteListItemOwnerActivePreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun CallvanRouteListItemOwnerClosedPreview() {
+private fun CallvanListItemOwnerClosedPreview() {
     RebrandKoinTheme {
-        CallvanRouteListItem(
+        CallvanListItem(
             departure = "정문",
             destination = "천안 시외터미널",
             date = "02.05",
