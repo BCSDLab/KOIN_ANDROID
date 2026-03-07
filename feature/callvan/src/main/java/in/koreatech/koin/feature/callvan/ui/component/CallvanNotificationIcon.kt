@@ -17,12 +17,13 @@ import `in`.koreatech.koin.feature.callvan.R
 
 @Composable
 fun CallvanNotificationIcon(
-    hasNewNotification: Boolean = false
+    hasNewNotification: Boolean = false,
+    contentDescription: String? = null
 ) {
     Box {
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_callvan_notification),
-            contentDescription = null
+            contentDescription = contentDescription
         )
         if (hasNewNotification) {
             Box(
