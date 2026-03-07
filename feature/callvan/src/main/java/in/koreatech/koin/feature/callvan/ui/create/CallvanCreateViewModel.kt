@@ -14,6 +14,7 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
+@Suppress("TooManyFunctions")
 @HiltViewModel
 class CallvanCreateViewModel @Inject constructor(
     private val createCallvanPostUseCase: CreateCallvanPostUseCase
