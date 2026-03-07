@@ -71,6 +71,6 @@ fun ChatDateTitle(
 
 @Preview
 @Composable
-fun ChatDateTitlePreview() {
+private fun ChatDateTitlePreview() {
     ChatDateTitle(date = LocalDate.now())
 }

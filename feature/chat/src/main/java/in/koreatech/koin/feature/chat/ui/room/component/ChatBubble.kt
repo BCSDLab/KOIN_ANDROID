@@ -327,7 +327,7 @@ private fun ChatBubbleImage(
 
 @Preview
 @Composable
-fun ChatBubblePreview() {
+private fun ChatBubblePreview() {
     KoinSurface {
         Column {
             ChatBubble(
