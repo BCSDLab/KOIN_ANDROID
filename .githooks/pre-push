@@ -1,0 +1,78 @@
+#!/bin/bash
+
+# pre-push hook: run ktlintCheck, spotlessCheck, detekt for changed modules only
+
+set -e
+
+MAIN_BRANCH="origin/main"
+MERGE_BASE=$(git merge-base HEAD "$MAIN_BRANCH" 2>/dev/null || git merge-base HEAD main 2>/dev/null)
+
+if [ -z "$MERGE_BASE" ]; then
+  echo "[pre-push] Could not determine merge base. Running full check..."
+  ./gradlew ktlintCheck spotlessCheck detekt
+  exit $?
+fi
+
+CHANGED_FILES=$(git diff --name-only "$MERGE_BASE" HEAD)
+
+if [ -z "$CHANGED_FILES" ]; then
+  echo "[pre-push] No changed files. Skipping checks."
+  exit 0
+fi
+
+echo "[pre-push] Changed files:"
+echo "$CHANGED_FILES" | sed 's/^/  /'
+
+# Map file paths to Gradle module names
+declare -A MODULES
+
+while IFS= read -r file; do
+  module=""
+
+  case "$file" in
+    koin/*)              module=":koin" ;;
+    data/*)              module=":data" ;;
+    domain/*)            module=":domain" ;;
+    business/*)          module=":business" ;;
+    core/notification/*) module=":core:notification" ;;
+    core/navigation/*)   module=":core:navigation" ;;
+    core/onboarding/*)   module=":core:onboarding" ;;
+    core/designsystem/*) module=":core:designsystem" ;;
+    core/analytics/*)    module=":core:analytics" ;;
+    core/webapp/*)       module=":core:webapp" ;;
+    core/network/*)      module=":core:network" ;;
+    core/*)              module=":core" ;;
+    feature/timetable/*) module=":feature:timetable" ;;
+    feature/bus/*)       module=":feature:bus" ;;
+    feature/article/*)   module=":feature:article" ;;
+    feature/chat/*)      module=":feature:chat" ;;
+    feature/banner/*)    module=":feature:banner" ;;
+    feature/store/*)     module=":feature:store" ;;
+    feature/user/*)      module=":feature:user" ;;
+    feature/club/*)      module=":feature:club" ;;
+    feature/dining/*)    module=":feature:dining" ;;
+    feature/lostandfound/*) module=":feature:lostandfound" ;;
+    feature/callvan/*)   module=":feature:callvan" ;;
+  esac
+
+  if [ -n "$module" ]; then
+    MODULES["$module"]=1
+  fi
+done <<< "$CHANGED_FILES"
+
+if [ ${#MODULES[@]} -eq 0 ]; then
+  echo "[pre-push] No Kotlin module changes detected. Skipping checks."
+  exit 0
+fi
+
+echo "[pre-push] Affected modules: ${!MODULES[*]}"
+
+TASKS=()
+for module in "${!MODULES[@]}"; do
+  TASKS+=("${module}:ktlintCheck")
+  TASKS+=("${module}:spotlessCheck")
+  TASKS+=("${module}:detekt")
+done
+
+echo "[pre-push] Running: ./gradlew ${TASKS[*]}"
+./gradlew "${TASKS[@]}"
