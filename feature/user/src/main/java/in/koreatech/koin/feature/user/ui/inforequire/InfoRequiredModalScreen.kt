@@ -55,7 +55,7 @@ fun InfoRequiredModalScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun ChoiceDialogPreview() {
+private fun ChoiceDialogPreview() {
     KoinTheme {
         InfoRequiredModalScreen(
             title = "아직 입력되지 않은 정보가 있어요",

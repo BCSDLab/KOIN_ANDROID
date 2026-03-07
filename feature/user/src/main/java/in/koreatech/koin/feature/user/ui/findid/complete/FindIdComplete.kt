@@ -108,7 +108,7 @@ fun FindIdCompleteImpl(
 
 @Preview(showBackground = true)
 @Composable
-fun FindIdCompletePreview() {
+private fun FindIdCompletePreview() {
     FindIdCompleteImpl(
         loginId = "test"
     )

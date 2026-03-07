@@ -445,7 +445,7 @@ fun handleSideEffect(
 
 @Preview(showBackground = true)
 @Composable
-fun FindPasswordBySmsPreview() {
+private fun FindPasswordBySmsPreview() {
     FindPasswordVerificationImpl(
         loginId = "testUser",
         loginIdValid = true,
