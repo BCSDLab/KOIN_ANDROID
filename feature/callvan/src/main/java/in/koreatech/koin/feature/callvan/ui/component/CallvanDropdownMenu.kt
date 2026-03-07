@@ -1,9 +1,11 @@
-package `in`.koreatech.koin.feature.callvan.ui.notification.component
+package `in`.koreatech.koin.feature.callvan.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.HorizontalDivider
@@ -25,9 +27,9 @@ import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 @Composable
-fun CallvanNotificationDropdownMenu(
+fun CallvanDropdownMenu(
     expanded: Boolean,
-    items: List<DropdownMenuItem>,
+    items: List<CallvanDropdownMenuItem>,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit = {},
     topPadding: Dp = 0.dp
@@ -56,49 +58,59 @@ fun CallvanNotificationDropdownMenu(
                             modifier = Modifier.padding(horizontal = 12.dp)
                         )
                     }
-                    Text(
-                        text = item.text(),
-                        style = KoinTheme.typography.regular14,
-                        color = item.color(),
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .noRippleClickable {
                                 item.onClick()
                                 onDismissRequest()
                             }
                             .padding(horizontal = 16.dp, vertical = 12.dp)
-                    )
+                    ) {
+                        item.icon?.invoke()
+                        if (item.icon != null) {
+                            Spacer(modifier = Modifier.width(8.dp))
+                        }
+                        Text(
+                            text = item.text(),
+                            style = KoinTheme.typography.regular14,
+                            color = item.color()
+                        )
+                    }
                 }
             }
         }
     }
 }
 
-class DropdownMenuItem(
+class CallvanDropdownMenuItem(
     val text: @Composable () -> String,
     val color: @Composable () -> Color = { KoinTheme.colors.neutral800 },
-    val onClick: () -> Unit
+    val onClick: () -> Unit,
+    val icon: (@Composable () -> Unit)? = null
 ) {
     constructor(
         text: String,
         color: Color? = null,
-        onClick: () -> Unit
-    ) : this({ text }, { color ?: KoinTheme.colors.neutral800 }, onClick)
+        onClick: () -> Unit,
+        icon: (@Composable () -> Unit)? = null
+    ) : this({ text }, { color ?: KoinTheme.colors.neutral800 }, onClick, icon)
 }
 
 @Preview
 @Composable
-private fun CallvanNotificationDropdownMenuPreview() {
+private fun CallvanDropdownMenuPreview() {
     val items = listOf(
-        DropdownMenuItem(
+        CallvanDropdownMenuItem(
             text = "모두 읽음으로 표시",
             onClick = {}
         ),
-        DropdownMenuItem(
+        CallvanDropdownMenuItem(
             text = "알림 전체 삭제",
             onClick = {}
         )
     )
-    CallvanNotificationDropdownMenu(
+    CallvanDropdownMenu(
         expanded = true,
         items = items,
         onDismissRequest = {}
