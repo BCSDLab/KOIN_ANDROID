@@ -29,6 +29,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 
+@Suppress("LongParameterList")
 @Composable
 fun CallvanTimeField(
     amPmText: String,
@@ -101,6 +102,7 @@ fun CallvanTimeField(
     }
 }
 
+@Suppress("LongParameterList")
 @Composable
 private fun CallvanTimePickerCard(
     isAm: Boolean,
