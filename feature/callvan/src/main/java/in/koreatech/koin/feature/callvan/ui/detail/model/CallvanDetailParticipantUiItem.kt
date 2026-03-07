@@ -1,7 +1,9 @@
 package `in`.koreatech.koin.feature.callvan.ui.detail.model
 
+import androidx.compose.runtime.Immutable
 import `in`.koreatech.koin.domain.model.callvan.CallvanPostDetail
 
+@Immutable
 data class CallvanDetailParticipantUiItem(
     val id: Int,
     val name: String,
