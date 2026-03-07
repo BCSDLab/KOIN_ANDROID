@@ -75,6 +75,19 @@ jobs:
         with:
           properties: ${{ secrets.PROPERTIES }}
 
+      - name: Update Firebase
+        env:
+          FIREBASE: ${{ secrets.FIREBASE }}
+          FIREBASE_STAGE: ${{ secrets.FIREBASE_STAGE }}
+        run: |
+          mkdir -p ./koin/src/debug
+          echo $FIREBASE | base64 -di > ./koin/google-services.json
+          echo $FIREBASE_STAGE | base64 -di > ./koin/src/debug/google-services.json
+          for file in $(find . -name 'google-services.json')
+          do
+           echo $file
+          done
+
       - name: Kover - Unit Test with Coverage
         run: ./gradlew koverXmlReport
 
@@ -125,11 +138,11 @@ jobs:
       - name: Update Firebase
         env:
           FIREBASE: ${{ secrets.FIREBASE }}
-          FIREBASE_DEBUG: ${{ secrets.FIREBASE_DEBUG }}
+          FIREBASE_STAGE: ${{ secrets.FIREBASE_STAGE }}
         run: |
           mkdir -p ./koin/src/debug
           echo $FIREBASE | base64 -di > ./koin/google-services.json
-          echo $FIREBASE_DEBUG | base64 -di > ./koin/src/debug/google-services.json
+          echo $FIREBASE_STAGE | base64 -di > ./koin/src/debug/google-services.json
           for file in $(find . -name 'google-services.json')
           do
            echo $file
