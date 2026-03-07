@@ -67,10 +67,10 @@ fi
 
 echo "[pre-push] Affected modules: ${!MODULES[*]}"
 
-TASKS=()
+# spotlessCheck is root-level only (target "**/*.kt" across all modules)
+TASKS=("spotlessCheck")
 for module in "${!MODULES[@]}"; do
   TASKS+=("${module}:ktlintCheck")
-  TASKS+=("${module}:spotlessCheck")
   TASKS+=("${module}:detekt")
 done
 
