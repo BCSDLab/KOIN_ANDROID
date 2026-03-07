@@ -53,4 +53,11 @@
     <string name="callvan_detail_participant_name_me">%1$s (나)</string>
     <string name="callvan_detail_enter_chat">단체 채팅방 입장</string>
     <string name="callvan_detail_participant_report">신고하기</string>
+
+    <string name="callvan_btn_join">참여하기</string>
+    <string name="callvan_btn_cancel_join">참여취소</string>
+    <string name="callvan_btn_closed">모집마감</string>
+    <string name="callvan_btn_close">마감하기</string>
+    <string name="callvan_btn_re_recruit">재모집</string>
+    <string name="callvan_btn_complete">이용완료</string>
 </resources>

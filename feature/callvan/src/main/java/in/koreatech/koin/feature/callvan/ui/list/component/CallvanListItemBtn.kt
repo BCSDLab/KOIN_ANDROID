@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.callvan.ui.list.component
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,15 +10,14 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -43,19 +43,17 @@ fun CallvanRouteListItemButtons(
     ) {
         if (state == CallvanRouteState.JOINED) {
             IconButton(onClick = onChat, modifier = Modifier.size(24.dp)) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.ic_callvan_chat),
+                Image(
+                    painter = painterResource(R.drawable.ic_callvan_chat),
                     contentDescription = "",
-                    tint = RebrandKoinTheme.colors.primary500
                 )
             }
         }
         if (state == CallvanRouteState.OWNER_ACTIVE || state == CallvanRouteState.OWNER_CLOSED) {
             IconButton(onClick = onCall, modifier = Modifier.size(24.dp)) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.ic_callvan_call),
+                Image(
+                    painter = painterResource(R.drawable.ic_callvan_call),
                     contentDescription = "",
-                    tint = RebrandKoinTheme.colors.primary500
                 )
             }
         }
@@ -77,7 +75,7 @@ fun CallvanRouteListItemButtons(
                     ) {
                         Text(
                             style = KoinTheme.typography.regular12,
-                            text = "참여하기"
+                            text = stringResource(R.string.callvan_btn_join)
                         )
                     }
                 }
@@ -95,7 +93,7 @@ fun CallvanRouteListItemButtons(
                     ) {
                         Text(
                             style = KoinTheme.typography.regular12,
-                            text = "참여취소"
+                            text = stringResource(R.string.callvan_btn_cancel_join)
                         )
                     }
                 }
@@ -115,7 +113,7 @@ fun CallvanRouteListItemButtons(
                     ) {
                         Text(
                             style = KoinTheme.typography.regular12,
-                            text = "모집마감"
+                            text = stringResource(R.string.callvan_btn_closed)
                         )
                     }
                 }
@@ -133,7 +131,7 @@ fun CallvanRouteListItemButtons(
                     ) {
                         Text(
                             style = KoinTheme.typography.regular12,
-                            text = "마감하기"
+                            text = stringResource(R.string.callvan_btn_close)
                         )
                     }
                 }
@@ -151,7 +149,7 @@ fun CallvanRouteListItemButtons(
                     ) {
                         Text(
                             style = KoinTheme.typography.regular12,
-                            text = "재모집"
+                            text = stringResource(R.string.callvan_btn_re_recruit)
                         )
                     }
                     Button(
@@ -165,7 +163,7 @@ fun CallvanRouteListItemButtons(
                     ) {
                         Text(
                             style = KoinTheme.typography.regular12,
-                            text = "이용완료"
+                            text = stringResource(R.string.callvan_btn_complete)
                         )
                     }
                 }
