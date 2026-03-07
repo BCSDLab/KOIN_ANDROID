@@ -131,7 +131,7 @@ fun CallvanDetailScreenImpl(
                 Spacer(modifier = Modifier.height(16.dp))
             }
 
-            itemsIndexed(participants) { index, participant ->
+            itemsIndexed(participants, key = { _, participant -> participant.id }) { index, participant ->
                 if (index > 0) {
                     HorizontalDivider(color = KoinTheme.colors.neutral200)
                 }
