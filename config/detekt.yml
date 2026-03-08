@@ -119,6 +119,8 @@ complexity:
     ignoreDefaultParameters: false
     ignoreDataClasses: true
     ignoreAnnotatedParameter: []
+    ignoreAnnotated:
+      - 'Composable'
   MethodOverloading:
     active: false
     threshold: 6
@@ -361,7 +363,7 @@ naming:
     packagePattern: '[a-z]+(\.[a-z][A-Za-z0-9]*)*'
   TopLevelPropertyNaming:
     active: true
-    constantPattern: '[A-Z][A-Za-z0-9]*'
+    constantPattern: '[A-Z][A-Z0-9_]*'
     propertyPattern: '[A-Za-z][_A-Za-z0-9]*'
     privatePropertyPattern: '_?[A-Za-z][_A-Za-z0-9]*'
   VariableMaxLength:

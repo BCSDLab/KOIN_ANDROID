@@ -22,3 +22,13 @@ dependencies {
     debugImplementation(libs.bundles.compose.debug.test)
     androidTestImplementation(libs.androidx.compose.ui.test.manifest)
 }
+
+kover {
+    reports {
+        filters {
+            excludes {
+                classes("*")
+            }
+        }
+    }
+}
