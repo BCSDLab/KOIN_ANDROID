@@ -98,6 +98,32 @@ fun ChatBubble(
     message: ConvertedChatMessage,
     modifier: Modifier = Modifier,
     colors: ChatBubbleColors = ChatBubbleDefaults.colors(),
+    chatPartnerProfileImage: @Composable () -> Unit = {},
+    onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> }
+) {
+    if (message.isSentByMe) {
+        ChatBubbleFromMe(
+            message = message,
+            onShowImageChange = onShowImageChange,
+            colors = colors,
+            modifier = modifier.then(chatBubbleDefaultModifier)
+        )
+    } else {
+        ChatBubbleFromOther(
+            message = message,
+            chatPartnerProfile = chatPartnerProfileImage,
+            onShowImageChange = onShowImageChange,
+            colors = colors,
+            modifier = modifier.then(chatBubbleDefaultModifier)
+        )
+    }
+}
+
+@Composable
+fun ChatBubble(
+    message: ConvertedChatMessage,
+    modifier: Modifier = Modifier,
+    colors: ChatBubbleColors = ChatBubbleDefaults.colors(),
     chatPartnerProfileImage: Uri? = null,
     onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> }
 ) {
@@ -111,7 +137,29 @@ fun ChatBubble(
     } else {
         ChatBubbleFromOther(
             message = message,
-            chatPartnerProfileImage = chatPartnerProfileImage,
+            chatPartnerProfile = {
+                if (chatPartnerProfileImage == null || chatPartnerProfileImage == Uri.EMPTY) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_chat_user_image),
+                        contentDescription = stringResource(id = R.string.chat_user_profile_image),
+                        modifier = Modifier
+                            .clip(KoinTheme.shapes.small)
+                            .border(width = 1.dp, color = colors.iconBorderColor, shape = KoinTheme.shapes.small)
+                            .background(colors.iconContainerColor)
+                            .padding(2.dp)
+                            .size(24.dp)
+                    )
+                } else {
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(chatPartnerProfileImage)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = stringResource(id = R.string.chat_user_profile_image),
+                        placeholder = painterResource(id = R.drawable.ic_chat_user_image)
+                    )
+                }
+            },
             onShowImageChange = onShowImageChange,
             colors = colors,
             modifier = modifier.then(chatBubbleDefaultModifier)
@@ -171,7 +219,7 @@ private fun ChatBubbleFromOther(
     message: ConvertedChatMessage,
     modifier: Modifier = Modifier,
     colors: ChatBubbleColors = ChatBubbleDefaults.colors(),
-    chatPartnerProfileImage: Uri? = null,
+    chatPartnerProfile: @Composable () -> Unit = {},
     onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> }
 ) {
     Column(
@@ -180,27 +228,7 @@ private fun ChatBubbleFromOther(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (chatPartnerProfileImage == null || chatPartnerProfileImage == Uri.EMPTY) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_chat_user_image),
-                    contentDescription = stringResource(id = R.string.chat_user_profile_image),
-                    modifier = Modifier
-                        .clip(KoinTheme.shapes.small)
-                        .border(width = 1.dp, color = colors.iconBorderColor, shape = KoinTheme.shapes.small)
-                        .background(colors.iconContainerColor)
-                        .padding(2.dp)
-                        .size(24.dp)
-                )
-            } else {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(chatPartnerProfileImage)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = stringResource(id = R.string.chat_user_profile_image),
-                    placeholder = painterResource(id = R.drawable.ic_chat_user_image)
-                )
-            }
+            chatPartnerProfile()
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = message.userNickname,
@@ -338,7 +366,8 @@ fun ChatBubblePreview() {
                     timestamp = LocalDateTime.now(),
                     isImage = false,
                     isSentByMe = true
-                )
+                ),
+                chatPartnerProfileImage = {}
             )
 
             ChatBubble(
@@ -349,7 +378,8 @@ fun ChatBubblePreview() {
                     timestamp = LocalDateTime.now(),
                     isImage = false,
                     isSentByMe = false
-                )
+                ),
+                chatPartnerProfileImage = {}
             )
         }
     }
