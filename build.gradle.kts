@@ -60,18 +60,8 @@ val lintReports = reportsDir.joinToString(",") { subproject ->
     "${subproject}/lint-results-debug.xml"
 }
 
-val reportMerge by tasks.registering(io.gitlab.arturbosch.detekt.report.ReportMergeTask::class) {
-    output.set(rootProject.layout.buildDirectory.file("reports/detekt/detekt.xml"))
-}
-
-subprojects {
-    tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
-        finalizedBy(reportMerge)
-    }
-
-    reportMerge {
-        input.from(tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().map { it.xmlReportFile })
-    }
+val detektReports = reportsDir.joinToString(",") { subproject ->
+    "${subproject}/detekt/detekt.xml"
 }
 
 kover {
@@ -86,7 +76,7 @@ sonar {
         property("sonar.organization", "bcsdlab")
         property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get().asFile.absolutePath}/reports/kover/report.xml")
         property("sonar.androidLint.reportPaths", lintReports)
-        property("sonar.kotlin.detekt.reportPaths", "${layout.buildDirectory.get().asFile.absolutePath}/reports/detekt/detekt.xml")
+        property("sonar.kotlin.detekt.reportPaths", detektReports)
         property("sonar.kotlin.ktlint.reportPaths", ktlintReports)
     }
 }
