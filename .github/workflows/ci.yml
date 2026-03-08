@@ -73,6 +73,14 @@ jobs:
           path: 'build/reports/detekt/detekt.xml'
           retention-days: 7
 
+      - name: Upload ktlint Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ktlint-report
+          path: 'build/reports/ktlint/ktlintMainSourceSetCheck/ktlintMainSourceSetCheck.xml'
+          retention-days: 7
+
   coverage:
     name: Code Coverage
     runs-on: ubuntu-latest
@@ -157,7 +165,7 @@ jobs:
           done
 
       - name: Lint
-        run: ./gradlew koin:lintDebug
+        run: ./gradlew lintDebug
 
       - name: Download Coverage Report
         uses: actions/download-artifact@v4
@@ -170,6 +178,12 @@ jobs:
         with:
           name: detekt-report
           path: build/reports/detekt
+
+      - name: Download ktlint Report
+        uses: actions/download-artifact@v4
+        with:
+          name: ktlint-report
+          path: build/reports/ktlint/ktlintMainSourceSetCheck
 
       - name: SonarCloud Scan
         env:
