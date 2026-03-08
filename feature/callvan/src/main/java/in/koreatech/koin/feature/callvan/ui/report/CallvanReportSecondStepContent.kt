@@ -164,24 +164,26 @@ internal fun CallvanReportSecondStepContent(
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            TextButton(
-                onClick = onAddImageClick,
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.textButtonColors(
-                    containerColor = RebrandKoinTheme.colors.primary100,
-                    contentColor = RebrandKoinTheme.colors.primary900
-                ),
-                shape = KoinTheme.shapes.small
-            ) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.ic_picture),
-                    contentDescription = null
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = stringResource(R.string.callvan_report_add_photo),
-                    style = KoinTheme.typography.medium16
-                )
+            if (images.size < CALLVAN_REPORT_IMAGE_MAX_COUNT) {
+                TextButton(
+                    onClick = onAddImageClick,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.textButtonColors(
+                        containerColor = RebrandKoinTheme.colors.primary100,
+                        contentColor = RebrandKoinTheme.colors.primary900
+                    ),
+                    shape = KoinTheme.shapes.small
+                ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_picture),
+                        contentDescription = null
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = stringResource(R.string.callvan_report_add_photo),
+                        style = KoinTheme.typography.medium16
+                    )
+                }
             }
         }
     }
