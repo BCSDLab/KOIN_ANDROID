@@ -7,5 +7,5 @@ data class CallvanListUiState(
     val dayOfWeek: String,
     val time: String,
     val currentCount: Int,
-    val maxCount: Int,
+    val maxCount: Int
 )

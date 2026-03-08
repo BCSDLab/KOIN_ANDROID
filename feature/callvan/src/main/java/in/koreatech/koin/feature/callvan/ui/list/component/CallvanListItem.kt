@@ -82,7 +82,7 @@ private fun CallvanListItemDefaultPreview() {
                 dayOfWeek = "월",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8,
+                maxCount = 8
             ),
             state = CallvanRouteState.DEFAULT
         )
@@ -101,7 +101,7 @@ private fun CallvanListItemJoinedPreview() {
                 dayOfWeek = "월",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8,
+                maxCount = 8
             ),
             state = CallvanRouteState.JOINED
         )
@@ -120,7 +120,7 @@ private fun CallvanListItemClosedPreview() {
                 dayOfWeek = "월",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8,
+                maxCount = 8
             ),
             state = CallvanRouteState.CLOSED
         )
@@ -139,7 +139,7 @@ private fun CallvanListItemOwnerActivePreview() {
                 dayOfWeek = "월",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8,
+                maxCount = 8
             ),
             state = CallvanRouteState.OWNER_ACTIVE
         )
@@ -158,7 +158,7 @@ private fun CallvanListItemOwnerClosedPreview() {
                 dayOfWeek = "월",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8,
+                maxCount = 8
             ),
             state = CallvanRouteState.OWNER_CLOSED
         )
