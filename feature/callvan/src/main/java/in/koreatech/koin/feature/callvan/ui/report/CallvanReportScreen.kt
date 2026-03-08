@@ -94,7 +94,17 @@ private fun CallvanReportScreenImpl(
                     .padding(contentPadding)
                     .imePadding()
             )
-            2 -> {} // TODO
+            2 -> CallvanReportSecondStepContent(
+                detail = detail,
+                onDetailChange = onDetailChange,
+                images = images,
+                onAddImageClick = onAddImageClick,
+                onRemoveImage = onRemoveImage,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(contentPadding)
+                    .imePadding()
+            )
         }
     }
 }
