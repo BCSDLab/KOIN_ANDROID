@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.callvan.ui.list.component
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,31 +9,29 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemClickListener
 
 @Composable
 fun CallvanListItemButtons(
     state: CallvanRouteState,
     modifier: Modifier = Modifier,
-    onJoin: () -> Unit = {},
-    onCancelJoin: () -> Unit = {},
-    onClose: () -> Unit = {},
-    onReRecruit: () -> Unit = {},
-    onComplete: () -> Unit = {},
-    onCall: () -> Unit = {},
-    onChat: () -> Unit = {}
+    clickListener: CallvanListItemClickListener = object : CallvanListItemClickListener {}
 ) {
     Column(
         modifier = modifier,
@@ -42,18 +39,20 @@ fun CallvanListItemButtons(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         if (state == CallvanRouteState.JOINED) {
-            IconButton(onClick = onChat, modifier = Modifier.size(24.dp)) {
-                Image(
-                    painter = painterResource(R.drawable.ic_callvan_chat),
-                    contentDescription = ""
+            IconButton(onClick = { clickListener.onChat() }, modifier = Modifier.size(24.dp)) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_callvan_chat),
+                    contentDescription = "",
+                    tint = Color.Unspecified
                 )
             }
         }
         if (state == CallvanRouteState.OWNER_ACTIVE || state == CallvanRouteState.OWNER_CLOSED) {
-            IconButton(onClick = onCall, modifier = Modifier.size(24.dp)) {
-                Image(
-                    painter = painterResource(R.drawable.ic_callvan_call),
-                    contentDescription = ""
+            IconButton(onClick = { clickListener.onCall() }, modifier = Modifier.size(24.dp)) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_callvan_call),
+                    contentDescription = "",
+                    tint = Color.Unspecified
                 )
             }
         }
@@ -66,7 +65,7 @@ fun CallvanListItemButtons(
                 CallvanRouteState.DEFAULT -> {
                     Button(
                         modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                        onClick = onJoin,
+                        onClick = { clickListener.onJoin() },
                         shape = KoinTheme.shapes.extraSmall,
                         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
                         colors = ButtonDefaults.buttonColors(
@@ -83,7 +82,7 @@ fun CallvanListItemButtons(
                 CallvanRouteState.JOINED -> {
                     OutlinedButton(
                         modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                        onClick = onCancelJoin,
+                        onClick = { clickListener.onCancelJoin() },
                         shape = KoinTheme.shapes.extraSmall,
                         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
                         colors = ButtonDefaults.outlinedButtonColors(
@@ -121,7 +120,7 @@ fun CallvanListItemButtons(
                 CallvanRouteState.OWNER_ACTIVE -> {
                     OutlinedButton(
                         modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                        onClick = onClose,
+                        onClick = { clickListener.onClose() },
                         shape = KoinTheme.shapes.extraSmall,
                         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
                         colors = ButtonDefaults.outlinedButtonColors(
@@ -139,7 +138,7 @@ fun CallvanListItemButtons(
                 CallvanRouteState.OWNER_CLOSED -> {
                     OutlinedButton(
                         modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                        onClick = onReRecruit,
+                        onClick = { clickListener.onReRecruit() },
                         shape = KoinTheme.shapes.extraSmall,
                         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
                         colors = ButtonDefaults.outlinedButtonColors(
@@ -154,7 +153,7 @@ fun CallvanListItemButtons(
                     }
                     Button(
                         modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                        onClick = onComplete,
+                        onClick = { clickListener.onComplete() },
                         shape = KoinTheme.shapes.extraSmall,
                         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
                         colors = ButtonDefaults.buttonColors(
