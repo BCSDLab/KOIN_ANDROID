@@ -126,7 +126,7 @@ class CallvanDetailViewModelTest {
         val viewModel = createViewModel()
 
         viewModel.container.stateFlow.test {
-            var state = awaitItem().copy(hasNewNotification = true)
+            var state = awaitItem()
             while (state.hasNewNotification) {
                 state = awaitItem()
             }
