@@ -120,7 +120,7 @@ class CallvanDetailViewModelTest {
     fun `모든 알림이 읽힌 상태면 hasNewNotification이 false다`() = runTest {
         fakeRepository.postDetailResult = Result.success(fakePostDetail)
         fakeRepository.notificationsResult = Result.success(
-            listOf(fakeNotification(isRead = false))
+            listOf(fakeNotification(isRead = true))
         )
 
         val viewModel = createViewModel()
