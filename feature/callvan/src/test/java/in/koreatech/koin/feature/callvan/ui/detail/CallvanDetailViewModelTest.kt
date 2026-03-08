@@ -44,7 +44,10 @@ class CallvanDetailViewModelTest {
         val viewModel = createViewModel()
 
         viewModel.container.stateFlow.test {
-            val state = awaitItem()
+            var state = awaitItem()
+            while (state.participants.isEmpty()) {
+                state = awaitItem()
+            }
             assertEquals("테니스장", state.departure)
             assertEquals("천안 시외터미널", state.destination)
             assertEquals("03.02(월) 14:00", state.dateTime)
