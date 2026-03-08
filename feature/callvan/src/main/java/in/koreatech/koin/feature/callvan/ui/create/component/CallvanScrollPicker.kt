@@ -22,22 +22,26 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import kotlin.math.roundToInt
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.filter
 
 @Suppress("LongParameterList")
 @Composable
 fun CallvanScrollPicker(
-    items: List<String>,
+    items: ImmutableList<String>,
     selectedIndex: Int,
-    onIndexChange: (Int) -> Unit,
+    onIndexChange: (Int) -> Unit = {},
     modifier: Modifier = Modifier,
     itemHeight: Dp = 32.dp,
     textAlign: TextAlign = TextAlign.Center
 ) {
     val density = LocalDensity.current
-    val clampedIndex = selectedIndex.coerceIn(0, (items.size - 1).coerceAtLeast(0))
+    val clampedIndex = remember(selectedIndex, items.size) {
+        selectedIndex.coerceIn(0, (items.size - 1).coerceAtLeast(0))
+    }
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = clampedIndex)
     val snappingLayout = rememberSnapFlingBehavior(listState)
 
@@ -71,7 +75,7 @@ fun CallvanScrollPicker(
         modifier = modifier.height(itemHeight * 3)
     ) {
         itemsIndexed(items) { index, item ->
-            val isSelected = index == currentSelectedIndex
+            val isSelected by remember(index) { derivedStateOf { index == currentSelectedIndex } }
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -80,8 +84,8 @@ fun CallvanScrollPicker(
             ) {
                 Text(
                     text = item,
-                    style = KoinTheme.typography.medium16,
-                    color = if (isSelected) KoinTheme.colors.neutral800 else KoinTheme.colors.neutral500,
+                    style = RebrandKoinTheme.typography.medium16,
+                    color = if (isSelected) RebrandKoinTheme.colors.neutral800 else RebrandKoinTheme.colors.neutral500,
                     textAlign = textAlign
                 )
             }
@@ -93,7 +97,7 @@ fun CallvanScrollPicker(
 @Composable
 private fun CallvanScrollPickerPreview() {
     CallvanScrollPicker(
-        items = listOf("1월", "2월", "3월", "4월", "5월", "6월"),
+        items = persistentListOf("1월", "2월", "3월", "4월", "5월", "6월"),
         selectedIndex = 2,
         onIndexChange = {}
     )
