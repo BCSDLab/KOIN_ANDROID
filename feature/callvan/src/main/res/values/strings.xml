@@ -29,4 +29,11 @@
     <string name="callvan_detail_participant_name_me">%1$s (나)</string>
     <string name="callvan_detail_enter_chat">단체 채팅방 입장</string>
     <string name="callvan_detail_participant_report">신고하기</string>
+
+    <string name="callvan_report_top_bar">신고하기</string>
+    <string name="callvan_report_header_title">신고 이유를 선택해주세요.</string>
+    <string name="callvan_report_header_description">신고가 접수되면 운영정책에 따라 검토 후 주변 기능이 제한될 수 있습니다. 본 서비스는 비용 정산에 직접 관여하지 않습니다.</string>
+    <string name="callvan_report_next">다음</string>
+    <string name="callvan_report_other_placeholder">신고 사유를 입력해주세요.</string>
+    <string name="callvan_report_other_reason_length">%1$d/%2$d</string>
 </resources>
