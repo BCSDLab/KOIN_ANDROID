@@ -44,10 +44,21 @@ plugins {
     alias(libs.plugins.sonarqube)
 }
 
+val reportsDir = subprojects.map { subproject ->
+    subproject.projectDir.absolutePath
+}.filter {
+    !it.endsWith("domain") && !it.endsWith("feature")
+}.map { subproject ->
+    "${subproject}/build/reports"
+}
+
+val ktlintReports = reportsDir.joinToString(",") { subproject ->
+    "${subproject}/ktlint/ktlintMainSourceSetCheck/ktlintMainSourceSetCheck.xml"
+}
+
 val reportMerge by tasks.registering(io.gitlab.arturbosch.detekt.report.ReportMergeTask::class) {
     output.set(rootProject.layout.buildDirectory.file("reports/detekt/detekt.xml"))
 }
-
 
 subprojects {
     tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
@@ -72,6 +83,7 @@ sonar {
         property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get().asFile.absolutePath}/reports/kover/report.xml")
         property("sonar.androidLint.reportPaths", "${projectDir.absolutePath}/koin/build/reports/lint-results*.xml")
         property("sonar.kotlin.detekt.reportPaths", "${layout.buildDirectory.get().asFile.absolutePath}/reports/detekt/detekt.xml")
+        property("sonar.kotlin.ktlint.reportPaths", ktlintReports)
     }
 }
 
