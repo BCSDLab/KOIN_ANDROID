@@ -8,13 +8,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -22,15 +20,42 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportFirstStepUiState
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportSecondStepUiState
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun CallvanReportScreen(
+    viewModel: CallvanReportViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {},
-    onSubmitClick: () -> Unit = {}
+    onShowErrorMessage: (String) -> Unit = {}
 ) {
+    val state by viewModel.collectAsState()
+
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            is CallvanReportSideEffect.NavigateBack -> onTopbarBackClick()
+            is CallvanReportSideEffect.ShowErrorMessage -> onShowErrorMessage(sideEffect.message)
+        }
+    }
+
     CallvanReportScreenImpl(
-        onTopbarBackClick = onTopbarBackClick,
-        onSubmitClick = onSubmitClick
+        firstStep = CallvanReportFirstStepUiState(
+            selectedReason = state.selectedReason,
+            onSelectedReasonChange = viewModel::onReasonSelect,
+            otherReason = state.otherReason,
+            onOtherReasonChange = viewModel::onOtherReasonChange
+        ),
+        secondStep = CallvanReportSecondStepUiState(
+            detail = state.detail,
+            onDetailChange = viewModel::onDetailChange,
+            images = state.images,
+            onAddImageClick = {},
+            onRemoveImage = viewModel::onRemoveImage
+        ),
+        step = state.step,
+        onTopbarBackClick = viewModel::onPreviousStep,
+        onNextClick = viewModel::onNextStep,
+        onSubmitClick = viewModel::onSubmit
     )
 }
 
@@ -38,12 +63,11 @@ fun CallvanReportScreen(
 private fun CallvanReportScreenImpl(
     firstStep: CallvanReportFirstStepUiState = CallvanReportFirstStepUiState(),
     secondStep: CallvanReportSecondStepUiState = CallvanReportSecondStepUiState(),
-    initStep: Int = 1,
+    step: Int = 1,
     onTopbarBackClick: () -> Unit = {},
+    onNextClick: () -> Unit = {},
     onSubmitClick: () -> Unit = {}
 ) {
-    var step by remember { mutableIntStateOf(initStep) }
-
     Scaffold(
         topBar = {
             KoinTopAppBar(
@@ -58,11 +82,7 @@ private fun CallvanReportScreenImpl(
                 } else {
                     stringResource(R.string.callvan_detail_participant_report)
                 },
-                onClick = if (step == 1) {
-                    { step = 2 }
-                } else {
-                    onSubmitClick
-                },
+                onClick = if (step == 1) onNextClick else onSubmitClick,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp, vertical = 16.dp),
@@ -103,15 +123,11 @@ private fun CallvanReportScreenImpl(
 @Preview(showBackground = true)
 @Composable
 private fun CallvanReportScreenFirstPreview() {
-    CallvanReportScreenImpl(
-        initStep = 1
-    )
+    CallvanReportScreenImpl(step = 1)
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun CallvanReportScreenSecondPreview() {
-    CallvanReportScreenImpl(
-        initStep = 2
-    )
+    CallvanReportScreenImpl(step = 2)
 }

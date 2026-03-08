@@ -20,7 +20,9 @@ fun NavGraphBuilder.koinCallvanGraph(
             onTopbarBackClick = { navController.popBackStack() },
             onNotificationClick = { navController.navigate(CallvanNavType.CallvanNotifications) },
             onEnterChatClick = { navController.navigate(CallvanNavType.CallvanChat(postId)) },
-            onReportClick = { navController.navigate(CallvanNavType.CallvanReport(postId)) }
+            onReportClick = { reportedUserId ->
+                navController.navigate(CallvanNavType.CallvanReport(postId, reportedUserId))
+            }
         )
     }
 
