@@ -21,7 +21,6 @@ import `in`.koreatech.koin.feature.callvan.ui.component.CallvanRouteInfo
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemClickListener
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListUiState
 
-
 @Composable
 fun CallvanListItem(
     uiState: CallvanListUiState,
