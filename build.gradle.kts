@@ -40,16 +40,22 @@ plugins {
     alias(libs.plugins.room) apply false
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.spotless)
-    alias(libs.plugins.kover) apply false
+    alias(libs.plugins.kover)
     alias(libs.plugins.sonarqube)
+}
+
+kover {
+    merge {
+        allProjects()
+    }
 }
 
 sonar {
     properties {
         property("sonar.projectKey", "BCSDLab_KOIN_ANDROID")
         property("sonar.organization", "bcsdlab")
-        property("sonar.coverage.jacoco.xmlReportPaths", "**/build/reports/kover/report.xml")
-        property("sonar.androidLint.reportPaths", "**/build/reports/lint-results*.xml")
+        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/kover/report.xml")
+        property("sonar.androidLint.reportPaths", "koin/build/reports/lint-results*.xml")
     }
 }
 

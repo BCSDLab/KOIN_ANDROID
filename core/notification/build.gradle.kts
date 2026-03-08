@@ -12,3 +12,13 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.timber)
 }
+
+kover {
+    reports {
+        filters {
+            excludes {
+                classes("*")
+            }
+        }
+    }
+}
