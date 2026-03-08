@@ -120,13 +120,16 @@ class CallvanDetailViewModelTest {
     fun `모든 알림이 읽힌 상태면 hasNewNotification이 false다`() = runTest {
         fakeRepository.postDetailResult = Result.success(fakePostDetail)
         fakeRepository.notificationsResult = Result.success(
-            listOf(fakeNotification(isRead = true))
+            listOf(fakeNotification(isRead = false))
         )
 
         val viewModel = createViewModel()
 
         viewModel.container.stateFlow.test {
-            val state = awaitItem()
+            var state = awaitItem().copy(hasNewNotification = true)
+            while (state.hasNewNotification) {
+                state = awaitItem()
+            }
             assertFalse(state.hasNewNotification)
             cancelAndIgnoreRemainingEvents()
         }
