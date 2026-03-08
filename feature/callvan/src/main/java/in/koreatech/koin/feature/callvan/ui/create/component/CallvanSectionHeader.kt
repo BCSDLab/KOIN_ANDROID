@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
@@ -18,13 +17,13 @@ fun CallvanSectionHeader(label: String, hint: String) {
     ) {
         Text(
             text = label,
-            style = KoinTheme.typography.medium16,
+            style = RebrandKoinTheme.typography.medium16,
             color = RebrandKoinTheme.colors.primary500
         )
         Text(
             text = hint,
-            style = KoinTheme.typography.regular12,
-            color = KoinTheme.colors.neutral500
+            style = RebrandKoinTheme.typography.regular12,
+            color = RebrandKoinTheme.colors.neutral500
         )
     }
 }
