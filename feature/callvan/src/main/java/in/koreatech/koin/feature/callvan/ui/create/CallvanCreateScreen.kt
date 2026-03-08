@@ -28,14 +28,14 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun CallvanCreateScreen(
     viewModel: CallvanCreateViewModel = hiltViewModel(),
-    onNavigateToDetail: (Int) -> Unit = {},
+    onNavigateToMain: () -> Unit = {},
     onTopbarBackClick: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
 
     viewModel.collectSideEffect { effect ->
         when (effect) {
-            is CallvanCreateSideEffect.NavigateToDetail -> onNavigateToDetail(effect.postId)
+            CallvanCreateSideEffect.NavigateToMain -> onNavigateToMain()
             CallvanCreateSideEffect.ShowSubmitError -> {}
         }
     }

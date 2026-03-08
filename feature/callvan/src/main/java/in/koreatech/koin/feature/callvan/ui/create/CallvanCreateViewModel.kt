@@ -183,9 +183,9 @@ class CallvanCreateViewModel @Inject constructor(
             departureDate = currentState.apiDepartureDate,
             departureTime = currentState.apiDepartureTime,
             maxParticipants = currentState.maxParticipants
-        ).onSuccess { post ->
+        ).onSuccess {
             reduce { state.copy(isSubmitting = false) }
-            postSideEffect(CallvanCreateSideEffect.NavigateToDetail(post.id))
+            postSideEffect(CallvanCreateSideEffect.NavigateToMain)
         }.onFailure {
             reduce { state.copy(isSubmitting = false) }
             postSideEffect(CallvanCreateSideEffect.ShowSubmitError)

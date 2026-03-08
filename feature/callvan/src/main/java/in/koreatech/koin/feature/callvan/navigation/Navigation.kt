@@ -17,8 +17,8 @@ fun NavGraphBuilder.koinCallvanGraph(
 
     composable<CallvanNavType.CallvanCreate> {
         CallvanCreateScreen(
-            onNavigateToDetail = { postId ->
-                navController.navigate(CallvanNavType.CallvanDetail(postId))
+            onNavigateToMain = {
+                navController.navigate(CallvanNavType.CallvanMain)
             },
             onTopbarBackClick = { navController.popBackStack() }
         )
