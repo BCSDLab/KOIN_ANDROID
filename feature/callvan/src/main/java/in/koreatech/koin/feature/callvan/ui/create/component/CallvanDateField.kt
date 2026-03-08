@@ -150,15 +150,13 @@ private fun CallvanDatePickerCard(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(40.dp, Alignment.CenterHorizontally)
+                modifier = Modifier.fillMaxWidth()
             ) {
                 CallvanScrollPicker(
                     items = years,
                     selectedIndex = yearIndex,
                     onIndexChange = onYearIndexChange,
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.End
+                    modifier = Modifier.weight(1f)
                 )
                 CallvanScrollPicker(
                     items = months,
