@@ -21,6 +21,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,7 +33,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
@@ -42,14 +42,15 @@ import `in`.koreatech.koin.feature.callvan.ui.component.CallvanBottomSheet
 @Composable
 fun CallvanLocationPickerBottomSheet(
     isDeparture: Boolean,
+    modifier: Modifier = Modifier,
     initialSelection: CallvanLocationOption? = null,
     initialCustomText: String? = null,
-    onLocationSelected: (CallvanLocationOption, String?) -> Unit,
-    onDismiss: () -> Unit
+    onLocationSelected: (CallvanLocationOption, String?) -> Unit = { _, _ -> },
+    onDismiss: () -> Unit = {}
 ) {
     var selectedLocation by remember { mutableStateOf(initialSelection) }
     var customText by remember { mutableStateOf(initialCustomText ?: "") }
-    val isOtherSelected = selectedLocation == CallvanLocationOption.OTHER
+    val isOtherSelected by remember { derivedStateOf { selectedLocation == CallvanLocationOption.OTHER } }
 
     CallvanBottomSheet(
         title = stringResource(
@@ -63,7 +64,7 @@ fun CallvanLocationPickerBottomSheet(
         showCloseButton = true
     ) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(24.dp)
@@ -85,7 +86,7 @@ fun CallvanLocationPickerBottomSheet(
                                     color = if (isSelected) {
                                         RebrandKoinTheme.colors.primary500
                                     } else {
-                                        KoinTheme.colors.neutral300
+                                        RebrandKoinTheme.colors.neutral300
                                     },
                                     shape = RoundedCornerShape(24.dp)
                                 )
@@ -100,11 +101,11 @@ fun CallvanLocationPickerBottomSheet(
                         ) {
                             Text(
                                 text = location.displayName,
-                                style = KoinTheme.typography.medium14,
+                                style = RebrandKoinTheme.typography.medium14,
                                 color = if (isSelected) {
                                     RebrandKoinTheme.colors.primary500
                                 } else {
-                                    KoinTheme.colors.neutral500
+                                    RebrandKoinTheme.colors.neutral500
                                 }
                             )
                         }
@@ -119,19 +120,19 @@ fun CallvanLocationPickerBottomSheet(
                         value = customText,
                         onValueChange = { customText = it },
                         singleLine = true,
-                        textStyle = KoinTheme.typography.regular14.copy(
-                            color = KoinTheme.colors.neutral600
+                        textStyle = RebrandKoinTheme.typography.regular14.copy(
+                            color = RebrandKoinTheme.colors.neutral600
                         ),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 4.dp)
-                            .border(1.dp, KoinTheme.colors.neutral300, RoundedCornerShape(12.dp))
-                            .background(Color.White, RoundedCornerShape(12.dp))
+                            .border(1.dp, RebrandKoinTheme.colors.neutral300, RebrandKoinTheme.shapes.medium)
+                            .background(RebrandKoinTheme.colors.neutral0, RebrandKoinTheme.shapes.medium)
                             .padding(horizontal = 20.dp, vertical = 13.dp)
                     )
                 }
                 HorizontalDivider(
-                    color = KoinTheme.colors.neutral300,
+                    color = RebrandKoinTheme.colors.neutral300,
                     thickness = 0.5.dp
                 )
             }
@@ -150,14 +151,14 @@ fun CallvanLocationPickerBottomSheet(
                 },
                 enabled = selectedLocation != null && (!isOtherSelected || customText.isNotBlank()),
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
-                textStyle = KoinTheme.typography.bold16,
+                shape = RebrandKoinTheme.shapes.medium,
+                textStyle = RebrandKoinTheme.typography.bold16,
                 contentPadding = PaddingValues(vertical = 10.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = RebrandKoinTheme.colors.primary500,
-                    disabledContainerColor = KoinTheme.colors.neutral400,
-                    contentColor = Color.White,
-                    disabledContentColor = Color.White
+                    disabledContainerColor = RebrandKoinTheme.colors.neutral400,
+                    contentColor = RebrandKoinTheme.colors.neutral0,
+                    disabledContentColor = RebrandKoinTheme.colors.neutral0
                 )
             )
         }
