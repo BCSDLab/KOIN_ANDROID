@@ -56,6 +56,10 @@ val ktlintReports = reportsDir.joinToString(",") { subproject ->
     "${subproject}/ktlint/ktlintMainSourceSetCheck/ktlintMainSourceSetCheck.xml"
 }
 
+val lintReports = reportsDir.joinToString(",") { subproject ->
+    "${subproject}/lint-results-debug.xml"
+}
+
 val reportMerge by tasks.registering(io.gitlab.arturbosch.detekt.report.ReportMergeTask::class) {
     output.set(rootProject.layout.buildDirectory.file("reports/detekt/detekt.xml"))
 }
@@ -81,7 +85,7 @@ sonar {
         property("sonar.projectKey", "BCSDLab_KOIN_ANDROID")
         property("sonar.organization", "bcsdlab")
         property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get().asFile.absolutePath}/reports/kover/report.xml")
-        property("sonar.androidLint.reportPaths", "${projectDir.absolutePath}/koin/build/reports/lint-results*.xml")
+        property("sonar.androidLint.reportPaths", lintReports)
         property("sonar.kotlin.detekt.reportPaths", "${layout.buildDirectory.get().asFile.absolutePath}/reports/detekt/detekt.xml")
         property("sonar.kotlin.ktlint.reportPaths", ktlintReports)
     }
