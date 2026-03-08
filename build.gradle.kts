@@ -40,7 +40,7 @@ plugins {
     alias(libs.plugins.room) apply false
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.spotless)
-    alias(libs.plugins.kover)
+    alias(libs.plugins.kover) apply false
     alias(libs.plugins.sonarqube)
 }
 
@@ -64,17 +64,15 @@ val detektReports = reportsDir.joinToString(",") { subproject ->
     "${subproject}/detekt/detekt.xml"
 }
 
-kover {
-    merge {
-        allProjects()
-    }
+val koverReports = reportsDir.joinToString(",") { subproject ->
+    "${subproject}/kover/report.xml"
 }
 
 sonar {
     properties {
         property("sonar.projectKey", "BCSDLab_KOIN_ANDROID")
         property("sonar.organization", "bcsdlab")
-        property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get().asFile.absolutePath}/reports/kover/report.xml")
+        property("sonar.coverage.jacoco.xmlReportPaths", koverReports)
         property("sonar.androidLint.reportPaths", lintReports)
         property("sonar.kotlin.detekt.reportPaths", detektReports)
         property("sonar.kotlin.ktlint.reportPaths", ktlintReports)
