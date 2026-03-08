@@ -36,4 +36,13 @@
     <string name="callvan_report_next">다음</string>
     <string name="callvan_report_other_placeholder">신고 사유를 입력해주세요.</string>
     <string name="callvan_report_other_reason_length">%1$d/%2$d</string>
+
+    <string name="callvan_report_detail_title">신고 상황을 입력해주세요.</string>
+    <string name="callvan_report_detail_placeholder">신고 상황을 확인하기 위해 자세히 작성해주세요.</string>
+    <string name="callvan_report_detail_length">%1$d/%2$d</string>
+    <string name="callvan_report_evidence_title">증빙자료 첨부</string>
+    <string name="callvan_report_evidence_description">신고 상황에 대한 채팅내역 등 증빙자료로 사용할 이미지를 첨부해주세요.</string>
+    <string name="callvan_report_evidence_count">%1$d/%2$d</string>
+    <string name="callvan_report_add_photo">사진 등록하기</string>
+    <string name="callvan_report_image_remove">이미지 삭제</string>
 </resources>

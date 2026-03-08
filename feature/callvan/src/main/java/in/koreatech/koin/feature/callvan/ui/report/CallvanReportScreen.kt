@@ -1,24 +1,19 @@
 package `in`.koreatech.koin.feature.callvan.ui.report
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import android.net.Uri
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
@@ -26,38 +21,37 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
-import `in`.koreatech.koin.feature.callvan.ui.report.component.CallvanReportReasonTextFieldItem
-import `in`.koreatech.koin.feature.callvan.ui.report.component.CallvanReportReasonItem
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportReason
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun CallvanReportScreen(
     onTopbarBackClick: () -> Unit = {},
-    onNextClick: () -> Unit = {}
+    onSubmitClick: () -> Unit = {}
 ) {
     CallvanReportScreenImpl(
         onTopbarBackClick = onTopbarBackClick,
-        onNextClick = onNextClick
+        onSubmitClick = onSubmitClick
     )
 }
 
 @Composable
 private fun CallvanReportScreenImpl(
     selectedReason: CallvanReportReason? = null,
+    initStep: Int = 1,
     onSelectedReasonChange: (CallvanReportReason) -> Unit = {},
     otherReason: String = "",
     onOtherReasonChange: (String) -> Unit = {},
+    detail: String = "",
+    onDetailChange: (String) -> Unit = {},
+    images: ImmutableList<Uri> = persistentListOf(),
+    onAddImageClick: () -> Unit = {},
+    onRemoveImage: (Uri) -> Unit = {},
     onTopbarBackClick: () -> Unit = {},
-    onNextClick: () -> Unit = {}
+    onSubmitClick: () -> Unit = {}
 ) {
-    val callvanReportReasonList = remember {
-        listOf(
-            CallvanReportReason.NO_SHOW,
-            CallvanReportReason.NON_PAYMENT,
-            CallvanReportReason.PROFANITY,
-            CallvanReportReason.OTHER
-        )
-    }
+    var step by remember { mutableIntStateOf(initStep) }
 
     Scaffold(
         topBar = {
@@ -68,8 +62,16 @@ private fun CallvanReportScreenImpl(
         },
         bottomBar = {
             FilledButton(
-                text = stringResource(R.string.callvan_report_next),
-                onClick = onNextClick,
+                text = if (step == 1) {
+                    stringResource(R.string.callvan_report_next)
+                } else {
+                    stringResource(R.string.callvan_detail_participant_report)
+                },
+                onClick = if (step == 1) {
+                    { step = 2 }
+                } else {
+                    onSubmitClick
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp, vertical = 16.dp),
@@ -81,63 +83,34 @@ private fun CallvanReportScreenImpl(
         },
         containerColor = KoinTheme.colors.neutral0
     ) { contentPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(contentPadding)
-                .imePadding()
-        ) {
-            CallvanReportHeader()
-            LazyColumn(
-                modifier = Modifier.weight(1f)
-            ) {
-                items(callvanReportReasonList) { reason ->
-                    if (reason == CallvanReportReason.OTHER) {
-                        CallvanReportReasonTextFieldItem(
-                            reason = reason,
-                            isSelected = selectedReason == reason,
-                            value = otherReason,
-                            onValueChange = onOtherReasonChange,
-                            onClick = { onSelectedReasonChange(reason) }
-                        )
-                    } else {
-                        CallvanReportReasonItem(
-                            reason = reason,
-                            isSelected = selectedReason == reason,
-                            onClick = { onSelectedReasonChange(reason) }
-                        )
-                        HorizontalDivider(
-                            thickness = 1.dp,
-                            color = KoinTheme.colors.neutral200
-                        )
-                    }
-                }
-            }
+        when (step) {
+            1 -> CallvanReportFirstStepContent(
+                selectedReason = selectedReason,
+                onSelectedReasonChange = onSelectedReasonChange,
+                otherReason = otherReason,
+                onOtherReasonChange = onOtherReasonChange,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(contentPadding)
+                    .imePadding()
+            )
+            2 -> {} // TODO
         }
-    }
-}
-
-@Composable
-private fun CallvanReportHeader() {
-    Column(
-        modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp)
-    ) {
-        Text(
-            text = stringResource(R.string.callvan_report_header_title),
-            style = KoinTheme.typography.bold18.copy(fontWeight = FontWeight.SemiBold),
-            color = KoinTheme.colors.neutral800
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = stringResource(R.string.callvan_report_header_description),
-            style = KoinTheme.typography.regular14,
-            color = Color(0xFF8E8E8E)
-        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun CallvanReportScreenPreview() {
-    CallvanReportScreenImpl()
+private fun CallvanReportScreenFirstPreview() {
+    CallvanReportScreenImpl(
+        initStep = 1
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CallvanReportScreenSecondPreview() {
+    CallvanReportScreenImpl(
+        initStep = 2
+    )
 }
