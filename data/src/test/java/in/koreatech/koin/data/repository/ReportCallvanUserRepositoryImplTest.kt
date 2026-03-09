@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.api.FakeCallvanAuthApi
 import `in`.koreatech.koin.data.source.remote.CallvanRemoteDataSource
+import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -72,5 +73,26 @@ class ReportCallvanUserRepositoryImplTest {
         )
 
         assert(fakeCallvanAuthApi.capturedRequest?.attachments == null)
+    }
+
+    @Test
+    fun `신고 요청 시 reasons와 attachments가 올바르게 변환되어 전달된다`() = runTest {
+        callvanRepositoryImpl.reportCallvanUser(
+            postId = 1,
+            reportedUserId = 2,
+            description = "상세 내용",
+            reasons = listOf("ABUSE" to null, "OTHER" to "기타 입력"),
+            attachmentUrls = listOf("https://example.com/image.jpg")
+        )
+
+        val request = fakeCallvanAuthApi.capturedRequest!!
+        assertEquals(2, request.reasons.size)
+        assertEquals("ABUSE", request.reasons[0].reasonCode)
+        assertEquals(null, request.reasons[0].customText)
+        assertEquals("OTHER", request.reasons[1].reasonCode)
+        assertEquals("기타 입력", request.reasons[1].customText)
+        assertEquals(1, request.attachments!!.size)
+        assertEquals("IMAGE", request.attachments[0].attachmentType)
+        assertEquals("https://example.com/image.jpg", request.attachments[0].url)
     }
 }
