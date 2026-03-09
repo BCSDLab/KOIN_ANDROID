@@ -28,6 +28,7 @@ import `in`.koreatech.koin.feature.callvan.ui.report.component.CallvanReportSeco
 import `in`.koreatech.koin.feature.callvan.ui.report.component.rememberImagePickerLauncher
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportFirstStepUiAction
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportFirstStepUiState
+import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportReason
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportSecondStepUiAction
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportSecondStepUiState
 import org.orbitmvi.orbit.compose.collectAsState
@@ -116,6 +117,7 @@ private fun CallvanReportScreenImpl(
                 } else {
                     stringResource(R.string.callvan_report_next)
                 },
+                enabled = firstStepState.selectedReason != null,
                 onClick = if (isLastStep) onSubmitClick else onNextClick,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -165,5 +167,9 @@ private fun CallvanReportScreenFirstPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun CallvanReportScreenSecondPreview() {
-    CallvanReportScreenImpl(step = 2)
+    CallvanReportScreenImpl(
+        firstStepState = CallvanReportFirstStepUiState(selectedReason = CallvanReportReason.OTHER),
+        step = 2,
+        isLastStep = true
+    )
 }

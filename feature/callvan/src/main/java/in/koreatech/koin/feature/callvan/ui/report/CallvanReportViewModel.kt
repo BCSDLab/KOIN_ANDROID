@@ -10,6 +10,7 @@ import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportReason
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -29,6 +30,7 @@ class CallvanReportViewModel @Inject constructor(
     private val reportedUserId: Int = savedStateHandle["reportedUserId"] ?: 0
 
     fun onNextStep() = intent {
+        if (!validateFirstStep()) return@intent
         if (state.step < TOTAL_STEPS) {
             reduce { state.copy(step = state.step + 1) }
         }
@@ -61,11 +63,11 @@ class CallvanReportViewModel @Inject constructor(
     }
 
     fun onSubmit() = intent {
-        val reason = state.selectedReason ?: return@intent
-        if (reason == CallvanReportReason.OTHER && state.otherReason.isBlank()) {
-            reduce { state.copy(isOtherReasonError = true) }
+        if (!validateSecondStep()) {
+            onPreviousStep()
             return@intent
         }
+        val reason = state.selectedReason ?: return@intent
         val reasons = listOf(
             reason.name to if (reason == CallvanReportReason.OTHER) state.otherReason else null
         )
@@ -86,6 +88,19 @@ class CallvanReportViewModel @Inject constructor(
             }
             postSideEffect(CallvanReportSideEffect.ShowErrorMessage(message))
         }
+    }
+
+    private suspend fun SimpleSyntax<CallvanReportState, CallvanReportSideEffect>.validateFirstStep(): Boolean {
+        val reason = state.selectedReason ?: return false
+        if (reason == CallvanReportReason.OTHER && state.otherReason.isBlank()) {
+            reduce { state.copy(isOtherReasonError = true) }
+            return false
+        }
+        return true
+    }
+
+    private suspend fun SimpleSyntax<CallvanReportState, CallvanReportSideEffect>.validateSecondStep(): Boolean {
+        return validateFirstStep()
     }
 
     companion object {
