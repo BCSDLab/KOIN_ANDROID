@@ -63,19 +63,29 @@ fun CallvanListItem(
     }
 }
 
+private object PreviewData {
+    const val DEPARTURE_TENNIS = "테니스장"
+    const val DESTINATION_STATION = "천안역"
+    const val DATE = "02.05"
+    const val DAY_OF_WEEK = "월"
+    const val TIME = "14:00"
+    const val CURRENT_COUNT = 1
+    const val MAX_COUNT = 8
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun CallvanListItemDefaultPreview() {
     RebrandKoinTheme {
         CallvanListItem(
             uiState = CallvanListUiState(
-                departure = "테니스장",
-                destination = "천안 시외터미널",
-                date = "02.05",
-                dayOfWeek = "월",
-                time = "14:00",
-                currentCount = 1,
-                maxCount = 8
+                departure = PreviewData.DEPARTURE_TENNIS,
+                destination = PreviewData.DESTINATION_STATION,
+                date = PreviewData.DATE,
+                dayOfWeek = PreviewData.DAY_OF_WEEK,
+                time = PreviewData.TIME,
+                currentCount = PreviewData.CURRENT_COUNT,
+                maxCount = PreviewData.MAX_COUNT
             ),
             state = CallvanRouteState.DEFAULT
         )
@@ -88,13 +98,13 @@ private fun CallvanListItemJoinedPreview() {
     RebrandKoinTheme {
         CallvanListItem(
             uiState = CallvanListUiState(
-                departure = "정문",
-                destination = "천안 시외터미널",
-                date = "02.05",
-                dayOfWeek = "월",
-                time = "14:00",
-                currentCount = 1,
-                maxCount = 8
+                departure = PreviewData.DEPARTURE_TENNIS,
+                destination = PreviewData.DESTINATION_STATION,
+                date = PreviewData.DATE,
+                dayOfWeek = PreviewData.DAY_OF_WEEK,
+                time = PreviewData.TIME,
+                currentCount = PreviewData.CURRENT_COUNT,
+                maxCount = PreviewData.MAX_COUNT
             ),
             state = CallvanRouteState.JOINED
         )
@@ -107,13 +117,13 @@ private fun CallvanListItemClosedPreview() {
     RebrandKoinTheme {
         CallvanListItem(
             uiState = CallvanListUiState(
-                departure = "테니스장",
-                destination = "천안역",
-                date = "02.05",
-                dayOfWeek = "월",
-                time = "14:00",
-                currentCount = 1,
-                maxCount = 8
+                departure = PreviewData.DEPARTURE_TENNIS,
+                destination = PreviewData.DESTINATION_STATION,
+                date = PreviewData.DATE,
+                dayOfWeek = PreviewData.DAY_OF_WEEK,
+                time = PreviewData.TIME,
+                currentCount = PreviewData.CURRENT_COUNT,
+                maxCount = PreviewData.MAX_COUNT
             ),
             state = CallvanRouteState.CLOSED
         )
@@ -126,13 +136,13 @@ private fun CallvanListItemOwnerActivePreview() {
     RebrandKoinTheme {
         CallvanListItem(
             uiState = CallvanListUiState(
-                departure = "정문",
-                destination = "천안 시외터미널",
-                date = "02.05",
-                dayOfWeek = "월",
-                time = "14:00",
-                currentCount = 1,
-                maxCount = 8
+                departure = PreviewData.DEPARTURE_TENNIS,
+                destination = PreviewData.DESTINATION_STATION,
+                date = PreviewData.DATE,
+                dayOfWeek = PreviewData.DAY_OF_WEEK,
+                time = PreviewData.TIME,
+                currentCount = PreviewData.CURRENT_COUNT,
+                maxCount = PreviewData.MAX_COUNT
             ),
             state = CallvanRouteState.OWNER_ACTIVE
         )
@@ -145,13 +155,13 @@ private fun CallvanListItemOwnerClosedPreview() {
     RebrandKoinTheme {
         CallvanListItem(
             uiState = CallvanListUiState(
-                departure = "정문",
-                destination = "천안 시외터미널",
-                date = "02.05",
-                dayOfWeek = "월",
-                time = "14:00",
-                currentCount = 1,
-                maxCount = 8
+                departure = PreviewData.DEPARTURE_TENNIS,
+                destination = PreviewData.DESTINATION_STATION,
+                date = PreviewData.DATE,
+                dayOfWeek = PreviewData.DAY_OF_WEEK,
+                time = PreviewData.TIME,
+                currentCount = PreviewData.CURRENT_COUNT,
+                maxCount = PreviewData.MAX_COUNT
             ),
             state = CallvanRouteState.OWNER_CLOSED
         )
