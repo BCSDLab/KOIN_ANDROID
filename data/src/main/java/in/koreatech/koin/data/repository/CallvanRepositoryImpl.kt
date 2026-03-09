@@ -129,17 +129,26 @@ class CallvanRepositoryImpl @Inject constructor(
     override suspend fun reportCallvanUser(
         postId: Int,
         reportedUserId: Int,
-        reasons: List<Pair<String, String?>>
+        description: String?,
+        reasons: List<Pair<String, String?>>,
+        attachmentUrls: List<String>?
     ): Result<Unit> {
         return runCatching {
             callvanRemoteDataSource.reportCallvanUser(
                 postId = postId,
                 callvanUserReportCreateRequest = CallvanUserReportCreateRequest(
-                    reportedUserId = reportedUserId,
+                    reportedId = reportedUserId,
+                    description = description,
                     reasons = reasons.map {
                         CallvanUserReportCreateRequest.CallvanUserReportReasonRequest(
                             reasonCode = it.first,
                             customText = it.second
+                        )
+                    },
+                    attachments = attachmentUrls?.map {
+                        CallvanUserReportCreateRequest.CallvanUserReportAttachmentRequest(
+                            attachmentType = "IMAGE",
+                            url = it
                         )
                     }
                 )
