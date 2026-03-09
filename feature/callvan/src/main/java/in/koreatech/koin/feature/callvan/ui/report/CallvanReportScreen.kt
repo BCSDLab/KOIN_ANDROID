@@ -128,7 +128,12 @@ private fun CallvanReportScreenImpl(
                 shape = KoinTheme.shapes.small
             )
         },
-        snackbarHost = { CustomSnackBarHost(hotState = snackbarHostState) },
+        snackbarHost = {
+            CustomSnackBarHost(
+                hotState = snackbarHostState,
+                background = RebrandKoinTheme.colors.primary700.copy(alpha = 0.8f)
+            )
+        },
         containerColor = KoinTheme.colors.neutral0
     ) { contentPadding ->
         when (step) {
