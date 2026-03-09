@@ -144,7 +144,7 @@ fun GroupChatTopBar(
                     Spacer(modifier = Modifier.width(2.dp))
 
                     Text(
-                        text = "$currentMemberCount/$maxMemberCount",
+                        text = stringResource(R.string.group_chat_toolbar_participants, currentMemberCount, maxMemberCount),
                         style = RebrandKoinTheme.typography.regular12,
                         color = colors.memberCountColor
                     )
