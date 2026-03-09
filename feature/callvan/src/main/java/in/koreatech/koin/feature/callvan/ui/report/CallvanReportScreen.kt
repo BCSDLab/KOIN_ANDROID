@@ -55,7 +55,9 @@ fun CallvanReportScreen(
             onRemoveImage = viewModel::onRemoveImage
         ),
         step = state.step,
-        onTopbarBackClick = viewModel::onPreviousStep,
+        isLastStep = state.step == CallvanReportViewModel.TOTAL_STEPS,
+        onTopbarBackClick = onTopbarBackClick,
+        onPreviousClick = viewModel::onPreviousStep,
         onNextClick = viewModel::onNextStep,
         onSubmitClick = viewModel::onSubmit
     )
@@ -66,7 +68,9 @@ private fun CallvanReportScreenImpl(
     firstStep: CallvanReportFirstStepUiState = CallvanReportFirstStepUiState(),
     secondStep: CallvanReportSecondStepUiState = CallvanReportSecondStepUiState(),
     step: Int = 1,
+    isLastStep: Boolean = false,
     onTopbarBackClick: () -> Unit = {},
+    onPreviousClick: () -> Unit = {},
     onNextClick: () -> Unit = {},
     onSubmitClick: () -> Unit = {}
 ) {
@@ -74,17 +78,17 @@ private fun CallvanReportScreenImpl(
         topBar = {
             KoinTopAppBar(
                 title = stringResource(R.string.callvan_report_top_bar),
-                onNavigationIconClick = onTopbarBackClick
+                onNavigationIconClick = if (step == 1) onTopbarBackClick else onPreviousClick
             )
         },
         bottomBar = {
             FilledButton(
-                text = if (step == 1) {
-                    stringResource(R.string.callvan_report_next)
-                } else {
+                text = if (isLastStep) {
                     stringResource(R.string.callvan_detail_participant_report)
+                } else {
+                    stringResource(R.string.callvan_report_next)
                 },
-                onClick = if (step == 1) onNextClick else onSubmitClick,
+                onClick = if (isLastStep) onSubmitClick else onNextClick,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp, vertical = 16.dp),

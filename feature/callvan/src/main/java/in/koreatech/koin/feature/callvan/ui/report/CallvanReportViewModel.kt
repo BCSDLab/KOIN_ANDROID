@@ -29,14 +29,14 @@ class CallvanReportViewModel @Inject constructor(
     private val reportedUserId: Int = savedStateHandle["reportedUserId"] ?: 0
 
     fun onNextStep() = intent {
-        reduce { state.copy(step = 2) }
+        if (state.step < TOTAL_STEPS) {
+            reduce { state.copy(step = state.step + 1) }
+        }
     }
 
     fun onPreviousStep() = intent {
-        if (state.step == 1) {
-            postSideEffect(CallvanReportSideEffect.NavigateBack)
-        } else {
-            reduce { state.copy(step = 1) }
+        if (state.step > 1) {
+            reduce { state.copy(step = state.step - 1) }
         }
     }
 
@@ -85,5 +85,9 @@ class CallvanReportViewModel @Inject constructor(
             }
             postSideEffect(CallvanReportSideEffect.ShowErrorMessage(message))
         }
+    }
+
+    companion object {
+        const val TOTAL_STEPS = 2
     }
 }
