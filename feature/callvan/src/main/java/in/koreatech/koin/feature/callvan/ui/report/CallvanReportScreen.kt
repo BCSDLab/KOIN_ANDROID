@@ -60,25 +60,32 @@ fun CallvanReportScreen(
         onImagesSelected = viewModel::onAddImages
     )
 
+    val firstStepAction = remember {
+        CallvanReportFirstStepUiAction(
+            onSelectedReasonChange = viewModel::onReasonSelect,
+            onOtherReasonChange = viewModel::onOtherReasonChange
+        )
+    }
+    val secondStepAction = remember(onAddImageClick) {
+        CallvanReportSecondStepUiAction(
+            onDetailChange = viewModel::onDetailChange,
+            onAddImageClick = onAddImageClick,
+            onRemoveImage = viewModel::onRemoveImage
+        )
+    }
+
     CallvanReportScreenImpl(
         firstStepState = CallvanReportFirstStepUiState(
             selectedReason = state.selectedReason,
             otherReason = state.otherReason,
             isOtherReasonError = state.isOtherReasonError
         ),
-        firstStepAction = CallvanReportFirstStepUiAction(
-            onSelectedReasonChange = viewModel::onReasonSelect,
-            onOtherReasonChange = viewModel::onOtherReasonChange
-        ),
+        firstStepAction = firstStepAction,
         secondStepState = CallvanReportSecondStepUiState(
             detail = state.detail,
             images = state.images
         ),
-        secondStepAction = CallvanReportSecondStepUiAction(
-            onDetailChange = viewModel::onDetailChange,
-            onAddImageClick = onAddImageClick,
-            onRemoveImage = viewModel::onRemoveImage
-        ),
+        secondStepAction = secondStepAction,
         snackbarHostState = snackbarHostState,
         step = state.step,
         isLastStep = state.step == CallvanReportViewModel.TOTAL_STEPS,
