@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 package `in`.koreatech.koin.feature.chat.ui.groupchat.component
 
 import androidx.compose.foundation.Image
@@ -21,7 +23,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.chat.R
 
-object UserIconColors {
+object GroupUserIconColors {
     private val Color0 = Color(0xFFDDB1FE)
     private val Color1 = Color(0xFFD39AFE)
     private val Color2 = Color(0xFFCE86FD)
@@ -61,11 +63,11 @@ fun GroupChatUserIcon(
         modifier = modifier
             .size(32.dp)
             .clip(RebrandKoinTheme.shapes.small)
-            .border(width = 1.dp, color = UserIconColors.getColorByIndex(colorIndex), shape = RebrandKoinTheme.shapes.small),
+            .border(width = 1.dp, color = GroupUserIconColors.getColorByIndex(colorIndex), shape = RebrandKoinTheme.shapes.small),
         contentAlignment = Alignment.Center
     ) {
         Image(
-            imageVector = ImageVector.vectorResource(id = UserIconColors.getImageByIndex(colorIndex)),
+            imageVector = ImageVector.vectorResource(id = GroupUserIconColors.getImageByIndex(colorIndex)),
             contentDescription = stringResource(id = R.string.chat_user_profile_image),
             modifier = modifier.size(24.dp)
         )
