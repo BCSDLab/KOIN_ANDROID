@@ -1,23 +1,35 @@
-
-package `in`.koreatech.koin.feature.callvan.ui.detail
+package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.callvan.CallvanChatMessage
 import `in`.koreatech.koin.domain.model.callvan.CallvanNotification
 import `in`.koreatech.koin.domain.model.callvan.CallvanPostCreate
 import `in`.koreatech.koin.domain.model.callvan.CallvanPostDetail
 import `in`.koreatech.koin.domain.model.callvan.CallvanPostSearch
-import `in`.koreatech.koin.domain.repository.CallvanRepository
 
 class FakeCallvanRepository : CallvanRepository {
 
-    var postDetailResult: Result<CallvanPostDetail> =
-        Result.failure(NotImplementedError())
-    var notificationsResult: Result<List<CallvanNotification>> =
-        Result.failure(NotImplementedError())
+    var reportResult: Result<Unit> = Result.failure(NotImplementedError())
 
-    override suspend fun getCallvanPostDetail(postId: Int) = postDetailResult
+    var capturedPostId: Int? = null
+    var capturedReportedUserId: Int? = null
+    var capturedDescription: String? = null
+    var capturedReasons: List<Pair<String, String?>>? = null
+    var capturedAttachmentUrls: List<String>? = null
 
-    override suspend fun getNotifications() = notificationsResult
+    override suspend fun reportCallvanUser(
+        postId: Int,
+        reportedUserId: Int,
+        description: String?,
+        reasons: List<Pair<String, String?>>,
+        attachmentUrls: List<String>?
+    ): Result<Unit> {
+        capturedPostId = postId
+        capturedReportedUserId = reportedUserId
+        capturedDescription = description
+        capturedReasons = reasons
+        capturedAttachmentUrls = attachmentUrls
+        return reportResult
+    }
 
     override suspend fun createCallvanPost(
         departureType: String,
@@ -48,15 +60,13 @@ class FakeCallvanRepository : CallvanRepository {
     override suspend fun getCallvanChatMessages(postId: Int): Result<CallvanChatMessage> =
         throw NotImplementedError()
 
-    override suspend fun reportCallvanUser(
-        postId: Int,
-        reportedUserId: Int,
-        description: String?,
-        reasons: List<Pair<String, String?>>,
-        attachmentUrls: List<String>?
-    ): Result<Unit> = throw NotImplementedError()
+    override suspend fun getCallvanPostDetail(postId: Int): Result<CallvanPostDetail> =
+        throw NotImplementedError()
 
     override suspend fun closeCallvanPost(postId: Int): Result<Unit> = throw NotImplementedError()
+
+    override suspend fun getNotifications(): Result<List<CallvanNotification>> =
+        throw NotImplementedError()
 
     override suspend fun deleteAllNotifications(): Result<Unit> = throw NotImplementedError()
 

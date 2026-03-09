@@ -47,7 +47,9 @@ interface CallvanRepository {
     suspend fun reportCallvanUser(
         postId: Int,
         reportedUserId: Int,
-        reasons: List<Pair<String, String?>>
+        description: String?,
+        reasons: List<Pair<String, String?>>,
+        attachmentUrls: List<String>?
     ): Result<Unit>
 
     suspend fun closeCallvanPost(
