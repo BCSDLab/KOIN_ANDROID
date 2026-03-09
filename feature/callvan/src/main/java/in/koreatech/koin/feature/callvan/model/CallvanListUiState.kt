@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.callvan.ui.list.model
+package `in`.koreatech.koin.feature.callvan.model
 
 data class CallvanListUiState(
     val departure: String,

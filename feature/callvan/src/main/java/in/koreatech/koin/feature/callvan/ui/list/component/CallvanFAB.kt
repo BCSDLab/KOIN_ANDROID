@@ -26,7 +26,7 @@ import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
-import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFABDefaults
+import `in`.koreatech.koin.feature.callvan.model.CallvanFABDefaults
 
 @Composable
 fun CallvanFAB(

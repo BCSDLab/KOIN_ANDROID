@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.callvan.ui.list.model
+package `in`.koreatech.koin.feature.callvan.model
 
 interface CallvanListItemClickListener {
     fun onJoin() { /* Default no-op: override to handle join action */ }
