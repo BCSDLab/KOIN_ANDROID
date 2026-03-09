@@ -65,6 +65,28 @@ kover {
     }
 }
 
+val sonarCoverageExclusions = listOf(
+    "**/core/analytics/**",
+    "**/core/designsystem/**",
+    "**/core/navigation/**",
+    "**/core/network/**",
+    "**/core/notification/**",
+    "**/core/onboarding/**",
+    "**/core/webapp/**",
+    "**/firebase/**",
+    "**/di/**",
+    "**/navigation/*",
+    "**/feature/**/model/**",
+    "**/feature/**/component/**",
+    "**/ui/**/*Screen.kt",
+    "**/ui/**/*State.kt",
+    "**/ui/**/*SideEffect.kt",
+    "**/*Activity.kt",
+    "**/*RecyclerAdapter.kt",
+    "**/*RecyclerViewAdapter.kt",
+    "**/*Fragment.kt"
+).joinToString(", ")
+
 sonar {
     properties {
         property("sonar.projectKey", "BCSDLab_KOIN_ANDROID")
@@ -72,7 +94,7 @@ sonar {
         property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get().asFile.absolutePath}/reports/kover/report.xml")
         property("sonar.androidLint.reportPaths", "${projectDir.absolutePath}/koin/build/reports/lint-results*.xml")
         property("sonar.kotlin.detekt.reportPaths", "${layout.buildDirectory.get().asFile.absolutePath}/reports/detekt/detekt.xml")
-        property("sonar.coverage.inclusions", "**/data/**/*.kt,**/*ViewModel.kt")
+        property("sonar.coverage.exclusions", sonarCoverageExclusions)
     }
 }
 
