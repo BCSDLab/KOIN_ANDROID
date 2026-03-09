@@ -43,9 +43,8 @@ internal fun CallvanReportTextField(
                         style = KoinTheme.typography.regular14,
                         color = KoinTheme.colors.neutral500
                     )
-                } else {
-                    innerTextField()
                 }
+                innerTextField()
             }
         }
     )
