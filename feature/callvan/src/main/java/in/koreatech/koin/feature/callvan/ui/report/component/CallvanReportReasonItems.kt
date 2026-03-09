@@ -126,7 +126,7 @@ fun CallvanReportReasonTextFieldItem(
             modifier = Modifier.padding(horizontal = 8.dp),
             value = value,
             onValueChange = onValueChange,
-            readOnly = !isSelected,
+            enabled = isSelected,
             maxLength = CALLVAN_REPORT_OTHER_REASON_MAX_LENGTH,
             placeholder = stringResource(R.string.callvan_report_other_placeholder),
             isError = isError

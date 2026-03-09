@@ -22,9 +22,9 @@ internal fun CallvanReportTextField(
     modifier: Modifier = Modifier,
     placeholder: String = "",
     maxLength: Int = Int.MAX_VALUE,
-    readOnly: Boolean = false,
-    contentAlignment: Alignment = Alignment.CenterStart,
-    isError: Boolean = false
+    isError: Boolean = false,
+    enabled: Boolean = true,
+    contentAlignment: Alignment = Alignment.CenterStart
 ) {
     val borderColor = if (isError) RebrandKoinTheme.colors.sub500 else KoinTheme.colors.neutral300
     BasicTextField(
@@ -33,7 +33,7 @@ internal fun CallvanReportTextField(
             .border(1.dp, color = borderColor, shape = KoinTheme.shapes.extraSmall)
             .padding(vertical = 12.dp, horizontal = 16.dp),
         value = value,
-        readOnly = readOnly,
+        enabled = enabled,
         textStyle = KoinTheme.typography.regular14.copy(color = KoinTheme.colors.neutral800),
         onValueChange = { onValueChange(it.take(maxLength)) },
         decorationBox = { innerTextField ->
