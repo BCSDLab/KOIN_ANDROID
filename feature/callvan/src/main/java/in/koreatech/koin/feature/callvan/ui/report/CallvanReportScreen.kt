@@ -22,7 +22,9 @@ import `in`.koreatech.koin.feature.callvan.ui.report.component.CALLVAN_REPORT_IM
 import `in`.koreatech.koin.feature.callvan.ui.report.component.CallvanReportFirstStepContent
 import `in`.koreatech.koin.feature.callvan.ui.report.component.CallvanReportSecondStepContent
 import `in`.koreatech.koin.feature.callvan.ui.report.component.rememberImagePickerLauncher
+import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportFirstStepUiAction
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportFirstStepUiState
+import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportSecondStepUiAction
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportSecondStepUiState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -73,10 +75,12 @@ fun CallvanReportScreen(
 
 @Composable
 private fun CallvanReportScreenImpl(
-    firstStep: CallvanReportFirstStepUiState = CallvanReportFirstStepUiState(),
-    secondStep: CallvanReportSecondStepUiState = CallvanReportSecondStepUiState(),
     step: Int = 1,
     isLastStep: Boolean = false,
+    firstStepState: CallvanReportFirstStepUiState = CallvanReportFirstStepUiState(),
+    firstStepAction: CallvanReportFirstStepUiAction = CallvanReportFirstStepUiAction(),
+    secondStepState: CallvanReportSecondStepUiState = CallvanReportSecondStepUiState(),
+    secondStepAction: CallvanReportSecondStepUiAction = CallvanReportSecondStepUiAction(),
     onTopbarBackClick: () -> Unit = {},
     onPreviousClick: () -> Unit = {},
     onNextClick: () -> Unit = {},
@@ -110,21 +114,21 @@ private fun CallvanReportScreenImpl(
     ) { contentPadding ->
         when (step) {
             1 -> CallvanReportFirstStepContent(
-                selectedReason = firstStep.selectedReason,
-                onSelectedReasonChange = firstStep.onSelectedReasonChange,
-                otherReason = firstStep.otherReason,
-                onOtherReasonChange = firstStep.onOtherReasonChange,
+                selectedReason = firstStepState.selectedReason,
+                onSelectedReasonChange = firstStepAction.onSelectedReasonChange,
+                otherReason = firstStepState.otherReason,
+                onOtherReasonChange = firstStepAction.onOtherReasonChange,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(contentPadding)
                     .imePadding()
             )
             2 -> CallvanReportSecondStepContent(
-                detail = secondStep.detail,
-                onDetailChange = secondStep.onDetailChange,
-                images = secondStep.images,
-                onAddImageClick = secondStep.onAddImageClick,
-                onRemoveImage = secondStep.onRemoveImage,
+                detail = secondStepState.detail,
+                onDetailChange = secondStepAction.onDetailChange,
+                images = secondStepState.images,
+                onAddImageClick = secondStepAction.onAddImageClick,
+                onRemoveImage = secondStepAction.onRemoveImage,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(contentPadding)

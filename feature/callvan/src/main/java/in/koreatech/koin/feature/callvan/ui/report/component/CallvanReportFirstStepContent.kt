@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,7 +43,7 @@ internal fun CallvanReportFirstStepContent(
         LazyColumn(
             modifier = Modifier.weight(1f)
         ) {
-            items(callvanReportReasonList) { reason ->
+            items(items = callvanReportReasonList, key = { reason -> reason.name }) { reason ->
                 if (reason == CallvanReportReason.OTHER) {
                     CallvanReportReasonTextFieldItem(
                         reason = reason,
@@ -83,7 +82,7 @@ internal fun CallvanReportHeader() {
         Text(
             text = stringResource(R.string.callvan_report_header_description),
             style = KoinTheme.typography.regular14,
-            color = Color(0xFF8E8E8E)
+            color = KoinTheme.colors.neutral500
         )
     }
 }
