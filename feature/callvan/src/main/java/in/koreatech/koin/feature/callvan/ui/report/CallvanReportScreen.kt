@@ -48,7 +48,7 @@ fun CallvanReportScreen(
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             is CallvanReportSideEffect.SubmitSuccess -> {
-                snackbarHostState.showSnackBarWithDismiss("사용자가 신고되었습니다.")
+                snackbarHostState.showSnackBarWithDismiss(context.getString(R.string.callvan_report_submit_success))
                 onTopbarBackClick()
             }
             is CallvanReportSideEffect.ShowErrorMessage -> {
