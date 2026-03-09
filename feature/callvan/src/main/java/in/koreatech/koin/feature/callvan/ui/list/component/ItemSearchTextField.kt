@@ -73,7 +73,7 @@ fun ItemSearchTextField(
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
 @Composable
-fun ItemSearchTextFieldPreview() {
+private fun ItemSearchTextFieldPreview() {
     ItemSearchTextField(
         value = "",
         hint = "검색어를 입력해주세요.",

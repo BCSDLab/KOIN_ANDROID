@@ -46,7 +46,7 @@ fun CallvanListItemButtons(
                 IconButton(onClick = { clickListener.onChat() }, modifier = Modifier.size(24.dp)) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_callvan_chat),
-                        contentDescription = "",
+                        contentDescription = stringResource(R.string.ic_callvan_chat),
                         tint = Color.Unspecified
                     )
                 }
@@ -56,7 +56,7 @@ fun CallvanListItemButtons(
                 IconButton(onClick = { clickListener.onCall() }, modifier = Modifier.size(24.dp)) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_callvan_call),
-                        contentDescription = "",
+                        contentDescription = stringResource(R.string.ic_callvan_call),
                         tint = Color.Unspecified
                     )
                 }

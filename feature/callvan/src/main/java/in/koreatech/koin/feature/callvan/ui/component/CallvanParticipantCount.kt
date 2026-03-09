@@ -33,7 +33,7 @@ fun CallvanParticipantCount(
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_participants),
-            contentDescription = "",
+            contentDescription = null,
             tint = KoinTheme.colors.neutral600,
             modifier = Modifier.size(iconSize)
         )

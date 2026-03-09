@@ -76,6 +76,9 @@
     <string name="callvan_complete_description">• 콜밴 이용(탑승, 정산)이 모두 완료된 뒤 눌러야 합니다.\n• 완료 시 대화 내역이 삭제되며, 되돌릴 수 없습니다.</string>
     <string name="write_btn">모집하기</string>
 
+    <string name="ic_callvan_chat">채팅</string>
+    <string name="ic_callvan_call">전화하기</string>
+  
     <string name="callvan_report_top_bar">신고하기</string>
     <string name="callvan_report_header_title">신고 이유를 선택해주세요.</string>
     <string name="callvan_report_header_description">신고가 접수되면 운영정책에 따라 검토 후 주변 기능이 제한될 수 있습니다. 본 서비스는 비용 정산에 직접 관여하지 않습니다.</string>
