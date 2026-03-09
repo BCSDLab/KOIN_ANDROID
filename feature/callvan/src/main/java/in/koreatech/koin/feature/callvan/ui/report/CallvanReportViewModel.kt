@@ -52,8 +52,8 @@ class CallvanReportViewModel @Inject constructor(
         reduce { state.copy(detail = text) }
     }
 
-    fun onAddImage(uri: Uri) = intent {
-        reduce { state.copy(images = (state.images + uri).toPersistentList()) }
+    fun onAddImages(uris: List<Uri>) = intent {
+        reduce { state.copy(images = (state.images + uris).toPersistentList()) }
     }
 
     fun onRemoveImage(index: Int) = intent {

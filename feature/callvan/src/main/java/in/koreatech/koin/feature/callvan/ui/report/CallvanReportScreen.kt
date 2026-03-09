@@ -18,8 +18,10 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
+import `in`.koreatech.koin.feature.callvan.ui.report.component.CALLVAN_REPORT_IMAGE_MAX_COUNT
 import `in`.koreatech.koin.feature.callvan.ui.report.component.CallvanReportFirstStepContent
 import `in`.koreatech.koin.feature.callvan.ui.report.component.CallvanReportSecondStepContent
+import `in`.koreatech.koin.feature.callvan.ui.report.component.rememberImagePickerLauncher
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportFirstStepUiState
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportSecondStepUiState
 import org.orbitmvi.orbit.compose.collectAsState
@@ -40,6 +42,12 @@ fun CallvanReportScreen(
         }
     }
 
+    val onAddImageClick = rememberImagePickerLauncher(
+        currentImageCount = state.images.size,
+        maxImageCount = CALLVAN_REPORT_IMAGE_MAX_COUNT,
+        onImagesSelected = viewModel::onAddImages
+    )
+
     CallvanReportScreenImpl(
         firstStep = CallvanReportFirstStepUiState(
             selectedReason = state.selectedReason,
@@ -51,7 +59,7 @@ fun CallvanReportScreen(
             detail = state.detail,
             onDetailChange = viewModel::onDetailChange,
             images = state.images,
-            onAddImageClick = {},
+            onAddImageClick = onAddImageClick,
             onRemoveImage = viewModel::onRemoveImage
         ),
         step = state.step,
