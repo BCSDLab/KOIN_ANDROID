@@ -65,7 +65,7 @@ kover {
     }
 }
 
-val coverageExclusions = listOf(
+val sonarCoverageExclusions = listOf(
     "**/core/analytics/**",
     "**/core/designsystem/**",
     "**/core/navigation/**",
@@ -94,7 +94,7 @@ sonar {
         property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get().asFile.absolutePath}/reports/kover/report.xml")
         property("sonar.androidLint.reportPaths", "${projectDir.absolutePath}/koin/build/reports/lint-results*.xml")
         property("sonar.kotlin.detekt.reportPaths", "${layout.buildDirectory.get().asFile.absolutePath}/reports/detekt/detekt.xml")
-        property("sonar.coverage.exclusions", coverageExclusions)
+        property("sonar.coverage.exclusions", sonarCoverageExclusions)
     }
 }
 
