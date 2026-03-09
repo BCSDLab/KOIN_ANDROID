@@ -137,7 +137,7 @@ class CallvanRepositoryImpl @Inject constructor(
             callvanRemoteDataSource.reportCallvanUser(
                 postId = postId,
                 callvanUserReportCreateRequest = CallvanUserReportCreateRequest(
-                    reportedId = reportedUserId,
+                    reportedUserId = reportedUserId,
                     description = description,
                     reasons = reasons.map {
                         CallvanUserReportCreateRequest.CallvanUserReportReasonRequest(

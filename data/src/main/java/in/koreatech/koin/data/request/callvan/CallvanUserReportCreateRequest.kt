@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class CallvanUserReportCreateRequest(
     @SerializedName("reported_user_id")
-    val reportedId: Int,
+    val reportedUserId: Int,
     @SerializedName("description")
     val description: String?,
     @SerializedName("reasons")
