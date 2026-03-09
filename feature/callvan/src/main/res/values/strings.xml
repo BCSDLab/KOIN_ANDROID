@@ -53,4 +53,5 @@
     <string name="callvan_report_reason_profanity_title">욕설</string>
     <string name="callvan_report_reason_profanity_description">욕설, 성적인 언어, 비방하는 언어를 사용했습니다.</string>
     <string name="callvan_report_reason_other_title">기타</string>
+    <string name="callvan_report_submit_success">사용자가 신고되었습니다.</string>
 </resources>
