@@ -136,7 +136,7 @@ fun GroupChatTopBar(
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_chat_user_count),
-                        contentDescription = null,
+                        contentDescription = stringResource(id = R.string.group_chat_member_count_icon),
                         modifier = Modifier.size(16.dp),
                         tint = colors.memberCountColor
                     )

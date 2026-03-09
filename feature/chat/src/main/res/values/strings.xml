@@ -22,4 +22,9 @@
     <string name="removed_from_party">콜밴팟에서 퇴장되었습니다</string>
     <string name="group_chat_left_user_label">나감</string>
     <string name="chat_back">뒤로</string>
+    <string name="group_chat_member_count_icon">참여 인원</string>
+    <string name="group_chat_message_image">채팅 이미지</string>
+    <string name="group_chat_uploading_image">업로드 중인 채팅 이미지</string>
+    <string name="group_chat_fullscreen_image">확대된 채팅 이미지</string>
+    <string name="group_chat_toolbar_participants">$1%d/$2%d</string>
 </resources>

@@ -247,7 +247,7 @@ private fun GroupChatMessageImage(
                 }
             },
             contentScale = ContentScale.Fit,
-            contentDescription = null
+            contentDescription = stringResource(id = R.string.group_chat_message_image)
         )
         if (imageUrl.startsWith("content://")) {
             Box(
@@ -265,7 +265,7 @@ private fun GroupChatMessageImage(
                     ) {
                         Image(
                             imageVector = ImageVector.vectorResource(id = R.drawable.ic_uploading_image),
-                            contentDescription = null
+                            contentDescription = stringResource(id = R.string.group_chat_uploading_image)
                         )
                         CircularProgressIndicator(
                             modifier = Modifier.matchParentSize(),
