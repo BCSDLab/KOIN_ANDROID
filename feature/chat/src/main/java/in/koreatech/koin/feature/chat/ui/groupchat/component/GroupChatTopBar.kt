@@ -32,6 +32,13 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.chat.R
+import `in`.koreatech.koin.feature.chat.ui.groupchat.PREVIEW_ARRIVAL
+import `in`.koreatech.koin.feature.chat.ui.groupchat.PREVIEW_CURRENT_MEMBER_COUNT
+import `in`.koreatech.koin.feature.chat.ui.groupchat.PREVIEW_DEPARTURE
+import `in`.koreatech.koin.feature.chat.ui.groupchat.PREVIEW_DEPARTURE_TIME
+import `in`.koreatech.koin.feature.chat.ui.groupchat.PREVIEW_LONG_ARRIVAL
+import `in`.koreatech.koin.feature.chat.ui.groupchat.PREVIEW_LONG_DEPARTURE
+import `in`.koreatech.koin.feature.chat.ui.groupchat.PREVIEW_MAX_MEMBER_COUNT
 
 object GroupChatTopBarDefaults {
     @Composable
@@ -163,20 +170,20 @@ private fun GroupChatTopBarPreview() {
     KoinSurface {
         Column {
             GroupChatTopBar(
-                departure = "테니스장",
-                arrival = "천안터미널",
-                departureTime = "16:00",
-                currentMemberCount = 6,
-                maxMemberCount = 8,
+                departure = PREVIEW_DEPARTURE,
+                arrival = PREVIEW_ARRIVAL,
+                departureTime = PREVIEW_DEPARTURE_TIME,
+                currentMemberCount = PREVIEW_CURRENT_MEMBER_COUNT,
+                maxMemberCount = PREVIEW_MAX_MEMBER_COUNT,
                 onNavigationIconClick = {}
             )
             Spacer(modifier = Modifier.height(16.dp))
             GroupChatTopBar(
-                departure = "담헌앞 횡단보도",
-                arrival = "천안시외터미널",
-                departureTime = "16:00",
-                currentMemberCount = 6,
-                maxMemberCount = 8
+                departure = PREVIEW_LONG_DEPARTURE,
+                arrival = PREVIEW_LONG_ARRIVAL,
+                departureTime = PREVIEW_DEPARTURE_TIME,
+                currentMemberCount = PREVIEW_CURRENT_MEMBER_COUNT,
+                maxMemberCount = PREVIEW_MAX_MEMBER_COUNT
             )
         }
     }

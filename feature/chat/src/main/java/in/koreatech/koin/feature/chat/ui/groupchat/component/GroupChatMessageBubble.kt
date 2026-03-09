@@ -38,6 +38,7 @@ import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.chat.R
 import `in`.koreatech.koin.feature.chat.ui.groupchat.model.GroupChatMessage
+import `in`.koreatech.koin.feature.chat.ui.groupchat.previewMessage
 
 object GroupChatMessageDefaults {
     @Composable
@@ -292,28 +293,23 @@ private fun GroupChatMessageBubblePreview() {
     KoinSurface {
         Column {
             GroupChatMessageBubble(
-                message = GroupChatMessage(
+                message = previewMessage(
                     id = "1",
                     userId = 0,
                     userNickname = "신짱구",
                     content = "넵!!",
                     timestamp = "13:53",
-                    isSentByMe = false,
-                    readCount = 6,
                     isFirstInGroup = true
                 ),
                 userColorIndex = 0
             )
             GroupChatMessageBubble(
-                message = GroupChatMessage(
+                message = previewMessage(
                     id = "2",
                     userId = 0,
                     userNickname = "신짱구",
                     content = "방송국 건너편인가요?",
-                    timestamp = "14:53",
-                    isSentByMe = false,
-                    readCount = 6,
-                    isFirstInGroup = false
+                    timestamp = "14:53"
                 ),
                 userColorIndex = 1
             )

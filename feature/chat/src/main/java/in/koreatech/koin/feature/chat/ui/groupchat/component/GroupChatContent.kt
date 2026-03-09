@@ -29,6 +29,9 @@ import `in`.koreatech.koin.feature.chat.R
 import `in`.koreatech.koin.feature.chat.ui.component.ChatProgressIndicator
 import `in`.koreatech.koin.feature.chat.ui.groupchat.model.GroupChatMessage
 import `in`.koreatech.koin.feature.chat.ui.groupchat.model.GroupChatMessageGroup
+import `in`.koreatech.koin.feature.chat.ui.groupchat.previewEmptyImageState
+import `in`.koreatech.koin.feature.chat.ui.groupchat.previewMemberColors
+import `in`.koreatech.koin.feature.chat.ui.groupchat.previewMessages
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
 import `in`.koreatech.koin.feature.chat.ui.room.component.ChatDateTitle
 import `in`.koreatech.koin.feature.chat.ui.room.component.ChatDateTitleDefaults
@@ -38,7 +41,6 @@ import `in`.koreatech.koin.feature.chat.util.parseDateString
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.persistentMapOf
 
 @Composable
 fun GroupChatContent(
@@ -170,45 +172,10 @@ fun GroupChatContent(
 private fun GroupChatContentPreview() {
     GroupChatContent(
         isLoading = false,
-        messages = persistentListOf(
-            GroupChatMessageGroup(
-                date = "2026년 1월 2일",
-                messages = persistentListOf(
-                    GroupChatMessage(
-                        id = "1",
-                        userId = 0,
-                        userNickname = "신짱구",
-                        content = "넵!!",
-                        timestamp = "13:53",
-                        isSentByMe = false,
-                        readCount = 6,
-                        isFirstInGroup = true
-                    ),
-                    GroupChatMessage(
-                        id = "2",
-                        userId = 0,
-                        userNickname = "신짱구",
-                        content = "방송국 건너편인가요?",
-                        timestamp = "14:53",
-                        isSentByMe = false,
-                        readCount = 6,
-                        isFirstInGroup = false
-                    ),
-                    GroupChatMessage(
-                        id = "3",
-                        userId = 1,
-                        userNickname = "나",
-                        content = "네 맞습니다",
-                        timestamp = "15:53",
-                        isSentByMe = true,
-                        readCount = 6
-                    )
-                )
-            )
-        ),
-        memberColors = persistentMapOf(0 to 0, 1 to 1),
+        messages = previewMessages(),
+        memberColors = previewMemberColors,
         chatInputValue = "",
         uploadingImage = persistentListOf(),
-        showImage = Pair(false, Uri.EMPTY)
+        showImage = previewEmptyImageState
     )
 }

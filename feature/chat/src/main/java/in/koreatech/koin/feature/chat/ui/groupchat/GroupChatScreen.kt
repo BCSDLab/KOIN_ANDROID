@@ -30,12 +30,11 @@ import `in`.koreatech.koin.feature.chat.R
 import `in`.koreatech.koin.feature.chat.ui.groupchat.component.GroupChatContent
 import `in`.koreatech.koin.feature.chat.ui.groupchat.component.GroupChatTopBar
 import `in`.koreatech.koin.feature.chat.ui.groupchat.component.GroupChatTopBarDefaults
-import `in`.koreatech.koin.feature.chat.ui.groupchat.model.GroupChatMessage
 import `in`.koreatech.koin.feature.chat.ui.groupchat.model.GroupChatMessageGroup
+import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.persistentMapOf
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -127,7 +126,7 @@ private fun GroupChatScaffold(
     messages: ImmutableList<GroupChatMessageGroup>,
     memberColors: ImmutableMap<Int, Int>,
     chatInputValue: String,
-    uploadingImage: ImmutableList<`in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage>,
+    uploadingImage: ImmutableList<ConvertedChatMessage>,
     showImage: Pair<Boolean, android.net.Uri>,
     onNavigationIconClick: () -> Unit,
     onChatInputValueChange: (String) -> Unit = {},
@@ -214,10 +213,10 @@ private fun GroupChatScreenPreview() {
         maxMemberCount = PREVIEW_MAX_MEMBER_COUNT,
         isLoading = false,
         messages = previewMessages(),
-        memberColors = persistentMapOf(0 to 0, 1 to 4, 2 to 2, 3 to 6),
+        memberColors = previewMemberColors,
         chatInputValue = "",
         uploadingImage = persistentListOf(),
-        showImage = Pair(false, android.net.Uri.EMPTY),
+        showImage = previewEmptyImageState,
         onNavigationIconClick = {}
     )
 }
@@ -233,63 +232,10 @@ private fun GroupChatScreenEmptyPreview() {
         maxMemberCount = PREVIEW_MAX_MEMBER_COUNT,
         isLoading = false,
         messages = persistentListOf(),
-        memberColors = persistentMapOf(),
+        memberColors = previewEmptyMemberColors,
         chatInputValue = "",
         uploadingImage = persistentListOf(),
-        showImage = Pair(false, android.net.Uri.EMPTY),
+        showImage = previewEmptyImageState,
         onNavigationIconClick = {}
     )
 }
-
-private fun previewMessages(): ImmutableList<GroupChatMessageGroup> = persistentListOf(
-    GroupChatMessageGroup(
-        date = "2026년 1월 2일",
-        messages = persistentListOf(
-            GroupChatMessage(
-                id = "msg_1",
-                userId = 0,
-                userNickname = "신짱구",
-                content = "넵!!",
-                timestamp = "13:53",
-                isSentByMe = false,
-                readCount = 6,
-                isFirstInGroup = true
-            ),
-            GroupChatMessage(
-                id = "msg_2",
-                userId = 0,
-                userNickname = "신짱구",
-                content = "방송국 건너편인가요?",
-                timestamp = "14:53",
-                isSentByMe = false,
-                readCount = 6,
-                isFirstInGroup = false
-            ),
-            GroupChatMessage(
-                id = "msg_3",
-                userId = 1,
-                userNickname = "나",
-                content = "네 맞습니다",
-                timestamp = "15:53",
-                isSentByMe = true,
-                readCount = 6
-            ),
-            GroupChatMessage(
-                id = "msg_4",
-                userId = 2,
-                userNickname = "이훈이",
-                content = "5분 정도 늦을 것 같아요 ㅠㅠ",
-                timestamp = "14:53",
-                isSentByMe = false,
-                readCount = 6,
-                isFirstInGroup = true
-            )
-        )
-    )
-)
-
-private const val PREVIEW_DEPARTURE: String = "테니스장"
-private const val PREVIEW_ARRIVAL: String = "천안터미널"
-private const val PREVIEW_DEPARTURE_TIME: String = "16:00"
-private const val PREVIEW_CURRENT_MEMBER_COUNT: Int = 6
-private const val PREVIEW_MAX_MEMBER_COUNT: Int = 8
