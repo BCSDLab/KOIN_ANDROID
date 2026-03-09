@@ -5,7 +5,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.error.callvan.KoinCallvanException
+import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
 import `in`.koreatech.koin.domain.usecase.callvan.ReportCallvanUserUseCase
+import `in`.koreatech.koin.domain.usecase.presignedurl.UploadImageUseCase
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportReason
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
@@ -19,7 +21,8 @@ import org.orbitmvi.orbit.viewmodel.container
 @HiltViewModel
 class CallvanReportViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val reportCallvanUserUseCase: ReportCallvanUserUseCase
+    private val reportCallvanUserUseCase: ReportCallvanUserUseCase,
+    private val uploadImageUseCase: UploadImageUseCase
 ) : ViewModel(), ContainerHost<CallvanReportState, CallvanReportSideEffect> {
 
     override val container = container<CallvanReportState, CallvanReportSideEffect>(
@@ -54,12 +57,38 @@ class CallvanReportViewModel @Inject constructor(
         reduce { state.copy(detail = text) }
     }
 
-    fun onAddImages(uris: List<Uri>) = intent {
-        reduce { state.copy(images = (state.images + uris).toPersistentList()) }
+    fun uploadImage(
+        mediaName: String,
+        mediaType: String,
+        mediaSize: Long,
+        imageUri: Uri
+    ) = intent {
+        reduce { state.copy(isLoading = true) }
+        uploadImageUseCase(
+            domain = PreSignedUrlDomain.CALLVAN,
+            contentLength = mediaSize,
+            contentType = mediaType,
+            fileName = mediaName,
+            imageUri = imageUri.toString()
+        ).onSuccess { uploadedUrl ->
+            reduce {
+                state.copy(
+                    images = state.images.toPersistentList().add(uploadedUrl),
+                    isLoading = false
+                )
+            }
+        }.onFailure {
+            reduce { state.copy(isLoading = false) }
+            postSideEffect(CallvanReportSideEffect.ShowErrorMessage("이미지 업로드에 실패했습니다."))
+        }
     }
 
     fun onRemoveImage(index: Int) = intent {
-        reduce { state.copy(images = state.images.toMutableList().also { it.removeAt(index) }.toPersistentList()) }
+        reduce {
+            state.copy(
+                images = state.images.toMutableList().also { it.removeAt(index) }.toPersistentList()
+            )
+        }
     }
 
     fun onSubmit() = intent {
@@ -75,7 +104,9 @@ class CallvanReportViewModel @Inject constructor(
         reportCallvanUserUseCase(
             postId = postId,
             reportedUserId = reportedUserId,
-            reasons = reasons
+            description = state.detail.ifBlank { null },
+            reasons = reasons,
+            attachmentUrls = state.images.takeIf { it.isNotEmpty() }
         ).onSuccess {
             postSideEffect(CallvanReportSideEffect.SubmitSuccess)
         }.onFailure { throwable ->

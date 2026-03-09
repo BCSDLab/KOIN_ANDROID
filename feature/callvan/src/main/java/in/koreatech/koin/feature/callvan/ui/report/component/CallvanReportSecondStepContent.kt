@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.callvan.ui.report.component
 
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -55,7 +54,7 @@ internal const val CALLVAN_REPORT_IMAGE_MAX_COUNT = 10
 internal fun CallvanReportSecondStepContent(
     detail: String,
     onDetailChange: (String) -> Unit,
-    images: ImmutableList<Uri>,
+    images: ImmutableList<String>,
     onAddImageClick: () -> Unit,
     onRemoveImage: (index: Int) -> Unit,
     modifier: Modifier = Modifier
@@ -150,9 +149,9 @@ internal fun CallvanReportSecondStepContent(
                         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        itemsIndexed(images) { index, uri ->
+                        itemsIndexed(images) { index, url ->
                             CallvanReportImageItem(
-                                uri = uri,
+                                url = url,
                                 onRemoveClick = { onRemoveImage(index) },
                                 modifier = Modifier
                                     .fillMaxHeight()
@@ -190,13 +189,13 @@ internal fun CallvanReportSecondStepContent(
 
 @Composable
 private fun CallvanReportImageItem(
-    uri: Uri,
+    url: String,
     onRemoveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier) {
         AsyncImage(
-            model = uri,
+            model = url,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -253,9 +252,9 @@ private fun CallvanReportSecondStepContentWithImagesPreview() {
         detail = "",
         onDetailChange = {},
         images = persistentListOf(
-            Uri.parse("content://preview/1"),
-            Uri.parse("content://preview/2"),
-            Uri.parse("content://preview/3")
+            "https://example.com/1.jpg",
+            "https://example.com/2.jpg",
+            "https://example.com/3.jpg"
         ),
         onAddImageClick = {},
         onRemoveImage = {},

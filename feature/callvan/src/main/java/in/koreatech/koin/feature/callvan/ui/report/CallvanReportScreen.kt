@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.callvan.ui.report
 
+import android.provider.OpenableColumns
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -11,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,6 +43,7 @@ fun CallvanReportScreen(
 ) {
     val state by viewModel.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
@@ -57,7 +60,25 @@ fun CallvanReportScreen(
     val onAddImageClick = rememberImagePickerLauncher(
         currentImageCount = state.images.size,
         maxImageCount = CALLVAN_REPORT_IMAGE_MAX_COUNT,
-        onImagesSelected = viewModel::onAddImages
+        onImagesSelected = { uris ->
+            uris.forEach { uri ->
+                val cursor = context.contentResolver.query(uri, null, null, null, null)
+                cursor?.use {
+                    if (it.moveToFirst()) {
+                        val fileNameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                        val fileSizeIndex = it.getColumnIndex(OpenableColumns.SIZE)
+                        if (fileNameIndex != -1 && fileSizeIndex != -1) {
+                            val fileName = it.getString(fileNameIndex)
+                            val fileSize = it.getLong(fileSizeIndex)
+                            val fileType = context.contentResolver.getType(uri)
+                            if (fileType?.startsWith("image/") == true) {
+                                viewModel.uploadImage(fileName, fileType, fileSize, uri)
+                            }
+                        }
+                    }
+                }
+            }
+        }
     )
 
     val firstStepAction = remember {
