@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.callvan.ui.report
 
-import android.net.Uri
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -21,9 +20,10 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
-import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportReason
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
+import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportFirstStepUiAction
+import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportFirstStepUiState
+import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportSecondStepUiAction
+import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportSecondStepUiState
 
 @Composable
 fun CallvanReportScreen(
@@ -38,16 +38,11 @@ fun CallvanReportScreen(
 
 @Composable
 private fun CallvanReportScreenImpl(
-    selectedReason: CallvanReportReason? = null,
+    firstStepState: CallvanReportFirstStepUiState = CallvanReportFirstStepUiState(),
+    firstStepAction: CallvanReportFirstStepUiAction = CallvanReportFirstStepUiAction(),
+    secondStepState: CallvanReportSecondStepUiState = CallvanReportSecondStepUiState(),
+    secondStepAction: CallvanReportSecondStepUiAction = CallvanReportSecondStepUiAction(),
     initStep: Int = 1,
-    onSelectedReasonChange: (CallvanReportReason) -> Unit = {},
-    otherReason: String = "",
-    onOtherReasonChange: (String) -> Unit = {},
-    detail: String = "",
-    onDetailChange: (String) -> Unit = {},
-    images: ImmutableList<Uri> = persistentListOf(),
-    onAddImageClick: () -> Unit = {},
-    onRemoveImage: (Uri) -> Unit = {},
     onTopbarBackClick: () -> Unit = {},
     onSubmitClick: () -> Unit = {}
 ) {
@@ -85,16 +80,26 @@ private fun CallvanReportScreenImpl(
     ) { contentPadding ->
         when (step) {
             1 -> CallvanReportFirstStepContent(
-                selectedReason = selectedReason,
-                onSelectedReasonChange = onSelectedReasonChange,
-                otherReason = otherReason,
-                onOtherReasonChange = onOtherReasonChange,
+                selectedReason = firstStepState.selectedReason,
+                onSelectedReasonChange = firstStepAction.onSelectedReasonChange,
+                otherReason = firstStepState.otherReason,
+                onOtherReasonChange = firstStepAction.onOtherReasonChange,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(contentPadding)
                     .imePadding()
             )
-            2 -> {} // TODO
+            2 -> CallvanReportSecondStepContent(
+                detail = secondStepState.detail,
+                onDetailChange = secondStepAction.onDetailChange,
+                images = secondStepState.images,
+                onAddImageClick = secondStepAction.onAddImageClick,
+                onRemoveImage = secondStepAction.onRemoveImage,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(contentPadding)
+                    .imePadding()
+            )
         }
     }
 }
