@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.repository
 import `in`.koreatech.koin.data.api.FakeCallvanAuthApi
 import `in`.koreatech.koin.data.source.remote.CallvanRemoteDataSource
 import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -30,7 +31,7 @@ class ReportCallvanUserRepositoryImplTest {
             attachmentUrls = null
         )
 
-        assert(result.isSuccess)
+        assertTrue(result.isSuccess)
     }
 
     @Test
@@ -43,7 +44,7 @@ class ReportCallvanUserRepositoryImplTest {
             attachmentUrls = listOf("https://example.com/image1.jpg", "https://example.com/image2.jpg")
         )
 
-        assert(result.isSuccess)
+        assertTrue(result.isSuccess)
     }
 
     @Test
@@ -58,8 +59,8 @@ class ReportCallvanUserRepositoryImplTest {
             attachmentUrls = null
         )
 
-        assert(result.isFailure)
-        assert(result.exceptionOrNull() is RuntimeException)
+        assertTrue(result.isFailure)
+        assertTrue(result.exceptionOrNull() is RuntimeException)
     }
 
     @Test
@@ -72,7 +73,7 @@ class ReportCallvanUserRepositoryImplTest {
             attachmentUrls = null
         )
 
-        assert(fakeCallvanAuthApi.capturedRequest?.attachments == null)
+        assertTrue(fakeCallvanAuthApi.capturedRequest?.attachments == null)
     }
 
     @Test

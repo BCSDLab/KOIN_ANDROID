@@ -3,6 +3,7 @@ package `in`.koreatech.koin.domain.usecase.callvan
 import `in`.koreatech.koin.domain.error.callvan.KoinCallvanException
 import `in`.koreatech.koin.domain.repository.FakeCallvanRepository
 import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -30,7 +31,7 @@ class ReportCallvanUserUseCaseTest {
             attachmentUrls = null
         )
 
-        assert(result.isSuccess)
+        assertTrue(result.isSuccess)
     }
 
     @Test
@@ -45,8 +46,8 @@ class ReportCallvanUserUseCaseTest {
             attachmentUrls = null
         )
 
-        assert(result.isFailure)
-        assert(result.exceptionOrNull() is KoinCallvanException.CallvanReportSelfException)
+        assertTrue(result.isFailure)
+        assertTrue(result.exceptionOrNull() is KoinCallvanException.CallvanReportSelfException)
     }
 
     @Test
@@ -61,8 +62,8 @@ class ReportCallvanUserUseCaseTest {
             attachmentUrls = null
         )
 
-        assert(result.isFailure)
-        assert(result.exceptionOrNull() is KoinCallvanException.CallvanReportOnlyParticipantException)
+        assertTrue(result.isFailure)
+        assertTrue(result.exceptionOrNull() is KoinCallvanException.CallvanReportOnlyParticipantException)
     }
 
     @Test
@@ -77,8 +78,8 @@ class ReportCallvanUserUseCaseTest {
             attachmentUrls = null
         )
 
-        assert(result.isFailure)
-        assert(result.exceptionOrNull() is KoinCallvanException.CallvanReportAlreadyPendingException)
+        assertTrue(result.isFailure)
+        assertTrue(result.exceptionOrNull() is KoinCallvanException.CallvanReportAlreadyPendingException)
     }
 
     @Test
@@ -93,7 +94,7 @@ class ReportCallvanUserUseCaseTest {
             attachmentUrls = listOf("https://example.com/image1.jpg")
         )
 
-        assert(result.isSuccess)
+        assertTrue(result.isSuccess)
     }
 
     @Test
