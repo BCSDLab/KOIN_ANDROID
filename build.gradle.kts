@@ -66,7 +66,7 @@ kover {
 }
 
 val coverageExclusions = listOf(
-    "**/core/analtyics/*",
+    "**/core/analytics/*",
     "**/core/designsystem/*",
     "**/core/navigation/*",
     "**/core/network/*",
