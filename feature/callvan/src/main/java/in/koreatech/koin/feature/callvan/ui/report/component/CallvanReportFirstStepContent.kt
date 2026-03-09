@@ -20,10 +20,12 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportReason
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun CallvanReportFirstStepContent(
-    selectedReason: CallvanReportReason?,
+    selectedReasons: ImmutableList<CallvanReportReason>,
     onSelectedReasonChange: (CallvanReportReason) -> Unit,
     otherReason: String,
     onOtherReasonChange: (String) -> Unit,
@@ -48,7 +50,7 @@ internal fun CallvanReportFirstStepContent(
                 if (reason == CallvanReportReason.OTHER) {
                     CallvanReportReasonTextFieldItem(
                         reason = reason,
-                        isSelected = selectedReason == reason,
+                        isSelected = reason in selectedReasons,
                         value = otherReason,
                         onValueChange = onOtherReasonChange,
                         onClick = { onSelectedReasonChange(reason) },
@@ -57,7 +59,7 @@ internal fun CallvanReportFirstStepContent(
                 } else {
                     CallvanReportReasonItem(
                         reason = reason,
-                        isSelected = selectedReason == reason,
+                        isSelected = reason in selectedReasons,
                         onClick = { onSelectedReasonChange(reason) }
                     )
                     HorizontalDivider(
@@ -93,7 +95,7 @@ internal fun CallvanReportHeader() {
 @Composable
 private fun CallvanReportFirstStepContentPreview() {
     CallvanReportFirstStepContent(
-        selectedReason = null,
+        selectedReasons = persistentListOf(),
         onSelectedReasonChange = {},
         otherReason = "",
         onOtherReasonChange = {},

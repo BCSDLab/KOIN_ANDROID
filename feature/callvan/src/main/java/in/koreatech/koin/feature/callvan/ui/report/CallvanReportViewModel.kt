@@ -46,7 +46,10 @@ class CallvanReportViewModel @Inject constructor(
     }
 
     fun onReasonSelect(reason: CallvanReportReason) = intent {
-        reduce { state.copy(selectedReason = reason, isOtherReasonError = false) }
+        val updated = state.selectedReasons.toMutableList().also { list ->
+            if (reason in list) list.remove(reason) else list.add(reason)
+        }.toPersistentList()
+        reduce { state.copy(selectedReasons = updated, isOtherReasonError = false) }
     }
 
     fun onOtherReasonChange(text: String) = intent {
@@ -96,10 +99,9 @@ class CallvanReportViewModel @Inject constructor(
             onPreviousStep()
             return@intent
         }
-        val reason = state.selectedReason ?: return@intent
-        val reasons = listOf(
+        val reasons = state.selectedReasons.map { reason ->
             reason.name to if (reason == CallvanReportReason.OTHER) state.otherReason else null
-        )
+        }
         reduce { state.copy(isLoading = true) }
         reportCallvanUserUseCase(
             postId = postId,
@@ -122,8 +124,8 @@ class CallvanReportViewModel @Inject constructor(
     }
 
     private suspend fun SimpleSyntax<CallvanReportState, CallvanReportSideEffect>.validateFirstStep(): Boolean {
-        val reason = state.selectedReason ?: return false
-        if (reason == CallvanReportReason.OTHER && state.otherReason.isBlank()) {
+        if (state.selectedReasons.isEmpty()) return false
+        if (CallvanReportReason.OTHER in state.selectedReasons && state.otherReason.isBlank()) {
             reduce { state.copy(isOtherReasonError = true) }
             return false
         }

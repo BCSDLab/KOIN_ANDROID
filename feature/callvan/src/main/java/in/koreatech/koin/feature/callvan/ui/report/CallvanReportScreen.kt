@@ -33,6 +33,7 @@ import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportFirstSte
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportReason
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportSecondStepUiAction
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportSecondStepUiState
+import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -97,7 +98,7 @@ fun CallvanReportScreen(
 
     CallvanReportScreenImpl(
         firstStepState = CallvanReportFirstStepUiState(
-            selectedReason = state.selectedReason,
+            selectedReasons = state.selectedReasons,
             otherReason = state.otherReason,
             isOtherReasonError = state.isOtherReasonError
         ),
@@ -145,7 +146,7 @@ private fun CallvanReportScreenImpl(
                 } else {
                     stringResource(R.string.callvan_report_next)
                 },
-                enabled = firstStepState.selectedReason != null,
+                enabled = firstStepState.selectedReasons.isNotEmpty(),
                 onClick = if (isLastStep) onSubmitClick else onNextClick,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -166,7 +167,7 @@ private fun CallvanReportScreenImpl(
     ) { contentPadding ->
         when (step) {
             1 -> CallvanReportFirstStepContent(
-                selectedReason = firstStepState.selectedReason,
+                selectedReasons = firstStepState.selectedReasons,
                 onSelectedReasonChange = firstStepAction.onSelectedReasonChange,
                 otherReason = firstStepState.otherReason,
                 onOtherReasonChange = firstStepAction.onOtherReasonChange,
@@ -201,7 +202,7 @@ private fun CallvanReportScreenFirstPreview() {
 @Composable
 private fun CallvanReportScreenSecondPreview() {
     CallvanReportScreenImpl(
-        firstStepState = CallvanReportFirstStepUiState(selectedReason = CallvanReportReason.OTHER),
+        firstStepState = CallvanReportFirstStepUiState(selectedReasons = persistentListOf(CallvanReportReason.OTHER)),
         step = 2,
         isLastStep = true
     )

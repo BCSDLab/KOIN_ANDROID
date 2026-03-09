@@ -6,7 +6,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 data class CallvanReportState(
     val step: Int = 1,
-    val selectedReason: CallvanReportReason? = null,
+    val selectedReasons: ImmutableList<CallvanReportReason> = persistentListOf(),
     val otherReason: String = "",
     val isOtherReasonError: Boolean = false,
     val detail: String = "",
