@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/usr/bin/env bash
 # pre-push hook: run ktlintCheck, spotlessCheck, detekt for changed modules only
 
 set -e
