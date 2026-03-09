@@ -73,7 +73,7 @@ val coverageExclusions = listOf(
     "**/core/notification/**",
     "**/core/onboarding/**",
     "**/core/webapp/**",
-    "**/firebase/*",
+    "**/firebase/**",
     "**/di/**",
     "**/navigation/*",
     "**/feature/**/model/**",
