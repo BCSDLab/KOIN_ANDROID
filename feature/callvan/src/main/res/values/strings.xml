@@ -55,4 +55,11 @@
     <string name="filter_list_departure_desc">출발일 (내림차순)</string>
     <string name="filter_list_departure_asc">출발일 (오름차순)</string>
     <string name="callvan_search_hint">검색어를 입력해주세요.</string>
+
+    <string name="callvan_btn_join">참여하기</string>
+    <string name="callvan_btn_cancel_join">참여취소</string>
+    <string name="callvan_btn_closed">모집마감</string>
+    <string name="callvan_btn_close">마감하기</string>
+    <string name="callvan_btn_re_recruit">재모집</string>
+    <string name="callvan_btn_complete">이용완료</string>
 </resources>

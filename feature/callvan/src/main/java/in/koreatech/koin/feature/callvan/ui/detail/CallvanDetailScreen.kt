@@ -34,6 +34,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanDropdownMenuItem
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanNotificationIcon
+import `in`.koreatech.koin.feature.callvan.ui.component.CallvanParticipantCount
 import `in`.koreatech.koin.feature.callvan.ui.component.callvanPersonIconColor
 import `in`.koreatech.koin.feature.callvan.ui.detail.component.CallvanDetailParticipantItem
 import `in`.koreatech.koin.feature.callvan.ui.detail.component.CallvanDetailRouteCard
@@ -176,16 +177,11 @@ private fun ParticipantsHeader(
             color = KoinTheme.colors.neutral800
         )
         Spacer(modifier = Modifier.width(8.dp))
-        Icon(
-            imageVector = ImageVector.vectorResource(R.drawable.ic_participants),
-            contentDescription = null,
-            tint = KoinTheme.colors.neutral600,
-            modifier = Modifier.size(20.dp)
-        )
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(
-            text = stringResource(R.string.callvan_detail_participants_count, currentParticipants, maxParticipants),
-            style = KoinTheme.typography.regular14.copy(color = KoinTheme.colors.neutral600)
+        CallvanParticipantCount(
+            currentCount = currentParticipants,
+            maxCount = maxParticipants,
+            textStyle = KoinTheme.typography.regular14,
+            iconSize = 20.dp
         )
     }
 }
