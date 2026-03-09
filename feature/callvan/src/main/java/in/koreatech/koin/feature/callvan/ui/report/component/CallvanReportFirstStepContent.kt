@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.callvan.ui.report
+package `in`.koreatech.koin.feature.callvan.ui.report.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,8 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.callvan.R
-import `in`.koreatech.koin.feature.callvan.ui.report.component.CallvanReportReasonItem
-import `in`.koreatech.koin.feature.callvan.ui.report.component.CallvanReportReasonTextFieldItem
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportReason
 
 @Composable

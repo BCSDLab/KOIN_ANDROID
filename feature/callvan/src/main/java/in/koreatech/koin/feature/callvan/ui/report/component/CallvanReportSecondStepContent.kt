@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.callvan.ui.report
+package `in`.koreatech.koin.feature.callvan.ui.report.component
 
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -45,7 +45,6 @@ import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
-import `in`.koreatech.koin.feature.callvan.ui.report.component.CallvanReportTextField
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 

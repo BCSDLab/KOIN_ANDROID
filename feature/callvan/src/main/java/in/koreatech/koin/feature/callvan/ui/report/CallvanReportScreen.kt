@@ -18,6 +18,8 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
+import `in`.koreatech.koin.feature.callvan.ui.report.component.CallvanReportFirstStepContent
+import `in`.koreatech.koin.feature.callvan.ui.report.component.CallvanReportSecondStepContent
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportFirstStepUiState
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportSecondStepUiState
 import org.orbitmvi.orbit.compose.collectAsState
