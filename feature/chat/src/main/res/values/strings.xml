@@ -9,6 +9,7 @@
     <string name="failed_to_upload_image">이미지를 업로드하지 못했습니다</string>
     <string name="failed_to_connect_to_server">서버에 연결하지 못했습니다</string>
     <string name="failed_to_send_message">메시지를 전송하지 못했습니다</string>
+    <string name="failed_to_load_messages">메시지를 불러오지 못했습니다</string>
     <string name="failed_to_block_user">사용자 차단에 실패했습니다</string>
     <string name="block_dialog_title">이 사용자를 차단하시겠습니까?</string>
     <string name="block_dialog_description">쪽지 수신 및 발신이 모두 차단됩니다.</string>
@@ -16,4 +17,9 @@
 
     <string name="chat_list_title">쪽지</string>
     <string name="blocked_by_user">차단되었습니다.</string>
+    <string name="failed_to_leave_party">콜밴팟에서 나가기에 실패했습니다</string>
+    <string name="leave_party_success">콜밴팟에서 나갔습니다</string>
+    <string name="removed_from_party">콜밴팟에서 퇴장되었습니다</string>
+    <string name="group_chat_left_user_label">나감</string>
+    <string name="chat_back">뒤로</string>
 </resources>
