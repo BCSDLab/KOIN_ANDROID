@@ -34,7 +34,7 @@ class ReportCallvanUserUseCaseTest {
     }
 
     @Test
-    fun `자기 자신을 신고하면 CallvanReportSelfException이 반환된다`() = runTest {
+    fun `repository가 반환한 실패를 그대로 전파한다`() = runTest {
         callvanRepository.reportResult = Result.failure(KoinCallvanException.CallvanReportSelfException())
 
         val result = reportCallvanUserUseCase(
