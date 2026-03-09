@@ -50,15 +50,17 @@ fun CallvanReportReasonItem(
             modifier = Modifier.padding(horizontal = 8.dp)
         ) {
             Text(
-                text = reason.title,
+                text = stringResource(reason.titleRes),
                 style = KoinTheme.typography.medium18,
                 color = KoinTheme.colors.neutral800
             )
-            Text(
-                text = reason.description,
-                style = KoinTheme.typography.regular14,
-                color = KoinTheme.colors.neutral600
-            )
+            reason.descriptionRes?.let {
+                Text(
+                    text = stringResource(it),
+                    style = KoinTheme.typography.regular14,
+                    color = KoinTheme.colors.neutral600
+                )
+            }
         }
     }
 }
@@ -98,7 +100,7 @@ fun CallvanReportReasonTextFieldItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = reason.title,
+                    text = stringResource(reason.titleRes),
                     style = KoinTheme.typography.medium18,
                     color = KoinTheme.colors.neutral800
                 )

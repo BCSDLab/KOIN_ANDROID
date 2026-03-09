@@ -31,10 +31,8 @@ internal fun CallvanReportTextField(
             .padding(vertical = 12.dp, horizontal = 16.dp),
         value = value,
         readOnly = readOnly,
-        textStyle = KoinTheme.typography.regular14,
-        onValueChange = {
-            if (it.length <= maxLength) onValueChange(it) else onValueChange(it.take(maxLength))
-        },
+        textStyle = KoinTheme.typography.regular14.copy(color = KoinTheme.colors.neutral800),
+        onValueChange = { onValueChange(it.take(maxLength)) },
         decorationBox = { innerTextField ->
             Box(contentAlignment = contentAlignment) {
                 if (value.isEmpty()) {
