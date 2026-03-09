@@ -23,7 +23,7 @@ import `in`.koreatech.koin.feature.callvan.ui.component.CallvanBottomSheet
 @Composable
 fun LoginBottomSheet(
     onLogin: () -> Unit,
-    onDismiss: () -> Unit,
+    onDismiss: () -> Unit
 ) {
     CallvanBottomSheet(
         title = stringResource(R.string.callvan_login_title),

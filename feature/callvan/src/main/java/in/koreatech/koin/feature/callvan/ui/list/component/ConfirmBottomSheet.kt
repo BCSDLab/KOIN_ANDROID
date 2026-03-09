@@ -31,7 +31,7 @@ fun ConfirmBottomSheet(
         ConfirmType.CANCEL_JOIN -> stringResource(R.string.callvan_confirm_cancel_title)
         ConfirmType.CLOSE -> stringResource(R.string.callvan_confirm_close_title)
         ConfirmType.REOPEN -> stringResource(R.string.callvan_confirm_reopen_title)
-    },
+    }
 ) {
     CallvanBottomSheet(
         title = title,

@@ -9,7 +9,7 @@ import `in`.koreatech.koin.feature.callvan.ui.component.CallvanConfirmBottomShee
 @Composable
 fun CompleteBottomSheet(
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit,
+    onDismiss: () -> Unit
 ) {
     CallvanConfirmBottomSheet(
         title = stringResource(R.string.callvan_complete_title),
