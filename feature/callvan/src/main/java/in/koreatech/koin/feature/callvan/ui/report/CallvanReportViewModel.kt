@@ -3,11 +3,9 @@ package `in`.koreatech.koin.feature.callvan.ui.report
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.error.callvan.KoinCallvanException
 import `in`.koreatech.koin.domain.usecase.callvan.ReportCallvanUserUseCase
-import `in`.koreatech.koin.feature.callvan.navigation.CallvanNavType
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportReason
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
@@ -27,9 +25,8 @@ class CallvanReportViewModel @Inject constructor(
         CallvanReportState()
     )
 
-    private val route = savedStateHandle.toRoute<CallvanNavType.CallvanReport>()
-    private val postId: Int = route.postId
-    private val reportedUserId: Int = route.reportedUserId
+    private val postId: Int = savedStateHandle["postId"] ?: 0
+    private val reportedUserId: Int = savedStateHandle["reportedUserId"] ?: 0
 
     fun onNextStep() = intent {
         reduce { state.copy(step = 2) }
