@@ -75,7 +75,7 @@ class CallvanReportViewModel @Inject constructor(
             reportedUserId = reportedUserId,
             reasons = reasons
         ).onSuccess {
-            postSideEffect(CallvanReportSideEffect.NavigateBack)
+            postSideEffect(CallvanReportSideEffect.SubmitSuccess)
         }.onFailure { throwable ->
             reduce { state.copy(isLoading = false) }
             val message = when (throwable) {

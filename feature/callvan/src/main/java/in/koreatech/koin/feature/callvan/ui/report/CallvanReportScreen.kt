@@ -6,14 +6,18 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
+import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
+import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -32,15 +36,20 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun CallvanReportScreen(
     viewModel: CallvanReportViewModel = hiltViewModel(),
-    onTopbarBackClick: () -> Unit = {},
-    onShowErrorMessage: (String) -> Unit = {}
+    onTopbarBackClick: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            is CallvanReportSideEffect.NavigateBack -> onTopbarBackClick()
-            is CallvanReportSideEffect.ShowErrorMessage -> onShowErrorMessage(sideEffect.message)
+            is CallvanReportSideEffect.SubmitSuccess -> {
+                snackbarHostState.showSnackBarWithDismiss("사용자가 신고되었습니다.")
+                onTopbarBackClick()
+            }
+            is CallvanReportSideEffect.ShowErrorMessage -> {
+                snackbarHostState.showSnackBarWithDismiss(sideEffect.message)
+            }
         }
     }
 
@@ -69,6 +78,7 @@ fun CallvanReportScreen(
             onAddImageClick = onAddImageClick,
             onRemoveImage = viewModel::onRemoveImage
         ),
+        snackbarHostState = snackbarHostState,
         step = state.step,
         isLastStep = state.step == CallvanReportViewModel.TOTAL_STEPS,
         onTopbarBackClick = onTopbarBackClick,
@@ -86,6 +96,7 @@ private fun CallvanReportScreenImpl(
     firstStepAction: CallvanReportFirstStepUiAction = CallvanReportFirstStepUiAction(),
     secondStepState: CallvanReportSecondStepUiState = CallvanReportSecondStepUiState(),
     secondStepAction: CallvanReportSecondStepUiAction = CallvanReportSecondStepUiAction(),
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     onTopbarBackClick: () -> Unit = {},
     onPreviousClick: () -> Unit = {},
     onNextClick: () -> Unit = {},
@@ -115,6 +126,7 @@ private fun CallvanReportScreenImpl(
                 shape = KoinTheme.shapes.small
             )
         },
+        snackbarHost = { CustomSnackBarHost(hotState = snackbarHostState) },
         containerColor = KoinTheme.colors.neutral0
     ) { contentPadding ->
         when (step) {
