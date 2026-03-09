@@ -78,7 +78,7 @@
 
     <string name="ic_callvan_chat">채팅</string>
     <string name="ic_callvan_call">전화하기</string>
-  
+
     <string name="callvan_report_top_bar">신고하기</string>
     <string name="callvan_report_header_title">신고 이유를 선택해주세요.</string>
     <string name="callvan_report_header_description">신고가 접수되면 운영정책에 따라 검토 후 주변 기능이 제한될 수 있습니다. 본 서비스는 비용 정산에 직접 관여하지 않습니다.</string>
@@ -102,4 +102,7 @@
     <string name="callvan_report_reason_profanity_title">욕설</string>
     <string name="callvan_report_reason_profanity_description">욕설, 성적인 언어, 비방하는 언어를 사용했습니다.</string>
     <string name="callvan_report_reason_other_title">기타</string>
+
+    <string name="callvan_title">콜밴팟</string>
+    <string name="callvan_empty_articles">게시글이 없습니다.</string>
 </resources>

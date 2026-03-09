@@ -24,7 +24,6 @@ import `in`.koreatech.koin.feature.callvan.util.formatDateTime
 @Composable
 fun CallvanListItem(
     uiState: CallvanListUiState,
-    state: CallvanRouteState,
     modifier: Modifier = Modifier,
     clickListener: CallvanListItemClickListener
 ) {
@@ -61,7 +60,7 @@ fun CallvanListItem(
         }
 
         CallvanListItemButtons(
-            state = state,
+            state = uiState.routeState,
             clickListener = clickListener
         )
     }
@@ -73,14 +72,15 @@ private fun CallvanListItemDefaultPreview() {
     RebrandKoinTheme {
         CallvanListItem(
             uiState = CallvanListUiState(
+                id = 1,
                 departure = "테니스장",
                 destination = "천안 시외터미널",
                 date = "2025-02-05",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8
+                maxCount = 8,
+                routeState = CallvanRouteState.DEFAULT
             ),
-            state = CallvanRouteState.DEFAULT,
             clickListener = object : CallvanListItemClickListener {}
         )
     }
@@ -92,14 +92,15 @@ private fun CallvanListItemJoinedPreview() {
     RebrandKoinTheme {
         CallvanListItem(
             uiState = CallvanListUiState(
+                id = 2,
                 departure = "정문",
                 destination = "천안 시외터미널",
                 date = "2025-02-05",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8
+                maxCount = 8,
+                routeState = CallvanRouteState.JOINED
             ),
-            state = CallvanRouteState.JOINED,
             clickListener = object : CallvanListItemClickListener {}
         )
     }
@@ -111,14 +112,15 @@ private fun CallvanListItemClosedPreview() {
     RebrandKoinTheme {
         CallvanListItem(
             uiState = CallvanListUiState(
+                id = 3,
                 departure = "테니스장",
                 destination = "천안역",
                 date = "2025-02-05",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8
+                maxCount = 8,
+                routeState = CallvanRouteState.CLOSED
             ),
-            state = CallvanRouteState.CLOSED,
             clickListener = object : CallvanListItemClickListener {}
         )
     }
@@ -130,14 +132,15 @@ private fun CallvanListItemOwnerActivePreview() {
     RebrandKoinTheme {
         CallvanListItem(
             uiState = CallvanListUiState(
+                id = 4,
                 departure = "정문",
                 destination = "천안 시외터미널",
                 date = "2025-02-05",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8
+                maxCount = 8,
+                routeState = CallvanRouteState.OWNER_ACTIVE
             ),
-            state = CallvanRouteState.OWNER_ACTIVE,
             clickListener = object : CallvanListItemClickListener {}
         )
     }
@@ -149,14 +152,15 @@ private fun CallvanListItemOwnerClosedPreview() {
     RebrandKoinTheme {
         CallvanListItem(
             uiState = CallvanListUiState(
+                id = 5,
                 departure = "정문",
                 destination = "천안 시외터미널",
                 date = "2025-02-05",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8
+                maxCount = 8,
+                routeState = CallvanRouteState.OWNER_CLOSED
             ),
-            state = CallvanRouteState.OWNER_CLOSED,
             clickListener = object : CallvanListItemClickListener {}
         )
     }
