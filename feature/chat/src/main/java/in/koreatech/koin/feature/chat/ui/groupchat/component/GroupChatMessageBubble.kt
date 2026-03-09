@@ -36,7 +36,7 @@ import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.chat.R
-import `in`.koreatech.koin.feature.chat.ui.groupchat.GroupChatMessage
+import `in`.koreatech.koin.feature.chat.ui.groupchat.model.GroupChatMessage
 
 object GroupChatMessageDefaults {
     @Composable
