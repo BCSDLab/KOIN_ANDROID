@@ -11,5 +11,5 @@ class CallvanReportSecondStepUiState(
     val onDetailChange: (String) -> Unit = {},
     val images: ImmutableList<Uri> = persistentListOf(),
     val onAddImageClick: () -> Unit = {},
-    val onRemoveImage: (Uri) -> Unit = {}
+    val onRemoveImage: (index: Int) -> Unit = {}
 )

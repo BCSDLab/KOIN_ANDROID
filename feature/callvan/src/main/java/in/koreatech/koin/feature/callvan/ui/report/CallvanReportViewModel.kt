@@ -56,8 +56,8 @@ class CallvanReportViewModel @Inject constructor(
         reduce { state.copy(images = (state.images + uri).toPersistentList()) }
     }
 
-    fun onRemoveImage(uri: Uri) = intent {
-        reduce { state.copy(images = state.images.filter { it != uri }.toPersistentList()) }
+    fun onRemoveImage(index: Int) = intent {
+        reduce { state.copy(images = state.images.toMutableList().also { it.removeAt(index) }.toPersistentList()) }
     }
 
     fun onSubmit() = intent {
