@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.chat.ui.groupchat.component
 
+import android.content.ContentResolver
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -249,10 +250,10 @@ private fun GroupChatMessageImage(
             contentScale = ContentScale.Fit,
             contentDescription = stringResource(id = R.string.group_chat_message_image)
         )
-        if (imageUrl.startsWith("content://")) {
+        if (imageUrl.toUri().scheme == ContentResolver.SCHEME_CONTENT) {
             Box(
                 modifier = Modifier
-                    .background(Color(0x66000000))
+                    .background(RebrandKoinTheme.colors.neutral800.copy(alpha = 0.4f))
                     .matchParentSize(),
                 contentAlignment = Alignment.Center
             ) {

@@ -1,5 +1,8 @@
 package `in`.koreatech.koin.feature.chat.ui.groupchat.model
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class GroupChatMessage(
     val id: String,
     val userId: Int,

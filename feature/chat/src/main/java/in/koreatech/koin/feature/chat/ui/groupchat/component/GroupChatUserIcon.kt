@@ -69,7 +69,7 @@ fun GroupChatUserIcon(
         Image(
             imageVector = ImageVector.vectorResource(id = GroupUserIconColors.getImageByIndex(colorIndex)),
             contentDescription = stringResource(id = R.string.chat_user_profile_image),
-            modifier = modifier.size(24.dp)
+            modifier = Modifier.size(24.dp)
         )
     }
 }
