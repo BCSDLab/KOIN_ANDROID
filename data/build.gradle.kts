@@ -71,4 +71,7 @@ dependencies {
     implementation(libs.timber)
 
     implementation(libs.bundles.krossbow)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
