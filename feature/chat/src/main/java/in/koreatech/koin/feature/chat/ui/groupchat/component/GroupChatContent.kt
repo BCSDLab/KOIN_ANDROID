@@ -27,11 +27,9 @@ import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.chat.R
 import `in`.koreatech.koin.feature.chat.ui.component.ChatProgressIndicator
+import `in`.koreatech.koin.feature.chat.ui.groupchat.GroupChatPreviewData
 import `in`.koreatech.koin.feature.chat.ui.groupchat.model.GroupChatMessage
 import `in`.koreatech.koin.feature.chat.ui.groupchat.model.GroupChatMessageGroup
-import `in`.koreatech.koin.feature.chat.ui.groupchat.previewEmptyImageState
-import `in`.koreatech.koin.feature.chat.ui.groupchat.previewMemberColors
-import `in`.koreatech.koin.feature.chat.ui.groupchat.previewMessages
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
 import `in`.koreatech.koin.feature.chat.ui.room.component.ChatDateTitle
 import `in`.koreatech.koin.feature.chat.ui.room.component.ChatDateTitleDefaults
@@ -172,10 +170,10 @@ fun GroupChatContent(
 private fun GroupChatContentPreview() {
     GroupChatContent(
         isLoading = false,
-        messages = previewMessages(),
-        memberColors = previewMemberColors,
+        messages = GroupChatPreviewData.messages(),
+        memberColors = GroupChatPreviewData.memberColors,
         chatInputValue = "",
         uploadingImage = persistentListOf(),
-        showImage = previewEmptyImageState
+        showImage = GroupChatPreviewData.emptyImageState
     )
 }

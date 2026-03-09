@@ -206,17 +206,17 @@ private fun handleSideEffect(
 @Composable
 private fun GroupChatScreenPreview() {
     GroupChatScaffold(
-        departure = PREVIEW_DEPARTURE,
-        arrival = PREVIEW_ARRIVAL,
-        departureTime = PREVIEW_DEPARTURE_TIME,
-        currentMemberCount = PREVIEW_CURRENT_MEMBER_COUNT,
-        maxMemberCount = PREVIEW_MAX_MEMBER_COUNT,
+        departure = GroupChatPreviewData.departure,
+        arrival = GroupChatPreviewData.arrival,
+        departureTime = GroupChatPreviewData.departureTime,
+        currentMemberCount = GroupChatPreviewData.currentMemberCount,
+        maxMemberCount = GroupChatPreviewData.maxMemberCount,
         isLoading = false,
-        messages = previewMessages(),
-        memberColors = previewMemberColors,
+        messages = GroupChatPreviewData.messages(),
+        memberColors = GroupChatPreviewData.memberColors,
         chatInputValue = "",
         uploadingImage = persistentListOf(),
-        showImage = previewEmptyImageState,
+        showImage = GroupChatPreviewData.emptyImageState,
         onNavigationIconClick = {}
     )
 }
@@ -225,17 +225,17 @@ private fun GroupChatScreenPreview() {
 @Composable
 private fun GroupChatScreenEmptyPreview() {
     GroupChatScaffold(
-        departure = PREVIEW_DEPARTURE,
-        arrival = PREVIEW_ARRIVAL,
-        departureTime = PREVIEW_DEPARTURE_TIME,
-        currentMemberCount = PREVIEW_CURRENT_MEMBER_COUNT,
-        maxMemberCount = PREVIEW_MAX_MEMBER_COUNT,
+        departure = GroupChatPreviewData.departure,
+        arrival = GroupChatPreviewData.arrival,
+        departureTime = GroupChatPreviewData.departureTime,
+        currentMemberCount = GroupChatPreviewData.currentMemberCount,
+        maxMemberCount = GroupChatPreviewData.maxMemberCount,
         isLoading = false,
         messages = persistentListOf(),
-        memberColors = previewEmptyMemberColors,
+        memberColors = GroupChatPreviewData.emptyMemberColors,
         chatInputValue = "",
         uploadingImage = persistentListOf(),
-        showImage = previewEmptyImageState,
+        showImage = GroupChatPreviewData.emptyImageState,
         onNavigationIconClick = {}
     )
 }

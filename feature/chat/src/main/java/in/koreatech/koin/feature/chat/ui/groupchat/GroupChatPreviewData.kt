@@ -8,74 +8,86 @@ import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentMapOf
 
-internal const val PREVIEW_DEPARTURE: String = "테니스장"
-internal const val PREVIEW_ARRIVAL: String = "천안터미널"
-internal const val PREVIEW_LONG_DEPARTURE: String = "담헌앞 횡단보도"
-internal const val PREVIEW_LONG_ARRIVAL: String = "천안시외터미널"
-internal const val PREVIEW_DEPARTURE_TIME: String = "16:00"
-internal const val PREVIEW_CURRENT_MEMBER_COUNT: Int = 6
-internal const val PREVIEW_MAX_MEMBER_COUNT: Int = 8
+internal object GroupChatPreviewData {
+    data class Sender(
+        val userId: Int,
+        val userNickname: String
+    )
 
-internal val previewMemberColors: ImmutableMap<Int, Int> = persistentMapOf(0 to 0, 1 to 4, 2 to 2, 3 to 6)
-internal val previewEmptyMemberColors: ImmutableMap<Int, Int> = persistentMapOf()
+    const val departure: String = "테니스장"
+    const val arrival: String = "천안터미널"
+    const val longDeparture: String = "담헌앞 횡단보도"
+    const val longArrival: String = "천안시외터미널"
+    const val departureTime: String = "16:00"
+    const val currentMemberCount: Int = 6
+    const val maxMemberCount: Int = 8
 
-internal val previewEmptyImageState: Pair<Boolean, Uri> = Pair(false, Uri.EMPTY)
+    val memberColors: ImmutableMap<Int, Int> = persistentMapOf(0 to 0, 1 to 4, 2 to 2, 3 to 6)
+    val emptyMemberColors: ImmutableMap<Int, Int> = persistentMapOf()
+    val emptyImageState: Pair<Boolean, Uri> = false to Uri.EMPTY
+    val defaultOtherSender: Sender = Sender(userId = 0, userNickname = "신짱구")
 
-internal fun previewMessages(): ImmutableList<GroupChatMessageGroup> = persistentListOf(
-    GroupChatMessageGroup(
-        date = "2026년 1월 2일",
-        messages = persistentListOf(
-            previewMessage(
-                id = "msg_1",
-                userId = 0,
-                userNickname = "신짱구",
-                content = "넵!!",
-                timestamp = "13:53",
-                isFirstInGroup = true
-            ),
-            previewMessage(
-                id = "msg_2",
-                userId = 0,
-                userNickname = "신짱구",
-                content = "방송국 건너편인가요?",
-                timestamp = "14:53",
-                isFirstInGroup = false
-            ),
-            previewMessage(
-                id = "msg_3",
-                userId = 1,
-                userNickname = "나",
-                content = "네 맞습니다",
-                timestamp = "15:53",
-                isSentByMe = true
-            ),
-            previewMessage(
-                id = "msg_4",
-                userId = 2,
-                userNickname = "이훈이",
-                content = "5분 정도 늦을 것 같아요 ㅠㅠ",
-                timestamp = "14:53",
-                isFirstInGroup = true
+    fun messages(): ImmutableList<GroupChatMessageGroup> = persistentListOf(
+        GroupChatMessageGroup(
+            date = "2026년 1월 2일",
+            messages = persistentListOf(
+                otherMessage(
+                    id = "msg_1",
+                    content = "넵!!",
+                    timestamp = "13:53",
+                    isFirstInGroup = true
+                ),
+                otherMessage(
+                    id = "msg_2",
+                    content = "방송국 건너편인가요?",
+                    timestamp = "14:53"
+                ),
+                myMessage(
+                    id = "msg_3",
+                    content = "네 맞습니다",
+                    timestamp = "15:53"
+                ),
+                otherMessage(
+                    id = "msg_4",
+                    content = "5분 정도 늦을 것 같아요 ㅠㅠ",
+                    timestamp = "14:53",
+                    sender = Sender(userId = 2, userNickname = "이훈이"),
+                    isFirstInGroup = true
+                )
             )
         )
     )
-)
 
-internal fun previewMessage(
-    id: String,
-    userId: Int,
-    userNickname: String,
-    content: String,
-    timestamp: String,
-    isSentByMe: Boolean = false,
-    isFirstInGroup: Boolean = false
-): GroupChatMessage = GroupChatMessage(
-    id = id,
-    userId = userId,
-    userNickname = userNickname,
-    content = content,
-    timestamp = timestamp,
-    isSentByMe = isSentByMe,
-    readCount = PREVIEW_CURRENT_MEMBER_COUNT,
-    isFirstInGroup = isFirstInGroup
-)
+    fun otherMessage(
+        id: String,
+        content: String,
+        timestamp: String,
+        sender: Sender = defaultOtherSender,
+        isFirstInGroup: Boolean = false
+    ): GroupChatMessage = GroupChatMessage(
+        id = id,
+        userId = sender.userId,
+        userNickname = sender.userNickname,
+        content = content,
+        timestamp = timestamp,
+        isSentByMe = false,
+        readCount = currentMemberCount,
+        isFirstInGroup = isFirstInGroup
+    )
+
+    fun myMessage(
+        id: String,
+        content: String,
+        timestamp: String,
+        userId: Int = 1,
+        userNickname: String = "나"
+    ): GroupChatMessage = GroupChatMessage(
+        id = id,
+        userId = userId,
+        userNickname = userNickname,
+        content = content,
+        timestamp = timestamp,
+        isSentByMe = true,
+        readCount = currentMemberCount
+    )
+}

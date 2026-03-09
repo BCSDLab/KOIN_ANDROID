@@ -32,13 +32,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.chat.R
-import `in`.koreatech.koin.feature.chat.ui.groupchat.PREVIEW_ARRIVAL
-import `in`.koreatech.koin.feature.chat.ui.groupchat.PREVIEW_CURRENT_MEMBER_COUNT
-import `in`.koreatech.koin.feature.chat.ui.groupchat.PREVIEW_DEPARTURE
-import `in`.koreatech.koin.feature.chat.ui.groupchat.PREVIEW_DEPARTURE_TIME
-import `in`.koreatech.koin.feature.chat.ui.groupchat.PREVIEW_LONG_ARRIVAL
-import `in`.koreatech.koin.feature.chat.ui.groupchat.PREVIEW_LONG_DEPARTURE
-import `in`.koreatech.koin.feature.chat.ui.groupchat.PREVIEW_MAX_MEMBER_COUNT
+import `in`.koreatech.koin.feature.chat.ui.groupchat.GroupChatPreviewData
 
 object GroupChatTopBarDefaults {
     @Composable
@@ -170,20 +164,20 @@ private fun GroupChatTopBarPreview() {
     KoinSurface {
         Column {
             GroupChatTopBar(
-                departure = PREVIEW_DEPARTURE,
-                arrival = PREVIEW_ARRIVAL,
-                departureTime = PREVIEW_DEPARTURE_TIME,
-                currentMemberCount = PREVIEW_CURRENT_MEMBER_COUNT,
-                maxMemberCount = PREVIEW_MAX_MEMBER_COUNT,
+                departure = GroupChatPreviewData.departure,
+                arrival = GroupChatPreviewData.arrival,
+                departureTime = GroupChatPreviewData.departureTime,
+                currentMemberCount = GroupChatPreviewData.currentMemberCount,
+                maxMemberCount = GroupChatPreviewData.maxMemberCount,
                 onNavigationIconClick = {}
             )
             Spacer(modifier = Modifier.height(16.dp))
             GroupChatTopBar(
-                departure = PREVIEW_LONG_DEPARTURE,
-                arrival = PREVIEW_LONG_ARRIVAL,
-                departureTime = PREVIEW_DEPARTURE_TIME,
-                currentMemberCount = PREVIEW_CURRENT_MEMBER_COUNT,
-                maxMemberCount = PREVIEW_MAX_MEMBER_COUNT
+                departure = GroupChatPreviewData.longDeparture,
+                arrival = GroupChatPreviewData.longArrival,
+                departureTime = GroupChatPreviewData.departureTime,
+                currentMemberCount = GroupChatPreviewData.currentMemberCount,
+                maxMemberCount = GroupChatPreviewData.maxMemberCount
             )
         }
     }
