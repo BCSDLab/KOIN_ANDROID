@@ -4,13 +4,20 @@
 
 set -e
 
+# bash 4.0+ required for associative arrays (macOS default is 3.2)
+# Install via: brew install bash
+if ((BASH_VERSINFO[0] < 4)); then
+  echo "[pre-push] Error: bash 4.0+ is required. Install with: brew install bash"
+  exit 1
+fi
+
 MAIN_BRANCH="origin/develop"
 MERGE_BASE=$(git merge-base HEAD "$MAIN_BRANCH" 2>/dev/null || git merge-base HEAD develop 2>/dev/null || true)
 
 if [ -z "$MERGE_BASE" ]; then
   echo "[pre-push] Could not determine merge base. Running full check..."
   ./gradlew ktlintCheck spotlessCheck detekt
-  exit $?
+  exit 0
 fi
 
 CHANGED_FILES=$(git diff --name-only "$MERGE_BASE" HEAD)
@@ -43,7 +50,7 @@ RUN_ALL=false
 
 while IFS= read -r file; do
   case "$file" in
-    build-logic/*|build.gradle.kts|gradle.properties|settings.gradle)
+    build-logic/*|build.gradle.kts|gradle.properties|settings.gradle|gradle/libs.versions.toml)
       RUN_ALL=true
       break
       ;;
@@ -60,7 +67,7 @@ done <<< "$CHANGED_FILES"
 if [ "$RUN_ALL" = true ]; then
   echo "[pre-push] Build-level changes detected. Running full check..."
   ./gradlew spotlessCheck ktlintCheck detekt
-  exit $?
+  exit 0
 fi
 
 if [ ${#MODULES[@]} -eq 0 ]; then
