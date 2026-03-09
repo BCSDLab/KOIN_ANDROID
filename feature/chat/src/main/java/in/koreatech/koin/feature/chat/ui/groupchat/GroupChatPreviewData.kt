@@ -14,13 +14,13 @@ internal object GroupChatPreviewData {
         val userNickname: String
     )
 
-    const val departure: String = "테니스장"
-    const val arrival: String = "천안터미널"
-    const val longDeparture: String = "담헌앞 횡단보도"
-    const val longArrival: String = "천안시외터미널"
-    const val departureTime: String = "16:00"
-    const val currentMemberCount: Int = 6
-    const val maxMemberCount: Int = 8
+    const val DEPARTURE: String = "테니스장"
+    const val ARRIVAL: String = "천안터미널"
+    const val LONG_DEPARTURE: String = "담헌앞 횡단보도"
+    const val LONG_ARRIVAL: String = "천안시외터미널"
+    const val DEPARTURE_TIME: String = "16:00"
+    const val CURRENT_MEMBER_COUNT: Int = 6
+    const val MAX_MEMBER_COUNT: Int = 8
 
     val memberColors: ImmutableMap<Int, Int> = persistentMapOf(0 to 0, 1 to 4, 2 to 2, 3 to 6)
     val emptyMemberColors: ImmutableMap<Int, Int> = persistentMapOf()
@@ -71,7 +71,7 @@ internal object GroupChatPreviewData {
         content = content,
         timestamp = timestamp,
         isSentByMe = false,
-        readCount = currentMemberCount,
+        readCount = CURRENT_MEMBER_COUNT,
         isFirstInGroup = isFirstInGroup
     )
 
@@ -88,6 +88,6 @@ internal object GroupChatPreviewData {
         content = content,
         timestamp = timestamp,
         isSentByMe = true,
-        readCount = currentMemberCount
+        readCount = CURRENT_MEMBER_COUNT
     )
 }

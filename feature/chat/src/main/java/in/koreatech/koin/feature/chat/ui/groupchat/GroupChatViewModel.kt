@@ -38,7 +38,7 @@ class GroupChatViewModel @Inject constructor(
 ) : ViewModel(), ContainerHost<GroupChatState, GroupChatSideEffect> {
 
     override val container = container<GroupChatState, GroupChatSideEffect>(GroupChatState()) {
-        val postId = savedStateHandle.get<Int>(POST_ID)
+        val postId: Int? = savedStateHandle[POST_ID]
         checkNotNull(postId)
         getCallvanPostDetail(postId)
     }
@@ -96,10 +96,10 @@ class GroupChatViewModel @Inject constructor(
 
     fun sendMessage() = intent {
         if (state.chatInputValue.isBlank()) return@intent
-        if (state.postId == null) return@intent
+        val postId = state.postId ?: return@intent
 
         sendCallvanMessageUseCase(
-            postId = state.postId!!,
+            postId = postId,
             isImage = false,
             content = state.chatInputValue
         ).onSuccess {
@@ -118,13 +118,16 @@ class GroupChatViewModel @Inject constructor(
         fileName: String,
         imageUri: Uri
     ) = intent {
+        val postId = state.postId ?: return@intent
+        val imageUriString = imageUri.toString()
+
         reduce {
             state.copy(
                 uploadingImage = (
                     state.uploadingImage + ConvertedChatMessage(
                         userId = state.userId,
                         userNickname = state.userNickname,
-                        content = imageUri.toString(),
+                        content = imageUriString,
                         timestamp = LocalDateTime.now(),
                         isImage = true,
                         isSentByMe = true
@@ -137,25 +140,39 @@ class GroupChatViewModel @Inject constructor(
             contentLength = fileSize,
             contentType = fileType,
             fileName = fileName,
-            imageUri = imageUri.toString()
+            imageUri = imageUriString
         ).onSuccess { fileUrl ->
             sendCallvanMessageUseCase(
-                postId = state.postId!!,
+                postId = postId,
                 isImage = true,
                 content = fileUrl
             ).onSuccess {
                 reduce {
                     state.copy(
                         uploadingImage = state.uploadingImage
-                            .filter { it.content != imageUri.toString() }
+                            .filter { it.content != imageUriString }
                             .toImmutableList()
                     )
                 }
                 loadMessages()
             }.onFailure {
+                reduce {
+                    state.copy(
+                        uploadingImage = state.uploadingImage
+                            .filter { it.content != imageUriString }
+                            .toImmutableList()
+                    )
+                }
                 postSideEffect(GroupChatSideEffect.FailedToSendMessage)
             }
         }.onFailure {
+            reduce {
+                state.copy(
+                    uploadingImage = state.uploadingImage
+                        .filter { it.content != imageUriString }
+                        .toImmutableList()
+                )
+            }
             postSideEffect(GroupChatSideEffect.FailedToUploadImage)
         }
     }
@@ -167,10 +184,10 @@ class GroupChatViewModel @Inject constructor(
     }
 
     private fun loadMessages() = intent {
-        if (state.postId == null) return@intent
+        val postId = state.postId ?: return@intent
 
         getCallvanChatMessagesUseCase(
-            postId = state.postId!!
+            postId = postId
         ).onSuccess { chatMessage ->
             val messageGroups = chatMessage.messages.groupBy { it.date }.map { (date, messages) ->
                 GroupChatMessageGroup(
@@ -178,7 +195,7 @@ class GroupChatViewModel @Inject constructor(
                     messages = messages.mapIndexed { index, message ->
                         val prevMessage = messages.getOrNull(index - 1)
                         GroupChatMessage(
-                            id = "${state.postId}_${message.userId}_${message.time}_$index",
+                            id = "${postId}_${message.userId}_${message.time}_$index",
                             userId = message.userId,
                             userNickname = message.senderNickname,
                             content = message.content,

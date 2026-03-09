@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -55,7 +54,6 @@ fun GroupChatContent(
     onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> }
 ) {
     val scrollState = rememberLazyListState()
-    rememberCoroutineScope()
 
     if (isLoading) {
         ChatProgressIndicator()

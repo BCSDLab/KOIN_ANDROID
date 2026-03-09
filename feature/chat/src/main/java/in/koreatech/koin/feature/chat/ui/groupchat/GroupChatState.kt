@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.chat.ui.groupchat
 
+import androidx.compose.runtime.Immutable
 import `in`.koreatech.koin.feature.chat.ui.groupchat.model.GroupChatMessageGroup
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
 import kotlinx.collections.immutable.ImmutableList
@@ -7,6 +8,7 @@ import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentMapOf
 
+@Immutable
 data class GroupChatState(
     val isLoading: Boolean = true,
     val postId: Int? = null,

@@ -1,12 +1,19 @@
 package `in`.koreatech.koin.feature.chat.util
 
 import java.time.LocalDate
+import timber.log.Timber
 
 fun parseDateString(dateString: String): LocalDate {
     val regex = "(\\d+)년 (\\d+)월 (\\d+)일".toRegex()
-    val matchResult = regex.find(dateString) ?: return LocalDate.now()
+    val matchResult = regex.find(dateString) ?: run {
+        Timber.w("Failed to parse date string: %s", dateString)
+        return LocalDate.now()
+    }
     val (year, month, day) = matchResult.destructured
     return runCatching {
         LocalDate.of(year.toInt(), month.toInt(), day.toInt())
-    }.getOrDefault(LocalDate.now())
+    }.getOrElse { exception ->
+        Timber.w(exception, "Failed to create LocalDate from: %s", dateString)
+        LocalDate.now()
+    }
 }

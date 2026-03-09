@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.chat.ui.groupchat
 
 import android.content.Context
+import android.net.Uri
 import android.provider.OpenableColumns
 import android.widget.Toast
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
@@ -22,8 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.net.toUri
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.chat.R
@@ -49,28 +51,12 @@ fun GroupChatScreen(
 
     val pickMultipleMedia = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(10)) { uris ->
         if (uris.isNotEmpty()) {
-            uris.forEach { uri ->
-                val cursor = context.contentResolver.query(uri, null, null, null, null)
-                cursor.use {
-                    if (cursor != null && cursor.moveToFirst()) {
-                        val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                        val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
-
-                        if (fileNameIndex != -1 && fileSizeIndex != -1) {
-                            val fileName = cursor.getString(fileNameIndex)
-                            val fileSize = cursor.getLong(fileSizeIndex)
-                            val fileType = context.contentResolver.getType(uri) ?: "image/${fileName.split(".").last()}"
-
-                            viewModel.uploadImage(fileSize, fileType, fileName, uri)
-                        }
-                    }
-                }
-            }
+            handleSelectedImages(uris, context, viewModel::uploadImage)
         }
     }
 
     DisposableEffect(lifecycleOwner) {
-        val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
+        val observer = LifecycleEventObserver { _, event ->
             when (event) {
                 Lifecycle.Event.ON_RESUME -> viewModel.startPolling()
                 Lifecycle.Event.ON_PAUSE -> viewModel.stopPolling()
@@ -93,7 +79,7 @@ fun GroupChatScreen(
         )
     }
 
-    GroupChatScaffold(
+    GroupChatScreenImpl(
         departure = uiState.departure,
         arrival = uiState.arrival,
         departureTime = uiState.departureTime,
@@ -116,7 +102,7 @@ fun GroupChatScreen(
 }
 
 @Composable
-private fun GroupChatScaffold(
+private fun GroupChatScreenImpl(
     departure: String,
     arrival: String,
     departureTime: String,
@@ -205,12 +191,12 @@ private fun handleSideEffect(
 @Preview(showBackground = true)
 @Composable
 private fun GroupChatScreenPreview() {
-    GroupChatScaffold(
-        departure = GroupChatPreviewData.departure,
-        arrival = GroupChatPreviewData.arrival,
-        departureTime = GroupChatPreviewData.departureTime,
-        currentMemberCount = GroupChatPreviewData.currentMemberCount,
-        maxMemberCount = GroupChatPreviewData.maxMemberCount,
+    GroupChatScreenImpl(
+        departure = GroupChatPreviewData.DEPARTURE,
+        arrival = GroupChatPreviewData.ARRIVAL,
+        departureTime = GroupChatPreviewData.DEPARTURE_TIME,
+        currentMemberCount = GroupChatPreviewData.CURRENT_MEMBER_COUNT,
+        maxMemberCount = GroupChatPreviewData.MAX_MEMBER_COUNT,
         isLoading = false,
         messages = GroupChatPreviewData.messages(),
         memberColors = GroupChatPreviewData.memberColors,
@@ -224,12 +210,12 @@ private fun GroupChatScreenPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun GroupChatScreenEmptyPreview() {
-    GroupChatScaffold(
-        departure = GroupChatPreviewData.departure,
-        arrival = GroupChatPreviewData.arrival,
-        departureTime = GroupChatPreviewData.departureTime,
-        currentMemberCount = GroupChatPreviewData.currentMemberCount,
-        maxMemberCount = GroupChatPreviewData.maxMemberCount,
+    GroupChatScreenImpl(
+        departure = GroupChatPreviewData.DEPARTURE,
+        arrival = GroupChatPreviewData.ARRIVAL,
+        departureTime = GroupChatPreviewData.DEPARTURE_TIME,
+        currentMemberCount = GroupChatPreviewData.CURRENT_MEMBER_COUNT,
+        maxMemberCount = GroupChatPreviewData.MAX_MEMBER_COUNT,
         isLoading = false,
         messages = persistentListOf(),
         memberColors = GroupChatPreviewData.emptyMemberColors,
@@ -238,4 +224,27 @@ private fun GroupChatScreenEmptyPreview() {
         showImage = GroupChatPreviewData.emptyImageState,
         onNavigationIconClick = {}
     )
+}
+
+private fun handleSelectedImages(
+    uris: List<Uri>,
+    context: Context,
+    uploadImage: (Long, String, String, Uri) -> Unit
+) {
+    uris.forEach { uri ->
+        context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+            if (!cursor.moveToFirst()) return@use
+
+            val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
+
+            if (fileNameIndex == -1 || fileSizeIndex == -1) return@use
+
+            val fileName = cursor.getString(fileNameIndex)
+            val fileSize = cursor.getLong(fileSizeIndex)
+            val fileType = context.contentResolver.getType(uri) ?: "image/${fileName.substringAfterLast(".")}"
+
+            uploadImage(fileSize, fileType, fileName, uri)
+        }
+    }
 }

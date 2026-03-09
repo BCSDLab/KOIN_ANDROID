@@ -164,20 +164,20 @@ private fun GroupChatTopBarPreview() {
     KoinSurface {
         Column {
             GroupChatTopBar(
-                departure = GroupChatPreviewData.departure,
-                arrival = GroupChatPreviewData.arrival,
-                departureTime = GroupChatPreviewData.departureTime,
-                currentMemberCount = GroupChatPreviewData.currentMemberCount,
-                maxMemberCount = GroupChatPreviewData.maxMemberCount,
+                departure = GroupChatPreviewData.DEPARTURE,
+                arrival = GroupChatPreviewData.ARRIVAL,
+                departureTime = GroupChatPreviewData.DEPARTURE_TIME,
+                currentMemberCount = GroupChatPreviewData.CURRENT_MEMBER_COUNT,
+                maxMemberCount = GroupChatPreviewData.MAX_MEMBER_COUNT,
                 onNavigationIconClick = {}
             )
             Spacer(modifier = Modifier.height(16.dp))
             GroupChatTopBar(
-                departure = GroupChatPreviewData.longDeparture,
-                arrival = GroupChatPreviewData.longArrival,
-                departureTime = GroupChatPreviewData.departureTime,
-                currentMemberCount = GroupChatPreviewData.currentMemberCount,
-                maxMemberCount = GroupChatPreviewData.maxMemberCount
+                departure = GroupChatPreviewData.LONG_DEPARTURE,
+                arrival = GroupChatPreviewData.LONG_ARRIVAL,
+                departureTime = GroupChatPreviewData.DEPARTURE_TIME,
+                currentMemberCount = GroupChatPreviewData.CURRENT_MEMBER_COUNT,
+                maxMemberCount = GroupChatPreviewData.MAX_MEMBER_COUNT
             )
         }
     }
