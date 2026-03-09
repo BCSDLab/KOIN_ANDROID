@@ -27,6 +27,7 @@ internal fun CallvanReportFirstStepContent(
     onSelectedReasonChange: (CallvanReportReason) -> Unit,
     otherReason: String,
     onOtherReasonChange: (String) -> Unit,
+    isOtherReasonError: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val callvanReportReasonList = remember {
@@ -50,7 +51,8 @@ internal fun CallvanReportFirstStepContent(
                         isSelected = selectedReason == reason,
                         value = otherReason,
                         onValueChange = onOtherReasonChange,
-                        onClick = { onSelectedReasonChange(reason) }
+                        onClick = { onSelectedReasonChange(reason) },
+                        isError = isOtherReasonError
                     )
                 } else {
                     CallvanReportReasonItem(

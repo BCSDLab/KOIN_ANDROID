@@ -51,16 +51,21 @@ fun CallvanReportScreen(
     )
 
     CallvanReportScreenImpl(
-        firstStep = CallvanReportFirstStepUiState(
+        firstStepState = CallvanReportFirstStepUiState(
             selectedReason = state.selectedReason,
-            onSelectedReasonChange = viewModel::onReasonSelect,
             otherReason = state.otherReason,
+            isOtherReasonError = state.isOtherReasonError
+        ),
+        firstStepAction = CallvanReportFirstStepUiAction(
+            onSelectedReasonChange = viewModel::onReasonSelect,
             onOtherReasonChange = viewModel::onOtherReasonChange
         ),
-        secondStep = CallvanReportSecondStepUiState(
+        secondStepState = CallvanReportSecondStepUiState(
             detail = state.detail,
+            images = state.images
+        ),
+        secondStepAction = CallvanReportSecondStepUiAction(
             onDetailChange = viewModel::onDetailChange,
-            images = state.images,
             onAddImageClick = onAddImageClick,
             onRemoveImage = viewModel::onRemoveImage
         ),
@@ -118,6 +123,7 @@ private fun CallvanReportScreenImpl(
                 onSelectedReasonChange = firstStepAction.onSelectedReasonChange,
                 otherReason = firstStepState.otherReason,
                 onOtherReasonChange = firstStepAction.onOtherReasonChange,
+                isOtherReasonError = firstStepState.isOtherReasonError,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(contentPadding)

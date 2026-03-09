@@ -72,7 +72,8 @@ fun CallvanReportReasonTextFieldItem(
     value: String,
     onValueChange: (String) -> Unit,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isError: Boolean = false
 ) {
     Column(
         modifier = modifier
@@ -127,7 +128,8 @@ fun CallvanReportReasonTextFieldItem(
             onValueChange = onValueChange,
             readOnly = !isSelected,
             maxLength = CALLVAN_REPORT_OTHER_REASON_MAX_LENGTH,
-            placeholder = stringResource(R.string.callvan_report_other_placeholder)
+            placeholder = stringResource(R.string.callvan_report_other_placeholder),
+            isError = isError
         )
     }
 }

@@ -9,6 +9,7 @@ data class CallvanReportState(
     val step: Int = 1,
     val selectedReason: CallvanReportReason? = null,
     val otherReason: String = "",
+    val isOtherReasonError: Boolean = false,
     val detail: String = "",
     val images: ImmutableList<Uri> = persistentListOf(),
     val isLoading: Boolean = false

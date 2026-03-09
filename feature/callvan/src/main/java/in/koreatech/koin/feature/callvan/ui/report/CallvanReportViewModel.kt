@@ -41,11 +41,11 @@ class CallvanReportViewModel @Inject constructor(
     }
 
     fun onReasonSelect(reason: CallvanReportReason) = intent {
-        reduce { state.copy(selectedReason = reason) }
+        reduce { state.copy(selectedReason = reason, isOtherReasonError = false) }
     }
 
     fun onOtherReasonChange(text: String) = intent {
-        reduce { state.copy(otherReason = text) }
+        reduce { state.copy(otherReason = text, isOtherReasonError = false) }
     }
 
     fun onDetailChange(text: String) = intent {
@@ -62,12 +62,13 @@ class CallvanReportViewModel @Inject constructor(
 
     fun onSubmit() = intent {
         val reason = state.selectedReason ?: return@intent
-        val reasons = buildList {
-            add(reason.name to reason.description.ifBlank { null })
-            if (reason == CallvanReportReason.OTHER && state.otherReason.isNotBlank()) {
-                add(reason.name to state.otherReason)
-            }
+        if (reason == CallvanReportReason.OTHER && state.otherReason.isBlank()) {
+            reduce { state.copy(isOtherReasonError = true) }
+            return@intent
         }
+        val reasons = listOf(
+            reason.name to if (reason == CallvanReportReason.OTHER) state.otherReason else null
+        )
         reduce { state.copy(isLoading = true) }
         reportCallvanUserUseCase(
             postId = postId,

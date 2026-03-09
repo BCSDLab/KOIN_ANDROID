@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 internal fun CallvanReportTextField(
@@ -22,12 +23,14 @@ internal fun CallvanReportTextField(
     placeholder: String = "",
     maxLength: Int = Int.MAX_VALUE,
     readOnly: Boolean = false,
-    contentAlignment: Alignment = Alignment.CenterStart
+    contentAlignment: Alignment = Alignment.CenterStart,
+    isError: Boolean = false
 ) {
+    val borderColor = if (isError) RebrandKoinTheme.colors.sub500 else KoinTheme.colors.neutral300
     BasicTextField(
         modifier = modifier
             .fillMaxWidth()
-            .border(1.dp, color = KoinTheme.colors.neutral300, shape = KoinTheme.shapes.extraSmall)
+            .border(1.dp, color = borderColor, shape = KoinTheme.shapes.extraSmall)
             .padding(vertical = 12.dp, horizontal = 16.dp),
         value = value,
         readOnly = readOnly,
@@ -76,5 +79,16 @@ private fun CallvanReportTextFieldMultilinePreview() {
         onValueChange = {},
         placeholder = "신고 상황을 확인하기 위해 자세히 작성해주세요.",
         contentAlignment = Alignment.TopStart
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CallvanReportTextFieldErrorPreview() {
+    CallvanReportTextField(
+        value = "",
+        onValueChange = {},
+        placeholder = "내용을 입력해주세요.",
+        isError = true
     )
 }
