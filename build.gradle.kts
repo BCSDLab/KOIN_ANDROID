@@ -66,23 +66,24 @@ kover {
 }
 
 val coverageExclusions = listOf(
-    "**/core/analytics/*",
-    "**/core/designsystem/*",
-    "**/core/navigation/*",
-    "**/core/network/*",
-    "**/core/notification/*",
-    "**/core/onboarding/*",
-    "**/core/webapp/*",
+    "**/core/analytics/**",
+    "**/core/designsystem/**",
+    "**/core/navigation/**",
+    "**/core/network/**",
+    "**/core/notification/**",
+    "**/core/onboarding/**",
+    "**/core/webapp/**",
     "**/firebase/*",
-    "**/di/*",
+    "**/di/**",
     "**/navigation/*",
-    "**/feature/**/model/*",
-    "**/feature/**/component/*",
+    "**/feature/**/model/**",
+    "**/feature/**/component/**",
     "**/ui/**/*Screen.kt",
     "**/ui/**/*State.kt",
     "**/ui/**/*SideEffect.kt",
     "**/*Activity.kt",
     "**/*RecyclerAdapter.kt",
+    "**/*RecyclerViewAdapter.kt",
     "**/*Fragment.kt"
 ).joinToString(", ")
 
