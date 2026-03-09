@@ -26,7 +26,7 @@ fun CallvanListItem(
     uiState: CallvanListUiState,
     state: CallvanRouteState,
     modifier: Modifier = Modifier,
-    clickListener: CallvanListItemClickListener = object : CallvanListItemClickListener {}
+    clickListener: CallvanListItemClickListener
 ) {
     Row(
         modifier = modifier
@@ -80,7 +80,8 @@ private fun CallvanListItemDefaultPreview() {
                 currentCount = 1,
                 maxCount = 8
             ),
-            state = CallvanRouteState.DEFAULT
+            state = CallvanRouteState.DEFAULT,
+            clickListener = object : CallvanListItemClickListener {}
         )
     }
 }
@@ -98,7 +99,8 @@ private fun CallvanListItemJoinedPreview() {
                 currentCount = 1,
                 maxCount = 8
             ),
-            state = CallvanRouteState.JOINED
+            state = CallvanRouteState.JOINED,
+            clickListener = object : CallvanListItemClickListener {}
         )
     }
 }
@@ -116,7 +118,8 @@ private fun CallvanListItemClosedPreview() {
                 currentCount = 1,
                 maxCount = 8
             ),
-            state = CallvanRouteState.CLOSED
+            state = CallvanRouteState.CLOSED,
+            clickListener = object : CallvanListItemClickListener {}
         )
     }
 }
@@ -134,7 +137,8 @@ private fun CallvanListItemOwnerActivePreview() {
                 currentCount = 1,
                 maxCount = 8
             ),
-            state = CallvanRouteState.OWNER_ACTIVE
+            state = CallvanRouteState.OWNER_ACTIVE,
+            clickListener = object : CallvanListItemClickListener {}
         )
     }
 }
@@ -152,7 +156,8 @@ private fun CallvanListItemOwnerClosedPreview() {
                 currentCount = 1,
                 maxCount = 8
             ),
-            state = CallvanRouteState.OWNER_CLOSED
+            state = CallvanRouteState.OWNER_CLOSED,
+            clickListener = object : CallvanListItemClickListener {}
         )
     }
 }
