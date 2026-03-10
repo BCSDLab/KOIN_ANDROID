@@ -72,11 +72,11 @@ fun ChatDateTitle(
             modifier = Modifier
                 .background(
                     color = colors.containerColor,
-                    shape = KoinTheme.shapes.medium
+                    shape = RebrandKoinTheme.shapes.medium
                 )
                 .padding(vertical = 4.dp, horizontal = 12.dp),
             text = text,
-            style = KoinTheme.typography.medium12,
+            style = RebrandKoinTheme.typography.medium12,
             color = colors.contentColor
         )
     }

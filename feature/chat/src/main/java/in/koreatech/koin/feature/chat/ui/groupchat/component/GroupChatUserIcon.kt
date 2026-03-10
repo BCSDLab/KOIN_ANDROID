@@ -19,7 +19,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.chat.R
 
@@ -79,7 +78,7 @@ fun GroupChatUserIcon(
 private fun GroupChatUserIconPreview() {
     KoinSurface {
         Row(
-            modifier = Modifier.background(KoinTheme.colors.neutral0)
+            modifier = Modifier.background(RebrandKoinTheme.colors.neutral0)
         ) {
             repeat(8) { index ->
                 GroupChatUserIcon(
