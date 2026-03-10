@@ -38,9 +38,14 @@ fun CallvanScrollPicker(
     itemHeight: Dp = 32.dp,
     textAlign: TextAlign = TextAlign.Center
 ) {
+    if (items.isEmpty()) {
+        Box(modifier = modifier.height(itemHeight * 3))
+        return
+    }
+
     val density = LocalDensity.current
     val clampedIndex = remember(selectedIndex, items.size) {
-        selectedIndex.coerceIn(0, (items.size - 1).coerceAtLeast(0))
+        selectedIndex.coerceIn(0, items.lastIndex)
     }
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = clampedIndex)
     val snappingLayout = rememberSnapFlingBehavior(listState)
@@ -51,7 +56,7 @@ fun CallvanScrollPicker(
             val totalOffset = listState.firstVisibleItemIndex * itemHeightPx +
                 listState.firstVisibleItemScrollOffset
             (totalOffset / itemHeightPx).roundToInt()
-                .coerceIn(0, (items.size - 1).coerceAtLeast(0))
+                .coerceIn(0, items.lastIndex)
         }
     }
 
@@ -63,7 +68,7 @@ fun CallvanScrollPicker(
 
     LaunchedEffect(selectedIndex) {
         if (!listState.isScrollInProgress) {
-            val target = selectedIndex.coerceIn(0, (items.size - 1).coerceAtLeast(0))
+            val target = selectedIndex.coerceIn(0, items.lastIndex)
             listState.scrollToItem(target)
         }
     }
