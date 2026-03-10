@@ -120,7 +120,7 @@ fun GroupChatContent(
                             content = uploading.content,
                             timestamp = uploading.timestamp.toLocalTime().toString().substring(0, 5),
                             isImage = true,
-                            isSentByMe = uploading.isSentByMe,
+                            isSentByMe = uploading.isSentByMe
                         )
                         GroupChatMessageBubble(
                             message = uploadingMessage,
