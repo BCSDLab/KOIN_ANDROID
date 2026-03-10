@@ -48,16 +48,14 @@ object GroupChatMessageDefaults {
         bubbleContentColor: Color = RebrandKoinTheme.colors.neutral800,
         bubbleTimeStampColor: Color = RebrandKoinTheme.colors.neutral500,
         userNicknameColor: Color = RebrandKoinTheme.colors.neutral600,
-        leftUserLabelColor: Color = RebrandKoinTheme.colors.primary500,
-        readCountColor: Color = RebrandKoinTheme.colors.neutral700
+        leftUserLabelColor: Color = RebrandKoinTheme.colors.primary500
     ): GroupChatMessageColors = GroupChatMessageColors(
         bubbleContainerColorFromMe = bubbleContainerColorFromMe,
         bubbleContainerColorFromOther = bubbleContainerColorFromOther,
         bubbleContentColor = bubbleContentColor,
         timeStampColor = bubbleTimeStampColor,
         userNicknameColor = userNicknameColor,
-        leftUserLabelColor = leftUserLabelColor,
-        readCountColor = readCountColor
+        leftUserLabelColor = leftUserLabelColor
     )
 }
 
@@ -68,8 +66,7 @@ data class GroupChatMessageColors(
     val bubbleContentColor: Color,
     val timeStampColor: Color,
     val userNicknameColor: Color,
-    val leftUserLabelColor: Color,
-    val readCountColor: Color
+    val leftUserLabelColor: Color
 )
 
 @Composable
@@ -112,23 +109,11 @@ private fun GroupChatMessageFromMe(
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = Arrangement.End
     ) {
-        Column(
-            horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.Bottom
-        ) {
-            if (message.readCount > 0) {
-                Text(
-                    text = "${message.readCount}",
-                    style = RebrandKoinTheme.typography.regular12,
-                    color = colors.readCountColor
-                )
-            }
-            Text(
-                text = message.timestamp,
-                style = RebrandKoinTheme.typography.regular12,
-                color = colors.timeStampColor
-            )
-        }
+        Text(
+            text = message.timestamp,
+            style = RebrandKoinTheme.typography.regular12,
+            color = colors.timeStampColor
+        )
         Spacer(modifier = Modifier.width(8.dp))
         Box(
             modifier = Modifier.weight(1f, false)

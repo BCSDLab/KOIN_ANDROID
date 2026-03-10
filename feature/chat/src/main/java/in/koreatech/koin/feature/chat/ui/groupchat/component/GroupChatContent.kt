@@ -134,7 +134,6 @@ fun GroupChatContent(
                                 timestamp = uploading.timestamp.toLocalTime().toString().substring(0, 5),
                                 isImage = true,
                                 isSentByMe = uploading.isSentByMe,
-                                readCount = 0
                             )
                             GroupChatMessageBubble(
                                 message = uploadingMessage,

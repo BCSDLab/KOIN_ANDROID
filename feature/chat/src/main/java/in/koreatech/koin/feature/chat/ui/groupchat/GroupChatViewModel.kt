@@ -210,7 +210,6 @@ class GroupChatViewModel @Inject constructor(
                                 timestamp = message.time,
                                 isImage = message.isImage,
                                 isSentByMe = message.isMine,
-                                readCount = if (message.isMine) state.currentMemberCount else 0,
                                 isFirstInGroup = prevMessage?.userId != message.userId,
                                 isLeftUser = message.isLeftUser
                             )
