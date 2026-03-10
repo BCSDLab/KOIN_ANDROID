@@ -40,6 +40,8 @@ import `in`.koreatech.koin.feature.chat.R
 import `in`.koreatech.koin.feature.chat.ui.groupchat.GroupChatPreviewData
 import `in`.koreatech.koin.feature.chat.ui.groupchat.model.GroupChatMessage
 
+private const val IMAGE_MAX_WIDTH_FRACTION = 0.6f
+
 object GroupChatMessageDefaults {
     @Composable
     fun purpleColors(
@@ -217,6 +219,7 @@ private fun GroupChatMessageImage(
     Box {
         SubcomposeAsyncImage(
             modifier = Modifier
+                .fillMaxWidth(IMAGE_MAX_WIDTH_FRACTION)
                 .clip(RebrandKoinTheme.shapes.small)
                 .noRippleClickable {
                     onShowImageChange(true, imageUrl.toUri())
