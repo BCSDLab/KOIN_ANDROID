@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -41,6 +42,7 @@ import `in`.koreatech.koin.feature.chat.ui.groupchat.GroupChatPreviewData
 import `in`.koreatech.koin.feature.chat.ui.groupchat.model.GroupChatMessage
 
 private const val IMAGE_MAX_WIDTH_FRACTION = 0.6f
+private val IMAGE_MIN_HEIGHT = 100.dp
 
 object GroupChatMessageDefaults {
     @Composable
@@ -221,6 +223,7 @@ private fun GroupChatMessageImage(
         SubcomposeAsyncImage(
             modifier = Modifier
                 .fillMaxWidth(IMAGE_MAX_WIDTH_FRACTION)
+                .heightIn(min = IMAGE_MIN_HEIGHT)
                 .clip(RebrandKoinTheme.shapes.small)
                 .noRippleClickable {
                     onShowImageChange(true, imageUri)
