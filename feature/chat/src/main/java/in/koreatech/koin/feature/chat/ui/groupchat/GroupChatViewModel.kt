@@ -101,13 +101,14 @@ class GroupChatViewModel @Inject constructor(
     }
 
     fun sendMessage() = intent {
-        if (state.chatInputValue.isBlank()) return@intent
+        val message = state.chatInputValue
+        if (message.isBlank()) return@intent
         val postId = state.postId ?: return@intent
 
         sendCallvanMessageUseCase(
             postId = postId,
             isImage = false,
-            content = state.chatInputValue
+            content = message
         ).onSuccess {
             reduce {
                 state.copy(chatInputValue = "")
