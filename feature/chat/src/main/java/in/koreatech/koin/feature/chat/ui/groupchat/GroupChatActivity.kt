@@ -8,6 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 
 @AndroidEntryPoint
@@ -21,7 +22,7 @@ class GroupChatActivity : ComponentActivity() {
             // 화면 상태 저장 이후에는 방향 고정이 불가능할 수 있어 무시한다.
         }
         setContent {
-            KoinTheme {
+            RebrandKoinTheme {
                 GroupChatScreen()
             }
         }
