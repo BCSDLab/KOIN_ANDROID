@@ -124,10 +124,10 @@ fun GroupChatContent(
                     if (uploadingImage.isNotEmpty() && lastDate == date) {
                         items(
                             items = uploadingImage,
-                            key = { uploading -> "uploading_${uploading.timestamp}" }
+                            key = { uploading -> uploading.uploadId }
                         ) { uploading ->
                             val uploadingMessage = GroupChatMessage(
-                                id = "uploading_${uploading.timestamp}",
+                                id = uploading.uploadId,
                                 userId = uploading.userId,
                                 userNickname = uploading.userNickname,
                                 content = uploading.content,

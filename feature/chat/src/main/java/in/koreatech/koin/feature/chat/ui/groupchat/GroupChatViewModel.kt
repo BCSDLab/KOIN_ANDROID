@@ -14,6 +14,7 @@ import `in`.koreatech.koin.feature.chat.ui.groupchat.model.GroupChatMessage
 import `in`.koreatech.koin.feature.chat.ui.groupchat.model.GroupChatMessageGroup
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
 import java.time.LocalDateTime
+import java.util.UUID
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
@@ -125,7 +126,7 @@ class GroupChatViewModel @Inject constructor(
     ) = intent {
         val postId = state.postId ?: return@intent
         val imageUriString = imageUri.toString()
-        val uploadStartedAt = LocalDateTime.now()
+        val uploadId = UUID.randomUUID().toString()
 
         reduce {
             state.copy(
@@ -134,9 +135,10 @@ class GroupChatViewModel @Inject constructor(
                         userId = state.userId,
                         userNickname = state.userNickname,
                         content = imageUriString,
-                        timestamp = uploadStartedAt,
+                        timestamp = LocalDateTime.now(),
                         isImage = true,
-                        isSentByMe = true
+                        isSentByMe = true,
+                        uploadId = uploadId
                     )
                     ).toImmutableList()
             )
@@ -156,7 +158,7 @@ class GroupChatViewModel @Inject constructor(
                 reduce {
                     state.copy(
                         uploadingImage = state.uploadingImage
-                            .filterNot { it.content == imageUriString && it.timestamp == uploadStartedAt }
+                            .filterNot { it.uploadId == uploadId }
                             .toImmutableList()
                     )
                 }
@@ -165,7 +167,7 @@ class GroupChatViewModel @Inject constructor(
                 reduce {
                     state.copy(
                         uploadingImage = state.uploadingImage
-                            .filterNot { it.content == imageUriString && it.timestamp == uploadStartedAt }
+                            .filterNot { it.uploadId == uploadId }
                             .toImmutableList()
                     )
                 }
@@ -175,7 +177,7 @@ class GroupChatViewModel @Inject constructor(
             reduce {
                 state.copy(
                     uploadingImage = state.uploadingImage
-                        .filterNot { it.content == imageUriString && it.timestamp == uploadStartedAt }
+                        .filterNot { it.uploadId == uploadId }
                         .toImmutableList()
                 )
             }
