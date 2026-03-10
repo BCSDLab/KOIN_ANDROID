@@ -222,7 +222,9 @@ class GroupChatViewModel @Inject constructor(
                     state.copy(messages = messageGroups)
                 }
             }.onFailure {
-                postSideEffect(GroupChatSideEffect.FailedToLoadMessages)
+                if (state.messages.isEmpty()) {
+                    postSideEffect(GroupChatSideEffect.FailedToLoadMessages)
+                }
             }
         } finally {
             loadMessagesMutex.unlock()
