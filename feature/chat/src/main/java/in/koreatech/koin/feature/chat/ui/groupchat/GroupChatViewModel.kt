@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.callvan.CallvanChatMessage.CallvanMessage
 import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
 import `in`.koreatech.koin.domain.usecase.callvan.GetCallvanChatMessagesUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.GetCallvanPostDetailUseCase
@@ -182,12 +183,16 @@ class GroupChatViewModel @Inject constructor(
                 postId = postId
             ).onSuccess { chatMessage ->
                 val messageGroups = chatMessage.messages.groupBy { it.date }.map { (date, messages) ->
+                    val messageOccurrences = mutableMapOf<String, Int>()
                     GroupChatMessageGroup(
                         date = date,
                         messages = messages.mapIndexed { index, message ->
                             val prevMessage = messages.getOrNull(index - 1)
+                            val messageSignature = buildGroupChatMessageSignature(message)
+                            val occurrence = (messageOccurrences[messageSignature] ?: 0) + 1
+                            messageOccurrences[messageSignature] = occurrence
                             GroupChatMessage(
-                                id = "${postId}_${date}_${message.userId}_${message.time}_${message.content.hashCode()}",
+                                id = "${postId}_${date}_${messageSignature}_$occurrence",
                                 userId = message.userId,
                                 userNickname = message.senderNickname,
                                 content = message.content,
@@ -244,3 +249,6 @@ private fun ImmutableList<ConvertedChatMessage>.addUploadingImage(uploadingImage
 
 private fun ImmutableList<ConvertedChatMessage>.removeUploadingImage(uploadId: String): ImmutableList<ConvertedChatMessage> =
     filterNot { it.uploadId == uploadId }.toImmutableList()
+
+private fun buildGroupChatMessageSignature(message: CallvanMessage): String =
+    "${message.userId}_${message.time}_${message.content.hashCode()}_${message.isImage}_${message.isMine}_${message.isLeftUser}"
