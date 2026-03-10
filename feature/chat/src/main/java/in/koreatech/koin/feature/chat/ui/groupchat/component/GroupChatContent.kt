@@ -146,10 +146,17 @@ fun GroupChatContent(
                     }
                     item(key = "date_$date") {
                         val localDate = parseDateString(date)
-                        ChatDateTitle(
-                            date = localDate,
-                            colors = ChatDateTitleDefaults.purpleColors()
-                        )
+                        if (localDate != null) {
+                            ChatDateTitle(
+                                date = localDate,
+                                colors = ChatDateTitleDefaults.purpleColors()
+                            )
+                        } else {
+                            ChatDateTitle(
+                                text = date,
+                                colors = ChatDateTitleDefaults.purpleColors()
+                            )
+                        }
                     }
                 }
             }

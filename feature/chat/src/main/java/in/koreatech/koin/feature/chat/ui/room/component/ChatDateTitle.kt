@@ -49,6 +49,19 @@ fun ChatDateTitle(
     modifier: Modifier = Modifier,
     colors: ChatDateTitleColors = ChatDateTitleDefaults.colors()
 ) {
+    ChatDateTitle(
+        text = date.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")),
+        modifier = modifier,
+        colors = colors
+    )
+}
+
+@Composable
+fun ChatDateTitle(
+    text: String,
+    modifier: Modifier = Modifier,
+    colors: ChatDateTitleColors = ChatDateTitleDefaults.colors()
+) {
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -62,7 +75,7 @@ fun ChatDateTitle(
                     shape = KoinTheme.shapes.medium
                 )
                 .padding(vertical = 4.dp, horizontal = 12.dp),
-            text = date.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")),
+            text = text,
             style = KoinTheme.typography.medium12,
             color = colors.contentColor
         )
