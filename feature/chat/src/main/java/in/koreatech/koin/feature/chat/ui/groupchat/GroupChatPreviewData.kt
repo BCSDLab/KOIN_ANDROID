@@ -71,7 +71,6 @@ internal object GroupChatPreviewData {
         content = content,
         timestamp = timestamp,
         isSentByMe = false,
-        readCount = CURRENT_MEMBER_COUNT,
         isFirstInGroup = isFirstInGroup
     )
 
@@ -87,7 +86,6 @@ internal object GroupChatPreviewData {
         userNickname = userNickname,
         content = content,
         timestamp = timestamp,
-        isSentByMe = true,
-        readCount = CURRENT_MEMBER_COUNT
+        isSentByMe = true
     )
 }
