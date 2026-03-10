@@ -41,7 +41,7 @@ import `in`.koreatech.koin.feature.chat.R
 import `in`.koreatech.koin.feature.chat.ui.groupchat.GroupChatPreviewData
 import `in`.koreatech.koin.feature.chat.ui.groupchat.model.GroupChatMessage
 
-private const val ImageMaxWidthFraction = 0.6f
+private val ImageMaxWidthFraction = 0.6f
 private val ImageMinHeight = 100.dp
 
 object GroupChatMessageDefaults {
