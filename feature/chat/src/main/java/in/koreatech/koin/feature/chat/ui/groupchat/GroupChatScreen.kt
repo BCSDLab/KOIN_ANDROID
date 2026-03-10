@@ -72,10 +72,7 @@ fun GroupChatScreen(
     viewModel.collectSideEffect {
         handleSideEffect(
             sideEffect = it,
-            context = context,
-            navigateBack = {
-                onBackPressedDispatcher?.onBackPressed()
-            }
+            context = context
         )
     }
 
@@ -156,12 +153,9 @@ private fun GroupChatScreenImpl(
 
 private fun handleSideEffect(
     sideEffect: GroupChatSideEffect,
-    context: Context,
-    navigateBack: () -> Unit
+    context: Context
 ) {
     when (sideEffect) {
-        is GroupChatSideEffect.NavigateBack -> navigateBack()
-
         is GroupChatSideEffect.FailedToLoadMessages -> {
             Toast.makeText(
                 context,

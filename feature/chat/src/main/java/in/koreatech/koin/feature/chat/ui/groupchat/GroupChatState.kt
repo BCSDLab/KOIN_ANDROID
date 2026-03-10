@@ -22,7 +22,6 @@ data class GroupChatState(
     val messages: ImmutableList<GroupChatMessageGroup> = persistentListOf(),
     val chatInputValue: String = "",
     val memberColors: ImmutableMap<Int, Int> = persistentMapOf(),
-    val showLeaveDialog: Boolean = false,
     val uploadingImage: ImmutableList<ConvertedChatMessage> = persistentListOf(),
     val showImage: Pair<Boolean, String> = Pair(false, "")
 )

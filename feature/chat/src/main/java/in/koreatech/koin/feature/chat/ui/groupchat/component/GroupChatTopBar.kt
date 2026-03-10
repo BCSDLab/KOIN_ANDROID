@@ -39,17 +39,13 @@ object GroupChatTopBarDefaults {
     fun purpleColors(
         containerColor: Color = RebrandKoinTheme.colors.neutral0,
         titleColor: Color = RebrandKoinTheme.colors.neutral800,
-        subtitleColor: Color = RebrandKoinTheme.colors.neutral600,
         iconColor: Color = RebrandKoinTheme.colors.neutral800,
-        memberCountColor: Color = RebrandKoinTheme.colors.neutral600,
-        menuBackgroundColor: Color = RebrandKoinTheme.colors.neutral50
+        memberCountColor: Color = RebrandKoinTheme.colors.neutral600
     ): GroupChatTopBarColors = GroupChatTopBarColors(
         containerColor = containerColor,
         titleColor = titleColor,
-        subtitleColor = subtitleColor,
         iconColor = iconColor,
-        memberCountColor = memberCountColor,
-        menuBackgroundColor = menuBackgroundColor
+        memberCountColor = memberCountColor
     )
 }
 
@@ -57,10 +53,8 @@ object GroupChatTopBarDefaults {
 data class GroupChatTopBarColors(
     val containerColor: Color,
     val titleColor: Color,
-    val subtitleColor: Color,
     val iconColor: Color,
-    val memberCountColor: Color,
-    val menuBackgroundColor: Color
+    val memberCountColor: Color
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
