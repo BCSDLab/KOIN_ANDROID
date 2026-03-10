@@ -41,8 +41,8 @@ import `in`.koreatech.koin.feature.chat.R
 import `in`.koreatech.koin.feature.chat.ui.groupchat.GroupChatPreviewData
 import `in`.koreatech.koin.feature.chat.ui.groupchat.model.GroupChatMessage
 
-private const val IMAGE_MAX_WIDTH_FRACTION = 0.6f
-private val IMAGE_MIN_HEIGHT = 100.dp
+private const val ImageMaxWidthFraction = 0.6f
+private val ImageMinHeight = 100.dp
 
 object GroupChatMessageDefaults {
     @Composable
@@ -222,8 +222,8 @@ private fun GroupChatMessageImage(
     Box {
         SubcomposeAsyncImage(
             modifier = Modifier
-                .fillMaxWidth(IMAGE_MAX_WIDTH_FRACTION)
-                .heightIn(min = IMAGE_MIN_HEIGHT)
+                .fillMaxWidth(ImageMaxWidthFraction)
+                .heightIn(min = ImageMinHeight)
                 .clip(RebrandKoinTheme.shapes.small)
                 .noRippleClickable {
                     onShowImageChange(true, imageUri)

@@ -16,6 +16,7 @@ import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
 import java.time.LocalDateTime
 import java.util.UUID
 import javax.inject.Inject
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.Job
@@ -127,22 +128,14 @@ class GroupChatViewModel @Inject constructor(
     ) = intent {
         val postId = state.postId ?: return@intent
         val imageUriString = imageUri.toString()
-        val uploadId = UUID.randomUUID().toString()
+        val uploadingImage = createUploadingImage(
+            userId = state.userId,
+            userNickname = state.userNickname,
+            imageUriString = imageUriString
+        )
 
         reduce {
-            state.copy(
-                uploadingImage = (
-                    state.uploadingImage + ConvertedChatMessage(
-                        userId = state.userId,
-                        userNickname = state.userNickname,
-                        content = imageUriString,
-                        timestamp = LocalDateTime.now(),
-                        isImage = true,
-                        isSentByMe = true,
-                        uploadId = uploadId
-                    )
-                    ).toImmutableList()
-            )
+            state.copy(uploadingImage = state.uploadingImage.addUploadingImage(uploadingImage))
         }
         uploadImageUseCase(
             domain = PreSignedUrlDomain.CALLVAN,
@@ -157,30 +150,18 @@ class GroupChatViewModel @Inject constructor(
                 content = fileUrl
             ).onSuccess {
                 reduce {
-                    state.copy(
-                        uploadingImage = state.uploadingImage
-                            .filterNot { it.uploadId == uploadId }
-                            .toImmutableList()
-                    )
+                    state.copy(uploadingImage = state.uploadingImage.removeUploadingImage(uploadingImage.uploadId))
                 }
                 loadMessages()
             }.onFailure {
                 reduce {
-                    state.copy(
-                        uploadingImage = state.uploadingImage
-                            .filterNot { it.uploadId == uploadId }
-                            .toImmutableList()
-                    )
+                    state.copy(uploadingImage = state.uploadingImage.removeUploadingImage(uploadingImage.uploadId))
                 }
                 postSideEffect(GroupChatSideEffect.FailedToSendMessage)
             }
         }.onFailure {
             reduce {
-                state.copy(
-                    uploadingImage = state.uploadingImage
-                        .filterNot { it.uploadId == uploadId }
-                        .toImmutableList()
-                )
+                state.copy(uploadingImage = state.uploadingImage.removeUploadingImage(uploadingImage.uploadId))
             }
             postSideEffect(GroupChatSideEffect.FailedToUploadImage)
         }
@@ -243,3 +224,23 @@ class GroupChatViewModel @Inject constructor(
         const val POST_ID = "post_id"
     }
 }
+
+private fun createUploadingImage(
+    userId: Int,
+    userNickname: String,
+    imageUriString: String
+): ConvertedChatMessage = ConvertedChatMessage(
+    userId = userId,
+    userNickname = userNickname,
+    content = imageUriString,
+    timestamp = LocalDateTime.now(),
+    isImage = true,
+    isSentByMe = true,
+    uploadId = UUID.randomUUID().toString()
+)
+
+private fun ImmutableList<ConvertedChatMessage>.addUploadingImage(uploadingImage: ConvertedChatMessage): ImmutableList<ConvertedChatMessage> =
+    (this + uploadingImage).toImmutableList()
+
+private fun ImmutableList<ConvertedChatMessage>.removeUploadingImage(uploadId: String): ImmutableList<ConvertedChatMessage> =
+    filterNot { it.uploadId == uploadId }.toImmutableList()
