@@ -3,9 +3,10 @@ package `in`.koreatech.koin.feature.chat.util
 import java.time.LocalDate
 import timber.log.Timber
 
+private val DATE_REGEX = "(\\d+)년 (\\d+)월 (\\d+)일".toRegex()
+
 fun parseDateString(dateString: String): LocalDate {
-    val regex = "(\\d+)년 (\\d+)월 (\\d+)일".toRegex()
-    val matchResult = regex.find(dateString) ?: run {
+    val matchResult = DATE_REGEX.find(dateString) ?: run {
         Timber.w("Failed to parse date string: %s", dateString)
         return LocalDate.now()
     }

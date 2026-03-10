@@ -22,7 +22,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -192,9 +191,9 @@ class GroupChatViewModel @Inject constructor(
 
     private fun loadMessages() = intent {
         val postId = state.postId ?: return@intent
-        if (loadMessagesMutex.isLocked) return@intent
+        if (!loadMessagesMutex.tryLock()) return@intent
 
-        loadMessagesMutex.withLock {
+        try {
             getCallvanChatMessagesUseCase(
                 postId = postId
             ).onSuccess { chatMessage ->
@@ -224,6 +223,8 @@ class GroupChatViewModel @Inject constructor(
             }.onFailure {
                 postSideEffect(GroupChatSideEffect.FailedToLoadMessages)
             }
+        } finally {
+            loadMessagesMutex.unlock()
         }
     }
 

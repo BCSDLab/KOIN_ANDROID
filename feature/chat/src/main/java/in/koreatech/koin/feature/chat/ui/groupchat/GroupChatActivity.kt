@@ -15,12 +15,12 @@ class GroupChatActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdgeWithLightStatusBar()
+        try {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        } catch (ignore: IllegalStateException) {
+            // 화면 상태 저장 이후에는 방향 고정이 불가능할 수 있어 무시한다.
+        }
         setContent {
-            try {
-                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-            } catch (ignore: IllegalStateException) {
-                // 화면 상태 저장 이후에는 방향 고정이 불가능할 수 있어 무시한다.
-            }
             KoinTheme {
                 GroupChatScreen()
             }

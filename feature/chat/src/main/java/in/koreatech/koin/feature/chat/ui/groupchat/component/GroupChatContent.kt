@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -54,6 +55,7 @@ fun GroupChatContent(
     onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> }
 ) {
     val scrollState = rememberLazyListState()
+    val latestMessageId = messages.lastOrNull()?.messages?.lastOrNull()?.id
 
     if (isLoading) {
         ChatProgressIndicator()
@@ -86,9 +88,9 @@ fun GroupChatContent(
             )
         }
     } else {
-        LaunchedEffect(messages) {
-            if (messages.isNotEmpty()) {
-                scrollState.scrollToItem(0)
+        LaunchedEffect(latestMessageId) {
+            if (latestMessageId != null && scrollState.firstVisibleItemIndex < 3) {
+                scrollState.animateScrollToItem(0)
             }
         }
 
@@ -100,9 +102,9 @@ fun GroupChatContent(
 
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .background(RebrandKoinTheme.colors.neutral0)
-                    .weight(1f),
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .background(RebrandKoinTheme.colors.neutral0),
                 state = scrollState,
                 reverseLayout = true,
                 verticalArrangement = Arrangement.Top
