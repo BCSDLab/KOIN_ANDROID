@@ -21,6 +21,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -44,6 +46,7 @@ class GroupChatViewModel @Inject constructor(
     }
 
     private var pollingJob: Job? = null
+    private val loadMessagesMutex: Mutex = Mutex()
 
     private fun getCallvanPostDetail(postId: Int) = intent {
         getCallvanPostDetailUseCase(postId).onSuccess { postDetail ->
@@ -185,35 +188,38 @@ class GroupChatViewModel @Inject constructor(
 
     private fun loadMessages() = intent {
         val postId = state.postId ?: return@intent
+        if (loadMessagesMutex.isLocked) return@intent
 
-        getCallvanChatMessagesUseCase(
-            postId = postId
-        ).onSuccess { chatMessage ->
-            val messageGroups = chatMessage.messages.groupBy { it.date }.map { (date, messages) ->
-                GroupChatMessageGroup(
-                    date = date,
-                    messages = messages.mapIndexed { index, message ->
-                        val prevMessage = messages.getOrNull(index - 1)
-                        GroupChatMessage(
-                            id = "${postId}_${message.userId}_${message.time}_$index",
-                            userId = message.userId,
-                            userNickname = message.senderNickname,
-                            content = message.content,
-                            timestamp = message.time,
-                            isImage = message.isImage,
-                            isSentByMe = message.isMine,
-                            readCount = if (message.isMine) state.currentMemberCount else 0,
-                            isFirstInGroup = prevMessage?.userId != message.userId,
-                            isLeftUser = message.isLeftUser
-                        )
-                    }.toImmutableList()
-                )
-            }.toImmutableList()
-            reduce {
-                state.copy(messages = messageGroups)
+        loadMessagesMutex.withLock {
+            getCallvanChatMessagesUseCase(
+                postId = postId
+            ).onSuccess { chatMessage ->
+                val messageGroups = chatMessage.messages.groupBy { it.date }.map { (date, messages) ->
+                    GroupChatMessageGroup(
+                        date = date,
+                        messages = messages.mapIndexed { index, message ->
+                            val prevMessage = messages.getOrNull(index - 1)
+                            GroupChatMessage(
+                                id = "${postId}_${date}_${message.userId}_${message.time}_$index",
+                                userId = message.userId,
+                                userNickname = message.senderNickname,
+                                content = message.content,
+                                timestamp = message.time,
+                                isImage = message.isImage,
+                                isSentByMe = message.isMine,
+                                readCount = if (message.isMine) state.currentMemberCount else 0,
+                                isFirstInGroup = prevMessage?.userId != message.userId,
+                                isLeftUser = message.isLeftUser
+                            )
+                        }.toImmutableList()
+                    )
+                }.toImmutableList()
+                reduce {
+                    state.copy(messages = messageGroups)
+                }
+            }.onFailure {
+                postSideEffect(GroupChatSideEffect.FailedToLoadMessages)
             }
-        }.onFailure {
-            postSideEffect(GroupChatSideEffect.FailedToLoadMessages)
         }
     }
 
