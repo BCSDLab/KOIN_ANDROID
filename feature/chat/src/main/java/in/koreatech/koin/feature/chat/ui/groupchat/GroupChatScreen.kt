@@ -110,12 +110,12 @@ private fun GroupChatScreenImpl(
     memberColors: ImmutableMap<Int, Int>,
     chatInputValue: String,
     uploadingImage: ImmutableList<ConvertedChatMessage>,
-    showImage: Pair<Boolean, android.net.Uri>,
+    showImage: Pair<Boolean, Uri>,
     onNavigationIconClick: () -> Unit,
     onChatInputValueChange: (String) -> Unit = {},
     onImageButtonClick: () -> Unit = {},
     onSendClick: () -> Unit = {},
-    onShowImageChange: (Boolean, android.net.Uri) -> Unit = { _, _ -> }
+    onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> }
 ) {
     Scaffold(
         modifier = Modifier.imePadding(),
