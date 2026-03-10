@@ -30,6 +30,30 @@
     <string name="callvan_detail_enter_chat">단체 채팅방 입장</string>
     <string name="callvan_detail_participant_report">신고하기</string>
 
+    <string name="callvan_report_top_bar">신고하기</string>
+    <string name="callvan_report_header_title">신고 이유를 선택해주세요.</string>
+    <string name="callvan_report_header_description">신고가 접수되면 운영정책에 따라 검토 후 주변 기능이 제한될 수 있습니다. 본 서비스는 비용 정산에 직접 관여하지 않습니다.</string>
+    <string name="callvan_report_next">다음</string>
+    <string name="callvan_report_other_placeholder">신고 사유를 입력해주세요.</string>
+    <string name="callvan_report_other_reason_length">%1$d/%2$d</string>
+
+    <string name="callvan_report_detail_title">신고 상황을 입력해주세요.</string>
+    <string name="callvan_report_detail_placeholder">신고 상황을 확인하기 위해 자세히 작성해주세요.</string>
+    <string name="callvan_report_detail_length">%1$d/%2$d</string>
+    <string name="callvan_report_evidence_title">증빙자료 첨부</string>
+    <string name="callvan_report_evidence_description">신고 상황에 대한 채팅내역 등 증빙자료로 사용할 이미지를 첨부해주세요.</string>
+    <string name="callvan_report_evidence_count">%1$d/%2$d</string>
+    <string name="callvan_report_add_photo">사진 등록하기</string>
+    <string name="callvan_report_image_remove">이미지 삭제</string>
+
+    <string name="callvan_report_reason_no_show_title">노쇼</string>
+    <string name="callvan_report_reason_no_show_description">참여 신청 후 약속 장소에 나타나지 않았습니다.</string>
+    <string name="callvan_report_reason_non_payment_title">비용 미납</string>
+    <string name="callvan_report_reason_non_payment_description">콜밴 비용을 납부하지 않았습니다.</string>
+    <string name="callvan_report_reason_profanity_title">욕설</string>
+    <string name="callvan_report_reason_profanity_description">욕설, 성적인 언어, 비방하는 언어를 사용했습니다.</string>
+    <string name="callvan_report_reason_other_title">기타</string>
+
     <string name="callvan_create_top_bar">콜밴팟</string>
     <string name="callvan_create_departure_label">출발</string>
     <string name="callvan_create_arrival_label">도착</string>
