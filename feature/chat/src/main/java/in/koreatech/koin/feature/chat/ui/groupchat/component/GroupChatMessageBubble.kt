@@ -216,13 +216,14 @@ private fun GroupChatMessageImage(
     imageUrl: String,
     onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> }
 ) {
+    val imageUri = imageUrl.toUri()
     Box {
         SubcomposeAsyncImage(
             modifier = Modifier
                 .fillMaxWidth(IMAGE_MAX_WIDTH_FRACTION)
                 .clip(RebrandKoinTheme.shapes.small)
                 .noRippleClickable {
-                    onShowImageChange(true, imageUrl.toUri())
+                    onShowImageChange(true, imageUri)
                 },
             model = ImageRequest.Builder(LocalContext.current)
                 .data(imageUrl)
@@ -239,7 +240,7 @@ private fun GroupChatMessageImage(
             contentScale = ContentScale.Fit,
             contentDescription = stringResource(id = R.string.group_chat_message_image)
         )
-        if (imageUrl.toUri().scheme == ContentResolver.SCHEME_CONTENT) {
+        if (imageUri.scheme == ContentResolver.SCHEME_CONTENT) {
             Box(
                 modifier = Modifier
                     .background(RebrandKoinTheme.colors.neutral800.copy(alpha = 0.4f))
