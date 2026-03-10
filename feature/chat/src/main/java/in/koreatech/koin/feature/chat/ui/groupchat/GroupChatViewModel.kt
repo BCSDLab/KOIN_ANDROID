@@ -71,6 +71,9 @@ class GroupChatViewModel @Inject constructor(
             }
             loadMessages()
         }.onFailure {
+            reduce {
+                state.copy(isLoading = false)
+            }
             postSideEffect(GroupChatSideEffect.FailedToLoadMessages)
         }
     }
@@ -123,6 +126,7 @@ class GroupChatViewModel @Inject constructor(
     ) = intent {
         val postId = state.postId ?: return@intent
         val imageUriString = imageUri.toString()
+        val uploadStartedAt = LocalDateTime.now()
 
         reduce {
             state.copy(
@@ -131,7 +135,7 @@ class GroupChatViewModel @Inject constructor(
                         userId = state.userId,
                         userNickname = state.userNickname,
                         content = imageUriString,
-                        timestamp = LocalDateTime.now(),
+                        timestamp = uploadStartedAt,
                         isImage = true,
                         isSentByMe = true
                     )
@@ -153,7 +157,7 @@ class GroupChatViewModel @Inject constructor(
                 reduce {
                     state.copy(
                         uploadingImage = state.uploadingImage
-                            .filter { it.content != imageUriString }
+                            .filterNot { it.content == imageUriString && it.timestamp == uploadStartedAt }
                             .toImmutableList()
                     )
                 }
@@ -162,7 +166,7 @@ class GroupChatViewModel @Inject constructor(
                 reduce {
                     state.copy(
                         uploadingImage = state.uploadingImage
-                            .filter { it.content != imageUriString }
+                            .filterNot { it.content == imageUriString && it.timestamp == uploadStartedAt }
                             .toImmutableList()
                     )
                 }
@@ -172,7 +176,7 @@ class GroupChatViewModel @Inject constructor(
             reduce {
                 state.copy(
                     uploadingImage = state.uploadingImage
-                        .filter { it.content != imageUriString }
+                        .filterNot { it.content == imageUriString && it.timestamp == uploadStartedAt }
                         .toImmutableList()
                 )
             }
