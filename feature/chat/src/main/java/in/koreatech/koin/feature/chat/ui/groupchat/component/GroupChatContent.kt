@@ -98,7 +98,6 @@ fun GroupChatContent(
             modifier = modifier.fillMaxSize()
         ) {
             val reversedMessages = messages.asReversed()
-            val lastDate = reversedMessages.firstOrNull()?.date
 
             LazyColumn(
                 modifier = Modifier
@@ -109,6 +108,28 @@ fun GroupChatContent(
                 reverseLayout = true,
                 verticalArrangement = Arrangement.Top
             ) {
+                if (uploadingImage.isNotEmpty()) {
+                    items(
+                        items = uploadingImage,
+                        key = { uploading -> uploading.uploadId }
+                    ) { uploading ->
+                        val uploadingMessage = GroupChatMessage(
+                            id = uploading.uploadId,
+                            userId = uploading.userId,
+                            userNickname = uploading.userNickname,
+                            content = uploading.content,
+                            timestamp = uploading.timestamp.toLocalTime().toString().substring(0, 5),
+                            isImage = true,
+                            isSentByMe = uploading.isSentByMe,
+                        )
+                        GroupChatMessageBubble(
+                            message = uploadingMessage,
+                            userColorIndex = memberColors[uploading.userId] ?: 0,
+                            onShowImageChange = onShowImageChange,
+                            modifier = Modifier.padding(vertical = 2.dp)
+                        )
+                    }
+                }
                 reversedMessages.forEach { (date, dateMessages) ->
                     items(
                         items = dateMessages.asReversed(),
@@ -120,28 +141,6 @@ fun GroupChatContent(
                             onShowImageChange = onShowImageChange,
                             modifier = Modifier.padding(vertical = 2.dp)
                         )
-                    }
-                    if (uploadingImage.isNotEmpty() && lastDate == date) {
-                        items(
-                            items = uploadingImage,
-                            key = { uploading -> uploading.uploadId }
-                        ) { uploading ->
-                            val uploadingMessage = GroupChatMessage(
-                                id = uploading.uploadId,
-                                userId = uploading.userId,
-                                userNickname = uploading.userNickname,
-                                content = uploading.content,
-                                timestamp = uploading.timestamp.toLocalTime().toString().substring(0, 5),
-                                isImage = true,
-                                isSentByMe = uploading.isSentByMe,
-                            )
-                            GroupChatMessageBubble(
-                                message = uploadingMessage,
-                                userColorIndex = memberColors[uploading.userId] ?: 0,
-                                onShowImageChange = onShowImageChange,
-                                modifier = Modifier.padding(vertical = 2.dp)
-                            )
-                        }
                     }
                     item(key = "date_$date") {
                         val localDate = parseDateString(date)
