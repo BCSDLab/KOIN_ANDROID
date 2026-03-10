@@ -9,10 +9,14 @@ class ReportCallvanUserUseCase @Inject constructor(
     suspend operator fun invoke(
         postId: Int,
         reportedUserId: Int,
-        reasons: List<Pair<String, String?>>
+        description: String?,
+        reasons: List<Pair<String, String?>>,
+        attachmentUrls: List<String>?
     ): Result<Unit> = callvanRepository.reportCallvanUser(
         postId = postId,
         reportedUserId = reportedUserId,
-        reasons = reasons
+        description = description,
+        reasons = reasons,
+        attachmentUrls = attachmentUrls
     )
 }
