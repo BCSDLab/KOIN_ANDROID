@@ -187,7 +187,7 @@ class GroupChatViewModel @Inject constructor(
                         messages = messages.mapIndexed { index, message ->
                             val prevMessage = messages.getOrNull(index - 1)
                             GroupChatMessage(
-                                id = "${postId}_${date}_${message.userId}_${message.time}_$index",
+                                id = "${postId}_${date}_${message.userId}_${message.time}_${message.content.hashCode()}",
                                 userId = message.userId,
                                 userNickname = message.senderNickname,
                                 content = message.content,
