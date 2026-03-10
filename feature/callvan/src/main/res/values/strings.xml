@@ -53,4 +53,30 @@
     <string name="callvan_report_reason_profanity_title">욕설</string>
     <string name="callvan_report_reason_profanity_description">욕설, 성적인 언어, 비방하는 언어를 사용했습니다.</string>
     <string name="callvan_report_reason_other_title">기타</string>
+
+    <string name="filter_container">필터</string>
+    <string name="filter_list_reset">초기화</string>
+    <string name="filter_list_adapt">적용하기</string>
+    <string name="filter_list_sort_order">정렬</string>
+    <string name="filter_list_recruitment_status">모집 상태</string>
+    <string name="filter_list_origin">출발지</string>
+    <string name="filter_list_destination">도착지</string>
+    <string name="filter_list_other_place_hint">기타 장소는 검색창을 이용해주세요.</string>
+    <string name="filter_list_all">전체</string>
+    <string name="filter_list_front_gate">정문</string>
+    <string name="filter_list_back_gate">후문</string>
+    <string name="filter_list_tennis_court">테니스장</string>
+    <string name="filter_list_dormitory_main">본관동</string>
+    <string name="filter_list_dormitory_sub">별관동</string>
+    <string name="filter_list_terminal">천안터미널</string>
+    <string name="filter_list_station">천안역</string>
+    <string name="filter_list_asan_station">천안아산역</string>
+    <string name="filter_list_recruiting">모집중</string>
+    <string name="filter_list_closed">모집마감</string>
+    <string name="filter_list_completed">모집완료</string>
+    <string name="filter_list_latest_desc">게시글 등록순 (내림차순)</string>
+    <string name="filter_list_latest_asc">게시글 등록순 (오름차순)</string>
+    <string name="filter_list_departure_desc">출발일 (내림차순)</string>
+    <string name="filter_list_departure_asc">출발일 (오름차순)</string>
+    <string name="callvan_search_hint">검색어를 입력해주세요.</string>
 </resources>
