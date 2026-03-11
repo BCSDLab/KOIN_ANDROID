@@ -32,23 +32,20 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.chat.R
+import `in`.koreatech.koin.feature.chat.ui.groupchat.GroupChatPreviewData
 
 object GroupChatTopBarDefaults {
     @Composable
     fun purpleColors(
         containerColor: Color = RebrandKoinTheme.colors.neutral0,
         titleColor: Color = RebrandKoinTheme.colors.neutral800,
-        subtitleColor: Color = RebrandKoinTheme.colors.neutral600,
         iconColor: Color = RebrandKoinTheme.colors.neutral800,
-        memberCountColor: Color = RebrandKoinTheme.colors.neutral600,
-        menuBackgroundColor: Color = RebrandKoinTheme.colors.neutral50
+        memberCountColor: Color = RebrandKoinTheme.colors.neutral600
     ): GroupChatTopBarColors = GroupChatTopBarColors(
         containerColor = containerColor,
         titleColor = titleColor,
-        subtitleColor = subtitleColor,
         iconColor = iconColor,
-        memberCountColor = memberCountColor,
-        menuBackgroundColor = menuBackgroundColor
+        memberCountColor = memberCountColor
     )
 }
 
@@ -56,10 +53,8 @@ object GroupChatTopBarDefaults {
 data class GroupChatTopBarColors(
     val containerColor: Color,
     val titleColor: Color,
-    val subtitleColor: Color,
     val iconColor: Color,
-    val memberCountColor: Color,
-    val menuBackgroundColor: Color
+    val memberCountColor: Color
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -163,20 +158,20 @@ private fun GroupChatTopBarPreview() {
     KoinSurface {
         Column {
             GroupChatTopBar(
-                departure = "테니스장",
-                arrival = "천안터미널",
-                departureTime = "16:00",
-                currentMemberCount = 6,
-                maxMemberCount = 8,
+                departure = GroupChatPreviewData.DEPARTURE,
+                arrival = GroupChatPreviewData.ARRIVAL,
+                departureTime = GroupChatPreviewData.DEPARTURE_TIME,
+                currentMemberCount = GroupChatPreviewData.CURRENT_MEMBER_COUNT,
+                maxMemberCount = GroupChatPreviewData.MAX_MEMBER_COUNT,
                 onNavigationIconClick = {}
             )
             Spacer(modifier = Modifier.height(16.dp))
             GroupChatTopBar(
-                departure = "담헌앞 횡단보도",
-                arrival = "천안시외터미널",
-                departureTime = "16:00",
-                currentMemberCount = 6,
-                maxMemberCount = 8
+                departure = GroupChatPreviewData.LONG_DEPARTURE,
+                arrival = GroupChatPreviewData.LONG_ARRIVAL,
+                departureTime = GroupChatPreviewData.DEPARTURE_TIME,
+                currentMemberCount = GroupChatPreviewData.CURRENT_MEMBER_COUNT,
+                maxMemberCount = GroupChatPreviewData.MAX_MEMBER_COUNT
             )
         }
     }
