@@ -15,7 +15,7 @@ MERGE_BASE=$(git merge-base HEAD "$MAIN_BRANCH" 2>/dev/null || git merge-base HE
 
 if [ -z "$MERGE_BASE" ]; then
   echo "[pre-push] Could not determine merge base. Running full check..."
-  ./gradlew ktlintCheck spotlessCheck detekt
+  ./gradlew spotlessCheck ktlintCheck detekt
   exit 0
 fi
 
