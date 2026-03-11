@@ -84,4 +84,4 @@ for module in "${!MODULES[@]}"; do
 done
 
 echo "[pre-push] Running: ./gradlew ${TASKS[*]}"
-./gradlew "${TASKS[@]}"
+./gradlew --continue "${TASKS[@]}"
