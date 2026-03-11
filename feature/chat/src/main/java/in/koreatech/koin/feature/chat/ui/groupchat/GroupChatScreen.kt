@@ -19,6 +19,7 @@ import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +38,8 @@ import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -48,10 +51,13 @@ fun GroupChatScreen(
     val uiState by viewModel.collectAsState()
     val lifecycleOwner = LocalLifecycleOwner.current
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    val coroutineScope = rememberCoroutineScope()
 
     val pickMultipleMedia = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(10)) { uris ->
         if (uris.isNotEmpty()) {
-            handleSelectedImages(uris, context, viewModel::uploadImage)
+            coroutineScope.launch(Dispatchers.IO) {
+                handleSelectedImages(uris, context, viewModel::uploadImage)
+            }
         }
     }
 
