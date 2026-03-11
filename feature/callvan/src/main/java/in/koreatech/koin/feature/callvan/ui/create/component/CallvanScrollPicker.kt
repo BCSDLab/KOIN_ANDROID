@@ -50,7 +50,7 @@ fun CallvanScrollPicker(
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = clampedIndex)
     val snappingLayout = rememberSnapFlingBehavior(listState)
 
-    val currentSelectedIndex by remember(density) {
+    val currentSelectedIndex by remember(density, items.size) {
         derivedStateOf {
             val itemHeightPx = with(density) { itemHeight.toPx() }
             val totalOffset = listState.firstVisibleItemIndex * itemHeightPx +
@@ -101,9 +101,11 @@ fun CallvanScrollPicker(
 @Preview(showBackground = true)
 @Composable
 private fun CallvanScrollPickerPreview() {
-    CallvanScrollPicker(
-        items = persistentListOf("1월", "2월", "3월", "4월", "5월", "6월"),
-        selectedIndex = 2,
-        onIndexChange = {}
-    )
+    RebrandKoinTheme {
+        CallvanScrollPicker(
+            items = persistentListOf("1월", "2월", "3월", "4월", "5월", "6월"),
+            selectedIndex = 2,
+            onIndexChange = {}
+        )
+    }
 }
