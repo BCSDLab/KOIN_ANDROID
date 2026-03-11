@@ -54,13 +54,20 @@ while IFS= read -r file; do
       break
       ;;
   esac
+  matched_module=""
+  matched_len=0
   for module in "${!MODULE_PATHS[@]}"; do
     dir="${MODULE_PATHS[$module]}"
     if [[ "$file" == "$dir/"* ]]; then
-      MODULES["$module"]=1
-      break
+      if (( ${`#dir`} > matched_len )); then
+        matched_module="$module"
+        matched_len=${`#dir`}
+      fi
     fi
   done
+  if [[ -n "$matched_module" ]]; then
+    MODULES["$matched_module"]=1
+  fi
 done <<< "$CHANGED_FILES"
 
 if [ "$RUN_ALL" = true ]; then
