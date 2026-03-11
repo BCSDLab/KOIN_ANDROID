@@ -117,14 +117,15 @@ private fun GroupChatScreenImpl(
     chatInputValue: String,
     uploadingImage: ImmutableList<ConvertedChatMessage>,
     showImage: Pair<Boolean, Uri>,
-    onNavigationIconClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    onNavigationIconClick: () -> Unit = {},
     onChatInputValueChange: (String) -> Unit = {},
     onImageButtonClick: () -> Unit = {},
     onSendClick: () -> Unit = {},
     onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> }
 ) {
     Scaffold(
-        modifier = Modifier.imePadding(),
+        modifier = modifier.imePadding(),
         topBar = {
             GroupChatTopBar(
                 departure = departure,
