@@ -26,4 +26,7 @@ dependencies {
     implementation(libs.coil.compose)
 
     implementation(libs.timber)
+
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.turbine)
 }

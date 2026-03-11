@@ -68,6 +68,28 @@ val koverReports = reportsDir.joinToString(",") { subproject ->
     "${subproject}/kover/report.xml"
 }
 
+val sonarCoverageExclusions = listOf(
+    "**/core/analytics/**",
+    "**/core/designsystem/**",
+    "**/core/navigation/**",
+    "**/core/network/**",
+    "**/core/notification/**",
+    "**/core/onboarding/**",
+    "**/core/webapp/**",
+    "**/firebase/**",
+    "**/di/**",
+    "**/navigation/*",
+    "**/feature/**/model/**",
+    "**/feature/**/component/**",
+    "**/ui/**/*Screen.kt",
+    "**/ui/**/*State.kt",
+    "**/ui/**/*SideEffect.kt",
+    "**/*Activity.kt",
+    "**/*RecyclerAdapter.kt",
+    "**/*RecyclerViewAdapter.kt",
+    "**/*Fragment.kt"
+).joinToString(", ")
+
 sonar {
     properties {
         property("sonar.projectKey", "BCSDLab_KOIN_ANDROID")
@@ -76,6 +98,7 @@ sonar {
         property("sonar.androidLint.reportPaths", lintReports)
         property("sonar.kotlin.detekt.reportPaths", detektReports)
         property("sonar.kotlin.ktlint.reportPaths", ktlintReports)
+        property("sonar.coverage.exclusions", sonarCoverageExclusions)
     }
 }
 
