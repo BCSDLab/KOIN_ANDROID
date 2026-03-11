@@ -70,7 +70,7 @@ if [ "$RUN_ALL" = true ]; then
 fi
 
 if [ ${#MODULES[@]} -eq 0 ]; then
-  echo "[pre-push] No Kotlin module changes detected. Skipping checks."
+  echo "[pre-push] No affected modules detected. Skipping checks."
   exit 0
 fi
 
