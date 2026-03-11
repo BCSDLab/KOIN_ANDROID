@@ -59,9 +59,9 @@ while IFS= read -r file; do
   for module in "${!MODULE_PATHS[@]}"; do
     dir="${MODULE_PATHS[$module]}"
     if [[ "$file" == "$dir/"* ]]; then
-      if (( ${`#dir`} > matched_len )); then
+      if (( ${#dir} > matched_len )); then
         matched_module="$module"
-        matched_len=${`#dir`}
+        matched_len=${#dir}
       fi
     fi
   done
