@@ -32,7 +32,6 @@ import java.util.Calendar
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
-@Suppress("LongParameterList")
 @Composable
 fun CallvanDateField(
     formattedDate: String,
@@ -119,8 +118,8 @@ private fun CallvanDatePickerCard(
     val years = persistentListOf("${currentYear}년", "${currentYear + 1}년")
     val months = (1..12).map { "${it}월" }.toPersistentList()
     val daysCount = Calendar.getInstance().apply {
-        set(Calendar.YEAR, selectedYear)
-        set(Calendar.MONTH, selectedMonth - 1)
+        clear()
+        set(selectedYear, selectedMonth - 1, 1)
     }.getActualMaximum(Calendar.DAY_OF_MONTH)
     val days = (1..daysCount).map { "${it}일" }.toPersistentList()
 
