@@ -7,6 +7,7 @@ import `in`.koreatech.convention.configureDetekt
 import `in`.koreatech.convention.configureTest
 import `in`.koreatech.convention.libs
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
+import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -35,6 +36,16 @@ internal class AndroidFeatureConventionPlugin : Plugin<Project> {
 
             extensions.configure<DetektExtension> {
                 configureDetekt(this)
+            }
+
+            extensions.configure<KoverProjectExtension> {
+                reports {
+                    filters {
+                        includes {
+                            classes("*ViewModel")
+                        }
+                    }
+                }
             }
         }
     }
