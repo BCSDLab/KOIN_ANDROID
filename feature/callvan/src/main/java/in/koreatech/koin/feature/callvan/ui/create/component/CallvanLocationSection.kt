@@ -167,15 +167,17 @@ private fun CallvanSwapButton(onClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 private fun CallvanLocationSectionPreview() {
-    CallvanLocationSection(
-        departureLocation = null,
-        arrivalLocation = null,
-        departureCustomText = null,
-        arrivalCustomText = null,
-        onDepartureClick = {},
-        onArrivalClick = {},
-        onSwap = {}
-    )
+    RebrandKoinTheme {
+        CallvanLocationSection(
+            departureLocation = null,
+            arrivalLocation = null,
+            departureCustomText = null,
+            arrivalCustomText = null,
+            onDepartureClick = {},
+            onArrivalClick = {},
+            onSwap = {}
+        )
+    }
 }
 
 @Preview(showBackground = true)
