@@ -134,7 +134,7 @@ private fun CallvanLocationItem(
 
 @Composable
 private fun CallvanSwapButton(onClick: () -> Unit) {
-    val swapButtonDescription = stringResource(R.string.swap_button)
+    val swapButtonDescription = stringResource(R.string.callvan_create_swap_button)
 
     Box(
         modifier = Modifier
@@ -181,13 +181,15 @@ private fun CallvanLocationSectionPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun CallvanLocationSectionFilledPreview() {
-    CallvanLocationSection(
-        departureLocation = CallvanLocationOption.FRONT_GATE,
-        arrivalLocation = CallvanLocationOption.TERMINAL,
-        departureCustomText = null,
-        arrivalCustomText = null,
-        onDepartureClick = {},
-        onArrivalClick = {},
-        onSwap = {}
-    )
+    RebrandKoinTheme {
+        CallvanLocationSection(
+            departureLocation = CallvanLocationOption.FRONT_GATE,
+            arrivalLocation = CallvanLocationOption.TERMINAL,
+            departureCustomText = null,
+            arrivalCustomText = null,
+            onDepartureClick = {},
+            onArrivalClick = {},
+            onSwap = {}
+        )
+    }
 }
