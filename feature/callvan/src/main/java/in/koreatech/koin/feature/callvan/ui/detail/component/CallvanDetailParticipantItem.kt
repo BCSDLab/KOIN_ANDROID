@@ -56,7 +56,7 @@ fun CallvanDetailParticipantItem(
         Spacer(modifier = Modifier.width(12.dp))
         Text(
             text = if (participant.isMe) {
-                "${participant.name} ${stringResource(R.string.callvan_detail_me_suffix)}"
+                stringResource(R.string.callvan_detail_participant_name_me, participant.name)
             } else {
                 participant.name
             },

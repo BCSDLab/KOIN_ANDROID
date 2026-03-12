@@ -97,7 +97,7 @@ fun pickMentor() {
 }
 
 fun main(args: Array<String>) {
-    val githubActor = System.getenv("GITHUB_ACTOR")
+    val githubActor = System.getenv("PR_AUTHOR")
     val developer = Developer.entries.firstOrNull { it.githubName == githubActor }
 
     pickRandomReviewer(developer)

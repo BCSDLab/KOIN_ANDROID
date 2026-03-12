@@ -23,3 +23,13 @@ dependencies {
     implementation(libs.balloon)
     implementation(libs.balloon.compose)
 }
+
+kover {
+    reports {
+        filters {
+            excludes {
+                classes("*")
+            }
+        }
+    }
+}

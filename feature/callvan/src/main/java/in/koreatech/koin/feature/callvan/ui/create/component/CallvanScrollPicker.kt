@@ -14,6 +14,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,43 +28,61 @@ import kotlin.math.roundToInt
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 
 @Suppress("LongParameterList")
 @Composable
 fun CallvanScrollPicker(
     items: ImmutableList<String>,
     selectedIndex: Int,
-    onIndexChange: (Int) -> Unit = {},
     modifier: Modifier = Modifier,
     itemHeight: Dp = 32.dp,
-    textAlign: TextAlign = TextAlign.Center
+    textAlign: TextAlign = TextAlign.Center,
+    onIndexChange: (Int) -> Unit = {}
 ) {
+    if (items.isEmpty()) {
+        Box(modifier = modifier.height(itemHeight * 3))
+        return
+    }
+
     val density = LocalDensity.current
     val clampedIndex = remember(selectedIndex, items.size) {
-        selectedIndex.coerceIn(0, (items.size - 1).coerceAtLeast(0))
+        selectedIndex.coerceIn(0, items.lastIndex)
     }
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = clampedIndex)
     val snappingLayout = rememberSnapFlingBehavior(listState)
+    val latestOnIndexChange by rememberUpdatedState(onIndexChange)
 
-    val currentSelectedIndex by remember(density) {
+    val currentSelectedIndex by remember(density, items.size, itemHeight) {
         derivedStateOf {
             val itemHeightPx = with(density) { itemHeight.toPx() }
             val totalOffset = listState.firstVisibleItemIndex * itemHeightPx +
                 listState.firstVisibleItemScrollOffset
             (totalOffset / itemHeightPx).roundToInt()
-                .coerceIn(0, (items.size - 1).coerceAtLeast(0))
+                .coerceIn(0, items.lastIndex)
         }
     }
 
     LaunchedEffect(listState) {
+        var hasScrollStarted = false
         snapshotFlow { listState.isScrollInProgress }
-            .filter { !it }
-            .collect { onIndexChange(currentSelectedIndex) }
+            .collect { isScrolling ->
+                if (isScrolling) {
+                    hasScrollStarted = true
+                } else if (hasScrollStarted) {
+                    hasScrollStarted = false
+                    latestOnIndexChange(currentSelectedIndex)
+                }
+            }
     }
 
-    LaunchedEffect(selectedIndex) {
-        if (!listState.isScrollInProgress) {
-            val target = selectedIndex.coerceIn(0, (items.size - 1).coerceAtLeast(0))
+    LaunchedEffect(selectedIndex, items.size) {
+        snapshotFlow { listState.isScrollInProgress }
+            .filter { !it }
+            .first()
+
+        val target = selectedIndex.coerceIn(0, items.lastIndex)
+        if (listState.firstVisibleItemIndex != target || listState.firstVisibleItemScrollOffset != 0) {
             listState.scrollToItem(target)
         }
     }
@@ -96,9 +115,11 @@ fun CallvanScrollPicker(
 @Preview(showBackground = true)
 @Composable
 private fun CallvanScrollPickerPreview() {
-    CallvanScrollPicker(
-        items = persistentListOf("1월", "2월", "3월", "4월", "5월", "6월"),
-        selectedIndex = 2,
-        onIndexChange = {}
-    )
+    RebrandKoinTheme {
+        CallvanScrollPicker(
+            items = persistentListOf("1월", "2월", "3월", "4월", "5월", "6월"),
+            selectedIndex = 2,
+            onIndexChange = {}
+        )
+    }
 }

@@ -1,17 +1,19 @@
 package `in`.koreatech.koin.feature.callvan.model
 
+import androidx.annotation.StringRes
+import `in`.koreatech.koin.feature.callvan.R
+
 enum class CallvanLocationOption(
-    val displayName: String,
+    @StringRes val displayNameRes: Int,
     val type: String
 ) {
-    FRONT_GATE("정문", "FRONT_GATE"),
-    BACK_GATE("후문", "BACK_GATE"),
-    CHEONAN_TERMINAL("천안터미널", "CHEONAN_TERMINAL"),
-    CHEONAN_STATION("천안역", "CHEONAN_STATION"),
-    OSONG_STATION("오송역", "OSONG_STATION"),
-    CHEONGJU_TERMINAL("청주터미널", "CHEONGJU_TERMINAL"),
-    CHEONGJU_STATION("청주역", "CHEONGJU_STATION"),
-    SEOUL_EXPRESS_TERMINAL("서울고속터미널", "SEOUL_EXPRESS_TERMINAL"),
-    DONGSEOUL_TERMINAL("동서울터미널", "DONGSEOUL_TERMINAL"),
-    OTHER("기타", "OTHER")
+    FRONT_GATE(R.string.callvan_location_front_gate, "FRONT_GATE"),
+    BACK_GATE(R.string.callvan_location_back_gate, "BACK_GATE"),
+    TENNIS_COURT(R.string.callvan_location_tennis_court, "TENNIS_COURT"),
+    DORMITORY_MAIN(R.string.callvan_location_dormitory_main, "DORMITORY_MAIN"),
+    DORMITORY_SUB(R.string.callvan_location_dormitory_sub, "DORMITORY_SUB"),
+    TERMINAL(R.string.callvan_location_terminal, "TERMINAL"),
+    STATION(R.string.callvan_location_station, "STATION"),
+    ASAN_STATION(R.string.callvan_location_asan_station, "ASAN_STATION"),
+    CUSTOM(R.string.callvan_location_custom, "CUSTOM")
 }

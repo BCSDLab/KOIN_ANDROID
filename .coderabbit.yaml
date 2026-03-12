@@ -67,6 +67,9 @@ reviews:
         3. ViewModel에서 Context 사용 금지
         4. Clean Architecture:
           - Repository 직접 접근 금지
+        5. @Composable 함수의 파라미터는 기본값이 없는 필수 파라미터, modifier, 기본값이 있는 파라미터 순서로 선언, 기본값이 없는 lambda 는 최하단에 선언해도 통과
+        6. @Preview 가 선언된 composable 함수는 private 필수
+        7. androidx.hilt:hilt-navigation-compose.hiltViewModel 가 아닌 androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel 를 사용
 
     - path: feature/**
       instructions: |
@@ -77,6 +80,9 @@ reviews:
           - data 모듈 의존 금지
           - Repository 직접 접근 금지
         5. Compose 최적화를 위해 State 클래스에 @Immutable 및 ImmutableList 사용 필수
+        6. @Composable 함수의 파라미터는 기본값이 없는 필수 파라미터, modifier, 기본값이 있는 파라미터 순서로 선언, 기본값이 없는 lambda 는 최하단에 선언해도 통과
+        7. @Preview 가 선언된 composable 함수는 private 필수
+        8. androidx.hilt:hilt-navigation-compose.hiltViewModel 가 아닌 androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel 를 사용
 
     - path: core/designsystem/**
       instructions: |
