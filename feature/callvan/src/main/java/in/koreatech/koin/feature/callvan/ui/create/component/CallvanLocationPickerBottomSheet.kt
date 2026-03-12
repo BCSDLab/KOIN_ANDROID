@@ -50,7 +50,7 @@ fun CallvanLocationPickerBottomSheet(
 ) {
     var selectedLocation by remember { mutableStateOf(initialSelection) }
     var customText by remember { mutableStateOf(initialCustomText ?: "") }
-    val isOtherSelected by remember { derivedStateOf { selectedLocation == CallvanLocationOption.OTHER } }
+    val isOtherSelected by remember { derivedStateOf { selectedLocation == CallvanLocationOption.CUSTOM } }
 
     CallvanBottomSheet(
         title = stringResource(
@@ -94,13 +94,13 @@ fun CallvanLocationPickerBottomSheet(
                                 .background(Color.Transparent)
                                 .clickable {
                                     selectedLocation = location
-                                    if (location != CallvanLocationOption.OTHER) customText = ""
+                                    if (location != CallvanLocationOption.CUSTOM) customText = ""
                                 }
                                 .padding(horizontal = 12.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = location.displayName,
+                                text = stringResource(location.displayNameRes),
                                 style = RebrandKoinTheme.typography.medium14,
                                 color = if (isSelected) {
                                     RebrandKoinTheme.colors.primary500
