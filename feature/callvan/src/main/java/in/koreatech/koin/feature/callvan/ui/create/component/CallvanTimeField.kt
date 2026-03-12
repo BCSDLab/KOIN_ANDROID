@@ -208,7 +208,7 @@ private fun CallvanTimeFieldPreview() {
 @Composable
 private fun CallvanTimeFieldPickerVisiblePreview() {
     CallvanTimeField(
-        formattedTime = "03:45",
+        formattedTime = "02:45",
         isPickerVisible = true,
         isAm = false,
         selectedHour = 2,
