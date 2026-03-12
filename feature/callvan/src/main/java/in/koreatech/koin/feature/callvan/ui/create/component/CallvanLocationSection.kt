@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,7 +23,10 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -57,7 +59,7 @@ fun CallvanLocationSection(
             modifier = Modifier
                 .weight(1f)
                 .padding(end = 31.5.dp),
-            customDisplayName = if (departureLocation == CallvanLocationOption.OTHER) departureCustomText else null,
+            customDisplayName = if (departureLocation == CallvanLocationOption.CUSTOM) departureCustomText else null,
             onClick = onDepartureClick
         )
         CallvanSwapButton(onClick = onSwap)
@@ -68,7 +70,7 @@ fun CallvanLocationSection(
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 31.5.dp),
-            customDisplayName = if (arrivalLocation == CallvanLocationOption.OTHER) arrivalCustomText else null,
+            customDisplayName = if (arrivalLocation == CallvanLocationOption.CUSTOM) arrivalCustomText else null,
             onClick = onArrivalClick
         )
     }
@@ -85,7 +87,7 @@ private fun CallvanLocationItem(
     onClick: () -> Unit = {}
 ) {
     Column(
-        modifier = modifier.height(65.dp),
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
@@ -95,16 +97,22 @@ private fun CallvanLocationItem(
             color = RebrandKoinTheme.colors.primary500
         )
         if (location != null) {
-            val displayText = customDisplayName?.takeIf { it.isNotBlank() } ?: location.displayName
-            Text(
-                text = displayText,
-                style = RebrandKoinTheme.typography.medium18,
-                color = RebrandKoinTheme.colors.neutral800,
-                textAlign = TextAlign.Center,
+            val displayText = customDisplayName?.takeIf { it.isNotBlank() } ?: stringResource(location.displayNameRes)
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable(onClick = onClick)
-            )
+                    .clickable(onClick = onClick),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = displayText,
+                    style = RebrandKoinTheme.typography.medium18,
+                    color = RebrandKoinTheme.colors.neutral800,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         } else {
             Box(
                 modifier = Modifier
@@ -126,12 +134,15 @@ private fun CallvanLocationItem(
 
 @Composable
 private fun CallvanSwapButton(onClick: () -> Unit) {
+    val swapButtonDescription = stringResource(R.string.swap_button)
+
     Box(
         modifier = Modifier
             .size(31.dp)
             .clip(CircleShape)
             .border(0.8.dp, RebrandKoinTheme.colors.neutral300, CircleShape)
             .clickable(onClick = onClick)
+            .semantics { contentDescription = swapButtonDescription }
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_tabler_arrow_left),
@@ -172,7 +183,7 @@ private fun CallvanLocationSectionPreview() {
 private fun CallvanLocationSectionFilledPreview() {
     CallvanLocationSection(
         departureLocation = CallvanLocationOption.FRONT_GATE,
-        arrivalLocation = CallvanLocationOption.CHEONAN_TERMINAL,
+        arrivalLocation = CallvanLocationOption.TERMINAL,
         departureCustomText = null,
         arrivalCustomText = null,
         onDepartureClick = {},

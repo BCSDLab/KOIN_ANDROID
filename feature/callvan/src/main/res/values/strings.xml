@@ -84,4 +84,5 @@
     <string name="callvan_location_station">천안역</string>
     <string name="callvan_location_asan_station">천안아산역</string>
     <string name="callvan_location_custom">기타</string>
+    <string name="swap_button">출발지와 도착지 변경</string>
 </resources>
