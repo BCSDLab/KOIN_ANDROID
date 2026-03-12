@@ -3,7 +3,10 @@ package `in`.koreatech.koin.feature.callvan.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
+import `in`.koreatech.koin.feature.callvan.ui.detail.CallvanDetailScreen
 import `in`.koreatech.koin.feature.callvan.ui.notification.CallvanNotificationsScreen
+import `in`.koreatech.koin.feature.callvan.ui.report.CallvanReportScreen
 
 fun NavGraphBuilder.koinCallvanGraph(
     navController: NavController
@@ -11,7 +14,14 @@ fun NavGraphBuilder.koinCallvanGraph(
     composable<CallvanNavType.CallvanMain> {
     }
 
-    composable<CallvanNavType.CallvanDetail> {
+    composable<CallvanNavType.CallvanDetail> { backStackEntry ->
+        val postId = backStackEntry.toRoute<CallvanNavType.CallvanDetail>().postId
+        CallvanDetailScreen(
+            onTopbarBackClick = { navController.popBackStack() },
+            onNotificationClick = { navController.navigate(CallvanNavType.CallvanNotifications) },
+            onEnterChatClick = { navController.navigate(CallvanNavType.CallvanChat(postId)) },
+            onReportClick = { navController.navigate(CallvanNavType.CallvanReport(postId)) }
+        )
     }
 
     composable<CallvanNavType.CallvanCreate> {
@@ -27,5 +37,8 @@ fun NavGraphBuilder.koinCallvanGraph(
     }
 
     composable<CallvanNavType.CallvanReport> {
+        CallvanReportScreen(
+            onTopbarBackClick = { navController.popBackStack() }
+        )
     }
 }

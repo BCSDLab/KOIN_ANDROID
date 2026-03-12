@@ -1,10 +1,11 @@
 name: "Pick Reviewer"
 on:
   pull_request:
-    types: [opened, ready_for_review]
+    types: [labeled]
 
 jobs:
   pick-reviewer:
+    if: github.event.label.name == 'claude:complete'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -12,7 +13,10 @@ jobs:
 
       - name: Pick reviewer
         id: pick_reviewer
-        run: kotlinc -script ./.github/scripts/pick_reviewer.kts "${{ github.event.pull_request.title }}"
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: kotlinc -script ./.github/scripts/pick_reviewer.kts "$PR_TITLE"
 
       - name: Add Reviewer
         uses: madrapps/add-reviewers@v1

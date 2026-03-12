@@ -21,7 +21,8 @@ import `in`.koreatech.koin.feature.callvan.R
 fun CallvanPersonIcon(
     isMine: Boolean,
     modifier: Modifier = Modifier,
-    tint: Color = RebrandKoinTheme.colors.primary500
+    tint: Color = RebrandKoinTheme.colors.primary500,
+    contentDescription: String? = null
 ) {
     val backgroundColor = if (isMine) tint else Color.Transparent
     val iconTint = if (isMine) KoinTheme.colors.neutral0 else tint
@@ -35,7 +36,7 @@ fun CallvanPersonIcon(
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_person),
-            contentDescription = null,
+            contentDescription = contentDescription,
             tint = iconTint
         )
     }
