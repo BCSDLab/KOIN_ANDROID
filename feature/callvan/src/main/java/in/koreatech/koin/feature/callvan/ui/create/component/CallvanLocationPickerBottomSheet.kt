@@ -31,6 +31,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -48,9 +51,20 @@ fun CallvanLocationPickerBottomSheet(
     onLocationSelected: (CallvanLocationOption, String?) -> Unit = { _, _ -> },
     onDismiss: () -> Unit = {}
 ) {
-    var selectedLocation by remember { mutableStateOf(initialSelection) }
-    var customText by remember { mutableStateOf(initialCustomText ?: "") }
+    var selectedLocation by remember(initialSelection) { mutableStateOf(initialSelection) }
+    var customText by remember(initialSelection, initialCustomText) {
+        mutableStateOf(
+            if (initialSelection == CallvanLocationOption.CUSTOM) initialCustomText.orEmpty() else ""
+        )
+    }
     val isOtherSelected by remember { derivedStateOf { selectedLocation == CallvanLocationOption.CUSTOM } }
+    val customInputDescription = stringResource(
+        if (isDeparture) {
+            R.string.callvan_create_departure_placeholder
+        } else {
+            R.string.callvan_create_arrival_placeholder
+        }
+    )
 
     CallvanBottomSheet(
         title = stringResource(
@@ -124,6 +138,9 @@ fun CallvanLocationPickerBottomSheet(
                             color = RebrandKoinTheme.colors.neutral600
                         ),
                         modifier = Modifier
+                            .semantics {
+                                contentDescription = customInputDescription
+                            }
                             .fillMaxWidth()
                             .padding(top = 4.dp)
                             .border(1.dp, RebrandKoinTheme.colors.neutral300, RebrandKoinTheme.shapes.medium)
@@ -162,5 +179,33 @@ fun CallvanLocationPickerBottomSheet(
                 )
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CallvanLocationPickerBottomSheetPreview() {
+    RebrandKoinTheme {
+        CallvanLocationPickerBottomSheet(
+            isDeparture = true,
+            initialSelection = CallvanLocationOption.FRONT_GATE,
+            initialCustomText = null,
+            onLocationSelected = { _, _ -> },
+            onDismiss = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CallvanLocationPickerBottomSheetCustomPreview() {
+    RebrandKoinTheme {
+        CallvanLocationPickerBottomSheet(
+            isDeparture = true,
+            initialSelection = CallvanLocationOption.CUSTOM,
+            initialCustomText = "test test test",
+            onLocationSelected = { _, _ -> },
+            onDismiss = {}
+        )
     }
 }
