@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.callvan.ui.create.component
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
@@ -19,6 +20,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +30,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
-import java.util.Calendar
+import java.time.Year
+import java.time.YearMonth
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
@@ -41,12 +44,17 @@ fun CallvanDateField(
     selectedDay: Int,
     modifier: Modifier = Modifier,
     onFieldClick: () -> Unit = {},
-    onYearIndexChange: (Int) -> Unit = {},
-    onMonthIndexChange: (Int) -> Unit = {},
-    onDayIndexChange: (Int) -> Unit = {},
+    onYearChange: (Int) -> Unit = {},
+    onMonthChange: (Int) -> Unit = {},
+    onDayChange: (Int) -> Unit = {},
     onReset: () -> Unit = {},
     onConfirm: () -> Unit = {}
 ) {
+    val arrowRotation by animateFloatAsState(
+        targetValue = if (isPickerVisible) 180f else 0f,
+        label = "arrowRotation"
+    )
+
     Column(modifier = modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
@@ -78,7 +86,7 @@ fun CallvanDateField(
                     tint = RebrandKoinTheme.colors.neutral800,
                     modifier = Modifier
                         .size(24.dp)
-                        .rotate(if (isPickerVisible) 180f else 0f)
+                        .rotate(arrowRotation)
                 )
             }
         }
@@ -91,9 +99,9 @@ fun CallvanDateField(
                 selectedYear = selectedYear,
                 selectedMonth = selectedMonth,
                 selectedDay = selectedDay,
-                onYearIndexChange = onYearIndexChange,
-                onMonthIndexChange = onMonthIndexChange,
-                onDayIndexChange = onDayIndexChange,
+                onYearChange = onYearChange,
+                onMonthChange = onMonthChange,
+                onDayChange = onDayChange,
                 onReset = onReset,
                 onConfirm = onConfirm
             )
@@ -108,20 +116,19 @@ private fun CallvanDatePickerCard(
     selectedMonth: Int,
     selectedDay: Int,
     modifier: Modifier = Modifier,
-    onYearIndexChange: (Int) -> Unit = {},
-    onMonthIndexChange: (Int) -> Unit = {},
-    onDayIndexChange: (Int) -> Unit = {},
+    onYearChange: (Int) -> Unit = {},
+    onMonthChange: (Int) -> Unit = {},
+    onDayChange: (Int) -> Unit = {},
     onReset: () -> Unit = {},
     onConfirm: () -> Unit = {}
 ) {
-    val currentYear = Calendar.getInstance()[Calendar.YEAR]
-    val years = persistentListOf("${currentYear}년", "${currentYear + 1}년")
+    val currentYear = remember { Year.now().value }
+    val years = remember(currentYear) { persistentListOf("${currentYear}년", "${currentYear + 1}년") }
     val months = (1..12).map { "${it}월" }.toPersistentList()
-    val daysCount = Calendar.getInstance().apply {
-        clear()
-        set(selectedYear, selectedMonth - 1, 1)
-    }.getActualMaximum(Calendar.DAY_OF_MONTH)
-    val days = (1..daysCount).map { "${it}일" }.toPersistentList()
+    val days = remember(selectedYear, selectedMonth) {
+        val daysCount = YearMonth.of(selectedYear, selectedMonth).lengthOfMonth()
+        (1..daysCount).map { "${it}일" }.toPersistentList()
+    }
 
     val yearIndex = remember(selectedYear, currentYear) {
         (selectedYear - currentYear).coerceIn(0, years.size - 1)
@@ -153,19 +160,19 @@ private fun CallvanDatePickerCard(
                 CallvanScrollPicker(
                     items = years,
                     selectedIndex = yearIndex,
-                    onIndexChange = onYearIndexChange,
+                    onIndexChange = { index -> onYearChange(currentYear + index) },
                     modifier = Modifier.weight(1f)
                 )
                 CallvanScrollPicker(
                     items = months,
                     selectedIndex = monthIndex,
-                    onIndexChange = onMonthIndexChange,
+                    onIndexChange = { index -> onMonthChange(index + 1) },
                     modifier = Modifier.weight(1f)
                 )
                 CallvanScrollPicker(
                     items = days,
                     selectedIndex = dayIndex,
-                    onIndexChange = onDayIndexChange,
+                    onIndexChange = { index -> onDayChange(index + 1) },
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -201,9 +208,9 @@ private fun CallvanDateFieldPreview() {
         selectedMonth = 3,
         selectedDay = 7,
         onFieldClick = {},
-        onYearIndexChange = {},
-        onMonthIndexChange = {},
-        onDayIndexChange = {},
+        onYearChange = {},
+        onMonthChange = {},
+        onDayChange = {},
         onReset = {},
         onConfirm = {}
     )
@@ -219,9 +226,9 @@ private fun CallvanDateFieldPickerVisiblePreview() {
         selectedMonth = 3,
         selectedDay = 7,
         onFieldClick = {},
-        onYearIndexChange = {},
-        onMonthIndexChange = {},
-        onDayIndexChange = {},
+        onYearChange = {},
+        onMonthChange = {},
+        onDayChange = {},
         onReset = {},
         onConfirm = {}
     )
