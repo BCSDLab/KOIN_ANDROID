@@ -33,7 +33,6 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
 
-@Suppress("LongParameterList")
 @Composable
 fun CallvanLocationSection(
     departureLocation: CallvanLocationOption?,
@@ -101,7 +100,10 @@ private fun CallvanLocationItem(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable(onClick = onClick),
+                    .clickable(
+                        onClickLabel = placeholder,
+                        onClick = onClick
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -118,7 +120,10 @@ private fun CallvanLocationItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(RebrandKoinTheme.colors.neutral100, RoundedCornerShape(8.dp))
-                    .clickable(onClick = onClick)
+                    .clickable(
+                        onClickLabel = placeholder,
+                        onClick = onClick
+                    )
                     .padding(horizontal = 32.dp, vertical = 8.dp),
                 contentAlignment = Alignment.Center
             ) {
@@ -141,8 +146,11 @@ private fun CallvanSwapButton(onClick: () -> Unit) {
             .size(31.dp)
             .clip(CircleShape)
             .border(0.8.dp, RebrandKoinTheme.colors.neutral300, CircleShape)
-            .clickable(onClick = onClick)
             .semantics { contentDescription = swapButtonDescription }
+            .clickable(
+                onClickLabel = swapButtonDescription,
+                onClick = onClick
+            )
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_tabler_arrow_left),
