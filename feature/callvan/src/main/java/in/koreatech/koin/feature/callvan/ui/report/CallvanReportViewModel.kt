@@ -8,6 +8,7 @@ import `in`.koreatech.koin.domain.error.callvan.KoinCallvanException
 import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
 import `in`.koreatech.koin.domain.usecase.callvan.ReportCallvanUserUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.UploadImageUseCase
+import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportErrorType
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportReason
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
@@ -82,7 +83,7 @@ class CallvanReportViewModel @Inject constructor(
             }
         }.onFailure {
             reduce { state.copy(isLoading = false) }
-            postSideEffect(CallvanReportSideEffect.ShowErrorMessage("이미지 업로드에 실패했습니다."))
+            postSideEffect(CallvanReportSideEffect.ShowErrorMessage(CallvanReportErrorType.IMAGE_UPLOAD_FAILED))
         }
     }
 
@@ -115,13 +116,13 @@ class CallvanReportViewModel @Inject constructor(
             postSideEffect(CallvanReportSideEffect.SubmitSuccess)
         }.onFailure { throwable ->
             reduce { state.copy(isLoading = false) }
-            val message = when (throwable) {
-                is KoinCallvanException.CallvanReportSelfException -> "본인을 신고할 수 없습니다."
-                is KoinCallvanException.CallvanReportAlreadyPendingException -> "이미 신고가 접수된 사용자입니다."
-                is KoinCallvanException.CallvanReportOnlyParticipantException -> "같은 콜밴 참여자만 신고할 수 있습니다."
-                else -> "신고에 실패했습니다. 다시 시도해주세요."
+            val errorType = when (throwable) {
+                is KoinCallvanException.CallvanReportSelfException -> CallvanReportErrorType.REPORT_SELF
+                is KoinCallvanException.CallvanReportAlreadyPendingException -> CallvanReportErrorType.REPORT_ALREADY_PENDING
+                is KoinCallvanException.CallvanReportOnlyParticipantException -> CallvanReportErrorType.REPORT_ONLY_PARTICIPANT
+                else -> CallvanReportErrorType.REPORT_FAILED
             }
-            postSideEffect(CallvanReportSideEffect.ShowErrorMessage(message))
+            postSideEffect(CallvanReportSideEffect.ShowErrorMessage(errorType))
         }
     }
 

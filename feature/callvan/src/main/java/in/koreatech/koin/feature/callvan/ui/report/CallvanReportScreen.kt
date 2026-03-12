@@ -28,6 +28,7 @@ import `in`.koreatech.koin.feature.callvan.ui.report.component.CALLVAN_REPORT_IM
 import `in`.koreatech.koin.feature.callvan.ui.report.component.CallvanReportFirstStepContent
 import `in`.koreatech.koin.feature.callvan.ui.report.component.CallvanReportSecondStepContent
 import `in`.koreatech.koin.feature.callvan.ui.report.component.rememberImagePickerLauncher
+import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportErrorType
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportFirstStepUiAction
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportFirstStepUiState
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportReason
@@ -53,7 +54,16 @@ fun CallvanReportScreen(
                 onTopbarBackClick()
             }
             is CallvanReportSideEffect.ShowErrorMessage -> {
-                snackbarHostState.showSnackBarWithDismiss(sideEffect.message)
+                val message = context.getString(
+                    when (sideEffect.errorType) {
+                        CallvanReportErrorType.IMAGE_UPLOAD_FAILED -> R.string.callvan_report_error_image_upload_failed
+                        CallvanReportErrorType.REPORT_SELF -> R.string.callvan_report_error_self
+                        CallvanReportErrorType.REPORT_ALREADY_PENDING -> R.string.callvan_report_error_already_pending
+                        CallvanReportErrorType.REPORT_ONLY_PARTICIPANT -> R.string.callvan_report_error_only_participant
+                        CallvanReportErrorType.REPORT_FAILED -> R.string.callvan_report_error_failed
+                    }
+                )
+                snackbarHostState.showSnackBarWithDismiss(message)
             }
         }
     }
