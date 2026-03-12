@@ -85,4 +85,7 @@
     <string name="callvan_location_station">천안역</string>
     <string name="callvan_location_asan_station">천안아산역</string>
     <string name="callvan_location_custom">기타</string>
+
+    <string name="callvan_am">오전</string>
+    <string name="callvan_pm">오후</string>
 </resources>

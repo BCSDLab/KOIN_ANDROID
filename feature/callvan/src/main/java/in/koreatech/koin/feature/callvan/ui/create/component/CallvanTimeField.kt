@@ -31,7 +31,6 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun CallvanTimeField(
-    amPmText: String,
     formattedTime: String,
     isPickerVisible: Boolean,
     isAm: Boolean,
@@ -44,6 +43,8 @@ fun CallvanTimeField(
     onReset: () -> Unit = {},
     onConfirm: () -> Unit = {}
 ) {
+    val amPmText = stringResource(if (isAm) R.string.callvan_am else R.string.callvan_pm)
+
     Column(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
@@ -113,12 +114,16 @@ private fun CallvanTimePickerCard(
     onReset: () -> Unit,
     onConfirm: () -> Unit
 ) {
-    val amPmItems = remember { listOf("AM", "PM").toImmutableList() }
+    val amLabel = stringResource(R.string.callvan_am)
+    val pmLabel = stringResource(R.string.callvan_pm)
+    val amPmItems = remember(amLabel, pmLabel) {
+        listOf(amLabel, pmLabel).toImmutableList()
+    }
     val hourItems = remember { (1..12).map { it.toString() }.toImmutableList() }
     val minuteItems = remember { (0..59).map { "%02d".format(it) }.toImmutableList() }
 
     val amPmIndex = if (isAm) 0 else 1
-    val hourIndex = if (selectedHour == 0) 11 else (selectedHour - 1).coerceIn(0, 11)
+    val hourIndex = (selectedHour - 1).coerceIn(0, 11)
     val minuteIndex = selectedMinute.coerceIn(0, 59)
 
     Card(
@@ -185,7 +190,6 @@ private fun CallvanTimePickerCard(
 @Composable
 private fun CallvanTimeFieldPreview() {
     CallvanTimeField(
-        amPmText = "오전",
         formattedTime = "09:30",
         isPickerVisible = false,
         isAm = true,
@@ -204,8 +208,7 @@ private fun CallvanTimeFieldPreview() {
 @Composable
 private fun CallvanTimeFieldPickerVisiblePreview() {
     CallvanTimeField(
-        amPmText = "오후",
-        formattedTime = "14:45",
+        formattedTime = "03:45",
         isPickerVisible = true,
         isAm = false,
         selectedHour = 2,
