@@ -28,6 +28,7 @@ import kotlin.math.roundToInt
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 
 @Suppress("LongParameterList")
 @Composable
@@ -51,7 +52,6 @@ fun CallvanScrollPicker(
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = clampedIndex)
     val snappingLayout = rememberSnapFlingBehavior(listState)
     val latestOnIndexChange by rememberUpdatedState(onIndexChange)
-    val latestSelectedIndex by rememberUpdatedState(selectedIndex)
 
     val currentSelectedIndex by remember(density, items.size, itemHeight) {
         derivedStateOf {
@@ -76,15 +76,15 @@ fun CallvanScrollPicker(
             }
     }
 
-    LaunchedEffect(listState, items.size) {
+    LaunchedEffect(selectedIndex, items.size) {
         snapshotFlow { listState.isScrollInProgress }
             .filter { !it }
-            .collect {
-                val target = latestSelectedIndex.coerceIn(0, items.lastIndex)
-                if (listState.firstVisibleItemIndex != target || listState.firstVisibleItemScrollOffset != 0) {
-                    listState.scrollToItem(target)
-                }
-            }
+            .first()
+
+        val target = selectedIndex.coerceIn(0, items.lastIndex)
+        if (listState.firstVisibleItemIndex != target || listState.firstVisibleItemScrollOffset != 0) {
+            listState.scrollToItem(target)
+        }
     }
 
     LazyColumn(
