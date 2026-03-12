@@ -29,7 +29,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -105,7 +104,6 @@ fun CallvanLocationPickerBottomSheet(
                                     shape = RoundedCornerShape(24.dp)
                                 )
                                 .clip(RoundedCornerShape(24.dp))
-                                .background(Color.Transparent)
                                 .clickable {
                                     selectedLocation = location
                                     if (location != CallvanLocationOption.CUSTOM) customText = ""
