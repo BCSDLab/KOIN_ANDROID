@@ -72,7 +72,7 @@ fun ClubDetailIntro(
 
 @Preview
 @Composable
-fun ClubDetailIntroPreview() {
+private fun ClubDetailIntroPreview() {
     ClubDetailIntro(
         introduction = "introduction",
         modifier = Modifier

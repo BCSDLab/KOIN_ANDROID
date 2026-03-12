@@ -43,6 +43,6 @@ fun LoadingDialog() {
 
 @Preview
 @Composable
-fun LoadingDialogPreview() {
+private fun LoadingDialogPreview() {
     LoadingDialog()
 }

@@ -115,7 +115,7 @@ fun CustomStepSlider(
 
 @Preview(showBackground = true)
 @Composable
-fun CustomStepSliderPreview() {
+private fun CustomStepSliderPreview() {
     Column(
         modifier = Modifier
             .fillMaxWidth()

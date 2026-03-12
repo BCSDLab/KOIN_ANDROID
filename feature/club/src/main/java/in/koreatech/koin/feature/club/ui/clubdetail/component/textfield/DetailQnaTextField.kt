@@ -129,7 +129,7 @@ fun DetailQnaTextField(
 
 @Preview
 @Composable
-fun DetailQnaTextFieldTextPreview() {
+private fun DetailQnaTextFieldTextPreview() {
     DetailQnaTextField(
         value = "답변"
     )
@@ -137,7 +137,7 @@ fun DetailQnaTextFieldTextPreview() {
 
 @Preview
 @Composable
-fun DetailQnaTextFieldHintPreview() {
+private fun DetailQnaTextFieldHintPreview() {
     DetailQnaTextField(
         value = ""
     )
@@ -145,7 +145,7 @@ fun DetailQnaTextFieldHintPreview() {
 
 @Preview
 @Composable
-fun DetailQnaTextFieldNoIconPreview() {
+private fun DetailQnaTextFieldNoIconPreview() {
     DetailQnaTextField(
         value = "",
         isSendIconVisible = false
@@ -154,7 +154,7 @@ fun DetailQnaTextFieldNoIconPreview() {
 
 @Preview
 @Composable
-fun DetailQnaTextFieldErrorPreview() {
+private fun DetailQnaTextFieldErrorPreview() {
     DetailQnaTextField(
         value = "",
         isSendIconVisible = false,

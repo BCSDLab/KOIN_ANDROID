@@ -74,7 +74,7 @@ fun QuantitySelectorSection(
 
 @Preview
 @Composable
-fun QuantitySelectorSectionPreview() {
+private fun QuantitySelectorSectionPreview() {
     QuantitySelectorSection(
         value = 1
     )

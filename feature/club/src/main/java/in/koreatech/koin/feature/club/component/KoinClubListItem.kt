@@ -111,7 +111,7 @@ fun KoinClubListItem(
 
 @Preview(showBackground = true)
 @Composable
-fun KoinClubListItemPreview() {
+private fun KoinClubListItemPreview() {
     KoinTheme {
         Box {
             KoinClubListItem(

@@ -154,7 +154,7 @@ fun DetailEventBox(
 
 @Preview(showBackground = true)
 @Composable
-fun DetailEventBoxPreview() {
+private fun DetailEventBoxPreview() {
     DetailEventBox(
         eventName = "2025년 제22회 깔끔한 행사 명 선발 대회",
         stateText = "곧 행사 진행",
@@ -166,7 +166,7 @@ fun DetailEventBoxPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun DetailEventBoxDisablePreview() {
+private fun DetailEventBoxDisablePreview() {
     DetailEventBox(
         eventName = "2025년 제22회 깔끔한 행사 명 선발 대회",
         stateText = "마감된 행사",
