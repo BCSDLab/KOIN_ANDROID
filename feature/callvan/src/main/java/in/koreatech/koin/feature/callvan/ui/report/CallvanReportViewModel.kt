@@ -29,8 +29,8 @@ class CallvanReportViewModel @Inject constructor(
         CallvanReportState()
     )
 
-    private val postId: Int = savedStateHandle["postId"] ?: 0
-    private val reportedUserId: Int = savedStateHandle["reportedUserId"] ?: 0
+    private val postId: Int = checkNotNull(savedStateHandle["postId"])
+    private val reportedUserId: Int = checkNotNull(savedStateHandle["reportedUserId"])
 
     fun onNextStep() = intent {
         if (!validateFirstStep()) return@intent
@@ -68,7 +68,7 @@ class CallvanReportViewModel @Inject constructor(
     ) = intent {
         reduce { state.copy(isLoading = true) }
         uploadImageUseCase(
-            domain = PreSignedUrlDomain.CALLVAN,
+            domain = PreSignedUrlDomain.CALLVAN_REPORT,
             contentLength = mediaSize,
             contentType = mediaType,
             fileName = mediaName,
@@ -87,6 +87,7 @@ class CallvanReportViewModel @Inject constructor(
     }
 
     fun onRemoveImage(index: Int) = intent {
+        if (index !in state.images.indices) return@intent
         reduce {
             state.copy(
                 images = state.images.toMutableList().also { it.removeAt(index) }.toPersistentList()
@@ -95,6 +96,7 @@ class CallvanReportViewModel @Inject constructor(
     }
 
     fun onSubmit() = intent {
+        if (state.isLoading) return@intent
         if (!validateSecondStep()) {
             onPreviousStep()
             return@intent
