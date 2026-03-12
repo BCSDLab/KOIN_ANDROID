@@ -23,8 +23,6 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -146,7 +144,6 @@ private fun CallvanSwapButton(onClick: () -> Unit) {
             .size(31.dp)
             .clip(CircleShape)
             .border(0.8.dp, RebrandKoinTheme.colors.neutral300, CircleShape)
-            .semantics { contentDescription = swapButtonDescription }
             .clickable(
                 onClickLabel = swapButtonDescription,
                 onClick = onClick
