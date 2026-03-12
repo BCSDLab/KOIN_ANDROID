@@ -94,7 +94,7 @@ fun QuantityOptionButton(
 
 @Composable
 @Preview
-fun QuantityOptionButtonPreview() {
+private fun QuantityOptionButtonPreview() {
     KoinTheme {
         QuantityOptionButton(
             quantity = 2,

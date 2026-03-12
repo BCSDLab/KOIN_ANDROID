@@ -52,7 +52,7 @@ fun KoinClubRecruitmentLabel(
 
 @Preview
 @Composable
-fun KoinClubRecruitmentLabelPreview() {
+private fun KoinClubRecruitmentLabelPreview() {
     KoinTheme {
         KoinClubRecruitmentLabel(
             labelType = KoinClubRecruitmentLabelType.RECRUITING

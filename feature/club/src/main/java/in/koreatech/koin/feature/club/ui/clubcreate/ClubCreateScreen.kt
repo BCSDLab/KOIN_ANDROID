@@ -644,7 +644,7 @@ fun handleSideEffect(
 
 @Preview(showBackground = true)
 @Composable
-fun ClubCreateScreenPreview() {
+private fun ClubCreateScreenPreview() {
     ClubCreateScreenImpl(
         isLoading = false,
         clubName = "Club Name",

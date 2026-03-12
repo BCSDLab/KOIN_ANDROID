@@ -127,7 +127,7 @@ fun KoinCartOptionItem(
 
 @Preview(showBackground = true)
 @Composable
-fun KoinCartOptionItemPreview() {
+private fun KoinCartOptionItemPreview() {
     RebrandKoinTheme {
         KoinCartOptionItem(
             options = listOf(

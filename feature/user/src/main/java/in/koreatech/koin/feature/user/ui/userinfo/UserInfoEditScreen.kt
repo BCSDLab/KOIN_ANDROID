@@ -752,7 +752,7 @@ fun handleSideEffect(
 
 @Preview(showBackground = true)
 @Composable
-fun UserInfoEditScreenImplPreview() {
+private fun UserInfoEditScreenImplPreview() {
     KoinTheme {
         Column {
             UserInfoHeader(stringResource(R.string.user_info_general_user_info_header))
