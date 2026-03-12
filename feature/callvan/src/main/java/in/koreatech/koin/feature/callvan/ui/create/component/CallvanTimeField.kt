@@ -29,7 +29,6 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import kotlinx.collections.immutable.toImmutableList
 
-@Suppress("LongParameterList")
 @Composable
 fun CallvanTimeField(
     amPmText: String,
@@ -143,7 +142,7 @@ private fun CallvanTimePickerCard(
                     items = amPmItems,
                     selectedIndex = amPmIndex,
                     onIndexChange = onAmPmIndexChange,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f)
                 )
                 CallvanScrollPicker(
                     items = hourItems,
