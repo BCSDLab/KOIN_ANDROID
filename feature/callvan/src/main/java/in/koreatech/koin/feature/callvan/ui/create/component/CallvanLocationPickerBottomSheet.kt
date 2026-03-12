@@ -161,7 +161,7 @@ fun CallvanLocationPickerBottomSheet(
                 ),
                 onClick = {
                     selectedLocation?.let { loc ->
-                        onLocationSelected(loc, if (isOtherSelected) customText else null)
+                        onLocationSelected(loc, if (isOtherSelected) customText.trim() else null)
                     }
                 },
                 enabled = selectedLocation != null && (!isOtherSelected || customText.isNotBlank()),
