@@ -156,7 +156,7 @@ private fun GroupChatScreenImpl(
             onImageButtonClick = onImageButtonClick,
             onSendClick = {
                 EventLogger.logCampusClickEvent(
-                    AnalyticsConstant.Label.Callvan.CALLVAN_CHAT_ENRTY,
+                    AnalyticsConstant.Label.Callvan.CALLVAN_CHAT_SEND,
                     ""
                 )
                 onSendClick()
