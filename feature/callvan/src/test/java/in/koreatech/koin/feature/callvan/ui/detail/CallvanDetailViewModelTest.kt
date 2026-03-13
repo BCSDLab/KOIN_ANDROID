@@ -146,8 +146,8 @@ class CallvanDetailViewModelTest {
         maxParticipants = 8,
         status = "OPEN",
         participants = listOf(
-            CallvanPostDetail.CallvanParticipant(userId = 2, nickname = "신짱구", isMe = false),
-            CallvanPostDetail.CallvanParticipant(userId = 1, nickname = "홍길동", isMe = true)
+            CallvanPostDetail.CallvanParticipant(userId = 2, nickname = "신짱구", isMe = false, isReported = false),
+            CallvanPostDetail.CallvanParticipant(userId = 1, nickname = "홍길동", isMe = true, isReported = false)
         )
     )
 
