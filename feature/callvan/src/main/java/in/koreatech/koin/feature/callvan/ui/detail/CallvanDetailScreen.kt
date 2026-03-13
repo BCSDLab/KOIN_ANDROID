@@ -21,7 +21,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -35,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
@@ -75,8 +75,9 @@ fun CallvanDetailScreen(
         }
     }
 
-    LaunchedEffect(Unit) {
+    LifecycleResumeEffect(Unit) {
         viewModel.fetchHasNewNotification()
+        onPauseOrDispose {}
     }
 
     CallvanDetailScreenImpl(
@@ -129,7 +130,7 @@ fun CallvanDetailScreenImpl(
                 text = stringResource(R.string.callvan_detail_enter_chat),
                 onClick = {
                     EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.Callvan.CALLVAN_CHAT_SEND,
+                        AnalyticsConstant.Label.Callvan.CALLVAN_CHAT_ENRTY,
                         ""
                     )
                     onEnterChatClick()
