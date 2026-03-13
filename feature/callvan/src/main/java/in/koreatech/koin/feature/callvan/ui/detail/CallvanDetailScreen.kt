@@ -246,6 +246,15 @@ private fun ParticipantsHeader(
     }
 }
 
+private val previewParticipants = persistentListOf(
+    CallvanDetailParticipantUiItem(id = 1, name = "홍길동", isMe = true, isReported = false),
+    CallvanDetailParticipantUiItem(id = 2, name = "신짱구", isMe = false, isReported = false),
+    CallvanDetailParticipantUiItem(id = 3, name = "김철수", isMe = false, isReported = false),
+    CallvanDetailParticipantUiItem(id = 4, name = "한유리", isMe = false, isReported = false),
+    CallvanDetailParticipantUiItem(id = 5, name = "이훈이", isMe = false, isReported = true),
+    CallvanDetailParticipantUiItem(id = 6, name = "맹구", isMe = false, isReported = false)
+)
+
 @Preview(showBackground = true)
 @Composable
 private fun CallvanDetailScreenPreview() {
@@ -255,14 +264,7 @@ private fun CallvanDetailScreenPreview() {
         dateTime = "02.05 (월) 14:00",
         currentParticipants = 6,
         maxParticipants = 8,
-        participants = persistentListOf(
-            CallvanDetailParticipantUiItem(id = 1, name = "홍길동", isMe = true, isReported = false),
-            CallvanDetailParticipantUiItem(id = 2, name = "신짱구", isMe = false, isReported = false),
-            CallvanDetailParticipantUiItem(id = 3, name = "김철수", isMe = false, isReported = false),
-            CallvanDetailParticipantUiItem(id = 4, name = "한유리", isMe = false, isReported = true),
-            CallvanDetailParticipantUiItem(id = 5, name = "이훈이", isMe = false, isReported = false),
-            CallvanDetailParticipantUiItem(id = 6, name = "맹구", isMe = false, isReported = false)
-        )
+        participants = previewParticipants
     )
 }
 
@@ -276,13 +278,6 @@ private fun CallvanDetailScreenNotificationPreview() {
         currentParticipants = 6,
         maxParticipants = 8,
         hasNewNotification = true,
-        participants = persistentListOf(
-            CallvanDetailParticipantUiItem(id = 1, name = "홍길동", isMe = true, isReported = false),
-            CallvanDetailParticipantUiItem(id = 2, name = "신짱구", isMe = false, isReported = false),
-            CallvanDetailParticipantUiItem(id = 3, name = "김철수", isMe = false, isReported = false),
-            CallvanDetailParticipantUiItem(id = 4, name = "한유리", isMe = false, isReported = true),
-            CallvanDetailParticipantUiItem(id = 5, name = "이훈이", isMe = false, isReported = false),
-            CallvanDetailParticipantUiItem(id = 6, name = "맹구", isMe = false, isReported = false)
-        )
+        participants = previewParticipants
     )
 }
