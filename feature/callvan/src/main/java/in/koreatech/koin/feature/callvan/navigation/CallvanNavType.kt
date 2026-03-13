@@ -20,5 +20,5 @@ sealed class CallvanNavType {
     data object CallvanNotifications : CallvanNavType()
 
     @Serializable
-    data class CallvanReport(val postId: Int) : CallvanNavType()
+    data class CallvanReport(val postId: Int, val reportedUserId: Int) : CallvanNavType()
 }
