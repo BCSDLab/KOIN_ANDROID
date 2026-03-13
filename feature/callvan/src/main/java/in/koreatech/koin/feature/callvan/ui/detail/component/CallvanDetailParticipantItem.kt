@@ -71,7 +71,7 @@ fun CallvanDetailParticipantItem(
                 color = RebrandKoinTheme.colors.primary500
             )
         }
-        Spacer(modifier.weight(1f))
+        Spacer(Modifier.weight(1f))
         if (!participant.isMe) {
             Box {
                 IconButton(

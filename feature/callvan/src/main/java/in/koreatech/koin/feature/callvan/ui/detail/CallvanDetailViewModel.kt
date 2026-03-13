@@ -68,7 +68,7 @@ class CallvanDetailViewModel @Inject constructor(
             }
     }
 
-    fun fetchHasNewNotification() = intent {
+    internal fun fetchHasNewNotification() = intent {
         getNotificationsUseCase()
             .onSuccess { notifications ->
                 reduce {
