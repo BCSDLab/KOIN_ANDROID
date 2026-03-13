@@ -130,7 +130,7 @@ fun CallvanDetailScreenImpl(
                 text = stringResource(R.string.callvan_detail_enter_chat),
                 onClick = {
                     EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.Callvan.CALLVAN_CHAT_ENRTY,
+                        AnalyticsConstant.Label.Callvan.CALLVAN_CHAT_ENTRY,
                         ""
                     )
                     onEnterChatClick()
