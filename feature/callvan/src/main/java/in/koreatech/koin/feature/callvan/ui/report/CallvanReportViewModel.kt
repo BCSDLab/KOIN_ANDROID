@@ -113,6 +113,7 @@ class CallvanReportViewModel @Inject constructor(
             reasons = reasons,
             attachmentUrls = state.images.takeIf { it.isNotEmpty() }
         ).onSuccess {
+            reduce { state.copy(isLoading = false) }
             postSideEffect(CallvanReportSideEffect.SubmitSuccess)
         }.onFailure { throwable ->
             reduce { state.copy(isLoading = false) }
