@@ -11,6 +11,7 @@ import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
@@ -25,11 +26,26 @@ class CallvanDetailViewModel @Inject constructor(
         CallvanDetailState()
     )
 
-    private val postId: Int = checkNotNull(savedStateHandle["postId"])
+    private val postId: Int = checkNotNull(savedStateHandle[KEY_POST_ID])
 
     init {
         fetchPostDetail()
         fetchHasNewNotification()
+        observeReportSuccess(savedStateHandle)
+    }
+
+    private fun observeReportSuccess(savedStateHandle: SavedStateHandle) = intent {
+        savedStateHandle.getStateFlow(KEY_REPORT_SUCCESS, false).collect { success ->
+            if (success) {
+                postSideEffect(CallvanDetailSideEffect.ShowReportSuccess)
+                savedStateHandle[KEY_REPORT_SUCCESS] = false
+            }
+        }
+    }
+
+    companion object {
+        private const val KEY_POST_ID = "postId"
+        const val KEY_REPORT_SUCCESS = "reportSuccess"
     }
 
     private fun fetchPostDetail() = intent {

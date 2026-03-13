@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import `in`.koreatech.koin.feature.callvan.ui.detail.CallvanDetailScreen
+import `in`.koreatech.koin.feature.callvan.ui.detail.CallvanDetailViewModel
 import `in`.koreatech.koin.feature.callvan.ui.notification.CallvanNotificationsScreen
 import `in`.koreatech.koin.feature.callvan.ui.report.CallvanReportScreen
 
@@ -40,7 +41,11 @@ fun NavGraphBuilder.koinCallvanGraph(
 
     composable<CallvanNavType.CallvanReport> {
         CallvanReportScreen(
-            onTopbarBackClick = { navController.popBackStack() }
+            onTopbarBackClick = { navController.popBackStack() },
+            onSubmitSuccess = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(CallvanDetailViewModel.KEY_REPORT_SUCCESS, true)
+                navController.popBackStack()
+            }
         )
     }
 }

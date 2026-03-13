@@ -15,6 +15,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,12 +23,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
+import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
+import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -41,6 +45,7 @@ import `in`.koreatech.koin.feature.callvan.ui.detail.model.CallvanDetailParticip
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun CallvanDetailScreen(
@@ -51,6 +56,16 @@ fun CallvanDetailScreen(
     onReportClick: (userId: Int) -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            is CallvanDetailSideEffect.ShowReportSuccess -> {
+                snackbarHostState.showSnackBarWithDismiss(context.getString(R.string.callvan_report_submit_success))
+            }
+        }
+    }
 
     CallvanDetailScreenImpl(
         departure = state.departure,
@@ -59,6 +74,7 @@ fun CallvanDetailScreen(
         currentParticipants = state.currentParticipants,
         maxParticipants = state.maxParticipants,
         participants = state.participants,
+        snackbarHostState = snackbarHostState,
         onTopbarBackClick = onTopbarBackClick,
         onNotificationClick = onNotificationClick,
         onEnterChatClick = onEnterChatClick,
@@ -76,6 +92,7 @@ fun CallvanDetailScreenImpl(
     maxParticipants: Int,
     participants: ImmutableList<CallvanDetailParticipantUiItem>,
     hasNewNotification: Boolean = false,
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     onTopbarBackClick: () -> Unit = {},
     onNotificationClick: () -> Unit = {},
     onEnterChatClick: () -> Unit = {},
@@ -102,6 +119,12 @@ fun CallvanDetailScreenImpl(
                     .padding(horizontal = 24.dp, vertical = 16.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = RebrandKoinTheme.colors.primary500),
                 shape = KoinTheme.shapes.small
+            )
+        },
+        snackbarHost = {
+            CustomSnackBarHost(
+                hotState = snackbarHostState,
+                background = RebrandKoinTheme.colors.primary700.copy(alpha = 0.8f)
             )
         },
         containerColor = KoinTheme.colors.neutral0
