@@ -181,6 +181,14 @@ object AnalyticsConstant {
             const val DINING_AB_TEST_DESIGN_A = "design_A"
             const val DINING_AB_TEST_DESIGN_B = "design_B"
         }
+
+        object Callvan {
+            const val MAIN_CALLVAN_VIEW = "main_callvan_view"
+            const val MAIN_CALLVAN_WRITE = "main_callvan_write"
+            const val CALLVAN_HAMBURGER = "hamburger"
+            const val CALLVAN_CHAT_SEND = "callvan_chat_send"
+            const val CALLVAN_CHAT_ENRTY = "callvan_chat_entry"
+        }
     }
 
     const val PREVIOUS_PAGE = "previous_page"
