@@ -30,15 +30,17 @@ internal fun rememberImagePickerLauncher(
         }
     }
 
-    return {
-        if (remaining == 1) {
-            singleImagePickerLauncher.launch(
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-            )
-        } else if (remaining > 1) {
-            multipleImagePickerLauncher.launch(
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-            )
+    return remember(remaining) {
+        {
+            if (remaining == 1) {
+                singleImagePickerLauncher.launch(
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                )
+            } else if (remaining > 1) {
+                multipleImagePickerLauncher.launch(
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                )
+            }
         }
     }
 }

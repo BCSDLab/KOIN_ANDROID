@@ -19,6 +19,7 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
+@Suppress("TooManyFunctions")
 @HiltViewModel
 class CallvanReportViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
@@ -30,8 +31,8 @@ class CallvanReportViewModel @Inject constructor(
         CallvanReportState()
     )
 
-    private val postId: Int = checkNotNull(savedStateHandle["postId"])
-    private val reportedUserId: Int = checkNotNull(savedStateHandle["reportedUserId"])
+    private val postId: Int = checkNotNull(savedStateHandle[KEY_POST_ID])
+    private val reportedUserId: Int = checkNotNull(savedStateHandle[KEY_REPORTED_USER_ID])
 
     fun onNextStep() = intent {
         if (!validateFirstStep()) return@intent
@@ -61,13 +62,16 @@ class CallvanReportViewModel @Inject constructor(
         reduce { state.copy(detail = text) }
     }
 
+    fun setLoading(isLoading: Boolean) = intent {
+        reduce { state.copy(isLoading = isLoading) }
+    }
+
     fun uploadImage(
         mediaName: String,
         mediaType: String,
         mediaSize: Long,
         imageUri: Uri
     ) = intent {
-        reduce { state.copy(isLoading = true) }
         uploadImageUseCase(
             domain = PreSignedUrlDomain.CALLVAN_REPORT,
             contentLength = mediaSize,
@@ -76,13 +80,9 @@ class CallvanReportViewModel @Inject constructor(
             imageUri = imageUri.toString()
         ).onSuccess { uploadedUrl ->
             reduce {
-                state.copy(
-                    images = state.images.toPersistentList().add(uploadedUrl),
-                    isLoading = false
-                )
+                state.copy(images = state.images.toPersistentList().add(uploadedUrl))
             }
         }.onFailure {
-            reduce { state.copy(isLoading = false) }
             postSideEffect(CallvanReportSideEffect.ShowErrorMessage(CallvanReportErrorType.IMAGE_UPLOAD_FAILED))
         }
     }
@@ -141,5 +141,7 @@ class CallvanReportViewModel @Inject constructor(
 
     companion object {
         const val TOTAL_STEPS = 2
+        private const val KEY_POST_ID = "postId"
+        private const val KEY_REPORTED_USER_ID = "reportedUserId"
     }
 }

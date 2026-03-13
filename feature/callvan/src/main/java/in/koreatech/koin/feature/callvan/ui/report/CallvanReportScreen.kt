@@ -1,21 +1,28 @@
 package `in`.koreatech.koin.feature.callvan.ui.report
 
 import android.provider.OpenableColumns
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
@@ -35,23 +42,27 @@ import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportReason
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportSecondStepUiAction
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportSecondStepUiState
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun CallvanReportScreen(
     viewModel: CallvanReportViewModel = hiltViewModel(),
-    onTopbarBackClick: () -> Unit = {}
+    onTopbarBackClick: () -> Unit = {},
+    onSubmitSuccess: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             is CallvanReportSideEffect.SubmitSuccess -> {
-                snackbarHostState.showSnackBarWithDismiss(context.getString(R.string.callvan_report_submit_success))
-                onTopbarBackClick()
+                onSubmitSuccess()
             }
             is CallvanReportSideEffect.ShowErrorMessage -> {
                 val message = context.getString(
@@ -72,22 +83,30 @@ fun CallvanReportScreen(
         currentImageCount = state.images.size,
         maxImageCount = CALLVAN_REPORT_IMAGE_MAX_COUNT,
         onImagesSelected = { uris ->
-            uris.forEach { uri ->
-                val cursor = context.contentResolver.query(uri, null, null, null, null)
-                cursor?.use {
-                    if (it.moveToFirst()) {
-                        val fileNameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                        val fileSizeIndex = it.getColumnIndex(OpenableColumns.SIZE)
-                        if (fileNameIndex != -1 && fileSizeIndex != -1) {
-                            val fileName = it.getString(fileNameIndex)
-                            val fileSize = it.getLong(fileSizeIndex)
-                            val fileType = context.contentResolver.getType(uri)
-                            if (fileType?.startsWith("image/") == true) {
-                                viewModel.uploadImage(fileName, fileType, fileSize, uri)
+            viewModel.setLoading(true)
+            coroutineScope.launch {
+                withContext(Dispatchers.IO) {
+                    uris.forEach { uri ->
+                        val cursor = context.contentResolver.query(uri, null, null, null, null)
+                        cursor?.use {
+                            if (it.moveToFirst()) {
+                                val fileNameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                                val fileSizeIndex = it.getColumnIndex(OpenableColumns.SIZE)
+                                if (fileNameIndex != -1 && fileSizeIndex != -1) {
+                                    val fileName = it.getString(fileNameIndex)
+                                    val fileSize = it.getLong(fileSizeIndex)
+                                    val fileType = context.contentResolver.getType(uri)
+                                    if (fileType?.startsWith("image/") == true) {
+                                        withContext(Dispatchers.Main) {
+                                            viewModel.uploadImage(fileName, fileType, fileSize, uri)
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
+                viewModel.setLoading(false)
             }
         }
     )
@@ -121,6 +140,7 @@ fun CallvanReportScreen(
         snackbarHostState = snackbarHostState,
         step = state.step,
         isLastStep = state.step == CallvanReportViewModel.TOTAL_STEPS,
+        isLoading = state.isLoading,
         onTopbarBackClick = onTopbarBackClick,
         onPreviousClick = viewModel::onPreviousStep,
         onNextClick = viewModel::onNextStep,
@@ -132,6 +152,7 @@ fun CallvanReportScreen(
 private fun CallvanReportScreenImpl(
     step: Int = 1,
     isLastStep: Boolean = false,
+    isLoading: Boolean = false,
     firstStepState: CallvanReportFirstStepUiState = CallvanReportFirstStepUiState(),
     firstStepAction: CallvanReportFirstStepUiAction = CallvanReportFirstStepUiAction(),
     secondStepState: CallvanReportSecondStepUiState = CallvanReportSecondStepUiState(),
@@ -175,29 +196,42 @@ private fun CallvanReportScreenImpl(
         },
         containerColor = KoinTheme.colors.neutral0
     ) { contentPadding ->
-        when (step) {
-            1 -> CallvanReportFirstStepContent(
-                selectedReasons = firstStepState.selectedReasons,
-                onSelectedReasonChange = firstStepAction.onSelectedReasonChange,
-                otherReason = firstStepState.otherReason,
-                onOtherReasonChange = firstStepAction.onOtherReasonChange,
-                isOtherReasonError = firstStepState.isOtherReasonError,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(contentPadding)
-                    .imePadding()
-            )
-            2 -> CallvanReportSecondStepContent(
-                detail = secondStepState.detail,
-                onDetailChange = secondStepAction.onDetailChange,
-                images = secondStepState.images,
-                onAddImageClick = secondStepAction.onAddImageClick,
-                onRemoveImage = secondStepAction.onRemoveImage,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(contentPadding)
-                    .imePadding()
-            )
+        Box(modifier = Modifier.fillMaxSize()) {
+            when (step) {
+                1 -> CallvanReportFirstStepContent(
+                    selectedReasons = firstStepState.selectedReasons,
+                    onSelectedReasonChange = firstStepAction.onSelectedReasonChange,
+                    otherReason = firstStepState.otherReason,
+                    onOtherReasonChange = firstStepAction.onOtherReasonChange,
+                    isOtherReasonError = firstStepState.isOtherReasonError,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(contentPadding)
+                        .imePadding()
+                )
+                2 -> CallvanReportSecondStepContent(
+                    detail = secondStepState.detail,
+                    onDetailChange = secondStepAction.onDetailChange,
+                    images = secondStepState.images,
+                    onAddImageClick = secondStepAction.onAddImageClick,
+                    onRemoveImage = secondStepAction.onRemoveImage,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(contentPadding)
+                        .imePadding()
+                )
+            }
+            if (isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.White.copy(alpha = 0.6f))
+                        .zIndex(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = RebrandKoinTheme.colors.primary500)
+                }
+            }
         }
     }
 }
