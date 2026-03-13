@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.core.onboarding)
     implementation(projects.core.designsystem)
     implementation(projects.core.analytics)
+    implementation(projects.core.navigation)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
