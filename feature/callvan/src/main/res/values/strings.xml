@@ -27,6 +27,7 @@
     <string name="callvan_detail_destination">도착: %1$s</string>
     <string name="callvan_detail_me_suffix">(나)</string>
     <string name="callvan_detail_participant_name_me">%1$s (나)</string>
+    <string name="callvan_detail_participant_reported">(신고됨)</string>
     <string name="callvan_detail_enter_chat">단체 채팅방 입장</string>
     <string name="callvan_detail_participant_report">신고하기</string>
 

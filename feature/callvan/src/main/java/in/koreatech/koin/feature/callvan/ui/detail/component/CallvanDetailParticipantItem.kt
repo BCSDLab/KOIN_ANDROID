@@ -61,9 +61,17 @@ fun CallvanDetailParticipantItem(
                 participant.name
             },
             style = KoinTheme.typography.medium16,
-            color = KoinTheme.colors.neutral800,
-            modifier = Modifier.weight(1f)
+            color = KoinTheme.colors.neutral800
         )
+        if (participant.isReported) {
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = stringResource(R.string.callvan_detail_participant_reported),
+                style = KoinTheme.typography.regular10,
+                color = RebrandKoinTheme.colors.primary500
+            )
+        }
+        Spacer(modifier.weight(1f))
         if (!participant.isMe) {
             Box {
                 IconButton(
@@ -94,7 +102,22 @@ private fun CallvanDetailParticipantItemPreview() {
         participant = CallvanDetailParticipantUiItem(
             id = 1,
             name = "홍길동",
-            isMe = false
+            isMe = false,
+            isReported = false
+        ),
+        menuItems = persistentListOf()
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CallvanDetailParticipantItemIsReportedPreview() {
+    CallvanDetailParticipantItem(
+        participant = CallvanDetailParticipantUiItem(
+            id = 1,
+            name = "홍길동",
+            isMe = false,
+            isReported = true
         ),
         menuItems = persistentListOf()
     )
@@ -107,7 +130,8 @@ private fun CallvanDetailParticipantItemIsMinePreview() {
         participant = CallvanDetailParticipantUiItem(
             id = 1,
             name = "홍길동",
-            isMe = true
+            isMe = true,
+            isReported = false
         ),
         menuItems = persistentListOf()
     )
