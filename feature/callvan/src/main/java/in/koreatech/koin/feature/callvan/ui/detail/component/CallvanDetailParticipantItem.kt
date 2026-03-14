@@ -23,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanDropdownMenu
@@ -60,14 +59,14 @@ fun CallvanDetailParticipantItem(
             } else {
                 participant.name
             },
-            style = KoinTheme.typography.medium16,
-            color = KoinTheme.colors.neutral800
+            style = RebrandKoinTheme.typography.medium16,
+            color = RebrandKoinTheme.colors.neutral800
         )
         if (participant.isReported) {
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = stringResource(R.string.callvan_detail_participant_reported),
-                style = KoinTheme.typography.regular10,
+                style = RebrandKoinTheme.typography.regular10,
                 color = RebrandKoinTheme.colors.primary500
             )
         }
@@ -81,7 +80,7 @@ fun CallvanDetailParticipantItem(
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_menu_small),
                         contentDescription = null,
-                        tint = KoinTheme.colors.neutral600
+                        tint = RebrandKoinTheme.colors.neutral600
                     )
                 }
                 CallvanDropdownMenu(
