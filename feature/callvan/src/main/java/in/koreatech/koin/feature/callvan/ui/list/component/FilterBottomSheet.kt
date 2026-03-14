@@ -41,6 +41,8 @@ import `in`.koreatech.koin.feature.callvan.enums.CallvanFilterType.DeparturesFil
 import `in`.koreatech.koin.feature.callvan.enums.CallvanFilterType.SortType
 import `in`.koreatech.koin.feature.callvan.enums.CallvanFilterType.StatusesType
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanBottomSheet
+import `in`.koreatech.koin.feature.callvan.ui.list.FilterBottomSheetActions
+import `in`.koreatech.koin.feature.callvan.ui.list.FilterBottomSheetState
 import kotlin.collections.map
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -67,69 +69,65 @@ fun FilterBottomSheet(
         showCloseButton = true
     ) {
         FilterBottomSheetContent(
-            selectedSortType = selectedSortType,
-            selectedStatusesType = selectedStatusesType,
-            selectedDeparturesType = selectedDeparturesType,
-            selectedArrivalsType = selectedArrivalsType,
-            onSortTypeChange = { selectedSortType = it as SortType },
-            onStatusesTypeChange = { selectedStatusesType = it as StatusesType },
-            onArrivalsTypeChange = {
-                val newSelected = it.map { type -> type as ArrivalsFilterType }
-                selectedArrivalsType = if (
-                    selectedArrivalsType.size == 1 &&
-                    selectedArrivalsType.first() == ArrivalsFilterType.All
-                ) {
-                    (newSelected - ArrivalsFilterType.All).toPersistentList()
-                } else if (ArrivalsFilterType.All in newSelected) {
-                    persistentListOf(ArrivalsFilterType.All)
-                } else {
-                    newSelected.toPersistentList()
+            state = FilterBottomSheetState(
+                selectedSortType = selectedSortType,
+                selectedStatusesType = selectedStatusesType,
+                selectedDeparturesType = selectedDeparturesType,
+                selectedArrivalsType = selectedArrivalsType
+            ),
+            actions = FilterBottomSheetActions(
+                onSortTypeChange = { selectedSortType = it as SortType },
+                onStatusesTypeChange = { selectedStatusesType = it as StatusesType },
+                onArrivalsTypeChange = {
+                    val newSelected = it.map { type -> type as ArrivalsFilterType }
+                    selectedArrivalsType = if (
+                        selectedArrivalsType.size == 1 &&
+                        selectedArrivalsType.first() == ArrivalsFilterType.All
+                    ) {
+                        (newSelected - ArrivalsFilterType.All).toPersistentList()
+                    } else if (ArrivalsFilterType.All in newSelected) {
+                        persistentListOf(ArrivalsFilterType.All)
+                    } else {
+                        newSelected.toPersistentList()
+                    }
+                },
+                onDeparturesTypeChange = {
+                    val newSelected = it.map { type -> type as DeparturesFilterType }
+                    selectedDeparturesType = if (
+                        selectedDeparturesType.size == 1 &&
+                        selectedDeparturesType.first() == DeparturesFilterType.All
+                    ) {
+                        (newSelected - DeparturesFilterType.All).toPersistentList()
+                    } else if (DeparturesFilterType.All in newSelected) {
+                        persistentListOf(DeparturesFilterType.All)
+                    } else {
+                        newSelected.toPersistentList()
+                    }
+                },
+                onReset = {
+                    selectedSortType = SortType.LatestDesc
+                    selectedStatusesType = StatusesType.All
+                    selectedDeparturesType = persistentListOf(DeparturesFilterType.All)
+                    selectedArrivalsType = persistentListOf(ArrivalsFilterType.All)
+                },
+                onApplyClick = {
+                    onApply(
+                        selectedSortType,
+                        selectedStatusesType,
+                        selectedDeparturesType,
+                        selectedArrivalsType
+                    )
+                    onDismissRequest()
                 }
-            },
-            onDeparturesTypeChange = {
-                val newSelected = it.map { type -> type as DeparturesFilterType }
-                selectedDeparturesType = if (
-                    selectedDeparturesType.size == 1 &&
-                    selectedDeparturesType.first() == DeparturesFilterType.All
-                ) {
-                    (newSelected - DeparturesFilterType.All).toPersistentList()
-                } else if (DeparturesFilterType.All in newSelected) {
-                    persistentListOf(DeparturesFilterType.All)
-                } else {
-                    newSelected.toPersistentList()
-                }
-            },
-            onReset = {
-                selectedSortType = SortType.LatestDesc
-                selectedStatusesType = StatusesType.All
-                selectedDeparturesType = persistentListOf(DeparturesFilterType.All)
-                selectedArrivalsType = persistentListOf(ArrivalsFilterType.All)
-            },
-            onApplyClick = {
-                onApply(
-                    selectedSortType,
-                    selectedStatusesType,
-                    selectedDeparturesType,
-                    selectedArrivalsType
-                )
-                onDismissRequest()
-            }
+            )
         )
     }
 }
 
 @Composable
 fun FilterBottomSheetContent(
-    selectedSortType: SortType,
-    selectedStatusesType: StatusesType,
-    selectedDeparturesType: ImmutableList<DeparturesFilterType>,
-    selectedArrivalsType: ImmutableList<ArrivalsFilterType>,
-    onSortTypeChange: (CallvanFilterType) -> Unit,
-    onStatusesTypeChange: (CallvanFilterType) -> Unit,
-    onDeparturesTypeChange: (ImmutableList<CallvanFilterType>) -> Unit,
-    onArrivalsTypeChange: (ImmutableList<CallvanFilterType>) -> Unit,
-    onReset: () -> Unit,
-    onApplyClick: () -> Unit
+    state: FilterBottomSheetState,
+    actions: FilterBottomSheetActions
 ) {
     Column(
         modifier = Modifier
@@ -151,8 +149,8 @@ fun FilterBottomSheetContent(
                     SortType.DepartureDesc,
                     SortType.DepartureAsc
                 ),
-                selectedItem = selectedSortType,
-                onItemSelected = onSortTypeChange
+                selectedItem = state.selectedSortType,
+                onItemSelected = actions.onSortTypeChange
             )
             HorizontalDivider(color = KoinTheme.colors.neutral300)
             FilterSection(
@@ -163,8 +161,8 @@ fun FilterBottomSheetContent(
                     StatusesType.Closed,
                     StatusesType.Completed
                 ),
-                selectedItem = selectedStatusesType,
-                onItemSelected = onStatusesTypeChange
+                selectedItem = state.selectedStatusesType,
+                onItemSelected = actions.onStatusesTypeChange
             )
             HorizontalDivider(color = KoinTheme.colors.neutral300)
             FilterDuplicateSection(
@@ -176,8 +174,8 @@ fun FilterBottomSheetContent(
                     DeparturesFilterType.Terminal, DeparturesFilterType.Station,
                     DeparturesFilterType.AsanStation
                 ),
-                selectedItems = selectedDeparturesType,
-                onItemSelected = onDeparturesTypeChange
+                selectedItems = state.selectedDeparturesType,
+                onItemSelected = actions.onDeparturesTypeChange
             )
             HorizontalDivider(color = KoinTheme.colors.neutral300)
             FilterDuplicateSection(
@@ -189,8 +187,8 @@ fun FilterBottomSheetContent(
                     ArrivalsFilterType.Terminal, ArrivalsFilterType.Station,
                     ArrivalsFilterType.AsanStation
                 ),
-                selectedItems = selectedArrivalsType,
-                onItemSelected = onArrivalsTypeChange
+                selectedItems = state.selectedArrivalsType,
+                onItemSelected = actions.onArrivalsTypeChange
             )
             HorizontalDivider(color = KoinTheme.colors.neutral300)
         }
@@ -202,7 +200,7 @@ fun FilterBottomSheetContent(
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             OutlinedButton(
-                onClick = onReset,
+                onClick = actions.onReset,
                 shape = KoinTheme.shapes.medium,
                 border = BorderStroke(1.dp, KoinTheme.colors.neutral300),
                 modifier = Modifier.weight(1f).height(48.dp),
@@ -222,7 +220,7 @@ fun FilterBottomSheetContent(
                 )
             }
             Button(
-                onClick = onApplyClick,
+                onClick = actions.onApplyClick,
                 shape = KoinTheme.shapes.medium,
                 colors = ButtonDefaults.buttonColors(containerColor = RebrandKoinTheme.colors.primary500),
                 modifier = Modifier.weight(2f).height(48.dp)
@@ -322,16 +320,20 @@ fun FilterDuplicateSection(
 private fun FilterBottomSheetContentPreview() {
     RebrandKoinTheme {
         FilterBottomSheetContent(
-            selectedSortType = SortType.LatestDesc,
-            selectedStatusesType = StatusesType.All,
-            selectedDeparturesType = persistentListOf(DeparturesFilterType.All),
-            selectedArrivalsType = persistentListOf(ArrivalsFilterType.All),
-            onSortTypeChange = {},
-            onStatusesTypeChange = {},
-            onDeparturesTypeChange = {},
-            onArrivalsTypeChange = {},
-            onReset = {},
-            onApplyClick = {}
+            state = FilterBottomSheetState(
+                selectedSortType = SortType.LatestDesc,
+                selectedStatusesType = StatusesType.All,
+                selectedDeparturesType = persistentListOf(DeparturesFilterType.All),
+                selectedArrivalsType = persistentListOf(ArrivalsFilterType.All)
+            ),
+            actions = FilterBottomSheetActions(
+                onSortTypeChange = {},
+                onStatusesTypeChange = {},
+                onDeparturesTypeChange = {},
+                onArrivalsTypeChange = {},
+                onReset = {},
+                onApplyClick = {}
+            )
         )
     }
 }
