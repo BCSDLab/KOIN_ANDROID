@@ -9,6 +9,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -27,7 +29,9 @@ fun FilterBottomSheetItem(
             color = if (isSelected) RebrandKoinTheme.colors.primary500 else KoinTheme.colors.neutral300
         ),
         color = KoinTheme.colors.neutral0,
-        modifier = Modifier.padding(end = 8.dp)
+        modifier = Modifier
+            .padding(end = 8.dp)
+            .semantics { selected = isSelected }
     ) {
         Box(
             contentAlignment = Alignment.Center,

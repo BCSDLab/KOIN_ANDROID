@@ -8,16 +8,16 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 sealed class CallvanFilterType(
     @StringRes open val stringRes: Int,
-    open val value: String
+    open val value: String?
 ) : Parcelable {
 
     @Parcelize
     sealed class DeparturesFilterType(
         @StringRes override val stringRes: Int,
-        override val value: String
+        override val value: String?
     ) : CallvanFilterType(stringRes, value) {
         @Parcelize
-        object All : DeparturesFilterType(R.string.filter_list_all, "ALL")
+        object All : DeparturesFilterType(R.string.filter_list_all, null)
 
         @Parcelize
         object FrontGate : DeparturesFilterType(R.string.filter_list_front_gate, "FRONT_GATE")
@@ -47,10 +47,10 @@ sealed class CallvanFilterType(
     @Parcelize
     sealed class ArrivalsFilterType(
         @StringRes override val stringRes: Int,
-        override val value: String
+        override val value: String?
     ) : CallvanFilterType(stringRes, value) {
         @Parcelize
-        object All : ArrivalsFilterType(R.string.filter_list_all, "ALL")
+        object All : ArrivalsFilterType(R.string.filter_list_all, null)
 
         @Parcelize
         object FrontGate : ArrivalsFilterType(R.string.filter_list_front_gate, "FRONT_GATE")
@@ -80,10 +80,10 @@ sealed class CallvanFilterType(
     @Parcelize
     sealed class StatusesType(
         @StringRes override val stringRes: Int,
-        override val value: String
+        override val value: String?
     ) : CallvanFilterType(stringRes, value) {
         @Parcelize
-        object All : StatusesType(R.string.filter_list_all, "ALL")
+        object All : StatusesType(R.string.filter_list_all, null)
 
         @Parcelize
         object Recruiting : StatusesType(R.string.filter_list_recruiting, "RECRUITING")
@@ -98,7 +98,7 @@ sealed class CallvanFilterType(
     @Parcelize
     sealed class SortType(
         @StringRes override val stringRes: Int,
-        override val value: String
+        override val value: String?
     ) : CallvanFilterType(stringRes, value) {
         @Parcelize
         object LatestDesc : SortType(R.string.filter_list_latest_desc, "LATEST_DESC")

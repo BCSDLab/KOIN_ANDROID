@@ -66,7 +66,7 @@ fun ItemSearchTextField(
         )
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_search_vector),
-            contentDescription = ""
+            contentDescription = null
         )
     }
 }

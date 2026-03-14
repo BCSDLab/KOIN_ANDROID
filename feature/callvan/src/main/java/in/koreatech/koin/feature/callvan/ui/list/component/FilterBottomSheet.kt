@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -134,8 +136,11 @@ fun FilterBottomSheetContent(
             .fillMaxWidth()
             .padding(bottom = 20.dp)
     ) {
+        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
+                .weight(1f, fill = false)
+                .verticalScroll(scrollState)
                 .padding(top = 12.dp, start = 32.dp, bottom = 12.dp, end = 12.dp)
         ) {
             FilterSection(
