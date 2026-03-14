@@ -507,7 +507,7 @@ fun handleSideEffect(
 
 @Preview(showBackground = true)
 @Composable
-fun ClubListScreenPreview() {
+private fun ClubListScreenPreview() {
     ClubListScreenImpl(
         isLoading = false,
         clubList = emptyList(),

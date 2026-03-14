@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.callvan.ui.report
+package `in`.koreatech.koin.feature.callvan.ui.report.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,16 +19,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.callvan.R
-import `in`.koreatech.koin.feature.callvan.ui.report.component.CallvanReportReasonItem
-import `in`.koreatech.koin.feature.callvan.ui.report.component.CallvanReportReasonTextFieldItem
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportReason
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun CallvanReportFirstStepContent(
-    selectedReason: CallvanReportReason?,
+    selectedReasons: ImmutableList<CallvanReportReason>,
     onSelectedReasonChange: (CallvanReportReason) -> Unit,
     otherReason: String,
     onOtherReasonChange: (String) -> Unit,
+    isOtherReasonError: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val callvanReportReasonList = remember {
@@ -49,15 +50,16 @@ internal fun CallvanReportFirstStepContent(
                 if (reason == CallvanReportReason.OTHER) {
                     CallvanReportReasonTextFieldItem(
                         reason = reason,
-                        isSelected = selectedReason == reason,
+                        isSelected = reason in selectedReasons,
                         value = otherReason,
                         onValueChange = onOtherReasonChange,
-                        onClick = { onSelectedReasonChange(reason) }
+                        onClick = { onSelectedReasonChange(reason) },
+                        isError = isOtherReasonError
                     )
                 } else {
                     CallvanReportReasonItem(
                         reason = reason,
-                        isSelected = selectedReason == reason,
+                        isSelected = reason in selectedReasons,
                         onClick = { onSelectedReasonChange(reason) }
                     )
                     HorizontalDivider(
@@ -93,7 +95,7 @@ internal fun CallvanReportHeader() {
 @Composable
 private fun CallvanReportFirstStepContentPreview() {
     CallvanReportFirstStepContent(
-        selectedReason = null,
+        selectedReasons = persistentListOf(),
         onSelectedReasonChange = {},
         otherReason = "",
         onOtherReasonChange = {},

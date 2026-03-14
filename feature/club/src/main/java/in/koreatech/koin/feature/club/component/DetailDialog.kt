@@ -102,7 +102,7 @@ fun DetailDialog(
 
 @Preview
 @Composable
-fun DetailDialogPreview() {
+private fun DetailDialogPreview() {
     DetailDialog(
         title = "동아리 생성 안내사항"
     )

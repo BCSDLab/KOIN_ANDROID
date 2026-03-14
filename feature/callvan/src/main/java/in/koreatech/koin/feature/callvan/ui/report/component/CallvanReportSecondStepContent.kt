@@ -1,6 +1,5 @@
-package `in`.koreatech.koin.feature.callvan.ui.report
+package `in`.koreatech.koin.feature.callvan.ui.report.component
 
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,7 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -45,7 +44,6 @@ import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
-import `in`.koreatech.koin.feature.callvan.ui.report.component.CallvanReportTextField
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -56,9 +54,9 @@ internal const val CALLVAN_REPORT_IMAGE_MAX_COUNT = 10
 internal fun CallvanReportSecondStepContent(
     detail: String,
     onDetailChange: (String) -> Unit,
-    images: ImmutableList<Uri>,
+    images: ImmutableList<String>,
     onAddImageClick: () -> Unit,
-    onRemoveImage: (Uri) -> Unit,
+    onRemoveImage: (index: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -151,10 +149,10 @@ internal fun CallvanReportSecondStepContent(
                         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        items(images) { uri ->
+                        itemsIndexed(images) { index, url ->
                             CallvanReportImageItem(
-                                uri = uri,
-                                onRemoveClick = { onRemoveImage(uri) },
+                                url = url,
+                                onRemoveClick = { onRemoveImage(index) },
                                 modifier = Modifier
                                     .fillMaxHeight()
                                     .aspectRatio(1f)
@@ -191,13 +189,13 @@ internal fun CallvanReportSecondStepContent(
 
 @Composable
 private fun CallvanReportImageItem(
-    uri: Uri,
+    url: String,
     onRemoveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier) {
         AsyncImage(
-            model = uri,
+            model = url,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -254,9 +252,9 @@ private fun CallvanReportSecondStepContentWithImagesPreview() {
         detail = "",
         onDetailChange = {},
         images = persistentListOf(
-            Uri.parse("content://preview/1"),
-            Uri.parse("content://preview/2"),
-            Uri.parse("content://preview/3")
+            "https://example.com/1.jpg",
+            "https://example.com/2.jpg",
+            "https://example.com/3.jpg"
         ),
         onAddImageClick = {},
         onRemoveImage = {},

@@ -47,7 +47,7 @@ fun CallvanDetailRouteCard(
 
 @Preview(showBackground = true)
 @Composable
-fun CallvanDetailRouteCardPreview() {
+private fun CallvanDetailRouteCardPreview() {
     CallvanDetailRouteCard(
         departure = "테니스장",
         destination = "천안 시외터미널",

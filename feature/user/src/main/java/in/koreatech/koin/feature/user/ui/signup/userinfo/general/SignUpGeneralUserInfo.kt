@@ -426,7 +426,7 @@ private fun handleSideEffect(
 
 @Preview(showBackground = true)
 @Composable
-fun SignUpGeneralUserInfoPreview() {
+private fun SignUpGeneralUserInfoPreview() {
     KoinTheme {
         SignUpGeneralUserInfoImpl(
             step = SignUpGeneralStep.NICKNAME_AND_EMAIL,
