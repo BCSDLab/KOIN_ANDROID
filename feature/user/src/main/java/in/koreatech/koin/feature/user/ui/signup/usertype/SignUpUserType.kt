@@ -101,6 +101,6 @@ fun SignUpUserType(
 
 @Preview(showBackground = true)
 @Composable
-fun SignUpUserTypePreview() {
+private fun SignUpUserTypePreview() {
     SignUpUserType()
 }

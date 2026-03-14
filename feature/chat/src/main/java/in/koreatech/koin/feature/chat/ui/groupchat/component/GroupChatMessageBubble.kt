@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -37,7 +38,11 @@ import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.chat.R
+import `in`.koreatech.koin.feature.chat.ui.groupchat.GroupChatPreviewData
 import `in`.koreatech.koin.feature.chat.ui.groupchat.model.GroupChatMessage
+
+private val ImageMaxWidthFraction = 0.6f
+private val ImageMinHeight = 100.dp
 
 object GroupChatMessageDefaults {
     @Composable
@@ -47,16 +52,14 @@ object GroupChatMessageDefaults {
         bubbleContentColor: Color = RebrandKoinTheme.colors.neutral800,
         bubbleTimeStampColor: Color = RebrandKoinTheme.colors.neutral500,
         userNicknameColor: Color = RebrandKoinTheme.colors.neutral600,
-        leftUserLabelColor: Color = RebrandKoinTheme.colors.primary500,
-        readCountColor: Color = RebrandKoinTheme.colors.neutral700
+        leftUserLabelColor: Color = RebrandKoinTheme.colors.primary500
     ): GroupChatMessageColors = GroupChatMessageColors(
         bubbleContainerColorFromMe = bubbleContainerColorFromMe,
         bubbleContainerColorFromOther = bubbleContainerColorFromOther,
         bubbleContentColor = bubbleContentColor,
         timeStampColor = bubbleTimeStampColor,
         userNicknameColor = userNicknameColor,
-        leftUserLabelColor = leftUserLabelColor,
-        readCountColor = readCountColor
+        leftUserLabelColor = leftUserLabelColor
     )
 }
 
@@ -67,8 +70,7 @@ data class GroupChatMessageColors(
     val bubbleContentColor: Color,
     val timeStampColor: Color,
     val userNicknameColor: Color,
-    val leftUserLabelColor: Color,
-    val readCountColor: Color
+    val leftUserLabelColor: Color
 )
 
 @Composable
@@ -111,23 +113,11 @@ private fun GroupChatMessageFromMe(
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = Arrangement.End
     ) {
-        Column(
-            horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.Bottom
-        ) {
-            if (message.readCount > 0) {
-                Text(
-                    text = "${message.readCount}",
-                    style = RebrandKoinTheme.typography.regular12,
-                    color = colors.readCountColor
-                )
-            }
-            Text(
-                text = message.timestamp,
-                style = RebrandKoinTheme.typography.regular12,
-                color = colors.timeStampColor
-            )
-        }
+        Text(
+            text = message.timestamp,
+            style = RebrandKoinTheme.typography.regular12,
+            color = colors.timeStampColor
+        )
         Spacer(modifier = Modifier.width(8.dp))
         Box(
             modifier = Modifier.weight(1f, false)
@@ -228,12 +218,15 @@ private fun GroupChatMessageImage(
     imageUrl: String,
     onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> }
 ) {
+    val imageUri = imageUrl.toUri()
     Box {
         SubcomposeAsyncImage(
             modifier = Modifier
+                .fillMaxWidth(ImageMaxWidthFraction)
+                .heightIn(min = ImageMinHeight)
                 .clip(RebrandKoinTheme.shapes.small)
                 .noRippleClickable {
-                    onShowImageChange(true, imageUrl.toUri())
+                    onShowImageChange(true, imageUri)
                 },
             model = ImageRequest.Builder(LocalContext.current)
                 .data(imageUrl)
@@ -250,7 +243,7 @@ private fun GroupChatMessageImage(
             contentScale = ContentScale.Fit,
             contentDescription = stringResource(id = R.string.group_chat_message_image)
         )
-        if (imageUrl.toUri().scheme == ContentResolver.SCHEME_CONTENT) {
+        if (imageUri.scheme == ContentResolver.SCHEME_CONTENT) {
             Box(
                 modifier = Modifier
                     .background(RebrandKoinTheme.colors.neutral800.copy(alpha = 0.4f))
@@ -292,28 +285,19 @@ private fun GroupChatMessageBubblePreview() {
     KoinSurface {
         Column {
             GroupChatMessageBubble(
-                message = GroupChatMessage(
+                message = GroupChatPreviewData.otherMessage(
                     id = "1",
-                    userId = 0,
-                    userNickname = "신짱구",
                     content = "넵!!",
                     timestamp = "13:53",
-                    isSentByMe = false,
-                    readCount = 6,
                     isFirstInGroup = true
                 ),
                 userColorIndex = 0
             )
             GroupChatMessageBubble(
-                message = GroupChatMessage(
+                message = GroupChatPreviewData.otherMessage(
                     id = "2",
-                    userId = 0,
-                    userNickname = "신짱구",
                     content = "방송국 건너편인가요?",
-                    timestamp = "14:53",
-                    isSentByMe = false,
-                    readCount = 6,
-                    isFirstInGroup = false
+                    timestamp = "14:53"
                 ),
                 userColorIndex = 1
             )

@@ -79,4 +79,11 @@
     <string name="filter_list_departure_desc">출발일 (내림차순)</string>
     <string name="filter_list_departure_asc">출발일 (오름차순)</string>
     <string name="callvan_search_hint">검색어를 입력해주세요.</string>
+    <string name="callvan_report_submit_success">사용자가 신고되었습니다.</string>
+
+    <string name="callvan_report_error_image_upload_failed">이미지 업로드에 실패했습니다.</string>
+    <string name="callvan_report_error_self">본인을 신고할 수 없습니다.</string>
+    <string name="callvan_report_error_already_pending">이미 신고가 접수된 사용자입니다.</string>
+    <string name="callvan_report_error_only_participant">같은 콜밴 참여자만 신고할 수 있습니다.</string>
+    <string name="callvan_report_error_failed">신고에 실패했습니다. 다시 시도해주세요.</string>
 </resources>

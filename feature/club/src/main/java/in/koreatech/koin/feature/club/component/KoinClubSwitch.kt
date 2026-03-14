@@ -67,7 +67,7 @@ fun KoinClubSwitch(
 
 @Preview(showBackground = true)
 @Composable
-fun KoinClubSwitchPreview() {
+private fun KoinClubSwitchPreview() {
     KoinClubSwitch(
         checked = true
     )

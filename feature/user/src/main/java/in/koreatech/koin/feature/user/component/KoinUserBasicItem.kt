@@ -72,7 +72,7 @@ fun KoinUserBasicItem(
 
 @Preview(showBackground = true)
 @Composable
-fun KoinUserBasicItemPreview() {
+private fun KoinUserBasicItemPreview() {
     KoinTheme {
         KoinUserBasicItem(
             title = "Name",

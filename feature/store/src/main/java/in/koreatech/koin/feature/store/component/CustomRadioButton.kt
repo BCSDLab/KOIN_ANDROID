@@ -47,7 +47,7 @@ fun CustomRadioButton(
 
 @Preview
 @Composable
-fun CustomRadioButtonPreview() {
+private fun CustomRadioButtonPreview() {
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {

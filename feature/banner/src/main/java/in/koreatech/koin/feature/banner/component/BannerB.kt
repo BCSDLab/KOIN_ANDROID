@@ -115,7 +115,7 @@ fun BannerB(
 
 @Preview
 @Composable
-fun BannerBPreview() {
+private fun BannerBPreview() {
     KoinTheme {
         BannerB(
             bannerList = persistentListOf(),

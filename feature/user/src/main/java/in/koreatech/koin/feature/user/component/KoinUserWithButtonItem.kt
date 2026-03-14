@@ -96,7 +96,7 @@ fun KoinUserWithButtonItem(
 
 @Preview(showBackground = true)
 @Composable
-fun KoinUserWithButtonItemPreview() {
+private fun KoinUserWithButtonItemPreview() {
     KoinTheme {
         KoinUserWithButtonItem(
             title = "Name",
