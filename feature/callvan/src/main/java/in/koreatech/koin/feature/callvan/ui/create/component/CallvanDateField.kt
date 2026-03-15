@@ -122,7 +122,7 @@ private fun CallvanDatePickerCard(
     onConfirm: () -> Unit = {}
 ) {
     val currentYear = remember { Year.now().value }
-    val years = remember(currentYear) { persistentListOf("${currentYear}년", "${currentYear + 1}년") }
+    val years = remember { persistentListOf("${currentYear}년", "${currentYear + 1}년") }
     val months = remember { (1..12).map { "${it}월" }.toPersistentList() }
     val days = remember(selectedYear, selectedMonth) {
         val daysCount = YearMonth.of(selectedYear, selectedMonth).lengthOfMonth()
