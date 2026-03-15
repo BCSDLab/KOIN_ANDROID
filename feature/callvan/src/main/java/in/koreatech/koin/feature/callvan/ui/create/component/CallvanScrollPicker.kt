@@ -97,7 +97,7 @@ private fun CallvanScrollPickerContent(
             }
     }
 
-    LaunchedEffect(selectedIndex, items.size) {
+    LaunchedEffect(selectedIndex, items) {
         snapshotFlow { listState.isScrollInProgress }
             .filter { !it }
             .first()
@@ -119,7 +119,7 @@ private fun CallvanScrollPickerContent(
         contentPadding = PaddingValues(vertical = itemHeight),
         modifier = modifier.height(itemHeight * 3)
     ) {
-        itemsIndexed(items, key = { _, item -> item }) { index, item ->
+        itemsIndexed(items, key = { index, _ -> index }) { index, item ->
             val isSelected by remember(index) { derivedStateOf { index == currentSelectedIndex } }
             Box(
                 modifier = Modifier
