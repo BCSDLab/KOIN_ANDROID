@@ -74,7 +74,7 @@ private fun CallvanScrollPickerContent(
     val latestOnIndexChange by rememberUpdatedState(onIndexChange)
     var isProgrammaticScroll by remember { mutableStateOf(false) }
 
-    val currentSelectedIndex by remember(density, items.size, itemHeight) {
+    val currentSelectedIndex by remember(density, items, itemHeight) {
         derivedStateOf {
             val itemHeightPx = with(density) { itemHeight.toPx() }
             val totalOffset = listState.firstVisibleItemIndex * itemHeightPx +
@@ -119,7 +119,7 @@ private fun CallvanScrollPickerContent(
         contentPadding = PaddingValues(vertical = itemHeight),
         modifier = modifier.height(itemHeight * 3)
     ) {
-        itemsIndexed(items, key = { index, _ -> index }) { index, item ->
+        itemsIndexed(items, key = { _, item -> item }) { index, item ->
             val isSelected by remember(index) { derivedStateOf { index == currentSelectedIndex } }
             Box(
                 modifier = Modifier

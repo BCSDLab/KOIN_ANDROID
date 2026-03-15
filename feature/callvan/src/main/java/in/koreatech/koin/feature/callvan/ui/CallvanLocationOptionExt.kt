@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.callvan.ui.create.component
+package `in`.koreatech.koin.feature.callvan.ui
 
 import androidx.annotation.StringRes
 import `in`.koreatech.koin.feature.callvan.R
