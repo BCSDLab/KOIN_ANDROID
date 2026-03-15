@@ -23,6 +23,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 @Composable
@@ -50,6 +52,10 @@ fun CallvanEntry(
                 title = stringResource(R.string.callvan_entry_find_title),
                 description = stringResource(R.string.callvan_entry_find_description),
                 onClick = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.Callvan.MAIN_CALLVAN_VIEW,
+                        ""
+                    )
                     context.startActivity(Intent(context, CallvanActivity::class.java))
                 }
             )
@@ -61,6 +67,10 @@ fun CallvanEntry(
                 title = stringResource(R.string.callvan_entry_recruit_title),
                 description = stringResource(R.string.callvan_entry_recruit_description),
                 onClick = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.Callvan.MAIN_CALLVAN_WRITE,
+                        ""
+                    )
                     context.startActivity(Intent(context, CallvanActivity::class.java)) // TODO: Navigate to create
                 }
             )

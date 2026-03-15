@@ -30,7 +30,6 @@ class CallvanDetailViewModel @Inject constructor(
 
     init {
         fetchPostDetail()
-        fetchHasNewNotification()
         observeReportSuccess(savedStateHandle)
     }
 
@@ -69,7 +68,7 @@ class CallvanDetailViewModel @Inject constructor(
             }
     }
 
-    private fun fetchHasNewNotification() = intent {
+    internal fun fetchHasNewNotification() = intent {
         getNotificationsUseCase()
             .onSuccess { notifications ->
                 reduce {
