@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 data class CallvanListUiState(
+    val id: Int,
     val departure: String,
     val destination: String,
     val date: String,

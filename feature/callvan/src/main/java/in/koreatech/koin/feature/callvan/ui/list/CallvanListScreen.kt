@@ -8,10 +8,12 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -36,6 +38,46 @@ import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListUiState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import org.orbitmvi.orbit.compose.collectAsState
+
+@Composable
+fun CallvanListScreen(
+    viewModel: CallvanListViewModel = hiltViewModel(),
+    onTopbarBackClick: () -> Unit = {},
+    onNotificationClick: () -> Unit = {},
+    onWriteClick: () -> Unit = {},
+    onLoginClick: () -> Unit = {},
+    onChatClick: (postId: Int) -> Unit = {},
+    onCallClick: (postId: Int) -> Unit = {}
+) {
+    val state by viewModel.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchHasNewNotification()
+    }
+
+    CallvanListScreenImpl(
+        searchValue = state.searchValue,
+        items = state.items,
+        filterState = state.filterState,
+        hasNewNotification = state.hasNewNotification,
+        isLoginVisible = state.isLoginVisible,
+        onSearchValueChange = viewModel::updateSearch,
+        onFilterApply = viewModel::applyFilter,
+        onTopbarBackClick = onTopbarBackClick,
+        onNotificationClick = onNotificationClick,
+        onWriteClick = onWriteClick,
+        onLoginClick = onLoginClick,
+        onLoginDismiss = viewModel::dismissLoginDialog,
+        onJoin = viewModel::join,
+        onCancelJoin = viewModel::cancelJoin,
+        onClose = viewModel::close,
+        onReRecruit = viewModel::reRecruit,
+        onComplete = viewModel::complete,
+        onCall = { index -> state.items.getOrNull(index)?.id?.let { onCallClick(it) } },
+        onChat = { index -> state.items.getOrNull(index)?.id?.let { onChatClick(it) } }
+    )
+}
 
 @Suppress("LongParameterList")
 @Composable
@@ -68,6 +110,67 @@ fun CallvanListScreenImpl(
     var isFilterVisible by remember { mutableStateOf(false) }
     var pendingConfirm: Pair<CallvanConfirmType, Int>? by remember { mutableStateOf(null) }
     var pendingCompleteIndex: Int? by remember { mutableStateOf(null) }
+
+    if (isFilterVisible) {
+        FilterBottomSheet(
+            onDismissRequest = { isFilterVisible = false },
+            selectedSortType = filterState.selectedSortType,
+            selectedStatusesType = filterState.selectedStatusesType,
+            selectedArrivalsType = filterState.selectedArrivalsType,
+            selectedDeparturesType = filterState.selectedDeparturesType,
+            onApply = onFilterApply
+        )
+    }
+
+    pendingConfirm?.let { (confirmType, index) ->
+        val title = when (confirmType) {
+            CallvanConfirmType.JOIN -> stringResource(R.string.callvan_confirm_join_title)
+            CallvanConfirmType.CANCEL_JOIN -> stringResource(R.string.callvan_confirm_cancel_title)
+            CallvanConfirmType.CLOSE -> stringResource(R.string.callvan_confirm_close_title)
+            CallvanConfirmType.REOPEN -> stringResource(R.string.callvan_confirm_reopen_title)
+        }
+        CallvanConfirmBottomSheet(
+            title = title,
+            description = "",
+            confirmText = stringResource(R.string.callvan_confirm_positive),
+            cancelText = stringResource(R.string.callvan_confirm_negative),
+            onConfirm = {
+                when (confirmType) {
+                    CallvanConfirmType.JOIN -> onJoin(index)
+                    CallvanConfirmType.CANCEL_JOIN -> onCancelJoin(index)
+                    CallvanConfirmType.CLOSE -> onClose(index)
+                    CallvanConfirmType.REOPEN -> onReRecruit(index)
+                }
+                pendingConfirm = null
+            },
+            onDismiss = { pendingConfirm = null }
+        )
+    }
+
+    pendingCompleteIndex?.let { index ->
+        CallvanConfirmBottomSheet(
+            title = stringResource(R.string.callvan_complete_title),
+            description = stringResource(R.string.callvan_complete_description),
+            confirmText = stringResource(R.string.callvan_confirm_positive),
+            cancelText = stringResource(R.string.callvan_confirm_negative),
+            onConfirm = {
+                onComplete(index)
+                pendingCompleteIndex = null
+            },
+            onDismiss = { pendingCompleteIndex = null }
+        )
+    }
+
+    if (isLoginVisible) {
+        CallvanConfirmBottomSheet(
+            title = stringResource(R.string.callvan_login_title),
+            description = "",
+            confirmText = stringResource(R.string.callvan_login_login),
+            cancelText = stringResource(R.string.callvan_login_close),
+            onConfirm = onLoginClick,
+            onDismiss = onLoginDismiss
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -134,67 +237,6 @@ fun CallvanListScreenImpl(
                 )
             }
         }
-
-        if (isFilterVisible) {
-            FilterBottomSheet(
-                onDismissRequest = { isFilterVisible = false },
-                selectedSortType = filterState.selectedSortType,
-                selectedStatusesType = filterState.selectedStatusesType,
-                selectedArrivalsType = filterState.selectedArrivalsType,
-                selectedDeparturesType = filterState.selectedDeparturesType,
-                onApply = onFilterApply
-            )
-        }
-
-        pendingConfirm?.let { (confirmType, index) ->
-            val title = when (confirmType) {
-                CallvanConfirmType.JOIN -> stringResource(R.string.callvan_confirm_join_title)
-                CallvanConfirmType.CANCEL_JOIN -> stringResource(R.string.callvan_confirm_cancel_title)
-                CallvanConfirmType.CLOSE -> stringResource(R.string.callvan_confirm_close_title)
-                CallvanConfirmType.REOPEN -> stringResource(R.string.callvan_confirm_reopen_title)
-            }
-            CallvanConfirmBottomSheet(
-                title = title,
-                description = "",
-                confirmText = stringResource(R.string.callvan_confirm_positive),
-                cancelText = stringResource(R.string.callvan_confirm_negative),
-                onConfirm = {
-                    when (confirmType) {
-                        CallvanConfirmType.JOIN -> onJoin(index)
-                        CallvanConfirmType.CANCEL_JOIN -> onCancelJoin(index)
-                        CallvanConfirmType.CLOSE -> onClose(index)
-                        CallvanConfirmType.REOPEN -> onReRecruit(index)
-                    }
-                    pendingConfirm = null
-                },
-                onDismiss = { pendingConfirm = null }
-            )
-        }
-
-        pendingCompleteIndex?.let { index ->
-            CallvanConfirmBottomSheet(
-                title = stringResource(R.string.callvan_complete_title),
-                description = stringResource(R.string.callvan_complete_description),
-                confirmText = stringResource(R.string.callvan_confirm_positive),
-                cancelText = stringResource(R.string.callvan_confirm_negative),
-                onConfirm = {
-                    onComplete(index)
-                    pendingCompleteIndex = null
-                },
-                onDismiss = { pendingCompleteIndex = null }
-            )
-        }
-
-        if (isLoginVisible) {
-            CallvanConfirmBottomSheet(
-                title = stringResource(R.string.callvan_login_title),
-                description = "",
-                confirmText = stringResource(R.string.callvan_login_login),
-                cancelText = stringResource(R.string.callvan_login_close),
-                onConfirm = onLoginClick,
-                onDismiss = onLoginDismiss
-            )
-        }
     }
 }
 
@@ -205,11 +247,11 @@ private fun CallvanListScreenPreview() {
         CallvanListScreenImpl(
             searchValue = "",
             items = persistentListOf(
-                CallvanListUiState("테니스장", "천안 시외터미널", "2025-02-05", "14:00", 1, 8, CallvanItemState.DEFAULT),
-                CallvanListUiState("정문", "천안 시외터미널", "2025-02-05", "14:00", 1, 8, CallvanItemState.JOINED),
-                CallvanListUiState("테니스장", "천안역", "2025-02-05", "14:00", 1, 8, CallvanItemState.CLOSED),
-                CallvanListUiState("담헌 앞", "천안아산역", "2025-02-05", "14:00", 1, 8, CallvanItemState.OWNER_ACTIVE),
-                CallvanListUiState("천안 시외터미널", "학교", "2025-02-05", "14:00", 1, 8, CallvanItemState.OWNER_CLOSED)
+                CallvanListUiState(1, "테니스장", "천안 시외터미널", "2025-02-05", "14:00", 1, 8, CallvanItemState.DEFAULT),
+                CallvanListUiState(2, "정문", "천안 시외터미널", "2025-02-05", "14:00", 1, 8, CallvanItemState.JOINED),
+                CallvanListUiState(3, "테니스장", "천안역", "2025-02-05", "14:00", 1, 8, CallvanItemState.CLOSED),
+                CallvanListUiState(4, "담헌 앞", "천안아산역", "2025-02-05", "14:00", 1, 8, CallvanItemState.OWNER_ACTIVE),
+                CallvanListUiState(5, "천안 시외터미널", "학교", "2025-02-05", "14:00", 1, 8, CallvanItemState.OWNER_CLOSED)
             )
         )
     }
