@@ -98,10 +98,7 @@ private fun CallvanLocationItem(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable(
-                        onClickLabel = placeholder,
-                        onClick = onClick
-                    ),
+                    .clickable(onClick = onClick),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -118,10 +115,7 @@ private fun CallvanLocationItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(RebrandKoinTheme.colors.neutral100, RoundedCornerShape(8.dp))
-                    .clickable(
-                        onClickLabel = placeholder,
-                        onClick = onClick
-                    )
+                    .clickable(onClick = onClick)
                     .padding(horizontal = 32.dp, vertical = 8.dp),
                 contentAlignment = Alignment.Center
             ) {
@@ -136,18 +130,16 @@ private fun CallvanLocationItem(
 }
 
 @Composable
-private fun CallvanSwapButton(onClick: () -> Unit) {
-    val swapButtonDescription = stringResource(R.string.callvan_create_swap_button)
-
+private fun CallvanSwapButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
+) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .size(31.dp)
             .clip(CircleShape)
             .border(0.8.dp, RebrandKoinTheme.colors.neutral300, CircleShape)
-            .clickable(
-                onClickLabel = swapButtonDescription,
-                onClick = onClick
-            )
+            .clickable(onClick = onClick)
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_tabler_arrow_left),

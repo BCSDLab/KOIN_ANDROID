@@ -76,7 +76,7 @@
     <string name="callvan_create_picker_confirm">확인</string>
     <string name="callvan_create_submit_notice">※ 모든 항목을 다 작성해주세요.</string>
     <string name="callvan_create_submit">작성 완료</string>
-    <string name="callvan_create_swap_button">출발지와 도착지 변경</string>
+
 
     <string name="callvan_location_front_gate">정문</string>
     <string name="callvan_location_back_gate">후문</string>
