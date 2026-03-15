@@ -4,6 +4,6 @@ env:
 ---
 - runFlow: launch_app.yaml
 - tapOn:
-    point: 92%,10%
+    id: "${APP_ID}:id/button_category"
 - waitForAnimationToEnd:
     timeout: 3000
