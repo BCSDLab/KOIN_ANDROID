@@ -44,9 +44,28 @@ fun CallvanScrollPicker(
 ) {
     if (items.isEmpty()) {
         Box(modifier = modifier.height(itemHeight * 3))
-        return
+    } else {
+        CallvanScrollPickerContent(
+            items = items,
+            selectedIndex = selectedIndex,
+            modifier = modifier,
+            itemHeight = itemHeight,
+            textAlign = textAlign,
+            onIndexChange = onIndexChange
+        )
     }
+}
 
+@Suppress("LongParameterList")
+@Composable
+private fun CallvanScrollPickerContent(
+    items: ImmutableList<String>,
+    selectedIndex: Int,
+    modifier: Modifier = Modifier,
+    itemHeight: Dp = 32.dp,
+    textAlign: TextAlign = TextAlign.Center,
+    onIndexChange: (Int) -> Unit = {}
+) {
     val density = LocalDensity.current
     val listState = rememberLazyListState(
         initialFirstVisibleItemIndex = selectedIndex.coerceIn(0, items.lastIndex)
@@ -100,7 +119,7 @@ fun CallvanScrollPicker(
         contentPadding = PaddingValues(vertical = itemHeight),
         modifier = modifier.height(itemHeight * 3)
     ) {
-        itemsIndexed(items, key = { _, item -> item }) { index, item ->
+        itemsIndexed(items, key = { index, _ -> index }) { index, item ->
             val isSelected by remember(index) { derivedStateOf { index == currentSelectedIndex } }
             Box(
                 modifier = Modifier
