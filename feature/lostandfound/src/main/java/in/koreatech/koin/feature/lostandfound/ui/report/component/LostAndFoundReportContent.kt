@@ -62,7 +62,7 @@ fun LostAndFoundReportContent(
 
 @Preview
 @Composable
-fun LostAndFoundReportContentPreview() {
+private fun LostAndFoundReportContentPreview() {
     KoinSurface {
         LostAndFoundReportContent(
             itemList = lostAndFoundReportReasonList,

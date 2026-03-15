@@ -44,12 +44,61 @@ plugins {
     alias(libs.plugins.sonarqube)
 }
 
+val reportsDir = subprojects.map { subproject ->
+    subproject.projectDir.absolutePath
+}.filter {
+    !it.endsWith("domain") && !it.endsWith("feature")
+}.map { subproject ->
+    "${subproject}/build/reports"
+}
+
+val ktlintReports = reportsDir.joinToString(",") { subproject ->
+    "${subproject}/ktlint/ktlintMainSourceSetCheck/ktlintMainSourceSetCheck.xml"
+}
+
+val lintReports = reportsDir.joinToString(",") { subproject ->
+    "${subproject}/lint-results-debug.xml"
+}
+
+val detektReports = reportsDir.joinToString(",") { subproject ->
+    "${subproject}/detekt/detekt.xml"
+}
+
+val koverReports = reportsDir.joinToString(",") { subproject ->
+    "${subproject}/kover/report.xml"
+}
+
+val sonarCoverageExclusions = listOf(
+    "**/core/analytics/**",
+    "**/core/designsystem/**",
+    "**/core/navigation/**",
+    "**/core/network/**",
+    "**/core/notification/**",
+    "**/core/onboarding/**",
+    "**/core/webapp/**",
+    "**/firebase/**",
+    "**/di/**",
+    "**/navigation/*",
+    "**/feature/**/model/**",
+    "**/feature/**/component/**",
+    "**/ui/**/*Screen.kt",
+    "**/ui/**/*State.kt",
+    "**/ui/**/*SideEffect.kt",
+    "**/*Activity.kt",
+    "**/*RecyclerAdapter.kt",
+    "**/*RecyclerViewAdapter.kt",
+    "**/*Fragment.kt"
+).joinToString(", ")
+
 sonar {
     properties {
         property("sonar.projectKey", "BCSDLab_KOIN_ANDROID")
         property("sonar.organization", "bcsdlab")
-        property("sonar.coverage.jacoco.xmlReportPaths", "**/build/reports/kover/report.xml")
-        property("sonar.androidLint.reportPaths", "**/build/reports/lint-results*.xml")
+        property("sonar.coverage.jacoco.xmlReportPaths", koverReports)
+        property("sonar.androidLint.reportPaths", lintReports)
+        property("sonar.kotlin.detekt.reportPaths", detektReports)
+        property("sonar.kotlin.ktlint.reportPaths", ktlintReports)
+        property("sonar.coverage.exclusions", sonarCoverageExclusions)
     }
 }
 

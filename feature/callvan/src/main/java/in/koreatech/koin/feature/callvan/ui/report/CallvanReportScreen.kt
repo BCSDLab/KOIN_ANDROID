@@ -1,0 +1,253 @@
+package `in`.koreatech.koin.feature.callvan.ui.report
+
+import android.provider.OpenableColumns
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
+import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
+import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.callvan.R
+import `in`.koreatech.koin.feature.callvan.ui.report.component.CALLVAN_REPORT_IMAGE_MAX_COUNT
+import `in`.koreatech.koin.feature.callvan.ui.report.component.CallvanReportFirstStepContent
+import `in`.koreatech.koin.feature.callvan.ui.report.component.CallvanReportSecondStepContent
+import `in`.koreatech.koin.feature.callvan.ui.report.component.rememberImagePickerLauncher
+import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportErrorType
+import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportFirstStepUiAction
+import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportFirstStepUiState
+import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportReason
+import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportSecondStepUiAction
+import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportSecondStepUiState
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
+
+@Composable
+fun CallvanReportScreen(
+    viewModel: CallvanReportViewModel = hiltViewModel(),
+    onTopbarBackClick: () -> Unit = {},
+    onSubmitSuccess: () -> Unit = {}
+) {
+    val state by viewModel.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            is CallvanReportSideEffect.SubmitSuccess -> {
+                onSubmitSuccess()
+            }
+            is CallvanReportSideEffect.ShowErrorMessage -> {
+                val message = context.getString(
+                    when (sideEffect.errorType) {
+                        CallvanReportErrorType.IMAGE_UPLOAD_FAILED -> R.string.callvan_report_error_image_upload_failed
+                        CallvanReportErrorType.REPORT_SELF -> R.string.callvan_report_error_self
+                        CallvanReportErrorType.REPORT_ALREADY_PENDING -> R.string.callvan_report_error_already_pending
+                        CallvanReportErrorType.REPORT_ONLY_PARTICIPANT -> R.string.callvan_report_error_only_participant
+                        CallvanReportErrorType.REPORT_FAILED -> R.string.callvan_report_error_failed
+                    }
+                )
+                snackbarHostState.showSnackBarWithDismiss(message)
+            }
+        }
+    }
+
+    val onAddImageClick = rememberImagePickerLauncher(
+        currentImageCount = state.images.size,
+        maxImageCount = CALLVAN_REPORT_IMAGE_MAX_COUNT,
+        onImagesSelected = { uris ->
+            viewModel.setLoading(true)
+            coroutineScope.launch {
+                withContext(Dispatchers.IO) {
+                    uris.forEach { uri ->
+                        val cursor = context.contentResolver.query(uri, null, null, null, null)
+                        cursor?.use {
+                            if (it.moveToFirst()) {
+                                val fileNameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                                val fileSizeIndex = it.getColumnIndex(OpenableColumns.SIZE)
+                                if (fileNameIndex != -1 && fileSizeIndex != -1) {
+                                    val fileName = it.getString(fileNameIndex)
+                                    val fileSize = it.getLong(fileSizeIndex)
+                                    val fileType = context.contentResolver.getType(uri)
+                                    if (fileType?.startsWith("image/") == true) {
+                                        withContext(Dispatchers.Main) {
+                                            viewModel.uploadImage(fileName, fileType, fileSize, uri)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                viewModel.setLoading(false)
+            }
+        }
+    )
+
+    val firstStepAction = remember {
+        CallvanReportFirstStepUiAction(
+            onSelectedReasonChange = viewModel::onReasonSelect,
+            onOtherReasonChange = viewModel::onOtherReasonChange
+        )
+    }
+    val secondStepAction = remember(onAddImageClick) {
+        CallvanReportSecondStepUiAction(
+            onDetailChange = viewModel::onDetailChange,
+            onAddImageClick = onAddImageClick,
+            onRemoveImage = viewModel::onRemoveImage
+        )
+    }
+
+    CallvanReportScreenImpl(
+        firstStepState = CallvanReportFirstStepUiState(
+            selectedReasons = state.selectedReasons,
+            otherReason = state.otherReason,
+            isOtherReasonError = state.isOtherReasonError
+        ),
+        firstStepAction = firstStepAction,
+        secondStepState = CallvanReportSecondStepUiState(
+            detail = state.detail,
+            images = state.images
+        ),
+        secondStepAction = secondStepAction,
+        snackbarHostState = snackbarHostState,
+        step = state.step,
+        isLastStep = state.step == CallvanReportViewModel.TOTAL_STEPS,
+        isLoading = state.isLoading,
+        onTopbarBackClick = onTopbarBackClick,
+        onPreviousClick = viewModel::onPreviousStep,
+        onNextClick = viewModel::onNextStep,
+        onSubmitClick = viewModel::onSubmit
+    )
+}
+
+@Composable
+private fun CallvanReportScreenImpl(
+    step: Int = 1,
+    isLastStep: Boolean = false,
+    isLoading: Boolean = false,
+    firstStepState: CallvanReportFirstStepUiState = CallvanReportFirstStepUiState(),
+    firstStepAction: CallvanReportFirstStepUiAction = CallvanReportFirstStepUiAction(),
+    secondStepState: CallvanReportSecondStepUiState = CallvanReportSecondStepUiState(),
+    secondStepAction: CallvanReportSecondStepUiAction = CallvanReportSecondStepUiAction(),
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    onTopbarBackClick: () -> Unit = {},
+    onPreviousClick: () -> Unit = {},
+    onNextClick: () -> Unit = {},
+    onSubmitClick: () -> Unit = {}
+) {
+    Scaffold(
+        topBar = {
+            KoinTopAppBar(
+                title = stringResource(R.string.callvan_report_top_bar),
+                onNavigationIconClick = if (step == 1) onTopbarBackClick else onPreviousClick
+            )
+        },
+        bottomBar = {
+            FilledButton(
+                text = if (isLastStep) {
+                    stringResource(R.string.callvan_detail_participant_report)
+                } else {
+                    stringResource(R.string.callvan_report_next)
+                },
+                enabled = firstStepState.selectedReasons.isNotEmpty(),
+                onClick = if (isLastStep) onSubmitClick else onNextClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp, vertical = 16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = RebrandKoinTheme.colors.primary500
+                ),
+                shape = KoinTheme.shapes.small
+            )
+        },
+        snackbarHost = {
+            CustomSnackBarHost(
+                hotState = snackbarHostState,
+                background = RebrandKoinTheme.colors.primary700.copy(alpha = 0.8f)
+            )
+        },
+        containerColor = KoinTheme.colors.neutral0
+    ) { contentPadding ->
+        Box(modifier = Modifier.fillMaxSize()) {
+            when (step) {
+                1 -> CallvanReportFirstStepContent(
+                    selectedReasons = firstStepState.selectedReasons,
+                    onSelectedReasonChange = firstStepAction.onSelectedReasonChange,
+                    otherReason = firstStepState.otherReason,
+                    onOtherReasonChange = firstStepAction.onOtherReasonChange,
+                    isOtherReasonError = firstStepState.isOtherReasonError,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(contentPadding)
+                        .imePadding()
+                )
+                2 -> CallvanReportSecondStepContent(
+                    detail = secondStepState.detail,
+                    onDetailChange = secondStepAction.onDetailChange,
+                    images = secondStepState.images,
+                    onAddImageClick = secondStepAction.onAddImageClick,
+                    onRemoveImage = secondStepAction.onRemoveImage,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(contentPadding)
+                        .imePadding()
+                )
+            }
+            if (isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.White.copy(alpha = 0.6f))
+                        .zIndex(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = RebrandKoinTheme.colors.primary500)
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CallvanReportScreenFirstPreview() {
+    CallvanReportScreenImpl(step = 1)
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CallvanReportScreenSecondPreview() {
+    CallvanReportScreenImpl(
+        firstStepState = CallvanReportFirstStepUiState(selectedReasons = persistentListOf(CallvanReportReason.OTHER)),
+        step = 2,
+        isLastStep = true
+    )
+}

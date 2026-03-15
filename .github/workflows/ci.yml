@@ -4,7 +4,48 @@ on:
   pull_request:
     types: [opened, reopened, synchronize]
 
+concurrency:
+  group: ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
+  reset-review-labels:
+    name: Reset Review Labels
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action == 'synchronize'
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Generate App Token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ github.event.repository.name }}
+
+      - name: Remove Review Labels
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const labels = ['ci:passed', 'coderabbit:complete', 'claude:complete'];
+            for (const label of labels) {
+              try {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  name: label
+                });
+              } catch (e) {
+                if (e.status !== 404) {
+                  throw e;
+                }
+              }
+            }
+
   lint:
     name: Lint & Format Check
     runs-on: ubuntu-latest
@@ -24,6 +65,22 @@ jobs:
       - name: detekt
         run: ./gradlew detekt
 
+      - name: Upload detekt Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: detekt-report
+          path: '**/build/reports/detekt/**'
+          retention-days: 7
+
+      - name: Upload ktlint Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ktlint-report
+          path: '**/build/reports/ktlint/**'
+          retention-days: 7
+
   coverage:
     name: Code Coverage
     runs-on: ubuntu-latest
@@ -33,6 +90,19 @@ jobs:
       - uses: ./.github/actions/gradle-setup
         with:
           properties: ${{ secrets.PROPERTIES }}
+
+      - name: Update Firebase
+        env:
+          FIREBASE: ${{ secrets.FIREBASE }}
+          FIREBASE_STAGE: ${{ secrets.FIREBASE_STAGE }}
+        run: |
+          mkdir -p ./koin/src/debug
+          echo $FIREBASE | base64 -di > ./koin/google-services.json
+          echo $FIREBASE_STAGE | base64 -di > ./koin/src/debug/google-services.json
+          for file in $(find . -name 'google-services.json')
+          do
+           echo $file
+          done
 
       - name: Kover - Unit Test with Coverage
         run: ./gradlew koverXmlReport
@@ -84,11 +154,11 @@ jobs:
       - name: Update Firebase
         env:
           FIREBASE: ${{ secrets.FIREBASE }}
-          FIREBASE_DEBUG: ${{ secrets.FIREBASE_DEBUG }}
+          FIREBASE_STAGE: ${{ secrets.FIREBASE_STAGE }}
         run: |
           mkdir -p ./koin/src/debug
           echo $FIREBASE | base64 -di > ./koin/google-services.json
-          echo $FIREBASE_DEBUG | base64 -di > ./koin/src/debug/google-services.json
+          echo $FIREBASE_STAGE | base64 -di > ./koin/src/debug/google-services.json
           for file in $(find . -name 'google-services.json')
           do
            echo $file
@@ -101,15 +171,25 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: kover-report
-          path: ./artifacts/kover
+          path: .
+
+      - name: Download detekt Report
+        uses: actions/download-artifact@v4
+        with:
+          name: detekt-report
+          path: .
+
+      - name: Download ktlint Report
+        uses: actions/download-artifact@v4
+        with:
+          name: ktlint-report
+          path: .
 
       - name: SonarCloud Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          REPORT_PATHS=$(find ./artifacts/kover -name "report.xml" | paste -sd,)
           ./gradlew sonar \
-            -Dsonar.coverage.jacoco.xmlReportPaths="$REPORT_PATHS" \
             -Dsonar.qualitygate.wait=true
 
   label:

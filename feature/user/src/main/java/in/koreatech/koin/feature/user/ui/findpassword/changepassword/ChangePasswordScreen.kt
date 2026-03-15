@@ -177,7 +177,7 @@ fun handleSideEffect(
 
 @Preview(showBackground = true)
 @Composable
-fun ChangePasswordScreenPreview() {
+private fun ChangePasswordScreenPreview() {
     ChangePasswordScreenImpl(
         password = "password123",
         isPasswordValid = true,

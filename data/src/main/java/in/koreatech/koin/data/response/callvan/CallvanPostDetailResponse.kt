@@ -30,6 +30,8 @@ data class CallvanPostDetailResponse(
         @SerializedName("nickname")
         val nickname: String,
         @SerializedName("is_me")
-        val isMe: Boolean
+        val isMe: Boolean,
+        @SerializedName("is_reported")
+        val isReported: Boolean
     )
 }

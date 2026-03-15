@@ -117,6 +117,6 @@ fun BannerA(
 
 @Preview
 @Composable
-fun BannerPreview() {
+private fun BannerPreview() {
     BannerA(persistentListOf(), 0)
 }
