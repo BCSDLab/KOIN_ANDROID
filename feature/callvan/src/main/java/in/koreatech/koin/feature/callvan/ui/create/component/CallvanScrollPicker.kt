@@ -13,8 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,12 +48,12 @@ fun CallvanScrollPicker(
     }
 
     val density = LocalDensity.current
-    val clampedIndex = remember(selectedIndex, items.size) {
-        selectedIndex.coerceIn(0, items.lastIndex)
-    }
-    val listState = rememberLazyListState(initialFirstVisibleItemIndex = clampedIndex)
+    val listState = rememberLazyListState(
+        initialFirstVisibleItemIndex = selectedIndex.coerceIn(0, items.lastIndex)
+    )
     val snappingLayout = rememberSnapFlingBehavior(listState)
     val latestOnIndexChange by rememberUpdatedState(onIndexChange)
+    var isProgrammaticScroll by remember { mutableStateOf(false) }
 
     val currentSelectedIndex by remember(density, items.size, itemHeight) {
         derivedStateOf {
@@ -68,7 +70,7 @@ fun CallvanScrollPicker(
         snapshotFlow { listState.isScrollInProgress }
             .collect { isScrolling ->
                 if (isScrolling) {
-                    hasScrollStarted = true
+                    if (!isProgrammaticScroll) hasScrollStarted = true
                 } else if (hasScrollStarted) {
                     hasScrollStarted = false
                     latestOnIndexChange(currentSelectedIndex)
@@ -83,7 +85,12 @@ fun CallvanScrollPicker(
 
         val target = selectedIndex.coerceIn(0, items.lastIndex)
         if (listState.firstVisibleItemIndex != target || listState.firstVisibleItemScrollOffset != 0) {
-            listState.scrollToItem(target)
+            isProgrammaticScroll = true
+            try {
+                listState.scrollToItem(target)
+            } finally {
+                isProgrammaticScroll = false
+            }
         }
     }
 
@@ -93,7 +100,7 @@ fun CallvanScrollPicker(
         contentPadding = PaddingValues(vertical = itemHeight),
         modifier = modifier.height(itemHeight * 3)
     ) {
-        itemsIndexed(items) { index, item ->
+        itemsIndexed(items, key = { _, item -> item }) { index, item ->
             val isSelected by remember(index) { derivedStateOf { index == currentSelectedIndex } }
             Box(
                 modifier = Modifier
