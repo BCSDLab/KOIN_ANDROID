@@ -91,6 +91,6 @@ fun FindPasswordCompleteScreen() {
 
 @Preview(showBackground = true)
 @Composable
-fun FindPasswordCompleteScreenPreview() {
+private fun FindPasswordCompleteScreenPreview() {
     FindPasswordCompleteScreen()
 }

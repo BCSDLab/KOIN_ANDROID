@@ -27,6 +27,7 @@
     <string name="callvan_detail_destination">도착: %1$s</string>
     <string name="callvan_detail_me_suffix">(나)</string>
     <string name="callvan_detail_participant_name_me">%1$s (나)</string>
+    <string name="callvan_detail_participant_reported">(신고됨)</string>
     <string name="callvan_detail_enter_chat">단체 채팅방 입장</string>
     <string name="callvan_detail_participant_report">신고하기</string>
 
@@ -53,6 +54,7 @@
     <string name="callvan_report_reason_profanity_title">욕설</string>
     <string name="callvan_report_reason_profanity_description">욕설, 성적인 언어, 비방하는 언어를 사용했습니다.</string>
     <string name="callvan_report_reason_other_title">기타</string>
+    <string name="callvan_report_submit_success">사용자가 신고되었습니다.</string>
 
     <string name="callvan_create_top_bar">콜밴팟</string>
     <string name="callvan_create_departure_label">출발</string>
@@ -85,4 +87,10 @@
     <string name="callvan_location_station">천안역</string>
     <string name="callvan_location_asan_station">천안아산역</string>
     <string name="callvan_location_custom">기타</string>
+
+    <string name="callvan_report_error_image_upload_failed">이미지 업로드에 실패했습니다.</string>
+    <string name="callvan_report_error_self">본인을 신고할 수 없습니다.</string>
+    <string name="callvan_report_error_already_pending">이미 신고가 접수된 사용자입니다.</string>
+    <string name="callvan_report_error_only_participant">같은 콜밴 참여자만 신고할 수 있습니다.</string>
+    <string name="callvan_report_error_failed">신고에 실패했습니다. 다시 시도해주세요.</string>
 </resources>

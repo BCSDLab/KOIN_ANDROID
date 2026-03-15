@@ -7,11 +7,13 @@ import `in`.koreatech.koin.domain.model.callvan.CallvanPostDetail
 data class CallvanDetailParticipantUiItem(
     val id: Int,
     val name: String,
-    val isMe: Boolean
+    val isMe: Boolean,
+    val isReported: Boolean
 )
 
 fun CallvanPostDetail.CallvanParticipant.toUiItem() = CallvanDetailParticipantUiItem(
     id = userId,
     name = nickname,
-    isMe = isMe
+    isMe = isMe,
+    isReported = isReported
 )

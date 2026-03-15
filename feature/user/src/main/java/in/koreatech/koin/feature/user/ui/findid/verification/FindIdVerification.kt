@@ -393,7 +393,7 @@ fun handleSideEffect(
 
 @Preview(showBackground = true)
 @Composable
-fun FindPasswordByVerificationMethodPreview() {
+private fun FindPasswordByVerificationMethodPreview() {
     FindIdVerificationImpl(
         isSms = true,
         verificationMethod = "test@test.com",

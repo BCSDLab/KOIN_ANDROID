@@ -188,7 +188,7 @@ fun ChatTextField(
 
 @Preview
 @Composable
-fun ChatInputPreview() {
+private fun ChatInputPreview() {
     KoinSurface {
         ChatInput(
             modifier = Modifier,

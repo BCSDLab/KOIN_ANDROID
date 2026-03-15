@@ -317,7 +317,7 @@ fun DiningEmptyContent() {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewDiningWidget() {
+private fun PreviewDiningWidget() {
     KoinTheme {
         DiningWidget(
             selectedPosition = 0,

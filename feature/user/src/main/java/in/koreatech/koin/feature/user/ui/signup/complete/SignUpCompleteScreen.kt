@@ -98,6 +98,6 @@ fun SignUpCompleteScreen(
 
 @Preview
 @Composable
-fun SignUpCompleteScreenPreview() {
+private fun SignUpCompleteScreenPreview() {
     SignUpCompleteScreen()
 }

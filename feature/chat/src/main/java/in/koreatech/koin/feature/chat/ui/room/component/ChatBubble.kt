@@ -327,7 +327,7 @@ private fun ChatBubbleImage(
 
 @Preview
 @Composable
-fun ChatBubblePreview() {
+private fun ChatBubblePreview() {
     KoinSurface {
         Column {
             ChatBubble(
@@ -337,7 +337,8 @@ fun ChatBubblePreview() {
                     content = "투명 케이스가 끼워져 있었어요! \n담헌실학관 401호 앞에 떨어져있었어요",
                     timestamp = LocalDateTime.now(),
                     isImage = false,
-                    isSentByMe = true
+                    isSentByMe = true,
+                    uploadId = "preview_me"
                 )
             )
 
@@ -348,7 +349,8 @@ fun ChatBubblePreview() {
                     content = "투명 케이스가 끼워져 있었어요! \n담헌실학관 401호 앞에 떨어져있었어요",
                     timestamp = LocalDateTime.now(),
                     isImage = false,
-                    isSentByMe = false
+                    isSentByMe = false,
+                    uploadId = "preview_other"
                 )
             )
         }

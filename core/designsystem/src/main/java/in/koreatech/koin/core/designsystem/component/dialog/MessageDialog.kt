@@ -79,7 +79,7 @@ fun MessageDialog(
 
 @Preview
 @Composable
-fun PreviewMassageDialog() {
+private fun PreviewMassageDialog() {
     MessageDialog(
         title = "요일을 선택해 주세요."
     )

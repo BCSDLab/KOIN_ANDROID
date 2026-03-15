@@ -11,7 +11,6 @@ data class GroupChatMessage(
     val timestamp: String,
     val isImage: Boolean = false,
     val isSentByMe: Boolean = false,
-    val readCount: Int = 0,
     val isFirstInGroup: Boolean = true,
     val isLeftUser: Boolean = false
 )
