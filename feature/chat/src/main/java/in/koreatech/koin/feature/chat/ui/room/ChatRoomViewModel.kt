@@ -23,6 +23,7 @@ import `in`.koreatech.koin.feature.chat.ui.model.appendMessage
 import `in`.koreatech.koin.feature.chat.ui.model.mapToConvertedChatMessages
 import java.net.UnknownHostException
 import java.time.LocalDateTime
+import java.util.UUID
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -222,13 +223,13 @@ class ChatRoomViewModel @Inject constructor(
         fileUrl: String,
         mediaType: String,
         mediaSize: Long,
-        imageUri: Uri
+        uploadingImage: ConvertedChatMessage
     ) = intent {
         uploadFilesUseCase(
             preSignedUrl,
             mediaType,
             mediaSize,
-            imageUri.toString()
+            uploadingImage.content
         ).onSuccess {
             sendMessageUseCase(
                 state.articleId,
@@ -243,7 +244,7 @@ class ChatRoomViewModel @Inject constructor(
             ).onSuccess {
                 reduce {
                     state.copy(
-                        uploadingImage = state.uploadingImage.filter { it.content != imageUri.toString() }
+                        uploadingImage = state.uploadingImage.filterNot { it.uploadId == uploadingImage.uploadId }
                     )
                 }
             }.onFailure {
@@ -261,18 +262,18 @@ class ChatRoomViewModel @Inject constructor(
         fileName: String,
         imageUri: Uri
     ) = intent {
+        val uploadingImage = ConvertedChatMessage(
+            userId = state.userId,
+            userNickname = state.userNickName,
+            content = imageUri.toString(),
+            timestamp = LocalDateTime.now(),
+            isImage = true,
+            isSentByMe = true,
+            uploadId = UUID.randomUUID().toString()
+        )
         reduce {
             state.copy(
-                uploadingImage = state.uploadingImage.plus(
-                    ConvertedChatMessage(
-                        userId = state.userId,
-                        userNickname = state.userNickName,
-                        content = imageUri.toString(),
-                        timestamp = LocalDateTime.now(),
-                        isImage = true,
-                        isSentByMe = true
-                    )
-                )
+                uploadingImage = state.uploadingImage.plus(uploadingImage)
             )
         }
         getLostAndFoundPreSignedUrlUseCase(
@@ -285,7 +286,7 @@ class ChatRoomViewModel @Inject constructor(
                 fileUrl = it.first,
                 mediaType = fileType,
                 mediaSize = fileSize,
-                imageUri = imageUri
+                uploadingImage = uploadingImage
             )
         }.onFailure {
             intent {

@@ -134,7 +134,7 @@ fun ClubDetailEvents(
 
 @Preview(showBackground = true)
 @Composable
-fun ClubDetailEventsPreview() {
+private fun ClubDetailEventsPreview() {
     ClubDetailEvents(
         isDropdownExpanded = false,
         clubEvents = immutableListOf(
@@ -157,7 +157,7 @@ fun ClubDetailEventsPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun ClubDetailEventsManagerPreview() {
+private fun ClubDetailEventsManagerPreview() {
     ClubDetailEvents(
         isDropdownExpanded = false,
         clubEvents = immutableListOf(

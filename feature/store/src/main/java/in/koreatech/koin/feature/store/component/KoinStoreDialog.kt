@@ -152,7 +152,7 @@ fun KoinStoreDialog(
 
 @Preview(showBackground = true)
 @Composable
-fun KoinStoreDialogPreview() {
+private fun KoinStoreDialogPreview() {
     KoinStoreDialog(
         onDismissRequest = {},
         message = "This is a preview of the Koin Store Dialog."

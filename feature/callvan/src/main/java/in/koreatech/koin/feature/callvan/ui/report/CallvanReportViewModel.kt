@@ -1,0 +1,148 @@
+package `in`.koreatech.koin.feature.callvan.ui.report
+
+import android.net.Uri
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.error.callvan.KoinCallvanException
+import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
+import `in`.koreatech.koin.domain.usecase.callvan.ReportCallvanUserUseCase
+import `in`.koreatech.koin.domain.usecase.presignedurl.UploadImageUseCase
+import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportErrorType
+import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportReason
+import javax.inject.Inject
+import kotlinx.collections.immutable.toPersistentList
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
+
+@Suppress("TooManyFunctions")
+@HiltViewModel
+class CallvanReportViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val reportCallvanUserUseCase: ReportCallvanUserUseCase,
+    private val uploadImageUseCase: UploadImageUseCase
+) : ViewModel(), ContainerHost<CallvanReportState, CallvanReportSideEffect> {
+
+    override val container = container<CallvanReportState, CallvanReportSideEffect>(
+        CallvanReportState()
+    )
+
+    private val postId: Int = checkNotNull(savedStateHandle[KEY_POST_ID])
+    private val reportedUserId: Int = checkNotNull(savedStateHandle[KEY_REPORTED_USER_ID])
+
+    fun onNextStep() = intent {
+        if (!validateFirstStep()) return@intent
+        if (state.step < TOTAL_STEPS) {
+            reduce { state.copy(step = state.step + 1) }
+        }
+    }
+
+    fun onPreviousStep() = intent {
+        if (state.step > 1) {
+            reduce { state.copy(step = state.step - 1) }
+        }
+    }
+
+    fun onReasonSelect(reason: CallvanReportReason) = intent {
+        val updated = state.selectedReasons.toMutableList().also { list ->
+            if (reason in list) list.remove(reason) else list.add(reason)
+        }.toPersistentList()
+        reduce { state.copy(selectedReasons = updated, isOtherReasonError = false) }
+    }
+
+    fun onOtherReasonChange(text: String) = intent {
+        reduce { state.copy(otherReason = text, isOtherReasonError = false) }
+    }
+
+    fun onDetailChange(text: String) = intent {
+        reduce { state.copy(detail = text) }
+    }
+
+    fun setLoading(isLoading: Boolean) = intent {
+        reduce { state.copy(isLoading = isLoading) }
+    }
+
+    fun uploadImage(
+        mediaName: String,
+        mediaType: String,
+        mediaSize: Long,
+        imageUri: Uri
+    ) = intent {
+        uploadImageUseCase(
+            domain = PreSignedUrlDomain.CALLVAN_REPORT,
+            contentLength = mediaSize,
+            contentType = mediaType,
+            fileName = mediaName,
+            imageUri = imageUri.toString()
+        ).onSuccess { uploadedUrl ->
+            reduce {
+                state.copy(images = state.images.toPersistentList().add(uploadedUrl))
+            }
+        }.onFailure {
+            postSideEffect(CallvanReportSideEffect.ShowErrorMessage(CallvanReportErrorType.IMAGE_UPLOAD_FAILED))
+        }
+    }
+
+    fun onRemoveImage(index: Int) = intent {
+        if (index !in state.images.indices) return@intent
+        reduce {
+            state.copy(
+                images = state.images.toMutableList().also { it.removeAt(index) }.toPersistentList()
+            )
+        }
+    }
+
+    fun onSubmit() = intent {
+        if (state.isLoading) return@intent
+        if (!validateSecondStep()) {
+            onPreviousStep()
+            return@intent
+        }
+        val reasons = state.selectedReasons.map { reason ->
+            reason.name to if (reason == CallvanReportReason.OTHER) state.otherReason else null
+        }
+        reduce { state.copy(isLoading = true) }
+        reportCallvanUserUseCase(
+            postId = postId,
+            reportedUserId = reportedUserId,
+            description = state.detail.ifBlank { null },
+            reasons = reasons,
+            attachmentUrls = state.images.takeIf { it.isNotEmpty() }
+        ).onSuccess {
+            reduce { state.copy(isLoading = false) }
+            postSideEffect(CallvanReportSideEffect.SubmitSuccess)
+        }.onFailure { throwable ->
+            reduce { state.copy(isLoading = false) }
+            val errorType = when (throwable) {
+                is KoinCallvanException.CallvanReportSelfException -> CallvanReportErrorType.REPORT_SELF
+                is KoinCallvanException.CallvanReportAlreadyPendingException -> CallvanReportErrorType.REPORT_ALREADY_PENDING
+                is KoinCallvanException.CallvanReportOnlyParticipantException -> CallvanReportErrorType.REPORT_ONLY_PARTICIPANT
+                else -> CallvanReportErrorType.REPORT_FAILED
+            }
+            postSideEffect(CallvanReportSideEffect.ShowErrorMessage(errorType))
+        }
+    }
+
+    private suspend fun SimpleSyntax<CallvanReportState, CallvanReportSideEffect>.validateFirstStep(): Boolean {
+        if (state.selectedReasons.isEmpty()) return false
+        if (CallvanReportReason.OTHER in state.selectedReasons && state.otherReason.isBlank()) {
+            reduce { state.copy(isOtherReasonError = true) }
+            return false
+        }
+        return true
+    }
+
+    private suspend fun SimpleSyntax<CallvanReportState, CallvanReportSideEffect>.validateSecondStep(): Boolean {
+        return validateFirstStep()
+    }
+
+    companion object {
+        const val TOTAL_STEPS = 2
+        private const val KEY_POST_ID = "postId"
+        private const val KEY_REPORTED_USER_ID = "reportedUserId"
+    }
+}

@@ -15,6 +15,7 @@ data class CallvanPostDetail(
     data class CallvanParticipant(
         val userId: Int,
         val nickname: String,
-        val isMe: Boolean
+        val isMe: Boolean,
+        val isReported: Boolean
     )
 }

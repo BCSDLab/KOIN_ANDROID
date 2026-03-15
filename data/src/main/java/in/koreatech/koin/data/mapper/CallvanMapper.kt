@@ -81,7 +81,8 @@ fun CallvanPostDetailResponse.toCallvanPostDetail() = CallvanPostDetail(
 fun CallvanPostDetailResponse.CallvanParticipantResponse.toCallvanParticipant() = CallvanPostDetail.CallvanParticipant(
     userId = userId,
     nickname = nickname,
-    isMe = isMe
+    isMe = isMe,
+    isReported = isReported
 )
 
 fun CallvanNotificationResponse.toCallvanNotification() = CallvanNotification(

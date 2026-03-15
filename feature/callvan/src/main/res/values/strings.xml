@@ -27,6 +27,7 @@
     <string name="callvan_detail_destination">도착: %1$s</string>
     <string name="callvan_detail_me_suffix">(나)</string>
     <string name="callvan_detail_participant_name_me">%1$s (나)</string>
+    <string name="callvan_detail_participant_reported">(신고됨)</string>
     <string name="callvan_detail_enter_chat">단체 채팅방 입장</string>
     <string name="callvan_detail_participant_report">신고하기</string>
 
@@ -53,35 +54,11 @@
     <string name="callvan_report_reason_profanity_title">욕설</string>
     <string name="callvan_report_reason_profanity_description">욕설, 성적인 언어, 비방하는 언어를 사용했습니다.</string>
     <string name="callvan_report_reason_other_title">기타</string>
+    <string name="callvan_report_submit_success">사용자가 신고되었습니다.</string>
 
-    <string name="callvan_create_top_bar">콜밴팟</string>
-    <string name="callvan_create_departure_label">출발</string>
-    <string name="callvan_create_arrival_label">도착</string>
-    <string name="callvan_create_departure_placeholder">출발지 선택</string>
-    <string name="callvan_create_arrival_placeholder">도착지 선택</string>
-    <string name="callvan_create_departure_picker_question">출발지가 어디인가요?</string>
-    <string name="callvan_create_arrival_picker_question">도착지가 어디인가요?</string>
-    <string name="callvan_create_location_picker_select">선택하기</string>
-    <string name="callvan_create_location_picker_confirm_other">입력 완료</string>
-    <string name="callvan_create_date_label">출발일</string>
-    <string name="callvan_create_date_hint">출발 날짜를 선택해주세요.</string>
-    <string name="callvan_create_time_label">출발 시각</string>
-    <string name="callvan_create_time_hint">출발 시각을 선택해주세요.</string>
-    <string name="callvan_create_participants_label">참여 인원</string>
-    <string name="callvan_create_participants_hint_bold">본인을 포함한</string>
-    <string name="callvan_create_participants_hint_normal"> 참여 인원 수를 선택해주세요.</string>
-    <string name="callvan_create_picker_reset">초기화</string>
-    <string name="callvan_create_picker_confirm">확인</string>
-    <string name="callvan_create_submit_notice">※ 모든 항목을 다 작성해주세요.</string>
-    <string name="callvan_create_submit">작성 완료</string>
-
-    <string name="callvan_location_front_gate">정문</string>
-    <string name="callvan_location_back_gate">후문</string>
-    <string name="callvan_location_tennis_court">테니스장</string>
-    <string name="callvan_location_dormitory_main">본관동</string>
-    <string name="callvan_location_dormitory_sub">별관동</string>
-    <string name="callvan_location_terminal">천안 터미널</string>
-    <string name="callvan_location_station">천안역</string>
-    <string name="callvan_location_asan_station">천안아산역</string>
-    <string name="callvan_location_custom">기타</string>
+    <string name="callvan_report_error_image_upload_failed">이미지 업로드에 실패했습니다.</string>
+    <string name="callvan_report_error_self">본인을 신고할 수 없습니다.</string>
+    <string name="callvan_report_error_already_pending">이미 신고가 접수된 사용자입니다.</string>
+    <string name="callvan_report_error_only_participant">같은 콜밴 참여자만 신고할 수 있습니다.</string>
+    <string name="callvan_report_error_failed">신고에 실패했습니다. 다시 시도해주세요.</string>
 </resources>

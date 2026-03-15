@@ -70,7 +70,7 @@ fun KoinClubCategoryItem(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewKoinClubCategoryItem() {
+private fun PreviewKoinClubCategoryItem() {
     KoinClubCategoryItem(
         categoryName = "운동",
         icon = painterResource(id = R.drawable.ic_club_category_sports),
