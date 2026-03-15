@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
+import java.util.Locale
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -120,7 +121,7 @@ private fun CallvanTimePickerCard(
         listOf(amLabel, pmLabel).toImmutableList()
     }
     val hourItems = remember { (1..12).map { it.toString() }.toImmutableList() }
-    val minuteItems = remember { (0..59).map { "%02d".format(it) }.toImmutableList() }
+    val minuteItems = remember { (0..59).map { String.format(Locale.ROOT, "%02d", it) }.toImmutableList() }
 
     val amPmIndex = if (isAm) 0 else 1
     val hourIndex = (selectedHour - 1).coerceIn(0, 11)
@@ -165,23 +166,7 @@ private fun CallvanTimePickerCard(
                 )
             }
             HorizontalDivider(color = RebrandKoinTheme.colors.neutral200)
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.End)
-            ) {
-                Text(
-                    text = stringResource(R.string.callvan_create_picker_reset),
-                    style = RebrandKoinTheme.typography.medium14,
-                    color = RebrandKoinTheme.colors.primary500,
-                    modifier = Modifier.clickable(onClick = onReset)
-                )
-                Text(
-                    text = stringResource(R.string.callvan_create_picker_confirm),
-                    style = RebrandKoinTheme.typography.medium14,
-                    color = RebrandKoinTheme.colors.primary500,
-                    modifier = Modifier.clickable(onClick = onConfirm)
-                )
-            }
+            CallvanPickerFooter(onReset = onReset, onConfirm = onConfirm)
         }
     }
 }

@@ -176,23 +176,7 @@ private fun CallvanDatePickerCard(
                 )
             }
             HorizontalDivider(color = RebrandKoinTheme.colors.neutral200)
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.End)
-            ) {
-                Text(
-                    text = stringResource(R.string.callvan_create_picker_reset),
-                    style = RebrandKoinTheme.typography.medium14,
-                    color = RebrandKoinTheme.colors.primary500,
-                    modifier = Modifier.clickable(onClick = onReset)
-                )
-                Text(
-                    text = stringResource(R.string.callvan_create_picker_confirm),
-                    style = RebrandKoinTheme.typography.medium14,
-                    color = RebrandKoinTheme.colors.primary500,
-                    modifier = Modifier.clickable(onClick = onConfirm)
-                )
-            }
+            CallvanPickerFooter(onReset = onReset, onConfirm = onConfirm)
         }
     }
 }
