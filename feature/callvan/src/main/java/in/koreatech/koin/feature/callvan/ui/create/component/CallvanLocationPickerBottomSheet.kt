@@ -54,7 +54,7 @@ fun CallvanLocationPickerBottomSheet(
             if (initialSelection == CallvanLocationOption.CUSTOM) initialCustomText.orEmpty() else ""
         )
     }
-    val isOtherSelected by remember { derivedStateOf { selectedLocation == CallvanLocationOption.CUSTOM } }
+    val isCustomSelected by remember { derivedStateOf { selectedLocation == CallvanLocationOption.CUSTOM } }
 
     CallvanBottomSheet(
         title = stringResource(
@@ -84,7 +84,7 @@ fun CallvanLocationPickerBottomSheet(
                     }
                 )
                 CallvanCustomLocationInput(
-                    visible = isOtherSelected,
+                    visible = isCustomSelected,
                     value = customText,
                     onValueChange = { customText = it }
                 )
@@ -95,7 +95,7 @@ fun CallvanLocationPickerBottomSheet(
             }
             FilledButton(
                 text = stringResource(
-                    if (isOtherSelected) {
+                    if (isCustomSelected) {
                         R.string.callvan_create_location_picker_confirm_other
                     } else {
                         R.string.callvan_create_location_picker_select
@@ -103,10 +103,10 @@ fun CallvanLocationPickerBottomSheet(
                 ),
                 onClick = {
                     selectedLocation?.let { loc ->
-                        onLocationSelected(loc, if (isOtherSelected) customText.trim() else null)
+                        onLocationSelected(loc, if (isCustomSelected) customText.trim() else null)
                     }
                 },
-                enabled = selectedLocation != null && (!isOtherSelected || customText.isNotBlank()),
+                enabled = selectedLocation != null && (!isCustomSelected || customText.isNotBlank()),
                 modifier = Modifier.fillMaxWidth(),
                 shape = RebrandKoinTheme.shapes.medium,
                 textStyle = RebrandKoinTheme.typography.bold16,
@@ -125,7 +125,7 @@ fun CallvanLocationPickerBottomSheet(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun CallvanLocationChipGroup(
-    selectedLocation: CallvanLocationOption? = null,
+    selectedLocation: CallvanLocationOption?,
     onLocationClick: (CallvanLocationOption) -> Unit = {}
 ) {
     FlowRow(
@@ -186,6 +186,7 @@ private fun CallvanCustomLocationInput(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 4.dp)
+                .clip(RebrandKoinTheme.shapes.medium)
                 .border(1.dp, RebrandKoinTheme.colors.neutral300, RebrandKoinTheme.shapes.medium)
                 .background(RebrandKoinTheme.colors.neutral0, RebrandKoinTheme.shapes.medium)
                 .padding(horizontal = 20.dp, vertical = 13.dp)
