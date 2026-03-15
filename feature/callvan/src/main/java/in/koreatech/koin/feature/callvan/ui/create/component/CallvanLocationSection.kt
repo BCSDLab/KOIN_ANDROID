@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
+import `in`.koreatech.koin.feature.callvan.ui.displayNameRes
 
 @Composable
 fun CallvanLocationSection(
@@ -73,7 +74,6 @@ fun CallvanLocationSection(
     }
 }
 
-@Suppress("LongParameterList")
 @Composable
 private fun CallvanLocationItem(
     label: String,
@@ -94,7 +94,7 @@ private fun CallvanLocationItem(
             color = RebrandKoinTheme.colors.primary500
         )
         if (location != null) {
-            val displayText = customDisplayName?.takeIf { it.isNotBlank() } ?: stringResource(location.displayNameRes)
+            val displayText = customDisplayName?.takeIf { it.isNotBlank() } ?: stringResource(location.displayNameRes())
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -194,6 +194,22 @@ private fun CallvanLocationSectionFilledPreview() {
             arrivalLocation = CallvanLocationOption.TERMINAL,
             departureCustomText = null,
             arrivalCustomText = null,
+            onDepartureClick = {},
+            onArrivalClick = {},
+            onSwap = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CallvanLocationSectionCustomPreview() {
+    RebrandKoinTheme {
+        CallvanLocationSection(
+            departureLocation = CallvanLocationOption.CUSTOM,
+            arrivalLocation = CallvanLocationOption.CUSTOM,
+            departureCustomText = "출발지",
+            arrivalCustomText = "testtesttesttest",
             onDepartureClick = {},
             onArrivalClick = {},
             onSwap = {}
