@@ -27,7 +27,6 @@ jobs:
         run: |
           echo "$FIREBASE" | base64 -di > ./koin/google-services.json  
           echo "$GOOGLE_CREDENTIALS" | base64 -di > ./google-credentials.json 
-          echo "GOOGLE_CREDENTIALS_TEXT=$(echo $(cat ./google-credentials.json ))" >> $GITHUB_ENV
           for file in $(find . -name 'google-services.json')
           do
            echo $file
