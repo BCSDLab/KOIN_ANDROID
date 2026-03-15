@@ -94,7 +94,7 @@ jobs:
               shift 2
 
               echo "Running Maestro suite: ${suite_name}"
-              adb shell screenrecord --bit-rate 4000000 "/sdcard/${suite_name}.mp4" &
+              adb shell screenrecord --bit-rate 4000000 --time-limit 170 "/sdcard/${suite_name}.mp4" &
               RECORD_PID=$!
 
               if ! maestro test "$suite_path" \
