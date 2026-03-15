@@ -93,7 +93,7 @@ fun TimetableBottomSheetCustom(
 
 @Preview(showBackground = true)
 @Composable
-fun TimetableBottomSheetCustomPreview() {
+private fun TimetableBottomSheetCustomPreview() {
     TimetableBottomSheetCustom(
         customContents = CustomContentState(),
         sheetLazyListState = rememberLazyListState()

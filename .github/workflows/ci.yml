@@ -70,7 +70,15 @@ jobs:
         if: always()
         with:
           name: detekt-report
-          path: 'build/reports/detekt/detekt.xml'
+          path: '**/build/reports/detekt/**'
+          retention-days: 7
+
+      - name: Upload ktlint Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ktlint-report
+          path: '**/build/reports/ktlint/**'
           retention-days: 7
 
   coverage:
@@ -104,7 +112,7 @@ jobs:
         if: always()
         with:
           name: kover-report
-          path: 'build/reports/kover/report.xml'
+          path: '**/build/reports/kover/**'
           retention-days: 7
 
   sonarcloud:
@@ -157,19 +165,25 @@ jobs:
           done
 
       - name: Lint
-        run: ./gradlew koin:lintDebug
+        run: ./gradlew lintDebug
 
       - name: Download Coverage Report
         uses: actions/download-artifact@v4
         with:
           name: kover-report
-          path: build/reports/kover
+          path: .
 
       - name: Download detekt Report
         uses: actions/download-artifact@v4
         with:
           name: detekt-report
-          path: build/reports/detekt
+          path: .
+
+      - name: Download ktlint Report
+        uses: actions/download-artifact@v4
+        with:
+          name: ktlint-report
+          path: .
 
       - name: SonarCloud Scan
         env:

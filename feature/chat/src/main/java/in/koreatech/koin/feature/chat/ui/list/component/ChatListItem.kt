@@ -157,7 +157,7 @@ fun ChatListItem(
 
 @Preview(showBackground = true)
 @Composable
-fun ChatListItemPreview() {
+private fun ChatListItemPreview() {
     ChatListItem(
         title = "Title",
         recentMessage = " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vitae risus condimentum leo facilisis luctus. Vestibulum viverra justo eu leo dictum, sit amet fermentum nisi facilisis. Mauris sagittis dignissim massa, ac varius enim faucibus id. Etiam tempus dolor et diam tempus consectetur. Nulla facilisi. Pellentesque ex nisi, varius eu pellentesque in, scelerisque sed nisl. Morbi tincidunt vestibulum sapien, at mattis erat tempus in. Sed consequat non ligula eget eleifend. Nulla tempor eleifend ligula sed dapibus. Nunc fringilla cursus felis. Curabitur egestas arcu non sodales mollis. ",

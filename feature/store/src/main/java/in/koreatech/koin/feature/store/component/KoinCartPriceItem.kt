@@ -124,7 +124,7 @@ fun KoinCartPriceItem(
 
 @Preview(showBackground = true)
 @Composable
-fun KoinCartPriceItemPreview() {
+private fun KoinCartPriceItemPreview() {
     KoinCartPriceItem(
         prices = listOf(
             LocalShopPrice(

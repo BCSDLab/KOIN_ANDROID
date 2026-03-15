@@ -97,7 +97,7 @@ fun DeleteCartDialog(
 
 @Composable
 @Preview
-fun DeleteCartDialogPreview() {
+private fun DeleteCartDialogPreview() {
     DeleteCartDialog(
         onConfirm = {},
         onDismiss = {},

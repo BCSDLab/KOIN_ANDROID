@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
+import `in`.koreatech.koin.feature.callvan.ui.displayNameRes
 
 @Composable
 fun CallvanLocationSection(
@@ -73,7 +74,6 @@ fun CallvanLocationSection(
     }
 }
 
-@Suppress("LongParameterList")
 @Composable
 private fun CallvanLocationItem(
     label: String,
@@ -94,14 +94,11 @@ private fun CallvanLocationItem(
             color = RebrandKoinTheme.colors.primary500
         )
         if (location != null) {
-            val displayText = customDisplayName?.takeIf { it.isNotBlank() } ?: stringResource(location.displayNameRes)
+            val displayText = customDisplayName?.takeIf { it.isNotBlank() } ?: stringResource(location.displayNameRes())
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable(
-                        onClickLabel = placeholder,
-                        onClick = onClick
-                    ),
+                    .clickable(onClick = onClick),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -118,10 +115,7 @@ private fun CallvanLocationItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(RebrandKoinTheme.colors.neutral100, RoundedCornerShape(8.dp))
-                    .clickable(
-                        onClickLabel = placeholder,
-                        onClick = onClick
-                    )
+                    .clickable(onClick = onClick)
                     .padding(horizontal = 32.dp, vertical = 8.dp),
                 contentAlignment = Alignment.Center
             ) {
@@ -136,18 +130,16 @@ private fun CallvanLocationItem(
 }
 
 @Composable
-private fun CallvanSwapButton(onClick: () -> Unit) {
-    val swapButtonDescription = stringResource(R.string.callvan_create_swap_button)
-
+private fun CallvanSwapButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
+) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .size(31.dp)
             .clip(CircleShape)
             .border(0.8.dp, RebrandKoinTheme.colors.neutral300, CircleShape)
-            .clickable(
-                onClickLabel = swapButtonDescription,
-                onClick = onClick
-            )
+            .clickable(onClick = onClick)
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_tabler_arrow_left),
@@ -194,6 +186,22 @@ private fun CallvanLocationSectionFilledPreview() {
             arrivalLocation = CallvanLocationOption.TERMINAL,
             departureCustomText = null,
             arrivalCustomText = null,
+            onDepartureClick = {},
+            onArrivalClick = {},
+            onSwap = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CallvanLocationSectionCustomPreview() {
+    RebrandKoinTheme {
+        CallvanLocationSection(
+            departureLocation = CallvanLocationOption.CUSTOM,
+            arrivalLocation = CallvanLocationOption.CUSTOM,
+            departureCustomText = "출발지",
+            arrivalCustomText = "testtesttesttest",
             onDepartureClick = {},
             onArrivalClick = {},
             onSwap = {}

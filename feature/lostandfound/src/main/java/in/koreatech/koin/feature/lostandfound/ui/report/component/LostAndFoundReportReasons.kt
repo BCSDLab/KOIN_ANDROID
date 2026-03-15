@@ -215,7 +215,7 @@ fun ReportTextField(
 
 @Preview
 @Composable
-fun PreviewLostAndFoundReportReasons() {
+private fun PreviewLostAndFoundReportReasons() {
     KoinSurface {
         LostAndFoundReportReasons(
             itemList = lostAndFoundReportReasonList,
