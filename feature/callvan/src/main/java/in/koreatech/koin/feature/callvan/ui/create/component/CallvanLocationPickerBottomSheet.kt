@@ -30,8 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
@@ -39,8 +37,8 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanBottomSheet
+import `in`.koreatech.koin.feature.callvan.ui.displayNameRes
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CallvanLocationPickerBottomSheet(
     isDeparture: Boolean,
@@ -57,13 +55,6 @@ fun CallvanLocationPickerBottomSheet(
         )
     }
     val isOtherSelected by remember { derivedStateOf { selectedLocation == CallvanLocationOption.CUSTOM } }
-    val customInputDescription = stringResource(
-        if (isDeparture) {
-            R.string.callvan_create_departure_placeholder
-        } else {
-            R.string.callvan_create_arrival_placeholder
-        }
-    )
 
     CallvanBottomSheet(
         title = stringResource(
@@ -85,67 +76,18 @@ fun CallvanLocationPickerBottomSheet(
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    CallvanLocationOption.entries.forEach { location ->
-                        val isSelected = selectedLocation == location
-                        Box(
-                            modifier = Modifier
-                                .height(34.dp)
-                                .border(
-                                    width = 1.dp,
-                                    color = if (isSelected) {
-                                        RebrandKoinTheme.colors.primary500
-                                    } else {
-                                        RebrandKoinTheme.colors.neutral300
-                                    },
-                                    shape = RoundedCornerShape(24.dp)
-                                )
-                                .clip(RoundedCornerShape(24.dp))
-                                .clickable {
-                                    selectedLocation = location
-                                    if (location != CallvanLocationOption.CUSTOM) customText = ""
-                                }
-                                .padding(horizontal = 12.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = stringResource(location.displayNameRes),
-                                style = RebrandKoinTheme.typography.medium14,
-                                color = if (isSelected) {
-                                    RebrandKoinTheme.colors.primary500
-                                } else {
-                                    RebrandKoinTheme.colors.neutral500
-                                }
-                            )
-                        }
+                CallvanLocationChipGroup(
+                    selectedLocation = selectedLocation,
+                    onLocationClick = { location ->
+                        selectedLocation = location
+                        if (location != CallvanLocationOption.CUSTOM) customText = ""
                     }
-                }
-                AnimatedVisibility(
+                )
+                CallvanCustomLocationInput(
                     visible = isOtherSelected,
-                    enter = expandVertically(),
-                    exit = shrinkVertically()
-                ) {
-                    BasicTextField(
-                        value = customText,
-                        onValueChange = { customText = it },
-                        singleLine = true,
-                        textStyle = RebrandKoinTheme.typography.regular14.copy(
-                            color = RebrandKoinTheme.colors.neutral600
-                        ),
-                        modifier = Modifier
-                            .semantics {
-                                contentDescription = customInputDescription
-                            }
-                            .fillMaxWidth()
-                            .padding(top = 4.dp)
-                            .border(1.dp, RebrandKoinTheme.colors.neutral300, RebrandKoinTheme.shapes.medium)
-                            .background(RebrandKoinTheme.colors.neutral0, RebrandKoinTheme.shapes.medium)
-                            .padding(horizontal = 20.dp, vertical = 13.dp)
-                    )
-                }
+                    value = customText,
+                    onValueChange = { customText = it }
+                )
                 HorizontalDivider(
                     color = RebrandKoinTheme.colors.neutral300,
                     thickness = 0.5.dp
@@ -177,6 +119,77 @@ fun CallvanLocationPickerBottomSheet(
                 )
             )
         }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun CallvanLocationChipGroup(
+    selectedLocation: CallvanLocationOption? = null,
+    onLocationClick: (CallvanLocationOption) -> Unit = {}
+) {
+    FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        CallvanLocationOption.entries.forEach { location ->
+            val isSelected = selectedLocation == location
+            Box(
+                modifier = Modifier
+                    .height(34.dp)
+                    .border(
+                        width = 1.dp,
+                        color = if (isSelected) {
+                            RebrandKoinTheme.colors.primary500
+                        } else {
+                            RebrandKoinTheme.colors.neutral300
+                        },
+                        shape = RoundedCornerShape(24.dp)
+                    )
+                    .clip(RoundedCornerShape(24.dp))
+                    .clickable { onLocationClick(location) }
+                    .padding(horizontal = 12.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(location.displayNameRes()),
+                    style = RebrandKoinTheme.typography.medium14,
+                    color = if (isSelected) {
+                        RebrandKoinTheme.colors.primary500
+                    } else {
+                        RebrandKoinTheme.colors.neutral500
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun CallvanCustomLocationInput(
+    visible: Boolean,
+    value: String,
+    onValueChange: (String) -> Unit = {}
+) {
+    AnimatedVisibility(
+        visible = visible,
+        enter = expandVertically(),
+        exit = shrinkVertically()
+    ) {
+        BasicTextField(
+            value = value,
+            onValueChange = onValueChange,
+            singleLine = true,
+            textStyle = RebrandKoinTheme.typography.regular14.copy(
+                color = RebrandKoinTheme.colors.neutral600
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp)
+                .border(1.dp, RebrandKoinTheme.colors.neutral300, RebrandKoinTheme.shapes.medium)
+                .background(RebrandKoinTheme.colors.neutral0, RebrandKoinTheme.shapes.medium)
+                .padding(horizontal = 20.dp, vertical = 13.dp)
+        )
     }
 }
 
