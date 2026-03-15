@@ -28,6 +28,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.chat.R
 import `in`.koreatech.koin.feature.chat.ui.groupchat.component.GroupChatContent
@@ -152,7 +154,13 @@ private fun GroupChatScreenImpl(
             showImage = showImage,
             onChatInputValueChange = onChatInputValueChange,
             onImageButtonClick = onImageButtonClick,
-            onSendClick = onSendClick,
+            onSendClick = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.Callvan.CALLVAN_CHAT_SEND,
+                    ""
+                )
+                onSendClick()
+            },
             onShowImageChange = onShowImageChange
         )
     }
