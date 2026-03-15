@@ -24,7 +24,6 @@ import `in`.koreatech.koin.feature.callvan.util.formatDateTime
 @Composable
 fun CallvanListItem(
     uiState: CallvanListUiState,
-    state: CallvanItemState,
     modifier: Modifier = Modifier,
     clickListener: CallvanListItemClickListener
 ) {
@@ -61,7 +60,7 @@ fun CallvanListItem(
         }
 
         CallvanListItemButtons(
-            state = state,
+            state = uiState.itemState,
             clickListener = clickListener
         )
     }
@@ -78,9 +77,9 @@ private fun CallvanListItemDefaultPreview() {
                 date = "2025-02-05",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8
+                maxCount = 8,
+                itemState = CallvanItemState.DEFAULT
             ),
-            state = CallvanItemState.DEFAULT,
             clickListener = object : CallvanListItemClickListener {}
         )
     }
@@ -97,9 +96,9 @@ private fun CallvanListItemJoinedPreview() {
                 date = "2025-02-05",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8
+                maxCount = 8,
+                itemState = CallvanItemState.JOINED
             ),
-            state = CallvanItemState.JOINED,
             clickListener = object : CallvanListItemClickListener {}
         )
     }
@@ -116,9 +115,9 @@ private fun CallvanListItemClosedPreview() {
                 date = "2025-02-05",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8
+                maxCount = 8,
+                itemState = CallvanItemState.CLOSED
             ),
-            state = CallvanItemState.CLOSED,
             clickListener = object : CallvanListItemClickListener {}
         )
     }
@@ -135,9 +134,9 @@ private fun CallvanListItemOwnerActivePreview() {
                 date = "2025-02-05",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8
+                maxCount = 8,
+                itemState = CallvanItemState.OWNER_ACTIVE
             ),
-            state = CallvanItemState.OWNER_ACTIVE,
             clickListener = object : CallvanListItemClickListener {}
         )
     }
@@ -154,9 +153,9 @@ private fun CallvanListItemOwnerClosedPreview() {
                 date = "2025-02-05",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8
+                maxCount = 8,
+                itemState = CallvanItemState.OWNER_CLOSED
             ),
-            state = CallvanItemState.OWNER_CLOSED,
             clickListener = object : CallvanListItemClickListener {}
         )
     }
