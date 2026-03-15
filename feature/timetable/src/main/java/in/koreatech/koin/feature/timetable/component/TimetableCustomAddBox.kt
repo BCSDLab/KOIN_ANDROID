@@ -61,6 +61,6 @@ fun TimetableCustomAddBox(
 
 @Preview
 @Composable
-fun TimetableCustomAddBoxPreview() {
+private fun TimetableCustomAddBoxPreview() {
     TimetableCustomAddBox()
 }

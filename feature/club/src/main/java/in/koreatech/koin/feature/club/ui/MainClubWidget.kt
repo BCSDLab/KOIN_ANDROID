@@ -159,7 +159,7 @@ fun MainClubWidgetB(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewMainClubWidgetA() {
+private fun PreviewMainClubWidgetA() {
     KoinTheme {
         MainClubWidgetA()
     }
@@ -167,7 +167,7 @@ fun PreviewMainClubWidgetA() {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewMainClubWidgetB() {
+private fun PreviewMainClubWidgetB() {
     KoinTheme {
         MainClubWidgetB(
             hotClubId = 0,

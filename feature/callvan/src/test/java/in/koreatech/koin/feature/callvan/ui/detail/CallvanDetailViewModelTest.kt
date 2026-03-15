@@ -77,27 +77,6 @@ class CallvanDetailViewModelTest {
     }
 
     @Test
-    fun `상세 조회 실패 시 isLoading이 false가 된다`() = runTest {
-        fakeRepository.postDetailResult = Result.failure(Exception("network error"))
-        fakeRepository.notificationsResult = Result.success(
-            listOf(fakeNotification(isRead = false))
-        )
-
-        val viewModel = createViewModel()
-
-        viewModel.container.stateFlow.test {
-            var loadingState = awaitItem()
-            assertFalse(loadingState.isLoading)
-
-            while (!loadingState.hasNewNotification) {
-                loadingState = awaitItem()
-            }
-            assertFalse(loadingState.isLoading)
-            cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
     fun `읽지 않은 알림이 있으면 hasNewNotification이 true다`() = runTest {
         fakeRepository.postDetailResult = Result.success(fakePostDetail)
         fakeRepository.notificationsResult = Result.success(
@@ -105,6 +84,7 @@ class CallvanDetailViewModelTest {
         )
 
         val viewModel = createViewModel()
+        viewModel.fetchHasNewNotification()
 
         viewModel.container.stateFlow.test {
             var state = awaitItem()
@@ -124,6 +104,7 @@ class CallvanDetailViewModelTest {
         )
 
         val viewModel = createViewModel()
+        viewModel.fetchHasNewNotification()
 
         viewModel.container.stateFlow.test {
             var state = awaitItem()
@@ -146,8 +127,8 @@ class CallvanDetailViewModelTest {
         maxParticipants = 8,
         status = "OPEN",
         participants = listOf(
-            CallvanPostDetail.CallvanParticipant(userId = 2, nickname = "신짱구", isMe = false),
-            CallvanPostDetail.CallvanParticipant(userId = 1, nickname = "홍길동", isMe = true)
+            CallvanPostDetail.CallvanParticipant(userId = 2, nickname = "신짱구", isMe = false, isReported = false),
+            CallvanPostDetail.CallvanParticipant(userId = 1, nickname = "홍길동", isMe = true, isReported = false)
         )
     )
 

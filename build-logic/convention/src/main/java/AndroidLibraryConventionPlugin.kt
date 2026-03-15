@@ -3,12 +3,14 @@ import `in`.koreatech.convention.configureAndroidLint
 import `in`.koreatech.convention.configureAndroidLibrary
 import `in`.koreatech.convention.configureAndroidTest
 import `in`.koreatech.convention.configureDetekt
+import `in`.koreatech.convention.configureKtlint
 import `in`.koreatech.convention.configureTest
 import `in`.koreatech.convention.libs
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.jlleitschuh.gradle.ktlint.KtlintExtension
 
 internal class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -30,6 +32,10 @@ internal class AndroidLibraryConventionPlugin : Plugin<Project> {
 
             extensions.configure<DetektExtension> {
                 configureDetekt(this)
+            }
+
+            extensions.configure<KtlintExtension> {
+                configureKtlint(this)
             }
         }
     }

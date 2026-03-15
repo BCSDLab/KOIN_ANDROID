@@ -585,6 +585,10 @@ abstract class KoinNavigationDrawerActivity :
     }
 
     private fun goToCallvanActivity() {
+        EventLogger.logCampusClickEvent(
+            AnalyticsConstant.Label.Callvan.CALLVAN_HAMBURGER,
+            "콜밴팟 모집"
+        )
         if (menuState != MenuState.Main) {
             goToActivityFinish(Intent(this, CallvanActivity::class.java))
         } else {
