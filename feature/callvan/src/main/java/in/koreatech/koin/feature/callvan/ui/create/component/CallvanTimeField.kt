@@ -120,8 +120,12 @@ private fun CallvanTimePickerCard(
     val amPmItems = remember(amLabel, pmLabel) {
         listOf(amLabel, pmLabel).toImmutableList()
     }
-    val hourItems = remember { (1..12).map { it.toString() }.toImmutableList() }
-    val minuteItems = remember { (0..59).map { String.format(Locale.ROOT, "%02d", it) }.toImmutableList() }
+    val hourItems = remember {
+        (1..12).map { it.toString() }.toImmutableList()
+    }
+    val minuteItems = remember {
+        (0..59).map { String.format(Locale.ROOT, "%02d", it) }.toImmutableList()
+    }
 
     val amPmIndex = if (isAm) 0 else 1
     val hourIndex = (selectedHour - 1).coerceIn(0, 11)
