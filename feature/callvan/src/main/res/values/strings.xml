@@ -87,4 +87,24 @@
     <string name="callvan_report_error_already_pending">이미 신고가 접수된 사용자입니다.</string>
     <string name="callvan_report_error_only_participant">같은 콜밴 참여자만 신고할 수 있습니다.</string>
     <string name="callvan_report_error_failed">신고에 실패했습니다. 다시 시도해주세요.</string>
+
+    <string name="callvan_btn_join">참여하기</string>
+    <string name="callvan_btn_cancel_join">참여취소</string>
+    <string name="callvan_btn_closed">모집마감</string>
+    <string name="callvan_btn_close">마감하기</string>
+    <string name="callvan_btn_re_recruit">재모집</string>
+    <string name="callvan_btn_complete">이용완료</string>
+
+    <string name="callvan_login_title">콜밴팟에 참여하려면 로그인이 필요해요.</string>
+    <string name="callvan_login_login">로그인하기</string>
+    <string name="callvan_login_close">닫기</string>
+    <string name="callvan_confirm_join_title">해당 콜밴팟에 참여할까요?</string>
+    <string name="callvan_confirm_cancel_title">해당 콜밴팟 참여를 취소할까요?</string>
+    <string name="callvan_confirm_close_title">해당 콜밴팟 모집을 마감할까요?</string>
+    <string name="callvan_confirm_reopen_title">해당 콜밴팟을 다시 모집할까요?</string>
+    <string name="callvan_confirm_positive">예</string>
+    <string name="callvan_confirm_negative">아니요</string>
+    <string name="callvan_complete_title">이용 완료 상태로 변경할까요?</string>
+    <string name="callvan_complete_description">• 콜밴 이용(탑승, 정산)이 모두 완료된 뒤 눌러야 합니다.\n• 완료 시 대화 내역이 삭제되며, 되돌릴 수 없습니다.</string>
+    <string name="write_btn">모집하기</string>
 </resources>
