@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanRouteInfo
 
 @Composable
@@ -26,7 +26,7 @@ fun CallvanDetailRouteCard(
         modifier = modifier
             .fillMaxWidth()
             .border(
-                border = BorderStroke(1.dp, KoinTheme.colors.neutral200),
+                border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral200),
                 shape = RoundedCornerShape(8.dp)
             )
             .padding(horizontal = 16.dp, vertical = 12.dp),
@@ -39,8 +39,8 @@ fun CallvanDetailRouteCard(
         )
         Text(
             text = dateTime,
-            style = KoinTheme.typography.regular14,
-            color = KoinTheme.colors.neutral600
+            style = RebrandKoinTheme.typography.regular14,
+            color = RebrandKoinTheme.colors.neutral600
         )
     }
 }

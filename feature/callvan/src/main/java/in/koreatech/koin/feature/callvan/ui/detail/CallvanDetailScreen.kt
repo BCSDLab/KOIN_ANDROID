@@ -129,7 +129,7 @@ fun CallvanDetailScreenImpl(
                 text = stringResource(R.string.callvan_detail_enter_chat),
                 onClick = {
                     EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.Callvan.CALLVAN_CHAT_SEND,
+                        AnalyticsConstant.Label.Callvan.CALLVAN_CHAT_ENTRY,
                         ""
                     )
                     onEnterChatClick()
@@ -183,14 +183,14 @@ fun CallvanDetailScreenImpl(
 
                 itemsIndexed(participants, key = { _, participant -> participant.id }) { index, participant ->
                     if (index > 0) {
-                        HorizontalDivider(color = KoinTheme.colors.neutral200)
+                        HorizontalDivider(color = RebrandKoinTheme.colors.neutral200)
                     }
                     CallvanDetailParticipantItem(
                         participant = participant,
                         tint = callvanPersonIconColor(participantColorIndices[index]),
                         menuItems = persistentListOf(
                             CallvanDropdownMenuItem(
-                                text = { stringResource(R.string.callvan_detail_participant_report) },
+                                text = stringResource(R.string.callvan_detail_participant_report),
                                 icon = {
                                     Icon(
                                         imageVector = ImageVector.vectorResource(R.drawable.ic_siren),
@@ -228,20 +228,20 @@ private fun ParticipantsHeader(
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = stringResource(R.string.callvan_detail_participants_header),
-            style = KoinTheme.typography.medium18,
-            color = KoinTheme.colors.neutral800
+            style = RebrandKoinTheme.typography.medium18,
+            color = RebrandKoinTheme.colors.neutral800
         )
         Spacer(modifier = Modifier.width(8.dp))
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_participants),
             contentDescription = null,
-            tint = KoinTheme.colors.neutral600,
+            tint = RebrandKoinTheme.colors.neutral600,
             modifier = Modifier.size(20.dp)
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = stringResource(R.string.callvan_detail_participants_count, currentParticipants, maxParticipants),
-            style = KoinTheme.typography.regular14.copy(color = KoinTheme.colors.neutral600)
+            style = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral600)
         )
     }
 }

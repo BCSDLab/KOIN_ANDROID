@@ -187,7 +187,7 @@ object AnalyticsConstant {
             const val MAIN_CALLVAN_WRITE = "main_callvan_write"
             const val CALLVAN_HAMBURGER = "hamburger"
             const val CALLVAN_CHAT_SEND = "callvan_chat_send"
-            const val CALLVAN_CHAT_ENRTY = "callvan_chat_entry"
+            const val CALLVAN_CHAT_ENTRY = "callvan_chat_entry"
         }
     }
 
