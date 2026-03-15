@@ -1,0 +1,19 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin
+---
+- runFlow: ../common/open_drawer.yaml
+- tapOn:
+    id: "${APP_ID}:id/navi_item_bus_timetable"
+- waitForAnimationToEnd:
+    timeout: 8000
+- assertVisible: "버스 시간표"
+- assertVisible: "셔틀버스 시간표"
+- pressKey: BACK
+- runFlow: ../common/open_drawer.yaml
+- tapOn:
+    id: "${APP_ID}:id/navi_item_bus_search"
+- waitForAnimationToEnd:
+    timeout: 8000
+- assertVisible: "교통편 조회하기"
+- assertVisible: "출발지 선택"
