@@ -43,7 +43,6 @@ import `in`.koreatech.koin.feature.callvan.enums.CallvanFilterType.StatusesType
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanBottomSheet
 import `in`.koreatech.koin.feature.callvan.ui.list.FilterBottomSheetActions
 import `in`.koreatech.koin.feature.callvan.ui.list.FilterBottomSheetState
-import kotlin.collections.map
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -58,10 +57,10 @@ fun FilterBottomSheet(
     selectedDeparturesType: ImmutableList<DeparturesFilterType>,
     onApply: (SortType, StatusesType, ImmutableList<DeparturesFilterType>, ImmutableList<ArrivalsFilterType>) -> Unit
 ) {
-    var selectedSortType by remember { mutableStateOf(selectedSortType) }
-    var selectedStatusesType by remember { mutableStateOf(selectedStatusesType) }
-    var selectedArrivalsType by remember { mutableStateOf(selectedArrivalsType) }
-    var selectedDeparturesType by remember { mutableStateOf(selectedDeparturesType) }
+    var currentSortType by remember { mutableStateOf(selectedSortType) }
+    var currentStatusesType by remember { mutableStateOf(selectedStatusesType) }
+    var currentArrivalsType by remember { mutableStateOf(selectedArrivalsType) }
+    var currentDeparturesType by remember { mutableStateOf(selectedDeparturesType) }
 
     CallvanBottomSheet(
         title = stringResource(R.string.filter_container),
@@ -70,52 +69,28 @@ fun FilterBottomSheet(
     ) {
         FilterBottomSheetContent(
             state = FilterBottomSheetState(
-                selectedSortType = selectedSortType,
-                selectedStatusesType = selectedStatusesType,
-                selectedDeparturesType = selectedDeparturesType,
-                selectedArrivalsType = selectedArrivalsType
+                selectedSortType = currentSortType,
+                selectedStatusesType = currentStatusesType,
+                selectedDeparturesType = currentDeparturesType,
+                selectedArrivalsType = currentArrivalsType
             ),
             actions = FilterBottomSheetActions(
-                onSortTypeChange = { selectedSortType = it as SortType },
-                onStatusesTypeChange = { selectedStatusesType = it as StatusesType },
-                onArrivalsTypeChange = {
-                    val newSelected = it.map { type -> type as ArrivalsFilterType }
-                    selectedArrivalsType = if (
-                        selectedArrivalsType.size == 1 &&
-                        selectedArrivalsType.first() == ArrivalsFilterType.All
-                    ) {
-                        (newSelected - ArrivalsFilterType.All).toPersistentList()
-                    } else if (ArrivalsFilterType.All in newSelected) {
-                        persistentListOf(ArrivalsFilterType.All)
-                    } else {
-                        newSelected.toPersistentList()
-                    }
-                },
-                onDeparturesTypeChange = {
-                    val newSelected = it.map { type -> type as DeparturesFilterType }
-                    selectedDeparturesType = if (
-                        selectedDeparturesType.size == 1 &&
-                        selectedDeparturesType.first() == DeparturesFilterType.All
-                    ) {
-                        (newSelected - DeparturesFilterType.All).toPersistentList()
-                    } else if (DeparturesFilterType.All in newSelected) {
-                        persistentListOf(DeparturesFilterType.All)
-                    } else {
-                        newSelected.toPersistentList()
-                    }
-                },
+                onSortTypeChange = { currentSortType = it },
+                onStatusesTypeChange = { currentStatusesType = it },
+                onArrivalsTypeChange = { currentArrivalsType = it },
+                onDeparturesTypeChange = { currentDeparturesType = it },
                 onReset = {
-                    selectedSortType = SortType.LatestDesc
-                    selectedStatusesType = StatusesType.All
-                    selectedDeparturesType = persistentListOf(DeparturesFilterType.All)
-                    selectedArrivalsType = persistentListOf(ArrivalsFilterType.All)
+                    currentSortType = SortType.LatestDesc
+                    currentStatusesType = StatusesType.All
+                    currentDeparturesType = persistentListOf(DeparturesFilterType.All)
+                    currentArrivalsType = persistentListOf(ArrivalsFilterType.All)
                 },
                 onApplyClick = {
                     onApply(
-                        selectedSortType,
-                        selectedStatusesType,
-                        selectedDeparturesType,
-                        selectedArrivalsType
+                        currentSortType,
+                        currentStatusesType,
+                        currentDeparturesType,
+                        currentArrivalsType
                     )
                     onDismissRequest()
                 }
@@ -175,6 +150,7 @@ fun FilterBottomSheetContent(
                     DeparturesFilterType.AsanStation
                 ),
                 selectedItems = state.selectedDeparturesType,
+                allItem = DeparturesFilterType.All,
                 onItemSelected = actions.onDeparturesTypeChange
             )
             HorizontalDivider(color = KoinTheme.colors.neutral300)
@@ -188,6 +164,7 @@ fun FilterBottomSheetContent(
                     ArrivalsFilterType.AsanStation
                 ),
                 selectedItems = state.selectedArrivalsType,
+                allItem = ArrivalsFilterType.All,
                 onItemSelected = actions.onArrivalsTypeChange
             )
             HorizontalDivider(color = KoinTheme.colors.neutral300)
@@ -236,11 +213,11 @@ fun FilterBottomSheetContent(
 }
 
 @Composable
-fun FilterSection(
+fun <T : CallvanFilterType> FilterSection(
     title: String,
-    items: ImmutableList<CallvanFilterType>,
-    selectedItem: CallvanFilterType,
-    onItemSelected: (CallvanFilterType) -> Unit
+    items: ImmutableList<T>,
+    selectedItem: T,
+    onItemSelected: (T) -> Unit
 ) {
     Column(modifier = Modifier.padding(vertical = 12.dp)) {
         Text(
@@ -263,14 +240,14 @@ fun FilterSection(
         }
     }
 }
-private const val AT_LEAST_COUNT = 1
 
 @Composable
-fun FilterDuplicateSection(
+fun <T : CallvanFilterType> FilterDuplicateSection(
     title: String,
-    items: ImmutableList<CallvanFilterType>,
-    selectedItems: ImmutableList<CallvanFilterType>,
-    onItemSelected: (ImmutableList<CallvanFilterType>) -> Unit
+    items: ImmutableList<T>,
+    selectedItems: ImmutableList<T>,
+    allItem: T,
+    onItemSelected: (ImmutableList<T>) -> Unit
 ) {
     Column(modifier = Modifier.padding(vertical = 12.dp)) {
         Row(
@@ -297,17 +274,14 @@ fun FilterDuplicateSection(
                     text = stringResource(item.stringRes),
                     isSelected = item in selectedItems,
                     onClick = {
-                        onItemSelected(
-                            if (item in selectedItems) {
-                                if (selectedItems.size > AT_LEAST_COUNT) {
-                                    (selectedItems - item).toPersistentList()
-                                } else {
-                                    return@FilterBottomSheetItem
-                                }
-                            } else {
-                                (selectedItems + item).toPersistentList()
+                        val newSelection = when (item) {
+                            in selectedItems -> {
+                                val removed = selectedItems.filter { it != item }.toPersistentList()
+                                removed.ifEmpty { persistentListOf(allItem) }
                             }
-                        )
+                            else -> (selectedItems.filter { it != allItem } + item).toPersistentList()
+                        }
+                        onItemSelected(newSelection)
                     }
                 )
             }
