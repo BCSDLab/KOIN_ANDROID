@@ -1,4 +1,4 @@
-    package `in`.koreatech.koin.feature.callvan.ui.list.component
+package `in`.koreatech.koin.feature.callvan.ui.list.component
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
