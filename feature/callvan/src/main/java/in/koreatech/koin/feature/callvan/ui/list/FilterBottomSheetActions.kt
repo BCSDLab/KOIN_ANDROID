@@ -1,8 +1,10 @@
 package `in`.koreatech.koin.feature.callvan.ui.list
 
-import `in`.koreatech.koin.feature.callvan.enums.CallvanFilterType
+import androidx.compose.runtime.Stable
 import kotlinx.collections.immutable.ImmutableList
+import `in`.koreatech.koin.feature.callvan.enums.CallvanFilterType
 
+@Stable
 data class FilterBottomSheetActions(
     val onSortTypeChange: (CallvanFilterType.SortType) -> Unit,
     val onStatusesTypeChange: (CallvanFilterType.StatusesType) -> Unit,
