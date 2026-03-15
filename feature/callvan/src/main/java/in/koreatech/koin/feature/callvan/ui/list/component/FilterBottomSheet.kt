@@ -217,9 +217,10 @@ fun <T : CallvanFilterType> FilterSection(
     title: String,
     items: ImmutableList<T>,
     selectedItem: T,
+    modifier: Modifier = Modifier,
     onItemSelected: (T) -> Unit
 ) {
-    Column(modifier = Modifier.padding(vertical = 12.dp)) {
+    Column(modifier = modifier.padding(vertical = 12.dp)) {
         Text(
             text = title,
             style = KoinTheme.typography.bold16,
@@ -247,9 +248,10 @@ fun <T : CallvanFilterType> FilterDuplicateSection(
     items: ImmutableList<T>,
     selectedItems: ImmutableList<T>,
     allItem: T,
+    modifier: Modifier = Modifier,
     onItemSelected: (ImmutableList<T>) -> Unit
 ) {
-    Column(modifier = Modifier.padding(vertical = 12.dp)) {
+    Column(modifier = modifier.padding(vertical = 12.dp)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -275,6 +277,7 @@ fun <T : CallvanFilterType> FilterDuplicateSection(
                     isSelected = item in selectedItems,
                     onClick = {
                         val newSelection = when (item) {
+                            allItem -> persistentListOf(allItem)
                             in selectedItems -> {
                                 val removed = selectedItems.filter { it != item }.toPersistentList()
                                 removed.ifEmpty { persistentListOf(allItem) }
