@@ -86,4 +86,13 @@
     <string name="callvan_report_error_already_pending">이미 신고가 접수된 사용자입니다.</string>
     <string name="callvan_report_error_only_participant">같은 콜밴 참여자만 신고할 수 있습니다.</string>
     <string name="callvan_report_error_failed">신고에 실패했습니다. 다시 시도해주세요.</string>
+
+    <string name="callvan_btn_join">참여하기</string>
+    <string name="callvan_btn_cancel_join">참여취소</string>
+    <string name="callvan_btn_closed">모집마감</string>
+    <string name="callvan_btn_close">마감하기</string>
+    <string name="callvan_btn_re_recruit">재모집</string>
+    <string name="callvan_btn_complete">이용완료</string>
+    <string name="ic_callvan_chat">채팅</string>
+    <string name="ic_callvan_call">전화하기</string>
 </resources>
