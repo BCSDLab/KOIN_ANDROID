@@ -1,0 +1,143 @@
+name: Android Maestro UI Tests
+
+on:
+  pull_request:
+    types: [ opened, reopened, synchronize ]
+    branches:
+      - production
+  workflow_dispatch:
+jobs:
+  maestro-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      APP_ID: in.koreatech.koin
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/gradle-setup
+        with:
+          properties: ${{ secrets.PROPERTIES }}
+
+      - name: Update Firebase
+        env:
+          FIREBASE: ${{ secrets.FIREBASE }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        run: |
+          echo $FIREBASE | base64 -di > ./koin/google-services.json  
+          echo $GOOGLE_CREDENTIALS | base64 -di > ./google-credentials.json 
+          echo "GOOGLE_CREDENTIALS_TEXT=$(echo $(cat ./google-credentials.json ))" >> $GITHUB_ENV
+          for file in $(find . -name 'google-services.json')
+          do
+           echo $file
+          done
+          for file in $(find . -name 'google-credentials.json')
+          do
+           echo $file
+          done
+
+      - name: Build release APK with Gradle
+        run: ./gradlew koin:assembleRelease
+
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: AVD cache
+        uses: actions/cache@v4
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-34
+
+      - name: Create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
+
+      - name: Install Maestro
+        run: |
+          curl -Ls "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+
+      - name: Run Maestro guest tests on Android Emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: |
+            mkdir -p recordings debug-output
+            adb uninstall in.koreatech.koin || true
+            adb uninstall in.koreatech.koin.dev || true
+            adb install -r koin/build/outputs/apk/release/koin-release.apk
+
+            overall_status=0
+
+            run_suite() {
+              local suite_path="$1"
+              local suite_name="$2"
+              shift 2
+
+              echo "Running Maestro suite: ${suite_name}"
+              adb shell screenrecord --bit-rate 4000000 "/sdcard/${suite_name}.mp4" &
+              RECORD_PID=$!
+
+              if ! maestro test "$suite_path" \
+                --format junit \
+                --output "recordings/${suite_name}-result.xml" \
+                --debug-output "debug-output/${suite_name}" \
+                "$@"; then
+                overall_status=1
+              fi
+
+              sleep 1
+              kill $RECORD_PID || true
+              sleep 2
+
+              adb pull "/sdcard/${suite_name}.mp4" "recordings/${suite_name}.mp4" || true
+              adb shell rm -f "/sdcard/${suite_name}.mp4"
+            }
+
+            run_suite ".maestro/suites/student_guest_smoke.yaml" "student_guest_smoke" -e APP_ID="$APP_ID"
+
+            exit $overall_status
+
+      - name: Upload Maestro test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-test-results
+          path: |
+            recordings/*.mp4
+            recordings/*.xml
+            debug-output/**
+          retention-days: 7
+
+      - name: Upload to Slack
+        if: failure()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: Android Maestro UI Tests
+          text: |
+            Maestro 테스트 실패.
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
