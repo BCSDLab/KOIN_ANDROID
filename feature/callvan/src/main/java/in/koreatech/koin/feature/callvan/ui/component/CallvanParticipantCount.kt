@@ -48,7 +48,7 @@ fun CallvanParticipantCount(
 
 @Preview(showBackground = true)
 @Composable
-private fun CallvanPersonCountPreview() {
+private fun CallvanParticipantCountPreview() {
     CallvanParticipantCount(
         currentCount = 1,
         maxCount = 8
@@ -57,7 +57,7 @@ private fun CallvanPersonCountPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun CallvanPersonCountFullPreview() {
+private fun CallvanParticipantCountFullPreview() {
     CallvanParticipantCount(
         currentCount = 8,
         maxCount = 8

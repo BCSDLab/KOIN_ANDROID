@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.callvan.ui.list.component
+    package `in`.koreatech.koin.feature.callvan.ui.list.component
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -25,8 +25,8 @@ import `in`.koreatech.koin.feature.callvan.util.formatDateTime
 fun CallvanListItem(
     uiState: CallvanListUiState,
     state: CallvanRouteState,
-    modifier: Modifier = Modifier,
-    clickListener: CallvanListItemClickListener
+    clickListener: CallvanListItemClickListener,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
@@ -41,6 +41,9 @@ fun CallvanListItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 12.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             with(uiState) {
