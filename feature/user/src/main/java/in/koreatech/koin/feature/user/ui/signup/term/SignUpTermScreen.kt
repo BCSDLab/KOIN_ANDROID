@@ -184,7 +184,7 @@ fun handleSideEffect(sideEffect: SignUpTermSideEffect, context: Context) {
 
 @Preview(showBackground = true)
 @Composable
-fun SignUpTermScreenPreview() {
+private fun SignUpTermScreenPreview() {
     SignUpTermScreenImpl(
         privacyTerm = "개인정보 처리방침",
         koinTerm = "코인 이용약관",

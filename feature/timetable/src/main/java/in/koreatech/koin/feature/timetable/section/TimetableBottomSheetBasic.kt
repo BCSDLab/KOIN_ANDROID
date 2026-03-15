@@ -76,7 +76,7 @@ fun TimetableBottomSheetBasic(
 
 @Preview(showBackground = true)
 @Composable
-fun TimetableBottomSheetBasicPreview() {
+private fun TimetableBottomSheetBasicPreview() {
     TimetableBottomSheetBasic(
         searchText = "",
         lectures = listOf(dummyLecture, dummyLecture.copy(id = 2, name = "컴퓨터 개발")),

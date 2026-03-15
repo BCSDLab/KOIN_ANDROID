@@ -527,7 +527,7 @@ private fun handleSideEffect(
 
 @Preview(showBackground = true)
 @Composable
-fun SignUpVerificationPreview() {
+private fun SignUpVerificationPreview() {
     SignUpVerificationImpl(
         name = "홍길동",
         isNameValid = true,

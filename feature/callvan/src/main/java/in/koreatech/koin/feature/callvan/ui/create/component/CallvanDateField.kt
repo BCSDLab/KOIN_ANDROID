@@ -109,7 +109,6 @@ fun CallvanDateField(
     }
 }
 
-@Suppress("LongParameterList")
 @Composable
 private fun CallvanDatePickerCard(
     selectedYear: Int,
@@ -123,8 +122,8 @@ private fun CallvanDatePickerCard(
     onConfirm: () -> Unit = {}
 ) {
     val currentYear = remember { Year.now().value }
-    val years = remember(currentYear) { persistentListOf("${currentYear}년", "${currentYear + 1}년") }
-    val months = (1..12).map { "${it}월" }.toPersistentList()
+    val years = remember { persistentListOf("${currentYear}년", "${currentYear + 1}년") }
+    val months = remember { (1..12).map { "${it}월" }.toPersistentList() }
     val days = remember(selectedYear, selectedMonth) {
         val daysCount = YearMonth.of(selectedYear, selectedMonth).lengthOfMonth()
         (1..daysCount).map { "${it}일" }.toPersistentList()

@@ -117,7 +117,7 @@ fun InfoRequiredFullScreen(
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun MainScreenPreview() {
+private fun MainScreenPreview() {
     MaterialTheme {
         InfoRequiredFullScreen(
             buttonText = "정보 입력하러 가기",

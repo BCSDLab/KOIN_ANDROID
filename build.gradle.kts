@@ -40,29 +40,32 @@ plugins {
     alias(libs.plugins.room) apply false
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.spotless)
-    alias(libs.plugins.kover)
+    alias(libs.plugins.kover) apply false
     alias(libs.plugins.sonarqube)
 }
 
-val reportMerge by tasks.registering(io.gitlab.arturbosch.detekt.report.ReportMergeTask::class) {
-    output.set(rootProject.layout.buildDirectory.file("reports/detekt/detekt.xml"))
+val reportsDir = subprojects.map { subproject ->
+    subproject.projectDir.absolutePath
+}.filter {
+    !it.endsWith("domain") && !it.endsWith("feature")
+}.map { subproject ->
+    "${subproject}/build/reports"
 }
 
-
-subprojects {
-    tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
-        finalizedBy(reportMerge)
-    }
-
-    reportMerge {
-        input.from(tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().map { it.xmlReportFile })
-    }
+val ktlintReports = reportsDir.joinToString(",") { subproject ->
+    "${subproject}/ktlint/ktlintMainSourceSetCheck/ktlintMainSourceSetCheck.xml"
 }
 
-kover {
-    merge {
-        allProjects()
-    }
+val lintReports = reportsDir.joinToString(",") { subproject ->
+    "${subproject}/lint-results-debug.xml"
+}
+
+val detektReports = reportsDir.joinToString(",") { subproject ->
+    "${subproject}/detekt/detekt.xml"
+}
+
+val koverReports = reportsDir.joinToString(",") { subproject ->
+    "${subproject}/kover/report.xml"
 }
 
 val sonarCoverageExclusions = listOf(
@@ -91,9 +94,10 @@ sonar {
     properties {
         property("sonar.projectKey", "BCSDLab_KOIN_ANDROID")
         property("sonar.organization", "bcsdlab")
-        property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get().asFile.absolutePath}/reports/kover/report.xml")
-        property("sonar.androidLint.reportPaths", "${projectDir.absolutePath}/koin/build/reports/lint-results*.xml")
-        property("sonar.kotlin.detekt.reportPaths", "${layout.buildDirectory.get().asFile.absolutePath}/reports/detekt/detekt.xml")
+        property("sonar.coverage.jacoco.xmlReportPaths", koverReports)
+        property("sonar.androidLint.reportPaths", lintReports)
+        property("sonar.kotlin.detekt.reportPaths", detektReports)
+        property("sonar.kotlin.ktlint.reportPaths", ktlintReports)
         property("sonar.coverage.exclusions", sonarCoverageExclusions)
     }
 }
