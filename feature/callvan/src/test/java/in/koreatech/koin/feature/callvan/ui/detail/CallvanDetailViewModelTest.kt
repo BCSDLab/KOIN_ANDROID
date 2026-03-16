@@ -104,7 +104,6 @@ class CallvanDetailViewModelTest {
         )
 
         val viewModel = createViewModel()
-        viewModel.fetchHasNewNotification()
 
         viewModel.container.stateFlow.test {
             var state = awaitItem()

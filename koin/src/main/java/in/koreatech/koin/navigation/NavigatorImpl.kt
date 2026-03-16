@@ -6,6 +6,7 @@ import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.utils.buildDeepLinkIntent
 import `in`.koreatech.koin.core.navigation.utils.buildIntent
 import `in`.koreatech.koin.core.navigation.utils.isValidDeepLink
+import `in`.koreatech.koin.feature.chat.ui.groupchat.GroupChatActivity
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
 import `in`.koreatech.koin.feature.store.StoreActivity
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
@@ -64,6 +65,12 @@ class NavigatorImpl @Inject constructor() : Navigator {
 
     override fun navigateToChatRoom(context: Context): Intent {
         return context.buildIntent(ChatRoomActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+    }
+
+    override fun navigateToGroupChat(context: Context, postId: Int): Intent {
+        return GroupChatActivity.createIntent(context, postId).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
     }
