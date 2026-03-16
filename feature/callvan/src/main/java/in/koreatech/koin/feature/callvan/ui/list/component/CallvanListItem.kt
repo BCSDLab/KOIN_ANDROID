@@ -72,7 +72,8 @@ private fun CallvanListItemDefaultPreview() {
     RebrandKoinTheme {
         CallvanListItem(
             uiState = CallvanListUiState(
-                departure = "테니스장",
+                id = 0,
+                departure ="테니스장",
                 destination = "천안 시외터미널",
                 date = "2025-02-05",
                 time = "14:00",
@@ -91,7 +92,8 @@ private fun CallvanListItemJoinedPreview() {
     RebrandKoinTheme {
         CallvanListItem(
             uiState = CallvanListUiState(
-                departure = "정문",
+                id = 0,
+                departure ="정문",
                 destination = "천안 시외터미널",
                 date = "2025-02-05",
                 time = "14:00",
@@ -110,7 +112,8 @@ private fun CallvanListItemClosedPreview() {
     RebrandKoinTheme {
         CallvanListItem(
             uiState = CallvanListUiState(
-                departure = "테니스장",
+                id = 0,
+                departure ="테니스장",
                 destination = "천안역",
                 date = "2025-02-05",
                 time = "14:00",
@@ -129,7 +132,8 @@ private fun CallvanListItemOwnerActivePreview() {
     RebrandKoinTheme {
         CallvanListItem(
             uiState = CallvanListUiState(
-                departure = "정문",
+                id = 0,
+                departure ="정문",
                 destination = "천안 시외터미널",
                 date = "2025-02-05",
                 time = "14:00",
@@ -148,7 +152,8 @@ private fun CallvanListItemOwnerClosedPreview() {
     RebrandKoinTheme {
         CallvanListItem(
             uiState = CallvanListUiState(
-                departure = "정문",
+                id = 0,
+                departure ="정문",
                 destination = "천안 시외터미널",
                 date = "2025-02-05",
                 time = "14:00",
