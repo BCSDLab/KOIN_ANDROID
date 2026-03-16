@@ -1,0 +1,11 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin
+---
+- runFlow: ../common/launch_app.yaml
+- openLink: "koin://signup/activity"
+- waitForAnimationToEnd:
+    timeout: 5000
+- assertVisible: "회원가입"
+- assertVisible: "1. 약관 동의"
+- assertVisible: "다음"
