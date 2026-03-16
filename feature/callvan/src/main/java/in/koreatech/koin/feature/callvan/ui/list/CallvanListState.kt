@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.callvan.ui.list
 
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanConfirmType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListUiState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
 import kotlinx.collections.immutable.ImmutableList
@@ -11,5 +12,9 @@ data class CallvanListState(
     val filterState: FilterBottomSheetState = FilterBottomSheetState(),
     val hasNewNotification: Boolean = false,
     val isLoading: Boolean = false,
-    val isLoginVisible: Boolean = false
+    val isLoggedIn: Boolean = false,
+    val isLoginVisible: Boolean = false,
+    val isFilterVisible: Boolean = false,
+    val pendingConfirm: Pair<CallvanConfirmType, Int>? = null,
+    val pendingCompleteIndex: Int? = null
 )

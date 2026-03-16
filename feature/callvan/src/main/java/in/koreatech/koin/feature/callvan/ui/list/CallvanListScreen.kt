@@ -10,9 +10,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,19 +57,32 @@ fun CallvanListScreen(
         viewModel.fetchHasNewNotification()
     }
 
+    LaunchedEffect(Unit) {
+        snapshotFlow { state.searchValue }
+            .debounce(SEARCH_DEBOUNCE_MS)
+            .distinctUntilChanged()
+            .collectLatest { viewModel.fetchPosts() }
+    }
+
     CallvanListScreenImpl(
         searchValue = state.searchValue,
         items = state.items,
         filterState = state.filterState,
         hasNewNotification = state.hasNewNotification,
         isLoginVisible = state.isLoginVisible,
+        isFilterVisible = state.isFilterVisible,
+        pendingConfirm = state.pendingConfirm,
+        pendingCompleteIndex = state.pendingCompleteIndex,
         onSearchValueChange = viewModel::updateSearch,
         onFilterApply = viewModel::applyFilter,
+        onFilterVisibleChange = viewModel::updateFilterVisible,
+        onPendingConfirmChange = viewModel::updatePendingConfirm,
+        onPendingCompleteIndexChange = viewModel::updatePendingCompleteIndex,
         onTopbarBackClick = onTopbarBackClick,
         onNotificationClick = onNotificationClick,
         onWriteClick = onWriteClick,
         onLoginClick = onLoginClick,
-        onLoginDismiss = viewModel::dismissLoginDialog,
+        onLoginVisibleChange = viewModel::updateLoginVisible,
         onJoin = viewModel::join,
         onCancelJoin = viewModel::cancelJoin,
         onClose = viewModel::close,
@@ -87,7 +101,13 @@ fun CallvanListScreenImpl(
     filterState: FilterBottomSheetState = FilterBottomSheetState(),
     hasNewNotification: Boolean = false,
     isLoginVisible: Boolean = false,
+    isFilterVisible: Boolean = false,
+    pendingConfirm: Pair<CallvanConfirmType, Int>? = null,
+    pendingCompleteIndex: Int? = null,
     onSearchValueChange: (String) -> Unit = {},
+    onFilterVisibleChange: (Boolean) -> Unit = {},
+    onPendingConfirmChange: (Pair<CallvanConfirmType, Int>?) -> Unit = {},
+    onPendingCompleteIndexChange: (Int?) -> Unit = {},
     onFilterApply: (
         CallvanFilterType.SortType,
         CallvanFilterType.StatusesType,
@@ -98,7 +118,7 @@ fun CallvanListScreenImpl(
     onNotificationClick: () -> Unit = {},
     onWriteClick: () -> Unit = {},
     onLoginClick: () -> Unit = {},
-    onLoginDismiss: () -> Unit = {},
+    onLoginVisibleChange: (Boolean) -> Unit = {},
     onJoin: (Int) -> Unit = {},
     onCancelJoin: (Int) -> Unit = {},
     onClose: (Int) -> Unit = {},
@@ -107,13 +127,9 @@ fun CallvanListScreenImpl(
     onCall: (Int) -> Unit = {},
     onChat: (Int) -> Unit = {}
 ) {
-    var isFilterVisible by remember { mutableStateOf(false) }
-    var pendingConfirm: Pair<CallvanConfirmType, Int>? by remember { mutableStateOf(null) }
-    var pendingCompleteIndex: Int? by remember { mutableStateOf(null) }
-
     if (isFilterVisible) {
         FilterBottomSheet(
-            onDismissRequest = { isFilterVisible = false },
+            onDismissRequest = { onFilterVisibleChange(false) },
             selectedSortType = filterState.selectedSortType,
             selectedStatusesType = filterState.selectedStatusesType,
             selectedArrivalsType = filterState.selectedArrivalsType,
@@ -141,9 +157,9 @@ fun CallvanListScreenImpl(
                     CallvanConfirmType.CLOSE -> onClose(index)
                     CallvanConfirmType.REOPEN -> onReRecruit(index)
                 }
-                pendingConfirm = null
+                onPendingConfirmChange(null)
             },
-            onDismiss = { pendingConfirm = null }
+            onDismiss = { onPendingConfirmChange(null) }
         )
     }
 
@@ -155,9 +171,9 @@ fun CallvanListScreenImpl(
             cancelText = stringResource(R.string.callvan_confirm_negative),
             onConfirm = {
                 onComplete(index)
-                pendingCompleteIndex = null
+                onPendingCompleteIndexChange(null)
             },
-            onDismiss = { pendingCompleteIndex = null }
+            onDismiss = { onPendingCompleteIndexChange(null) }
         )
     }
 
@@ -167,8 +183,11 @@ fun CallvanListScreenImpl(
             description = "",
             confirmText = stringResource(R.string.callvan_login_login),
             cancelText = stringResource(R.string.callvan_login_close),
-            onConfirm = onLoginClick,
-            onDismiss = onLoginDismiss
+            onConfirm = {
+                onLoginClick()
+                onLoginVisibleChange(false)
+            },
+            onDismiss = { onLoginVisibleChange(false) }
         )
     }
 
@@ -208,7 +227,7 @@ fun CallvanListScreenImpl(
                         onValueChange = onSearchValueChange,
                         modifier = Modifier.weight(1f)
                     )
-                    CallvanFilterChip(onClick = { isFilterVisible = true })
+                    CallvanFilterChip(onClick = { onFilterVisibleChange(true) })
                 }
             }
 
@@ -217,19 +236,19 @@ fun CallvanListScreenImpl(
                     uiState = uiState,
                     clickListener = object : CallvanListItemClickListener {
                         override fun onJoin() {
-                            pendingConfirm = Pair(CallvanConfirmType.JOIN, index)
+                            onPendingConfirmChange(Pair(CallvanConfirmType.JOIN, index))
                         }
                         override fun onCancelJoin() {
-                            pendingConfirm = Pair(CallvanConfirmType.CANCEL_JOIN, index)
+                            onPendingConfirmChange(Pair(CallvanConfirmType.CANCEL_JOIN, index))
                         }
                         override fun onClose() {
-                            pendingConfirm = Pair(CallvanConfirmType.CLOSE, index)
+                            onPendingConfirmChange(Pair(CallvanConfirmType.CLOSE, index))
                         }
                         override fun onReRecruit() {
-                            pendingConfirm = Pair(CallvanConfirmType.REOPEN, index)
+                            onPendingConfirmChange(Pair(CallvanConfirmType.REOPEN, index))
                         }
                         override fun onComplete() {
-                            pendingCompleteIndex = index
+                            onPendingCompleteIndexChange(index)
                         }
                         override fun onCall() { onCall(index) }
                         override fun onChat() { onChat(index) }
@@ -256,3 +275,5 @@ private fun CallvanListScreenPreview() {
         )
     }
 }
+
+private const val SEARCH_DEBOUNCE_MS = 250L

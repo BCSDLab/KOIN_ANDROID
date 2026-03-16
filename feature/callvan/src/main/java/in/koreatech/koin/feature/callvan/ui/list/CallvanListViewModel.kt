@@ -1,7 +1,10 @@
 package `in`.koreatech.koin.feature.callvan.ui.list
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.callvan.CallvanPostSearch
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.callvan.CloseCallvanPostUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.CompleteCallvanPostUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.GetCallvanPostsUseCase
@@ -9,14 +12,17 @@ import `in`.koreatech.koin.domain.usecase.callvan.GetNotificationsUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.JoinCallvanPostUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.LeaveCallvanPostUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.ReopenCallvanPostUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanConfirmType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanItemState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListUiState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
-import `in`.koreatech.koin.domain.model.callvan.CallvanPostSearch
 import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -30,7 +36,8 @@ class CallvanListViewModel @Inject constructor(
     private val closeCallvanPostUseCase: CloseCallvanPostUseCase,
     private val reopenCallvanPostUseCase: ReopenCallvanPostUseCase,
     private val completeCallvanPostUseCase: CompleteCallvanPostUseCase,
-    private val getNotificationsUseCase: GetNotificationsUseCase
+    private val getNotificationsUseCase: GetNotificationsUseCase,
+    private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<CallvanListState, CallvanListSideEffect> {
 
     override val container = container<CallvanListState, CallvanListSideEffect>(
@@ -39,6 +46,17 @@ class CallvanListViewModel @Inject constructor(
 
     init {
         fetchPosts()
+        initUserInfo()
+    }
+
+    private fun initUserInfo() = viewModelScope.launch {
+        getUserStatusUseCase().collectLatest { user ->
+            intent {
+                reduce {
+                    state.copy(isLoggedIn = user !is User.Anonymous)
+                }
+            }
+        }
     }
 
     internal fun fetchHasNewNotification() = intent {
@@ -52,7 +70,6 @@ class CallvanListViewModel @Inject constructor(
 
     fun updateSearch(query: String) = intent {
         reduce { state.copy(searchValue = query) }
-        fetchPosts()
     }
 
     fun applyFilter(
@@ -75,44 +92,72 @@ class CallvanListViewModel @Inject constructor(
     }
 
     fun join(index: Int) = intent {
+        if (!state.isLoggedIn) {
+            reduce { state.copy(isLoginVisible = true) }
+            return@intent
+        }
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         joinCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
     }
 
     fun cancelJoin(index: Int) = intent {
+        if (!state.isLoggedIn) {
+            reduce { state.copy(isLoginVisible = true) }
+            return@intent
+        }
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         leaveCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
     }
 
     fun close(index: Int) = intent {
+        if (!state.isLoggedIn) {
+            reduce { state.copy(isLoginVisible = true) }
+            return@intent
+        }
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         closeCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
     }
 
     fun reRecruit(index: Int) = intent {
+        if (!state.isLoggedIn) {
+            reduce { state.copy(isLoginVisible = true) }
+            return@intent
+        }
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         reopenCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
     }
 
     fun complete(index: Int) = intent {
+        if (!state.isLoggedIn) {
+            reduce { state.copy(isLoginVisible = true) }
+            return@intent
+        }
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         completeCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
     }
 
-    fun showLoginDialog() = intent {
-        reduce { state.copy(isLoginVisible = true) }
+    fun updateFilterVisible(visible: Boolean) = intent {
+        reduce { state.copy(isFilterVisible = visible) }
     }
 
-    fun dismissLoginDialog() = intent {
-        reduce { state.copy(isLoginVisible = false) }
+    fun updatePendingConfirm(pending: Pair<CallvanConfirmType, Int>?) = intent {
+        reduce { state.copy(pendingConfirm = pending) }
     }
 
-    private fun fetchPosts() = intent {
+    fun updatePendingCompleteIndex(index: Int?) = intent {
+        reduce { state.copy(pendingCompleteIndex = index) }
+    }
+
+    fun updateLoginVisible(visible: Boolean) = intent {
+        reduce { state.copy(isLoginVisible = visible) }
+    }
+
+    fun fetchPosts() = intent {
         reduce { state.copy(isLoading = true) }
         getCallvanPostsUseCase(
             author = null,
