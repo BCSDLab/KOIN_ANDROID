@@ -186,12 +186,16 @@ class ArticleDetailFragment : Fragment() {
                 getString(R.string.list)
             )
             if (!navController.popBackStack(R.id.articleListFragment, false)) {
-                navController.navigate(R.id.articleListFragment, null, navOptions {
-                    popUpTo(R.id.nav_graph_article) {
-                        inclusive = true
+                navController.navigate(
+                    R.id.articleListFragment,
+                    null,
+                    navOptions {
+                        popUpTo(R.id.nav_graph_article) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
                     }
-                    launchSingleTop = true
-                })
+                )
             }
         }
         binding.buttonToPrevArticle.setOnClickListener {
