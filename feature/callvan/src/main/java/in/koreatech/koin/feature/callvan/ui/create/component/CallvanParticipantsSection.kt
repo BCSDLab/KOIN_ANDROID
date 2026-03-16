@@ -35,12 +35,12 @@ import `in`.koreatech.koin.feature.callvan.R
 
 @Composable
 fun CallvanParticipantsSection(
-    participantsText: String,
     count: Int,
     modifier: Modifier = Modifier,
     onDecrement: () -> Unit = {},
     onIncrement: () -> Unit = {}
 ) {
+    val participantsText = stringResource(R.string.callvan_create_participants_count, count)
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -123,10 +123,11 @@ fun CallvanParticipantsSection(
 @Preview(showBackground = true)
 @Composable
 private fun CallvanParticipantsSectionPreview() {
-    CallvanParticipantsSection(
-        participantsText = "4 명",
-        count = 4,
-        onDecrement = {},
-        onIncrement = {}
-    )
+    RebrandKoinTheme {
+        CallvanParticipantsSection(
+            count = 4,
+            onDecrement = {},
+            onIncrement = {}
+        )
+    }
 }

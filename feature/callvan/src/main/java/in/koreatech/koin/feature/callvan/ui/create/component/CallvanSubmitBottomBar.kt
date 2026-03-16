@@ -63,29 +63,35 @@ fun CallvanSubmitBottomBar(
 @Preview(showBackground = true)
 @Composable
 private fun CallvanSubmitBottomBarEnabledPreview() {
-    CallvanSubmitBottomBar(
-        isFormComplete = true,
-        isSubmitting = false,
-        onSubmit = {}
-    )
+    RebrandKoinTheme {
+        CallvanSubmitBottomBar(
+            isFormComplete = true,
+            isSubmitting = false,
+            onSubmit = {}
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun CallvanSubmitBottomBarDisabledPreview() {
-    CallvanSubmitBottomBar(
-        isFormComplete = false,
-        isSubmitting = false,
-        onSubmit = {}
-    )
+    RebrandKoinTheme {
+        CallvanSubmitBottomBar(
+            isFormComplete = false,
+            isSubmitting = false,
+            onSubmit = {}
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun CallvanSubmitBottomBarLoadingPreview() {
-    CallvanSubmitBottomBar(
-        isFormComplete = true,
-        isSubmitting = true,
-        onSubmit = {}
-    )
+    RebrandKoinTheme {
+        CallvanSubmitBottomBar(
+            isFormComplete = true,
+            isSubmitting = true,
+            onSubmit = {}
+        )
+    }
 }
