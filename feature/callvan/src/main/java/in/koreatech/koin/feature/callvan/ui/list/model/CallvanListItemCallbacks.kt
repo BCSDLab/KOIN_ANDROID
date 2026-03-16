@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.callvan.ui.list.model
 import androidx.compose.runtime.Stable
 
 @Stable
+@Suppress("LongParameterList")
 class CallvanListItemCallbacks(
     val onJoin: () -> Unit = {},
     val onCancelJoin: () -> Unit = {},
