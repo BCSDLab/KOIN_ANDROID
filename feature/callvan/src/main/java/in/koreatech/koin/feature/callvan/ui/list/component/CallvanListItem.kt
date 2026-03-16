@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,7 +18,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.enums.CallvanRouteState
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanParticipantCount
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanRouteInfo
-import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemClickListener
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemCallbacks
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListUiState
 import `in`.koreatech.koin.feature.callvan.util.formatDateTime
 
@@ -25,7 +26,7 @@ import `in`.koreatech.koin.feature.callvan.util.formatDateTime
 fun CallvanListItem(
     uiState: CallvanListUiState,
     state: CallvanRouteState,
-    clickListener: CallvanListItemClickListener,
+    callbacks: CallvanListItemCallbacks,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -46,26 +47,33 @@ fun CallvanListItem(
                 .padding(end = 12.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            with(uiState) {
-                CallvanRouteInfo(departure = departure, destination = destination)
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        text = formatDateTime(date, time),
-                        style = KoinTheme.typography.regular12,
-                        color = KoinTheme.colors.neutral600
-                    )
-                    Text(text = "|", color = KoinTheme.colors.neutral300)
-                    CallvanParticipantCount(currentCount = currentCount, maxCount = maxCount)
-                }
+            val formattedDateTime = remember(uiState.date, uiState.time) {
+                formatDateTime(uiState.date, uiState.time)
+            }
+            CallvanRouteInfo(
+                departure = uiState.departure,
+                destination = uiState.destination
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = formattedDateTime,
+                    style = KoinTheme.typography.regular12,
+                    color = KoinTheme.colors.neutral600
+                )
+                Text(text = "|", color = KoinTheme.colors.neutral300)
+                CallvanParticipantCount(
+                    currentCount = uiState.currentCount,
+                    maxCount = uiState.maxCount
+                )
             }
         }
 
         CallvanListItemButtons(
             state = state,
-            clickListener = clickListener
+            callbacks = callbacks
         )
     }
 }
@@ -84,7 +92,7 @@ private fun CallvanListItemDefaultPreview() {
                 maxCount = 8
             ),
             state = CallvanRouteState.DEFAULT,
-            clickListener = object : CallvanListItemClickListener {}
+            callbacks = CallvanListItemCallbacks()
         )
     }
 }
@@ -103,7 +111,7 @@ private fun CallvanListItemJoinedPreview() {
                 maxCount = 8
             ),
             state = CallvanRouteState.JOINED,
-            clickListener = object : CallvanListItemClickListener {}
+            callbacks = CallvanListItemCallbacks()
         )
     }
 }
@@ -122,7 +130,7 @@ private fun CallvanListItemClosedPreview() {
                 maxCount = 8
             ),
             state = CallvanRouteState.CLOSED,
-            clickListener = object : CallvanListItemClickListener {}
+            callbacks = CallvanListItemCallbacks()
         )
     }
 }
@@ -141,7 +149,7 @@ private fun CallvanListItemOwnerActivePreview() {
                 maxCount = 8
             ),
             state = CallvanRouteState.OWNER_ACTIVE,
-            clickListener = object : CallvanListItemClickListener {}
+            callbacks = CallvanListItemCallbacks()
         )
     }
 }
@@ -160,7 +168,7 @@ private fun CallvanListItemOwnerClosedPreview() {
                 maxCount = 8
             ),
             state = CallvanRouteState.OWNER_CLOSED,
-            clickListener = object : CallvanListItemClickListener {}
+            callbacks = CallvanListItemCallbacks()
         )
     }
 }

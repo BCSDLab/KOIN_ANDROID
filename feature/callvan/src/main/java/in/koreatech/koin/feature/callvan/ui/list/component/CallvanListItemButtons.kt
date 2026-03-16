@@ -28,13 +28,13 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.enums.CallvanRouteState
-import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemClickListener
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemCallbacks
 
 @Composable
 fun CallvanListItemButtons(
     state: CallvanRouteState,
+    callbacks: CallvanListItemCallbacks,
     modifier: Modifier = Modifier,
-    clickListener: CallvanListItemClickListener = object : CallvanListItemClickListener {}
 ) {
     Column(
         modifier = modifier,
@@ -42,79 +42,93 @@ fun CallvanListItemButtons(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         when (state) {
+            CallvanRouteState.DEFAULT -> {
+                Spacer(modifier = Modifier.size(24.dp))
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CallvanFilledButton(
+                        text = stringResource(R.string.callvan_btn_join),
+                        onClick = { callbacks.onJoin() }
+                    )
+                }
+            }
             CallvanRouteState.JOINED -> {
-                IconButton(onClick = { clickListener.onChat() }, modifier = Modifier.size(24.dp)) {
+                IconButton(onClick = { callbacks.onChat() }, modifier = Modifier.size(24.dp)) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_callvan_chat),
                         contentDescription = stringResource(R.string.ic_callvan_chat),
                         tint = Color.Unspecified
                     )
                 }
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CallvanOutlinedButton(
+                        text = stringResource(R.string.callvan_btn_cancel_join),
+                        onClick = { callbacks.onCancelJoin() }
+                    )
+                }
             }
-            CallvanRouteState.OWNER_ACTIVE,
-            CallvanRouteState.OWNER_CLOSED -> {
-                IconButton(onClick = { clickListener.onCall() }, modifier = Modifier.size(24.dp)) {
+            CallvanRouteState.CLOSED -> {
+                Spacer(modifier = Modifier.size(24.dp))
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CallvanOutlinedButton(
+                        text = stringResource(R.string.callvan_btn_closed),
+                        onClick = {},
+                        enabled = false,
+                        contentColor = KoinTheme.colors.neutral400,
+                        borderColor = KoinTheme.colors.neutral300,
+                        borderWidth = 1.dp
+                    )
+                }
+            }
+            CallvanRouteState.OWNER_ACTIVE -> {
+                IconButton(onClick = { callbacks.onCall() }, modifier = Modifier.size(24.dp)) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_callvan_call),
                         contentDescription = stringResource(R.string.ic_callvan_call),
                         tint = Color.Unspecified
                     )
                 }
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CallvanOutlinedButton(
+                        text = stringResource(R.string.callvan_btn_close),
+                        onClick = { callbacks.onClose() }
+                    )
+                }
             }
-            else -> Spacer(modifier = Modifier.size(24.dp))
-        }
-
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            when (state) {
-                CallvanRouteState.JOINED -> CallvanOutlinedButton(
-                    text = stringResource(R.string.callvan_btn_cancel_join),
-                    onClick = { clickListener.onCancelJoin() }
-                )
-                CallvanRouteState.CLOSED -> CallvanOutlinedButton(
-                    text = stringResource(R.string.callvan_btn_closed),
-                    onClick = {},
-                    enabled = false,
-                    contentColor = KoinTheme.colors.neutral400,
-                    borderColor = KoinTheme.colors.neutral300,
-                    borderWidth = 1.dp
-                )
-                CallvanRouteState.OWNER_ACTIVE -> CallvanOutlinedButton(
-                    text = stringResource(R.string.callvan_btn_close),
-                    onClick = { clickListener.onClose() }
-                )
-                CallvanRouteState.OWNER_CLOSED -> CallvanOutlinedButton(
-                    text = stringResource(R.string.callvan_btn_re_recruit),
-                    onClick = { clickListener.onReRecruit() },
-                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
-                )
-                else -> {}
-            }
-
-            if (state == CallvanRouteState.DEFAULT || state == CallvanRouteState.OWNER_CLOSED) {
-                CallvanFilledButton(
-                    text = stringResource(
-                        if (state == CallvanRouteState.DEFAULT) {
-                            R.string.callvan_btn_join
-                        } else {
-                            R.string.callvan_btn_complete
-                        }
-                    ),
-                    onClick = {
-                        if (state == CallvanRouteState.DEFAULT) {
-                            clickListener.onJoin()
-                        } else {
-                            clickListener.onComplete()
-                        }
-                    },
-                    contentPadding = if (state == CallvanRouteState.OWNER_CLOSED) {
-                        PaddingValues(horizontal = 8.dp, vertical = 4.dp)
-                    } else {
-                        PaddingValues(horizontal = 12.dp, vertical = 4.dp)
-                    }
-                )
+            CallvanRouteState.OWNER_CLOSED -> {
+                IconButton(onClick = { callbacks.onCall() }, modifier = Modifier.size(24.dp)) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_callvan_call),
+                        contentDescription = stringResource(R.string.ic_callvan_call),
+                        tint = Color.Unspecified
+                    )
+                }
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CallvanOutlinedButton(
+                        text = stringResource(R.string.callvan_btn_re_recruit),
+                        onClick = { callbacks.onReRecruit() },
+                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+                    )
+                    CallvanFilledButton(
+                        text = stringResource(R.string.callvan_btn_complete),
+                        onClick = { callbacks.onComplete() },
+                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+                    )
+                }
             }
         }
     }
@@ -171,7 +185,10 @@ private fun CallvanOutlinedButton(
 @Composable
 private fun CallvanListItemButtonsDefaultPreview() {
     RebrandKoinTheme {
-        CallvanListItemButtons(state = CallvanRouteState.DEFAULT)
+        CallvanListItemButtons(
+            state = CallvanRouteState.DEFAULT,
+            callbacks = CallvanListItemCallbacks()
+        )
     }
 }
 
@@ -179,7 +196,10 @@ private fun CallvanListItemButtonsDefaultPreview() {
 @Composable
 private fun CallvanListItemButtonsJoinedPreview() {
     RebrandKoinTheme {
-        CallvanListItemButtons(state = CallvanRouteState.JOINED)
+        CallvanListItemButtons(
+            state = CallvanRouteState.JOINED,
+            callbacks = CallvanListItemCallbacks()
+        )
     }
 }
 
@@ -187,7 +207,10 @@ private fun CallvanListItemButtonsJoinedPreview() {
 @Composable
 private fun CallvanListItemButtonsClosedPreview() {
     RebrandKoinTheme {
-        CallvanListItemButtons(state = CallvanRouteState.CLOSED)
+        CallvanListItemButtons(
+            state = CallvanRouteState.CLOSED,
+            callbacks = CallvanListItemCallbacks()
+        )
     }
 }
 
@@ -195,7 +218,10 @@ private fun CallvanListItemButtonsClosedPreview() {
 @Composable
 private fun CallvanListItemButtonsOwnerActivePreview() {
     RebrandKoinTheme {
-        CallvanListItemButtons(state = CallvanRouteState.OWNER_ACTIVE)
+        CallvanListItemButtons(
+            state = CallvanRouteState.OWNER_ACTIVE,
+            callbacks = CallvanListItemCallbacks()
+        )
     }
 }
 
@@ -203,6 +229,9 @@ private fun CallvanListItemButtonsOwnerActivePreview() {
 @Composable
 private fun CallvanListItemButtonsOwnerClosedPreview() {
     RebrandKoinTheme {
-        CallvanListItemButtons(state = CallvanRouteState.OWNER_CLOSED)
+        CallvanListItemButtons(
+            state = CallvanRouteState.OWNER_CLOSED,
+            callbacks = CallvanListItemCallbacks()
+        )
     }
 }
