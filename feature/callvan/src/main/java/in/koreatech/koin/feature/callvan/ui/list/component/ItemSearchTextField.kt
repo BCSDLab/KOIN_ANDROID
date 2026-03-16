@@ -45,13 +45,7 @@ fun ItemSearchTextField(
             value = value,
             textStyle = textStyle,
             singleLine = true,
-            onValueChange = {
-                if (it.length < maxLength) {
-                    onValueChange(it)
-                } else {
-                    onValueChange(it.take(maxLength))
-                }
-            },
+            onValueChange = { onValueChange(it.take(maxLength)) },
             decorationBox = { innerTextField ->
                 Box {
                     if (value.isEmpty()) {
