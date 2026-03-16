@@ -34,7 +34,7 @@ import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemCallback
 fun CallvanListItemButtons(
     state: CallvanRouteState,
     callbacks: CallvanListItemCallbacks,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier,
