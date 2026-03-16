@@ -50,16 +50,17 @@ fun CallvanListItemButtons(
                 ) {
                     CallvanFilledButton(
                         text = stringResource(R.string.callvan_btn_join),
-                        onClick = { callbacks.onJoin() }
+                        onClick = callbacks.onJoin
                     )
                 }
             }
             CallvanRouteState.JOINED -> {
-                IconButton(onClick = { callbacks.onChat() }, modifier = Modifier.size(24.dp)) {
+                IconButton(onClick = callbacks.onChat) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_callvan_chat),
                         contentDescription = stringResource(R.string.ic_callvan_chat),
-                        tint = Color.Unspecified
+                        tint = Color.Unspecified,
+                        modifier = Modifier.size(24.dp)
                     )
                 }
                 Row(
@@ -68,7 +69,7 @@ fun CallvanListItemButtons(
                 ) {
                     CallvanOutlinedButton(
                         text = stringResource(R.string.callvan_btn_cancel_join),
-                        onClick = { callbacks.onCancelJoin() }
+                        onClick = callbacks.onCancelJoin
                     )
                 }
             }
@@ -89,11 +90,12 @@ fun CallvanListItemButtons(
                 }
             }
             CallvanRouteState.OWNER_ACTIVE -> {
-                IconButton(onClick = { callbacks.onCall() }, modifier = Modifier.size(24.dp)) {
+                IconButton(onClick = callbacks.onCall) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_callvan_call),
                         contentDescription = stringResource(R.string.ic_callvan_call),
-                        tint = Color.Unspecified
+                        tint = Color.Unspecified,
+                        modifier = Modifier.size(24.dp)
                     )
                 }
                 Row(
@@ -102,16 +104,17 @@ fun CallvanListItemButtons(
                 ) {
                     CallvanOutlinedButton(
                         text = stringResource(R.string.callvan_btn_close),
-                        onClick = { callbacks.onClose() }
+                        onClick = callbacks.onClose
                     )
                 }
             }
             CallvanRouteState.OWNER_CLOSED -> {
-                IconButton(onClick = { callbacks.onCall() }, modifier = Modifier.size(24.dp)) {
+                IconButton(onClick = callbacks.onCall) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_callvan_call),
                         contentDescription = stringResource(R.string.ic_callvan_call),
-                        tint = Color.Unspecified
+                        tint = Color.Unspecified,
+                        modifier = Modifier.size(24.dp)
                     )
                 }
                 Row(
@@ -120,12 +123,12 @@ fun CallvanListItemButtons(
                 ) {
                     CallvanOutlinedButton(
                         text = stringResource(R.string.callvan_btn_re_recruit),
-                        onClick = { callbacks.onReRecruit() },
+                        onClick = callbacks.onReRecruit,
                         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
                     )
                     CallvanFilledButton(
                         text = stringResource(R.string.callvan_btn_complete),
-                        onClick = { callbacks.onComplete() },
+                        onClick = callbacks.onComplete,
                         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
                     )
                 }
@@ -162,7 +165,9 @@ private fun CallvanOutlinedButton(
     enabled: Boolean = true,
     contentPadding: PaddingValues = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
     contentColor: Color = RebrandKoinTheme.colors.primary500,
+    disabledContentColor: Color = contentColor,
     borderColor: Color = RebrandKoinTheme.colors.primary500,
+    disabledBorderColor: Color = borderColor,
     borderWidth: Dp = 0.5.dp
 ) {
     OutlinedButton(
@@ -173,9 +178,9 @@ private fun CallvanOutlinedButton(
         contentPadding = contentPadding,
         colors = ButtonDefaults.outlinedButtonColors(
             contentColor = contentColor,
-            disabledContentColor = contentColor
+            disabledContentColor = disabledContentColor
         ),
-        border = BorderStroke(borderWidth, borderColor)
+        border = BorderStroke(borderWidth, if (enabled) borderColor else disabledBorderColor)
     ) {
         Text(style = KoinTheme.typography.regular12, text = text)
     }

@@ -95,4 +95,5 @@
     <string name="callvan_btn_complete">이용완료</string>
     <string name="ic_callvan_chat">채팅</string>
     <string name="ic_callvan_call">전화하기</string>
+    <string name="callvan_list_separator">|</string>
 </resources>

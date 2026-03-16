@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -27,7 +28,7 @@ fun CallvanParticipantCount(
     iconSize: Dp = 16.dp
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier.semantics(mergeDescendants = true) {},
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
@@ -49,17 +50,21 @@ fun CallvanParticipantCount(
 @Preview(showBackground = true)
 @Composable
 private fun CallvanParticipantCountPreview() {
-    CallvanParticipantCount(
-        currentCount = 1,
-        maxCount = 8
-    )
+    KoinTheme {
+        CallvanParticipantCount(
+            currentCount = 1,
+            maxCount = 8
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun CallvanParticipantCountFullPreview() {
-    CallvanParticipantCount(
-        currentCount = 8,
-        maxCount = 8
-    )
+    KoinTheme {
+        CallvanParticipantCount(
+            currentCount = 8,
+            maxCount = 8
+        )
+    }
 }

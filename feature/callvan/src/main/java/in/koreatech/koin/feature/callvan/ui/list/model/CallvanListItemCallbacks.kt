@@ -3,7 +3,7 @@ package `in`.koreatech.koin.feature.callvan.ui.list.model
 import androidx.compose.runtime.Stable
 
 @Stable
-data class CallvanListItemCallbacks(
+class CallvanListItemCallbacks(
     val onJoin: () -> Unit = {},
     val onCancelJoin: () -> Unit = {},
     val onClose: () -> Unit = {},
