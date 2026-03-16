@@ -4,12 +4,14 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.callvan.ui.detail.CallvanDetailScreen
+import `in`.koreatech.koin.feature.callvan.ui.list.CallvanListScreen
 import `in`.koreatech.koin.feature.callvan.ui.detail.CallvanDetailViewModel
 import `in`.koreatech.koin.feature.callvan.ui.notification.CallvanNotificationsScreen
 import `in`.koreatech.koin.feature.callvan.ui.report.CallvanReportScreen
@@ -18,6 +20,16 @@ fun NavGraphBuilder.koinCallvanGraph(
     navController: NavController
 ) {
     composable<CallvanNavType.CallvanMain> {
+        val navigator = rememberNavigator()
+        val context = LocalContext.current
+        CallvanListScreen(
+            onTopbarBackClick = { navController.popBackStack() },
+            onNotificationClick = { navController.navigate(CallvanNavType.CallvanNotifications) },
+            onWriteClick = { navController.navigate(CallvanNavType.CallvanCreate) },
+            onLoginClick = { context.startActivity(navigator.navigateToSignIn(context)) },
+            onChatClick = { postId -> navController.navigate(CallvanNavType.CallvanChat(postId)) },
+            onCallClick = { postId -> navController.navigate(CallvanNavType.CallvanDetail(postId)) }
+        )
     }
 
     composable<CallvanNavType.CallvanDetail> { backStackEntry ->
