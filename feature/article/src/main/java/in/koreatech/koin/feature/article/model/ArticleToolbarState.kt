@@ -11,5 +11,5 @@ enum class ArticleToolbarState(
     ARTICLE_LIST(R.string.navigation_title_article, R.menu.menu_article_list),
     ARTICLE_DETAIL(R.string.navigation_title_article),
     ARTICLE_SEARCH(R.string.navigation_title_article_search),
-    ARTICLE_KEYWORD(R.string.navigation_title_article_keyword),
+    ARTICLE_KEYWORD(R.string.navigation_title_article_keyword)
 }

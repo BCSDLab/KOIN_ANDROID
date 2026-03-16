@@ -104,7 +104,7 @@ class ArticleActivity : ActivityBase() {
                 )
             }
             null -> {
-               setNavigationGraph()
+                setNavigationGraph()
             }
         }
     }
