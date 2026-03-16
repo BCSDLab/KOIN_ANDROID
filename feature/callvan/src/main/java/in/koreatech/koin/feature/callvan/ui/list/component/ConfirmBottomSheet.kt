@@ -26,15 +26,16 @@ fun ConfirmBottomSheet(
     confirmType: ConfirmType,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
-    title: String = when (confirmType) {
+    title: String? = null
+) {
+    val resolvedTitle = title ?: when (confirmType) {
         ConfirmType.JOIN -> stringResource(R.string.callvan_confirm_join_title)
         ConfirmType.CANCEL_JOIN -> stringResource(R.string.callvan_confirm_cancel_title)
         ConfirmType.CLOSE -> stringResource(R.string.callvan_confirm_close_title)
         ConfirmType.REOPEN -> stringResource(R.string.callvan_confirm_reopen_title)
     }
-) {
     CallvanBottomSheet(
-        title = title,
+        title = resolvedTitle,
         onDismiss = onDismiss,
         showCloseButton = false
     ) {

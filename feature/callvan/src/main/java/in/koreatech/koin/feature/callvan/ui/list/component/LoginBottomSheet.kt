@@ -55,7 +55,6 @@ fun LoginBottomSheet(
                 modifier = Modifier.fillMaxWidth(),
                 shape = KoinTheme.shapes.small,
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
-
                 border = BorderStroke(1.dp, KoinTheme.colors.neutral300),
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = KoinTheme.colors.neutral600
@@ -73,40 +72,8 @@ fun LoginBottomSheet(
 @Preview
 @Composable
 private fun LoginBottomSheetPreview() {
-    CallvanBottomSheet(
-        title = "콜밴팟에 참여하려면 로그인이 필요해요.",
-        onDismiss = {},
-        showCloseButton = false
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 32.dp, end = 32.dp, top = 16.dp, bottom = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Button(
-                onClick = {},
-                modifier = Modifier.fillMaxWidth(),
-                shape = KoinTheme.shapes.small,
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = RebrandKoinTheme.colors.primary500
-                )
-            ) {
-                Text(text = "로그인하기", style = KoinTheme.typography.medium16)
-            }
-            OutlinedButton(
-                onClick = {},
-                modifier = Modifier.fillMaxWidth(),
-                shape = KoinTheme.shapes.small,
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
-                border = BorderStroke(1.dp, KoinTheme.colors.neutral300),
-                colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = KoinTheme.colors.neutral600
-                )
-            ) {
-                Text(text = "닫기", style = KoinTheme.typography.medium16)
-            }
-        }
-    }
+    LoginBottomSheet(
+        onLogin = {},
+        onDismiss = {}
+    )
 }

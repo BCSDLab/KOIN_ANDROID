@@ -50,20 +50,20 @@ fun CallvanFAB(
                     color = KoinTheme.colors.neutral50,
                     shape = RoundedCornerShape(50)
                 )
-                .padding(vertical = 8.dp, horizontal = 12.dp)
                 .noRippleClickable(onClick = onClick)
+                .padding(vertical = 8.dp, horizontal = 12.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_write_fab),
-                    contentDescription = stringResource(R.string.write_btn),
+                    contentDescription = stringResource(R.string.callvan_fab_write_btn),
                     tint = Color.Unspecified
                 )
                 Spacer(
                     modifier = Modifier.width(4.dp)
                 )
                 Text(
-                    text = stringResource(R.string.write_btn),
+                    text = stringResource(R.string.callvan_fab_write_btn),
                     style = KoinTheme.typography.medium16,
                     color = RebrandKoinTheme.colors.primary600
                 )
