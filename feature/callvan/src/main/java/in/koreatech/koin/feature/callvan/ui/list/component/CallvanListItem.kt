@@ -11,10 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.hideFromAccessibility
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.enums.CallvanRouteState
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanParticipantCount
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanRouteInfo
@@ -47,7 +51,7 @@ fun CallvanListItem(
                 .padding(end = 12.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            val formattedDateTime = remember(uiState.date, uiState.time) {
+            val formattedDateTime = remember(uiState) {
                 formatDateTime(uiState.date, uiState.time)
             }
             CallvanRouteInfo(
@@ -63,7 +67,11 @@ fun CallvanListItem(
                     style = KoinTheme.typography.regular12,
                     color = KoinTheme.colors.neutral600
                 )
-                Text(text = "|", color = KoinTheme.colors.neutral300)
+                Text(
+                    text = stringResource(R.string.callvan_list_separator),
+                    color = KoinTheme.colors.neutral600,
+                    modifier = Modifier.semantics { hideFromAccessibility() }
+                )
                 CallvanParticipantCount(
                     currentCount = uiState.currentCount,
                     maxCount = uiState.maxCount
