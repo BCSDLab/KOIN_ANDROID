@@ -60,15 +60,6 @@ class ArticleActivity : ActivityBase() {
                 R.id.articleDetailFragment -> setToolbar(ArticleToolbarState.ARTICLE_DETAIL)
                 R.id.articleSearchFragment -> setToolbar(ArticleToolbarState.ARTICLE_SEARCH)
                 R.id.articleKeywordFragment -> setToolbar(ArticleToolbarState.ARTICLE_KEYWORD)
-                R.id.articleLostAndFoundWriteLostFragment -> setToolbar(
-                    ArticleToolbarState.ARTICLE_LOSTANDFOUND_LOST_ITEM
-                )
-                R.id.articleLostAndFoundWriteFoundFragment -> setToolbar(
-                    ArticleToolbarState.ARTICLE_LOSTANDFOUND_FOUND_ITEM
-                )
-                R.id.articleLostAndFoundDetailFragment -> setToolbar(
-                    ArticleToolbarState.ARTICLE_DETAIL
-                )
             }
         }
 
@@ -80,8 +71,8 @@ class ArticleActivity : ActivityBase() {
         super.onNewIntent(intent)
     }
 
-    private fun setNavigationGraph(startBoard: Int = ArticleBoardType.ALL.id) {
-        navController.setGraph(R.navigation.nav_graph_article, bundleOf(START_BOARD to startBoard))
+    private fun setNavigationGraph() {
+        navController.setGraph(R.navigation.nav_graph_article, bundleOf(START_BOARD to ArticleBoardType.ALL.id))
     }
 
     // 지정된 프래그먼트로 이동 (extra로 전달받은 경우에만)
@@ -113,10 +104,7 @@ class ArticleActivity : ActivityBase() {
                 )
             }
             null -> {
-                val bundle = intent.getBundleExtra(BUNDLE_ARTICLE_EXTRA_KEY)
-                bundle?.getInt(START_BOARD)?.let {
-                    setNavigationGraph(it)
-                } ?: setNavigationGraph()
+               setNavigationGraph()
             }
         }
     }
@@ -167,6 +155,5 @@ class ArticleActivity : ActivityBase() {
     companion object {
         const val NAVIGATE_ACTION = "navigate_action"
         const val START_BOARD = "start_board"
-        const val BUNDLE_ARTICLE_EXTRA_KEY = "BUNDLE_EXTRA_KEY"
     }
 }

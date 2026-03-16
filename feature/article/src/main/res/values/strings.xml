@@ -22,7 +22,6 @@
     <string name="article_employment">취업게시판</string>
     <string name="article_anonymous">익명게시판</string>
     <string name="article_all">전체공지</string>
-    <string name="article_lost_and_found">분실물</string>
     <string name="article_normal">일반공지</string>
     <string name="article_normal_simple">일반</string>
     <string name="article_school">학사공지</string>
@@ -38,10 +37,6 @@
     <string name="article_ipp_simple">현장실습</string>
     <string name="article_student">학생생활</string>
     <string name="article_student_simple">학생</string>
-
-    <string name="fab_write">글쓰기</string>
-    <string name="fab_found">주인을 찾아요</string>
-    <string name="fab_lost">잃어버렸어요</string>
 
     <string name="keyword_see_all">모두보기</string>
     <string name="keyword_add_new">새 키워드 추가</string>
@@ -79,9 +74,6 @@
     <string name="navigation_title_article">공지사항</string>
     <string name="navigation_title_article_search">공지글 검색</string>
     <string name="navigation_title_article_keyword">키워드 관리</string>
-    <string name="navigation_title_article_write_lost_item">분실물 신고</string>
-    <string name="navigation_title_article_write_found_item">습득물 신고</string>
-    <string name="article_lost_and_found_detail_report">신고하기</string>
     <string name="previous_page">이전</string>
     <string name="next_page">다음</string>
     <string name="divider_dot">•</string>
