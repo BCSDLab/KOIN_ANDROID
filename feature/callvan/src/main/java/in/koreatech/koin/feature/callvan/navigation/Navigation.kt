@@ -16,6 +16,9 @@ import `in`.koreatech.koin.feature.callvan.ui.detail.CallvanDetailViewModel
 import `in`.koreatech.koin.feature.callvan.ui.notification.CallvanNotificationsScreen
 import `in`.koreatech.koin.feature.callvan.ui.report.CallvanReportScreen
 
+private const val STORE_CATEGORY = "STORE_CATEGORY"
+private const val STORE_CATEGORY_CALLVAN_PRODUCTION = 10
+
 fun NavGraphBuilder.koinCallvanGraph(
     navController: NavController
 ) {
@@ -28,7 +31,14 @@ fun NavGraphBuilder.koinCallvanGraph(
             onWriteClick = { navController.navigate(CallvanNavType.CallvanCreate) },
             onLoginClick = { context.startActivity(navigator.navigateToSignIn(context)) },
             onChatClick = { postId -> navController.navigate(CallvanNavType.CallvanChat(postId)) },
-            onCallClick = { postId -> navController.navigate(CallvanNavType.CallvanDetail(postId)) }
+            onCallClick = {
+                context.startActivity(
+                    navigator.navigateToStore(context).apply {
+                        putExtra(STORE_CATEGORY, STORE_CATEGORY_CALLVAN_PRODUCTION)
+                    }
+                )
+            },
+            onDetailClick = { postId -> navController.navigate(CallvanNavType.CallvanDetail(postId)) }
         )
     }
 

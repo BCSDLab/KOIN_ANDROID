@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.callvan.ui.list
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -99,6 +100,7 @@ class CallvanListViewModel @Inject constructor(
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         joinCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
+            .onFailure { Log.e("MYLOG", "join ${it}") }
     }
 
     fun cancelJoin(index: Int) = intent {
@@ -109,6 +111,7 @@ class CallvanListViewModel @Inject constructor(
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         leaveCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
+            .onFailure { Log.e("MYLOG", "joinCancle ${it}") }
     }
 
     fun close(index: Int) = intent {
@@ -119,6 +122,7 @@ class CallvanListViewModel @Inject constructor(
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         closeCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
+            .onFailure { Log.e("MYLOG", "close ${it}") }
     }
 
     fun reRecruit(index: Int) = intent {
@@ -129,6 +133,7 @@ class CallvanListViewModel @Inject constructor(
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         reopenCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
+            .onFailure { Log.e("MYLOG", "reRecruit ${it}") }
     }
 
     fun complete(index: Int) = intent {
@@ -158,6 +163,7 @@ class CallvanListViewModel @Inject constructor(
     }
 
     fun fetchPosts() = intent {
+        if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
         getCallvanPostsUseCase(
             author = null,
@@ -169,23 +175,61 @@ class CallvanListViewModel @Inject constructor(
             title = state.searchValue.ifBlank { null },
             sort = state.filterState.selectedSortType.value,
             page = 1,
-            limit = null
+            limit = PAGE_SIZE
         ).onSuccess { result ->
             reduce {
                 state.copy(
                     items = result.posts.map { it.toUiState() }.toPersistentList(),
+                    currentPage = result.currentPage,
+                    totalPage = result.totalPage,
+                    hasMoreItems = result.currentPage < result.totalPage,
                     isLoading = false
                 )
             }
         }.onFailure {
+            Log.e("MYLOG","not load ${it}")
             reduce { state.copy(isLoading = false) }
         }
+    }
+
+    fun loadMorePosts() = intent {
+        if (state.isLoadingMore || !state.hasMoreItems) return@intent
+        reduce { state.copy(isLoadingMore = true) }
+        val nextPage = state.currentPage + 1
+        getCallvanPostsUseCase(
+            author = null,
+            departures = state.filterState.selectedDeparturesType.mapNotNull { it.value }.ifEmpty { null },
+            departureKeyword = null,
+            arrivals = state.filterState.selectedArrivalsType.mapNotNull { it.value }.ifEmpty { null },
+            arrivalKeyword = null,
+            statuses = state.filterState.selectedStatusesType.value?.let { listOf(it) },
+            title = state.searchValue.ifBlank { null },
+            sort = state.filterState.selectedSortType.value,
+            page = nextPage,
+            limit = PAGE_SIZE
+        ).onSuccess { result ->
+            reduce {
+                state.copy(
+                    items = (state.items + result.posts.map { it.toUiState() }).distinctBy { it.id }.toPersistentList(),
+                    currentPage = result.currentPage,
+                    totalPage = result.totalPage,
+                    hasMoreItems = result.currentPage < result.totalPage,
+                    isLoadingMore = false
+                )
+            }
+        }.onFailure {
+            reduce { state.copy(isLoadingMore = false) }
+        }
+    }
+
+    companion object {
+        private const val PAGE_SIZE = 10
     }
 
     private fun CallvanPostSearch.CallvanPost.toItemState(): CallvanItemState = when {
         isAuthor && status == "RECRUITING" -> CallvanItemState.OWNER_ACTIVE
         isAuthor && status == "CLOSED" -> CallvanItemState.OWNER_CLOSED
-        isJoined -> CallvanItemState.JOINED
+        !isAuthor && isJoined -> CallvanItemState.JOINED
         status == "RECRUITING" -> CallvanItemState.DEFAULT
         else -> CallvanItemState.CLOSED
     }

@@ -1,7 +1,9 @@
 package `in`.koreatech.koin.feature.callvan.ui.list.component
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +27,7 @@ import `in`.koreatech.koin.feature.callvan.util.formatDateTime
 fun CallvanListItem(
     uiState: CallvanListUiState,
     modifier: Modifier = Modifier,
+    onItemClick: () -> Unit = {},
     clickListener: CallvanListItemClickListener
 ) {
     Row(
@@ -35,6 +38,8 @@ fun CallvanListItem(
                 color = KoinTheme.colors.neutral400,
                 shape = KoinTheme.shapes.small
             )
+            .clip(KoinTheme.shapes.small)
+            .clickable(onClick = onItemClick)
             .padding(horizontal = 24.dp, vertical = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically

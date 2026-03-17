@@ -1,10 +1,15 @@
 package `in`.koreatech.koin.feature.callvan.ui.list
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -14,6 +19,7 @@ import androidx.compose.runtime.snapshotFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,7 +55,8 @@ fun CallvanListScreen(
     onWriteClick: () -> Unit = {},
     onLoginClick: () -> Unit = {},
     onChatClick: (postId: Int) -> Unit = {},
-    onCallClick: (postId: Int) -> Unit = {}
+    onCallClick: (postId: Int) -> Unit = {},
+    onDetailClick: (postId: Int) -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
 
@@ -71,6 +78,8 @@ fun CallvanListScreen(
         hasNewNotification = state.hasNewNotification,
         isLoginVisible = state.isLoginVisible,
         isFilterVisible = state.isFilterVisible,
+        isLoadingMore = state.isLoadingMore,
+        hasMoreItems = state.hasMoreItems,
         pendingConfirm = state.pendingConfirm,
         pendingCompleteIndex = state.pendingCompleteIndex,
         onSearchValueChange = viewModel::updateSearch,
@@ -78,6 +87,7 @@ fun CallvanListScreen(
         onFilterVisibleChange = viewModel::updateFilterVisible,
         onPendingConfirmChange = viewModel::updatePendingConfirm,
         onPendingCompleteIndexChange = viewModel::updatePendingCompleteIndex,
+        onLoadMore = viewModel::loadMorePosts,
         onTopbarBackClick = onTopbarBackClick,
         onNotificationClick = onNotificationClick,
         onWriteClick = onWriteClick,
@@ -89,7 +99,8 @@ fun CallvanListScreen(
         onReRecruit = viewModel::reRecruit,
         onComplete = viewModel::complete,
         onCall = { index -> state.items.getOrNull(index)?.id?.let { onCallClick(it) } },
-        onChat = { index -> state.items.getOrNull(index)?.id?.let { onChatClick(it) } }
+        onChat = { index -> state.items.getOrNull(index)?.id?.let { onChatClick(it) } },
+        onDetailClick = { index -> state.items.getOrNull(index)?.id?.let { onDetailClick(it) } }
     )
 }
 
@@ -102,12 +113,15 @@ fun CallvanListScreenImpl(
     hasNewNotification: Boolean = false,
     isLoginVisible: Boolean = false,
     isFilterVisible: Boolean = false,
+    isLoadingMore: Boolean = false,
+    hasMoreItems: Boolean = true,
     pendingConfirm: Pair<CallvanConfirmType, Int>? = null,
     pendingCompleteIndex: Int? = null,
     onSearchValueChange: (String) -> Unit = {},
     onFilterVisibleChange: (Boolean) -> Unit = {},
     onPendingConfirmChange: (Pair<CallvanConfirmType, Int>?) -> Unit = {},
     onPendingCompleteIndexChange: (Int?) -> Unit = {},
+    onLoadMore: () -> Unit = {},
     onFilterApply: (
         CallvanFilterType.SortType,
         CallvanFilterType.StatusesType,
@@ -125,8 +139,27 @@ fun CallvanListScreenImpl(
     onReRecruit: (Int) -> Unit = {},
     onComplete: (Int) -> Unit = {},
     onCall: (Int) -> Unit = {},
-    onChat: (Int) -> Unit = {}
+    onChat: (Int) -> Unit = {},
+    onDetailClick: (Int) -> Unit = {}
 ) {
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(listState, hasMoreItems, isLoadingMore, items.size) {
+        snapshotFlow {
+            val layoutInfo = listState.layoutInfo
+            val totalItemsCount = layoutInfo.totalItemsCount
+            val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+            val canScroll = totalItemsCount > layoutInfo.visibleItemsInfo.size
+            if (!canScroll && totalItemsCount > 0) true
+            else lastVisibleItemIndex >= totalItemsCount - LOAD_MORE_THRESHOLD
+        }
+            .distinctUntilChanged()
+            .filter { it }
+            .collect {
+                if (hasMoreItems && !isLoadingMore) onLoadMore()
+            }
+    }
+
     if (isFilterVisible) {
         FilterBottomSheet(
             onDismissRequest = { onFilterVisibleChange(false) },
@@ -212,6 +245,7 @@ fun CallvanListScreenImpl(
         containerColor = KoinTheme.colors.neutral0
     ) { contentPadding ->
         LazyColumn(
+            state = listState,
             modifier = Modifier
                 .padding(contentPadding)
                 .padding(horizontal = 24.dp),
@@ -234,6 +268,7 @@ fun CallvanListScreenImpl(
             itemsIndexed(items) { index, uiState ->
                 CallvanListItem(
                     uiState = uiState,
+                    onItemClick = { onDetailClick(index) },
                     clickListener = object : CallvanListItemClickListener {
                         override fun onJoin() {
                             onPendingConfirmChange(Pair(CallvanConfirmType.JOIN, index))
@@ -254,6 +289,23 @@ fun CallvanListScreenImpl(
                         override fun onChat() { onChat(index) }
                     }
                 )
+            }
+
+            if (isLoadingMore) {
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(24.dp),
+                            color = KoinTheme.colors.primary500,
+                            strokeWidth = 2.dp
+                        )
+                    }
+                }
             }
         }
     }
@@ -277,3 +329,4 @@ private fun CallvanListScreenPreview() {
 }
 
 private const val SEARCH_DEBOUNCE_MS = 250L
+private const val LOAD_MORE_THRESHOLD = 3
