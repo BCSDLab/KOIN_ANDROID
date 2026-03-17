@@ -140,17 +140,21 @@ class CallvanCreateViewModel @Inject constructor(
     fun submit() = intent {
         val currentState = state
         if (!currentState.isFormComplete || currentState.isSubmitting) return@intent
-        if(currentState.departureLocation == null || currentState.arrivalLocation == null) return@intent
+        if (currentState.departureLocation == null || currentState.arrivalLocation == null) return@intent
         reduce { state.copy(isSubmitting = true) }
         createCallvanPostUseCase(
             departureType = currentState.departureLocation.name,
             departureCustomName = if (currentState.departureLocation == CallvanLocationOption.CUSTOM) {
                 currentState.departureCustomText
-            } else null,
+            } else {
+                null
+            },
             arrivalType = currentState.arrivalLocation.name,
             arrivalCustomName = if (currentState.arrivalLocation == CallvanLocationOption.CUSTOM) {
                 currentState.arrivalCustomText
-            } else null,
+            } else {
+                null
+            },
             departureDate = currentState.apiDepartureDate,
             departureTime = currentState.apiDepartureTime,
             maxParticipants = currentState.maxParticipants
@@ -162,5 +166,4 @@ class CallvanCreateViewModel @Inject constructor(
             postSideEffect(CallvanCreateSideEffect.ShowSubmitError)
         }
     }
-
 }
