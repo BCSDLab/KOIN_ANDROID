@@ -216,14 +216,3 @@ private fun CallvanListItemButtonsOwnerClosedPreview() {
         CallvanListItemButtons(state = CallvanItemState.OWNER_CLOSED)
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-private fun CallvanListItemButtonsOwnerClosesdPreview() {
-    RebrandKoinTheme {
-        CallvanFilledButton(
-            text = stringResource(R.string.callvan_btn_close),
-            onClick = {}
-        )
-    }
-}

@@ -50,8 +50,8 @@ fun CallvanFAB(
                     color = KoinTheme.colors.neutral50,
                     shape = RoundedCornerShape(50)
                 )
-                .padding(vertical = 8.dp, horizontal = 12.dp)
                 .noRippleClickable(onClick = onClick)
+                .padding(vertical = 8.dp, horizontal = 12.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
