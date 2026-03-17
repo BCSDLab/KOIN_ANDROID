@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.callvan.ui.list
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -101,7 +100,6 @@ class CallvanListViewModel @Inject constructor(
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         joinCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
-            .onFailure { Log.e("MYLOG", "join $it") }
     }
 
     fun cancelJoin(index: Int) = intent {
@@ -112,7 +110,6 @@ class CallvanListViewModel @Inject constructor(
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         leaveCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
-            .onFailure { Log.e("MYLOG", "joinCancle $it") }
     }
 
     fun close(index: Int) = intent {
@@ -123,7 +120,6 @@ class CallvanListViewModel @Inject constructor(
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         closeCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
-            .onFailure { Log.e("MYLOG", "close $it") }
     }
 
     fun reRecruit(index: Int) = intent {
@@ -134,7 +130,6 @@ class CallvanListViewModel @Inject constructor(
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         reopenCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
-            .onFailure { Log.e("MYLOG", "reRecruit $it") }
     }
 
     fun complete(index: Int) = intent {
@@ -188,7 +183,6 @@ class CallvanListViewModel @Inject constructor(
                 )
             }
         }.onFailure {
-            Log.e("MYLOG", "not load $it")
             reduce { state.copy(isLoading = false) }
         }
     }
