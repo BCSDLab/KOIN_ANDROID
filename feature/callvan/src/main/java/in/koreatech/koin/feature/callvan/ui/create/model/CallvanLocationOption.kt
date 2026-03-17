@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.callvan.model
+package `in`.koreatech.koin.feature.callvan.ui.create.model
 
 enum class CallvanLocationOption {
     FRONT_GATE,

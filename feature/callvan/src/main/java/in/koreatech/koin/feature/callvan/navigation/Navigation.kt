@@ -59,11 +59,12 @@ fun NavGraphBuilder.koinCallvanGraph(
     }
 
     composable<CallvanNavType.CallvanCreate> {
+        val context = LocalContext.current
         CallvanCreateScreen(
             onNavigateToMain = {
                 navController.navigate(CallvanNavType.CallvanMain)
             },
-            onTopbarBackClick = { navController.popBackStack() }
+            onTopbarBackClick = { navController.popBackStackOrFinish(context) }
         )
     }
 
