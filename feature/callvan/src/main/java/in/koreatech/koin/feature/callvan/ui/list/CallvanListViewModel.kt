@@ -100,7 +100,7 @@ class CallvanListViewModel @Inject constructor(
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         joinCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
-            .onFailure { Log.e("MYLOG", "join ${it}") }
+            .onFailure { Log.e("MYLOG", "join $it") }
     }
 
     fun cancelJoin(index: Int) = intent {
@@ -111,7 +111,7 @@ class CallvanListViewModel @Inject constructor(
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         leaveCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
-            .onFailure { Log.e("MYLOG", "joinCancle ${it}") }
+            .onFailure { Log.e("MYLOG", "joinCancle $it") }
     }
 
     fun close(index: Int) = intent {
@@ -122,7 +122,7 @@ class CallvanListViewModel @Inject constructor(
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         closeCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
-            .onFailure { Log.e("MYLOG", "close ${it}") }
+            .onFailure { Log.e("MYLOG", "close $it") }
     }
 
     fun reRecruit(index: Int) = intent {
@@ -133,7 +133,7 @@ class CallvanListViewModel @Inject constructor(
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         reopenCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
-            .onFailure { Log.e("MYLOG", "reRecruit ${it}") }
+            .onFailure { Log.e("MYLOG", "reRecruit $it") }
     }
 
     fun complete(index: Int) = intent {
@@ -187,7 +187,7 @@ class CallvanListViewModel @Inject constructor(
                 )
             }
         }.onFailure {
-            Log.e("MYLOG","not load ${it}")
+            Log.e("MYLOG", "not load $it")
             reduce { state.copy(isLoading = false) }
         }
     }

@@ -11,8 +11,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.callvan.ui.detail.CallvanDetailScreen
-import `in`.koreatech.koin.feature.callvan.ui.list.CallvanListScreen
 import `in`.koreatech.koin.feature.callvan.ui.detail.CallvanDetailViewModel
+import `in`.koreatech.koin.feature.callvan.ui.list.CallvanListScreen
 import `in`.koreatech.koin.feature.callvan.ui.notification.CallvanNotificationsScreen
 import `in`.koreatech.koin.feature.callvan.ui.report.CallvanReportScreen
 
