@@ -58,10 +58,10 @@ fun FilterBottomSheet(
     selectedDeparturesType: ImmutableList<DeparturesFilterType>,
     onApply: (SortType, StatusesType, ImmutableList<DeparturesFilterType>, ImmutableList<ArrivalsFilterType>) -> Unit
 ) {
-    var selectedSortType by remember { mutableStateOf(selectedSortType) }
-    var selectedStatusesType by remember { mutableStateOf(selectedStatusesType) }
-    var selectedArrivalsType by remember { mutableStateOf(selectedArrivalsType) }
-    var selectedDeparturesType by remember { mutableStateOf(selectedDeparturesType) }
+    var currentSortType by remember { mutableStateOf(selectedSortType) }
+    var currentStatusesType by remember { mutableStateOf(selectedStatusesType) }
+    var currentArrivalsType by remember { mutableStateOf(selectedArrivalsType) }
+    var currentDeparturesType by remember { mutableStateOf(selectedDeparturesType) }
 
     CallvanBottomSheet(
         title = stringResource(R.string.filter_container),
@@ -70,19 +70,19 @@ fun FilterBottomSheet(
     ) {
         FilterBottomSheetContent(
             state = FilterBottomSheetState(
-                selectedSortType = selectedSortType,
-                selectedStatusesType = selectedStatusesType,
-                selectedDeparturesType = selectedDeparturesType,
-                selectedArrivalsType = selectedArrivalsType
+                selectedSortType = currentSortType,
+                selectedStatusesType = currentStatusesType,
+                selectedDeparturesType = currentDeparturesType,
+                selectedArrivalsType = currentArrivalsType
             ),
             actions = FilterBottomSheetActions(
-                onSortTypeChange = { selectedSortType = it as SortType },
-                onStatusesTypeChange = { selectedStatusesType = it as StatusesType },
+                onSortTypeChange = { currentSortType = it as SortType },
+                onStatusesTypeChange = { currentStatusesType = it as StatusesType },
                 onArrivalsTypeChange = {
                     val newSelected = it.map { type -> type as ArrivalsFilterType }
-                    selectedArrivalsType = if (
-                        selectedArrivalsType.size == 1 &&
-                        selectedArrivalsType.first() == ArrivalsFilterType.All
+                    currentArrivalsType = if (
+                        currentArrivalsType.size == 1 &&
+                        currentArrivalsType.first() == ArrivalsFilterType.All
                     ) {
                         (newSelected - ArrivalsFilterType.All).toPersistentList()
                     } else if (ArrivalsFilterType.All in newSelected) {
@@ -93,9 +93,9 @@ fun FilterBottomSheet(
                 },
                 onDeparturesTypeChange = {
                     val newSelected = it.map { type -> type as DeparturesFilterType }
-                    selectedDeparturesType = if (
-                        selectedDeparturesType.size == 1 &&
-                        selectedDeparturesType.first() == DeparturesFilterType.All
+                    currentDeparturesType = if (
+                        currentDeparturesType.size == 1 &&
+                        currentDeparturesType.first() == DeparturesFilterType.All
                     ) {
                         (newSelected - DeparturesFilterType.All).toPersistentList()
                     } else if (DeparturesFilterType.All in newSelected) {
@@ -105,17 +105,17 @@ fun FilterBottomSheet(
                     }
                 },
                 onReset = {
-                    selectedSortType = SortType.LatestDesc
-                    selectedStatusesType = StatusesType.All
-                    selectedDeparturesType = persistentListOf(DeparturesFilterType.All)
-                    selectedArrivalsType = persistentListOf(ArrivalsFilterType.All)
+                    currentSortType = SortType.LatestDesc
+                    currentStatusesType = StatusesType.All
+                    currentDeparturesType = persistentListOf(DeparturesFilterType.All)
+                    currentArrivalsType = persistentListOf(ArrivalsFilterType.All)
                 },
                 onApplyClick = {
                     onApply(
-                        selectedSortType,
-                        selectedStatusesType,
-                        selectedDeparturesType,
-                        selectedArrivalsType
+                        currentSortType,
+                        currentStatusesType,
+                        currentDeparturesType,
+                        currentArrivalsType
                     )
                     onDismissRequest()
                 }
