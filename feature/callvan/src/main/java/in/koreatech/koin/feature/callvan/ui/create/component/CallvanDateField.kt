@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
-import java.time.Year
+import java.time.LocalDate
 import java.time.YearMonth
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -121,22 +121,33 @@ private fun CallvanDatePickerCard(
     onReset: () -> Unit = {},
     onConfirm: () -> Unit = {}
 ) {
-    val currentYear = remember { Year.now().value }
+    val today = remember { LocalDate.now() }
+    val currentYear = remember { today.year }
+    val currentMonth = remember { today.monthValue }
+    val currentDay = remember { today.dayOfMonth }
     val years = remember { persistentListOf("${currentYear}년", "${currentYear + 1}년") }
-    val months = remember { (1..12).map { "${it}월" }.toPersistentList() }
+    val startMonth = remember(selectedYear) {
+        if (selectedYear == currentYear) currentMonth else 1
+    }
+    val months = remember(selectedYear) {
+        (startMonth..12).map { "${it}월" }.toPersistentList()
+    }
+    val startDay = remember(selectedYear, selectedMonth) {
+        if (selectedYear == currentYear && selectedMonth == currentMonth) currentDay else 1
+    }
     val days = remember(selectedYear, selectedMonth) {
         val daysCount = YearMonth.of(selectedYear, selectedMonth).lengthOfMonth()
-        (1..daysCount).map { "${it}일" }.toPersistentList()
+        (startDay..daysCount).map { "${it}일" }.toPersistentList()
     }
 
     val yearIndex = remember(selectedYear, currentYear) {
         (selectedYear - currentYear).coerceIn(0, years.size - 1)
     }
-    val monthIndex = remember(selectedMonth) {
-        (selectedMonth - 1).coerceIn(0, months.size - 1)
+    val monthIndex = remember(selectedMonth, startMonth) {
+        (selectedMonth - startMonth).coerceIn(0, months.size - 1)
     }
-    val dayIndex = remember(selectedDay, days.size) {
-        (selectedDay - 1).coerceIn(0, days.size - 1)
+    val dayIndex = remember(selectedDay, startDay, days.size) {
+        (selectedDay - startDay).coerceIn(0, days.size - 1)
     }
 
     Card(
@@ -159,19 +170,29 @@ private fun CallvanDatePickerCard(
                 CallvanScrollPicker(
                     items = years,
                     selectedIndex = yearIndex,
-                    onIndexChange = { index -> onYearChange(currentYear + index) },
+                    onIndexChange = { index ->
+                        val newYear = currentYear + index
+                        onYearChange(newYear)
+                        val newStartDay = if (newYear == currentYear && selectedMonth == currentMonth) currentDay else 1
+                        if (selectedDay < newStartDay) onDayChange(newStartDay)
+                    },
                     modifier = Modifier.weight(1f)
                 )
                 CallvanScrollPicker(
                     items = months,
                     selectedIndex = monthIndex,
-                    onIndexChange = { index -> onMonthChange(index + 1) },
+                    onIndexChange = { index ->
+                        val newMonth = startMonth + index
+                        onMonthChange(newMonth)
+                        val newStartDay = if (selectedYear == currentYear && newMonth == currentMonth) currentDay else 1
+                        if (selectedDay < newStartDay) onDayChange(newStartDay)
+                    },
                     modifier = Modifier.weight(1f)
                 )
                 CallvanScrollPicker(
                     items = days,
                     selectedIndex = dayIndex,
-                    onIndexChange = { index -> onDayChange(index + 1) },
+                    onIndexChange = { index -> onDayChange(startDay + index) },
                     modifier = Modifier.weight(1f)
                 )
             }
