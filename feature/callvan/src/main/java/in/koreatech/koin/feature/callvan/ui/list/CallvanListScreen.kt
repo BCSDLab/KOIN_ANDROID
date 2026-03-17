@@ -268,7 +268,7 @@ fun CallvanListScreenImpl(
                 }
             }
 
-            items(items) { uiState ->
+            items(items, key = { it.id }) { uiState ->
                 CallvanListItem(
                     uiState = uiState,
                     onItemClick = { onDetailClick(uiState.id) },
