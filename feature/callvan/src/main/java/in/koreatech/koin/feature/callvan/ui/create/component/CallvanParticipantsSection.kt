@@ -106,7 +106,7 @@ fun CallvanParticipantsSection(
                 )
             }
             Icon(
-                imageVector = Icons.Default.Add,
+                imageVector = ImageVector.vectorResource(R.drawable.ic_add),
                 contentDescription = null,
                 tint = RebrandKoinTheme.colors.primary500,
                 modifier = Modifier
