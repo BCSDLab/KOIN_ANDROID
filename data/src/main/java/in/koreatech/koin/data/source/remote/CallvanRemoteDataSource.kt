@@ -4,8 +4,8 @@ import `in`.koreatech.koin.data.api.auth.CallvanAuthApi
 import `in`.koreatech.koin.data.request.callvan.CallvanChatMessageRequest
 import `in`.koreatech.koin.data.request.callvan.CallvanPostCreateRequest
 import `in`.koreatech.koin.data.request.callvan.CallvanUserReportCreateRequest
-import retrofit2.HttpException
 import javax.inject.Inject
+import retrofit2.HttpException
 
 class CallvanRemoteDataSource @Inject constructor(
     private val callvanAuthApi: CallvanAuthApi
