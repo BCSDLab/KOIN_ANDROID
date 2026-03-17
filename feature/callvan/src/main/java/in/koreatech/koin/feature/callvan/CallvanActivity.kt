@@ -1,9 +1,13 @@
 package `in`.koreatech.koin.feature.callvan
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -19,6 +23,12 @@ class CallvanActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdgeWithLightStatusBar()
+
+        try {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        } catch (ignore: IllegalStateException) {
+        }
+
         var startDestination: CallvanNavType = CallvanNavType.CallvanMain
         if (intent.getBooleanExtra(EXTRA_NAVIGATE_TO_CREATE, false)) {
             startDestination = CallvanNavType.CallvanCreate
@@ -29,7 +39,11 @@ class CallvanActivity : ComponentActivity() {
 
                 Scaffold { innerPadding ->
                     NavHost(
-                        modifier = Modifier.padding(innerPadding),
+                        modifier = Modifier
+                            .background(color = RebrandKoinTheme.colors.neutral0)
+                            .padding(innerPadding)
+                            .consumeWindowInsets(innerPadding)
+                            .systemBarsPadding(),
                         navController = navController,
                         startDestination = startDestination
                     ) {
