@@ -114,7 +114,6 @@ class CallvanListViewModel @Inject constructor(
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         joinCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
-            .onFailure { Log.e("MYLOG", "join ${it}") }
     }
 
     fun cancelJoin(index: Int) = intent {
