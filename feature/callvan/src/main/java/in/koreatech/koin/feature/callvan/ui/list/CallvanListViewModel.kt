@@ -24,6 +24,7 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
@@ -69,7 +70,7 @@ class CallvanListViewModel @Inject constructor(
             }
     }
 
-    fun updateSearch(query: String) = intent {
+    fun updateSearch(query: String) = blockingIntent {
         reduce { state.copy(searchValue = query) }
     }
 
@@ -137,19 +138,19 @@ class CallvanListViewModel @Inject constructor(
             .onSuccess { fetchPosts() }
     }
 
-    fun updateFilterVisible(visible: Boolean) = intent {
+    fun updateFilterVisible(visible: Boolean) = blockingIntent {
         reduce { state.copy(isFilterVisible = visible) }
     }
 
-    fun updatePendingConfirm(pending: Pair<CallvanConfirmType, Int>?) = intent {
+    fun updatePendingConfirm(pending: Pair<CallvanConfirmType, Int>?) = blockingIntent {
         reduce { state.copy(pendingConfirm = pending) }
     }
 
-    fun updatePendingCompletePostId(postId: Int?) = intent {
+    fun updatePendingCompletePostId(postId: Int?) = blockingIntent {
         reduce { state.copy(pendingCompletePostId = postId) }
     }
 
-    fun updateLoginVisible(visible: Boolean) = intent {
+    fun updateLoginVisible(visible: Boolean) = blockingIntent {
         reduce { state.copy(isLoginVisible = visible) }
     }
 
