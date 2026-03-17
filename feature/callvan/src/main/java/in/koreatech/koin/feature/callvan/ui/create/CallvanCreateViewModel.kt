@@ -143,16 +143,14 @@ class CallvanCreateViewModel @Inject constructor(
         if(currentState.departureLocation == null || currentState.arrivalLocation == null) return@intent
         reduce { state.copy(isSubmitting = true) }
         createCallvanPostUseCase(
-            departureType = if (currentState.departureLocation == CallvanLocationOption.CUSTOM) {
-                currentState.departureCustomText ?: ""
-            } else {
-                currentState.departureLocation.name
-            },
-            arrivalType = if (currentState.arrivalLocation == CallvanLocationOption.CUSTOM) {
-                currentState.arrivalCustomText ?: ""
-            } else {
-                currentState.arrivalLocation.name
-            },
+            departureType = currentState.departureLocation.name,
+            departureCustomName = if (currentState.departureLocation == CallvanLocationOption.CUSTOM) {
+                currentState.departureCustomText
+            } else null,
+            arrivalType = currentState.arrivalLocation.name,
+            arrivalCustomName = if (currentState.arrivalLocation == CallvanLocationOption.CUSTOM) {
+                currentState.arrivalCustomText
+            } else null,
             departureDate = currentState.apiDepartureDate,
             departureTime = currentState.apiDepartureTime,
             maxParticipants = currentState.maxParticipants
