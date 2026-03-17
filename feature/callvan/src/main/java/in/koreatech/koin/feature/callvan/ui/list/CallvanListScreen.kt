@@ -128,8 +128,12 @@ fun CallvanListScreenImpl(
                         override fun onComplete() {
                             pendingCompleteIndex = index
                         }
-                        override fun onCall() { onCall(index) }
-                        override fun onChat() { onChat(index) }
+                        override fun onCall() {
+                            onCall(index)
+                        }
+                        override fun onChat() {
+                            onChat(index)
+                        }
                     }
                 )
             }
