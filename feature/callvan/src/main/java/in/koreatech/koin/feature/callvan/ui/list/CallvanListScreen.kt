@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.IconButton
@@ -81,12 +81,12 @@ fun CallvanListScreen(
         isLoadingMore = state.isLoadingMore,
         hasMoreItems = state.hasMoreItems,
         pendingConfirm = state.pendingConfirm,
-        pendingCompleteIndex = state.pendingCompleteIndex,
+        pendingCompletePostId = state.pendingCompletePostId,
         onSearchValueChange = viewModel::updateSearch,
         onFilterApply = viewModel::applyFilter,
         onFilterVisibleChange = viewModel::updateFilterVisible,
         onPendingConfirmChange = viewModel::updatePendingConfirm,
-        onPendingCompleteIndexChange = viewModel::updatePendingCompleteIndex,
+        onPendingCompletePostIdChange = viewModel::updatePendingCompletePostId,
         onLoadMore = viewModel::loadMorePosts,
         onTopbarBackClick = onTopbarBackClick,
         onNotificationClick = onNotificationClick,
@@ -98,9 +98,9 @@ fun CallvanListScreen(
         onClose = viewModel::close,
         onReRecruit = viewModel::reRecruit,
         onComplete = viewModel::complete,
-        onCall = { index -> state.items.getOrNull(index)?.id?.let { onCallClick(it) } },
-        onChat = { index -> state.items.getOrNull(index)?.id?.let { onChatClick(it) } },
-        onDetailClick = { index -> state.items.getOrNull(index)?.id?.let { onDetailClick(it) } }
+        onCall = onCallClick,
+        onChat = onChatClick,
+        onDetailClick = onDetailClick
     )
 }
 
@@ -116,11 +116,11 @@ fun CallvanListScreenImpl(
     isLoadingMore: Boolean = false,
     hasMoreItems: Boolean = true,
     pendingConfirm: Pair<CallvanConfirmType, Int>? = null,
-    pendingCompleteIndex: Int? = null,
+    pendingCompletePostId: Int? = null,
     onSearchValueChange: (String) -> Unit = {},
     onFilterVisibleChange: (Boolean) -> Unit = {},
     onPendingConfirmChange: (Pair<CallvanConfirmType, Int>?) -> Unit = {},
-    onPendingCompleteIndexChange: (Int?) -> Unit = {},
+    onPendingCompletePostIdChange: (Int?) -> Unit = {},
     onLoadMore: () -> Unit = {},
     onFilterApply: (
         CallvanFilterType.SortType,
@@ -174,7 +174,7 @@ fun CallvanListScreenImpl(
         )
     }
 
-    pendingConfirm?.let { (confirmType, index) ->
+    pendingConfirm?.let { (confirmType, postId) ->
         val title = when (confirmType) {
             CallvanConfirmType.JOIN -> stringResource(R.string.callvan_confirm_join_title)
             CallvanConfirmType.CANCEL_JOIN -> stringResource(R.string.callvan_confirm_cancel_title)
@@ -188,10 +188,10 @@ fun CallvanListScreenImpl(
             cancelText = stringResource(R.string.callvan_confirm_negative),
             onConfirm = {
                 when (confirmType) {
-                    CallvanConfirmType.JOIN -> onJoin(index)
-                    CallvanConfirmType.CANCEL_JOIN -> onCancelJoin(index)
-                    CallvanConfirmType.CLOSE -> onClose(index)
-                    CallvanConfirmType.REOPEN -> onReRecruit(index)
+                    CallvanConfirmType.JOIN -> onJoin(postId)
+                    CallvanConfirmType.CANCEL_JOIN -> onCancelJoin(postId)
+                    CallvanConfirmType.CLOSE -> onClose(postId)
+                    CallvanConfirmType.REOPEN -> onReRecruit(postId)
                 }
                 onPendingConfirmChange(null)
             },
@@ -199,17 +199,17 @@ fun CallvanListScreenImpl(
         )
     }
 
-    pendingCompleteIndex?.let { index ->
+    pendingCompletePostId?.let { postId ->
         CallvanConfirmBottomSheet(
             title = stringResource(R.string.callvan_complete_title),
             description = stringResource(R.string.callvan_complete_description),
             confirmText = stringResource(R.string.callvan_confirm_positive),
             cancelText = stringResource(R.string.callvan_confirm_negative),
             onConfirm = {
-                onComplete(index)
-                onPendingCompleteIndexChange(null)
+                onComplete(postId)
+                onPendingCompletePostIdChange(null)
             },
-            onDismiss = { onPendingCompleteIndexChange(null) }
+            onDismiss = { onPendingCompletePostIdChange(null) }
         )
     }
 
@@ -268,31 +268,31 @@ fun CallvanListScreenImpl(
                 }
             }
 
-            itemsIndexed(items) { index, uiState ->
+            items(items) { uiState ->
                 CallvanListItem(
                     uiState = uiState,
-                    onItemClick = { onDetailClick(index) },
+                    onItemClick = { onDetailClick(uiState.id) },
                     clickListener = object : CallvanListItemClickListener {
                         override fun onJoin() {
-                            onPendingConfirmChange(Pair(CallvanConfirmType.JOIN, index))
+                            onPendingConfirmChange(Pair(CallvanConfirmType.JOIN, uiState.id))
                         }
                         override fun onCancelJoin() {
-                            onPendingConfirmChange(Pair(CallvanConfirmType.CANCEL_JOIN, index))
+                            onPendingConfirmChange(Pair(CallvanConfirmType.CANCEL_JOIN, uiState.id))
                         }
                         override fun onClose() {
-                            onPendingConfirmChange(Pair(CallvanConfirmType.CLOSE, index))
+                            onPendingConfirmChange(Pair(CallvanConfirmType.CLOSE, uiState.id))
                         }
                         override fun onReRecruit() {
-                            onPendingConfirmChange(Pair(CallvanConfirmType.REOPEN, index))
+                            onPendingConfirmChange(Pair(CallvanConfirmType.REOPEN, uiState.id))
                         }
                         override fun onComplete() {
-                            onPendingCompleteIndexChange(index)
+                            onPendingCompletePostIdChange(uiState.id)
                         }
                         override fun onCall() {
-                            onCall(index)
+                            onCall(uiState.id)
                         }
                         override fun onChat() {
-                            onChat(index)
+                            onChat(uiState.id)
                         }
                     }
                 )

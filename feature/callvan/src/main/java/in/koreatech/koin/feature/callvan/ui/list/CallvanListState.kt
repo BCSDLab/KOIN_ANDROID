@@ -20,5 +20,5 @@ data class CallvanListState(
     val isLoginVisible: Boolean = false,
     val isFilterVisible: Boolean = false,
     val pendingConfirm: Pair<CallvanConfirmType, Int>? = null,
-    val pendingCompleteIndex: Int? = null
+    val pendingCompletePostId: Int? = null
 )
