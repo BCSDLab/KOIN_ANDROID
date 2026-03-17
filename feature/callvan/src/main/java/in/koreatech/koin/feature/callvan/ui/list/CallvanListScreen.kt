@@ -15,6 +15,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -269,10 +270,8 @@ fun CallvanListScreenImpl(
             }
 
             items(items, key = { it.id }) { uiState ->
-                CallvanListItem(
-                    uiState = uiState,
-                    onItemClick = { onDetailClick(uiState.id) },
-                    clickListener = object : CallvanListItemClickListener {
+                val clickListener = remember(uiState.id) {
+                    object : CallvanListItemClickListener {
                         override fun onJoin() {
                             onPendingConfirmChange(Pair(CallvanConfirmType.JOIN, uiState.id))
                         }
@@ -295,6 +294,11 @@ fun CallvanListScreenImpl(
                             onChat(uiState.id)
                         }
                     }
+                }
+                CallvanListItem(
+                    uiState = uiState,
+                    onItemClick = { onDetailClick(uiState.id) },
+                    clickListener = clickListener
                 )
             }
 
