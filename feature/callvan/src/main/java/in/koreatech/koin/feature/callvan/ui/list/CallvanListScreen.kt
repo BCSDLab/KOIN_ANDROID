@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.callvan.ui.list
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -242,10 +243,14 @@ fun CallvanListScreenImpl(
                 .padding(horizontal = 24.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            item {
+            stickyHeader {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(KoinTheme.colors.neutral0)
+                        .padding(vertical = 8.dp)
                 ) {
                     ItemSearchTextField(
                         value = searchValue,
