@@ -30,6 +30,7 @@ fun ItemSearchTextField(
     textStyle: TextStyle = KoinTheme.typography.regular14.copy(color = KoinTheme.colors.neutral600),
     onValueChange: (String) -> Unit = {}
 ) {
+    val safeMaxLength = maxLength.coerceAtLeast(0)
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -45,7 +46,7 @@ fun ItemSearchTextField(
             value = value,
             textStyle = textStyle,
             singleLine = true,
-            onValueChange = { onValueChange(it.take(maxLength)) },
+            onValueChange = { onValueChange(it.take(safeMaxLength)) },
             decorationBox = { innerTextField ->
                 Box {
                     if (value.isEmpty()) {
