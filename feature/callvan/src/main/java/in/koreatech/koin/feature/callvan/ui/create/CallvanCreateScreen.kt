@@ -15,13 +15,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.callvan.R
+import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanDateField
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanLocationPickerBottomSheet
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanLocationSection
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanParticipantsSection
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanSubmitBottomBar
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanTimeField
-import `in`.koreatech.koin.feature.callvan.ui.create.model.CallvanLocationOption
 import java.time.LocalDate
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect

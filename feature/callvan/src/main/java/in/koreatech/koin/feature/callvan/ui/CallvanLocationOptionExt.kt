@@ -2,7 +2,7 @@ package `in`.koreatech.koin.feature.callvan.ui
 
 import androidx.annotation.StringRes
 import `in`.koreatech.koin.feature.callvan.R
-import `in`.koreatech.koin.feature.callvan.ui.create.model.CallvanLocationOption
+import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
 
 @StringRes
 fun CallvanLocationOption.displayNameRes(): Int = when (this) {
