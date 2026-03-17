@@ -17,13 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
-import kotlinx.coroutines.flow.filter
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -44,6 +43,7 @@ import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
@@ -142,8 +142,11 @@ fun CallvanListScreenImpl(
             val totalItemsCount = layoutInfo.totalItemsCount
             val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
             val canScroll = totalItemsCount > layoutInfo.visibleItemsInfo.size
-            if (!canScroll && totalItemsCount > 0) true
-            else lastVisibleItemIndex >= totalItemsCount - LOAD_MORE_THRESHOLD
+            if (!canScroll && totalItemsCount > 0) {
+                true
+            } else {
+                lastVisibleItemIndex >= totalItemsCount - LOAD_MORE_THRESHOLD
+            }
         }
             .distinctUntilChanged()
             .filter { it }
@@ -281,8 +284,12 @@ fun CallvanListScreenImpl(
                         override fun onComplete() {
                             onPendingCompleteIndexChange(index)
                         }
-                        override fun onCall() { onCall(index) }
-                        override fun onChat() { onChat(index) }
+                        override fun onCall() {
+                            onCall(index)
+                        }
+                        override fun onChat() {
+                            onChat(index)
+                        }
                     }
                 )
             }

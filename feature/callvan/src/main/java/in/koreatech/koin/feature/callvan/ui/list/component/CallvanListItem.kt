@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.callvan.ui.list.component
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,13 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
-import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanItemState
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanParticipantCount
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanRouteInfo
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanItemState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemClickListener
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListUiState
 import `in`.koreatech.koin.feature.callvan.util.formatDateTime
@@ -87,7 +87,7 @@ private fun CallvanListItemDefaultPreview() {
         CallvanListItem(
             uiState = CallvanListUiState(
                 id = 0,
-                departure ="테니스장",
+                departure = "테니스장",
                 destination = "천안 시외터미널",
                 date = "2025-02-05",
                 time = "14:00",
@@ -107,7 +107,7 @@ private fun CallvanListItemJoinedPreview() {
         CallvanListItem(
             uiState = CallvanListUiState(
                 id = 0,
-                departure ="정문",
+                departure = "정문",
                 destination = "천안 시외터미널",
                 date = "2025-02-05",
                 time = "14:00",
@@ -127,7 +127,7 @@ private fun CallvanListItemClosedPreview() {
         CallvanListItem(
             uiState = CallvanListUiState(
                 id = 0,
-                departure ="테니스장",
+                departure = "테니스장",
                 destination = "천안역",
                 date = "2025-02-05",
                 time = "14:00",
@@ -147,7 +147,7 @@ private fun CallvanListItemOwnerActivePreview() {
         CallvanListItem(
             uiState = CallvanListUiState(
                 id = 0,
-                departure ="정문",
+                departure = "정문",
                 destination = "천안 시외터미널",
                 date = "2025-02-05",
                 time = "14:00",
@@ -167,7 +167,7 @@ private fun CallvanListItemOwnerClosedPreview() {
         CallvanListItem(
             uiState = CallvanListUiState(
                 id = 0,
-                departure ="정문",
+                departure = "정문",
                 destination = "천안 시외터미널",
                 date = "2025-02-05",
                 time = "14:00",

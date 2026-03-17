@@ -39,7 +39,7 @@ fun CallvanConfirmBottomSheet(
             modifier = Modifier.padding(horizontal = 24.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            if(description.isNotBlank()) {
+            if (description.isNotBlank()) {
                 Text(
                     text = description,
                     style = KoinTheme.typography.regular14,
