@@ -1,0 +1,10 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin
+---
+- runFlow: ../common/launch_app.yaml
+- openLink: "koin://store"
+- waitForAnimationToEnd:
+    timeout: 8000
+- assertVisible: "주변상점"
+- assertVisible: "검색어를 입력해주세요."

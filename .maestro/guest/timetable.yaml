@@ -1,0 +1,11 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin
+---
+- runFlow: ../common/open_drawer.yaml
+- tapOn:
+    id: "${APP_ID}:id/navi_item_timetable"
+- waitForAnimationToEnd:
+    timeout: 10000
+- assertVisible: "시간표"
+- assertVisible: "시간표 다운로드"
