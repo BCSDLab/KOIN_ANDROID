@@ -21,6 +21,7 @@ import `in`.koreatech.koin.feature.callvan.ui.report.CallvanReportScreen
 private const val STORE_CATEGORY = "STORE_CATEGORY"
 private const val STORE_CATEGORY_CALLVAN_PRODUCTION = 10
 
+@Suppress("LongMethod")
 fun NavGraphBuilder.koinCallvanGraph(
     navController: NavController
 ) {
