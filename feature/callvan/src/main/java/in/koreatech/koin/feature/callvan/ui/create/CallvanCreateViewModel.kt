@@ -194,8 +194,8 @@ class CallvanCreateViewModel @Inject constructor(
 
     private fun getDaysInMonth(year: Int, month: Int): Int {
         return Calendar.getInstance().apply {
-            set(Calendar.YEAR, year)
-            set(Calendar.MONTH, month - 1)
+            clear()
+            set(year, month - 1, 1)
         }.getActualMaximum(Calendar.DAY_OF_MONTH)
     }
 }
