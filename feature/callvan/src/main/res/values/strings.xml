@@ -29,7 +29,6 @@
     <string name="callvan_detail_participant_name_me">%1$s (나)</string>
     <string name="callvan_detail_participant_reported">(신고됨)</string>
     <string name="callvan_detail_enter_chat">단체 채팅방 입장</string>
-    <string name="callvan_detail_not_participant">참여자만 입장할 수 있습니다.</string>
     <string name="callvan_detail_participant_report">신고하기</string>
 
     <string name="callvan_report_top_bar">신고하기</string>
@@ -99,6 +98,7 @@
     <string name="callvan_create_participants_label">참여 인원</string>
     <string name="callvan_create_participants_hint_bold">본인을 포함한</string>
     <string name="callvan_create_participants_hint_normal"> 참여 인원 수를 선택해주세요.</string>
+    <string name="callvan_create_participants_count">%d 명</string>
     <string name="callvan_create_picker_reset">초기화</string>
     <string name="callvan_create_picker_confirm">확인</string>
     <string name="callvan_create_submit_notice">※ 모든 항목을 다 작성해주세요.</string>

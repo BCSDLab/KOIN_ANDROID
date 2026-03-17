@@ -1,9 +1,9 @@
 package `in`.koreatech.koin.feature.callvan.navigation
 
+import android.content.Context
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.ComponentActivity
-import android.content.Context
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
@@ -12,9 +12,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
+import `in`.koreatech.koin.feature.callvan.ui.create.CallvanCreateScreen
 import `in`.koreatech.koin.feature.callvan.ui.detail.CallvanDetailScreen
-import `in`.koreatech.koin.feature.callvan.ui.list.CallvanListScreen
 import `in`.koreatech.koin.feature.callvan.ui.detail.CallvanDetailViewModel
+import `in`.koreatech.koin.feature.callvan.ui.list.CallvanListScreen
 import `in`.koreatech.koin.feature.callvan.ui.notification.CallvanNotificationsScreen
 import `in`.koreatech.koin.feature.callvan.ui.report.CallvanReportScreen
 
@@ -58,6 +59,15 @@ fun NavGraphBuilder.koinCallvanGraph(
     }
 
     composable<CallvanNavType.CallvanCreate> {
+        val context = LocalContext.current
+        CallvanCreateScreen(
+            onCompleteAndNavigateToMain = {
+                navController.navigate(CallvanNavType.CallvanMain) {
+                    popUpTo(CallvanNavType.CallvanCreate::class) { inclusive = true }
+                }
+            },
+            onTopbarBackClick = { navController.popBackStackOrFinish(context) }
+        )
     }
 
     composable<CallvanNavType.CallvanChat> {
@@ -96,4 +106,3 @@ fun NavGraphBuilder.koinCallvanGraph(
 private fun NavController.popBackStackOrFinish(context: Context) {
     if (!popBackStack()) (context as? ComponentActivity)?.finish()
 }
-
