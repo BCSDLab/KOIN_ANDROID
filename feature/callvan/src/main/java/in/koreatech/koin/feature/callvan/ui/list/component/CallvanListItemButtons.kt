@@ -15,8 +15,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -169,7 +169,7 @@ private fun CallvanOutlinedButton(
             ),
             border = BorderStroke(
                 borderWidth,
-                if(enabled) borderColor else disabledContentColor
+                if (enabled) borderColor else disabledContentColor
             )
         ) {
             Text(style = KoinTheme.typography.regular12, text = text)
