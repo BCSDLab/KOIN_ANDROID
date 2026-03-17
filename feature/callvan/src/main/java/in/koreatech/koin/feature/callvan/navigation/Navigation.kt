@@ -2,6 +2,8 @@ package `in`.koreatech.koin.feature.callvan.navigation
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.ComponentActivity
+import android.content.Context
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
@@ -26,7 +28,7 @@ fun NavGraphBuilder.koinCallvanGraph(
         val navigator = rememberNavigator()
         val context = LocalContext.current
         CallvanListScreen(
-            onTopbarBackClick = { navController.popBackStack() },
+            onTopbarBackClick = { navController.popBackStackOrFinish(context) },
             onNotificationClick = { navController.navigate(CallvanNavType.CallvanNotifications) },
             onWriteClick = { navController.navigate(CallvanNavType.CallvanCreate) },
             onLoginClick = { context.startActivity(navigator.navigateToSignIn(context)) },
@@ -44,8 +46,9 @@ fun NavGraphBuilder.koinCallvanGraph(
 
     composable<CallvanNavType.CallvanDetail> { backStackEntry ->
         val postId = backStackEntry.toRoute<CallvanNavType.CallvanDetail>().postId
+        val context = LocalContext.current
         CallvanDetailScreen(
-            onTopbarBackClick = { navController.popBackStack() },
+            onTopbarBackClick = { navController.popBackStackOrFinish(context) },
             onNotificationClick = { navController.navigate(CallvanNavType.CallvanNotifications) },
             onEnterChatClick = { navController.navigate(CallvanNavType.CallvanChat(postId)) },
             onReportClick = { reportedUserId ->
@@ -59,7 +62,7 @@ fun NavGraphBuilder.koinCallvanGraph(
 
     composable<CallvanNavType.CallvanChat> {
         val navigator = rememberNavigator()
-        val context = navController.context
+        val context = LocalContext.current
         val intent = remember { navigator.navigateToGroupChat(context, it.toRoute<CallvanNavType.CallvanChat>().postId) }
         val launcher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.StartActivityForResult()
@@ -72,14 +75,16 @@ fun NavGraphBuilder.koinCallvanGraph(
     }
 
     composable<CallvanNavType.CallvanNotifications> {
+        val context = LocalContext.current
         CallvanNotificationsScreen(
-            onTopbarBackClick = { navController.popBackStack() }
+            onTopbarBackClick = { navController.popBackStackOrFinish(context) }
         )
     }
 
     composable<CallvanNavType.CallvanReport> {
+        val context = LocalContext.current
         CallvanReportScreen(
-            onTopbarBackClick = { navController.popBackStack() },
+            onTopbarBackClick = { navController.popBackStackOrFinish(context) },
             onSubmitSuccess = {
                 navController.previousBackStackEntry?.savedStateHandle?.set(CallvanDetailViewModel.KEY_REPORT_SUCCESS, true)
                 navController.popBackStack()
@@ -87,3 +92,8 @@ fun NavGraphBuilder.koinCallvanGraph(
         )
     }
 }
+
+private fun NavController.popBackStackOrFinish(context: Context) {
+    if (!popBackStack()) (context as? ComponentActivity)?.finish()
+}
+

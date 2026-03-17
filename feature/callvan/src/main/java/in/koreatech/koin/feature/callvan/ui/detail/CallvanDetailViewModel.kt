@@ -2,13 +2,18 @@ package `in`.koreatech.koin.feature.callvan.ui.detail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.callvan.GetCallvanPostDetailUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.GetNotificationsUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.callvan.ui.detail.model.toUiItem
 import `in`.koreatech.koin.feature.callvan.util.formatDateTime
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
@@ -19,7 +24,8 @@ import org.orbitmvi.orbit.viewmodel.container
 class CallvanDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getCallvanPostDetailUseCase: GetCallvanPostDetailUseCase,
-    private val getNotificationsUseCase: GetNotificationsUseCase
+    private val getNotificationsUseCase: GetNotificationsUseCase,
+    private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<CallvanDetailState, CallvanDetailSideEffect> {
 
     override val container = container<CallvanDetailState, CallvanDetailSideEffect>(

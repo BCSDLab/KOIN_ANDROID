@@ -1,7 +1,10 @@
 package `in`.koreatech.koin.feature.callvan.ui.list.component
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -9,14 +12,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,7 +50,15 @@ fun CallvanListItemButtons(
     ) {
         when (state) {
             CallvanItemState.JOINED -> {
-                IconButton(onClick = { clickListener.onChat() }, modifier = Modifier.size(24.dp)) {
+                Box(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = ripple(bounded = false)
+                        ) { clickListener.onChat() },
+                    contentAlignment = Alignment.Center
+                ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_callvan_chat),
                         contentDescription = "",
@@ -55,7 +68,15 @@ fun CallvanListItemButtons(
             }
             CallvanItemState.OWNER_ACTIVE,
             CallvanItemState.OWNER_CLOSED -> {
-                IconButton(onClick = { clickListener.onCall() }, modifier = Modifier.size(24.dp)) {
+                Box(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = ripple(bounded = false)
+                        ) { clickListener.onCall() },
+                    contentAlignment = Alignment.Center
+                ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_callvan_call),
                         contentDescription = "",
@@ -71,9 +92,13 @@ fun CallvanListItemButtons(
             verticalAlignment = Alignment.CenterVertically
         ) {
             when (state) {
-                CallvanItemState.JOINED -> CallvanOutlinedButton(
+                CallvanItemState.JOINED -> CallvanFilledButton(
                     text = stringResource(R.string.callvan_btn_cancel_join),
-                    onClick = { clickListener.onCancelJoin() }
+                    onClick = { clickListener.onCancelJoin() },
+                    color = ButtonDefaults.buttonColors(
+                        contentColor = RebrandKoinTheme.colors.primary800,
+                        containerColor = RebrandKoinTheme.colors.primary100.copy(alpha = 0.6f)
+                    )
                 )
                 CallvanItemState.CLOSED -> CallvanOutlinedButton(
                     text = stringResource(R.string.callvan_btn_closed),
@@ -127,6 +152,10 @@ private fun CallvanFilledButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    color: ButtonColors = ButtonDefaults.buttonColors(
+        contentColor = RebrandKoinTheme.colors.neutral0,
+        containerColor = RebrandKoinTheme.colors.primary500
+    ),
     contentPadding: PaddingValues = PaddingValues(horizontal = 12.dp, vertical = 4.dp)
 ) {
     CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
@@ -135,9 +164,7 @@ private fun CallvanFilledButton(
             onClick = onClick,
             shape = KoinTheme.shapes.extraSmall,
             contentPadding = contentPadding,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = RebrandKoinTheme.colors.primary500
-            )
+            colors = color
         ) {
             Text(style = KoinTheme.typography.regular12, text = text)
         }

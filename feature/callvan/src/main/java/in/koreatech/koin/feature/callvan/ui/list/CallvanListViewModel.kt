@@ -23,6 +23,10 @@ import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -48,6 +52,16 @@ class CallvanListViewModel @Inject constructor(
     init {
         fetchPosts()
         initUserInfo()
+        observeSearchQuery()
+    }
+
+    @OptIn(FlowPreview::class)
+    private fun observeSearchQuery() = viewModelScope.launch {
+        container.stateFlow
+            .map { it.searchValue }
+            .distinctUntilChanged()
+            .debounce(SEARCH_DEBOUNCE_MS)
+            .collectLatest { fetchPosts() }
     }
 
     private fun initUserInfo() = viewModelScope.launch {
@@ -100,7 +114,6 @@ class CallvanListViewModel @Inject constructor(
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         joinCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
-            .onFailure { Log.e("MYLOG", "join ${it}") }
     }
 
     fun cancelJoin(index: Int) = intent {
@@ -111,7 +124,6 @@ class CallvanListViewModel @Inject constructor(
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         leaveCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
-            .onFailure { Log.e("MYLOG", "joinCancle ${it}") }
     }
 
     fun close(index: Int) = intent {
@@ -122,7 +134,6 @@ class CallvanListViewModel @Inject constructor(
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         closeCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
-            .onFailure { Log.e("MYLOG", "close ${it}") }
     }
 
     fun reRecruit(index: Int) = intent {
@@ -133,7 +144,6 @@ class CallvanListViewModel @Inject constructor(
         val postId = state.items.getOrNull(index)?.id ?: return@intent
         reopenCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
-            .onFailure { Log.e("MYLOG", "reRecruit ${it}") }
     }
 
     fun complete(index: Int) = intent {
@@ -187,7 +197,6 @@ class CallvanListViewModel @Inject constructor(
                 )
             }
         }.onFailure {
-            Log.e("MYLOG","not load ${it}")
             reduce { state.copy(isLoading = false) }
         }
     }
@@ -224,6 +233,7 @@ class CallvanListViewModel @Inject constructor(
 
     companion object {
         private const val PAGE_SIZE = 10
+        private const val SEARCH_DEBOUNCE_MS = 250L
     }
 
     private fun CallvanPostSearch.CallvanPost.toItemState(): CallvanItemState = when {
