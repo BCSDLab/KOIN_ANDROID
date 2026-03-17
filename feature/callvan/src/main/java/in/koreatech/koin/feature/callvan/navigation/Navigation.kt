@@ -59,7 +59,7 @@ fun NavGraphBuilder.koinCallvanGraph(
 
     composable<CallvanNavType.CallvanChat> {
         val navigator = rememberNavigator()
-        val context = navController.context
+        val context = LocalContext.current
         val intent = remember { navigator.navigateToGroupChat(context, it.toRoute<CallvanNavType.CallvanChat>().postId) }
         val launcher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.StartActivityForResult()

@@ -1,0 +1,9 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin
+---
+- runFlow: launch_app.yaml
+- tapOn:
+    id: "${APP_ID}:id/button_category"
+- waitForAnimationToEnd:
+    timeout: 3000

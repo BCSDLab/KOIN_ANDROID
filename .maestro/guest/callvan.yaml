@@ -1,0 +1,9 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin
+---
+- runFlow: ../common/open_drawer.yaml
+- tapOn:
+    id: "${APP_ID}:id/navi_item_callvan"
+- waitForAnimationToEnd:
+    timeout: 10000
