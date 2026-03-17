@@ -11,11 +11,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import java.time.LocalDate
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.callvan.R
-import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
+import `in`.koreatech.koin.feature.callvan.ui.create.model.CallvanLocationOption
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanDateField
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanLocationPickerBottomSheet
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanLocationSection
@@ -56,9 +57,7 @@ fun CallvanCreateScreen(
         onArrivalLocationClick = viewModel::openArrivalLocationPicker,
         onSwapLocations = viewModel::swapLocations,
         onDateFieldClick = viewModel::toggleDatePicker,
-        onYearIndexChange = viewModel::updateYear,
-        onMonthIndexChange = viewModel::updateMonth,
-        onDayIndexChange = viewModel::updateDay,
+        onDateChange = viewModel::updateDate,
         onDateReset = viewModel::resetDate,
         onDateConfirm = viewModel::confirmDate,
         onTimeFieldClick = viewModel::toggleTimePicker,
@@ -82,9 +81,7 @@ fun CallvanCreateScreenImpl(
     onArrivalLocationClick: () -> Unit = {},
     onSwapLocations: () -> Unit = {},
     onDateFieldClick: () -> Unit = {},
-    onYearIndexChange: (Int) -> Unit = {},
-    onMonthIndexChange: (Int) -> Unit = {},
-    onDayIndexChange: (Int) -> Unit = {},
+    onDateChange: (LocalDate) -> Unit = {},
     onDateReset: () -> Unit = {},
     onDateConfirm: () -> Unit = {},
     onTimeFieldClick: () -> Unit = {},
@@ -129,18 +126,13 @@ fun CallvanCreateScreenImpl(
                 CallvanDateField(
                     formattedDate = state.formattedDate,
                     isPickerVisible = state.isDatePickerVisible,
-                    selectedYear = state.selectedYear,
-                    selectedMonth = state.selectedMonth,
-                    selectedDay = state.selectedDay,
+                    selectedDate = state.selectedDate,
                     onFieldClick = onDateFieldClick,
-                    onYearIndexChange = onYearIndexChange,
-                    onMonthIndexChange = onMonthIndexChange,
-                    onDayIndexChange = onDayIndexChange,
+                    onDateChange = onDateChange,
                     onReset = onDateReset,
                     onConfirm = onDateConfirm
                 )
                 CallvanTimeField(
-                    amPmText = state.amPmText,
                     formattedTime = state.formattedTime,
                     isPickerVisible = state.isTimePickerVisible,
                     isAm = state.isAm,
@@ -154,7 +146,6 @@ fun CallvanCreateScreenImpl(
                     onConfirm = onTimeConfirm
                 )
                 CallvanParticipantsSection(
-                    participantsText = state.participantsText,
                     count = state.maxParticipants,
                     onDecrement = onDecrement,
                     onIncrement = onIncrement
@@ -183,7 +174,7 @@ private fun CallvanCreateScreenFilledPreview() {
     CallvanCreateScreenImpl(
         state = CallvanCreateState(
             departureLocation = CallvanLocationOption.FRONT_GATE,
-            arrivalLocation = CallvanLocationOption.CHEONAN_TERMINAL,
+            arrivalLocation = CallvanLocationOption.ASAN_STATION,
             selectedHour = 9,
             selectedMinute = 0,
             isAm = true,
@@ -198,7 +189,7 @@ private fun CallvanCreateScreenDatePickerPreview() {
     CallvanCreateScreenImpl(
         state = CallvanCreateState(
             departureLocation = CallvanLocationOption.FRONT_GATE,
-            arrivalLocation = CallvanLocationOption.CHEONAN_TERMINAL,
+            arrivalLocation = CallvanLocationOption.ASAN_STATION,
             isDatePickerVisible = true
         )
     )

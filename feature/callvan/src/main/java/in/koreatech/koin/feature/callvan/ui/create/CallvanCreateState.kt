@@ -1,16 +1,14 @@
 package `in`.koreatech.koin.feature.callvan.ui.create
 
-import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
-import java.util.Calendar
+import `in`.koreatech.koin.feature.callvan.ui.create.model.CallvanLocationOption
+import java.time.LocalDate
 
 data class CallvanCreateState(
     val departureLocation: CallvanLocationOption? = null,
     val arrivalLocation: CallvanLocationOption? = null,
     val departureCustomText: String? = null,
     val arrivalCustomText: String? = null,
-    val selectedYear: Int = Calendar.getInstance().get(Calendar.YEAR),
-    val selectedMonth: Int = Calendar.getInstance().get(Calendar.MONTH) + 1,
-    val selectedDay: Int = Calendar.getInstance().get(Calendar.DAY_OF_MONTH),
+    val selectedDate: LocalDate = LocalDate.now(),
     val selectedHour: Int = 12,
     val selectedMinute: Int = 0,
     val isAm: Boolean = true,
@@ -24,14 +22,14 @@ data class CallvanCreateState(
     val isFormComplete: Boolean
         get() {
             val departureValid = departureLocation != null &&
-                (departureLocation != CallvanLocationOption.OTHER || !departureCustomText.isNullOrBlank())
+                (departureLocation != CallvanLocationOption.CUSTOM || !departureCustomText.isNullOrBlank())
             val arrivalValid = arrivalLocation != null &&
-                (arrivalLocation != CallvanLocationOption.OTHER || !arrivalCustomText.isNullOrBlank())
+                (arrivalLocation != CallvanLocationOption.CUSTOM || !arrivalCustomText.isNullOrBlank())
             return departureValid && arrivalValid
         }
 
     val formattedDate: String
-        get() = "${selectedYear}년 ${selectedMonth}월 ${selectedDay}일"
+        get() = "${selectedDate.year}년 ${selectedDate.monthValue}월 ${selectedDate.dayOfMonth}일"
 
     val formattedTime: String
         get() = "%02d:%02d".format(selectedHour, selectedMinute)
@@ -43,7 +41,7 @@ data class CallvanCreateState(
         get() = "$maxParticipants 명"
 
     val apiDepartureDate: String
-        get() = "%04d-%02d-%02d".format(selectedYear, selectedMonth, selectedDay)
+        get() = selectedDate.toString()
 
     val apiDepartureTime: String
         get() {

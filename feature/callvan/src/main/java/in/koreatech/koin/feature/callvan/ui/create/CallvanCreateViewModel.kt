@@ -3,8 +3,8 @@ package `in`.koreatech.koin.feature.callvan.ui.create
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.callvan.CreateCallvanPostUseCase
-import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
-import java.util.Calendar
+import `in`.koreatech.koin.feature.callvan.ui.create.model.CallvanLocationOption
+import java.time.LocalDate
 import javax.inject.Inject
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -74,42 +74,14 @@ class CallvanCreateViewModel @Inject constructor(
         }
     }
 
-    fun updateYear(yearIndex: Int) = blockingIntent {
-        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-        val newYear = currentYear + yearIndex
-        reduce {
-            val maxDay = getDaysInMonth(newYear, state.selectedMonth)
-            state.copy(
-                selectedYear = newYear,
-                selectedDay = state.selectedDay.coerceAtMost(maxDay)
-            )
-        }
-    }
-
-    fun updateMonth(monthIndex: Int) = blockingIntent {
-        val newMonth = monthIndex + 1
-        reduce {
-            val maxDay = getDaysInMonth(state.selectedYear, newMonth)
-            state.copy(
-                selectedMonth = newMonth,
-                selectedDay = state.selectedDay.coerceAtMost(maxDay)
-            )
-        }
-    }
-
-    fun updateDay(dayIndex: Int) = blockingIntent {
-        reduce { state.copy(selectedDay = dayIndex + 1) }
+    fun updateDate(date: LocalDate) = blockingIntent {
+        val today = LocalDate.now()
+        val clamped = if (date.isBefore(today)) today else date
+        reduce { state.copy(selectedDate = clamped) }
     }
 
     fun resetDate() = blockingIntent {
-        val today = Calendar.getInstance()
-        reduce {
-            state.copy(
-                selectedYear = today.get(Calendar.YEAR),
-                selectedMonth = today.get(Calendar.MONTH) + 1,
-                selectedDay = today.get(Calendar.DAY_OF_MONTH)
-            )
-        }
+        reduce { state.copy(selectedDate = LocalDate.now()) }
     }
 
     fun confirmDate() = blockingIntent {
@@ -168,17 +140,18 @@ class CallvanCreateViewModel @Inject constructor(
     fun submit() = intent {
         val currentState = state
         if (!currentState.isFormComplete || currentState.isSubmitting) return@intent
+        if(currentState.departureLocation == null || currentState.arrivalLocation == null) return@intent
         reduce { state.copy(isSubmitting = true) }
         createCallvanPostUseCase(
-            departureType = if (currentState.departureLocation == CallvanLocationOption.OTHER) {
+            departureType = if (currentState.departureLocation == CallvanLocationOption.CUSTOM) {
                 currentState.departureCustomText ?: ""
             } else {
-                currentState.departureLocation!!.type
+                currentState.departureLocation.name
             },
-            arrivalType = if (currentState.arrivalLocation == CallvanLocationOption.OTHER) {
+            arrivalType = if (currentState.arrivalLocation == CallvanLocationOption.CUSTOM) {
                 currentState.arrivalCustomText ?: ""
             } else {
-                currentState.arrivalLocation!!.type
+                currentState.arrivalLocation.name
             },
             departureDate = currentState.apiDepartureDate,
             departureTime = currentState.apiDepartureTime,
@@ -192,10 +165,4 @@ class CallvanCreateViewModel @Inject constructor(
         }
     }
 
-    private fun getDaysInMonth(year: Int, month: Int): Int {
-        return Calendar.getInstance().apply {
-            clear()
-            set(year, month - 1, 1)
-        }.getActualMaximum(Calendar.DAY_OF_MONTH)
-    }
 }

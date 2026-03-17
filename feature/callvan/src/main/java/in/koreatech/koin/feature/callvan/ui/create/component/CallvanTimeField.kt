@@ -1,11 +1,9 @@
 package `in`.koreatech.koin.feature.callvan.ui.create.component
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,13 +16,20 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import java.util.Locale
@@ -45,23 +50,25 @@ fun CallvanTimeField(
     onConfirm: () -> Unit = {}
 ) {
     val amPmText = stringResource(if (isAm) R.string.callvan_am else R.string.callvan_pm)
+    var popupOffsetHeightPx by remember { mutableIntStateOf(0) }
 
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            CallvanSectionHeader(
-                label = stringResource(R.string.callvan_create_time_label),
-                hint = stringResource(R.string.callvan_create_time_hint)
-            )
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp, vertical = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        CallvanSectionHeader(
+            label = stringResource(R.string.callvan_create_time_label),
+            hint = stringResource(R.string.callvan_create_time_hint)
+        )
+        Box {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .border(1.dp, RebrandKoinTheme.colors.neutral400, RoundedCornerShape(4.dp))
-                    .clickable(onClick = onFieldClick),
+                    .clickable(onClick = onFieldClick)
+                    .onGloballyPositioned { popupOffsetHeightPx = it.size.height + 20 },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -83,22 +90,25 @@ fun CallvanTimeField(
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 )
             }
-        }
-        AnimatedVisibility(
-            visible = isPickerVisible,
-            enter = expandVertically(),
-            exit = shrinkVertically()
-        ) {
-            CallvanTimePickerCard(
-                isAm = isAm,
-                selectedHour = selectedHour,
-                selectedMinute = selectedMinute,
-                onAmPmIndexChange = onAmPmIndexChange,
-                onHourIndexChange = onHourIndexChange,
-                onMinuteIndexChange = onMinuteIndexChange,
-                onReset = onReset,
-                onConfirm = onConfirm
-            )
+            if (isPickerVisible) {
+                Popup(
+                    alignment = Alignment.TopStart,
+                    offset = IntOffset(x = 0, y = popupOffsetHeightPx),
+                    onDismissRequest = onFieldClick,
+                    properties = PopupProperties(focusable = true)
+                ) {
+                    CallvanTimePickerCard(
+                        isAm = isAm,
+                        selectedHour = selectedHour,
+                        selectedMinute = selectedMinute,
+                        onAmPmIndexChange = onAmPmIndexChange,
+                        onHourIndexChange = onHourIndexChange,
+                        onMinuteIndexChange = onMinuteIndexChange,
+                        onReset = onReset,
+                        onConfirm = onConfirm
+                    )
+                }
+            }
         }
     }
 }
