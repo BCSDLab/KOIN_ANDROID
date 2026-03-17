@@ -19,6 +19,10 @@ class CallvanActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdgeWithLightStatusBar()
+        var startDestination: CallvanNavType = CallvanNavType.CallvanMain
+        if (intent.getBooleanExtra(EXTRA_NAVIGATE_TO_CREATE, false)) {
+            startDestination = CallvanNavType.CallvanCreate
+        }
         setContent {
             RebrandKoinTheme {
                 val navController = rememberNavController()
@@ -27,12 +31,16 @@ class CallvanActivity : ComponentActivity() {
                     NavHost(
                         modifier = Modifier.padding(innerPadding),
                         navController = navController,
-                        startDestination = CallvanNavType.CallvanMain::class
+                        startDestination = startDestination
                     ) {
                         koinCallvanGraph(navController = navController)
                     }
                 }
             }
         }
+    }
+
+    companion object {
+        const val EXTRA_NAVIGATE_TO_CREATE = "navigate_to_create"
     }
 }

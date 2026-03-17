@@ -71,7 +71,11 @@ fun CallvanEntry(
                         AnalyticsConstant.Label.Callvan.MAIN_CALLVAN_WRITE,
                         ""
                     )
-                    context.startActivity(Intent(context, CallvanActivity::class.java)) // TODO: Navigate to create
+                    context.startActivity(
+                        Intent(context, CallvanActivity::class.java).apply {
+                            putExtra(CallvanActivity.EXTRA_NAVIGATE_TO_CREATE, true)
+                        }
+                    )
                 }
             )
         }
