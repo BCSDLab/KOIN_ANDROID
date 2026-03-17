@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.feature.callvan.ui.create
 
-import `in`.koreatech.koin.feature.callvan.ui.create.model.CallvanLocationOption
+import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
 import java.time.LocalDate
 
 data class CallvanCreateState(

@@ -3,7 +3,7 @@ package `in`.koreatech.koin.feature.callvan.ui.create
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.callvan.CreateCallvanPostUseCase
-import `in`.koreatech.koin.feature.callvan.ui.create.model.CallvanLocationOption
+import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
 import java.time.LocalDate
 import javax.inject.Inject
 import org.orbitmvi.orbit.Container
