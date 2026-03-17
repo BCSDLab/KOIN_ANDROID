@@ -23,7 +23,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
@@ -36,6 +39,7 @@ import `in`.koreatech.koin.feature.callvan.ui.list.component.FilterBottomSheet
 import `in`.koreatech.koin.feature.callvan.ui.list.component.ItemSearchTextField
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanConfirmType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.SortType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanItemState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemClickListener
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListUiState
@@ -162,7 +166,13 @@ fun CallvanListScreenImpl(
             selectedStatusesType = filterState.selectedStatusesType,
             selectedArrivalsType = filterState.selectedArrivalsType,
             selectedDeparturesType = filterState.selectedDeparturesType,
-            onApply = onFilterApply
+            onApply = { sortType, statusesType, departuresFilterTypes, arrivalsFilterTypes ->
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.Callvan.CALLVAN_FILTER_APPLY,
+                    ""
+                )
+                onFilterApply(sortType, statusesType, departuresFilterTypes, arrivalsFilterTypes)
+            }
         )
     }
 
@@ -180,10 +190,26 @@ fun CallvanListScreenImpl(
             cancelText = stringResource(R.string.callvan_confirm_negative),
             onConfirm = {
                 when (confirmType) {
-                    CallvanConfirmType.JOIN -> onJoin(index)
-                    CallvanConfirmType.CANCEL_JOIN -> onCancelJoin(index)
-                    CallvanConfirmType.CLOSE -> onClose(index)
-                    CallvanConfirmType.REOPEN -> onReRecruit(index)
+                    CallvanConfirmType.JOIN -> {
+                        EventLogger.logCampusClickEvent(
+                            AnalyticsConstant.Label.Callvan.CALLVAN_JOIN,
+                            ""
+                        )
+                        onJoin(index)
+                    }
+                    CallvanConfirmType.CANCEL_JOIN -> {
+                        EventLogger.logCampusClickEvent(
+                            AnalyticsConstant.Label.Callvan.CALLVAN_JOIN_CANCEL,
+                            ""
+                        )
+                        onCancelJoin(index)
+                    }
+                    CallvanConfirmType.CLOSE -> {
+                        onClose(index)
+                    }
+                    CallvanConfirmType.REOPEN -> {
+                        onReRecruit(index)
+                    }
                 }
                 onPendingConfirmChange(null)
             },
@@ -223,7 +249,13 @@ fun CallvanListScreenImpl(
         topBar = {
             KoinTopAppBar(
                 title = stringResource(R.string.callvan_detail_top_bar),
-                onNavigationIconClick = onTopbarBackClick,
+                onNavigationIconClick = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.Callvan.CALLVAN_BACK,
+                        ""
+                    )
+                    onTopbarBackClick()
+                },
                 actions = {
                     IconButton(onClick = onNotificationClick) {
                         CallvanNotificationIcon(hasNewNotification = hasNewNotification)
@@ -234,7 +266,13 @@ fun CallvanListScreenImpl(
         floatingActionButton = {
             CallvanFAB(
                 modifier = Modifier.padding(bottom = 16.dp),
-                onClick = onWriteClick
+                onClick = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.Callvan.CALLVAN_CREATE,
+                        ""
+                    )
+                    onWriteClick()
+                }
             )
         },
         containerColor = KoinTheme.colors.neutral0
@@ -258,9 +296,22 @@ fun CallvanListScreenImpl(
                     ItemSearchTextField(
                         value = searchValue,
                         onValueChange = onSearchValueChange,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f).noRippleClickable {
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.Callvan.CALLVAN_SEARCH,
+                                ""
+                            )
+                        }
                     )
-                    CallvanFilterChip(onClick = { onFilterVisibleChange(true) })
+                    CallvanFilterChip(
+                        onClick = {
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.Callvan.CALLVAN_FILTER,
+                                ""
+                            )
+                            onFilterVisibleChange(true)
+                        }
+                    )
                 }
             }
 
@@ -285,9 +336,17 @@ fun CallvanListScreenImpl(
                             onPendingCompleteIndexChange(index)
                         }
                         override fun onCall() {
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.Callvan.CALLVAN_CALL,
+                                ""
+                            )
                             onCall(index)
                         }
                         override fun onChat() {
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.Callvan.CALLVAN_CHAT,
+                                ""
+                            )
                             onChat(index)
                         }
                     }
