@@ -104,7 +104,7 @@ fun CallvanListScreen(
     )
 }
 
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "CyclomaticComplexMethod")
 @Composable
 fun CallvanListScreenImpl(
     searchValue: String,

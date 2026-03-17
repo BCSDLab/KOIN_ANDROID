@@ -30,6 +30,7 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
+@Suppress("LongParameterList", "TooManyFunctions")
 class CallvanListViewModel @Inject constructor(
     private val getCallvanPostsUseCase: GetCallvanPostsUseCase,
     private val joinCallvanPostUseCase: JoinCallvanPostUseCase,
