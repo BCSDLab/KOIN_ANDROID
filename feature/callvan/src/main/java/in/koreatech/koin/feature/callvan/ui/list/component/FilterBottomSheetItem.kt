@@ -19,7 +19,8 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 fun FilterBottomSheetItem(
     text: String,
     isSelected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Surface(
         onClick = onClick,
@@ -29,7 +30,7 @@ fun FilterBottomSheetItem(
             color = if (isSelected) RebrandKoinTheme.colors.primary500 else KoinTheme.colors.neutral300
         ),
         color = KoinTheme.colors.neutral0,
-        modifier = Modifier
+        modifier = modifier
             .padding(end = 8.dp)
             .semantics { selected = isSelected }
     ) {

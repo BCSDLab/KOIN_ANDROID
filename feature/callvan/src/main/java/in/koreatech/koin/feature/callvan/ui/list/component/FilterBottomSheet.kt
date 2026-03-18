@@ -125,7 +125,7 @@ fun FilterBottomSheet(
 }
 
 @Composable
-fun FilterBottomSheetContent(
+private fun FilterBottomSheetContent(
     state: FilterBottomSheetState,
     actions: FilterBottomSheetActions
 ) {
@@ -236,7 +236,7 @@ fun FilterBottomSheetContent(
 }
 
 @Composable
-fun FilterSection(
+private fun FilterSection(
     title: String,
     items: ImmutableList<CallvanFilterType>,
     selectedItem: CallvanFilterType,
@@ -266,7 +266,7 @@ fun FilterSection(
 private const val AT_LEAST_COUNT = 1
 
 @Composable
-fun FilterDuplicateSection(
+private fun FilterDuplicateSection(
     title: String,
     items: ImmutableList<CallvanFilterType>,
     selectedItems: ImmutableList<CallvanFilterType>,
