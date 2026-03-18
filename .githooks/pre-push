@@ -46,7 +46,7 @@ RUN_ALL=false
 
 while IFS= read -r file; do
   case "$file" in
-    build-logic/*|build.gradle.kts|gradle.properties|settings.gradle|gradle/libs.versions.toml)
+    build-logic/*|build.gradle|build.gradle.kts|gradle.properties|settings.gradle|settings.gradle.kts|gradle/libs.versions.toml)
       RUN_ALL=true
       break
       ;;
