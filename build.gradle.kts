@@ -120,3 +120,11 @@ spotless {
 tasks.named<Delete>("clean") {
     delete(rootProject.buildDir)
 }
+tasks.register("installGitHooks") {
+    doLast {
+        exec {
+            commandLine("git", "config", "core.hooksPath", ".githooks")
+        }
+        println("Git hooks installed!")
+    }
+}

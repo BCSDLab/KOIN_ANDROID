@@ -15,6 +15,7 @@ internal fun Project.configureDetekt(
     }
 
     tasks.named<Detekt>("detekt") {
+        jvmTarget = "17"
         reports {
             html.required.set(true)
             xml.required.set(true)
