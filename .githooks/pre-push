@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
-# pre-push hook: run ktlintCheck, spotlessCheck, detekt for changed modules only
 
 set -e
 
-# bash 4.0+ required for associative arrays (macOS default is 3.2)
-# Install via: brew install bash
 if ((BASH_VERSINFO[0] < 4)); then
   echo "[pre-push] Error: bash 4.0+ is required. Install with: brew install bash"
   exit 1
@@ -83,12 +80,12 @@ fi
 
 echo "[pre-push] Affected modules: ${!MODULES[*]}"
 
-# spotlessCheck is root-level only (target "**/*.kt" across all modules)
 TASKS=("spotlessCheck")
 for module in "${!MODULES[@]}"; do
   TASKS+=("${module}:ktlintCheck")
-  TASKS+=("${module}:detekt")
+  if ./gradlew "${module}:tasks" --quiet 2>/dev/null | grep -q "^detekt "; then
+    TASKS+=("${module}:detekt")
+  fi
 done
-
 echo "[pre-push] Running: ./gradlew ${TASKS[*]}"
 ./gradlew --continue "${TASKS[@]}"
