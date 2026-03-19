@@ -92,7 +92,7 @@ fun CallvanListItemButtons(
                     onClick = { clickListener.onReRecruit() },
                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
                 )
-                else -> {}
+                else -> Unit
             }
 
             when (state) {
@@ -106,7 +106,7 @@ fun CallvanListItemButtons(
                     onClick = { clickListener.onComplete() },
                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
                 )
-                else -> {}
+                else -> Unit
             }
         }
     }
