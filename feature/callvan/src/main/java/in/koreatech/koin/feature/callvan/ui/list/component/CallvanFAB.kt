@@ -29,8 +29,8 @@ import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFABDefaults
 
 @Composable
 fun CallvanFAB(
-    modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     windowInsets: WindowInsets = CallvanFABDefaults.windowInsets
 ) {
     Box(
