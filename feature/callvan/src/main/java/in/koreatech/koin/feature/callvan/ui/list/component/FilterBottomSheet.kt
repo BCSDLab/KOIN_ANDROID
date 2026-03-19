@@ -43,7 +43,6 @@ import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.SortT
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.StatusesType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetActions
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
-import kotlin.collections.map
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -76,10 +75,9 @@ fun FilterBottomSheet(
                 selectedArrivalsType = selectedArrivalsType
             ),
             actions = FilterBottomSheetActions(
-                onSortTypeChange = { selectedSortType = it as SortType },
-                onStatusesTypeChange = { selectedStatusesType = it as StatusesType },
-                onArrivalsTypeChange = {
-                    val newSelected = it.map { type -> type as ArrivalsFilterType }
+                onSortTypeChange = { selectedSortType = it },
+                onStatusesTypeChange = { selectedStatusesType = it },
+                onArrivalsTypeChange = { newSelected ->
                     selectedArrivalsType = if (
                         selectedArrivalsType.size == 1 &&
                         selectedArrivalsType.first() == ArrivalsFilterType.All
@@ -91,8 +89,7 @@ fun FilterBottomSheet(
                         newSelected.toPersistentList()
                     }
                 },
-                onDeparturesTypeChange = {
-                    val newSelected = it.map { type -> type as DeparturesFilterType }
+                onDeparturesTypeChange = { newSelected ->
                     selectedDeparturesType = if (
                         selectedDeparturesType.size == 1 &&
                         selectedDeparturesType.first() == DeparturesFilterType.All
@@ -236,11 +233,11 @@ private fun FilterBottomSheetContent(
 }
 
 @Composable
-private fun FilterSection(
+private fun <T : CallvanFilterType> FilterSection(
     title: String,
-    items: ImmutableList<CallvanFilterType>,
-    selectedItem: CallvanFilterType,
-    onItemSelected: (CallvanFilterType) -> Unit
+    items: ImmutableList<T>,
+    selectedItem: T,
+    onItemSelected: (T) -> Unit
 ) {
     Column(modifier = Modifier.padding(vertical = 12.dp)) {
         Text(
@@ -266,11 +263,11 @@ private fun FilterSection(
 private const val AT_LEAST_COUNT = 1
 
 @Composable
-private fun FilterDuplicateSection(
+private fun <T : CallvanFilterType> FilterDuplicateSection(
     title: String,
-    items: ImmutableList<CallvanFilterType>,
-    selectedItems: ImmutableList<CallvanFilterType>,
-    onItemSelected: (ImmutableList<CallvanFilterType>) -> Unit
+    items: ImmutableList<T>,
+    selectedItems: ImmutableList<T>,
+    onItemSelected: (ImmutableList<T>) -> Unit
 ) {
     Column(modifier = Modifier.padding(vertical = 12.dp)) {
         Row(
