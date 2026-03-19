@@ -35,8 +35,8 @@ import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemClickLis
 @Composable
 fun CallvanListItemButtons(
     state: CallvanItemState,
-    modifier: Modifier = Modifier,
-    clickListener: CallvanListItemClickListener = object : CallvanListItemClickListener {}
+    clickListener: CallvanListItemClickListener,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier,
@@ -171,7 +171,7 @@ private fun CallvanOutlinedButton(
 @Composable
 private fun CallvanListItemButtonsDefaultPreview() {
     RebrandKoinTheme {
-        CallvanListItemButtons(state = CallvanItemState.DEFAULT)
+        CallvanListItemButtons(state = CallvanItemState.DEFAULT, clickListener = object : CallvanListItemClickListener {})
     }
 }
 
@@ -179,7 +179,7 @@ private fun CallvanListItemButtonsDefaultPreview() {
 @Composable
 private fun CallvanListItemButtonsJoinedPreview() {
     RebrandKoinTheme {
-        CallvanListItemButtons(state = CallvanItemState.JOINED)
+        CallvanListItemButtons(state = CallvanItemState.JOINED, clickListener = object : CallvanListItemClickListener {})
     }
 }
 
@@ -187,7 +187,7 @@ private fun CallvanListItemButtonsJoinedPreview() {
 @Composable
 private fun CallvanListItemButtonsClosedPreview() {
     RebrandKoinTheme {
-        CallvanListItemButtons(state = CallvanItemState.CLOSED)
+        CallvanListItemButtons(state = CallvanItemState.CLOSED, clickListener = object : CallvanListItemClickListener {})
     }
 }
 
@@ -195,7 +195,7 @@ private fun CallvanListItemButtonsClosedPreview() {
 @Composable
 private fun CallvanListItemButtonsOwnerActivePreview() {
     RebrandKoinTheme {
-        CallvanListItemButtons(state = CallvanItemState.OWNER_ACTIVE)
+        CallvanListItemButtons(state = CallvanItemState.OWNER_ACTIVE, clickListener = object : CallvanListItemClickListener {})
     }
 }
 
@@ -203,6 +203,6 @@ private fun CallvanListItemButtonsOwnerActivePreview() {
 @Composable
 private fun CallvanListItemButtonsOwnerClosedPreview() {
     RebrandKoinTheme {
-        CallvanListItemButtons(state = CallvanItemState.OWNER_CLOSED)
+        CallvanListItemButtons(state = CallvanItemState.OWNER_CLOSED, clickListener = object : CallvanListItemClickListener {})
     }
 }

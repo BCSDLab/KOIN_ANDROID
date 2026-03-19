@@ -57,6 +57,7 @@ fun ItemSearchTextField(
                     if (value.isEmpty()) {
                         Text(
                             text = hint,
+                            style = textStyle,
                             color = KoinTheme.colors.neutral600
                         )
                     }
