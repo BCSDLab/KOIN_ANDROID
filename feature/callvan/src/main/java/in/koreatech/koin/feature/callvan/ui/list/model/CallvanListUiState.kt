@@ -1,5 +1,8 @@
 package `in`.koreatech.koin.feature.callvan.ui.list.model
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class CallvanListUiState(
     val departure: String,
     val destination: String,

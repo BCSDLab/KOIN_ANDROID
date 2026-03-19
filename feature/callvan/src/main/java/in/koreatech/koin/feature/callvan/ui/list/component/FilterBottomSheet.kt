@@ -47,20 +47,22 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
+private const val MINIMUM_SELECTION_COUNT = 1
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterBottomSheet(
     onDismissRequest: () -> Unit,
-    selectedSortType: SortType,
-    selectedStatusesType: StatusesType,
-    selectedArrivalsType: ImmutableList<ArrivalsFilterType>,
-    selectedDeparturesType: ImmutableList<DeparturesFilterType>,
+    initialSortType: SortType,
+    initialStatusesType: StatusesType,
+    initialArrivalsType: ImmutableList<ArrivalsFilterType>,
+    initialDeparturesType: ImmutableList<DeparturesFilterType>,
     onApply: (SortType, StatusesType, ImmutableList<DeparturesFilterType>, ImmutableList<ArrivalsFilterType>) -> Unit
 ) {
-    var selectedSortType by remember { mutableStateOf(selectedSortType) }
-    var selectedStatusesType by remember { mutableStateOf(selectedStatusesType) }
-    var selectedArrivalsType by remember { mutableStateOf(selectedArrivalsType) }
-    var selectedDeparturesType by remember { mutableStateOf(selectedDeparturesType) }
+    var selectedSortType by remember(initialSortType) { mutableStateOf(initialSortType) }
+    var selectedStatusesType by remember(initialStatusesType) { mutableStateOf(initialStatusesType) }
+    var selectedArrivalsType by remember(initialArrivalsType) { mutableStateOf(initialArrivalsType) }
+    var selectedDeparturesType by remember(initialDeparturesType) { mutableStateOf(initialDeparturesType) }
 
     CallvanBottomSheet(
         title = stringResource(R.string.filter_container),
@@ -260,7 +262,6 @@ private fun <T : CallvanFilterType> FilterSection(
         }
     }
 }
-private const val AT_LEAST_COUNT = 1
 
 @Composable
 private fun <T : CallvanFilterType> FilterDuplicateSection(
@@ -296,7 +297,7 @@ private fun <T : CallvanFilterType> FilterDuplicateSection(
                     onClick = {
                         onItemSelected(
                             if (item in selectedItems) {
-                                if (selectedItems.size > AT_LEAST_COUNT) {
+                                if (selectedItems.size > MINIMUM_SELECTION_COUNT) {
                                     (selectedItems - item).toPersistentList()
                                 } else {
                                     return@FilterBottomSheetItem
