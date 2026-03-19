@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.callvan.ui.component
 
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,12 +41,16 @@ fun CallvanRouteInfo(
                 Text(
                     text = stringResource(R.string.callvan_detail_departure, departure),
                     style = KoinTheme.typography.medium14,
-                    color = KoinTheme.colors.neutral800
+                    color = KoinTheme.colors.neutral800,
+                    maxLines = 1,
+                    modifier = Modifier.basicMarquee()
                 )
                 Text(
                     text = stringResource(R.string.callvan_detail_destination, destination),
                     style = KoinTheme.typography.medium14,
-                    color = KoinTheme.colors.neutral800
+                    color = KoinTheme.colors.neutral800,
+                    maxLines = 1,
+                    modifier = Modifier.basicMarquee()
                 )
             }
         }

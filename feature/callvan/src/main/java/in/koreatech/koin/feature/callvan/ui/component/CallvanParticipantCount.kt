@@ -15,7 +15,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 
 @Composable
@@ -23,7 +23,7 @@ fun CallvanParticipantCount(
     currentCount: Int,
     maxCount: Int,
     modifier: Modifier = Modifier,
-    textStyle: TextStyle = KoinTheme.typography.regular12,
+    textStyle: TextStyle = RebrandKoinTheme.typography.regular12,
     iconSize: Dp = 16.dp
 ) {
     Row(
@@ -34,13 +34,13 @@ fun CallvanParticipantCount(
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_participants),
             contentDescription = null,
-            tint = KoinTheme.colors.neutral600,
+            tint = RebrandKoinTheme.colors.neutral600,
             modifier = Modifier.size(iconSize)
         )
         Text(
             text = stringResource(R.string.callvan_detail_participants_count, currentCount, maxCount),
             style = textStyle,
-            color = KoinTheme.colors.neutral600
+            color = RebrandKoinTheme.colors.neutral600
 
         )
     }
