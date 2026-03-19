@@ -142,10 +142,10 @@ fun CallvanListScreenImpl(
         if (isFilterVisible) {
             FilterBottomSheet(
                 onDismissRequest = { isFilterVisible = false },
-                selectedSortType = filterState.selectedSortType,
-                selectedStatusesType = filterState.selectedStatusesType,
-                selectedArrivalsType = filterState.selectedArrivalsType,
-                selectedDeparturesType = filterState.selectedDeparturesType,
+                initialSortType = filterState.selectedSortType,
+                initialStatusesType = filterState.selectedStatusesType,
+                initialArrivalsType = filterState.selectedArrivalsType,
+                initialDeparturesType = filterState.selectedDeparturesType,
                 onApply = onFilterApply
             )
         }
