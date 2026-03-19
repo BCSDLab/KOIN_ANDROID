@@ -22,12 +22,13 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 
 @Composable
-fun CallvanFilterChip(onClick: () -> Unit) {
+fun CallvanFilterChip(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Surface(
-        onClick = {
-            onClick()
-        },
-        modifier = Modifier
+        onClick = onClick,
+        modifier = modifier
             .height(34.dp),
         shape = RoundedCornerShape(24.dp),
         color = RebrandKoinTheme.colors.primary100,

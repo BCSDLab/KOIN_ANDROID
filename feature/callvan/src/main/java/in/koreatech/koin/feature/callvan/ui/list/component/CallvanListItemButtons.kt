@@ -92,31 +92,21 @@ fun CallvanListItemButtons(
                     onClick = { clickListener.onReRecruit() },
                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
                 )
-                else -> {}
+                else -> Unit
             }
 
-            if (state == CallvanItemState.DEFAULT || state == CallvanItemState.OWNER_CLOSED) {
-                CallvanFilledButton(
-                    text = stringResource(
-                        if (state == CallvanItemState.DEFAULT) {
-                            R.string.callvan_btn_join
-                        } else {
-                            R.string.callvan_btn_complete
-                        }
-                    ),
-                    onClick = {
-                        if (state == CallvanItemState.DEFAULT) {
-                            clickListener.onJoin()
-                        } else {
-                            clickListener.onComplete()
-                        }
-                    },
-                    contentPadding = if (state == CallvanItemState.OWNER_CLOSED) {
-                        PaddingValues(horizontal = 8.dp, vertical = 4.dp)
-                    } else {
-                        PaddingValues(horizontal = 12.dp, vertical = 4.dp)
-                    }
+            when (state) {
+                CallvanItemState.DEFAULT -> CallvanFilledButton(
+                    text = stringResource(R.string.callvan_btn_join),
+                    onClick = { clickListener.onJoin() },
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp)
                 )
+                CallvanItemState.OWNER_CLOSED -> CallvanFilledButton(
+                    text = stringResource(R.string.callvan_btn_complete),
+                    onClick = { clickListener.onComplete() },
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+                )
+                else -> Unit
             }
         }
     }
@@ -214,16 +204,5 @@ private fun CallvanListItemButtonsOwnerActivePreview() {
 private fun CallvanListItemButtonsOwnerClosedPreview() {
     RebrandKoinTheme {
         CallvanListItemButtons(state = CallvanItemState.OWNER_CLOSED)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun CallvanListItemButtonsOwnerClosesdPreview() {
-    RebrandKoinTheme {
-        CallvanFilledButton(
-            text = stringResource(R.string.callvan_btn_close),
-            onClick = {}
-        )
     }
 }
