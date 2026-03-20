@@ -170,9 +170,7 @@ private fun CallvanDatePickerCard(
                     items = years,
                     selectedIndex = yearIndex,
                     onIndexChange = { index ->
-                        val newYear = today.year + index
-                        val safeDay = selectedDate.dayOfMonth.coerceAtMost(YearMonth.of(newYear, selectedDate.monthValue).lengthOfMonth())
-                        onDateChange(LocalDate.of(newYear, selectedDate.monthValue, safeDay))
+                        onDateChange(maxOf(selectedDate.withYear(today.year + index), today))
                     },
                     modifier = Modifier.weight(1f)
                 )
@@ -180,9 +178,7 @@ private fun CallvanDatePickerCard(
                     items = months,
                     selectedIndex = monthIndex,
                     onIndexChange = { index ->
-                        val newMonth = minMonth + index
-                        val safeDay = selectedDate.dayOfMonth.coerceAtMost(YearMonth.of(selectedDate.year, newMonth).lengthOfMonth())
-                        onDateChange(LocalDate.of(selectedDate.year, newMonth, safeDay))
+                        onDateChange(maxOf(selectedDate.withMonth(minMonth + index), today))
                     },
                     modifier = Modifier.weight(1f)
                 )
@@ -190,7 +186,7 @@ private fun CallvanDatePickerCard(
                     items = days,
                     selectedIndex = dayIndex,
                     onIndexChange = { index ->
-                        onDateChange(LocalDate.of(selectedDate.year, selectedDate.monthValue, minDay + index))
+                        onDateChange(maxOf(selectedDate.withDayOfMonth(minDay + index), today))
                     },
                     modifier = Modifier.weight(1f)
                 )
