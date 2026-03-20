@@ -120,40 +120,33 @@ private fun CallvanDatePickerCard(
     onConfirm: () -> Unit = {}
 ) {
     val today = remember { LocalDate.now() }
-    val currentYear = today.year
-    val currentMonth = today.monthValue
-    val currentDay = today.dayOfMonth
 
-    val selectedYear = selectedDate.year
-    val selectedMonth = selectedDate.monthValue
-    val selectedDay = selectedDate.dayOfMonth
+    val isCurrentYear = selectedDate.year == today.year
+    val isCurrentMonth = isCurrentYear && selectedDate.monthValue == today.monthValue
 
-    val isCurrentYear = selectedYear == currentYear
-    val isCurrentMonth = isCurrentYear && selectedMonth == currentMonth
+    val years = remember { persistentListOf("${today.year}년", "${today.year + 1}년") }
 
-    val years = remember { persistentListOf("${currentYear}년", "${currentYear + 1}년") }
-
-    val minMonth = if (isCurrentYear) currentMonth else 1
+    val minMonth = if (isCurrentYear) today.monthValue else 1
     val months: ImmutableList<String> = remember(minMonth) {
         (minMonth..12).map { "${it}월" }.toPersistentList()
     }
 
-    val daysInMonth = remember(selectedYear, selectedMonth) {
-        YearMonth.of(selectedYear, selectedMonth).lengthOfMonth()
+    val daysInMonth = remember(selectedDate.year, selectedDate.monthValue) {
+        YearMonth.of(selectedDate.year, selectedDate.monthValue).lengthOfMonth()
     }
-    val minDay = if (isCurrentMonth) currentDay else 1
-    val days: ImmutableList<String> = remember(selectedYear, selectedMonth, minDay) {
+    val minDay = if (isCurrentMonth) today.dayOfMonth else 1
+    val days: ImmutableList<String> = remember(selectedDate.year, selectedDate.monthValue, minDay) {
         (minDay..daysInMonth).map { "${it}일" }.toPersistentList()
     }
 
-    val yearIndex = remember(selectedYear) {
-        (selectedYear - currentYear).coerceIn(0, years.size - 1)
+    val yearIndex = remember(selectedDate.year) {
+        (selectedDate.year - today.year).coerceIn(0, years.size - 1)
     }
-    val monthIndex = remember(selectedMonth, minMonth) {
-        (selectedMonth - minMonth).coerceIn(0, months.size - 1)
+    val monthIndex = remember(selectedDate.monthValue, minMonth) {
+        (selectedDate.monthValue - minMonth).coerceIn(0, months.size - 1)
     }
-    val dayIndex = remember(selectedDay, minDay, days.size) {
-        (selectedDay - minDay).coerceIn(0, days.size - 1)
+    val dayIndex = remember(selectedDate.dayOfMonth, minDay, days.size) {
+        (selectedDate.dayOfMonth - minDay).coerceIn(0, days.size - 1)
     }
 
     Card(
@@ -177,9 +170,9 @@ private fun CallvanDatePickerCard(
                     items = years,
                     selectedIndex = yearIndex,
                     onIndexChange = { index ->
-                        val newYear = currentYear + index
-                        val safeDay = selectedDay.coerceAtMost(YearMonth.of(newYear, selectedMonth).lengthOfMonth())
-                        onDateChange(LocalDate.of(newYear, selectedMonth, safeDay))
+                        val newYear = today.year + index
+                        val safeDay = selectedDate.dayOfMonth.coerceAtMost(YearMonth.of(newYear, selectedDate.monthValue).lengthOfMonth())
+                        onDateChange(LocalDate.of(newYear, selectedDate.monthValue, safeDay))
                     },
                     modifier = Modifier.weight(1f)
                 )
@@ -188,8 +181,8 @@ private fun CallvanDatePickerCard(
                     selectedIndex = monthIndex,
                     onIndexChange = { index ->
                         val newMonth = minMonth + index
-                        val safeDay = selectedDay.coerceAtMost(YearMonth.of(selectedYear, newMonth).lengthOfMonth())
-                        onDateChange(LocalDate.of(selectedYear, newMonth, safeDay))
+                        val safeDay = selectedDate.dayOfMonth.coerceAtMost(YearMonth.of(selectedDate.year, newMonth).lengthOfMonth())
+                        onDateChange(LocalDate.of(selectedDate.year, newMonth, safeDay))
                     },
                     modifier = Modifier.weight(1f)
                 )
@@ -197,7 +190,7 @@ private fun CallvanDatePickerCard(
                     items = days,
                     selectedIndex = dayIndex,
                     onIndexChange = { index ->
-                        onDateChange(LocalDate.of(selectedYear, selectedMonth, minDay + index))
+                        onDateChange(LocalDate.of(selectedDate.year, selectedDate.monthValue, minDay + index))
                     },
                     modifier = Modifier.weight(1f)
                 )
