@@ -124,29 +124,19 @@ private fun CallvanDatePickerCard(
     val isCurrentYear = selectedDate.year == today.year
     val isCurrentMonth = isCurrentYear && selectedDate.monthValue == today.monthValue
 
-    val years = remember { persistentListOf("${today.year}년", "${today.year + 1}년") }
+    val years = remember { persistentListOf(today.year, today.year + 1) }
 
     val minMonth = if (isCurrentYear) today.monthValue else 1
-    val months: ImmutableList<String> = remember(minMonth) {
-        (minMonth..12).map { "${it}월" }.toPersistentList()
+    val months: ImmutableList<Int> = remember(minMonth) {
+        (minMonth..12).toPersistentList()
     }
 
     val daysInMonth = remember(selectedDate.year, selectedDate.monthValue) {
         YearMonth.of(selectedDate.year, selectedDate.monthValue).lengthOfMonth()
     }
     val minDay = if (isCurrentMonth) today.dayOfMonth else 1
-    val days: ImmutableList<String> = remember(selectedDate.year, selectedDate.monthValue, minDay) {
-        (minDay..daysInMonth).map { "${it}일" }.toPersistentList()
-    }
-
-    val yearIndex = remember(selectedDate.year) {
-        (selectedDate.year - today.year).coerceIn(0, years.size - 1)
-    }
-    val monthIndex = remember(selectedDate.monthValue, minMonth) {
-        (selectedDate.monthValue - minMonth).coerceIn(0, months.size - 1)
-    }
-    val dayIndex = remember(selectedDate.dayOfMonth, minDay, days.size) {
-        (selectedDate.dayOfMonth - minDay).coerceIn(0, days.size - 1)
+    val days: ImmutableList<Int> = remember(selectedDate.year, selectedDate.monthValue, minDay) {
+        (minDay..daysInMonth).toPersistentList()
     }
 
     Card(
@@ -168,26 +158,23 @@ private fun CallvanDatePickerCard(
             ) {
                 CallvanScrollPicker(
                     items = years,
-                    selectedIndex = yearIndex,
-                    onIndexChange = { index ->
-                        onDateChange(maxOf(selectedDate.withYear(today.year + index), today))
-                    },
+                    selectedValue = selectedDate.year,
+                    suffix = stringResource(R.string.callvan_date_picker_year_suffix),
+                    onValueChange = { onDateChange(maxOf(selectedDate.withYear(it), today)) },
                     modifier = Modifier.weight(1f)
                 )
                 CallvanScrollPicker(
                     items = months,
-                    selectedIndex = monthIndex,
-                    onIndexChange = { index ->
-                        onDateChange(maxOf(selectedDate.withMonth(minMonth + index), today))
-                    },
+                    selectedValue = selectedDate.monthValue,
+                    suffix = stringResource(R.string.callvan_date_picker_month_suffix),
+                    onValueChange = { onDateChange(maxOf(selectedDate.withMonth(it), today)) },
                     modifier = Modifier.weight(1f)
                 )
                 CallvanScrollPicker(
                     items = days,
-                    selectedIndex = dayIndex,
-                    onIndexChange = { index ->
-                        onDateChange(maxOf(selectedDate.withDayOfMonth(minDay + index), today))
-                    },
+                    selectedValue = selectedDate.dayOfMonth,
+                    suffix = stringResource(R.string.callvan_date_picker_day_suffix),
+                    onValueChange = { onDateChange(maxOf(selectedDate.withDayOfMonth(it), today)) },
                     modifier = Modifier.weight(1f)
                 )
             }

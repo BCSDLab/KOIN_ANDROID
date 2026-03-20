@@ -94,6 +94,9 @@
     <string name="callvan_create_location_picker_confirm_other">입력 완료</string>
     <string name="callvan_create_date_label">출발일</string>
     <string name="callvan_create_date_hint">출발 날짜를 선택해주세요.</string>
+    <string name="callvan_date_picker_year_suffix">년</string>
+    <string name="callvan_date_picker_month_suffix">월</string>
+    <string name="callvan_date_picker_day_suffix">일</string>
     <string name="callvan_create_time_label">출발 시각</string>
     <string name="callvan_create_time_hint">출발 시각을 선택해주세요.</string>
     <string name="callvan_create_participants_label">참여 인원</string>

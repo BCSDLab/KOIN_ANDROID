@@ -35,23 +35,25 @@ import kotlinx.coroutines.flow.first
 @Suppress("LongParameterList")
 @Composable
 fun CallvanScrollPicker(
-    items: ImmutableList<String>,
-    selectedIndex: Int,
+    items: ImmutableList<Int>,
+    selectedValue: Int,
+    suffix: String,
     modifier: Modifier = Modifier,
     itemHeight: Dp = 32.dp,
     textAlign: TextAlign = TextAlign.Center,
-    onIndexChange: (Int) -> Unit = {}
+    onValueChange: (Int) -> Unit = {}
 ) {
     if (items.isEmpty()) {
         Box(modifier = modifier.height(itemHeight * 3))
     } else {
         CallvanScrollPickerContent(
             items = items,
-            selectedIndex = selectedIndex,
+            selectedValue = selectedValue,
+            suffix = suffix,
             modifier = modifier,
             itemHeight = itemHeight,
             textAlign = textAlign,
-            onIndexChange = onIndexChange
+            onValueChange = onValueChange
         )
     }
 }
@@ -59,19 +61,21 @@ fun CallvanScrollPicker(
 @Suppress("LongParameterList")
 @Composable
 private fun CallvanScrollPickerContent(
-    items: ImmutableList<String>,
-    selectedIndex: Int,
+    items: ImmutableList<Int>,
+    selectedValue: Int,
+    suffix: String,
     modifier: Modifier = Modifier,
     itemHeight: Dp = 32.dp,
     textAlign: TextAlign = TextAlign.Center,
-    onIndexChange: (Int) -> Unit = {}
+    onValueChange: (Int) -> Unit = {}
 ) {
+    val selectedIndex = remember(items, selectedValue) { items.indexOf(selectedValue).coerceAtLeast(0) }
     val density = LocalDensity.current
     val listState = rememberLazyListState(
         initialFirstVisibleItemIndex = selectedIndex.coerceIn(0, items.lastIndex)
     )
     val snappingLayout = rememberSnapFlingBehavior(listState)
-    val latestOnIndexChange by rememberUpdatedState(onIndexChange)
+    val latestOnValueChange by rememberUpdatedState(onValueChange)
     var isProgrammaticScroll by remember { mutableStateOf(false) }
 
     val currentSelectedIndex by remember(density, items, itemHeight) {
@@ -92,7 +96,7 @@ private fun CallvanScrollPickerContent(
                     if (!isProgrammaticScroll) hasScrollStarted = true
                 } else if (hasScrollStarted) {
                     hasScrollStarted = false
-                    latestOnIndexChange(currentSelectedIndex)
+                    latestOnValueChange(items[currentSelectedIndex])
                 }
             }
     }
@@ -128,7 +132,7 @@ private fun CallvanScrollPickerContent(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = item,
+                    text = "$item$suffix",
                     style = RebrandKoinTheme.typography.medium16,
                     color = if (isSelected) RebrandKoinTheme.colors.neutral800 else RebrandKoinTheme.colors.neutral500,
                     textAlign = textAlign
@@ -143,9 +147,10 @@ private fun CallvanScrollPickerContent(
 private fun CallvanScrollPickerPreview() {
     RebrandKoinTheme {
         CallvanScrollPicker(
-            items = persistentListOf("1월", "2월", "3월", "4월", "5월", "6월"),
-            selectedIndex = 2,
-            onIndexChange = {}
+            items = persistentListOf(1, 2, 3, 4, 5, 6),
+            selectedValue = 3,
+            suffix = "월",
+            onValueChange = {}
         )
     }
 }
