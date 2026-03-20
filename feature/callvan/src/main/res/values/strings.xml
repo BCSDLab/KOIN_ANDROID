@@ -56,6 +56,7 @@
     <string name="callvan_report_reason_other_title">기타</string>
 
     <string name="filter_container">필터</string>
+    <string name="filter_list_top_bar">콜밴팟</string>
     <string name="filter_list_reset">초기화</string>
     <string name="filter_list_adapt">적용하기</string>
     <string name="filter_list_sort_order">정렬</string>

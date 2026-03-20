@@ -26,9 +26,9 @@ import `in`.koreatech.koin.feature.callvan.util.formatDateTime
 @Composable
 fun CallvanListItem(
     uiState: CallvanListUiState,
+    clickListener: CallvanListItemClickListener,
     modifier: Modifier = Modifier,
-    onItemClick: () -> Unit = {},
-    clickListener: CallvanListItemClickListener
+    onItemClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier
