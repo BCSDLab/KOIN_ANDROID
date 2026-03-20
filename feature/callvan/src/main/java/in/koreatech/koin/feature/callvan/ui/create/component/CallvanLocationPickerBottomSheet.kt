@@ -107,6 +107,7 @@ fun CallvanLocationPickerBottomSheet(
                     selectedLocation?.let { loc ->
                         onLocationSelected(loc, if (isCustomSelected) customText.trim() else null)
                     }
+                    onDismiss()
                 },
                 enabled = selectedLocation != null && (!isCustomSelected || customText.isNotBlank()),
                 modifier = Modifier.fillMaxWidth(),
