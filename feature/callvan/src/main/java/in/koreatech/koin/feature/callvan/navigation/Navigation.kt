@@ -65,6 +65,7 @@ fun NavGraphBuilder.koinCallvanGraph(
             onCompleteAndNavigateToMain = {
                 navController.navigate(CallvanNavType.CallvanMain) {
                     popUpTo(CallvanNavType.CallvanCreate::class) { inclusive = true }
+                    launchSingleTop = true
                 }
             },
             onTopbarBackClick = { navController.popBackStackOrFinish(context) }
