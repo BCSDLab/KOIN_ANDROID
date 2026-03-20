@@ -1,7 +1,5 @@
 package `in`.koreatech.koin.feature.callvan.navigation
 
-import android.content.Context
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.LaunchedEffect
@@ -17,6 +15,7 @@ import `in`.koreatech.koin.feature.callvan.ui.detail.CallvanDetailViewModel
 import `in`.koreatech.koin.feature.callvan.ui.list.CallvanListScreen
 import `in`.koreatech.koin.feature.callvan.ui.notification.CallvanNotificationsScreen
 import `in`.koreatech.koin.feature.callvan.ui.report.CallvanReportScreen
+import `in`.koreatech.koin.feature.callvan.util.popBackStackOrFinish
 
 private const val STORE_CATEGORY = "STORE_CATEGORY"
 private const val STORE_CATEGORY_CALLVAN_PRODUCTION = 10
@@ -92,8 +91,4 @@ fun NavGraphBuilder.koinCallvanGraph(
             }
         )
     }
-}
-
-private fun NavController.popBackStackOrFinish(context: Context) {
-    if (!popBackStack()) (context as? ComponentActivity)?.finish()
 }
