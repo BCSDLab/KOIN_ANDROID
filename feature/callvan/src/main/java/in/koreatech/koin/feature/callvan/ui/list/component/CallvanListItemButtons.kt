@@ -35,13 +35,13 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanItemState
-import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemClickListener
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemActions
 
 @Composable
 fun CallvanListItemButtons(
     state: CallvanItemState,
-    modifier: Modifier = Modifier,
-    clickListener: CallvanListItemClickListener = object : CallvanListItemClickListener {}
+    actions: CallvanListItemActions,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier,
@@ -55,8 +55,9 @@ fun CallvanListItemButtons(
                         .size(24.dp)
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
-                            indication = ripple(bounded = false)
-                        ) { clickListener.onChat() },
+                            indication = ripple(bounded = false),
+                            onClick = actions.onChat
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
@@ -73,8 +74,9 @@ fun CallvanListItemButtons(
                         .size(24.dp)
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
-                            indication = ripple(bounded = false)
-                        ) { clickListener.onCall() },
+                            indication = ripple(bounded = false),
+                            onClick = actions.onCall
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
@@ -94,7 +96,7 @@ fun CallvanListItemButtons(
             when (state) {
                 CallvanItemState.JOINED -> CallvanFilledButton(
                     text = stringResource(R.string.callvan_btn_cancel_join),
-                    onClick = { clickListener.onCancelJoin() },
+                    onClick = actions.onCancelJoin,
                     color = ButtonDefaults.buttonColors(
                         contentColor = RebrandKoinTheme.colors.primary800,
                         containerColor = RebrandKoinTheme.colors.primary100.copy(alpha = 0.6f)
@@ -110,11 +112,11 @@ fun CallvanListItemButtons(
                 )
                 CallvanItemState.OWNER_ACTIVE -> CallvanOutlinedButton(
                     text = stringResource(R.string.callvan_btn_close),
-                    onClick = { clickListener.onClose() }
+                    onClick = actions.onClose
                 )
                 CallvanItemState.OWNER_CLOSED -> CallvanOutlinedButton(
                     text = stringResource(R.string.callvan_btn_re_recruit),
-                    onClick = { clickListener.onReRecruit() },
+                    onClick = actions.onReRecruit,
                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
                 )
                 else -> Unit
@@ -123,12 +125,12 @@ fun CallvanListItemButtons(
             when (state) {
                 CallvanItemState.DEFAULT -> CallvanFilledButton(
                     text = stringResource(R.string.callvan_btn_join),
-                    onClick = { clickListener.onJoin() },
+                    onClick = actions.onJoin,
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp)
                 )
                 CallvanItemState.OWNER_CLOSED -> CallvanFilledButton(
                     text = stringResource(R.string.callvan_btn_complete),
-                    onClick = { clickListener.onComplete() },
+                    onClick = actions.onComplete,
                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
                 )
                 else -> Unit
@@ -198,7 +200,10 @@ private fun CallvanOutlinedButton(
 @Composable
 private fun CallvanListItemButtonsDefaultPreview() {
     RebrandKoinTheme {
-        CallvanListItemButtons(state = CallvanItemState.DEFAULT)
+        CallvanListItemButtons(
+            state = CallvanItemState.DEFAULT,
+            actions = CallvanListItemActions()
+        )
     }
 }
 
@@ -206,7 +211,10 @@ private fun CallvanListItemButtonsDefaultPreview() {
 @Composable
 private fun CallvanListItemButtonsJoinedPreview() {
     RebrandKoinTheme {
-        CallvanListItemButtons(state = CallvanItemState.JOINED)
+        CallvanListItemButtons(
+            state = CallvanItemState.JOINED,
+            actions = CallvanListItemActions()
+        )
     }
 }
 
@@ -214,7 +222,10 @@ private fun CallvanListItemButtonsJoinedPreview() {
 @Composable
 private fun CallvanListItemButtonsClosedPreview() {
     RebrandKoinTheme {
-        CallvanListItemButtons(state = CallvanItemState.CLOSED)
+        CallvanListItemButtons(
+            state = CallvanItemState.CLOSED,
+            actions = CallvanListItemActions()
+        )
     }
 }
 
@@ -222,7 +233,10 @@ private fun CallvanListItemButtonsClosedPreview() {
 @Composable
 private fun CallvanListItemButtonsOwnerActivePreview() {
     RebrandKoinTheme {
-        CallvanListItemButtons(state = CallvanItemState.OWNER_ACTIVE)
+        CallvanListItemButtons(
+            state = CallvanItemState.OWNER_ACTIVE,
+            actions = CallvanListItemActions()
+        )
     }
 }
 
@@ -230,6 +244,9 @@ private fun CallvanListItemButtonsOwnerActivePreview() {
 @Composable
 private fun CallvanListItemButtonsOwnerClosedPreview() {
     RebrandKoinTheme {
-        CallvanListItemButtons(state = CallvanItemState.OWNER_CLOSED)
+        CallvanListItemButtons(
+            state = CallvanItemState.OWNER_CLOSED,
+            actions = CallvanListItemActions()
+        )
     }
 }

@@ -17,19 +17,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.callvan.MAX_PARTICIPANTS_COUNT
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanParticipantCount
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanRouteInfo
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanItemState
-import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemClickListener
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemActions
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListUiState
 import `in`.koreatech.koin.feature.callvan.util.formatDateTime
 
 @Composable
 fun CallvanListItem(
     uiState: CallvanListUiState,
+    actions: CallvanListItemActions,
     modifier: Modifier = Modifier,
-    onItemClick: () -> Unit = {},
-    clickListener: CallvanListItemClickListener
+    onItemClick: () -> Unit = {}
 ) {
     val isJoined = remember(uiState.itemState) { uiState.itemState == CallvanItemState.JOINED }
 
@@ -75,7 +76,7 @@ fun CallvanListItem(
 
         CallvanListItemButtons(
             state = uiState.itemState,
-            clickListener = clickListener
+            actions = actions
         )
     }
 }
@@ -92,10 +93,10 @@ private fun CallvanListItemDefaultPreview() {
                 date = "2025-02-05",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8,
+                maxCount = MAX_PARTICIPANTS_COUNT,
                 itemState = CallvanItemState.DEFAULT
             ),
-            clickListener = object : CallvanListItemClickListener {}
+            actions = CallvanListItemActions()
         )
     }
 }
@@ -112,10 +113,10 @@ private fun CallvanListItemJoinedPreview() {
                 date = "2025-02-05",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8,
+                maxCount = MAX_PARTICIPANTS_COUNT,
                 itemState = CallvanItemState.JOINED
             ),
-            clickListener = object : CallvanListItemClickListener {}
+            actions = CallvanListItemActions()
         )
     }
 }
@@ -132,10 +133,10 @@ private fun CallvanListItemClosedPreview() {
                 date = "2025-02-05",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8,
+                maxCount = MAX_PARTICIPANTS_COUNT,
                 itemState = CallvanItemState.CLOSED
             ),
-            clickListener = object : CallvanListItemClickListener {}
+            actions = CallvanListItemActions()
         )
     }
 }
@@ -152,10 +153,10 @@ private fun CallvanListItemOwnerActivePreview() {
                 date = "2025-02-05",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8,
+                maxCount = MAX_PARTICIPANTS_COUNT,
                 itemState = CallvanItemState.OWNER_ACTIVE
             ),
-            clickListener = object : CallvanListItemClickListener {}
+            actions = CallvanListItemActions()
         )
     }
 }
@@ -172,10 +173,10 @@ private fun CallvanListItemOwnerClosedPreview() {
                 date = "2025-02-05",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8,
+                maxCount = MAX_PARTICIPANTS_COUNT,
                 itemState = CallvanItemState.OWNER_CLOSED
             ),
-            clickListener = object : CallvanListItemClickListener {}
+            actions = CallvanListItemActions()
         )
     }
 }
