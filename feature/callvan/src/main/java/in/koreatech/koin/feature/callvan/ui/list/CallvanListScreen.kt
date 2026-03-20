@@ -72,7 +72,7 @@ fun CallvanListScreenImpl(
     Scaffold(
         topBar = {
             KoinTopAppBar(
-                title = stringResource(R.string.callvan_detail_top_bar),
+                title = stringResource(R.string.filter_list_top_bar),
                 onNavigationIconClick = onTopbarBackClick,
                 actions = {
                     IconButton(onClick = onNotificationClick) {
