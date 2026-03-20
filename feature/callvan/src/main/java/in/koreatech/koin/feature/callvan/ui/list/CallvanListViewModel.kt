@@ -50,7 +50,6 @@ class CallvanListViewModel @Inject constructor(
     )
 
     init {
-        fetchPosts()
         initUserInfo()
         observeSearchQuery()
     }
@@ -75,12 +74,18 @@ class CallvanListViewModel @Inject constructor(
     }
 
     internal fun fetchHasNewNotification() = intent {
-        getNotificationsUseCase()
-            .onSuccess { notifications ->
-                reduce {
-                    state.copy(hasNewNotification = notifications.any { !it.isRead })
+        if (state.isLoggedIn) {
+            getNotificationsUseCase()
+                .onSuccess { notifications ->
+                    reduce {
+                        state.copy(hasNewNotification = notifications.any { !it.isRead })
+                    }
                 }
+        } else {
+            reduce {
+                state.copy(hasNewNotification = false)
             }
+        }
     }
 
     fun updateSearch(query: String) = intent {

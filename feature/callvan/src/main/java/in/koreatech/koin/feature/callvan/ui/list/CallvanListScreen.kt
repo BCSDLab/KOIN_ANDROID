@@ -60,7 +60,7 @@ fun CallvanListScreen(
     val state by viewModel.collectAsState()
 
     LaunchedEffect(state.isLoggedIn) {
-        if (state.isLoggedIn) viewModel.fetchHasNewNotification()
+        viewModel.fetchHasNewNotification()
     }
 
     CallvanListScreenImpl(
