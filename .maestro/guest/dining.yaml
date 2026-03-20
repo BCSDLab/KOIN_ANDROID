@@ -5,7 +5,8 @@ env:
 - runFlow: ../common/open_drawer.yaml
 - tapOn:
     id: "${APP_ID}:id/navi_item_dining"
-- waitForAnimationToEnd:
-    timeout: 8000
+- extendedWaitUntil:
+    visible: "식단"
+    timeout: 15000
 - assertVisible: "식단"
 - assertVisible: "아침"

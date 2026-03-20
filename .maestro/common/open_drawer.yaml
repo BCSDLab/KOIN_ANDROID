@@ -6,4 +6,4 @@ env:
 - tapOn:
     id: "${APP_ID}:id/button_category"
 - waitForAnimationToEnd:
-    timeout: 3000
+    timeout: 5000

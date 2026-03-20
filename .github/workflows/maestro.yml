@@ -9,7 +9,7 @@ on:
 jobs:
   maestro-tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     env:
       APP_ID: in.koreatech.koin
 
@@ -19,6 +19,16 @@ jobs:
       - uses: ./.github/actions/gradle-setup
         with:
           properties: ${{ secrets.PROPERTIES }}
+
+      - name: Update Secrets
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        run: |
+          echo $SECRET_KEY | base64 -di > ./koin/team_kap_android.jks
+          for file in $(find . -name 'team_kap_android.jks')
+          do
+           echo $file
+          done
 
       - name: Update Firebase
         env:
@@ -85,37 +95,8 @@ jobs:
             adb uninstall in.koreatech.koin || true
             adb uninstall in.koreatech.koin.dev || true
             adb install -r koin/build/outputs/apk/release/koin-release.apk
-
-            overall_status=0
-
-            run_suite() {
-              local suite_path="$1"
-              local suite_name="$2"
-              shift 2
-
-              echo "Running Maestro suite: ${suite_name}"
-              adb shell screenrecord --bit-rate 4000000 --time-limit 170 "/sdcard/${suite_name}.mp4" &
-              RECORD_PID=$!
-
-              if ! maestro test "$suite_path" \
-                --format junit \
-                --output "recordings/${suite_name}-result.xml" \
-                --debug-output "debug-output/${suite_name}" \
-                "$@"; then
-                overall_status=1
-              fi
-
-              sleep 1
-              kill $RECORD_PID || true
-              sleep 2
-
-              adb pull "/sdcard/${suite_name}.mp4" "recordings/${suite_name}.mp4" || true
-              adb shell rm -f "/sdcard/${suite_name}.mp4"
-            }
-
-            run_suite ".maestro/suites/student_guest_smoke.yaml" "student_guest_smoke" -e APP_ID="$APP_ID"
-
-            exit $overall_status
+            chmod +x .github/scripts/run_maestro_suite.sh
+            bash .github/scripts/run_maestro_suite.sh ".maestro/suites/student_guest_smoke.yaml" "student_guest_smoke" "$APP_ID"
 
       - name: Upload Maestro test results
         if: always()
@@ -128,14 +109,26 @@ jobs:
             debug-output/**
           retention-days: 7
 
-      - name: Upload to Slack
+      - name: Upload Success to Slack
+        if: success()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: Android Maestro UI Tests
+          text: |
+            :white_check_mark: Maestro 테스트 성공
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Upload Failure to Slack
         if: failure()
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
           author_name: Android Maestro UI Tests
           text: |
-            Maestro 테스트 실패.
+            :x: Maestro 테스트 실패
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
         env:

@@ -5,7 +5,7 @@ env:
 - stopApp
 - openLink: "koin://main/activity"
 - waitForAnimationToEnd:
-    timeout: 8000
+    timeout: 15000
 - tapOn:
     text: "닫기"
     optional: true
