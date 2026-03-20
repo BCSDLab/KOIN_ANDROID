@@ -174,7 +174,6 @@ class CallvanListViewModel @Inject constructor(
     }
 
     fun fetchPosts() = intent {
-        if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
         getCallvanPostsUseCase(
             author = null,
