@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.callvan.ui.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.model.callvan.CallvanPostSearch
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.callvan.CloseCallvanPostUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.CompleteCallvanPostUseCase
@@ -15,9 +14,8 @@ import `in`.koreatech.koin.domain.usecase.callvan.ReopenCallvanPostUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanConfirmType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType
-import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanItemState
-import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListUiState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
+import `in`.koreatech.koin.feature.callvan.ui.list.model.toUiState
 import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -79,7 +77,7 @@ class CallvanListViewModel @Inject constructor(
         statusesType: CallvanFilterType.StatusesType,
         departuresType: ImmutableList<CallvanFilterType.DeparturesFilterType>,
         arrivalsType: ImmutableList<CallvanFilterType.ArrivalsFilterType>
-    ) = intent {
+    ) = blockingIntent {
         reduce {
             state.copy(
                 filterState = FilterBottomSheetState(
@@ -216,23 +214,4 @@ class CallvanListViewModel @Inject constructor(
     companion object {
         private const val PAGE_SIZE = 10
     }
-
-    private fun CallvanPostSearch.CallvanPost.toItemState(): CallvanItemState = when {
-        isAuthor && status == "RECRUITING" -> CallvanItemState.OWNER_ACTIVE
-        isAuthor && status == "CLOSED" -> CallvanItemState.OWNER_CLOSED
-        !isAuthor && isJoined -> CallvanItemState.JOINED
-        status == "RECRUITING" -> CallvanItemState.DEFAULT
-        else -> CallvanItemState.CLOSED
-    }
-
-    private fun CallvanPostSearch.CallvanPost.toUiState(): CallvanListUiState = CallvanListUiState(
-        id = id,
-        departure = departure,
-        destination = arrival,
-        date = departureDate,
-        time = departureTime,
-        currentCount = currentParticipants,
-        maxCount = maxParticipants,
-        itemState = toItemState()
-    )
 }
