@@ -55,7 +55,7 @@ fun CallvanDateField(
         targetValue = if (isPickerVisible) 180f else 0f,
         label = "arrowRotation"
     )
-    var popupOffestHeightPx by remember { mutableIntStateOf(0) }
+    var popupOffsetHeightPx by remember { mutableIntStateOf(0) }
 
     Column(
         modifier = modifier
@@ -73,7 +73,7 @@ fun CallvanDateField(
                     .fillMaxWidth()
                     .background(RebrandKoinTheme.colors.neutral100, RebrandKoinTheme.shapes.small)
                     .clickable(onClick = onFieldClick)
-                    .onGloballyPositioned { popupOffestHeightPx = it.size.height + 20 }
+                    .onGloballyPositioned { popupOffsetHeightPx = it.size.height + 20 }
                     .padding(horizontal = 12.dp, vertical = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
@@ -95,7 +95,7 @@ fun CallvanDateField(
             if (isPickerVisible) {
                 Popup(
                     alignment = Alignment.TopStart,
-                    offset = IntOffset(x = 0, y = popupOffestHeightPx),
+                    offset = IntOffset(x = 0, y = popupOffsetHeightPx),
                     onDismissRequest = onFieldClick,
                     properties = PopupProperties(focusable = true)
                 ) {
