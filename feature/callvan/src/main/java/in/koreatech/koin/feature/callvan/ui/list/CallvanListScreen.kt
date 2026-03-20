@@ -37,7 +37,7 @@ import `in`.koreatech.koin.feature.callvan.ui.list.component.ItemSearchTextField
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanConfirmType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanItemState
-import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemClickListener
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemActions
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListUiState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
 import kotlinx.collections.immutable.ImmutableList
@@ -270,35 +270,21 @@ fun CallvanListScreenImpl(
             }
 
             items(items, key = { it.id }) { uiState ->
-                val clickListener = remember(uiState.id) {
-                    object : CallvanListItemClickListener {
-                        override fun onJoin() {
-                            onPendingConfirmChange(Pair(CallvanConfirmType.JOIN, uiState.id))
-                        }
-                        override fun onCancelJoin() {
-                            onPendingConfirmChange(Pair(CallvanConfirmType.CANCEL_JOIN, uiState.id))
-                        }
-                        override fun onClose() {
-                            onPendingConfirmChange(Pair(CallvanConfirmType.CLOSE, uiState.id))
-                        }
-                        override fun onReRecruit() {
-                            onPendingConfirmChange(Pair(CallvanConfirmType.REOPEN, uiState.id))
-                        }
-                        override fun onComplete() {
-                            onPendingCompletePostIdChange(uiState.id)
-                        }
-                        override fun onCall() {
-                            onCall(uiState.id)
-                        }
-                        override fun onChat() {
-                            onChat(uiState.id)
-                        }
-                    }
+                val actions = remember(uiState.id) {
+                    CallvanListItemActions(
+                        onJoin = { onPendingConfirmChange(Pair(CallvanConfirmType.JOIN, uiState.id)) },
+                        onCancelJoin = { onPendingConfirmChange(Pair(CallvanConfirmType.CANCEL_JOIN, uiState.id)) },
+                        onClose = { onPendingConfirmChange(Pair(CallvanConfirmType.CLOSE, uiState.id)) },
+                        onReRecruit = { onPendingConfirmChange(Pair(CallvanConfirmType.REOPEN, uiState.id)) },
+                        onComplete = { onPendingCompletePostIdChange(uiState.id) },
+                        onCall = { onCall(uiState.id) },
+                        onChat = { onChat(uiState.id) }
+                    )
                 }
                 CallvanListItem(
                     uiState = uiState,
                     onItemClick = { onDetailClick(uiState.id) },
-                    clickListener = clickListener
+                    actions = actions
                 )
             }
 
