@@ -17,7 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 
@@ -42,7 +41,7 @@ fun CallvanFilterChip(
         ) {
             Text(
                 text = stringResource(R.string.filter_container),
-                style = KoinTheme.typography.bold14
+                style = RebrandKoinTheme.typography.bold14
             )
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.ic_list_filter),
@@ -56,7 +55,5 @@ fun CallvanFilterChip(
 @Preview(showBackground = true)
 @Composable
 private fun CallvanFilterChipPreview() {
-    KoinTheme {
-        CallvanFilterChip(onClick = {})
-    }
+    CallvanFilterChip(onClick = {})
 }

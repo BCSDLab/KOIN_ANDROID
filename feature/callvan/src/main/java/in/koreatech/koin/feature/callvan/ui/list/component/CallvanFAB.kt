@@ -23,15 +23,14 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFABDefaults
 
 @Composable
 fun CallvanFAB(
-    modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     windowInsets: WindowInsets = CallvanFABDefaults.windowInsets
 ) {
     Box(
@@ -47,7 +46,7 @@ fun CallvanFAB(
                     shape = RoundedCornerShape(50)
                 )
                 .background(
-                    color = KoinTheme.colors.neutral50,
+                    color = RebrandKoinTheme.colors.neutral50,
                     shape = RoundedCornerShape(50)
                 )
                 .noRippleClickable(onClick = onClick)
@@ -64,7 +63,7 @@ fun CallvanFAB(
                 )
                 Text(
                     text = stringResource(R.string.write_btn),
-                    style = KoinTheme.typography.medium16,
+                    style = RebrandKoinTheme.typography.medium16,
                     color = RebrandKoinTheme.colors.primary600
                 )
             }
@@ -75,7 +74,7 @@ fun CallvanFAB(
 @Preview(showBackground = true)
 @Composable
 private fun CallvanFABPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         CallvanFAB(onClick = {})
     }
 }

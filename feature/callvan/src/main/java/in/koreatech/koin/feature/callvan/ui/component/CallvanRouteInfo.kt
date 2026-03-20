@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 
 @Composable
@@ -40,15 +40,15 @@ fun CallvanRouteInfo(
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(
                     text = stringResource(R.string.callvan_detail_departure, departure),
-                    style = KoinTheme.typography.medium14,
-                    color = KoinTheme.colors.neutral800,
+                    style = RebrandKoinTheme.typography.medium14,
+                    color = RebrandKoinTheme.colors.neutral800,
                     maxLines = 1,
                     modifier = Modifier.basicMarquee()
                 )
                 Text(
                     text = stringResource(R.string.callvan_detail_destination, destination),
-                    style = KoinTheme.typography.medium14,
-                    color = KoinTheme.colors.neutral800,
+                    style = RebrandKoinTheme.typography.medium14,
+                    color = RebrandKoinTheme.colors.neutral800,
                     maxLines = 1,
                     modifier = Modifier.basicMarquee()
                 )

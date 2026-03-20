@@ -5,8 +5,9 @@ env:
 - runFlow: ../common/open_drawer.yaml
 - tapOn:
     id: "${APP_ID}:id/navi_item_setting"
-- waitForAnimationToEnd:
-    timeout: 8000
+- extendedWaitUntil:
+    visible: "설정"
+    timeout: 15000
 - assertVisible: "설정"
 - assertVisible: "개인정보 처리방침"
 - assertVisible: "앱 버전"

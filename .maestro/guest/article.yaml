@@ -4,6 +4,8 @@ env:
 ---
 - runFlow: ../common/launch_app.yaml
 - openLink: "koin://article/activity"
-- waitForAnimationToEnd:
-    timeout: 5000
+- extendedWaitUntil:
+    visible: "공지사항"
+    timeout: 15000
 - assertVisible: "공지사항"
+- assertVisible: "전체공지"
