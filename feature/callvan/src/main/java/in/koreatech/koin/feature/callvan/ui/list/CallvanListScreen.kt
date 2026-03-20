@@ -31,7 +31,7 @@ import `in`.koreatech.koin.feature.callvan.ui.list.component.ItemSearchTextField
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanConfirmType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanItemState
-import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemClickListener
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemActions
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListUiState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
 import kotlinx.collections.immutable.ImmutableList
@@ -110,31 +110,20 @@ fun CallvanListScreenImpl(
             }
 
             itemsIndexed(items) { index, uiState ->
+                val actions = remember(index) {
+                    CallvanListItemActions(
+                        onJoin = { pendingConfirm = Pair(CallvanConfirmType.JOIN, index) },
+                        onCancelJoin = { pendingConfirm = Pair(CallvanConfirmType.CANCEL_JOIN, index) },
+                        onClose = { pendingConfirm = Pair(CallvanConfirmType.CLOSE, index) },
+                        onReRecruit = { pendingConfirm = Pair(CallvanConfirmType.REOPEN, index) },
+                        onComplete = { pendingCompleteIndex = index },
+                        onCall = { onCall(index) },
+                        onChat = { onChat(index) }
+                    )
+                }
                 CallvanListItem(
                     uiState = uiState,
-                    clickListener = object : CallvanListItemClickListener {
-                        override fun onJoin() {
-                            pendingConfirm = Pair(CallvanConfirmType.JOIN, index)
-                        }
-                        override fun onCancelJoin() {
-                            pendingConfirm = Pair(CallvanConfirmType.CANCEL_JOIN, index)
-                        }
-                        override fun onClose() {
-                            pendingConfirm = Pair(CallvanConfirmType.CLOSE, index)
-                        }
-                        override fun onReRecruit() {
-                            pendingConfirm = Pair(CallvanConfirmType.REOPEN, index)
-                        }
-                        override fun onComplete() {
-                            pendingCompleteIndex = index
-                        }
-                        override fun onCall() {
-                            onCall(index)
-                        }
-                        override fun onChat() {
-                            onChat(index)
-                        }
-                    }
+                    actions = actions
                 )
             }
         }

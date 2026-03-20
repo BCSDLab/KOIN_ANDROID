@@ -18,14 +18,14 @@ import `in`.koreatech.koin.feature.callvan.MAX_PARTICIPANTS_COUNT
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanParticipantCount
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanRouteInfo
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanItemState
-import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemClickListener
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemActions
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListUiState
 import `in`.koreatech.koin.feature.callvan.util.formatDateTime
 
 @Composable
 fun CallvanListItem(
     uiState: CallvanListUiState,
-    clickListener: CallvanListItemClickListener,
+    actions: CallvanListItemActions,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -62,7 +62,7 @@ fun CallvanListItem(
 
         CallvanListItemButtons(
             state = uiState.itemState,
-            clickListener = clickListener
+            actions = actions
         )
     }
 }
@@ -81,7 +81,7 @@ private fun CallvanListItemDefaultPreview() {
                 maxCount = MAX_PARTICIPANTS_COUNT,
                 itemState = CallvanItemState.DEFAULT
             ),
-            clickListener = object : CallvanListItemClickListener {}
+            actions = CallvanListItemActions()
         )
     }
 }
@@ -100,7 +100,7 @@ private fun CallvanListItemJoinedPreview() {
                 maxCount = MAX_PARTICIPANTS_COUNT,
                 itemState = CallvanItemState.JOINED
             ),
-            clickListener = object : CallvanListItemClickListener {}
+            actions = CallvanListItemActions()
         )
     }
 }
@@ -119,7 +119,7 @@ private fun CallvanListItemClosedPreview() {
                 maxCount = MAX_PARTICIPANTS_COUNT,
                 itemState = CallvanItemState.CLOSED
             ),
-            clickListener = object : CallvanListItemClickListener {}
+            actions = CallvanListItemActions()
         )
     }
 }
@@ -138,7 +138,7 @@ private fun CallvanListItemOwnerActivePreview() {
                 maxCount = MAX_PARTICIPANTS_COUNT,
                 itemState = CallvanItemState.OWNER_ACTIVE
             ),
-            clickListener = object : CallvanListItemClickListener {}
+            actions = CallvanListItemActions()
         )
     }
 }
@@ -157,7 +157,7 @@ private fun CallvanListItemOwnerClosedPreview() {
                 maxCount = MAX_PARTICIPANTS_COUNT,
                 itemState = CallvanItemState.OWNER_CLOSED
             ),
-            clickListener = object : CallvanListItemClickListener {}
+            actions = CallvanListItemActions()
         )
     }
 }
