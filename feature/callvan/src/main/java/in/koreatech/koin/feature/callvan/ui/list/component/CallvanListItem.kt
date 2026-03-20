@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.callvan.MAX_PARTICIPANTS_COUNT
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanParticipantCount
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanRouteInfo
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanItemState
@@ -77,7 +78,7 @@ private fun CallvanListItemDefaultPreview() {
                 date = "2025-02-05",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8,
+                maxCount = MAX_PARTICIPANTS_COUNT,
                 itemState = CallvanItemState.DEFAULT
             ),
             clickListener = object : CallvanListItemClickListener {}
@@ -96,7 +97,7 @@ private fun CallvanListItemJoinedPreview() {
                 date = "2025-02-05",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8,
+                maxCount = MAX_PARTICIPANTS_COUNT,
                 itemState = CallvanItemState.JOINED
             ),
             clickListener = object : CallvanListItemClickListener {}
@@ -115,7 +116,7 @@ private fun CallvanListItemClosedPreview() {
                 date = "2025-02-05",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8,
+                maxCount = MAX_PARTICIPANTS_COUNT,
                 itemState = CallvanItemState.CLOSED
             ),
             clickListener = object : CallvanListItemClickListener {}
@@ -134,7 +135,7 @@ private fun CallvanListItemOwnerActivePreview() {
                 date = "2025-02-05",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8,
+                maxCount = MAX_PARTICIPANTS_COUNT,
                 itemState = CallvanItemState.OWNER_ACTIVE
             ),
             clickListener = object : CallvanListItemClickListener {}
@@ -153,7 +154,7 @@ private fun CallvanListItemOwnerClosedPreview() {
                 date = "2025-02-05",
                 time = "14:00",
                 currentCount = 1,
-                maxCount = 8,
+                maxCount = MAX_PARTICIPANTS_COUNT,
                 itemState = CallvanItemState.OWNER_CLOSED
             ),
             clickListener = object : CallvanListItemClickListener {}
