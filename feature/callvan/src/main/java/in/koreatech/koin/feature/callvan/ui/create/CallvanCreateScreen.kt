@@ -46,7 +46,7 @@ fun CallvanCreateScreen(
             isDeparture = state.isPickingDeparture,
             initialSelection = if (state.isPickingDeparture) state.departureLocation else state.arrivalLocation,
             initialCustomText = if (state.isPickingDeparture) state.departureCustomText else state.arrivalCustomText,
-            onLocationSelected = { location, customText -> viewModel.selectLocation(location, customText) },
+            onLocationSelected = viewModel::selectLocation,
             onDismiss = viewModel::closeLocationPicker
         )
     }
