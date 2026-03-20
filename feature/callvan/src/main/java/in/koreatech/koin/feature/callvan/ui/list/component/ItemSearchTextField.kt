@@ -46,7 +46,7 @@ fun ItemSearchTextField(
             textStyle = textStyle,
             singleLine = true,
             onValueChange = {
-                if (it.length < maxLength) {
+                if (it.length <= maxLength) {
                     onValueChange(it)
                 } else {
                     onValueChange(it.take(maxLength))

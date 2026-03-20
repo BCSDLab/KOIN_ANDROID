@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
@@ -88,7 +89,7 @@ class CallvanListViewModel @Inject constructor(
         }
     }
 
-    fun updateSearch(query: String) = intent {
+    fun updateSearch(query: String) = blockingIntent {
         reduce { state.copy(searchValue = query) }
     }
 
@@ -111,69 +112,64 @@ class CallvanListViewModel @Inject constructor(
         fetchPosts()
     }
 
-    fun join(index: Int) = intent {
+    fun join(postId: Int) = intent {
         if (!state.isLoggedIn) {
             reduce { state.copy(isLoginVisible = true) }
             return@intent
         }
-        val postId = state.items.getOrNull(index)?.id ?: return@intent
         joinCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
     }
 
-    fun cancelJoin(index: Int) = intent {
+    fun cancelJoin(postId: Int) = intent {
         if (!state.isLoggedIn) {
             reduce { state.copy(isLoginVisible = true) }
             return@intent
         }
-        val postId = state.items.getOrNull(index)?.id ?: return@intent
         leaveCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
     }
 
-    fun close(index: Int) = intent {
+    fun close(postId: Int) = intent {
         if (!state.isLoggedIn) {
             reduce { state.copy(isLoginVisible = true) }
             return@intent
         }
-        val postId = state.items.getOrNull(index)?.id ?: return@intent
         closeCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
     }
 
-    fun reRecruit(index: Int) = intent {
+    fun reRecruit(postId: Int) = intent {
         if (!state.isLoggedIn) {
             reduce { state.copy(isLoginVisible = true) }
             return@intent
         }
-        val postId = state.items.getOrNull(index)?.id ?: return@intent
         reopenCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
     }
 
-    fun complete(index: Int) = intent {
+    fun complete(postId: Int) = intent {
         if (!state.isLoggedIn) {
             reduce { state.copy(isLoginVisible = true) }
             return@intent
         }
-        val postId = state.items.getOrNull(index)?.id ?: return@intent
         completeCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
     }
 
-    fun updateFilterVisible(visible: Boolean) = intent {
+    fun updateFilterVisible(visible: Boolean) = blockingIntent {
         reduce { state.copy(isFilterVisible = visible) }
     }
 
-    fun updatePendingConfirm(pending: Pair<CallvanConfirmType, Int>?) = intent {
+    fun updatePendingConfirm(pending: Pair<CallvanConfirmType, Int>?) = blockingIntent {
         reduce { state.copy(pendingConfirm = pending) }
     }
 
-    fun updatePendingCompleteIndex(index: Int?) = intent {
-        reduce { state.copy(pendingCompleteIndex = index) }
+    fun updatePendingCompletePostId(postId: Int?) = blockingIntent {
+        reduce { state.copy(pendingCompletePostId = postId) }
     }
 
-    fun updateLoginVisible(visible: Boolean) = intent {
+    fun updateLoginVisible(visible: Boolean) = blockingIntent {
         reduce { state.copy(isLoginVisible = visible) }
     }
 
