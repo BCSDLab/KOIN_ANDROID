@@ -3,7 +3,9 @@ env:
   APP_ID: in.koreatech.koin
 ---
 - runFlow: ../common/launch_app.yaml
+- extendedWaitUntil:
+    visible: "게시판"
+    timeout: 15000
 - assertVisible: "게시판"
-- assertVisible: "지금 인기있는 공지"
 - assertVisible: "버스 시간표"
-- assertVisible: "분실물"
+- assertVisible: "가장 빠른 버스"

@@ -4,8 +4,9 @@ env:
 ---
 - runFlow: ../common/launch_app.yaml
 - openLink: "koin://signup/activity"
-- waitForAnimationToEnd:
-    timeout: 5000
+- extendedWaitUntil:
+    visible: "회원가입"
+    timeout: 15000
 - assertVisible: "회원가입"
 - assertVisible: "1. 약관 동의"
-- assertVisible: "다음"
+- assertVisible: "모두 동의합니다."

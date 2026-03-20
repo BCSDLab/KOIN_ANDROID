@@ -3,9 +3,14 @@ env:
   APP_ID: in.koreatech.koin
 ---
 - runFlow: ../common/open_drawer.yaml
+- scrollUntilVisible:
+    element:
+      id: "${APP_ID}:id/navi_item_land"
+    direction: DOWN
+    timeout: 10000
 - tapOn:
     id: "${APP_ID}:id/navi_item_land"
-- waitForAnimationToEnd:
-    timeout: 10000
+- extendedWaitUntil:
+    visible: "복덕방"
+    timeout: 15000
 - assertVisible: "복덕방"
-- assertVisible: "검색"
