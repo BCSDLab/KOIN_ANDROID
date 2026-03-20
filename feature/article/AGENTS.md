@@ -4,7 +4,7 @@ This file provides prescriptive coding guidelines for AI coding agents working i
 
 ## Module Overview
 
-The `feature:article` module provides the **article and announcement system** for the KOIN app, including university notices, keyword-based notifications, search functionality, and the lost & found feature. It uses a hybrid architecture with legacy XML-based fragments and modern Compose components.
+The `feature:article` module provides the **article and announcement system** for the KOIN app, including university notices, keyword-based notifications, search functionality. It uses legacy XML-based fragments.
 
 ### Architecture Position
 ```
@@ -14,7 +14,7 @@ The `feature:article` module provides the **article and announcement system** fo
                             ↓ depends on
 ┌─────────────────────────────────────────────────────────────┐
 │                  feature:article                            │
-│    (Notices, Keywords, Search, Lost & Found)                │
+│    (Notices, Keywords, Search)                              │
 └─────────────────────────────────────────────────────────────┘
                             ↓ depends on
 ┌─────────────────────────────────────────────────────────────┐
@@ -28,24 +28,15 @@ The `feature:article` module provides the **article and announcement system** fo
 2. **Article Detail**: Show full article content with attachments
 3. **Keyword Management**: User keyword subscriptions for notifications
 4. **Article Search**: Full-text search with history
-5. **Lost & Found**: Lost/found item posting and browsing
-6. **Hot Articles**: Popular article recommendations
-7. **Deep Linking**: Handle notification and external links
+5. **Hot Articles**: Popular article recommendations
+6. **Deep Linking**: Handle notification and external links
 
 ## Package Structure
 
 ```
 feature/article/src/main/java/in/koreatech/koin/feature/article/
 ├── ArticleActivity.kt                    # Main activity with navigation
-├── LostAndFoundReportActivity.kt         # Report feature activity
 ├── Constant.kt                           # Module constants
-├── component/                            # Reusable Compose components
-│   ├── Dropdown.kt                       # Dropdown selector
-│   ├── HotArticle.kt                     # Hot article card
-│   ├── ItemTypeChip.kt                   # Item type chip
-│   ├── KeywordChipGroup.kt               # Keyword chips
-│   ├── LoadingDialog.kt                  # Loading indicator
-│   └── LostItemTypeChip.kt               # Lost item category chip
 ├── enums/
 │   └── ArticleBoardType.kt               # Board type enumeration
 ├── model/
@@ -67,16 +58,6 @@ feature/article/src/main/java/in/koreatech/koin/feature/article/
 │   ├── list/
 │   │   ├── ArticleListFragment.kt        # Article list screen
 │   │   └── ArticleListViewModel.kt
-│   ├── lostandfound/
-│   │   ├── component/                    # Lost & found Compose components
-│   │   ├── detail/
-│   │   │   ├── ArticleLostAndFoundDetailFragment.kt
-│   │   │   └── ArticleLostAndFoundDetailViewModel.kt
-│   │   ├── report/
-│   │   │   └── LostAndFoundReportScreen.kt
-│   │   └── write/
-│   │       ├── ArticleLostAndFoundWriteLostFragment.kt
-│   │       └── ArticleLostAndFoundWriteFoundFragment.kt
 │   └── search/
 │       ├── ArticleSearchFragment.kt      # Search screen
 │       └── ArticleSearchViewModel.kt
@@ -84,7 +65,6 @@ feature/article/src/main/java/in/koreatech/koin/feature/article/
     ├── ContextExtensions.kt              # Context utilities
     ├── HtmlView.kt                       # HTML rendering
     ├── KoreanDateUtil.kt                 # Korean date formatting
-    ├── ModifierUtil.kt                   # Compose modifier utilities
     ├── ParsingExtensions.kt              # String parsing
     └── TextExtensions.kt                 # Text utilities
 ```
@@ -232,7 +212,6 @@ enum class ArticleBoardType(
     val exposedInAll: Boolean = true
 ) {
     ALL(4, R.string.article_all, R.string.article_all, LinkType.NONE),
-    LOSTANDFOUND(14, R.string.article_lost_and_found, R.string.article_lost_and_found, LinkType.NONE),
     NORMAL(5, R.string.article_normal, R.string.article_normal_simple, LinkType.ARTICLE),
     SCHOLARSHIP(6, R.string.article_scholarship, R.string.article_scholarship_simple, LinkType.ARTICLE),
     SCHOOL(7, R.string.article_school, R.string.article_school_simple, LinkType.ARTICLE),
@@ -261,7 +240,6 @@ enum class LinkType {
 | Type | ID | Link Type | Exposed in ALL | Description |
 |------|-----|-----------|----------------|-------------|
 | ALL | 4 | NONE | - | Aggregated view of all boards |
-| LOSTANDFOUND | 14 | NONE | Yes | Lost & Found posts |
 | NORMAL | 5 | ARTICLE | Yes | General announcements |
 | SCHOLARSHIP | 6 | ARTICLE | Yes | Scholarship notices |
 | SCHOOL | 7 | ARTICLE | Yes | School-wide notices |
@@ -363,50 +341,6 @@ fun Article.toArticleState(): ArticleState = ArticleState(
 )
 ```
 
-### Compose Component Pattern (Lost & Found)
-
-**MUST** follow design system patterns for new components:
-
-```kotlin
-@Composable
-fun LostItemTypeChip(
-    type: LostItemType,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val colors = koinColors()
-    
-    FilterChip(
-        selected = isSelected,
-        onClick = onClick,
-        label = {
-            Text(
-                text = stringResource(type.labelRes),
-                style = koinTypography().labelMedium
-            )
-        },
-        colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = colors.primary,
-            selectedLabelColor = colors.background
-        ),
-        modifier = modifier
-    )
-}
-
-@Preview
-@Composable
-private fun LostItemTypeChipPreview() {
-    RebrandKoinTheme {
-        LostItemTypeChip(
-            type = LostItemType.LOST,
-            isSelected = true,
-            onClick = {}
-        )
-    }
-}
-```
-
 ### Korean Date Formatting
 
 **MUST** use consistent Korean date formatting:
@@ -466,9 +400,6 @@ private fun navigateToDetailFragment() {
                     NAVIGATED_BOARD_ID to boardId
                 )
             )
-        }
-        "article_lost_and_found" -> {
-            setNavigationGraph(ArticleBoardType.LOSTANDFOUND.id)
         }
         null -> {
             val bundle = intent.getBundleExtra(BUNDLE_ARTICLE_EXTRA_KEY)
@@ -645,14 +576,6 @@ These rules are **non-negotiable**:
 7. **Edge-to-Edge**: **MUST** enable edge-to-edge display with proper inset handling.
 
 8. **Analytics**: **MUST** log user interactions for article views, searches, and keyword actions.
-
-## Migration Notes
-
-This module is in a **hybrid state**:
-- Legacy XML fragments for article list, detail, search, keyword screens
-- Compose components for Lost & Found feature
-- New features **SHOULD** use Compose
-- Existing screens **MAY** be migrated gradually
 
 ## Build Commands
 
