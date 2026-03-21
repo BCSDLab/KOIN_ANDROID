@@ -142,6 +142,92 @@ private fun CallvanScrollPickerContent(
     }
 }
 
+@Composable
+fun CallvanAmPmScrollPicker(
+    items: ImmutableList<String>,
+    selectedIndex: Int,
+    modifier: Modifier = Modifier,
+    itemHeight: Dp = 32.dp,
+    textAlign: TextAlign = TextAlign.Center,
+    onIndexChange: (Int) -> Unit = {}
+) {
+    if (items.isEmpty()) {
+        Box(modifier = modifier.height(itemHeight * 3))
+        return
+    }
+
+    val density = LocalDensity.current
+    val listState = rememberLazyListState(
+        initialFirstVisibleItemIndex = selectedIndex.coerceIn(0, items.lastIndex)
+    )
+    val snappingLayout = rememberSnapFlingBehavior(listState)
+    val latestOnIndexChange by rememberUpdatedState(onIndexChange)
+    var isProgrammaticScroll by remember { mutableStateOf(false) }
+
+    val currentSelectedIndex by remember(density, items, itemHeight) {
+        derivedStateOf {
+            val itemHeightPx = with(density) { itemHeight.toPx() }
+            val totalOffset = listState.firstVisibleItemIndex * itemHeightPx +
+                listState.firstVisibleItemScrollOffset
+            (totalOffset / itemHeightPx).roundToInt()
+                .coerceIn(0, items.lastIndex)
+        }
+    }
+
+    LaunchedEffect(listState) {
+        var hasScrollStarted = false
+        snapshotFlow { listState.isScrollInProgress }
+            .collect { isScrolling ->
+                if (isScrolling) {
+                    if (!isProgrammaticScroll) hasScrollStarted = true
+                } else if (hasScrollStarted) {
+                    hasScrollStarted = false
+                    latestOnIndexChange(currentSelectedIndex)
+                }
+            }
+    }
+
+    LaunchedEffect(selectedIndex, items) {
+        snapshotFlow { listState.isScrollInProgress }
+            .filter { !it }
+            .first()
+
+        val target = selectedIndex.coerceIn(0, items.lastIndex)
+        if (listState.firstVisibleItemIndex != target || listState.firstVisibleItemScrollOffset != 0) {
+            isProgrammaticScroll = true
+            try {
+                listState.scrollToItem(target)
+            } finally {
+                isProgrammaticScroll = false
+            }
+        }
+    }
+
+    LazyColumn(
+        state = listState,
+        flingBehavior = snappingLayout,
+        contentPadding = PaddingValues(vertical = itemHeight),
+        modifier = modifier.height(itemHeight * 3)
+    ) {
+        itemsIndexed(items, key = { index, _ -> index }) { index, item ->
+            val isSelected by remember(index) { derivedStateOf { index == currentSelectedIndex } }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(itemHeight),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = item,
+                    style = RebrandKoinTheme.typography.medium16,
+                    color = if (isSelected) RebrandKoinTheme.colors.neutral800 else RebrandKoinTheme.colors.neutral500,
+                    textAlign = textAlign
+                )
+            }
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun CallvanScrollPickerPreview() {

@@ -32,7 +32,7 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
-import java.util.Locale
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -128,18 +128,16 @@ private fun CallvanTimePickerCard(
     val amLabel = stringResource(R.string.callvan_am)
     val pmLabel = stringResource(R.string.callvan_pm)
     val amPmItems = remember(amLabel, pmLabel) {
-        listOf(amLabel, pmLabel).toImmutableList()
+        persistentListOf(amLabel, pmLabel)
     }
     val hourItems = remember {
-        (1..12).map { it.toString() }.toImmutableList()
+        (1..12).toImmutableList()
     }
     val minuteItems = remember {
-        (0..59).map { String.format(Locale.ROOT, "%02d", it) }.toImmutableList()
+        (0..59).toImmutableList()
     }
 
     val amPmIndex = if (isAm) 0 else 1
-    val hourIndex = (selectedHour - 1).coerceIn(0, 11)
-    val minuteIndex = selectedMinute.coerceIn(0, 59)
 
     Card(
         modifier = Modifier
@@ -158,7 +156,7 @@ private fun CallvanTimePickerCard(
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                CallvanScrollPicker(
+                CallvanAmPmScrollPicker(
                     items = amPmItems,
                     selectedIndex = amPmIndex,
                     onIndexChange = onAmPmIndexChange,
@@ -166,15 +164,17 @@ private fun CallvanTimePickerCard(
                 )
                 CallvanScrollPicker(
                     items = hourItems,
-                    selectedIndex = hourIndex,
-                    onIndexChange = onHourIndexChange,
+                    selectedValue = selectedHour,
+                    suffix = "",
+                    onValueChange = onHourIndexChange,
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.End
                 )
                 CallvanScrollPicker(
                     items = minuteItems,
-                    selectedIndex = minuteIndex,
-                    onIndexChange = onMinuteIndexChange,
+                    selectedValue = selectedMinute,
+                    suffix = "",
+                    onValueChange = onMinuteIndexChange,
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.End
                 )
