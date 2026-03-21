@@ -65,14 +65,11 @@ import `in`.koreatech.koin.feature.lostandfound.ui.LostAndFoundActivity
 import `in`.koreatech.koin.feature.lostandfound.ui.entry.LostAndFoundEntry
 import `in`.koreatech.koin.feature.store.MainStoreWidget
 import `in`.koreatech.koin.navigation.SchemeType
-import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
 import `in`.koreatech.koin.ui.main.compose.HotArticlePager
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import `in`.koreatech.koin.ui.main.widget.DiningWidget
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
-import `in`.koreatech.koin.ui.store.activity.CallBenefitStoreActivity
-import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.util.ext.observeLiveData
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
@@ -91,39 +88,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     @Inject
     lateinit var navigator: Navigator
-
-    private val storeCategoriesRecyclerAdapter =
-        StoreCategoriesRecyclerAdapter().apply {
-            setOnItemClickListener { id, name ->
-                if (id == 0) {
-                    startActivity(Intent(this@MainActivity, CallBenefitStoreActivity::class.java))
-                    EventLogger.logClickEvent(
-                        EventAction.BUSINESS,
-                        AnalyticsConstant.Label.MAIN_SHOP_BENEFIT,
-                        name,
-                        EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
-                        EventExtra(AnalyticsConstant.CURRENT_PAGE, "benefit"),
-                        EventExtra(
-                            AnalyticsConstant.DURATION_TIME,
-                            getElapsedTimeAndReset().toString()
-                        )
-                    )
-                } else {
-                    EventLogger.logClickEvent(
-                        EventAction.BUSINESS,
-                        AnalyticsConstant.Label.MAIN_SHOP_CATEGORIES,
-                        name,
-                        EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
-                        EventExtra(AnalyticsConstant.CURRENT_PAGE, name),
-                        EventExtra(
-                            AnalyticsConstant.DURATION_TIME,
-                            getElapsedTimeAndReset().toString()
-                        )
-                    )
-                    gotoStoreActivity(id)
-                }
-            }
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -196,25 +160,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             scrollPercentage = 100.0f * offset / (range - extent)
         }
         viewModel.postABTestAssign(Experiment.BENEFIT_STORE.experimentTitle)
-
-        storeListButton.setOnClickListener {
-            gotoStoreActivity(0)
-        }
-        callBenefitStoreListButton.setOnClickListener {
-            EventLogger.logClickEvent(
-                EventAction.BUSINESS,
-                AnalyticsConstant.Label.MAIN_SHOP_BENEFIT,
-                "전화주문혜택",
-                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
-                EventExtra(AnalyticsConstant.CURRENT_PAGE, "benefit"),
-                EventExtra(
-                    AnalyticsConstant.DURATION_TIME,
-                    getElapsedTimeAndReset().toString()
-                )
-            )
-            val intent = Intent(this@MainActivity, CallBenefitStoreActivity::class.java)
-            startActivity(intent)
-        }
 
         buttonCategory.setOnClickListener {
             toggleNavigationDrawer()
@@ -370,11 +315,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             }
         }
 
-        recyclerViewStoreCategory.apply {
-            layoutManager = GridLayoutManager(this@MainActivity, 6)
-            adapter = storeCategoriesRecyclerAdapter
-        }
-
         mainSwipeRefreshLayout.setOnRefreshListener {
             viewModel.updateDining()
         }
@@ -431,16 +371,8 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         }
 
         lifecycleScope.launch {
-            storeCategories.collect {
-                storeCategoriesRecyclerAdapter.submitList(it)
-            }
-        }
-
-        lifecycleScope.launch {
             getStoreCategories()
             binding.textViewStore.visibility = View.GONE
-            binding.storeButtonLayout.visibility = View.GONE
-            binding.recyclerViewStoreCategory.visibility = View.GONE
             binding.shopComposeView.visibility = View.VISIBLE
         }
     }
@@ -454,27 +386,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 } else {
                     binding.callvanComposeView.visibility = View.GONE
                     binding.clubComposeView.visibility = View.VISIBLE
-                }
-            }
-        }
-    }
-
-    private fun observeOldStoreABTest() = with(viewModel) {
-        observeLiveData(variableName) {
-            when (viewModel.variableName.value) {
-                ExperimentGroup.A -> {
-                    binding.storeButtonLayout.visibility = View.GONE
-                    binding.recyclerViewStoreCategory.visibility = View.VISIBLE
-                }
-
-                ExperimentGroup.B -> {
-                    binding.storeButtonLayout.visibility = View.VISIBLE
-                    binding.recyclerViewStoreCategory.visibility = View.GONE
-                }
-
-                else -> {
-                    binding.storeButtonLayout.visibility = View.GONE
-                    binding.recyclerViewStoreCategory.visibility = View.VISIBLE
                 }
             }
         }
@@ -495,7 +406,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     private fun gotoStoreActivity(id: Int) {
         val bundle = Bundle()
-        bundle.putInt(StoreActivityContract.STORE_CATEGORY, id)
+        bundle.putInt(STORE_CATEGORY, id)
         callDrawerItem(R.id.navi_item_store, bundle)
     }
 
@@ -534,5 +445,9 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 initBanner()
             }
         }
+    }
+
+    companion object {
+        private const val STORE_CATEGORY = "STORE_CATEGORY"
     }
 }
