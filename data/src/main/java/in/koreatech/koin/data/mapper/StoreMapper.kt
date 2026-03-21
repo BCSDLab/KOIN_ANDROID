@@ -138,8 +138,9 @@ fun StoreCategoriesItemResponse.toStoreCategories(): StoreCategories =
         name = name
     )
 
-fun StoreCategoriesItemResponse.toStoreCategoriesEntity(): StoreCategoriesEntity = StoreCategoriesEntity(
+fun StoreCategoriesItemResponse.toStoreCategoriesEntity(index: Int): StoreCategoriesEntity = StoreCategoriesEntity(
     id = id,
+    order = index,
     imageUrl = imageUrl,
     name = name
 )
