@@ -34,7 +34,34 @@ import kotlinx.coroutines.flow.first
 
 @Suppress("LongParameterList")
 @Composable
-fun CallvanScrollPicker(
+fun CallvanIntScrollPicker(
+    items: ImmutableList<Int>,
+    selectedValue: Int,
+    suffix: String,
+    modifier: Modifier = Modifier,
+    itemHeight: Dp = 32.dp,
+    textAlign: TextAlign = TextAlign.Center,
+    onValueChange: (Int) -> Unit = {}
+) {
+    val selectedIndex = remember(items, selectedValue) {
+        items.indexOf(selectedValue).coerceAtLeast(0)
+    }
+    val displayItems = remember(items, suffix) {
+        items.map { "$it$suffix" }
+    }
+
+    BaseScrollPicker(
+        displayItems = displayItems,
+        selectedIndex = selectedIndex,
+        modifier = modifier,
+        itemHeight = itemHeight,
+        textAlign = textAlign,
+        onSelectedIndexChange = { index -> onValueChange(items[index]) }
+    )
+}
+
+@Composable
+fun CallvanStringScrollPicker(
     items: ImmutableList<String>,
     selectedIndex: Int,
     modifier: Modifier = Modifier,
@@ -42,45 +69,46 @@ fun CallvanScrollPicker(
     textAlign: TextAlign = TextAlign.Center,
     onIndexChange: (Int) -> Unit = {}
 ) {
-    if (items.isEmpty()) {
-        Box(modifier = modifier.height(itemHeight * 3))
-    } else {
-        CallvanScrollPickerContent(
-            items = items,
-            selectedIndex = selectedIndex,
-            modifier = modifier,
-            itemHeight = itemHeight,
-            textAlign = textAlign,
-            onIndexChange = onIndexChange
-        )
-    }
+    BaseScrollPicker(
+        displayItems = items,
+        selectedIndex = selectedIndex,
+        modifier = modifier,
+        itemHeight = itemHeight,
+        textAlign = textAlign,
+        onSelectedIndexChange = onIndexChange
+    )
 }
 
 @Suppress("LongParameterList")
 @Composable
-private fun CallvanScrollPickerContent(
-    items: ImmutableList<String>,
+private fun BaseScrollPicker(
+    displayItems: List<String>,
     selectedIndex: Int,
     modifier: Modifier = Modifier,
     itemHeight: Dp = 32.dp,
     textAlign: TextAlign = TextAlign.Center,
-    onIndexChange: (Int) -> Unit = {}
+    onSelectedIndexChange: (Int) -> Unit = {}
 ) {
+    if (displayItems.isEmpty()) {
+        Box(modifier = modifier.height(itemHeight * 3))
+        return
+    }
+
     val density = LocalDensity.current
     val listState = rememberLazyListState(
-        initialFirstVisibleItemIndex = selectedIndex.coerceIn(0, items.lastIndex)
+        initialFirstVisibleItemIndex = selectedIndex.coerceIn(0, displayItems.lastIndex)
     )
     val snappingLayout = rememberSnapFlingBehavior(listState)
-    val latestOnIndexChange by rememberUpdatedState(onIndexChange)
+    val latestOnSelectedIndexChange by rememberUpdatedState(onSelectedIndexChange)
     var isProgrammaticScroll by remember { mutableStateOf(false) }
 
-    val currentSelectedIndex by remember(density, items, itemHeight) {
+    val currentSelectedIndex by remember(density, displayItems, itemHeight) {
         derivedStateOf {
             val itemHeightPx = with(density) { itemHeight.toPx() }
             val totalOffset = listState.firstVisibleItemIndex * itemHeightPx +
                 listState.firstVisibleItemScrollOffset
             (totalOffset / itemHeightPx).roundToInt()
-                .coerceIn(0, items.lastIndex)
+                .coerceIn(0, displayItems.lastIndex)
         }
     }
 
@@ -92,17 +120,17 @@ private fun CallvanScrollPickerContent(
                     if (!isProgrammaticScroll) hasScrollStarted = true
                 } else if (hasScrollStarted) {
                     hasScrollStarted = false
-                    latestOnIndexChange(currentSelectedIndex)
+                    latestOnSelectedIndexChange(currentSelectedIndex)
                 }
             }
     }
 
-    LaunchedEffect(selectedIndex, items) {
+    LaunchedEffect(selectedIndex, displayItems) {
         snapshotFlow { listState.isScrollInProgress }
             .filter { !it }
             .first()
 
-        val target = selectedIndex.coerceIn(0, items.lastIndex)
+        val target = selectedIndex.coerceIn(0, displayItems.lastIndex)
         if (listState.firstVisibleItemIndex != target || listState.firstVisibleItemScrollOffset != 0) {
             isProgrammaticScroll = true
             try {
@@ -119,7 +147,7 @@ private fun CallvanScrollPickerContent(
         contentPadding = PaddingValues(vertical = itemHeight),
         modifier = modifier.height(itemHeight * 3)
     ) {
-        itemsIndexed(items, key = { index, _ -> index }) { index, item ->
+        itemsIndexed(displayItems, key = { index, _ -> index }) { index, item ->
             val isSelected by remember(index) { derivedStateOf { index == currentSelectedIndex } }
             Box(
                 modifier = Modifier
@@ -140,12 +168,13 @@ private fun CallvanScrollPickerContent(
 
 @Preview(showBackground = true)
 @Composable
-private fun CallvanScrollPickerPreview() {
+private fun CallvanIntScrollPickerPreview() {
     RebrandKoinTheme {
-        CallvanScrollPicker(
-            items = persistentListOf("1월", "2월", "3월", "4월", "5월", "6월"),
-            selectedIndex = 2,
-            onIndexChange = {}
+        CallvanIntScrollPicker(
+            items = persistentListOf(1, 2, 3, 4, 5, 6),
+            selectedValue = 3,
+            suffix = "월",
+            onValueChange = {}
         )
     }
 }

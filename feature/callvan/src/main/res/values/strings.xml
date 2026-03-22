@@ -95,6 +95,9 @@
     <string name="callvan_create_location_picker_confirm_other">입력 완료</string>
     <string name="callvan_create_date_label">출발일</string>
     <string name="callvan_create_date_hint">출발 날짜를 선택해주세요.</string>
+    <string name="callvan_date_picker_year_suffix">년</string>
+    <string name="callvan_date_picker_month_suffix">월</string>
+    <string name="callvan_date_picker_day_suffix">일</string>
     <string name="callvan_create_time_label">출발 시각</string>
     <string name="callvan_create_time_hint">출발 시각을 선택해주세요.</string>
     <string name="callvan_create_participants_label">참여 인원</string>
@@ -141,4 +144,7 @@
     <string name="callvan_complete_title">이용 완료 상태로 변경할까요?</string>
     <string name="callvan_complete_description">• 콜밴 이용(탑승, 정산)이 모두 완료된 뒤 눌러야 합니다.\n• 완료 시 대화 내역이 삭제되며, 되돌릴 수 없습니다.</string>
     <string name="write_btn">모집하기</string>
+
+    <string name="callvan_am">오전</string>
+    <string name="callvan_pm">오후</string>
 </resources>
