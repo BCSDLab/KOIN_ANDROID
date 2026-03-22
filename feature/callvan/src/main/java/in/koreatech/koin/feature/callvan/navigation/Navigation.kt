@@ -10,6 +10,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
+import `in`.koreatech.koin.feature.callvan.ui.create.CallvanCreateScreen
 import `in`.koreatech.koin.feature.callvan.ui.detail.CallvanDetailScreen
 import `in`.koreatech.koin.feature.callvan.ui.detail.CallvanDetailViewModel
 import `in`.koreatech.koin.feature.callvan.ui.list.CallvanListScreen
@@ -58,6 +59,15 @@ fun NavGraphBuilder.koinCallvanGraph(
     }
 
     composable<CallvanNavType.CallvanCreate> {
+        val context = LocalContext.current
+        CallvanCreateScreen(
+            onCompleteAndNavigateToMain = {
+                navController.navigate(CallvanNavType.CallvanMain) {
+                    popUpTo(CallvanNavType.CallvanMain::class) { inclusive = true }
+                }
+            },
+            onTopbarBackClick = { navController.popBackStackOrFinish(context) }
+        )
     }
 
     composable<CallvanNavType.CallvanChat> {
