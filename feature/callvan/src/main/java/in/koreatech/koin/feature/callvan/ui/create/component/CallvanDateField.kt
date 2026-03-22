@@ -156,21 +156,21 @@ private fun CallvanDatePickerCard(
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                CallvanScrollPicker(
+                CallvanIntScrollPicker(
                     items = years,
                     selectedValue = selectedDate.year,
                     suffix = stringResource(R.string.callvan_date_picker_year_suffix),
                     onValueChange = { onDateChange(maxOf(selectedDate.withYear(it), today)) },
                     modifier = Modifier.weight(1f)
                 )
-                CallvanScrollPicker(
+                CallvanIntScrollPicker(
                     items = months,
                     selectedValue = selectedDate.monthValue,
                     suffix = stringResource(R.string.callvan_date_picker_month_suffix),
                     onValueChange = { onDateChange(maxOf(selectedDate.withMonth(it), today)) },
                     modifier = Modifier.weight(1f)
                 )
-                CallvanScrollPicker(
+                CallvanIntScrollPicker(
                     items = days,
                     selectedValue = selectedDate.dayOfMonth,
                     suffix = stringResource(R.string.callvan_date_picker_day_suffix),

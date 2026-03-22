@@ -156,13 +156,13 @@ private fun CallvanTimePickerCard(
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                CallvanAmPmScrollPicker(
+                CallvanStringScrollPicker(
                     items = amPmItems,
                     selectedIndex = amPmIndex,
                     onIndexChange = onAmPmIndexChange,
                     modifier = Modifier.weight(1f)
                 )
-                CallvanScrollPicker(
+                CallvanIntScrollPicker(
                     items = hourItems,
                     selectedValue = selectedHour,
                     suffix = "",
@@ -170,7 +170,7 @@ private fun CallvanTimePickerCard(
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.End
                 )
-                CallvanScrollPicker(
+                CallvanIntScrollPicker(
                     items = minuteItems,
                     selectedValue = selectedMinute,
                     suffix = "",
