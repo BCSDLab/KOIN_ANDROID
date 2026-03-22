@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -20,10 +21,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
+import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
@@ -37,6 +41,7 @@ import `in`.koreatech.koin.feature.callvan.ui.list.component.ItemSearchTextField
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanConfirmType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanItemState
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListErrorType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemActions
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListUiState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
@@ -45,6 +50,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun CallvanListScreen(
@@ -58,6 +64,30 @@ fun CallvanListScreen(
     onDetailClick: (postId: Int) -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            is CallvanListSideEffect.ShowSnackbar -> {
+                val message = context.getString(
+                    when (sideEffect.errorType) {
+                        CallvanListErrorType.POST_NOT_RECRUITING -> R.string.callvan_error_post_not_recruiting
+                        CallvanListErrorType.POST_FULL -> R.string.callvan_error_post_full
+                        CallvanListErrorType.ALREADY_JOINED -> R.string.callvan_error_already_joined
+                        CallvanListErrorType.NOT_FOUND_ARTICLE -> R.string.callvan_error_not_found_article
+                        CallvanListErrorType.FORBIDDEN_AUTHOR -> R.string.callvan_error_forbidden_author
+                        CallvanListErrorType.FORBIDDEN_PARTICIPANT -> R.string.callvan_error_forbidden_participant
+                        CallvanListErrorType.POST_AUTHOR_CANNOT_LEAVE -> R.string.callvan_error_post_author_cannot_leave
+                        CallvanListErrorType.REOPEN_FAILED_FULL -> R.string.callvan_error_reopen_failed_full
+                        CallvanListErrorType.REOPEN_FAILED_TIME -> R.string.callvan_error_reopen_failed_time
+                        CallvanListErrorType.UNKNOWN -> R.string.callvan_error_unknown
+                    }
+                )
+                snackbarHostState.showSnackBarWithDismiss(message)
+            }
+        }
+    }
 
     LaunchedEffect(state.isLoggedIn) {
         viewModel.fetchHasNewNotification()
@@ -92,7 +122,8 @@ fun CallvanListScreen(
         onComplete = viewModel::complete,
         onCall = onCallClick,
         onChat = onChatClick,
-        onDetailClick = onDetailClick
+        onDetailClick = onDetailClick,
+        snackbarHostState = snackbarHostState
     )
 }
 
@@ -132,7 +163,8 @@ fun CallvanListScreenImpl(
     onComplete: (Int) -> Unit = {},
     onCall: (Int) -> Unit = {},
     onChat: (Int) -> Unit = {},
-    onDetailClick: (Int) -> Unit = {}
+    onDetailClick: (Int) -> Unit = {},
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 ) {
     val listState = rememberLazyListState()
 
@@ -219,87 +251,93 @@ fun CallvanListScreenImpl(
         )
     }
 
-    Scaffold(
-        topBar = {
-            KoinTopAppBar(
-                title = stringResource(R.string.filter_list_top_bar),
-                onNavigationIconClick = onTopbarBackClick,
-                actions = {
-                    IconButton(onClick = onNotificationClick) {
-                        CallvanNotificationIcon(hasNewNotification = hasNewNotification)
+    Box {
+        Scaffold(
+            topBar = {
+                KoinTopAppBar(
+                    title = stringResource(R.string.filter_list_top_bar),
+                    onNavigationIconClick = onTopbarBackClick,
+                    actions = {
+                        IconButton(onClick = onNotificationClick) {
+                            CallvanNotificationIcon(hasNewNotification = hasNewNotification)
+                        }
                     }
-                }
-            )
-        },
-        floatingActionButton = {
-            CallvanFAB(
-                modifier = Modifier.padding(bottom = 24.dp),
-                onClick = onWriteClick
-            )
-        },
-        containerColor = RebrandKoinTheme.colors.neutral0
-    ) { contentPadding ->
-        LazyColumn(
-            state = listState,
-            modifier = Modifier
-                .padding(contentPadding)
-                .padding(horizontal = 24.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            stickyHeader {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(RebrandKoinTheme.colors.neutral0)
-                        .padding(vertical = 8.dp)
-                ) {
-                    ItemSearchTextField(
-                        value = searchValue,
-                        onValueChange = onSearchValueChange,
-                        modifier = Modifier.weight(1f)
-                    )
-                    CallvanFilterChip(onClick = { onFilterVisibleChange(true) })
-                }
-            }
-
-            items(items, key = { it.id }) { uiState ->
-                val actions = remember(uiState.id) {
-                    CallvanListItemActions(
-                        onJoin = { onPendingConfirmChange(Pair(CallvanConfirmType.JOIN, uiState.id)) },
-                        onCancelJoin = { onPendingConfirmChange(Pair(CallvanConfirmType.CANCEL_JOIN, uiState.id)) },
-                        onClose = { onPendingConfirmChange(Pair(CallvanConfirmType.CLOSE, uiState.id)) },
-                        onReRecruit = { onPendingConfirmChange(Pair(CallvanConfirmType.REOPEN, uiState.id)) },
-                        onComplete = { onPendingCompletePostIdChange(uiState.id) },
-                        onCall = { onCall(uiState.id) },
-                        onChat = { onChat(uiState.id) }
-                    )
-                }
-                CallvanListItem(
-                    uiState = uiState,
-                    onItemClick = { onDetailClick(uiState.id) },
-                    actions = actions
                 )
-            }
-
-            if (isLoadingMore) {
-                item {
-                    Box(
+            },
+            floatingActionButton = {
+                CallvanFAB(
+                    modifier = Modifier.padding(bottom = 24.dp),
+                    onClick = onWriteClick
+                )
+            },
+            containerColor = RebrandKoinTheme.colors.neutral0
+        ) { contentPadding ->
+            LazyColumn(
+                state = listState,
+                modifier = Modifier
+                    .padding(contentPadding)
+                    .padding(horizontal = 24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                stickyHeader {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp),
-                        contentAlignment = Alignment.Center
+                            .background(RebrandKoinTheme.colors.neutral0)
+                            .padding(vertical = 8.dp)
                     ) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(24.dp),
-                            color = RebrandKoinTheme.colors.primary500,
-                            strokeWidth = 2.dp
+                        ItemSearchTextField(
+                            value = searchValue,
+                            onValueChange = onSearchValueChange,
+                            modifier = Modifier.weight(1f)
                         )
+                        CallvanFilterChip(onClick = { onFilterVisibleChange(true) })
+                    }
+                }
+
+                items(items, key = { it.id }) { uiState ->
+                    val actions = remember(uiState.id) {
+                        CallvanListItemActions(
+                            onJoin = { onPendingConfirmChange(Pair(CallvanConfirmType.JOIN, uiState.id)) },
+                            onCancelJoin = { onPendingConfirmChange(Pair(CallvanConfirmType.CANCEL_JOIN, uiState.id)) },
+                            onClose = { onPendingConfirmChange(Pair(CallvanConfirmType.CLOSE, uiState.id)) },
+                            onReRecruit = { onPendingConfirmChange(Pair(CallvanConfirmType.REOPEN, uiState.id)) },
+                            onComplete = { onPendingCompletePostIdChange(uiState.id) },
+                            onCall = { onCall(uiState.id) },
+                            onChat = { onChat(uiState.id) }
+                        )
+                    }
+                    CallvanListItem(
+                        uiState = uiState,
+                        onItemClick = { onDetailClick(uiState.id) },
+                        actions = actions
+                    )
+                }
+
+                if (isLoadingMore) {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(24.dp),
+                                color = RebrandKoinTheme.colors.primary500,
+                                strokeWidth = 2.dp
+                            )
+                        }
                     }
                 }
             }
         }
+        CustomSnackBarHost(
+            hotState = snackbarHostState,
+            background = RebrandKoinTheme.colors.primary700.copy(alpha = 0.8f)
+        )
     }
 }
 

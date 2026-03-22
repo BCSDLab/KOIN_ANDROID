@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
@@ -110,7 +111,12 @@ fun CallvanCreateScreenImpl(
                 onNavigationIconClick = onTopbarBackClick
             )
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = {
+            CustomSnackBarHost(
+                hotState = snackbarHostState,
+                background = RebrandKoinTheme.colors.primary700.copy(alpha = 0.8f)
+            )
+        },
         containerColor = RebrandKoinTheme.colors.neutral0
     ) { innerPadding ->
         Column(

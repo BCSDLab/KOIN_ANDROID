@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.feature.callvan.ui.list
-
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.error.callvan.KoinCallvanException
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.callvan.CloseCallvanPostUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.CompleteCallvanPostUseCase
@@ -13,7 +13,9 @@ import `in`.koreatech.koin.domain.usecase.callvan.ReopenCallvanPostUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanConfirmType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListErrorType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
+import `in`.koreatech.koin.feature.callvan.ui.list.model.toListErrorType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.toUiState
 import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList
@@ -26,6 +28,7 @@ import kotlinx.coroutines.flow.map
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
@@ -115,6 +118,7 @@ class CallvanListViewModel @Inject constructor(
         }
         joinCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
+            .onFailure { postSideEffect(CallvanListSideEffect.ShowSnackbar(it.toListErrorType())) }
     }
 
     fun cancelJoin(postId: Int) = intent {
@@ -124,6 +128,7 @@ class CallvanListViewModel @Inject constructor(
         }
         leaveCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
+            .onFailure { postSideEffect(CallvanListSideEffect.ShowSnackbar(it.toListErrorType())) }
     }
 
     fun close(postId: Int) = intent {
@@ -133,6 +138,7 @@ class CallvanListViewModel @Inject constructor(
         }
         closeCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
+            .onFailure { postSideEffect(CallvanListSideEffect.ShowSnackbar(it.toListErrorType())) }
     }
 
     fun reRecruit(postId: Int) = intent {
@@ -142,6 +148,7 @@ class CallvanListViewModel @Inject constructor(
         }
         reopenCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
+            .onFailure { postSideEffect(CallvanListSideEffect.ShowSnackbar(it.toListErrorType())) }
     }
 
     fun complete(postId: Int) = intent {
@@ -151,6 +158,7 @@ class CallvanListViewModel @Inject constructor(
         }
         completeCallvanPostUseCase(postId)
             .onSuccess { fetchPosts() }
+            .onFailure { postSideEffect(CallvanListSideEffect.ShowSnackbar(it.toListErrorType())) }
     }
 
     fun updateFilterVisible(visible: Boolean) = blockingIntent {

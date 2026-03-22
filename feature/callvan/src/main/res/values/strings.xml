@@ -149,4 +149,15 @@
     <string name="callvan_pm">오후</string>
 
     <string name="callvan_create_past_time_error">현재 시간 이후로만 출발 시각을 설정할 수 있습니다.</string>
+
+    <string name="callvan_error_post_not_recruiting">현재 모집 중인 콜밴팟이 아닙니다.</string>
+    <string name="callvan_error_post_full">콜밴팟 인원이 가득 찼습니다.</string>
+    <string name="callvan_error_already_joined">이미 참여한 콜밴팟입니다.</string>
+    <string name="callvan_error_not_found_article">존재하지 않는 콜밴팟입니다.</string>
+    <string name="callvan_error_forbidden_author">작성자만 수행할 수 있습니다.</string>
+    <string name="callvan_error_forbidden_participant">참여자만 수행할 수 있습니다.</string>
+    <string name="callvan_error_post_author_cannot_leave">작성자는 참여를 취소할 수 없습니다.</string>
+    <string name="callvan_error_reopen_failed_full">인원이 가득 차 재모집할 수 없습니다.</string>
+    <string name="callvan_error_reopen_failed_time">출발 시간이 지나 재모집할 수 없습니다.</string>
+    <string name="callvan_error_unknown">오류가 발생했습니다. 다시 시도해주세요.</string>
 </resources>
