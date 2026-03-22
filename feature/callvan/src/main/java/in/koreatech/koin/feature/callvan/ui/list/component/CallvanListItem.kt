@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.callvan.ui.list.component
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -26,7 +28,8 @@ import `in`.koreatech.koin.feature.callvan.util.formatDateTime
 fun CallvanListItem(
     uiState: CallvanListUiState,
     actions: CallvanListItemActions,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onItemClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -36,6 +39,8 @@ fun CallvanListItem(
                 color = KoinTheme.colors.neutral400,
                 shape = KoinTheme.shapes.small
             )
+            .clip(KoinTheme.shapes.small)
+            .clickable(onClick = onItemClick)
             .padding(horizontal = 24.dp, vertical = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -73,6 +78,7 @@ private fun CallvanListItemDefaultPreview() {
     RebrandKoinTheme {
         CallvanListItem(
             uiState = CallvanListUiState(
+                id = 0,
                 departure = "테니스장",
                 destination = "천안 시외터미널",
                 date = "2025-02-05",
@@ -92,6 +98,7 @@ private fun CallvanListItemJoinedPreview() {
     RebrandKoinTheme {
         CallvanListItem(
             uiState = CallvanListUiState(
+                id = 0,
                 departure = "정문",
                 destination = "천안 시외터미널",
                 date = "2025-02-05",
@@ -111,6 +118,7 @@ private fun CallvanListItemClosedPreview() {
     RebrandKoinTheme {
         CallvanListItem(
             uiState = CallvanListUiState(
+                id = 0,
                 departure = "테니스장",
                 destination = "천안역",
                 date = "2025-02-05",
@@ -130,6 +138,7 @@ private fun CallvanListItemOwnerActivePreview() {
     RebrandKoinTheme {
         CallvanListItem(
             uiState = CallvanListUiState(
+                id = 0,
                 departure = "정문",
                 destination = "천안 시외터미널",
                 date = "2025-02-05",
@@ -149,6 +158,7 @@ private fun CallvanListItemOwnerClosedPreview() {
     RebrandKoinTheme {
         CallvanListItem(
             uiState = CallvanListUiState(
+                id = 0,
                 departure = "정문",
                 destination = "천안 시외터미널",
                 date = "2025-02-05",

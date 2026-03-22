@@ -5,6 +5,7 @@ import `in`.koreatech.koin.data.request.callvan.CallvanChatMessageRequest
 import `in`.koreatech.koin.data.request.callvan.CallvanPostCreateRequest
 import `in`.koreatech.koin.data.request.callvan.CallvanUserReportCreateRequest
 import javax.inject.Inject
+import retrofit2.HttpException
 
 class CallvanRemoteDataSource @Inject constructor(
     private val callvanAuthApi: CallvanAuthApi
@@ -69,9 +70,10 @@ class CallvanRemoteDataSource @Inject constructor(
 
     suspend fun closeCallvanPost(
         postId: Int
-    ) = callvanAuthApi.closeCallvanPost(
-        postId = postId
-    )
+    ) {
+        val response = callvanAuthApi.closeCallvanPost(postId = postId)
+        if (!response.isSuccessful) throw HttpException(response)
+    }
 
     suspend fun getNotifications() = callvanAuthApi.getNotifications()
 
@@ -93,9 +95,10 @@ class CallvanRemoteDataSource @Inject constructor(
 
     suspend fun completeCallvanPost(
         postId: Int
-    ) = callvanAuthApi.completeCallvanPost(
-        postId = postId
-    )
+    ) {
+        val response = callvanAuthApi.completeCallvanPost(postId = postId)
+        if (!response.isSuccessful) throw HttpException(response)
+    }
 
     suspend fun joinCallvanPost(
         postId: Int
@@ -105,13 +108,15 @@ class CallvanRemoteDataSource @Inject constructor(
 
     suspend fun leaveCallvanPost(
         postId: Int
-    ) = callvanAuthApi.leaveCallvanPost(
-        postId = postId
-    )
+    ) {
+        val response = callvanAuthApi.leaveCallvanPost(postId = postId)
+        if (!response.isSuccessful) throw HttpException(response)
+    }
 
     suspend fun reopenCallvanPost(
         postId: Int
-    ) = callvanAuthApi.reopenCallvanPost(
-        postId = postId
-    )
+    ) {
+        val response = callvanAuthApi.reopenCallvanPost(postId = postId)
+        if (!response.isSuccessful) throw HttpException(response)
+    }
 }

@@ -12,13 +12,35 @@ import androidx.navigation.toRoute
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.callvan.ui.detail.CallvanDetailScreen
 import `in`.koreatech.koin.feature.callvan.ui.detail.CallvanDetailViewModel
+import `in`.koreatech.koin.feature.callvan.ui.list.CallvanListScreen
 import `in`.koreatech.koin.feature.callvan.ui.notification.CallvanNotificationsScreen
 import `in`.koreatech.koin.feature.callvan.ui.report.CallvanReportScreen
 
+private const val STORE_CATEGORY = "STORE_CATEGORY"
+private const val STORE_CATEGORY_CALLVAN_PRODUCTION = 10
+
+@Suppress("LongMethod")
 fun NavGraphBuilder.koinCallvanGraph(
     navController: NavController
 ) {
     composable<CallvanNavType.CallvanMain> {
+        val navigator = rememberNavigator()
+        val context = LocalContext.current
+        CallvanListScreen(
+            onTopbarBackClick = { navController.popBackStack() },
+            onNotificationClick = { navController.navigate(CallvanNavType.CallvanNotifications) },
+            onWriteClick = { navController.navigate(CallvanNavType.CallvanCreate) },
+            onLoginClick = { context.startActivity(navigator.navigateToSignIn(context)) },
+            onChatClick = { postId -> navController.navigate(CallvanNavType.CallvanChat(postId)) },
+            onCallClick = {
+                context.startActivity(
+                    navigator.navigateToStore(context).apply {
+                        putExtra(STORE_CATEGORY, STORE_CATEGORY_CALLVAN_PRODUCTION)
+                    }
+                )
+            },
+            onDetailClick = { postId -> navController.navigate(CallvanNavType.CallvanDetail(postId)) }
+        )
     }
 
     composable<CallvanNavType.CallvanDetail> { backStackEntry ->

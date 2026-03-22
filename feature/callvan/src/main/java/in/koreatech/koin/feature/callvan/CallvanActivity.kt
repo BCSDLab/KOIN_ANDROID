@@ -27,7 +27,7 @@ class CallvanActivity : ComponentActivity() {
                     NavHost(
                         modifier = Modifier.padding(innerPadding),
                         navController = navController,
-                        startDestination = CallvanNavType.CallvanCreate::class
+                        startDestination = CallvanNavType.CallvanMain::class
                     ) {
                         koinCallvanGraph(navController = navController)
                     }

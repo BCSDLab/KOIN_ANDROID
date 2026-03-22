@@ -8,6 +8,7 @@ import `in`.koreatech.koin.data.response.callvan.CallvanNotificationResponse
 import `in`.koreatech.koin.data.response.callvan.CallvanPostCreateResponse
 import `in`.koreatech.koin.data.response.callvan.CallvanPostDetailResponse
 import `in`.koreatech.koin.data.response.callvan.CallvanPostSearchResponse
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -61,7 +62,7 @@ interface CallvanAuthApi {
     @PUT("/callvan/posts/{postId}/close")
     suspend fun closeCallvanPost(
         @Path("postId") postId: Int
-    )
+    ): Response<Unit>
 
     @GET("/callvan/notifications")
     suspend fun getNotifications(): List<CallvanNotificationResponse>
@@ -85,7 +86,7 @@ interface CallvanAuthApi {
     @PUT("/callvan/posts/{postId}/complete")
     suspend fun completeCallvanPost(
         @Path("postId") postId: Int
-    )
+    ): Response<Unit>
 
     @POST("/callvan/posts/{postId}/participants")
     suspend fun joinCallvanPost(
@@ -95,10 +96,10 @@ interface CallvanAuthApi {
     @DELETE("/callvan/posts/{postId}/participants")
     suspend fun leaveCallvanPost(
         @Path("postId") postId: Int
-    )
+    ): Response<Unit>
 
     @PUT("/callvan/posts/{postId}/reopen")
     suspend fun reopenCallvanPost(
         @Path("postId") postId: Int
-    )
+    ): Response<Unit>
 }

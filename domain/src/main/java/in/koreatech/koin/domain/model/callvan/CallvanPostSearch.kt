@@ -13,7 +13,7 @@ data class CallvanPostSearch(
         val arrival: String,
         val departureDate: String,
         val departureTime: String,
-        val authorNickname: String,
+        val authorNickname: String?,
         val currentParticipants: Int,
         val maxParticipants: Int,
         val status: String,

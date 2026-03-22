@@ -26,7 +26,7 @@ data class CallvanPostSearchResponse(
         @SerializedName("departure_time")
         val departureTime: String,
         @SerializedName("author_nickname")
-        val authorNickname: String,
+        val authorNickname: String?,
         @SerializedName("current_participants")
         val currentParticipants: Int,
         @SerializedName("max_participants")
