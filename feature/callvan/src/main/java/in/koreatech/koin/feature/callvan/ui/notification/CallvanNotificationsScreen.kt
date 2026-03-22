@@ -31,7 +31,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanConfirmBottomSheet
@@ -81,7 +80,7 @@ fun CallvanNotificationsScreenImpl(
             ),
             CallvanDropdownMenuItem(
                 text = { stringResource(R.string.callvan_notification_delete_all) },
-                color = { KoinTheme.colors.danger700 },
+                color = { RebrandKoinTheme.colors.danger700 },
                 onClick = { isDeleteAllBottomSheetVisible = true }
             )
         )
@@ -132,7 +131,7 @@ fun CallvanNotificationsScreenImpl(
                 }
             )
         },
-        containerColor = KoinTheme.colors.neutral0
+        containerColor = RebrandKoinTheme.colors.neutral0
     ) { contentPadding ->
         if (notifications.isEmpty()) {
             Column(
@@ -150,14 +149,14 @@ fun CallvanNotificationsScreenImpl(
                 )
                 Text(
                     text = stringResource(R.string.callvan_notification_empty_title),
-                    style = KoinTheme.typography.bold18.copy(fontWeight = FontWeight(600)),
+                    style = RebrandKoinTheme.typography.bold18.copy(fontWeight = FontWeight(600)),
                     color = RebrandKoinTheme.colors.primary500,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(top = 12.dp)
                 )
                 Text(
                     text = stringResource(R.string.callvan_notification_empty_description),
-                    style = KoinTheme.typography.medium14.copy(color = KoinTheme.colors.neutral600),
+                    style = RebrandKoinTheme.typography.medium14.copy(color = RebrandKoinTheme.colors.neutral600),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(top = 2.dp)
                 )
@@ -170,7 +169,7 @@ fun CallvanNotificationsScreenImpl(
                     if (index > 0) {
                         HorizontalDivider(
                             modifier = Modifier.padding(horizontal = 24.dp),
-                            color = KoinTheme.colors.neutral200
+                            color = RebrandKoinTheme.colors.neutral200
                         )
                     }
                     CallvanNotificationItem(

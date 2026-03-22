@@ -23,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.notification.model.CallvanNotificationUiItem
@@ -34,9 +33,9 @@ fun CallvanNotificationItem(
     modifier: Modifier = Modifier,
     onClick: (Int) -> Unit = {}
 ) {
-    val titleColor = if (notification.isRead) KoinTheme.colors.neutral500 else KoinTheme.colors.neutral800
-    val titleStyle = if (notification.isRead) KoinTheme.typography.regular14 else KoinTheme.typography.medium14
-    val routeColor = if (notification.isRead) KoinTheme.colors.neutral500 else RebrandKoinTheme.colors.primary500
+    val titleColor = if (notification.isRead) RebrandKoinTheme.colors.neutral500 else RebrandKoinTheme.colors.neutral800
+    val titleStyle = if (notification.isRead) RebrandKoinTheme.typography.regular14 else RebrandKoinTheme.typography.medium14
+    val routeColor = if (notification.isRead) RebrandKoinTheme.colors.neutral500 else RebrandKoinTheme.colors.primary500
 
     Row(
         modifier = modifier
@@ -52,7 +51,7 @@ fun CallvanNotificationItem(
                 .clip(CircleShape)
                 .background(
                     if (notification.isRead) {
-                        KoinTheme.colors.neutral0
+                        RebrandKoinTheme.colors.neutral0
                     } else {
                         RebrandKoinTheme.colors.primary500
                     }
@@ -73,7 +72,7 @@ fun CallvanNotificationItem(
             ) {
                 Text(
                     text = notification.routeInfo,
-                    style = KoinTheme.typography.regular12,
+                    style = RebrandKoinTheme.typography.regular12,
                     color = routeColor
                 )
                 Spacer(modifier = Modifier.width(4.dp))
@@ -89,14 +88,14 @@ fun CallvanNotificationItem(
                         notification.currentParticipants,
                         notification.maxParticipants
                     ),
-                    style = KoinTheme.typography.regular12,
+                    style = RebrandKoinTheme.typography.regular12,
                     color = routeColor
                 )
             }
             Spacer(modifier = Modifier.height(2.dp))
             Text(
                 text = notification.message,
-                style = KoinTheme.typography.regular14,
+                style = RebrandKoinTheme.typography.regular14,
                 color = titleColor
             )
         }

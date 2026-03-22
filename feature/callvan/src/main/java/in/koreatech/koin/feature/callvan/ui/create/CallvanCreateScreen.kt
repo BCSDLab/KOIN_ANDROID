@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanDateField
@@ -111,7 +111,7 @@ fun CallvanCreateScreenImpl(
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        containerColor = KoinTheme.colors.neutral0
+        containerColor = RebrandKoinTheme.colors.neutral0
     ) { innerPadding ->
         Column(
             modifier = Modifier

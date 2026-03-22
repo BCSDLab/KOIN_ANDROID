@@ -31,7 +31,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanItemState
@@ -106,8 +105,8 @@ fun CallvanListItemButtons(
                     text = stringResource(R.string.callvan_btn_closed),
                     onClick = {},
                     enabled = false,
-                    contentColor = KoinTheme.colors.neutral400,
-                    borderColor = KoinTheme.colors.neutral300,
+                    contentColor = RebrandKoinTheme.colors.neutral400,
+                    borderColor = RebrandKoinTheme.colors.neutral300,
                     borderWidth = 1.dp
                 )
                 CallvanItemState.OWNER_ACTIVE -> CallvanOutlinedButton(
@@ -154,11 +153,11 @@ private fun CallvanFilledButton(
         Button(
             modifier = modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
             onClick = onClick,
-            shape = KoinTheme.shapes.extraSmall,
+            shape = RebrandKoinTheme.shapes.extraSmall,
             contentPadding = contentPadding,
             colors = color
         ) {
-            Text(style = KoinTheme.typography.regular12, text = text)
+            Text(style = RebrandKoinTheme.typography.regular12, text = text)
         }
     }
 }
@@ -180,7 +179,7 @@ private fun CallvanOutlinedButton(
             modifier = modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
             onClick = onClick,
             enabled = enabled,
-            shape = KoinTheme.shapes.extraSmall,
+            shape = RebrandKoinTheme.shapes.extraSmall,
             contentPadding = contentPadding,
             colors = ButtonDefaults.outlinedButtonColors(
                 contentColor = contentColor,
@@ -191,7 +190,7 @@ private fun CallvanOutlinedButton(
                 if (enabled) borderColor else disabledContentColor
             )
         ) {
-            Text(style = KoinTheme.typography.regular12, text = text)
+            Text(style = RebrandKoinTheme.typography.regular12, text = text)
         }
     }
 }

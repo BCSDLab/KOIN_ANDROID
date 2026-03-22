@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 
@@ -25,12 +24,12 @@ fun CallvanPersonIcon(
     contentDescription: String? = null
 ) {
     val backgroundColor = if (isMine) tint else Color.Transparent
-    val iconTint = if (isMine) KoinTheme.colors.neutral0 else tint
+    val iconTint = if (isMine) RebrandKoinTheme.colors.neutral0 else tint
 
     Box(
         modifier = modifier
-            .clip(KoinTheme.shapes.small)
-            .border(1.dp, tint, KoinTheme.shapes.small)
+            .clip(RebrandKoinTheme.shapes.small)
+            .border(1.dp, tint, RebrandKoinTheme.shapes.small)
             .background(color = backgroundColor)
             .padding(all = 4.dp)
     ) {

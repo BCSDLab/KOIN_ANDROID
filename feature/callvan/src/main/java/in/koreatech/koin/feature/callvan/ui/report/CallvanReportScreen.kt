@@ -28,7 +28,6 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
 import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.report.component.CALLVAN_REPORT_IMAGE_MAX_COUNT
@@ -185,7 +184,7 @@ private fun CallvanReportScreenImpl(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = RebrandKoinTheme.colors.primary500
                 ),
-                shape = KoinTheme.shapes.small
+                shape = RebrandKoinTheme.shapes.small
             )
         },
         snackbarHost = {
@@ -194,7 +193,7 @@ private fun CallvanReportScreenImpl(
                 background = RebrandKoinTheme.colors.primary700.copy(alpha = 0.8f)
             )
         },
-        containerColor = KoinTheme.colors.neutral0
+        containerColor = RebrandKoinTheme.colors.neutral0
     ) { contentPadding ->
         Box(modifier = Modifier.fillMaxSize()) {
             when (step) {

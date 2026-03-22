@@ -40,7 +40,6 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
 import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanDropdownMenuItem
@@ -138,7 +137,7 @@ fun CallvanDetailScreenImpl(
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp, vertical = 16.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = RebrandKoinTheme.colors.primary500),
-                shape = KoinTheme.shapes.small
+                shape = RebrandKoinTheme.shapes.small
             )
         },
         snackbarHost = {
@@ -147,7 +146,7 @@ fun CallvanDetailScreenImpl(
                 background = RebrandKoinTheme.colors.primary700.copy(alpha = 0.8f)
             )
         },
-        containerColor = KoinTheme.colors.neutral0
+        containerColor = RebrandKoinTheme.colors.neutral0
     ) { contentPadding ->
         Box(modifier = Modifier.fillMaxSize()) {
             val participantColorIndices = remember(participants) {
@@ -235,7 +234,7 @@ private fun ParticipantsHeader(
         CallvanParticipantCount(
             currentCount = currentParticipants,
             maxCount = maxParticipants,
-            textStyle = KoinTheme.typography.regular14,
+            textStyle = RebrandKoinTheme.typography.regular14,
             iconSize = 20.dp
         )
     }

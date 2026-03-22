@@ -20,7 +20,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 
@@ -51,7 +50,7 @@ fun CallvanBottomSheet(
             ) {
                 Text(
                     text = title,
-                    style = KoinTheme.typography.bold18,
+                    style = RebrandKoinTheme.typography.bold18,
                     color = RebrandKoinTheme.colors.primary500,
                     modifier = Modifier.padding(vertical = 12.dp)
                 )
@@ -60,14 +59,14 @@ fun CallvanBottomSheet(
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_bottom_sheet_close),
                             contentDescription = null,
-                            tint = KoinTheme.colors.neutral600
+                            tint = RebrandKoinTheme.colors.neutral600
                         )
                     }
                 }
             }
-            HorizontalDivider(color = KoinTheme.colors.neutral200)
+            HorizontalDivider(color = RebrandKoinTheme.colors.neutral200)
             content()
-            HorizontalDivider(color = KoinTheme.colors.neutral200)
+            HorizontalDivider(color = RebrandKoinTheme.colors.neutral200)
         }
     }
 }

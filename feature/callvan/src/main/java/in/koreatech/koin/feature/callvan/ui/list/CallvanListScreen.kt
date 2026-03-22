@@ -25,7 +25,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanConfirmBottomSheet
@@ -238,7 +237,7 @@ fun CallvanListScreenImpl(
                 onClick = onWriteClick
             )
         },
-        containerColor = KoinTheme.colors.neutral0
+        containerColor = RebrandKoinTheme.colors.neutral0
     ) { contentPadding ->
         LazyColumn(
             state = listState,
@@ -253,7 +252,7 @@ fun CallvanListScreenImpl(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(KoinTheme.colors.neutral0)
+                        .background(RebrandKoinTheme.colors.neutral0)
                         .padding(vertical = 8.dp)
                 ) {
                     ItemSearchTextField(
@@ -294,7 +293,7 @@ fun CallvanListScreenImpl(
                     ) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(24.dp),
-                            color = KoinTheme.colors.primary500,
+                            color = RebrandKoinTheme.colors.primary500,
                             strokeWidth = 2.dp
                         )
                     }

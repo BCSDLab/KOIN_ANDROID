@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 fun CallvanDropdownMenu(
@@ -47,15 +47,15 @@ fun CallvanDropdownMenu(
     ) {
         Box(
             modifier = modifier
-                .shadow(elevation = 4.dp, shape = KoinTheme.shapes.medium)
-                .clip(KoinTheme.shapes.medium)
-                .background(KoinTheme.colors.neutral50)
+                .shadow(elevation = 4.dp, shape = RebrandKoinTheme.shapes.medium)
+                .clip(RebrandKoinTheme.shapes.medium)
+                .background(RebrandKoinTheme.colors.neutral50)
         ) {
             Column(modifier = Modifier.width(IntrinsicSize.Max)) {
                 items.forEachIndexed { index, item ->
                     if (index > 0) {
                         HorizontalDivider(
-                            color = KoinTheme.colors.neutral200,
+                            color = RebrandKoinTheme.colors.neutral200,
                             modifier = Modifier.padding(horizontal = 12.dp)
                         )
                     }
@@ -75,7 +75,7 @@ fun CallvanDropdownMenu(
                         }
                         Text(
                             text = item.text(),
-                            style = KoinTheme.typography.regular14,
+                            style = RebrandKoinTheme.typography.regular14,
                             color = item.color()
                         )
                     }
@@ -87,7 +87,7 @@ fun CallvanDropdownMenu(
 
 class CallvanDropdownMenuItem(
     val text: @Composable () -> String,
-    val color: @Composable () -> Color = { KoinTheme.colors.neutral800 },
+    val color: @Composable () -> Color = { RebrandKoinTheme.colors.neutral800 },
     val onClick: () -> Unit,
     val icon: (@Composable () -> Unit)? = null
 ) {
@@ -96,7 +96,7 @@ class CallvanDropdownMenuItem(
         color: Color? = null,
         onClick: () -> Unit,
         icon: (@Composable () -> Unit)? = null
-    ) : this({ text }, { color ?: KoinTheme.colors.neutral800 }, onClick, icon)
+    ) : this({ text }, { color ?: RebrandKoinTheme.colors.neutral800 }, onClick, icon)
 }
 
 @Preview

@@ -16,7 +16,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Suppress("LongParameterList")
@@ -42,15 +41,15 @@ fun CallvanConfirmBottomSheet(
             if (description.isNotBlank()) {
                 Text(
                     text = description,
-                    style = KoinTheme.typography.regular14,
-                    color = KoinTheme.colors.neutral800
+                    style = RebrandKoinTheme.typography.regular14,
+                    color = RebrandKoinTheme.colors.neutral800
                 )
             }
             FilledButton(
                 text = confirmText,
                 onClick = onConfirm,
                 modifier = Modifier.fillMaxWidth(),
-                shape = KoinTheme.shapes.medium,
+                shape = RebrandKoinTheme.shapes.medium,
                 contentPadding = PaddingValues(vertical = 10.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = RebrandKoinTheme.colors.primary500)
             )
@@ -58,10 +57,10 @@ fun CallvanConfirmBottomSheet(
                 text = cancelText,
                 onClick = onDismiss,
                 modifier = Modifier.fillMaxWidth(),
-                shape = KoinTheme.shapes.medium,
+                shape = RebrandKoinTheme.shapes.medium,
                 contentPadding = PaddingValues(vertical = 10.dp),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = KoinTheme.colors.neutral600),
-                border = BorderStroke(1.dp, KoinTheme.colors.neutral300)
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = RebrandKoinTheme.colors.neutral600),
+                border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral300)
             )
         }
         Spacer(modifier = Modifier.height(12.dp))

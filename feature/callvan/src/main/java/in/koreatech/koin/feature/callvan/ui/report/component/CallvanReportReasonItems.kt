@@ -16,7 +16,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportReason
@@ -43,7 +42,7 @@ fun CallvanReportReasonItem(
             onClick = null,
             colors = RadioButtonDefaults.colors(
                 selectedColor = RebrandKoinTheme.colors.primary500,
-                unselectedColor = KoinTheme.colors.neutral500
+                unselectedColor = RebrandKoinTheme.colors.neutral500
             )
         )
         Column(
@@ -51,14 +50,14 @@ fun CallvanReportReasonItem(
         ) {
             Text(
                 text = stringResource(reason.titleRes),
-                style = KoinTheme.typography.medium18,
-                color = KoinTheme.colors.neutral800
+                style = RebrandKoinTheme.typography.medium18,
+                color = RebrandKoinTheme.colors.neutral800
             )
             reason.descriptionRes?.let {
                 Text(
                     text = stringResource(it),
-                    style = KoinTheme.typography.regular14,
-                    color = KoinTheme.colors.neutral600
+                    style = RebrandKoinTheme.typography.regular14,
+                    color = RebrandKoinTheme.colors.neutral600
                 )
             }
         }
@@ -91,7 +90,7 @@ fun CallvanReportReasonTextFieldItem(
                 onClick = null,
                 colors = RadioButtonDefaults.colors(
                     selectedColor = RebrandKoinTheme.colors.primary500,
-                    unselectedColor = KoinTheme.colors.neutral500
+                    unselectedColor = RebrandKoinTheme.colors.neutral500
                 )
             )
             Row(
@@ -102,8 +101,8 @@ fun CallvanReportReasonTextFieldItem(
             ) {
                 Text(
                     text = stringResource(reason.titleRes),
-                    style = KoinTheme.typography.medium18,
-                    color = KoinTheme.colors.neutral800
+                    style = RebrandKoinTheme.typography.medium18,
+                    color = RebrandKoinTheme.colors.neutral800
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
@@ -112,11 +111,11 @@ fun CallvanReportReasonTextFieldItem(
                         value.length,
                         CALLVAN_REPORT_OTHER_REASON_MAX_LENGTH
                     ),
-                    style = KoinTheme.typography.regular12,
+                    style = RebrandKoinTheme.typography.regular12,
                     color = if (value.length >= CALLVAN_REPORT_OTHER_REASON_MAX_LENGTH) {
                         RebrandKoinTheme.colors.primary500
                     } else {
-                        KoinTheme.colors.neutral500
+                        RebrandKoinTheme.colors.neutral500
                     }
                 )
             }
