@@ -10,6 +10,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
+import `in`.koreatech.koin.feature.callvan.DEEPLINK_CALLVAN
 import `in`.koreatech.koin.feature.callvan.ui.create.CallvanCreateScreen
 import `in`.koreatech.koin.feature.callvan.ui.detail.CallvanDetailScreen
 import `in`.koreatech.koin.feature.callvan.ui.detail.CallvanDetailViewModel
@@ -32,7 +33,7 @@ fun NavGraphBuilder.koinCallvanGraph(
             onTopbarBackClick = { navController.popBackStackOrFinish(context) },
             onNotificationClick = { navController.navigate(CallvanNavType.CallvanNotifications) },
             onWriteClick = { navController.navigate(CallvanNavType.CallvanCreate) },
-            onLoginClick = { context.startActivity(navigator.navigateToSignIn(context)) },
+            onLoginClick = { context.startActivity(navigator.navigateToSignIn(context, DEEPLINK_CALLVAN)) },
             onChatClick = { postId -> navController.navigate(CallvanNavType.CallvanChat(postId)) },
             onCallClick = {
                 context.startActivity(
