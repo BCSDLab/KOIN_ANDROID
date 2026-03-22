@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.callvan.ui.list
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.error.callvan.KoinCallvanException
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.callvan.CloseCallvanPostUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.CompleteCallvanPostUseCase
@@ -13,7 +12,6 @@ import `in`.koreatech.koin.domain.usecase.callvan.ReopenCallvanPostUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanConfirmType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType
-import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListErrorType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.toListErrorType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.toUiState
