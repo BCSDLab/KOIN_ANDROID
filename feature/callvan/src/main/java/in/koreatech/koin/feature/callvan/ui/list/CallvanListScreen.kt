@@ -234,7 +234,7 @@ fun CallvanListScreenImpl(
         },
         floatingActionButton = {
             CallvanFAB(
-                modifier = Modifier.padding(bottom = 16.dp),
+                modifier = Modifier.padding(bottom = 24.dp),
                 onClick = onWriteClick
             )
         },
