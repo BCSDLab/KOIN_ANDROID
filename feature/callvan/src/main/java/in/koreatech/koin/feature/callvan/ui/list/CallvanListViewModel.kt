@@ -117,7 +117,7 @@ class CallvanListViewModel @Inject constructor(
             return@intent
         }
         joinCallvanPostUseCase(postId)
-            .onSuccess { fetchPosts() }
+            .onSuccess { fetchPosts(state.items.size.coerceAtLeast(PAGE_SIZE)) }
             .onFailure { postSideEffect(CallvanListSideEffect.ShowSnackbar(it.toListErrorType())) }
     }
 
@@ -127,7 +127,7 @@ class CallvanListViewModel @Inject constructor(
             return@intent
         }
         leaveCallvanPostUseCase(postId)
-            .onSuccess { fetchPosts() }
+            .onSuccess { fetchPosts(state.items.size.coerceAtLeast(PAGE_SIZE)) }
             .onFailure { postSideEffect(CallvanListSideEffect.ShowSnackbar(it.toListErrorType())) }
     }
 
@@ -137,7 +137,7 @@ class CallvanListViewModel @Inject constructor(
             return@intent
         }
         closeCallvanPostUseCase(postId)
-            .onSuccess { fetchPosts() }
+            .onSuccess { fetchPosts(state.items.size.coerceAtLeast(PAGE_SIZE)) }
             .onFailure { postSideEffect(CallvanListSideEffect.ShowSnackbar(it.toListErrorType())) }
     }
 
@@ -147,7 +147,7 @@ class CallvanListViewModel @Inject constructor(
             return@intent
         }
         reopenCallvanPostUseCase(postId)
-            .onSuccess { fetchPosts() }
+            .onSuccess { fetchPosts(state.items.size.coerceAtLeast(PAGE_SIZE)) }
             .onFailure { postSideEffect(CallvanListSideEffect.ShowSnackbar(it.toListErrorType())) }
     }
 
@@ -157,7 +157,7 @@ class CallvanListViewModel @Inject constructor(
             return@intent
         }
         completeCallvanPostUseCase(postId)
-            .onSuccess { fetchPosts() }
+            .onSuccess { fetchPosts(state.items.size.coerceAtLeast(PAGE_SIZE)) }
             .onFailure { postSideEffect(CallvanListSideEffect.ShowSnackbar(it.toListErrorType())) }
     }
 
@@ -177,7 +177,7 @@ class CallvanListViewModel @Inject constructor(
         reduce { state.copy(isLoginVisible = visible) }
     }
 
-    fun fetchPosts() = intent {
+    fun fetchPosts(limit: Int = PAGE_SIZE) = intent {
         reduce { state.copy(isLoading = true) }
         getCallvanPostsUseCase(
             author = null,
@@ -189,7 +189,7 @@ class CallvanListViewModel @Inject constructor(
             title = state.searchValue.ifBlank { null },
             sort = state.filterState.selectedSortType.value,
             page = 1,
-            limit = PAGE_SIZE
+            limit = limit
         ).onSuccess { result ->
             reduce {
                 state.copy(
