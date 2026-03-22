@@ -62,7 +62,7 @@ fun CallvanFAB(
                     modifier = Modifier.width(4.dp)
                 )
                 Text(
-                    text = stringResource(R.string.write_btn),
+                    text = stringResource(R.string.callvan_write_btn),
                     style = RebrandKoinTheme.typography.medium16,
                     color = RebrandKoinTheme.colors.primary600
                 )
