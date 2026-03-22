@@ -57,7 +57,6 @@ leakcanary = "2.12"
 lottie = "6.4.0"
 markerman = "2.3.0"
 material = "1.12.0"
-materialTabStrip = "1.1.1"
 naverMapSdk = "3.21.0"
 okhttp = "4.12.0"
 ossLicenses = "17.2.1"
@@ -172,7 +171,6 @@ lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie"
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
 markerman-roundedImageView = { module = "com.makeramen:roundedimageview", version.ref = "markerman" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-materialtabstrip-library = { module = "com.jpardogo.materialtabstrip:library", version.ref = "materialTabStrip" }
 naver-map-sdk = { module = "com.naver.maps:map-sdk", version.ref = "naverMapSdk" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
