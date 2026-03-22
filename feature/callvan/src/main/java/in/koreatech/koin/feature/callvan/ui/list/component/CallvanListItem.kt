@@ -52,6 +52,7 @@ fun CallvanListItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
+            modifier = Modifier.weight(1f).padding(end = 4.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             with(uiState) {
