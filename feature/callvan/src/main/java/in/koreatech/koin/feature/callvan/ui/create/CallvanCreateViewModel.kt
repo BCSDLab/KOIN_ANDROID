@@ -3,6 +3,8 @@ package `in`.koreatech.koin.feature.callvan.ui.create
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.callvan.CreateCallvanPostUseCase
+import `in`.koreatech.koin.feature.callvan.MAX_PARTICIPANTS_COUNT
+import `in`.koreatech.koin.feature.callvan.MIN_PARTICIPANTS_COUNT
 import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -115,7 +117,7 @@ class CallvanCreateViewModel @Inject constructor(
 
     fun decrementParticipants() = blockingIntent {
         reduce {
-            if (state.maxParticipants > 1) {
+            if (state.maxParticipants > MIN_PARTICIPANTS_COUNT) {
                 state.copy(maxParticipants = state.maxParticipants - 1)
             } else {
                 state
@@ -125,7 +127,7 @@ class CallvanCreateViewModel @Inject constructor(
 
     fun incrementParticipants() = blockingIntent {
         reduce {
-            if (state.maxParticipants < 8) {
+            if (state.maxParticipants < MAX_PARTICIPANTS_COUNT) {
                 state.copy(maxParticipants = state.maxParticipants + 1)
             } else {
                 state

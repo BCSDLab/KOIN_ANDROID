@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.callvan.ui.create
 
+import `in`.koreatech.koin.feature.callvan.MIN_PARTICIPANTS_COUNT
 import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
 import java.time.LocalDate
 import java.time.LocalTime
@@ -11,7 +12,7 @@ data class CallvanCreateState(
     val arrivalCustomText: String? = null,
     val selectedDate: LocalDate = LocalDate.now(),
     val selectedTime: LocalTime = LocalTime.now(),
-    val maxParticipants: Int = 1,
+    val maxParticipants: Int = MIN_PARTICIPANTS_COUNT,
     val isDatePickerVisible: Boolean = false,
     val isTimePickerVisible: Boolean = false,
     val isLocationPickerVisible: Boolean = false,
