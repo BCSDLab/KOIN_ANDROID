@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.callvan.GetCallvanPostDetailUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.GetNotificationsUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.callvan.ui.detail.model.toUiItem
 import `in`.koreatech.koin.feature.callvan.util.formatDateTime
 import javax.inject.Inject
@@ -19,7 +20,8 @@ import org.orbitmvi.orbit.viewmodel.container
 class CallvanDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getCallvanPostDetailUseCase: GetCallvanPostDetailUseCase,
-    private val getNotificationsUseCase: GetNotificationsUseCase
+    private val getNotificationsUseCase: GetNotificationsUseCase,
+    private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<CallvanDetailState, CallvanDetailSideEffect> {
 
     override val container = container<CallvanDetailState, CallvanDetailSideEffect>(

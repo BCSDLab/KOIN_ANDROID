@@ -39,11 +39,13 @@ fun CallvanConfirmBottomSheet(
             modifier = Modifier.padding(horizontal = 24.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text(
-                text = description,
-                style = KoinTheme.typography.regular14,
-                color = KoinTheme.colors.neutral800
-            )
+            if (description.isNotBlank()) {
+                Text(
+                    text = description,
+                    style = KoinTheme.typography.regular14,
+                    color = KoinTheme.colors.neutral800
+                )
+            }
             FilledButton(
                 text = confirmText,
                 onClick = onConfirm,

@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.callvan.ui.list
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.callvan.CloseCallvanPostUseCase
@@ -19,8 +18,11 @@ import `in`.koreatech.koin.feature.callvan.ui.list.model.toUiState
 import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -45,11 +47,20 @@ class CallvanListViewModel @Inject constructor(
     )
 
     init {
-        fetchPosts()
         initUserInfo()
+        observeSearchQuery()
     }
 
-    private fun initUserInfo() = viewModelScope.launch {
+    @OptIn(FlowPreview::class)
+    private fun observeSearchQuery() = intent {
+        container.stateFlow
+            .map { it.searchValue }
+            .distinctUntilChanged()
+            .debounce(SEARCH_DEBOUNCE_MS)
+            .collectLatest { fetchPosts() }
+    }
+
+    private fun initUserInfo() = intent {
         getUserStatusUseCase().collectLatest { user ->
             intent {
                 reduce {
@@ -60,12 +71,18 @@ class CallvanListViewModel @Inject constructor(
     }
 
     internal fun fetchHasNewNotification() = intent {
-        getNotificationsUseCase()
-            .onSuccess { notifications ->
-                reduce {
-                    state.copy(hasNewNotification = notifications.any { !it.isRead })
+        if (state.isLoggedIn) {
+            getNotificationsUseCase()
+                .onSuccess { notifications ->
+                    reduce {
+                        state.copy(hasNewNotification = notifications.any { !it.isRead })
+                    }
                 }
+        } else {
+            reduce {
+                state.copy(hasNewNotification = false)
             }
+        }
     }
 
     fun updateSearch(query: String) = blockingIntent {
@@ -153,7 +170,6 @@ class CallvanListViewModel @Inject constructor(
     }
 
     fun fetchPosts() = intent {
-        if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
         getCallvanPostsUseCase(
             author = null,
@@ -213,5 +229,6 @@ class CallvanListViewModel @Inject constructor(
 
     companion object {
         private const val PAGE_SIZE = 10
+        private const val SEARCH_DEBOUNCE_MS = 250L
     }
 }

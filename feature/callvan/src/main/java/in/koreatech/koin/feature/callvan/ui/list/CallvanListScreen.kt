@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.callvan.ui.list
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -42,8 +43,6 @@ import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListUiState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import org.orbitmvi.orbit.compose.collectAsState
@@ -61,15 +60,8 @@ fun CallvanListScreen(
 ) {
     val state by viewModel.collectAsState()
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(state.isLoggedIn) {
         viewModel.fetchHasNewNotification()
-    }
-
-    LaunchedEffect(Unit) {
-        snapshotFlow { state.searchValue }
-            .debounce(SEARCH_DEBOUNCE_MS)
-            .distinctUntilChanged()
-            .collectLatest { viewModel.fetchPosts() }
     }
 
     CallvanListScreenImpl(
@@ -255,10 +247,14 @@ fun CallvanListScreenImpl(
                 .padding(horizontal = 24.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            item {
+            stickyHeader {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(KoinTheme.colors.neutral0)
+                        .padding(vertical = 8.dp)
                 ) {
                     ItemSearchTextField(
                         value = searchValue,
@@ -325,5 +321,4 @@ private fun CallvanListScreenPreview() {
     }
 }
 
-private const val SEARCH_DEBOUNCE_MS = 250L
 private const val LOAD_MORE_THRESHOLD = 3

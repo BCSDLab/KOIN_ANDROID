@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,6 +32,8 @@ fun CallvanListItem(
     modifier: Modifier = Modifier,
     onItemClick: () -> Unit = {}
 ) {
+    val isJoined = remember(uiState.itemState) { uiState.itemState == CallvanItemState.JOINED }
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -40,7 +43,10 @@ fun CallvanListItem(
                 shape = KoinTheme.shapes.small
             )
             .clip(KoinTheme.shapes.small)
-            .clickable(onClick = onItemClick)
+            .clickable(
+                enabled = isJoined,
+                onClick = onItemClick
+            )
             .padding(horizontal = 24.dp, vertical = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -59,8 +65,11 @@ fun CallvanListItem(
                         style = KoinTheme.typography.regular12,
                         color = KoinTheme.colors.neutral600
                     )
-                    Text(text = "|", color = KoinTheme.colors.neutral300)
+                    Text(text = "|", color = KoinTheme.colors.neutral600)
                     CallvanParticipantCount(currentCount = currentCount, maxCount = maxCount)
+                    if (isJoined) {
+                        Text(text = ">", color = KoinTheme.colors.neutral600)
+                    }
                 }
             }
         }

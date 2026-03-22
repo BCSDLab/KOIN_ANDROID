@@ -15,6 +15,7 @@ import `in`.koreatech.koin.feature.callvan.ui.detail.CallvanDetailViewModel
 import `in`.koreatech.koin.feature.callvan.ui.list.CallvanListScreen
 import `in`.koreatech.koin.feature.callvan.ui.notification.CallvanNotificationsScreen
 import `in`.koreatech.koin.feature.callvan.ui.report.CallvanReportScreen
+import `in`.koreatech.koin.feature.callvan.util.popBackStackOrFinish
 
 private const val STORE_CATEGORY = "STORE_CATEGORY"
 private const val STORE_CATEGORY_CALLVAN_PRODUCTION = 10
@@ -27,7 +28,7 @@ fun NavGraphBuilder.koinCallvanGraph(
         val navigator = rememberNavigator()
         val context = LocalContext.current
         CallvanListScreen(
-            onTopbarBackClick = { navController.popBackStack() },
+            onTopbarBackClick = { navController.popBackStackOrFinish(context) },
             onNotificationClick = { navController.navigate(CallvanNavType.CallvanNotifications) },
             onWriteClick = { navController.navigate(CallvanNavType.CallvanCreate) },
             onLoginClick = { context.startActivity(navigator.navigateToSignIn(context)) },
@@ -45,8 +46,9 @@ fun NavGraphBuilder.koinCallvanGraph(
 
     composable<CallvanNavType.CallvanDetail> { backStackEntry ->
         val postId = backStackEntry.toRoute<CallvanNavType.CallvanDetail>().postId
+        val context = LocalContext.current
         CallvanDetailScreen(
-            onTopbarBackClick = { navController.popBackStack() },
+            onTopbarBackClick = { navController.popBackStackOrFinish(context) },
             onNotificationClick = { navController.navigate(CallvanNavType.CallvanNotifications) },
             onEnterChatClick = { navController.navigate(CallvanNavType.CallvanChat(postId)) },
             onReportClick = { reportedUserId ->
@@ -73,14 +75,16 @@ fun NavGraphBuilder.koinCallvanGraph(
     }
 
     composable<CallvanNavType.CallvanNotifications> {
+        val context = LocalContext.current
         CallvanNotificationsScreen(
-            onTopbarBackClick = { navController.popBackStack() }
+            onTopbarBackClick = { navController.popBackStackOrFinish(context) }
         )
     }
 
     composable<CallvanNavType.CallvanReport> {
+        val context = LocalContext.current
         CallvanReportScreen(
-            onTopbarBackClick = { navController.popBackStack() },
+            onTopbarBackClick = { navController.popBackStackOrFinish(context) },
             onSubmitSuccess = {
                 navController.previousBackStackEntry?.savedStateHandle?.set(CallvanDetailViewModel.KEY_REPORT_SUCCESS, true)
                 navController.popBackStack()
