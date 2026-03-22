@@ -5,6 +5,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.callvan.CreateCallvanPostUseCase
 import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 import javax.inject.Inject
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -76,8 +78,9 @@ class CallvanCreateViewModel @Inject constructor(
 
     fun updateDate(date: LocalDate) = blockingIntent {
         val today = LocalDate.now()
-        val clamped = if (date.isBefore(today)) today else date
-        reduce { state.copy(selectedDate = clamped) }
+        val clampedDate = if (date.isBefore(today)) today else date
+        val clampedTime = if (clampedDate == today) maxOf(state.selectedTime, LocalTime.now()) else state.selectedTime
+        reduce { state.copy(selectedDate = clampedDate, selectedTime = clampedTime) }
     }
 
     fun resetDate() = blockingIntent {
@@ -97,20 +100,13 @@ class CallvanCreateViewModel @Inject constructor(
         }
     }
 
-    fun updateAmPm(amPmIndex: Int) = blockingIntent {
-        reduce { state.copy(isAm = amPmIndex == 0) }
-    }
-
-    fun updateHour(hourIndex: Int) = blockingIntent {
-        reduce { state.copy(selectedHour = hourIndex + 1) }
-    }
-
-    fun updateMinute(minuteIndex: Int) = blockingIntent {
-        reduce { state.copy(selectedMinute = minuteIndex) }
+    fun updateTime(time: LocalTime) = blockingIntent {
+        val clamped = if (state.selectedDate == LocalDate.now()) maxOf(time, LocalTime.now()) else time
+        reduce { state.copy(selectedTime = clamped) }
     }
 
     fun resetTime() = blockingIntent {
-        reduce { state.copy(selectedHour = 12, selectedMinute = 0, isAm = true) }
+        reduce { state.copy(selectedTime = LocalTime.now()) }
     }
 
     fun confirmTime() = blockingIntent {
@@ -137,10 +133,24 @@ class CallvanCreateViewModel @Inject constructor(
         }
     }
 
+    private fun isDepartureInPast(state: CallvanCreateState): Boolean {
+        val selected = LocalDateTime.of(state.selectedDate, state.selectedTime)
+        return selected.isBefore(LocalDateTime.now())
+    }
+
     fun submit() = intent {
         val currentState = state
         if (!currentState.isFormComplete || currentState.isSubmitting) return@intent
         if (currentState.departureLocation == null || currentState.arrivalLocation == null) return@intent
+
+        /* 현재 날짜 이후 검증 로직 */
+        if (isDepartureInPast(currentState)) {
+            val now = LocalDateTime.now()
+            reduce { state.copy(selectedDate = now.toLocalDate(), selectedTime = now.toLocalTime()) }
+            postSideEffect(CallvanCreateSideEffect.ShowPastTimeError)
+            return@intent
+        }
+
         reduce { state.copy(isSubmitting = true) }
         createCallvanPostUseCase(
             departureType = currentState.departureLocation.name,

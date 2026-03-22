@@ -121,7 +121,7 @@ private fun CallvanDatePickerCard(
     onReset: () -> Unit = {},
     onConfirm: () -> Unit = {}
 ) {
-    val today = remember { LocalDate.now() }
+    val today = LocalDate.now()
 
     val isCurrentYear = selectedDate.year == today.year
     val isCurrentMonth = isCurrentYear && selectedDate.monthValue == today.monthValue

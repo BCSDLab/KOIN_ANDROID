@@ -6,9 +6,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -23,6 +27,7 @@ import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanParticipan
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanSubmitBottomBar
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanTimeField
 import java.time.LocalDate
+import java.time.LocalTime
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -33,11 +38,16 @@ fun CallvanCreateScreen(
     onTopbarBackClick: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
 
     viewModel.collectSideEffect { effect ->
         when (effect) {
             CallvanCreateSideEffect.NavigateToMain -> onCompleteAndNavigateToMain()
             CallvanCreateSideEffect.ShowSubmitError -> {}
+            CallvanCreateSideEffect.ShowPastTimeError -> snackbarHostState.showSnackbar(
+                context.getString(R.string.callvan_create_past_time_error)
+            )
         }
     }
 
@@ -53,6 +63,7 @@ fun CallvanCreateScreen(
 
     CallvanCreateScreenImpl(
         state = state,
+        snackbarHostState = snackbarHostState,
         onDepartureLocationClick = viewModel::openDepartureLocationPicker,
         onArrivalLocationClick = viewModel::openArrivalLocationPicker,
         onSwapLocations = viewModel::swapLocations,
@@ -61,9 +72,7 @@ fun CallvanCreateScreen(
         onDateReset = viewModel::resetDate,
         onDateConfirm = viewModel::confirmDate,
         onTimeFieldClick = viewModel::toggleTimePicker,
-        onAmPmIndexChange = viewModel::updateAmPm,
-        onHourIndexChange = viewModel::updateHour,
-        onMinuteIndexChange = viewModel::updateMinute,
+        onTimeChange = viewModel::updateTime,
         onTimeReset = viewModel::resetTime,
         onTimeConfirm = viewModel::confirmTime,
         onDecrement = viewModel::decrementParticipants,
@@ -77,6 +86,7 @@ fun CallvanCreateScreen(
 @Composable
 fun CallvanCreateScreenImpl(
     state: CallvanCreateState,
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     onDepartureLocationClick: () -> Unit = {},
     onArrivalLocationClick: () -> Unit = {},
     onSwapLocations: () -> Unit = {},
@@ -85,9 +95,7 @@ fun CallvanCreateScreenImpl(
     onDateReset: () -> Unit = {},
     onDateConfirm: () -> Unit = {},
     onTimeFieldClick: () -> Unit = {},
-    onAmPmIndexChange: (Int) -> Unit = {},
-    onHourIndexChange: (Int) -> Unit = {},
-    onMinuteIndexChange: (Int) -> Unit = {},
+    onTimeChange: (LocalTime) -> Unit = {},
     onTimeReset: () -> Unit = {},
     onTimeConfirm: () -> Unit = {},
     onDecrement: () -> Unit = {},
@@ -102,6 +110,7 @@ fun CallvanCreateScreenImpl(
                 onNavigationIconClick = onTopbarBackClick
             )
         },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         containerColor = KoinTheme.colors.neutral0
     ) { innerPadding ->
         Column(
@@ -133,15 +142,11 @@ fun CallvanCreateScreenImpl(
                     onConfirm = onDateConfirm
                 )
                 CallvanTimeField(
-                    formattedTime = state.formattedTime,
                     isPickerVisible = state.isTimePickerVisible,
-                    isAm = state.isAm,
-                    selectedHour = state.selectedHour,
-                    selectedMinute = state.selectedMinute,
+                    selectedDate = state.selectedDate,
+                    selectedTime = state.selectedTime,
                     onFieldClick = onTimeFieldClick,
-                    onAmPmIndexChange = onAmPmIndexChange,
-                    onHourIndexChange = onHourIndexChange,
-                    onMinuteIndexChange = onMinuteIndexChange,
+                    onTimeChange = onTimeChange,
                     onReset = onTimeReset,
                     onConfirm = onTimeConfirm
                 )
@@ -175,9 +180,7 @@ private fun CallvanCreateScreenFilledPreview() {
         state = CallvanCreateState(
             departureLocation = CallvanLocationOption.FRONT_GATE,
             arrivalLocation = CallvanLocationOption.ASAN_STATION,
-            selectedHour = 9,
-            selectedMinute = 0,
-            isAm = true,
+            selectedTime = LocalTime.of(9, 0),
             maxParticipants = 8
         )
     )
