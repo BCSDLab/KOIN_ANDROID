@@ -9,5 +9,6 @@ data class CallvanListUiState(
     val date: String,
     val time: String,
     val currentCount: Int,
-    val maxCount: Int
+    val maxCount: Int,
+    val itemState: CallvanItemState
 )

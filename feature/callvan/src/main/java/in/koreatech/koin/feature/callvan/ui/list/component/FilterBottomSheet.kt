@@ -59,10 +59,10 @@ fun FilterBottomSheet(
     initialDeparturesType: ImmutableList<DeparturesFilterType>,
     onApply: (SortType, StatusesType, ImmutableList<DeparturesFilterType>, ImmutableList<ArrivalsFilterType>) -> Unit
 ) {
-    var selectedSortType by remember(initialSortType) { mutableStateOf(initialSortType) }
-    var selectedStatusesType by remember(initialStatusesType) { mutableStateOf(initialStatusesType) }
-    var selectedArrivalsType by remember(initialArrivalsType) { mutableStateOf(initialArrivalsType) }
-    var selectedDeparturesType by remember(initialDeparturesType) { mutableStateOf(initialDeparturesType) }
+    var currentSortType by remember(initialSortType) { mutableStateOf(initialSortType) }
+    var currentStatusesType by remember(initialStatusesType) { mutableStateOf(initialStatusesType) }
+    var currentArrivalsType by remember(initialArrivalsType) { mutableStateOf(initialArrivalsType) }
+    var currentDeparturesType by remember(initialDeparturesType) { mutableStateOf(initialDeparturesType) }
 
     CallvanBottomSheet(
         title = stringResource(R.string.filter_container),
@@ -71,18 +71,18 @@ fun FilterBottomSheet(
     ) {
         FilterBottomSheetContent(
             state = FilterBottomSheetState(
-                selectedSortType = selectedSortType,
-                selectedStatusesType = selectedStatusesType,
-                selectedDeparturesType = selectedDeparturesType,
-                selectedArrivalsType = selectedArrivalsType
+                selectedSortType = currentSortType,
+                selectedStatusesType = currentStatusesType,
+                selectedDeparturesType = currentDeparturesType,
+                selectedArrivalsType = currentArrivalsType
             ),
             actions = FilterBottomSheetActions(
-                onSortTypeChange = { selectedSortType = it },
-                onStatusesTypeChange = { selectedStatusesType = it },
+                onSortTypeChange = { currentSortType = it },
+                onStatusesTypeChange = { currentStatusesType = it },
                 onArrivalsTypeChange = { newSelected ->
-                    selectedArrivalsType = if (
-                        selectedArrivalsType.size == 1 &&
-                        selectedArrivalsType.first() == ArrivalsFilterType.All
+                    currentArrivalsType = if (
+                        currentArrivalsType.size == 1 &&
+                        currentArrivalsType.first() == ArrivalsFilterType.All
                     ) {
                         (newSelected - ArrivalsFilterType.All).toPersistentList()
                     } else if (ArrivalsFilterType.All in newSelected) {
@@ -92,9 +92,9 @@ fun FilterBottomSheet(
                     }
                 },
                 onDeparturesTypeChange = { newSelected ->
-                    selectedDeparturesType = if (
-                        selectedDeparturesType.size == 1 &&
-                        selectedDeparturesType.first() == DeparturesFilterType.All
+                    currentDeparturesType = if (
+                        currentDeparturesType.size == 1 &&
+                        currentDeparturesType.first() == DeparturesFilterType.All
                     ) {
                         (newSelected - DeparturesFilterType.All).toPersistentList()
                     } else if (DeparturesFilterType.All in newSelected) {
@@ -104,17 +104,17 @@ fun FilterBottomSheet(
                     }
                 },
                 onReset = {
-                    selectedSortType = SortType.LatestDesc
-                    selectedStatusesType = StatusesType.All
-                    selectedDeparturesType = persistentListOf(DeparturesFilterType.All)
-                    selectedArrivalsType = persistentListOf(ArrivalsFilterType.All)
+                    currentSortType = SortType.LatestDesc
+                    currentStatusesType = StatusesType.All
+                    currentDeparturesType = persistentListOf(DeparturesFilterType.All)
+                    currentArrivalsType = persistentListOf(ArrivalsFilterType.All)
                 },
                 onApplyClick = {
                     onApply(
-                        selectedSortType,
-                        selectedStatusesType,
-                        selectedDeparturesType,
-                        selectedArrivalsType
+                        currentSortType,
+                        currentStatusesType,
+                        currentDeparturesType,
+                        currentArrivalsType
                     )
                     onDismissRequest()
                 }
