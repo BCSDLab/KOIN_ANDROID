@@ -23,7 +23,7 @@ fun CallvanNotification.toUiItem() = CallvanNotificationUiItem(
     routeInfo = formatRouteInfo(this),
     maxParticipants = maxParticipants,
     currentParticipants = currentParticipants,
-    message = messagePreview,
+    message = messagePreview.orEmpty(),
     isRead = isRead
 )
 

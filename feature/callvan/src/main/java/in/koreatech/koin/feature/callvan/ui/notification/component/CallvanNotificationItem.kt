@@ -92,12 +92,14 @@ fun CallvanNotificationItem(
                     color = routeColor
                 )
             }
-            Spacer(modifier = Modifier.height(2.dp))
-            Text(
-                text = notification.message,
-                style = RebrandKoinTheme.typography.regular14,
-                color = titleColor
-            )
+            if (notification.message.isNotBlank()) {
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = notification.message,
+                    style = RebrandKoinTheme.typography.regular14,
+                    color = titleColor
+                )
+            }
         }
     }
 }

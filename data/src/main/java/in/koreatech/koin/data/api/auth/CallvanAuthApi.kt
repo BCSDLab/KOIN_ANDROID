@@ -68,20 +68,20 @@ interface CallvanAuthApi {
     suspend fun getNotifications(): List<CallvanNotificationResponse>
 
     @DELETE("/callvan/notifications")
-    suspend fun deleteAllNotifications()
+    suspend fun deleteAllNotifications(): Response<Unit>
 
     @DELETE("/callvan/notifications/{notificationId}")
     suspend fun deleteNotification(
         @Path("notificationId") notificationId: Int
-    )
+    ): Response<Unit>
 
     @POST("/callvan/notifications/{notificationId}/read")
     suspend fun markNotificationAsRead(
         @Path("notificationId") notificationId: Int
-    )
+    ): Response<Unit>
 
     @POST("/callvan/notifications/mark-all-read")
-    suspend fun markAllNotificationsAsRead()
+    suspend fun markAllNotificationsAsRead(): Response<Unit>
 
     @PUT("/callvan/posts/{postId}/complete")
     suspend fun completeCallvanPost(

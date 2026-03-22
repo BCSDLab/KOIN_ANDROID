@@ -77,21 +77,29 @@ class CallvanRemoteDataSource @Inject constructor(
 
     suspend fun getNotifications() = callvanAuthApi.getNotifications()
 
-    suspend fun deleteAllNotifications() = callvanAuthApi.deleteAllNotifications()
+    suspend fun deleteAllNotifications() {
+        val response = callvanAuthApi.deleteAllNotifications()
+        if (!response.isSuccessful) throw HttpException(response)
+    }
 
     suspend fun deleteNotification(
         notificationId: Int
-    ) = callvanAuthApi.deleteNotification(
-        notificationId = notificationId
-    )
+    ) {
+        val response = callvanAuthApi.deleteNotification(notificationId = notificationId)
+        if (!response.isSuccessful) throw HttpException(response)
+    }
 
     suspend fun markNotificationAsRead(
         notificationId: Int
-    ) = callvanAuthApi.markNotificationAsRead(
-        notificationId = notificationId
-    )
+    ) {
+        val response = callvanAuthApi.markNotificationAsRead(notificationId = notificationId)
+        if (!response.isSuccessful) throw HttpException(response)
+    }
 
-    suspend fun markAllNotificationsAsRead() = callvanAuthApi.markAllNotificationsAsRead()
+    suspend fun markAllNotificationsAsRead() {
+        val response = callvanAuthApi.markAllNotificationsAsRead()
+        if (!response.isSuccessful) throw HttpException(response)
+    }
 
     suspend fun completeCallvanPost(
         postId: Int
