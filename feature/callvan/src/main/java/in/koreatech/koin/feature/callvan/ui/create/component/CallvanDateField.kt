@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -72,6 +73,7 @@ fun CallvanDateField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(RebrandKoinTheme.colors.neutral100, RebrandKoinTheme.shapes.small)
+                    .clip(RebrandKoinTheme.shapes.small)
                     .clickable(onClick = onFieldClick)
                     .onGloballyPositioned { popupOffsetHeightPx = it.size.height + 20 }
                     .padding(horizontal = 12.dp, vertical = 8.dp),

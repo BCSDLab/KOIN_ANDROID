@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -66,7 +67,8 @@ fun CallvanTimeField(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .border(1.dp, RebrandKoinTheme.colors.neutral400, RoundedCornerShape(4.dp))
+                    .border(1.dp, RebrandKoinTheme.colors.neutral400, RebrandKoinTheme.shapes.extraSmall)
+                    .clip(RebrandKoinTheme.shapes.extraSmall)
                     .clickable(onClick = onFieldClick)
                     .onGloballyPositioned { popupOffsetHeightPx = it.size.height + 20 },
                 verticalAlignment = Alignment.CenterVertically
