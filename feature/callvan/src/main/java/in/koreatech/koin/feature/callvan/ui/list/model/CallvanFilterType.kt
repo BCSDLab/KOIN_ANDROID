@@ -96,6 +96,18 @@ sealed class CallvanFilterType(
     }
 
     @Parcelize
+    sealed class AuthorType(
+        @StringRes override val stringRes: Int,
+        override val value: String?
+    ) : CallvanFilterType(stringRes, value) {
+        @Parcelize
+        object All : AuthorType(R.string.filter_list_all, "ALL")
+
+        @Parcelize
+        object My : AuthorType(R.string.filter_list_my_posts, "MY")
+    }
+
+    @Parcelize
     sealed class SortType(
         @StringRes override val stringRes: Int,
         override val value: String?

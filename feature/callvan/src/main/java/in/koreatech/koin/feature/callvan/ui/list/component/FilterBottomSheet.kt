@@ -37,6 +37,7 @@ import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanBottomSheet
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.ArrivalsFilterType
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.AuthorType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.DeparturesFilterType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.SortType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.StatusesType
@@ -52,12 +53,14 @@ private const val MINIMUM_SELECTION_COUNT = 1
 @Composable
 fun FilterBottomSheet(
     onDismissRequest: () -> Unit,
+    initialAuthorType: AuthorType,
     initialSortType: SortType,
     initialStatusesType: StatusesType,
     initialArrivalsType: ImmutableList<ArrivalsFilterType>,
     initialDeparturesType: ImmutableList<DeparturesFilterType>,
-    onApply: (SortType, StatusesType, ImmutableList<DeparturesFilterType>, ImmutableList<ArrivalsFilterType>) -> Unit
+    onApply: (AuthorType, SortType, StatusesType, ImmutableList<DeparturesFilterType>, ImmutableList<ArrivalsFilterType>) -> Unit
 ) {
+    var currentAuthorType by remember(initialAuthorType) { mutableStateOf(initialAuthorType) }
     var currentSortType by remember(initialSortType) { mutableStateOf(initialSortType) }
     var currentStatusesType by remember(initialStatusesType) { mutableStateOf(initialStatusesType) }
     var currentArrivalsType by remember(initialArrivalsType) { mutableStateOf(initialArrivalsType) }
@@ -70,12 +73,14 @@ fun FilterBottomSheet(
     ) {
         FilterBottomSheetContent(
             state = FilterBottomSheetState(
+                selectedAuthorType = currentAuthorType,
                 selectedSortType = currentSortType,
                 selectedStatusesType = currentStatusesType,
                 selectedDeparturesType = currentDeparturesType,
                 selectedArrivalsType = currentArrivalsType
             ),
             actions = FilterBottomSheetActions(
+                onAuthorTypeChange = { currentAuthorType = it },
                 onSortTypeChange = { currentSortType = it },
                 onStatusesTypeChange = { currentStatusesType = it },
                 onArrivalsTypeChange = { newSelected ->
@@ -103,6 +108,7 @@ fun FilterBottomSheet(
                     }
                 },
                 onReset = {
+                    currentAuthorType = AuthorType.All
                     currentSortType = SortType.LatestDesc
                     currentStatusesType = StatusesType.All
                     currentDeparturesType = persistentListOf(DeparturesFilterType.All)
@@ -110,6 +116,7 @@ fun FilterBottomSheet(
                 },
                 onApplyClick = {
                     onApply(
+                        currentAuthorType,
                         currentSortType,
                         currentStatusesType,
                         currentDeparturesType,
@@ -139,6 +146,16 @@ private fun FilterBottomSheetContent(
                 .verticalScroll(scrollState)
                 .padding(top = 12.dp, start = 32.dp, bottom = 12.dp, end = 12.dp)
         ) {
+            FilterSection(
+                title = stringResource(R.string.filter_list_author),
+                items = persistentListOf(
+                    AuthorType.All,
+                    AuthorType.My
+                ),
+                selectedItem = state.selectedAuthorType,
+                onItemSelected = actions.onAuthorTypeChange
+            )
+            HorizontalDivider(color = RebrandKoinTheme.colors.neutral300)
             FilterSection(
                 title = stringResource(R.string.filter_list_sort_order),
                 items = persistentListOf(
@@ -324,6 +341,7 @@ private fun FilterBottomSheetContentPreview() {
                 selectedArrivalsType = persistentListOf(ArrivalsFilterType.All)
             ),
             actions = FilterBottomSheetActions(
+                onAuthorTypeChange = {},
                 onSortTypeChange = {},
                 onStatusesTypeChange = {},
                 onDeparturesTypeChange = {},

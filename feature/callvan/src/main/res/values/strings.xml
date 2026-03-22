@@ -65,6 +65,8 @@
     <string name="filter_list_destination">도착지</string>
     <string name="filter_list_other_place_hint">기타 장소는 검색창을 이용해주세요.</string>
     <string name="filter_list_all">전체</string>
+    <string name="filter_list_my_posts">내 게시물</string>
+    <string name="filter_list_author">게시물 유형</string>
     <string name="filter_list_front_gate">정문</string>
     <string name="filter_list_back_gate">후문</string>
     <string name="filter_list_tennis_court">테니스장</string>
