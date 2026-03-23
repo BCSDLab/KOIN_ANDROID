@@ -113,8 +113,6 @@ fun CallvanTimeField(
                     properties = PopupProperties(focusable = true)
                 ) {
                     CallvanTimePickerCard(
-                        isAm = isAm,
-                        displayHour = displayHour,
                         selectedDate = selectedDate,
                         selectedTime = selectedTime,
                         onTimeChange = onTimeChange,
@@ -129,8 +127,6 @@ fun CallvanTimeField(
 
 @Composable
 private fun CallvanTimePickerCard(
-    isAm: Boolean,
-    displayHour: Int,
     selectedDate: LocalDate,
     selectedTime: LocalTime,
     onTimeChange: (LocalTime) -> Unit,
@@ -143,6 +139,9 @@ private fun CallvanTimePickerCard(
     val isToday = remember(selectedDate) { selectedDate == LocalDate.now() }
     val now = LocalTime.now()
     val currentThreshold = remember(now.hour, now.minute, isToday) { if (isToday) now.hour * 60 + now.minute else 0 }
+
+    val isAm = remember(now.hour) { now.hour <= 12 }
+    val displayHour = remember(now.hour) { toDisplayHour(now.hour) }
 
     val amAvailable = !isToday || currentThreshold <= 779
 
@@ -158,7 +157,7 @@ private fun CallvanTimePickerCard(
     }
 
     val minMinute = if (isToday) {
-        maxOf(currentThreshold - selectedTime.hour * 60, 0)
+        maxOf(currentThreshold - to24Hour(isAm, displayHour) * 60, 0)
     } else {
         0
     }
@@ -200,7 +199,7 @@ private fun CallvanTimePickerCard(
                 )
                 CallvanIntScrollPicker(
                     items = hourItems,
-                    selectedValue = displayHour,
+                    selectedValue = selectedTime.hour,
                     suffix = "",
                     onValueChange = { newDisplayHour ->
                         val newHour24 = to24Hour(isAm, newDisplayHour)
