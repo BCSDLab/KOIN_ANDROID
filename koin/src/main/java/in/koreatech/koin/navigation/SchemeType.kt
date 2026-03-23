@@ -5,7 +5,7 @@ import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
 import `in`.koreatech.koin.feature.club.ui.ClubActivity
 import `in`.koreatech.koin.feature.dining.ui.DiningActivity
 import `in`.koreatech.koin.feature.lostandfound.ui.LostAndFoundActivity
-import `in`.koreatech.koin.ui.store.activity.StoreActivity
+import `in`.koreatech.koin.feature.store.StoreActivity
 
 enum class SchemeType(
     val type: String,
