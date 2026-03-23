@@ -37,8 +37,8 @@ import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanBottomSheet
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.ArrivalsFilterType
-import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.AuthorType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.DeparturesFilterType
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.ListType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.SortType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.StatusesType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetActions
@@ -53,14 +53,14 @@ private const val MINIMUM_SELECTION_COUNT = 1
 @Composable
 fun FilterBottomSheet(
     onDismissRequest: () -> Unit,
-    initialAuthorType: AuthorType,
+    initialListType: ListType,
     initialSortType: SortType,
     initialStatusesType: StatusesType,
     initialArrivalsType: ImmutableList<ArrivalsFilterType>,
     initialDeparturesType: ImmutableList<DeparturesFilterType>,
-    onApply: (AuthorType, SortType, StatusesType, ImmutableList<DeparturesFilterType>, ImmutableList<ArrivalsFilterType>) -> Unit
+    onApply: (ListType, SortType, StatusesType, ImmutableList<DeparturesFilterType>, ImmutableList<ArrivalsFilterType>) -> Unit
 ) {
-    var currentAuthorType by remember(initialAuthorType) { mutableStateOf(initialAuthorType) }
+    var currentListType by remember(initialListType) { mutableStateOf(initialListType) }
     var currentSortType by remember(initialSortType) { mutableStateOf(initialSortType) }
     var currentStatusesType by remember(initialStatusesType) { mutableStateOf(initialStatusesType) }
     var currentArrivalsType by remember(initialArrivalsType) { mutableStateOf(initialArrivalsType) }
@@ -73,14 +73,14 @@ fun FilterBottomSheet(
     ) {
         FilterBottomSheetContent(
             state = FilterBottomSheetState(
-                selectedAuthorType = currentAuthorType,
+                selectedListType = currentListType,
                 selectedSortType = currentSortType,
                 selectedStatusesType = currentStatusesType,
                 selectedDeparturesType = currentDeparturesType,
                 selectedArrivalsType = currentArrivalsType
             ),
             actions = FilterBottomSheetActions(
-                onAuthorTypeChange = { currentAuthorType = it },
+                onListTypeChange = { currentListType = it },
                 onSortTypeChange = { currentSortType = it },
                 onStatusesTypeChange = { currentStatusesType = it },
                 onArrivalsTypeChange = { newSelected ->
@@ -108,7 +108,7 @@ fun FilterBottomSheet(
                     }
                 },
                 onReset = {
-                    currentAuthorType = AuthorType.All
+                    currentListType = ListType.All
                     currentSortType = SortType.LatestDesc
                     currentStatusesType = StatusesType.All
                     currentDeparturesType = persistentListOf(DeparturesFilterType.All)
@@ -116,7 +116,7 @@ fun FilterBottomSheet(
                 },
                 onApplyClick = {
                     onApply(
-                        currentAuthorType,
+                        currentListType,
                         currentSortType,
                         currentStatusesType,
                         currentDeparturesType,
@@ -147,13 +147,14 @@ private fun FilterBottomSheetContent(
                 .padding(top = 12.dp, start = 32.dp, bottom = 12.dp, end = 12.dp)
         ) {
             FilterSection(
-                title = stringResource(R.string.filter_list_author),
+                title = stringResource(R.string.filter_list_list_type),
                 items = persistentListOf(
-                    AuthorType.All,
-                    AuthorType.My
+                    ListType.All,
+                    ListType.My,
+                    ListType.Joined
                 ),
-                selectedItem = state.selectedAuthorType,
-                onItemSelected = actions.onAuthorTypeChange
+                selectedItem = state.selectedListType,
+                onItemSelected = actions.onListTypeChange
             )
             HorizontalDivider(color = RebrandKoinTheme.colors.neutral300)
             FilterSection(
@@ -341,7 +342,7 @@ private fun FilterBottomSheetContentPreview() {
                 selectedArrivalsType = persistentListOf(ArrivalsFilterType.All)
             ),
             actions = FilterBottomSheetActions(
-                onAuthorTypeChange = {},
+                onListTypeChange = {},
                 onSortTypeChange = {},
                 onStatusesTypeChange = {},
                 onDeparturesTypeChange = {},

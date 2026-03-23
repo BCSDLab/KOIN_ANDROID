@@ -146,7 +146,7 @@ fun CallvanListScreenImpl(
     onPendingCompletePostIdChange: (Int?) -> Unit = {},
     onLoadMore: () -> Unit = {},
     onFilterApply: (
-        CallvanFilterType.AuthorType,
+        CallvanFilterType.ListType,
         CallvanFilterType.SortType,
         CallvanFilterType.StatusesType,
         ImmutableList<CallvanFilterType.DeparturesFilterType>,
@@ -191,7 +191,7 @@ fun CallvanListScreenImpl(
     if (isFilterVisible) {
         FilterBottomSheet(
             onDismissRequest = { onFilterVisibleChange(false) },
-            initialAuthorType = filterState.selectedAuthorType,
+            initialListType = filterState.selectedListType,
             initialSortType = filterState.selectedSortType,
             initialStatusesType = filterState.selectedStatusesType,
             initialArrivalsType = filterState.selectedArrivalsType,

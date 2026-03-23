@@ -6,7 +6,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Immutable
 data class FilterBottomSheetState(
-    val selectedAuthorType: CallvanFilterType.AuthorType = CallvanFilterType.AuthorType.All,
+    val selectedListType: CallvanFilterType.ListType = CallvanFilterType.ListType.All,
     val selectedSortType: CallvanFilterType.SortType = CallvanFilterType.SortType.LatestDesc,
     val selectedStatusesType: CallvanFilterType.StatusesType = CallvanFilterType.StatusesType.All,
     val selectedDeparturesType: ImmutableList<CallvanFilterType.DeparturesFilterType> = persistentListOf(

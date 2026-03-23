@@ -26,6 +26,7 @@ interface CallvanRepository {
         statuses: List<String>?,
         title: String?,
         sort: String?,
+        joined: Boolean,
         page: Int?,
         limit: Int?
     ): Result<CallvanPostSearch>

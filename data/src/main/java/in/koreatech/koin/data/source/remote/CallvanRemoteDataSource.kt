@@ -25,6 +25,7 @@ class CallvanRemoteDataSource @Inject constructor(
         statuses: List<String>?,
         title: String?,
         sort: String?,
+        joined: Boolean,
         page: Int?,
         limit: Int?
     ) = callvanAuthApi.getCallvanPosts(
@@ -36,6 +37,7 @@ class CallvanRemoteDataSource @Inject constructor(
         statuses = statuses,
         title = title,
         sort = sort,
+        joined = joined,
         page = page,
         limit = limit
     )

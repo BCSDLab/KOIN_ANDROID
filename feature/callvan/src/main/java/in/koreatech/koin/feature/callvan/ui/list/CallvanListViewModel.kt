@@ -91,20 +91,20 @@ class CallvanListViewModel @Inject constructor(
     }
 
     fun applyFilter(
-        authorType: CallvanFilterType.AuthorType,
+        listType: CallvanFilterType.ListType,
         sortType: CallvanFilterType.SortType,
         statusesType: CallvanFilterType.StatusesType,
         departuresType: ImmutableList<CallvanFilterType.DeparturesFilterType>,
         arrivalsType: ImmutableList<CallvanFilterType.ArrivalsFilterType>
     ) = blockingIntent {
-        if (authorType is CallvanFilterType.AuthorType.My && !state.isLoggedIn) {
+        if (listType !is CallvanFilterType.ListType.All && !state.isLoggedIn) {
             reduce { state.copy(isLoginVisible = true) }
             return@blockingIntent
         }
         reduce {
             state.copy(
                 filterState = FilterBottomSheetState(
-                    selectedAuthorType = authorType,
+                    selectedListType = listType,
                     selectedSortType = sortType,
                     selectedStatusesType = statusesType,
                     selectedDeparturesType = departuresType,
@@ -184,7 +184,7 @@ class CallvanListViewModel @Inject constructor(
     fun fetchPosts(limit: Int = PAGE_SIZE) = intent {
         reduce { state.copy(isLoading = true) }
         getCallvanPostsUseCase(
-            author = state.filterState.selectedAuthorType.value,
+            author = state.filterState.selectedListType.value,
             departures = state.filterState.selectedDeparturesType.mapNotNull { it.value }.ifEmpty { null },
             departureKeyword = null,
             arrivals = state.filterState.selectedArrivalsType.mapNotNull { it.value }.ifEmpty { null },
@@ -192,6 +192,7 @@ class CallvanListViewModel @Inject constructor(
             statuses = state.filterState.selectedStatusesType.value?.let { listOf(it) },
             title = state.searchValue.ifBlank { null },
             sort = state.filterState.selectedSortType.value,
+            joined = state.filterState.selectedListType is CallvanFilterType.ListType.Joined,
             page = 1,
             limit = limit
         ).onSuccess { result ->
@@ -214,7 +215,7 @@ class CallvanListViewModel @Inject constructor(
         reduce { state.copy(isLoadingMore = true) }
         val nextPage = state.currentPage + 1
         getCallvanPostsUseCase(
-            author = state.filterState.selectedAuthorType.value,
+            author = state.filterState.selectedListType.value,
             departures = state.filterState.selectedDeparturesType.mapNotNull { it.value }.ifEmpty { null },
             departureKeyword = null,
             arrivals = state.filterState.selectedArrivalsType.mapNotNull { it.value }.ifEmpty { null },
@@ -222,6 +223,7 @@ class CallvanListViewModel @Inject constructor(
             statuses = state.filterState.selectedStatusesType.value?.let { listOf(it) },
             title = state.searchValue.ifBlank { null },
             sort = state.filterState.selectedSortType.value,
+            joined = state.filterState.selectedListType is CallvanFilterType.ListType.Joined,
             page = nextPage,
             limit = PAGE_SIZE
         ).onSuccess { result ->

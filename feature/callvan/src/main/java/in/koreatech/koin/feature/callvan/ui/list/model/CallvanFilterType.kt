@@ -96,15 +96,19 @@ sealed class CallvanFilterType(
     }
 
     @Parcelize
-    sealed class AuthorType(
+    sealed class ListType(
         @StringRes override val stringRes: Int,
         override val value: String?
     ) : CallvanFilterType(stringRes, value) {
         @Parcelize
-        object All : AuthorType(R.string.filter_list_all, "ALL")
+        object All : ListType(R.string.filter_list_all, "ALL")
 
         @Parcelize
-        object My : AuthorType(R.string.filter_list_my_posts, "MY")
+        object My : ListType(R.string.filter_list_my_posts, "MY")
+
+        /* joined 의 value는 ALL 과 같으며 다른 field 의 조건 값이 존재 */
+        @Parcelize
+        object Joined : ListType(R.string.filter_list_joined_posts, "ALL")
     }
 
     @Parcelize
