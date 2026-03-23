@@ -142,7 +142,7 @@ private fun CallvanTimePickerCard(
 
     val isToday = remember(selectedDate) { selectedDate == LocalDate.now() }
     val now = LocalTime.now()
-    val currentThreshold = remember(now) { if (isToday) now.hour * 60 + now.minute else 0 }
+    val currentThreshold = remember(now.hour, now.minute, isToday) { if (isToday) now.hour * 60 + now.minute else 0 }
 
     val amAvailable = !isToday || currentThreshold <= 779
 
