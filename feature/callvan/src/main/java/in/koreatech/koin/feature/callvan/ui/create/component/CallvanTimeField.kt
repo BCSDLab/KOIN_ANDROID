@@ -141,7 +141,7 @@ private fun CallvanTimePickerCard(
     val currentThreshold = remember(now.hour, now.minute, isToday) { if (isToday) now.hour * 60 + now.minute else 0 }
 
     val isAm = remember(now.hour) { now.hour <= 12 }
-    val displayHour = remember(now.hour) { toDisplayHour(now.hour) }
+    val selectedHour = remember(selectedTime.hour) { toDisplayHour(selectedTime.hour) }
 
     val amAvailable = !isToday || currentThreshold <= 779
 
@@ -157,7 +157,7 @@ private fun CallvanTimePickerCard(
     }
 
     val minMinute = if (isToday) {
-        maxOf(currentThreshold - to24Hour(isAm, displayHour) * 60, 0)
+        maxOf(currentThreshold - selectedTime.hour * 60, 0)
     } else {
         0
     }
@@ -191,7 +191,7 @@ private fun CallvanTimePickerCard(
                     selectedIndex = amPmIndex,
                     onIndexChange = { index ->
                         val newIsAm = if (amAvailable) index == 0 else false
-                        val clampedHour = if (newIsAm) displayHour.coerceIn(0, 12) else displayHour.coerceIn(1, 11)
+                        val clampedHour = if (newIsAm) selectedHour.coerceIn(0, 12) else selectedHour.coerceIn(1, 11)
                         val newHour24 = to24Hour(newIsAm, clampedHour)
                         onTimeChange(LocalTime.of(newHour24, selectedTime.minute))
                     },
@@ -199,7 +199,7 @@ private fun CallvanTimePickerCard(
                 )
                 CallvanIntScrollPicker(
                     items = hourItems,
-                    selectedValue = selectedTime.hour,
+                    selectedValue = selectedHour,
                     suffix = "",
                     onValueChange = { newDisplayHour ->
                         val newHour24 = to24Hour(isAm, newDisplayHour)
