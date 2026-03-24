@@ -143,7 +143,7 @@ private fun CallvanTimePickerCard(
     val isAm = remember(now.hour) { now.hour <= 12 }
     val selectedHour = remember(selectedTime.hour) { toDisplayHour(selectedTime.hour) }
 
-    val amAvailable = !isToday || currentThreshold <= 779
+    val amAvailable = !isToday || currentThreshold <= 779 // 12:59 = 12 * 60 + 59
 
     val amPmItems = remember(amLabel, pmLabel, amAvailable) {
         if (amAvailable) persistentListOf(amLabel, pmLabel) else persistentListOf(pmLabel)
