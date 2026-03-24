@@ -113,8 +113,6 @@ fun CallvanTimeField(
                     properties = PopupProperties(focusable = true)
                 ) {
                     CallvanTimePickerCard(
-                        isAm = isAm,
-                        displayHour = displayHour,
                         selectedDate = selectedDate,
                         selectedTime = selectedTime,
                         onTimeChange = onTimeChange,
@@ -129,8 +127,6 @@ fun CallvanTimeField(
 
 @Composable
 private fun CallvanTimePickerCard(
-    isAm: Boolean,
-    displayHour: Int,
     selectedDate: LocalDate,
     selectedTime: LocalTime,
     onTimeChange: (LocalTime) -> Unit,
@@ -142,9 +138,12 @@ private fun CallvanTimePickerCard(
 
     val isToday = remember(selectedDate) { selectedDate == LocalDate.now() }
     val now = LocalTime.now()
-    val currentThreshold = remember(now) { if (isToday) now.hour * 60 + now.minute else 0 }
+    val currentThreshold = remember(now.hour, now.minute, isToday) { if (isToday) now.hour * 60 + now.minute else 0 }
 
-    val amAvailable = !isToday || currentThreshold <= 779
+    val isAm = remember(now.hour) { now.hour <= 12 }
+    val selectedHour = remember(selectedTime.hour) { toDisplayHour(selectedTime.hour) }
+
+    val amAvailable = !isToday || currentThreshold <= 779 // 12:59 = 12 * 60 + 59
 
     val amPmItems = remember(amLabel, pmLabel, amAvailable) {
         if (amAvailable) persistentListOf(amLabel, pmLabel) else persistentListOf(pmLabel)
@@ -192,7 +191,7 @@ private fun CallvanTimePickerCard(
                     selectedIndex = amPmIndex,
                     onIndexChange = { index ->
                         val newIsAm = if (amAvailable) index == 0 else false
-                        val clampedHour = if (newIsAm) displayHour.coerceIn(0, 12) else displayHour.coerceIn(1, 11)
+                        val clampedHour = if (newIsAm) selectedHour.coerceIn(0, 12) else selectedHour.coerceIn(1, 11)
                         val newHour24 = to24Hour(newIsAm, clampedHour)
                         onTimeChange(LocalTime.of(newHour24, selectedTime.minute))
                     },
@@ -200,7 +199,7 @@ private fun CallvanTimePickerCard(
                 )
                 CallvanIntScrollPicker(
                     items = hourItems,
-                    selectedValue = displayHour,
+                    selectedValue = selectedHour,
                     suffix = "",
                     onValueChange = { newDisplayHour ->
                         val newHour24 = to24Hour(isAm, newDisplayHour)

@@ -126,7 +126,7 @@ private fun CallvanDatePickerCard(
     val isCurrentYear = selectedDate.year == today.year
     val isCurrentMonth = isCurrentYear && selectedDate.monthValue == today.monthValue
 
-    val years = remember { persistentListOf(today.year, today.year + 1) }
+    val years = remember(today) { persistentListOf(today.year, today.year + 1) }
 
     val minMonth = if (isCurrentYear) today.monthValue else 1
     val months: ImmutableList<Int> = remember(minMonth) {

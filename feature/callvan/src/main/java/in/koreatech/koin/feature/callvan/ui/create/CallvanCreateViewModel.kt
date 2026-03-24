@@ -2,10 +2,12 @@ package `in`.koreatech.koin.feature.callvan.ui.create
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.error.callvan.KoinCallvanException
 import `in`.koreatech.koin.domain.usecase.callvan.CreateCallvanPostUseCase
 import `in`.koreatech.koin.feature.callvan.MAX_PARTICIPANTS_COUNT
 import `in`.koreatech.koin.feature.callvan.MIN_PARTICIPANTS_COUNT
 import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
+import `in`.koreatech.koin.feature.callvan.ui.create.model.SubmitErrorType
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -173,9 +175,15 @@ class CallvanCreateViewModel @Inject constructor(
         ).onSuccess {
             reduce { state.copy(isSubmitting = false) }
             postSideEffect(CallvanCreateSideEffect.NavigateToMain)
-        }.onFailure {
+        }.onFailure { error ->
             reduce { state.copy(isSubmitting = false) }
-            postSideEffect(CallvanCreateSideEffect.ShowSubmitError)
+            val errorType = when (error) {
+                is KoinCallvanException.InvalidRequestBodyException -> SubmitErrorType.INVALID_REQUEST_BODY
+                is KoinCallvanException.InvalidCustomLocationNameException -> SubmitErrorType.INVALID_CUSTOM_LOCATION_NAME
+                is KoinCallvanException.NotFoundUserException -> SubmitErrorType.NOT_FOUND_USER
+                else -> SubmitErrorType.UNKNOWN
+            }
+            postSideEffect(CallvanCreateSideEffect.ShowSubmitError(errorType))
         }
     }
 }

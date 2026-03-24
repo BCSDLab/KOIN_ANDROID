@@ -25,7 +25,7 @@ object DatabaseModule {
             context,
             AppDatabase::class.java,
             "koin_database"
-        ).build()
+        ).addMigrations(AppDatabase.MIGRATION_2_3).build()
     }
 
     @Provides
