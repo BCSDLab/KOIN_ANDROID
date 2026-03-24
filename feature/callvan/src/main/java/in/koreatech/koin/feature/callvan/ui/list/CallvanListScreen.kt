@@ -177,14 +177,8 @@ fun CallvanListScreenImpl(
     }
 
     pendingConfirm?.let { (confirmType, postId) ->
-        val title = when (confirmType) {
-            CallvanConfirmType.JOIN -> stringResource(R.string.callvan_confirm_join_title)
-            CallvanConfirmType.CANCEL_JOIN -> stringResource(R.string.callvan_confirm_cancel_title)
-            CallvanConfirmType.CLOSE -> stringResource(R.string.callvan_confirm_close_title)
-            CallvanConfirmType.REOPEN -> stringResource(R.string.callvan_confirm_reopen_title)
-        }
         CallvanConfirmBottomSheet(
-            title = title,
+            title = stringResource(confirmType.titleRes),
             description = "",
             confirmText = stringResource(R.string.callvan_confirm_positive),
             cancelText = stringResource(R.string.callvan_confirm_negative),
