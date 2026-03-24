@@ -39,7 +39,7 @@ fun CallvanListItem(
         uiState.itemState in listOf(
             CallvanItemState.JOINED,
             CallvanItemState.OWNER_ACTIVE,
-            CallvanItemState.OWNER_CLOSED,
+            CallvanItemState.OWNER_CLOSED
         )
     }
 

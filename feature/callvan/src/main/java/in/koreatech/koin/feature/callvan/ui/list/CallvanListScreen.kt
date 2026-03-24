@@ -26,10 +26,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
-import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
+import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
