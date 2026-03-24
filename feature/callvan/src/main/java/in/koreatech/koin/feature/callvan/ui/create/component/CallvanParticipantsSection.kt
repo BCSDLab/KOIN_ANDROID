@@ -19,6 +19,7 @@ import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -67,7 +68,7 @@ fun CallvanParticipantsSection(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
-                .border(1.dp, RebrandKoinTheme.colors.neutral400, RoundedCornerShape(4.dp)),
+                .border(1.dp, RebrandKoinTheme.colors.neutral400, RebrandKoinTheme.shapes.extraSmall),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -108,6 +109,7 @@ fun CallvanParticipantsSection(
                 contentDescription = null,
                 tint = RebrandKoinTheme.colors.primary500,
                 modifier = Modifier
+                    .clip(RoundedCornerShape(topStart = 0.dp, topEnd = 4.dp, bottomEnd = 4.dp, bottomStart = 0.dp))
                     .clickable(onClick = onIncrement)
                     .padding(horizontal = 8.dp, vertical = 7.dp)
                     .size(24.dp)

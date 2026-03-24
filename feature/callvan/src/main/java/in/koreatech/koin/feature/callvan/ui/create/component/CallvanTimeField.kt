@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -32,24 +33,37 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
+import java.time.LocalDate
+import java.time.LocalTime
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
+private fun to24Hour(isAm: Boolean, displayHour: Int): Int = when {
+    isAm -> displayHour
+    else -> displayHour + 12
+}
+
+private fun toDisplayHour(hour24: Int): Int = when {
+    hour24 <= 12 -> hour24
+    else -> hour24 - 12
+}
+
 @Composable
 fun CallvanTimeField(
-    formattedTime: String,
     isPickerVisible: Boolean,
-    isAm: Boolean,
-    selectedHour: Int,
-    selectedMinute: Int,
+    selectedDate: LocalDate,
+    selectedTime: LocalTime,
     onFieldClick: () -> Unit = {},
-    onAmPmIndexChange: (Int) -> Unit = {},
-    onHourIndexChange: (Int) -> Unit = {},
-    onMinuteIndexChange: (Int) -> Unit = {},
+    onTimeChange: (LocalTime) -> Unit = {},
     onReset: () -> Unit = {},
     onConfirm: () -> Unit = {}
 ) {
+    val isAm = remember(selectedTime) { selectedTime.hour <= 12 }
+    val displayHour = remember(selectedTime) { toDisplayHour(selectedTime.hour) }
     val amPmText = stringResource(if (isAm) R.string.callvan_am else R.string.callvan_pm)
+    val formattedTime = remember(selectedTime) {
+        "%02d:%02d".format(displayHour, selectedTime.minute)
+    }
     var popupOffsetHeightPx by remember { mutableIntStateOf(0) }
 
     Column(
@@ -66,7 +80,8 @@ fun CallvanTimeField(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .border(1.dp, RebrandKoinTheme.colors.neutral400, RoundedCornerShape(4.dp))
+                    .border(1.dp, RebrandKoinTheme.colors.neutral400, RebrandKoinTheme.shapes.extraSmall)
+                    .clip(RebrandKoinTheme.shapes.extraSmall)
                     .clickable(onClick = onFieldClick)
                     .onGloballyPositioned { popupOffsetHeightPx = it.size.height + 20 },
                 verticalAlignment = Alignment.CenterVertically
@@ -98,12 +113,9 @@ fun CallvanTimeField(
                     properties = PopupProperties(focusable = true)
                 ) {
                     CallvanTimePickerCard(
-                        isAm = isAm,
-                        selectedHour = selectedHour,
-                        selectedMinute = selectedMinute,
-                        onAmPmIndexChange = onAmPmIndexChange,
-                        onHourIndexChange = onHourIndexChange,
-                        onMinuteIndexChange = onMinuteIndexChange,
+                        selectedDate = selectedDate,
+                        selectedTime = selectedTime,
+                        onTimeChange = onTimeChange,
                         onReset = onReset,
                         onConfirm = onConfirm
                     )
@@ -113,31 +125,49 @@ fun CallvanTimeField(
     }
 }
 
-@Suppress("LongParameterList")
 @Composable
 private fun CallvanTimePickerCard(
-    isAm: Boolean,
-    selectedHour: Int,
-    selectedMinute: Int,
-    onAmPmIndexChange: (Int) -> Unit,
-    onHourIndexChange: (Int) -> Unit,
-    onMinuteIndexChange: (Int) -> Unit,
+    selectedDate: LocalDate,
+    selectedTime: LocalTime,
+    onTimeChange: (LocalTime) -> Unit,
     onReset: () -> Unit,
     onConfirm: () -> Unit
 ) {
     val amLabel = stringResource(R.string.callvan_am)
     val pmLabel = stringResource(R.string.callvan_pm)
-    val amPmItems = remember(amLabel, pmLabel) {
-        persistentListOf(amLabel, pmLabel)
-    }
-    val hourItems = remember {
-        (1..12).toImmutableList()
-    }
-    val minuteItems = remember {
-        (0..59).toImmutableList()
+
+    val isToday = remember(selectedDate) { selectedDate == LocalDate.now() }
+    val now = LocalTime.now()
+    val currentThreshold = remember(now.hour, now.minute, isToday) { if (isToday) now.hour * 60 + now.minute else 0 }
+
+    val isAm = remember(now.hour) { now.hour <= 12 }
+    val selectedHour = remember(selectedTime.hour) { toDisplayHour(selectedTime.hour) }
+
+    val amAvailable = !isToday || currentThreshold <= 779 // 12:59 = 12 * 60 + 59
+
+    val amPmItems = remember(amLabel, pmLabel, amAvailable) {
+        if (amAvailable) persistentListOf(amLabel, pmLabel) else persistentListOf(pmLabel)
     }
 
-    val amPmIndex = if (isAm) 0 else 1
+    val hourItems = remember(isAm, currentThreshold) {
+        val range = if (isAm) (0..12) else (1..11)
+        range.filter { hour ->
+            to24Hour(isAm, hour) * 60 + 59 >= currentThreshold
+        }.toImmutableList()
+    }
+
+    val minMinute = if (isToday) {
+        maxOf(currentThreshold - selectedTime.hour * 60, 0)
+    } else {
+        0
+    }
+    val minuteItems = remember(minMinute) {
+        (minMinute..59).toImmutableList()
+    }
+
+    val amPmIndex = remember(isAm, amAvailable) {
+        if (!amAvailable) 0 else if (isAm) 0 else 1
+    }
 
     Card(
         modifier = Modifier
@@ -159,22 +189,32 @@ private fun CallvanTimePickerCard(
                 CallvanStringScrollPicker(
                     items = amPmItems,
                     selectedIndex = amPmIndex,
-                    onIndexChange = onAmPmIndexChange,
+                    onIndexChange = { index ->
+                        val newIsAm = if (amAvailable) index == 0 else false
+                        val clampedHour = if (newIsAm) selectedHour.coerceIn(0, 12) else selectedHour.coerceIn(1, 11)
+                        val newHour24 = to24Hour(newIsAm, clampedHour)
+                        onTimeChange(LocalTime.of(newHour24, selectedTime.minute))
+                    },
                     modifier = Modifier.weight(1f)
                 )
                 CallvanIntScrollPicker(
                     items = hourItems,
                     selectedValue = selectedHour,
                     suffix = "",
-                    onValueChange = onHourIndexChange,
+                    onValueChange = { newDisplayHour ->
+                        val newHour24 = to24Hour(isAm, newDisplayHour)
+                        onTimeChange(LocalTime.of(newHour24, selectedTime.minute))
+                    },
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.End
                 )
                 CallvanIntScrollPicker(
                     items = minuteItems,
-                    selectedValue = selectedMinute,
+                    selectedValue = selectedTime.minute,
                     suffix = "",
-                    onValueChange = onMinuteIndexChange,
+                    onValueChange = { newMinute ->
+                        onTimeChange(LocalTime.of(selectedTime.hour, newMinute))
+                    },
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.End
                 )
@@ -189,15 +229,11 @@ private fun CallvanTimePickerCard(
 @Composable
 private fun CallvanTimeFieldPreview() {
     CallvanTimeField(
-        formattedTime = "09:30",
         isPickerVisible = false,
-        isAm = true,
-        selectedHour = 9,
-        selectedMinute = 30,
+        selectedDate = LocalDate.now(),
+        selectedTime = LocalTime.of(9, 30),
         onFieldClick = {},
-        onAmPmIndexChange = {},
-        onHourIndexChange = {},
-        onMinuteIndexChange = {},
+        onTimeChange = {},
         onReset = {},
         onConfirm = {}
     )
@@ -207,15 +243,11 @@ private fun CallvanTimeFieldPreview() {
 @Composable
 private fun CallvanTimeFieldPickerVisiblePreview() {
     CallvanTimeField(
-        formattedTime = "02:45",
         isPickerVisible = true,
-        isAm = false,
-        selectedHour = 2,
-        selectedMinute = 45,
+        selectedDate = LocalDate.now(),
+        selectedTime = LocalTime.of(14, 45),
         onFieldClick = {},
-        onAmPmIndexChange = {},
-        onHourIndexChange = {},
-        onMinuteIndexChange = {},
+        onTimeChange = {},
         onReset = {},
         onConfirm = {}
     )

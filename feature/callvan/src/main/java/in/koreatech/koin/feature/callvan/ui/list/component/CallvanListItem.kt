@@ -7,17 +7,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.MAX_PARTICIPANTS_COUNT
+import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanParticipantCount
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanRouteInfo
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanItemState
@@ -39,10 +42,10 @@ fun CallvanListItem(
             .fillMaxWidth()
             .border(
                 width = 0.5.dp,
-                color = KoinTheme.colors.neutral400,
-                shape = KoinTheme.shapes.small
+                color = RebrandKoinTheme.colors.neutral400,
+                shape = RebrandKoinTheme.shapes.small
             )
-            .clip(KoinTheme.shapes.small)
+            .clip(RebrandKoinTheme.shapes.small)
             .clickable(
                 enabled = isJoined,
                 onClick = onItemClick
@@ -52,6 +55,7 @@ fun CallvanListItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
+            modifier = Modifier.weight(1f).padding(end = 4.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             with(uiState) {
@@ -62,13 +66,16 @@ fun CallvanListItem(
                 ) {
                     Text(
                         text = formatDateTime(date, time),
-                        style = KoinTheme.typography.regular12,
-                        color = KoinTheme.colors.neutral600
+                        style = RebrandKoinTheme.typography.regular12,
+                        color = RebrandKoinTheme.colors.neutral600
                     )
-                    Text(text = "|", color = KoinTheme.colors.neutral600)
+                    Text(text = "|", color = RebrandKoinTheme.colors.neutral600)
                     CallvanParticipantCount(currentCount = currentCount, maxCount = maxCount)
                     if (isJoined) {
-                        Text(text = ">", color = KoinTheme.colors.neutral600)
+                        Icon(
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_callvan_arrow_right),
+                            contentDescription = null
+                        )
                     }
                 }
             }

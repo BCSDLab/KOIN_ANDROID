@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -114,7 +113,8 @@ private fun CallvanLocationItem(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(RebrandKoinTheme.colors.neutral100, RoundedCornerShape(8.dp))
+                    .background(RebrandKoinTheme.colors.neutral100, RebrandKoinTheme.shapes.small)
+                    .clip(RebrandKoinTheme.shapes.small)
                     .clickable(onClick = onClick)
                     .padding(horizontal = 32.dp, vertical = 8.dp),
                 contentAlignment = Alignment.Center
