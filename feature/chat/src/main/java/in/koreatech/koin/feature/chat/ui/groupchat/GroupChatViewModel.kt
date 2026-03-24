@@ -139,7 +139,7 @@ class GroupChatViewModel @Inject constructor(
             state.copy(uploadingImage = state.uploadingImage.addUploadingImage(uploadingImage))
         }
         uploadImageUseCase(
-            domain = PreSignedUrlDomain.CALLVAN,
+            domain = PreSignedUrlDomain.CALLVAN_CHAT,
             contentLength = fileSize,
             contentType = fileType,
             fileName = fileName,

@@ -13,7 +13,7 @@ class StoreLocalDataSource @Inject constructor(
     private var nearbyShops: List<StoreItemResponse> = emptyList()
 
     suspend fun setCachedStoreCategories(storeCategories: List<StoreCategoriesItemResponse>) {
-        storeCategoriesDao.insert(storeCategories.map { it.toStoreCategoriesEntity() })
+        storeCategoriesDao.insert(storeCategories.mapIndexed { index, response -> response.toStoreCategoriesEntity(index) })
     }
 
     suspend fun getCachedStoreCategories(): List<StoreCategoriesItemResponse> {
