@@ -28,6 +28,7 @@ import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanLocationSe
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanParticipantsSection
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanSubmitBottomBar
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanTimeField
+import `in`.koreatech.koin.feature.callvan.ui.create.model.SubmitErrorType
 import `in`.koreatech.koin.feature.callvan.ui.displayNameRes
 import java.time.LocalDate
 import java.time.LocalTime
@@ -47,7 +48,15 @@ fun CallvanCreateScreen(
     viewModel.collectSideEffect { effect ->
         when (effect) {
             CallvanCreateSideEffect.NavigateToMain -> onCompleteAndNavigateToMain()
-            CallvanCreateSideEffect.ShowSubmitError -> {}
+            is CallvanCreateSideEffect.ShowSubmitError -> {
+                val messageRes = when (effect.type) {
+                    SubmitErrorType.INVALID_REQUEST_BODY -> R.string.callvan_create_submit_error_invalid_request
+                    SubmitErrorType.INVALID_CUSTOM_LOCATION_NAME -> R.string.callvan_create_submit_error_invalid_custom_location
+                    SubmitErrorType.NOT_FOUND_USER -> R.string.callvan_create_submit_error_not_found_user
+                    SubmitErrorType.UNKNOWN -> R.string.callvan_create_submit_error_unknown
+                }
+                snackbarHostState.showSnackbar(context.getString(messageRes))
+            }
             CallvanCreateSideEffect.ShowPastTimeError -> snackbarHostState.showSnackbar(
                 context.getString(R.string.callvan_create_past_time_error)
             )
