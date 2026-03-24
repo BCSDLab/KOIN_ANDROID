@@ -52,11 +52,12 @@ import `in`.koreatech.koin.feature.callvan.ui.detail.model.CallvanDetailParticip
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
-import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun CallvanDetailScreen(
     viewModel: CallvanDetailViewModel = hiltViewModel(),
+    reportSuccess: Boolean = false,
+    onReportSuccessShown: () -> Unit = {},
     onTopbarBackClick: () -> Unit = {},
     onNotificationClick: () -> Unit = {},
     onEnterChatClick: () -> Unit = {},
@@ -66,11 +67,11 @@ fun CallvanDetailScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
 
-    viewModel.collectSideEffect { sideEffect ->
-        when (sideEffect) {
-            is CallvanDetailSideEffect.ShowReportSuccess -> {
-                snackbarHostState.showSnackBarWithDismiss(context.getString(R.string.callvan_report_submit_success))
-            }
+    LaunchedEffect(reportSuccess) {
+        if (reportSuccess) {
+            viewModel.fetchPostDetail()
+            snackbarHostState.showSnackBarWithDismiss(context.getString(R.string.callvan_report_submit_success))
+            onReportSuccessShown()
         }
     }
 

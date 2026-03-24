@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.callvan.navigation
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
@@ -49,7 +50,15 @@ fun NavGraphBuilder.koinCallvanGraph(
     composable<CallvanNavType.CallvanDetail> { backStackEntry ->
         val postId = backStackEntry.toRoute<CallvanNavType.CallvanDetail>().postId
         val context = LocalContext.current
+        val reportSuccess = backStackEntry.savedStateHandle
+            .getStateFlow(CallvanDetailViewModel.KEY_REPORT_SUCCESS, false)
+            .collectAsState()
+
         CallvanDetailScreen(
+            reportSuccess = reportSuccess.value,
+            onReportSuccessShown = {
+                backStackEntry.savedStateHandle[CallvanDetailViewModel.KEY_REPORT_SUCCESS] = false
+            },
             onTopbarBackClick = { navController.popBackStackOrFinish(context) },
             onNotificationClick = { navController.navigate(CallvanNavType.CallvanNotifications) },
             onEnterChatClick = { navController.navigate(CallvanNavType.CallvanChat(postId)) },
