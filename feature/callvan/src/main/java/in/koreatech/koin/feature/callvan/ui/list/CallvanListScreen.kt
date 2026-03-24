@@ -263,7 +263,7 @@ fun CallvanListScreenImpl(
         floatingActionButton = {
             CallvanFAB(
                 modifier = Modifier.padding(bottom = 24.dp),
-                onClick =  {
+                onClick = {
                     EventLogger.logCampusClickEvent(
                         AnalyticsConstant.Label.Callvan.CALLVAN_CREATE,
                         ""

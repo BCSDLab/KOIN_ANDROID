@@ -66,7 +66,7 @@ fun CallvanCreateScreen(
                     } else {
                         AnalyticsConstant.Label.Callvan.CALLVAN_WRITE_ARRIVAL
                     },
-                    context.getString(location.displayNameRes()) + if(location == CallvanLocationOption.CUSTOM) ", $customText" else ""
+                    context.getString(location.displayNameRes()) + if (location == CallvanLocationOption.CUSTOM) ", $customText" else ""
                 )
                 viewModel.selectLocation(location, customText)
             },
