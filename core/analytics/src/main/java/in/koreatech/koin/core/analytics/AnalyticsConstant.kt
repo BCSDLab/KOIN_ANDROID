@@ -188,6 +188,20 @@ object AnalyticsConstant {
             const val CALLVAN_HAMBURGER = "hamburger"
             const val CALLVAN_CHAT_SEND = "callvan_chat_send"
             const val CALLVAN_CHAT_ENTRY = "callvan_chat_entry"
+            const val CALLVAN_FILTER = "callvan_filter"
+            const val CALLVAN_SEARCH = "callvan_search"
+            const val CALLVAN_FILTER_APPLY = "callvan_filter_apply"
+            const val CALLVAN_JOIN = "callvan_join"
+            const val CALLVAN_JOIN_CANCEL = "callvan_join_cancel"
+            const val CALLVAN_CHAT = "callvan_chat"
+            const val CALLVAN_CALL = "callvan_call"
+            const val CALLVAN_CREATE = "callvan_create"
+            const val CALLVAN_BACK = "callvan_back"
+            const val CALLVAN_WRITE_DEPARTURE = "callvan_write_departure"
+            const val CALLVAN_WRITE_ARRIVAL = "callvan_write_arrival"
+            const val CALLVAN_WRITE_TIME = "callvan_write_time"
+            const val CALLVAN_WRITE_DONE = "callvan_write_done"
+            const val CALLVAN_WRITE_BACK = "callvan_write_back"
         }
     }
 

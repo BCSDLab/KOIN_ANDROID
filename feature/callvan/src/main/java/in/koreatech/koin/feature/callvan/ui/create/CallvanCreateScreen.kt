@@ -16,6 +16,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
@@ -26,6 +28,8 @@ import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanLocationSe
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanParticipantsSection
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanSubmitBottomBar
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanTimeField
+import `in`.koreatech.koin.feature.callvan.ui.create.model.SubmitErrorType
+import `in`.koreatech.koin.feature.callvan.ui.displayNameRes
 import java.time.LocalDate
 import java.time.LocalTime
 import org.orbitmvi.orbit.compose.collectAsState
@@ -44,7 +48,15 @@ fun CallvanCreateScreen(
     viewModel.collectSideEffect { effect ->
         when (effect) {
             CallvanCreateSideEffect.NavigateToMain -> onCompleteAndNavigateToMain()
-            CallvanCreateSideEffect.ShowSubmitError -> {}
+            is CallvanCreateSideEffect.ShowSubmitError -> {
+                val messageRes = when (effect.type) {
+                    SubmitErrorType.INVALID_REQUEST_BODY -> R.string.callvan_create_submit_error_invalid_request
+                    SubmitErrorType.INVALID_CUSTOM_LOCATION_NAME -> R.string.callvan_create_submit_error_invalid_custom_location
+                    SubmitErrorType.NOT_FOUND_USER -> R.string.callvan_create_submit_error_not_found_user
+                    SubmitErrorType.UNKNOWN -> R.string.callvan_create_submit_error_unknown
+                }
+                snackbarHostState.showSnackbar(context.getString(messageRes))
+            }
             CallvanCreateSideEffect.ShowPastTimeError -> snackbarHostState.showSnackbar(
                 context.getString(R.string.callvan_create_past_time_error)
             )
@@ -56,7 +68,17 @@ fun CallvanCreateScreen(
             isDeparture = state.isPickingDeparture,
             initialSelection = if (state.isPickingDeparture) state.departureLocation else state.arrivalLocation,
             initialCustomText = if (state.isPickingDeparture) state.departureCustomText else state.arrivalCustomText,
-            onLocationSelected = viewModel::selectLocation,
+            onLocationSelected = { location, customText ->
+                EventLogger.logCampusClickEvent(
+                    if (state.isPickingDeparture) {
+                        AnalyticsConstant.Label.Callvan.CALLVAN_WRITE_DEPARTURE
+                    } else {
+                        AnalyticsConstant.Label.Callvan.CALLVAN_WRITE_ARRIVAL
+                    },
+                    context.getString(location.displayNameRes()) + if (location == CallvanLocationOption.CUSTOM) ", $customText" else ""
+                )
+                viewModel.selectLocation(location, customText)
+            },
             onDismiss = viewModel::closeLocationPicker
         )
     }
@@ -107,7 +129,13 @@ fun CallvanCreateScreenImpl(
         topBar = {
             KoinTopAppBar(
                 title = stringResource(R.string.callvan_create_top_bar),
-                onNavigationIconClick = onTopbarBackClick
+                onNavigationIconClick = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.Callvan.CALLVAN_WRITE_BACK,
+                        ""
+                    )
+                    onTopbarBackClick()
+                }
             )
         },
         snackbarHost = {
@@ -153,7 +181,13 @@ fun CallvanCreateScreenImpl(
                     onFieldClick = onTimeFieldClick,
                     onTimeChange = onTimeChange,
                     onReset = onTimeReset,
-                    onConfirm = onTimeConfirm
+                    onConfirm = {
+                        EventLogger.logCampusClickEvent(
+                            AnalyticsConstant.Label.Callvan.CALLVAN_WRITE_TIME,
+                            "${state.selectedTime.hour}:${"%02d".format(state.selectedTime.minute)}"
+                        )
+                        onTimeConfirm()
+                    }
                 )
                 CallvanParticipantsSection(
                     count = state.maxParticipants,
@@ -164,7 +198,13 @@ fun CallvanCreateScreenImpl(
             CallvanSubmitBottomBar(
                 isFormComplete = state.isFormComplete,
                 isSubmitting = state.isSubmitting,
-                onSubmit = onSubmit
+                onSubmit = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.Callvan.CALLVAN_WRITE_DONE,
+                        ""
+                    )
+                    onSubmit()
+                }
             )
         }
     }

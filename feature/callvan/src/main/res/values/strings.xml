@@ -163,4 +163,9 @@
     <string name="callvan_error_reopen_failed_full">인원이 가득 차 재모집할 수 없습니다.</string>
     <string name="callvan_error_reopen_failed_time">출발 시간이 지나 재모집할 수 없습니다.</string>
     <string name="callvan_error_unknown">오류가 발생했습니다. 다시 시도해주세요.</string>
+
+    <string name="callvan_create_submit_error_invalid_request">요청 형식이 올바르지 않습니다.</string>
+    <string name="callvan_create_submit_error_invalid_custom_location">사용자 지정 장소명이 올바르지 않습니다.</string>
+    <string name="callvan_create_submit_error_not_found_user">사용자를 찾을 수 없습니다.</string>
+    <string name="callvan_create_submit_error_unknown">게시글 작성에 실패했습니다.</string>
 </resources>
