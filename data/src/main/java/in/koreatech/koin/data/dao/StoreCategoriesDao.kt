@@ -12,6 +12,6 @@ interface StoreCategoriesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(storeCategories: List<StoreCategoriesEntity>)
 
-    @Query("SELECT * FROM ${DBConstant.STORE_CATEGORIES} ORDER BY `order` ASC")
+    @Query("SELECT * FROM ${DBConstant.STORE_CATEGORIES}")
     suspend fun getAll(): List<StoreCategoriesEntity>
 }

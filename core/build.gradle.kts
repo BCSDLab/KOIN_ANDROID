@@ -79,6 +79,7 @@ dependencies {
     api(libs.rxjava)
     api(libs.javax.inject)
     api(libs.jsr250.api)
+    api(libs.materialtabstrip.library)
     api(libs.jetbrains.annotations)
 
     implementation(libs.photoview)

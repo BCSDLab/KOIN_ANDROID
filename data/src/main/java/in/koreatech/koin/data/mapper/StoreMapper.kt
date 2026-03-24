@@ -105,8 +105,8 @@ fun StoreItemResponse.toStore(): Store =
         isBankOk = isBankOk ?: false,
         isEvent = isEvent ?: false,
         isOpen = isOpen ?: false,
-        averageRate = averageRate,
-        reviewCount = reviewCount,
+        averageRate = averageRate ?: 0.0,
+        reviewCount = reviewCount ?: 0,
         open = open?.filter { it.dayOfWeek == localDayOfWeekName }?.map {
             Store.OpenData(
                 dayOfWeek = it.dayOfWeek ?: "",
@@ -138,9 +138,8 @@ fun StoreCategoriesItemResponse.toStoreCategories(): StoreCategories =
         name = name
     )
 
-fun StoreCategoriesItemResponse.toStoreCategoriesEntity(index: Int): StoreCategoriesEntity = StoreCategoriesEntity(
+fun StoreCategoriesItemResponse.toStoreCategoriesEntity(): StoreCategoriesEntity = StoreCategoriesEntity(
     id = id,
-    order = index,
     imageUrl = imageUrl,
     name = name
 )
@@ -175,8 +174,8 @@ fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu =
         imageUrls = imageUrls ?: emptyList(),
         shopCategories = shopCategories?.map { it.toCategory() }.orEmpty(),
         menuCategories = menuCategories?.map { it.toCategory() }.orEmpty(),
-        bank = bank,
-        accountNumber = accountNumber
+        bank = bank ?: null,
+        accountNumber = accountNumber ?: null
     )
 
 fun StoreItemWithMenusV2Response.toStoreWithMenuV2(): StoreWithMenuV2 =
@@ -252,18 +251,18 @@ fun StoreDetailEventResponse.toStoreDetailEvents(): ShopEvents =
 
 fun StoreRegisterResponse.toStoreDetailInfo(): StoreDetailInfo =
     StoreDetailInfo(
-        address = address,
+        address = address ?: "",
         mainCategoryId = mainCategoryId,
-        categoryIds = categoryIds,
-        deliveryPrice = deliveryPrice,
-        description = description,
-        imageUrls = imageUrls,
-        isBankOk = payBank,
-        isCardOk = payCard,
-        isDeliveryOk = delivery,
-        name = name,
+        categoryIds = categoryIds ?: emptyList(),
+        deliveryPrice = deliveryPrice ?: 0,
+        description = description ?: "",
+        imageUrls = imageUrls ?: emptyList(),
+        isBankOk = payBank ?: false,
+        isCardOk = payCard ?: false,
+        isDeliveryOk = delivery ?: false,
+        name = name ?: "",
         operatingTime = open?.toOperatingTime() ?: emptyList(),
-        phone = phone,
+        phone = phone ?: "",
         bank = null,
         accountNumber = null
     )
@@ -356,14 +355,16 @@ fun List<StoreMenuOptionPrice>.toOptionPriceList(): List<StoreMenuRegisterRespon
 fun StoreMenuInfoResponse.toStoreMenuInfo(): StoreMenuInfo {
     val responseList = ArrayList<StoreMenuOptionPrice>()
 
-    for (priceOption in this.optionPrices) {
-        val response =
-            StoreMenuOptionPrice(
-                option = priceOption.option,
-                price = priceOption.price.toString()
-            )
+    if (this.optionPrices != null) {
+        for (priceOption in this.optionPrices) {
+            val response =
+                StoreMenuOptionPrice(
+                    option = priceOption.option,
+                    price = priceOption.price.toString()
+                )
 
-        responseList.add(response)
+            responseList.add(response)
+        }
     }
     return StoreMenuInfo(
         shopId = shopId,
@@ -386,16 +387,16 @@ fun StoreReviewStatisticsResponse.toStoreReviewStatistics() =
 fun List<StoreReviewContentResponse>.toStoreReviewContentList(): List<StoreReviewContent> =
     this.map { response ->
         StoreReviewContent(
-            reviewId = response.reviewId,
-            rating = response.rating,
-            nickName = response.nickName,
-            content = response.content,
-            imageUrls = response.imageUrls,
-            menuNames = response.menuNames,
-            isMine = response.isMine,
-            isModified = response.isModified,
-            isReported = response.isReported,
-            createdAt = response.createdAt
+            reviewId = response.reviewId ?: 0,
+            rating = response.rating ?: 0,
+            nickName = response.nickName ?: "",
+            content = response.content ?: "",
+            imageUrls = response.imageUrls ?: emptyList(),
+            menuNames = response.menuNames ?: emptyList(),
+            isMine = response.isMine ?: false,
+            isModified = response.isModified ?: false,
+            isReported = response.isReported ?: false,
+            createdAt = response.createdAt ?: ""
         )
     }
 

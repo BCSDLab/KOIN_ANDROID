@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/store_review_menu_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd = "10dp"
+        android:layout_marginBottom="12dp"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:gravity="center"
+        android:background="@drawable/bg_review_menu_border">
+
+        <TextView
+            android:id="@+id/store_review_menu_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="3dp"
+            android:textColor="@color/blue_alpha20"
+            android:gravity="center"
+            tools:text="계란찜" />
+
+    </LinearLayout>
+</layout>

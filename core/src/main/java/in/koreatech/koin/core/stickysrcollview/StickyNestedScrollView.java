@@ -2,6 +2,8 @@ package in.koreatech.koin.core.stickysrcollview;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -28,7 +30,12 @@ public class StickyNestedScrollView extends NestedScrollView implements IStickyS
     private View stickyFooterView;
     private View stickyHeaderView;
 
+    private static final String SCROLL_STATE = "scroll_state";
+    private static final String SUPER_STATE = "super_state";
+
+
     private StickyScrollPresenter mStickyScrollPresenter;
+    int[] updatedFooterLocation = new int[2];
 
     public StickyNestedScrollView(Context context) {
         this(context, null);
@@ -55,8 +62,9 @@ public class StickyNestedScrollView extends NestedScrollView implements IStickyS
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        if (stickyFooterView != null && !changed) {
-            mStickyScrollPresenter.recomputeFooterLocation(getRelativeTop(stickyFooterView));
+        if(stickyFooterView != null && !changed) {
+            stickyFooterView.getLocationInWindow(updatedFooterLocation);
+            mStickyScrollPresenter.recomputeFooterLocation(getRelativeTop(stickyFooterView), updatedFooterLocation[1]);
         }
     }
 
@@ -84,7 +92,7 @@ public class StickyNestedScrollView extends NestedScrollView implements IStickyS
     public void freeHeader() {
         if (stickyHeaderView != null) {
             stickyHeaderView.setTranslationY(0);
-            PropertySetter.INSTANCE.setTranslationZ(stickyHeaderView, 0);
+            PropertySetter.setTranslationZ(stickyHeaderView, 0);
         }
     }
 
@@ -99,7 +107,7 @@ public class StickyNestedScrollView extends NestedScrollView implements IStickyS
     public void stickHeader(int translationY) {
         if (stickyHeaderView != null) {
             stickyHeaderView.setTranslationY(translationY);
-            PropertySetter.INSTANCE.setTranslationZ(stickyHeaderView, 1);
+            PropertySetter.setTranslationZ(stickyHeaderView, 1);
         }
     }
 
@@ -154,7 +162,23 @@ public class StickyNestedScrollView extends NestedScrollView implements IStickyS
     }
 
     @Override
-    public int getCurrentScrollYPos() {
-        return getScrollY();
+    public Parcelable onSaveInstanceState()
+    {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(SUPER_STATE, super.onSaveInstanceState());
+        bundle.putBoolean(SCROLL_STATE, mStickyScrollPresenter.mScrolled);
+        return bundle;
     }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state)
+    {
+        if (state instanceof Bundle) {
+            Bundle bundle = (Bundle) state;
+            mStickyScrollPresenter.mScrolled = bundle.getBoolean(SCROLL_STATE);
+            state = bundle.getParcelable(SUPER_STATE);
+        }
+        super.onRestoreInstanceState(state);
+    }
+
 }
