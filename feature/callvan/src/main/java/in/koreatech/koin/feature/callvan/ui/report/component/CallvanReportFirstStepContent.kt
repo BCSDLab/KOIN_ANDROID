@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.report.model.CallvanReportReason
 import kotlinx.collections.immutable.ImmutableList
@@ -29,8 +29,8 @@ internal fun CallvanReportFirstStepContent(
     onSelectedReasonChange: (CallvanReportReason) -> Unit,
     otherReason: String,
     onOtherReasonChange: (String) -> Unit,
-    isOtherReasonError: Boolean = false,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isOtherReasonError: Boolean = false
 ) {
     val callvanReportReasonList = remember {
         listOf(
@@ -64,7 +64,7 @@ internal fun CallvanReportFirstStepContent(
                     )
                     HorizontalDivider(
                         thickness = 1.dp,
-                        color = KoinTheme.colors.neutral200
+                        color = RebrandKoinTheme.colors.neutral200
                     )
                 }
             }
@@ -79,14 +79,14 @@ internal fun CallvanReportHeader() {
     ) {
         Text(
             text = stringResource(R.string.callvan_report_header_title),
-            style = KoinTheme.typography.bold18.copy(fontWeight = FontWeight.SemiBold),
-            color = KoinTheme.colors.neutral800
+            style = RebrandKoinTheme.typography.bold18.copy(fontWeight = FontWeight.SemiBold),
+            color = RebrandKoinTheme.colors.neutral800
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = stringResource(R.string.callvan_report_header_description),
-            style = KoinTheme.typography.regular14,
-            color = KoinTheme.colors.neutral500
+            style = RebrandKoinTheme.typography.regular14,
+            color = RebrandKoinTheme.colors.neutral500
         )
     }
 }

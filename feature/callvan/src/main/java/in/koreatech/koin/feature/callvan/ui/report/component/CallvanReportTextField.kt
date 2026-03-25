@@ -12,9 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
+@Suppress("LongParameterList")
 @Composable
 internal fun CallvanReportTextField(
     value: String,
@@ -26,23 +26,23 @@ internal fun CallvanReportTextField(
     enabled: Boolean = true,
     contentAlignment: Alignment = Alignment.CenterStart
 ) {
-    val borderColor = if (isError) RebrandKoinTheme.colors.sub500 else KoinTheme.colors.neutral300
+    val borderColor = if (isError) RebrandKoinTheme.colors.sub500 else RebrandKoinTheme.colors.neutral300
     BasicTextField(
         modifier = modifier
             .fillMaxWidth()
-            .border(1.dp, color = borderColor, shape = KoinTheme.shapes.extraSmall)
+            .border(1.dp, color = borderColor, shape = RebrandKoinTheme.shapes.extraSmall)
             .padding(vertical = 12.dp, horizontal = 16.dp),
         value = value,
         enabled = enabled,
-        textStyle = KoinTheme.typography.regular14.copy(color = KoinTheme.colors.neutral800),
+        textStyle = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral800),
         onValueChange = { onValueChange(it.take(maxLength)) },
         decorationBox = { innerTextField ->
             Box(contentAlignment = contentAlignment) {
                 if (value.isEmpty()) {
                     Text(
                         text = placeholder,
-                        style = KoinTheme.typography.regular14,
-                        color = KoinTheme.colors.neutral500
+                        style = RebrandKoinTheme.typography.regular14,
+                        color = RebrandKoinTheme.colors.neutral500
                     )
                 }
                 innerTextField()

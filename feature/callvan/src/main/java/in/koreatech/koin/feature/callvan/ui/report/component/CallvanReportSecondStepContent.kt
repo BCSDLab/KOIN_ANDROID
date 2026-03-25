@@ -41,7 +41,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import kotlinx.collections.immutable.ImmutableList
@@ -72,8 +71,8 @@ internal fun CallvanReportSecondStepContent(
             ) {
                 Text(
                     text = stringResource(R.string.callvan_report_detail_title),
-                    style = KoinTheme.typography.bold18.copy(fontWeight = FontWeight.SemiBold),
-                    color = KoinTheme.colors.neutral800
+                    style = RebrandKoinTheme.typography.bold18.copy(fontWeight = FontWeight.SemiBold),
+                    color = RebrandKoinTheme.colors.neutral800
                 )
                 Text(
                     text = stringResource(
@@ -81,11 +80,11 @@ internal fun CallvanReportSecondStepContent(
                         detail.length,
                         CALLVAN_REPORT_DETAIL_MAX_LENGTH
                     ),
-                    style = KoinTheme.typography.regular12,
+                    style = RebrandKoinTheme.typography.regular12,
                     color = if (detail.length >= CALLVAN_REPORT_DETAIL_MAX_LENGTH) {
                         RebrandKoinTheme.colors.primary500
                     } else {
-                        KoinTheme.colors.neutral500
+                        RebrandKoinTheme.colors.neutral500
                     }
                 )
             }
@@ -102,86 +101,99 @@ internal fun CallvanReportSecondStepContent(
 
         HorizontalDivider(
             thickness = 1.dp,
-            color = KoinTheme.colors.neutral200
+            color = RebrandKoinTheme.colors.neutral200
         )
 
-        Column(
-            modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp)
+        CallvanReportImageSection(
+            images = images,
+            onAddImageClick = onAddImageClick,
+            onRemoveImage = onRemoveImage
+        )
+    }
+}
+
+@Composable
+private fun CallvanReportImageSection(
+    images: ImmutableList<String>,
+    onAddImageClick: () -> Unit,
+    onRemoveImage: (index: Int) -> Unit
+) {
+    Column(
+        modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp)
+    ) {
+        Text(
+            text = stringResource(R.string.callvan_report_evidence_title),
+            style = RebrandKoinTheme.typography.bold18.copy(fontWeight = FontWeight.SemiBold),
+            color = RebrandKoinTheme.colors.neutral800
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = stringResource(R.string.callvan_report_evidence_description),
+            style = RebrandKoinTheme.typography.regular14,
+            color = RebrandKoinTheme.colors.neutral600
+        )
+        Text(
+            text = stringResource(
+                R.string.callvan_report_evidence_count,
+                images.size,
+                CALLVAN_REPORT_IMAGE_MAX_COUNT
+            ),
+            style = RebrandKoinTheme.typography.regular12,
+            color = if (images.size >= CALLVAN_REPORT_IMAGE_MAX_COUNT) {
+                RebrandKoinTheme.colors.primary500
+            } else {
+                RebrandKoinTheme.colors.neutral500
+            },
+            modifier = Modifier.align(Alignment.End)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp)
+                .background(
+                    color = RebrandKoinTheme.colors.neutral100,
+                    shape = RebrandKoinTheme.shapes.extraSmall
+                )
         ) {
-            Text(
-                text = stringResource(R.string.callvan_report_evidence_title),
-                style = KoinTheme.typography.bold18.copy(fontWeight = FontWeight.SemiBold),
-                color = KoinTheme.colors.neutral800
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = stringResource(R.string.callvan_report_evidence_description),
-                style = KoinTheme.typography.regular14,
-                color = KoinTheme.colors.neutral600
-            )
-            Text(
-                text = stringResource(
-                    R.string.callvan_report_evidence_count,
-                    images.size,
-                    CALLVAN_REPORT_IMAGE_MAX_COUNT
-                ),
-                style = KoinTheme.typography.regular12,
-                color = if (images.size >= CALLVAN_REPORT_IMAGE_MAX_COUNT) {
-                    RebrandKoinTheme.colors.primary500
-                } else {
-                    KoinTheme.colors.neutral500
-                },
-                modifier = Modifier.align(Alignment.End)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-                    .background(
-                        color = KoinTheme.colors.neutral100,
-                        shape = KoinTheme.shapes.extraSmall
-                    )
-            ) {
-                if (images.isNotEmpty()) {
-                    LazyRow(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        itemsIndexed(images) { index, url ->
-                            CallvanReportImageItem(
-                                url = url,
-                                onRemoveClick = { onRemoveImage(index) },
-                                modifier = Modifier
-                                    .fillMaxHeight()
-                                    .aspectRatio(1f)
-                            )
-                        }
+            if (images.isNotEmpty()) {
+                LazyRow(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    itemsIndexed(images) { index, url ->
+                        CallvanReportImageItem(
+                            url = url,
+                            onRemoveClick = { onRemoveImage(index) },
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .aspectRatio(1f)
+                        )
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp))
-            if (images.size < CALLVAN_REPORT_IMAGE_MAX_COUNT) {
-                TextButton(
-                    onClick = onAddImageClick,
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.textButtonColors(
-                        containerColor = RebrandKoinTheme.colors.primary100,
-                        contentColor = RebrandKoinTheme.colors.primary900
-                    ),
-                    shape = KoinTheme.shapes.small
-                ) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_picture),
-                        contentDescription = null
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = stringResource(R.string.callvan_report_add_photo),
-                        style = KoinTheme.typography.medium16
-                    )
-                }
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        if (images.size < CALLVAN_REPORT_IMAGE_MAX_COUNT) {
+            TextButton(
+                onClick = onAddImageClick,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.textButtonColors(
+                    containerColor = RebrandKoinTheme.colors.primary100,
+                    contentColor = RebrandKoinTheme.colors.primary900
+                ),
+                shape = RebrandKoinTheme.shapes.small
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_picture),
+                    contentDescription = null
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = stringResource(R.string.callvan_report_add_photo),
+                    style = RebrandKoinTheme.typography.medium16
+                )
             }
         }
     }
@@ -200,8 +212,8 @@ private fun CallvanReportImageItem(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxSize()
-                .clip(KoinTheme.shapes.extraSmall)
-                .background(KoinTheme.colors.neutral200)
+                .clip(RebrandKoinTheme.shapes.extraSmall)
+                .background(RebrandKoinTheme.colors.neutral200)
         )
         IconButton(
             onClick = onRemoveClick,

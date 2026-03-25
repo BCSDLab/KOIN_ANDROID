@@ -32,7 +32,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanBottomSheet
@@ -151,7 +150,7 @@ private fun FilterBottomSheetContent(
                 selectedItem = state.selectedSortType,
                 onItemSelected = actions.onSortTypeChange
             )
-            HorizontalDivider(color = KoinTheme.colors.neutral300)
+            HorizontalDivider(color = RebrandKoinTheme.colors.neutral300)
             FilterSection(
                 title = stringResource(R.string.filter_list_recruitment_status),
                 items = persistentListOf(
@@ -163,7 +162,7 @@ private fun FilterBottomSheetContent(
                 selectedItem = state.selectedStatusesType,
                 onItemSelected = actions.onStatusesTypeChange
             )
-            HorizontalDivider(color = KoinTheme.colors.neutral300)
+            HorizontalDivider(color = RebrandKoinTheme.colors.neutral300)
             FilterDuplicateSection(
                 title = stringResource(R.string.filter_list_origin),
                 items = persistentListOf(
@@ -176,7 +175,7 @@ private fun FilterBottomSheetContent(
                 selectedItems = state.selectedDeparturesType,
                 onItemSelected = actions.onDeparturesTypeChange
             )
-            HorizontalDivider(color = KoinTheme.colors.neutral300)
+            HorizontalDivider(color = RebrandKoinTheme.colors.neutral300)
             FilterDuplicateSection(
                 title = stringResource(R.string.filter_list_destination),
                 items = persistentListOf(
@@ -189,7 +188,7 @@ private fun FilterBottomSheetContent(
                 selectedItems = state.selectedArrivalsType,
                 onItemSelected = actions.onArrivalsTypeChange
             )
-            HorizontalDivider(color = KoinTheme.colors.neutral300)
+            HorizontalDivider(color = RebrandKoinTheme.colors.neutral300)
         }
 
         Row(
@@ -200,34 +199,34 @@ private fun FilterBottomSheetContent(
         ) {
             OutlinedButton(
                 onClick = actions.onReset,
-                shape = KoinTheme.shapes.medium,
-                border = BorderStroke(1.dp, KoinTheme.colors.neutral300),
+                shape = RebrandKoinTheme.shapes.medium,
+                border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral300),
                 modifier = Modifier.weight(1f).height(48.dp),
-                colors = ButtonDefaults.outlinedButtonColors(containerColor = KoinTheme.colors.neutral0)
+                colors = ButtonDefaults.outlinedButtonColors(containerColor = RebrandKoinTheme.colors.neutral0)
             ) {
                 Text(
                     text = stringResource(R.string.filter_list_reset),
-                    color = KoinTheme.colors.neutral600,
-                    style = KoinTheme.typography.bold16
+                    color = RebrandKoinTheme.colors.neutral600,
+                    style = RebrandKoinTheme.typography.bold16
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_process),
                     contentDescription = null,
                     modifier = Modifier.size(16.dp),
-                    tint = KoinTheme.colors.neutral500
+                    tint = RebrandKoinTheme.colors.neutral500
                 )
             }
             Button(
                 onClick = actions.onApplyClick,
-                shape = KoinTheme.shapes.medium,
+                shape = RebrandKoinTheme.shapes.medium,
                 colors = ButtonDefaults.buttonColors(containerColor = RebrandKoinTheme.colors.primary500),
                 modifier = Modifier.weight(2f).height(48.dp)
             ) {
                 Text(
                     text = stringResource(R.string.filter_list_adapt),
-                    color = KoinTheme.colors.neutral0,
-                    style = KoinTheme.typography.bold16
+                    color = RebrandKoinTheme.colors.neutral0,
+                    style = RebrandKoinTheme.typography.bold16
                 )
             }
         }
@@ -244,8 +243,8 @@ private fun <T : CallvanFilterType> FilterSection(
     Column(modifier = Modifier.padding(vertical = 12.dp)) {
         Text(
             text = title,
-            style = KoinTheme.typography.bold16,
-            color = KoinTheme.colors.neutral800,
+            style = RebrandKoinTheme.typography.bold16,
+            color = RebrandKoinTheme.colors.neutral800,
             modifier = Modifier.padding(bottom = 12.dp)
         )
         FlowRow(
@@ -277,13 +276,13 @@ private fun <T : CallvanFilterType> FilterDuplicateSection(
         ) {
             Text(
                 text = title,
-                style = KoinTheme.typography.bold16,
-                color = KoinTheme.colors.neutral800
+                style = RebrandKoinTheme.typography.bold16,
+                color = RebrandKoinTheme.colors.neutral800
             )
             Text(
                 text = stringResource(R.string.filter_list_other_place_hint),
-                style = KoinTheme.typography.regular12,
-                color = KoinTheme.colors.neutral500
+                style = RebrandKoinTheme.typography.regular12,
+                color = RebrandKoinTheme.colors.neutral500
             )
         }
         FlowRow(

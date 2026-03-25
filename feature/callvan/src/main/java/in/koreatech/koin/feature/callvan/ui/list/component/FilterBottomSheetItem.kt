@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
@@ -27,9 +26,9 @@ fun FilterBottomSheetItem(
         shape = RoundedCornerShape(24.dp),
         border = BorderStroke(
             width = 1.dp,
-            color = if (isSelected) RebrandKoinTheme.colors.primary500 else KoinTheme.colors.neutral300
+            color = if (isSelected) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral300
         ),
-        color = KoinTheme.colors.neutral0,
+        color = RebrandKoinTheme.colors.neutral0,
         modifier = modifier
             .padding(end = 8.dp)
             .semantics { selected = isSelected }
@@ -40,8 +39,8 @@ fun FilterBottomSheetItem(
         ) {
             Text(
                 text = text,
-                color = if (isSelected) RebrandKoinTheme.colors.primary500 else KoinTheme.colors.neutral500,
-                style = KoinTheme.typography.bold14
+                color = if (isSelected) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral500,
+                style = RebrandKoinTheme.typography.bold14
             )
         }
     }

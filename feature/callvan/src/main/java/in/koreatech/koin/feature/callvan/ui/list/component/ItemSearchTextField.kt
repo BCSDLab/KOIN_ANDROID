@@ -17,7 +17,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.TEXT_FIELD_MAX_LENGTH
 
@@ -27,15 +27,15 @@ fun ItemSearchTextField(
     modifier: Modifier = Modifier,
     maxLength: Int = TEXT_FIELD_MAX_LENGTH,
     hint: String = stringResource(R.string.callvan_search_hint),
-    textStyle: TextStyle = KoinTheme.typography.regular14.copy(color = KoinTheme.colors.neutral600),
+    textStyle: TextStyle = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral600),
     onValueChange: (String) -> Unit = {}
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = KoinTheme.colors.neutral100,
-                shape = KoinTheme.shapes.extraSmall
+                color = RebrandKoinTheme.colors.neutral100,
+                shape = RebrandKoinTheme.shapes.extraSmall
             )
             .padding(vertical = 8.dp, horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -58,7 +58,7 @@ fun ItemSearchTextField(
                         Text(
                             text = hint,
                             style = textStyle,
-                            color = KoinTheme.colors.neutral600
+                            color = RebrandKoinTheme.colors.neutral600
                         )
                     }
                     innerTextField()

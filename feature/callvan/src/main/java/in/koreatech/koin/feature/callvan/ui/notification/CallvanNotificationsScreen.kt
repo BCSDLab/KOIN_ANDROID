@@ -31,7 +31,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanConfirmBottomSheet
@@ -62,6 +61,7 @@ fun CallvanNotificationsScreen(
     )
 }
 
+@Suppress("kotlin:S6615")
 @Composable
 fun CallvanNotificationsScreenImpl(
     notifications: ImmutableList<CallvanNotificationUiItem>,
@@ -81,7 +81,7 @@ fun CallvanNotificationsScreenImpl(
             ),
             CallvanDropdownMenuItem(
                 text = { stringResource(R.string.callvan_notification_delete_all) },
-                color = { KoinTheme.colors.danger700 },
+                color = { RebrandKoinTheme.colors.danger700 },
                 onClick = { isDeleteAllBottomSheetVisible = true }
             )
         )
@@ -132,7 +132,7 @@ fun CallvanNotificationsScreenImpl(
                 }
             )
         },
-        containerColor = KoinTheme.colors.neutral0
+        containerColor = RebrandKoinTheme.colors.neutral0
     ) { contentPadding ->
         if (notifications.isEmpty()) {
             Column(
@@ -150,14 +150,14 @@ fun CallvanNotificationsScreenImpl(
                 )
                 Text(
                     text = stringResource(R.string.callvan_notification_empty_title),
-                    style = KoinTheme.typography.bold18.copy(fontWeight = FontWeight(600)),
+                    style = RebrandKoinTheme.typography.bold18.copy(fontWeight = FontWeight(600)),
                     color = RebrandKoinTheme.colors.primary500,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(top = 12.dp)
                 )
                 Text(
                     text = stringResource(R.string.callvan_notification_empty_description),
-                    style = KoinTheme.typography.medium14.copy(color = KoinTheme.colors.neutral600),
+                    style = RebrandKoinTheme.typography.medium14.copy(color = RebrandKoinTheme.colors.neutral600),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(top = 2.dp)
                 )
@@ -170,7 +170,7 @@ fun CallvanNotificationsScreenImpl(
                     if (index > 0) {
                         HorizontalDivider(
                             modifier = Modifier.padding(horizontal = 24.dp),
-                            color = KoinTheme.colors.neutral200
+                            color = RebrandKoinTheme.colors.neutral200
                         )
                     }
                     CallvanNotificationItem(
@@ -190,7 +190,7 @@ private fun CallvanNotificationsScreenPreview() {
         CallvanNotificationUiItem(
             id = 1,
             titleRes = R.string.callvan_notification_title_recruitment_complete,
-            routeInfo = "02.02(월) 16:00 인경관 - 천안터미널",
+            routeInfo = PREVIEW_ROUTE_INFO,
             maxParticipants = 8,
             currentParticipants = 8,
             message = "해당 콜밴팟 인원이 모두 모집되었어요. 콜밴을 예약할까요?",
@@ -199,7 +199,7 @@ private fun CallvanNotificationsScreenPreview() {
         CallvanNotificationUiItem(
             id = 2,
             titleRes = R.string.callvan_notification_title_member_joined,
-            routeInfo = "02.02(월) 16:00 인경관 - 천안터미널",
+            routeInfo = PREVIEW_ROUTE_INFO,
             maxParticipants = 8,
             currentParticipants = 7,
             message = "김철수: 인경 어디로 가면 되나요?",
@@ -208,7 +208,7 @@ private fun CallvanNotificationsScreenPreview() {
         CallvanNotificationUiItem(
             id = 3,
             titleRes = R.string.callvan_notification_title_new_message,
-            routeInfo = "02.02(월) 16:00 인경관 - 천안터미널",
+            routeInfo = PREVIEW_ROUTE_INFO,
             maxParticipants = 8,
             currentParticipants = 7,
             message = "이훈이 님이 콜밴팟에 참여했어요.",
@@ -217,7 +217,7 @@ private fun CallvanNotificationsScreenPreview() {
         CallvanNotificationUiItem(
             id = 4,
             titleRes = R.string.callvan_notification_title_departure_imminent,
-            routeInfo = "02.02(월) 16:00 인경관 - 천안터미널",
+            routeInfo = PREVIEW_ROUTE_INFO,
             maxParticipants = 8,
             currentParticipants = 6,
             message = "해당 콜밴팟 출발 시간이 30분 남았어요.",
@@ -237,3 +237,5 @@ private fun CallvanNotificationsScreenEmptyPreview() {
         notifications = sampleNotifications.toPersistentList()
     )
 }
+
+private const val PREVIEW_ROUTE_INFO = "02.02(월) 16:00 인경관 - 천안터미널"
