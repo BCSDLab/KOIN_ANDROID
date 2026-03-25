@@ -144,12 +144,7 @@ fun CallvanListScreenImpl(
             val layoutInfo = listState.layoutInfo
             val totalItemsCount = layoutInfo.totalItemsCount
             val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-            val canScroll = totalItemsCount > layoutInfo.visibleItemsInfo.size
-            if (!canScroll && totalItemsCount > 0) {
-                true
-            } else {
-                lastVisibleItemIndex >= totalItemsCount - LOAD_MORE_THRESHOLD
-            }
+            shouldLoadMore(totalItemsCount, layoutInfo.visibleItemsInfo.size, lastVisibleItemIndex)
         }
             .distinctUntilChanged()
             .filter { it }
@@ -182,24 +177,7 @@ fun CallvanListScreenImpl(
             confirmText = stringResource(R.string.callvan_confirm_positive),
             cancelText = stringResource(R.string.callvan_confirm_negative),
             onConfirm = {
-                when (confirmType) {
-                    CallvanConfirmType.JOIN -> {
-                        EventLogger.logCampusClickEvent(
-                            AnalyticsConstant.Label.Callvan.CALLVAN_JOIN,
-                            ""
-                        )
-                        onJoin(postId)
-                    }
-                    CallvanConfirmType.CANCEL_JOIN -> {
-                        EventLogger.logCampusClickEvent(
-                            AnalyticsConstant.Label.Callvan.CALLVAN_JOIN_CANCEL,
-                            ""
-                        )
-                        onCancelJoin(postId)
-                    }
-                    CallvanConfirmType.CLOSE -> onClose(postId)
-                    CallvanConfirmType.REOPEN -> onReRecruit(postId)
-                }
+                handleConfirmAction(confirmType, postId, onJoin, onCancelJoin, onClose, onReRecruit)
                 onPendingConfirmChange(null)
             },
             onDismiss = { onPendingConfirmChange(null) }
@@ -362,14 +340,60 @@ private fun CallvanListScreenPreview() {
         CallvanListScreenImpl(
             searchValue = "",
             items = persistentListOf(
-                CallvanListUiState(1, "테니스장", "천안 시외터미널", "2025-02-05", "14:00", 1, 8, CallvanItemState.DEFAULT),
-                CallvanListUiState(2, "정문", "천안 시외터미널", "2025-02-05", "14:00", 1, 8, CallvanItemState.JOINED),
-                CallvanListUiState(3, "테니스장", "천안역", "2025-02-05", "14:00", 1, 8, CallvanItemState.CLOSED),
-                CallvanListUiState(4, "담헌 앞", "천안아산역", "2025-02-05", "14:00", 1, 8, CallvanItemState.OWNER_ACTIVE),
-                CallvanListUiState(5, "천안 시외터미널", "학교", "2025-02-05", "14:00", 1, 8, CallvanItemState.OWNER_CLOSED)
+                CallvanListUiState(1, PREVIEW_DEPARTURE, PREVIEW_TERMINAL, PREVIEW_DATE, PREVIEW_TIME, 1, 8, CallvanItemState.DEFAULT),
+                CallvanListUiState(2, "정문", PREVIEW_TERMINAL, PREVIEW_DATE, PREVIEW_TIME, 1, 8, CallvanItemState.JOINED),
+                CallvanListUiState(3, PREVIEW_DEPARTURE, "천안역", PREVIEW_DATE, PREVIEW_TIME, 1, 8, CallvanItemState.CLOSED),
+                CallvanListUiState(4, "담헌 앞", "천안아산역", PREVIEW_DATE, PREVIEW_TIME, 1, 8, CallvanItemState.OWNER_ACTIVE),
+                CallvanListUiState(5, PREVIEW_TERMINAL, "학교", PREVIEW_DATE, PREVIEW_TIME, 1, 8, CallvanItemState.OWNER_CLOSED)
             )
         )
     }
 }
 
+@Suppress("LongParameterList")
+private fun handleConfirmAction(
+    confirmType: CallvanConfirmType,
+    postId: Int,
+    onJoin: (Int) -> Unit,
+    onCancelJoin: (Int) -> Unit,
+    onClose: (Int) -> Unit,
+    onReRecruit: (Int) -> Unit
+) {
+    when (confirmType) {
+        CallvanConfirmType.JOIN -> {
+            EventLogger.logCampusClickEvent(
+                AnalyticsConstant.Label.Callvan.CALLVAN_JOIN,
+                ""
+            )
+            onJoin(postId)
+        }
+        CallvanConfirmType.CANCEL_JOIN -> {
+            EventLogger.logCampusClickEvent(
+                AnalyticsConstant.Label.Callvan.CALLVAN_JOIN_CANCEL,
+                ""
+            )
+            onCancelJoin(postId)
+        }
+        CallvanConfirmType.CLOSE -> onClose(postId)
+        CallvanConfirmType.REOPEN -> onReRecruit(postId)
+    }
+}
+
+private fun shouldLoadMore(
+    totalItemsCount: Int,
+    visibleItemsCount: Int,
+    lastVisibleItemIndex: Int
+): Boolean {
+    val canScroll = totalItemsCount > visibleItemsCount
+    return if (!canScroll && totalItemsCount > 0) {
+        true
+    } else {
+        lastVisibleItemIndex >= totalItemsCount - LOAD_MORE_THRESHOLD
+    }
+}
+
 private const val LOAD_MORE_THRESHOLD = 3
+private const val PREVIEW_DATE = "2025-02-05"
+private const val PREVIEW_TIME = "14:00"
+private const val PREVIEW_DEPARTURE = "테니스장"
+private const val PREVIEW_TERMINAL = "천안 시외터미널"

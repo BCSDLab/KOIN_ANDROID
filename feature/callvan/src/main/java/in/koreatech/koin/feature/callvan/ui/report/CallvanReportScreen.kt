@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.feature.callvan.ui.report
 
+import android.content.Context
+import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -84,27 +86,7 @@ fun CallvanReportScreen(
         onImagesSelected = { uris ->
             viewModel.setLoading(true)
             coroutineScope.launch {
-                withContext(Dispatchers.IO) {
-                    uris.forEach { uri ->
-                        val cursor = context.contentResolver.query(uri, null, null, null, null)
-                        cursor?.use {
-                            if (it.moveToFirst()) {
-                                val fileNameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                                val fileSizeIndex = it.getColumnIndex(OpenableColumns.SIZE)
-                                if (fileNameIndex != -1 && fileSizeIndex != -1) {
-                                    val fileName = it.getString(fileNameIndex)
-                                    val fileSize = it.getLong(fileSizeIndex)
-                                    val fileType = context.contentResolver.getType(uri)
-                                    if (fileType?.startsWith("image/") == true) {
-                                        withContext(Dispatchers.Main) {
-                                            viewModel.uploadImage(fileName, fileType, fileSize, uri)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                processSelectedImages(context, uris, viewModel)
                 viewModel.setLoading(false)
             }
         }
@@ -147,6 +129,7 @@ fun CallvanReportScreen(
     )
 }
 
+@Suppress("LongParameterList")
 @Composable
 private fun CallvanReportScreenImpl(
     step: Int = 1,
@@ -249,4 +232,40 @@ private fun CallvanReportScreenSecondPreview() {
         step = 2,
         isLastStep = true
     )
+}
+
+@Suppress("kotlin:S6310")
+private suspend fun processSelectedImages(
+    context: Context,
+    uris: List<Uri>,
+    viewModel: CallvanReportViewModel
+) {
+    withContext(Dispatchers.IO) {
+        uris.forEach { uri ->
+            extractImageMetadata(context, uri)?.let { (fileName, fileType, fileSize) ->
+                withContext(Dispatchers.Main) {
+                    viewModel.uploadImage(fileName, fileType, fileSize, uri)
+                }
+            }
+        }
+    }
+}
+
+@Suppress("kotlin:S6310")
+private fun extractImageMetadata(
+    context: Context,
+    uri: Uri
+): Triple<String, String, Long>? {
+    val cursor = context.contentResolver.query(uri, null, null, null, null)
+    return cursor?.use {
+        if (!it.moveToFirst()) return@use null
+        val fileNameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+        val fileSizeIndex = it.getColumnIndex(OpenableColumns.SIZE)
+        if (fileNameIndex == -1 || fileSizeIndex == -1) return@use null
+        val fileName = it.getString(fileNameIndex)
+        val fileSize = it.getLong(fileSizeIndex)
+        val fileType = context.contentResolver.getType(uri) ?: return@use null
+        if (!fileType.startsWith("image/")) return@use null
+        Triple(fileName, fileType, fileSize)
+    }
 }
