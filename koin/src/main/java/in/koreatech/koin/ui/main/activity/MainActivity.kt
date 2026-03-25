@@ -179,7 +179,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                             Intent(Intent.ACTION_VIEW).apply {
                                 data = when (it.type) {
                                     ArticleNotiType.KEYWORD -> Uri.parse("koin://article/activity?fragment=article_keyword")
-                                    ArticleNotiType.LOST_AND_FOUND -> Uri.parse("koin://articles/lost-item/activity")
+                                    ArticleNotiType.LOST_AND_FOUND -> Uri.parse("koin://lost-item/activity")
                                 }
                             }
                         intent.`package` = packageName
