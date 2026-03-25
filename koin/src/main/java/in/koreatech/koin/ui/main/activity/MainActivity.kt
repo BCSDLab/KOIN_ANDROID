@@ -100,7 +100,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         initView()
         initViewModel()
         handleIntent()
-        observeDeveloperOption()
     }
 
     override fun onResume() {
@@ -246,35 +245,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             }
         }
 
-        clubComposeView.apply {
-            setContent {
-                val abTestGroup by viewModel.clubABTestExperimentGroup.collectAsStateWithLifecycle()
-                if (abTestGroup == ExperimentGroup.CATEGORY) {
-                    EventLogger.logABTestEvent(
-                        CLUB_AB_TEST_CATEGORY,
-                        CLUB_1,
-                        CLUB_AB_TEST_DESIGN_A
-                    )
-                } else if (abTestGroup == ExperimentGroup.HOT) {
-                    EventLogger.logABTestEvent(
-                        CLUB_AB_TEST_CATEGORY,
-                        CLUB_1,
-                        CLUB_AB_TEST_DESIGN_B
-                    )
-                }
-
-                if (abTestGroup == ExperimentGroup.CATEGORY) {
-                    MainClubWidgetA()
-                } else if (abTestGroup == ExperimentGroup.HOT) {
-                    val hotClub by viewModel.hotClub.collectAsStateWithLifecycle()
-                    MainClubWidgetB(
-                        hotClubId = hotClub?.clubId ?: -1,
-                        hotClubImageUrl = hotClub?.imageUrl ?: ""
-                    )
-                }
-            }
-        }
-
         callvanComposeView.setContent {
             KoinTheme {
                 CallvanEntry()
@@ -372,20 +342,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             getStoreCategories()
             binding.textViewStore.visibility = View.GONE
             binding.shopComposeView.visibility = View.VISIBLE
-        }
-    }
-
-    private fun observeDeveloperOption() = lifecycleScope.launch {
-        repeatOnLifecycle(Lifecycle.State.STARTED) {
-            DeveloperOptionUtil.getDeveloperOptionFlow(DeveloperOption.CallvanSprint).collectLatest { enabled ->
-                if (enabled) {
-                    binding.callvanComposeView.visibility = View.VISIBLE
-                    binding.clubComposeView.visibility = View.GONE
-                } else {
-                    binding.callvanComposeView.visibility = View.GONE
-                    binding.clubComposeView.visibility = View.VISIBLE
-                }
-            }
         }
     }
 
