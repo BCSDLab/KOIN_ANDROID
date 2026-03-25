@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.api
 
-import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
 import `in`.koreatech.koin.data.request.user.CheckEmailExistsRequest
 import `in`.koreatech.koin.data.request.user.CheckPhoneExistsRequest
@@ -31,127 +30,127 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface UserApi {
-    @POST(URLConstant.USERS.SIGNIN_V2)
+    @POST("v2/users/login")
     suspend fun getToken(
         @Body loginRequest: LoginRequest
     ): AuthResponse
 
-    @POST(URLConstant.OWNER.SIGNIN)
+    @POST("owner/login")
     suspend fun getOwnerToken(
         @Body ownerLoginRequest: OwnerLoginRequest
     ): OwnerAuthResponse
 
-    @POST(URLConstant.USER.STUDENT.REGISTER)
+    @POST("user/student/register")
     suspend fun postRegister(
         @Body studentInfoRequest: StudentInfoRequest
     )
 
-    @POST(URLConstant.USER.FINDPASSWORD)
+    @POST("user/find/password")
     suspend fun postPasswordReset(
         @Body idRequest: IdRequest
     )
 
-    @GET(URLConstant.USER.CHECK.NICKNAME)
+    @GET("user/check/nickname")
     suspend fun checkNickname(
         @Query("nickname") nickname: String
     )
 
-    @GET(URLConstant.USER.CHECK.EMAIL)
+    @GET("user/check/email")
     suspend fun checkEmail(
         @Query("address") email: String
     )
 
-    @POST(URLConstant.USER.REFRESH)
+    @POST("user/refresh")
     suspend fun postUserRefresh(
         @Body refreshRequest: RefreshRequest
     ): Response<RefreshResponse>
 
-    @GET(URLConstant.USER.CHECK.PHONE)
+    @GET("user/check/phone")
     suspend fun checkPhoneNumberDuplicate(
         @Query("phone") phone: String
     )
 
-    @GET(URLConstant.USER.CHECK.NICKNAME_V2)
+    @GET("user/check/nickname")
     suspend fun checkNicknameV2(
         @Query("nickname") nickname: String
     )
 
-    @GET(URLConstant.USER.CHECKUSERID)
+    @GET("user/check/id")
     suspend fun checkLoginId(
         @Query("loginId") id: String
     )
 
-    @POST(URLConstant.USERS.SMSSEND)
+    @POST("users/verification/sms/send")
     suspend fun smsSend(
         @Body smsSendRequest: SmsSendRequest
     ): CodeRequestCountResponse
 
-    @POST(URLConstant.USERS.EMAILSEND)
+    @POST("users/verification/email/send")
     suspend fun emailSend(
         @Body emailSendRequest: EmailSendRequest
     ): CodeRequestCountResponse
 
-    @POST(URLConstant.USERS.STUDENTS.REGISTER_V2)
+    @POST("v2/users/students/register")
     suspend fun postStudentRegister(
         @Body studentInfoRequest: StudentInfoRequestV2
     )
 
-    @POST(URLConstant.USERS.GENERAL.REGISTER)
+    @POST("v2/users/register")
     suspend fun postGeneralRegister(
         @Body generalInfoRequest: GeneralInfoRequest
     )
 
-    @POST(URLConstant.USERS.SMSVERIFY)
+    @POST("users/verification/sms/verify")
     suspend fun codeVerify(
         @Body smsVerifyRequest: SmsVerifyRequest
     )
 
-    @POST(URLConstant.USERS.EMAILVERIFY)
+    @POST("users/verification/email/verify")
     suspend fun emailVerify(
         @Body emailVerifyRequest: EmailVerifyRequest
     )
 
-    @POST(URLConstant.USER.EXISTS.ID_EXISTS)
+    @POST("user/id/exists")
     suspend fun idExists(
         @Body idExistsRequest: IDExistsRequest
     )
 
-    @POST(URLConstant.USERS.ID_MATCH_EMAIL)
+    @POST("users/id/match/email")
     suspend fun idMatchEmail(
         @Body idMatchEmail: IdMatchEmail
     )
 
-    @POST(URLConstant.USERS.ID_MATCH_PHONE)
+    @POST("users/id/match/phone")
     suspend fun idMatchPhone(
         @Body idMatchPhone: IdMatchPhone
     )
 
-    @POST(URLConstant.USERS.PASSWORD_RESET_BY_EMAIL)
+    @POST("users/password/reset/email")
     suspend fun passwordResetByEmail(
         @Body passwordResetByEmail: PasswordResetByEmail
     )
 
-    @POST(URLConstant.USERS.PASSWORD_RESET_BY_SMS)
+    @POST("users/password/reset/sms")
     suspend fun passwordResetBySms(
         @Body passwordResetBySms: PasswordResetBySms
     )
 
-    @POST(URLConstant.USER.EXISTS.EMAIL)
+    @POST("user/email/exists")
     suspend fun checkEmailExists(
         @Body checkEmailExistsRequest: CheckEmailExistsRequest
     )
 
-    @POST(URLConstant.USER.EXISTS.PHONE)
+    @POST("user/phone/exists")
     suspend fun checkPhoneExists(
         @Body checkPhoneExistsRequest: CheckPhoneExistsRequest
     )
 
-    @POST(URLConstant.USERS.FINDID.EMAIL)
+    @POST("users/id/find/email")
     suspend fun findIdByEmail(
         @Body emailVerifyRequest: EmailVerifyRequest // Find id use same DTO with email verification
     ): LoginIdResponse
 
-    @POST(URLConstant.USERS.FINDID.SMS)
+    @POST("users/id/find/sms")
     suspend fun findIdBySms(
         @Body smsVerifyRequest: SmsVerifyRequest // Find id use same DTO with sms verification
     ): LoginIdResponse
