@@ -301,7 +301,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         }
     }
 
-
     private fun initBanner() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
