@@ -59,6 +59,7 @@ import `in`.koreatech.koin.feature.banner.ui.BannerActivity
 import `in`.koreatech.koin.feature.callvan.CallvanEntry
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetA
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetB
+import `in`.koreatech.koin.feature.lostandfound.DEEP_LINK_LOST_AND_FOUND_BASE
 import `in`.koreatech.koin.feature.lostandfound.ui.LostAndFoundActivity
 import `in`.koreatech.koin.feature.lostandfound.ui.entry.LostAndFoundEntry
 import `in`.koreatech.koin.feature.store.MainStoreWidget
@@ -138,7 +139,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             insets
         }
 
-        binding.nestedScrollViewMain.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+        binding.nestedScrollViewMain.setOnScrollChangeListener { _, _, _, _, _ ->
             val offset = binding.nestedScrollViewMain.computeVerticalScrollOffset()
             val extent = binding.nestedScrollViewMain.computeVerticalScrollExtent()
             val range = binding.nestedScrollViewMain.computeVerticalScrollRange()
@@ -163,44 +164,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             toggleNavigationDrawer()
         }
 
-        binding.composeViewHotArticle.setContent {
-            KoinTheme {
-                val articleMain by viewModel.articleMain.collectAsState()
-
-                HotArticlePager(
-                    articles = articleMain,
-                    onNotiClick = {
-                        EventLogger.logClickEvent(
-                            EventAction.CAMPUS,
-                            AnalyticsConstant.Label.TO_MANAGE_KEYWORD,
-                            it.value
-                        )
-                        val intent =
-                            Intent(Intent.ACTION_VIEW).apply {
-                                data = when (it.type) {
-                                    ArticleNotiType.KEYWORD -> Uri.parse("koin://article/activity?fragment=article_keyword")
-                                    ArticleNotiType.LOST_AND_FOUND -> Uri.parse("koin://articles/lost-item/activity")
-                                }
-                            }
-                        intent.`package` = packageName
-                        startActivity(intent)
-                    },
-                    onArticleClick = {
-                        EventLogger.logClickEvent(
-                            EventAction.CAMPUS,
-                            AnalyticsConstant.Label.POPULAR_NOTICE_BANNER,
-                            it.title
-                        )
-                        val intent =
-                            Intent(Intent.ACTION_VIEW).apply {
-                                data = Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.boardId}")
-                            }
-                        intent.`package` = packageName
-                        startActivity(intent)
-                    }
-                )
-            }
-        }
+        initHotArticleView()
 
         textSeeMoreArticle.setOnClickListener {
             EventLogger.logClickEvent(
@@ -246,34 +210,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             }
         }
 
-        clubComposeView.apply {
-            setContent {
-                val abTestGroup by viewModel.clubABTestExperimentGroup.collectAsStateWithLifecycle()
-                if (abTestGroup == ExperimentGroup.CATEGORY) {
-                    EventLogger.logABTestEvent(
-                        CLUB_AB_TEST_CATEGORY,
-                        CLUB_1,
-                        CLUB_AB_TEST_DESIGN_A
-                    )
-                } else if (abTestGroup == ExperimentGroup.HOT) {
-                    EventLogger.logABTestEvent(
-                        CLUB_AB_TEST_CATEGORY,
-                        CLUB_1,
-                        CLUB_AB_TEST_DESIGN_B
-                    )
-                }
-
-                if (abTestGroup == ExperimentGroup.CATEGORY) {
-                    MainClubWidgetA()
-                } else if (abTestGroup == ExperimentGroup.HOT) {
-                    val hotClub by viewModel.hotClub.collectAsStateWithLifecycle()
-                    MainClubWidgetB(
-                        hotClubId = hotClub?.clubId ?: -1,
-                        hotClubImageUrl = hotClub?.imageUrl ?: ""
-                    )
-                }
-            }
-        }
+        initClubView()
 
         callvanComposeView.setContent {
             KoinTheme {
@@ -397,6 +334,78 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         val intent = Intent(this@MainActivity, BannerActivity::class.java)
                         startActivity(intent)
                     }
+                }
+            }
+        }
+    }
+
+    private fun initHotArticleView() {
+        binding.composeViewHotArticle.setContent {
+            KoinTheme {
+                val articleMain by viewModel.articleMain.collectAsState()
+
+                HotArticlePager(
+                    articles = articleMain,
+                    onNotiClick = {
+                        EventLogger.logClickEvent(
+                            EventAction.CAMPUS,
+                            AnalyticsConstant.Label.TO_MANAGE_KEYWORD,
+                            it.value
+                        )
+                        val intent =
+                            Intent(Intent.ACTION_VIEW).apply {
+                                data = when (it.type) {
+                                    ArticleNotiType.KEYWORD -> Uri.parse("koin://article/activity?fragment=article_keyword")
+                                    ArticleNotiType.LOST_AND_FOUND -> Uri.parse(DEEP_LINK_LOST_AND_FOUND_BASE)
+                                }
+                            }
+                        intent.`package` = packageName
+                        startActivity(intent)
+                    },
+                    onArticleClick = {
+                        EventLogger.logClickEvent(
+                            EventAction.CAMPUS,
+                            AnalyticsConstant.Label.POPULAR_NOTICE_BANNER,
+                            it.title
+                        )
+                        val intent =
+                            Intent(Intent.ACTION_VIEW).apply {
+                                data = Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.boardId}")
+                            }
+                        intent.`package` = packageName
+                        startActivity(intent)
+                    }
+                )
+            }
+        }
+    }
+
+    private fun initClubView() {
+        binding.clubComposeView.apply {
+            setContent {
+                val abTestGroup by viewModel.clubABTestExperimentGroup.collectAsStateWithLifecycle()
+                if (abTestGroup == ExperimentGroup.CATEGORY) {
+                    EventLogger.logABTestEvent(
+                        CLUB_AB_TEST_CATEGORY,
+                        CLUB_1,
+                        CLUB_AB_TEST_DESIGN_A
+                    )
+                } else if (abTestGroup == ExperimentGroup.HOT) {
+                    EventLogger.logABTestEvent(
+                        CLUB_AB_TEST_CATEGORY,
+                        CLUB_1,
+                        CLUB_AB_TEST_DESIGN_B
+                    )
+                }
+
+                if (abTestGroup == ExperimentGroup.CATEGORY) {
+                    MainClubWidgetA()
+                } else if (abTestGroup == ExperimentGroup.HOT) {
+                    val hotClub by viewModel.hotClub.collectAsStateWithLifecycle()
+                    MainClubWidgetB(
+                        hotClubId = hotClub?.clubId ?: -1,
+                        hotClubImageUrl = hotClub?.imageUrl ?: ""
+                    )
                 }
             }
         }
