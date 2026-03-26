@@ -67,6 +67,7 @@
     <ID>TooGenericExceptionCaught:MainActivity.kt$MainActivity$e: Exception</ID>
     <ID>TooManyFunctions:AuthNetworkModule.kt$AuthNetworkModule</ID>
     <ID>TooManyFunctions:KoinNavigationDrawerActivity.kt$KoinNavigationDrawerActivity : ActivityBaseOnNavigationItemSelectedListener</ID>
+    <ID>TooManyFunctions:MainActivity.kt$MainActivity : KoinNavigationDrawerTimeActivity</ID>
     <ID>TooManyFunctions:MainActivityViewModel.kt$MainActivityViewModel : BaseViewModel</ID>
     <ID>TooManyFunctions:NotificationActivity.kt$NotificationActivity : ActivityBase</ID>
     <ID>TooManyFunctions:SchemeActivity.kt$SchemeActivity : ActivityBase</ID>

@@ -60,7 +60,7 @@ jobs:
         run: ./gradlew ktlintCheck
 
       - name: spotless
-        run: ./gradlew spotlessCheck
+        run: ./gradlew spotlessCheck --no-configuration-cache
 
       - name: detekt
         run: ./gradlew detekt

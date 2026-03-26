@@ -162,6 +162,7 @@ private fun CallvanFilledButton(
     }
 }
 
+@Suppress("LongParameterList")
 @Composable
 private fun CallvanOutlinedButton(
     text: String,

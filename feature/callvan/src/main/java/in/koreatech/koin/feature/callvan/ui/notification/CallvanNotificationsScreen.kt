@@ -61,6 +61,7 @@ fun CallvanNotificationsScreen(
     )
 }
 
+@Suppress("kotlin:S6615")
 @Composable
 fun CallvanNotificationsScreenImpl(
     notifications: ImmutableList<CallvanNotificationUiItem>,
@@ -189,7 +190,7 @@ private fun CallvanNotificationsScreenPreview() {
         CallvanNotificationUiItem(
             id = 1,
             titleRes = R.string.callvan_notification_title_recruitment_complete,
-            routeInfo = "02.02(월) 16:00 인경관 - 천안터미널",
+            routeInfo = PREVIEW_ROUTE_INFO,
             maxParticipants = 8,
             currentParticipants = 8,
             message = "해당 콜밴팟 인원이 모두 모집되었어요. 콜밴을 예약할까요?",
@@ -198,7 +199,7 @@ private fun CallvanNotificationsScreenPreview() {
         CallvanNotificationUiItem(
             id = 2,
             titleRes = R.string.callvan_notification_title_member_joined,
-            routeInfo = "02.02(월) 16:00 인경관 - 천안터미널",
+            routeInfo = PREVIEW_ROUTE_INFO,
             maxParticipants = 8,
             currentParticipants = 7,
             message = "김철수: 인경 어디로 가면 되나요?",
@@ -207,7 +208,7 @@ private fun CallvanNotificationsScreenPreview() {
         CallvanNotificationUiItem(
             id = 3,
             titleRes = R.string.callvan_notification_title_new_message,
-            routeInfo = "02.02(월) 16:00 인경관 - 천안터미널",
+            routeInfo = PREVIEW_ROUTE_INFO,
             maxParticipants = 8,
             currentParticipants = 7,
             message = "이훈이 님이 콜밴팟에 참여했어요.",
@@ -216,7 +217,7 @@ private fun CallvanNotificationsScreenPreview() {
         CallvanNotificationUiItem(
             id = 4,
             titleRes = R.string.callvan_notification_title_departure_imminent,
-            routeInfo = "02.02(월) 16:00 인경관 - 천안터미널",
+            routeInfo = PREVIEW_ROUTE_INFO,
             maxParticipants = 8,
             currentParticipants = 6,
             message = "해당 콜밴팟 출발 시간이 30분 남았어요.",
@@ -236,3 +237,5 @@ private fun CallvanNotificationsScreenEmptyPreview() {
         notifications = sampleNotifications.toPersistentList()
     )
 }
+
+private const val PREVIEW_ROUTE_INFO = "02.02(월) 16:00 인경관 - 천안터미널"

@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.data.api
 
 import OwnerRegisterRequest
-import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordRequest
 import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordSmsRequest
 import `in`.koreatech.koin.data.request.owner.OwnerEmailRegisterRequest
@@ -20,80 +19,80 @@ import retrofit2.http.PUT
 import retrofit2.http.Query
 
 interface OwnerApi {
-    @POST(URLConstant.OWNER.CODE)
+    @POST("owners/verification/code")
     suspend fun postVerificationCode(
         @Body ownerVerificationCode: OwnerVerificationCodeRequest
     ): OwnerVerificationCodeResponse
 
-    @POST(URLConstant.OWNER.EMAIL)
+    @POST("owners/verification/email")
     suspend fun postVerificationEmail(
         @Body ownerVerificationEmail: OwnerVerificationEmailRequest
     )
 
-    @POST(URLConstant.OWNER.REGISTER)
+    @POST("owners/register")
     suspend fun postOwnerEmailRegister(
         @Body ownerEmailRegisterRequest: OwnerEmailRegisterRequest
     ): OwnerResponse
 
-    @POST(URLConstant.OWNER.REGISTER_PHONE)
+    @POST("owners/register/phone")
     suspend fun postOwnerRegister(
         @Body ownerRegisterRequest: OwnerRegisterRequest
     )
 
     // 비밀번호 변경 인증번호 발송
-    @POST(URLConstant.OWNER.CHANGEPASSWORDEMAIL)
+    @POST("owners/password/reset/verification")
     suspend fun changePasswordVerificationEmail(
         @Body ownerVerificationEmail: OwnerVerificationEmailRequest
     )
 
-    @POST(URLConstant.OWNER.CHANGEPASSWORDESENDSMS)
+    @POST("owners/password/reset/verification/sms")
     suspend fun changePasswordVerificationSms(
         @Body ownerVerificationSms: VerificationSmsRequest
     )
 
     // 비밀번호 변경 인증번호 확인
-    @POST(URLConstant.OWNER.CHANGEPASSWORDCODE)
+    @POST("owners/password/reset/send")
     suspend fun changePasswordVerificationCode(
         @Body ownerVerificationCode: OwnerVerificationCodeRequest
     )
 
-    @POST(URLConstant.OWNER.CHANGEPASSWORDSMSCODE)
+    @POST("owners/password/reset/send/sms")
     suspend fun changePasswordVerificationCode(
         @Body ownerVerificationSmsCode: VerificationCodeSmsRequest
     )
 
     // 비밀번호 변경
-    @PUT(URLConstant.OWNER.CHANGEPASSWORD)
+    @PUT("owners/password/reset")
     suspend fun changePassword(
         @Body ownerChangePasswordRequest: OwnerChangePasswordRequest
     )
 
-    @PUT(URLConstant.OWNER.CHANGEPASSWORDSMS)
+    @PUT("owners/password/reset/sms")
     suspend fun changePasswordSms(
         @Body ownerChangePasswordSmsRequest: OwnerChangePasswordSmsRequest
     )
 
-    @GET(URLConstant.OWNER.EXISTS_ACCOUNT)
+    @GET("owners/exists/account")
     suspend fun checkExistsAccount(
         @Query("account") account: String
     )
 
-    @POST(URLConstant.OWNER.SMS)
+    @POST("owners/verification/sms")
     suspend fun postVerificationSms(
         @Body ownerVerificationSms: VerificationSmsRequest
     )
 
-    @POST(URLConstant.OWNER.CODE_SMS)
+    @POST("owners/verification/code/sms")
     suspend fun postVerificationCodeSms(
         @Body ownerVerificationCode: VerificationCodeSmsRequest
     ): OwnerVerificationCodeResponse
 
-    @POST(URLConstant.OWNER.SHOPS)
+    @POST("owner/shops")
     suspend fun putMyStore(
         @Body storeRegisterResponse: StoreRegisterResponse
     ): StoreRegisterResponse
 
-    @POST(URLConstant.OWNER.OWNERS + "/exists/company-number")
+    @POST("owners/exists/company-number")
     suspend fun checkExistsCompanyNumber(
         @Body companyNumber: CheckCompanyNumberResponse
     )
