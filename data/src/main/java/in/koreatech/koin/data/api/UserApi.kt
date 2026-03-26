@@ -50,11 +50,6 @@ interface UserApi {
         @Body idRequest: IdRequest
     )
 
-    @GET("user/check/nickname")
-    suspend fun checkNickname(
-        @Query("nickname") nickname: String
-    )
-
     @GET("user/check/email")
     suspend fun checkEmail(
         @Query("address") email: String

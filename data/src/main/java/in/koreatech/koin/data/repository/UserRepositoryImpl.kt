@@ -136,18 +136,6 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun isUsernameDuplicated(nickname: String): Boolean {
-        return try {
-            userRemoteDataSource.checkNickname(nickname)
-            false
-        } catch (e: HttpException) {
-            if (e.code() == 409) {
-                true
-            } else {
-                throw e
-            }
-        }
-    }
 
     override suspend fun isUserEmailDuplicated(email: String): Boolean {
         return try {
