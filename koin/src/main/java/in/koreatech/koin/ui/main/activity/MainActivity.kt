@@ -59,6 +59,7 @@ import `in`.koreatech.koin.feature.banner.ui.BannerActivity
 import `in`.koreatech.koin.feature.callvan.CallvanEntry
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetA
 import `in`.koreatech.koin.feature.club.ui.MainClubWidgetB
+import `in`.koreatech.koin.feature.lostandfound.DEEP_LINK_LOST_AND_FOUND_BASE
 import `in`.koreatech.koin.feature.lostandfound.ui.LostAndFoundActivity
 import `in`.koreatech.koin.feature.lostandfound.ui.entry.LostAndFoundEntry
 import `in`.koreatech.koin.feature.store.MainStoreWidget
@@ -355,7 +356,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                             Intent(Intent.ACTION_VIEW).apply {
                                 data = when (it.type) {
                                     ArticleNotiType.KEYWORD -> Uri.parse("koin://article/activity?fragment=article_keyword")
-                                    ArticleNotiType.LOST_AND_FOUND -> Uri.parse("koin://lost-item/activity")
+                                    ArticleNotiType.LOST_AND_FOUND -> Uri.parse(DEEP_LINK_LOST_AND_FOUND_BASE)
                                 }
                             }
                         intent.`package` = packageName
