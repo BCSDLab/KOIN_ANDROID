@@ -1,5 +1,4 @@
 package `in`.koreatech.koin.feature.callvan.ui.list
-
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
@@ -14,6 +13,7 @@ import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanConfirmType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
+import `in`.koreatech.koin.feature.callvan.ui.list.model.toListErrorType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.toUiState
 import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList
@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.map
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
@@ -90,14 +91,20 @@ class CallvanListViewModel @Inject constructor(
     }
 
     fun applyFilter(
+        listType: CallvanFilterType.ListType,
         sortType: CallvanFilterType.SortType,
         statusesType: CallvanFilterType.StatusesType,
         departuresType: ImmutableList<CallvanFilterType.DeparturesFilterType>,
         arrivalsType: ImmutableList<CallvanFilterType.ArrivalsFilterType>
     ) = blockingIntent {
+        if (listType !is CallvanFilterType.ListType.All && !state.isLoggedIn) {
+            reduce { state.copy(isLoginVisible = true) }
+            return@blockingIntent
+        }
         reduce {
             state.copy(
                 filterState = FilterBottomSheetState(
+                    selectedListType = listType,
                     selectedSortType = sortType,
                     selectedStatusesType = statusesType,
                     selectedDeparturesType = departuresType,
@@ -114,7 +121,8 @@ class CallvanListViewModel @Inject constructor(
             return@intent
         }
         joinCallvanPostUseCase(postId)
-            .onSuccess { fetchPosts() }
+            .onSuccess { fetchPosts(state.items.size.coerceAtLeast(PAGE_SIZE)) }
+            .onFailure { postSideEffect(CallvanListSideEffect.ShowSnackbar(it.toListErrorType())) }
     }
 
     fun cancelJoin(postId: Int) = intent {
@@ -123,7 +131,8 @@ class CallvanListViewModel @Inject constructor(
             return@intent
         }
         leaveCallvanPostUseCase(postId)
-            .onSuccess { fetchPosts() }
+            .onSuccess { fetchPosts(state.items.size.coerceAtLeast(PAGE_SIZE)) }
+            .onFailure { postSideEffect(CallvanListSideEffect.ShowSnackbar(it.toListErrorType())) }
     }
 
     fun close(postId: Int) = intent {
@@ -132,7 +141,8 @@ class CallvanListViewModel @Inject constructor(
             return@intent
         }
         closeCallvanPostUseCase(postId)
-            .onSuccess { fetchPosts() }
+            .onSuccess { fetchPosts(state.items.size.coerceAtLeast(PAGE_SIZE)) }
+            .onFailure { postSideEffect(CallvanListSideEffect.ShowSnackbar(it.toListErrorType())) }
     }
 
     fun reRecruit(postId: Int) = intent {
@@ -141,7 +151,8 @@ class CallvanListViewModel @Inject constructor(
             return@intent
         }
         reopenCallvanPostUseCase(postId)
-            .onSuccess { fetchPosts() }
+            .onSuccess { fetchPosts(state.items.size.coerceAtLeast(PAGE_SIZE)) }
+            .onFailure { postSideEffect(CallvanListSideEffect.ShowSnackbar(it.toListErrorType())) }
     }
 
     fun complete(postId: Int) = intent {
@@ -150,7 +161,8 @@ class CallvanListViewModel @Inject constructor(
             return@intent
         }
         completeCallvanPostUseCase(postId)
-            .onSuccess { fetchPosts() }
+            .onSuccess { fetchPosts(state.items.size.coerceAtLeast(PAGE_SIZE)) }
+            .onFailure { postSideEffect(CallvanListSideEffect.ShowSnackbar(it.toListErrorType())) }
     }
 
     fun updateFilterVisible(visible: Boolean) = blockingIntent {
@@ -169,10 +181,10 @@ class CallvanListViewModel @Inject constructor(
         reduce { state.copy(isLoginVisible = visible) }
     }
 
-    fun fetchPosts() = intent {
+    fun fetchPosts(limit: Int = PAGE_SIZE) = intent {
         reduce { state.copy(isLoading = true) }
         getCallvanPostsUseCase(
-            author = null,
+            author = state.filterState.selectedListType.value,
             departures = state.filterState.selectedDeparturesType.mapNotNull { it.value }.ifEmpty { null },
             departureKeyword = null,
             arrivals = state.filterState.selectedArrivalsType.mapNotNull { it.value }.ifEmpty { null },
@@ -180,8 +192,9 @@ class CallvanListViewModel @Inject constructor(
             statuses = state.filterState.selectedStatusesType.value?.let { listOf(it) },
             title = state.searchValue.ifBlank { null },
             sort = state.filterState.selectedSortType.value,
+            joined = state.filterState.selectedListType is CallvanFilterType.ListType.Joined,
             page = 1,
-            limit = PAGE_SIZE
+            limit = limit
         ).onSuccess { result ->
             reduce {
                 state.copy(
@@ -202,7 +215,7 @@ class CallvanListViewModel @Inject constructor(
         reduce { state.copy(isLoadingMore = true) }
         val nextPage = state.currentPage + 1
         getCallvanPostsUseCase(
-            author = null,
+            author = state.filterState.selectedListType.value,
             departures = state.filterState.selectedDeparturesType.mapNotNull { it.value }.ifEmpty { null },
             departureKeyword = null,
             arrivals = state.filterState.selectedArrivalsType.mapNotNull { it.value }.ifEmpty { null },
@@ -210,6 +223,7 @@ class CallvanListViewModel @Inject constructor(
             statuses = state.filterState.selectedStatusesType.value?.let { listOf(it) },
             title = state.searchValue.ifBlank { null },
             sort = state.filterState.selectedSortType.value,
+            joined = state.filterState.selectedListType is CallvanFilterType.ListType.Joined,
             page = nextPage,
             limit = PAGE_SIZE
         ).onSuccess { result ->

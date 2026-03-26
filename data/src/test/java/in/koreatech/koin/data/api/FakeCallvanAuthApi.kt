@@ -36,6 +36,7 @@ class FakeCallvanAuthApi : CallvanAuthApi {
         statuses: List<String>?,
         title: String?,
         sort: String?,
+        joined: Boolean,
         page: Int?,
         limit: Int?
     ): CallvanPostSearchResponse = throw NotImplementedError()

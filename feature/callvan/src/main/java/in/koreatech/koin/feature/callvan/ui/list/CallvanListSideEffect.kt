@@ -1,3 +1,7 @@
 package `in`.koreatech.koin.feature.callvan.ui.list
 
-sealed interface CallvanListSideEffect
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListErrorType
+
+sealed interface CallvanListSideEffect {
+    data class ShowSnackbar(val errorType: CallvanListErrorType) : CallvanListSideEffect
+}

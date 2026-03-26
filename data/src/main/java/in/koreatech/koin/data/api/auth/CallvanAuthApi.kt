@@ -33,6 +33,7 @@ interface CallvanAuthApi {
         @Query("statuses") statuses: List<String>? = null,
         @Query("title") title: String? = null,
         @Query("sort") sort: String? = "LATEST_DESC",
+        @Query("joined") joined: Boolean = false,
         @Query("page") page: Int? = 1,
         @Query("limit") limit: Int? = 10
     ): CallvanPostSearchResponse
@@ -68,20 +69,20 @@ interface CallvanAuthApi {
     suspend fun getNotifications(): List<CallvanNotificationResponse>
 
     @DELETE("/callvan/notifications")
-    suspend fun deleteAllNotifications()
+    suspend fun deleteAllNotifications(): Response<Unit>
 
     @DELETE("/callvan/notifications/{notificationId}")
     suspend fun deleteNotification(
         @Path("notificationId") notificationId: Int
-    )
+    ): Response<Unit>
 
     @POST("/callvan/notifications/{notificationId}/read")
     suspend fun markNotificationAsRead(
         @Path("notificationId") notificationId: Int
-    )
+    ): Response<Unit>
 
     @POST("/callvan/notifications/mark-all-read")
-    suspend fun markAllNotificationsAsRead()
+    suspend fun markAllNotificationsAsRead(): Response<Unit>
 
     @PUT("/callvan/posts/{postId}/complete")
     suspend fun completeCallvanPost(

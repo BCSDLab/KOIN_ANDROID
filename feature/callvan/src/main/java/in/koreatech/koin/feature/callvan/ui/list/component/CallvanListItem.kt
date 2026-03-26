@@ -35,7 +35,13 @@ fun CallvanListItem(
     modifier: Modifier = Modifier,
     onItemClick: () -> Unit = {}
 ) {
-    val isJoined = remember(uiState.itemState) { uiState.itemState == CallvanItemState.JOINED }
+    val isJoined = remember(uiState.itemState) {
+        uiState.itemState in listOf(
+            CallvanItemState.JOINED,
+            CallvanItemState.OWNER_ACTIVE,
+            CallvanItemState.OWNER_CLOSED
+        )
+    }
 
     Row(
         modifier = modifier

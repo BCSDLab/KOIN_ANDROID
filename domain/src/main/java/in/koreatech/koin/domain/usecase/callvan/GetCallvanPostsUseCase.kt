@@ -16,6 +16,7 @@ class GetCallvanPostsUseCase @Inject constructor(
         statuses: List<String>?,
         title: String?,
         sort: String?,
+        joined: Boolean,
         page: Int?,
         limit: Int?
     ): Result<CallvanPostSearch> = callvanRepository.getCallvanPosts(
@@ -27,6 +28,7 @@ class GetCallvanPostsUseCase @Inject constructor(
         statuses = statuses,
         title = title,
         sort = sort,
+        joined = joined,
         page = page,
         limit = limit
     )

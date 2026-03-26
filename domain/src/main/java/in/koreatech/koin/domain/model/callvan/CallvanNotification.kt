@@ -3,7 +3,7 @@ package `in`.koreatech.koin.domain.model.callvan
 data class CallvanNotification(
     val id: Int,
     val type: String,
-    val messagePreview: String,
+    val messagePreview: String?,
     val isRead: Boolean,
     val createdAt: String,
     val postId: Int,

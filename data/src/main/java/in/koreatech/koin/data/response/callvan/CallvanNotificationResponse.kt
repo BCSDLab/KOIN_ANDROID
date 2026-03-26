@@ -8,7 +8,7 @@ data class CallvanNotificationResponse(
     @SerializedName("type")
     val type: String,
     @SerializedName("message_preview")
-    val messagePreview: String,
+    val messagePreview: String?,
     @SerializedName("is_read")
     val isRead: Boolean,
     @SerializedName("created_at")

@@ -96,6 +96,22 @@ sealed class CallvanFilterType(
     }
 
     @Parcelize
+    sealed class ListType(
+        @StringRes override val stringRes: Int,
+        override val value: String?
+    ) : CallvanFilterType(stringRes, value) {
+        @Parcelize
+        object All : ListType(R.string.filter_list_all, "ALL")
+
+        @Parcelize
+        object My : ListType(R.string.filter_list_my_posts, "MY")
+
+        /* joined 의 value는 ALL 과 같으며 다른 field 의 조건 값이 존재 */
+        @Parcelize
+        object Joined : ListType(R.string.filter_list_joined_posts, "ALL")
+    }
+
+    @Parcelize
     sealed class SortType(
         @StringRes override val stringRes: Int,
         override val value: String?
