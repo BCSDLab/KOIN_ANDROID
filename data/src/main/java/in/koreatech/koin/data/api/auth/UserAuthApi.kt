@@ -134,7 +134,7 @@ interface UserAuthApi {
         @Body abTestRequest: ABTestRequest
     ): ABTestResponse
 
-    @POST("shops/{shopId}}/call-notification")
+    @POST("shops/{shopId}/call-notification")
     suspend fun postReviewPromptNotification(
         @Path("storeId") storeId: Int
     )
