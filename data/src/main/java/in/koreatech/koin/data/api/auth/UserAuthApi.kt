@@ -14,7 +14,6 @@ import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
 import `in`.koreatech.koin.data.response.user.GeneralUserResponse
 import `in`.koreatech.koin.data.response.user.StudentUserResponse
-import `in`.koreatech.koin.data.response.user.UserInfoEditResponse
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -49,9 +48,6 @@ interface UserAuthApi {
 
     @DELETE("user")
     suspend fun deleteUser(): Response<Unit?>
-
-    @GET("user/check/nickname/{nickname}")
-    suspend fun checkNickName(): UserInfoEditResponse
 
     @GET("user/auth")
     suspend fun getUserType(): UserTypeResponse
@@ -136,6 +132,6 @@ interface UserAuthApi {
 
     @POST("shops/{shopId}/call-notification")
     suspend fun postReviewPromptNotification(
-        @Path("storeId") storeId: Int
+        @Path("shopId") shopId: Int
     )
 }
