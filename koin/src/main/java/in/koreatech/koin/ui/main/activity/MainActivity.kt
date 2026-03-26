@@ -129,7 +129,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             insets
         }
 
-        binding.nestedScrollViewMain.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+        binding.nestedScrollViewMain.setOnScrollChangeListener { _, _, _, _, _ ->
             val offset = binding.nestedScrollViewMain.computeVerticalScrollOffset()
             val extent = binding.nestedScrollViewMain.computeVerticalScrollExtent()
             val range = binding.nestedScrollViewMain.computeVerticalScrollRange()
@@ -154,44 +154,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             toggleNavigationDrawer()
         }
 
-        binding.composeViewHotArticle.setContent {
-            KoinTheme {
-                val articleMain by viewModel.articleMain.collectAsState()
-
-                HotArticlePager(
-                    articles = articleMain,
-                    onNotiClick = {
-                        EventLogger.logClickEvent(
-                            EventAction.CAMPUS,
-                            AnalyticsConstant.Label.TO_MANAGE_KEYWORD,
-                            it.value
-                        )
-                        val intent =
-                            Intent(Intent.ACTION_VIEW).apply {
-                                data = when (it.type) {
-                                    ArticleNotiType.KEYWORD -> Uri.parse("koin://article/activity?fragment=article_keyword")
-                                    ArticleNotiType.LOST_AND_FOUND -> Uri.parse("koin://articles/lost-item/activity")
-                                }
-                            }
-                        intent.`package` = packageName
-                        startActivity(intent)
-                    },
-                    onArticleClick = {
-                        EventLogger.logClickEvent(
-                            EventAction.CAMPUS,
-                            AnalyticsConstant.Label.POPULAR_NOTICE_BANNER,
-                            it.title
-                        )
-                        val intent =
-                            Intent(Intent.ACTION_VIEW).apply {
-                                data = Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.boardId}")
-                            }
-                        intent.`package` = packageName
-                        startActivity(intent)
-                    }
-                )
-            }
-        }
+        initHotArticleView()
 
         textSeeMoreArticle.setOnClickListener {
             EventLogger.logClickEvent(
@@ -334,6 +297,47 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             getStoreCategories()
             binding.textViewStore.visibility = View.GONE
             binding.shopComposeView.visibility = View.VISIBLE
+        }
+    }
+
+    private fun initHotArticleView() {
+        binding.composeViewHotArticle.setContent {
+            KoinTheme {
+                val articleMain by viewModel.articleMain.collectAsState()
+
+                HotArticlePager(
+                    articles = articleMain,
+                    onNotiClick = {
+                        EventLogger.logClickEvent(
+                            EventAction.CAMPUS,
+                            AnalyticsConstant.Label.TO_MANAGE_KEYWORD,
+                            it.value
+                        )
+                        val intent =
+                            Intent(Intent.ACTION_VIEW).apply {
+                                data = when (it.type) {
+                                    ArticleNotiType.KEYWORD -> Uri.parse("koin://article/activity?fragment=article_keyword")
+                                    ArticleNotiType.LOST_AND_FOUND -> Uri.parse("koin://articles/lost-item/activity")
+                                }
+                            }
+                        intent.`package` = packageName
+                        startActivity(intent)
+                    },
+                    onArticleClick = {
+                        EventLogger.logClickEvent(
+                            EventAction.CAMPUS,
+                            AnalyticsConstant.Label.POPULAR_NOTICE_BANNER,
+                            it.title
+                        )
+                        val intent =
+                            Intent(Intent.ACTION_VIEW).apply {
+                                data = Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.boardId}")
+                            }
+                        intent.`package` = packageName
+                        startActivity(intent)
+                    }
+                )
+            }
         }
     }
 
