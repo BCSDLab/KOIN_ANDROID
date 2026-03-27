@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -39,6 +40,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -85,9 +87,10 @@ import `in`.koreatech.koin.feature.store.model.LocalShop
 import `in`.koreatech.koin.feature.store.model.LocalStoreCategories
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -105,9 +108,19 @@ fun StoreNearbyScreen(
     val uiState by viewModel.collectAsState()
     val context = LocalContext.current
     val navigator = rememberNavigator()
+    val coroutineScope = rememberCoroutineScope()
+    val categoryListState = rememberLazyListState()
+    val shopListState = rememberLazyListState()
 
-    viewModel.collectSideEffect {
-        handleSideEffect(it, navigateToCart)
+    viewModel.collectSideEffect { sideEffect ->
+        handleSideEffect(
+            sideEffect = sideEffect,
+            coroutineScope = coroutineScope,
+            navigateToCart = navigateToCart,
+            fetchData = viewModel::fetchData,
+            scrollCategory = { categoryListState.animateScrollToItem(it) },
+            scrollToTop = { shopListState.animateScrollToItem(0) }
+        )
     }
 
     LaunchedEffect(Unit) {
@@ -117,17 +130,6 @@ fun StoreNearbyScreen(
     LaunchedEffect(Unit) {
         if (uiState.categoryId == -1) {
             viewModel.onCategoryChange(categoryId)
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        combine(
-            snapshotFlow { uiState.selectedStoreFilter },
-            snapshotFlow { uiState.selectedOrderOption },
-            snapshotFlow { uiState.categoryId },
-            snapshotFlow { uiState.selectedMinimumPriceOption }
-        ) { _, _, _, _ -> }.collect {
-            viewModel.fetchData()
         }
     }
 
@@ -223,6 +225,8 @@ fun StoreNearbyScreen(
             selectedStoreFilter = uiState.selectedStoreFilter,
             selectedMinimumPriceOption = uiState.selectedMinimumPriceOption,
             showMinimumPriceOptions = uiState.showMinimumPriceOptions,
+            categoryListState = categoryListState,
+            shopListState = shopListState,
             navigateToDetail = navigateToDetail,
             navigateToSearch = {
                 navigateToSearch()
@@ -254,6 +258,8 @@ private fun StoreNearbyScreen(
     selectedMinimumPriceOption: MinimumPriceOption,
     showOrderOptions: Boolean,
     showMinimumPriceOptions: Boolean,
+    categoryListState: LazyListState,
+    shopListState: LazyListState,
     modifier: Modifier = Modifier,
     navigateToDetail: (Int) -> Unit = { },
     navigateToSearch: () -> Unit = { },
@@ -265,19 +271,6 @@ private fun StoreNearbyScreen(
     onShowMinimumPriceOptionsChange: (Boolean) -> Unit = { }
 ) {
     val context = LocalContext.current
-    val categoryListState = rememberLazyListState()
-    val shopListState = rememberLazyListState()
-
-    LaunchedEffect(categoryId) {
-        if (categoryId != -1) {
-            categoryListState.animateScrollToItem(storeCategories.map { it.id }.indexOf(categoryId))
-            shopListState.animateScrollToItem(0)
-        }
-    }
-
-    LaunchedEffect(selectedOrderOption) {
-        shopListState.animateScrollToItem(0)
-    }
 
     LaunchedEffect(storeCategories) {
         if (storeCategories.isEmpty()) return@LaunchedEffect
@@ -601,18 +594,40 @@ private fun StoreNearbyScreenPreview() {
             selectedOrderOption = OrderOption.NONE,
             selectedStoreFilter = persistentListOf(StoreFilter.IS_OPEN),
             selectedMinimumPriceOption = MinimumPriceOption.ALL,
-            showMinimumPriceOptions = false
+            showMinimumPriceOptions = false,
+            categoryListState = LazyListState(),
+            shopListState = LazyListState()
         )
     }
 }
 
 private fun handleSideEffect(
     sideEffect: StoreNearbySideEffect,
-    navigateToCart: () -> Unit
+    coroutineScope: CoroutineScope,
+    navigateToCart: () -> Unit,
+    fetchData: () -> Unit,
+    scrollCategory: suspend (categoryId: Int) -> Unit,
+    scrollToTop: suspend () -> Unit
 ) {
     when (sideEffect) {
         StoreNearbySideEffect.NavigateToCart -> {
             navigateToCart()
+        }
+
+        StoreNearbySideEffect.FetchData -> {
+            fetchData()
+        }
+
+        is StoreNearbySideEffect.ScrollCategory -> {
+            coroutineScope.launch {
+                scrollCategory(sideEffect.categoryId - 1)
+            }
+        }
+
+        StoreNearbySideEffect.ScrollToTop -> {
+            coroutineScope.launch {
+                scrollToTop()
+            }
         }
     }
 }

@@ -22,6 +22,7 @@ android {
         versionCode = rootProject.extra["versionCode"] as Int
         versionName = rootProject.extra["versionName"].toString()
         manifestPlaceholders["naverMapKey"] = getPropertyKey("navermap_key")
+        versionNameSuffix = if (project.hasProperty("versionNameSuffix")) project.property("versionNameSuffix").toString() else ""
     }
 
     signingConfigs {
@@ -114,6 +115,7 @@ dependencies {
     implementation(projects.feature.club)
     implementation(projects.feature.dining)
     implementation(projects.feature.lostandfound)
+    implementation(projects.feature.callvan)
 
     implementation(libs.guava)
 

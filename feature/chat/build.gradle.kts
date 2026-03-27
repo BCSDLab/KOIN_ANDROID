@@ -24,4 +24,5 @@ dependencies {
     implementation(libs.timber)
 
     implementation(libs.krossbow.stomp.core)
+    implementation(libs.kotlinx.collections.immutable)
 }

@@ -1,0 +1,23 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin
+---
+- runFlow: ../common/launch_app.yaml
+- openLink: "koin://login/activity"
+- extendedWaitUntil:
+    visible: "로그인"
+    timeout: 15000
+- assertVisible: "로그인"
+- assertVisible: "회원가입"
+- assertVisible: "아이디 찾기"
+- assertVisible: "비밀번호 찾기"
+- tapOn: "아이디(Koreatech ID/전화번호)"
+- inputText: "invalid-user"
+- tapOn: "비밀번호"
+- inputText: "wrong-password"
+- hideKeyboard
+- tapOn: "로그인"
+- extendedWaitUntil:
+    visible: "아이디 또는 비밀번호가 올바르지 않습니다."
+    timeout: 15000
+- assertVisible: "아이디 또는 비밀번호가 올바르지 않습니다."

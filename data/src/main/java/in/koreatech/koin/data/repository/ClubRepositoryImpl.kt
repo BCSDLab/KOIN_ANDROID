@@ -15,8 +15,7 @@ import `in`.koreatech.koin.data.request.club.ClubModifyRequest
 import `in`.koreatech.koin.data.request.club.ClubQnaRequest
 import `in`.koreatech.koin.data.request.club.ClubRecruitmentRequest
 import `in`.koreatech.koin.data.source.remote.ClubRemoteDataSource
-import `in`.koreatech.koin.data.util.getErrorResponse
-import `in`.koreatech.koin.data.util.toKoinUnknownErrorException
+import `in`.koreatech.koin.data.util.mapHttpFailure
 import `in`.koreatech.koin.domain.error.club.KoinClubException
 import `in`.koreatech.koin.domain.model.club.ClubCategories
 import `in`.koreatech.koin.domain.model.club.ClubDetails
@@ -53,58 +52,25 @@ class ClubRepositoryImpl @Inject constructor(
     ): Result<Clubs> {
         return runCatching {
             clubRemoteDataSource.getClubs(categoryId, sortType, isRecruiting, query).toClubs()
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            404 -> KoinClubException.ClubCategoryNotFoundException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(404) throws KoinClubException.ClubCategoryNotFoundException()
         }
     }
 
     override suspend fun cancelClubLike(clubId: Int): Result<Unit> {
         return runCatching {
             clubRemoteDataSource.cancelClubLike(clubId)
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            401 -> KoinClubException.UnauthorizedException()
-                            404 -> KoinClubException.AlreadyNotLikedException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(401) throws KoinClubException.UnauthorizedException()
+            on(404) throws KoinClubException.AlreadyNotLikedException()
         }
     }
 
     override suspend fun getClubDetails(clubId: Int): Result<ClubDetails> {
         return runCatching {
             clubRemoteDataSource.getClubDetails(clubId).toClubDetails()
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            404 -> KoinClubException.ClubNotFoundException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(404) throws KoinClubException.ClubNotFoundException()
         }
     }
 
@@ -139,19 +105,8 @@ class ClubRepositoryImpl @Inject constructor(
                     isLikeHidden = isLikeHidden
                 )
             )
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            401 -> KoinClubException.UnauthorizedException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(401) throws KoinClubException.UnauthorizedException()
         }
     }
 
@@ -184,21 +139,10 @@ class ClubRepositoryImpl @Inject constructor(
                     isLikeHidden = isLikeHidden
                 )
             )
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            401 -> KoinClubException.UnauthorizedException()
-                            403 -> KoinClubException.NotClubManagerException()
-                            404 -> KoinClubException.ClubNotFoundException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(401) throws KoinClubException.UnauthorizedException()
+            on(403) throws KoinClubException.NotClubManagerException()
+            on(404) throws KoinClubException.ClubNotFoundException()
         }
     }
 
@@ -211,20 +155,9 @@ class ClubRepositoryImpl @Inject constructor(
     override suspend fun setClubLike(clubId: Int): Result<Unit> {
         return runCatching {
             clubRemoteDataSource.setClubLike(clubId)
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            401 -> KoinClubException.UnauthorizedException()
-                            409 -> KoinClubException.AlreadyLikedException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(401) throws KoinClubException.UnauthorizedException()
+            on(409) throws KoinClubException.AlreadyLikedException()
         }
     }
 
@@ -236,42 +169,20 @@ class ClubRepositoryImpl @Inject constructor(
             } else {
                 throw HttpException(response)
             }
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            403 -> KoinClubException.DeletePermissionDeniedException()
-                            404 -> KoinClubException.QnaNotFoundException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(403) throws KoinClubException.DeletePermissionDeniedException()
+            on(404) throws KoinClubException.QnaNotFoundException()
         }
     }
 
     override suspend fun setClubEmpowerment(clubId: Int, changedManagerId: String): Result<Unit> {
         return runCatching {
             clubRemoteDataSource.setClubEmpowerment(ClubEmpowermentRequest(clubId, changedManagerId))
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            400 -> KoinClubException.AlreadyManagerException()
-                            401 -> KoinClubException.UnauthorizedException()
-                            403 -> KoinClubException.NotClubManagerException()
-                            404 -> KoinClubException.LoginIdNotFoundException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(400) throws KoinClubException.AlreadyLikedException()
+            on(401) throws KoinClubException.UnauthorizedException()
+            on(403) throws KoinClubException.NotClubManagerException()
+            on(404) throws KoinClubException.LoginIdNotFoundException()
         }
     }
 
@@ -281,21 +192,10 @@ class ClubRepositoryImpl @Inject constructor(
                 clubId,
                 ClubQnaRequest(parentId, content)
             )
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            401 -> KoinClubException.UnauthorizedException()
-                            403 -> KoinClubException.NotClubManagerException()
-                            404 -> KoinClubException.ClubNotFoundException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(401) throws KoinClubException.UnauthorizedException()
+            on(403) throws KoinClubException.NotClubManagerException()
+            on(404) throws KoinClubException.ClubNotFoundException()
         }
     }
 
@@ -304,19 +204,9 @@ class ClubRepositoryImpl @Inject constructor(
     ): Result<ClubRecruitment> {
         return runCatching {
             clubRemoteDataSource.getClubRecruitment(clubId).toClubRecruitment()
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            400 -> KoinClubException.WrongInputDataException()
-                            404 -> KoinClubException.ClubRecruitNotFoundException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(400) throws KoinClubException.WrongInputDataException()
+            on(404) throws KoinClubException.ClubRecruitNotFoundException()
         }
     }
 
@@ -339,20 +229,10 @@ class ClubRepositoryImpl @Inject constructor(
                     content
                 )
             )
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            400 -> KoinClubException.WrongInputDataException()
-                            404 -> KoinClubException.ClubRecruitNotFoundException()
-                            409 -> KoinClubException.AlreadyRecruitingException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(400) throws KoinClubException.WrongInputDataException()
+            on(404) throws KoinClubException.ClubRecruitNotFoundException()
+            on(409) throws KoinClubException.AlreadyLikedException()
         }
     }
 
@@ -364,19 +244,9 @@ class ClubRepositoryImpl @Inject constructor(
             } else {
                 throw HttpException(response)
             }
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            400 -> KoinClubException.WrongInputDataException()
-                            404 -> KoinClubException.ClubRecruitNotFoundException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(400) throws KoinClubException.WrongInputDataException()
+            on(404) throws KoinClubException.ClubRecruitNotFoundException()
         }
     }
 
@@ -404,19 +274,9 @@ class ClubRepositoryImpl @Inject constructor(
             } else {
                 throw HttpException(response)
             }
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            400 -> KoinClubException.WrongInputDataException()
-                            404 -> KoinClubException.ClubRecruitNotFoundException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(400) throws KoinClubException.WrongInputDataException()
+            on(404) throws KoinClubException.ClubRecruitNotFoundException()
         }
     }
 
@@ -426,19 +286,9 @@ class ClubRepositoryImpl @Inject constructor(
     ): Result<List<ClubEvent>> {
         return runCatching {
             clubRemoteDataSource.getClubEvents(clubId, eventType).map { it.toClubEvent() }
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            400 -> KoinClubException.WrongInputDataException()
-                            404 -> KoinClubException.ClubEventNotFoundException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(400) throws KoinClubException.WrongInputDataException()
+            on(404) throws KoinClubException.ClubEventNotFoundException()
         }
     }
 
@@ -468,19 +318,9 @@ class ClubRepositoryImpl @Inject constructor(
             } else {
                 throw HttpException(response)
             }
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            400 -> KoinClubException.WrongInputDataException()
-                            404 -> KoinClubException.ClubNotFoundException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(400) throws KoinClubException.WrongInputDataException()
+            on(404) throws KoinClubException.ClubNotFoundException()
         }
     }
 
@@ -490,38 +330,17 @@ class ClubRepositoryImpl @Inject constructor(
     ): Result<ClubEvent> {
         return runCatching {
             clubRemoteDataSource.getClubEvent(clubId, eventId).toClubEvent()
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            400 -> KoinClubException.WrongInputDataException()
-                            404 -> KoinClubException.ClubEventNotFoundException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(400) throws KoinClubException.WrongInputDataException()
+            on(404) throws KoinClubException.ClubEventNotFoundException()
         }
     }
 
     override suspend fun searchClubs(query: String): Result<ClubSearch> {
         return runCatching {
             clubRemoteDataSource.searchClubs(query).toClubSearch()
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            404 -> KoinClubException.ClubNotFoundException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(404) throws KoinClubException.ClubNotFoundException()
         }
     }
 
@@ -553,19 +372,9 @@ class ClubRepositoryImpl @Inject constructor(
             } else {
                 throw HttpException(response)
             }
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            400 -> KoinClubException.WrongInputDataException()
-                            404 -> KoinClubException.ClubEventNotFoundException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(400) throws KoinClubException.WrongInputDataException()
+            on(404) throws KoinClubException.ClubEventNotFoundException()
         }
     }
 
@@ -580,19 +389,9 @@ class ClubRepositoryImpl @Inject constructor(
             } else {
                 throw HttpException(response)
             }
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            400 -> KoinClubException.WrongInputDataException()
-                            404 -> KoinClubException.ClubEventNotFoundException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(400) throws KoinClubException.WrongInputDataException()
+            on(404) throws KoinClubException.ClubEventNotFoundException()
         }
     }
 
@@ -604,20 +403,10 @@ class ClubRepositoryImpl @Inject constructor(
             } else {
                 throw HttpException(response)
             }
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            400 -> KoinClubException.WrongInputDataException()
-                            403 -> KoinClubException.NotAllowedUserException()
-                            404 -> KoinClubException.ClubNotFoundException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(400) throws KoinClubException.WrongInputDataException()
+            on(403) throws KoinClubException.NotAllowedUserException()
+            on(404) throws KoinClubException.ClubNotFoundException()
         }
     }
 
@@ -629,20 +418,10 @@ class ClubRepositoryImpl @Inject constructor(
             } else {
                 throw HttpException(response)
             }
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            400 -> KoinClubException.WrongInputDataException()
-                            403 -> KoinClubException.NotAllowedUserException()
-                            404 -> KoinClubException.ClubNotFoundException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(400) throws KoinClubException.WrongInputDataException()
+            on(403) throws KoinClubException.NotAllowedUserException()
+            on(404) throws KoinClubException.ClubNotFoundException()
         }
     }
 
@@ -657,20 +436,10 @@ class ClubRepositoryImpl @Inject constructor(
             } else {
                 throw HttpException(response)
             }
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            400 -> KoinClubException.WrongInputDataException()
-                            403 -> KoinClubException.NotAllowedUserException()
-                            404 -> KoinClubException.ClubEventNotFoundException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(400) throws KoinClubException.WrongInputDataException()
+            on(403) throws KoinClubException.NotAllowedUserException()
+            on(404) throws KoinClubException.ClubEventNotFoundException()
         }
     }
 
@@ -685,20 +454,10 @@ class ClubRepositoryImpl @Inject constructor(
             } else {
                 throw HttpException(response)
             }
-        }.onFailure { exception ->
-            return Result.failure(
-                when (exception) {
-                    is HttpException -> {
-                        when (exception.code()) {
-                            400 -> KoinClubException.WrongInputDataException()
-                            403 -> KoinClubException.NotAllowedUserException()
-                            404 -> KoinClubException.ClubEventNotFoundException()
-                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
-                        }
-                    }
-                    else -> exception
-                }
-            )
+        }.mapHttpFailure {
+            on(400) throws KoinClubException.WrongInputDataException()
+            on(403) throws KoinClubException.NotAllowedUserException()
+            on(404) throws KoinClubException.ClubEventNotFoundException()
         }
     }
 }

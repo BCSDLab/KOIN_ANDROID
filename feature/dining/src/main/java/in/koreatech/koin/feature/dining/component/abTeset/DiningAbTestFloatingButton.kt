@@ -66,7 +66,7 @@ fun DiningAbTestFloatingButton(
 
 @Preview
 @Composable
-fun DiningAbTestFloatingButtonPreview() {
+private fun DiningAbTestFloatingButtonPreview() {
     DiningAbTestFloatingButton(
         contentText = "오늘 학식 메뉴가 별로라면?",
         buttonText = "주변상점 보기",

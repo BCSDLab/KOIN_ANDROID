@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComplexCondition:OnboardingManager.kt$OnboardingManager$user.name == null || user.phoneNumber == null || user.major == null || user.studentNumber == null</ID>
+    <ID>TooManyFunctions:OnboardingManager.kt$OnboardingManager</ID>
+  </CurrentIssues>
+</SmellBaseline>

@@ -1,0 +1,11 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin
+---
+- runFlow: ../common/launch_app.yaml
+- openLink: "koin://article/activity"
+- extendedWaitUntil:
+    visible: "공지사항"
+    timeout: 15000
+- assertVisible: "공지사항"
+- assertVisible: "전체공지"

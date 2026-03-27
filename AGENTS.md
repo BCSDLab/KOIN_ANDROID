@@ -51,7 +51,7 @@ This is a **Clean Architecture** Android app with **MVVM + MVI (Orbit)** pattern
 ```
 koin/          - Main student app (in.koreatech.koin)
 business/      - Business app (in.koreatech.business)
-domain/        - Repository interfaces, use cases, business models (pure Kotlin)
+domain/        - Repository interfaces, use cases, business models (kotlin & java)
 data/          - Repository implementations, API services, DTOs
 core/          - Shared utilities (designsystem, network, analytics, navigation, notification)
 feature/       - Feature modules (timetable, bus, store, chat, club, dining, lostandfound, banner)
@@ -62,7 +62,7 @@ build-logic/   - Custom Gradle convention plugins
 
 **MUST** respect these boundaries:
 
-- **Domain Layer** (`domain/`): Pure Kotlin. Repository interfaces, use cases, business models. Uses `Result<T>` or Flow for new code. Legacy code uses `Pair<T?, ErrorHandler?>` pattern.
+- **Domain Layer** (`domain/`): Kotlin & Java. Repository interfaces, use cases, business models. Uses `Result<T>` or Flow for new code. Legacy code uses `Pair<T?, ErrorHandler?>` pattern.
 - **Data Layer** (`data/`): Repository implementations, Retrofit API services, data sources. Handles network/local data.
 - **Presentation Layer** (`koin/`, `business/`, `feature/`): ViewModels with Orbit MVI, Jetpack Compose UI, legacy XML views.
 
@@ -150,7 +150,7 @@ Each module has its own detailed AGENTS.md file with module-specific patterns an
 
 ### Package & Import Organization
 
-**MUST** use backtick-escaped `in` package and group imports in this order:
+**MUST** use backtick-escaped `in` package names.
 
 ```kotlin
 package `in`.koreatech.koin.feature.user.ui.signin
@@ -165,12 +165,11 @@ import org.orbitmvi.orbit.ContainerHost
 ```
 
 **Import grouping order**:
-1. Android/AndroidX imports
-2. Dagger/Hilt imports
-3. Internal project imports (backtick-escaped `in`)
-4. javax imports
-5. kotlinx imports
-6. Third-party libraries (Orbit, etc.)
+- Follow the module-specific AGENTS.md when it defines an import order.
+- If the module has no specific guidance, keep Android Studio's default ordering
+  (`ktlint_code_style = android_studio`) and avoid manual reordering.
+- This repo does not enforce a single global import order in ktlint or IDE settings,
+  so do not churn imports unless a module rule explicitly requires it.
 
 ### Naming Conventions
 

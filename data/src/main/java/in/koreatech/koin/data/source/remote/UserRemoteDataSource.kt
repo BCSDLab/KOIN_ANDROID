@@ -71,10 +71,6 @@ class UserRemoteDataSource(
         userAuthApi.deleteUser()
     }
 
-    suspend fun checkNickname(nickname: String) {
-        userApi.checkNickname(nickname)
-    }
-
     suspend fun checkEmail(email: String) {
         userApi.checkEmail(email)
     }

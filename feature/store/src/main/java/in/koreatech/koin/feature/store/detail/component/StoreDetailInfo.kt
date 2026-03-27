@@ -163,7 +163,7 @@ fun CallCard(
 
 @Preview(showBackground = true)
 @Composable
-fun StoreDetailInfoPreview() {
+private fun StoreDetailInfoPreview() {
     StoreDetailInfo(
         storeInfo = ShopInfoModel.empty(),
         storeReview = StoreReview.empty(),

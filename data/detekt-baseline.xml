@@ -1,0 +1,147 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ConstructorParameterNaming:OrderShopResponse.kt$OrderShopResponse$@SerializedName("images") val ShopImages: List&lt;ShopImage&gt;</ID>
+    <ID>ConstructorParameterNaming:StoreCategoriesResponse.kt$StoreCategoriesResponse$@SerializedName("shop_categories") val shop_categories: List&lt;StoreCategoriesItemResponse&gt;</ID>
+    <ID>CyclomaticComplexMethod:ArticleResponse.kt$fun Node.toHtmlModel(parentStyles: Map&lt;CssAttribute, String&gt;): HtmlModel</ID>
+    <ID>CyclomaticComplexMethod:HttpExceptionMapper.kt$fun HttpException.httpExceptionMapper(): Result&lt;Unit&gt;</ID>
+    <ID>CyclomaticComplexMethod:StoreMapper.kt$fun StoreItemResponse.toStore(): Store</ID>
+    <ID>CyclomaticComplexMethod:StoreMapper.kt$fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu</ID>
+    <ID>EmptyCatchBlock:ArticleResponse.kt${ }</ID>
+    <ID>FunctionParameterNaming:StoreApi.kt$StoreApi$@Query("filter") DELIVERY: String = "DELIVERY"</ID>
+    <ID>FunctionParameterNaming:StoreApi.kt$StoreApi$@Query("filter") OPEN: String = "OPEN"</ID>
+    <ID>InstanceOfCheckForException:KoinStomp.kt$KoinStomp$e is CancellationException</ID>
+    <ID>InstanceOfCheckForException:VersionLocalDataSource.kt$VersionLocalDataSource$e !is IOException</ID>
+    <ID>LongMethod:ArticleResponse.kt$fun Node.toHtmlModel(parentStyles: Map&lt;CssAttribute, String&gt;): HtmlModel</ID>
+    <ID>LongParameterList:ArticleAuthApi.kt$ArticleAuthApi$( @Query("type") type: String?, @Query("page") page: Int, @Query("limit") limit: Int, @Query("category") category: List&lt;String&gt;, @Query("foundStatus") foundStatus: String?, @Query("sort") sort: String?, @Query("author") author: String?, @Query("title") title: String? )</ID>
+    <ID>LongParameterList:ArticleRemoteDataSource.kt$ArticleRemoteDataSource$( type: String?, page: Int, limit: Int, category: List&lt;String&gt;, foundStatus: String?, sort: String?, author: String?, title: String? )</ID>
+    <ID>LongParameterList:CallvanAuthApi.kt$CallvanAuthApi$( @Query("author") author: String? = "ALL", @Query("departures") departures: List&lt;String&gt;? = null, @Query("departure_keyword") departureKeyword: String? = null, @Query("arrivals") arrivals: List&lt;String&gt;? = null, @Query("arrival_keyword") arrivalKeyword: String? = null, @Query("statuses") statuses: List&lt;String&gt;? = null, @Query("title") title: String? = null, @Query("sort") sort: String? = "LATEST_DESC", @Query("joined") joined: Boolean = false, @Query("page") page: Int? = 1, @Query("limit") limit: Int? = 10 )</ID>
+    <ID>LongParameterList:CallvanRemoteDataSource.kt$CallvanRemoteDataSource$( author: String?, departures: List&lt;String&gt;?, departureKeyword: String?, arrivals: List&lt;String&gt;?, arrivalKeyword: String?, statuses: List&lt;String&gt;?, title: String?, sort: String?, joined: Boolean, page: Int?, limit: Int? )</ID>
+    <ID>LongParameterList:NetworkUtil.kt$( e400: KoinErrorException? = null, e401: KoinErrorException? = null, e403: KoinErrorException? = null, e404: KoinErrorException? = null, e409: KoinErrorException? = null, e429: KoinErrorException? = null, e500: KoinErrorException? = null )</ID>
+    <ID>LongParameterList:StoreAuthApi.kt$StoreAuthApi$( @Query("page") page: Int?, @Query("limit") limit: Int?, @Query("period") period: String?, @Query("status") status: String?, @Query("type") type: String?, @Query("query") query: String? )</ID>
+    <ID>LongParameterList:StoreRemoteDataSource.kt$StoreRemoteDataSource$( page: Int?, limit: Int?, period: String?, status: String?, type: String?, query: String? )</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.ABTEST$const val ABTEST = "abtest"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.ABTEST.ASSIGN$const val ASSIGN = "$ABTEST/assign"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.ARTICLES$const val ARTICLES = "articles"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.ARTICLES.HOT$const val HOT = "$ARTICLES/hot"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.ARTICLES.KEYWORD$const val KEYWORD = "$ARTICLES/keyword"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.ARTICLES.LOSTITEM$const val LOSTITEM = "$ARTICLES/lost-item"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.BENEFIT$const val BENEFIT = "benefit"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.BUS$const val BUS = "bus"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.BUS.TIMETABLE$const val TIMETABLE = "$BUS/timetable"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.CHAT.ARTICLEID$const val ARTICLEID = "$CHATROOM/${PATH.ARTICLEID}"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.CHAT.ARTICLEID.ROOMID$const val ROOMID = "$CHATROOM/${PATH.ARTICLEID}/${PATH.CHATROOMID}"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.CLUBS$const val CLUBS = "clubs"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.CLUBS.CLUBID$const val CLUBID = "$CLUBS/${PATH.CLUBID}"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.CLUBS.CLUBID.EVENT$const val EVENT = "$CLUBID/event"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.CLUBS.CLUBID.EVENT.EVENTID$const val EVENTID = "$EVENT/{eventId}"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.CLUBS.CLUBID.LIKE$const val LIKE = "$CLUBID/like"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.CLUBS.CLUBID.QNA$const val QNA = "$CLUBID/qna"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.CLUBS.CLUBID.RECRUITMENT$const val RECRUITMENT = "$CLUBID/recruitment"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.COOPSHOP$const val COOPSHOP = "coopshop"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.DEPT$const val DEPT = "/dept"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.LAND$const val LAND = "lands"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.LECTURES$const val LECTURES = "/lectures"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.OWNER$const val OWNER = "owner"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.SHOPS$const val SHOPS = "shops"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.SHOPS.ID$const val ID = "$SHOPS/${PATH.ID}"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.SHOPS.OWNERSHOPS$const val OWNERSHOPS = "owner/shops"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.SHOPS.OWNERSHOPS.ID$const val ID = "$OWNERSHOPS/${PATH.ID}"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.SHOPS.OWNERSHOPS.MENUS$const val MENUS = "$OWNERSHOPS/menus"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.SHOPS.OWNERSHOPS.SHOPID$const val SHOPID = "$OWNERSHOPS/${PATH.SHOPID}"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.SHOPS.OWNERSHOPS.SHOPID.EVENT$const val EVENT = "$SHOPID/event"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.SHOPS.SHOPID$const val SHOPID = "$SHOPS/${PATH.SHOPID}"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.SHOPS.SHOPID.REVIEWS$const val REVIEWS = "$SHOPID/reviews"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.SHOPS.SHOPID.REVIEWS.REVIEWID$const val REVIEWID = "$REVIEWS/${PATH.REVIEWID}"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.TIMETABLE$const val TIMETABLE = "timetables"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.TIMETABLE.V2$const val V2 = "v2"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.TIMETABLE.V2.FRAME$const val FRAME = "/$V2/$TIMETABLE/frame"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.TIMETABLE.V2.LECTURE$const val LECTURE = "/$V2/$TIMETABLE/lecture"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.TIMETABLE.V3$const val V3 = "v3"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.TIMETABLE.V3.FRAME$const val FRAME = "/$V3/$TIMETABLE/frame"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.TIMETABLE.V3.LECTURE$const val LECTURE = "/$V3/$TIMETABLE/lecture"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.TIMETABLE.V3.SEMESTERS$const val SEMESTERS = "/$V3/semesters"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.USER$const val USER = "user"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.USER.CHECK$const val CHECK = "$USER/check"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.USER.EXISTS$const val EXISTS = "exists"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.USER.NOTIFICATION$const val NOTIFICATION = "/notification"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.USER.NOTIFICATION.SUBSCRIBE$const val SUBSCRIBE = "$NOTIFICATION/subscribe"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.USER.STUDENT$const val STUDENT = "student"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.USER.VERIFICATION$const val VERIFICATION = "$USER/verification"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.USERS$const val USERS = "users"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.USERS.FINDID$const val FINDID = "id/find"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.USERS.STUDENTS$const val STUDENTS = "students"</ID>
+    <ID>MemberNameEqualsClassName:URLConstant.kt$URLConstant.VERSION$const val VERSION = "version"</ID>
+    <ID>NestedBlockDepth:UploadImageLocalDataSource.kt$UploadImageLocalDataSource$fun uriToBitmap( uriString: String, fileSize: Long ): ByteArray</ID>
+    <ID>RethrowCaughtException:OwnerChangePasswordRepositoryImpl.kt$OwnerChangePasswordRepositoryImpl$throw e</ID>
+    <ID>RethrowCaughtException:OwnerSignupRepositoryImpl.kt$OwnerSignupRepositoryImpl$throw t</ID>
+    <ID>RethrowCaughtException:UserRepositoryImpl.kt$UserRepositoryImpl$throw e</ID>
+    <ID>SwallowedException:ArticleResponse.kt$e: IllegalArgumentException</ID>
+    <ID>SwallowedException:DeptRepositoryImpl.kt$DeptRepositoryImpl$t: Throwable</ID>
+    <ID>SwallowedException:TimetableRepositoryImpl.kt$TimetableRepositoryImpl$e: NullPointerException</ID>
+    <ID>SwallowedException:UserLocalDataSource.kt$UserLocalDataSource$e: Exception</ID>
+    <ID>SwallowedException:UserLocalDataSource.kt$UserLocalDataSource$e: NullPointerException</ID>
+    <ID>SwallowedException:VersionLocalDataSource.kt$VersionLocalDataSource$e: Exception</ID>
+    <ID>ThrowingExceptionsWithoutMessageOrCause:DeptLocalDataSource.kt$DeptLocalDataSource$IllegalArgumentException()</ID>
+    <ID>ThrowingExceptionsWithoutMessageOrCause:DeptRepositoryImpl.kt$DeptRepositoryImpl$IllegalArgumentException()</ID>
+    <ID>ThrowingExceptionsWithoutMessageOrCause:TimetableRepositoryImpl.kt$TimetableRepositoryImpl$Exception()</ID>
+    <ID>ThrowingExceptionsWithoutMessageOrCause:UserMapper.kt$IllegalStateException()</ID>
+    <ID>TooGenericExceptionCaught:ApiMapper.kt$t: Throwable</ID>
+    <ID>TooGenericExceptionCaught:ArticleRemoteDataSource.kt$ArticleRemoteDataSource$t: Throwable</ID>
+    <ID>TooGenericExceptionCaught:DeptRepositoryImpl.kt$DeptRepositoryImpl$t: Throwable</ID>
+    <ID>TooGenericExceptionCaught:KoinStomp.kt$KoinStomp$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:OwnerChangePasswordRepositoryImpl.kt$OwnerChangePasswordRepositoryImpl$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:OwnerRegisterRepositoryImpl.kt$OwnerRegisterRepositoryImpl$t: Throwable</ID>
+    <ID>TooGenericExceptionCaught:OwnerSignupRepositoryImpl.kt$OwnerSignupRepositoryImpl$t: Throwable</ID>
+    <ID>TooGenericExceptionCaught:OwnerVerificationCodeRepositoryImpl.kt$OwnerVerificationCodeRepositoryImpl$t: Throwable</ID>
+    <ID>TooGenericExceptionCaught:PreSignedUrlRepositoryImpl.kt$PreSignedUrlRepositoryImpl$t: Throwable</ID>
+    <ID>TooGenericExceptionCaught:SignupRepositoryImpl.kt$SignupRepositoryImpl$t: Throwable</ID>
+    <ID>TooGenericExceptionCaught:StoreRepositoryImpl.kt$StoreRepositoryImpl$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:TimetableRepositoryImpl.kt$TimetableRepositoryImpl$e: NullPointerException</ID>
+    <ID>TooGenericExceptionCaught:UploadUrlRepositoryImpl.kt$UploadUrlRepositoryImpl$t: Throwable</ID>
+    <ID>TooGenericExceptionCaught:UserLocalDataSource.kt$UserLocalDataSource$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:UserLocalDataSource.kt$UserLocalDataSource$e: NullPointerException</ID>
+    <ID>TooGenericExceptionCaught:VersionLocalDataSource.kt$VersionLocalDataSource$e: Exception</ID>
+    <ID>TooGenericExceptionThrown:TimetableRepositoryImpl.kt$TimetableRepositoryImpl$throw Exception()</ID>
+    <ID>TooManyFunctions:ArticleAuthApi.kt$ArticleAuthApi</ID>
+    <ID>TooManyFunctions:ArticleRemoteDataSource.kt$ArticleRemoteDataSource</ID>
+    <ID>TooManyFunctions:ArticleRepositoryImpl.kt$ArticleRepositoryImpl : ArticleRepository</ID>
+    <ID>TooManyFunctions:CallvanAuthApi.kt$CallvanAuthApi</ID>
+    <ID>TooManyFunctions:CallvanRemoteDataSource.kt$CallvanRemoteDataSource</ID>
+    <ID>TooManyFunctions:CallvanRepositoryImpl.kt$CallvanRepositoryImpl : CallvanRepository</ID>
+    <ID>TooManyFunctions:ClubAuthApi.kt$ClubAuthApi</ID>
+    <ID>TooManyFunctions:ClubMapper.kt$in.koreatech.koin.data.mapper.ClubMapper.kt</ID>
+    <ID>TooManyFunctions:ClubRemoteDataSource.kt$ClubRemoteDataSource</ID>
+    <ID>TooManyFunctions:ClubRepositoryImpl.kt$ClubRepositoryImpl : ClubRepository</ID>
+    <ID>TooManyFunctions:NoAuthNetworkModule.kt$NoAuthNetworkModule</ID>
+    <ID>TooManyFunctions:OwnerApi.kt$OwnerApi</ID>
+    <ID>TooManyFunctions:OwnerAuthApi.kt$OwnerAuthApi</ID>
+    <ID>TooManyFunctions:OwnerRemoteDataSource.kt$OwnerRemoteDataSource</ID>
+    <ID>TooManyFunctions:RemoteDataSourceModule.kt$RemoteDataSourceModule</ID>
+    <ID>TooManyFunctions:RepositoryModule.kt$RepositoryModule</ID>
+    <ID>TooManyFunctions:SignupRepositoryImpl.kt$SignupRepositoryImpl : SignupRepository</ID>
+    <ID>TooManyFunctions:StoreApi.kt$StoreApi</ID>
+    <ID>TooManyFunctions:StoreAuthApi.kt$StoreAuthApi</ID>
+    <ID>TooManyFunctions:StoreMapper.kt$in.koreatech.koin.data.mapper.StoreMapper.kt</ID>
+    <ID>TooManyFunctions:StoreRemoteDataSource.kt$StoreRemoteDataSource</ID>
+    <ID>TooManyFunctions:StoreRepositoryImpl.kt$StoreRepositoryImpl : StoreRepository</ID>
+    <ID>TooManyFunctions:TimetableAuthApi.kt$TimetableAuthApi</ID>
+    <ID>TooManyFunctions:TimetableRemoteDataSource.kt$TimetableRemoteDataSource</ID>
+    <ID>TooManyFunctions:TimetableRepositoryImpl.kt$TimetableRepositoryImpl : TimetableRepository</ID>
+    <ID>TooManyFunctions:TokenLocalDataSource.kt$TokenLocalDataSource</ID>
+    <ID>TooManyFunctions:TokenRepositoryImpl.kt$TokenRepositoryImpl : TokenRepository</ID>
+    <ID>TooManyFunctions:UserApi.kt$UserApi</ID>
+    <ID>TooManyFunctions:UserAuthApi.kt$UserAuthApi</ID>
+    <ID>TooManyFunctions:UserMapper.kt$in.koreatech.koin.data.mapper.UserMapper.kt</ID>
+    <ID>TooManyFunctions:UserRemoteDataSource.kt$UserRemoteDataSource</ID>
+    <ID>TooManyFunctions:UserRepositoryImpl.kt$UserRepositoryImpl : UserRepository</ID>
+    <ID>TopLevelPropertyNaming:Constant.kt$const val BUS_REQUEST_DATE_FORMAT = "yyyy-MM-dd"</ID>
+    <ID>TopLevelPropertyNaming:Constant.kt$const val BUS_REQUEST_TIME_FORMAT = "HH:mm"</ID>
+    <ID>TopLevelPropertyNaming:Constant.kt$const val BUS_RESPONSE_TIME_FORMAT = "HH:mm"</ID>
+    <ID>TopLevelPropertyNaming:Constant.kt$const val STORE_CLOSE_TIME_FORMAT = "HH:mm"</ID>
+    <ID>TopLevelPropertyNaming:Constant.kt$const val STORE_OPEN_TIME_FORMAT = "HH:mm"</ID>
+    <ID>TopLevelPropertyNaming:Constant.kt$const val STORE_UPDATED_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss" // 2018-03-23 20:25:24</ID>
+    <ID>TopLevelPropertyNaming:Constant.kt$const val WEEK_IN_MILLIS = 7 * 24 * 60 * 60 * 1000L</ID>
+  </CurrentIssues>
+</SmellBaseline>

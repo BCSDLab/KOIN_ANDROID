@@ -73,11 +73,13 @@ class SignInActivity : ComponentActivity() {
                     Intent(Intent.ACTION_VIEW).apply {
                         flags = FLAG_ACTIVITY_CLEAR_TOP
                         data = link.toUri()
+                        `package` = packageName
                     }
                 startActivity(intent)
             } catch (e: Exception) {
                 Intent(Intent.ACTION_VIEW).apply {
                     data = DEEPLINK_MAIN.toUri()
+                    `package` = packageName
                 }.let {
                     startActivity(it)
                 }
@@ -85,6 +87,7 @@ class SignInActivity : ComponentActivity() {
         } else {
             Intent(Intent.ACTION_VIEW).apply {
                 data = DEEPLINK_MAIN.toUri()
+                `package` = packageName
             }.let {
                 startActivity(it)
             }
@@ -107,6 +110,7 @@ class SignInActivity : ComponentActivity() {
         val intent = Intent(Intent.ACTION_VIEW, INFO_REQUIRED_URI.toUri())
             .putExtra(EXTRA_IS_FULL, check)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.`package` = packageName
         this@SignInActivity.startActivity(intent)
         finishWithTransition()
     }

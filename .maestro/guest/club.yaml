@@ -1,0 +1,18 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin
+---
+- runFlow: ../common/open_drawer.yaml
+- scrollUntilVisible:
+    element:
+      id: "${APP_ID}:id/navi_item_club"
+    direction: DOWN
+    timeout: 10000
+- tapOn:
+    id: "${APP_ID}:id/navi_item_club"
+- extendedWaitUntil:
+    visible: "동아리"
+    timeout: 15000
+- assertVisible: "동아리"
+- assertVisible: "동아리 목록"
+- assertVisible: "동아리 생성하기"

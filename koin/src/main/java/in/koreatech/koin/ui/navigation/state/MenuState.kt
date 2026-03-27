@@ -15,6 +15,8 @@ sealed class MenuState {
 
     data object BusTimetable : MenuState()
 
+    data object Callvan : MenuState()
+
     data object BusSearch : MenuState()
 
     data object Dining : MenuState()

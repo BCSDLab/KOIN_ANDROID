@@ -8,7 +8,6 @@ import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.model.article.articleNotiContent
-import `in`.koreatech.koin.domain.model.club.ClubHot
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.model.store.StoreCategories
@@ -16,10 +15,8 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchArticleLostAndFoundStatsUseCase
 import `in`.koreatech.koin.domain.usecase.banner.CheckBannerRefusalUseCase
-import `in`.koreatech.koin.domain.usecase.club.GetClubHotUseCase
 import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
 import `in`.koreatech.koin.domain.usecase.session.GetSessionIdUseCase
-import `in`.koreatech.koin.domain.usecase.setting.GetDeveloperSettingUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
@@ -39,7 +36,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -52,10 +48,8 @@ class MainActivityViewModel @Inject constructor(
     private val abTestUseCase: ABTestUseCase,
     private val checkBannerRefusalUseCase: CheckBannerRefusalUseCase,
     private val articleRepository: ArticleRepository,
-    private val getClubHotUseCase: GetClubHotUseCase,
     private val getSessionIdUseCase: GetSessionIdUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
-    private val getDeveloperSettingUseCase: GetDeveloperSettingUseCase,
     private val fetchArticleLostAndFoundStatsUseCase: FetchArticleLostAndFoundStatsUseCase
 ) : BaseViewModel() {
     private val _variableName = MutableLiveData<String>()
@@ -149,32 +143,15 @@ class MainActivityViewModel @Inject constructor(
         initialValue = User.Anonymous
     )
 
-    val clubABTestExperimentGroup =
-        flow {
-            abTestUseCase(Experiment.MAIN_CLUB_UI.experimentTitle).onSuccess {
-                emit(it)
-            }.onFailure {
-                emit(Experiment.MAIN_CLUB_UI.experimentGroups.first())
-            }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = ExperimentGroup.CATEGORY.first()
-        )
-
     private val _storeCategories = MutableStateFlow<List<StoreCategories>>(emptyList())
     val storeCategories: StateFlow<List<StoreCategories>> get() = _storeCategories
 
     private val _isBannerRefusal = MutableStateFlow<Boolean?>(null)
     val isBannerRefusal: StateFlow<Boolean?> get() = _isBannerRefusal
 
-    private val _hotClub = MutableStateFlow<ClubHot?>(null)
-    val hotClub: StateFlow<ClubHot?> get() = _hotClub
-
     init {
         checkBannerRefusal()
         updateDining()
-        getClubHot()
         getLostAndFoundState()
     }
 
@@ -240,15 +217,6 @@ class MainActivityViewModel @Inject constructor(
         viewModelScope.launchWithLoading {
             checkBannerRefusalUseCase().let {
                 _isBannerRefusal.value = it
-            }
-        }
-    }
-
-    private fun getClubHot() {
-        viewModelScope.launchWithLoading {
-            if (clubABTestExperimentGroup.first() == ExperimentGroup.CATEGORY) return@launchWithLoading
-            getClubHotUseCase().onSuccess { clubHot ->
-                _hotClub.value = clubHot
             }
         }
     }

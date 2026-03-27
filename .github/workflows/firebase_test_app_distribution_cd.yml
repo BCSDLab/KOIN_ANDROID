@@ -1,0 +1,53 @@
+name: Upload apk to firebase app distribution
+
+on:
+  issues:
+    types: [closed]
+  workflow_dispatch:
+    inputs:
+      target_group:
+        description: '테스터 지정'
+        type: boolean
+        default: true
+
+jobs:
+  firebase_cd:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/gradle-setup
+        with:
+          properties: ${{ secrets.PROPERTIES }}
+
+      - name: Restore secrets
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.FIREBASE_STAGE }}
+          GCP_KEY : ${{ secrets.GCP_KEY_STAGE }}
+        run: |
+          echo $GOOGLE_SERVICES_JSON | base64 --decode >  ./koin/google-services.json
+          echo $GCP_KEY | base64 --decode > ./koin/gcp-key.json
+
+      - name: Build Debug APK
+        run: |
+          ISSUE_INFO="${{ github.event.issue.number && format('{0}', github.event.issue.number) || 'Manual' }}"
+          ./gradlew assembleDebug -PversionNameSuffix="($ISSUE_INFO)"
+
+      - name: Upload to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_PROJECT_ID_STAGE }}
+          serviceCredentialsFile: ./koin/gcp-key.json
+          file: ./koin/build/outputs/apk/debug/koin-debug.apk
+          groups: ${{ (github.event_name == 'workflow_dispatch' && github.event.inputs.target_group == true) && 'sprint' || '' }}
+          releaseNotes: |
+            브랜치: ${{ github.ref_name }}
+            ${{ github.event.issue.number && format('이슈 번호: #{0}', github.event.issue.number) || '' }}
+            ${{ github.event.issue.title && format('이슈 제목: {0}', github.event.issue.title) || '' }}
+            ${{ github.event.issue.body && format('이슈 내용: {0}', github.event.issue.body)  || '' }}
+
+      - name: Cleanup Secrets
+        if: always()
+        run: |
+          rm -f ./koin/google-services.json
+          rm -f ./koin/gcp-key.json

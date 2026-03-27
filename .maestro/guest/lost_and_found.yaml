@@ -1,0 +1,13 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin
+---
+- runFlow: ../common/open_drawer.yaml
+- tapOn:
+    id: "${APP_ID}:id/navi_item_lost_and_found"
+- extendedWaitUntil:
+    visible: "분실물"
+    timeout: 15000
+- assertVisible: "분실물"
+- assertVisible: "검색어를 입력해주세요."
+- assertVisible: "글쓰기"

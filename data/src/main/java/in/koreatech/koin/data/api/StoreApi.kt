@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.api
 
-import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.response.store.BenefitCategoryListResponse
 import `in`.koreatech.koin.data.response.store.OrderableShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopDeliveryAvailableResponse
@@ -29,23 +28,23 @@ import retrofit2.http.Query
 
 interface StoreApi {
     // Get Shop list API
-    @GET(URLConstant.SHOPS.SHOPS_V2)
+    @GET("/v2/shops")
     suspend fun getShopList(): StoreResponse
 
-    @GET(URLConstant.SHOPS.SHOPS_V2)
+    @GET("/v2/shops")
     suspend fun getShopListWithSorting(
         @Query("sorter") sorter: String,
         @Query("query") query: String?
     ): StoreResponse
 
-    @GET(URLConstant.SHOPS.SHOPS_V2)
+    @GET("/v2/shops")
     suspend fun getShopListWithOneFilter(
         @Query("sorter") sorter: String,
         @Query("filter") filter: String,
         @Query("query") query: String?
     ): StoreResponse
 
-    @GET(URLConstant.SHOPS.SHOPS_V2)
+    @GET("/v2/shops")
     suspend fun getShopListWithTwoFilter(
         @Query("sorter") sorter: String,
         @Query("filter") OPEN: String = "OPEN",
@@ -53,14 +52,14 @@ interface StoreApi {
         @Query("query") query: String?
     ): StoreResponse
 
-    @GET(URLConstant.SHOPS.EVENTS)
+    @GET("shops/events")
     suspend fun getEventShopList(): StoreEventResponse
 
-    @GET(URLConstant.SHOPS.CATERGORIES)
+    @GET("shops/categories")
     suspend fun getCategories(): StoreCategoriesResponse
 
     // Get Shop list API
-    @GET(URLConstant.SHOPS.SHOPS + "/{id}")
+    @GET("shops/{id}")
     suspend fun getStore(
         @Path("id") uid: Int
     ): StoreItemWithMenusResponse
@@ -70,27 +69,27 @@ interface StoreApi {
         @Path("id") uid: Int
     ): StoreItemWithMenusV2Response
 
-    @GET(URLConstant.SHOPS.SHOPS + "/{shopId}/menus/categories")
+    @GET("shops/{shopId}/menus/categories")
     suspend fun getStoreMenuCategory(
         @Path("shopId") uid: Int
     ): StoreMenuCategoryResponse
 
-    @GET(URLConstant.SHOPS.SHOPS + "/{id}" + "/menus")
+    @GET("shops/{id}/menus")
     suspend fun getShopMenus(
         @Path("id") uid: Int
     ): StoreMenuResponse
 
-    @GET(URLConstant.SHOPS.SHOPS + "/{id}" + "/events")
+    @GET("shops/{id}/events")
     suspend fun getShopEvents(
         @Path("id") uid: Int
     ): StoreDetailEventResponse
 
-    @GET(URLConstant.SHOPS.SHOPS + "/{id}" + "/reviews")
+    @GET("shops/{id}/reviews")
     suspend fun getShopReviews(
         @Path("id") uid: Int
     ): StoreReviewResponse
 
-    @GET(URLConstant.SHOPS.SHOPID.REVIEWS.REVIEWID.REVIEWID)
+    @GET("shops/{shopId}/reviews/{reviewId}")
     suspend fun searchReview(
         @Path("reviewId") reviewId: Int,
         @Path("shopId") shopId: Int
@@ -122,7 +121,7 @@ interface StoreApi {
         @Query("minimum_order_amount") minimumOrderAmount: Int?
     ): List<ShopResponse>
 
-    @GET(URLConstant.SHOPS.SHOPS_V3)
+    @GET("/v3/shops")
     suspend fun getNearbyShops(
         @Query("sorter") sorter: String,
         @Query("filter") filter: List<String>?,

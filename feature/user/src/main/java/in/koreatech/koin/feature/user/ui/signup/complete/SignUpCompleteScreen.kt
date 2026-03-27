@@ -87,6 +87,7 @@ fun SignUpCompleteScreen(
             onClick = {
                 Intent(Intent.ACTION_VIEW).apply {
                     data = "koin://main/activity".toUri()
+                    `package` = context.packageName
                 }.let {
                     context.startActivity(it)
                 }
@@ -97,6 +98,6 @@ fun SignUpCompleteScreen(
 
 @Preview
 @Composable
-fun SignUpCompleteScreenPreview() {
+private fun SignUpCompleteScreenPreview() {
     SignUpCompleteScreen()
 }

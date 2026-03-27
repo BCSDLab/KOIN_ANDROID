@@ -15,7 +15,6 @@ import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundSortType
 import `in`.koreatech.koin.feature.lostandfound.model.toLostAndFoundItemState
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetailViewModel.Companion.PAGE_SIZE
 import javax.inject.Inject
-import kotlin.collections.plus
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.catch
@@ -23,6 +22,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
@@ -31,8 +31,8 @@ import timber.log.Timber
 class LostAndFoundListViewModel @Inject constructor(
     private val fetchLostAndFoundArticlePaginationV2UseCase: FetchLostAndFoundArticlePaginationV2UseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase
-) : ViewModel(), ContainerHost<LostAndFoundListState, Nothing> {
-    override val container = container<LostAndFoundListState, Nothing>(
+) : ViewModel(), ContainerHost<LostAndFoundListState, LostAndFoundListSideEffect> {
+    override val container = container<LostAndFoundListState, LostAndFoundListSideEffect>(
         initialState = LostAndFoundListState()
     )
 
@@ -164,6 +164,11 @@ class LostAndFoundListViewModel @Inject constructor(
         categoryFilterType: List<CategoryFilterType>,
         foundFilterType: FoundFilterType
     ) = intent {
+        if (!state.isLoggedIn && authorFilterType == AuthorFilterType.MY) {
+            postSideEffect(LostAndFoundListSideEffect.UpdateSignInDialog(true))
+            return@intent
+        }
+
         reduce {
             state.copy(
                 authorFilterType = authorFilterType,
@@ -172,6 +177,7 @@ class LostAndFoundListViewModel @Inject constructor(
                 foundFilterType = foundFilterType
             )
         }
+        postSideEffect(LostAndFoundListSideEffect.FetchData)
     }
 
     fun setShowFilterBottomSheet(value: Boolean) = intent {

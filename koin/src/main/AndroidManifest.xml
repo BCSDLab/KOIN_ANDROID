@@ -38,19 +38,6 @@
             android:exported="false" />
 
         <activity
-            android:name=".storev2.StoreDetailActivity"
-            android:theme="@style/KAPTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="true"/>
-
-        <activity
-            android:name=".storev2.ShoppingCartActivity"
-            android:theme="@style/KAPTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="true"/>
-
-
-        <activity
             android:name=".ui.timetablev2.TimetableActivity"
             android:exported="true"
             android:theme="@style/KAPTheme.NoActionBar"
@@ -83,17 +70,6 @@
         <activity
             android:name=".ui.operating.OperatingInfoActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.store.activity.CallBenefitStoreActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".ui.store.activity.WriteReviewActivity"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
 
         <activity
             android:name=".ui.forceupdate.ForceUpdateActivity"
@@ -169,27 +145,6 @@
                 <data android:pathPrefix="/lost-item"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.store.activity.StoreActivity"
-            android:exported="false"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.dining.DiningNoticeActivity"
-            android:exported="false"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.store.activity.StoreDetailActivity"
-            android:exported="false"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.store.activity.StoreReviewReportActivity"
-            android:exported="false"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
             android:name=".ui.land.LandActivity"
             android:exported="false"

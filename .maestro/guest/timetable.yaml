@@ -1,0 +1,16 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin
+---
+- runFlow: ../common/open_drawer.yaml
+- scrollUntilVisible:
+    element:
+      id: "${APP_ID}:id/navi_item_timetable"
+    direction: DOWN
+    timeout: 10000
+- tapOn:
+    id: "${APP_ID}:id/navi_item_timetable"
+- extendedWaitUntil:
+    visible: "시간표"
+    timeout: 15000
+- assertVisible: "시간표"

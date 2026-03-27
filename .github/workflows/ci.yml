@@ -1,0 +1,222 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  reset-review-labels:
+    name: Reset Review Labels
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action == 'synchronize'
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Generate App Token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ github.event.repository.name }}
+
+      - name: Remove Review Labels
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const labels = ['ci:passed', 'coderabbit:complete', 'claude:complete'];
+            for (const label of labels) {
+              try {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  name: label
+                });
+              } catch (e) {
+                if (e.status !== 404) {
+                  throw e;
+                }
+              }
+            }
+
+  lint:
+    name: Lint & Format Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/gradle-setup
+        with:
+          properties: ${{ secrets.PROPERTIES }}
+
+      - name: ktlint
+        run: ./gradlew ktlintCheck
+
+      - name: spotless
+        run: ./gradlew spotlessCheck --no-configuration-cache
+
+      - name: detekt
+        run: ./gradlew detekt
+
+      - name: Upload detekt Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: detekt-report
+          path: '**/build/reports/detekt/**'
+          retention-days: 7
+
+      - name: Upload ktlint Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ktlint-report
+          path: '**/build/reports/ktlint/**'
+          retention-days: 7
+
+  coverage:
+    name: Code Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/gradle-setup
+        with:
+          properties: ${{ secrets.PROPERTIES }}
+
+      - name: Update Firebase
+        env:
+          FIREBASE: ${{ secrets.FIREBASE }}
+          FIREBASE_STAGE: ${{ secrets.FIREBASE_STAGE }}
+        run: |
+          mkdir -p ./koin/src/debug
+          echo $FIREBASE | base64 -di > ./koin/google-services.json
+          echo $FIREBASE_STAGE | base64 -di > ./koin/src/debug/google-services.json
+          for file in $(find . -name 'google-services.json')
+          do
+           echo $file
+          done
+
+      - name: Kover - Unit Test with Coverage
+        run: ./gradlew koverXmlReport
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kover-report
+          path: '**/build/reports/kover/**'
+          retention-days: 7
+
+  sonarcloud:
+    name: SonarCloud
+    needs: [lint, coverage]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/gradle-setup
+        with:
+          properties: ${{ secrets.PROPERTIES }}
+
+      - name: Cache SonarQube packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Update Secrets
+        env:
+          KOIN_STORE_PASSWORD: ${{ secrets.KOIN_STORE_PASSWORD}}
+          NAVER_MAP_KEY: ${{ secrets.NAVER_MAP_KEY}}
+          SECRET_KEY : ${{ secrets.SECRET_KEY }}
+        run: |
+          echo $SECRET_KEY | base64 -di > ./koin/team_kap_android.jks
+          for file in $(find . -name 'local.properties')
+          do
+           echo $file
+          done
+          for file in $(find . -name 'team_kap_android.jks')
+          do
+           echo $file
+          done
+
+      - name: Update Firebase
+        env:
+          FIREBASE: ${{ secrets.FIREBASE }}
+          FIREBASE_STAGE: ${{ secrets.FIREBASE_STAGE }}
+        run: |
+          mkdir -p ./koin/src/debug
+          echo $FIREBASE | base64 -di > ./koin/google-services.json
+          echo $FIREBASE_STAGE | base64 -di > ./koin/src/debug/google-services.json
+          for file in $(find . -name 'google-services.json')
+          do
+           echo $file
+          done
+
+      - name: Lint
+        run: ./gradlew lintDebug
+
+      - name: Download Coverage Report
+        uses: actions/download-artifact@v4
+        with:
+          name: kover-report
+          path: .
+
+      - name: Download detekt Report
+        uses: actions/download-artifact@v4
+        with:
+          name: detekt-report
+          path: .
+
+      - name: Download ktlint Report
+        uses: actions/download-artifact@v4
+        with:
+          name: ktlint-report
+          path: .
+
+      - name: SonarCloud Scan
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          ./gradlew sonar \
+            -Dsonar.qualitygate.wait=true
+
+  label:
+    name: Add CI Label
+    needs: [ sonarcloud ]
+    runs-on: ubuntu-latest
+    if: needs.sonarcloud.result == 'success'
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Generate App Token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ github.event.repository.name }}
+
+      - name: Add Label
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['ci:passed']
+            });

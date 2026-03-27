@@ -16,6 +16,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.activity.WebViewActivity
@@ -184,7 +185,18 @@ class ArticleDetailFragment : Fragment() {
                 AnalyticsConstant.Label.INVENTORY,
                 getString(R.string.list)
             )
-            navController.popBackStack(R.id.articleListFragment, false)
+            if (!navController.popBackStack(R.id.articleListFragment, false)) {
+                navController.navigate(
+                    R.id.articleListFragment,
+                    null,
+                    navOptions {
+                        popUpTo(R.id.nav_graph_article) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                )
+            }
         }
         binding.buttonToPrevArticle.setOnClickListener {
             navController.navigate(

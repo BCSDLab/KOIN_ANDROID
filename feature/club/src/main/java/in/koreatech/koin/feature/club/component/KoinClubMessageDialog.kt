@@ -71,7 +71,7 @@ fun KoinClubMessageDialog(
 
 @Preview
 @Composable
-fun KoinClubMessageDialogPreview() {
+private fun KoinClubMessageDialogPreview() {
     KoinTheme {
         KoinClubMessageDialog(
             title = "제목",

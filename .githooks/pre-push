@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+
+set -e
+
+if ((BASH_VERSINFO[0] < 4)); then
+  echo "[pre-push] Error: bash 4.0+ is required. Install with: brew install bash"
+  exit 1
+fi
+
+MAIN_BRANCH="origin/develop"
+MERGE_BASE=$(git merge-base HEAD "$MAIN_BRANCH" 2>/dev/null || git merge-base HEAD develop 2>/dev/null || true)
+
+if [ -z "$MERGE_BASE" ]; then
+  echo "[pre-push] Could not determine merge base. Running full check..."
+  ./gradlew spotlessCheck ktlintCheck detekt
+  exit 0
+fi
+
+CHANGED_FILES=$(git diff --name-only "$MERGE_BASE" HEAD)
+
+if [ -z "$CHANGED_FILES" ]; then
+  echo "[pre-push] No changed files. Skipping checks."
+  exit 0
+fi
+
+echo "[pre-push] Changed files:"
+echo "$CHANGED_FILES" | sed 's/^/  /'
+
+# Parse modules from settings.gradle dynamically
+declare -A MODULE_PATHS  # module -> dir path
+while IFS= read -r line; do
+  for token in $line; do
+    token="${token//\'/}"
+    token="${token//,/}"
+    if [[ "$token" == :* ]]; then
+      dir="${token//://}"
+      dir="${dir#/}"
+      MODULE_PATHS["$token"]="$dir"
+    fi
+  done
+done < <(grep "^include" settings.gradle)
+
+# Map changed files to affected modules
+declare -A MODULES
+RUN_ALL=false
+
+while IFS= read -r file; do
+  case "$file" in
+    build-logic/*|build.gradle|build.gradle.kts|gradle.properties|settings.gradle|settings.gradle.kts|gradle/libs.versions.toml)
+      RUN_ALL=true
+      break
+      ;;
+  esac
+  matched_module=""
+  matched_len=0
+  for module in "${!MODULE_PATHS[@]}"; do
+    dir="${MODULE_PATHS[$module]}"
+    if [[ "$file" == "$dir/"* ]]; then
+      if (( ${#dir} > matched_len )); then
+        matched_module="$module"
+        matched_len=${#dir}
+      fi
+    fi
+  done
+  if [[ -n "$matched_module" ]]; then
+    MODULES["$matched_module"]=1
+  fi
+done <<< "$CHANGED_FILES"
+
+if [ "$RUN_ALL" = true ]; then
+  echo "[pre-push] Build-level changes detected. Running full check..."
+  ./gradlew spotlessCheck ktlintCheck detekt
+  exit 0
+fi
+
+if [ ${#MODULES[@]} -eq 0 ]; then
+  echo "[pre-push] No affected modules detected. Skipping checks."
+  exit 0
+fi
+
+echo "[pre-push] Affected modules: ${!MODULES[*]}"
+
+TASKS=("spotlessCheck")
+for module in "${!MODULES[@]}"; do
+  TASKS+=("${module}:ktlintCheck")
+  if ./gradlew "${module}:tasks" --quiet 2>/dev/null | grep -q "^detekt "; then
+    TASKS+=("${module}:detekt")
+  fi
+done
+echo "[pre-push] Running: ./gradlew ${TASKS[*]}"
+./gradlew --continue "${TASKS[@]}"

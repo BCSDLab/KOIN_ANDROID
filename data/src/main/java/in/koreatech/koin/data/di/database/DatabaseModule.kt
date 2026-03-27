@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.koin.data.dao.ABTestDao
 import `in`.koreatech.koin.data.dao.CacheMetadataDao
 import `in`.koreatech.koin.data.dao.StoreCategoriesDao
 import `in`.koreatech.koin.data.db.AppDatabase
@@ -24,7 +25,7 @@ object DatabaseModule {
             context,
             AppDatabase::class.java,
             "koin_database"
-        ).build()
+        ).addMigrations(AppDatabase.MIGRATION_2_3).build()
     }
 
     @Provides
@@ -37,5 +38,11 @@ object DatabaseModule {
     @Singleton
     fun provideStoreCategoriesDao(appDatabase: AppDatabase): StoreCategoriesDao {
         return appDatabase.storeCategoriesDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAbTestDao(appDatabase: AppDatabase): ABTestDao {
+        return appDatabase.abTestDao()
     }
 }

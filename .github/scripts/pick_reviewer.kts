@@ -12,7 +12,6 @@ import kotlin.random.Random
  * If developer should not be picked as a reviewer, set shouldPick to false.
  */
 enum class Developer(val githubName: String, val isMentor: Boolean = false) {
-    YUNJAENA("yunjaena", true),
     JAEYOUNG290("JaeYoung290"),
     KONGWOOJIN("kongwoojin"),
     KYM_P("KYM-P"),
@@ -97,7 +96,7 @@ fun pickMentor() {
 }
 
 fun main(args: Array<String>) {
-    val githubActor = System.getenv("GITHUB_ACTOR")
+    val githubActor = System.getenv("PR_AUTHOR")
     val developer = Developer.entries.firstOrNull { it.githubName == githubActor }
 
     pickRandomReviewer(developer)

@@ -1,14 +1,19 @@
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import `in`.koreatech.convention.configureAndroidCompose
+import `in`.koreatech.convention.configureAndroidLint
 import `in`.koreatech.convention.configureAndroidProject
 import `in`.koreatech.convention.configureAndroidTest
+import `in`.koreatech.convention.configureDetekt
+import `in`.koreatech.convention.configureKtlint
 import `in`.koreatech.convention.configureTest
 import `in`.koreatech.convention.libs
+import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.getByType
+import org.jlleitschuh.gradle.ktlint.KtlintExtension
 
 internal class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -20,6 +25,7 @@ internal class AndroidApplicationConventionPlugin : Plugin<Project> {
                 apply(libs.findPlugin("ksp").get().get().pluginId)
                 apply(libs.findPlugin("ktlint").get().get().pluginId)
                 apply(libs.findPlugin("compose-compiler").get().get().pluginId)
+                apply(libs.findPlugin("detekt").get().get().pluginId)
             }
             val extension = extensions.getByType<BaseAppModuleExtension>()
             extensions.configure<ApplicationExtension> {
@@ -27,6 +33,15 @@ internal class AndroidApplicationConventionPlugin : Plugin<Project> {
                 configureAndroidCompose(this)
                 configureTest()
                 configureAndroidTest()
+                configureAndroidLint(this)
+            }
+
+            extensions.configure<DetektExtension> {
+                configureDetekt(this)
+            }
+
+            extensions.configure<KtlintExtension> {
+                configureKtlint(this)
             }
         }
     }

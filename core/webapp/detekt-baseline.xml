@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>LongParameterList:WebApp.kt$( url: String, modifier: Modifier = Modifier, exposedInterfaceName: String = "Android", windowInsets: WindowInsets = WindowInsets.safeDrawing, cookies: List&lt;Pair&lt;String, String&gt;&gt; = emptyList(), koinWebAppInterface: KoinWebAppInterface = KoinWebAppInterface(), koinWebAppWebViewClient: KoinWebAppWebViewClient = KoinWebAppWebViewClient(), koinWebChromeClient: KoinWebAppWebChromeClient = KoinWebAppWebChromeClient(), backHandler: @Composable (view: WebView?) -&gt; Unit = {} )</ID>
+  </CurrentIssues>
+</SmellBaseline>

@@ -137,6 +137,7 @@ private fun BannerContent(
                 } else {
                     if (banner.redirectLink.isNotEmpty()) {
                         val intent = Intent(Intent.ACTION_VIEW, banner.redirectLink.toUri())
+                        intent.`package` = context.packageName
                         context.startActivity(intent)
                     }
                 }

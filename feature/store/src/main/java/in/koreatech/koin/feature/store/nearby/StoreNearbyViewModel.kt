@@ -34,6 +34,7 @@ class StoreNearbyViewModel @Inject constructor(
     override val container = container<StoreNearbyState, StoreNearbySideEffect>(StoreNearbyState())
 
     init {
+        fetchData()
         intent {
             getStoreCategoriesUseCase().let {
                 reduce {
@@ -55,6 +56,7 @@ class StoreNearbyViewModel @Inject constructor(
                         state.copy(isLoggedIn = true)
                     }
                 }
+
                 is User.Anonymous -> {
                     reduce {
                         state.copy(isLoggedIn = false)
@@ -111,6 +113,7 @@ class StoreNearbyViewModel @Inject constructor(
                     isLoading = false
                 )
             }
+            postSideEffect(StoreNearbySideEffect.ScrollToTop)
         }.onFailure {
             reduce {
                 state.copy(
@@ -134,6 +137,7 @@ class StoreNearbyViewModel @Inject constructor(
                 selectedOrderOption = orderOption
             )
         }
+        postSideEffect(StoreNearbySideEffect.FetchData)
     }
 
     fun onSelectedStoreFilterChange(selectedStoreFilter: StoreFilter) = intent {
@@ -146,6 +150,7 @@ class StoreNearbyViewModel @Inject constructor(
                 }.toImmutableList()
             )
         }
+        postSideEffect(StoreNearbySideEffect.FetchData)
     }
 
     fun onShowMinimumPriceOptionsChange(showMinimumPriceOptions: Boolean) = intent {
@@ -162,6 +167,7 @@ class StoreNearbyViewModel @Inject constructor(
                 selectedMinimumPriceOption = selectedMinimumPriceOption
             )
         }
+        postSideEffect(StoreNearbySideEffect.FetchData)
     }
 
     fun onShowSearchChange(showSearch: Boolean) = intent {
@@ -179,6 +185,8 @@ class StoreNearbyViewModel @Inject constructor(
                 categoryId = categoryId
             )
         }
+        postSideEffect(StoreNearbySideEffect.FetchData)
+        postSideEffect(StoreNearbySideEffect.ScrollCategory(categoryId))
     }
 
     fun onQueryChange(query: String) = blockingIntent {

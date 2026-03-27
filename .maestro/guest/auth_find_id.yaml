@@ -1,0 +1,12 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin
+---
+- runFlow: ../common/launch_app.yaml
+- openLink: "koin://findid/activity"
+- extendedWaitUntil:
+    visible: "아이디 찾기"
+    timeout: 15000
+- assertVisible: "아이디 찾기"
+- assertVisible: "휴대전화 번호"
+- assertVisible: "인증번호 발송"

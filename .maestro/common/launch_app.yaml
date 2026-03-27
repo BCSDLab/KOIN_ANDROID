@@ -1,0 +1,11 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin
+---
+- stopApp
+- openLink: "koin://main/activity"
+- waitForAnimationToEnd:
+    timeout: 15000
+- tapOn:
+    text: "닫기"
+    optional: true

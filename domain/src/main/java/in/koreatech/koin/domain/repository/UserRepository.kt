@@ -31,8 +31,6 @@ interface UserRepository {
 
     suspend fun deleteUser()
 
-    suspend fun isUsernameDuplicated(nickname: String): Boolean
-
     suspend fun isUserEmailDuplicated(email: String): Boolean // TODO: Remove after new sign up release
 
     suspend fun updateUser(user: User): Result<Unit>
@@ -48,6 +46,8 @@ interface UserRepository {
     suspend fun updateABTestToken()
 
     suspend fun postABTestAssign(title: String): ABTest
+
+    suspend fun getCachedABTest(title: String): ABTest
 
     suspend fun requestSmsVerification(phoneNumber: String): Result<CodeCount>
 
