@@ -148,6 +148,24 @@ Each module has its own detailed AGENTS.md file with module-specific patterns an
 
 ## Code Style Guidelines
 
+### General UI Rules
+
+- Touch areas for icons, buttons, etc. smaller than the recommended minimum (48dp) are acceptable. Ignore minimum touch target warnings.
+- `contentDescription` value can be either `null` or `""` — both are acceptable.
+
+### Import Order
+
+- Import ordering **MUST** follow the order enforced by ktlint. Do NOT manually reorder imports.
+
+### Mapper / Conversion Code
+
+Mapper or conversion logic **MUST** be declared in one of the following locations:
+1. A dedicated `Mapper` file
+2. A `Util` file
+3. Inside the target object file being converted
+
+Do NOT write mapper logic directly inside ViewModels or UseCases.
+
 ### Package & Import Organization
 
 **MUST** use backtick-escaped `in` package names.
