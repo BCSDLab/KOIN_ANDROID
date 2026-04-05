@@ -43,6 +43,7 @@ import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.SortT
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.StatusesType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetActions
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
+import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterSectionItem
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -146,67 +147,68 @@ private fun FilterBottomSheetContent(
                 .verticalScroll(scrollState)
                 .padding(top = 12.dp, start = 32.dp, bottom = 12.dp, end = 12.dp)
         ) {
-            FilterSection(
-                title = stringResource(R.string.filter_list_list_type),
-                items = persistentListOf(
-                    ListType.All,
-                    ListType.My,
-                    ListType.Joined
+            val sections = listOf(
+                FilterSectionItem(
+                    title = stringResource(R.string.filter_list_list_type),
+                    items = persistentListOf(ListType.All, ListType.My, ListType.Joined),
+                    selectedItems = persistentListOf(state.selectedListType),
+                    onItemSelected = { actions.onListTypeChange(it.first() as ListType) }
                 ),
-                selectedItem = state.selectedListType,
-                onItemSelected = actions.onListTypeChange
-            )
-            HorizontalDivider(color = RebrandKoinTheme.colors.neutral300)
-            FilterSection(
-                title = stringResource(R.string.filter_list_sort_order),
-                items = persistentListOf(
-                    SortType.LatestDesc,
-                    SortType.LatestAsc,
-                    SortType.DepartureDesc,
-                    SortType.DepartureAsc
+                FilterSectionItem(
+                    title = stringResource(R.string.filter_list_sort_order),
+                    items = persistentListOf(SortType.LatestDesc, SortType.LatestAsc, SortType.DepartureDesc, SortType.DepartureAsc),
+                    selectedItems = persistentListOf(state.selectedSortType),
+                    onItemSelected = { actions.onSortTypeChange(it.first() as SortType) }
                 ),
-                selectedItem = state.selectedSortType,
-                onItemSelected = actions.onSortTypeChange
-            )
-            HorizontalDivider(color = RebrandKoinTheme.colors.neutral300)
-            FilterSection(
-                title = stringResource(R.string.filter_list_recruitment_status),
-                items = persistentListOf(
-                    StatusesType.All,
-                    StatusesType.Recruiting,
-                    StatusesType.Closed,
-                    StatusesType.Completed
+                FilterSectionItem(
+                    title = stringResource(R.string.filter_list_recruitment_status),
+                    items = persistentListOf(StatusesType.All, StatusesType.Recruiting, StatusesType.Closed, StatusesType.Completed),
+                    selectedItems = persistentListOf(state.selectedStatusesType),
+                    onItemSelected = { actions.onStatusesTypeChange(it.first() as StatusesType) }
                 ),
-                selectedItem = state.selectedStatusesType,
-                onItemSelected = actions.onStatusesTypeChange
-            )
-            HorizontalDivider(color = RebrandKoinTheme.colors.neutral300)
-            FilterDuplicateSection(
-                title = stringResource(R.string.filter_list_origin),
-                items = persistentListOf(
-                    DeparturesFilterType.All, DeparturesFilterType.FrontGate,
-                    DeparturesFilterType.BackGate, DeparturesFilterType.TennisCourt,
-                    DeparturesFilterType.DormitoryMain, DeparturesFilterType.DormitorySub,
-                    DeparturesFilterType.Terminal, DeparturesFilterType.Station,
-                    DeparturesFilterType.AsanStation
+                FilterSectionItem(
+                    title = stringResource(R.string.filter_list_origin),
+                    items = persistentListOf(
+                        DeparturesFilterType.All, DeparturesFilterType.FrontGate,
+                        DeparturesFilterType.BackGate, DeparturesFilterType.TennisCourt,
+                        DeparturesFilterType.DormitoryMain, DeparturesFilterType.DormitorySub,
+                        DeparturesFilterType.Terminal, DeparturesFilterType.Station,
+                        DeparturesFilterType.AsanStation
+                    ),
+                    selectedItems = state.selectedDeparturesType,
+                    onItemSelected = { actions.onDeparturesTypeChange(it.map { item -> item as DeparturesFilterType }.toPersistentList()) },
+                    isDuplicateSelectable = true,
+                    hint = stringResource(R.string.filter_list_other_place_hint)
                 ),
-                selectedItems = state.selectedDeparturesType,
-                onItemSelected = actions.onDeparturesTypeChange
+                FilterSectionItem(
+                    title = stringResource(R.string.filter_list_destination),
+                    items = persistentListOf(
+                        ArrivalsFilterType.All, ArrivalsFilterType.FrontGate,
+                        ArrivalsFilterType.BackGate, ArrivalsFilterType.TennisCourt,
+                        ArrivalsFilterType.DormitoryMain, ArrivalsFilterType.DormitorySub,
+                        ArrivalsFilterType.Terminal, ArrivalsFilterType.Station,
+                        ArrivalsFilterType.AsanStation
+                    ),
+                    selectedItems = state.selectedArrivalsType,
+                    onItemSelected = { actions.onArrivalsTypeChange(it.map { item -> item as ArrivalsFilterType }.toPersistentList()) },
+                    isDuplicateSelectable = true,
+                    hint = stringResource(R.string.filter_list_other_place_hint)
+                )
             )
-            HorizontalDivider(color = RebrandKoinTheme.colors.neutral300)
-            FilterDuplicateSection(
-                title = stringResource(R.string.filter_list_destination),
-                items = persistentListOf(
-                    ArrivalsFilterType.All, ArrivalsFilterType.FrontGate,
-                    ArrivalsFilterType.BackGate, ArrivalsFilterType.TennisCourt,
-                    ArrivalsFilterType.DormitoryMain, ArrivalsFilterType.DormitorySub,
-                    ArrivalsFilterType.Terminal, ArrivalsFilterType.Station,
-                    ArrivalsFilterType.AsanStation
-                ),
-                selectedItems = state.selectedArrivalsType,
-                onItemSelected = actions.onArrivalsTypeChange
-            )
-            HorizontalDivider(color = RebrandKoinTheme.colors.neutral300)
+
+            sections.forEachIndexed { index, section ->
+                FilterSection(
+                    title = section.title,
+                    items = section.items,
+                    selectedItems = section.selectedItems,
+                    onItemSelected = section.onItemSelected,
+                    isDuplicateSelectable = section.isDuplicateSelectable,
+                    hint = section.hint
+                )
+                if (index <= sections.lastIndex) {
+                    HorizontalDivider(color = RebrandKoinTheme.colors.neutral300)
+                }
+            }
         }
 
         Row(
@@ -252,56 +254,32 @@ private fun FilterBottomSheetContent(
 }
 
 @Composable
-private fun <T : CallvanFilterType> FilterSection(
+private fun FilterSection(
     title: String,
-    items: ImmutableList<T>,
-    selectedItem: T,
-    onItemSelected: (T) -> Unit
-) {
-    Column(modifier = Modifier.padding(vertical = 12.dp)) {
-        Text(
-            text = title,
-            style = RebrandKoinTheme.typography.bold16,
-            color = RebrandKoinTheme.colors.neutral800,
-            modifier = Modifier.padding(bottom = 12.dp)
-        )
-        FlowRow(
-            modifier = Modifier.fillMaxWidth(),
-            maxItemsInEachRow = 4
-        ) {
-            items.forEach { item ->
-                FilterBottomSheetItem(
-                    text = stringResource(item.stringRes),
-                    isSelected = item == selectedItem,
-                    onClick = { onItemSelected(item) }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun <T : CallvanFilterType> FilterDuplicateSection(
-    title: String,
-    items: ImmutableList<T>,
-    selectedItems: ImmutableList<T>,
-    onItemSelected: (ImmutableList<T>) -> Unit
+    items: ImmutableList<CallvanFilterType>,
+    selectedItems: ImmutableList<CallvanFilterType>,
+    onItemSelected: (ImmutableList<CallvanFilterType>) -> Unit,
+    isDuplicateSelectable: Boolean = false,
+    hint: String? = null
 ) {
     Column(modifier = Modifier.padding(vertical = 12.dp)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(bottom = 12.dp)
         ) {
             Text(
                 text = title,
                 style = RebrandKoinTheme.typography.bold16,
                 color = RebrandKoinTheme.colors.neutral800
             )
-            Text(
-                text = stringResource(R.string.filter_list_other_place_hint),
-                style = RebrandKoinTheme.typography.regular12,
-                color = RebrandKoinTheme.colors.neutral500
-            )
+            if (hint != null) {
+                Text(
+                    text = hint,
+                    style = RebrandKoinTheme.typography.regular12,
+                    color = RebrandKoinTheme.colors.neutral500
+                )
+            }
         }
         FlowRow(
             modifier = Modifier.fillMaxWidth(),
@@ -312,17 +290,21 @@ private fun <T : CallvanFilterType> FilterDuplicateSection(
                     text = stringResource(item.stringRes),
                     isSelected = item in selectedItems,
                     onClick = {
-                        onItemSelected(
-                            if (item in selectedItems) {
-                                if (selectedItems.size > MINIMUM_SELECTION_COUNT) {
-                                    (selectedItems - item).toPersistentList()
+                        if (isDuplicateSelectable) {
+                            onItemSelected(
+                                if (item in selectedItems) {
+                                    if (selectedItems.size > MINIMUM_SELECTION_COUNT) {
+                                        (selectedItems - item).toPersistentList()
+                                    } else {
+                                        return@FilterBottomSheetItem
+                                    }
                                 } else {
-                                    return@FilterBottomSheetItem
+                                    (selectedItems + item).toPersistentList()
                                 }
-                            } else {
-                                (selectedItems + item).toPersistentList()
-                            }
-                        )
+                            )
+                        } else {
+                            onItemSelected(persistentListOf(item))
+                        }
                     }
                 )
             }
