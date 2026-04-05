@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -21,7 +22,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -67,59 +75,78 @@ private fun FilterBottomSheetContent(
     state: FilterBottomSheetState,
     actions: FilterBottomSheetActions
 ) {
+    val configuration = LocalConfiguration.current
+    val maxHeight = remember(configuration.screenHeightDp) {
+        (configuration.screenHeightDp * 0.7f).dp
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .heightIn(max = maxHeight)
             .padding(bottom = 20.dp)
     ) {
         val scrollState = rememberScrollState()
+        val nestedScrollConnection = remember {
+            object : NestedScrollConnection {
+                override fun onPostScroll(
+                    consumed: Offset,
+                    available: Offset,
+                    source: NestedScrollSource
+                ): Offset = if (available.y < 0) available else Offset.Zero
+            }
+        }
         Column(
             modifier = Modifier
                 .weight(1f, fill = false)
+                .nestedScroll(nestedScrollConnection)
                 .verticalScroll(scrollState)
                 .padding(top = 12.dp, start = 32.dp, bottom = 12.dp, end = 12.dp)
         ) {
-            val sections = listOf(
-                FilterSectionItem(
-                    title = stringResource(R.string.filter_list_list_type),
-                    items = persistentListOf(ListType.All, ListType.My, ListType.Joined),
-                    selectedItems = persistentListOf(state.selectedListType)
-                ),
-                FilterSectionItem(
-                    title = stringResource(R.string.filter_list_sort_order),
-                    items = persistentListOf(SortType.LatestDesc, SortType.LatestAsc, SortType.DepartureDesc, SortType.DepartureAsc),
-                    selectedItems = persistentListOf(state.selectedSortType)
-                ),
-                FilterSectionItem(
-                    title = stringResource(R.string.filter_list_recruitment_status),
-                    items = persistentListOf(StatusesType.All, StatusesType.Recruiting, StatusesType.Closed, StatusesType.Completed),
-                    selectedItems = persistentListOf(state.selectedStatusesType)
-                ),
-                FilterSectionItem(
-                    title = stringResource(R.string.filter_list_origin),
-                    items = persistentListOf(
-                        DeparturesFilterType.All, DeparturesFilterType.FrontGate,
-                        DeparturesFilterType.BackGate, DeparturesFilterType.TennisCourt,
-                        DeparturesFilterType.DormitoryMain, DeparturesFilterType.DormitorySub,
-                        DeparturesFilterType.Terminal, DeparturesFilterType.Station,
-                        DeparturesFilterType.AsanStation
+            val context = LocalContext.current
+            val sections = remember(state) {
+                listOf(
+                    FilterSectionItem(
+                        title = context.getString(R.string.filter_list_list_type),
+                        items = persistentListOf(ListType.All, ListType.My, ListType.Joined),
+                        selectedItems = persistentListOf(state.selectedListType)
                     ),
-                    selectedItems = state.selectedDeparturesType,
-                    hint = stringResource(R.string.filter_list_other_place_hint)
-                ),
-                FilterSectionItem(
-                    title = stringResource(R.string.filter_list_destination),
-                    items = persistentListOf(
-                        ArrivalsFilterType.All, ArrivalsFilterType.FrontGate,
-                        ArrivalsFilterType.BackGate, ArrivalsFilterType.TennisCourt,
-                        ArrivalsFilterType.DormitoryMain, ArrivalsFilterType.DormitorySub,
-                        ArrivalsFilterType.Terminal, ArrivalsFilterType.Station,
-                        ArrivalsFilterType.AsanStation
+                    FilterSectionItem(
+                        title = context.getString(R.string.filter_list_sort_order),
+                        items = persistentListOf(SortType.LatestDesc, SortType.LatestAsc, SortType.DepartureDesc, SortType.DepartureAsc),
+                        selectedItems = persistentListOf(state.selectedSortType)
                     ),
-                    selectedItems = state.selectedArrivalsType,
-                    hint = stringResource(R.string.filter_list_other_place_hint)
+                    FilterSectionItem(
+                        title = context.getString(R.string.filter_list_recruitment_status),
+                        items = persistentListOf(StatusesType.All, StatusesType.Recruiting, StatusesType.Closed, StatusesType.Completed),
+                        selectedItems = persistentListOf(state.selectedStatusesType)
+                    ),
+                    FilterSectionItem(
+                        title = context.getString(R.string.filter_list_origin),
+                        items = persistentListOf(
+                            DeparturesFilterType.All, DeparturesFilterType.FrontGate,
+                            DeparturesFilterType.BackGate, DeparturesFilterType.TennisCourt,
+                            DeparturesFilterType.DormitoryMain, DeparturesFilterType.DormitorySub,
+                            DeparturesFilterType.Terminal, DeparturesFilterType.Station,
+                            DeparturesFilterType.AsanStation
+                        ),
+                        selectedItems = state.selectedDeparturesType,
+                        hint = context.getString(R.string.filter_list_other_place_hint)
+                    ),
+                    FilterSectionItem(
+                        title = context.getString(R.string.filter_list_destination),
+                        items = persistentListOf(
+                            ArrivalsFilterType.All, ArrivalsFilterType.FrontGate,
+                            ArrivalsFilterType.BackGate, ArrivalsFilterType.TennisCourt,
+                            ArrivalsFilterType.DormitoryMain, ArrivalsFilterType.DormitorySub,
+                            ArrivalsFilterType.Terminal, ArrivalsFilterType.Station,
+                            ArrivalsFilterType.AsanStation
+                        ),
+                        selectedItems = state.selectedArrivalsType,
+                        hint = context.getString(R.string.filter_list_other_place_hint)
+                    )
                 )
-            )
+            }
 
             sections.forEachIndexed { index, section ->
                 FilterSection(
