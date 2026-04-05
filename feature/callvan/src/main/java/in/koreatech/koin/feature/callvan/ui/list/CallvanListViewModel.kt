@@ -96,7 +96,6 @@ class CallvanListViewModel @Inject constructor(
         reduce { state.copy(searchValue = query) }
     }
 
-
     fun join(postId: Int) = intent {
         if (!state.isLoggedIn) {
             reduce { state.copy(isLoginVisible = true) }
@@ -165,12 +164,16 @@ class CallvanListViewModel @Inject constructor(
                     is StatusesType -> pending.copy(selectedStatusesType = item)
                     is DeparturesFilterType -> pending.copy(
                         selectedDeparturesType = toggleDuplicateSelection(
-                            pending.selectedDeparturesType, item, DeparturesFilterType.All
+                            pending.selectedDeparturesType,
+                            item,
+                            DeparturesFilterType.All
                         )
                     )
                     is ArrivalsFilterType -> pending.copy(
                         selectedArrivalsType = toggleDuplicateSelection(
-                            pending.selectedArrivalsType, item, ArrivalsFilterType.All
+                            pending.selectedArrivalsType,
+                            item,
+                            ArrivalsFilterType.All
                         )
                     )
                 }
@@ -200,8 +203,11 @@ class CallvanListViewModel @Inject constructor(
         item == allItem -> persistentListOf(allItem)
         allItem in current -> persistentListOf(item)
         item in current -> {
-            if (current.size > MINIMUM_SELECTION_COUNT) (current - item).toPersistentList()
-            else current
+            if (current.size > MINIMUM_SELECTION_COUNT) {
+                (current - item).toPersistentList()
+            } else {
+                current
+            }
         }
         else -> (current + item).toPersistentList()
     }
