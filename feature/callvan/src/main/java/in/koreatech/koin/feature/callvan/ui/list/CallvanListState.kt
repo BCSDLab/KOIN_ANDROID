@@ -12,6 +12,7 @@ data class CallvanListState(
     val items: ImmutableList<CallvanListUiState> = persistentListOf(),
     val searchValue: String = "",
     val filterState: FilterBottomSheetState = FilterBottomSheetState(),
+    val pendingFilterState: FilterBottomSheetState = FilterBottomSheetState(),
     val hasNewNotification: Boolean = false,
     val isLoading: Boolean = false,
     val isLoadingMore: Boolean = false,

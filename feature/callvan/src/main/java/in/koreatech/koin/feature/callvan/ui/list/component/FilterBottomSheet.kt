@@ -21,10 +21,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -46,86 +42,22 @@ import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterSectionItem
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
-
-private const val MINIMUM_SELECTION_COUNT = 1
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterBottomSheet(
-    onDismissRequest: () -> Unit,
-    initialListType: ListType,
-    initialSortType: SortType,
-    initialStatusesType: StatusesType,
-    initialArrivalsType: ImmutableList<ArrivalsFilterType>,
-    initialDeparturesType: ImmutableList<DeparturesFilterType>,
-    onApply: (ListType, SortType, StatusesType, ImmutableList<DeparturesFilterType>, ImmutableList<ArrivalsFilterType>) -> Unit
+    state: FilterBottomSheetState,
+    actions: FilterBottomSheetActions,
+    onDismissRequest: () -> Unit
 ) {
-    var currentListType by remember(initialListType) { mutableStateOf(initialListType) }
-    var currentSortType by remember(initialSortType) { mutableStateOf(initialSortType) }
-    var currentStatusesType by remember(initialStatusesType) { mutableStateOf(initialStatusesType) }
-    var currentArrivalsType by remember(initialArrivalsType) { mutableStateOf(initialArrivalsType) }
-    var currentDeparturesType by remember(initialDeparturesType) { mutableStateOf(initialDeparturesType) }
-
     CallvanBottomSheet(
         title = stringResource(R.string.filter_container),
         onDismiss = onDismissRequest,
         showCloseButton = true
     ) {
         FilterBottomSheetContent(
-            state = FilterBottomSheetState(
-                selectedListType = currentListType,
-                selectedSortType = currentSortType,
-                selectedStatusesType = currentStatusesType,
-                selectedDeparturesType = currentDeparturesType,
-                selectedArrivalsType = currentArrivalsType
-            ),
-            actions = FilterBottomSheetActions(
-                onListTypeChange = { currentListType = it },
-                onSortTypeChange = { currentSortType = it },
-                onStatusesTypeChange = { currentStatusesType = it },
-                onArrivalsTypeChange = { newSelected ->
-                    currentArrivalsType = if (
-                        currentArrivalsType.size == 1 &&
-                        currentArrivalsType.first() == ArrivalsFilterType.All
-                    ) {
-                        (newSelected - ArrivalsFilterType.All).toPersistentList()
-                    } else if (ArrivalsFilterType.All in newSelected) {
-                        persistentListOf(ArrivalsFilterType.All)
-                    } else {
-                        newSelected.toPersistentList()
-                    }
-                },
-                onDeparturesTypeChange = { newSelected ->
-                    currentDeparturesType = if (
-                        currentDeparturesType.size == 1 &&
-                        currentDeparturesType.first() == DeparturesFilterType.All
-                    ) {
-                        (newSelected - DeparturesFilterType.All).toPersistentList()
-                    } else if (DeparturesFilterType.All in newSelected) {
-                        persistentListOf(DeparturesFilterType.All)
-                    } else {
-                        newSelected.toPersistentList()
-                    }
-                },
-                onReset = {
-                    currentListType = ListType.All
-                    currentSortType = SortType.LatestDesc
-                    currentStatusesType = StatusesType.All
-                    currentDeparturesType = persistentListOf(DeparturesFilterType.All)
-                    currentArrivalsType = persistentListOf(ArrivalsFilterType.All)
-                },
-                onApplyClick = {
-                    onApply(
-                        currentListType,
-                        currentSortType,
-                        currentStatusesType,
-                        currentDeparturesType,
-                        currentArrivalsType
-                    )
-                    onDismissRequest()
-                }
-            )
+            state = state,
+            actions = actions
         )
     }
 }
@@ -151,20 +83,17 @@ private fun FilterBottomSheetContent(
                 FilterSectionItem(
                     title = stringResource(R.string.filter_list_list_type),
                     items = persistentListOf(ListType.All, ListType.My, ListType.Joined),
-                    selectedItems = persistentListOf(state.selectedListType),
-                    onItemSelected = { actions.onListTypeChange(it.first() as ListType) }
+                    selectedItems = persistentListOf(state.selectedListType)
                 ),
                 FilterSectionItem(
                     title = stringResource(R.string.filter_list_sort_order),
                     items = persistentListOf(SortType.LatestDesc, SortType.LatestAsc, SortType.DepartureDesc, SortType.DepartureAsc),
-                    selectedItems = persistentListOf(state.selectedSortType),
-                    onItemSelected = { actions.onSortTypeChange(it.first() as SortType) }
+                    selectedItems = persistentListOf(state.selectedSortType)
                 ),
                 FilterSectionItem(
                     title = stringResource(R.string.filter_list_recruitment_status),
                     items = persistentListOf(StatusesType.All, StatusesType.Recruiting, StatusesType.Closed, StatusesType.Completed),
-                    selectedItems = persistentListOf(state.selectedStatusesType),
-                    onItemSelected = { actions.onStatusesTypeChange(it.first() as StatusesType) }
+                    selectedItems = persistentListOf(state.selectedStatusesType)
                 ),
                 FilterSectionItem(
                     title = stringResource(R.string.filter_list_origin),
@@ -176,8 +105,6 @@ private fun FilterBottomSheetContent(
                         DeparturesFilterType.AsanStation
                     ),
                     selectedItems = state.selectedDeparturesType,
-                    onItemSelected = { actions.onDeparturesTypeChange(it.map { item -> item as DeparturesFilterType }.toPersistentList()) },
-                    isDuplicateSelectable = true,
                     hint = stringResource(R.string.filter_list_other_place_hint)
                 ),
                 FilterSectionItem(
@@ -190,8 +117,6 @@ private fun FilterBottomSheetContent(
                         ArrivalsFilterType.AsanStation
                     ),
                     selectedItems = state.selectedArrivalsType,
-                    onItemSelected = { actions.onArrivalsTypeChange(it.map { item -> item as ArrivalsFilterType }.toPersistentList()) },
-                    isDuplicateSelectable = true,
                     hint = stringResource(R.string.filter_list_other_place_hint)
                 )
             )
@@ -201,8 +126,7 @@ private fun FilterBottomSheetContent(
                     title = section.title,
                     items = section.items,
                     selectedItems = section.selectedItems,
-                    onItemSelected = section.onItemSelected,
-                    isDuplicateSelectable = section.isDuplicateSelectable,
+                    onItemClicked = actions.onItemClicked,
                     hint = section.hint
                 )
                 if (index <= sections.lastIndex) {
@@ -258,8 +182,7 @@ private fun FilterSection(
     title: String,
     items: ImmutableList<CallvanFilterType>,
     selectedItems: ImmutableList<CallvanFilterType>,
-    onItemSelected: (ImmutableList<CallvanFilterType>) -> Unit,
-    isDuplicateSelectable: Boolean = false,
+    onItemClicked: (CallvanFilterType) -> Unit,
     hint: String? = null
 ) {
     Column(modifier = Modifier.padding(vertical = 12.dp)) {
@@ -289,23 +212,7 @@ private fun FilterSection(
                 FilterBottomSheetItem(
                     text = stringResource(item.stringRes),
                     isSelected = item in selectedItems,
-                    onClick = {
-                        if (isDuplicateSelectable) {
-                            onItemSelected(
-                                if (item in selectedItems) {
-                                    if (selectedItems.size > MINIMUM_SELECTION_COUNT) {
-                                        (selectedItems - item).toPersistentList()
-                                    } else {
-                                        return@FilterBottomSheetItem
-                                    }
-                                } else {
-                                    (selectedItems + item).toPersistentList()
-                                }
-                            )
-                        } else {
-                            onItemSelected(persistentListOf(item))
-                        }
-                    }
+                    onClick = { onItemClicked(item) }
                 )
             }
         }
@@ -324,11 +231,7 @@ private fun FilterBottomSheetContentPreview() {
                 selectedArrivalsType = persistentListOf(ArrivalsFilterType.All)
             ),
             actions = FilterBottomSheetActions(
-                onListTypeChange = {},
-                onSortTypeChange = {},
-                onStatusesTypeChange = {},
-                onDeparturesTypeChange = {},
-                onArrivalsTypeChange = {},
+                onItemClicked = {},
                 onReset = {},
                 onApplyClick = {}
             )
