@@ -86,7 +86,7 @@ fun SignUpCompleteScreen(
             colors = FilledButtonColors.Primary,
             onClick = {
                 Intent(Intent.ACTION_VIEW).apply {
-                    data = "koin://main/activity".toUri()
+                    data = "koin://main/navigation".toUri()
                     `package` = context.packageName
                 }.let {
                     context.startActivity(it)

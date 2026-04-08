@@ -49,7 +49,7 @@ import kotlinx.coroutines.yield
 @AndroidEntryPoint
 class SplashActivity : ActivityBase() {
     companion object {
-        private const val INFO_REQUIRED_URI = "koin://inforequired/activity"
+        private const val INFO_REQUIRED_URI = "koin://inforequired/navigation"
         private const val EXTRA_IS_FULL = "extra_is_full"
         private const val screenTitle = "스플래시"
         private const val koinStart = "koin_start"

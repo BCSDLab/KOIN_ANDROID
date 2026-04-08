@@ -407,7 +407,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
     }
 
     private fun startToLoginActivity() {
-        navigator.navigateToSignIn(this, "koin://timetable/activity").let(::startActivity)
+        navigator.navigateToSignIn(this, "koin://timetable/navigation").let(::startActivity)
     }
 
     private fun saveTimetable(bitmap: Bitmap, callback: (Boolean) -> Unit) {

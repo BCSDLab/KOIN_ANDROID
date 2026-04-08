@@ -10,7 +10,7 @@ const val VERIFICATION_CODE_LENGTH = 6
 
 const val KOREATECH_EMAIL_DOMAIN = "koreatech.ac.kr"
 
-const val DEEPLINK_MAIN = "koin://main/activity"
+const val DEEPLINK_MAIN = "koin://main/navigation"
 
 const val OWNER_URL_STAGE = "https://owner.stage.koreatech.in/"
 const val OWNER_URL_PRODUCTION = "https://owner.koreatech.in/"
