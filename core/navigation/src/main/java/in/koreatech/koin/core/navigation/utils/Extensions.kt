@@ -20,7 +20,7 @@ fun Context.buildIntent(className: Class<*>, vararg argument: Pair<String, Any?>
     }
 
 fun buildDeepLinkIntent(type: String?) = Intent(Intent.ACTION_VIEW).apply {
-    data = "koin://$type/activity".toUri()
+    data = "koin://$type/navigation".toUri()
     flags = FLAG_ACTIVITY_CLEAR_TOP
 }
 

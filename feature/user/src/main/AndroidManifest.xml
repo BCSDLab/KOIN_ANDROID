@@ -18,7 +18,7 @@
 
                 <data
                     android:host="findid"
-                    android:pathPrefix="/activity"
+                    android:pathPrefix="/navigation"
                     android:scheme="koin" />
             </intent-filter>
         </activity>
@@ -34,7 +34,7 @@
 
                 <data
                     android:host="findpassword"
-                    android:pathPrefix="/activity"
+                    android:pathPrefix="/navigation"
                     android:scheme="koin" />
             </intent-filter>
         </activity>
@@ -51,7 +51,7 @@
 
                 <data
                     android:host="login"
-                    android:pathPrefix="/activity"
+                    android:pathPrefix="/navigation"
                     android:scheme="koin" />
             </intent-filter>
         </activity>
@@ -67,7 +67,7 @@
 
                 <data
                     android:host="signup"
-                    android:pathPrefix="/activity"
+                    android:pathPrefix="/navigation"
                     android:scheme="koin" />
             </intent-filter>
         </activity>
@@ -84,7 +84,7 @@
 
                 <data
                     android:host="inforequired"
-                    android:pathPrefix="/activity"
+                    android:pathPrefix="/navigation"
                     android:scheme="koin" />
             </intent-filter>
         </activity>

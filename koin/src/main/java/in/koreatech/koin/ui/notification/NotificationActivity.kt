@@ -88,7 +88,7 @@ class NotificationActivity : ActivityBase() {
         binding.clGotoArticleKeyword.setOnClickListener {
             val intent =
                 Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse("koin://article/activity?fragment=article_keyword")
+                    data = Uri.parse("koin://article/navigation?fragment=article_keyword")
                 }
             intent.`package` = packageName
             startActivity(intent)

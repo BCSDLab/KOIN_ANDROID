@@ -330,7 +330,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         val intent =
                             Intent(Intent.ACTION_VIEW).apply {
                                 data = when (it.type) {
-                                    ArticleNotiType.KEYWORD -> Uri.parse("koin://article/activity?fragment=article_keyword")
+                                    ArticleNotiType.KEYWORD -> Uri.parse("koin://article/navigation?fragment=article_keyword")
                                     ArticleNotiType.LOST_AND_FOUND -> Uri.parse(DEEP_LINK_LOST_AND_FOUND_BASE)
                                 }
                             }
@@ -345,7 +345,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         )
                         val intent =
                             Intent(Intent.ACTION_VIEW).apply {
-                                data = Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.boardId}")
+                                data = Uri.parse("koin://article/navigation?fragment=article_detail&article_id=${it.id}&board_id=${it.boardId}")
                             }
                         intent.`package` = packageName
                         startActivity(intent)

@@ -50,7 +50,7 @@
 
                 <data
                     android:host="timetable"
-                    android:pathPrefix="/activity"
+                    android:pathPrefix="/navigation"
                     android:scheme="koin" />
             </intent-filter>
         </activity>
@@ -92,7 +92,7 @@
 
                 <data
                     android:host="main"
-                    android:pathPrefix="/activity"
+                    android:pathPrefix="/navigation"
                     android:scheme="koin" />
             </intent-filter>
         </activity>

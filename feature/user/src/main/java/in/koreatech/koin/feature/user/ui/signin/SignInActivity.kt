@@ -124,7 +124,7 @@ class SignInActivity : ComponentActivity() {
     }
 
     companion object {
-        private const val INFO_REQUIRED_URI = "koin://inforequired/activity"
+        private const val INFO_REQUIRED_URI = "koin://inforequired/navigation"
         private const val EXTRA_IS_FULL = "extra_is_full"
     }
 }
