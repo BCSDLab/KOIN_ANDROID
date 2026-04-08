@@ -3,7 +3,7 @@ env:
   APP_ID: in.koreatech.koin
 ---
 - stopApp
-- openLink: "koin://main/activity"
+- openLink: "koin://main/navigation"
 - waitForAnimationToEnd:
     timeout: 15000
 - tapOn:
