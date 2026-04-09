@@ -113,6 +113,7 @@ class NotificationActivity : ActivityBase() {
             notificationShopEvent.isEnabled = true
             notificationReviewPrompt.isEnabled = true
             notificationDiningImageUpload.isEnabled = true
+            notificationCallvan.isEnabled = true
         }
     }
 
@@ -125,6 +126,7 @@ class NotificationActivity : ActivityBase() {
             notificationShopEvent.disableAll()
             notificationReviewPrompt.disableAll()
             notificationDiningImageUpload.disableAll()
+            notificationCallvan.disableAll()
         }
     }
 
