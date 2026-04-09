@@ -255,15 +255,13 @@ class SplashActivity : ActivityBase() {
                 navigator.navigateTo(
                     context = this@SplashActivity,
                     type = Pair(EXTRA_TYPE, type),
-                    *arrayOf(
-                        Pair(EXTRA_ID, targetId),
-                        Pair(EXTRA_BOARD_ID, targetBoardId),
-                        Pair(EXTRA_ARTICLE_ID, targetArticleId),
-                        Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
-                        Pair(EXTRA_CLUB_ID, targetClubId),
-                        Pair(EXTRA_EVENT_ID, targetEventId),
-                        Pair(EXTRA_POST_ID, targetPostId)
-                    )
+                    Pair(EXTRA_ID, targetId),
+                    Pair(EXTRA_BOARD_ID, targetBoardId),
+                    Pair(EXTRA_ARTICLE_ID, targetArticleId),
+                    Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
+                    Pair(EXTRA_CLUB_ID, targetClubId),
+                    Pair(EXTRA_EVENT_ID, targetEventId),
+                    Pair(EXTRA_POST_ID, targetPostId)
                 )
             } else {
                 Intent(this@SplashActivity, MainActivity::class.java)
