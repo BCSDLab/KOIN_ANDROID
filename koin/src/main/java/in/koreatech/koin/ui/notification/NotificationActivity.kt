@@ -185,6 +185,13 @@ class NotificationActivity : ActivityBase() {
                                             }
                                         }
 
+                                    SubscribesType.CALLVAN -> with(binding.notificationCallvan) {
+                                        if (isChecked != it.isPermit) {
+                                            fakeChecked = it.isPermit
+                                            isChecked = it.isPermit
+                                        }
+                                    }
+
                                     SubscribesType.NOTHING -> Unit
                                     else -> Unit
                                 }
@@ -264,6 +271,10 @@ class NotificationActivity : ActivityBase() {
 
         binding.notificationChat.setOnSwitchClickListener { isChecked ->
             handleSubscription(isChecked, SubscribesType.LOST_ITEM_CHAT)
+        }
+
+        binding.notificationCallvan.setOnSwitchClickListener { isChecked ->
+            handleSubscription(isChecked, SubscribesType.CALLVAN)
         }
 
         binding.notificationDiningImageUpload.setOnSwitchClickListener { isChecked ->
