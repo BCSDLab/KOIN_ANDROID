@@ -19,6 +19,7 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_CLUB_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_EVENT_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_NAV_TYPE
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_POST_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_URL
 import `in`.koreatech.koin.core.navigation.utils.toHost
@@ -125,7 +126,8 @@ class SchemeActivity : ActivityBase() {
             Pair(EXTRA_CHAT_ROOM_ID, getChatRoomIdFromUrl(url)),
             Pair(EXTRA_BOARD_ID, getBoardIdFromUrl(url)),
             Pair(EXTRA_CLUB_ID, getClubIdFromUrl(url)),
-            Pair(EXTRA_EVENT_ID, getEventIdFromUrl(url))
+            Pair(EXTRA_EVENT_ID, getEventIdFromUrl(url)),
+            Pair(EXTRA_POST_ID, getPostIdFromUrl(url))
         ).filter { it.second != null }
     }
 
@@ -155,6 +157,10 @@ class SchemeActivity : ActivityBase() {
 
     private fun getEventIdFromUrl(url: String): Int? {
         return Uri.parse(url).getQueryParameter("eventId")?.toIntOrNull()
+    }
+
+    private fun getPostIdFromUrl(url: String): Int? {
+        return Uri.parse(url).getQueryParameter("postId")?.toIntOrNull()
     }
 
     private fun navigateToActivity(intent: Intent) {
