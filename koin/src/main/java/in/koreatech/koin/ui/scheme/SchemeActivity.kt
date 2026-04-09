@@ -54,7 +54,9 @@ class SchemeActivity : ActivityBase() {
     }
 
     private fun handleIntent() {
-        intent.getStringExtra(EXTRA_URL).let { url ->
+        val intentUrl = intent.getStringExtra(EXTRA_URL) ?: intent.data?.urlFromIntentData()
+
+        intentUrl.let { url ->
             val tasks =
                 getSystemService<ActivityManager>()?.appTasks?.map {
                     /**
@@ -159,4 +161,6 @@ class SchemeActivity : ActivityBase() {
         startActivity(intent)
         finish()
     }
+
+    private fun Uri?.urlFromIntentData(): String? = this?.let { "${it.scheme}://${it.host}" }
 }
