@@ -21,7 +21,7 @@ enum class SchemeType(
     CLUB("club", ClubActivity::class.java),
     LOST_AND_FOUND("articles/lost-item", LostAndFoundActivity::class.java),
     CALLVAN("callvan", CallvanActivity::class.java),
-    CALLVAN_CHAT("callvan-chat", GroupChatActivity::class.java),
+    CALLVAN_CHAT("callvan-chat", GroupChatActivity::class.java)
     ;
 
     companion object {
