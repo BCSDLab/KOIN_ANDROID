@@ -69,8 +69,8 @@ class NavigatorImpl @Inject constructor() : Navigator {
         }
     }
 
-    override fun navigateToGroupChat(context: Context, postId: Int): Intent {
-        return GroupChatActivity.createIntent(context, postId).apply {
+    override fun navigateToGroupChat(context: Context): Intent {
+        return context.buildIntent(GroupChatActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
     }

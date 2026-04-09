@@ -9,7 +9,6 @@ import androidx.activity.compose.setContent
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
-import `in`.koreatech.koin.core.navigation.utils.EXTRA_POST_ID
 
 @AndroidEntryPoint
 class GroupChatActivity : ComponentActivity() {
@@ -25,12 +24,6 @@ class GroupChatActivity : ComponentActivity() {
             RebrandKoinTheme {
                 GroupChatScreen()
             }
-        }
-    }
-
-    companion object {
-        fun createIntent(context: Context, postId: Int): Intent = Intent(context, GroupChatActivity::class.java).apply {
-            putExtra(EXTRA_POST_ID, postId)
         }
     }
 }
