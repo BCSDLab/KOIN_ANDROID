@@ -30,6 +30,7 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_CLUB_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_EVENT_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_NAV_TYPE
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_POST_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -244,6 +245,7 @@ class SplashActivity : ActivityBase() {
         val targetChatId = intent.getIntExtra(EXTRA_CHAT_ROOM_ID, -1)
         val targetClubId = intent.getIntExtra(EXTRA_CLUB_ID, -1)
         val targetEventId = intent.getIntExtra(EXTRA_EVENT_ID, -1)
+        val targetPostId = intent.getIntExtra(EXTRA_POST_ID, -1)
         val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
         val navType = intent.getStringExtra(EXTRA_NAV_TYPE) ?: ""
 
@@ -259,7 +261,8 @@ class SplashActivity : ActivityBase() {
                         Pair(EXTRA_ARTICLE_ID, targetArticleId),
                         Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
                         Pair(EXTRA_CLUB_ID, targetClubId),
-                        Pair(EXTRA_EVENT_ID, targetEventId)
+                        Pair(EXTRA_EVENT_ID, targetEventId),
+                        Pair(EXTRA_POST_ID, targetPostId)
                     )
                 )
             } else {
