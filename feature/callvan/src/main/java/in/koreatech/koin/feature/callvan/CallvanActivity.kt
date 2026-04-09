@@ -42,7 +42,7 @@ class CallvanActivity : ComponentActivity() {
 
                 // Scheme url from backend is not matching with deeplink url in navigation
                 // So, let's navigate to correct deeplink from here
-                LaunchedEffect(navController) {
+                LaunchedEffect(Unit) {
                     if (targetId == -1) return@LaunchedEffect
                     navController.navigate(CallvanNavType.CallvanDetail(targetId))
                 }
