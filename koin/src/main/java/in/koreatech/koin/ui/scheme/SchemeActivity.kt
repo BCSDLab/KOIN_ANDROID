@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.core.content.getSystemService
+import androidx.core.net.toUri
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
@@ -132,35 +133,35 @@ class SchemeActivity : ActivityBase() {
     }
 
     private fun getIdFromUrl(url: String): Int? {
-        return Uri.parse(url).getQueryParameter("id")?.toIntOrNull()
+        return url.toUri().getQueryParameter("id")?.toIntOrNull()
     }
 
     private fun getArticleIdFromUrl(url: String): Int? {
-        return Uri.parse(url).getQueryParameter("articleId")?.toIntOrNull()
+        return url.toUri().getQueryParameter("articleId")?.toIntOrNull()
     }
 
     private fun getChatRoomIdFromUrl(url: String): Int? {
-        return Uri.parse(url).getQueryParameter("chatRoomId")?.toIntOrNull()
+        return url.toUri().getQueryParameter("chatRoomId")?.toIntOrNull()
     }
 
     private fun getBoardIdFromUrl(url: String): Int? {
-        return Uri.parse(url).getQueryParameter("board-id")?.toIntOrNull()
+        return url.toUri().getQueryParameter("board-id")?.toIntOrNull()
     }
 
     private fun getKeywordFromUrl(url: String): String? {
-        return Uri.parse(url).getQueryParameter("keyword")
+        return url.toUri().getQueryParameter("keyword")
     }
 
     private fun getClubIdFromUrl(url: String): Int? {
-        return Uri.parse(url).getQueryParameter("clubId")?.toIntOrNull()
+        return url.toUri().getQueryParameter("clubId")?.toIntOrNull()
     }
 
     private fun getEventIdFromUrl(url: String): Int? {
-        return Uri.parse(url).getQueryParameter("eventId")?.toIntOrNull()
+        return url.toUri().getQueryParameter("eventId")?.toIntOrNull()
     }
 
     private fun getPostIdFromUrl(url: String): Int? {
-        return Uri.parse(url).getQueryParameter("postId")?.toIntOrNull()
+        return url.toUri().getQueryParameter("postId")?.toIntOrNull()
     }
 
     private fun navigateToActivity(intent: Intent) {
