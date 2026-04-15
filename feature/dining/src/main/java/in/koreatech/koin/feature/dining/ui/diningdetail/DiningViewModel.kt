@@ -123,11 +123,7 @@ class DiningViewModel @Inject constructor(
             viewModelScope.launch {
                 getNotOperationFilteredDiningUseCase(date)
                     .onSuccess {
-                        _dining.value = it.filter { dining ->
-                            dining.place == DiningPlace.CornerA.place ||
-                                dining.place == DiningPlace.CornerB.place ||
-                                dining.place == DiningPlace.CornerC.place
-                        }
+                        _dining.value = it
                         _isLoading.value = false
                         _isDiningRefreshing.value = false
                     }
