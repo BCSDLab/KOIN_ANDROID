@@ -9,7 +9,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import `in`.koreatech.koin.core.navigation.utils.EXTRA_POST_ID
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.callvan.DEEPLINK_CALLVAN
 import `in`.koreatech.koin.feature.callvan.ui.create.CallvanCreateScreen
@@ -89,9 +88,10 @@ fun NavGraphBuilder.koinCallvanGraph(
             navController.popBackStack()
         }
         LaunchedEffect(Unit) {
-            navigator.navigateToGroupChat(context).apply {
-                putExtra(EXTRA_POST_ID, it.toRoute<CallvanNavType.CallvanChat>().postId)
-            }.let(launcher::launch)
+            navigator.navigateToGroupChat(
+                context,
+                it.toRoute<CallvanNavType.CallvanChat>().postId
+            ).let(launcher::launch)
         }
     }
 

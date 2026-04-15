@@ -35,6 +35,7 @@ interface Navigator {
     ): Intent
 
     fun navigateToGroupChat(
-        context: Context
+        context: Context,
+        extraPostId: Int
     ): Intent
 }

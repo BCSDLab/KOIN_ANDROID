@@ -3,6 +3,7 @@ package `in`.koreatech.koin.navigation
 import android.content.Context
 import android.content.Intent
 import `in`.koreatech.koin.core.navigation.Navigator
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_POST_ID
 import `in`.koreatech.koin.core.navigation.utils.buildDeepLinkIntent
 import `in`.koreatech.koin.core.navigation.utils.buildIntent
 import `in`.koreatech.koin.core.navigation.utils.isValidDeepLink
@@ -69,8 +70,14 @@ class NavigatorImpl @Inject constructor() : Navigator {
         }
     }
 
-    override fun navigateToGroupChat(context: Context): Intent {
-        return context.buildIntent(GroupChatActivity::class.java).apply {
+    override fun navigateToGroupChat(
+        context: Context,
+        extraPostId: Int
+    ): Intent {
+        return context.buildIntent(
+            GroupChatActivity::class.java,
+            EXTRA_POST_ID to extraPostId
+        ).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
     }
