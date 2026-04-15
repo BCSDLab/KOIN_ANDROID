@@ -8,7 +8,6 @@ import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.domain.model.dining.Dining
-import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
