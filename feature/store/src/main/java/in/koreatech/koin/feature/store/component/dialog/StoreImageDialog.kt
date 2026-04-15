@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.rememberAsyncImagePainter
+import `in`.koreatech.koin.core.component.PinchToZoom
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import kotlinx.collections.immutable.ImmutableList
@@ -108,12 +109,16 @@ fun StoreImageDialog(
                             .fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Image(
-                            painter = painter,
-                            contentDescription = "",
-                            contentScale = ContentScale.Fit,
+                        PinchToZoom(
                             modifier = Modifier.fillMaxSize()
-                        )
+                        ) {
+                            Image(
+                                painter = painter,
+                                contentDescription = "",
+                                contentScale = ContentScale.Fit,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
                     }
                 }
             }
