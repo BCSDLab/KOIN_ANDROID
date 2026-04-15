@@ -43,6 +43,12 @@ import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.feature.dining.R
 
+private val IMAGE_SUPPORTED_PLACES = setOf(
+    DiningPlace.CornerA.place,
+    DiningPlace.CornerB.place,
+    DiningPlace.CornerC.place
+)
+
 @Composable
 fun DiningItem(
     dining: Dining,
@@ -133,7 +139,7 @@ fun DiningItem(
             ),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            if (dining.place in listOf(DiningPlace.CornerA.place, DiningPlace.CornerB.place, DiningPlace.CornerC.place)) {
+            if (dining.place in IMAGE_SUPPORTED_PLACES) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()

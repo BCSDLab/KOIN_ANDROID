@@ -8,6 +8,7 @@ import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.domain.model.dining.Dining
+import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
@@ -122,7 +123,7 @@ class DiningViewModel @Inject constructor(
             viewModelScope.launch {
                 getNotOperationFilteredDiningUseCase(date)
                     .onSuccess {
-                        _dining.value = it
+                        _dining.value = it.sortedBy { diningOrder[it.place] ?: Int.MAX_VALUE }
                         _isLoading.value = false
                         _isDiningRefreshing.value = false
                     }
@@ -216,3 +217,11 @@ class DiningViewModel @Inject constructor(
         )
     }
 }
+
+private val diningOrder = mapOf(
+    DiningPlace.CornerA.place to 0,
+    DiningPlace.CornerB.place to 1,
+    DiningPlace.CornerC.place to 2,
+    DiningPlace.Nungsu.place to 3,
+    DiningPlace.Campus2.place to 4
+)
