@@ -40,6 +40,7 @@ import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.dining.Dining
+import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.feature.dining.R
 
 @Composable
@@ -132,96 +133,98 @@ fun DiningItem(
             ),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(4f / 3f),
-                contentAlignment = Alignment.Center
-            ) {
-                if (dining.imageUrl.isEmpty()) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                color = KoinTheme.colors.neutral50,
-                                shape = KoinTheme.shapes.small
-                            )
-                            .border(
-                                width = 1.dp,
-                                color = KoinTheme.colors.neutral400,
-                                shape = KoinTheme.shapes.small
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(8.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Image(
-                                painter = painterResource(R.drawable.no_photo),
-                                contentDescription = null
-                            )
-                            Text(
-                                text = stringResource(
-                                    if (isWeekend) {
-                                        R.string.photo_not_provided_on_weekend
-                                    } else {
-                                        R.string.no_photo
-                                    }
+            if (dining.place in listOf(DiningPlace.CornerA.place, DiningPlace.CornerB.place, DiningPlace.CornerC.place)) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(4f / 3f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (dining.imageUrl.isEmpty()) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(
+                                    color = KoinTheme.colors.neutral50,
+                                    shape = KoinTheme.shapes.small
+                                )
+                                .border(
+                                    width = 1.dp,
+                                    color = KoinTheme.colors.neutral400,
+                                    shape = KoinTheme.shapes.small
                                 ),
-                                style = KoinTheme.typography.regular14,
-                                color = KoinTheme.colors.neutral500 // Change to a similar color; original color is 0xFF8E8E8E
-                            )
-                        }
-                    }
-                } else {
-                    SubcomposeAsyncImage(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(shape = KoinTheme.shapes.small)
-                            .clickable {
-                                onImageClick()
-                            },
-                        model = ImageRequest.Builder(context)
-                            .data(dining.imageUrl)
-                            .build(),
-                        contentDescription = "Dining Image",
-                        contentScale = ContentScale.Crop,
-                        alignment = Alignment.Center,
-                        loading = {
-                            Box(
-                                contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(8.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                CircularProgressIndicator()
+                                Image(
+                                    painter = painterResource(R.drawable.no_photo),
+                                    contentDescription = null
+                                )
+                                Text(
+                                    text = stringResource(
+                                        if (isWeekend) {
+                                            R.string.photo_not_provided_on_weekend
+                                        } else {
+                                            R.string.no_photo
+                                        }
+                                    ),
+                                    style = KoinTheme.typography.regular14,
+                                    color = KoinTheme.colors.neutral500 // Change to a similar color; original color is 0xFF8E8E8E
+                                )
                             }
                         }
-                    )
-                }
-                if (dining.soldOutAt.isNotBlank()) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                color = KoinTheme.colors.neutral800.copy(alpha = 0.5f),
-                                shape = KoinTheme.shapes.small
-                            )
-                            .zIndex(1f),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(25.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
+                    } else {
+                        SubcomposeAsyncImage(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(shape = KoinTheme.shapes.small)
+                                .clickable {
+                                    onImageClick()
+                                },
+                            model = ImageRequest.Builder(context)
+                                .data(dining.imageUrl)
+                                .build(),
+                            contentDescription = "Dining Image",
+                            contentScale = ContentScale.Crop,
+                            alignment = Alignment.Center,
+                            loading = {
+                                Box(
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    CircularProgressIndicator()
+                                }
+                            }
+                        )
+                    }
+                    if (dining.soldOutAt.isNotBlank()) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(
+                                    color = KoinTheme.colors.neutral800.copy(alpha = 0.5f),
+                                    shape = KoinTheme.shapes.small
+                                )
+                                .zIndex(1f),
+                            contentAlignment = Alignment.Center
                         ) {
-                            Image(
-                                painter = painterResource(R.drawable.no_meals),
-                                contentDescription = null,
-                                modifier = Modifier.scale(1.5f)
-                            )
-                            Text(
-                                text = stringResource(R.string.sold_out_menu),
-                                style = KoinTheme.typography.regular14,
-                                color = KoinTheme.colors.neutral0
-                            )
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(25.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Image(
+                                    painter = painterResource(R.drawable.no_meals),
+                                    contentDescription = null,
+                                    modifier = Modifier.scale(1.5f)
+                                )
+                                Text(
+                                    text = stringResource(R.string.sold_out_menu),
+                                    style = KoinTheme.typography.regular14,
+                                    color = KoinTheme.colors.neutral0
+                                )
+                            }
                         }
                     }
                 }
