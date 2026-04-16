@@ -678,6 +678,49 @@ This commit fixes fabricated code examples that did not match
 the actual implementation patterns in the codebase.
 ```
 
+## PR Title Convention
+
+PR titles **MUST** follow this format:
+
+```
+[team/module][type] Subject
+```
+
+### Team/Module Labels
+
+The first bracket identifies the responsible team or scope:
+
+| Label | Description |
+|-------|-------------|
+| `campus` | BCSD campus (student) team |
+| `user` | BCSD user team |
+| `business` | BCSD business team |
+| `koin project` | Project-wide or cross-module changes |
+
+### Type Labels
+
+The second bracket identifies the type of work:
+
+| Type | Description |
+|------|-------------|
+| `feature` | New feature development |
+| `fix` | Bug fixes |
+| `refactor` | Code refactoring without behavior change |
+| `enhancement` | Improvements to existing features |
+| `chore` | Minor changes and maintenance tasks |
+| `documentation` | Documentation changes |
+
+### PR Title Examples
+
+```
+[campus][feature] Add bus schedule notification
+[campus][fix] Resolve crash on dining menu screen
+[user][refactor] Extract common auth validation logic
+[business][enhancement] Improve store detail loading performance
+[koin project][chore] Update Gradle dependencies to latest versions
+[koin project][documentation] Add PR title convention to AGENTS.md
+```
+
 
 ## Required Configuration
 
