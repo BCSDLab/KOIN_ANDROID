@@ -620,7 +620,7 @@ private fun handleSideEffect(
 
         is StoreNearbySideEffect.ScrollCategory -> {
             coroutineScope.launch {
-                scrollCategory(sideEffect.categoryId - 1)
+                scrollCategory(sideEffect.index)
             }
         }
 

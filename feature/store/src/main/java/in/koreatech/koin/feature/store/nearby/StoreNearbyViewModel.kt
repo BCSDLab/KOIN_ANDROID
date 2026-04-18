@@ -186,7 +186,7 @@ class StoreNearbyViewModel @Inject constructor(
             )
         }
         postSideEffect(StoreNearbySideEffect.FetchData)
-        postSideEffect(StoreNearbySideEffect.ScrollCategory(categoryId))
+        postSideEffect(StoreNearbySideEffect.ScrollCategory(state.storeCategories.indexOfFirst { it.id == categoryId }))
     }
 
     fun onQueryChange(query: String) = blockingIntent {
