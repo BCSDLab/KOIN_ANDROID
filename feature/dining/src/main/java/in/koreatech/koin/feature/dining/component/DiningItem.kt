@@ -187,9 +187,7 @@ fun DiningItem(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .clip(shape = KoinTheme.shapes.small)
-                                .clickable {
-                                    onImageClick()
-                                },
+                                .clickable(onClick = onImageClick),
                             model = ImageRequest.Builder(context)
                                 .data(dining.imageUrl)
                                 .build(),
