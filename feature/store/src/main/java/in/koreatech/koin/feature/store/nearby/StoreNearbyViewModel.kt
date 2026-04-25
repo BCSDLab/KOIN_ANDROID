@@ -18,7 +18,6 @@ import `in`.koreatech.koin.feature.store.model.toLocalStoreCategories
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.ContainerHost
-import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -170,14 +169,6 @@ class StoreNearbyViewModel @Inject constructor(
         postSideEffect(StoreNearbySideEffect.FetchData)
     }
 
-    fun onShowSearchChange(showSearch: Boolean) = intent {
-        reduce {
-            state.copy(
-                showSearch = showSearch
-            )
-        }
-    }
-
     fun onCategoryChange(categoryId: Int) = intent {
         if (categoryId == state.categoryId) return@intent
         reduce {
@@ -186,18 +177,6 @@ class StoreNearbyViewModel @Inject constructor(
             )
         }
         postSideEffect(StoreNearbySideEffect.FetchData)
-        postSideEffect(StoreNearbySideEffect.ScrollCategory(categoryId))
-    }
-
-    fun onQueryChange(query: String) = blockingIntent {
-        reduce {
-            state.copy(
-                query = query
-            )
-        }
-    }
-
-    fun onSearch() = intent {
-        // TODO
+        postSideEffect(StoreNearbySideEffect.ScrollCategory(state.storeCategories.indexOfFirst { it.id == categoryId }))
     }
 }
