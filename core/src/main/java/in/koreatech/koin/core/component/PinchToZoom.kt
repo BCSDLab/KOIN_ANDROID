@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.IntSize
 @Composable
 fun PinchToZoom(
     modifier: Modifier = Modifier,
+    minScale: Float = 1f,
+    maxScale: Float = 5f,
     content: @Composable () -> Unit
 ) {
     var scale by remember { mutableFloatStateOf(1f) }
@@ -31,9 +33,6 @@ fun PinchToZoom(
     val animateOffset by animateOffsetAsState(
         targetValue = offset
     )
-
-    val minScale = 1f
-    val maxScale = 5f
 
     Box(
         modifier = modifier
