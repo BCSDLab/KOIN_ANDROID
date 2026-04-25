@@ -34,11 +34,12 @@ class CallvanActivity : ComponentActivity() {
         if (intent.getBooleanExtra(EXTRA_NAVIGATE_TO_CREATE, false)) {
             startDestination = CallvanNavType.CallvanCreate
         }
+
+        val targetId = intent.getIntExtra(EXTRA_ID, -1)
+
         setContent {
             RebrandKoinTheme {
                 val navController = rememberNavController()
-
-                val targetId = intent.getIntExtra(EXTRA_ID, -1)
 
                 // Scheme url from backend is not matching with deeplink url in navigation
                 // So, let's navigate to correct deeplink from here
