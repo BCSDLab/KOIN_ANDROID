@@ -123,11 +123,7 @@ class DiningViewModel @Inject constructor(
             viewModelScope.launch {
                 getNotOperationFilteredDiningUseCase(date)
                     .onSuccess {
-                        _dining.value = it.filter { dining ->
-                            dining.place == DiningPlace.CornerA.place ||
-                                dining.place == DiningPlace.CornerB.place ||
-                                dining.place == DiningPlace.CornerC.place
-                        }
+                        _dining.value = it.sortedBy { diningOrder[it.place] ?: Int.MAX_VALUE }
                         _isLoading.value = false
                         _isDiningRefreshing.value = false
                     }
@@ -221,3 +217,11 @@ class DiningViewModel @Inject constructor(
         )
     }
 }
+
+private val diningOrder = mapOf(
+    DiningPlace.CornerA.place to 0,
+    DiningPlace.CornerB.place to 1,
+    DiningPlace.CornerC.place to 2,
+    DiningPlace.Nungsu.place to 3,
+    DiningPlace.Campus2.place to 4
+)
