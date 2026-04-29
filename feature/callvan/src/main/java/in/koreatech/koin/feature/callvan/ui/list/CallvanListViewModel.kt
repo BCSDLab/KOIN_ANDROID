@@ -1,6 +1,9 @@
 package `in`.koreatech.koin.feature.callvan.ui.list
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.onboarding.OnboardingManager
+import `in`.koreatech.koin.core.onboarding.OnboardingType
+import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.callvan.CloseCallvanPostUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.CompleteCallvanPostUseCase
@@ -9,7 +12,10 @@ import `in`.koreatech.koin.domain.usecase.callvan.GetNotificationsUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.JoinCallvanPostUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.LeaveCallvanPostUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.ReopenCallvanPostUseCase
+import `in`.koreatech.koin.domain.usecase.notification.GetNotificationPermissionInfoUseCase
+import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
+import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanConfirmType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
@@ -40,7 +46,10 @@ class CallvanListViewModel @Inject constructor(
     private val reopenCallvanPostUseCase: ReopenCallvanPostUseCase,
     private val completeCallvanPostUseCase: CompleteCallvanPostUseCase,
     private val getNotificationsUseCase: GetNotificationsUseCase,
-    private val getUserStatusUseCase: GetUserStatusUseCase
+    private val getUserStatusUseCase: GetUserStatusUseCase,
+    private val onboardingManager: OnboardingManager,
+    private val getNotificationPermissionInfoUseCase: GetNotificationPermissionInfoUseCase,
+    private val updateNotificationSubscriptionUseCase: UpdateNotificationSubscriptionUseCase
 ) : ViewModel(), ContainerHost<CallvanListState, CallvanListSideEffect> {
 
     override val container = container<CallvanListState, CallvanListSideEffect>(
@@ -179,6 +188,28 @@ class CallvanListViewModel @Inject constructor(
 
     fun updateLoginVisible(visible: Boolean) = blockingIntent {
         reduce { state.copy(isLoginVisible = visible) }
+    }
+
+    fun checkNotificationSuggest() = intent {
+        if (!state.isLoggedIn) return@intent
+        val shouldOnboard = onboardingManager.getShouldOnboard(OnboardingType.CALLVAN_NOTIFICATION)
+        if (!shouldOnboard) return@intent
+        onboardingManager.updateShouldOnboard(OnboardingType.CALLVAN_NOTIFICATION, false)
+        getNotificationPermissionInfoUseCase().onSuccess { info ->
+            val isCallvanEnabled = info.subscribes.any { it.type == SubscribesType.CALLVAN && it.isPermit }
+            if (!isCallvanEnabled) {
+                intent { reduce { state.copy(showNotificationSuggest = true) } }
+            }
+        }
+    }
+
+    fun enableCallvanNotification() = intent {
+        updateNotificationSubscriptionUseCase(SubscribesType.CALLVAN)
+        reduce { state.copy(showNotificationSuggest = false) }
+    }
+
+    fun dismissNotificationSuggest() = blockingIntent {
+        reduce { state.copy(showNotificationSuggest = false) }
     }
 
     fun fetchPosts(limit: Int = PAGE_SIZE) = intent {

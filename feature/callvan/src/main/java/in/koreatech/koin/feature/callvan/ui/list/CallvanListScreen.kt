@@ -94,6 +94,7 @@ fun CallvanListScreen(
 
     LaunchedEffect(state.isLoggedIn) {
         viewModel.fetchHasNewNotification()
+        if (state.isLoggedIn) viewModel.checkNotificationSuggest()
     }
 
     CallvanListScreenImpl(
@@ -107,6 +108,7 @@ fun CallvanListScreen(
         hasMoreItems = state.hasMoreItems,
         pendingConfirm = state.pendingConfirm,
         pendingCompletePostId = state.pendingCompletePostId,
+        showNotificationSuggest = state.showNotificationSuggest,
         onSearchValueChange = viewModel::updateSearch,
         onFilterApply = viewModel::applyFilter,
         onFilterVisibleChange = viewModel::updateFilterVisible,
@@ -126,6 +128,8 @@ fun CallvanListScreen(
         onCall = onCallClick,
         onChat = onChatClick,
         onDetailClick = onDetailClick,
+        onNotificationSuggestConfirm = viewModel::enableCallvanNotification,
+        onNotificationSuggestDismiss = viewModel::dismissNotificationSuggest,
         snackbarHostState = snackbarHostState
     )
 }
@@ -143,6 +147,7 @@ fun CallvanListScreenImpl(
     hasMoreItems: Boolean = true,
     pendingConfirm: Pair<CallvanConfirmType, Int>? = null,
     pendingCompletePostId: Int? = null,
+    showNotificationSuggest: Boolean = false,
     onSearchValueChange: (String) -> Unit = {},
     onFilterVisibleChange: (Boolean) -> Unit = {},
     onPendingConfirmChange: (Pair<CallvanConfirmType, Int>?) -> Unit = {},
@@ -168,6 +173,8 @@ fun CallvanListScreenImpl(
     onCall: (Int) -> Unit = {},
     onChat: (Int) -> Unit = {},
     onDetailClick: (Int) -> Unit = {},
+    onNotificationSuggestConfirm: () -> Unit = {},
+    onNotificationSuggestDismiss: () -> Unit = {},
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 ) {
     val listState = rememberLazyListState()
@@ -243,6 +250,17 @@ fun CallvanListScreenImpl(
                 onLoginVisibleChange(false)
             },
             onDismiss = { onLoginVisibleChange(false) }
+        )
+    }
+
+    if (showNotificationSuggest) {
+        CallvanConfirmBottomSheet(
+            title = stringResource(R.string.callvan_notification_suggest_title),
+            description = stringResource(R.string.callvan_notification_suggest_description),
+            confirmText = stringResource(R.string.callvan_notification_suggest_confirm),
+            cancelText = stringResource(R.string.callvan_notification_suggest_cancel),
+            onConfirm = onNotificationSuggestConfirm,
+            onDismiss = onNotificationSuggestDismiss
         )
     }
 
@@ -378,6 +396,20 @@ private fun CallvanListScreenPreview() {
                 CallvanListUiState(4, "담헌 앞", "천안아산역", PREVIEW_DATE, PREVIEW_TIME, 1, 8, CallvanItemState.OWNER_ACTIVE),
                 CallvanListUiState(5, PREVIEW_TERMINAL, "학교", PREVIEW_DATE, PREVIEW_TIME, 1, 8, CallvanItemState.OWNER_CLOSED)
             )
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CallvanListScreenNotificationSuggestPreview() {
+    RebrandKoinTheme {
+        CallvanListScreenImpl(
+            searchValue = "",
+            items = persistentListOf(
+                CallvanListUiState(1, PREVIEW_DEPARTURE, PREVIEW_TERMINAL, PREVIEW_DATE, PREVIEW_TIME, 1, 8, CallvanItemState.DEFAULT)
+            ),
+            showNotificationSuggest = true
         )
     }
 }
