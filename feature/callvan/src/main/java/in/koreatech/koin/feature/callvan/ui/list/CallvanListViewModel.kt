@@ -198,7 +198,7 @@ class CallvanListViewModel @Inject constructor(
         getNotificationPermissionInfoUseCase().onSuccess { info ->
             val isCallvanEnabled = info.subscribes.any { it.type == SubscribesType.CALLVAN && it.isPermit }
             if (!isCallvanEnabled) {
-                intent { reduce { state.copy(showNotificationSuggest = true) } }
+                reduce { state.copy(showNotificationSuggest = true) }
             }
         }
     }

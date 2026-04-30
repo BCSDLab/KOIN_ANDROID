@@ -253,17 +253,6 @@ fun CallvanListScreenImpl(
         )
     }
 
-    if (showNotificationSuggest) {
-        CallvanConfirmBottomSheet(
-            title = stringResource(R.string.callvan_notification_suggest_title),
-            description = stringResource(R.string.callvan_notification_suggest_description),
-            confirmText = stringResource(R.string.callvan_notification_suggest_confirm),
-            cancelText = stringResource(R.string.callvan_notification_suggest_cancel),
-            onConfirm = onNotificationSuggestConfirm,
-            onDismiss = onNotificationSuggestDismiss
-        )
-    }
-
     Box {
         Scaffold(
             topBar = {
@@ -380,6 +369,16 @@ fun CallvanListScreenImpl(
             hotState = snackbarHostState,
             background = RebrandKoinTheme.colors.primary700.copy(alpha = 0.8f)
         )
+        if (showNotificationSuggest) {
+            CallvanConfirmBottomSheet(
+                title = stringResource(R.string.callvan_notification_suggest_title),
+                description = stringResource(R.string.callvan_notification_suggest_description),
+                confirmText = stringResource(R.string.callvan_notification_suggest_confirm),
+                cancelText = stringResource(R.string.callvan_notification_suggest_cancel),
+                onConfirm = onNotificationSuggestConfirm,
+                onDismiss = onNotificationSuggestDismiss
+            )
+        }
     }
 }
 
