@@ -162,6 +162,7 @@
     <string name="callvan_error_post_author_cannot_leave">작성자는 참여를 취소할 수 없습니다.</string>
     <string name="callvan_error_reopen_failed_full">인원이 가득 차 재모집할 수 없습니다.</string>
     <string name="callvan_error_reopen_failed_time">출발 시간이 지나 재모집할 수 없습니다.</string>
+    <string name="callvan_error_notification_subscription_failed">알림 설정에 실패했습니다.</string>
     <string name="callvan_error_unknown">오류가 발생했습니다. 다시 시도해주세요.</string>
 
     <string name="callvan_create_submit_error_invalid_request">요청 형식이 올바르지 않습니다.</string>

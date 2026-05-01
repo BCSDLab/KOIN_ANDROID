@@ -84,6 +84,7 @@ fun CallvanListScreen(
                         CallvanListErrorType.POST_AUTHOR_CANNOT_LEAVE -> R.string.callvan_error_post_author_cannot_leave
                         CallvanListErrorType.REOPEN_FAILED_FULL -> R.string.callvan_error_reopen_failed_full
                         CallvanListErrorType.REOPEN_FAILED_TIME -> R.string.callvan_error_reopen_failed_time
+                        CallvanListErrorType.NOTIFICATION_SUBSCRIPTION_FAILED -> R.string.callvan_error_notification_subscription_failed
                         CallvanListErrorType.UNKNOWN -> R.string.callvan_error_unknown
                     }
                 )

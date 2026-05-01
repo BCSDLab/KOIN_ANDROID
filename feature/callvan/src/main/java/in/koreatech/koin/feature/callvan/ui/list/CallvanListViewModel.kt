@@ -15,9 +15,11 @@ import `in`.koreatech.koin.domain.usecase.callvan.ReopenCallvanPostUseCase
 import `in`.koreatech.koin.domain.usecase.notification.GetNotificationPermissionInfoUseCase
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
+import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanConfirmType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListErrorType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.toListErrorType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.toUiState
@@ -72,10 +74,8 @@ class CallvanListViewModel @Inject constructor(
 
     private fun initUserInfo() = intent {
         getUserStatusUseCase().collectLatest { user ->
-            intent {
-                reduce {
-                    state.copy(isLoggedIn = user !is User.Anonymous)
-                }
+            reduce {
+                state.copy(isLoggedIn = user !is User.Anonymous)
             }
         }
     }
@@ -205,7 +205,11 @@ class CallvanListViewModel @Inject constructor(
 
     fun enableCallvanNotification() = intent {
         updateNotificationSubscriptionUseCase(SubscribesType.CALLVAN)
-        reduce { state.copy(showNotificationSuggest = false) }
+            .onSuccess { reduce { state.copy(showNotificationSuggest = false) } }
+            .onFailure {
+                reduce { state.copy(showNotificationSuggest = false) }
+                postSideEffect(CallvanListSideEffect.ShowSnackbar(CallvanListErrorType.NOTIFICATION_SUBSCRIPTION_FAILED))
+            }
     }
 
     fun dismissNotificationSuggest() = blockingIntent {
