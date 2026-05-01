@@ -4,7 +4,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -83,14 +82,16 @@ fun NavGraphBuilder.koinCallvanGraph(
     composable<CallvanNavType.CallvanChat> {
         val navigator = rememberNavigator()
         val context = LocalContext.current
-        val intent = remember { navigator.navigateToGroupChat(context, it.toRoute<CallvanNavType.CallvanChat>().postId) }
         val launcher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.StartActivityForResult()
         ) {
             navController.popBackStack()
         }
         LaunchedEffect(Unit) {
-            launcher.launch(intent)
+            navigator.navigateToGroupChat(
+                context,
+                it.toRoute<CallvanNavType.CallvanChat>().postId
+            ).let(launcher::launch)
         }
     }
 

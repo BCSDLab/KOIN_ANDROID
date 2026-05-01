@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_POST_ID
 import `in`.koreatech.koin.domain.model.callvan.CallvanChatMessage.CallvanMessage
 import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
 import `in`.koreatech.koin.domain.usecase.callvan.GetCallvanChatMessagesUseCase
@@ -42,7 +43,7 @@ class GroupChatViewModel @Inject constructor(
 ) : ViewModel(), ContainerHost<GroupChatState, GroupChatSideEffect> {
 
     override val container = container<GroupChatState, GroupChatSideEffect>(GroupChatState()) {
-        val postId: Int? = savedStateHandle[POST_ID]
+        val postId: Int? = savedStateHandle[EXTRA_POST_ID]
         checkNotNull(postId)
         getCallvanPostDetail(postId)
     }
@@ -226,7 +227,6 @@ class GroupChatViewModel @Inject constructor(
     companion object {
         const val MAX_USER_COLORS = 8
         const val POLLING_INTERVAL_MS = 1000L
-        const val POST_ID = "post_id"
     }
 }
 
