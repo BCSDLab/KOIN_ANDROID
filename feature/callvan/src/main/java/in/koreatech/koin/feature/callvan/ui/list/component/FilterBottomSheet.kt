@@ -40,15 +40,19 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanBottomSheet
+import `in`.koreatech.koin.feature.callvan.ui.list.model.ARRIVALS_ITEMS
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.ArrivalsFilterType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.DeparturesFilterType
-import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.ListType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.SortType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.StatusesType
+import `in`.koreatech.koin.feature.callvan.ui.list.model.DEPARTURES_ITEMS
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetActions
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterSectionItem
+import `in`.koreatech.koin.feature.callvan.ui.list.model.LIST_TYPE_ITEMS
+import `in`.koreatech.koin.feature.callvan.ui.list.model.SORT_TYPE_ITEMS
+import `in`.koreatech.koin.feature.callvan.ui.list.model.STATUSES_TYPE_ITEMS
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -107,53 +111,10 @@ private fun FilterBottomSheetContent(
                 .verticalScroll(scrollState)
                 .padding(top = 12.dp, start = 32.dp, bottom = 12.dp, end = 12.dp)
         ) {
-            val context = LocalContext.current
-            val sections = remember(state) {
-                listOf(
-                    FilterSectionItem(
-                        title = context.getString(R.string.filter_list_list_type),
-                        items = persistentListOf(ListType.All, ListType.My, ListType.Joined),
-                        selectedItems = persistentListOf(state.selectedListType)
-                    ),
-                    FilterSectionItem(
-                        title = context.getString(R.string.filter_list_sort_order),
-                        items = persistentListOf(SortType.LatestDesc, SortType.LatestAsc, SortType.DepartureDesc, SortType.DepartureAsc),
-                        selectedItems = persistentListOf(state.selectedSortType)
-                    ),
-                    FilterSectionItem(
-                        title = context.getString(R.string.filter_list_recruitment_status),
-                        items = persistentListOf(StatusesType.All, StatusesType.Recruiting, StatusesType.Closed, StatusesType.Completed),
-                        selectedItems = persistentListOf(state.selectedStatusesType)
-                    ),
-                    FilterSectionItem(
-                        title = context.getString(R.string.filter_list_origin),
-                        items = persistentListOf(
-                            DeparturesFilterType.All, DeparturesFilterType.FrontGate,
-                            DeparturesFilterType.BackGate, DeparturesFilterType.TennisCourt,
-                            DeparturesFilterType.DormitoryMain, DeparturesFilterType.DormitorySub,
-                            DeparturesFilterType.Terminal, DeparturesFilterType.Station,
-                            DeparturesFilterType.AsanStation
-                        ),
-                        selectedItems = state.selectedDeparturesType,
-                        hint = context.getString(R.string.filter_list_other_place_hint)
-                    ),
-                    FilterSectionItem(
-                        title = context.getString(R.string.filter_list_destination),
-                        items = persistentListOf(
-                            ArrivalsFilterType.All, ArrivalsFilterType.FrontGate,
-                            ArrivalsFilterType.BackGate, ArrivalsFilterType.TennisCourt,
-                            ArrivalsFilterType.DormitoryMain, ArrivalsFilterType.DormitorySub,
-                            ArrivalsFilterType.Terminal, ArrivalsFilterType.Station,
-                            ArrivalsFilterType.AsanStation
-                        ),
-                        selectedItems = state.selectedArrivalsType,
-                        hint = context.getString(R.string.filter_list_other_place_hint)
-                    )
-                )
-            }
+            val sections = rememberFilterSections(state)
 
             sections.forEachIndexed { index, section ->
-                key(section.title) {
+                key(section) {
                     FilterSection(
                         title = section.title,
                         items = section.items,
@@ -251,6 +212,51 @@ private fun FilterSection(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun rememberFilterSections(state: FilterBottomSheetState): List<FilterSectionItem> {
+    val context = LocalContext.current
+    val listTypeItem = remember(state.selectedListType) {
+        FilterSectionItem(
+            title = context.getString(R.string.filter_list_list_type),
+            items = LIST_TYPE_ITEMS,
+            selectedItems = persistentListOf(state.selectedListType)
+        )
+    }
+    val sortTypeItem = remember(state.selectedSortType) {
+        FilterSectionItem(
+            title = context.getString(R.string.filter_list_sort_order),
+            items = SORT_TYPE_ITEMS,
+            selectedItems = persistentListOf(state.selectedSortType)
+        )
+    }
+    val statusesTypeItem = remember(state.selectedStatusesType) {
+        FilterSectionItem(
+            title = context.getString(R.string.filter_list_recruitment_status),
+            items = STATUSES_TYPE_ITEMS,
+            selectedItems = persistentListOf(state.selectedStatusesType)
+        )
+    }
+    val departuresTypeItem = remember(state.selectedDeparturesType) {
+        FilterSectionItem(
+            title = context.getString(R.string.filter_list_origin),
+            items = DEPARTURES_ITEMS,
+            selectedItems = state.selectedDeparturesType,
+            hint = context.getString(R.string.filter_list_other_place_hint)
+        )
+    }
+    val arrivalsTypeItem = remember(state.selectedArrivalsType) {
+        FilterSectionItem(
+            title = context.getString(R.string.filter_list_destination),
+            items = ARRIVALS_ITEMS,
+            selectedItems = state.selectedArrivalsType,
+            hint = context.getString(R.string.filter_list_other_place_hint)
+        )
+    }
+    return remember(listTypeItem, sortTypeItem, statusesTypeItem, departuresTypeItem, arrivalsTypeItem) {
+        listOf(listTypeItem, sortTypeItem, statusesTypeItem, departuresTypeItem, arrivalsTypeItem)
     }
 }
 
