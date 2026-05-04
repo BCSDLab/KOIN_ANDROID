@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,7 +57,8 @@ import kotlinx.collections.immutable.persistentListOf
 fun FilterBottomSheet(
     state: FilterBottomSheetState,
     actions: FilterBottomSheetActions,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     CallvanBottomSheet(
         title = stringResource(R.string.filter_container),
@@ -64,6 +66,7 @@ fun FilterBottomSheet(
         showCloseButton = true
     ) {
         FilterBottomSheetContent(
+            modifier = modifier,
             state = state,
             actions = actions
         )
@@ -73,7 +76,8 @@ fun FilterBottomSheet(
 @Composable
 private fun FilterBottomSheetContent(
     state: FilterBottomSheetState,
-    actions: FilterBottomSheetActions
+    actions: FilterBottomSheetActions,
+    modifier: Modifier = Modifier
 ) {
     val configuration = LocalConfiguration.current
     val maxHeight = remember(configuration.screenHeightDp) {
@@ -81,7 +85,7 @@ private fun FilterBottomSheetContent(
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .heightIn(max = maxHeight)
             .padding(bottom = 20.dp)
@@ -149,15 +153,17 @@ private fun FilterBottomSheetContent(
             }
 
             sections.forEachIndexed { index, section ->
-                FilterSection(
-                    title = section.title,
-                    items = section.items,
-                    selectedItems = section.selectedItems,
-                    onItemClicked = actions.onItemClicked,
-                    hint = section.hint
-                )
-                if (index <= sections.lastIndex) {
-                    HorizontalDivider(color = RebrandKoinTheme.colors.neutral300)
+                key(section.title) {
+                    FilterSection(
+                        title = section.title,
+                        items = section.items,
+                        selectedItems = section.selectedItems,
+                        onItemClicked = actions.onItemClicked,
+                        hint = section.hint
+                    )
+                    if (index <= sections.lastIndex) {
+                        HorizontalDivider(color = RebrandKoinTheme.colors.neutral300)
+                    }
                 }
             }
         }
@@ -236,11 +242,13 @@ private fun FilterSection(
             maxItemsInEachRow = 5
         ) {
             items.forEach { item ->
-                FilterBottomSheetItem(
-                    text = stringResource(item.stringRes),
-                    isSelected = item in selectedItems,
-                    onClick = { onItemClicked(item) }
-                )
+                key(item) {
+                    FilterBottomSheetItem(
+                        text = stringResource(item.stringRes),
+                        isSelected = item in selectedItems,
+                        onClick = { onItemClicked(item) }
+                    )
+                }
             }
         }
     }
