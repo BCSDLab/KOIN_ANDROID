@@ -19,12 +19,18 @@ import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanConfirmType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.ArrivalsFilterType
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.DeparturesFilterType
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.ListType
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.SortType
+import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.StatusesType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListErrorType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.toListErrorType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.toUiState
 import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
@@ -99,31 +105,6 @@ class CallvanListViewModel @Inject constructor(
         reduce { state.copy(searchValue = query) }
     }
 
-    fun applyFilter(
-        listType: CallvanFilterType.ListType,
-        sortType: CallvanFilterType.SortType,
-        statusesType: CallvanFilterType.StatusesType,
-        departuresType: ImmutableList<CallvanFilterType.DeparturesFilterType>,
-        arrivalsType: ImmutableList<CallvanFilterType.ArrivalsFilterType>
-    ) = blockingIntent {
-        if (listType !is CallvanFilterType.ListType.All && !state.isLoggedIn) {
-            reduce { state.copy(isLoginVisible = true) }
-            return@blockingIntent
-        }
-        reduce {
-            state.copy(
-                filterState = FilterBottomSheetState(
-                    selectedListType = listType,
-                    selectedSortType = sortType,
-                    selectedStatusesType = statusesType,
-                    selectedDeparturesType = departuresType,
-                    selectedArrivalsType = arrivalsType
-                )
-            )
-        }
-        fetchPosts()
-    }
-
     fun join(postId: Int) = intent {
         if (!state.isLoggedIn) {
             reduce { state.copy(isLoginVisible = true) }
@@ -175,7 +156,69 @@ class CallvanListViewModel @Inject constructor(
     }
 
     fun updateFilterVisible(visible: Boolean) = blockingIntent {
-        reduce { state.copy(isFilterVisible = visible) }
+        if (visible) {
+            reduce { state.copy(isFilterVisible = true, pendingFilterState = state.filterState) }
+        } else {
+            reduce { state.copy(isFilterVisible = false) }
+        }
+    }
+
+    fun onFilterItemClicked(item: CallvanFilterType) = blockingIntent {
+        val pending = state.pendingFilterState
+        reduce {
+            state.copy(
+                pendingFilterState = when (item) {
+                    is ListType -> pending.copy(selectedListType = item)
+                    is SortType -> pending.copy(selectedSortType = item)
+                    is StatusesType -> pending.copy(selectedStatusesType = item)
+                    is DeparturesFilterType -> pending.copy(
+                        selectedDeparturesType = toggleDuplicateSelection(
+                            pending.selectedDeparturesType,
+                            item,
+                            DeparturesFilterType.All
+                        )
+                    )
+                    is ArrivalsFilterType -> pending.copy(
+                        selectedArrivalsType = toggleDuplicateSelection(
+                            pending.selectedArrivalsType,
+                            item,
+                            ArrivalsFilterType.All
+                        )
+                    )
+                }
+            )
+        }
+    }
+
+    fun resetPendingFilter() = blockingIntent {
+        reduce { state.copy(pendingFilterState = FilterBottomSheetState()) }
+    }
+
+    fun applyPendingFilter() = intent {
+        val pending = state.pendingFilterState
+        if (pending.selectedListType !is ListType.All && !state.isLoggedIn) {
+            reduce { state.copy(isLoginVisible = true) }
+            return@intent
+        }
+        reduce { state.copy(filterState = pending, isFilterVisible = false) }
+        fetchPosts()
+    }
+
+    private fun <T : CallvanFilterType> toggleDuplicateSelection(
+        current: ImmutableList<T>,
+        item: T,
+        allItem: T
+    ): ImmutableList<T> = when {
+        item == allItem -> persistentListOf(allItem)
+        allItem in current -> persistentListOf(item)
+        item in current -> {
+            if (current.size > MINIMUM_SELECTION_COUNT) {
+                (current - item).toPersistentList()
+            } else {
+                current
+            }
+        }
+        else -> (current + item).toPersistentList()
     }
 
     fun updatePendingConfirm(pending: Pair<CallvanConfirmType, Int>?) = blockingIntent {
@@ -227,7 +270,7 @@ class CallvanListViewModel @Inject constructor(
             statuses = state.filterState.selectedStatusesType.value?.let { listOf(it) },
             title = state.searchValue.ifBlank { null },
             sort = state.filterState.selectedSortType.value,
-            joined = state.filterState.selectedListType is CallvanFilterType.ListType.Joined,
+            joined = state.filterState.selectedListType is ListType.Joined,
             page = 1,
             limit = limit
         ).onSuccess { result ->
@@ -258,7 +301,7 @@ class CallvanListViewModel @Inject constructor(
             statuses = state.filterState.selectedStatusesType.value?.let { listOf(it) },
             title = state.searchValue.ifBlank { null },
             sort = state.filterState.selectedSortType.value,
-            joined = state.filterState.selectedListType is CallvanFilterType.ListType.Joined,
+            joined = state.filterState.selectedListType is ListType.Joined,
             page = nextPage,
             limit = PAGE_SIZE
         ).onSuccess { result ->
@@ -279,5 +322,6 @@ class CallvanListViewModel @Inject constructor(
     companion object {
         private const val PAGE_SIZE = 10
         private const val SEARCH_DEBOUNCE_MS = 250L
+        private const val MINIMUM_SELECTION_COUNT = 1
     }
 }

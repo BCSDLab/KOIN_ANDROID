@@ -47,6 +47,7 @@ import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanItemState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListErrorType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListItemActions
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListUiState
+import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetActions
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -101,6 +102,7 @@ fun CallvanListScreen(
     CallvanListScreenImpl(
         searchValue = state.searchValue,
         items = state.items,
+        pendingFilterState = state.pendingFilterState,
         filterState = state.filterState,
         hasNewNotification = state.hasNewNotification,
         isLoginVisible = state.isLoginVisible,
@@ -111,7 +113,15 @@ fun CallvanListScreen(
         pendingCompletePostId = state.pendingCompletePostId,
         showNotificationSuggest = state.showNotificationSuggest,
         onSearchValueChange = viewModel::updateSearch,
-        onFilterApply = viewModel::applyFilter,
+        onFilterItemClicked = viewModel::onFilterItemClicked,
+        onFilterReset = viewModel::resetPendingFilter,
+        onFilterApply = {
+            EventLogger.logCampusClickEvent(
+                AnalyticsConstant.Label.Callvan.CALLVAN_FILTER_APPLY,
+                ""
+            )
+            viewModel.applyPendingFilter()
+        },
         onFilterVisibleChange = viewModel::updateFilterVisible,
         onPendingConfirmChange = viewModel::updatePendingConfirm,
         onPendingCompletePostIdChange = viewModel::updatePendingCompletePostId,
@@ -140,6 +150,7 @@ fun CallvanListScreen(
 fun CallvanListScreenImpl(
     searchValue: String,
     items: ImmutableList<CallvanListUiState>,
+    pendingFilterState: FilterBottomSheetState = FilterBottomSheetState(),
     filterState: FilterBottomSheetState = FilterBottomSheetState(),
     hasNewNotification: Boolean = false,
     isLoginVisible: Boolean = false,
@@ -150,17 +161,13 @@ fun CallvanListScreenImpl(
     pendingCompletePostId: Int? = null,
     showNotificationSuggest: Boolean = false,
     onSearchValueChange: (String) -> Unit = {},
+    onFilterItemClicked: (CallvanFilterType) -> Unit = {},
+    onFilterReset: () -> Unit = {},
+    onFilterApply: () -> Unit = {},
     onFilterVisibleChange: (Boolean) -> Unit = {},
     onPendingConfirmChange: (Pair<CallvanConfirmType, Int>?) -> Unit = {},
     onPendingCompletePostIdChange: (Int?) -> Unit = {},
     onLoadMore: () -> Unit = {},
-    onFilterApply: (
-        CallvanFilterType.ListType,
-        CallvanFilterType.SortType,
-        CallvanFilterType.StatusesType,
-        ImmutableList<CallvanFilterType.DeparturesFilterType>,
-        ImmutableList<CallvanFilterType.ArrivalsFilterType>
-    ) -> Unit = { _, _, _, _, _ -> },
     onTopbarBackClick: () -> Unit = {},
     onNotificationClick: () -> Unit = {},
     onWriteClick: () -> Unit = {},
@@ -196,19 +203,13 @@ fun CallvanListScreenImpl(
 
     if (isFilterVisible) {
         FilterBottomSheet(
-            onDismissRequest = { onFilterVisibleChange(false) },
-            initialListType = filterState.selectedListType,
-            initialSortType = filterState.selectedSortType,
-            initialStatusesType = filterState.selectedStatusesType,
-            initialArrivalsType = filterState.selectedArrivalsType,
-            initialDeparturesType = filterState.selectedDeparturesType,
-            onApply = { listType, sortType, statusesType, departuresFilterTypes, arrivalsFilterTypes ->
-                EventLogger.logCampusClickEvent(
-                    AnalyticsConstant.Label.Callvan.CALLVAN_FILTER_APPLY,
-                    ""
-                )
-                onFilterApply(listType, sortType, statusesType, departuresFilterTypes, arrivalsFilterTypes)
-            }
+            state = pendingFilterState,
+            actions = FilterBottomSheetActions(
+                onItemClicked = onFilterItemClicked,
+                onReset = onFilterReset,
+                onApplyClick = onFilterApply
+            ),
+            onDismissRequest = { onFilterVisibleChange(false) }
         )
     }
 
