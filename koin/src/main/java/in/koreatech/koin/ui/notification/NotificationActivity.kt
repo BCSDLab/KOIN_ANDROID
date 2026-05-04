@@ -88,7 +88,7 @@ class NotificationActivity : ActivityBase() {
         binding.clGotoArticleKeyword.setOnClickListener {
             val intent =
                 Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse("koin://article/activity?fragment=article_keyword")
+                    data = Uri.parse("koin://article/navigation?fragment=article_keyword")
                 }
             intent.`package` = packageName
             startActivity(intent)
@@ -113,6 +113,7 @@ class NotificationActivity : ActivityBase() {
             notificationShopEvent.isEnabled = true
             notificationReviewPrompt.isEnabled = true
             notificationDiningImageUpload.isEnabled = true
+            notificationCallvan.isEnabled = true
         }
     }
 
@@ -125,6 +126,7 @@ class NotificationActivity : ActivityBase() {
             notificationShopEvent.disableAll()
             notificationReviewPrompt.disableAll()
             notificationDiningImageUpload.disableAll()
+            notificationCallvan.disableAll()
         }
     }
 
@@ -184,6 +186,13 @@ class NotificationActivity : ActivityBase() {
                                                 isChecked = it.isPermit
                                             }
                                         }
+
+                                    SubscribesType.CALLVAN -> with(binding.notificationCallvan) {
+                                        if (isChecked != it.isPermit) {
+                                            fakeChecked = it.isPermit
+                                            isChecked = it.isPermit
+                                        }
+                                    }
 
                                     SubscribesType.NOTHING -> Unit
                                     else -> Unit
@@ -264,6 +273,10 @@ class NotificationActivity : ActivityBase() {
 
         binding.notificationChat.setOnSwitchClickListener { isChecked ->
             handleSubscription(isChecked, SubscribesType.LOST_ITEM_CHAT)
+        }
+
+        binding.notificationCallvan.setOnSwitchClickListener { isChecked ->
+            handleSubscription(isChecked, SubscribesType.CALLVAN)
         }
 
         binding.notificationDiningImageUpload.setOnSwitchClickListener { isChecked ->

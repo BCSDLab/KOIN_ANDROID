@@ -34,8 +34,8 @@
         tools:replace="icon,label">
         <activity
             android:name=".ui.error.InspectionActivity"
-            android:launchMode="singleTask"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode="singleTask" />
 
         <activity
             android:name=".ui.timetablev2.TimetableActivity"
@@ -50,7 +50,7 @@
 
                 <data
                     android:host="timetable"
-                    android:pathPrefix="/activity"
+                    android:pathPrefix="/navigation"
                     android:scheme="koin" />
             </intent-filter>
         </activity>
@@ -63,9 +63,25 @@
 
         <activity
             android:name=".ui.scheme.SchemeActivity"
-            android:exported="false"
+            android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@style/KAPTheme.NoActionBar" />
+            android:theme="@style/KAPTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="koin" />
+                <data android:pathPrefix="/activity" />
+
+                <data android:host="article" />
+                <data android:host="callvan" />
+                <data android:host="lost-item" />
+                <data android:host="timetable" />
+                <data android:host="main" />
+
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.operating.OperatingInfoActivity"
@@ -83,7 +99,7 @@
             android:name=".ui.main.activity.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" >
+            android:theme="@style/KAPTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -92,7 +108,7 @@
 
                 <data
                     android:host="main"
-                    android:pathPrefix="/activity"
+                    android:pathPrefix="/navigation"
                     android:scheme="koin" />
             </intent-filter>
         </activity>
@@ -134,15 +150,17 @@
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="http" />
                 <data android:scheme="https" />
 
-                <data android:host="${appLinkUri}"
-                    tools:replace="host"/>
-                <data android:pathPrefix="/lost-item"/>
+                <data
+                    android:host="${appLinkUri}"
+                    tools:replace="host" />
+                <data android:pathPrefix="/lost-item" />
             </intent-filter>
         </activity>
         <activity

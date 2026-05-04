@@ -54,7 +54,7 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
@@ -209,7 +209,7 @@ fun StoreNearbyScreen(
                     }
                 }
             },
-            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = colorResource(id = R.color.store_detail_background)
             )
         )
@@ -620,7 +620,7 @@ private fun handleSideEffect(
 
         is StoreNearbySideEffect.ScrollCategory -> {
             coroutineScope.launch {
-                scrollCategory(sideEffect.categoryId - 1)
+                scrollCategory(sideEffect.index)
             }
         }
 

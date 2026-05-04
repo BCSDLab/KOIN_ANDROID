@@ -30,6 +30,7 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_CLUB_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_EVENT_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_NAV_TYPE
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_POST_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -49,7 +50,7 @@ import kotlinx.coroutines.yield
 @AndroidEntryPoint
 class SplashActivity : ActivityBase() {
     companion object {
-        private const val INFO_REQUIRED_URI = "koin://inforequired/activity"
+        private const val INFO_REQUIRED_URI = "koin://inforequired/navigation"
         private const val EXTRA_IS_FULL = "extra_is_full"
         private const val screenTitle = "스플래시"
         private const val koinStart = "koin_start"
@@ -244,6 +245,7 @@ class SplashActivity : ActivityBase() {
         val targetChatId = intent.getIntExtra(EXTRA_CHAT_ROOM_ID, -1)
         val targetClubId = intent.getIntExtra(EXTRA_CLUB_ID, -1)
         val targetEventId = intent.getIntExtra(EXTRA_EVENT_ID, -1)
+        val targetPostId = intent.getIntExtra(EXTRA_POST_ID, -1)
         val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
         val navType = intent.getStringExtra(EXTRA_NAV_TYPE) ?: ""
 
@@ -253,14 +255,13 @@ class SplashActivity : ActivityBase() {
                 navigator.navigateTo(
                     context = this@SplashActivity,
                     type = Pair(EXTRA_TYPE, type),
-                    *arrayOf(
-                        Pair(EXTRA_ID, targetId),
-                        Pair(EXTRA_BOARD_ID, targetBoardId),
-                        Pair(EXTRA_ARTICLE_ID, targetArticleId),
-                        Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
-                        Pair(EXTRA_CLUB_ID, targetClubId),
-                        Pair(EXTRA_EVENT_ID, targetEventId)
-                    )
+                    Pair(EXTRA_ID, targetId),
+                    Pair(EXTRA_BOARD_ID, targetBoardId),
+                    Pair(EXTRA_ARTICLE_ID, targetArticleId),
+                    Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
+                    Pair(EXTRA_CLUB_ID, targetClubId),
+                    Pair(EXTRA_EVENT_ID, targetEventId),
+                    Pair(EXTRA_POST_ID, targetPostId)
                 )
             } else {
                 Intent(this@SplashActivity, MainActivity::class.java)
