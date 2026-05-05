@@ -26,6 +26,7 @@ sealed class KoinCallvanException : KoinErrorException() {
     class ForbiddenParticipantException : KoinCallvanException()
     class ForbiddenAuthorException : KoinCallvanException()
     class CallvanReportOnlyParticipantException : KoinCallvanException()
+    class CallvanRestrictedUserException : KoinCallvanException()
 
     /*
      * Exceptions for 404

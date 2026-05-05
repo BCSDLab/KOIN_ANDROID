@@ -48,6 +48,7 @@ class CallvanRepositoryImpl @Inject constructor(
         }.mapHttpFailure {
             on(400, "INVALID_REQUEST_BODY") throws KoinCallvanException.InvalidRequestBodyException()
             on(400, "INVALID_CUSTOM_LOCATION_NAME") throws KoinCallvanException.InvalidCustomLocationNameException()
+            on(403, "FORBIDDEN_CALLVAN_RESTRICTED_USER") throws KoinCallvanException.CallvanRestrictedUserException()
             on(404) throws KoinCallvanException.NotFoundUserException()
         }
     }
@@ -241,6 +242,7 @@ class CallvanRepositoryImpl @Inject constructor(
         }.mapHttpFailure {
             on(400, "CALLVAN_POST_NOT_RECRUITING") throws KoinCallvanException.CallvanPostNotRecruitingException()
             on(400, "CALLVAN_POST_FULL") throws KoinCallvanException.CallvanPostFullException()
+            on(403, "FORBIDDEN_CALLVAN_RESTRICTED_USER") throws KoinCallvanException.CallvanRestrictedUserException()
             on(404) throws KoinCallvanException.NotFoundArticleException()
             on(409) throws KoinCallvanException.CallvanAlreadyJoinedException()
         }
