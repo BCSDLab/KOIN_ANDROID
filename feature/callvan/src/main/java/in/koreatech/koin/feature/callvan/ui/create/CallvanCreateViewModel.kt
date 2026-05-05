@@ -5,10 +5,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.error.callvan.KoinCallvanException
 import `in`.koreatech.koin.domain.usecase.callvan.CreateCallvanPostUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.GetCallvanRestrictionUseCase
-import `in`.koreatech.koin.feature.callvan.model.toUiState
 import `in`.koreatech.koin.feature.callvan.MAX_PARTICIPANTS_COUNT
 import `in`.koreatech.koin.feature.callvan.MIN_PARTICIPANTS_COUNT
 import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
+import `in`.koreatech.koin.feature.callvan.model.toUiState
 import `in`.koreatech.koin.feature.callvan.ui.create.model.SubmitErrorType
 import java.time.LocalDate
 import java.time.LocalDateTime

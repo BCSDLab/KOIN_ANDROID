@@ -9,7 +9,9 @@ data class CallvanRestrictionUiState(
     val restrictedUntil: LocalDate?
 ) {
     enum class RestrictionType(val days: Int?) {
-        TEMPORARY_14_DAYS(14), PERMANENT(null), NONE(null)
+        TEMPORARY_14_DAYS(14),
+        PERMANENT(null),
+        NONE(null)
     }
 }
 

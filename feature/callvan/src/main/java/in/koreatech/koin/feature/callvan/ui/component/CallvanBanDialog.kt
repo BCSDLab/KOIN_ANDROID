@@ -34,7 +34,9 @@ fun CallvanBanDialog(
 
     val formattedDate = if (restrictedUntil != null) {
         stringResource(R.string.callvan_ban_date_format, restrictedUntil.monthValue, restrictedUntil.dayOfMonth)
-    } else null
+    } else {
+        null
+    }
 
     val title = when (restrictionType) {
         CallvanRestrictionUiState.RestrictionType.TEMPORARY_14_DAYS ->

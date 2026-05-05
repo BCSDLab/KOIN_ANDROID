@@ -99,7 +99,7 @@ fun CallvanListScreen(
         viewModel.fetchHasNewNotification()
         if (state.isLoggedIn) {
             viewModel.checkNotificationSuggest()
-            //viewModel.fetchRestriction()
+            // viewModel.fetchRestriction()
         }
     }
 

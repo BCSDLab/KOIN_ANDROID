@@ -18,6 +18,7 @@ import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscri
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
+import `in`.koreatech.koin.feature.callvan.model.toUiState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanConfirmType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.ArrivalsFilterType
@@ -27,7 +28,6 @@ import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.SortT
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.StatusesType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListErrorType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
-import `in`.koreatech.koin.feature.callvan.model.toUiState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.toListErrorType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.toUiState
 import javax.inject.Inject
