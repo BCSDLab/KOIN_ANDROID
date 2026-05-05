@@ -15,7 +15,7 @@
                 <data
                     android:host="callvan"
                     android:scheme="koin"
-                    android:pathPrefix="/activity"/>
+                    android:pathPrefix="/navigation"/>
             </intent-filter>
         </activity>
     </application>

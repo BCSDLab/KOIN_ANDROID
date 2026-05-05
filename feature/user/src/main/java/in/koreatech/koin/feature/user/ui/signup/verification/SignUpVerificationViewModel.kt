@@ -73,7 +73,6 @@ class SignUpVerificationViewModel @Inject constructor(
                 )
             }
         }
-        AccountTimer.cancel()
     }
 
     fun checkPhoneNumber() = intent {

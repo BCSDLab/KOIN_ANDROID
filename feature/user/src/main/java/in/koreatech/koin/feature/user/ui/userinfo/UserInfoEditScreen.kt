@@ -740,7 +740,7 @@ fun handleSideEffect(
         UserInfoEditSideEffect.WithdrawalSuccess -> {
             Toast.makeText(context, R.string.user_info_withdraw_success, Toast.LENGTH_SHORT).show()
             Intent(Intent.ACTION_VIEW).apply {
-                data = "koin://main/activity".toUri()
+                data = "koin://main/navigation".toUri()
                 `package` = context.packageName
             }.let {
                 context.startActivity(it)

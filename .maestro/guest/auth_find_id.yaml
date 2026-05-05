@@ -3,7 +3,7 @@ env:
   APP_ID: in.koreatech.koin
 ---
 - runFlow: ../common/launch_app.yaml
-- openLink: "koin://findid/activity"
+- openLink: "koin://findid/navigation"
 - extendedWaitUntil:
     visible: "아이디 찾기"
     timeout: 15000

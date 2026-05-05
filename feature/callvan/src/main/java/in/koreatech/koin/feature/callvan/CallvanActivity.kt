@@ -8,12 +8,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.feature.callvan.navigation.CallvanNavType
 import `in`.koreatech.koin.feature.callvan.navigation.koinCallvanGraph
 
@@ -32,9 +34,19 @@ class CallvanActivity : ComponentActivity() {
         if (intent.getBooleanExtra(EXTRA_NAVIGATE_TO_CREATE, false)) {
             startDestination = CallvanNavType.CallvanCreate
         }
+
+        val targetId = intent.getIntExtra(EXTRA_ID, -1)
+
         setContent {
             RebrandKoinTheme {
                 val navController = rememberNavController()
+
+                // Scheme url from backend is not matching with deeplink url in navigation
+                // So, let's navigate to correct deeplink from here
+                LaunchedEffect(Unit) {
+                    if (targetId == -1) return@LaunchedEffect
+                    navController.navigate(CallvanNavType.CallvanDetail(targetId))
+                }
 
                 Scaffold { innerPadding ->
                     NavHost(

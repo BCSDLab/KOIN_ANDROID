@@ -358,6 +358,9 @@
     <string name="notification_permission_dialog_positive">설정 이동</string>
     <string name="notification_permission_dialog_negative">취소</string>
 
+    <string name="notification_callvan">콜밴팟 알림</string>
+    <string name="notification_callvan_description">콜밴팟 알림을 받습니다.</string>
+
     <!-- force update -->
     <string name="force_update_do_update">업데이트하기</string>
     <string name="force_update_already_update">이미 업데이트를 하셨나요?</string>
@@ -576,6 +579,7 @@
     <string name="notification_chat">쪽지 알림</string>
     <string name="notification_chat_description">쪽지가 도착하면 알림을 받습니다.</string>
     <string name="board">게시판</string>
+    <string name="callvan">콜밴팟</string>
     <string name="write_review_error">한 상점에 하루에 한 번만 리뷰를 남길 수 있습니다.</string>
     <string name="inspection_title">개발 중인 페이지입니다</string>
     <string name="inspection_content">죄송합니다. 현재 개발 중인 페이지입니다.\n최대한 빠르게 오픈하도록 하겠습니다.</string>

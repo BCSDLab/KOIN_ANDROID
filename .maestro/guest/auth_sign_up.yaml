@@ -3,7 +3,7 @@ env:
   APP_ID: in.koreatech.koin
 ---
 - runFlow: ../common/launch_app.yaml
-- openLink: "koin://signup/activity"
+- openLink: "koin://signup/navigation"
 - extendedWaitUntil:
     visible: "회원가입"
     timeout: 15000

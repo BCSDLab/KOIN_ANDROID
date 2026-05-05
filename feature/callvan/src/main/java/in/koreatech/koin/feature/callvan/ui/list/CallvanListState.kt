@@ -12,6 +12,7 @@ data class CallvanListState(
     val items: ImmutableList<CallvanListUiState> = persistentListOf(),
     val searchValue: String = "",
     val filterState: FilterBottomSheetState = FilterBottomSheetState(),
+    val pendingFilterState: FilterBottomSheetState = FilterBottomSheetState(),
     val hasNewNotification: Boolean = false,
     val isLoading: Boolean = false,
     val isLoadingMore: Boolean = false,
@@ -22,5 +23,6 @@ data class CallvanListState(
     val isLoginVisible: Boolean = false,
     val isFilterVisible: Boolean = false,
     val pendingConfirm: Pair<CallvanConfirmType, Int>? = null,
-    val pendingCompletePostId: Int? = null
+    val pendingCompletePostId: Int? = null,
+    val showNotificationSuggest: Boolean = false
 )

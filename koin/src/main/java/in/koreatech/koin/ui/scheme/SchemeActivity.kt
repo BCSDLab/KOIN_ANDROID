@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.core.content.getSystemService
+import androidx.core.net.toUri
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
@@ -19,6 +20,7 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_CLUB_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_EVENT_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_NAV_TYPE
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_POST_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_URL
 import `in`.koreatech.koin.core.navigation.utils.toHost
@@ -54,7 +56,9 @@ class SchemeActivity : ActivityBase() {
     }
 
     private fun handleIntent() {
-        intent.getStringExtra(EXTRA_URL).let { url ->
+        val intentUrl = intent.getStringExtra(EXTRA_URL) ?: intent.data?.urlFromIntentData()
+
+        intentUrl.let { url ->
             val tasks =
                 getSystemService<ActivityManager>()?.appTasks?.map {
                     /**
@@ -123,40 +127,47 @@ class SchemeActivity : ActivityBase() {
             Pair(EXTRA_CHAT_ROOM_ID, getChatRoomIdFromUrl(url)),
             Pair(EXTRA_BOARD_ID, getBoardIdFromUrl(url)),
             Pair(EXTRA_CLUB_ID, getClubIdFromUrl(url)),
-            Pair(EXTRA_EVENT_ID, getEventIdFromUrl(url))
+            Pair(EXTRA_EVENT_ID, getEventIdFromUrl(url)),
+            Pair(EXTRA_POST_ID, getPostIdFromUrl(url))
         ).filter { it.second != null }
     }
 
     private fun getIdFromUrl(url: String): Int? {
-        return Uri.parse(url).getQueryParameter("id")?.toIntOrNull()
+        return url.toUri().getQueryParameter("id")?.toIntOrNull()
     }
 
     private fun getArticleIdFromUrl(url: String): Int? {
-        return Uri.parse(url).getQueryParameter("articleId")?.toIntOrNull()
+        return url.toUri().getQueryParameter("articleId")?.toIntOrNull()
     }
 
     private fun getChatRoomIdFromUrl(url: String): Int? {
-        return Uri.parse(url).getQueryParameter("chatRoomId")?.toIntOrNull()
+        return url.toUri().getQueryParameter("chatRoomId")?.toIntOrNull()
     }
 
     private fun getBoardIdFromUrl(url: String): Int? {
-        return Uri.parse(url).getQueryParameter("board-id")?.toIntOrNull()
+        return url.toUri().getQueryParameter("board-id")?.toIntOrNull()
     }
 
     private fun getKeywordFromUrl(url: String): String? {
-        return Uri.parse(url).getQueryParameter("keyword")
+        return url.toUri().getQueryParameter("keyword")
     }
 
     private fun getClubIdFromUrl(url: String): Int? {
-        return Uri.parse(url).getQueryParameter("clubId")?.toIntOrNull()
+        return url.toUri().getQueryParameter("clubId")?.toIntOrNull()
     }
 
     private fun getEventIdFromUrl(url: String): Int? {
-        return Uri.parse(url).getQueryParameter("eventId")?.toIntOrNull()
+        return url.toUri().getQueryParameter("eventId")?.toIntOrNull()
+    }
+
+    private fun getPostIdFromUrl(url: String): Int? {
+        return url.toUri().getQueryParameter("postId")?.toIntOrNull()
     }
 
     private fun navigateToActivity(intent: Intent) {
         startActivity(intent)
         finish()
     }
+
+    private fun Uri?.urlFromIntentData(): String? = this?.let { "${it.scheme}://${it.host}" }
 }

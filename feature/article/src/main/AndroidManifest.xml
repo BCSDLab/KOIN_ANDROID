@@ -15,7 +15,7 @@
 
                 <data
                     android:host="article"
-                    android:pathPrefix="/activity"
+                    android:pathPrefix="/navigation"
                     android:scheme="koin" />
             </intent-filter>
         </activity>
