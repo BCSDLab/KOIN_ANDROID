@@ -4,9 +4,11 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.error.callvan.KoinCallvanException
 import `in`.koreatech.koin.domain.usecase.callvan.CreateCallvanPostUseCase
+import `in`.koreatech.koin.domain.usecase.callvan.GetCallvanRestrictionUseCase
 import `in`.koreatech.koin.feature.callvan.MAX_PARTICIPANTS_COUNT
 import `in`.koreatech.koin.feature.callvan.MIN_PARTICIPANTS_COUNT
 import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
+import `in`.koreatech.koin.feature.callvan.model.toUiState
 import `in`.koreatech.koin.feature.callvan.ui.create.model.SubmitErrorType
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -23,7 +25,8 @@ import org.orbitmvi.orbit.viewmodel.container
 @Suppress("TooManyFunctions")
 @HiltViewModel
 class CallvanCreateViewModel @Inject constructor(
-    private val createCallvanPostUseCase: CreateCallvanPostUseCase
+    private val createCallvanPostUseCase: CreateCallvanPostUseCase,
+    private val getCallvanRestrictionUseCase: GetCallvanRestrictionUseCase
 ) : ViewModel(), ContainerHost<CallvanCreateState, CallvanCreateSideEffect> {
 
     override val container: Container<CallvanCreateState, CallvanCreateSideEffect> = container(
@@ -137,15 +140,33 @@ class CallvanCreateViewModel @Inject constructor(
         }
     }
 
+    fun updateBanDialogVisible(visible: Boolean) = blockingIntent {
+        reduce { state.copy(showBanDialog = visible) }
+    }
+
+    fun fetchRestriction() = intent {
+        getCallvanRestrictionUseCase()
+            .onSuccess { restriction ->
+                val uiState = restriction.toUiState()
+                reduce { state.copy(restriction = uiState, showBanDialog = uiState.isRestricted) }
+            }
+    }
+
     private fun isDepartureInPast(state: CallvanCreateState): Boolean {
         val selected = LocalDateTime.of(state.selectedDate, state.selectedTime)
         return selected.isBefore(LocalDateTime.now())
     }
 
+    @Suppress("CognitiveComplexMethod")
     fun submit() = intent {
         val currentState = state
         if (!currentState.isFormComplete || currentState.isSubmitting) return@intent
         if (currentState.departureLocation == null || currentState.arrivalLocation == null) return@intent
+
+        if (currentState.restriction.isRestricted) {
+            reduce { state.copy(showBanDialog = true) }
+            return@intent
+        }
 
         /* 현재 날짜 이후 검증 로직 */
         if (isDepartureInPast(currentState)) {

@@ -5,6 +5,7 @@ import `in`.koreatech.koin.domain.model.callvan.CallvanNotification
 import `in`.koreatech.koin.domain.model.callvan.CallvanPostCreate
 import `in`.koreatech.koin.domain.model.callvan.CallvanPostDetail
 import `in`.koreatech.koin.domain.model.callvan.CallvanPostSearch
+import `in`.koreatech.koin.domain.model.callvan.CallvanRestriction
 
 interface CallvanRepository {
     suspend fun createCallvanPost(
@@ -86,4 +87,6 @@ interface CallvanRepository {
     suspend fun reopenCallvanPost(
         postId: Int
     ): Result<Unit>
+
+    suspend fun getCallvanRestriction(): Result<CallvanRestriction>
 }

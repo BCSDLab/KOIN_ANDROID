@@ -5,11 +5,13 @@ import `in`.koreatech.koin.data.response.callvan.CallvanNotificationResponse
 import `in`.koreatech.koin.data.response.callvan.CallvanPostCreateResponse
 import `in`.koreatech.koin.data.response.callvan.CallvanPostDetailResponse
 import `in`.koreatech.koin.data.response.callvan.CallvanPostSearchResponse
+import `in`.koreatech.koin.data.response.callvan.CallvanRestrictionResponse
 import `in`.koreatech.koin.domain.model.callvan.CallvanChatMessage
 import `in`.koreatech.koin.domain.model.callvan.CallvanNotification
 import `in`.koreatech.koin.domain.model.callvan.CallvanPostCreate
 import `in`.koreatech.koin.domain.model.callvan.CallvanPostDetail
 import `in`.koreatech.koin.domain.model.callvan.CallvanPostSearch
+import `in`.koreatech.koin.domain.model.callvan.CallvanRestriction
 
 fun CallvanPostCreateResponse.toCallvanPostCreate() = CallvanPostCreate(
     id = id,
@@ -83,6 +85,12 @@ fun CallvanPostDetailResponse.CallvanParticipantResponse.toCallvanParticipant() 
     nickname = nickname,
     isMe = isMe,
     isReported = isReported
+)
+
+fun CallvanRestrictionResponse.toCallvanRestriction() = CallvanRestriction(
+    isRestricted = isRestricted,
+    restrictionType = CallvanRestriction.CallvanRestrictionType.from(restrictionType),
+    restrictedUntil = restrictedUntil
 )
 
 fun CallvanNotificationResponse.toCallvanNotification() = CallvanNotification(
