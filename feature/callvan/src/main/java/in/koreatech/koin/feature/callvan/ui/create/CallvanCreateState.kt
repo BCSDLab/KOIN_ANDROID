@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.callvan.ui.create
 
 import `in`.koreatech.koin.feature.callvan.MIN_PARTICIPANTS_COUNT
 import `in`.koreatech.koin.feature.callvan.model.CallvanLocationOption
+import `in`.koreatech.koin.feature.callvan.model.CallvanRestrictionUiState
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -17,7 +18,13 @@ data class CallvanCreateState(
     val isTimePickerVisible: Boolean = false,
     val isLocationPickerVisible: Boolean = false,
     val isPickingDeparture: Boolean = true,
-    val isSubmitting: Boolean = false
+    val isSubmitting: Boolean = false,
+    val restriction: CallvanRestrictionUiState = CallvanRestrictionUiState(
+        isRestricted = false,
+        restrictionType = CallvanRestrictionUiState.RestrictionType.NONE,
+        restrictedUntil = null
+    ),
+    val showBanDialog: Boolean = false
 ) {
     val isFormComplete: Boolean
         get() {
