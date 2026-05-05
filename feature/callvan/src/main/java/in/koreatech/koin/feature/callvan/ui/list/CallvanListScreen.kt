@@ -34,6 +34,8 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
+import `in`.koreatech.koin.feature.callvan.model.CallvanRestrictionUiState
+import `in`.koreatech.koin.feature.callvan.ui.component.CallvanBanDialog
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanConfirmBottomSheet
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanNotificationIcon
 import `in`.koreatech.koin.feature.callvan.ui.list.component.CallvanFAB
@@ -70,7 +72,6 @@ fun CallvanListScreen(
     val state by viewModel.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
-
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             is CallvanListSideEffect.ShowSnackbar -> {
@@ -96,14 +97,16 @@ fun CallvanListScreen(
 
     LaunchedEffect(state.isLoggedIn) {
         viewModel.fetchHasNewNotification()
-        if (state.isLoggedIn) viewModel.checkNotificationSuggest()
+        if (state.isLoggedIn) {
+            viewModel.checkNotificationSuggest()
+            //viewModel.fetchRestriction()
+        }
     }
 
     CallvanListScreenImpl(
         searchValue = state.searchValue,
         items = state.items,
         pendingFilterState = state.pendingFilterState,
-        filterState = state.filterState,
         hasNewNotification = state.hasNewNotification,
         isLoginVisible = state.isLoginVisible,
         isFilterVisible = state.isFilterVisible,
@@ -141,7 +144,10 @@ fun CallvanListScreen(
         onDetailClick = onDetailClick,
         onNotificationSuggestConfirm = viewModel::enableCallvanNotification,
         onNotificationSuggestDismiss = viewModel::dismissNotificationSuggest,
-        snackbarHostState = snackbarHostState
+        snackbarHostState = snackbarHostState,
+        showBanDialog = state.showBanDialog,
+        restriction = state.restriction,
+        onBanDialogDismiss = { viewModel.updateBanDialogVisible(false) }
     )
 }
 
@@ -151,7 +157,6 @@ fun CallvanListScreenImpl(
     searchValue: String,
     items: ImmutableList<CallvanListUiState>,
     pendingFilterState: FilterBottomSheetState = FilterBottomSheetState(),
-    filterState: FilterBottomSheetState = FilterBottomSheetState(),
     hasNewNotification: Boolean = false,
     isLoginVisible: Boolean = false,
     isFilterVisible: Boolean = false,
@@ -183,7 +188,14 @@ fun CallvanListScreenImpl(
     onDetailClick: (Int) -> Unit = {},
     onNotificationSuggestConfirm: () -> Unit = {},
     onNotificationSuggestDismiss: () -> Unit = {},
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    showBanDialog: Boolean = false,
+    restriction: CallvanRestrictionUiState = CallvanRestrictionUiState(
+        isRestricted = false,
+        restrictionType = CallvanRestrictionUiState.RestrictionType.NONE,
+        restrictedUntil = null
+    ),
+    onBanDialogDismiss: () -> Unit = {}
 ) {
     val listState = rememberLazyListState()
 
@@ -238,6 +250,14 @@ fun CallvanListScreenImpl(
                 onPendingCompletePostIdChange(null)
             },
             onDismiss = { onPendingCompletePostIdChange(null) }
+        )
+    }
+
+    if (showBanDialog) {
+        CallvanBanDialog(
+            restrictionType = restriction.restrictionType,
+            restrictedUntil = restriction.restrictedUntil,
+            onDismiss = onBanDialogDismiss
         )
     }
 

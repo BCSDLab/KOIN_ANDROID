@@ -1,15 +1,22 @@
 package `in`.koreatech.koin.feature.callvan.ui.list
 
 import androidx.compose.runtime.Immutable
+import `in`.koreatech.koin.feature.callvan.model.CallvanRestrictionUiState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanConfirmType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanListUiState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.FilterBottomSheetState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import java.time.LocalDate
 
 @Immutable
 data class CallvanListState(
     val items: ImmutableList<CallvanListUiState> = persistentListOf(),
+    val restriction: CallvanRestrictionUiState = CallvanRestrictionUiState(
+        isRestricted = false,
+        restrictionType = CallvanRestrictionUiState.RestrictionType.NONE,
+        restrictedUntil = null
+    ),
     val searchValue: String = "",
     val filterState: FilterBottomSheetState = FilterBottomSheetState(),
     val pendingFilterState: FilterBottomSheetState = FilterBottomSheetState(),
@@ -24,5 +31,6 @@ data class CallvanListState(
     val isFilterVisible: Boolean = false,
     val pendingConfirm: Pair<CallvanConfirmType, Int>? = null,
     val pendingCompletePostId: Int? = null,
-    val showNotificationSuggest: Boolean = false
+    val showNotificationSuggest: Boolean = false,
+    val showBanDialog: Boolean = false
 )

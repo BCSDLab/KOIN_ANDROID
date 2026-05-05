@@ -8,6 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -26,6 +27,7 @@ import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanDateField
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanLocationPickerBottomSheet
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanLocationSection
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanParticipantsSection
+import `in`.koreatech.koin.feature.callvan.ui.component.CallvanBanDialog
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanSubmitBottomBar
 import `in`.koreatech.koin.feature.callvan.ui.create.component.CallvanTimeField
 import `in`.koreatech.koin.feature.callvan.ui.displayNameRes
@@ -53,6 +55,18 @@ fun CallvanCreateScreen(
                 context.getString(R.string.callvan_create_past_time_error)
             )
         }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchRestriction()
+    }
+
+    if (state.showBanDialog) {
+        CallvanBanDialog(
+            restrictionType = state.restriction.restrictionType,
+            restrictedUntil = state.restriction.restrictedUntil,
+            onDismiss = { viewModel.updateBanDialogVisible(false) }
+        )
     }
 
     if (state.isLocationPickerVisible) {
