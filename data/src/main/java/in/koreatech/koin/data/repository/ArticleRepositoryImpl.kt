@@ -15,6 +15,7 @@ import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundReportItem
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundStats
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
+import `in`.koreatech.koin.domain.model.article.KeywordType
 import `in`.koreatech.koin.domain.model.article.LostAndFoundFilterParams
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
@@ -40,28 +41,27 @@ class ArticleRepositoryImpl @Inject constructor(
     private val userRepository: UserRepository,
     private val coroutineScope: CoroutineScope
 ) : ArticleRepository {
-    val user =
-        userRepository.getUserInfoFlow().distinctUntilChanged()
-            .onEach { user ->
-                if (user.isStudent || user.isGeneral) {
-                    _myKeywords.emit(articleRemoteDataSource.fetchMyKeyword().keywords)
-                } else {
-                    _myKeywords.emit(
-                        articleLocalDataSource.fetchMyKeyword().map {
-                            ArticleKeywordWrapperResponse.ArticleKeywordResponse(0, it)
-                        }
-                    )
-                }
-            }.stateIn(
-                scope = coroutineScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = User.Anonymous
-            )
+    val user = userRepository.getUserInfoFlow().distinctUntilChanged()
+        .onEach { user ->
+            if (user.isStudent || user.isGeneral) {
+                _myArticleKeywords.emit(articleRemoteDataSource.fetchMyKeyword(KeywordType.KOREATECH).keywords)
+            } else {
+                _myArticleKeywords.emit(
+                    articleLocalDataSource.fetchMyKeyword(KeywordType.KOREATECH).map {
+                        ArticleKeywordWrapperResponse.ArticleKeywordResponse(0, it)
+                    }
+                )
+            }
+        }.stateIn(
+            scope = coroutineScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = User.Anonymous
+        )
 
-    private val _myKeywords =
+    private val _myArticleKeywords =
         MutableStateFlow<List<ArticleKeywordWrapperResponse.ArticleKeywordResponse>>(emptyList())
-    private val myKeywords =
-        _myKeywords.stateIn(
+    private val myArticleKeywords =
+        _myArticleKeywords.stateIn(
             scope = coroutineScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = emptyList()
@@ -127,48 +127,68 @@ class ArticleRepositoryImpl @Inject constructor(
     }
 
     override fun fetchMyKeyword(): Flow<List<String>> {
-        return myKeywords.map { response ->
+        return myArticleKeywords.map { response ->
             response.map {
                 it.keyword
             }
         }
     }
 
-    override fun fetchKeywordSuggestions(): Flow<List<String>> {
+    override fun fetchKeywordSuggestions(type: KeywordType): Flow<List<String>> {
         return flow {
-            emit(articleRemoteDataSource.fetchKeywordSuggestions().keywords)
+            emit(articleRemoteDataSource.fetchKeywordSuggestions(type).keywords)
         }
     }
 
-    override fun saveKeyword(keyword: String): Flow<Unit> {
+    override fun saveKeyword(type: KeywordType, keyword: String): Flow<Unit> {
+        val keywords = when (type) {
+            KeywordType.KOREATECH -> myArticleKeywords
+            KeywordType.LOST_ITEM -> TODO("MUST BE REPLACE AFTER CREATE LOST-ITEM myKeywords")
+        }
+
+        val _keywords = when (type) {
+            KeywordType.KOREATECH -> _myArticleKeywords
+            KeywordType.LOST_ITEM -> TODO("MUST BE REPLACE AFTER CREATE LOST-ITEM myKeywords")
+        }
+
         return flow {
             if (user.value.isStudent || user.value.isGeneral) {
-                emit(articleRemoteDataSource.saveKeyword(keyword))
+                emit(articleRemoteDataSource.saveKeyword(type, keyword))
             } else {
-                articleLocalDataSource.saveKeyword(keyword)
+                articleLocalDataSource.saveKeyword(type, keyword)
                 emit(ArticleKeywordWrapperResponse.ArticleKeywordResponse(0, keyword))
             }
         }.onEach {
-            _myKeywords.emit(
+            _keywords.emit(
                 buildList {
-                    addAll(myKeywords.value)
+                    addAll(keywords.value)
                     add(it)
                 }
             )
         }.map { Unit }
     }
 
-    override fun deleteKeyword(keyword: String): Flow<Unit> {
+    override fun deleteKeyword(type: KeywordType, keyword: String): Flow<Unit> {
+        val keywords = when (type) {
+            KeywordType.KOREATECH -> myArticleKeywords
+            KeywordType.LOST_ITEM -> TODO("MUST BE REPLACE AFTER CREATE LOST-ITEM myKeywords")
+        }
+
+        val _keywords = when (type) {
+            KeywordType.KOREATECH -> _myArticleKeywords
+            KeywordType.LOST_ITEM -> TODO("MUST BE REPLACE AFTER CREATE LOST-ITEM myKeywords")
+        }
+
         return flow {
             if (user.value.isStudent || user.value.isGeneral) {
-                emit(articleRemoteDataSource.deleteKeyword(myKeywords.value.first { it.keyword == keyword }.id))
+                emit(articleRemoteDataSource.deleteKeyword(keywords.value.first { it.keyword == keyword }.id))
             } else {
-                emit(articleLocalDataSource.deleteKeyword(keyword))
+                emit(articleLocalDataSource.deleteKeyword(type, keyword))
             }
         }.onEach {
-            _myKeywords.emit(
+            _keywords.emit(
                 buildList {
-                    myKeywords.value.forEach {
+                    keywords.value.forEach {
                         if (it.keyword != keyword) {
                             add(it)
                         }
