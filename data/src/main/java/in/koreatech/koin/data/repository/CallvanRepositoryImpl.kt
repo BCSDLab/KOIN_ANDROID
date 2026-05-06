@@ -5,6 +5,7 @@ import `in`.koreatech.koin.data.mapper.toCallvanNotification
 import `in`.koreatech.koin.data.mapper.toCallvanPostCreate
 import `in`.koreatech.koin.data.mapper.toCallvanPostDetail
 import `in`.koreatech.koin.data.mapper.toCallvanPostSearch
+import `in`.koreatech.koin.data.mapper.toCallvanRestriction
 import `in`.koreatech.koin.data.request.callvan.CallvanChatMessageRequest
 import `in`.koreatech.koin.data.request.callvan.CallvanPostCreateRequest
 import `in`.koreatech.koin.data.request.callvan.CallvanUserReportCreateRequest
@@ -16,6 +17,7 @@ import `in`.koreatech.koin.domain.model.callvan.CallvanNotification
 import `in`.koreatech.koin.domain.model.callvan.CallvanPostCreate
 import `in`.koreatech.koin.domain.model.callvan.CallvanPostDetail
 import `in`.koreatech.koin.domain.model.callvan.CallvanPostSearch
+import `in`.koreatech.koin.domain.model.callvan.CallvanRestriction
 import `in`.koreatech.koin.domain.repository.CallvanRepository
 import javax.inject.Inject
 
@@ -46,6 +48,7 @@ class CallvanRepositoryImpl @Inject constructor(
         }.mapHttpFailure {
             on(400, "INVALID_REQUEST_BODY") throws KoinCallvanException.InvalidRequestBodyException()
             on(400, "INVALID_CUSTOM_LOCATION_NAME") throws KoinCallvanException.InvalidCustomLocationNameException()
+            on(403, "FORBIDDEN_CALLVAN_RESTRICTED_USER") throws KoinCallvanException.CallvanRestrictedUserException()
             on(404) throws KoinCallvanException.NotFoundUserException()
         }
     }
@@ -239,6 +242,7 @@ class CallvanRepositoryImpl @Inject constructor(
         }.mapHttpFailure {
             on(400, "CALLVAN_POST_NOT_RECRUITING") throws KoinCallvanException.CallvanPostNotRecruitingException()
             on(400, "CALLVAN_POST_FULL") throws KoinCallvanException.CallvanPostFullException()
+            on(403, "FORBIDDEN_CALLVAN_RESTRICTED_USER") throws KoinCallvanException.CallvanRestrictedUserException()
             on(404) throws KoinCallvanException.NotFoundArticleException()
             on(409) throws KoinCallvanException.CallvanAlreadyJoinedException()
         }
@@ -270,6 +274,15 @@ class CallvanRepositoryImpl @Inject constructor(
             on(400, "CALLVAN_POST_REOPEN_FAILED_TIME") throws KoinCallvanException.CallvanPostReopenFailedTimeException()
             on(403) throws KoinCallvanException.ForbiddenAuthorException()
             on(404) throws KoinCallvanException.NotFoundArticleException()
+        }
+    }
+
+    override suspend fun getCallvanRestriction(): Result<CallvanRestriction> {
+        return runCatching {
+            callvanRemoteDataSource.getCallvanRestriction().toCallvanRestriction()
+        }.mapHttpFailure {
+            on(401) throws KoinCallvanException.UnauthorizedUserException()
+            on(404) throws KoinCallvanException.NotFoundUserException()
         }
     }
 }

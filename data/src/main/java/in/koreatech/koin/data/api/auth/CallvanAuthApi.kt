@@ -8,6 +8,7 @@ import `in`.koreatech.koin.data.response.callvan.CallvanNotificationResponse
 import `in`.koreatech.koin.data.response.callvan.CallvanPostCreateResponse
 import `in`.koreatech.koin.data.response.callvan.CallvanPostDetailResponse
 import `in`.koreatech.koin.data.response.callvan.CallvanPostSearchResponse
+import `in`.koreatech.koin.data.response.callvan.CallvanRestrictionResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -103,4 +104,7 @@ interface CallvanAuthApi {
     suspend fun reopenCallvanPost(
         @Path("postId") postId: Int
     ): Response<Unit>
+
+    @GET("/callvan/restriction")
+    suspend fun getCallvanRestriction(): CallvanRestrictionResponse
 }

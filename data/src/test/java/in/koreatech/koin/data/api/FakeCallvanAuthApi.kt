@@ -9,6 +9,7 @@ import `in`.koreatech.koin.data.response.callvan.CallvanNotificationResponse
 import `in`.koreatech.koin.data.response.callvan.CallvanPostCreateResponse
 import `in`.koreatech.koin.data.response.callvan.CallvanPostDetailResponse
 import `in`.koreatech.koin.data.response.callvan.CallvanPostSearchResponse
+import `in`.koreatech.koin.data.response.callvan.CallvanRestrictionResponse
 
 class FakeCallvanAuthApi : CallvanAuthApi {
 
@@ -72,4 +73,7 @@ class FakeCallvanAuthApi : CallvanAuthApi {
     override suspend fun leaveCallvanPost(postId: Int) = throw NotImplementedError()
 
     override suspend fun reopenCallvanPost(postId: Int) = throw NotImplementedError()
+
+    override suspend fun getCallvanRestriction(): CallvanRestrictionResponse =
+        throw NotImplementedError()
 }

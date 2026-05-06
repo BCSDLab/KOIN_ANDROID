@@ -359,7 +359,7 @@
     <string name="notification_permission_dialog_negative">취소</string>
 
     <string name="notification_callvan">콜밴팟 알림</string>
-    <string name="notification_callvan_description">콜밴팟 알림을 받습니다.</string>
+    <string name="notification_callvan_description">모든 콜밴팟의 알림을 받습니다.</string>
 
     <!-- force update -->
     <string name="force_update_do_update">업데이트하기</string>

@@ -8,6 +8,7 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.callvan.CloseCallvanPostUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.CompleteCallvanPostUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.GetCallvanPostsUseCase
+import `in`.koreatech.koin.domain.usecase.callvan.GetCallvanRestrictionUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.GetNotificationsUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.JoinCallvanPostUseCase
 import `in`.koreatech.koin.domain.usecase.callvan.LeaveCallvanPostUseCase
@@ -17,6 +18,7 @@ import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscri
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
+import `in`.koreatech.koin.feature.callvan.model.toUiState
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanConfirmType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType
 import `in`.koreatech.koin.feature.callvan.ui.list.model.CallvanFilterType.ArrivalsFilterType
@@ -48,6 +50,7 @@ import org.orbitmvi.orbit.viewmodel.container
 @Suppress("LongParameterList", "TooManyFunctions")
 class CallvanListViewModel @Inject constructor(
     private val getCallvanPostsUseCase: GetCallvanPostsUseCase,
+    private val getCallvanRestrictionUseCase: GetCallvanRestrictionUseCase,
     private val joinCallvanPostUseCase: JoinCallvanPostUseCase,
     private val leaveCallvanPostUseCase: LeaveCallvanPostUseCase,
     private val closeCallvanPostUseCase: CloseCallvanPostUseCase,
@@ -86,6 +89,24 @@ class CallvanListViewModel @Inject constructor(
         }
     }
 
+    fun updateBanDialogVisible(visible: Boolean) = blockingIntent {
+        reduce { state.copy(showBanDialog = visible) }
+    }
+
+    fun fetchRestriction() = intent {
+        if (!state.isLoggedIn) return@intent
+        getCallvanRestrictionUseCase()
+            .onSuccess { restriction ->
+                val uiState = restriction.toUiState()
+                reduce {
+                    state.copy(
+                        restriction = uiState,
+                        showBanDialog = uiState.isRestricted
+                    )
+                }
+            }
+    }
+
     internal fun fetchHasNewNotification() = intent {
         if (state.isLoggedIn) {
             getNotificationsUseCase()
@@ -108,6 +129,10 @@ class CallvanListViewModel @Inject constructor(
     fun join(postId: Int) = intent {
         if (!state.isLoggedIn) {
             reduce { state.copy(isLoginVisible = true) }
+            return@intent
+        }
+        if (state.restriction.isRestricted) {
+            reduce { state.copy(showBanDialog = true) }
             return@intent
         }
         joinCallvanPostUseCase(postId)

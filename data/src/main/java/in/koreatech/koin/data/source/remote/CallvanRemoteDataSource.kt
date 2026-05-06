@@ -129,4 +129,6 @@ class CallvanRemoteDataSource @Inject constructor(
         val response = callvanAuthApi.reopenCallvanPost(postId = postId)
         if (!response.isSuccessful) throw HttpException(response)
     }
+
+    suspend fun getCallvanRestriction() = callvanAuthApi.getCallvanRestriction()
 }
