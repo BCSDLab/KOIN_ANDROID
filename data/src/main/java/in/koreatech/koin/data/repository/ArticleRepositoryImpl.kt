@@ -146,7 +146,7 @@ class ArticleRepositoryImpl @Inject constructor(
             KeywordType.LOST_ITEM -> TODO("MUST BE REPLACE AFTER CREATE LOST-ITEM myKeywords")
         }
 
-        val _keywords = when (type) {
+        val mutableKeywords = when (type) {
             KeywordType.KOREATECH -> _myArticleKeywords
             KeywordType.LOST_ITEM -> TODO("MUST BE REPLACE AFTER CREATE LOST-ITEM myKeywords")
         }
@@ -159,7 +159,7 @@ class ArticleRepositoryImpl @Inject constructor(
                 emit(ArticleKeywordWrapperResponse.ArticleKeywordResponse(0, keyword))
             }
         }.onEach {
-            _keywords.emit(
+            mutableKeywords.emit(
                 buildList {
                     addAll(keywords.value)
                     add(it)
@@ -174,7 +174,7 @@ class ArticleRepositoryImpl @Inject constructor(
             KeywordType.LOST_ITEM -> TODO("MUST BE REPLACE AFTER CREATE LOST-ITEM myKeywords")
         }
 
-        val _keywords = when (type) {
+        val mutableKeywords = when (type) {
             KeywordType.KOREATECH -> _myArticleKeywords
             KeywordType.LOST_ITEM -> TODO("MUST BE REPLACE AFTER CREATE LOST-ITEM myKeywords")
         }
@@ -186,7 +186,7 @@ class ArticleRepositoryImpl @Inject constructor(
                 emit(articleLocalDataSource.deleteKeyword(type, keyword))
             }
         }.onEach {
-            _keywords.emit(
+            mutableKeywords.emit(
                 buildList {
                     keywords.value.forEach {
                         if (it.keyword != keyword) {
