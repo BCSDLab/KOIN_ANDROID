@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.source.local
 
 import `in`.koreatech.koin.data.source.datastore.ArticleDataStore
+import `in`.koreatech.koin.domain.model.article.KeywordType
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
@@ -23,16 +24,16 @@ class ArticleLocalDataSource @Inject constructor(
         articleDataStore.clearSearchHistory()
     }
 
-    suspend fun fetchMyKeyword(): List<String> {
-        return articleDataStore.fetchMyKeyword()
+    suspend fun fetchMyKeyword(type: KeywordType): List<String> {
+        return articleDataStore.fetchMyKeyword(type)
     }
 
-    suspend fun saveKeyword(keyword: String) {
-        articleDataStore.saveKeyword(keyword)
+    suspend fun saveKeyword(type: KeywordType, keyword: String) {
+        articleDataStore.saveKeyword(type, keyword)
     }
 
-    suspend fun deleteKeyword(keyword: String) {
-        articleDataStore.deleteKeyword(keyword)
+    suspend fun deleteKeyword(type: KeywordType, keyword: String) {
+        articleDataStore.deleteKeyword(type, keyword)
     }
 
     suspend fun fetchKeywordNotiIndex(): Int {
