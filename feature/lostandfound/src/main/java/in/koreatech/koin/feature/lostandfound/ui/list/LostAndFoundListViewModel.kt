@@ -219,4 +219,10 @@ class LostAndFoundListViewModel @Inject constructor(
             )
         }
     }
+
+    fun selectKeyword(index: Int) {
+        intent {
+            reduce { state.copy(selectedKeywordIndex = index) }
+        }
+    }
 }
