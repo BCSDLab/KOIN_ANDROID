@@ -8,6 +8,7 @@ import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundPaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundResponse
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
+import `in`.koreatech.koin.domain.model.article.KeywordType
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -19,13 +20,18 @@ import retrofit2.http.Query
 
 interface ArticleAuthApi {
     @GET("articles/keyword/me")
-    suspend fun fetchMyKeyword(): ArticleKeywordWrapperResponse
+    suspend fun fetchMyKeyword(
+        @Query("type") type: KeywordType
+    ): ArticleKeywordWrapperResponse
 
     @GET("articles/keyword/suggestions")
-    suspend fun fetchKeywordSuggestions(): KeywordsResponse
+    suspend fun fetchKeywordSuggestions(
+        @Query("type") type: KeywordType
+    ): KeywordsResponse
 
     @POST("articles/keyword")
     suspend fun saveKeyword(
+        @Query("type") type: KeywordType,
         @Body keywordRequest: ArticleKeywordRequest
     ): ArticleKeywordWrapperResponse.ArticleKeywordResponse
 

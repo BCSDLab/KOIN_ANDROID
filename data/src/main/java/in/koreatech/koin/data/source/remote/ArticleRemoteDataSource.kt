@@ -13,6 +13,7 @@ import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleResponse
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
+import `in`.koreatech.koin.domain.model.article.KeywordType
 import javax.inject.Inject
 
 class ArticleRemoteDataSource @Inject constructor(
@@ -52,16 +53,16 @@ class ArticleRemoteDataSource @Inject constructor(
         return articleApi.fetchHotArticles()
     }
 
-    suspend fun fetchMyKeyword(): ArticleKeywordWrapperResponse {
-        return articleAuthApi.fetchMyKeyword()
+    suspend fun fetchMyKeyword(type: KeywordType): ArticleKeywordWrapperResponse {
+        return articleAuthApi.fetchMyKeyword(type)
     }
 
-    suspend fun fetchKeywordSuggestions(): KeywordsResponse {
-        return articleAuthApi.fetchKeywordSuggestions()
+    suspend fun fetchKeywordSuggestions(type: KeywordType): KeywordsResponse {
+        return articleAuthApi.fetchKeywordSuggestions(type)
     }
 
-    suspend fun saveKeyword(keyword: String): ArticleKeywordWrapperResponse.ArticleKeywordResponse {
-        return articleAuthApi.saveKeyword(ArticleKeywordRequest(keyword))
+    suspend fun saveKeyword(type: KeywordType, keyword: String): ArticleKeywordWrapperResponse.ArticleKeywordResponse {
+        return articleAuthApi.saveKeyword(type, ArticleKeywordRequest(keyword))
     }
 
     suspend fun deleteKeyword(id: Int) {
