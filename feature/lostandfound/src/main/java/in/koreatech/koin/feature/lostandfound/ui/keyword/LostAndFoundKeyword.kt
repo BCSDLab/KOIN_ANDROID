@@ -117,6 +117,7 @@ private fun LostAndFoundKeywordContent(
 ) {
     Scaffold(
         modifier = modifier,
+        containerColor = KoinTheme.colors.neutral0,
         topBar = {
             KoinTopAppBar(
                 title = stringResource(R.string.lost_and_found_keyword_management),
