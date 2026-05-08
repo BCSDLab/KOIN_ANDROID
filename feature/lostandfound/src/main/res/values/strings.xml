@@ -145,6 +145,8 @@
 
     <string name="keyword_see_all">모두보기</string>
     <string name="keyword_add_new">새 키워드 추가</string>
+    <string name="keyword_notification_setting">키워드 알림 설정</string>
+    <string name="keyword_setting_coming_soon">키워드 알림 설정 기능은 준비 중입니다.</string>
 
     <string name="dialog_loading">로딩 중…</string>
 

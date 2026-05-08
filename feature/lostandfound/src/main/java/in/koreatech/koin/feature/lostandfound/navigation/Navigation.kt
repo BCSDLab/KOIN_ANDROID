@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.lostandfound.navigation
 
+import android.widget.Toast
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,6 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.lostandfound.DEEP_LINK_LOST_AND_FOUND_BASE
+import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetail
 import `in`.koreatech.koin.feature.lostandfound.ui.list.LostAndFoundList
 import `in`.koreatech.koin.feature.lostandfound.ui.modify.LostAndFoundModify
@@ -74,6 +76,13 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
             },
             navigateToWrite = { typeName ->
                 navController.navigate(LostAndFoundNavType.LostAndFoundWriteRoute(typeName))
+            },
+            navigateToKeywordSetting = {
+                Toast.makeText(
+                    context,
+                    R.string.keyword_setting_coming_soon,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         )
     }

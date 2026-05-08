@@ -30,6 +30,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.ItemSearchTextField
+import `in`.koreatech.koin.feature.lostandfound.ui.list.component.KeywordNotificationRow
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.ListColumn
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LoginDialog
 import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LostAndFoundChip
@@ -51,7 +52,8 @@ fun LostAndFoundList(
     onTopbarBackClick: () -> Unit = {},
     navigateToLogin: () -> Unit = {},
     navigateArticleDetail: (Int) -> Unit = {},
-    navigateToWrite: (String) -> Unit = {}
+    navigateToWrite: (String) -> Unit = {},
+    navigateToKeywordSetting: () -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
 
@@ -192,6 +194,15 @@ fun LostAndFoundList(
                     }
                 )
             }
+            KeywordNotificationRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp, vertical = 16.dp),
+                keywords = uiState.keywords,
+                selectedKeywordIndex = uiState.selectedKeywordIndex,
+                onKeywordSelect = viewModel::selectKeyword,
+                onSettingClick = navigateToKeywordSetting
+            )
             if (!uiState.isFirstPageLoading) {
                 if (uiState.searchedArticles.isEmpty()) {
                     Box(
