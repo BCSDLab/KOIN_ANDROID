@@ -53,7 +53,7 @@ fun LostAndFoundList(
     navigateToLogin: () -> Unit = {},
     navigateArticleDetail: (Int) -> Unit = {},
     navigateToWrite: (String) -> Unit = {},
-    navigateToKeywordSetting: () -> Unit = {}
+    navigateToKeywordSetting: (List<String>) -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
 
@@ -201,7 +201,7 @@ fun LostAndFoundList(
                 keywords = uiState.keywords,
                 selectedKeywordIndex = uiState.selectedKeywordIndex,
                 onKeywordSelect = viewModel::selectKeyword,
-                onSettingClick = navigateToKeywordSetting
+                onSettingClick = { navigateToKeywordSetting(uiState.keywords) }
             )
             if (!uiState.isFirstPageLoading) {
                 if (uiState.searchedArticles.isEmpty()) {

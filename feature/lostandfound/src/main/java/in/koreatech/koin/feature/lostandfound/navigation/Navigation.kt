@@ -1,24 +1,26 @@
 package `in`.koreatech.koin.feature.lostandfound.navigation
 
-import android.widget.Toast
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.lostandfound.DEEP_LINK_LOST_AND_FOUND_BASE
-import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetail
+import `in`.koreatech.koin.feature.lostandfound.ui.keyword.LostAndFoundKeyword
 import `in`.koreatech.koin.feature.lostandfound.ui.list.LostAndFoundList
+import `in`.koreatech.koin.feature.lostandfound.ui.list.LostAndFoundListViewModel
 import `in`.koreatech.koin.feature.lostandfound.ui.modify.LostAndFoundModify
 import `in`.koreatech.koin.feature.lostandfound.ui.report.LostAndFoundReport
 import `in`.koreatech.koin.feature.lostandfound.ui.write.LostAndFoundWriteArticle
+import kotlinx.collections.immutable.toPersistentList
 
 fun NavGraphBuilder.koinLostAndFoundGraph(
     navController: NavController,
@@ -34,6 +36,11 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
             }
     }
 
+    val onBackPressedWithCancel = {
+        cancelRefreshList(true)
+        onBackPressed()
+    }
+
     val navigateToList = { cancelRefresh: Boolean ->
         cancelRefreshList(cancelRefresh)
         navController.navigate(LostAndFoundNavType.LostAndFoundListRoute) {
@@ -44,12 +51,9 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
         }
     }
 
-    val onBackPressed = {
-        cancelRefreshList(true)
-        onBackPressed()
-    }
-
     composable<LostAndFoundNavType.LostAndFoundListRoute> { backStackEntry ->
+        // hiltViewModel()을 한 번만 호출하여 LostAndFoundList에 명시적으로 전달
+        val listViewModel: LostAndFoundListViewModel = hiltViewModel()
         var isCancelRefresh by remember { mutableStateOf(false) }
 
         LaunchedEffect(Unit) {
@@ -58,10 +62,23 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
             }
             backStackEntry.savedStateHandle.remove<Boolean>(CANCEL_REFRESH_LIST)
         }
+
+        // 키워드 화면에서 복귀 시 전달된 키워드 목록을 수신
+        LaunchedEffect(backStackEntry) {
+            backStackEntry.savedStateHandle
+                .getStateFlow<ArrayList<String>?>(KEY_KEYWORD_LIST, null)
+                .collect { keywords ->
+                    if (keywords != null) {
+                        listViewModel.updateKeywordsFromKeywordScreen(keywords.toPersistentList())
+                        backStackEntry.savedStateHandle.remove<ArrayList<String>>(KEY_KEYWORD_LIST)
+                    }
+                }
+        }
         val navigator = rememberNavigator()
         val context = LocalContext.current
         LostAndFoundList(
             cancelRefresh = isCancelRefresh,
+            viewModel = listViewModel,
             onTopbarBackClick = onBackPressed,
             navigateArticleDetail = { articleId ->
                 navController.navigate(LostAndFoundNavType.LostAndFoundDetailRoute(articleId))
@@ -77,12 +94,12 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
             navigateToWrite = { typeName ->
                 navController.navigate(LostAndFoundNavType.LostAndFoundWriteRoute(typeName))
             },
-            navigateToKeywordSetting = {
-                Toast.makeText(
-                    context,
-                    R.string.keyword_setting_coming_soon,
-                    Toast.LENGTH_SHORT
-                ).show()
+            navigateToKeywordSetting = { keywords ->
+                navController.navigate(
+                    LostAndFoundNavType.LostAndFoundKeywordRoute(
+                        initialKeywordsCsv = keywords.joinToString("\u0001")
+                    )
+                )
             }
         )
     }
@@ -92,7 +109,7 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
         val context = LocalContext.current
         LostAndFoundDetail(
             navigateToArticleList = navigateToList,
-            onTopbarBackClick = onBackPressed,
+            onTopbarBackClick = onBackPressedWithCancel,
             refreshList = { cancelRefreshList(false) },
             navigateToChatRoom = { articleId ->
                 val intent = navigator.navigateToChatRoom(context)
@@ -120,27 +137,43 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
     }
 
     composable<LostAndFoundNavType.LostAndFoundReportRoute> { backStackEntry ->
-        val route = backStackEntry.toRoute<LostAndFoundNavType.LostAndFoundDetailRoute>()
+        val route = backStackEntry.toRoute<LostAndFoundNavType.LostAndFoundReportRoute>()
         LostAndFoundReport(
             articleId = route.articleId,
-            onTopbarBackClick = onBackPressed,
+            onTopbarBackClick = onBackPressedWithCancel,
             onSuccess = { navigateToList(false) }
         )
     }
 
     composable<LostAndFoundNavType.LostAndFoundWriteRoute> {
         LostAndFoundWriteArticle(
-            onBackClick = onBackPressed,
+            onBackClick = onBackPressedWithCancel,
             onComplete = { navigateToList(false) }
         )
     }
 
     composable<LostAndFoundNavType.LostAndFoundModifyRoute> {
         LostAndFoundModify(
-            onBackClick = onBackPressed,
+            onBackClick = onBackPressedWithCancel,
             onComplete = { articleId ->
                 navigateToList(false)
                 navController.navigate(LostAndFoundNavType.LostAndFoundDetailRoute(articleId))
+            }
+        )
+    }
+
+    composable<LostAndFoundNavType.LostAndFoundKeywordRoute> {
+        LostAndFoundKeyword(
+            viewModel = hiltViewModel(),
+            onBackClick = { keywords ->
+                // previousBackStackEntry는 진짜 NavBackStackEntry?(nullable) → 안전한 ?.
+                navController.previousBackStackEntry
+                    ?.savedStateHandle
+                    ?.set(KEY_KEYWORD_LIST, ArrayList(keywords))
+                // 의도적으로 공용 onBackPressed 미사용:
+                // 공용 onBackPressed는 cancelRefreshList(true) → getBackStackEntry(ListRoute)를 호출하며,
+                // getBackStackEntry()는 비nullable이므로 deep-link 직접 진입 시 IllegalArgumentException 발생.
+                navController.popBackStack()
             }
         )
     }

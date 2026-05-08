@@ -15,11 +15,13 @@ import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundSortType
 import `in`.koreatech.koin.feature.lostandfound.model.toLostAndFoundItemState
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetailViewModel.Companion.PAGE_SIZE
 import javax.inject.Inject
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
@@ -28,11 +30,12 @@ import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 
 @HiltViewModel
+@Suppress("TooManyFunctions") // updateKeywordsFromKeywordScreen() 필수 추가
 class LostAndFoundListViewModel @Inject constructor(
     private val fetchLostAndFoundArticlePaginationV2UseCase: FetchLostAndFoundArticlePaginationV2UseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<LostAndFoundListState, LostAndFoundListSideEffect> {
-    override val container = container<LostAndFoundListState, LostAndFoundListSideEffect>(
+    override val container: Container<LostAndFoundListState, LostAndFoundListSideEffect> = container(
         initialState = LostAndFoundListState()
     )
 
@@ -223,6 +226,25 @@ class LostAndFoundListViewModel @Inject constructor(
     fun selectKeyword(index: Int) {
         intent {
             reduce { state.copy(selectedKeywordIndex = index) }
+        }
+    }
+
+    fun updateKeywordsFromKeywordScreen(keywords: ImmutableList<String>) {
+        intent {
+            // 기존에 선택되어 있던 키워드 문자열 확보
+            val oldSelectedKeyword = state.keywords.getOrNull(state.selectedKeywordIndex)
+            // 새 키워드 리스트에서 해당 문자열의 인덱스를 탐색 (없으면 0으로 폴백)
+            val newIndex = oldSelectedKeyword?.let { keywords.indexOf(it) }?.takeIf { it >= 0 } ?: 0
+
+            reduce {
+                state.copy(keywords = keywords, selectedKeywordIndex = newIndex)
+            }
+
+            // 선택된 키워드가 실질적으로 변경되었으면 리스트 데이터 갱신
+            val newSelectedKeyword = keywords.getOrNull(newIndex)
+            if (oldSelectedKeyword != newSelectedKeyword) {
+                postSideEffect(LostAndFoundListSideEffect.FetchData)
+            }
         }
     }
 }

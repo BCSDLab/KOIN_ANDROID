@@ -11,9 +11,15 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
@@ -25,13 +31,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.chip.ChipOverflowStrategy.Flow
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipColors
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipDefaults
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun KeywordChipGroup(
@@ -201,3 +210,116 @@ fun keywordChipColors() =
         selectedContentColor = KoinTheme.colors.neutral100,
         unselectedContentColor = KoinTheme.colors.neutral500
     )
+
+@Composable
+fun LostAndFoundKeywordChip(
+    title: String,
+    backgroundColor: Color,
+    textColor: Color,
+    iconVector: ImageVector,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .minimumInteractiveComponentSize()
+            .noRippleClickable(onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(
+            modifier = Modifier
+                .clip(CircleShape)
+                .background(backgroundColor)
+                .padding(horizontal = 12.dp, vertical = 6.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                modifier = Modifier.weight(1f, fill = false),
+                text = title,
+                style = KoinTheme.typography.medium14,
+                color = textColor,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Icon(
+                modifier = Modifier.padding(start = 4.dp),
+                imageVector = iconVector,
+                contentDescription = null,
+                tint = textColor
+            )
+        }
+    }
+}
+
+@Composable
+fun LostAndFoundDeletableKeywordChip(
+    title: String,
+    onDelete: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    LostAndFoundKeywordChip(
+        title = title,
+        backgroundColor = KoinTheme.colors.primary500,
+        textColor = KoinTheme.colors.neutral100,
+        iconVector = Icons.Default.Close,
+        onClick = { onDelete(title) },
+        modifier = modifier
+    )
+}
+
+@Composable
+fun LostAndFoundAddableKeywordChip(
+    title: String,
+    onAdd: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    LostAndFoundKeywordChip(
+        title = title,
+        backgroundColor = KoinTheme.colors.neutral100,
+        textColor = KoinTheme.colors.neutral500,
+        iconVector = Icons.Default.Add,
+        onClick = { onAdd(title) },
+        modifier = modifier
+    )
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun LostAndFoundDeletableChipFlowGroup(
+    keywords: ImmutableList<String>,
+    onDelete: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    FlowRow(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        keywords.forEach { keyword ->
+            androidx.compose.runtime.key(keyword) {
+                LostAndFoundDeletableKeywordChip(title = keyword, onDelete = onDelete)
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun LostAndFoundAddableChipFlowGroup(
+    keywords: ImmutableList<String>,
+    onAdd: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    FlowRow(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        keywords.forEach { keyword ->
+            androidx.compose.runtime.key(keyword) {
+                LostAndFoundAddableKeywordChip(title = keyword, onAdd = onAdd)
+            }
+        }
+    }
+}
