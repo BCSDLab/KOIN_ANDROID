@@ -1,12 +1,16 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.keyword
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.feature.lostandfound.R
+import `in`.koreatech.koin.feature.lostandfound.navigation.LostAndFoundNavType
 import javax.inject.Inject
-import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -15,11 +19,23 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
-class LostAndFoundKeywordViewModel @Inject constructor() :
+class LostAndFoundKeywordViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle
+) :
     ViewModel(),
     ContainerHost<LostAndFoundKeywordState, LostAndFoundKeywordSideEffect> {
-    override val container = container<LostAndFoundKeywordState, LostAndFoundKeywordSideEffect>(
-        initialState = LostAndFoundKeywordState()
+    override val container: Container<LostAndFoundKeywordState, LostAndFoundKeywordSideEffect> = container(
+        initialState = LostAndFoundKeywordState(
+            keywords = try {
+                val route = savedStateHandle.toRoute<LostAndFoundNavType.LostAndFoundKeywordRoute>()
+                route.initialKeywordsCsv
+                    .split("\u0001")
+                    .filter { it.isNotEmpty() }
+                    .toPersistentList()
+            } catch (@Suppress("SwallowedException") e: IllegalArgumentException) {
+                persistentListOf()
+            }
+        )
     )
 
     fun onKeywordInputChanged(input: String) {
@@ -30,46 +46,44 @@ class LostAndFoundKeywordViewModel @Inject constructor() :
 
     fun addKeyword(keyword: String) {
         intent {
-            val trimmed = keyword.trim()
-            when {
-                trimmed.isEmpty() -> {
-                    postSideEffect(LostAndFoundKeywordSideEffect.ShowSnackbar(R.string.keyword_add_require_input))
-                    return@intent
-                }
-                trimmedKeywordRegex.containsMatchIn(trimmed) -> {
-                    postSideEffect(LostAndFoundKeywordSideEffect.ShowSnackbar(R.string.keyword_add_blank_not_allowed))
-                    return@intent
-                }
-                trimmed.length < MIN_KEYWORD_LENGTH || trimmed.length > MAX_KEYWORD_LENGTH -> {
-                    postSideEffect(LostAndFoundKeywordSideEffect.ShowSnackbar(R.string.keyword_add_invalid_length))
-                    return@intent
-                }
+            val validationError = validateKeyword(keyword)
+            if (validationError != null) {
+                postSideEffect(LostAndFoundKeywordSideEffect.ShowSnackbar(validationError))
+                return@intent
             }
 
-            when {
-                state.keywords.size >= MAX_KEYWORD_COUNT -> {
-                    postSideEffect(LostAndFoundKeywordSideEffect.ShowSnackbar(R.string.keyword_add_limit_exceeded))
-                }
-                state.keywords.contains(trimmed) -> {
-                    postSideEffect(LostAndFoundKeywordSideEffect.ShowSnackbar(R.string.keyword_add_already_exist))
-                }
-                else -> {
-                    reduce {
-                        state.copy(
-                            keywords = (state.keywords + trimmed).toPersistentList(),
-                            keywordInput = ""
-                        )
-                    }
+            val addError = checkAddability(state, keyword)
+            if (addError != null) {
+                postSideEffect(LostAndFoundKeywordSideEffect.ShowSnackbar(addError))
+            } else {
+                reduce {
+                    state.copy(
+                        keywords = state.keywords.add(keyword),
+                        keywordInput = ""
+                    )
                 }
             }
         }
+    }
+
+    private fun validateKeyword(keyword: String): Int? = when {
+        keyword.isEmpty() -> R.string.keyword_add_require_input
+        WHITESPACE_REGEX.containsMatchIn(keyword) -> R.string.keyword_add_blank_not_allowed
+        keyword.length < MIN_KEYWORD_LENGTH || keyword.length > MAX_KEYWORD_LENGTH -> R.string.keyword_add_invalid_length
+        else -> null
+    }
+
+    private fun checkAddability(currentState: LostAndFoundKeywordState, keyword: String): Int? = when {
+        currentState.keywords.contains(keyword) -> R.string.keyword_add_already_exist
+        currentState.keywords.size >= MAX_KEYWORD_COUNT -> R.string.keyword_add_limit_exceeded
+        else -> null
     }
 
     fun deleteKeyword(keyword: String) {
         intent {
             reduce {
                 state.copy(
-                    keywords = state.keywords.minus(keyword).toPersistentList()
+                    keywords = state.keywords.remove(keyword)
                 )
             }
         }
@@ -79,9 +93,9 @@ class LostAndFoundKeywordViewModel @Inject constructor() :
         addKeyword(keyword)
     }
 
-    fun toggleNotification() {
+    fun toggleNotification(isEnabled: Boolean) {
         intent {
-            reduce { state.copy(isNotificationEnabled = !state.isNotificationEnabled) }
+            reduce { state.copy(isNotificationEnabled = isEnabled) }
         }
     }
 
@@ -89,7 +103,7 @@ class LostAndFoundKeywordViewModel @Inject constructor() :
         private const val MAX_KEYWORD_COUNT = 10
         private const val MAX_KEYWORD_LENGTH = 20
         private const val MIN_KEYWORD_LENGTH = 2
-        private val trimmedKeywordRegex = Regex("""\s+""")
-        val SUGGESTED_KEYWORDS: ImmutableList<String> = persistentListOf("지갑", "카드", "학생증", "에어팟", "핸드폰")
+        private val WHITESPACE_REGEX = Regex("""\s""")
+        val SUGGESTED_KEYWORDS: PersistentList<String> = persistentListOf("지갑", "카드", "학생증", "에어팟", "핸드폰")
     }
 }

@@ -260,8 +260,8 @@ fun LostAndFoundDeletableKeywordChip(
 ) {
     LostAndFoundKeywordChip(
         title = title,
-        backgroundColor = KoinTheme.colors.primary500,
-        textColor = KoinTheme.colors.neutral100,
+        backgroundColor = KoinTheme.colors.neutral100,
+        textColor = KoinTheme.colors.neutral500,
         iconVector = Icons.Default.Close,
         onClick = { onDelete(title) },
         modifier = modifier
