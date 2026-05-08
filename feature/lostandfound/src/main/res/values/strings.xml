@@ -239,7 +239,8 @@
 
     <!-- Keyword Management Screen -->
     <string name="lost_and_found_keyword_management">분실물 키워드 관리</string>
-    <string name="lost_and_found_my_keyword_count">내 키워드 %1$d/10</string>
+    <string name="lost_and_found_my_keyword_label">내 키워드</string>
+    <string name="lost_and_found_my_keyword_count">%1$d/10</string>
     <string name="lost_and_found_keyword_input_hint">잃어버린 물건을 입력해 주세요.</string>
     <string name="lost_and_found_keyword_notification_section_title">키워드 알림</string>
     <string name="lost_and_found_keyword_notification_title">분실물 키워드 알림받기</string>

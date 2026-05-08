@@ -181,11 +181,21 @@ private fun MyKeywordSection(
         // 내 키워드 섹션 (Figma 51322:186002, SemiBold 18 + Regular 14 supplementary)
         Spacer(modifier = Modifier.height(8.dp))
 
-        Text(
-            text = stringResource(R.string.lost_and_found_my_keyword_count, keywords.size),
-            style = KoinTheme.typography.bold18,
-            color = KoinTheme.colors.neutral800
-        )
+        Row(
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.lost_and_found_my_keyword_label),
+                style = KoinTheme.typography.bold18,
+                color = KoinTheme.colors.neutral800
+            )
+            Text(
+                text = stringResource(R.string.lost_and_found_my_keyword_count, keywords.size),
+                style = KoinTheme.typography.regular14,
+                color = KoinTheme.colors.neutral500
+            )
+        }
 
         Spacer(modifier = Modifier.height(2.dp))
 
