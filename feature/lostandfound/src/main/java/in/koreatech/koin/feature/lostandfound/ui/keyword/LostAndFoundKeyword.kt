@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.keyword
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -14,9 +15,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -28,8 +32,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,6 +39,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -53,6 +57,7 @@ import `in`.koreatech.koin.feature.lostandfound.component.LostAndFoundAddableChi
 import `in`.koreatech.koin.feature.lostandfound.component.LostAndFoundDeletableChipFlowGroup
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -87,6 +92,10 @@ fun LostAndFoundKeyword(
         onBackClick(keywords)
     }
 
+    // Article keyword 화면처럼, 이미 등록된 키워드는 추천 키워드에서 제거
+    val availableSuggestions = remember(keywords) {
+        (LostAndFoundKeywordViewModel.SUGGESTED_KEYWORDS - keywords.toSet()).toPersistentList()
+    }
     LostAndFoundKeywordContent(
         modifier = modifier,
         uiState = uiState,
@@ -97,7 +106,7 @@ fun LostAndFoundKeyword(
         onDeleteKeyword = viewModel::deleteKeyword,
         onAddSuggestedKeyword = viewModel::addSuggestedKeyword,
         onToggleNotification = viewModel::toggleNotification,
-        suggestedKeywords = LostAndFoundKeywordViewModel.SUGGESTED_KEYWORDS
+        suggestedKeywords = availableSuggestions
     )
 }
 
@@ -364,16 +373,7 @@ private fun KeywordNotificationSection(
                 )
             }
 
-            Switch(
-                checked = isEnabled,
-                onCheckedChange = null,
-                colors = SwitchDefaults.colors(
-                    checkedThumbColor = KoinTheme.colors.neutral0,
-                    checkedTrackColor = KoinTheme.colors.primary500,
-                    uncheckedThumbColor = KoinTheme.colors.neutral0,
-                    uncheckedTrackColor = KoinTheme.colors.neutral300
-                )
-            )
+            KoinKeywordSwitch(checked = isEnabled)
         }
 
         HorizontalDivider(
@@ -383,6 +383,40 @@ private fun KeywordNotificationSection(
         )
     }
 }
+
+/**
+ * Mirrors the article keyword screen's SwitchCompat style:
+ * - Track 52x24dp, 50dp radius (gray3 OFF / primary500 ON)
+ * - Thumb 24x24dp circle with 3dp ring (gray10 fill + gray3 ring OFF / white fill + primary500 ring ON)
+ */
+@Composable
+private fun KoinKeywordSwitch(checked: Boolean) {
+    val trackColor = if (checked) KoinTheme.colors.primary500 else KeywordSwitchTrackOff
+    val thumbFill = if (checked) KoinTheme.colors.neutral0 else KeywordSwitchThumbOffFill
+    val thumbRing = if (checked) KoinTheme.colors.primary500 else KeywordSwitchTrackOff
+    val thumbOffsetX by animateDpAsState(
+        targetValue = if (checked) 28.dp else 0.dp,
+        label = "thumbOffsetX"
+    )
+    Box(
+        modifier = Modifier
+            .size(width = 52.dp, height = 24.dp)
+            .clip(RoundedCornerShape(50))
+            .background(trackColor)
+    ) {
+        Box(
+            modifier = Modifier
+                .offset(x = thumbOffsetX)
+                .size(24.dp)
+                .clip(CircleShape)
+                .border(width = 3.dp, color = thumbRing, shape = CircleShape)
+                .background(thumbFill, CircleShape)
+        )
+    }
+}
+
+private val KeywordSwitchTrackOff = Color(0xFFE3E3E3)
+private val KeywordSwitchThumbOffFill = Color(0xFF828282)
 
 @Composable
 private fun PreviewLostAndFoundKeywordContent(
