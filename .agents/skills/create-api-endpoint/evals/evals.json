@@ -1,0 +1,41 @@
+{
+  "skill_name": "create-api-endpoint",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "DELETE /callvan/posts/{postId}/ban 추가",
+      "expected_output": "stage spec fetch 후 callvan 기존 파일들에 메서드 append: CallvanAuthApi (DELETE), CallvanRemoteDataSource (메서드), CallvanRepository (suspend fun), CallvanRepositoryImpl (runCatching + mapHttpFailure). spec 의 4xx 응답에서 추출한 에러 코드 중 KoinCallvanException 에 없는 case 가 있으면 sealed class 본문에 자동 추가 + RepositoryImpl 의 mapHttpFailure 가 그 새 Exception 참조. :data:assembleDebug 통과.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "GET /callvan/posts/{postId}/participants 추가. 응답 모델은 새로 만들어야 해.",
+      "expected_output": "spec fetch 후 응답 schema 가 기존 callvan 도메인 모델과 다르면 domain/model/callvan/<NewModel>.kt Write. CallvanMapper 에 toNewModel 추가. CallvanResponse 신규 + 모든 계층 메서드 append.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "GET /libraries 추가",
+      "expected_output": "Step 1 에서 LibraryRepository 가 domain 에 없음을 감지 → Skill 도구로 'create-repository Library' 자동 호출 → 그 skill 이 LibraryRepository / LibraryRepositoryImpl 생성 + BindsRepositoryModule.kt 등록 + ktlintFormat + assembleDebug 통과. 컨트롤이 돌아오면 Step 1.5 부터 endpoint 추가 흐름 계속. 사용자에게 묻지 않고 자동 진행. 최종 출력에 'ℹ️ LibraryRepository 가 없어서 create-repository 를 자동 실행했습니다.' 라인 포함.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "GET /banner-categories 추가",
+      "expected_output": "spec.security 가 비어있음 확인 → NoAuth 분기. data/api/BannerApi.kt 가 이미 있으므로 메서드만 append. NoAuthNetworkModule.kt 변경 없음 (기존 파일에 메서드 추가). KoinBannerException 이 없으면 4xx 매핑 시점에 신규 sealed class 파일 자동 생성.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "POST /libraries/reservations body: { date: String, seatId: Int }",
+      "expected_output": "LibraryRepository 가 없으면 #3 처럼 create-repository 자동 호출 후 진행. spec fetch 결과 path 가 없으면 '(spec unavailable — manual)' 표기 + 사용자가 입력한 body 필드로 LibraryReservationRequest 생성.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "/create-api-endpoint POST /callvan/posts (prod 기준)",
+      "expected_output": "사용자가 'prod 기준' 명시했으므로 prod spec URL (https://api.koreatech.in/v3/api-docs) 로 WebFetch. 나머지는 #1 과 동일.",
+      "files": []
+    }
+  ]
+}
