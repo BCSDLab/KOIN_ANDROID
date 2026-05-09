@@ -170,28 +170,18 @@ private fun AnimatedKeywordChipFlowGroup(
     modifier: Modifier = Modifier,
     chip: @Composable (String) -> Unit
 ) {
-    val displayedItems = remember { mutableStateListOf<String>() }
-    val visibility = remember { mutableStateMapOf<String, Boolean>() }
+    // 첫 컴포지션 시점에 이미 존재하는 키워드는 entry 애니메이션 없이 즉시 보이도록
+    // displayedItems / visibility 를 미리 채워 두고, 첫 프레임이 끝났는지 추적한다.
+    // 첫 프레임 이후에 새로 등장하는 칩(또는 제거 후 재추가된 칩)만 fade-in 한다.
+    val displayedItems = remember { mutableStateListOf<String>().apply { addAll(items) } }
+    val visibility = remember {
+        mutableStateMapOf<String, Boolean>().apply { items.forEach { put(it, true) } }
+    }
+    var hasInitialFrameRendered by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) { hasInitialFrameRendered = true }
 
     LaunchedEffect(items) {
-        // 아직 displayedItems 에 없는 키워드는 [items] 순서를 유지하도록 삽입한다.
-        // 단순 append 는 한 번 fade-out 후 사라졌다 되돌아올 때 원래 위치를 잃어버려
-        // 추천 키워드의 캐논 순서가 어긋나는 문제를 일으킨다.
-        items.forEachIndexed { itemIdx, key ->
-            if (key !in displayedItems) {
-                val insertAt = (itemIdx - 1 downTo 0)
-                    .asSequence()
-                    .map { displayedItems.indexOf(items[it]) }
-                    .firstOrNull { it >= 0 }
-                    ?.let { it + 1 }
-                    ?: 0
-                displayedItems.add(insertAt, key)
-            }
-            visibility[key] = true
-        }
-        displayedItems.toList().forEach { key ->
-            if (key !in items && visibility[key] != false) visibility[key] = false
-        }
+        syncDisplayedItems(items, displayedItems, visibility)
     }
 
     LookaheadScope {
@@ -202,38 +192,87 @@ private fun AnimatedKeywordChipFlowGroup(
         ) {
             displayedItems.forEach { keyword ->
                 key(keyword) {
-                    var hasStartedEntry by remember { mutableStateOf(false) }
-                    LaunchedEffect(Unit) { hasStartedEntry = true }
-                    val isVisible = visibility[keyword] ?: true
-                    val targetAlpha = if (hasStartedEntry && isVisible) 1f else 0f
-                    val alphaSpec = if (isVisible) {
-                        tween<Float>(durationMillis = 300, delayMillis = 300)
-                    } else {
-                        tween<Float>(durationMillis = 300)
-                    }
-                    val alpha by animateFloatAsState(
-                        targetValue = targetAlpha,
-                        animationSpec = alphaSpec,
-                        label = "keywordChipAlpha",
-                        finishedListener = { finalValue ->
-                            if (finalValue == 0f && visibility[keyword] == false) {
-                                displayedItems.remove(keyword)
-                                visibility.remove(keyword)
-                            }
-                        }
+                    AnimatedKeywordChipSlot(
+                        keyword = keyword,
+                        visibility = visibility,
+                        displayedItems = displayedItems,
+                        startVisible = !hasInitialFrameRendered,
+                        lookaheadScope = this@LookaheadScope,
+                        chip = chip
                     )
-                    Box(
-                        modifier = Modifier
-                            .animateBounds(
-                                lookaheadScope = this@LookaheadScope,
-                                boundsTransform = { _, _ -> tween(durationMillis = 300) }
-                            )
-                            .graphicsLayer { this.alpha = alpha }
-                    ) {
-                        chip(keyword)
-                    }
                 }
             }
         }
+    }
+}
+
+/**
+ * displayedItems 를 새 [items] 와 동기화한다. 새 키워드는 [items] 순서를 유지하도록 삽입하고,
+ * [items] 에서 빠진 키워드는 visibility=false 로 표시해 fade-out 을 트리거한다.
+ *
+ * 단순 append 는 한 번 fade-out 후 사라졌다 되돌아올 때 원래 위치를 잃어버려 추천 키워드의 캐논
+ * 순서가 어긋나는 문제를 일으키므로, 인접한 기존 키워드를 기준으로 삽입 위치를 계산한다.
+ */
+private fun syncDisplayedItems(
+    items: ImmutableList<String>,
+    displayedItems: MutableList<String>,
+    visibility: MutableMap<String, Boolean>
+) {
+    items.forEachIndexed { itemIdx, key ->
+        if (key !in displayedItems) {
+            val insertAt = (itemIdx - 1 downTo 0)
+                .asSequence()
+                .map { displayedItems.indexOf(items[it]) }
+                .firstOrNull { it >= 0 }
+                ?.let { it + 1 }
+                ?: 0
+            displayedItems.add(insertAt, key)
+        }
+        visibility[key] = true
+    }
+    displayedItems.toList().forEach { key ->
+        if (key !in items && visibility[key] != false) visibility[key] = false
+    }
+}
+
+@OptIn(ExperimentalSharedTransitionApi::class)
+@Composable
+private fun AnimatedKeywordChipSlot(
+    keyword: String,
+    visibility: MutableMap<String, Boolean>,
+    displayedItems: MutableList<String>,
+    startVisible: Boolean,
+    lookaheadScope: LookaheadScope,
+    chip: @Composable (String) -> Unit
+) {
+    var hasStartedEntry by remember { mutableStateOf(startVisible) }
+    LaunchedEffect(Unit) { hasStartedEntry = true }
+    val isVisible = visibility[keyword] ?: true
+    val targetAlpha = if (hasStartedEntry && isVisible) 1f else 0f
+    val alphaSpec = if (isVisible) {
+        tween<Float>(durationMillis = 300, delayMillis = 300)
+    } else {
+        tween<Float>(durationMillis = 300)
+    }
+    val alpha by animateFloatAsState(
+        targetValue = targetAlpha,
+        animationSpec = alphaSpec,
+        label = "keywordChipAlpha",
+        finishedListener = { finalValue ->
+            if (finalValue == 0f && visibility[keyword] == false) {
+                displayedItems.remove(keyword)
+                visibility.remove(keyword)
+            }
+        }
+    )
+    Box(
+        modifier = Modifier
+            .animateBounds(
+                lookaheadScope = lookaheadScope,
+                boundsTransform = { _, _ -> tween(durationMillis = 300) }
+            )
+            .graphicsLayer { this.alpha = alpha }
+    ) {
+        chip(keyword)
     }
 }

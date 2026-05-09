@@ -58,7 +58,7 @@ class LostAndFoundKeywordViewModel @Inject constructor(
             } else {
                 reduce {
                     state.copy(
-                        keywords = state.keywords.add(keyword),
+                        keywords = state.keywords.toPersistentList().add(keyword),
                         keywordInput = ""
                     )
                 }
@@ -83,7 +83,7 @@ class LostAndFoundKeywordViewModel @Inject constructor(
         intent {
             reduce {
                 state.copy(
-                    keywords = state.keywords.remove(keyword)
+                    keywords = state.keywords.toPersistentList().remove(keyword)
                 )
             }
         }

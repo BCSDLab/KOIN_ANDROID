@@ -48,8 +48,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
@@ -66,8 +67,8 @@ private val ButtonShape = RoundedCornerShape(4.dp)
 
 @Composable
 fun LostAndFoundKeyword(
-    modifier: Modifier = Modifier,
     onBackClick: (keywords: ImmutableList<String>) -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: LostAndFoundKeywordViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.collectAsState()
@@ -406,7 +407,7 @@ private fun KoinKeywordSwitch(checked: Boolean) {
     ) {
         Box(
             modifier = Modifier
-                .offset(x = thumbOffsetX)
+                .offset { IntOffset(thumbOffsetX.roundToPx(), 0) }
                 .size(24.dp)
                 .clip(CircleShape)
                 .border(width = 3.dp, color = thumbRing, shape = CircleShape)
