@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "feature/library 모듈 만들어줘.",
-      "expected_output": "feature/library 가 생성되고 build.gradle.kts 에 koin.feature + koin.hilt + koin.library.orbit 3개 플러그인 포함 (kotlinx-serialization 없음). namespace 는 in.koreatech.koin.feature.library. dependencies 에 projects.core.navigation 포함 (필수). testImplementation kotlinx.coroutines.test + turbine 포함. settings.gradle 에 include ':feature:library' 추가. koin/build.gradle.kts 에 implementation(projects.feature.library) 추가. ./gradlew :feature:library:tasks 가 성공.",
+      "expected_output": "feature/library 가 생성되고 build.gradle.kts 에 koin.feature + koin.hilt + koin.library.orbit 3개 플러그인 포함 (kotlinx-serialization 없음). namespace 는 in.koreatech.koin.feature.library. dependencies 에 projects.core.navigation 포함 (필수). testImplementation kotlinx.coroutines.test 포함. settings.gradle 에 include ':feature:library' 추가. koin/build.gradle.kts 에 implementation(projects.feature.library) 추가. ./gradlew :feature:library:tasks 가 성공.",
       "files": []
     },
     {

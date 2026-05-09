@@ -21,9 +21,9 @@ The user's invocation typically looks like one of:
 - "feature/library 모듈 만들어줘" — Korean natural language with name embedded
 - "scaffold a new compose feature module called menu with orbit" — name + extras hinted
 
-Extract the **module name** in kebab-case (`a-z0-9-`, lowercase). If the user supplies PascalCase or camelCase, normalize it (`Library` → `library`, `lostAndFound` → `lostandfound`). Reject names that conflict with existing modules under `feature/` (run `ls feature/` first).
+Extract the **module name** in kebab-case (`a-z0-9-`, lowercase). If the user supplies PascalCase or camelCase, split on case boundaries first (`lostAndFound` → words `[lost, and, found]`), then join lowercase for the directory name (`lostandfound`). **Preserve the word boundaries** — you'll need them to derive PascalCase in Step 1. Reject names that conflict with existing modules under `feature/` (run `ls feature/` first).
 
-**Orbit MVI and `core.navigation` are always on** — every new KOIN feature module uses both, so the `koin.library.orbit` plugin, its test deps (`kotlinx.coroutines.test`, `turbine`), and `implementation(projects.core.navigation)` are baked into the template. Do not ask about them. Do not offer to skip them.
+**Orbit MVI and `core.navigation` are always on** — every new KOIN feature module uses both, so the `koin.library.orbit` plugin, its test dep (`kotlinx.coroutines.test`), and `implementation(projects.core.navigation)` are baked into the template. Do not ask about them. Do not offer to skip them.
 
 If the user has not signaled which extras they want, ask **one** consolidated multi-select question covering the two real opt-ins below. Do not bombard with separate questions.
 
@@ -41,9 +41,9 @@ If the user only says "make me a feature module called X" with no extras hint, t
 ## Step 1 — Validate the name and resolve options
 
 1. Run `ls feature/` (Bash) to confirm the name is not taken.
-2. Normalize to kebab-case lowercase. Derive:
-   - `<name>` — kebab-case, e.g. `lostandfound`
-   - `<NamePascal>` — PascalCase, e.g. `Lostandfound`. (KOIN treats compound names as a single token: `lostandfound` → `Lostandfound`, not `LostAndFound`. Confirm by checking `feature/lostandfound/` directory naming if the input is multi-word.)
+2. Derive the names. KOIN's convention is **asymmetric**: the directory uses lowercase concatenated (single token, no dashes), but class names use multi-word PascalCase. Confirm by inspecting `feature/lostandfound/` — directory is `lostandfound`, but files are `LostAndFoundActivity.kt`, `LostAndFoundNavType.kt`, etc.
+   - `<name>` — lowercase concatenated, e.g. `lostandfound` (used for directory, namespace, package)
+   - `<NamePascal>` — multi-word PascalCase from the original word boundaries, e.g. `LostAndFound` (used for class names like `<NamePascal>Activity`). If the user typed `lost-and-found` or `lostAndFound`, you have boundaries → produce `LostAndFound`. If they typed `lostandfound` with no boundaries, ask one short clarification ("PascalCase로 어떻게 표기할까요? `LostAndFound` / `Lostandfound`") rather than guessing.
    - Namespace: `in.koreatech.koin.feature.<name>`
    - Source dir: `feature/<name>/src/main/java/in/koreatech/koin/feature/<name>/`
 3. If the user has not specified extras, ask **one** AskUserQuestion with `multiSelect: true`, options: "kotlinx-serialization", "Deeplink Activity". Frame Orbit as already-included so the user knows it's not a choice. If the user already mentioned the extras inline (e.g. "with serialization", "with deeplink"), skip the question.
@@ -204,7 +204,6 @@ Adapt the list to whichever extras were actually selected.
 - Do NOT create `AGENTS.md` content beyond the template — concrete focus areas are the user's job to fill in. Do not invent feature responsibilities.
 - Do NOT modify any existing feature module to "match style". Other modules are out of scope.
 - Do NOT commit. Stop after `ktlintFormat`.
-- Do NOT create a `res/` directory pre-emptively. Let the implementer add `res/values/strings.xml` etc. when they have actual resources.
 - Do NOT add `tests/`, `build.gradle` (Groovy variant), or any pre-AGP-9 boilerplate.
 
 # Reference files

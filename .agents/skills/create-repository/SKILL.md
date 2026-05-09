@@ -30,7 +30,7 @@ Extract the **noun** as `<Name>`:
 
 - Strip a trailing `Repository` if the user typed it (`LibraryRepository` → `Library`).
 - Strip a leading `feature/` if the user typed it (`feature/library` → `library`).
-- Convert to **PascalCase**: `library` → `Library`, `reservation_v2` → `ReservationV2`, `lostandfound` → `Lostandfound` (KOIN treats compound names as single token — see `domain/repository/CoopShopRepository.kt` vs imaginary `Lostandfound...`). When unsure, look at neighbours in `domain/repository/` to confirm casing convention.
+- Convert to **multi-word PascalCase**: `library` → `Library`, `reservation_v2` → `ReservationV2`, `lost-and-found` / `lostAndFound` → `LostAndFound`, `coop-shop` → `CoopShop` (see `domain/repository/CoopShopRepository.kt`, `OwnerChangePasswordRepository.kt`). If the input is a single concatenated token like `lostandfound` with no word boundaries, ask one short clarification rather than guessing — KOIN repositories all use multi-word PascalCase, so `Lostandfound` would be wrong.
 
 If the resulting `<Name>` is ambiguous (e.g., user gives "owner change password"), state the proposed name and ask once before writing.
 
