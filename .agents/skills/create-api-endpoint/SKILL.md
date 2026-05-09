@@ -93,7 +93,7 @@ If the user's path doesn't appear verbatim, also probe naming variants (hyphen v
 **Extract the matched path's full block (path through next path):**
 
 ```bash
-awk '/^  \/course\/registration\/search:$/{f=1} f && /^  \/[a-z_-]/&&!/^  \/course\/registration\/search:$/{exit} f' "$SPEC"
+awk '/^  \/course\/registration\/search:$/{f=1} f && /^  \/[a-z{_-]/&&!/^  \/course\/registration\/search:$/{exit} f' "$SPEC"
 ```
 
 (Adjust the regex to JSON form if the spec is JSON — but YAML is preferred.)
