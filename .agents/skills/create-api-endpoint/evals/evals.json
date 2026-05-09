@@ -22,7 +22,7 @@
     {
       "id": 4,
       "prompt": "GET /banner-categories 추가",
-      "expected_output": "spec.security 가 비어있음 확인 → NoAuth 분기. data/api/BannerApi.kt 가 이미 있으므로 메서드만 append. NoAuthNetworkModule.kt 변경 없음 (기존 파일에 메서드 추가). KoinBannerException 이 없으면 4xx 매핑 시점에 신규 sealed class 파일 자동 생성.",
+      "expected_output": "Step 1 에서 사용자에게 Auth/NoAuth 를 물음 (spec 추론 금지 — SKILL.md Step 1.5c 정책). 사용자가 'NoAuth' 응답 시 NoAuth 분기. data/api/BannerApi.kt 가 이미 있으므로 메서드만 append. NoAuthNetworkModule.kt 변경 없음 (기존 파일에 메서드 추가). KoinBannerException 이 없으면 4xx 매핑 시점에 신규 sealed class 파일 자동 생성.",
       "files": []
     },
     {

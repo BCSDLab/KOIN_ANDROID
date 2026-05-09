@@ -81,7 +81,7 @@ Use Edit anchored on `import javax.inject.Singleton` so the placement is determi
 
 ### 3b. Add the `@Binds` method
 
-Anchor on the **last `@Binds` method's closing line** in the file and insert a new block immediately after it. The current file ends like:
+Anchor on the **last `@Binds` method's closing line** in the file and insert a new block immediately after it. **Read the file first to find the actual last method — do not assume `bindsCallvanRepository` is still last, since this skill itself appends new methods on each run.** As of writing the file ends like:
 
 ```kotlin
     @Binds
