@@ -15,7 +15,7 @@ Do **not** create methods, data-source dependencies, mappers, request DTOs, resp
 
 # Why this exists
 
-KOIN already has 35 domain repository interfaces and 30 data impls. Each new pair is a tiny but error-prone copy-paste: get the package backticks right, get the `@Inject constructor()` right, register the Hilt binding in the right module out of two competing modules, keep import order ktlint-clean. This skill removes the rote.
+KOIN already has 31 domain repository interfaces and 31 data impls. Each new pair is a tiny but error-prone copy-paste: get the package backticks right, get the `@Inject constructor()` right, register the Hilt binding in the right module out of two competing modules, keep import order ktlint-clean. This skill removes the rote.
 
 # Inputs
 
@@ -99,9 +99,9 @@ Insert before the final `}`:
     abstract fun binds<Name>Repository(<name>RepositoryImpl: <Name>RepositoryImpl): <Name>Repository
 ```
 
-Where `<name>` is `<Name>` with the **first letter lowercased** (parameter name convention in this file: `callvanRepositoryImpl`, `busV2RepositoryImpl`, `timetableRepositoryImpl`).
+Where `<name>` is `<Name>` with the **first letter lowercased** (parameter name convention in this file: `callvanRepositoryImpl`, `timetableRepositoryImpl`). Note: `bindsBusV2Repository` is an outlier — its parameter is named `busV2RepositoryImpl` even though the impl class is `BusRepositoryImpl` (a leftover from an incomplete `v2` → `Bus` rename). Do not mirror this anomaly; follow the rule against `<Name>`, not the bus example.
 
-The method format is **single-line signature** when it fits on one line (mirrors `bindsTimetableRepository`, `bindsBusV2Repository`, `bindsCallvanRepository`). If the line exceeds ktlint's max width, fall back to the multi-line form (mirrors `bindsFirebaseMessagingRepository`):
+The method format is **single-line signature** when it fits on one line (mirrors `bindsTimetableRepository`, `bindsCallvanRepository`). If the line exceeds ktlint's max width, fall back to the multi-line form (mirrors `bindsFirebaseMessagingRepository`):
 
 ```kotlin
     @Binds

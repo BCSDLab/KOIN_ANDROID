@@ -9,7 +9,7 @@ You are the dedicated **KOIN feature-module scaffolder**. Given a feature name (
 
 # Philosophy
 
-KOIN already has 11 feature modules with a stable shape. Do not reinvent. Mirror the conventions of `feature/callvan/` (full-featured) — every new feature module in KOIN uses Orbit MVI and the shared `core.navigation` library, so both are **always** wired in. The user picks two opt-ins: kotlinx-serialization and a Deeplink Activity manifest block.
+KOIN already has 13 feature modules with a stable shape. Do not reinvent. Mirror the conventions of `feature/callvan/` (full-featured, the most recently added module). **Going forward, all new feature modules use Orbit MVI and the shared `core.navigation` library**, so both are wired in by default. (Older modules — `banner`, `bus`, `dining`, `timetable`, `user` — predate this convention and use a subset; do not match their shape for new work.) The user picks two opt-ins: kotlinx-serialization and a Deeplink Activity manifest block.
 
 The smallest correct scaffold beats a feature-rich one full of unused plugins. Add kotlinx-serialization or an Activity manifest entry **only when the user signals they're needed**.
 
@@ -23,7 +23,7 @@ The user's invocation typically looks like one of:
 
 Extract the **module name** in kebab-case (`a-z0-9-`, lowercase). If the user supplies PascalCase or camelCase, split on case boundaries first (`lostAndFound` → words `[lost, and, found]`), then join lowercase for the directory name (`lostandfound`). **Preserve the word boundaries** — you'll need them to derive PascalCase in Step 1. Reject names that conflict with existing modules under `feature/` (run `ls feature/` first).
 
-**Orbit MVI and `core.navigation` are always on** — every new KOIN feature module uses both, so the `koin.library.orbit` plugin, its test dep (`kotlinx.coroutines.test`), and `implementation(projects.core.navigation)` are baked into the template. Do not ask about them. Do not offer to skip them.
+**Orbit MVI and `core.navigation` are always on for new modules** — this is the going-forward convention, so the `koin.library.orbit` plugin, its test dep (`kotlinx.coroutines.test`), and `implementation(projects.core.navigation)` are baked into the template. Do not ask about them. Do not offer to skip them. (Older modules without one or both are grandfathered — see Philosophy.)
 
 If the user has not signaled which extras they want, ask **one** consolidated multi-select question covering the two real opt-ins below. Do not bombard with separate questions.
 
@@ -57,7 +57,7 @@ Issue all of the following Write/Bash calls in a single message — they have no
 |---|---|
 | `feature/<name>/build.gradle.kts` | Render `references/build.gradle.kts.tmpl` |
 | `feature/<name>/src/main/AndroidManifest.xml` | Render `references/AndroidManifest.xml.tmpl`. **The manifest lives under `src/main/`, NOT at the module root.** Every existing KOIN feature module follows this — putting it at the module root will be silently ignored by AGP and the module will fail at runtime. |
-| `feature/<name>/src/main/res/values/strings.xml` | Copy `references/strings.xml.tmpl` verbatim. Empty `<resources>` skeleton — every existing KOIN feature module has this file, even when minimal (`feature/banner` ships only 3 strings). The implementer adds string resources as features land. |
+| `feature/<name>/src/main/res/values/strings.xml` | Copy `references/strings.xml.tmpl` verbatim. Empty `<resources>` skeleton — strings.xml is the convention for new modules, even when minimal (e.g. `feature/banner` ships 3 strings, `feature/callvan` ships 164). A few older modules (`notification`, `setting`) skip the file; do not match their shape for new work. The implementer adds string resources as features land. |
 | `feature/<name>/proguard-rules.pro` | Copy `references/proguard-rules.pro.tmpl` verbatim |
 | `feature/<name>/consumer-rules.pro` | Empty file (`touch`) |
 | `feature/<name>/AGENTS.md` | Render `references/AGENTS.md.tmpl` |
