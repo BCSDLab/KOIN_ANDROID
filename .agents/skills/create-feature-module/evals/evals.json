@@ -1,0 +1,29 @@
+{
+  "skill_name": "create-feature-module",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "feature/library 모듈 만들어줘.",
+      "expected_output": "feature/library 가 생성되고 build.gradle.kts 에 koin.feature + koin.hilt + koin.library.orbit 3개 플러그인 포함 (kotlinx-serialization 없음). namespace 는 in.koreatech.koin.feature.library. dependencies 에 projects.core.navigation 포함 (필수). testImplementation kotlinx.coroutines.test + turbine 포함. settings.gradle 에 include ':feature:library' 추가. koin/build.gradle.kts 에 implementation(projects.feature.library) 추가. ./gradlew :feature:library:tasks 가 성공.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "scaffold a new compose feature module called menu. minimum dependencies, no serialization, no activity.",
+      "expected_output": "feature/menu 의 build.gradle.kts 에 koin.feature + koin.hilt + koin.library.orbit (Orbit 은 필수이므로 빠질 수 없음) + projects.core.navigation (필수). kotlinx-serialization 플러그인/의존성 없음. AndroidManifest 는 빈 application 태그. orbit 관련 testImplementation 포함.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "/create-feature-module reservation 만들어줘. 딥링크 Activity 도 필요하고, 화면 진입은 koin://reservation/navigation 로 받을 거야. serialization 도 켜.",
+      "expected_output": "feature/reservation 의 AndroidManifest.xml 에 .ReservationActivity intent-filter (host=reservation, scheme=koin, pathPrefix=/navigation) 포함. ReservationActivity.kt stub 이 src/main/java/.../reservation/ 에 생성. build.gradle.kts 에 4개 플러그인 (feature, hilt, orbit, kotlinx-serialization) + projects.core.navigation (필수) + kotlinx-serialization-json 포함.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "feature/callvan 모듈 새로 만들어줘",
+      "expected_output": "이미 존재하는 모듈이므로 거부 또는 명확한 안내. ls feature/ 결과를 근거로 제시. 기존 파일을 덮어쓰지 않음.",
+      "files": []
+    }
+  ]
+}
