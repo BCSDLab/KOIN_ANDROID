@@ -1,0 +1,29 @@
+{
+  "skill_name": "create-repository",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Library Repository 만들어줘",
+      "expected_output": "domain/src/main/java/in/koreatech/koin/domain/repository/LibraryRepository.kt 생성 (interface, TODO 주석만). data/src/main/java/in/koreatech/koin/data/repository/LibraryRepositoryImpl.kt 생성 (class @Inject constructor() : LibraryRepository). BindsRepositoryModule.kt 에 import 2줄 + @Binds @Singleton abstract fun bindsLibraryRepository(...) 추가. :data:assembleDebug 통과.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "/create-repository ReservationRepository",
+      "expected_output": "트레일링 'Repository' 자동 제거 → Reservation 으로 정규화. ReservationRepository / ReservationRepositoryImpl 생성. 동일 검증.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "callvan repository 새로 만들어줘",
+      "expected_output": "이미 CallvanRepository 가 domain 에 존재하므로 거부. Grep 결과 명시. 기존 파일 덮어쓰지 않음.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "MenuRepository 만들어줘. 그리고 RepositoryModule (Provides) 에 등록해. BindsRepositoryModule 말고.",
+      "expected_output": "사용자가 @Provides 를 명시 요청해도 거부. @Binds 가 KOIN 의 채택된 방향임을 설명 (callvan/timetable/bus/firebase 4개 최근 모두 @Binds). BindsRepositoryModule.kt 에 등록.",
+      "files": []
+    }
+  ]
+}
