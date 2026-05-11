@@ -25,14 +25,9 @@ import `in`.koreatech.bus.BusSearchActivity
 import `in`.koreatech.bus.BusTimetableActivity
 import `in`.koreatech.bus.screen.MainEntryView
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.abtest.Experiment
-import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Dining.DINING_AB_TEST_DESIGN_A
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Dining.DINING_AB_TEST_DESIGN_B
 import `in`.koreatech.koin.core.analytics.EventAction
-import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -64,8 +59,6 @@ import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.util.ext.observeLiveData
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -149,7 +142,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             }
             scrollPercentage = 100.0f * offset / (range - extent)
         }
-        viewModel.postABTestAssign(Experiment.BENEFIT_STORE.experimentTitle)
 
         buttonCategory.setOnClickListener {
             toggleNavigationDrawer()
@@ -249,13 +241,11 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                     val diningData by viewModel.diningData.collectAsStateWithLifecycle()
                     val selectedPosition by viewModel.selectedPosition.collectAsStateWithLifecycle()
                     val selectedType by viewModel.selectedType.collectAsStateWithLifecycle()
-                    val diningABTestExperimentGroup by viewModel.diningABTestExperimentGroup.collectAsStateWithLifecycle()
 
                     DiningWidget(
                         diningData = diningData,
                         selectedPosition = selectedPosition,
-                        selectedType = selectedType,
-                        diningABTestExperimentGroup = diningABTestExperimentGroup
+                        selectedType = selectedType
                     )
                 }
             }
@@ -263,33 +253,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     }
 
     private fun initViewModel() = with(viewModel) {
-        lifecycleScope.launch {
-            viewModel.diningStoreAbTestExperimentGroup
-                .filterNotNull()
-                .first()
-                .let { group ->
-                    val sessionId = viewModel.getDiningToShopSessionId()
-
-                    if (group == ExperimentGroup.CONTROL) {
-                        EventLogger.logSessionEvent(
-                            action = EventAction.ABTEST,
-                            category = EventCategory.DINING_AB_TEST_CATEGORY,
-                            label = "dining2shop_1",
-                            value = DINING_AB_TEST_DESIGN_A,
-                            customSessionId = sessionId
-                        )
-                    } else if (group == ExperimentGroup.VARIANT) {
-                        EventLogger.logSessionEvent(
-                            action = EventAction.ABTEST,
-                            category = EventCategory.DINING_AB_TEST_CATEGORY,
-                            label = "dining2shop_1",
-                            value = DINING_AB_TEST_DESIGN_B,
-                            customSessionId = sessionId
-                        )
-                    }
-                }
-        }
-
         observeLiveData(isLoading) {
             binding.mainSwipeRefreshLayout.isRefreshing = it
         }
