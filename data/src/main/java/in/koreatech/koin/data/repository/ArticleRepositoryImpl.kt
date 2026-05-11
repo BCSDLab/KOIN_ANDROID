@@ -55,7 +55,7 @@ class ArticleRepositoryImpl @Inject constructor(
                     }
 
                 runCatching {
-                    articleRemoteDataSource.fetchMyKeyword(KeywordType.LOST_ITEM_KEYWORD).keywords
+                    articleRemoteDataSource.fetchMyKeyword(KeywordType.LOST_ITEM).keywords
                 }.onSuccess { _myLostItemKeywords.emit(it) }
                     .onFailure {
                         if (it is CancellationException) throw it
@@ -68,7 +68,7 @@ class ArticleRepositoryImpl @Inject constructor(
                     }
                 )
                 _myLostItemKeywords.emit(
-                    articleLocalDataSource.fetchMyKeyword(KeywordType.LOST_ITEM_KEYWORD).map {
+                    articleLocalDataSource.fetchMyKeyword(KeywordType.LOST_ITEM).map {
                         ArticleKeywordWrapperResponse.ArticleKeywordResponse(0, it)
                     }
                 )
@@ -167,12 +167,12 @@ class ArticleRepositoryImpl @Inject constructor(
     override fun saveKeyword(type: KeywordType, keyword: String): Flow<Unit> {
         val keywords = when (type) {
             KeywordType.KOREATECH -> myArticleKeywords
-            KeywordType.LOST_ITEM_KEYWORD -> myLostItemKeywords
+            KeywordType.LOST_ITEM -> myLostItemKeywords
         }
 
         val mutableKeywords = when (type) {
             KeywordType.KOREATECH -> _myArticleKeywords
-            KeywordType.LOST_ITEM_KEYWORD -> _myLostItemKeywords
+            KeywordType.LOST_ITEM -> _myLostItemKeywords
         }
 
         return flow {
@@ -195,12 +195,12 @@ class ArticleRepositoryImpl @Inject constructor(
     override fun deleteKeyword(type: KeywordType, keyword: String): Flow<Unit> {
         val keywords = when (type) {
             KeywordType.KOREATECH -> myArticleKeywords
-            KeywordType.LOST_ITEM_KEYWORD -> myLostItemKeywords
+            KeywordType.LOST_ITEM -> myLostItemKeywords
         }
 
         val mutableKeywords = when (type) {
             KeywordType.KOREATECH -> _myArticleKeywords
-            KeywordType.LOST_ITEM_KEYWORD -> _myLostItemKeywords
+            KeywordType.LOST_ITEM -> _myLostItemKeywords
         }
 
         return flow {

@@ -9,5 +9,5 @@ class DeleteLostItemKeywordUseCase @Inject constructor(
     private val articleRepository: ArticleRepository
 ) {
     operator fun invoke(keyword: String): Flow<Unit> =
-        articleRepository.deleteKeyword(KeywordType.LOST_ITEM_KEYWORD, keyword)
+        articleRepository.deleteKeyword(KeywordType.LOST_ITEM, keyword)
 }

@@ -9,5 +9,5 @@ class FetchLostItemKeywordSuggestionsUseCase @Inject constructor(
     private val articleRepository: ArticleRepository
 ) {
     operator fun invoke(): Flow<List<String>> =
-        articleRepository.fetchKeywordSuggestions(KeywordType.LOST_ITEM_KEYWORD)
+        articleRepository.fetchKeywordSuggestions(KeywordType.LOST_ITEM)
 }

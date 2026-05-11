@@ -58,7 +58,7 @@ class ArticleDataStore @Inject constructor(
     suspend fun fetchMyKeyword(type: KeywordType): List<String> {
         val key = when (type) {
             KeywordType.KOREATECH -> KEY_MY_KEYWORD
-            KeywordType.LOST_ITEM_KEYWORD -> KEY_LOST_ITEM_KEYWORD
+            KeywordType.LOST_ITEM -> KEY_LOST_ITEM_KEYWORD
         }
 
         return dataStore.data.first()[key]?.let {
@@ -69,7 +69,7 @@ class ArticleDataStore @Inject constructor(
     suspend fun saveKeyword(type: KeywordType, keyword: String) {
         val key = when (type) {
             KeywordType.KOREATECH -> KEY_MY_KEYWORD
-            KeywordType.LOST_ITEM_KEYWORD -> KEY_LOST_ITEM_KEYWORD
+            KeywordType.LOST_ITEM -> KEY_LOST_ITEM_KEYWORD
         }
 
         dataStore.edit { preferences ->
@@ -83,7 +83,7 @@ class ArticleDataStore @Inject constructor(
     suspend fun deleteKeyword(type: KeywordType, keyword: String) {
         val key = when (type) {
             KeywordType.KOREATECH -> KEY_MY_KEYWORD
-            KeywordType.LOST_ITEM_KEYWORD -> KEY_LOST_ITEM_KEYWORD
+            KeywordType.LOST_ITEM -> KEY_LOST_ITEM_KEYWORD
         }
 
         dataStore.edit { preferences ->
