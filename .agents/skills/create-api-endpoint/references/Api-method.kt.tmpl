@@ -1,0 +1,18 @@
+// Append this block as a new method inside an existing <Feature>[Auth]Api interface.
+// For a brand-new Api file, prepend the standard `package ...` + `interface <Feature>[Auth]Api {`
+// header, then this method, then the closing `}`.
+
+@{{HTTP_METHOD}}("{{PATH}}")
+suspend fun {{METHOD_NAME}}(
+{{PARAMETERS}}
+){{RETURN_TYPE_CLAUSE}}
+
+// PARAMETERS — each line indented 4 spaces, comma-trailing except last:
+//     @Path("postId") postId: Int,
+//     @Query("limit") limit: Int? = null,
+//     @Body request: <Feature><Action>Request
+//
+// RETURN_TYPE_CLAUSE — one of:
+//   `: <Feature><Action>Response`  (when 200/201 has body)
+//   ``                              (empty — when response is Unit / 204 No Content)
+//   `: Response<Unit>`              (only when caller needs to inspect response code, e.g. close/cancel)

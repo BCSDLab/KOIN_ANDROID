@@ -1,0 +1,35 @@
+package `in`.koreatech.koin.domain.error.{{FEATURE_LOWER}}
+
+import `in`.koreatech.koin.domain.error.KoinErrorException
+
+sealed class Koin{{FEATURE}}Exception : KoinErrorException() {
+{{EXCEPTION_GROUPS}}
+}
+
+// EXCEPTION_GROUPS — one block per HTTP status code that has at least one mapped error.
+// Each group is preceded by a multi-line comment and contains `class <X>Exception : Koin<Feature>Exception()` lines.
+// Match the exact whitespace style of feature/callvan's KoinCallvanException.kt (4-space indent, blank lines between groups).
+//
+// Example output (4xx-only — server errors are never mapped here):
+//
+//     /*
+//      * Exceptions for 400
+//      */
+//     class InvalidRequestBodyException : KoinCallvanException()
+//     class InvalidCustomLocationNameException : KoinCallvanException()
+//
+//     /*
+//      * Exceptions for 403
+//      */
+//     class CallvanRestrictedUserException : KoinCallvanException()
+//
+//     /*
+//      * Exceptions for 404
+//      */
+//     class NotFoundUserException : KoinCallvanException()
+//
+// When APPENDING to an existing file (Case B in SKILL.md):
+//   - Read existing file. Find each `/* Exceptions for <N> */` group.
+//   - Insert each new class line at the END of the matching group.
+//   - If a status code has no group yet, append a new `/* Exceptions for <N> */ class ... : Koin<Feature>Exception()` block before the closing `}`.
+//   - NEVER reorder, rename, or remove existing classes.

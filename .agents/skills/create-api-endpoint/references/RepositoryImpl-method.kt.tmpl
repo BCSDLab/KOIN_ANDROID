@@ -1,0 +1,54 @@
+// Append this `override` block to <Feature>RepositoryImpl.kt.
+// Imports needed (add at top of file if missing — ktlintFormat will sort):
+//   import `in`.koreatech.koin.data.util.mapHttpFailure
+//   import `in`.koreatech.koin.domain.error.<feature>.Koin<Feature>Exception
+//   import `in`.koreatech.koin.data.mapper.to<DomainModel>     (only if a mapper is used)
+//   import `in`.koreatech.koin.data.request.<feature>.<...>Request  (only if a body is sent)
+
+override suspend fun {{METHOD_NAME}}(
+{{PARAMETERS}}
+): Result<{{DOMAIN_RETURN_TYPE}}> {
+    return runCatching {
+        {{REMOTE_DATA_SOURCE_PARAM}}.{{METHOD_NAME}}(
+{{REMOTE_CALL_ARGS}}
+        ){{MAPPER_CALL}}
+    }.mapHttpFailure {
+{{ERROR_MAPPINGS}}
+    }
+}
+
+// PARAMETERS — public-facing args (no annotations). Same names + types as the
+// matching domain Repository interface method.
+//
+// DOMAIN_RETURN_TYPE — `CallvanPostCreate`, `Unit`, `List<Foo>`, etc.
+//   When the API returns Unit (DELETE / 204), use `Unit`. The trailing `.toX()` becomes empty.
+//
+// REMOTE_DATA_SOURCE_PARAM — the constructor-injected RemoteDataSource property
+// (e.g. `callvanRemoteDataSource`).
+//
+// REMOTE_CALL_ARGS — each line indented 12 spaces (3 levels), comma-trailing.
+//   For body-bearing calls, build the Request DTO inline:
+//       <Feature><Action>Request(
+//           field = field,
+//           ...
+//       )
+//
+// MAPPER_CALL — `.to<DomainModel>()` when there is a Response→Domain mapper.
+//   Empty string when DOMAIN_RETURN_TYPE == Unit and the call returns Unit.
+//
+// ERROR_MAPPINGS — one line per error code extracted from the OpenAPI spec
+// (4xx AND 5xx if the spec documents them).
+// All Exception classes referenced MUST exist in Koin<Feature>Exception.kt
+// (the skill creates/appends them in Step 3 BEFORE writing this method body):
+//
+//     on(400, "INVALID_REQUEST_BODY") throws KoinCallvanException.InvalidRequestBodyException()
+//     on(403, "FORBIDDEN_CALLVAN_RESTRICTED_USER") throws KoinCallvanException.CallvanRestrictedUserException()
+//     on(404) throws KoinCallvanException.NotFoundUserException()
+//
+// 5xx: rare in KOIN today but supported by the DSL. The KDoc-preferred form is the IntRange:
+//
+//     on(500..599) throws KoinXxxException.ServerException()
+//     on(500..599, "DB_TIMEOUT") throws KoinXxxException.DbTimeoutException()
+//
+// When the spec doesn't document 5xx (most common case in KOIN), omit 5xx mappings —
+// NetworkUtil's KoinUnknownErrorException fallback handles those automatically.
