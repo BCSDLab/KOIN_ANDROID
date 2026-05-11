@@ -112,8 +112,7 @@ fun DiningDetailScreen(
     viewModel: DiningViewModel = hiltViewModel(),
     initialPage: Int = -1,
     onTopbarBackClick: () -> Unit = {},
-    onTopbarActionClick: () -> Unit = {},
-    onNavigateToStore: () -> Unit = {}
+    onTopbarActionClick: () -> Unit = {}
 ) {
     val userState by viewModel.userState.collectAsState()
 
@@ -193,8 +192,7 @@ fun DiningDetailScreen(
             onDateClick = viewModel::setSelectedDate,
             changeSoldOutSubscribe = viewModel::changeIsSoldOutSubscribed,
             changeDiningImageSubscribe = viewModel::changeIsDiningImageSubscribed,
-            getNotificationPermitInfo = viewModel::getNotificationPermissionInfo,
-            onNavigateToStore = onNavigateToStore
+            getNotificationPermitInfo = viewModel::getNotificationPermissionInfo
         )
     }
 }
@@ -218,8 +216,7 @@ private fun DiningDetailScreenImpl(
     onDateClick: (Date) -> Unit = {},
     changeSoldOutSubscribe: (Boolean) -> Unit = {},
     changeDiningImageSubscribe: (Boolean) -> Unit = {},
-    getNotificationPermitInfo: () -> Unit = {},
-    onNavigateToStore: () -> Unit = {}
+    getNotificationPermitInfo: () -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current
