@@ -28,6 +28,13 @@ import org.orbitmvi.orbit.syntax.simple.repeatOnSubscription
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 
+enum class ListOverlay {
+    FILTER_BOTTOM_SHEET,
+    WRITE_BOTTOM_SHEET,
+    FILTER_LOGIN_DIALOG,
+    WRITE_LOGIN_DIALOG
+}
+
 @HiltViewModel
 class LostAndFoundListViewModel @Inject constructor(
     private val fetchLostAndFoundArticlePaginationV2UseCase: FetchLostAndFoundArticlePaginationV2UseCase,
@@ -178,35 +185,14 @@ class LostAndFoundListViewModel @Inject constructor(
         postSideEffect(LostAndFoundListSideEffect.FetchData)
     }
 
-    fun setShowFilterBottomSheet(value: Boolean) = intent {
+    fun setOverlayVisibility(overlay: ListOverlay, show: Boolean) = intent {
         reduce {
-            state.copy(
-                showFilterBottomSheet = value
-            )
-        }
-    }
-
-    fun setShowWriteBottomSheet(value: Boolean) = intent {
-        reduce {
-            state.copy(
-                showWriteBottomSheet = value
-            )
-        }
-    }
-
-    fun setShowFilterLoginDialog(show: Boolean) = intent {
-        reduce {
-            state.copy(
-                showFilterLoginDialog = show
-            )
-        }
-    }
-
-    fun setShowWriteLoginDialog(show: Boolean) = intent {
-        reduce {
-            state.copy(
-                showWriteLoginDialog = show
-            )
+            when (overlay) {
+                ListOverlay.FILTER_BOTTOM_SHEET -> state.copy(showFilterBottomSheet = show)
+                ListOverlay.WRITE_BOTTOM_SHEET -> state.copy(showWriteBottomSheet = show)
+                ListOverlay.FILTER_LOGIN_DIALOG -> state.copy(showFilterLoginDialog = show)
+                ListOverlay.WRITE_LOGIN_DIALOG -> state.copy(showWriteLoginDialog = show)
+            }
         }
     }
 
