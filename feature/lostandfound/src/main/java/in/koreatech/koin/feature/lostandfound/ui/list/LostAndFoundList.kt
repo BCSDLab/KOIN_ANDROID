@@ -201,7 +201,7 @@ fun LostAndFoundList(
                 keywords = uiState.keywords,
                 selectedKeywordIndex = uiState.selectedKeywordIndex,
                 onKeywordSelect = viewModel::selectKeyword,
-                onSettingClick = { navigateToKeywordSetting() }
+                onSettingClick = navigateToKeywordSetting
             )
             if (!uiState.isFirstPageLoading) {
                 if (uiState.searchedArticles.isEmpty()) {
