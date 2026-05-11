@@ -8,5 +8,7 @@ import kotlinx.collections.immutable.persistentListOf
 data class LostAndFoundKeywordState(
     val keywords: ImmutableList<String> = persistentListOf(),
     val keywordInput: String = "",
-    val isNotificationEnabled: Boolean = false
+    val isNotificationEnabled: Boolean = false,
+    val isLoading: Boolean = false,
+    val suggestedKeywords: ImmutableList<String> = persistentListOf()
 )

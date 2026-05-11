@@ -7,9 +7,7 @@ sealed class LostAndFoundNavType {
     data object LostAndFoundListRoute : LostAndFoundNavType()
 
     @Serializable
-    data class LostAndFoundKeywordRoute(
-        val initialKeywordsCsv: String = ""
-    ) : LostAndFoundNavType()
+    data object LostAndFoundKeywordRoute : LostAndFoundNavType()
 
     @Serializable
     data class LostAndFoundDetailRoute(val articleId: Int) : LostAndFoundNavType()
@@ -28,4 +26,3 @@ const val ARTICLE_ID = "articleId"
 const val CHAT_ARTICLE_ID = "article_id"
 const val LOST_OR_FOUND_TYPE = "lostOrFoundType"
 const val CANCEL_REFRESH_LIST = "cancel_refresh_list"
-const val KEY_KEYWORD_LIST = "keyword_list"

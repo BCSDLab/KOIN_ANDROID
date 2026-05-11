@@ -38,6 +38,7 @@ fun String.toSubscribesType(): SubscribesType =
         Subscribes.LOST_ITEM_CHAT -> SubscribesType.LOST_ITEM_CHAT
         Subscribes.MARKETING -> SubscribesType.MARKETING
         Subscribes.CALLVAN -> SubscribesType.CALLVAN
+        Subscribes.LOST_ITEM_KEYWORD -> SubscribesType.LOST_ITEM_KEYWORD
         else -> SubscribesType.NOTHING
     }
 

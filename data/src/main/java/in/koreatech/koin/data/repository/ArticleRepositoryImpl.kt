@@ -21,11 +21,13 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
@@ -44,10 +46,29 @@ class ArticleRepositoryImpl @Inject constructor(
     val user = userRepository.getUserInfoFlow().distinctUntilChanged()
         .onEach { user ->
             if (user.isStudent || user.isGeneral) {
-                _myArticleKeywords.emit(articleRemoteDataSource.fetchMyKeyword(KeywordType.KOREATECH).keywords)
+                runCatching {
+                    articleRemoteDataSource.fetchMyKeyword(KeywordType.KOREATECH).keywords
+                }.onSuccess { _myArticleKeywords.emit(it) }
+                    .onFailure {
+                        if (it is CancellationException) throw it
+                        _myArticleKeywords.emit(emptyList())
+                    }
+
+                runCatching {
+                    articleRemoteDataSource.fetchMyKeyword(KeywordType.LOST_ITEM_KEYWORD).keywords
+                }.onSuccess { _myLostItemKeywords.emit(it) }
+                    .onFailure {
+                        if (it is CancellationException) throw it
+                        _myLostItemKeywords.emit(emptyList())
+                    }
             } else {
                 _myArticleKeywords.emit(
                     articleLocalDataSource.fetchMyKeyword(KeywordType.KOREATECH).map {
+                        ArticleKeywordWrapperResponse.ArticleKeywordResponse(0, it)
+                    }
+                )
+                _myLostItemKeywords.emit(
+                    articleLocalDataSource.fetchMyKeyword(KeywordType.LOST_ITEM_KEYWORD).map {
                         ArticleKeywordWrapperResponse.ArticleKeywordResponse(0, it)
                     }
                 )
@@ -60,12 +81,11 @@ class ArticleRepositoryImpl @Inject constructor(
 
     private val _myArticleKeywords =
         MutableStateFlow<List<ArticleKeywordWrapperResponse.ArticleKeywordResponse>>(emptyList())
-    private val myArticleKeywords =
-        _myArticleKeywords.stateIn(
-            scope = coroutineScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = emptyList()
-        )
+    private val myArticleKeywords = _myArticleKeywords.asStateFlow()
+
+    private val _myLostItemKeywords =
+        MutableStateFlow<List<ArticleKeywordWrapperResponse.ArticleKeywordResponse>>(emptyList())
+    private val myLostItemKeywords = _myLostItemKeywords.asStateFlow()
 
     private val hotArticleHeaders: StateFlow<List<ArticleHeader>> =
         flow {
@@ -134,6 +154,10 @@ class ArticleRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun fetchMyLostItemKeyword(): Flow<List<String>> {
+        return myLostItemKeywords.map { response -> response.map { it.keyword } }
+    }
+
     override fun fetchKeywordSuggestions(type: KeywordType): Flow<List<String>> {
         return flow {
             emit(articleRemoteDataSource.fetchKeywordSuggestions(type).keywords)
@@ -143,12 +167,12 @@ class ArticleRepositoryImpl @Inject constructor(
     override fun saveKeyword(type: KeywordType, keyword: String): Flow<Unit> {
         val keywords = when (type) {
             KeywordType.KOREATECH -> myArticleKeywords
-            KeywordType.LOST_ITEM -> TODO("MUST BE REPLACE AFTER CREATE LOST-ITEM myKeywords")
+            KeywordType.LOST_ITEM_KEYWORD -> myLostItemKeywords
         }
 
         val mutableKeywords = when (type) {
             KeywordType.KOREATECH -> _myArticleKeywords
-            KeywordType.LOST_ITEM -> TODO("MUST BE REPLACE AFTER CREATE LOST-ITEM myKeywords")
+            KeywordType.LOST_ITEM_KEYWORD -> _myLostItemKeywords
         }
 
         return flow {
@@ -171,12 +195,12 @@ class ArticleRepositoryImpl @Inject constructor(
     override fun deleteKeyword(type: KeywordType, keyword: String): Flow<Unit> {
         val keywords = when (type) {
             KeywordType.KOREATECH -> myArticleKeywords
-            KeywordType.LOST_ITEM -> TODO("MUST BE REPLACE AFTER CREATE LOST-ITEM myKeywords")
+            KeywordType.LOST_ITEM_KEYWORD -> myLostItemKeywords
         }
 
         val mutableKeywords = when (type) {
             KeywordType.KOREATECH -> _myArticleKeywords
-            KeywordType.LOST_ITEM -> TODO("MUST BE REPLACE AFTER CREATE LOST-ITEM myKeywords")
+            KeywordType.LOST_ITEM_KEYWORD -> _myLostItemKeywords
         }
 
         return flow {

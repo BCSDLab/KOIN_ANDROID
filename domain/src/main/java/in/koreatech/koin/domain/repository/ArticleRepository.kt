@@ -38,6 +38,8 @@ interface ArticleRepository {
 
     fun fetchMyKeyword(): Flow<List<String>>
 
+    fun fetchMyLostItemKeyword(): Flow<List<String>>
+
     fun fetchKeywordSuggestions(type: KeywordType): Flow<List<String>>
 
     fun saveKeyword(type: KeywordType, keyword: String): Flow<Unit>
