@@ -4,24 +4,16 @@ import android.content.Context
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.VectorConverter
-import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateValue
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.draggable
-import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,13 +25,11 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -69,9 +59,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -93,7 +81,6 @@ import com.kakao.sdk.template.model.Link
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
-import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
@@ -110,7 +97,6 @@ import `in`.koreatech.koin.feature.dining.R
 import `in`.koreatech.koin.feature.dining.component.DiningDateItem
 import `in`.koreatech.koin.feature.dining.component.DiningItem
 import `in`.koreatech.koin.feature.dining.component.DiningItemOriginal
-import `in`.koreatech.koin.feature.dining.component.abTeset.DiningAbTestFloatingButton
 import `in`.koreatech.koin.feature.dining.component.bottomsheet.DiningBottomSheet
 import `in`.koreatech.koin.feature.dining.component.dialog.DiningImageDialog
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_DATE
@@ -145,13 +131,8 @@ fun DiningDetailScreen(
 
     val abTestExperimentGroup by viewModel.abTestExperimentGroup.collectAsState()
 
-    val diningStoreAbTestExperimentGroup by viewModel.diningStoreAbTestExperimentGroup.collectAsState()
-
-    val sessionId by viewModel.sessionId.collectAsState()
-
     LaunchedEffect(Unit) { // userState NPE error in viewModel init{}; Flow is null
         viewModel.getDining()
-        viewModel.getDiningSessionId()
         snapshotFlow { userState }
             .collect { state ->
                 if (!state.isAnonymous) {
@@ -203,8 +184,6 @@ fun DiningDetailScreen(
             selectedDate = TimeUtil.stringToDateYYMMDD(selectedDate),
             showBottomSheet = showBottomSheet,
             experimentGroup = abTestExperimentGroup,
-            diningStoreExperimentGroup = diningStoreAbTestExperimentGroup,
-            sessionId = sessionId,
             isAnonymous = userState.isAnonymous,
             isDiningRefreshing = isDiningRefreshing,
             initialPage = if (initialPage != -1) initialPage else viewModel.getInitialPage(),
@@ -228,8 +207,6 @@ private fun DiningDetailScreenImpl(
     selectedDate: Date,
     showBottomSheet: Boolean,
     experimentGroup: String,
-    diningStoreExperimentGroup: String,
-    sessionId: String,
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
     isSoldOutSubscribed: Boolean = false,
@@ -569,78 +546,6 @@ private fun DiningDetailScreenImpl(
                 }
             }
         }
-
-        if (diningStoreExperimentGroup == ExperimentGroup.VARIANT) {
-            var isButtonVisible by remember { mutableStateOf(true) }
-            var boxHeight by remember { mutableFloatStateOf(0f) }
-            var offsetY by remember { mutableFloatStateOf(0f) }
-
-            AnimatedVisibility(
-                visible = isButtonVisible,
-                modifier = Modifier.align(Alignment.BottomCenter),
-                enter = slideInVertically(initialOffsetY = { it }),
-                exit = slideOutVertically(targetOffsetY = { it })
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .onSizeChanged { size ->
-                            if (size.height > 0) {
-                                boxHeight = size.height.toFloat()
-                            }
-                        }
-                        .windowInsetsPadding(WindowInsets.navigationBars)
-                        .padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
-                ) {
-                    val buttonVisibilityLimit = maxOf(boxHeight * 0.4f, 100f)
-
-                    DiningAbTestFloatingButton(
-                        contentText = stringResource(R.string.dining_menu_dislike),
-                        buttonText = stringResource(R.string.view_nearby_stores),
-                        modifier = Modifier
-                            .graphicsLayer(translationY = offsetY)
-                            .draggable(
-                                orientation = Orientation.Vertical,
-                                state = rememberDraggableState { delta ->
-                                    offsetY = (offsetY + delta).coerceAtLeast(0f)
-                                },
-                                onDragStopped = {
-                                    scope.launch {
-                                        if (offsetY > buttonVisibilityLimit) {
-                                            isButtonVisible = false
-
-                                            EventLogger.logSessionEvent(
-                                                action = EventAction.ABTEST,
-                                                category = EventCategory.SWIPE,
-                                                label = "dining_to_shop_close",
-                                                value = tabList[pagerState.currentPage],
-                                                customSessionId = sessionId
-                                            )
-                                        } else {
-                                            animate(
-                                                initialValue = offsetY,
-                                                targetValue = 0f,
-                                                animationSpec = spring(),
-                                                block = { value, _ -> offsetY = value }
-                                            )
-                                        }
-                                    }
-                                }
-                            ),
-                        onClick = {
-                            EventLogger.logSessionEvent(
-                                action = EventAction.ABTEST,
-                                category = EventCategory.CLICK,
-                                label = "dining_to_shop",
-                                value = tabList[pagerState.currentPage],
-                                customSessionId = sessionId
-                            )
-                            onNavigateToStore()
-                        }
-                    )
-                }
-            }
-        }
     }
 }
 
@@ -779,13 +684,11 @@ private fun DiningScreenPreview() {
                 changedAt = "2025.05.17"
             )
         ),
-        sessionId = "",
         isAnonymous = true,
         contentPadding = PaddingValues(),
         context = LocalContext.current,
         selectedDate = TimeUtil.getNextDayDate(TimeUtil.getCurrentTime()),
         showBottomSheet = false,
-        experimentGroup = ExperimentGroup.SHARE_NEW,
-        diningStoreExperimentGroup = ExperimentGroup.VARIANT
+        experimentGroup = ExperimentGroup.SHARE_NEW
     )
 }
