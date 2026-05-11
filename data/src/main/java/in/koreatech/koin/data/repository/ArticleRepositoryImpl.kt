@@ -205,7 +205,13 @@ class ArticleRepositoryImpl @Inject constructor(
 
         return flow {
             if (user.value.isStudent || user.value.isGeneral) {
-                emit(articleRemoteDataSource.deleteKeyword(keywords.value.first { it.keyword == keyword }.id))
+                val targetKeyword = keywords.value.firstOrNull { it.keyword == keyword }
+                if (targetKeyword != null) {
+                    emit(articleRemoteDataSource.deleteKeyword(targetKeyword.id))
+                } else {
+                    // 로컬에 존재하지 않는 경우에도 성공 처리하여 하위 onEach가 실행되도록 보장
+                    emit(Unit)
+                }
             } else {
                 emit(articleLocalDataSource.deleteKeyword(type, keyword))
             }
