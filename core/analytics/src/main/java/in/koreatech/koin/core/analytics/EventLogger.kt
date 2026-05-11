@@ -126,20 +126,6 @@ object EventLogger {
     }
 
     /**
-     * AB테스트 이벤트 로깅
-     * @param category 이벤트 종류
-     * @param label 이벤트 소분류
-     * @param value 이벤트 값
-     */
-    fun logABTestEvent(
-        category: String,
-        label: String,
-        value: String
-    ) {
-        logCustomEvent(EventAction.ABTEST.value, category, label, value)
-    }
-
-    /**
      * @param action 커스텀 이벤트 발생(EventAction 이외에 action)
      * @param category 커스텀 이벤트 종류(EventCategory 이외에 category)
      * @param label 이벤트 소분류
@@ -306,8 +292,7 @@ object EventLogger {
 enum class EventAction(val value: String) {
     BUSINESS("BUSINESS"),
     CAMPUS("CAMPUS"),
-    USER("USER"),
-    ABTEST("AB_TEST")
+    USER("USER")
 }
 
 enum class EventCategory(val value: String) {
@@ -315,8 +300,7 @@ enum class EventCategory(val value: String) {
     SCROLL("scroll"),
     SWIPE("swipe"), // 하단 뒤로가기(아이폰의 swipe 뒤로가기와 대응)
     NOTIFICATION("notification"),
-    ENTRY("entry"),
-    DINING_AB_TEST_CATEGORY("a/b test 로깅(메인화면 식단 진입)")
+    ENTRY("entry")
 }
 
 data class EventExtra(val key: String, val value: String)
