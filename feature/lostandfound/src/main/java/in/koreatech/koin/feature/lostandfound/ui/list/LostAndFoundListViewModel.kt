@@ -28,7 +28,6 @@ import org.orbitmvi.orbit.syntax.simple.repeatOnSubscription
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 
-@Suppress("TooManyFunctions")
 @HiltViewModel
 class LostAndFoundListViewModel @Inject constructor(
     private val fetchLostAndFoundArticlePaginationV2UseCase: FetchLostAndFoundArticlePaginationV2UseCase,

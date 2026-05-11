@@ -144,6 +144,7 @@ private fun LostAndFoundKeywordContent(
             MyKeywordSection(
                 keywords = uiState.keywords,
                 keywordInput = uiState.keywordInput,
+                isLoading = uiState.isLoading,
                 onKeywordInputChanged = onKeywordInputChanged,
                 onAddKeyword = onAddKeyword,
                 onDeleteKeyword = onDeleteKeyword,
@@ -176,6 +177,7 @@ private fun LostAndFoundKeywordContent(
 private fun MyKeywordSection(
     keywords: ImmutableList<String>,
     keywordInput: String,
+    isLoading: Boolean,
     onKeywordInputChanged: (String) -> Unit,
     onAddKeyword: (String) -> Unit,
     onDeleteKeyword: (String) -> Unit,
@@ -216,7 +218,7 @@ private fun MyKeywordSection(
         Spacer(modifier = Modifier.height(8.dp))
 
         // 키워드 입력 + 추가 버튼 (수평 배치, Figma 51322:185997)
-        val isAddButtonEnabled = keywordInput.isNotBlank()
+        val isAddButtonEnabled = keywordInput.isNotBlank() && !isLoading
         val interactionSource = remember { MutableInteractionSource() }
         val isFocused by interactionSource.collectIsFocusedAsState()
         Row(
@@ -237,13 +239,14 @@ private fun MyKeywordSection(
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 value = keywordInput,
                 onValueChange = onKeywordInputChanged,
+                enabled = !isLoading,
                 textStyle = KoinTheme.typography.medium14.copy(color = KoinTheme.colors.neutral800),
                 singleLine = true,
                 cursorBrush = SolidColor(KoinTheme.colors.primary400),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        if (keywordInput.isNotBlank()) {
+                        if (keywordInput.isNotBlank() && !isLoading) {
                             onAddKeyword(keywordInput)
                         }
                         focusManager.clearFocus()
