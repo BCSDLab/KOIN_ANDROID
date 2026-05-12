@@ -53,7 +53,7 @@ fun LostAndFoundList(
     navigateToLogin: () -> Unit = {},
     navigateArticleDetail: (Int) -> Unit = {},
     navigateToWrite: (String) -> Unit = {},
-    navigateToKeywordSetting: (List<String>) -> Unit = {}
+    navigateToKeywordSetting: () -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
 
@@ -62,7 +62,7 @@ fun LostAndFoundList(
             sideEffect = sideEffect,
             fetchData = viewModel::fetchLostAndFoundItem,
             updateSignInDialog = {
-                viewModel.setShowFilterLoginDialog(it)
+                viewModel.setOverlayVisibility(ListOverlay.FILTER_LOGIN_DIALOG, it)
             }
         )
     }
@@ -84,7 +84,7 @@ fun LostAndFoundList(
     if (uiState.showFilterBottomSheet) {
         LostAndFoundFilterBottomSheet(
             onDismissRequest = {
-                viewModel.setShowFilterBottomSheet(false)
+                viewModel.setOverlayVisibility(ListOverlay.FILTER_BOTTOM_SHEET, false)
             },
             selectedAuthorType = uiState.authorFilterType,
             selectedLostOrFoundType = uiState.lostOrFoundFilterType,
@@ -97,7 +97,7 @@ fun LostAndFoundList(
     if (uiState.showWriteBottomSheet) {
         LostAndFoundFABBottomSheet(
             onDismissRequest = {
-                viewModel.setShowWriteBottomSheet(false)
+                viewModel.setOverlayVisibility(ListOverlay.WRITE_BOTTOM_SHEET, false)
             },
             onFindOwnerClick = {
                 navigateToWrite(LostOrFoundType.FOUND.name)
@@ -132,14 +132,14 @@ fun LostAndFoundList(
                     "로그인하기"
                 )
                 navigateToLogin()
-                viewModel.setShowWriteLoginDialog(false)
+                viewModel.setOverlayVisibility(ListOverlay.WRITE_LOGIN_DIALOG, false)
             },
             onNegative = {
                 EventLogger.logCampusClickEvent(
                     AnalyticsConstant.Label.LostAndFound.LOST_ITEM_WRITE_LOGIN_REQUEST,
                     "닫기"
                 )
-                viewModel.setShowWriteLoginDialog(false)
+                viewModel.setOverlayVisibility(ListOverlay.WRITE_LOGIN_DIALOG, false)
             }
         )
     }
@@ -157,9 +157,9 @@ fun LostAndFoundList(
                 modifier = Modifier.offset(y = 10.dp),
                 onClick = {
                     if (uiState.isLoggedIn) {
-                        viewModel.setShowWriteBottomSheet(true)
+                        viewModel.setOverlayVisibility(ListOverlay.WRITE_BOTTOM_SHEET, true)
                     } else {
-                        viewModel.setShowWriteLoginDialog(true)
+                        viewModel.setOverlayVisibility(ListOverlay.WRITE_LOGIN_DIALOG, true)
                     }
                 }
             )
@@ -190,7 +190,7 @@ fun LostAndFoundList(
                 )
                 LostAndFoundChip(
                     onClick = {
-                        viewModel.setShowFilterBottomSheet(true)
+                        viewModel.setOverlayVisibility(ListOverlay.FILTER_BOTTOM_SHEET, true)
                     }
                 )
             }
@@ -201,7 +201,7 @@ fun LostAndFoundList(
                 keywords = uiState.keywords,
                 selectedKeywordIndex = uiState.selectedKeywordIndex,
                 onKeywordSelect = viewModel::selectKeyword,
-                onSettingClick = { navigateToKeywordSetting(uiState.keywords) }
+                onSettingClick = navigateToKeywordSetting
             )
             if (!uiState.isFirstPageLoading) {
                 if (uiState.searchedArticles.isEmpty()) {

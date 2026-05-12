@@ -1,42 +1,82 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.keyword
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.notification.SubscribesType
+import `in`.koreatech.koin.domain.usecase.article.lostandfound.DeleteLostItemKeywordUseCase
+import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostItemKeywordSuggestionsUseCase
+import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostItemKeywordUseCase
+import `in`.koreatech.koin.domain.usecase.article.lostandfound.SaveLostItemKeywordUseCase
+import `in`.koreatech.koin.domain.usecase.notification.DeleteNotificationSubscriptionUseCase
+import `in`.koreatech.koin.domain.usecase.notification.GetNotificationPermissionInfoUseCase
+import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionUseCase
 import `in`.koreatech.koin.feature.lostandfound.R
-import `in`.koreatech.koin.feature.lostandfound.navigation.LostAndFoundNavType
 import javax.inject.Inject
-import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
-import org.orbitmvi.orbit.Container
+import kotlinx.coroutines.flow.catch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.repeatOnSubscription
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
+@Suppress("LongParameterList")
 @HiltViewModel
 class LostAndFoundKeywordViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
-) :
-    ViewModel(),
-    ContainerHost<LostAndFoundKeywordState, LostAndFoundKeywordSideEffect> {
-    override val container: Container<LostAndFoundKeywordState, LostAndFoundKeywordSideEffect> = container(
-        initialState = LostAndFoundKeywordState(
-            keywords = try {
-                val route = savedStateHandle.toRoute<LostAndFoundNavType.LostAndFoundKeywordRoute>()
-                route.initialKeywordsCsv
-                    .split("\u0001")
-                    .filter { it.isNotEmpty() }
-                    .toPersistentList()
-            } catch (@Suppress("SwallowedException") e: IllegalArgumentException) {
-                persistentListOf()
-            }
-        )
+    private val fetchLostItemKeywordUseCase: FetchLostItemKeywordUseCase,
+    private val saveLostItemKeywordUseCase: SaveLostItemKeywordUseCase,
+    private val deleteLostItemKeywordUseCase: DeleteLostItemKeywordUseCase,
+    private val fetchLostItemKeywordSuggestionsUseCase: FetchLostItemKeywordSuggestionsUseCase,
+    private val updateNotificationSubscriptionUseCase: UpdateNotificationSubscriptionUseCase,
+    private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase,
+    private val getNotificationPermissionInfoUseCase: GetNotificationPermissionInfoUseCase
+) : ViewModel(), ContainerHost<LostAndFoundKeywordState, LostAndFoundKeywordSideEffect> {
+
+    override val container = container<LostAndFoundKeywordState, LostAndFoundKeywordSideEffect>(
+        LostAndFoundKeywordState()
     )
+
+    init {
+        observeKeywords()
+        fetchSuggestedKeywords()
+        loadNotificationState()
+    }
+
+    private fun observeKeywords() = intent {
+        repeatOnSubscription {
+            fetchLostItemKeywordUseCase()
+                .catch { reduce { state.copy(keywords = persistentListOf()) } }
+                .collect { keywords ->
+                    reduce { state.copy(keywords = keywords.toPersistentList()) }
+                }
+        }
+    }
+
+    private fun fetchSuggestedKeywords() = intent {
+        fetchLostItemKeywordSuggestionsUseCase()
+            .catch { Timber.e(it, "추천 키워드 로드 실패") }
+            .collect { suggestions ->
+                reduce { state.copy(suggestedKeywords = suggestions.toPersistentList()) }
+            }
+    }
+
+    private fun loadNotificationState() = intent {
+        val (info, error) = getNotificationPermissionInfoUseCase()
+        if (error != null) {
+            Timber.e("키워드 알림 설정 로드 실패: %s", error.message)
+            return@intent
+        }
+        if (info != null) {
+            val isEnabled = info.subscribes
+                .firstOrNull { it.type == SubscribesType.LOST_ITEM_KEYWORD }
+                ?.isPermit ?: false
+            reduce { state.copy(isNotificationEnabled = isEnabled) }
+        }
+    }
 
     fun onKeywordInputChanged(input: String) {
         blockingIntent {
@@ -46,46 +86,43 @@ class LostAndFoundKeywordViewModel @Inject constructor(
 
     fun addKeyword(keyword: String) {
         intent {
+            if (state.isLoading) return@intent
+
             val validationError = validateKeyword(keyword)
             if (validationError != null) {
                 postSideEffect(LostAndFoundKeywordSideEffect.ShowSnackbar(validationError))
                 return@intent
             }
-
             val addError = checkAddability(state, keyword)
             if (addError != null) {
                 postSideEffect(LostAndFoundKeywordSideEffect.ShowSnackbar(addError))
-            } else {
-                reduce {
-                    state.copy(
-                        keywords = state.keywords.toPersistentList().add(keyword),
-                        keywordInput = ""
-                    )
-                }
+                return@intent
             }
+            reduce { state.copy(isLoading = true) }
+            saveLostItemKeywordUseCase(keyword)
+                .catch {
+                    reduce { state.copy(isLoading = false) }
+                    postSideEffect(LostAndFoundKeywordSideEffect.ShowSnackbar(R.string.keyword_add_failed))
+                }
+                .collect {
+                    reduce { state.copy(isLoading = false, keywordInput = "") }
+                }
         }
-    }
-
-    private fun validateKeyword(keyword: String): Int? = when {
-        keyword.isEmpty() -> R.string.keyword_add_require_input
-        WHITESPACE_REGEX.containsMatchIn(keyword) -> R.string.keyword_add_blank_not_allowed
-        keyword.length < MIN_KEYWORD_LENGTH || keyword.length > MAX_KEYWORD_LENGTH -> R.string.keyword_add_invalid_length
-        else -> null
-    }
-
-    private fun checkAddability(currentState: LostAndFoundKeywordState, keyword: String): Int? = when {
-        currentState.keywords.contains(keyword) -> R.string.keyword_add_already_exist
-        currentState.keywords.size >= MAX_KEYWORD_COUNT -> R.string.keyword_add_limit_exceeded
-        else -> null
     }
 
     fun deleteKeyword(keyword: String) {
         intent {
-            reduce {
-                state.copy(
-                    keywords = state.keywords.toPersistentList().remove(keyword)
-                )
-            }
+            if (state.isLoading) return@intent
+
+            reduce { state.copy(isLoading = true) }
+            deleteLostItemKeywordUseCase(keyword)
+                .catch {
+                    reduce { state.copy(isLoading = false) }
+                    postSideEffect(LostAndFoundKeywordSideEffect.ShowSnackbar(R.string.keyword_delete_failed))
+                }
+                .collect {
+                    reduce { state.copy(isLoading = false) }
+                }
         }
     }
 
@@ -95,8 +132,35 @@ class LostAndFoundKeywordViewModel @Inject constructor(
 
     fun toggleNotification(isEnabled: Boolean) {
         intent {
-            reduce { state.copy(isNotificationEnabled = isEnabled) }
+            if (state.isLoading) return@intent
+
+            reduce { state.copy(isLoading = true, isNotificationEnabled = isEnabled) }
+            val (_, error) = if (isEnabled) {
+                updateNotificationSubscriptionUseCase(SubscribesType.LOST_ITEM_KEYWORD)
+            } else {
+                deleteNotificationSubscriptionUseCase(SubscribesType.LOST_ITEM_KEYWORD)
+            }
+            if (error != null) {
+                reduce { state.copy(isLoading = false, isNotificationEnabled = !isEnabled) }
+                postSideEffect(LostAndFoundKeywordSideEffect.ShowSnackbar(R.string.notification_update_failed))
+            } else {
+                reduce { state.copy(isLoading = false) }
+            }
         }
+    }
+
+    private fun validateKeyword(keyword: String): Int? = when {
+        keyword.isEmpty() -> R.string.keyword_add_require_input
+        WHITESPACE_REGEX.containsMatchIn(keyword) -> R.string.keyword_add_blank_not_allowed
+        keyword.length < MIN_KEYWORD_LENGTH || keyword.length > MAX_KEYWORD_LENGTH ->
+            R.string.keyword_add_invalid_length
+        else -> null
+    }
+
+    private fun checkAddability(currentState: LostAndFoundKeywordState, keyword: String): Int? = when {
+        currentState.keywords.contains(keyword) -> R.string.keyword_add_already_exist
+        currentState.keywords.size >= MAX_KEYWORD_COUNT -> R.string.keyword_add_limit_exceeded
+        else -> null
     }
 
     companion object {
@@ -104,6 +168,5 @@ class LostAndFoundKeywordViewModel @Inject constructor(
         private const val MAX_KEYWORD_LENGTH = 20
         private const val MIN_KEYWORD_LENGTH = 2
         private val WHITESPACE_REGEX = Regex("""\s""")
-        val SUGGESTED_KEYWORDS: PersistentList<String> = persistentListOf("지갑", "카드", "학생증", "에어팟", "핸드폰")
     }
 }

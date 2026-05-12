@@ -34,6 +34,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -67,7 +68,7 @@ private val ButtonShape = RoundedCornerShape(4.dp)
 
 @Composable
 fun LostAndFoundKeyword(
-    onBackClick: (keywords: ImmutableList<String>) -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LostAndFoundKeywordViewModel = hiltViewModel()
 ) {
@@ -75,8 +76,6 @@ fun LostAndFoundKeyword(
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-
-    val keywords = uiState.keywords
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
@@ -90,18 +89,20 @@ fun LostAndFoundKeyword(
     }
 
     BackHandler {
-        onBackClick(keywords)
+        onBackClick()
     }
 
     // Article keyword 화면처럼, 이미 등록된 키워드는 추천 키워드에서 제거
-    val availableSuggestions = remember(keywords) {
-        (LostAndFoundKeywordViewModel.SUGGESTED_KEYWORDS - keywords.toSet()).toPersistentList()
+    val availableSuggestions by remember {
+        derivedStateOf {
+            (uiState.suggestedKeywords - uiState.keywords.toSet()).toPersistentList()
+        }
     }
     LostAndFoundKeywordContent(
         modifier = modifier,
         uiState = uiState,
         snackbarHostState = snackbarHostState,
-        onBackClick = { onBackClick(keywords) },
+        onBackClick = onBackClick,
         onKeywordInputChanged = viewModel::onKeywordInputChanged,
         onAddKeyword = viewModel::addKeyword,
         onDeleteKeyword = viewModel::deleteKeyword,
@@ -146,6 +147,7 @@ private fun LostAndFoundKeywordContent(
             MyKeywordSection(
                 keywords = uiState.keywords,
                 keywordInput = uiState.keywordInput,
+                isLoading = uiState.isLoading,
                 onKeywordInputChanged = onKeywordInputChanged,
                 onAddKeyword = onAddKeyword,
                 onDeleteKeyword = onDeleteKeyword,
@@ -178,6 +180,7 @@ private fun LostAndFoundKeywordContent(
 private fun MyKeywordSection(
     keywords: ImmutableList<String>,
     keywordInput: String,
+    isLoading: Boolean,
     onKeywordInputChanged: (String) -> Unit,
     onAddKeyword: (String) -> Unit,
     onDeleteKeyword: (String) -> Unit,
@@ -218,7 +221,7 @@ private fun MyKeywordSection(
         Spacer(modifier = Modifier.height(8.dp))
 
         // 키워드 입력 + 추가 버튼 (수평 배치, Figma 51322:185997)
-        val isAddButtonEnabled = keywordInput.isNotBlank()
+        val isAddButtonEnabled = keywordInput.isNotBlank() && !isLoading
         val interactionSource = remember { MutableInteractionSource() }
         val isFocused by interactionSource.collectIsFocusedAsState()
         Row(
@@ -239,13 +242,14 @@ private fun MyKeywordSection(
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 value = keywordInput,
                 onValueChange = onKeywordInputChanged,
+                enabled = !isLoading,
                 textStyle = KoinTheme.typography.medium14.copy(color = KoinTheme.colors.neutral800),
                 singleLine = true,
                 cursorBrush = SolidColor(KoinTheme.colors.primary400),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        if (keywordInput.isNotBlank()) {
+                        if (keywordInput.isNotBlank() && !isLoading) {
                             onAddKeyword(keywordInput)
                         }
                         focusManager.clearFocus()
@@ -433,7 +437,7 @@ private fun PreviewLostAndFoundKeywordContent(
             onDeleteKeyword = {},
             onAddSuggestedKeyword = {},
             onToggleNotification = {},
-            suggestedKeywords = LostAndFoundKeywordViewModel.SUGGESTED_KEYWORDS
+            suggestedKeywords = persistentListOf("지갑", "카드", "학생증", "에어팟", "핸드폰")
         )
     }
 }

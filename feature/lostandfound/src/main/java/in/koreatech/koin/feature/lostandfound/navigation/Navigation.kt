@@ -20,7 +20,6 @@ import `in`.koreatech.koin.feature.lostandfound.ui.list.LostAndFoundListViewMode
 import `in`.koreatech.koin.feature.lostandfound.ui.modify.LostAndFoundModify
 import `in`.koreatech.koin.feature.lostandfound.ui.report.LostAndFoundReport
 import `in`.koreatech.koin.feature.lostandfound.ui.write.LostAndFoundWriteArticle
-import kotlinx.collections.immutable.toPersistentList
 
 fun NavGraphBuilder.koinLostAndFoundGraph(
     navController: NavController,
@@ -62,18 +61,6 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
             }
             backStackEntry.savedStateHandle.remove<Boolean>(CANCEL_REFRESH_LIST)
         }
-
-        // 키워드 화면에서 복귀 시 전달된 키워드 목록을 수신
-        LaunchedEffect(backStackEntry) {
-            backStackEntry.savedStateHandle
-                .getStateFlow<ArrayList<String>?>(KEY_KEYWORD_LIST, null)
-                .collect { keywords ->
-                    if (keywords != null) {
-                        listViewModel.updateKeywordsFromKeywordScreen(keywords.toPersistentList())
-                        backStackEntry.savedStateHandle.remove<ArrayList<String>>(KEY_KEYWORD_LIST)
-                    }
-                }
-        }
         val navigator = rememberNavigator()
         val context = LocalContext.current
         LostAndFoundList(
@@ -94,12 +81,8 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
             navigateToWrite = { typeName ->
                 navController.navigate(LostAndFoundNavType.LostAndFoundWriteRoute(typeName))
             },
-            navigateToKeywordSetting = { keywords ->
-                navController.navigate(
-                    LostAndFoundNavType.LostAndFoundKeywordRoute(
-                        initialKeywordsCsv = keywords.joinToString("\u0001")
-                    )
-                )
+            navigateToKeywordSetting = {
+                navController.navigate(LostAndFoundNavType.LostAndFoundKeywordRoute)
             }
         )
     }
@@ -165,16 +148,7 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
     composable<LostAndFoundNavType.LostAndFoundKeywordRoute> {
         LostAndFoundKeyword(
             viewModel = hiltViewModel(),
-            onBackClick = { keywords ->
-                // previousBackStackEntry는 진짜 NavBackStackEntry?(nullable) → 안전한 ?.
-                navController.previousBackStackEntry
-                    ?.savedStateHandle
-                    ?.set(KEY_KEYWORD_LIST, ArrayList(keywords))
-                // 의도적으로 공용 onBackPressed 미사용:
-                // 공용 onBackPressed는 cancelRefreshList(true) → getBackStackEntry(ListRoute)를 호출하며,
-                // getBackStackEntry()는 비nullable이므로 deep-link 직접 진입 시 IllegalArgumentException 발생.
-                navController.popBackStack()
-            }
+            onBackClick = { navController.popBackStack() }
         )
     }
 }
