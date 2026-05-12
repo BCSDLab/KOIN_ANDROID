@@ -22,6 +22,7 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.syntax.simple.repeatOnSubscription
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
 @Suppress("LongParameterList")
 @HiltViewModel
@@ -57,14 +58,18 @@ class LostAndFoundKeywordViewModel @Inject constructor(
 
     private fun fetchSuggestedKeywords() = intent {
         fetchLostItemKeywordSuggestionsUseCase()
-            .catch { /* 추천 키워드 없이 graceful 처리 */ }
+            .catch { Timber.e(it, "추천 키워드 로드 실패") }
             .collect { suggestions ->
                 reduce { state.copy(suggestedKeywords = suggestions.toPersistentList()) }
             }
     }
 
     private fun loadNotificationState() = intent {
-        val (info, _) = getNotificationPermissionInfoUseCase()
+        val (info, error) = getNotificationPermissionInfoUseCase()
+        if (error != null) {
+            Timber.e("키워드 알림 설정 로드 실패: %s", error.message)
+            return@intent
+        }
         if (info != null) {
             val isEnabled = info.subscribes
                 .firstOrNull { it.type == SubscribesType.LOST_ITEM_KEYWORD }
@@ -107,11 +112,17 @@ class LostAndFoundKeywordViewModel @Inject constructor(
 
     fun deleteKeyword(keyword: String) {
         intent {
+            if (state.isLoading) return@intent
+
+            reduce { state.copy(isLoading = true) }
             deleteLostItemKeywordUseCase(keyword)
                 .catch {
+                    reduce { state.copy(isLoading = false) }
                     postSideEffect(LostAndFoundKeywordSideEffect.ShowSnackbar(R.string.keyword_delete_failed))
                 }
-                .collect { }
+                .collect {
+                    reduce { state.copy(isLoading = false) }
+                }
         }
     }
 
@@ -121,15 +132,19 @@ class LostAndFoundKeywordViewModel @Inject constructor(
 
     fun toggleNotification(isEnabled: Boolean) {
         intent {
-            reduce { state.copy(isNotificationEnabled = isEnabled) }
+            if (state.isLoading) return@intent
+
+            reduce { state.copy(isLoading = true, isNotificationEnabled = isEnabled) }
             val (_, error) = if (isEnabled) {
                 updateNotificationSubscriptionUseCase(SubscribesType.LOST_ITEM_KEYWORD)
             } else {
                 deleteNotificationSubscriptionUseCase(SubscribesType.LOST_ITEM_KEYWORD)
             }
             if (error != null) {
-                reduce { state.copy(isNotificationEnabled = !isEnabled) }
+                reduce { state.copy(isLoading = false, isNotificationEnabled = !isEnabled) }
                 postSideEffect(LostAndFoundKeywordSideEffect.ShowSnackbar(R.string.notification_update_failed))
+            } else {
+                reduce { state.copy(isLoading = false) }
             }
         }
     }

@@ -34,6 +34,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -92,8 +93,10 @@ fun LostAndFoundKeyword(
     }
 
     // Article keyword 화면처럼, 이미 등록된 키워드는 추천 키워드에서 제거
-    val availableSuggestions = remember(uiState.keywords, uiState.suggestedKeywords) {
-        (uiState.suggestedKeywords - uiState.keywords.toSet()).toPersistentList()
+    val availableSuggestions by remember {
+        derivedStateOf {
+            (uiState.suggestedKeywords - uiState.keywords.toSet()).toPersistentList()
+        }
     }
     LostAndFoundKeywordContent(
         modifier = modifier,
