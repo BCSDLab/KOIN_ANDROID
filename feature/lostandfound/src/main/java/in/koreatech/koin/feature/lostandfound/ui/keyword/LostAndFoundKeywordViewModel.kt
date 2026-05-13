@@ -10,6 +10,7 @@ import `in`.koreatech.koin.domain.usecase.article.lostandfound.SaveLostItemKeywo
 import `in`.koreatech.koin.domain.usecase.notification.DeleteNotificationSubscriptionUseCase
 import `in`.koreatech.koin.domain.usecase.notification.GetNotificationPermissionInfoUseCase
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.lostandfound.R
 import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
@@ -24,7 +25,7 @@ import org.orbitmvi.orbit.syntax.simple.repeatOnSubscription
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "TooManyFunctions")
 @HiltViewModel
 class LostAndFoundKeywordViewModel @Inject constructor(
     private val fetchLostItemKeywordUseCase: FetchLostItemKeywordUseCase,
@@ -33,7 +34,8 @@ class LostAndFoundKeywordViewModel @Inject constructor(
     private val fetchLostItemKeywordSuggestionsUseCase: FetchLostItemKeywordSuggestionsUseCase,
     private val updateNotificationSubscriptionUseCase: UpdateNotificationSubscriptionUseCase,
     private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase,
-    private val getNotificationPermissionInfoUseCase: GetNotificationPermissionInfoUseCase
+    private val getNotificationPermissionInfoUseCase: GetNotificationPermissionInfoUseCase,
+    private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<LostAndFoundKeywordState, LostAndFoundKeywordSideEffect> {
 
     override val container = container<LostAndFoundKeywordState, LostAndFoundKeywordSideEffect>(
@@ -41,9 +43,20 @@ class LostAndFoundKeywordViewModel @Inject constructor(
     )
 
     init {
+        observeUserStatus()
         observeKeywords()
         fetchSuggestedKeywords()
         loadNotificationState()
+    }
+
+    private fun observeUserStatus() = intent {
+        repeatOnSubscription {
+            getUserStatusUseCase()
+                .catch { reduce { state.copy(isLoggedIn = false) } }
+                .collect { user ->
+                    reduce { state.copy(isLoggedIn = !user.isAnonymous) }
+                }
+        }
     }
 
     private fun observeKeywords() = intent {
@@ -86,6 +99,10 @@ class LostAndFoundKeywordViewModel @Inject constructor(
 
     fun addKeyword(keyword: String) {
         intent {
+            if (!state.isLoggedIn) {
+                reduce { state.copy(showLoginDialog = true) }
+                return@intent
+            }
             if (state.isLoading) return@intent
 
             val validationError = validateKeyword(keyword)
@@ -132,6 +149,10 @@ class LostAndFoundKeywordViewModel @Inject constructor(
 
     fun toggleNotification(isEnabled: Boolean) {
         intent {
+            if (!state.isLoggedIn) {
+                reduce { state.copy(showLoginDialog = true) }
+                return@intent
+            }
             if (state.isLoading) return@intent
 
             reduce { state.copy(isLoading = true, isNotificationEnabled = isEnabled) }
@@ -147,6 +168,10 @@ class LostAndFoundKeywordViewModel @Inject constructor(
                 reduce { state.copy(isLoading = false) }
             }
         }
+    }
+
+    fun dismissLoginDialog() = intent {
+        reduce { state.copy(showLoginDialog = false) }
     }
 
     private fun validateKeyword(keyword: String): Int? = when {
