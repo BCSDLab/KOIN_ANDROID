@@ -146,10 +146,6 @@ object AnalyticsConstant {
         }
 
         object Club {
-            const val CLUB_AB_TEST_CATEGORY = "a/b test 로깅(메인화면 동아리 진입)"
-            const val CLUB_AB_TEST_DESIGN_A = "design_A"
-            const val CLUB_AB_TEST_DESIGN_B = "design_B"
-            const val CLUB_1 = "CAMPUS_club_1"
             const val MAIN_POPULAR_CLUB = "main_popular_club"
             const val MAIN_CLUB = "main_club"
             const val MAIN_SELECT_CLUB = "club_main_select"
@@ -175,11 +171,6 @@ object AnalyticsConstant {
             const val CLUB_RECRUITMENT_NOTI = "club_recruitment_noti"
             const val CLUB_RECRUITMENT_ACCEPT = "club_recruitment_accept"
             const val CLUB_RECRUITMENT_CANCEL = "club_recruitment_cancel"
-        }
-
-        object Dining {
-            const val DINING_AB_TEST_DESIGN_A = "design_A"
-            const val DINING_AB_TEST_DESIGN_B = "design_B"
         }
 
         object Callvan {
