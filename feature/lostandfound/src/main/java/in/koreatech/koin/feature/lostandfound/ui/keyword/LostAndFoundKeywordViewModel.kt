@@ -52,9 +52,12 @@ class LostAndFoundKeywordViewModel @Inject constructor(
     private fun observeUserStatus() = intent {
         repeatOnSubscription {
             getUserStatusUseCase()
-                .catch { reduce { state.copy(isLoggedIn = false) } }
+                .catch { e ->
+                    Timber.e(e, "로그인 상태 관찰 실패")
+                    reduce { state.copy(isLoggedIn = false, isLoginStatusLoaded = true) }
+                }
                 .collect { user ->
-                    reduce { state.copy(isLoggedIn = !user.isAnonymous) }
+                    reduce { state.copy(isLoggedIn = !user.isAnonymous, isLoginStatusLoaded = true) }
                 }
         }
     }
@@ -99,6 +102,7 @@ class LostAndFoundKeywordViewModel @Inject constructor(
 
     fun addKeyword(keyword: String) {
         intent {
+            if (!state.isLoginStatusLoaded) return@intent
             if (!state.isLoggedIn) {
                 reduce { state.copy(showLoginDialog = true) }
                 return@intent
@@ -149,6 +153,7 @@ class LostAndFoundKeywordViewModel @Inject constructor(
 
     fun toggleNotification(isEnabled: Boolean) {
         intent {
+            if (!state.isLoginStatusLoaded) return@intent
             if (!state.isLoggedIn) {
                 reduce { state.copy(showLoginDialog = true) }
                 return@intent

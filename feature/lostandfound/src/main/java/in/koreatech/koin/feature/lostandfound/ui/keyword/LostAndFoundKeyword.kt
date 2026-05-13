@@ -55,9 +55,9 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
+import `in`.koreatech.koin.feature.lostandfound.component.LoginDialog
 import `in`.koreatech.koin.feature.lostandfound.component.LostAndFoundAddableChipFlowGroup
 import `in`.koreatech.koin.feature.lostandfound.component.LostAndFoundDeletableChipFlowGroup
-import `in`.koreatech.koin.feature.lostandfound.ui.list.component.LoginDialog
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
