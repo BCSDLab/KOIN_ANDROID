@@ -42,12 +42,12 @@ class DiningActivity : ComponentActivity() {
 
         setContent {
             KoinTheme {
-                var startDestination by remember { mutableStateOf(DiningNavType.DiningDetail.route) }
+                var startDestination: Any by remember { mutableStateOf(DiningNavType.DiningDetail()) }
                 navController = rememberNavController()
 
                 if (Intent.ACTION_VIEW == intent.action) {
                     val initPair = onActionView()
-                    startDestination = "${DiningNavType.DiningDetail.route}?initDate=${initPair.first}&initTabType=${initPair.second}"
+                    startDestination = DiningNavType.DiningDetail(initDate = initPair.first, initTabType = initPair.second)
                 }
 
                 NavHost(
@@ -96,9 +96,8 @@ class DiningActivity : ComponentActivity() {
         }
         super.onNewIntent(intent)
         val initPair = onActionView()
-        val startDestination = "${DiningNavType.DiningDetail.route}?initDate=${initPair.first}&initTabType=${initPair.second}"
-        navController.navigate(startDestination) {
-            popUpTo(DiningNavType.DiningDetail.route) { inclusive = true }
+        navController.navigate(DiningNavType.DiningDetail(initDate = initPair.first, initTabType = initPair.second)) {
+            popUpTo<DiningNavType.DiningDetail> { inclusive = true }
             launchSingleTop = true
         }
     }

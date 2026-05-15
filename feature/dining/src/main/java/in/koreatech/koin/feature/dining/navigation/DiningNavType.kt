@@ -1,6 +1,15 @@
 package `in`.koreatech.koin.feature.dining.navigation
 
-sealed class DiningNavType(val route: String) {
-    data object DiningDetail : DiningNavType("dining_detail")
-    data object DiningNotice : DiningNavType("dining_notice")
+import kotlinx.serialization.Serializable
+
+@Serializable
+sealed class DiningNavType {
+    @Serializable
+    data class DiningDetail(
+        val initDate: String = "",
+        val initTabType: Int = -1
+    ) : DiningNavType()
+
+    @Serializable
+    data object DiningNotice : DiningNavType()
 }
