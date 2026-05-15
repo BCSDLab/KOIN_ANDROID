@@ -10,5 +10,8 @@ data class LostAndFoundKeywordState(
     val keywordInput: String = "",
     val isNotificationEnabled: Boolean = false,
     val isLoading: Boolean = false,
-    val suggestedKeywords: ImmutableList<String> = persistentListOf()
+    val suggestedKeywords: ImmutableList<String> = persistentListOf(),
+    val isLoginStatusLoaded: Boolean = false,
+    val isLoggedIn: Boolean = false,
+    val showLoginDialog: Boolean = false
 )

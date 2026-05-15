@@ -55,6 +55,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
+import `in`.koreatech.koin.feature.lostandfound.component.LoginDialog
 import `in`.koreatech.koin.feature.lostandfound.component.LostAndFoundAddableChipFlowGroup
 import `in`.koreatech.koin.feature.lostandfound.component.LostAndFoundDeletableChipFlowGroup
 import kotlinx.collections.immutable.ImmutableList
@@ -69,6 +70,7 @@ private val ButtonShape = RoundedCornerShape(4.dp)
 @Composable
 fun LostAndFoundKeyword(
     onBackClick: () -> Unit,
+    navigateToLogin: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LostAndFoundKeywordViewModel = hiltViewModel()
 ) {
@@ -90,6 +92,19 @@ fun LostAndFoundKeyword(
 
     BackHandler {
         onBackClick()
+    }
+
+    // 비로그인 다이얼로그
+    if (uiState.showLoginDialog) {
+        LoginDialog(
+            title = stringResource(R.string.recommend_login_to_get_keyword_notification_title),
+            description = stringResource(R.string.recommend_login_to_get_keyword_notification_message),
+            onPositive = {
+                navigateToLogin()
+                viewModel.dismissLoginDialog()
+            },
+            onNegative = viewModel::dismissLoginDialog
+        )
     }
 
     // Article keyword 화면처럼, 이미 등록된 키워드는 추천 키워드에서 제거
