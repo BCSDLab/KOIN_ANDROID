@@ -37,12 +37,12 @@ class ClubActivity : ComponentActivity() {
 
         setContent {
             KoinTheme {
-                var startDestination by remember { mutableStateOf("${ClubNavType.ClubList.route}/$clubCategory") }
+                var startDestination: Any by remember { mutableStateOf(ClubNavType.ClubList(categoryId = clubCategory)) }
                 val navController = rememberNavController()
 
                 intent.getIntExtra(CLUB_ID, -1).let {
                     if (it != -1) {
-                        startDestination = "${ClubNavType.ClubDetail.route}/$it"
+                        startDestination = ClubNavType.ClubDetail(clubId = it)
                     }
                 }
 
@@ -50,9 +50,9 @@ class ClubActivity : ComponentActivity() {
                     if (it != -1) {
                         val eventId = intent.getIntExtra(EXTRA_EVENT_ID, -1)
                         startDestination = if (eventId != -1) {
-                            "${ClubNavType.ClubDetail.route}/$it?eventId=$eventId"
+                            ClubNavType.ClubDetail(clubId = it, eventId = eventId)
                         } else {
-                            "${ClubNavType.ClubDetail.route}/$it?recruitEvent=true"
+                            ClubNavType.ClubDetail(clubId = it, recruitEvent = true)
                         }
                     }
                 }
