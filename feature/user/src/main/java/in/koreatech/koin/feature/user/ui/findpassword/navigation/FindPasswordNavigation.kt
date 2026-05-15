@@ -2,9 +2,8 @@ package `in`.koreatech.koin.feature.user.ui.findpassword.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import `in`.koreatech.koin.feature.user.ui.findpassword.changepassword.ChangePasswordScreen
 import `in`.koreatech.koin.feature.user.ui.findpassword.complete.FindPasswordCompleteScreen
 import `in`.koreatech.koin.feature.user.ui.findpassword.verification.FindPasswordVerification
@@ -12,31 +11,22 @@ import `in`.koreatech.koin.feature.user.ui.findpassword.verification.FindPasswor
 fun NavGraphBuilder.koinFindPasswordGraph(
     navController: NavController
 ) {
-    composable(
-        route = FindPasswordNavType.Verification.route
-    ) {
+    composable<FindPasswordNavType.Verification> {
         FindPasswordVerification(
             navigateToPasswordScreen = { loginId, verificationMethod ->
-                navController.navigate("${FindPasswordNavType.ChangePassword.route}/$loginId/$verificationMethod")
+                navController.navigate(FindPasswordNavType.ChangePassword(loginId = loginId, verificationMethod = verificationMethod))
             }
         )
     }
 
-    composable(
-        route = "${FindPasswordNavType.ChangePassword.route}/{$LOGIN_ID}/{$VERIFICATION_METHOD}",
-        arguments = listOf(
-            navArgument(LOGIN_ID) { type = NavType.StringType },
-            navArgument(VERIFICATION_METHOD) { type = NavType.StringType }
-        )
-    ) {
+    composable<FindPasswordNavType.ChangePassword> { entry ->
+        val args = entry.toRoute<FindPasswordNavType.ChangePassword>()
         ChangePasswordScreen {
-            navController.navigate(FindPasswordNavType.Complete.route)
+            navController.navigate(FindPasswordNavType.Complete)
         }
     }
 
-    composable(
-        route = FindPasswordNavType.Complete.route
-    ) {
+    composable<FindPasswordNavType.Complete> {
         FindPasswordCompleteScreen()
     }
 }

@@ -1,6 +1,12 @@
 package `in`.koreatech.koin.feature.user.ui.findid.navigation
 
-sealed class FindIdNavType(val route: String) {
-    data object Verification : FindIdNavType("verification")
-    data object Complete : FindIdNavType("complete")
+import kotlinx.serialization.Serializable
+
+@Serializable
+sealed class FindIdNavType {
+    @Serializable
+    data object Verification : FindIdNavType()
+
+    @Serializable
+    data class Complete(val loginId: String) : FindIdNavType()
 }
