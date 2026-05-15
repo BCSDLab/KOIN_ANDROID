@@ -160,7 +160,7 @@ class CallvanCreateViewModel @Inject constructor(
     @Suppress("CognitiveComplexMethod")
     fun submit() = intent {
         val currentState = state
-        if (!currentState.isFormComplete || currentState.isSubmitting) return@intent
+        if (!currentState.isFormComplete) return@intent
         if (currentState.departureLocation == null || currentState.arrivalLocation == null) return@intent
 
         if (currentState.restriction.isRestricted) {
@@ -176,7 +176,17 @@ class CallvanCreateViewModel @Inject constructor(
             return@intent
         }
 
-        reduce { state.copy(isSubmitting = true) }
+        // check와 set을 하나의 reduce 로 처리해 중복 호출 방지 보장
+        var canProceed = false
+        reduce {
+            if (state.isSubmitting) {
+                state
+            } else {
+                canProceed = true
+                state.copy(isSubmitting = true)
+            }
+        }
+        if (!canProceed) return@intent
         createCallvanPostUseCase(
             departureType = currentState.departureLocation.name,
             departureCustomName = if (currentState.departureLocation == CallvanLocationOption.CUSTOM) {
