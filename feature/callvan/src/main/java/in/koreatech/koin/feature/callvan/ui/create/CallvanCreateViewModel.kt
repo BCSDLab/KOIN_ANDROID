@@ -14,6 +14,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import javax.inject.Inject
+import kotlinx.coroutines.sync.Mutex
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -32,6 +33,8 @@ class CallvanCreateViewModel @Inject constructor(
     override val container: Container<CallvanCreateState, CallvanCreateSideEffect> = container(
         CallvanCreateState()
     )
+
+    private val submitMutex = Mutex()
 
     fun openDepartureLocationPicker() = blockingIntent {
         reduce { state.copy(isLocationPickerVisible = true, isPickingDeparture = true) }
@@ -176,45 +179,39 @@ class CallvanCreateViewModel @Inject constructor(
             return@intent
         }
 
-        // check와 set을 하나의 reduce 로 처리해 중복 호출 방지 보장
-        var canProceed = false
-        reduce {
-            if (state.isSubmitting) {
-                state
-            } else {
-                canProceed = true
-                state.copy(isSubmitting = true)
+        if (!submitMutex.tryLock()) return@intent
+        reduce { state.copy(isSubmitting = true) }
+        try {
+            createCallvanPostUseCase(
+                departureType = currentState.departureLocation.name,
+                departureCustomName = if (currentState.departureLocation == CallvanLocationOption.CUSTOM) {
+                    currentState.departureCustomText
+                } else {
+                    null
+                },
+                arrivalType = currentState.arrivalLocation.name,
+                arrivalCustomName = if (currentState.arrivalLocation == CallvanLocationOption.CUSTOM) {
+                    currentState.arrivalCustomText
+                } else {
+                    null
+                },
+                departureDate = currentState.apiDepartureDate,
+                departureTime = currentState.apiDepartureTime,
+                maxParticipants = currentState.maxParticipants
+            ).onSuccess {
+                postSideEffect(CallvanCreateSideEffect.NavigateToMain)
+            }.onFailure { error ->
+                val errorType = when (error) {
+                    is KoinCallvanException.InvalidRequestBodyException -> SubmitErrorType.INVALID_REQUEST_BODY
+                    is KoinCallvanException.InvalidCustomLocationNameException -> SubmitErrorType.INVALID_CUSTOM_LOCATION_NAME
+                    is KoinCallvanException.NotFoundUserException -> SubmitErrorType.NOT_FOUND_USER
+                    else -> SubmitErrorType.UNKNOWN
+                }
+                postSideEffect(CallvanCreateSideEffect.ShowSubmitError(errorType))
             }
-        }
-        if (!canProceed) return@intent
-        createCallvanPostUseCase(
-            departureType = currentState.departureLocation.name,
-            departureCustomName = if (currentState.departureLocation == CallvanLocationOption.CUSTOM) {
-                currentState.departureCustomText
-            } else {
-                null
-            },
-            arrivalType = currentState.arrivalLocation.name,
-            arrivalCustomName = if (currentState.arrivalLocation == CallvanLocationOption.CUSTOM) {
-                currentState.arrivalCustomText
-            } else {
-                null
-            },
-            departureDate = currentState.apiDepartureDate,
-            departureTime = currentState.apiDepartureTime,
-            maxParticipants = currentState.maxParticipants
-        ).onSuccess {
+        } finally {
+            submitMutex.unlock()
             reduce { state.copy(isSubmitting = false) }
-            postSideEffect(CallvanCreateSideEffect.NavigateToMain)
-        }.onFailure { error ->
-            reduce { state.copy(isSubmitting = false) }
-            val errorType = when (error) {
-                is KoinCallvanException.InvalidRequestBodyException -> SubmitErrorType.INVALID_REQUEST_BODY
-                is KoinCallvanException.InvalidCustomLocationNameException -> SubmitErrorType.INVALID_CUSTOM_LOCATION_NAME
-                is KoinCallvanException.NotFoundUserException -> SubmitErrorType.NOT_FOUND_USER
-                else -> SubmitErrorType.UNKNOWN
-            }
-            postSideEffect(CallvanCreateSideEffect.ShowSubmitError(errorType))
         }
     }
 }
