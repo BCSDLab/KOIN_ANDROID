@@ -21,7 +21,6 @@ fun NavGraphBuilder.koinClubGraph(
     navController: NavController
 ) {
     composable<ClubNavType.ClubList> { entry ->
-        val args = entry.toRoute<ClubNavType.ClubList>()
         val isClubCreated by entry.savedStateHandle.getStateFlow(IS_CLUB_CREATED, initialValue = false)
             .collectAsStateWithLifecycle()
 
@@ -93,8 +92,7 @@ fun NavGraphBuilder.koinClubGraph(
         )
     }
 
-    composable<ClubNavType.ClubModify> { entry ->
-        val args = entry.toRoute<ClubNavType.ClubModify>()
+    composable<ClubNavType.ClubModify> {
         ClubModifyScreen(
             onNavigateUp = {
                 navController.navigateUp()
@@ -109,8 +107,7 @@ fun NavGraphBuilder.koinClubGraph(
         )
     }
 
-    composable<ClubNavType.ClubRecruitCreate> { entry ->
-        val args = entry.toRoute<ClubNavType.ClubRecruitCreate>()
+    composable<ClubNavType.ClubRecruitCreate> {
         ClubRecruitCreateScreen(
             onNavigateUp = {
                 navController.navigateUp()
@@ -121,8 +118,7 @@ fun NavGraphBuilder.koinClubGraph(
         )
     }
 
-    composable<ClubNavType.ClubRecruitModify> { entry ->
-        val args = entry.toRoute<ClubNavType.ClubRecruitModify>()
+    composable<ClubNavType.ClubRecruitModify> {
         ClubRecruitModifyScreen(
             onNavigateUp = {
                 navController.navigateUp()
@@ -133,8 +129,7 @@ fun NavGraphBuilder.koinClubGraph(
         )
     }
 
-    composable<ClubNavType.ClubEventCreate> { entry ->
-        val args = entry.toRoute<ClubNavType.ClubEventCreate>()
+    composable<ClubNavType.ClubEventCreate> {
         ClubEventCreateScreen(
             onNavigateUp = {
                 navController.navigateUp()
@@ -145,8 +140,7 @@ fun NavGraphBuilder.koinClubGraph(
         )
     }
 
-    composable<ClubNavType.ClubEventModify> { entry ->
-        val args = entry.toRoute<ClubNavType.ClubEventModify>()
+    composable<ClubNavType.ClubEventModify> {
         ClubEventModifyScreen(
             onNavigateUp = {
                 navController.navigateUp()

@@ -112,8 +112,7 @@ private fun NavGraphBuilder.koinStoreCartScreens(
                 uriPattern = "$DEEPLINK_STORE_ADD_CART/{$ORDERABLE_SHOP_ID}/{$ORDERABLE_SHOP_MENU_ID}/{$CART_DATA}"
             }
         )
-    ) { entry ->
-        val args = entry.toRoute<StoreNavType.StoreCartAdd>()
+    ) {
         CartAddScreen(
             navigateToCart = {
                 navController.previousBackStackEntry?.savedStateHandle?.set(
@@ -141,8 +140,7 @@ private fun NavGraphBuilder.koinStoreCartScreens(
         )
     }
 
-    composable<StoreNavType.StoreCartEdit> { entry ->
-        val args = entry.toRoute<StoreNavType.StoreCartEdit>()
+    composable<StoreNavType.StoreCartEdit> {
         CartEditScreen(
             navigateToCart = {
                 navController.navigate(StoreNavType.StoreCart)

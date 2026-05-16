@@ -4,10 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -40,15 +36,16 @@ class DiningActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdgeWithDarkStatusBar()
 
+        val startDestination: Any = if (Intent.ACTION_VIEW == intent.action) {
+            val initPair = onActionView()
+            DiningNavType.DiningDetail(initDate = initPair.first, initTabType = initPair.second)
+        } else {
+            DiningNavType.DiningDetail()
+        }
+
         setContent {
             KoinTheme {
-                var startDestination: Any by remember { mutableStateOf(DiningNavType.DiningDetail()) }
                 navController = rememberNavController()
-
-                if (Intent.ACTION_VIEW == intent.action) {
-                    val initPair = onActionView()
-                    startDestination = DiningNavType.DiningDetail(initDate = initPair.first, initTabType = initPair.second)
-                }
 
                 NavHost(
                     modifier = Modifier,

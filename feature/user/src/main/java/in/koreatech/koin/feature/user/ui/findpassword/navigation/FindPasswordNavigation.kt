@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.user.ui.findpassword.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
 import `in`.koreatech.koin.feature.user.ui.findpassword.changepassword.ChangePasswordScreen
 import `in`.koreatech.koin.feature.user.ui.findpassword.complete.FindPasswordCompleteScreen
 import `in`.koreatech.koin.feature.user.ui.findpassword.verification.FindPasswordVerification
@@ -19,8 +18,7 @@ fun NavGraphBuilder.koinFindPasswordGraph(
         )
     }
 
-    composable<FindPasswordNavType.ChangePassword> { entry ->
-        val args = entry.toRoute<FindPasswordNavType.ChangePassword>()
+    composable<FindPasswordNavType.ChangePassword> {
         ChangePasswordScreen {
             navController.navigate(FindPasswordNavType.Complete)
         }

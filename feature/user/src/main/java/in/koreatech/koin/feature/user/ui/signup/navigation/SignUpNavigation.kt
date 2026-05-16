@@ -36,15 +36,13 @@ fun NavGraphBuilder.koinUserGraph(
             }
         )
     }
-    composable<SignUpNavType.GeneralUserInfo> { entry ->
-        val args = entry.toRoute<SignUpNavType.GeneralUserInfo>()
+    composable<SignUpNavType.GeneralUserInfo> {
         SignUpGeneralUserInfo {
             navController.navigate(SignUpNavType.SignUpComplete)
         }
     }
 
-    composable<SignUpNavType.StudentUserInfo> { entry ->
-        val args = entry.toRoute<SignUpNavType.StudentUserInfo>()
+    composable<SignUpNavType.StudentUserInfo> {
         SignUpStudentUserInfo {
             navController.navigate(SignUpNavType.SignUpComplete)
         }
