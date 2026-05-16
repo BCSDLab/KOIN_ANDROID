@@ -251,4 +251,9 @@
 
     <string name="review_sign_in_dialog_title">리뷰를 작성하기 위해\n로그인이 필요해요.</string>
     <string name="review_sign_in_dialog_message">리뷰작성은 회원만 사용 가능합니다.</string>
+
+    <string name="store_notice_view_details">상세보기</string>
+    <string name="store_notice_fold">접기</string>
+    <string name="store_notice_image_preparing">사장님이 이미지를 준비중이에요.</string>
+    <string name="store_notice_empty">아직 이벤트/공지가 없어요</string>
 </resources>
