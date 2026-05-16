@@ -4,10 +4,6 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -34,28 +30,24 @@ class ClubActivity : ComponentActivity() {
         }
 
         val clubCategory = intent.getIntExtra(CATEGORY_ID, -1)
+        val clubId = intent.getIntExtra(CLUB_ID, -1)
+        val extraClubId = intent.getIntExtra(EXTRA_CLUB_ID, -1)
+        val extraEventId = intent.getIntExtra(EXTRA_EVENT_ID, -1)
+
+        val startDestination: ClubNavType = when {
+            extraClubId != -1 -> if (extraEventId != -1) {
+                ClubNavType.ClubDetail(clubId = extraClubId, eventId = extraEventId)
+            } else {
+                ClubNavType.ClubDetail(clubId = extraClubId, recruitEvent = true)
+            }
+
+            clubId != -1 -> ClubNavType.ClubDetail(clubId = clubId)
+            else -> ClubNavType.ClubList(categoryId = clubCategory)
+        }
 
         setContent {
             KoinTheme {
-                var startDestination: Any by remember { mutableStateOf(ClubNavType.ClubList(categoryId = clubCategory)) }
                 val navController = rememberNavController()
-
-                intent.getIntExtra(CLUB_ID, -1).let {
-                    if (it != -1) {
-                        startDestination = ClubNavType.ClubDetail(clubId = it)
-                    }
-                }
-
-                intent.getIntExtra(EXTRA_CLUB_ID, -1).let {
-                    if (it != -1) {
-                        val eventId = intent.getIntExtra(EXTRA_EVENT_ID, -1)
-                        startDestination = if (eventId != -1) {
-                            ClubNavType.ClubDetail(clubId = it, eventId = eventId)
-                        } else {
-                            ClubNavType.ClubDetail(clubId = it, recruitEvent = true)
-                        }
-                    }
-                }
 
                 NavHost(
                     modifier = Modifier,
