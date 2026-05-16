@@ -134,8 +134,11 @@ fun StoreNoticeCardExpand(
                             .size(8.dp)
                             .clip(CircleShape)
                             .background(
-                                if (selected) RebrandKoinTheme.colors.neutral800
-                                else RebrandKoinTheme.colors.neutral300
+                                if (selected) {
+                                    RebrandKoinTheme.colors.neutral800
+                                } else {
+                                    RebrandKoinTheme.colors.neutral300
+                                }
                             )
                     )
                 }

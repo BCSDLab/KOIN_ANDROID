@@ -97,7 +97,7 @@ fun StoreNoticeCard(
             Text(
                 text = description,
                 style = RebrandKoinTheme.typography.medium12,
-                color = RebrandKoinTheme.colors.neutral800,
+                color = RebrandKoinTheme.colors.neutral800
             )
             Text(
                 text = dateRange,
