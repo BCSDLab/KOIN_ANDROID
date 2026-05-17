@@ -55,6 +55,16 @@ jobs:
       - uses: ./.github/actions/gradle-setup
         with:
           properties: ${{ secrets.PROPERTIES }}
+          gradle-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+
+      - name: Update Firebase
+        env:
+          FIREBASE: ${{ secrets.FIREBASE }}
+          FIREBASE_STAGE: ${{ secrets.FIREBASE_STAGE }}
+        run: |
+          mkdir -p ./koin/src/debug
+          echo $FIREBASE | base64 -di > ./koin/google-services.json
+          echo $FIREBASE_STAGE | base64 -di > ./koin/src/debug/google-services.json
 
       - name: ktlint
         run: ./gradlew ktlintCheck
@@ -64,6 +74,9 @@ jobs:
 
       - name: detekt
         run: ./gradlew detekt
+
+      - name: Lint
+        run: ./gradlew lintDebug
 
       - name: Upload detekt Report
         uses: actions/upload-artifact@v4
@@ -81,6 +94,14 @@ jobs:
           path: '**/build/reports/ktlint/**'
           retention-days: 7
 
+      - name: Upload Lint Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lint-report
+          path: '**/build/reports/lint-results-debug.xml'
+          retention-days: 7
+
   coverage:
     name: Code Coverage
     runs-on: ubuntu-latest
@@ -90,6 +111,7 @@ jobs:
       - uses: ./.github/actions/gradle-setup
         with:
           properties: ${{ secrets.PROPERTIES }}
+          gradle-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
       - name: Update Firebase
         env:
@@ -127,6 +149,7 @@ jobs:
       - uses: ./.github/actions/gradle-setup
         with:
           properties: ${{ secrets.PROPERTIES }}
+          gradle-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
       - name: Cache SonarQube packages
         uses: actions/cache@v4
@@ -164,13 +187,16 @@ jobs:
            echo $file
           done
 
-      - name: Lint
-        run: ./gradlew lintDebug
-
       - name: Download Coverage Report
         uses: actions/download-artifact@v4
         with:
           name: kover-report
+          path: .
+
+      - name: Download Lint Report
+        uses: actions/download-artifact@v4
+        with:
+          name: lint-report
           path: .
 
       - name: Download detekt Report
