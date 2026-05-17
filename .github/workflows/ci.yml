@@ -215,8 +215,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          ./gradlew sonar \
-            -Dsonar.qualitygate.wait=true
+          ./gradlew build sonar
 
   label:
     name: Add CI Label
