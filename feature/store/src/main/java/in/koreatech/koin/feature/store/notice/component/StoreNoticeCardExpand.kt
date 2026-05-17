@@ -48,7 +48,7 @@ fun StoreNoticeCardExpand(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Column(
-            modifier = modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Row(
@@ -94,7 +94,7 @@ fun StoreNoticeCardExpand(
                 contentAlignment = Alignment.Center
             ) {
                 Column(
-                    modifier = modifier,
+                    modifier = Modifier,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Icon(
