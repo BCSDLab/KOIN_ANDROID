@@ -1,7 +1,18 @@
 package `in`.koreatech.koin.feature.user.ui.findpassword.navigation
 
-sealed class FindPasswordNavType(val route: String) {
-    data object Verification : FindPasswordNavType("verification")
-    data object ChangePassword : FindPasswordNavType("change_password")
-    data object Complete : FindPasswordNavType("complete")
+import kotlinx.serialization.Serializable
+
+@Serializable
+sealed class FindPasswordNavType {
+    @Serializable
+    data object Verification : FindPasswordNavType()
+
+    @Serializable
+    data class ChangePassword(
+        val loginId: String,
+        val verificationMethod: String
+    ) : FindPasswordNavType()
+
+    @Serializable
+    data object Complete : FindPasswordNavType()
 }

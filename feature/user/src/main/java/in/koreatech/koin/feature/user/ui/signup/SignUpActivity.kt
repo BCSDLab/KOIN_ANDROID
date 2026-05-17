@@ -65,7 +65,7 @@ class SignUpActivity : ComponentActivity() {
                         exitTransition = {
                             ExitTransition.None
                         },
-                        startDestination = SignUpNavType.Term.route
+                        startDestination = SignUpNavType.Term
                     ) {
                         koinUserGraph(navController = navController, finish = { finish() })
                     }

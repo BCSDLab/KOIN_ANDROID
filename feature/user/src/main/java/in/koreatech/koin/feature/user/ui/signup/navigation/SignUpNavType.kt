@@ -1,10 +1,36 @@
 package `in`.koreatech.koin.feature.user.ui.signup.navigation
 
-sealed class SignUpNavType(val route: String) {
-    data object Term : SignUpNavType("signUpTerm")
-    data object Verification : SignUpNavType("signUpVerification")
-    data object UserType : SignUpNavType("signUpUsertype")
-    data object StudentUserInfo : SignUpNavType("signUpStudentUserinfo")
-    data object GeneralUserInfo : SignUpNavType("signUpGeneralUserinfo")
-    data object SignUpComplete : SignUpNavType("signUpComplete")
+import kotlinx.serialization.Serializable
+
+@Serializable
+sealed class SignUpNavType {
+    @Serializable
+    data object Term : SignUpNavType()
+
+    @Serializable
+    data object Verification : SignUpNavType()
+
+    @Serializable
+    data class UserType(
+        val name: String,
+        val phoneNumber: String,
+        val gender: String
+    ) : SignUpNavType()
+
+    @Serializable
+    data class StudentUserInfo(
+        val name: String,
+        val phoneNumber: String,
+        val gender: String
+    ) : SignUpNavType()
+
+    @Serializable
+    data class GeneralUserInfo(
+        val name: String,
+        val phoneNumber: String,
+        val gender: String
+    ) : SignUpNavType()
+
+    @Serializable
+    data object SignUpComplete : SignUpNavType()
 }

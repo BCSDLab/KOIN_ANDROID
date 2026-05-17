@@ -58,7 +58,7 @@ class FindIdActivity : ComponentActivity() {
                         exitTransition = {
                             ExitTransition.None
                         },
-                        startDestination = FindIdNavType.Verification.route
+                        startDestination = FindIdNavType.Verification
                     ) {
                         koinFindIdNavigation(navController = navController)
                     }

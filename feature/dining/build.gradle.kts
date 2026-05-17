@@ -3,6 +3,7 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 plugins {
     alias(libs.plugins.koin.feature)
     alias(libs.plugins.koin.hilt)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
