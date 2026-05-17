@@ -26,13 +26,15 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun StoreNoticeCard(
     title: String,
     description: String,
     dateRange: String,
-    imageUris: List<String>,
+    imageUris: ImmutableList<String>,
     onExpandClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -115,7 +117,7 @@ private fun StoreNoticeCardPreview() {
         title = "알바 모집",
         description = "하루 6-8시간 주 2회 정도 알바할 학생을 찾습니다.\n상담은 직접 와서 만나면 돼요.",
         dateRange = "2025.12.12 - 2029.08.31",
-        imageUris = emptyList(),
+        imageUris = persistentListOf(),
         onExpandClick = {}
     )
 }

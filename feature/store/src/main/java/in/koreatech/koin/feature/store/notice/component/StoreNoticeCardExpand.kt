@@ -29,13 +29,15 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun StoreNoticeCardExpand(
     title: String,
     description: String,
     dateRange: String,
-    imageUris: List<String>,
+    imageUris: ImmutableList<String>,
     onFoldClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -83,7 +85,6 @@ fun StoreNoticeCardExpand(
                 color = RebrandKoinTheme.colors.neutral500
             )
         }
-        val pagerState = rememberPagerState(pageCount = { imageUris.size.coerceAtLeast(1) })
         if (imageUris.isEmpty()) {
             Box(
                 modifier = Modifier
@@ -109,6 +110,8 @@ fun StoreNoticeCardExpand(
                 }
             }
         } else {
+            val pagerState = rememberPagerState(pageCount = { imageUris.size })
+
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier.fillMaxWidth()
@@ -120,27 +123,26 @@ fun StoreNoticeCardExpand(
                     contentScale = ContentScale.FillWidth
                 )
             }
-        }
-        if (imageUris.size > 1) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                repeat(imageUris.size) { index ->
-                    val selected = index == pagerState.currentPage
-                    Box(
-                        modifier = Modifier
-                            .padding(horizontal = 4.dp)
-                            .size(8.dp)
-                            .clip(CircleShape)
-                            .background(
-                                if (selected) {
-                                    RebrandKoinTheme.colors.neutral800
-                                } else {
-                                    RebrandKoinTheme.colors.neutral300
-                                }
-                            )
-                    )
+            if (imageUris.size > 1) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    repeat(imageUris.size) { index ->
+                        Box(
+                            modifier = Modifier
+                                .padding(horizontal = 4.dp)
+                                .size(8.dp)
+                                .clip(CircleShape)
+                                .background(
+                                    if (index == pagerState.currentPage) {
+                                        RebrandKoinTheme.colors.neutral800
+                                    } else {
+                                        RebrandKoinTheme.colors.neutral300
+                                    }
+                                )
+                        )
+                    }
                 }
             }
         }
@@ -159,7 +161,7 @@ private fun StoreNoticeCardExpandPreview() {
         title = "알바 모집",
         description = "하루 6-8시간 주 2회 정도 알바할 학생을 찾습니다.\n상담은 직접 와서 만나면 돼요.",
         dateRange = "2025.12.12 - 2029.08.31",
-        imageUris = emptyList(),
+        imageUris = persistentListOf(),
         onFoldClick = {}
     )
 }
