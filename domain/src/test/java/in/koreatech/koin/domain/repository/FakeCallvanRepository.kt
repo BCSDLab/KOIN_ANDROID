@@ -5,6 +5,7 @@ import `in`.koreatech.koin.domain.model.callvan.CallvanNotification
 import `in`.koreatech.koin.domain.model.callvan.CallvanPostCreate
 import `in`.koreatech.koin.domain.model.callvan.CallvanPostDetail
 import `in`.koreatech.koin.domain.model.callvan.CallvanPostSearch
+import `in`.koreatech.koin.domain.model.callvan.CallvanRestriction
 
 class FakeCallvanRepository : CallvanRepository {
 
@@ -86,4 +87,5 @@ class FakeCallvanRepository : CallvanRepository {
     override suspend fun leaveCallvanPost(postId: Int): Result<Unit> = throw NotImplementedError()
 
     override suspend fun reopenCallvanPost(postId: Int): Result<Unit> = throw NotImplementedError()
+    override suspend fun getCallvanRestriction(): Result<CallvanRestriction> = throw NotImplementedError()
 }
