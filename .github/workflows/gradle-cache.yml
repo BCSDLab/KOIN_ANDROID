@@ -31,4 +31,4 @@ jobs:
 
       - name: Warm Gradle cache
         continue-on-error: true
-        run: ./gradlew ktlintCheck detekt lintDebug koverXmlReport
+        run: ./gradlew build koverXmlReport
