@@ -187,7 +187,7 @@ class StoreDetailViewModel @Inject constructor(
     }
 
     private fun fetchEventPreview(id: Int) = intent {
-        runCatching { getShopEventsUseCase(id) }.onSuccess { result ->
+        getShopEventsUseCase(id).also { result ->
             val first = result.events.firstOrNull()
             reduce {
                 state.copy(
