@@ -327,7 +327,7 @@ private fun MyKeywordSection(
                 onDelete = { keyword ->
                     EventLogger.logCampusClickEvent(
                         AnalyticsConstant.Label.LostAndFound.LOST_ITEM_KEYWORD_REMOVE,
-                        "설정된 키워드 삭제"
+                        keyword
                     )
                     onDeleteKeyword(keyword)
                 }
@@ -361,7 +361,7 @@ private fun SuggestedKeywordSection(
             onAdd = { keyword ->
                 EventLogger.logCampusClickEvent(
                     AnalyticsConstant.Label.LostAndFound.LOST_ITEM_KEYWORD_RECOMMEND,
-                    "추천 키워드"
+                    keyword
                 )
                 onAdd(keyword)
             }
