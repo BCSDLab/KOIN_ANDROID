@@ -150,7 +150,7 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
         val context = LocalContext.current
         LostAndFoundKeyword(
             viewModel = hiltViewModel(),
-            onBackClick = { navController.popBackStack() },
+            onBackClick = { if (!navController.popBackStack()) onBackPressed() },
             navigateToLogin = {
                 navigator.navigateToSignIn(
                     context = context,
