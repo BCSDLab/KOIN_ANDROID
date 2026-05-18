@@ -215,7 +215,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          ./gradlew build sonar
+          ./gradlew assembleDebug sonar
 
   label:
     name: Add CI Label
