@@ -302,6 +302,7 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
     }
 }
 
+@Suppress("LongMethod")
 internal fun NavGraphBuilder.koinStoreDetailGraph(
     navController: NavController,
     finish: () -> Unit = { }
