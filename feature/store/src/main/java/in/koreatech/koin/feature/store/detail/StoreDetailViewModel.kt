@@ -44,6 +44,7 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
+@Suppress("LongParameterList")
 @HiltViewModel
 class StoreDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
