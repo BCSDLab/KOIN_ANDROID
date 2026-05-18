@@ -29,14 +29,14 @@ class StoreNoticeViewModel @Inject constructor(
     }
 
     private fun fetchStoreName(storeId: Int) = intent {
-        runCatching { getStoreWithMenuUseCase(storeId) }.onSuccess { result ->
+        getStoreWithMenuUseCase(storeId).also { result ->
             reduce { state.copy(storeName = result.name) }
         }
     }
 
     private fun fetchNotices(storeId: Int) = intent {
         reduce { state.copy(isFirstPageLoading = true) }
-        runCatching { getShopEventsUseCase(storeId) }.onSuccess { result ->
+        getShopEventsUseCase(storeId).also { result ->
             reduce {
                 state.copy(
                     isFirstPageLoading = false,
@@ -51,8 +51,6 @@ class StoreNoticeViewModel @Inject constructor(
                     }.toImmutableList()
                 )
             }
-        }.onFailure {
-            reduce { state.copy(isFirstPageLoading = false) }
         }
     }
 
