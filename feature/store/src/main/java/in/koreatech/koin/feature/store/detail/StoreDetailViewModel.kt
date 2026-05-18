@@ -14,6 +14,7 @@ import `in`.koreatech.koin.domain.usecase.setting.GetDeveloperSettingUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartSummaryUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetShopEventsUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetShopMenusUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuUseCase
@@ -54,6 +55,7 @@ class StoreDetailViewModel @Inject constructor(
     private val getOrderShopMenuUseCase: GetOrderShopMenuUseCase,
     private val getStoreWithMenuUseCase: GetStoreWithMenuUseCase,
     private val getShopMenusUseCase: GetShopMenusUseCase,
+    private val getShopEventsUseCase: GetShopEventsUseCase,
     private val getStoreReviewUseCase: GetStoreReviewUseCase,
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
     private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase,
@@ -81,6 +83,7 @@ class StoreDetailViewModel @Inject constructor(
                 fetchStore(storeId)
             }
             fetchReview(storeId)
+            fetchEventPreview(storeId)
             checkToken()
         }
 
@@ -180,6 +183,17 @@ class StoreDetailViewModel @Inject constructor(
             }
         }
         fetchMenus(id)
+    }
+
+    private fun fetchEventPreview(id: Int) = intent {
+        runCatching { getShopEventsUseCase(id) }.onSuccess { result ->
+            val first = result.events.firstOrNull()
+            reduce {
+                state.copy(
+                    noticePreview = if (first != null) "${first.title}\n${first.content}" else null
+                )
+            }
+        }
     }
 
     private fun fetchMenus(id: Int) = intent {

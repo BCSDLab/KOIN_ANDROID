@@ -331,6 +331,9 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
             navigateToDetailInfo = { selectedInfoType ->
                 navController.navigate(StoreDetailNavType.StoreDetailInfo(storeId = args.storeId, isOrderableShop = args.isOrderableShop, selectedInfo = selectedInfoType))
             },
+            navigateToNotice = { storeId ->
+                navController.navigate(StoreDetailNavType.StoreNotice(storeId = storeId))
+            },
             navigateToReview = { storeNavigationData, storeName ->
                 navController.navigate(
                     StoreReviewNavType.StoreReviewHome(
@@ -359,6 +362,9 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
                 navController.navigate(StoreNavType.StoreCart)
             }
         )
+    }
+
+    composable<StoreDetailNavType.StoreNotice> {
     }
 }
 

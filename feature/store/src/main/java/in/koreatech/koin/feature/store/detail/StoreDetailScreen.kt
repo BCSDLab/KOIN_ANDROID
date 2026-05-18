@@ -111,6 +111,7 @@ fun StoreDetailScreen(
     navigateToCart: () -> Unit = {},
     navigateToBack: () -> Unit = {},
     navigateToDetailInfo: (selectedInfo: String) -> Unit = {},
+    navigateToNotice: (storeId: Int) -> Unit = {},
     navigateToReview: (StoreNavigationData, String) -> Unit = { _, _ -> },
     navigateToMenuInfo: (menuId: Int) -> Unit = {}
 ) {
@@ -345,6 +346,7 @@ fun StoreDetailScreen(
                             storeInfo = uiState.store,
                             storeReview = uiState.storeReview,
                             storeDescriptionModel = uiState.shopDescription,
+                            noticePreview = uiState.noticePreview,
                             isOrderableShop = uiState.isOrderableShop,
                             phoneNumber = uiState.shopDescription.phone,
                             navigateToReview = {
@@ -370,6 +372,7 @@ fun StoreDetailScreen(
                                     uiState.store.name
                                 )
                             },
+                            navigateToNotice = { navigateToNotice(uiState.store.shopId) },
                             call = {
                                 viewModel.intent {
                                     postSideEffect(StoreDetailSideEffect.CheckCallPermission)
