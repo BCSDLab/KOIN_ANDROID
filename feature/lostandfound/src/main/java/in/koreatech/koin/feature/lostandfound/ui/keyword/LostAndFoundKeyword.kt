@@ -52,6 +52,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
@@ -265,6 +267,10 @@ private fun MyKeywordSection(
                 keyboardActions = KeyboardActions(
                     onDone = {
                         if (keywordInput.isNotBlank() && !isLoading) {
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.LostAndFound.LOST_ITEM_KEYWORD_ADD,
+                                "키워드 추가"
+                            )
                             onAddKeyword(keywordInput)
                         }
                         focusManager.clearFocus()
@@ -288,6 +294,10 @@ private fun MyKeywordSection(
             Button(
                 modifier = Modifier.height(38.dp),
                 onClick = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_KEYWORD_ADD,
+                        "키워드 추가"
+                    )
                     onAddKeyword(keywordInput)
                     focusManager.clearFocus()
                 },
@@ -314,7 +324,13 @@ private fun MyKeywordSection(
         if (keywords.isNotEmpty()) {
             LostAndFoundDeletableChipFlowGroup(
                 keywords = keywords,
-                onDelete = onDeleteKeyword
+                onDelete = { keyword ->
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_KEYWORD_REMOVE,
+                        "설정된 키워드 삭제"
+                    )
+                    onDeleteKeyword(keyword)
+                }
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -342,7 +358,13 @@ private fun SuggestedKeywordSection(
 
         LostAndFoundAddableChipFlowGroup(
             keywords = suggestedKeywords,
-            onAdd = onAdd
+            onAdd = { keyword ->
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.LostAndFound.LOST_ITEM_KEYWORD_RECOMMEND,
+                    "추천 키워드"
+                )
+                onAdd(keyword)
+            }
         )
     }
 }
@@ -369,7 +391,13 @@ private fun KeywordNotificationSection(
                 .toggleable(
                     value = isEnabled,
                     role = Role.Switch,
-                    onValueChange = onToggle
+                    onValueChange = { newValue ->
+                        EventLogger.logCampusClickEvent(
+                            AnalyticsConstant.Label.LostAndFound.LOST_ITEM_KEYWORD_ALARM,
+                            "키워드 알림받기"
+                        )
+                        onToggle(newValue)
+                    }
                 )
                 .padding(horizontal = 24.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically,

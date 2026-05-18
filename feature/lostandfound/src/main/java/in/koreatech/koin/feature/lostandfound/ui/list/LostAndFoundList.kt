@@ -201,7 +201,13 @@ fun LostAndFoundList(
                 keywords = uiState.keywords,
                 selectedKeywordIndex = uiState.selectedKeywordIndex,
                 onKeywordSelect = viewModel::selectKeyword,
-                onSettingClick = navigateToKeywordSetting
+                onSettingClick = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_KEYWORD_SETTING,
+                        "키워드 설정"
+                    )
+                    navigateToKeywordSetting()
+                }
             )
             if (!uiState.isFirstPageLoading) {
                 if (uiState.searchedArticles.isEmpty()) {
