@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.lostandfound.ui.list.component
+package `in`.koreatech.koin.feature.lostandfound.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

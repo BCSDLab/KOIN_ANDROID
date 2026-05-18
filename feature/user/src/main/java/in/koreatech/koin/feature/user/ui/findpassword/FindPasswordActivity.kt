@@ -58,7 +58,7 @@ class FindPasswordActivity : ComponentActivity() {
                         exitTransition = {
                             ExitTransition.None
                         },
-                        startDestination = FindPasswordNavType.Verification.route
+                        startDestination = FindPasswordNavType.Verification
                     ) {
                         koinFindPasswordGraph(navController = navController)
                     }

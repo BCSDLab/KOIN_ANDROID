@@ -4,12 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
-import `in`.koreatech.koin.domain.model.cart.CartType
+import androidx.navigation.toRoute
 import `in`.koreatech.koin.feature.store.BuildConfig
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_ADD_CART
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_DETAIL_MAIN
@@ -20,7 +18,6 @@ import `in`.koreatech.koin.feature.store.cart.ShoppingCartScreen
 import `in`.koreatech.koin.feature.store.cartadd.CartAddScreen
 import `in`.koreatech.koin.feature.store.cartedit.CartEditScreen
 import `in`.koreatech.koin.feature.store.detail.StoreDetailScreen
-import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
 import `in`.koreatech.koin.feature.store.home.StoreHomeScreen
 import `in`.koreatech.koin.feature.store.model.StoreNavigationData
 import `in`.koreatech.koin.feature.store.model.StoreNavigationDataType
@@ -41,9 +38,8 @@ fun NavGraphBuilder.koinStoreGraph(
     enableDelivery: Boolean,
     finish: () -> Unit = { }
 ) {
-    navigation(
-        route = StoreNavType.StoreMain.route,
-        startDestination = if (enableDelivery) StoreMainNavType.StoreMainHome.route else StoreMainNavType.StoreMainNearby.route
+    navigation<StoreNavType.StoreMain>(
+        startDestination = if (enableDelivery) StoreMainNavType.StoreMainHome::class else StoreMainNavType.StoreMainNearby::class
     ) {
         koinStoreMainGraph(
             navController = navController,
@@ -52,18 +48,8 @@ fun NavGraphBuilder.koinStoreGraph(
         )
     }
 
-    navigation(
-        route = "${StoreNavType.StoreDetail.route}/{$STORE_ID}/{$IS_ORDERABLE_SHOP}",
-        startDestination = "${StoreDetailNavType.StoreDetailMain.route}/{$STORE_ID}/{$IS_ORDERABLE_SHOP}",
-        arguments = listOf(
-            navArgument(STORE_ID) {
-                type = NavType.IntType
-            },
-            navArgument(IS_ORDERABLE_SHOP) {
-                type = NavType.BoolType
-                defaultValue = true
-            }
-        )
+    navigation<StoreNavType.StoreDetail>(
+        startDestination = StoreDetailNavType.StoreDetailMain::class
     ) {
         koinStoreDetailGraph(
             navController = navController,
@@ -80,32 +66,37 @@ fun NavGraphBuilder.koinStoreGraph(
         )
     }
 
-    composable(
-        route = StoreNavType.StoreCart.route
-    ) {
-        val isCartModified by it.savedStateHandle.getStateFlow(IS_CART_MODIFIED, initialValue = false).collectAsStateWithLifecycle()
+    koinStoreCartScreens(navController = navController, finish = finish)
+    koinStoreSearchPaymentScreens(navController = navController, finish = finish)
+}
+
+private fun NavGraphBuilder.koinStoreCartScreens(
+    navController: NavController,
+    finish: () -> Unit = { }
+) {
+    composable<StoreNavType.StoreCart> { entry ->
+        val isCartModified by entry.savedStateHandle.getStateFlow(IS_CART_MODIFIED, initialValue = false).collectAsStateWithLifecycle()
 
         ShoppingCartScreen(
             isCartModified = isCartModified,
             navigateToStoreDetail = { storeId ->
-                val targetRoute = "${StoreDetailNavType.StoreDetailMain.route}/$storeId/${true}"
-                navController.navigate(targetRoute) {
+                navController.navigate(StoreDetailNavType.StoreDetailMain(storeId = storeId, isOrderableShop = true)) {
                     launchSingleTop = true
-                    popUpTo(targetRoute) {
+                    popUpTo(StoreDetailNavType.StoreDetailMain(storeId = storeId, isOrderableShop = true)) {
                         inclusive = false
                     }
                 }
                 navController.currentBackStackEntry?.savedStateHandle?.set(IS_CART_MODIFIED, false)
             },
             navigateToPayment = {
-                navController.navigate("${StoreNavType.StorePayment.route}/$it")
+                navController.navigate(StoreNavType.StorePayment(cartType = it))
             },
             navigateToCartEdit = {
-                navController.navigate("${StoreNavType.StoreCartEdit.route}/$it")
+                navController.navigate(StoreNavType.StoreCartEdit(cartMenuItemId = it))
             },
             navigateToStoreMain = {
                 navController.previousBackStackEntry?.savedStateHandle?.set(IS_CART_MODIFIED, false)
-                navController.navigate(StoreNavType.StoreMain.route)
+                navController.navigate(StoreNavType.StoreMain)
             },
             navigateBack = {
                 if (!navController.popBackStack()) {
@@ -115,20 +106,7 @@ fun NavGraphBuilder.koinStoreGraph(
         )
     }
 
-    composable(
-        route = "${StoreNavType.StoreCartAdd.route}/{$ORDERABLE_SHOP_ID}/{$ORDERABLE_SHOP_MENU_ID}",
-        arguments = listOf(
-            navArgument(ORDERABLE_SHOP_ID) {
-                type = NavType.IntType
-            },
-            navArgument(ORDERABLE_SHOP_MENU_ID) {
-                type = NavType.IntType
-            },
-            navArgument(CART_DATA) {
-                type = NavType.StringType
-                nullable = true
-            }
-        ),
+    composable<StoreNavType.StoreCartAdd>(
         deepLinks = listOf(
             navDeepLink {
                 uriPattern = "$DEEPLINK_STORE_ADD_CART/{$ORDERABLE_SHOP_ID}/{$ORDERABLE_SHOP_MENU_ID}/{$CART_DATA}"
@@ -141,7 +119,7 @@ fun NavGraphBuilder.koinStoreGraph(
                     IS_CART_ADDED,
                     true
                 )
-                navController.navigate(StoreNavType.StoreCart.route)
+                navController.navigate(StoreNavType.StoreCart)
             },
             navigateBack = { isItemAdded ->
                 if (isItemAdded) {
@@ -162,17 +140,10 @@ fun NavGraphBuilder.koinStoreGraph(
         )
     }
 
-    composable(
-        route = "${StoreNavType.StoreCartEdit.route}/{$CART_MENU_ITEM_ID}",
-        arguments = listOf(
-            navArgument(CART_MENU_ITEM_ID) {
-                type = NavType.IntType
-            }
-        )
-    ) {
+    composable<StoreNavType.StoreCartEdit> {
         CartEditScreen(
             navigateToCart = {
-                navController.navigate(StoreNavType.StoreCart.route)
+                navController.navigate(StoreNavType.StoreCart)
             },
             navigateBack = {
                 navController.previousBackStackEntry?.savedStateHandle?.set(
@@ -185,20 +156,18 @@ fun NavGraphBuilder.koinStoreGraph(
             }
         )
     }
+}
 
-    composable(
-        route = "${StoreNavType.StoreSearch.route}/{$IS_ORDERABLE_SHOP}",
-        arguments = listOf(
-            navArgument(IS_ORDERABLE_SHOP) {
-                type = NavType.BoolType
-            }
-        )
-    ) {
-        val isOrderableShop = it.arguments?.getBoolean(IS_ORDERABLE_SHOP) ?: true
+private fun NavGraphBuilder.koinStoreSearchPaymentScreens(
+    navController: NavController,
+    finish: () -> Unit = { }
+) {
+    composable<StoreNavType.StoreSearch> { entry ->
+        val args = entry.toRoute<StoreNavType.StoreSearch>()
         StoreSearchScreen(
             navigateToDetail = {
                 navController.popBackStack()
-                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$it/$isOrderableShop")
+                navController.navigate(StoreDetailNavType.StoreDetailMain(storeId = it, isOrderableShop = args.isOrderableShop))
             },
             onBackPressed = {
                 if (!navController.popBackStack()) {
@@ -208,69 +177,55 @@ fun NavGraphBuilder.koinStoreGraph(
         )
     }
 
-    composable(
-        route = "${StoreNavType.StorePayment.route}/{$CART_TYPE}",
-        arguments = listOf(
-            navArgument(CART_TYPE) {
-                type = NavType.StringType
-            }
-        )
-    ) {
-        val cartType = it.arguments?.getString(CART_TYPE) ?: CartType.DELIVERY.name
-        val url = "${BuildConfig.ORDER_BASE_URL}/payment?orderType=$cartType"
+    composable<StoreNavType.StorePayment> { entry ->
+        val args = entry.toRoute<StoreNavType.StorePayment>()
+        val url = "${BuildConfig.ORDER_BASE_URL}/payment?orderType=${args.cartType}"
         StoreWebAppScreen(
             url = url,
             finish = finish,
             navigateToMain = {
-                navController.navigate(StoreNavType.StoreMain.route) {
-                    popUpTo(StoreNavType.StoreMain.route) {
+                navController.navigate(StoreNavType.StoreMain) {
+                    popUpTo<StoreNavType.StoreMain> {
                         inclusive = true
                     }
                 }
             },
             navigateToCart = {
-                navController.navigate(StoreNavType.StoreCart.route) {
-                    popUpTo(StoreNavType.StoreCart.route) {
+                navController.navigate(StoreNavType.StoreCart) {
+                    popUpTo<StoreNavType.StoreCart> {
                         inclusive = true
                     }
                 }
             },
             navigateToDetail = { storeId ->
-                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId/${true}")
+                navController.navigate(StoreDetailNavType.StoreDetailMain(storeId = storeId, isOrderableShop = true))
             }
         )
     }
 
-    composable(
-        route = "${StoreNavType.StoreOrderResult.route}/{$ORDER_ID}",
-        arguments = listOf(
-            navArgument(ORDER_ID) {
-                type = NavType.IntType
-            }
-        )
-    ) {
-        val orderId = it.arguments?.getInt(ORDER_ID)
-        val url = "${BuildConfig.ORDER_BASE_URL}/result/$orderId"
+    composable<StoreNavType.StoreOrderResult> { entry ->
+        val args = entry.toRoute<StoreNavType.StoreOrderResult>()
+        val url = "${BuildConfig.ORDER_BASE_URL}/result/${args.orderId}"
 
         StoreWebAppScreen(
             url = url,
             finish = finish,
             navigateToMain = {
-                navController.navigate(StoreNavType.StoreMain.route) {
-                    popUpTo(StoreNavType.StoreMain.route) {
+                navController.navigate(StoreNavType.StoreMain) {
+                    popUpTo<StoreNavType.StoreMain> {
                         inclusive = true
                     }
                 }
             },
             navigateToCart = {
-                navController.navigate(StoreNavType.StoreCart.route) {
-                    popUpTo(StoreNavType.StoreCart.route) {
+                navController.navigate(StoreNavType.StoreCart) {
+                    popUpTo<StoreNavType.StoreCart> {
                         inclusive = true
                     }
                 }
             },
             navigateToDetail = { storeId ->
-                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId/${true}")
+                navController.navigate(StoreDetailNavType.StoreDetailMain(storeId = storeId, isOrderableShop = true))
             }
         )
     }
@@ -281,27 +236,24 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
     categoryId: Int,
     finish: () -> Unit = { }
 ) {
-    composable(
-        route = StoreMainNavType.StoreMainHome.route,
+    composable<StoreMainNavType.StoreMainHome>(
         deepLinks = listOf(
-            navDeepLink {
-                uriPattern = DEEPLINK_STORE_MAIN_HOME
-            }
+            navDeepLink<StoreMainNavType.StoreMainHome>(basePath = DEEPLINK_STORE_MAIN_HOME)
         )
     ) {
         StoreHomeScreen(
             categoryId = categoryId,
             navigateToDetail = { storeId ->
-                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId/${true}")
+                navController.navigate(StoreDetailNavType.StoreDetailMain(storeId = storeId, isOrderableShop = true))
             },
             navigateToCart = {
-                navController.navigate(StoreNavType.StoreCart.route)
+                navController.navigate(StoreNavType.StoreCart)
             },
             navigateToSearch = {
-                navController.navigate("${StoreNavType.StoreSearch.route}/${true}")
+                navController.navigate(StoreNavType.StoreSearch(isOrderableShop = true))
             },
             navigateToOrderResult = { orderId ->
-                navController.navigate("${StoreNavType.StoreOrderResult.route}/$orderId")
+                navController.navigate(StoreNavType.StoreOrderResult(orderId = orderId))
             }
         ) {
             if (!navController.popBackStack()) {
@@ -310,24 +262,21 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
         }
     }
 
-    composable(
-        route = StoreMainNavType.StoreMainNearby.route,
+    composable<StoreMainNavType.StoreMainNearby>(
         deepLinks = listOf(
-            navDeepLink {
-                uriPattern = DEEPLINK_STORE_MAIN_NEARBY
-            }
+            navDeepLink<StoreMainNavType.StoreMainNearby>(basePath = DEEPLINK_STORE_MAIN_NEARBY)
         )
     ) {
         StoreNearbyScreen(
             categoryId = categoryId,
             navigateToDetail = { storeId ->
-                navController.navigate("${StoreDetailNavType.StoreDetailMain.route}/$storeId/${false}")
+                navController.navigate(StoreDetailNavType.StoreDetailMain(storeId = storeId, isOrderableShop = false))
             },
             navigateToCart = {
-                navController.navigate(StoreNavType.StoreCart.route)
+                navController.navigate(StoreNavType.StoreCart)
             },
             navigateToSearch = {
-                navController.navigate("${StoreNavType.StoreSearch.route}/${false}")
+                navController.navigate(StoreNavType.StoreSearch(isOrderableShop = false))
             }
         ) {
             if (!navController.popBackStack()) {
@@ -336,15 +285,13 @@ internal fun NavGraphBuilder.koinStoreMainGraph(
         }
     }
 
-    composable(
-        route = StoreMainNavType.StoreMainOrder.route
-    ) {
+    composable<StoreMainNavType.StoreMainOrder> {
         OrderHistoryScreen(
             navigateToCart = {
-                navController.navigate(StoreNavType.StoreCart.route)
+                navController.navigate(StoreNavType.StoreCart)
             },
             navigateToOrderResult = { orderId ->
-                navController.navigate("${StoreNavType.StoreOrderResult.route}/$orderId")
+                navController.navigate(StoreNavType.StoreOrderResult(orderId = orderId))
             }
         ) {
             if (!navController.popBackStack()) {
@@ -358,27 +305,17 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
     navController: NavController,
     finish: () -> Unit = { }
 ) {
-    composable(
-        route = "${StoreDetailNavType.StoreDetailMain.route}/{$STORE_ID}/{$IS_ORDERABLE_SHOP}",
-        arguments = listOf(
-            navArgument(STORE_ID) {
-                type = NavType.IntType
-            },
-            navArgument(IS_ORDERABLE_SHOP) {
-                type = NavType.BoolType
-                defaultValue = true
-            }
-        ),
+    composable<StoreDetailNavType.StoreDetailMain>(
         deepLinks = listOf(
             navDeepLink {
                 uriPattern = "$DEEPLINK_STORE_DETAIL_MAIN/{$STORE_ID}/{$IS_ORDERABLE_SHOP}"
             }
         )
-    ) {
-        val isCartAdded by it.savedStateHandle.getStateFlow(IS_CART_ADDED, initialValue = false).collectAsStateWithLifecycle()
-        val isCartModified by it.savedStateHandle.getStateFlow(IS_CART_MODIFIED, initialValue = false).collectAsStateWithLifecycle()
-        val storeId = it.arguments?.getInt(STORE_ID) ?: 0
-        val isOrderableShop = it.arguments?.getBoolean(IS_ORDERABLE_SHOP) ?: true
+    ) { entry ->
+        val args = entry.toRoute<StoreDetailNavType.StoreDetailMain>()
+        val isCartAdded by entry.savedStateHandle.getStateFlow(IS_CART_ADDED, initialValue = false).collectAsStateWithLifecycle()
+        val isCartModified by entry.savedStateHandle.getStateFlow(IS_CART_MODIFIED, initialValue = false).collectAsStateWithLifecycle()
+
         StoreDetailScreen(
             isCartAdded = isCartAdded,
             isCartModified = isCartModified,
@@ -388,11 +325,11 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
                 }
             },
             navigateToCart = {
-                it.savedStateHandle[IS_CART_ADDED] = false
-                navController.navigate(StoreNavType.StoreCart.route)
+                entry.savedStateHandle[IS_CART_ADDED] = false
+                navController.navigate(StoreNavType.StoreCart)
             },
             navigateToDetailInfo = { selectedInfoType ->
-                navController.navigate("${StoreDetailNavType.StoreDetailInfo.route}/$storeId/$isOrderableShop/$selectedInfoType")
+                navController.navigate(StoreDetailNavType.StoreDetailInfo(storeId = args.storeId, isOrderableShop = args.isOrderableShop, selectedInfo = selectedInfoType))
             },
             navigateToReview = { storeNavigationData, storeName ->
                 navController.navigate(
@@ -403,38 +340,23 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
                 )
             },
             navigateToMenuInfo = { menuId ->
-                it.savedStateHandle[IS_CART_ADDED] = false
-                navController.navigate("${StoreNavType.StoreCartAdd.route}/$storeId/$menuId")
+                entry.savedStateHandle[IS_CART_ADDED] = false
+                navController.navigate(StoreNavType.StoreCartAdd(orderableShopId = args.storeId, orderableShopMenuId = menuId))
             }
         )
     }
 
-    composable(
-        route = "${StoreDetailNavType.StoreDetailInfo.route}/{$STORE_ID}/{$IS_ORDERABLE_SHOP}/{$SELECTED_INFO}",
-        arguments = listOf(
-            navArgument(STORE_ID) {
-                type = NavType.IntType
-            },
-            navArgument(IS_ORDERABLE_SHOP) {
-                type = NavType.BoolType
-                defaultValue = true
-            },
-            navArgument(SELECTED_INFO) {
-                type = NavType.StringType
-                defaultValue = StoreDetailInfoType.ORIGIN.routeName
-            }
-        )
-    ) {
-        val selectedInfo = it.arguments?.getString(SELECTED_INFO) ?: StoreDetailInfoType.ORIGIN.routeName
+    composable<StoreDetailNavType.StoreDetailInfo> { entry ->
+        val args = entry.toRoute<StoreDetailNavType.StoreDetailInfo>()
         ShopOriginInfoScreen(
-            selectedInfo = selectedInfo,
+            selectedInfo = args.selectedInfo,
             onBackClick = {
                 if (!navController.popBackStack()) {
                     finish()
                 }
             },
             navigateToShoppingCart = {
-                navController.navigate(StoreNavType.StoreCart.route)
+                navController.navigate(StoreNavType.StoreCart)
             }
         )
     }

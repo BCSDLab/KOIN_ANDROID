@@ -4,6 +4,12 @@ inputs:
   properties:
     required: true
     description: local.properties secret
+  gradle-encryption-key:
+    required: false
+    default: ""
+    description: >-
+      base64 AES key to encrypt/restore the Gradle configuration-cache in the
+      Actions cache. Empty = configuration-cache is not cached (no error).
 
 runs:
   using: "composite"
@@ -20,17 +26,11 @@ runs:
         PROPERTIES: ${{ inputs.properties }}
       run: echo "$PROPERTIES" | base64 -di > ./local.properties
 
-    - name: Gradle cache
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-          .gradle/configuration-cache
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', 'gradle.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
-
     - name: Make gradlew executable
       shell: bash
       run: chmod +x ./gradlew
+
+    - name: Set up Gradle
+      uses: gradle/actions/setup-gradle@v6
+      with:
+        cache-encryption-key: ${{ inputs.gradle-encryption-key }}

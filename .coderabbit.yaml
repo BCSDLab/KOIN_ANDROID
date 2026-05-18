@@ -18,7 +18,9 @@ reviews:
     - "!**/gradlew"
     - "!**/gradlew.bat"
   auto_review:
-    enabled: false # Trigger manually after ci finish via @coderabbit
+    enabled: true
+    labels:
+      - "ci:passed"
     drafts: false
     ignore_title_keywords:
       - "release" # Do not review release PR

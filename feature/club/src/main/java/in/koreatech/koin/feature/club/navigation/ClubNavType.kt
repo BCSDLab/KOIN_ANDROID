@@ -1,12 +1,34 @@
 package `in`.koreatech.koin.feature.club.navigation
 
-sealed class ClubNavType(val route: String) {
-    data object ClubList : ClubNavType("club_list")
-    data object ClubDetail : ClubNavType("club_detail")
-    data object ClubCreate : ClubNavType("club_create")
-    data object ClubModify : ClubNavType("club_modify")
-    data object ClubRecruitCreate : ClubNavType("club_recruit_create")
-    data object ClubRecruitModify : ClubNavType("club_recruit_modify")
-    data object ClubEventCreate : ClubNavType("club_event_create")
-    data object ClubEventModify : ClubNavType("club_event_modify")
+import kotlinx.serialization.Serializable
+
+@Serializable
+sealed class ClubNavType {
+    @Serializable
+    data class ClubList(val categoryId: Int) : ClubNavType()
+
+    @Serializable
+    data class ClubDetail(
+        val clubId: Int,
+        val recruitEvent: Boolean = false,
+        val eventId: Int = -1
+    ) : ClubNavType()
+
+    @Serializable
+    data object ClubCreate : ClubNavType()
+
+    @Serializable
+    data class ClubModify(val clubId: Int) : ClubNavType()
+
+    @Serializable
+    data class ClubRecruitCreate(val clubId: Int) : ClubNavType()
+
+    @Serializable
+    data class ClubRecruitModify(val clubId: Int) : ClubNavType()
+
+    @Serializable
+    data class ClubEventCreate(val clubId: Int) : ClubNavType()
+
+    @Serializable
+    data class ClubEventModify(val clubId: Int, val eventId: Int) : ClubNavType()
 }

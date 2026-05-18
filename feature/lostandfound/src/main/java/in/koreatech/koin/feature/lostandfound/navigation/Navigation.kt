@@ -146,9 +146,19 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
     }
 
     composable<LostAndFoundNavType.LostAndFoundKeywordRoute> {
+        val navigator = rememberNavigator()
+        val context = LocalContext.current
         LostAndFoundKeyword(
             viewModel = hiltViewModel(),
-            onBackClick = { navController.popBackStack() }
+            onBackClick = { navController.popBackStack() },
+            navigateToLogin = {
+                navigator.navigateToSignIn(
+                    context = context,
+                    redirectUrl = DEEP_LINK_LOST_AND_FOUND_BASE
+                ).apply {
+                    context.startActivity(this)
+                }
+            }
         )
     }
 }
