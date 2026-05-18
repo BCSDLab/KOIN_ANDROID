@@ -11,6 +11,7 @@ import kotlinx.parcelize.Parcelize
 data class StoreNoticeListState(
     val isLoading: Boolean = false,
     val isFirstPageLoading: Boolean = true,
+    val storeName: String = "",
     val notices: ImmutableList<StoreNoticeItemState> = persistentListOf()
 ) : Parcelable
 
