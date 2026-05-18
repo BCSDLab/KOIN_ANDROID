@@ -181,35 +181,33 @@ class CallvanCreateViewModel @Inject constructor(
 
         if (!submitMutex.tryLock()) return@intent
         reduce { state.copy(isSubmitting = true) }
-        try {
-            createCallvanPostUseCase(
-                departureType = currentState.departureLocation.name,
-                departureCustomName = if (currentState.departureLocation == CallvanLocationOption.CUSTOM) {
-                    currentState.departureCustomText
-                } else {
-                    null
-                },
-                arrivalType = currentState.arrivalLocation.name,
-                arrivalCustomName = if (currentState.arrivalLocation == CallvanLocationOption.CUSTOM) {
-                    currentState.arrivalCustomText
-                } else {
-                    null
-                },
-                departureDate = currentState.apiDepartureDate,
-                departureTime = currentState.apiDepartureTime,
-                maxParticipants = currentState.maxParticipants
-            ).onSuccess {
-                postSideEffect(CallvanCreateSideEffect.NavigateToMain)
-            }.onFailure { error ->
-                val errorType = when (error) {
-                    is KoinCallvanException.InvalidRequestBodyException -> SubmitErrorType.INVALID_REQUEST_BODY
-                    is KoinCallvanException.InvalidCustomLocationNameException -> SubmitErrorType.INVALID_CUSTOM_LOCATION_NAME
-                    is KoinCallvanException.NotFoundUserException -> SubmitErrorType.NOT_FOUND_USER
-                    else -> SubmitErrorType.UNKNOWN
-                }
-                postSideEffect(CallvanCreateSideEffect.ShowSubmitError(errorType))
+        createCallvanPostUseCase(
+            departureType = currentState.departureLocation.name,
+            departureCustomName = if (currentState.departureLocation == CallvanLocationOption.CUSTOM) {
+                currentState.departureCustomText
+            } else {
+                null
+            },
+            arrivalType = currentState.arrivalLocation.name,
+            arrivalCustomName = if (currentState.arrivalLocation == CallvanLocationOption.CUSTOM) {
+                currentState.arrivalCustomText
+            } else {
+                null
+            },
+            departureDate = currentState.apiDepartureDate,
+            departureTime = currentState.apiDepartureTime,
+            maxParticipants = currentState.maxParticipants
+        ).onSuccess {
+            postSideEffect(CallvanCreateSideEffect.NavigateToMain)
+        }.onFailure { error ->
+            val errorType = when (error) {
+                is KoinCallvanException.InvalidRequestBodyException -> SubmitErrorType.INVALID_REQUEST_BODY
+                is KoinCallvanException.InvalidCustomLocationNameException -> SubmitErrorType.INVALID_CUSTOM_LOCATION_NAME
+                is KoinCallvanException.NotFoundUserException -> SubmitErrorType.NOT_FOUND_USER
+                else -> SubmitErrorType.UNKNOWN
             }
-        } finally {
+            postSideEffect(CallvanCreateSideEffect.ShowSubmitError(errorType))
+        }.also {
             submitMutex.unlock()
             reduce { state.copy(isSubmitting = false) }
         }
