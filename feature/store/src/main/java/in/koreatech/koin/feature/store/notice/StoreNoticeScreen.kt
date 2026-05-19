@@ -1,25 +1,66 @@
 package `in`.koreatech.koin.feature.store.notice
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
 import `in`.koreatech.koin.feature.store.notice.component.StoreNoticeCard
 import `in`.koreatech.koin.feature.store.notice.component.StoreNoticeCardExpand
 import `in`.koreatech.koin.feature.store.notice.component.StoreNoticeEmpty
 import kotlinx.collections.immutable.persistentListOf
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StoreNoticeScreen(
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: StoreNoticeViewModel = hiltViewModel()
+) {
+    val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
+
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            KoinStoreTopAppBar(
+                title = state.storeName,
+                onNavigationIconClick = onBackClick,
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = colorResource(id = R.color.store_detail_background)
+                )
+            )
+        }
+    ) { innerPadding ->
+        StoreNoticeContent(
+            state = state,
+            onExpandClick = viewModel::expandNotice,
+            onFoldClick = viewModel::foldNotice,
+            modifier = Modifier
+                .padding(innerPadding)
+                .background(colorResource(id = R.color.store_detail_background))
+        )
+    }
+}
+
+@Composable
+private fun StoreNoticeContent(
     state: StoreNoticeListState,
     onExpandClick: (Int) -> Unit,
     onFoldClick: (Int) -> Unit,
@@ -63,8 +104,7 @@ fun StoreNoticeScreen(
                         }
                     }
                     HorizontalDivider(
-                        modifier = Modifier.padding(horizontal = 24.dp),
-                        color = RebrandKoinTheme.colors.neutral100
+                        color = RebrandKoinTheme.colors.neutral400
                     )
                 }
             }
@@ -75,7 +115,7 @@ fun StoreNoticeScreen(
 @Preview(showBackground = true, widthDp = 390, heightDp = 800)
 @Composable
 private fun StoreNoticeScreenPreview() {
-    StoreNoticeScreen(
+    StoreNoticeContent(
         state = StoreNoticeListState(
             notices = persistentListOf(
                 StoreNoticeItemState(
@@ -101,7 +141,7 @@ private fun StoreNoticeScreenPreview() {
 @Preview(showBackground = true, widthDp = 390, heightDp = 800)
 @Composable
 private fun StoreNoticeScreenEmptyPreview() {
-    StoreNoticeScreen(
+    StoreNoticeContent(
         state = StoreNoticeListState(notices = persistentListOf()),
         onExpandClick = {},
         onFoldClick = {}
