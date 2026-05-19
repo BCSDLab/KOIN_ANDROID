@@ -19,6 +19,9 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
@@ -41,7 +44,14 @@ fun StoreNoticeScreen(
         topBar = {
             KoinStoreTopAppBar(
                 title = state.storeName,
-                onNavigationIconClick = onBackClick,
+                onNavigationIconClick = {
+                    EventLogger.logClickEvent(
+                        EventAction.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_BENEFIT_BACK,
+                        state.storeName
+                    )
+                    onBackClick()
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = colorResource(id = R.color.store_detail_background)
                 )
@@ -99,7 +109,14 @@ private fun StoreNoticeContent(
                                 description = notice.description,
                                 dateRange = notice.dateRange,
                                 imageUris = notice.imageUris,
-                                onExpandClick = { onExpandClick(notice.id) }
+                                onExpandClick = {
+                                    EventLogger.logClickEvent(
+                                        EventAction.BUSINESS,
+                                        AnalyticsConstant.Label.SHOP_BENEFIT_DETAIL,
+                                        state.storeName
+                                    )
+                                    onExpandClick(notice.id)
+                                }
                             )
                         }
                     }
