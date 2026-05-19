@@ -101,6 +101,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 
+@Suppress("CyclomaticComplexMethod")
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun StoreDetailScreen(
@@ -111,6 +112,7 @@ fun StoreDetailScreen(
     navigateToCart: () -> Unit = {},
     navigateToBack: () -> Unit = {},
     navigateToDetailInfo: (selectedInfo: String) -> Unit = {},
+    navigateToNotice: (storeId: Int) -> Unit = {},
     navigateToReview: (StoreNavigationData, String) -> Unit = { _, _ -> },
     navigateToMenuInfo: (menuId: Int) -> Unit = {}
 ) {
@@ -345,6 +347,7 @@ fun StoreDetailScreen(
                             storeInfo = uiState.store,
                             storeReview = uiState.storeReview,
                             storeDescriptionModel = uiState.shopDescription,
+                            noticePreview = uiState.noticePreview,
                             isOrderableShop = uiState.isOrderableShop,
                             phoneNumber = uiState.shopDescription.phone,
                             navigateToReview = {
@@ -370,6 +373,7 @@ fun StoreDetailScreen(
                                     uiState.store.name
                                 )
                             },
+                            navigateToNotice = { navigateToNotice(uiState.store.shopId) },
                             call = {
                                 viewModel.intent {
                                     postSideEffect(StoreDetailSideEffect.CheckCallPermission)

@@ -25,35 +25,33 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
-import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
 import `in`.koreatech.koin.feature.store.model.ShopInfoModel
-import `in`.koreatech.koin.feature.store.model.StoreDescriptionModel
 
 @Composable
 fun StoreDetailInfoCard(
     storeInfo: ShopInfoModel,
     modifier: Modifier = Modifier,
-    storeDescriptionModel: StoreDescriptionModel? = null,
-    navigateToDetailInfo: (String) -> Unit = {}
+    noticePreview: String? = null,
+    navigateToDetailInfo: () -> Unit = {},
+    navigateToNotice: () -> Unit = {}
 ) {
     Row(modifier = modifier) {
         DeliveryInfoCard(
             modifier = if (storeInfo.isDeliveryAvailable) Modifier else Modifier.weight(1f),
             storeInfo = storeInfo,
-            navigateToDetailInfo = { navigateToDetailInfo(StoreDetailInfoType.DELIVERY.name) }
+            navigateToDetailInfo = navigateToDetailInfo
         )
         Spacer(modifier = Modifier.width(8.dp))
         NoticeCard(
             modifier = Modifier.weight(1f),
-            description = storeDescriptionModel?.description ?: stringResource(R.string.store_detail_notice_empty),
-            navigateToDetailInfo = {
-                navigateToDetailInfo(StoreDetailInfoType.DETAIL.name)
-            }
+            description = noticePreview ?: stringResource(R.string.store_detail_notice_empty),
+            navigateToNotice = navigateToNotice
         )
     }
 }
@@ -127,15 +125,15 @@ fun DeliveryInfoCard(
 @Composable
 fun NoticeCard(
     modifier: Modifier,
-    description: String?,
-    navigateToDetailInfo: () -> Unit = {}
+    description: String,
+    navigateToNotice: () -> Unit = {}
 ) {
     Surface(
         shape = RoundedCornerShape(12.dp),
         modifier = modifier
             .widthIn(175.dp)
             .heightIn(60.dp),
-        onClick = navigateToDetailInfo,
+        onClick = navigateToNotice,
         shadowElevation = 1.dp,
         color = KoinTheme.colors.neutral0
     ) {
@@ -146,9 +144,66 @@ fun NoticeCard(
         ) {
             Icon(ImageVector.vectorResource(id = R.drawable.ic_store_notice), contentDescription = null, modifier = Modifier.size(16.dp), tint = colorResource(id = R.color.store_detail_chip))
             Spacer(modifier = Modifier.width(7.dp))
-            Text(modifier = Modifier.width(97.dp), overflow = TextOverflow.Ellipsis, text = description ?: "", fontSize = 12.sp, lineHeight = 18.sp, maxLines = 2)
+            Text(modifier = Modifier.width(97.dp), overflow = TextOverflow.Ellipsis, text = description, fontSize = 12.sp, lineHeight = 18.sp, maxLines = 2)
             Spacer(modifier = Modifier.width(7.dp))
             Icon(painter = painterResource(id = R.drawable.ic_delivery_arrow_right), contentDescription = null, modifier = Modifier.size(10.dp))
         }
     }
+}
+
+@Preview(showBackground = true, name = "전체 카드 - 배달 가능, 공지 있음")
+@Composable
+private fun StoreDetailInfoCardDeliveryWithNoticePreview() {
+    StoreDetailInfoCard(
+        storeInfo = ShopInfoModel.empty().copy(
+            isDeliveryAvailable = true,
+            minimumOrderAmount = 15000,
+            minimumDeliveryTip = 1000,
+            maximumDeliveryTip = 3000
+        ),
+        noticePreview = "저희 가게를 이용해 주셔서 감사합니다!"
+    )
+}
+
+@Preview(showBackground = true, name = "전체 카드 - 배달 불가, 공지 없음")
+@Composable
+private fun StoreDetailInfoCardNoDeliveryNoNoticePreview() {
+    StoreDetailInfoCard(
+        storeInfo = ShopInfoModel.empty()
+    )
+}
+
+@Preview(showBackground = true, name = "배달 카드 - 배달 가능, 최대 배달비 없음")
+@Composable
+private fun DeliveryInfoCardSingleTipPreview() {
+    DeliveryInfoCard(
+        storeInfo = ShopInfoModel.empty().copy(
+            isDeliveryAvailable = true,
+            minimumOrderAmount = 15000,
+            minimumDeliveryTip = 1000,
+            maximumDeliveryTip = null
+        )
+    )
+}
+
+@Preview(showBackground = true, name = "배달 카드 - 배달 가능, 최대 배달비 있음")
+@Composable
+private fun DeliveryInfoCardRangeTipPreview() {
+    DeliveryInfoCard(
+        storeInfo = ShopInfoModel.empty().copy(
+            isDeliveryAvailable = true,
+            minimumOrderAmount = 15000,
+            minimumDeliveryTip = 1000,
+            maximumDeliveryTip = 3000
+        )
+    )
+}
+
+@Preview(showBackground = true, name = "공지 카드 - 공지 있음")
+@Composable
+private fun NoticeCardWithDescriptionPreview() {
+    NoticeCard(
+        modifier = Modifier,
+        description = "저희 가게를 이용해 주셔서 감사합니다!"
+    )
 }

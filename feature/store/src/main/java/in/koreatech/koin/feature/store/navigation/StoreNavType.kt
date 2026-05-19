@@ -67,6 +67,9 @@ sealed class StoreDetailNavType {
         val isOrderableShop: Boolean = true,
         val selectedInfo: String = StoreDetailInfoType.ORIGIN.routeName
     ) : StoreDetailNavType()
+
+    @Serializable
+    data class StoreNotice(val storeId: Int) : StoreDetailNavType()
 }
 
 @Serializable
