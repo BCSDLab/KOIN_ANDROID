@@ -373,7 +373,14 @@ fun StoreDetailScreen(
                                     uiState.store.name
                                 )
                             },
-                            navigateToNotice = { navigateToNotice(uiState.store.shopId) },
+                            navigateToNotice = {
+                                EventLogger.logClickEvent(
+                                    EventAction.BUSINESS,
+                                    AnalyticsConstant.Label.SHOP_BENEFIT_ENTRY,
+                                    uiState.store.name
+                                )
+                                navigateToNotice(uiState.store.shopId)
+                            },
                             call = {
                                 viewModel.intent {
                                     postSideEffect(StoreDetailSideEffect.CheckCallPermission)

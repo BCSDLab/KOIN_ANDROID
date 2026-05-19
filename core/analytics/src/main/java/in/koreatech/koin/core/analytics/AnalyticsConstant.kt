@@ -58,6 +58,9 @@ object AnalyticsConstant {
         const val SHOP_DETAIL_VIEW_INFO = "shop_detail_view_info"
         const val SHOP_DETAIL_VIEW_BACK = "shop_detail_view_back"
         const val SHOP_DETAIL_VIEW_EVENT = "shop_detail_view_event"
+        const val SHOP_BENEFIT_ENTRY = "shop_benefit_entry"
+        const val SHOP_BENEFIT_BACK = "shop_benefit_back"
+        const val SHOP_BENEFIT_DETAIL = "shop_benefit_detail"
 
         const val SHOP_DETAIL_VIEW_REVIEW = "shop_detail_view_review"
         const val SHOP_DETAIL_VIEW_REVIEW_WRITE = "shop_detail_view_review_write"
