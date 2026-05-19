@@ -93,6 +93,13 @@ class NotificationActivity : ActivityBase() {
             intent.`package` = packageName
             startActivity(intent)
         }
+        binding.clGotoLostAndFoundKeyword.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("koin://lost-item/navigation?screen=keyword")
+            }
+            intent.`package` = packageName
+            startActivity(intent)
+        }
     }
 
     override fun onResume() {

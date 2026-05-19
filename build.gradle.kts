@@ -99,6 +99,7 @@ sonar {
         property("sonar.kotlin.detekt.reportPaths", detektReports)
         property("sonar.kotlin.ktlint.reportPaths", ktlintReports)
         property("sonar.coverage.exclusions", sonarCoverageExclusions)
+        property("sonar.exclusions", "**/*.java")
     }
 }
 

@@ -349,6 +349,8 @@
     <string name="notification_article_keyword_description">키워드가 포함된 글이 게시될 경우 알림을 받습니다.</string>
     <string name="notification_dining_photo_upload">식단 사진 업로드 알림</string>
     <string name="notification_article_keyword">공지사항 키워드 알림</string>
+    <string name="notification_lost_and_found_keyword">분실물 키워드 알림</string>
+    <string name="notification_lost_and_found_keyword_description">키워드가 포함된 분실물 게시글의 알림을 받습니다.</string>
     <string name="notification_dining_photo_upload_description">식단 사진이 업로드 될 경우 알림을 받습니다.</string>
 
     <string name="notification_marketing_term_switch">마케팅 정보 수신 동의</string>
