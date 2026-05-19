@@ -138,6 +138,11 @@ object AnalyticsConstant {
             const val LOST_ITEM_FOUND = "lost_item_found"
             const val LOST_ITEM_MODIFY = "lost_item_modify"
             const val LOST_ITEM_MODIFY_COMPLETE = "lost_item_modify_complete"
+            const val LOST_ITEM_KEYWORD_SETTING = "lost_item_keyword_setting"
+            const val LOST_ITEM_KEYWORD_ADD = "lost_item_keyword_add"
+            const val LOST_ITEM_KEYWORD_RECOMMEND = "lost_item_keyword_recommend"
+            const val LOST_ITEM_KEYWORD_ALARM = "lost_item_keyword_alarm"
+            const val LOST_ITEM_KEYWORD_REMOVE = "lost_item_keyword_remove"
         }
 
         object CHAT {
