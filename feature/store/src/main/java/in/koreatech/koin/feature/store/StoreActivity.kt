@@ -24,6 +24,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -71,12 +73,9 @@ class StoreActivity : ComponentActivity() {
 
                 LaunchedEffect(Unit) {
                     navController.currentBackStackEntryFlow.collect { backStackEntry ->
-                        val route = backStackEntry.destination.route
-                        if (route != null) {
-                            viewModel.setCurrentRoute(
-                                navigationBarItems.indexOfFirst { route.startsWith(it.type.route) }
-                            )
-                        }
+                        viewModel.setCurrentRoute(
+                            navigationBarItems.indexOfFirst { backStackEntry.destination.hasRoute(it.type::class) }
+                        )
                     }
                 }
 
@@ -86,7 +85,7 @@ class StoreActivity : ComponentActivity() {
                     Scaffold(
                         bottomBar = {
                             if (!enableDelivery) return@Scaffold
-                            if (currentBackStack?.destination?.route?.startsWith(StoreNavType.StoreMain.route) == true) {
+                            if (currentBackStack?.destination?.hierarchy?.any { it.hasRoute<StoreNavType.StoreMain>() } == true) {
                                 KoinStoreNavigationBar {
                                     navigationBarItems.forEachIndexed { index, item ->
                                         KoinStoreNavigationBarItem(
@@ -94,7 +93,7 @@ class StoreActivity : ComponentActivity() {
                                             icon = painterResource(item.iconRes),
                                             label = stringResource(item.stringRes),
                                             onClick = {
-                                                navController.navigate(item.type.route) {
+                                                navController.navigate(item.type) {
                                                     popUpTo(navController.graph.findStartDestination().id) {
                                                         saveState = true
                                                     }
@@ -116,7 +115,7 @@ class StoreActivity : ComponentActivity() {
                                 .padding(innerPadding)
                                 .consumeWindowInsets(innerPadding),
                             navController = navController,
-                            startDestination = StoreNavType.StoreMain.route
+                            startDestination = StoreNavType.StoreMain
                         ) {
                             koinStoreGraph(
                                 navController = navController,

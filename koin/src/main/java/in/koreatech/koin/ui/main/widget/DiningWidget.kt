@@ -39,7 +39,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
@@ -60,7 +59,6 @@ fun DiningWidget(
     diningData: List<Dining>,
     selectedPosition: Int?,
     selectedType: DiningType,
-    diningABTestExperimentGroup: String,
     modifier: Modifier = Modifier
 ) {
     val pagerState =
@@ -116,27 +114,25 @@ fun DiningWidget(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            if (diningABTestExperimentGroup == ExperimentGroup.MAIN_DINING_NEW) {
-                Row(
-                    modifier = Modifier
-                        .padding(end = 20.dp)
-                        .noRippleClickable {
-                            Intent(context, DiningActivity::class.java).let {
-                                context.startActivity(it)
-                            }
-                        },
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        style = KoinTheme.typography.regular14.copy(color = KoinTheme.colors.neutral500),
-                        text = stringResource(R.string.dining_see_more)
-                    )
+            Row(
+                modifier = Modifier
+                    .padding(end = 20.dp)
+                    .noRippleClickable {
+                        Intent(context, DiningActivity::class.java).let {
+                            context.startActivity(it)
+                        }
+                    },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    style = KoinTheme.typography.regular14.copy(color = KoinTheme.colors.neutral500),
+                    text = stringResource(R.string.dining_see_more)
+                )
 
-                    Icon(
-                        painter = painterResource(R.drawable.ic_arrow_right),
-                        contentDescription = stringResource(R.string.dining_see_more)
-                    )
-                }
+                Icon(
+                    painter = painterResource(R.drawable.ic_arrow_right),
+                    contentDescription = stringResource(R.string.dining_see_more)
+                )
             }
         }
 
@@ -322,7 +318,6 @@ private fun PreviewDiningWidget() {
         DiningWidget(
             selectedPosition = 0,
             selectedType = DiningType.Breakfast,
-            diningABTestExperimentGroup = ExperimentGroup.MAIN_DINING_NEW,
             diningData = listOf(
                 Dining(
                     id = 0,

@@ -2,9 +2,8 @@ package `in`.koreatech.koin.feature.user.ui.signup.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import `in`.koreatech.koin.feature.user.ui.signup.complete.SignUpCompleteScreen
 import `in`.koreatech.koin.feature.user.ui.signup.term.SignUpTermScreen
 import `in`.koreatech.koin.feature.user.ui.signup.userinfo.general.SignUpGeneralUserInfo
@@ -16,69 +15,40 @@ fun NavGraphBuilder.koinUserGraph(
     navController: NavController,
     finish: () -> Unit = {}
 ) {
-    composable(
-        route = SignUpNavType.Term.route
-    ) {
+    composable<SignUpNavType.Term> {
         SignUpTermScreen {
-            navController.navigate(SignUpNavType.Verification.route)
+            navController.navigate(SignUpNavType.Verification)
         }
     }
-    composable(
-        route = SignUpNavType.Verification.route
-    ) {
+    composable<SignUpNavType.Verification> {
         SignUpVerification { name, phoneNumber, gender ->
-            navController.navigate("${SignUpNavType.UserType.route}/$name/$phoneNumber/$gender")
+            navController.navigate(SignUpNavType.UserType(name = name, phoneNumber = phoneNumber, gender = gender))
         }
     }
-    composable(
-        route = "${SignUpNavType.UserType.route}/{$NAME}/{$PHONE_NUMBER}/{$GENDER}",
-        arguments = listOf(
-            navArgument(NAME) { type = NavType.StringType },
-            navArgument(PHONE_NUMBER) { type = NavType.StringType },
-            navArgument(GENDER) { type = NavType.StringType }
-        )
-    ) {
-        val name = it.arguments?.getString(NAME) ?: ""
-        val phoneNumber = it.arguments?.getString(PHONE_NUMBER) ?: ""
-        val gender = it.arguments?.getString(GENDER) ?: ""
+    composable<SignUpNavType.UserType> { entry ->
+        val args = entry.toRoute<SignUpNavType.UserType>()
         SignUpUserType(
             navigateToStudentScreen = {
-                navController.navigate("${SignUpNavType.StudentUserInfo.route}/$name/$phoneNumber/$gender")
+                navController.navigate(SignUpNavType.StudentUserInfo(name = args.name, phoneNumber = args.phoneNumber, gender = args.gender))
             },
             navigateToGeneralScreen = {
-                navController.navigate("${SignUpNavType.GeneralUserInfo.route}/$name/$phoneNumber/$gender")
+                navController.navigate(SignUpNavType.GeneralUserInfo(name = args.name, phoneNumber = args.phoneNumber, gender = args.gender))
             }
         )
     }
-    composable(
-        route = "${SignUpNavType.GeneralUserInfo.route}/{$NAME}/{$PHONE_NUMBER}/{$GENDER}",
-        arguments = listOf(
-            navArgument(NAME) { type = NavType.StringType },
-            navArgument(PHONE_NUMBER) { type = NavType.StringType },
-            navArgument(GENDER) { type = NavType.StringType }
-        )
-    ) {
+    composable<SignUpNavType.GeneralUserInfo> {
         SignUpGeneralUserInfo {
-            navController.navigate(SignUpNavType.SignUpComplete.route)
+            navController.navigate(SignUpNavType.SignUpComplete)
         }
     }
 
-    composable(
-        route = "${SignUpNavType.StudentUserInfo.route}/{$NAME}/{$PHONE_NUMBER}/{$GENDER}",
-        arguments = listOf(
-            navArgument(NAME) { type = NavType.StringType },
-            navArgument(PHONE_NUMBER) { type = NavType.StringType },
-            navArgument(GENDER) { type = NavType.StringType }
-        )
-    ) {
+    composable<SignUpNavType.StudentUserInfo> {
         SignUpStudentUserInfo {
-            navController.navigate(SignUpNavType.SignUpComplete.route)
+            navController.navigate(SignUpNavType.SignUpComplete)
         }
     }
 
-    composable(
-        route = SignUpNavType.SignUpComplete.route
-    ) {
+    composable<SignUpNavType.SignUpComplete> {
         SignUpCompleteScreen {
             finish()
         }

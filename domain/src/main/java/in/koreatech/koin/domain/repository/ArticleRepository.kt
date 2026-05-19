@@ -8,6 +8,7 @@ import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundReportItem
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundStats
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
+import `in`.koreatech.koin.domain.model.article.KeywordType
 import `in`.koreatech.koin.domain.model.article.LostAndFoundFilterParams
 import kotlinx.coroutines.flow.Flow
 
@@ -37,11 +38,13 @@ interface ArticleRepository {
 
     fun fetchMyKeyword(): Flow<List<String>>
 
-    fun fetchKeywordSuggestions(): Flow<List<String>>
+    fun fetchMyLostItemKeyword(): Flow<List<String>>
 
-    fun saveKeyword(keyword: String): Flow<Unit>
+    fun fetchKeywordSuggestions(type: KeywordType): Flow<List<String>>
 
-    fun deleteKeyword(keyword: String): Flow<Unit>
+    fun saveKeyword(type: KeywordType, keyword: String): Flow<Unit>
+
+    fun deleteKeyword(type: KeywordType, keyword: String): Flow<Unit>
 
     fun fetchKeywordNotiIndex(): Flow<Int>
 

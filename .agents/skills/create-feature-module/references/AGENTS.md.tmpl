@@ -1,0 +1,23 @@
+# Feature {{NAME_PASCAL}} Module - AGENTS.md
+
+`feature/{{NAME}}` is a Compose-first Orbit module for {{ONE_LINE_PURPOSE}}.
+
+## Keep In Mind
+
+- Use the existing Compose + Orbit patterns for screens and ViewModels.
+- Keep {{NAME}}-specific flows inside this module.
+- Use `rememberNavigator()` and shared navigation helpers for hand-offs back to `koin` Activities.
+- Reuse shared onboarding, analytics, and design-system components before adding module-local alternatives.
+- Keep {{NAME_PASCAL}}-specific UI state and validation in the feature layer; ViewModels still call use cases rather than repositories directly.
+
+## Focus Areas
+
+- {{FOCUS_AREAS}}
+
+## Read First
+
+- Root `AGENTS.md`
+- `core/AGENTS.md`
+- `core/navigation/AGENTS.md`
+- `core/designsystem/AGENTS.md`
+- `core/onboarding/AGENTS.md`

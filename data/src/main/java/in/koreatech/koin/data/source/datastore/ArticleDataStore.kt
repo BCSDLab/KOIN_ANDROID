@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.gson.Gson
 import `in`.koreatech.koin.data.constant.WEEK_IN_MILLIS
+import `in`.koreatech.koin.domain.model.article.KeywordType
 import `in`.koreatech.koin.domain.model.article.articleNotiContent
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -54,27 +55,42 @@ class ArticleDataStore @Inject constructor(
         }
     }
 
-    suspend fun fetchMyKeyword(): List<String> {
-        return dataStore.data.first()[KEY_MY_KEYWORD]?.let {
+    suspend fun fetchMyKeyword(type: KeywordType): List<String> {
+        val key = when (type) {
+            KeywordType.KOREATECH -> KEY_MY_KEYWORD
+            KeywordType.LOST_ITEM -> KEY_LOST_ITEM_KEYWORD
+        }
+
+        return dataStore.data.first()[key]?.let {
             gson.fromJson<List<String>>(it, List::class.java) ?: emptyList()
         } ?: emptyList()
     }
 
-    suspend fun saveKeyword(keyword: String) {
+    suspend fun saveKeyword(type: KeywordType, keyword: String) {
+        val key = when (type) {
+            KeywordType.KOREATECH -> KEY_MY_KEYWORD
+            KeywordType.LOST_ITEM -> KEY_LOST_ITEM_KEYWORD
+        }
+
         dataStore.edit { preferences ->
-            val myKeyword = preferences[KEY_MY_KEYWORD] ?: ""
+            val myKeyword = preferences[key] ?: ""
             val list = (gson.fromJson<List<String>>(myKeyword, List::class.java) ?: listOf()).toMutableList()
             list.add(keyword)
-            preferences[KEY_MY_KEYWORD] = gson.toJson(list)
+            preferences[key] = gson.toJson(list)
         }
     }
 
-    suspend fun deleteKeyword(keyword: String) {
+    suspend fun deleteKeyword(type: KeywordType, keyword: String) {
+        val key = when (type) {
+            KeywordType.KOREATECH -> KEY_MY_KEYWORD
+            KeywordType.LOST_ITEM -> KEY_LOST_ITEM_KEYWORD
+        }
+
         dataStore.edit { preferences ->
-            val myKeyword = preferences[KEY_MY_KEYWORD] ?: ""
+            val myKeyword = preferences[key] ?: ""
             val list = gson.fromJson<List<String>>(myKeyword, List::class.java).toMutableList()
             list.remove(keyword)
-            preferences[KEY_MY_KEYWORD] = gson.toJson(list)
+            preferences[key] = gson.toJson(list)
         }
     }
 
@@ -99,6 +115,7 @@ class ArticleDataStore @Inject constructor(
     companion object {
         private val KEY_SEARCH_HISTORY = stringPreferencesKey("search_history")
         private val KEY_MY_KEYWORD = stringPreferencesKey("my_keyword")
+        private val KEY_LOST_ITEM_KEYWORD = stringPreferencesKey("lost_item_keyword")
         private val KEY_NOTI_INDEX = intPreferencesKey("noti_index")
         private val KEY_NOTI_LAST_UPDATE = longPreferencesKey("noti_last_update_time")
     }

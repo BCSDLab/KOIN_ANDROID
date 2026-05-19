@@ -1,0 +1,23 @@
+package `in`.koreatech.koin.data.response.{{FEATURE_LOWER}}
+
+import com.google.gson.annotations.SerializedName
+
+data class {{FEATURE}}{{ACTION}}Response(
+{{FIELDS}}
+)
+
+// FIELDS — same conventions as Request.kt.tmpl. Nullability driven by OpenAPI `required`.
+//
+// Nested objects: if the response schema has nested objects (`properties.foo.type == "object"`),
+// declare them as inner data classes inside the same file:
+//
+//     data class FooResponse(
+//         @SerializedName("items") val items: List<ItemDto>
+//     ) {
+//         data class ItemDto(
+//             @SerializedName("post_id") val postId: Int,
+//             @SerializedName("title")   val title: String
+//         )
+//     }
+//
+// Match `feature/callvan` response files for visual style.

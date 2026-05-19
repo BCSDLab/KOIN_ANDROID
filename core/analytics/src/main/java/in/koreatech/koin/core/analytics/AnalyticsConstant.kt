@@ -58,6 +58,9 @@ object AnalyticsConstant {
         const val SHOP_DETAIL_VIEW_INFO = "shop_detail_view_info"
         const val SHOP_DETAIL_VIEW_BACK = "shop_detail_view_back"
         const val SHOP_DETAIL_VIEW_EVENT = "shop_detail_view_event"
+        const val SHOP_BENEFIT_ENTRY = "shop_benefit_entry"
+        const val SHOP_BENEFIT_BACK = "shop_benefit_back"
+        const val SHOP_BENEFIT_DETAIL = "shop_benefit_detail"
 
         const val SHOP_DETAIL_VIEW_REVIEW = "shop_detail_view_review"
         const val SHOP_DETAIL_VIEW_REVIEW_WRITE = "shop_detail_view_review_write"
@@ -138,6 +141,11 @@ object AnalyticsConstant {
             const val LOST_ITEM_FOUND = "lost_item_found"
             const val LOST_ITEM_MODIFY = "lost_item_modify"
             const val LOST_ITEM_MODIFY_COMPLETE = "lost_item_modify_complete"
+            const val LOST_ITEM_KEYWORD_SETTING = "lost_item_keyword_setting"
+            const val LOST_ITEM_KEYWORD_ADD = "lost_item_keyword_add"
+            const val LOST_ITEM_KEYWORD_RECOMMEND = "lost_item_keyword_recommend"
+            const val LOST_ITEM_KEYWORD_ALARM = "lost_item_keyword_alarm"
+            const val LOST_ITEM_KEYWORD_REMOVE = "lost_item_keyword_remove"
         }
 
         object CHAT {
@@ -146,10 +154,6 @@ object AnalyticsConstant {
         }
 
         object Club {
-            const val CLUB_AB_TEST_CATEGORY = "a/b test 로깅(메인화면 동아리 진입)"
-            const val CLUB_AB_TEST_DESIGN_A = "design_A"
-            const val CLUB_AB_TEST_DESIGN_B = "design_B"
-            const val CLUB_1 = "CAMPUS_club_1"
             const val MAIN_POPULAR_CLUB = "main_popular_club"
             const val MAIN_CLUB = "main_club"
             const val MAIN_SELECT_CLUB = "club_main_select"
@@ -175,11 +179,6 @@ object AnalyticsConstant {
             const val CLUB_RECRUITMENT_NOTI = "club_recruitment_noti"
             const val CLUB_RECRUITMENT_ACCEPT = "club_recruitment_accept"
             const val CLUB_RECRUITMENT_CANCEL = "club_recruitment_cancel"
-        }
-
-        object Dining {
-            const val DINING_AB_TEST_DESIGN_A = "design_A"
-            const val DINING_AB_TEST_DESIGN_B = "design_B"
         }
 
         object Callvan {

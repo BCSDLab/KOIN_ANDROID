@@ -1,11 +1,11 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.list
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.article.LostAndFoundFilterParams
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticlePaginationV2UseCase
+import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostItemKeywordUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.AuthorFilterType
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.CategoryFilterType
@@ -19,46 +19,51 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.repeatOnSubscription
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
+
+enum class ListOverlay {
+    FILTER_BOTTOM_SHEET,
+    WRITE_BOTTOM_SHEET,
+    FILTER_LOGIN_DIALOG,
+    WRITE_LOGIN_DIALOG
+}
 
 @HiltViewModel
 class LostAndFoundListViewModel @Inject constructor(
     private val fetchLostAndFoundArticlePaginationV2UseCase: FetchLostAndFoundArticlePaginationV2UseCase,
-    private val getUserStatusUseCase: GetUserStatusUseCase
+    private val getUserStatusUseCase: GetUserStatusUseCase,
+    private val fetchLostItemKeywordUseCase: FetchLostItemKeywordUseCase
 ) : ViewModel(), ContainerHost<LostAndFoundListState, LostAndFoundListSideEffect> {
-    override val container = container<LostAndFoundListState, LostAndFoundListSideEffect>(
+    override val container: Container<LostAndFoundListState, LostAndFoundListSideEffect> = container(
         initialState = LostAndFoundListState()
     )
 
     init {
         initUserInfo()
+        observeKeywords()
     }
 
-    private fun initUserInfo() = viewModelScope.launch {
-        getUserStatusUseCase().collectLatest {
-            intent {
-                when (it) {
-                    is User.Student -> reduce {
-                        state.copy(
-                            isLoggedIn = true
-                        )
-                    }
-                    is User.General -> reduce {
-                        state.copy(
-                            isLoggedIn = true
-                        )
-                    }
-                    is User.Anonymous -> reduce {
-                        state.copy(isLoggedIn = false)
+    private fun initUserInfo() = intent {
+        repeatOnSubscription {
+            getUserStatusUseCase()
+                .catch {
+                    // 사용자 상태 로드 실패 — 익명으로 처리
+                    reduce { state.copy(isLoggedIn = false) }
+                }
+                .collect { user ->
+                    when (user) {
+                        is User.Student -> reduce { state.copy(isLoggedIn = true) }
+                        is User.General -> reduce { state.copy(isLoggedIn = true) }
+                        is User.Anonymous -> reduce { state.copy(isLoggedIn = false) }
                     }
                 }
-            }
         }
     }
 
@@ -180,35 +185,14 @@ class LostAndFoundListViewModel @Inject constructor(
         postSideEffect(LostAndFoundListSideEffect.FetchData)
     }
 
-    fun setShowFilterBottomSheet(value: Boolean) = intent {
+    fun setOverlayVisibility(overlay: ListOverlay, show: Boolean) = intent {
         reduce {
-            state.copy(
-                showFilterBottomSheet = value
-            )
-        }
-    }
-
-    fun setShowWriteBottomSheet(value: Boolean) = intent {
-        reduce {
-            state.copy(
-                showWriteBottomSheet = value
-            )
-        }
-    }
-
-    fun setShowFilterLoginDialog(show: Boolean) = intent {
-        reduce {
-            state.copy(
-                showFilterLoginDialog = show
-            )
-        }
-    }
-
-    fun setShowWriteLoginDialog(show: Boolean) = intent {
-        reduce {
-            state.copy(
-                showWriteLoginDialog = show
-            )
+            when (overlay) {
+                ListOverlay.FILTER_BOTTOM_SHEET -> state.copy(showFilterBottomSheet = show)
+                ListOverlay.WRITE_BOTTOM_SHEET -> state.copy(showWriteBottomSheet = show)
+                ListOverlay.FILTER_LOGIN_DIALOG -> state.copy(showFilterLoginDialog = show)
+                ListOverlay.WRITE_LOGIN_DIALOG -> state.copy(showWriteLoginDialog = show)
+            }
         }
     }
 
@@ -217,6 +201,42 @@ class LostAndFoundListViewModel @Inject constructor(
             state.copy(
                 searchQuery = query
             )
+        }
+    }
+
+    fun selectKeyword(index: Int) {
+        intent {
+            reduce { state.copy(selectedKeywordIndex = index) }
+        }
+    }
+
+    private fun observeKeywords() = intent {
+        repeatOnSubscription {
+            fetchLostItemKeywordUseCase()
+                .catch { reduce { state.copy(keywords = persistentListOf(), selectedKeywordIndex = 0) } }
+                .collect { keywords ->
+                    // UI 칩 인덱스 체계: 0 = "전체보기", 1 = keywords[0], ...
+                    // 따라서 실제 선택된 키워드 = keywords[selectedKeywordIndex - 1]
+                    val oldSelectedKeyword = if (state.selectedKeywordIndex > 0) {
+                        state.keywords.getOrNull(state.selectedKeywordIndex - 1)
+                    } else {
+                        null
+                    }
+                    // 새 목록에서 복원 시 +1 offset 적용
+                    val newIndex = oldSelectedKeyword?.let { kw ->
+                        val idx = keywords.indexOf(kw)
+                        if (idx >= 0) idx + 1 else 0
+                    } ?: 0
+                    reduce {
+                        state.copy(
+                            keywords = keywords.toPersistentList(),
+                            selectedKeywordIndex = newIndex
+                        )
+                    }
+                    if (oldSelectedKeyword != keywords.getOrNull(newIndex - 1)) {
+                        postSideEffect(LostAndFoundListSideEffect.FetchData)
+                    }
+                }
         }
     }
 }

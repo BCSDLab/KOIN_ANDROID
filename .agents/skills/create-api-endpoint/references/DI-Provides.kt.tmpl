@@ -1,0 +1,16 @@
+// Append this @Provides block when a brand-new Api file (Auth or NoAuth) was created.
+// Imports needed (add at top of file if missing — ktlintFormat will sort):
+//   import `in`.koreatech.koin.data.api.[auth.]<Feature>[Auth]Api
+
+@Provides
+@Singleton
+fun provide{{FEATURE}}{{API_SUFFIX}}(@{{QUALIFIER}} retrofit: Retrofit): {{FEATURE}}{{API_SUFFIX}} {
+    return retrofit.create({{FEATURE}}{{API_SUFFIX}}::class.java)
+}
+
+// API_SUFFIX  — `AuthApi`  for Bearer-token endpoints, `Api` for NoAuth endpoints.
+// QUALIFIER   — `Auth`     for Auth APIs (file: koin/.../di/network/AuthNetworkModule.kt),
+//               `NoAuth`   for NoAuth APIs (file: data/.../di/network/NoAuthNetworkModule.kt).
+//
+// Anchor for Edit: append after the LAST existing `provide<...>Api` block in the matching file.
+// Idempotency: Grep `provide{{FEATURE}}{{API_SUFFIX}}` first; skip if present.

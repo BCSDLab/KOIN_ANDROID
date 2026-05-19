@@ -1,0 +1,23 @@
+// Append this extension function to the existing <Feature>Mapper.kt file.
+// If the file does not exist, prepend the package declaration + necessary imports
+// (the response DTO + the domain model) before the function.
+//
+// File location: data/src/main/java/in/koreatech/koin/data/mapper/<Feature>Mapper.kt
+// Package:       `in`.koreatech.koin.data.mapper
+
+fun {{FEATURE}}{{ACTION}}Response.to{{DOMAIN_MODEL}}() = {{DOMAIN_MODEL}}(
+{{FIELD_ASSIGNMENTS}}
+)
+
+// FIELD_ASSIGNMENTS — each line indented 4 spaces, comma-trailing except last.
+// Map Response field name → Domain model property name. Almost always 1:1.
+//     id = id,
+//     author = author,
+//     departureType = departureType,
+//
+// Nested DTOs need their own toX() function (also extension):
+//     fun FooResponse.ItemDto.toItem() = Item(postId, title)
+//     // and the parent uses: items = items.map { it.toItem() }
+//
+// For new domain models (no Domain class yet), the skill writes the model file too —
+// see SKILL.md Step 3.

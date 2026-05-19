@@ -28,5 +28,7 @@ data class LostAndFoundListState(
     val searchedArticlesCurrentPage: Int = 1,
     val searchedArticlesTotalPage: Int = 1,
     val isLoadingMoreArticles: Boolean = false,
-    val hasMoreArticles: Boolean = true
+    val hasMoreArticles: Boolean = true,
+    val keywords: ImmutableList<String> = persistentListOf(),
+    val selectedKeywordIndex: Int = 0
 ) : Parcelable

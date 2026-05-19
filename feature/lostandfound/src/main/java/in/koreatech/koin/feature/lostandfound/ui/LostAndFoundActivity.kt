@@ -30,15 +30,20 @@ class LostAndFoundActivity : ComponentActivity() {
         }
 
         val id = intent.data?.getQueryParameter("id")
+        val screen = intent.data?.getQueryParameter("screen")
 
         setContent {
             KoinTheme {
-                var startDestination by remember { mutableStateOf<LostAndFoundNavType>(LostAndFoundNavType.LostAndFoundListRoute) }
-                val navController = rememberNavController()
-
-                id?.let {
-                    startDestination = LostAndFoundNavType.LostAndFoundDetailRoute(it.toInt())
+                var startDestination by remember {
+                    mutableStateOf<LostAndFoundNavType>(
+                        when {
+                            screen == "keyword" -> LostAndFoundNavType.LostAndFoundKeywordRoute
+                            id != null -> LostAndFoundNavType.LostAndFoundDetailRoute(id.toInt())
+                            else -> LostAndFoundNavType.LostAndFoundListRoute
+                        }
+                    )
                 }
+                val navController = rememberNavController()
 
                 val dispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 

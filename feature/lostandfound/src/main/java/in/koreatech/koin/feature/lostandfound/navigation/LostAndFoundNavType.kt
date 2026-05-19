@@ -7,6 +7,9 @@ sealed class LostAndFoundNavType {
     data object LostAndFoundListRoute : LostAndFoundNavType()
 
     @Serializable
+    data object LostAndFoundKeywordRoute : LostAndFoundNavType()
+
+    @Serializable
     data class LostAndFoundDetailRoute(val articleId: Int) : LostAndFoundNavType()
 
     @Serializable

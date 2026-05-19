@@ -1,11 +1,7 @@
 package `in`.koreatech.koin.ui.main.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.core.abtest.Experiment
-import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.model.article.articleNotiContent
 import `in`.koreatech.koin.domain.model.dining.Dining
@@ -16,9 +12,7 @@ import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchArticleLostAndFoundStatsUseCase
 import `in`.koreatech.koin.domain.usecase.banner.CheckBannerRefusalUseCase
 import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
-import `in`.koreatech.koin.domain.usecase.session.GetSessionIdUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
-import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
@@ -35,8 +29,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -45,55 +37,11 @@ import kotlinx.coroutines.flow.stateIn
 class MainActivityViewModel @Inject constructor(
     private val getDiningUseCase: GetDiningUseCase,
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
-    private val abTestUseCase: ABTestUseCase,
     private val checkBannerRefusalUseCase: CheckBannerRefusalUseCase,
     private val articleRepository: ArticleRepository,
-    private val getSessionIdUseCase: GetSessionIdUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
     private val fetchArticleLostAndFoundStatsUseCase: FetchArticleLostAndFoundStatsUseCase
 ) : BaseViewModel() {
-    private val _variableName = MutableLiveData<String>()
-    val variableName: LiveData<String> get() = _variableName
-
-    val bannerABTestExperimentGroup =
-        flow {
-            abTestUseCase(Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentTitle).onSuccess {
-                emit(it)
-            }.onFailure {
-                emit(Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentGroups.first())
-            }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = null
-        ).filterNotNull()
-
-    val diningABTestExperimentGroup =
-        flow {
-            abTestUseCase(Experiment.MAIN_DINING_SEE_MORE.experimentTitle).onSuccess {
-                emit(it)
-            }.onFailure {
-                emit(Experiment.MAIN_DINING_SEE_MORE.experimentGroups.first())
-            }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = Experiment.MAIN_DINING_SEE_MORE.experimentGroups.first()
-        )
-
-    val diningStoreAbTestExperimentGroup =
-        flow {
-            abTestUseCase(Experiment.DINING_STORE.experimentTitle).onSuccess {
-                emit(it)
-            }.onFailure {
-                emit(Experiment.DINING_STORE.experimentGroups.first())
-            }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = null
-        )
-
     val hotArticles: StateFlow<List<ArticleMainState.Content>> =
         articleRepository.fetchHotArticleHeaders()
             .map {
@@ -115,15 +63,10 @@ class MainActivityViewModel @Inject constructor(
 
     val articleMain: StateFlow<List<ArticleMainState>> =
         combine(
-            bannerABTestExperimentGroup,
             articleNoti,
             hotArticles
-        ) { experimentGroup, noti, articles ->
-            when (experimentGroup) {
-                ExperimentGroup.MAIN_BANNER_NEW -> listOf(noti) + articles
-                ExperimentGroup.MAIN_BANNER_ORIGINAL -> articles
-                else -> articles
-            }
+        ) { noti, articles ->
+            listOf(noti) + articles
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
@@ -153,12 +96,6 @@ class MainActivityViewModel @Inject constructor(
         checkBannerRefusal()
         updateDining()
         getLostAndFoundState()
-    }
-
-    fun postABTestAssign(title: String) = viewModelScope.launchWithLoading {
-        abTestUseCase(title).onSuccess {
-            _variableName.value = it
-        }
     }
 
     fun checkKeywordNotiContent() {
@@ -201,16 +138,6 @@ class MainActivityViewModel @Inject constructor(
 
     fun getStoreCategories() = viewModelScope.launchWithLoading {
         _storeCategories.value = getStoreCategoriesUseCase()
-    }
-
-    fun getDiningToShopSessionId(): String {
-        return getSessionIdUseCase(
-            sessionName = "dining2shop",
-            isLoggedIn = !_userState.value.isAnonymous,
-            platform = "ANDROID",
-            sessionTime = 1800,
-            shouldExpireOtherSessions = true
-        )
     }
 
     private fun checkBannerRefusal() {

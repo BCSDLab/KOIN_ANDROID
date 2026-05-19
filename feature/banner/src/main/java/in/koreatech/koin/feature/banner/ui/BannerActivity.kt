@@ -18,13 +18,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
 import `in`.koreatech.koin.feature.banner.component.BannerA
-import `in`.koreatech.koin.feature.banner.component.BannerB
 
 @AndroidEntryPoint
 class BannerActivity : ComponentActivity() {
@@ -37,7 +35,6 @@ class BannerActivity : ComponentActivity() {
 
         setContent {
             val uiState by viewModel.bannerState.collectAsState()
-            val experimentGroup by viewModel.mainBannerABTestExperimentGroup.collectAsState(null)
 
             KoinTheme {
                 if (!uiState.isLoading) {
@@ -60,45 +57,17 @@ class BannerActivity : ComponentActivity() {
                                 .fillMaxSize()
                                 .padding(contentPadding)
                         ) {
-                            when (experimentGroup) {
-                                ExperimentGroup.BOTTOM_BANNER -> {
-                                    EventLogger.logABTestEvent(
-                                        category = "a/b test 로깅(메인 모달)",
-                                        label = "CAMPUS_modal_1",
-                                        value = "design_A"
-                                    )
-                                    BannerA(
-                                        bannerList = uiState.bannerList,
-                                        currentKoinVersion = uiState.currentVersionCode,
-                                        dismiss = {
-                                            finishActivity()
-                                        },
-                                        dismissWithRefusal = {
-                                            viewModel.setBannerRefusal()
-                                            finishActivity()
-                                        }
-                                    )
+                            BannerA(
+                                bannerList = uiState.bannerList,
+                                currentKoinVersion = uiState.currentVersionCode,
+                                dismiss = {
+                                    finishActivity()
+                                },
+                                dismissWithRefusal = {
+                                    viewModel.setBannerRefusal()
+                                    finishActivity()
                                 }
-
-                                ExperimentGroup.CENTER_BANNER -> {
-                                    EventLogger.logABTestEvent(
-                                        category = "a/b test 로깅(메인 모달)",
-                                        label = "CAMPUS_modal_1",
-                                        value = "design_B"
-                                    )
-                                    BannerB(
-                                        bannerList = uiState.bannerList,
-                                        currentKoinVersion = uiState.currentVersionCode,
-                                        dismiss = {
-                                            finishActivity()
-                                        },
-                                        dismissWithRefusal = {
-                                            viewModel.setBannerRefusal()
-                                            finishActivity()
-                                        }
-                                    )
-                                }
-                            }
+                            )
                         }
                     }
                 }

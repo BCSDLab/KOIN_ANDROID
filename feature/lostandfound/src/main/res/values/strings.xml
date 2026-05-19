@@ -145,6 +145,8 @@
 
     <string name="keyword_see_all">모두보기</string>
     <string name="keyword_add_new">새 키워드 추가</string>
+    <string name="keyword_notification_setting">키워드 알림 설정</string>
+    <string name="keyword_setting_coming_soon">키워드 알림 설정 기능은 준비 중입니다.</string>
 
     <string name="dialog_loading">로딩 중…</string>
 
@@ -180,7 +182,7 @@
     <string name="downloading">다운로드 중</string>
     <string name="start_download">파일을 다운로드합니다.</string>
     <string name="recommend_login_to_get_keyword_notification_title">키워드 알림을 받으려면\n로그인이 필요해요.</string>
-    <string name="recommend_login_to_get_keyword_notification_message">로그인 후 간편하게 공지사항 키워드\n알림을 받아보세요!</string>
+    <string name="recommend_login_to_get_keyword_notification_message">로그인 후 간편하게 분실물 키워드\n알림을 받아보세요!</string>
     <string name="title_article">게시판</string>
     <string name="navigation_title_article">공지사항</string>
     <string name="navigation_title_article_search">공지글 검색</string>
@@ -234,4 +236,16 @@
     <string name="lost_and_found_my_filter_can_use_logged_in_negative">닫기</string>
 
     <string name="lost_and_found_search_hint">검색어를 입력해주세요.</string>
+
+    <!-- Keyword Management Screen -->
+    <string name="lost_and_found_keyword_management">분실물 키워드 관리</string>
+    <string name="lost_and_found_my_keyword_label">내 키워드</string>
+    <string name="lost_and_found_my_keyword_count">%1$d/10</string>
+    <string name="lost_and_found_keyword_input_hint">잃어버린 물건을 입력해 주세요.</string>
+    <string name="lost_and_found_keyword_notification_section_title">키워드 알림</string>
+    <string name="lost_and_found_keyword_notification_title">분실물 키워드 알림받기</string>
+    <string name="lost_and_found_keyword_notification_description">키워드가 포함된 분실물 게시글의 알림을 받습니다.</string>
+    <string name="notification_update_failed">알림 설정 변경에 실패했습니다.</string>
+    <string name="keyword_add_failed">키워드 추가에 실패했습니다.</string>
+    <string name="keyword_delete_failed">키워드 삭제에 실패했습니다.</string>
 </resources>

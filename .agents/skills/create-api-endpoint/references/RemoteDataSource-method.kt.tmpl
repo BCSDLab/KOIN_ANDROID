@@ -1,0 +1,31 @@
+// Append this method to <Feature>RemoteDataSource.kt
+// (`class <Feature>RemoteDataSource @Inject constructor(private val <feature>[Auth]Api: ...)`)
+//
+// For a brand-new RemoteDataSource file, prepend the standard header:
+//
+//     package `in`.koreatech.koin.data.source.remote
+//     import ...
+//     import javax.inject.Inject
+//
+//     class <Feature>RemoteDataSource @Inject constructor(
+//         private val {{API_PARAM}}: {{API_TYPE}}
+//     ) {
+//         <methods...>
+//     }
+
+suspend fun {{METHOD_NAME}}(
+{{PARAMETERS}}
+){{RETURN_TYPE_CLAUSE}} = {{API_PARAM}}.{{METHOD_NAME}}(
+{{ARG_FORWARDING}}
+)
+
+// PARAMETERS / RETURN_TYPE_CLAUSE — same as the Api method (no Retrofit annotations here).
+// API_PARAM — camelCase property name, e.g. `callvanAuthApi` or `bannerApi`.
+// API_TYPE  — `<Feature>AuthApi` or `<Feature>Api`.
+// ARG_FORWARDING — name = name (each line indented 4 spaces, comma-trailing except last).
+//
+// For Response<Unit> calls (rare), use the imperative style instead of `=`:
+//     suspend fun close(postId: Int) {
+//         val response = api.close(postId)
+//         if (!response.isSuccessful) throw HttpException(response)
+//     }

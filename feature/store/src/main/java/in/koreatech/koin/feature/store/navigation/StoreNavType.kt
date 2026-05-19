@@ -3,33 +3,73 @@ package `in`.koreatech.koin.feature.store.navigation
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
 import `in`.koreatech.koin.feature.store.model.StoreNavigationData
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed class StoreNavType(val route: String) {
-    data object StoreMain : StoreNavType("store_main")
-    data object StoreSearch : StoreNavType("store_search")
-    data object StoreDetail : StoreNavType("store_detail")
+sealed class StoreNavType {
+    @Serializable
+    data object StoreMain : StoreNavType()
 
     @Serializable
-    data object StoreReview : StoreNavType("store_review")
-    data object StoreCart : StoreNavType("store_cart")
-    data object StoreCartAdd : StoreNavType("store_cart_add")
-    data object StoreCartEdit : StoreNavType("store_cart_edit")
-    data object StorePayment : StoreNavType("store_payment")
-    data object StoreOrderResult : StoreNavType("store_order_result")
+    data object StoreDetail : StoreNavType()
+
+    @Serializable
+    data object StoreReview : StoreNavType()
+
+    @Serializable
+    data object StoreCart : StoreNavType()
+
+    @Serializable
+    data class StoreCartAdd(
+        val orderableShopId: Int,
+        val orderableShopMenuId: Int,
+        val cartData: String? = null
+    ) : StoreNavType()
+
+    @Serializable
+    data class StoreCartEdit(val cartMenuItemId: Int) : StoreNavType()
+
+    @Serializable
+    data class StorePayment(val cartType: String) : StoreNavType()
+
+    @Serializable
+    data class StoreOrderResult(val orderId: Int) : StoreNavType()
+
+    @Serializable
+    data class StoreSearch(val isOrderableShop: Boolean) : StoreNavType()
 }
 
-sealed class StoreMainNavType(val route: String) {
-    data object StoreMainHome : StoreMainNavType("store_main_home")
-    data object StoreMainNearby : StoreMainNavType("store_main_nearby")
-    data object StoreMainOrder : StoreMainNavType("store_main_order_history")
+@Serializable
+sealed class StoreMainNavType {
+    @Serializable
+    data object StoreMainHome : StoreMainNavType()
+
+    @Serializable
+    data object StoreMainNearby : StoreMainNavType()
+
+    @Serializable
+    data object StoreMainOrder : StoreMainNavType()
 }
 
-sealed class StoreDetailNavType(val route: String) {
-    data object StoreDetailMain : StoreDetailNavType("store_detail_main")
-    data object StoreDetailInfo : StoreDetailNavType("store_detail_info")
+@Serializable
+sealed class StoreDetailNavType {
+    @Serializable
+    data class StoreDetailMain(
+        val storeId: Int,
+        val isOrderableShop: Boolean = true
+    ) : StoreDetailNavType()
+
+    @Serializable
+    data class StoreDetailInfo(
+        val storeId: Int,
+        val isOrderableShop: Boolean = true,
+        val selectedInfo: String = StoreDetailInfoType.ORIGIN.routeName
+    ) : StoreDetailNavType()
+
+    @Serializable
+    data class StoreNotice(val storeId: Int) : StoreDetailNavType()
 }
 
 @Serializable

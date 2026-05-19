@@ -1,0 +1,17 @@
+package `in`.koreatech.koin.data.request.{{FEATURE_LOWER}}
+
+import com.google.gson.annotations.SerializedName
+
+data class {{FEATURE}}{{ACTION}}Request(
+{{FIELDS}}
+)
+
+// FIELDS — each line indented 4 spaces, comma-trailing except last.
+// Use Gson @SerializedName for snake_case API field, camelCase Kotlin property:
+//     @SerializedName("departure_type")
+//     val departureType: String,
+//     @SerializedName("departure_custom_name")
+//     val departureCustomName: String?,
+//
+// Nullability: a field is nullable iff it is NOT in OpenAPI's `required` array
+// for the requestBody schema. Required fields → non-null. Optional → `String?`/`Int?`.

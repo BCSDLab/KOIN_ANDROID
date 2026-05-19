@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
+import `in`.koreatech.koin.domain.model.article.KeywordType
 import `in`.koreatech.koin.domain.model.notification.NotificationPermissionInfo
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.domain.model.user.User
@@ -78,7 +79,7 @@ class ArticleKeywordViewModel @Inject constructor(
             )
 
     val suggestedKeywords: StateFlow<List<String>> =
-        articleRepository.fetchKeywordSuggestions()
+        articleRepository.fetchKeywordSuggestions(KEYWORD_TYPE)
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
@@ -111,7 +112,7 @@ class ArticleKeywordViewModel @Inject constructor(
             return
         }
 
-        articleRepository.saveKeyword(trimmedKeyword).onStart {
+        articleRepository.saveKeyword(KEYWORD_TYPE, trimmedKeyword).onStart {
             _keywordAddUiState.emit(KeywordAddUiState.Loading)
         }.onEach {
             _keywordAddUiState.emit(KeywordAddUiState.Success(trimmedKeyword))
@@ -145,7 +146,7 @@ class ArticleKeywordViewModel @Inject constructor(
     }
 
     fun deleteKeyword(keyword: String) {
-        articleRepository.deleteKeyword(keyword).onEach {
+        articleRepository.deleteKeyword(KEYWORD_TYPE, keyword).onEach {
             _keywordAddUiState.emit(KeywordAddUiState.Success(keyword))
         }.catch {
             _keywordAddUiState.emit(KeywordAddUiState.Error)
@@ -163,6 +164,7 @@ class ArticleKeywordViewModel @Inject constructor(
         const val MIN_KEYWORD_LENGTH = 2
         const val KEYWORD_INPUT = "keyword_input"
         val trimmedKeywordRegex = Regex("""\s+""")
+        val KEYWORD_TYPE = KeywordType.KOREATECH
     }
 }
 

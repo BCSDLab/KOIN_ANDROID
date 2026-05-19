@@ -144,17 +144,6 @@
     </issue>
 
     <issue
-        id="ConfigurationScreenWidthHeight"
-        message="Using Configuration.screenWidthDp instead of LocalWindowInfo.current.containerSize"
-        errorLine1="    val screenWidth by remember { mutableStateOf(configuration.screenWidthDp.dp - 48.dp) } // minus horizontal padding"
-        errorLine2="                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/in/koreatech/koin/feature/banner/component/BannerB.kt"
-            line="45"
-            column="50"/>
-    </issue>
-
-    <issue
         id="ModifierParameter"
         message="Modifier parameter should be the first optional parameter"
         errorLine1="    modifier: Modifier = Modifier,"

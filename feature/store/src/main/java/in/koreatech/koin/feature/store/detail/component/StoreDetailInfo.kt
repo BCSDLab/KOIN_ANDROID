@@ -46,7 +46,9 @@ fun StoreDetailInfo(
     phoneNumber: String? = null,
     isOrderableShop: Boolean = true,
     navigateToReview: () -> Unit = {},
+    noticePreview: String? = null,
     navigateToDetailInfo: (selectedInfo: String) -> Unit = {},
+    navigateToNotice: () -> Unit = {},
     call: (phoneNumber: String) -> Unit = {}
 ) {
     if (!isOrderableShop) require(phoneNumber != null)
@@ -97,8 +99,9 @@ fun StoreDetailInfo(
         StoreDetailInfoCard(
             storeInfo = storeInfo,
             modifier = Modifier.fillMaxWidth(),
-            storeDescriptionModel = storeDescriptionModel,
-            navigateToDetailInfo = { type -> navigateToDetailInfo(type) }
+            noticePreview = noticePreview,
+            navigateToDetailInfo = { navigateToDetailInfo(StoreDetailInfoType.DELIVERY.name) },
+            navigateToNotice = navigateToNotice
         )
 
         Spacer(modifier = Modifier.height(12.dp))
