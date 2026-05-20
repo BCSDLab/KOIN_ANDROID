@@ -136,15 +136,18 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun isUserEmailDuplicated(email: String): Boolean {
-        return try {
+    override suspend fun isUserEmailDuplicated(email: String): Result<Boolean> {
+        return suspendRunCatching {
             userRemoteDataSource.checkEmail(email)
             false
-        } catch (e: HttpException) {
-            if (e.code() == 409) {
+        }.mapHttpFailure {
+            on(400) throws KoinUserException.EmailInvalidException()
+            on(409) throws KoinUserException.EmailConflictException()
+        }.recoverCatching { exception ->
+            if (exception is KoinUserException.EmailConflictException) {
                 true
             } else {
-                throw e
+                throw exception
             }
         }
     }
