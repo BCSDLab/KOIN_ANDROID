@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.data.repository
 
-import `in`.koreatech.koin.data.mapper.safeApiCall
+import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.data.mapper.toCodeCount
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
@@ -189,7 +189,7 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun postABTestAssign(title: String): ABTest {
         val (variableName, accessHistoryId) = userRemoteDataSource.postABTestAssign(ABTestRequest(title))
 
-        safeApiCall {
+        suspendRunCatching {
             userLocalDataSource.insertCachedABTest(title, accessHistoryId, variableName)
         }
 

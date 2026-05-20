@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.data.repository
 
-import `in`.koreatech.koin.data.mapper.safeApiCall
+import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.data.requestbody.S3RequestBody
 import `in`.koreatech.koin.data.source.local.UploadImageLocalDataSource
 import `in`.koreatech.koin.data.source.remote.PreSignedUrlRemoteDataSource
@@ -40,7 +40,7 @@ class PreSignedUrlRepositoryImpl @Inject constructor(
         mediaType: String,
         mediaSize: Long
     ): Result<Unit> {
-        return safeApiCall {
+        return suspendRunCatching {
             val file = uploadImageLocalDataSource.uriToBitmap(imageUri, mediaSize).toRequestBody(mediaType.toMediaTypeOrNull())
             preSignedUrlRemoteDataSource.putPreSignedUrl(url, file)
         }
