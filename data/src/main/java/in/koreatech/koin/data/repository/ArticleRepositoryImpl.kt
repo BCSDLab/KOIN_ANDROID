@@ -6,6 +6,7 @@ import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
 import `in`.koreatech.koin.data.source.local.ArticleLocalDataSource
 import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
 import `in`.koreatech.koin.data.util.mapHttpFailure
+import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.error.article.KoinArticleException
 import `in`.koreatech.koin.domain.model.article.Article
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
@@ -21,7 +22,6 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,19 +46,17 @@ class ArticleRepositoryImpl @Inject constructor(
     val user = userRepository.getUserInfoFlow().distinctUntilChanged()
         .onEach { user ->
             if (user.isStudent || user.isGeneral) {
-                runCatching {
+                suspendRunCatching {
                     articleRemoteDataSource.fetchMyKeyword(KeywordType.KOREATECH).keywords
                 }.onSuccess { _myArticleKeywords.emit(it) }
                     .onFailure {
-                        if (it is CancellationException) throw it
                         _myArticleKeywords.emit(emptyList())
                     }
 
-                runCatching {
+                suspendRunCatching {
                     articleRemoteDataSource.fetchMyKeyword(KeywordType.LOST_ITEM).keywords
                 }.onSuccess { _myLostItemKeywords.emit(it) }
                     .onFailure {
-                        if (it is CancellationException) throw it
                         _myLostItemKeywords.emit(emptyList())
                     }
             } else {
@@ -336,7 +334,7 @@ class ArticleRepositoryImpl @Inject constructor(
     }
 
     override suspend fun fetchArticleLostAndFoundStats(): Result<ArticleLostAndFoundStats> {
-        return runCatching {
+        return suspendRunCatching {
             articleRemoteDataSource.fetchArticleLostAndFoundStats().toArticleLostAndFoundStats()
         }.mapHttpFailure { }
     }
@@ -344,7 +342,7 @@ class ArticleRepositoryImpl @Inject constructor(
     override suspend fun updateItemFound(
         articleId: Int
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             val response = articleRemoteDataSource.updateItemFound(articleId)
             if (response.isSuccessful) {
                 Unit
@@ -363,7 +361,7 @@ class ArticleRepositoryImpl @Inject constructor(
         newImage: List<String>?,
         deleteImageIds: List<Int>?
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             val response = articleRemoteDataSource.modifyArticleLostAndFound(
                 articleId,
                 ArticleModifyRequest(

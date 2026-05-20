@@ -14,6 +14,7 @@ import `in`.koreatech.koin.data.response.timetable.v3.toSemester
 import `in`.koreatech.koin.data.response.timetable.v3.toSemesters
 import `in`.koreatech.koin.data.source.datastore.TimetableDataStore
 import `in`.koreatech.koin.data.source.remote.TimetableRemoteDataSource
+import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.model.timetable.Semester
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameCreateQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameQuery
@@ -61,12 +62,12 @@ class TimetableRepositoryImpl @Inject constructor(
         }
 
     override suspend fun getTimetableLectures(timetableFrameId: Int): Result<TimetableLectures> =
-        runCatching {
+        suspendRunCatching {
             timetableRemoteDataSource.getTimetableLectures(timetableFrameId).toTimetableLectures()
         }
 
     override suspend fun getTimetableLectures(semester: String): Result<TimetableLectures> =
-        runCatching {
+        suspendRunCatching {
             val timetableLecturesString = timetableDataStore.getString(semester).firstOrNull().orEmpty()
             val timetableLecturesType = object : TypeToken<TimetableLectures>() {}.type
             try {
@@ -77,7 +78,7 @@ class TimetableRepositoryImpl @Inject constructor(
         }
 
     override suspend fun putTimetableLectures(lectures: TimetableLecturesQuery): Result<TimetableLectures> =
-        runCatching {
+        suspendRunCatching {
             timetableRemoteDataSource.putTimetableLectures(lectures.toTimetableLecturesQueryRequest()).toTimetableLectures()
         }
 
@@ -85,21 +86,16 @@ class TimetableRepositoryImpl @Inject constructor(
         key: String,
         value: TimetableLectures
     ): Result<TimetableLectures> =
-        runCatching {
+        suspendRunCatching {
             timetableDataStore.putString(key, gson.toJson(value))
-            return getTimetableLectures(semester = key)
-                .onSuccess {
-                    Result.success(it)
-                }.onFailure {
-                    Result.failure<TimetableLectures>(it)
-                }
+            getTimetableLectures(semester = key).getOrThrow()
         }
 
     override suspend fun putTimetableFrame(
         id: Int,
         frame: TimetableFrameQuery
     ): Result<TimetableFrame> =
-        runCatching {
+        suspendRunCatching {
             timetableRemoteDataSource
                 .putTimetableFrame(
                     id,
@@ -114,7 +110,7 @@ class TimetableRepositoryImpl @Inject constructor(
         frameId: Int,
         lectures: List<Lecture>
     ): Result<TimetableLectures> =
-        runCatching {
+        suspendRunCatching {
             timetableRemoteDataSource
                 .postTimetableLectures(
                     LecturesQueryRequest(
@@ -128,7 +124,7 @@ class TimetableRepositoryImpl @Inject constructor(
         frameId: Int,
         lectures: List<Lecture>
     ): Result<TimetableLectures> =
-        runCatching {
+        suspendRunCatching {
             val info =
                 lectures.map { it.classTime to it.place }.map { (classTime, place) ->
                     TimetableLectureClassInfoRequest(classTime = classTime, classPlace = place)
@@ -157,7 +153,7 @@ class TimetableRepositoryImpl @Inject constructor(
         frameId: Int,
         lectures: List<TimetableLecture>
     ): Result<TimetableLectures> =
-        runCatching {
+        suspendRunCatching {
             val queryLectures =
                 lectures.map {
                     if (it.lectureId == 0) {
@@ -177,7 +173,7 @@ class TimetableRepositoryImpl @Inject constructor(
         }
 
     override suspend fun postTimetableFrame(frame: TimetableFrameCreateQuery): Result<TimetableFrame> =
-        runCatching {
+        suspendRunCatching {
             timetableRemoteDataSource
                 .postTimetableFrame(
                     TimetableFrameCreateQueryRequest(
@@ -194,17 +190,17 @@ class TimetableRepositoryImpl @Inject constructor(
         }
 
     override suspend fun postRollbackFrame(frameId: Int): Result<TimetableLectures> =
-        runCatching {
+        suspendRunCatching {
             timetableRemoteDataSource.postRollbackFrame(frameId).toTimetableLectures()
         }
 
     override suspend fun deleteTimetableFrame(frameId: Int): Result<Unit> =
-        runCatching {
+        suspendRunCatching {
             timetableRemoteDataSource.deleteTimetableFrame(frameId)
         }
 
     override suspend fun deleteTimetableLecture(id: Int): Result<Unit> =
-        runCatching {
+        suspendRunCatching {
             timetableRemoteDataSource.deleteTimetableLecture(id)
         }
 
@@ -212,12 +208,12 @@ class TimetableRepositoryImpl @Inject constructor(
         frameId: Int,
         lectureId: Int
     ): Result<Unit> =
-        runCatching {
+        suspendRunCatching {
             timetableRemoteDataSource.deleteTimetableFrameLecture(frameId, lectureId)
         }
 
     override suspend fun deleteTimetableLectures(lectureIds: List<Int>): Result<Unit> =
-        runCatching {
+        suspendRunCatching {
             val response = timetableRemoteDataSource.deleteTimetableLectures(lectureIds)
             if (!response.isSuccessful) {
                 throw HttpException(response)
@@ -225,7 +221,7 @@ class TimetableRepositoryImpl @Inject constructor(
         }
 
     override suspend fun deleteAllTimetableFrame(semester: String): Result<Unit> =
-        runCatching {
+        suspendRunCatching {
             timetableRemoteDataSource.deleteAllTimetableFrame(semester)
         }
 }

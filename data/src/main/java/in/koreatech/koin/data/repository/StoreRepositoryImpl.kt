@@ -35,6 +35,7 @@ import `in`.koreatech.koin.data.source.local.CacheLocalDataSource
 import `in`.koreatech.koin.data.source.local.StoreLocalDataSource
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
 import `in`.koreatech.koin.data.util.mapHttpFailure
+import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.error.store.KoinStoreException
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import `in`.koreatech.koin.domain.model.store.BenefitCategoryList
@@ -245,7 +246,7 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getShopSearchRelatedListV2(keyword: String): Result<OrderableShopSearchRelated> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.getShopSearchRelatedV2(keyword).toOrderableShopSearchRelated()
         }.mapHttpFailure { }
     }
@@ -256,7 +257,7 @@ class StoreRepositoryImpl @Inject constructor(
         categoryFilter: Int?,
         minimumOrderAmount: Int?
     ): Result<List<Shop>> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.getOrderableShops(sorter, filter, categoryFilter, minimumOrderAmount).map { it.toShop() }
         }.mapHttpFailure {
             on(404) throws KoinStoreException.ShopNotFoundException()
@@ -264,7 +265,7 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getNearbyShops(): Result<List<Shop>> {
-        return runCatching {
+        return suspendRunCatching {
             storeLocalDataSource.getCachedNearbyShops()?.map { it.toShop() } ?: storeRemoteDataSource.getNearbyShops().shops.also {
                 storeLocalDataSource.setCachedNearbyShops(it)
             }.map {
@@ -276,7 +277,7 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getOrderableShopSummary(shopId: Int): Result<ShopSummary> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.getOrderableShopSummary(shopId).toShopSummary()
         }.mapHttpFailure {
             on(404) throws KoinStoreException.ShopNotFoundException()
@@ -284,7 +285,7 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getOrderableShopDetail(shopId: Int): Result<ShopDetail> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.getOrderableShopDetail(shopId).toShopDetail()
         }.mapHttpFailure {
             on(404) throws KoinStoreException.ShopNotFoundException()
@@ -292,7 +293,7 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getOrderableShopDelivery(shopId: Int): Result<ShopDeliveryAvailable> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.getOrderableShopDelivery(shopId).toShopDeliveryAvailable()
         }.mapHttpFailure {
             on(404) throws KoinStoreException.ShopNotFoundException()
@@ -300,7 +301,7 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getOrderableShopMenus(shopId: Int): Result<List<ShopMenus>> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.getOrderableShopMenus(shopId).map { it.toShopMenus() }
         }.mapHttpFailure {
             on(404) throws KoinStoreException.ShopNotFoundException()
@@ -308,7 +309,7 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getOrderableShopMenu(shopId: Int, menuId: Int): Result<ShopMenu> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.getOrderableShopMenu(shopId, menuId).toShopMenu()
         }.mapHttpFailure {
             on(404) throws KoinStoreException.MenuNotFoundException()
@@ -316,7 +317,7 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getOrderableShopMenuGroups(shopId: Int): Result<List<ShopMenusGroup>> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.getOrderableShopMenuGroups(shopId).map { it.toShopMenusGroup() }
         }.mapHttpFailure {
             on(404) throws KoinStoreException.ShopNotFoundException()
@@ -324,13 +325,13 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getOrderableShopSearchRelated(query: String): Result<OrderableShopSearchRelated> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.getOrderableShopSearchRelated(query).toOrderableShopSearchRelated()
         }.mapHttpFailure { }
     }
 
     override suspend fun updateCartItem(cartMenuItemId: Int, cartItem: CartItem): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.updateCartItem(cartMenuItemId, cartItem.toCartItemRequest())
         }.mapHttpFailure {
             on(400, "REQUIRED_OPTION_GROUP_MISSING") throws KoinStoreException.RequiredOptionGroupMissingException()
@@ -345,7 +346,7 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateCartItemQuantity(cartMenuItemId: Int, quantity: Int): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.updateCartItemQuantity(cartMenuItemId, quantity)
         }.mapHttpFailure {
             on(400) throws KoinStoreException.InvalidQuantityException()
@@ -356,7 +357,7 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addCartItem(cartAdd: CartAdd): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.addCartItem(cartAdd.toCartAddRequest())
         }.mapHttpFailure {
             on(400, "DIFFERENT_SHOP_ITEM_IN_CART") throws KoinStoreException.DifferentShopItemInCartException()
@@ -372,7 +373,7 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCartItems(type: String): Result<Cart> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.getCartItems(type).toCart()
         }.mapHttpFailure {
             on(400, "SHOP_NOT_DELIVERABLE") throws KoinStoreException.ShopNotDeliverableException()
@@ -382,7 +383,7 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun validateCartItems(orderType: String): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.validateCartItems(orderType)
         }.mapHttpFailure {
             on(400, "ORDER_AMOUNT_BELOW_MINIMUM") throws KoinStoreException.OrderAmountBelowMinimumException()
@@ -393,7 +394,7 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCartSummary(orderableShopId: Int): Result<CartSummary> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.getCartSummary(orderableShopId).toCartSummary()
         }.mapHttpFailure {
             on(401) throws KoinStoreException.UnauthorizedException()
@@ -401,7 +402,7 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCartPaymentSummary(type: String): Result<CartPaymentSummary> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.getCartPaymentSummary(type).toCartPaymentSummary()
         }.mapHttpFailure {
             on(400, "SHOP_NOT_DELIVERABLE") throws KoinStoreException.ShopNotDeliverableException()
@@ -411,7 +412,7 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCartItemEdit(cartMenuItemId: Int): Result<CartItemEdit> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.getCartItemEdit(cartMenuItemId).toCartItemEdit()
         }.mapHttpFailure {
             on(401) throws KoinStoreException.UnauthorizedException()
@@ -420,7 +421,7 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun resetCart(): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.resetCart()
             Unit
         }.mapHttpFailure {
@@ -430,7 +431,7 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteCartItem(cartMenuItemId: Int): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.deleteCartItem(cartMenuItemId)
             Unit
         }.mapHttpFailure {
@@ -441,7 +442,7 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCartItemsCount(): Result<CartItemsCount> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.getCartItemsCount().toCartItemsCount()
         }.mapHttpFailure {
             on(401) throws KoinStoreException.UnauthorizedException()
@@ -449,7 +450,7 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getOrderInProgress(): Result<List<OrderInProgress>> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.getOrderInProgress().map { it.toOrderInProgress() }
         }.mapHttpFailure { }
     }
@@ -462,7 +463,7 @@ class StoreRepositoryImpl @Inject constructor(
         type: String?,
         query: String?
     ): Result<OrderHistoryRelated> {
-        return runCatching {
+        return suspendRunCatching {
             storeRemoteDataSource.getOrderHistories(page, limit, period, status, type, query).toOrderHistoryRelated()
         }.mapHttpFailure { }
     }
