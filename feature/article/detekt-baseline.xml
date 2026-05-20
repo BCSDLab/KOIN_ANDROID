@@ -6,10 +6,6 @@
     <ID>EmptyFunctionBlock:ArticleListFragment.kt$ArticleListFragment.&lt;no name provided&gt;${}</ID>
     <ID>LongMethod:ArticleKeywordFragment.kt$ArticleKeywordFragment$private fun handleKeywordAddResult()</ID>
     <ID>LongMethod:ArticleListFragment.kt$ArticleListFragment$private fun handleKeywordChips()</ID>
-    <ID>LongParameterList:Dropdown.kt$( title: String, isDropdownExpanded: Boolean, items: List&lt;String&gt;, modifier: Modifier = Modifier, onDropdownExpandChange: (Boolean) -&gt; Unit = {}, onItemSelected: (Int) -&gt; Unit = {} )</ID>
-    <ID>LongParameterList:KeywordChipGroup.kt$( modifier: Modifier = Modifier, titles: List&lt;String&gt;, shape: Shape, onChipSelected: (index: Int) -&gt; Unit = {}, selectedChipIndexes: List&lt;Int&gt;, showClickRipple: Boolean, contentPadding: PaddingValues = PaddingValues(vertical = 0.dp, horizontal = 0.dp), horizontalArrangement: Arrangement.Horizontal, verticalArrangement: Arrangement.Vertical, chipColors: TextChipColors )</ID>
-    <ID>LongParameterList:KeywordChipGroup.kt$( title: String, modifier: Modifier = Modifier, textStyle: TextStyle = KoinTheme.typography.medium14, isSelected: Boolean = false, shape: Shape = RoundedCornerShape(50), showClickRipple: Boolean = true, contentPadding: PaddingValues = PaddingValues(horizontal = 12.dp), chipColors: TextChipColors = TextChipDefaults.chipColors(), onSelect: () -&gt; Unit = {} )</ID>
-    <ID>LongParameterList:KeywordChipGroup.kt$( titles: List&lt;String&gt;, modifier: Modifier = Modifier, shape: Shape = RoundedCornerShape(50), onChipSelected: (index: Int) -&gt; Unit = {}, selectedChipIndexes: List&lt;Int&gt; = emptyList(), showClickRipple: Boolean = false, contentPadding: PaddingValues = PaddingValues(vertical = 6.dp, horizontal = 12.dp), horizontalArrangement: Arrangement.Horizontal, chipColors: TextChipColors = TextChipDefaults.chipColors() )</ID>
     <ID>NestedBlockDepth:ArticleKeywordFragment.kt$ArticleKeywordFragment$private fun addMyKeywordView(keywords: List&lt;String&gt;)</ID>
     <ID>SwallowedException:ArticleAdapter.kt$ArticleAdapter.ArticleViewHolder$e: Exception</ID>
     <ID>SwallowedException:AttachmentState.kt$e: Exception</ID>
@@ -19,9 +15,5 @@
     <ID>TooManyFunctions:ArticleDetailFragment.kt$ArticleDetailFragment : Fragment</ID>
     <ID>TooManyFunctions:ArticleKeywordFragment.kt$ArticleKeywordFragment : Fragment</ID>
     <ID>TooManyFunctions:ArticleListFragment.kt$ArticleListFragment : Fragment</ID>
-    <ID>TopLevelPropertyNaming:Constant.kt$const val DESCRIPTION_MAX_LENGTH = 1000</ID>
-    <ID>TopLevelPropertyNaming:Constant.kt$const val IMAGE_MAX_COUNT = 10</ID>
-    <ID>TopLevelPropertyNaming:Constant.kt$const val MAX_ITEM_COUNT = 10</ID>
-    <ID>TopLevelPropertyNaming:Constant.kt$const val REPORT_OTHER_REASON_MAX_LENGTH = 150</ID>
   </CurrentIssues>
 </SmellBaseline>
