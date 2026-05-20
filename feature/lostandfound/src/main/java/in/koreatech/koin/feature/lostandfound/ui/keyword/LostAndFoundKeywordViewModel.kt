@@ -81,17 +81,16 @@ class LostAndFoundKeywordViewModel @Inject constructor(
     }
 
     private fun loadNotificationState() = intent {
-        val (info, error) = getNotificationPermissionInfoUseCase()
-        if (error != null) {
-            Timber.e("키워드 알림 설정 로드 실패: %s", error.message)
-            return@intent
-        }
-        if (info != null) {
-            val isEnabled = info.subscribes
-                .firstOrNull { it.type == SubscribesType.LOST_ITEM_KEYWORD }
-                ?.isPermit ?: false
-            reduce { state.copy(isNotificationEnabled = isEnabled) }
-        }
+        getNotificationPermissionInfoUseCase()
+            .onSuccess { info ->
+                val isEnabled = info.subscribes
+                    .firstOrNull { it.type == SubscribesType.LOST_ITEM_KEYWORD }
+                    ?.isPermit ?: false
+                reduce { state.copy(isNotificationEnabled = isEnabled) }
+            }
+            .onFailure { e ->
+                Timber.e(e, "키워드 알림 설정 로드 실패")
+            }
     }
 
     fun onKeywordInputChanged(input: String) {
@@ -161,17 +160,19 @@ class LostAndFoundKeywordViewModel @Inject constructor(
             if (state.isLoading) return@intent
 
             reduce { state.copy(isLoading = true, isNotificationEnabled = isEnabled) }
-            val (_, error) = if (isEnabled) {
+            val result = if (isEnabled) {
                 updateNotificationSubscriptionUseCase(SubscribesType.LOST_ITEM_KEYWORD)
             } else {
                 deleteNotificationSubscriptionUseCase(SubscribesType.LOST_ITEM_KEYWORD)
             }
-            if (error != null) {
-                reduce { state.copy(isLoading = false, isNotificationEnabled = !isEnabled) }
-                postSideEffect(LostAndFoundKeywordSideEffect.ShowSnackbar(R.string.notification_update_failed))
-            } else {
-                reduce { state.copy(isLoading = false) }
-            }
+            result
+                .onSuccess {
+                    reduce { state.copy(isLoading = false) }
+                }
+                .onFailure {
+                    reduce { state.copy(isLoading = false, isNotificationEnabled = !isEnabled) }
+                    postSideEffect(LostAndFoundKeywordSideEffect.ShowSnackbar(R.string.notification_update_failed))
+                }
         }
     }
 
