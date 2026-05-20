@@ -11,8 +11,6 @@ import `in`.koreatech.koin.domain.usecase.notification.DeleteNotificationSubscri
 import `in`.koreatech.koin.domain.usecase.notification.GetNotificationPermissionInfoUseCase
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionDetailUseCase
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionUseCase
-import `in`.koreatech.koin.domain.util.onFailure
-import `in`.koreatech.koin.domain.util.onSuccess
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,13 +30,15 @@ class NotificationViewModel @Inject constructor(
 
     fun getPermissionInfo() {
         viewModelScope.launchWithLoading {
-            getNotificationPermissionInfoUseCase().onSuccess { info ->
-                _notificationUiState.update {
-                    NotificationUiState.Success(info)
+            getNotificationPermissionInfoUseCase()
+                .onSuccess { info ->
+                    _notificationUiState.update {
+                        NotificationUiState.Success(info)
+                    }
                 }
-            }.onFailure {
-                _notificationUiState.update { NotificationUiState.Failed }
-            }
+                .onFailure {
+                    _notificationUiState.update { NotificationUiState.Failed }
+                }
         }
     }
 
