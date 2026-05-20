@@ -52,7 +52,7 @@ class FakeUserRepository : UserRepository {
         TODO("Not yet implemented")
     }
 
-    override suspend fun isUserEmailDuplicated(email: String): Boolean {
+    override suspend fun isUserEmailDuplicated(email: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
