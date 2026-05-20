@@ -6,6 +6,6 @@
     <ID>LongMethod:DiningAppWidget.kt$DiningAppWidget$private fun setDiningList(diningList: List&lt;Dining&gt;, context: Context)</ID>
     <ID>LongParameterList:DiningViewModel.kt$DiningViewModel$( savedStateHandle: SavedStateHandle, private val getNotOperationFilteredDiningUseCase: GetNotOperationFilteredDiningUseCase, private val getUserStatusUseCase: GetUserStatusUseCase, private val abTestUseCase: ABTestUseCase, private val onboardingManager: OnboardingManager, private val getNotificationPermissionInfoUseCase: GetNotificationPermissionInfoUseCase, private val updateNotificationSubscriptionUseCase: UpdateNotificationSubscriptionUseCase, private val updateNotificationSubscriptionDetailUseCase: UpdateNotificationSubscriptionDetailUseCase, private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase )</ID>
     <ID>TooManyFunctions:DiningAppWidget.kt$DiningAppWidget : AppWidgetProvider</ID>
-    <ID>TooManyFunctions:DiningViewModel.kt$DiningViewModel : ViewModel</ID>
+    <ID>TooManyFunctions:DiningViewModel.kt$DiningViewModel : ViewModelContainerHost</ID>
   </CurrentIssues>
 </SmellBaseline>
