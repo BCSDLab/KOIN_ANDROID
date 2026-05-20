@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.source.remote
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfoResponse
 import javax.inject.Inject
+import retrofit2.Response
 
 class NotificationRemoteDataSource @Inject constructor(
     private val userAuthApi: UserAuthApi
@@ -21,11 +22,9 @@ class NotificationRemoteDataSource @Inject constructor(
         userAuthApi.updateSubscriptionDetail(type)
     }
 
-    suspend fun deleteSubscription(type: String) {
+    suspend fun deleteSubscription(type: String): Response<Unit?> =
         userAuthApi.deleteSubscription(type)
-    }
 
-    suspend fun deleteSubscriptionDetail(type: String) {
+    suspend fun deleteSubscriptionDetail(type: String): Response<Unit?> =
         userAuthApi.deleteSubscriptionDetail(type)
-    }
 }
