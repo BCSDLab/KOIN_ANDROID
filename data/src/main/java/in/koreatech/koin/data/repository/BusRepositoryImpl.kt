@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.source.local.BusLocalDataSource
 import `in`.koreatech.koin.data.source.remote.BusRemoteDataSource
+import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.model.bus.BusNotice
 import `in`.koreatech.koin.domain.model.bus.BusSearchResult
 import `in`.koreatech.koin.domain.model.bus.CityTimetable
@@ -19,25 +20,25 @@ class BusRepositoryImpl @Inject constructor(
     private val busLocalDataSource: BusLocalDataSource
 ) : BusRepository {
     override suspend fun fetchBusNotice(): Result<BusNotice> {
-        return runCatching {
+        return suspendRunCatching {
             busRemoteDataSource.fetchBusNotice().toBusNotice()
         }
     }
 
     override suspend fun fetchShuttleTimetable(id: String): Result<ShuttleTimetable> {
-        return runCatching {
+        return suspendRunCatching {
             busRemoteDataSource.fetchShuttleTimetable(id).toShuttleTimetable()
         }
     }
 
     override suspend fun fetchShuttleCourses(): Result<ShuttleCourses> {
-        return runCatching {
+        return suspendRunCatching {
             busRemoteDataSource.fetchShuttleCourses().toShuttleCourses()
         }
     }
 
     override suspend fun fetchExpressTimetable(direction: String): Result<ExpressTimetable> {
-        return runCatching {
+        return suspendRunCatching {
             busRemoteDataSource.fetchExpressTimetable(direction).toExpressTimetable()
         }
     }
@@ -46,7 +47,7 @@ class BusRepositoryImpl @Inject constructor(
         number: Int,
         direction: String
     ): Result<CityTimetable> {
-        return runCatching {
+        return suspendRunCatching {
             busRemoteDataSource.fetchCityTimetable(number, direction).toCityTimetable()
         }
     }
@@ -58,7 +59,7 @@ class BusRepositoryImpl @Inject constructor(
         departure: String,
         arrival: String
     ): Result<List<BusSearchResult>> {
-        return runCatching {
+        return suspendRunCatching {
             busRemoteDataSource.fetchBusSearchResult(
                 date = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(date),
                 time = DateTimeFormatter.ofPattern("HH:mm").format(time),
@@ -70,13 +71,13 @@ class BusRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getLastShownNoticeId(): Result<Int> {
-        return runCatching {
+        return suspendRunCatching {
             busLocalDataSource.getLastShownNoticeId()
         }
     }
 
     override suspend fun saveLastShownNoticeId(id: Int): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             busLocalDataSource.saveLastShownNoticeId(id)
         }
     }

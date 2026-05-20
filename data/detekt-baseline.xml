@@ -96,6 +96,7 @@
     <ID>TooGenericExceptionCaught:OwnerSignupRepositoryImpl.kt$OwnerSignupRepositoryImpl$t: Throwable</ID>
     <ID>TooGenericExceptionCaught:OwnerVerificationCodeRepositoryImpl.kt$OwnerVerificationCodeRepositoryImpl$t: Throwable</ID>
     <ID>TooGenericExceptionCaught:PreSignedUrlRepositoryImpl.kt$PreSignedUrlRepositoryImpl$t: Throwable</ID>
+    <ID>TooGenericExceptionCaught:ResultUtil.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:SignupRepositoryImpl.kt$SignupRepositoryImpl$t: Throwable</ID>
     <ID>TooGenericExceptionCaught:StoreRepositoryImpl.kt$StoreRepositoryImpl$e: Exception</ID>
     <ID>TooGenericExceptionCaught:TimetableRepositoryImpl.kt$TimetableRepositoryImpl$e: NullPointerException</ID>

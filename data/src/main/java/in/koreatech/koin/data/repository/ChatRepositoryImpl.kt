@@ -4,13 +4,13 @@ import `in`.koreatech.koin.data.mapper.toChatMessageRequest
 import `in`.koreatech.koin.data.response.chat.toChatListItem
 import `in`.koreatech.koin.data.source.remote.ChatRemoteDataSource
 import `in`.koreatech.koin.data.util.mapHttpFailure
+import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.error.chat.KoinChatException
 import `in`.koreatech.koin.domain.model.chat.ChatListItem
 import `in`.koreatech.koin.domain.model.chat.ChatMessage
 import `in`.koreatech.koin.domain.model.chat.ChatRoom
 import `in`.koreatech.koin.domain.repository.ChatRepository
 import javax.inject.Inject
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -33,17 +33,10 @@ class ChatRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getChatRoomFromArticleId(articleId: Int): Result<ChatRoom> {
-        return runCatching {
+        return suspendRunCatching {
             chatRemoteDataSource.getChatRoomFromArticleId(articleId).toChatRoom()
         }.mapHttpFailure {
             on(403) throws KoinChatException.BlockedException()
-        }.onFailure {
-            return Result.failure(
-                when (it) {
-                    is CancellationException -> throw it
-                    else -> it
-                }
-            )
         }
     }
 
@@ -51,7 +44,7 @@ class ChatRepositoryImpl @Inject constructor(
         articleId: Int,
         chatRoomId: Int
     ): Result<ChatRoom> {
-        return runCatching {
+        return suspendRunCatching {
             chatRemoteDataSource.getChatRoom(articleId, chatRoomId).toChatRoom()
         }
     }
@@ -60,14 +53,8 @@ class ChatRepositoryImpl @Inject constructor(
         articleId: Int,
         chatRoomId: Int
     ): Result<List<ChatMessage>> {
-        return runCatching {
+        return suspendRunCatching {
             chatRemoteDataSource.getChatMessages(articleId, chatRoomId).map { it.toChatMessage() }
-        }.onFailure {
-            if (it is CancellationException) {
-                throw it
-            } else {
-                return Result.failure(it)
-            }
         }
     }
 

@@ -16,6 +16,7 @@ import `in`.koreatech.koin.data.request.club.ClubQnaRequest
 import `in`.koreatech.koin.data.request.club.ClubRecruitmentRequest
 import `in`.koreatech.koin.data.source.remote.ClubRemoteDataSource
 import `in`.koreatech.koin.data.util.mapHttpFailure
+import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.error.club.KoinClubException
 import `in`.koreatech.koin.domain.model.club.ClubCategories
 import `in`.koreatech.koin.domain.model.club.ClubDetails
@@ -33,13 +34,13 @@ class ClubRepositoryImpl @Inject constructor(
     private val clubRemoteDataSource: ClubRemoteDataSource
 ) : ClubRepository {
     override suspend fun getClubsCategories(): Result<ClubCategories> {
-        return runCatching {
+        return suspendRunCatching {
             clubRemoteDataSource.getClubsCategories().toClubCategories()
         }
     }
 
     override suspend fun getClubHot(): Result<ClubHot> {
-        return runCatching {
+        return suspendRunCatching {
             clubRemoteDataSource.getClubHot().toClubHot()
         }
     }
@@ -50,7 +51,7 @@ class ClubRepositoryImpl @Inject constructor(
         isRecruiting: Boolean,
         query: String
     ): Result<Clubs> {
-        return runCatching {
+        return suspendRunCatching {
             clubRemoteDataSource.getClubs(categoryId, sortType, isRecruiting, query).toClubs()
         }.mapHttpFailure {
             on(404) throws KoinClubException.ClubCategoryNotFoundException()
@@ -58,7 +59,7 @@ class ClubRepositoryImpl @Inject constructor(
     }
 
     override suspend fun cancelClubLike(clubId: Int): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             clubRemoteDataSource.cancelClubLike(clubId)
         }.mapHttpFailure {
             on(401) throws KoinClubException.UnauthorizedException()
@@ -67,7 +68,7 @@ class ClubRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getClubDetails(clubId: Int): Result<ClubDetails> {
-        return runCatching {
+        return suspendRunCatching {
             clubRemoteDataSource.getClubDetails(clubId).toClubDetails()
         }.mapHttpFailure {
             on(404) throws KoinClubException.ClubNotFoundException()
@@ -88,7 +89,7 @@ class ClubRepositoryImpl @Inject constructor(
         role: String,
         isLikeHidden: Boolean
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             clubRemoteDataSource.createClub(
                 ClubCreateRequest(
                     name = name,
@@ -123,7 +124,7 @@ class ClubRepositoryImpl @Inject constructor(
         phoneNumber: String,
         isLikeHidden: Boolean
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             clubRemoteDataSource.modifyClub(
                 clubId = clubId,
                 request = ClubModifyRequest(
@@ -147,13 +148,13 @@ class ClubRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getClubQnas(clubId: Int): Result<ClubQnasInfo> {
-        return runCatching {
+        return suspendRunCatching {
             clubRemoteDataSource.getClubQnas(clubId).toClubQnasInfo()
         }
     }
 
     override suspend fun setClubLike(clubId: Int): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             clubRemoteDataSource.setClubLike(clubId)
         }.mapHttpFailure {
             on(401) throws KoinClubException.UnauthorizedException()
@@ -162,7 +163,7 @@ class ClubRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteClubQna(clubId: Int, qnaId: Int): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             val response = clubRemoteDataSource.deleteClubQna(clubId, qnaId)
             if (response.isSuccessful) {
                 Unit
@@ -176,7 +177,7 @@ class ClubRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setClubEmpowerment(clubId: Int, changedManagerId: String): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             clubRemoteDataSource.setClubEmpowerment(ClubEmpowermentRequest(clubId, changedManagerId))
         }.mapHttpFailure {
             on(400) throws KoinClubException.AlreadyLikedException()
@@ -187,7 +188,7 @@ class ClubRepositoryImpl @Inject constructor(
     }
 
     override suspend fun postClubQna(clubId: Int, parentId: Int?, content: String): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             clubRemoteDataSource.postClubQna(
                 clubId,
                 ClubQnaRequest(parentId, content)
@@ -202,7 +203,7 @@ class ClubRepositoryImpl @Inject constructor(
     override suspend fun getClubRecruitment(
         clubId: Int
     ): Result<ClubRecruitment> {
-        return runCatching {
+        return suspendRunCatching {
             clubRemoteDataSource.getClubRecruitment(clubId).toClubRecruitment()
         }.mapHttpFailure {
             on(400) throws KoinClubException.WrongInputDataException()
@@ -218,7 +219,7 @@ class ClubRepositoryImpl @Inject constructor(
         imageUrl: String,
         content: String?
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             clubRemoteDataSource.createClubRecruitment(
                 clubId,
                 ClubRecruitmentRequest(
@@ -237,7 +238,7 @@ class ClubRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteClubRecruitment(clubId: Int): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             val response = clubRemoteDataSource.deleteClubRecruitment(clubId)
             if (response.isSuccessful) {
                 Unit
@@ -258,7 +259,7 @@ class ClubRepositoryImpl @Inject constructor(
         imageUrl: String,
         content: String?
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             val response = clubRemoteDataSource.modifyClubRecruitment(
                 clubId,
                 ClubRecruitmentRequest(
@@ -284,7 +285,7 @@ class ClubRepositoryImpl @Inject constructor(
         clubId: Int,
         eventType: String
     ): Result<List<ClubEvent>> {
-        return runCatching {
+        return suspendRunCatching {
             clubRemoteDataSource.getClubEvents(clubId, eventType).map { it.toClubEvent() }
         }.mapHttpFailure {
             on(400) throws KoinClubException.WrongInputDataException()
@@ -301,7 +302,7 @@ class ClubRepositoryImpl @Inject constructor(
         introduce: String,
         content: String?
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             val response = clubRemoteDataSource.createClubEvent(
                 clubId,
                 ClubEventRequest(
@@ -328,7 +329,7 @@ class ClubRepositoryImpl @Inject constructor(
         clubId: Int,
         eventId: Int
     ): Result<ClubEvent> {
-        return runCatching {
+        return suspendRunCatching {
             clubRemoteDataSource.getClubEvent(clubId, eventId).toClubEvent()
         }.mapHttpFailure {
             on(400) throws KoinClubException.WrongInputDataException()
@@ -337,7 +338,7 @@ class ClubRepositoryImpl @Inject constructor(
     }
 
     override suspend fun searchClubs(query: String): Result<ClubSearch> {
-        return runCatching {
+        return suspendRunCatching {
             clubRemoteDataSource.searchClubs(query).toClubSearch()
         }.mapHttpFailure {
             on(404) throws KoinClubException.ClubNotFoundException()
@@ -354,7 +355,7 @@ class ClubRepositoryImpl @Inject constructor(
         introduce: String,
         content: String?
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             val response = clubRemoteDataSource.modifyClubEvent(
                 clubId,
                 eventId,
@@ -382,7 +383,7 @@ class ClubRepositoryImpl @Inject constructor(
         clubId: Int,
         eventId: Int
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             val response = clubRemoteDataSource.deleteClubEvent(clubId, eventId)
             if (response.isSuccessful) {
                 Unit
@@ -396,7 +397,7 @@ class ClubRepositoryImpl @Inject constructor(
     }
 
     override suspend fun subscribeClubRecruitment(clubId: Int): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             val response = clubRemoteDataSource.subscribeClubRecruitment(clubId)
             if (response.isSuccessful) {
                 Unit
@@ -411,7 +412,7 @@ class ClubRepositoryImpl @Inject constructor(
     }
 
     override suspend fun unsubscribeClubRecruitment(clubId: Int): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             val response = clubRemoteDataSource.unsubscribeClubRecruitment(clubId)
             if (response.isSuccessful) {
                 Unit
@@ -429,7 +430,7 @@ class ClubRepositoryImpl @Inject constructor(
         clubId: Int,
         eventId: Int
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             val response = clubRemoteDataSource.subscribeClubEvent(clubId, eventId)
             if (response.isSuccessful) {
                 Unit
@@ -447,7 +448,7 @@ class ClubRepositoryImpl @Inject constructor(
         clubId: Int,
         eventId: Int
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             val response = clubRemoteDataSource.unsubscribeClubEvent(clubId, eventId)
             if (response.isSuccessful) {
                 Unit

@@ -25,9 +25,9 @@
 
 ## Error Handling
 
-- Wrap remote calls with `safeApiCall { }` from `data/mapper/ApiMapper.kt`
-- Add a feature-level mapper (`HttpExceptionMapper`) only when HTTP status codes need to map to specific domain exceptions
-- Always re-throw `CancellationException` — `safeApiCall` handles this automatically
+- Wrap remote calls with `suspendRunCatching { }` from `data/util/ResultUtil.kt` — it returns `Result<T>` and re-throws `CancellationException` automatically
+- Map HTTP failures to domain exceptions with the `mapHttpFailure { }` DSL from `data/util/NetworkUtil.kt` (e.g. `on(404) throws KoinFooException.NotFoundException()`)
+- Don't add manual `.onFailure { if (it is CancellationException) throw it }` blocks — `suspendRunCatching` already handles cancellation
 
 ## Mapper Convention
 
