@@ -5,6 +5,7 @@ import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.CodeCount
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserType
+import kotlin.Result
 import kotlinx.coroutines.flow.Flow
 
 class FakeUserRepository : UserRepository {
@@ -18,7 +19,7 @@ class FakeUserRepository : UserRepository {
         authToken = token
     }
 
-    override suspend fun getToken(email: String, password: String): AuthToken = authToken ?: throw IllegalStateException("No access token set")
+    override suspend fun getToken(email: String, password: String): Result<AuthToken> = authToken?.let { Result.success(it) } ?: Result.failure(IllegalStateException("No access token set"))
 
     override suspend fun getOwnerToken(phoneNumber: String, hashedPassword: String): AuthToken {
         TODO("Not yet implemented")
@@ -44,12 +45,12 @@ class FakeUserRepository : UserRepository {
         TODO("Not yet implemented")
     }
 
-    override suspend fun requestPasswordResetEmail(email: String) {
-        TODO("Not yet implemented")
+    override suspend fun requestPasswordResetEmail(email: String): Result<Unit> {
+        return Result.failure(NotImplementedError())
     }
 
-    override suspend fun deleteUser() {
-        TODO("Not yet implemented")
+    override suspend fun deleteUser(): Result<Unit> {
+        return Result.failure(NotImplementedError())
     }
 
     override suspend fun isUserEmailDuplicated(email: String): Boolean {
@@ -65,12 +66,12 @@ class FakeUserRepository : UserRepository {
         User.Anonymous -> TODO()
     }
 
-    override suspend fun deleteDeviceToken() {
-        TODO("Not yet implemented")
+    override suspend fun deleteDeviceToken(): Result<Unit> {
+        return Result.failure(NotImplementedError())
     }
 
-    override suspend fun verifyPassword(hashedPassword: String) {
-        TODO("Not yet implemented")
+    override suspend fun verifyPassword(hashedPassword: String): Result<Unit> {
+        return Result.failure(NotImplementedError())
     }
 
     override suspend fun updateUserPassword(hashedPassword: String): Result<Unit> {

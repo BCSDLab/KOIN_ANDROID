@@ -7,46 +7,47 @@ import `in`.koreatech.koin.domain.error.KoinErrorException
  * Don't add User prefix because we using sealed class to group exceptions.
  * Every exceptions should ends with Exception.
  */
-sealed class KoinUserException {
+sealed class KoinUserException : KoinErrorException() {
     /*
      * Exceptions for 400 Bad Request
      * format: {data type}InvalidException
      * or {data type}NotMatch{other data type}Exception
      */
-    class DataInvalidException : KoinErrorException()
-    class LoginIdInvalidException : KoinErrorException()
-    class EmailInvalidException : KoinErrorException()
-    class PhoneNumberInvalidException : KoinErrorException()
-    class NicknameInvalidException : KoinErrorException()
-    class VerificationCodeInvalidException : KoinErrorException()
-    class LoginIdNotMatchPhoneException : KoinErrorException()
-    class LoginIdNotMatchEmailException : KoinErrorException()
+    class DataInvalidException : KoinUserException()
+    class LoginIdInvalidException : KoinUserException()
+    class EmailInvalidException : KoinUserException()
+    class PhoneNumberInvalidException : KoinUserException()
+    class NicknameInvalidException : KoinUserException()
+    class VerificationCodeInvalidException : KoinUserException()
+    class LoginIdNotMatchPhoneException : KoinUserException()
+    class LoginIdNotMatchEmailException : KoinUserException()
+    class LoginCredentialInvalidException : KoinUserException()
 
     /*
      * Exceptions for 401 Unauthorized
      */
-    class UnauthorizedException : KoinErrorException()
+    class UnauthorizedException : KoinUserException()
 
     /*
      * Exceptions for 404 Not Found
      */
-    class UserNotFoundException : KoinErrorException()
-    class LoginIdNotFoundException : KoinErrorException()
-    class EmailNotFoundException : KoinErrorException()
-    class PhoneNumberNotFoundException : KoinErrorException()
-    class VerificationCodeExpiredException : KoinErrorException()
+    class UserNotFoundException : KoinUserException()
+    class LoginIdNotFoundException : KoinUserException()
+    class EmailNotFoundException : KoinUserException()
+    class PhoneNumberNotFoundException : KoinUserException()
+    class VerificationCodeExpiredException : KoinUserException()
 
     /*
      * Exceptions for 409 Conflict
      */
-    class PhoneNumberConflictException : KoinErrorException()
-    class EmailConflictException : KoinErrorException()
-    class LoginIdConflictException : KoinErrorException()
-    class NicknameConflictException : KoinErrorException()
-    class NicknameOrEmailConflictException : KoinErrorException()
+    class PhoneNumberConflictException : KoinUserException()
+    class EmailConflictException : KoinUserException()
+    class LoginIdConflictException : KoinUserException()
+    class NicknameConflictException : KoinUserException()
+    class NicknameOrEmailConflictException : KoinUserException()
 
     /*
      * Exceptions for 429 Too Many Requests
      */
-    class VerificationCodeRequestCountExceededException : KoinErrorException()
+    class VerificationCodeRequestCountExceededException : KoinUserException()
 }
