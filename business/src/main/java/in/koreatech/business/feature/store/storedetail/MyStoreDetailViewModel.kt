@@ -1,10 +1,9 @@
 package `in`.koreatech.business.feature.store.storedetail
 
-import android.content.Context
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.domain.usecase.business.DeleteOwnerEventsUseCase
 import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopEventsUseCase
@@ -25,11 +24,7 @@ import org.orbitmvi.orbit.viewmodel.container
 import retrofit2.HttpException
 
 @HiltViewModel
-class MyStoreDetailViewModel
-@Suppress("LongParameterList")
-@Inject
-constructor(
-    @ApplicationContext private val context: Context,
+class MyStoreDetailViewModel @Inject constructor(
     private val getOwnerShopInfoUseCase: GetOwnerShopInfoUseCase,
     private val getOwnerShopListUseCase: GetOwnerShopListUseCase,
     private val getOwnerShopEventsUseCase: GetOwnerShopEventsUseCase,
@@ -365,22 +360,23 @@ constructor(
             },
             onFailure = { throwable ->
                 postSideEffect(
-                    MyStoreDetailSideEffect.ShowErrorMessage(
-                        throwable.toDeleteUserErrorMessage()
+                    MyStoreDetailSideEffect.ShowErrorMessageRes(
+                        throwable.toDeleteUserErrorMessageRes()
                     )
                 )
             }
         )
     }
 
-    private fun Throwable.toDeleteUserErrorMessage(): String = when {
+    @StringRes
+    private fun Throwable.toDeleteUserErrorMessageRes(): Int = when {
         this is HttpException && this.code() == 500 ->
-            context.getString(`in`.koreatech.koin.data.R.string.error_internal_server_error)
+            `in`.koreatech.koin.data.R.string.error_internal_server_error
         this is java.net.ConnectException ||
             this is java.net.SocketTimeoutException ||
             this is java.net.UnknownHostException ->
-            context.getString(`in`.koreatech.koin.data.R.string.error_network_connection)
+            `in`.koreatech.koin.data.R.string.error_network_connection
         else ->
-            context.getString(`in`.koreatech.koin.data.R.string.error_network_unknown)
+            `in`.koreatech.koin.data.R.string.error_network_unknown
     }
 }
