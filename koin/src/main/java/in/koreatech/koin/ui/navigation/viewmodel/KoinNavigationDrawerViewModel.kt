@@ -1,8 +1,10 @@
 package `in`.koreatech.koin.ui.navigation.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.model.user.User
@@ -12,7 +14,6 @@ import `in`.koreatech.koin.domain.usecase.setting.GetDeveloperSettingUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.usecase.user.UpdateDeviceTokenUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLogoutUseCase
-import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +27,11 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @HiltViewModel
-class KoinNavigationDrawerViewModel @Inject constructor(
+class KoinNavigationDrawerViewModel
+@Suppress("LongParameterList")
+@Inject
+constructor(
+    @ApplicationContext private val context: Context,
     private val updateDeviceTokenUseCase: UpdateDeviceTokenUseCase,
     private val userLogoutUseCase: UserLogoutUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
@@ -77,9 +82,10 @@ class KoinNavigationDrawerViewModel @Inject constructor(
     }
 
     fun logout() = viewModelScope.launch {
-        userLogoutUseCase().onFailure {
-            _errorToast.value = it.message
-        }
+        userLogoutUseCase()
+            .onFailure { throwable ->
+                _errorToast.value = context.getString(`in`.koreatech.koin.R.string.error_failed_logout)
+            }
     }
 
     fun getSignUpSessionId(): String {
