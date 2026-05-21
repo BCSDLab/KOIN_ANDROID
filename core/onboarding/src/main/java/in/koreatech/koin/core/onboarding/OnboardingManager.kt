@@ -27,7 +27,6 @@ import com.skydoves.balloon.compose.BalloonWindow
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.OnboardingRepository
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
-import `in`.koreatech.koin.domain.util.onSuccess
 import javax.inject.Inject
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
