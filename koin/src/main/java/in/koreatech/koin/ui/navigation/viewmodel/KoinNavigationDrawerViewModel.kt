@@ -1,10 +1,8 @@
 package `in`.koreatech.koin.ui.navigation.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.model.user.User
@@ -27,11 +25,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @HiltViewModel
-class KoinNavigationDrawerViewModel
-@Suppress("LongParameterList")
-@Inject
-constructor(
-    @ApplicationContext private val context: Context,
+class KoinNavigationDrawerViewModel @Inject constructor(
     private val updateDeviceTokenUseCase: UpdateDeviceTokenUseCase,
     private val userLogoutUseCase: UserLogoutUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
@@ -83,8 +77,8 @@ constructor(
 
     fun logout() = viewModelScope.launch {
         userLogoutUseCase()
-            .onFailure { throwable ->
-                _errorToast.value = context.getString(`in`.koreatech.koin.R.string.error_failed_logout)
+            .onFailure {
+                Timber.e(it, "Failed to logout")
             }
     }
 
