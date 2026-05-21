@@ -104,13 +104,13 @@ class ChangePasswordViewModel @Inject constructor(
         if (enteredPwd.value == currentPwd) return
         savedStateHandle[KEY_ENTERED_PASSWORD] = currentPwd
         viewModelScope.launch {
-            verifyUserPasswordUseCase(currentPwd).let { handler ->
-                if (handler == null) {
+            verifyUserPasswordUseCase(currentPwd)
+                .onSuccess {
                     savedStateHandle[KEY_VERIFY_UI_STATUS] = UiStatus.Success
-                } else {
-                    savedStateHandle[KEY_VERIFY_UI_STATUS] = UiStatus.Failed(handler.message)
                 }
-            }
+                .onFailure {
+                    savedStateHandle[KEY_VERIFY_UI_STATUS] = UiStatus.Failed()
+                }
         }
     }
 
