@@ -1,8 +1,10 @@
 package `in`.koreatech.business.feature.store.storedetail
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.domain.usecase.business.DeleteOwnerEventsUseCase
 import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopEventsUseCase
@@ -20,9 +22,14 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import retrofit2.HttpException
 
 @HiltViewModel
-class MyStoreDetailViewModel @Inject constructor(
+class MyStoreDetailViewModel
+@Suppress("LongParameterList")
+@Inject
+constructor(
+    @ApplicationContext private val context: Context,
     private val getOwnerShopInfoUseCase: GetOwnerShopInfoUseCase,
     private val getOwnerShopListUseCase: GetOwnerShopListUseCase,
     private val getOwnerShopEventsUseCase: GetOwnerShopEventsUseCase,
@@ -351,17 +358,29 @@ class MyStoreDetailViewModel @Inject constructor(
             }
         }
 
-    fun deleteUser() {
-        intent {
-            viewModelScope.launch {
-                userRemoveUseCase()
-                    .onSuccess {
-                        postSideEffect(MyStoreDetailSideEffect.DeleteUser)
-                    }
-                    .onFailure { errorHandler ->
-                        postSideEffect(MyStoreDetailSideEffect.ShowErrorMessage(errorHandler.message))
-                    }
+    fun deleteUser() = intent {
+        userRemoveUseCase().fold(
+            onSuccess = {
+                postSideEffect(MyStoreDetailSideEffect.DeleteUser)
+            },
+            onFailure = { throwable ->
+                postSideEffect(
+                    MyStoreDetailSideEffect.ShowErrorMessage(
+                        throwable.toDeleteUserErrorMessage()
+                    )
+                )
             }
-        }
+        )
+    }
+
+    private fun Throwable.toDeleteUserErrorMessage(): String = when {
+        this is HttpException && this.code() == 500 ->
+            context.getString(`in`.koreatech.koin.data.R.string.error_internal_server_error)
+        this is java.net.ConnectException ||
+            this is java.net.SocketTimeoutException ||
+            this is java.net.UnknownHostException ->
+            context.getString(`in`.koreatech.koin.data.R.string.error_network_connection)
+        else ->
+            context.getString(`in`.koreatech.koin.data.R.string.error_network_unknown)
     }
 }
