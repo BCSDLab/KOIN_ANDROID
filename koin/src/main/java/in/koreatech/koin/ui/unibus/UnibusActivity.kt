@@ -1,0 +1,75 @@
+package `in`.koreatech.koin.ui.unibus
+
+import android.content.Context
+import android.webkit.JavascriptInterface
+import android.webkit.WebView
+import `in`.koreatech.koin.core.R
+import `in`.koreatech.koin.core.activity.KoinWebViewClient
+import `in`.koreatech.koin.core.activity.WebViewActivity
+
+class UnibusActivity : WebViewActivity() {
+    override fun init(
+        title: String?,
+        url: String?
+    ) {
+        super.init(title, url)
+        binding.webView.webViewClient = UnibusWebViewClient(
+            context = this@UnibusActivity,
+            showProgressDialog = {
+                showProgressDialog(R.string.loading)
+            },
+            hideProgressDialog = {
+                hideProgressDialog()
+            }
+        )
+        binding.webView.addJavascriptInterface(
+            object : Any() {
+                @JavascriptInterface
+                fun onQrcodeModalChanged(isActive: Boolean) {
+                    runOnUiThread {
+                        val layout = window.attributes
+                        if (isActive) {
+                            layout.screenBrightness = 1.0f
+                        } else {
+                            layout.screenBrightness = -1.0f
+                        }
+                        window.attributes = layout
+                    }
+                }
+            },
+            "Android"
+        )
+    }
+}
+
+private class UnibusWebViewClient(
+    context: Context,
+    openInNewTab: Boolean = false,
+    showProgressDialog: () -> Unit,
+    hideProgressDialog: () -> Unit
+) : KoinWebViewClient(context, openInNewTab, showProgressDialog, hideProgressDialog) {
+    companion object {
+        val QR_CHECK = """
+(function() {
+  const ${'$'}rootScope = angular.element(document.body).injector().get('${'$'}rootScope');
+
+  ${'$'}rootScope.${'$'}watch(function() {
+    return !!document.querySelector('div.modal[ui-if="qrcodeModal"]');
+  }, function(newVal, oldVal) {
+    if (newVal === oldVal) return;
+    window.Android?.onQrcodeModalChanged?.(newVal);
+  });
+})();
+        """
+    }
+
+    override fun onPageFinished(
+        view: WebView,
+        url: String
+    ) {
+        super.onPageFinished(view, url)
+        view.postDelayed({
+            view.evaluateJavascript(QR_CHECK, null)
+        }, 500)
+    }
+}
