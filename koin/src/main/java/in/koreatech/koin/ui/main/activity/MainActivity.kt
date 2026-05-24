@@ -82,7 +82,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
         EventLogger.logScreenName("HomeActivity") // DA requirement
 
-        fixTabRowSize()
         initView()
         initViewModel()
         handleIntent()
@@ -92,22 +91,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         super.onResume()
         viewModel.checkKeywordNotiContent()
         viewModel.updateDining()
-    }
-
-    private fun fixTabRowSize() {
-        // Compose M3's ScrollableTabRow has a hard coded minimum tab width
-        // 1.4.0-alpha10 fixes this, but we are using older version
-        // REMOVE THIS WHEN WE UPGRADE TO M3 1.4.0-alpha10 OR LATER
-        // Reference: https://issuetracker.google.com/issues/226665301
-        try {
-            Class
-                .forName("androidx.compose.material3.TabRowKt")
-                .getDeclaredField("ScrollableTabRowMinimumTabWidth").apply {
-                    isAccessible = true
-                }.set(this, 0f)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
     }
 
     private fun initView() = with(binding) {
