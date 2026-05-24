@@ -397,13 +397,6 @@ abstract class KoinNavigationDrawerActivity :
                     goToClubActivity()
                 }
 
-                MenuState.LoginOrLogout -> {
-                    if (userInfoFlow.value.isStudent || userInfoFlow.value.isGeneral) {
-                        logout()
-                    }
-                    goToLoginActivity()
-                }
-
                 MenuState.Article -> goToArticleActivity()
 
                 MenuState.LostAndFound -> goToLostAndFoundActivity()
