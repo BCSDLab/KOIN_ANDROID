@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.ui.unibus
 
 import android.content.Context
+import android.view.WindowManager
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import `in`.koreatech.koin.core.R
@@ -28,10 +29,10 @@ class UnibusActivity : WebViewActivity() {
                 fun onQrcodeModalChanged(isActive: Boolean) {
                     runOnUiThread {
                         val layout = window.attributes
-                        if (isActive) {
-                            layout.screenBrightness = 1.0f
+                        layout.screenBrightness = if (isActive) {
+                            WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
                         } else {
-                            layout.screenBrightness = -1.0f
+                            WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
                         }
                         window.attributes = layout
                     }
