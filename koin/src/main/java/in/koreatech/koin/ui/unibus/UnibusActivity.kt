@@ -23,7 +23,7 @@ class UnibusActivity : WebViewActivity() {
                 hideProgressDialog()
             }
         )
-        binding.webView.addJavascriptInterface(UnibusJavascriptInterface(),"Android")
+        binding.webView.addJavascriptInterface(UnibusJavascriptInterface(), "Android")
     }
 
     private inner class UnibusJavascriptInterface {
@@ -56,7 +56,7 @@ private class UnibusWebViewClient(
     if (retry > 0) setTimeout(function() { waitForAngular(retry - 1); }, 300);
     return;
   }
-  
+
   const ${'$'}rootScope = angular.element(document.body).injector().get('${'$'}rootScope');
 
   ${'$'}rootScope.${'$'}watch(function() {
