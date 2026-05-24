@@ -25,7 +25,6 @@ import `in`.koreatech.bus.BusSearchActivity
 import `in`.koreatech.bus.BusTimetableActivity
 import `in`.koreatech.bus.screen.MainEntryView
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
@@ -56,6 +55,7 @@ import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import `in`.koreatech.koin.ui.main.widget.DiningWidget
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
+import `in`.koreatech.koin.ui.unibus.UnibusActivity
 import `in`.koreatech.koin.util.ext.observeLiveData
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
@@ -149,7 +149,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                             "shuttle_ticket",
                             "셔틀 탑승권"
                         )
-                        val intent = Intent(this@MainActivity, WebViewActivity::class.java)
+                        val intent = Intent(this@MainActivity, UnibusActivity::class.java)
                         intent.putExtra("url", "https://koreatech.unibus.kr/")
                         startActivity(intent)
                     },

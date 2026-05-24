@@ -29,8 +29,8 @@ import `in`.koreatech.koin.core.databinding.ActivityWebviewBinding
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
 
-class WebViewActivity : ActivityBase(R.layout.activity_webview) {
-    private val binding by dataBinding<ActivityWebviewBinding>()
+open class WebViewActivity : ActivityBase(R.layout.activity_webview) {
+    protected val binding by dataBinding<ActivityWebviewBinding>()
     override val screenTitle: String = "웹뷰"
 
     override val onBackPressedCallback: OnBackPressedCallback =
@@ -63,7 +63,7 @@ class WebViewActivity : ActivityBase(R.layout.activity_webview) {
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private fun init(
+    open fun init(
         title: String?,
         url: String?
     ) {
@@ -115,7 +115,7 @@ class WebViewActivity : ActivityBase(R.layout.activity_webview) {
     }
 }
 
-internal class KoinWebViewClient(
+open class KoinWebViewClient(
     private val context: Context,
     private val openInNewTab: Boolean = false,
     private val showProgressDialog: () -> Unit,
@@ -186,7 +186,7 @@ internal class KoinWebViewClient(
     }
 }
 
-internal class KoinWebChromeClient(
+open class KoinWebChromeClient(
     private val context: Context,
     private val showProgressDialog: () -> Unit,
     private val hideProgressDialog: () -> Unit
