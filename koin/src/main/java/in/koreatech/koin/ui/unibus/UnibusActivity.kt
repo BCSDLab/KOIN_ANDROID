@@ -23,24 +23,23 @@ class UnibusActivity : WebViewActivity() {
                 hideProgressDialog()
             }
         )
-        binding.webView.addJavascriptInterface(
-            object : Any() {
-                @JavascriptInterface
-                fun onQrcodeModalChanged(isActive: Boolean) {
-                    runOnUiThread {
-                        if (isFinishing || isDestroyed) return@runOnUiThread
-                        val layout = window.attributes
-                        layout.screenBrightness = if (isActive) {
-                            WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
-                        } else {
-                            WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
-                        }
-                        window.attributes = layout
-                    }
+        binding.webView.addJavascriptInterface(UnibusJavascriptInterface(),"Android")
+    }
+
+    private inner class UnibusJavascriptInterface {
+        @JavascriptInterface
+        fun onQrcodeModalChanged(isActive: Boolean) {
+            runOnUiThread {
+                if (isFinishing || isDestroyed) return@runOnUiThread
+                val layout = window.attributes
+                layout.screenBrightness = if (isActive) {
+                    WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
+                } else {
+                    WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
                 }
-            },
-            "Android"
-        )
+                window.attributes = layout
+            }
+        }
     }
 }
 
