@@ -1,8 +1,13 @@
 package `in`.koreatech.koin.ui.timetablev2
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,6 +25,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.res.stringResource
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
@@ -81,6 +87,24 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
 
             if (it.resultCode == TimetableSemesterActivity.REQUEST_CODE_LOGIN_ACTIVITY) {
                 startToLoginActivity()
+            }
+        }
+
+    private val writeStoragePermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                viewModel.updateIsDownloadDialogVisible(true)
+            } else {
+                viewModel.updateSideEffect(
+                    TimetableSideEffect.SnackBar(
+                        getString(R.string.timetable_save_permission_needed)
+                    )
+                )
+                if (!shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.fromParts("package", this@TimetableActivity.packageName, null)
+                    }.let(::startActivity)
+                }
             }
         }
 
@@ -268,7 +292,19 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                         startToTimetableSemesterActivity()
                     },
                     onClickDownloadTimetable = {
-                        viewModel.updateIsDownloadDialogVisible(true)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            viewModel.updateIsDownloadDialogVisible(true)
+                        } else {
+                            if (ContextCompat.checkSelfPermission(
+                                    this,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                ) == PackageManager.PERMISSION_GRANTED
+                            ) {
+                                viewModel.updateIsDownloadDialogVisible(true)
+                            } else {
+                                writeStoragePermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            }
+                        }
                     },
                     onClickAddLectureMode = viewModel::updateTimetableBottomSheetMode,
                     onClickAddCustomLectureMode = {
