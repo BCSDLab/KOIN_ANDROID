@@ -33,7 +33,6 @@ class StoreNearbyViewModel @Inject constructor(
     override val container = container<StoreNearbyState, StoreNearbySideEffect>(StoreNearbyState())
 
     init {
-        fetchData()
         intent {
             getStoreCategoriesUseCase().let {
                 reduce {
@@ -177,6 +176,9 @@ class StoreNearbyViewModel @Inject constructor(
             )
         }
         postSideEffect(StoreNearbySideEffect.FetchData)
-        postSideEffect(StoreNearbySideEffect.ScrollCategory(state.storeCategories.indexOfFirst { it.id == categoryId }))
+        if (state.storeCategories.isNotEmpty()) {
+            // If category not fetched, `indexOfFirst` will return -1 and it'll cause Exception
+            postSideEffect(StoreNearbySideEffect.ScrollCategory(state.storeCategories.indexOfFirst { it.id == categoryId }))
+        }
     }
 }
