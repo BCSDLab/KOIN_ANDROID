@@ -65,7 +65,7 @@ private class UnibusWebViewClient(
     window.Android?.onQrcodeModalChanged?.(newVal);
   });
 })(10);
-        """
+        """.trimIndent()
     }
 
     override fun onPageFinished(
