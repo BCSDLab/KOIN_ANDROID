@@ -28,6 +28,7 @@ class UnibusActivity : WebViewActivity() {
                 @JavascriptInterface
                 fun onQrcodeModalChanged(isActive: Boolean) {
                     runOnUiThread {
+                        if (isFinishing || isDestroyed) return@runOnUiThread
                         val layout = window.attributes
                         layout.screenBrightness = if (isActive) {
                             WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
