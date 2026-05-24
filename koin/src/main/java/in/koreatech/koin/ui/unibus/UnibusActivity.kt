@@ -50,7 +50,12 @@ private class UnibusWebViewClient(
 ) : KoinWebViewClient(context, openInNewTab, showProgressDialog, hideProgressDialog) {
     companion object {
         val QR_CHECK = """
-(function() {
+(function waitForAngular(retry) {
+  if (typeof angular === 'undefined') {
+    if (retry > 0) setTimeout(function() { waitForAngular(retry - 1); }, 300);
+    return;
+  }
+  
   const ${'$'}rootScope = angular.element(document.body).injector().get('${'$'}rootScope');
 
   ${'$'}rootScope.${'$'}watch(function() {
@@ -59,7 +64,7 @@ private class UnibusWebViewClient(
     if (newVal === oldVal) return;
     window.Android?.onQrcodeModalChanged?.(newVal);
   });
-})();
+})(10);
         """
     }
 
@@ -68,8 +73,6 @@ private class UnibusWebViewClient(
         url: String
     ) {
         super.onPageFinished(view, url)
-        view.postDelayed({
-            view.evaluateJavascript(QR_CHECK, null)
-        }, 500)
+        view.evaluateJavascript(QR_CHECK, null)
     }
 }
