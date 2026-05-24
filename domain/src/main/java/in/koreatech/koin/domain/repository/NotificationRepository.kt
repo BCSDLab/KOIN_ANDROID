@@ -7,7 +7,7 @@ import `in`.koreatech.koin.domain.model.notification.SubscribesType
 interface NotificationRepository {
     suspend fun getPermissionInfo(): Result<NotificationPermissionInfo>
 
-    suspend fun postReviewPromptNotification(storeId: Int)
+    suspend fun postReviewPromptNotification(storeId: Int): Result<Unit>
 
     suspend fun updateSubscription(type: SubscribesType): Result<Unit>
 

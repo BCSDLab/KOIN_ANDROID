@@ -26,6 +26,11 @@ sealed class KoinStoreException : KoinErrorException() {
     class UnauthorizedException : KoinStoreException()
 
     /*
+     * Exceptions for 403 Forbidden
+     */
+    class ForbiddenException : KoinStoreException()
+
+    /*
      * Exceptions for 404 Not Found
      */
     class ShopNotFoundException : KoinStoreException()
