@@ -2,81 +2,39 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>ComplexCondition:StoreActivity.kt$StoreActivity$actionId == EditorInfo.IME_ACTION_DONE || (event != null &amp;&amp; event.keyCode == KeyEvent.KEYCODE_ENTER &amp;&amp; event.action == KeyEvent.ACTION_DOWN)</ID>
     <ID>CyclomaticComplexMethod:KoinNavigationDrawerActivity.kt$KoinNavigationDrawerActivity$override fun onPostCreate(savedInstanceState: Bundle?)</ID>
     <ID>CyclomaticComplexMethod:KoinNavigationDrawerActivity.kt$KoinNavigationDrawerActivity$private fun initDrawerViewModel()</ID>
     <ID>CyclomaticComplexMethod:LandDetailActivity.kt$LandDetailActivity$private fun setRoomOption(landDetail: LandDetail)</ID>
-    <ID>CyclomaticComplexMethod:MainActivity.kt$MainActivity$private fun initView()</ID>
     <ID>CyclomaticComplexMethod:NotificationActivity.kt$NotificationActivity$private fun observeData()</ID>
-    <ID>CyclomaticComplexMethod:StoreActivity.kt$StoreActivity$private fun initView()</ID>
-    <ID>CyclomaticComplexMethod:StoreDetailMenuFragment.kt$StoreDetailMenuFragment$@SuppressLint("ResourceAsColor") private fun initViewModel()</ID>
     <ID>CyclomaticComplexMethod:TimetableActivity.kt$TimetableActivity$private fun initComposeView()</ID>
     <ID>CyclomaticComplexMethod:TimetableSemesterActivity.kt$TimetableSemesterActivity$override fun onCreate(savedInstanceState: Bundle?)</ID>
     <ID>EmptyCatchBlock:DebugExtensions.kt${ }</ID>
-    <ID>EmptyDefaultConstructor:MenuRecyclerViewAdapter.kt$MenuRecyclerViewAdapter$()</ID>
-    <ID>EmptyDefaultConstructor:StoreActivityContract.kt$StoreActivityContract$()</ID>
-    <ID>EmptyDefaultConstructor:StoreCategoriesRecyclerAdapter.kt$StoreCategoriesRecyclerAdapter$()</ID>
-    <ID>EmptyDefaultConstructor:StoreDetailEventRecyclerAdapter.kt$StoreDetailEventRecyclerAdapter$()</ID>
-    <ID>EmptyDefaultConstructor:StoreDetailFlyerFullRecyclerAdapter.kt$StoreDetailFlyerFullRecyclerAdapter$()</ID>
-    <ID>EmptyDefaultConstructor:StoreDetailFlyerRecyclerAdapter.kt$StoreDetailFlyerRecyclerAdapter$()</ID>
-    <ID>EmptyDefaultConstructor:StoreDetailReviewImageRecyclerAdapter.kt$StoreDetailReviewImageRecyclerAdapter$()</ID>
-    <ID>EmptyDefaultConstructor:StoreDetailReviewMenuRecyclerAdapter.kt$StoreDetailReviewMenuRecyclerAdapter$()</ID>
-    <ID>EmptyDefaultConstructor:StoreEventPagerAdapter.kt$StoreEventPagerAdapter$()</ID>
     <ID>EmptyFunctionBlock:DebounceTextWatcher.kt$DebounceTextWatcher${}</ID>
     <ID>EmptyFunctionBlock:LoginContract.kt$LoginContract${ }</ID>
-    <ID>EmptyFunctionBlock:StoreActivity.kt$StoreActivity.&lt;no name provided&gt;${ }</ID>
-    <ID>EmptyFunctionBlock:StoreCallContract.kt$StoreCallContract${ }</ID>
-    <ID>EmptyFunctionBlock:StoreDetailActivity.kt$StoreDetailActivity.&lt;no name provided&gt;${}</ID>
-    <ID>EmptyFunctionBlock:StoreReviewReportActivity.kt$StoreReviewReportActivity.&lt;no name provided&gt;${ }</ID>
     <ID>FunctionParameterNaming:ExceptionHandlerUtil.kt$ExceptionHandlerUtil$ErrorMessage: String</ID>
-    <ID>ImplicitDefaultLocale:StoreDetailReviewFragment.kt$StoreDetailReviewFragment$String.format("%.1f", it.statistics.averageRating)</ID>
-    <ID>ImplicitDefaultLocale:StoreRecyclerAdapter.kt$StoreRecyclerAdapter.ViewHolder$String.format("%.1f", store.averageRate)</ID>
     <ID>LongMethod:KoinNavigationDrawerActivity.kt$KoinNavigationDrawerActivity$override fun onPostCreate(savedInstanceState: Bundle?)</ID>
     <ID>LongMethod:KoinNavigationDrawerActivity.kt$KoinNavigationDrawerActivity$private fun initDrawerViewModel()</ID>
     <ID>LongMethod:LandDetailActivity.kt$LandDetailActivity$private fun setRoomOption(landDetail: LandDetail)</ID>
     <ID>LongMethod:MainActivity.kt$MainActivity$private fun initView()</ID>
     <ID>LongMethod:NotificationActivity.kt$NotificationActivity$private fun observeData()</ID>
     <ID>LongMethod:SettingActivity.kt$SettingActivity$private fun initListeners()</ID>
-    <ID>LongMethod:StoreActivity.kt$StoreActivity$private fun initView()</ID>
-    <ID>LongMethod:StoreDetailActivity.kt$StoreDetailActivity$@SuppressLint("ClickableViewAccessibility") override fun onCreate(savedInstanceState: Bundle?)</ID>
-    <ID>LongMethod:StoreDetailActivity.kt$StoreDetailActivity$private fun initViewModel()</ID>
-    <ID>LongMethod:StoreDetailMenuFragment.kt$StoreDetailMenuFragment$@SuppressLint("ResourceAsColor") private fun initViewModel()</ID>
-    <ID>LongMethod:StoreDetailReviewFragment.kt$StoreDetailReviewFragment$private fun initViews()</ID>
-    <ID>LongMethod:StoreDetailReviewRecyclerAdapter.kt$StoreDetailReviewRecyclerAdapter$override fun onBindViewHolder( holder: StoreDetailReviewRecyclerAdapter.StoreDetailReviewViewHolder, position: Int )</ID>
-    <ID>LongMethod:StoreRecyclerAdapter.kt$StoreRecyclerAdapter.ViewHolder$fun bind(store: Store)</ID>
-    <ID>LongMethod:StoreReviewReportActivity.kt$StoreReviewReportActivity$private fun initViewModel()</ID>
-    <ID>LongMethod:StoreReviewReportViewModel.kt$StoreReviewReportViewModel$fun reportReviewButtonClicked(storeId: Int?, reviewId: Int?, etcReason: String)</ID>
     <ID>LongMethod:TimetableActivity.kt$TimetableActivity$private fun initComposeView()</ID>
     <ID>LongMethod:TimetableSemesterActivity.kt$TimetableSemesterActivity$override fun onCreate(savedInstanceState: Bundle?)</ID>
-    <ID>LongMethod:WriteReviewActivity.kt$WriteReviewActivity$private fun initView()</ID>
-    <ID>LongMethod:WriteReviewActivity.kt$WriteReviewActivity$private fun initViewModel()</ID>
-    <ID>LongParameterList:DeveloperSettingItem.kt$( title: String, key: DeveloperOption, value: Boolean, modifier: Modifier = Modifier, description: String? = null, onValueChange: (DeveloperOption, Boolean) -&gt; Unit = { _, _ -&gt; } )</ID>
-    <ID>LongParameterList:MainActivityViewModel.kt$MainActivityViewModel$( private val getDiningUseCase: GetDiningUseCase, private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase, private val abTestUseCase: ABTestUseCase, private val checkBannerRefusalUseCase: CheckBannerRefusalUseCase, private val articleRepository: ArticleRepository, private val getSessionIdUseCase: GetSessionIdUseCase, private val getUserStatusUseCase: GetUserStatusUseCase, private val fetchArticleLostAndFoundStatsUseCase: FetchArticleLostAndFoundStatsUseCase )</ID>
-    <ID>LongParameterList:StoreDetailViewModel.kt$StoreDetailViewModel$( private val getStoreWithMenuUseCase: GetStoreWithMenuUseCase, private val getRecommendStoresUseCase: GetRecommendStoresUseCase, private val getShopMenusUseCase: GetShopMenusUseCase, private val getStoreReviewUseCase: GetStoreReviewUseCase, private val getStoreEventsUseCase: GetShopEventsUseCase, private val deleteReviewUseCase: DeleteReviewUseCase, private val getUserInfoUseCase: GetUserInfoUseCase, private val reviewPromptUscCase: ReviewPromptUscCase, private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase, private val abTestUseCase: ABTestUseCase )</ID>
     <ID>PrintStackTrace:MainActivity.kt$MainActivity$e</ID>
     <ID>SpreadOperator:MainActivity.kt$MainActivity$( context = this, type = Pair(EXTRA_TYPE, type), *arrayOf( Pair(EXTRA_ID, targetId), Pair(EXTRA_BOARD_ID, targetBoardId), Pair(EXTRA_ARTICLE_ID, targetArticleId), Pair(EXTRA_CHAT_ROOM_ID, targetChatId), Pair(EXTRA_CLUB_ID, targetClubId), Pair(EXTRA_EVENT_ID, targetEventId) ) )</ID>
     <ID>SpreadOperator:SchemeActivity.kt$SchemeActivity$( context = this, type = Pair(EXTRA_TYPE, url?.toHost()), *(getExtraIds(url ?: "").toTypedArray()) )</ID>
     <ID>SpreadOperator:SchemeActivity.kt$SchemeActivity$( context = this, type = Pair(EXTRA_TYPE, url?.toHost()), navType = Pair(EXTRA_NAV_TYPE, NavigatorType.MAIN.type), *(getExtraIds(url ?: "").toTypedArray()) )</ID>
-    <ID>SpreadOperator:SplashActivity.kt$SplashActivity$( context = this@SplashActivity, type = Pair(EXTRA_TYPE, type), *arrayOf( Pair(EXTRA_ID, targetId), Pair(EXTRA_BOARD_ID, targetBoardId), Pair(EXTRA_ARTICLE_ID, targetArticleId), Pair(EXTRA_CHAT_ROOM_ID, targetChatId), Pair(EXTRA_CLUB_ID, targetClubId), Pair(EXTRA_EVENT_ID, targetEventId) ) )</ID>
     <ID>SwallowedException:ContextExtensions.kt$exception: ActivityNotFoundException</ID>
     <ID>SwallowedException:DebugExtensions.kt$e: PackageManager.NameNotFoundException</ID>
     <ID>SwallowedException:KakaoTalkLinkExtensions.kt$e: NameNotFoundException</ID>
-    <ID>ThrowingExceptionsWithoutMessageOrCause:StoreDetailViewpagerAdapter.kt$StoreDetailViewpagerAdapter$IndexOutOfBoundsException()</ID>
     <ID>TooGenericExceptionCaught:KoinFirebaseMessagingService.kt$KoinFirebaseMessagingService$e: Exception</ID>
     <ID>TooGenericExceptionCaught:KoinNavigationDrawerViewModel.kt$KoinNavigationDrawerViewModel$e: Exception</ID>
     <ID>TooGenericExceptionCaught:MainActivity.kt$MainActivity$e: Exception</ID>
     <ID>TooManyFunctions:AuthNetworkModule.kt$AuthNetworkModule</ID>
     <ID>TooManyFunctions:KoinNavigationDrawerActivity.kt$KoinNavigationDrawerActivity : ActivityBaseOnNavigationItemSelectedListener</ID>
-    <ID>TooManyFunctions:MainActivity.kt$MainActivity : KoinNavigationDrawerTimeActivity</ID>
-    <ID>TooManyFunctions:MainActivityViewModel.kt$MainActivityViewModel : BaseViewModel</ID>
     <ID>TooManyFunctions:NotificationActivity.kt$NotificationActivity : ActivityBase</ID>
     <ID>TooManyFunctions:SchemeActivity.kt$SchemeActivity : ActivityBase</ID>
     <ID>TooManyFunctions:SplashActivity.kt$SplashActivity : ActivityBase</ID>
-    <ID>TooManyFunctions:StoreDetailActivity.kt$StoreDetailActivity : KoinNavigationDrawerActivity</ID>
-    <ID>TooManyFunctions:StoreDetailViewModel.kt$StoreDetailViewModel : BaseViewModel</ID>
-    <ID>TooManyFunctions:StoreViewModel.kt$StoreViewModel : BaseViewModel</ID>
     <ID>TooManyFunctions:TimetableActivity.kt$TimetableActivity : KoinNavigationDrawerActivity</ID>
-    <ID>TopLevelPropertyNaming:ArticleMain.kt$private const val AUTO_SCROLL_INTERVAL = 5000L</ID>
-    <ID>TopLevelPropertyNaming:Constant.kt$const val GOTO_KOREATECH_PORTAL_SNACK_BAR_TIME = 5000</ID>
   </CurrentIssues>
 </SmellBaseline>

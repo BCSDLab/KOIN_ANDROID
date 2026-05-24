@@ -22,7 +22,6 @@ import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
-import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.feature.dining.navigation.INIT_DATE
 import java.util.Date
 import javax.inject.Inject
@@ -32,6 +31,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
 class DiningViewModel @Inject constructor(
@@ -44,7 +46,9 @@ class DiningViewModel @Inject constructor(
     private val updateNotificationSubscriptionUseCase: UpdateNotificationSubscriptionUseCase,
     private val updateNotificationSubscriptionDetailUseCase: UpdateNotificationSubscriptionDetailUseCase,
     private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase
-) : ViewModel() {
+) : ViewModel(), ContainerHost<Unit, Nothing> {
+
+    override val container = container<Unit, Nothing>(Unit)
 
     private val initDate = savedStateHandle.get<String>(INIT_DATE)
         .takeUnless { it.isNullOrBlank() }
@@ -139,7 +143,7 @@ class DiningViewModel @Inject constructor(
 
     fun getNotificationPermissionInfo() {
         if (userState.value.isAnonymous) return
-        viewModelScope.launch {
+        intent {
             getNotificationPermissionInfoUseCase().onSuccess { info ->
                 info.subscribes.forEach {
                     when (it.type) {
@@ -157,7 +161,7 @@ class DiningViewModel @Inject constructor(
 
     private fun onSoldOutSubscribe(boolean: Boolean) {
         if (userState.value.isAnonymous) return
-        viewModelScope.launch {
+        intent {
             if (boolean) {
                 updateNotificationSubscriptionUseCase(SubscribesType.DINING_SOLD_OUT)
                 updateNotificationSubscriptionDetailUseCase(SubscribesDetailType.BREAKFAST)
@@ -171,7 +175,7 @@ class DiningViewModel @Inject constructor(
 
     private fun onDiningImageSubscribe(boolean: Boolean) {
         if (userState.value.isAnonymous) return
-        viewModelScope.launch {
+        intent {
             if (boolean) {
                 updateNotificationSubscriptionUseCase(SubscribesType.DINING_IMAGE_UPLOAD)
             } else {
