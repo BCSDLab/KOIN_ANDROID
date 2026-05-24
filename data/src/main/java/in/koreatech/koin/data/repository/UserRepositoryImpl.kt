@@ -39,13 +39,18 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun getToken(
         loginId: String,
         hashedPassword: String
-    ): AuthToken {
-        val authResponse =
-            userRemoteDataSource.getToken(
-                LoginRequest(loginId, hashedPassword)
-            )
+    ): Result<AuthToken> {
+        return suspendRunCatching {
+            val authResponse =
+                userRemoteDataSource.getToken(
+                    LoginRequest(loginId, hashedPassword)
+                )
 
-        return AuthToken(authResponse.token, authResponse.refreshToken, authResponse.userType)
+            AuthToken(authResponse.token, authResponse.refreshToken, authResponse.userType)
+        }.mapHttpFailure {
+            on(400) throws KoinUserException.LoginCredentialInvalidException()
+            on(404) throws KoinUserException.UserNotFoundException()
+        }
     }
 
     override suspend fun getOwnerToken(
@@ -120,19 +125,22 @@ class UserRepositoryImpl @Inject constructor(
         return userLocalDataSource.user.map { it ?: getUserInfo() }
     }
 
-    override suspend fun requestPasswordResetEmail(email: String) {
-        userRemoteDataSource.sendPasswordResetEmail(IdRequest(email))
+    override suspend fun requestPasswordResetEmail(email: String): Result<Unit> {
+        return suspendRunCatching {
+            userRemoteDataSource.sendPasswordResetEmail(IdRequest(email))
+        }.mapHttpFailure {
+            on(404) throws KoinUserException.UserNotFoundException()
+            on(422) throws KoinUserException.EmailInvalidException()
+        }
     }
 
-    override suspend fun deleteUser() {
-        try {
+    override suspend fun deleteUser(): Result<Unit> {
+        return suspendRunCatching {
             userRemoteDataSource.deleteUser()
             userLocalDataSource.updateUserInfo(User.Anonymous)
             userLocalDataSource.updateIsLogin(false)
             tokenLocalDataSource.removeAccessToken()
             tokenLocalDataSource.removeRefreshToken()
-        } catch (e: HttpException) {
-            throw e
         }
     }
 
@@ -174,13 +182,19 @@ class UserRepositoryImpl @Inject constructor(
         e409 = KoinUserException.NicknameOrEmailConflictException()
     )
 
-    override suspend fun deleteDeviceToken() {
-        tokenLocalDataSource.removeDeviceToken()
-        userRemoteDataSource.deleteDeviceToken()
+    override suspend fun deleteDeviceToken(): Result<Unit> {
+        return suspendRunCatching {
+            tokenLocalDataSource.removeDeviceToken()
+            userRemoteDataSource.deleteDeviceToken()
+        }
     }
 
-    override suspend fun verifyPassword(hashedPassword: String) {
-        userRemoteDataSource.verifyPassword(PasswordRequest(hashedPassword))
+    override suspend fun verifyPassword(hashedPassword: String): Result<Unit> {
+        return suspendRunCatching {
+            userRemoteDataSource.verifyPassword(PasswordRequest(hashedPassword))
+        }.mapHttpFailure {
+            on(400) throws KoinUserException.DataInvalidException()
+        }
     }
 
     override suspend fun updateABTestToken() {

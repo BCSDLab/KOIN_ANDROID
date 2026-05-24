@@ -19,8 +19,6 @@ import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.domain.usecase.user.UpdateGeneralUserInfoUseCase
 import `in`.koreatech.koin.domain.usecase.user.UpdateStudentUserInfoUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserWithdrawUseCase
-import `in`.koreatech.koin.domain.util.onFailure
-import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.feature.user.model.NicknameState
 import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.feature.user.model.VerificationMethodState

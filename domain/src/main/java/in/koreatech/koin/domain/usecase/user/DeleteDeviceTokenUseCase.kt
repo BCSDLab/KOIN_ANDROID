@@ -1,20 +1,13 @@
 package `in`.koreatech.koin.domain.usecase.user
 
-import `in`.koreatech.koin.domain.error.user.UserErrorHandler
-import `in`.koreatech.koin.domain.model.error.ErrorHandler
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
+import kotlin.Result
 
 class DeleteDeviceTokenUseCase @Inject constructor(
-    private val userRepository: UserRepository,
-    private val userErrorHandler: UserErrorHandler
+    private val userRepository: UserRepository
 ) {
-    suspend operator fun invoke(): Pair<Unit?, ErrorHandler?> {
-        return try {
-            userRepository.deleteDeviceToken()
-            Unit to null
-        } catch (e: Exception) {
-            null to userErrorHandler.handleUserError(e)
-        }
+    suspend operator fun invoke(): Result<Unit> {
+        return userRepository.deleteDeviceToken()
     }
 }

@@ -12,7 +12,6 @@ import `in`.koreatech.koin.domain.usecase.setting.GetDeveloperSettingUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.usecase.user.UpdateDeviceTokenUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLogoutUseCase
-import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -77,9 +76,10 @@ class KoinNavigationDrawerViewModel @Inject constructor(
     }
 
     fun logout() = viewModelScope.launch {
-        userLogoutUseCase().onFailure {
-            _errorToast.value = it.message
-        }
+        userLogoutUseCase()
+            .onFailure {
+                Timber.e(it, "Failed to logout")
+            }
     }
 
     fun getSignUpSessionId(): String {

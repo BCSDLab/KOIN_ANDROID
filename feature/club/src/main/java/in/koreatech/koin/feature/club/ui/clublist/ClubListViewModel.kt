@@ -46,22 +46,14 @@ class ClubListViewModel @Inject constructor(
         getUserType()
     }
 
-    private fun getUserType() = viewModelScope.launch {
-        getUserInfoUseCase().first.let { user ->
-            if (user == null || user.isAnonymous) {
-                intent {
-                    reduce {
-                        state.copy(isAnonymous = true)
-                    }
-                }
-            } else {
-                intent {
-                    reduce {
-                        state.copy(isAnonymous = false)
-                    }
-                }
+    private fun getUserType() = intent {
+        getUserInfoUseCase()
+            .onSuccess { user ->
+                reduce { state.copy(isAnonymous = user.isAnonymous) }
             }
-        }
+            .onFailure {
+                reduce { state.copy(isAnonymous = true) }
+            }
     }
 
     fun updateSearchKeyword(keyword: String) = blockingIntent {
