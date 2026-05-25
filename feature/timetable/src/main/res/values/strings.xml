@@ -98,4 +98,5 @@
     <string name="download">다운로드</string>
     <string name="download_description">다운로드 하시겠어요?</string>
 
+    <string name="timetable_save_permission_needed">시간표를 저장하기 위해서는 권한이 필요해요.</string>
 </resources>

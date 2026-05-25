@@ -58,37 +58,36 @@ class BitmapUtils(
                     Timber.e("Failed save : ${e.message}")
                     return false
                 }
-            } else {
-                val imageFileFolder =
-                    File(Environment.getExternalStorageDirectory().toString() + "/" + "koin")
-                if (!imageFileFolder.exists()) {
-                    imageFileFolder.mkdirs()
-                }
-                val mImageName = "$timeStamp.png"
-                val imageFile = File(imageFileFolder, mImageName)
-                try {
-                    val outputStream: OutputStream = FileOutputStream(imageFile)
-                    try {
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-                        outputStream.close()
-                    } catch (e: Exception) {
-                        e.message
-                    }
-                    values.put(MediaStore.Images.Media.DATA, imageFile.absolutePath)
-                    context.contentResolver.insert(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        values
-                    )
-
-                    Timber.e("Saved...")
-                    return true
-                } catch (e: Exception) {
-                    Timber.e("Failed save : ${e.message}")
-                    return false
-                }
             }
         }
-        return false
+
+        val imageFileFolder =
+            File(Environment.getExternalStorageDirectory().toString() + "/" + "koin")
+        if (!imageFileFolder.exists()) {
+            imageFileFolder.mkdirs()
+        }
+        val mImageName = "$timeStamp.png"
+        val imageFile = File(imageFileFolder, mImageName)
+        try {
+            val outputStream: OutputStream = FileOutputStream(imageFile)
+            try {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                outputStream.close()
+            } catch (e: Exception) {
+                e.message
+            }
+            values.put(MediaStore.Images.Media.DATA, imageFile.absolutePath)
+            context.contentResolver.insert(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                values
+            )
+
+            Timber.e("Saved...")
+            return true
+        } catch (e: Exception) {
+            Timber.e("Failed save : ${e.message}")
+            return false
+        }
     }
 
     private fun generateBitmap(view: View): Bitmap {
