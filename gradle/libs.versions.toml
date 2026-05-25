@@ -132,7 +132,6 @@ detekt-gradle-plugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-g
 kover-gradle-plugin = { group = "org.jetbrains.kotlinx", name = "kover-gradle-plugin", version.ref = "kover" }
 ktlint-gradle-plugin = { group = "org.jlleitschuh.gradle", name = "ktlint-gradle", version.ref = "ktlint" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
-firebase-analytics-ktx = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 firebase-appdistribution-gradle = { group = "com.google.firebase", name = "firebase-appdistribution-gradle", version.ref = "firebaseAppdistributionGradle" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx" }
@@ -235,5 +234,5 @@ compose_m3 = ["androidx-compose-ui", "androidx-compose-graphics", "androidx-comp
 compose_debug_test = ["androidx-compose-ui-tooling", "androidx-compose-ui-test-manifest"]
 hilt = ["androidx-hilt-navigation-compose", "hilt-android"]
 orbit = ["orbit-core", "orbit-viewmodel", "orbit-compose"]
-firebase = ["firebase-crashlytics", "firebase-analytics", "firebase-analytics-ktx", "firebase-database", "firebase-perf", "firebase-messsaing"]
+firebase = ["firebase-crashlytics", "firebase-analytics", "firebase-database", "firebase-perf", "firebase-messsaing"]
 krossbow = ["krossbow-stomp-core", "krossbow-websocket-okhttp", "krossbow-stomp-kxserialization", "krossbow-stomp-kxserialization-json"]
