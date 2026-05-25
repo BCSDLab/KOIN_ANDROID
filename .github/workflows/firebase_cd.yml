@@ -34,7 +34,6 @@ jobs:
           FIREBASE: ${{ secrets.FIREBASE }}
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
        run: |
-            mkdir -p ./koin/src/debug
             echo $FIREBASE | base64 -di > ./koin/google-services.json  
             echo $GOOGLE_CREDENTIALS | base64 -di > ./google-credentials.json  
             for file in $(find . -name 'google-services.json')
