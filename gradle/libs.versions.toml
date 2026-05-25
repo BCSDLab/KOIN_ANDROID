@@ -134,9 +134,7 @@ ktlint-gradle-plugin = { group = "org.jlleitschuh.gradle", name = "ktlint-gradle
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 firebase-appdistribution-gradle = { group = "com.google.firebase", name = "firebase-appdistribution-gradle", version.ref = "firebaseAppdistributionGradle" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
-firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
-firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }
 firebase-crashlytics-gradle = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebaseGradle" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database" }
 firebase-messsaing = { group = "com.google.firebase", name = "firebase-messaging" }
