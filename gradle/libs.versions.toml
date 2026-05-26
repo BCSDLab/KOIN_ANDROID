@@ -139,7 +139,7 @@ firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashly
 firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }
 firebase-crashlytics-gradle = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebaseGradle" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database" }
-firebase-messsaing = { group = "com.google.firebase", name = "firebase-messaging" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
 firebase-perf = { group = "com.google.firebase", name = "firebase-perf" }
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 glide-ksp = { group = "com.github.bumptech.glide", name = "ksp", version.ref = "glide" }
@@ -234,5 +234,5 @@ compose_m3 = ["androidx-compose-ui", "androidx-compose-graphics", "androidx-comp
 compose_debug_test = ["androidx-compose-ui-tooling", "androidx-compose-ui-test-manifest"]
 hilt = ["androidx-hilt-navigation-compose", "hilt-android"]
 orbit = ["orbit-core", "orbit-viewmodel", "orbit-compose"]
-firebase = ["firebase-crashlytics", "firebase-analytics", "firebase-database", "firebase-perf", "firebase-messsaing"]
+firebase = ["firebase-crashlytics", "firebase-analytics", "firebase-database", "firebase-perf", "firebase-messaging"]
 krossbow = ["krossbow-stomp-core", "krossbow-websocket-okhttp", "krossbow-stomp-kxserialization", "krossbow-stomp-kxserialization-json"]
