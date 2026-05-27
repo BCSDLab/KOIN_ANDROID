@@ -101,6 +101,13 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.newmain.NewMainActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/KAPTheme.NoActionBar">
+        </activity>
+
         <meta-data
             android:name="com.naver.maps.map.NCP_KEY_ID"
             android:value="${naverMapKey}" />
