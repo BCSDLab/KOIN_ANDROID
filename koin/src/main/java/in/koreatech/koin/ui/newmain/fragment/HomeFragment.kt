@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.ui.newmain.category
+package `in`.koreatech.koin.ui.newmain.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @AndroidEntryPoint
-class CategoryFragment : Fragment() {
+class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -22,7 +22,7 @@ class CategoryFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 RebrandKoinTheme {
-                    Text("Category")
+                    Text("Home")
                 }
             }
         }

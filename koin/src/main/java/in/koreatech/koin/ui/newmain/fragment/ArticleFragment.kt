@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.ui.newmain.article
+package `in`.koreatech.koin.ui.newmain.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

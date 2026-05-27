@@ -9,10 +9,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.databinding.ActivityNewMainBinding
-import `in`.koreatech.koin.ui.newmain.article.ArticleFragment
-import `in`.koreatech.koin.ui.newmain.category.CategoryFragment
-import `in`.koreatech.koin.ui.newmain.home.HomeFragment
-import `in`.koreatech.koin.ui.newmain.profile.ProfileFragment
+import `in`.koreatech.koin.ui.newmain.fragment.ArticleFragment
+import `in`.koreatech.koin.ui.newmain.fragment.CategoryFragment
+import `in`.koreatech.koin.ui.newmain.fragment.HomeFragment
+import `in`.koreatech.koin.ui.newmain.fragment.ProfileFragment
 
 @AndroidEntryPoint
 class NewMainActivity : AppCompatActivity() {
