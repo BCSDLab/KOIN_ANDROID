@@ -116,6 +116,7 @@ dependencies {
     implementation(projects.feature.dining)
     implementation(projects.feature.lostandfound)
     implementation(projects.feature.callvan)
+    implementation(projects.feature.home)
 
     implementation(libs.guava)
 
