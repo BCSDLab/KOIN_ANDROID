@@ -2,6 +2,7 @@ package `in`.koreatech.koin.ui.newmain
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -31,7 +32,9 @@ class NewMainActivity : AppCompatActivity() {
                 bottom = systemBars.bottom
             )
 
-            WindowInsetsCompat.CONSUMED
+            WindowInsetsCompat.Builder(insets)
+                .setInsets(WindowInsetsCompat.Type.systemBars(), Insets.NONE)
+                .build()
         }
 
         val navHostFragment = supportFragmentManager.findFragmentById(binding.navHostFragmentMain.id) as NavHostFragment
