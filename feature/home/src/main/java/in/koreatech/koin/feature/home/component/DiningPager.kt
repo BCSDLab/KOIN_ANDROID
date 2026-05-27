@@ -50,7 +50,7 @@ fun DiningPager(
         HorizontalPager(
             state = pagerState,
             contentPadding = PaddingValues(horizontal = 40.dp),
-            pageSpacing = 30.dp,
+            pageSpacing = 12.dp,
             modifier = modifier.fillMaxWidth()
         ) { page ->
             DiningPagerContent(
