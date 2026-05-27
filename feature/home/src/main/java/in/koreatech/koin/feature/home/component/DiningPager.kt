@@ -88,6 +88,7 @@ private fun DiningPagerContent(
 ) {
     Column(
         modifier = modifier
+            .border(0.5.dp, Color(0xFFE6E6E6), RoundedCornerShape(24.dp))
             .clip(RoundedCornerShape(24.dp))
             .background(color = Color(0xFFFFFFFF))
             .padding(vertical = 20.dp, horizontal = 24.dp),
