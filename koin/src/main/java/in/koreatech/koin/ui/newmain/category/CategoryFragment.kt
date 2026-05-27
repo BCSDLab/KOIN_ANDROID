@@ -21,7 +21,7 @@ class CategoryFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                RebrandKoinTheme() {
+                RebrandKoinTheme {
                     Text("Category")
                 }
             }
