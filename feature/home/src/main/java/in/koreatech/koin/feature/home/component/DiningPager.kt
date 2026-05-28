@@ -148,9 +148,9 @@ private fun DiningPagerIndicator(
 ) {
     Box(
         modifier = modifier
+            .border(0.5.dp, color = if (isSelected) Color(0xFFB611F5) else Color(0xFFE6E6E6), CircleShape)
             .clip(CircleShape)
             .clickable(onClick = onClick)
-            .border(0.5.dp, color = if (isSelected) Color(0xFFB611F5) else Color(0xFFE6E6E6), CircleShape)
             .background(if (isSelected) Color(0xFFB611F5) else Color(0xFFFFFFFF))
             .padding(vertical = 8.dp, horizontal = 14.dp)
     ) {
