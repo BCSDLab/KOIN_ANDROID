@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.home.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -55,13 +56,16 @@ fun SmallHomeCard(
     colors: SmallHomeCardColors = SmallHomeCardDefaults.colors(),
     shape: Shape = SmallHomeCardDefaults.Shape,
     contentPadding: PaddingValues = SmallHomeCardDefaults.ContentPadding,
-    borderWidth: Dp = SmallHomeCardDefaults.BorderWidth
+    borderWidth: Dp = SmallHomeCardDefaults.BorderWidth,
+    onClick: () -> Unit = {}
 ) {
     Column(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
             .border(borderWidth, colors.borderColor, shape)
             .clip(shape)
             .background(color = colors.backgroundColor)
+            .clickable(onClick = onClick)
             .padding(contentPadding)
     ) {
         icon()

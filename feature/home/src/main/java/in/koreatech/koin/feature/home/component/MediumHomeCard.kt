@@ -59,13 +59,15 @@ fun MediumHomeCard(
     colors: MediumHomeCardColors = MediumHomeCardDefaults.colors(),
     shape: Shape = MediumHomeCardDefaults.Shape,
     contentPadding: PaddingValues = MediumHomeCardDefaults.ContentPadding,
-    borderWidth: Dp = MediumHomeCardDefaults.BorderWidth
+    borderWidth: Dp = MediumHomeCardDefaults.BorderWidth,
+    onClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier
             .border(borderWidth, colors.borderColor, shape)
             .clip(shape)
             .background(color = colors.backgroundColor)
+            .clickable(onClick = onClick)
             .padding(contentPadding),
         verticalAlignment = Alignment.CenterVertically
     ) {

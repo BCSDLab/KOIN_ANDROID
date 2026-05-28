@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.home.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,12 +24,14 @@ import `in`.koreatech.koin.feature.home.R
 
 @Composable
 fun ShuttleTicketCard(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(16.dp))
             .background(Color(0xFFFFFFFF))
+            .clickable(onClick = onClick)
             .padding(vertical = 8.dp, horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

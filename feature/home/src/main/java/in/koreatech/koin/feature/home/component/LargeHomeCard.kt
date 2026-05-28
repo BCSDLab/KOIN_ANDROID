@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.home.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -58,13 +59,15 @@ fun LargeHomeCard(
     colors: LargeHomeCardColors = LargeHomeCardDefaults.colors(),
     shape: Shape = LargeHomeCardDefaults.Shape,
     contentPadding: PaddingValues = LargeHomeCardDefaults.ContentPadding,
-    borderWidth: Dp = LargeHomeCardDefaults.BorderWidth
+    borderWidth: Dp = LargeHomeCardDefaults.BorderWidth,
+    onClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier
             .border(borderWidth, colors.borderColor, shape)
             .clip(shape)
             .background(color = colors.backgroundColor)
+            .clickable(onClick = onClick)
             .padding(contentPadding),
         verticalAlignment = Alignment.CenterVertically
     ) {
