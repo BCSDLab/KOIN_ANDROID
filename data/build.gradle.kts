@@ -64,7 +64,7 @@ dependencies {
 
     // Dependency - firebase
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.messsaing)
+    implementation(libs.firebase.messaging)
 
     implementation(libs.jsoup)
 
