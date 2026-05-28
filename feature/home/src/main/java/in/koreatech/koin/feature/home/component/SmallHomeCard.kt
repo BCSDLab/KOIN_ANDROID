@@ -78,9 +78,8 @@ fun SmallHomeCard(
             description()
         }
 
-        Spacer(modifier = Modifier.height(6.dp))
-
         if (actionButton != null) {
+            Spacer(modifier = Modifier.height(6.dp))
             actionButton()
         }
     }
