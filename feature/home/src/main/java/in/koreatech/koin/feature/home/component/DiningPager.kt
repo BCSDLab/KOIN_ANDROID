@@ -40,13 +40,13 @@ fun DiningPager(
     data: ImmutableList<DiningPagerData>,
     modifier: Modifier = Modifier
 ) {
+    val pagerState = rememberPagerState(pageCount = { data.size })
+    val coroutineScope = rememberCoroutineScope()
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        val pagerState = rememberPagerState(pageCount = { data.size })
-        val coroutineScope = rememberCoroutineScope()
-
         HorizontalPager(
             state = pagerState,
             contentPadding = PaddingValues(horizontal = 40.dp),
