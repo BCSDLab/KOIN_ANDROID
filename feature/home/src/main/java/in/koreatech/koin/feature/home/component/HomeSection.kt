@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.home.component
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,16 +28,21 @@ fun HomeSection(
     content: @Composable () -> Unit
 ) {
     Column(
-        modifier = modifier.fillMaxWidth().padding(top = 16.dp, start = 24.dp, end = 24.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp, start = 24.dp, end = 24.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            text()
-            more()
+            Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
+                text()
+            }
+            Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterEnd) {
+                more()
+            }
         }
         content()
     }
