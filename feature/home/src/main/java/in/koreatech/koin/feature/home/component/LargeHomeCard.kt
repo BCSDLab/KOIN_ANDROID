@@ -53,8 +53,8 @@ fun LargeHomeCard(
     title: @Composable () -> Unit,
     icon: @Composable () -> Unit,
     modifier: Modifier = Modifier,
-    label: (@Composable () -> Unit)?,
-    description: (@Composable () -> Unit)?,
+    label: (@Composable () -> Unit)? = null,
+    description: (@Composable () -> Unit)? = null,
     colors: LargeHomeCardColors = LargeHomeCardDefaults.colors(),
     shape: Shape = LargeHomeCardDefaults.Shape,
     contentPadding: PaddingValues = LargeHomeCardDefaults.ContentPadding,
@@ -101,7 +101,7 @@ private fun LargeHomeCardPreview() {
         title = {
             Text(
                 text = "많이 찾는 상점\n" +
-                    "둘러보기",
+                        "둘러보기",
                 style = RebrandKoinTheme.typography.medium16
             )
         },
