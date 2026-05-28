@@ -101,7 +101,7 @@ private fun LargeHomeCardPreview() {
         title = {
             Text(
                 text = "많이 찾는 상점\n" +
-                        "둘러보기",
+                    "둘러보기",
                 style = RebrandKoinTheme.typography.medium16
             )
         },
