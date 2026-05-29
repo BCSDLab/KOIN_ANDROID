@@ -11,8 +11,10 @@ import `in`.koreatech.koin.data.response.store.ShopRelatedListResponse
 import `in`.koreatech.koin.data.response.store.ShopResponse
 import `in`.koreatech.koin.data.response.store.ShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopSummaryResponse
+import `in`.koreatech.koin.data.response.store.StoreEventCountResponse
 import `in`.koreatech.koin.data.response.store.StoreBenefitResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesResponse
+import `in`.koreatech.koin.data.response.store.StoreCountResponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
 import `in`.koreatech.koin.data.response.store.StoreEventResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
@@ -127,6 +129,12 @@ interface StoreApi {
         @Query("filter") filter: List<String>?,
         @Query("query") query: String?
     ): StoreResponse
+
+    @GET("/shops/count")
+    suspend fun getShopsCount(): StoreCountResponse
+
+    @GET("/shops/events/count")
+    suspend fun getShopsEventCount(): StoreEventCountResponse
 
     @GET("/order/shop/{orderableShopId}/summary")
     suspend fun getOrderableShopSummary(
