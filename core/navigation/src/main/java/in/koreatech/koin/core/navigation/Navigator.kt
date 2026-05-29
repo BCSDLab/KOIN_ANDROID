@@ -30,6 +30,26 @@ interface Navigator {
         context: Context
     ): Intent
 
+    fun navigateToDining(
+        context: Context
+    ): Intent
+
+    fun navigateToBusTimeTable(
+        context: Context
+    ): Intent
+
+    fun navigateToBusSearch(
+        context: Context
+    ): Intent
+
+    fun navigateToUnibus(
+        context: Context
+    ): Intent
+
+    fun navigateToCallvan(
+        context: Context
+    ): Intent
+
     fun navigateToChatRoom(
         context: Context
     ): Intent
