@@ -22,8 +22,8 @@ class GetDiningWithOperationTimeUseCase @Inject constructor(
     suspend operator fun invoke(date: String): Result<List<DiningWithOperationTime>> = runCatching {
         coroutineScope {
             val diningList = async { diningRepository.getDining(date) }
-            val diningCoopShop = async { coopShopRepository.getCoopShopById(CoopShopType.Dining.id).getOrNull() }
-            val nungsuCoopShop = async { coopShopRepository.getCoopShopById(CoopShopType.NungSu.id).getOrNull() }
+            val diningCoopShop = async { coopShopRepository.getCoopShopById(CoopShopType.Dining.id).getOrThrow() }
+            val nungsuCoopShop = async { coopShopRepository.getCoopShopById(CoopShopType.NungSu.id).getOrThrow() }
 
             map(diningList.await(), nungsuCoopShop.await(), diningCoopShop.await())
         }
