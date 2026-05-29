@@ -21,6 +21,7 @@ import `in`.koreatech.koin.ui.splash.SplashActivity
 import `in`.koreatech.koin.ui.unibus.UnibusActivity
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class NavigatorImpl @Inject constructor() : Navigator {
     override fun navigateToSplash(
         context: Context,

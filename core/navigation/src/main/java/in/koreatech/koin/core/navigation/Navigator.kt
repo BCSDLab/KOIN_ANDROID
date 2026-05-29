@@ -3,6 +3,7 @@ package `in`.koreatech.koin.core.navigation
 import android.content.Context
 import android.content.Intent
 
+@Suppress("TooManyFunctions")
 interface Navigator {
     fun navigateToSplash(
         context: Context,
