@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.buildAnnotatedString
@@ -32,7 +33,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.home.component.DiningPager
 import `in`.koreatech.koin.feature.home.component.DiningPagerData
 import `in`.koreatech.koin.feature.home.component.HomeChip
@@ -149,6 +152,9 @@ private fun DiningSection(
     diningData: ImmutableList<DiningPagerData>,
     modifier: Modifier = Modifier
 ) {
+    val navigator = rememberNavigator()
+    val context = LocalContext.current
+
     HomeSection(
         modifier = modifier.fillMaxWidth(),
         text = {
@@ -159,6 +165,9 @@ private fun DiningSection(
         },
         more = {
             Row(
+                modifier = Modifier.noRippleClickable {
+                    navigator.navigateToDining(context).let(context::startActivity)
+                },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -173,7 +182,9 @@ private fun DiningSection(
             }
         }
     ) {
-        DiningPager(data = diningData)
+        DiningPager(data = diningData) {
+            navigator.navigateToDining(context).let(context::startActivity)
+        }
     }
 }
 
@@ -182,6 +193,9 @@ private fun BusSection(
     callVanRecruitCount: Int,
     modifier: Modifier = Modifier
 ) {
+    val navigator = rememberNavigator()
+    val context = LocalContext.current
+
     HomeSection(
         modifier = modifier.fillMaxWidth(),
         text = {
@@ -191,7 +205,9 @@ private fun BusSection(
             )
         },
         more = {
-            ShuttleTicketCard()
+            ShuttleTicketCard {
+                navigator.navigateToUnibus(context).let(context::startActivity)
+            }
         }
     ) {
         Column(
@@ -243,6 +259,9 @@ private fun BusSection(
                             style = RebrandKoinTheme.typography.medium13
                         )
                     }
+                },
+                onClick = {
+                    navigator.navigateToCallvan(context).let(context::startActivity)
                 }
             )
         }
@@ -279,6 +298,9 @@ private fun BusSection(
                         color = Color(0xFFB611F5),
                         style = RebrandKoinTheme.typography.regular10
                     )
+                },
+                onClick = {
+                    navigator.navigateToBusTimeTable(context).let(context::startActivity)
                 }
             )
 
@@ -311,6 +333,9 @@ private fun BusSection(
                         color = Color(0xFFB611F5),
                         style = RebrandKoinTheme.typography.regular10
                     )
+                },
+                onClick = {
+                    navigator.navigateToBusSearch(context).let(context::startActivity)
                 }
             )
         }
@@ -324,6 +349,8 @@ private fun ShopSection(
     shopCount: Int,
     modifier: Modifier = Modifier
 ) {
+    val navigator = rememberNavigator()
+    val context = LocalContext.current
     val shopOpen = stringResource(R.string.shop_open)
     val shopTotal = stringResource(R.string.shop_total, shopCount)
 
@@ -337,6 +364,9 @@ private fun ShopSection(
         },
         more = {
             Row(
+                modifier = Modifier.noRippleClickable {
+                    navigator.navigateToStore(context).let(context::startActivity)
+                },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -384,6 +414,9 @@ private fun ShopSection(
                     style = RebrandKoinTheme.typography.regular13,
                     color = Color(0xFFA8A8A8)
                 )
+            },
+            onClick = {
+                navigator.navigateToStore(context).let(context::startActivity)
             }
         )
     }

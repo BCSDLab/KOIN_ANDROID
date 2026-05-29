@@ -2,11 +2,72 @@ package `in`.koreatech.koin.feature.home
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.usecase.callvan.GetRecruitingCallvanCountUseCase
+import `in`.koreatech.koin.domain.usecase.dining.GetDiningWithOperationTimeUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetStoreCountUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetStoreEventCountUseCase
+import `in`.koreatech.koin.domain.util.DiningUtil
+import `in`.koreatech.koin.domain.util.TimeUtil
+import `in`.koreatech.koin.feature.home.mapper.toDiningPagerDataList
 import javax.inject.Inject
+import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
 @HiltViewModel
-class HomeViewModel @Inject constructor() : ViewModel(), ContainerHost<HomeState, HomeSideEffect> {
-    override val container = container<HomeState, HomeSideEffect>(HomeState())
+class HomeViewModel @Inject constructor(
+    private val getDiningWithOperationTimeUseCase: GetDiningWithOperationTimeUseCase,
+    private val getStoreCountUseCase: GetStoreCountUseCase,
+    private val getStoreEventCountUseCase: GetStoreEventCountUseCase,
+    private val getRecruitingCallvanCountUseCase: GetRecruitingCallvanCountUseCase
+) : ViewModel(), ContainerHost<HomeState, HomeSideEffect> {
+    override val container = container<HomeState, HomeSideEffect>(HomeState()) {
+        getDining()
+        getStoreCount()
+        getStoreEventCount()
+        getRecruitingCallvanCount()
+    }
+
+    private fun getDining() = intent {
+        getDiningWithOperationTimeUseCase(TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate())).onSuccess { data ->
+            reduce {
+                state.copy(diningData = data.filter { it.type == DiningUtil.getCurrentType().typeEnglish }.map { it.toDiningPagerDataList() }.toImmutableList())
+            }
+        }.onFailure {
+            Timber.e(it)
+        }
+    }
+
+    private fun getStoreCount() = intent {
+        getStoreCountUseCase().onSuccess {
+            reduce {
+                state.copy(openShopCount = it.openCount, shopCount = it.totalCount)
+            }
+        }.onFailure {
+            Timber.e(it)
+        }
+    }
+
+    private fun getStoreEventCount() = intent {
+        getStoreEventCountUseCase().onSuccess {
+            reduce {
+                state.copy(shopEventForKoin = it)
+            }
+        }.onFailure {
+            Timber.e(it)
+        }
+    }
+
+    private fun getRecruitingCallvanCount() = intent {
+        getRecruitingCallvanCountUseCase().onSuccess {
+            reduce {
+                state.copy(callVanRecruitCount = it)
+            }
+        }.onFailure {
+            Timber.e(it)
+        }
+    }
 }
