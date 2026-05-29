@@ -99,8 +99,8 @@ class CallvanRepositoryImpl @Inject constructor(
                 title = null,
                 sort = null,
                 joined = false,
-                page = null,
-                limit = null
+                page = 1,
+                limit = 1
             ).totalCount.toInt()
         }.mapHttpFailure {
             on(401) throws KoinCallvanException.UnauthorizedUserException()
