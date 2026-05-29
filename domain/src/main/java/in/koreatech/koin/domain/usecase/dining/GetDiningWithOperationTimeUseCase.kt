@@ -58,8 +58,8 @@ class GetDiningWithOperationTimeUseCase @Inject constructor(
         val localDate = LocalDate.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE)
         return when (localDate.dayOfWeek) {
             DayOfWeek.SATURDAY -> CoopShopDayType.Saturday
-            DayOfWeek.SUNDAY   -> CoopShopDayType.Weekend
-            else               -> CoopShopDayType.Weekday
+            DayOfWeek.SUNDAY -> CoopShopDayType.Weekend
+            else -> CoopShopDayType.Weekday
         }
     }
 }
