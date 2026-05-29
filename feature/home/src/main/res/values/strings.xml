@@ -13,7 +13,7 @@
 
     <string name="callvan_title">콜밴팟</string>
     <string name="callvan_recruit_count">%1$d건 모집중</string>
-    <string name="callvan_description">같이 콜벤 탈 사람을 찾아요</string>
+    <string name="callvan_description">같이 콜밴 탈 사람을 찾아요</string>
     <string name="callvan_action">모집 보기</string>
 
     <string name="bus_timetable">버스 시간표</string>
