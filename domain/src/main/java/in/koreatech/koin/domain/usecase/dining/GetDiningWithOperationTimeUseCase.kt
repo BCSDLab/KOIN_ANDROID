@@ -9,6 +9,7 @@ import `in`.koreatech.koin.domain.model.dining.DiningWithOperationTime
 import `in`.koreatech.koin.domain.repository.CoopShopRepository
 import `in`.koreatech.koin.domain.repository.DiningRepository
 import `in`.koreatech.koin.domain.util.DiningUtil
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -53,15 +54,12 @@ class GetDiningWithOperationTimeUseCase @Inject constructor(
         }
     }
 
-    private fun getDayType(dateString: String): CoopShopDayType = try {
+    private fun getDayType(dateString: String): CoopShopDayType {
         val localDate = LocalDate.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE)
-        when (localDate.dayOfWeek.value) {
-            1, 2, 3, 4, 5 -> CoopShopDayType.Weekday
-            6 -> CoopShopDayType.Saturday
-            7 -> CoopShopDayType.Weekend
-            else -> throw IllegalStateException("Wrong dayOfWeek")
+        return when (localDate.dayOfWeek) {
+            DayOfWeek.SATURDAY -> CoopShopDayType.Saturday
+            DayOfWeek.SUNDAY   -> CoopShopDayType.Weekend
+            else               -> CoopShopDayType.Weekday
         }
-    } catch (_: Exception) {
-        CoopShopDayType.Weekday
     }
 }
