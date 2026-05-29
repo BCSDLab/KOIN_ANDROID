@@ -6,4 +6,25 @@
     <string name="dining_open_time">%1$s - %2$s</string>
     <string name="dining_price">₩%1$,d</string>
     <string name="dining_kcal">%1$dkcal</string>
+
+    <string name="dining_section">오늘의 식단</string>
+    <string name="bus_section">교통</string>
+    <string name="shop_section">주변 상점</string>
+
+    <string name="callvan_title">콜밴팟</string>
+    <string name="callvan_recruit_count">%1$d건 모집중</string>
+    <string name="callvan_description">같이 콜밴 탈 사람을 찾아요</string>
+    <string name="callvan_action">모집 보기</string>
+
+    <string name="bus_timetable">버스 시간표</string>
+    <string name="bus_timetable_description">노선 별 출발 시간</string>
+    <string name="view_more">조회하기 →</string>
+    <string name="bus_route">버스 노선 조회</string>
+    <string name="bus_route_description">가장 빠른 버스 찾기</string>
+    <string name="view_all">전체보기</string>
+
+    <string name="shop_title">많이 찾는 상점\n둘러보기</string>
+    <string name="shop_event_count">KOIN 전용 이벤트 %1$d곳</string>
+    <string name="shop_open">영업중</string>
+    <string name="shop_total">전체 %1$d곳</string>
 </resources>
