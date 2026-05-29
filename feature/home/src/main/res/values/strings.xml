@@ -1,3 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="shuttle_ticket_title">셔틀 탑승권</string>
+    <string name="shuttle_ticket_description">QR 조회</string>
+
+    <string name="dining_open_time">%1$s - %2$s</string>
+    <string name="dining_price">₩%1$,d</string>
+    <string name="dining_kcal">%1$dkcal</string>
 </resources>
