@@ -3,6 +3,7 @@ package `in`.koreatech.koin.core.navigation
 import android.content.Context
 import android.content.Intent
 
+@Suppress("TooManyFunctions")
 interface Navigator {
     fun navigateToSplash(
         context: Context,
@@ -27,6 +28,26 @@ interface Navigator {
     ): Intent
 
     fun navigateToStore(
+        context: Context
+    ): Intent
+
+    fun navigateToDining(
+        context: Context
+    ): Intent
+
+    fun navigateToBusTimeTable(
+        context: Context
+    ): Intent
+
+    fun navigateToBusSearch(
+        context: Context
+    ): Intent
+
+    fun navigateToUnibus(
+        context: Context
+    ): Intent
+
+    fun navigateToCallvan(
         context: Context
     ): Intent
 

@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,7 +39,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun DiningPager(
     data: ImmutableList<DiningPagerData>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onCardClick: (data: DiningPagerData) -> Unit = { }
 ) {
     val pagerState = rememberPagerState(pageCount = { data.size })
     val coroutineScope = rememberCoroutineScope()
@@ -54,7 +56,8 @@ fun DiningPager(
             modifier = Modifier.fillMaxWidth()
         ) { page ->
             DiningPagerContent(
-                data = data[page]
+                data = data[page],
+                onClick = onCardClick
             )
         }
 
@@ -84,13 +87,17 @@ fun DiningPager(
 @Composable
 private fun DiningPagerContent(
     data: DiningPagerData,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: (data: DiningPagerData) -> Unit = { }
 ) {
+    val click = remember(data) { { onClick(data) } }
+
     Column(
         modifier = modifier
             .border(0.5.dp, Color(0xFFE6E6E6), RoundedCornerShape(24.dp))
             .clip(RoundedCornerShape(24.dp))
             .background(color = Color(0xFFFFFFFF))
+            .clickable(onClick = click)
             .padding(vertical = 20.dp, horizontal = 24.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
