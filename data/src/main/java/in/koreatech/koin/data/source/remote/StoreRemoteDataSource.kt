@@ -28,7 +28,9 @@ import `in`.koreatech.koin.data.response.store.ShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopSummaryResponse
 import `in`.koreatech.koin.data.response.store.StoreBenefitResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
+import `in`.koreatech.koin.data.response.store.StoreCountResponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
+import `in`.koreatech.koin.data.response.store.StoreEventCountResponse
 import `in`.koreatech.koin.data.response.store.StoreEventItemReponse
 import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
@@ -283,5 +285,13 @@ class StoreRemoteDataSource @Inject constructor(
         query: String?
     ): OrderHistoryResponse {
         return storeAuthApi.getOrderHistories(page, limit, period, status, type, query)
+    }
+
+    suspend fun getStoreCount(): StoreCountResponse {
+        return storeApi.getShopsCount()
+    }
+
+    suspend fun getStoreEventCount(): StoreEventCountResponse {
+        return storeApi.getShopsEventCount()
     }
 }

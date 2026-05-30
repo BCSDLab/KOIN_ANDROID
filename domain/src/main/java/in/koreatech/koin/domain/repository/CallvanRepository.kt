@@ -32,6 +32,8 @@ interface CallvanRepository {
         limit: Int?
     ): Result<CallvanPostSearch>
 
+    suspend fun getRecruitingCallvanCount(): Result<Int>
+
     suspend fun sendMessage(
         postId: Int,
         isImage: Boolean,

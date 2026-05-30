@@ -87,6 +87,27 @@ class CallvanRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getRecruitingCallvanCount(): Result<Int> {
+        return suspendRunCatching {
+            callvanRemoteDataSource.getCallvanPosts(
+                author = null,
+                departures = null,
+                departureKeyword = null,
+                arrivals = null,
+                arrivalKeyword = null,
+                statuses = listOf("RECRUITING"),
+                title = null,
+                sort = null,
+                joined = false,
+                page = 1,
+                limit = 1
+            ).totalCount.toInt()
+        }.mapHttpFailure {
+            on(401) throws KoinCallvanException.UnauthorizedUserException()
+            on(404) throws KoinCallvanException.NotFoundUserException()
+        }
+    }
+
     override suspend fun sendMessage(
         postId: Int,
         isImage: Boolean,

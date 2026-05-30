@@ -24,6 +24,7 @@ import `in`.koreatech.koin.data.mapper.toShopSummary
 import `in`.koreatech.koin.data.mapper.toStore
 import `in`.koreatech.koin.data.mapper.toStoreBenefitCategory
 import `in`.koreatech.koin.data.mapper.toStoreCategories
+import `in`.koreatech.koin.data.mapper.toStoreCount
 import `in`.koreatech.koin.data.mapper.toStoreDetailEvents
 import `in`.koreatech.koin.data.mapper.toStoreEvent
 import `in`.koreatech.koin.data.mapper.toStoreMenu
@@ -63,6 +64,7 @@ import `in`.koreatech.koin.domain.model.store.ShopSummary
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreBenefit
 import `in`.koreatech.koin.domain.model.store.StoreCategories
+import `in`.koreatech.koin.domain.model.store.StoreCount
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.model.store.StoreMenu
 import `in`.koreatech.koin.domain.model.store.StoreReport
@@ -453,6 +455,18 @@ class StoreRepositoryImpl @Inject constructor(
         return suspendRunCatching {
             storeRemoteDataSource.getOrderInProgress().map { it.toOrderInProgress() }
         }.mapHttpFailure { }
+    }
+
+    override suspend fun getStoreCount(): Result<StoreCount> {
+        return suspendRunCatching {
+            storeRemoteDataSource.getStoreCount().toStoreCount()
+        }
+    }
+
+    override suspend fun getStoreEventCount(): Result<Int> {
+        return suspendRunCatching {
+            storeRemoteDataSource.getStoreEventCount().count
+        }
     }
 
     override suspend fun getOrderHistories(
