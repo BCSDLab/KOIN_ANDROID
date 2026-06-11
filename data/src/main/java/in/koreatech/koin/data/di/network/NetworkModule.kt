@@ -27,7 +27,7 @@ object NetworkModule {
     fun provideHttpLoggingInterceptor() =
         HttpLoggingInterceptor().apply {
             level =
-                if (BuildConfig.DEBUG) {
+                if (CoreBuildConfig.IS_DEBUG || CoreBuildConfig.IS_QA) {
                     HttpLoggingInterceptor.Level.BODY
                 } else {
                     HttpLoggingInterceptor.Level.HEADERS
