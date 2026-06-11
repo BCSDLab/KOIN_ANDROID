@@ -2,10 +2,12 @@ package `in`.koreatech.koin.feature.home
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.callvan.GetRecruitingCallvanCountUseCase
 import `in`.koreatech.koin.domain.usecase.dining.GetDiningWithOperationTimeUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCountUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreEventCountUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.feature.home.mapper.toDiningPagerDataList
@@ -22,13 +24,15 @@ class HomeViewModel @Inject constructor(
     private val getDiningWithOperationTimeUseCase: GetDiningWithOperationTimeUseCase,
     private val getStoreCountUseCase: GetStoreCountUseCase,
     private val getStoreEventCountUseCase: GetStoreEventCountUseCase,
-    private val getRecruitingCallvanCountUseCase: GetRecruitingCallvanCountUseCase
+    private val getRecruitingCallvanCountUseCase: GetRecruitingCallvanCountUseCase,
+    private val getUserInfoUseCase: GetUserInfoUseCase
 ) : ViewModel(), ContainerHost<HomeState, HomeSideEffect> {
     override val container = container<HomeState, HomeSideEffect>(HomeState()) {
         getDining()
         getStoreCount()
         getStoreEventCount()
         getRecruitingCallvanCount()
+        getUserName()
     }
 
     private fun getDining() = intent {
@@ -38,6 +42,18 @@ class HomeViewModel @Inject constructor(
             }
         }.onFailure {
             Timber.e(it)
+        }
+    }
+
+    private fun getUserName() = intent {
+        getUserInfoUseCase().onSuccess { user ->
+            when (user) {
+                is User.Student -> reduce { state.copy(username = user.name ?: state.username) }
+                is User.General -> reduce { state.copy(username = user.name) }
+                User.Anonymous -> {
+                    // Do nothing
+                }
+            }
         }
     }
 
