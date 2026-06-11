@@ -2,7 +2,6 @@ package `in`.koreatech.koin.feature.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -118,7 +117,7 @@ private fun HeaderSection(
         Spacer(modifier = Modifier.weight(1f))
 
         Image(
-            modifier = Modifier.clickable(onClick = onNotificationClick),
+            modifier = Modifier.noRippleClickable(onClick = onNotificationClick),
             imageVector = if (isNewNotificationReceived) {
                 ImageVector.vectorResource(R.drawable.ic_home_notification_dot)
             } else {
