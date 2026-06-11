@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import `in`.koreatech.koin.BuildConfig
+import `in`.koreatech.koin.core.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.databinding.ActivityOperatingInfoBinding

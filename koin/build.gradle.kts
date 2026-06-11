@@ -46,7 +46,6 @@ android {
             manifestPlaceholders["appName"] = "@string/app_name_dev"
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_koin"
             manifestPlaceholders["appLinkUri"] = "stage.koreatech.in"
-            buildConfigField("Boolean", "IS_DEBUG", "true")
             buildConfigField(
                 "String",
                 "KAKAO_NATIVE_APP_KEY",
@@ -67,7 +66,6 @@ android {
             manifestPlaceholders["appName"] = "@string/app_name"
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_koin"
             manifestPlaceholders["appLinkUri"] = "koreatech.in"
-            buildConfigField("Boolean", "IS_DEBUG", "false")
             signingConfig = signingConfigs.getByName("release")
             buildConfigField(
                 "String",

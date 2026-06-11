@@ -12,6 +12,7 @@ import `in`.koreatech.koin.domain.usecase.user.GetLoggerUserDataUseCase
 import `in`.koreatech.koin.util.ExceptionHandlerUtil
 import javax.inject.Inject
 import timber.log.Timber
+import `in`.koreatech.koin.core.BuildConfig as CoreBuildConfig
 
 @HiltAndroidApp
 class KoinApplication : Application() {
@@ -38,7 +39,7 @@ class KoinApplication : Application() {
     }
 
     private fun initTimber() {
-        if (BuildConfig.IS_DEBUG) {
+        if (CoreBuildConfig.IS_DEBUG) {
             plantDebugTimberTree()
         } else {
             plantReleaseTimberTree()
