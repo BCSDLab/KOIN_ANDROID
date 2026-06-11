@@ -86,6 +86,7 @@ android {
 
         getByName("qa") {
             initWith(getByName("debug"))
+            isDebuggable = false
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
