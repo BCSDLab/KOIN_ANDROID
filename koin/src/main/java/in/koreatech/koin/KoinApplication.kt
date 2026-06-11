@@ -5,6 +5,7 @@ import android.util.Log
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
+import `in`.koreatech.koin.core.BuildConfig as CoreBuildConfig
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.repository.TokenRepository
@@ -12,7 +13,6 @@ import `in`.koreatech.koin.domain.usecase.user.GetLoggerUserDataUseCase
 import `in`.koreatech.koin.util.ExceptionHandlerUtil
 import javax.inject.Inject
 import timber.log.Timber
-import `in`.koreatech.koin.core.BuildConfig as CoreBuildConfig
 
 @HiltAndroidApp
 class KoinApplication : Application() {

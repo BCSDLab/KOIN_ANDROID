@@ -6,8 +6,8 @@ import android.util.Log
 import android.view.Gravity
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
-import `in`.koreatech.koin.core.BuildConfig
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.BuildConfig
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityErrorBinding
