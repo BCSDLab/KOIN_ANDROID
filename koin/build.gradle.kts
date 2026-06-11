@@ -101,6 +101,7 @@ android {
                 artifactType = "APK"
                 releaseNotes = "${rootProject.extra["versionName"]} $currentDate QA"
                 groups = "koin-qa"
+                serviceCredentialsFile = "./google-credentials.json"
             }
         }
     }
