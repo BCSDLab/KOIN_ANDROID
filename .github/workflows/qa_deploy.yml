@@ -12,6 +12,10 @@ jobs:
         with:
           properties: ${{ secrets.PROPERTIES }}
 
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+
       - name: Update Firebase
         env:
           FIREBASE: ${{ secrets.FIREBASE }}
@@ -32,7 +36,7 @@ jobs:
           done
 
       - name: Build with Gradle
-        run: ./gradlew koin:assembleQa appDistributionUploadQa
+        run: ./gradlew koin:assembleQa appDistributionUploadQa -PbuildDate="-${{ steps.date.outputs.date }}"
 
       - name: Upload to Slack
         uses: 8398a7/action-slack@v3

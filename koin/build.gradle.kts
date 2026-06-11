@@ -1,8 +1,6 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import java.io.FileInputStream
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Properties
 
 plugins {
@@ -15,8 +13,6 @@ plugins {
 
 val localProperties = Properties()
 localProperties.load(FileInputStream(rootProject.file("local.properties")))
-
-val currentDate: String = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now())
 
 android {
     namespace = "in.koreatech.koin"
@@ -99,7 +95,7 @@ android {
             }
             firebaseAppDistribution {
                 artifactType = "APK"
-                releaseNotes = "${rootProject.extra["versionName"]} $currentDate QA"
+                releaseNotes = "${rootProject.extra["versionName"]} ${getBuildDate()} QA"
                 groups = "koin-qa"
                 serviceCredentialsFile = "./google-credentials.json"
             }
@@ -109,6 +105,10 @@ android {
         dataBinding = true
         viewBinding = true
     }
+}
+
+fun getBuildDate(): String {
+    return if (project.hasProperty("buildDate")) project.property("buildDate").toString() else ""
 }
 
 fun getPropertyKey(propertyKey: String): String {
