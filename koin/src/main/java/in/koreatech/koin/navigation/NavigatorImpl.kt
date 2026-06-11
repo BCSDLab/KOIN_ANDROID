@@ -72,7 +72,6 @@ class NavigatorImpl @Inject constructor() : Navigator {
 
     override fun navigateToDining(context: Context): Intent {
         return context.buildIntent(DiningActivity::class.java).apply {
-            putExtra("url", "https://koreatech.unibus.kr/")
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
     }
@@ -91,6 +90,7 @@ class NavigatorImpl @Inject constructor() : Navigator {
 
     override fun navigateToUnibus(context: Context): Intent {
         return context.buildIntent(UnibusActivity::class.java).apply {
+            putExtra("url", "https://koreatech.unibus.kr/")
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
     }
