@@ -154,7 +154,7 @@ class SettingActivity : ActivityBase() {
                 startActivity(Intent(this@SettingActivity, OssLicensesMenuActivity::class.java))
             }
             svAppVersion.setOnClickListener {
-                if (BuildConfig.IS_DEBUG) {
+                if (BuildConfig.IS_DEBUG || BuildConfig.IS_QA) {
                     startActivity(Intent(this@SettingActivity, DeveloperSettingActivity::class.java))
                 }
             }

@@ -36,7 +36,7 @@ class ErrorActivity : ActivityBase() {
     }
 
     fun init() {
-        if (BuildConfig.IS_DEBUG) {
+        if (BuildConfig.IS_DEBUG || BuildConfig.IS_QA) {
             val stackTrace = intent.extras?.getString(ExceptionHandlerUtil.EXTRA_ERROR_TEXT) ?: ""
             Log.e("ErrorHandler", stackTrace)
             binding.errorTitleMessage.isVisible = false

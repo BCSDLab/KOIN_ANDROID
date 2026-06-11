@@ -11,7 +11,7 @@ import `in`.koreatech.koin.core.BuildConfig
 object KoinCoilImageLoader {
     fun getImageLoader(context: Context, useGif: Boolean = false): ImageLoader {
         return ImageLoader.Builder(context)
-            .logger(if (BuildConfig.IS_DEBUG) DebugLogger() else null)
+            .logger(if (BuildConfig.IS_DEBUG || BuildConfig.IS_QA) DebugLogger() else null)
             .components {
                 if (useGif) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {

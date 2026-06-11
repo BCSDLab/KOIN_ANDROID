@@ -34,7 +34,7 @@ class OperatingInfoActivity : AppCompatActivity() {
                 javaScriptEnabled = true
                 domStorageEnabled = true
             }
-            if (BuildConfig.IS_DEBUG) {
+            if (BuildConfig.IS_DEBUG || BuildConfig.IS_QA) {
                 loadUrl(getString(R.string.koreatech_operating_info_stage_url))
             } else {
                 loadUrl(getString(R.string.koreatech_operating_info_production_url))

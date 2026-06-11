@@ -223,7 +223,7 @@ abstract class KoinNavigationDrawerActivity :
                         val intent =
                             Intent(
                                 Intent.ACTION_VIEW,
-                                if (BuildConfig.IS_DEBUG) {
+                                if (BuildConfig.IS_DEBUG || BuildConfig.IS_QA) {
                                     Uri.parse(
                                         URLConstant.OWNER_URL_STAGE
                                     )
