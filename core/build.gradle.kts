@@ -13,6 +13,7 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("Boolean", "IS_DEBUG", "true")
+            buildConfigField("Boolean", "IS_QA", "false")
         }
 
         getByName("release") {
@@ -21,6 +22,16 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("Boolean", "IS_DEBUG", "false")
+            buildConfigField("Boolean", "IS_QA", "false")
+        }
+
+        getByName("qa") {
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            buildConfigField("Boolean", "IS_DEBUG", "false")
+            buildConfigField("Boolean", "IS_QA", "true")
         }
     }
 

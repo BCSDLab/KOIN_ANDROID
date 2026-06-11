@@ -1,6 +1,8 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import java.io.FileInputStream
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Properties
 
 plugins {
@@ -13,6 +15,8 @@ plugins {
 
 val localProperties = Properties()
 localProperties.load(FileInputStream(rootProject.file("local.properties")))
+
+val currentDate: String = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now())
 
 android {
     namespace = "in.koreatech.koin"
@@ -77,6 +81,26 @@ android {
                 artifactType = "AAB"
                 releaseNotes = "${rootProject.extra["versionName"]} release"
                 groups = "bcsd"
+            }
+        }
+
+        getByName("qa") {
+            initWith(getByName("debug"))
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            manifestPlaceholders["appName"] = "@string/app_name_qa"
+            manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_koin"
+            manifestPlaceholders["appLinkUri"] = "stage.koreatech.in"
+            configure<CrashlyticsExtension> {
+                mappingFileUploadEnabled = true
+            }
+            firebaseAppDistribution {
+                artifactType = "APK"
+                releaseNotes = "${rootProject.extra["versionName"]} $currentDate QA"
+                groups = "koin-qa"
             }
         }
     }

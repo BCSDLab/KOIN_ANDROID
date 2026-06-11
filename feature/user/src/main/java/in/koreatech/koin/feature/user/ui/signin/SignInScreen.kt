@@ -296,7 +296,7 @@ fun SignInScreenImpl(
                     .noRippleClickable {
                         val intent = Intent(
                             Intent.ACTION_VIEW,
-                            if (BuildConfig.IS_DEBUG) {
+                            if (BuildConfig.IS_DEBUG || BuildConfig.IS_QA) {
                                 OWNER_URL_STAGE.toUri()
                             } else {
                                 OWNER_URL_PRODUCTION.toUri()
