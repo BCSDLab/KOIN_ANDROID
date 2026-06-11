@@ -41,7 +41,7 @@ jobs:
           done
 
       - name: Build with Gradle
-        run: ./gradlew koin:assembleDebug -PversionNameSuffix="-${{ steps.date.outputs.date }}"
+        run: ./gradlew koin:assembleDebug
 
       - name: Upload to Firebase
         env:
