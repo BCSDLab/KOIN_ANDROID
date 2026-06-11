@@ -30,7 +30,7 @@ internal fun configureAndroidProject(
 
         buildTypes {
             create("qa") {
-                matchingFallbacks.add("debug")
+                matchingFallbacks += listOf("debug")
             }
         }
     }
