@@ -23,6 +23,7 @@ import `in`.koreatech.koin.data.api.StoreApi
 import `in`.koreatech.koin.data.api.TimetableApi
 import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.VersionApi
+import `in`.koreatech.koin.data.api.WeatherApi
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import okhttp3.Interceptor
@@ -184,5 +185,13 @@ object NoAuthNetworkModule {
         @NoAuth retrofit: Retrofit
     ): OrderShopApi {
         return retrofit.create(OrderShopApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWeatherApi(
+        @NoAuth retrofit: Retrofit
+    ): WeatherApi {
+        return retrofit.create(WeatherApi::class.java)
     }
 }

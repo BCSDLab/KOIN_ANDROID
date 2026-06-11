@@ -8,9 +8,11 @@ import `in`.koreatech.koin.domain.usecase.dining.GetDiningWithOperationTimeUseCa
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCountUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreEventCountUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
+import `in`.koreatech.koin.domain.usecase.weather.GetWeatherUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.feature.home.mapper.toDiningPagerDataList
+import `in`.koreatech.koin.feature.home.model.toLocalWeather
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.ContainerHost
@@ -25,7 +27,8 @@ class HomeViewModel @Inject constructor(
     private val getStoreCountUseCase: GetStoreCountUseCase,
     private val getStoreEventCountUseCase: GetStoreEventCountUseCase,
     private val getRecruitingCallvanCountUseCase: GetRecruitingCallvanCountUseCase,
-    private val getUserInfoUseCase: GetUserInfoUseCase
+    private val getUserInfoUseCase: GetUserInfoUseCase,
+    private val getWeatherUseCase: GetWeatherUseCase
 ) : ViewModel(), ContainerHost<HomeState, HomeSideEffect> {
     override val container = container<HomeState, HomeSideEffect>(HomeState()) {
         getDining()
@@ -33,6 +36,15 @@ class HomeViewModel @Inject constructor(
         getStoreEventCount()
         getRecruitingCallvanCount()
         getUserName()
+        getWeather()
+    }
+
+    private fun getWeather() = intent {
+        getWeatherUseCase().onSuccess {
+            reduce { state.copy(weather = it.toLocalWeather()) }
+        }.onFailure {
+            Timber.e(it)
+        }
     }
 
     private fun getDining() = intent {

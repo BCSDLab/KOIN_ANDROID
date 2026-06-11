@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="home_welcome_text_1">%1$s님,\n오늘도 잘 챙겨먹어요</string>
     <string name="shuttle_ticket_title">셔틀 탑승권</string>
     <string name="shuttle_ticket_description">QR 조회</string>
 
