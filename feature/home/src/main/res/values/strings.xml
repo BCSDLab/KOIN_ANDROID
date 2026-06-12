@@ -16,6 +16,7 @@
     <string name="dining_open_time">%1$s - %2$s</string>
     <string name="dining_price">₩%1$,d</string>
     <string name="dining_kcal">%1$dkcal</string>
+    <string name="dining_empty">오늘은 식단이 없어요</string>
 
     <string name="dining_section">오늘의 식단</string>
     <string name="bus_section">교통</string>

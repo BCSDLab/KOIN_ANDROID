@@ -106,7 +106,7 @@ private fun DiningEmpty(
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = "오늘은 식단이 없어요",
+            text = stringResource(R.string.dining_empty),
             style = RebrandKoinTheme.typography.medium13,
             color = Color(0xFFA8A8A8),
             textAlign = TextAlign.Center
