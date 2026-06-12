@@ -66,6 +66,8 @@ class HomeViewModel @Inject constructor(
                     // Do nothing
                 }
             }
+        }.onFailure {
+            Timber.e(it)
         }
     }
 
