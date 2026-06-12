@@ -36,7 +36,7 @@ jobs:
           done
 
       - name: Build with Gradle
-        run: ./gradlew koin:assembleQa appDistributionUploadQa -PbuildDate="-${{ steps.date.outputs.date }}"
+        run: ./gradlew koin:assembleQa koin:appDistributionUploadQa -PbuildDate="-${{ steps.date.outputs.date }}"
 
       - name: Upload to Slack
         uses: 8398a7/action-slack@v3
