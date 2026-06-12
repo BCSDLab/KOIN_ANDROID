@@ -12,6 +12,6 @@ data class HomeState(
     val openShopCount: Int = 0,
     val shopCount: Int = 0,
     val isNewNotificationReceived: Boolean = false,
-    val username: String = "익명",
+    val username: String = "",
     val weather: LocalWeather? = null
 )

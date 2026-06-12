@@ -173,7 +173,10 @@ private fun InfoSection(
         }
 
         Text(
-            text = stringResource(R.string.home_welcome_text_1, username),
+            text = stringResource(
+                R.string.home_welcome_text_1,
+                username.ifEmpty { stringResource(R.string.home_username_default) }
+            ),
             style = RebrandKoinTheme.typography.bold20.copy(fontSize = 24.sp),
             color = Color(0xFF0B0B0D)
         )
