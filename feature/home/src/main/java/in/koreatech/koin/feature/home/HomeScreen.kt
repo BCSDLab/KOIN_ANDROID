@@ -159,7 +159,7 @@ private fun InfoSection(
                     model = it.weatherIconUrl,
                     contentDescription = it.weather,
                     modifier = Modifier.size(16.dp),
-                    imageLoader = KoinCoilImageLoader.getImageLoader(context)
+                    imageLoader = remember(context) { KoinCoilImageLoader.getImageLoader(context) }
                 )
 
                 Spacer(modifier = Modifier.width(4.dp))
