@@ -30,7 +30,7 @@ jobs:
           do
            echo $file
           done
-          for file in $(find . -name 'google-credentials.json  ')
+          for file in $(find . -name 'google-credentials.json')
           do
            echo $file
           done
