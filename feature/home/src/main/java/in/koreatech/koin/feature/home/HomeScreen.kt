@@ -33,7 +33,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import coil.compose.SubcomposeAsyncImage
+import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
@@ -155,7 +155,7 @@ private fun InfoSection(
             weather?.let {
                 Spacer(modifier = Modifier.width(4.dp))
 
-                SubcomposeAsyncImage(
+                AsyncImage(
                     model = it.weatherIconUrl,
                     contentDescription = it.weather,
                     modifier = Modifier.size(16.dp),
