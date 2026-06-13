@@ -136,7 +136,7 @@ private fun InfoSection(
 ) {
     val context = LocalContext.current
     val formatter = remember { DateTimeFormatter.ofPattern("M월 dd일 EEEE", Locale.KOREAN) }
-    val currentDate = remember { LocalDate.now().format(formatter) }
+    val currentDate = remember(LocalDate.now()) { LocalDate.now().format(formatter) }
 
     Column(
         modifier = modifier.padding(top = 16.dp, start = 24.dp, end = 24.dp),
