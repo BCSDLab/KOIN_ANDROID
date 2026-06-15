@@ -7,10 +7,12 @@ import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.data.repository.BusRepositoryImpl
 import `in`.koreatech.koin.data.repository.CallvanRepositoryImpl
 import `in`.koreatech.koin.data.repository.TimetableRepositoryImpl
+import `in`.koreatech.koin.data.repository.WeatherRepositoryImpl
 import `in`.koreatech.koin.data.repository.firebase.messaging.FirebaseMessagingRepositoryImpl
 import `in`.koreatech.koin.domain.repository.BusRepository
 import `in`.koreatech.koin.domain.repository.CallvanRepository
 import `in`.koreatech.koin.domain.repository.TimetableRepository
+import `in`.koreatech.koin.domain.repository.WeatherRepository
 import `in`.koreatech.koin.domain.repository.firebase.messaging.FirebaseMessagingRepository
 import javax.inject.Singleton
 
@@ -34,4 +36,8 @@ abstract class BindsRepositoryModule {
     @Binds
     @Singleton
     abstract fun bindsCallvanRepository(callvanRepositoryImpl: CallvanRepositoryImpl): CallvanRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsWeatherRepository(weatherRepositoryImpl: WeatherRepositoryImpl): WeatherRepository
 }

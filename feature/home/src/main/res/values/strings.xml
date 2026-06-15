@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="home_welcome_text_1">%1$s님,\n오늘도 잘 챙겨먹어요</string>
+    <string name="home_welcome_text_2">%1$s님,\n오늘의 학식을 확인해보세요</string>
+    <string name="home_welcome_text_3">%1$s님,\n식사 메뉴 정하셨나요?</string>
+    <string name="home_welcome_text_4">%1$s님,\n출출한 밤, 주변 상점을 둘러봐요</string>
+    <string name="home_welcome_text_5">%1$s님,\n오늘 하루도 수고 많으셨어요</string>
+    <string name="home_welcome_text_6">%1$s님,\n함께 콜밴 탈 사람을 찾아볼까요?</string>
+    <string name="home_welcome_text_7">%1$s님,\n좋은 하루 보내세요</string>
+    <string name="home_welcome_text_8">%1$s님,\n학교 소식을 확인해보세요</string>
+    <string name="home_welcome_text_9">%1$s님,\n셔틀버스 운행시간을 확인해보세요</string>
+    <string name="home_username_default">익명</string>
+
     <string name="shuttle_ticket_title">셔틀 탑승권</string>
     <string name="shuttle_ticket_description">QR 조회</string>
 
     <string name="dining_open_time">%1$s - %2$s</string>
     <string name="dining_price">₩%1$,d</string>
     <string name="dining_kcal">%1$dkcal</string>
+    <string name="dining_empty">오늘은 식단이 없어요</string>
 
     <string name="dining_section">오늘의 식단</string>
     <string name="bus_section">교통</string>

@@ -2,7 +2,6 @@ package `in`.koreatech.koin.feature.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -33,9 +33,11 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
+import `in`.koreatech.koin.core.util.KoinCoilImageLoader
 import `in`.koreatech.koin.feature.home.component.DiningPager
 import `in`.koreatech.koin.feature.home.component.DiningPagerData
 import `in`.koreatech.koin.feature.home.component.HomeChip
@@ -46,6 +48,7 @@ import `in`.koreatech.koin.feature.home.component.LargeHomeCard
 import `in`.koreatech.koin.feature.home.component.MediumHomeCard
 import `in`.koreatech.koin.feature.home.component.ShuttleTicketCard
 import `in`.koreatech.koin.feature.home.component.SmallHomeCard
+import `in`.koreatech.koin.feature.home.model.LocalWeather
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -75,7 +78,10 @@ private fun HomeScreen(
         HeaderSection(
             isNewNotificationReceived = uiState.isNewNotificationReceived
         )
-        InfoSection()
+        InfoSection(
+            username = uiState.username,
+            weather = uiState.weather
+        )
         DiningSection(
             diningData = uiState.diningData
         )
@@ -111,7 +117,7 @@ private fun HeaderSection(
         Spacer(modifier = Modifier.weight(1f))
 
         Image(
-            modifier = Modifier.clickable(onClick = onNotificationClick),
+            modifier = Modifier.noRippleClickable(onClick = onNotificationClick),
             imageVector = if (isNewNotificationReceived) {
                 ImageVector.vectorResource(R.drawable.ic_home_notification_dot)
             } else {
@@ -124,23 +130,53 @@ private fun HeaderSection(
 
 @Composable
 private fun InfoSection(
+    username: String,
+    weather: LocalWeather?,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     val formatter = remember { DateTimeFormatter.ofPattern("M월 dd일 EEEE", Locale.KOREAN) }
-    val currentDate = remember { LocalDate.now().format(formatter) }
+    val currentDate = remember(LocalDate.now()) { LocalDate.now().format(formatter) }
 
     Column(
         modifier = modifier.padding(top = 16.dp, start = 24.dp, end = 24.dp),
         horizontalAlignment = Alignment.Start
     ) {
-        Text(
-            text = currentDate,
-            style = RebrandKoinTheme.typography.regular13,
-            color = Color(0xFFB611F5)
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = currentDate,
+                style = RebrandKoinTheme.typography.regular13,
+                color = Color(0xFFB611F5)
+            )
+
+            weather?.let {
+                Spacer(modifier = Modifier.width(4.dp))
+
+                AsyncImage(
+                    model = it.weatherIconUrl,
+                    contentDescription = it.weather,
+                    modifier = Modifier.size(16.dp),
+                    imageLoader = remember(context) { KoinCoilImageLoader.getImageLoader(context) }
+                )
+
+                Spacer(modifier = Modifier.width(4.dp))
+
+                Text(
+                    text = "${it.weather} ${it.temperature}°",
+                    style = RebrandKoinTheme.typography.regular13,
+                    color = Color(0xFF6F6F6F)
+                )
+            }
+        }
 
         Text(
-            text = "BCSD님,\n오늘도 잘 챙겨먹어요",
+            text = stringResource(
+                R.string.home_welcome_text_1,
+                username.ifEmpty { stringResource(R.string.home_username_default) }
+            ),
             style = RebrandKoinTheme.typography.bold20.copy(fontSize = 24.sp),
             color = Color(0xFF0B0B0D)
         )

@@ -25,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,6 +45,13 @@ fun DiningPager(
 ) {
     val pagerState = rememberPagerState(pageCount = { data.size })
     val coroutineScope = rememberCoroutineScope()
+
+    if (pagerState.pageCount == 0) {
+        DiningEmpty(
+            modifier = Modifier.fillMaxWidth()
+        )
+        return
+    }
 
     Column(
         modifier = modifier,
@@ -81,6 +89,28 @@ fun DiningPager(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun DiningEmpty(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .border(0.5.dp, Color(0xFFE6E6E6), RoundedCornerShape(24.dp))
+            .clip(RoundedCornerShape(24.dp))
+            .background(color = Color(0xFFFFFFFF))
+            .padding(vertical = 20.dp, horizontal = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(R.string.dining_empty),
+            style = RebrandKoinTheme.typography.medium13,
+            color = Color(0xFFA8A8A8),
+            textAlign = TextAlign.Center
+        )
     }
 }
 
