@@ -6,8 +6,8 @@ import android.util.Log
 import android.view.Gravity
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
-import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.BuildConfig
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityErrorBinding
@@ -36,7 +36,7 @@ class ErrorActivity : ActivityBase() {
     }
 
     fun init() {
-        if (BuildConfig.IS_DEBUG) {
+        if (BuildConfig.IS_DEBUG || BuildConfig.IS_QA) {
             val stackTrace = intent.extras?.getString(ExceptionHandlerUtil.EXTRA_ERROR_TEXT) ?: ""
             Log.e("ErrorHandler", stackTrace)
             binding.errorTitleMessage.isVisible = false

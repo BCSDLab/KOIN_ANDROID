@@ -4,9 +4,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.koin.core.BuildConfig as CoreBuildConfig
 import `in`.koreatech.koin.core.qualifier.NoAuth
 import `in`.koreatech.koin.core.qualifier.ServerUrl
-import `in`.koreatech.koin.data.BuildConfig
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.stomp.KoinStomp
@@ -26,7 +26,7 @@ object NetworkModule {
     fun provideHttpLoggingInterceptor() =
         HttpLoggingInterceptor().apply {
             level =
-                if (BuildConfig.DEBUG) {
+                if (CoreBuildConfig.IS_DEBUG || CoreBuildConfig.IS_QA) {
                     HttpLoggingInterceptor.Level.BODY
                 } else {
                     HttpLoggingInterceptor.Level.HEADERS
@@ -37,7 +37,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideServerUrl(): String {
-        return if (BuildConfig.DEBUG) {
+        return if (CoreBuildConfig.IS_DEBUG || CoreBuildConfig.IS_QA) {
             URLConstant.BASE_URL_STAGE
         } else {
             URLConstant.BASE_URL_PRODUCTION

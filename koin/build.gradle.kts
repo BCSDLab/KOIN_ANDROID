@@ -22,7 +22,6 @@ android {
         versionCode = rootProject.extra["versionCode"] as Int
         versionName = rootProject.extra["versionName"].toString()
         manifestPlaceholders["naverMapKey"] = getPropertyKey("navermap_key")
-        versionNameSuffix = if (project.hasProperty("versionNameSuffix")) project.property("versionNameSuffix").toString() else ""
     }
 
     signingConfigs {
@@ -46,7 +45,6 @@ android {
             manifestPlaceholders["appName"] = "@string/app_name_dev"
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_koin"
             manifestPlaceholders["appLinkUri"] = "stage.koreatech.in"
-            buildConfigField("Boolean", "IS_DEBUG", "true")
             buildConfigField(
                 "String",
                 "KAKAO_NATIVE_APP_KEY",
@@ -67,7 +65,6 @@ android {
             manifestPlaceholders["appName"] = "@string/app_name"
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_koin"
             manifestPlaceholders["appLinkUri"] = "koreatech.in"
-            buildConfigField("Boolean", "IS_DEBUG", "false")
             signingConfig = signingConfigs.getByName("release")
             buildConfigField(
                 "String",
@@ -81,11 +78,37 @@ android {
                 groups = "bcsd"
             }
         }
+
+        getByName("qa") {
+            initWith(getByName("debug"))
+            isDebuggable = false
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            manifestPlaceholders["appName"] = "@string/app_name_qa"
+            manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_koin"
+            manifestPlaceholders["appLinkUri"] = "stage.koreatech.in"
+            configure<CrashlyticsExtension> {
+                mappingFileUploadEnabled = true
+            }
+            firebaseAppDistribution {
+                artifactType = "APK"
+                releaseNotes = "${rootProject.extra["versionName"]} ${getBuildDate()} QA"
+                groups = "koin-qa"
+                serviceCredentialsFile = "./google-credentials.json"
+            }
+        }
     }
     buildFeatures {
         dataBinding = true
         viewBinding = true
     }
+}
+
+fun getBuildDate(): String {
+    return if (project.hasProperty("buildDate")) project.property("buildDate").toString() else ""
 }
 
 fun getPropertyKey(propertyKey: String): String {

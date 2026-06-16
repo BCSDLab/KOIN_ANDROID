@@ -28,9 +28,9 @@ import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.bus.BusSearchActivity
 import `in`.koreatech.bus.BusTimetableActivity
-import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.URL
+import `in`.koreatech.koin.core.BuildConfig
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
@@ -223,7 +223,7 @@ abstract class KoinNavigationDrawerActivity :
                         val intent =
                             Intent(
                                 Intent.ACTION_VIEW,
-                                if (BuildConfig.IS_DEBUG) {
+                                if (BuildConfig.IS_DEBUG || BuildConfig.IS_QA) {
                                     Uri.parse(
                                         URLConstant.OWNER_URL_STAGE
                                     )

@@ -8,10 +8,18 @@ android {
     buildTypes {
         getByName("debug") {
             buildConfigField("Boolean", "IS_DEBUG", "true")
+            buildConfigField("Boolean", "IS_QA", "false")
         }
 
         getByName("release") {
             buildConfigField("Boolean", "IS_DEBUG", "false")
+            buildConfigField("Boolean", "IS_QA", "false")
+        }
+
+        getByName("qa") {
+            // Set true in core:analytics module because logging should have debug suffix on qa variant
+            buildConfigField("Boolean", "IS_DEBUG", "true")
+            buildConfigField("Boolean", "IS_QA", "true")
         }
     }
 }
