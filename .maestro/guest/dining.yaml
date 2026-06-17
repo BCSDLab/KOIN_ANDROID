@@ -7,7 +7,7 @@ env:
     id: "${APP_ID}:id/navi_item_dining"
 - runFlow:
     when:
-      visible: "알림 설정을 허용하고"
+      visible: "알림 설정 바로가기"
     commands:
       - pressKey: BACK
 - extendedWaitUntil:
