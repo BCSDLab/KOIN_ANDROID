@@ -9,7 +9,7 @@ on:
 jobs:
   maestro-tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 180
     env:
       APP_ID: in.koreatech.koin.dev
 
