@@ -99,8 +99,7 @@ jobs:
             adb uninstall in.koreatech.koin.dev || true
             adb install -r koin/build/outputs/apk/qa/koin-qa.apk
             chmod +x .github/scripts/run_maestro_suite.sh
-            bash .github/scripts/run_maestro_suite.sh ".maestro/suites/student_guest_smoke.yaml" "student_guest_smoke" "$APP_ID"
-            bash .github/scripts/run_maestro_suite.sh ".maestro/suites/student_auth_smoke.yaml" "student_auth_smoke" "$APP_ID"
+            bash .github/scripts/run_maestro_suite.sh ".maestro/suites/student_smoke.yaml" "student_smoke" "$APP_ID"
         env:
           USER_PASSWORD: ${{ secrets.MAESTRO_USER_PASSWORD }}
 

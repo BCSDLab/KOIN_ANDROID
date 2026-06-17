@@ -11,7 +11,7 @@ suite_path="$1"
 suite_name="$2"
 app_id="$3"
 
-if [[ "$suite_name" == *auth* && -z "${USER_PASSWORD:-}" ]]; then
+if [[ -z "${USER_PASSWORD:-}" ]]; then
   echo "USER_PASSWORD is required for auth Maestro suites. Set MAESTRO_USER_PASSWORD secret in GitHub Actions." >&2
   exit 1
 fi
