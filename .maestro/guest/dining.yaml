@@ -1,10 +1,15 @@
 appId: ${APP_ID}
 env:
-  APP_ID: in.koreatech.koin
+  APP_ID: in.koreatech.koin.dev
 ---
 - runFlow: ../common/open_drawer.yaml
 - tapOn:
     id: "${APP_ID}:id/navi_item_dining"
+- runFlow:
+    when:
+      visible: "알림 설정을 허용하고"
+    commands:
+      - pressKey: BACK
 - extendedWaitUntil:
     visible: "식단"
     timeout: 15000

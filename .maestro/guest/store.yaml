@@ -1,6 +1,6 @@
 appId: ${APP_ID}
 env:
-  APP_ID: in.koreatech.koin
+  APP_ID: in.koreatech.koin.dev
 ---
 - runFlow: ../common/launch_app.yaml
 - openLink: "koin://store"

@@ -1,6 +1,6 @@
 appId: ${APP_ID}
 env:
-  APP_ID: in.koreatech.koin
+  APP_ID: in.koreatech.koin.dev
 ---
 - stopApp
 - openLink: "koin://main/navigation"
