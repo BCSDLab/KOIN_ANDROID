@@ -29,7 +29,7 @@ env:
     timeout: 5000
 - assertVisible: "maestroarticle"
 
-- tapOn: "maestroarticle 삭제"
+- tapOn: "maestroarticle"
 - extendedWaitUntil:
     notVisible: "maestroarticle"
     timeout: 5000
