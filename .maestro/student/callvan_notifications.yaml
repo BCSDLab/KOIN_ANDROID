@@ -2,8 +2,12 @@ appId: ${APP_ID}
 env:
   APP_ID: in.koreatech.koin.dev
 ---
-- runFlow: ../common/launch_app.yaml
 - runFlow: ../common/open_drawer.yaml
+- scrollUntilVisible:
+    element:
+      id: "${APP_ID}:id/navi_item_callvan"
+    direction: DOWN
+    timeout: 10000
 - tapOn:
     id: "${APP_ID}:id/navi_item_callvan"
 - tapOn:

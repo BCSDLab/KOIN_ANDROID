@@ -28,3 +28,10 @@ env:
     visible: "maestroarticle"
     timeout: 5000
 - assertVisible: "maestroarticle"
+
+# 키워드 삭제 테스트: Material Chip 닫기 아이콘(접근성 라벨 "<키워드> 삭제")을 탭하면 제거
+- tapOn: "maestroarticle 삭제"
+- extendedWaitUntil:
+    notVisible: "maestroarticle"
+    timeout: 5000
+- assertNotVisible: "maestroarticle"

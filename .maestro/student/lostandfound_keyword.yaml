@@ -2,8 +2,12 @@ appId: ${APP_ID}
 env:
   APP_ID: in.koreatech.koin.dev
 ---
-- runFlow: ../common/launch_app.yaml
 - runFlow: ../common/open_drawer.yaml
+- scrollUntilVisible:
+    element:
+      id: "${APP_ID}:id/navi_item_lost_and_found"
+    direction: DOWN
+    timeout: 10000
 - tapOn:
     id: "${APP_ID}:id/navi_item_lost_and_found"
 - extendedWaitUntil:
@@ -30,3 +34,10 @@ env:
     visible: "maestrotest"
     timeout: 5000
 - assertVisible: "maestrotest"
+
+# 키워드 삭제 테스트: 내 키워드 칩은 전체가 클릭 = 삭제 동작
+- tapOn: "maestrotest"
+- extendedWaitUntil:
+    notVisible: "maestrotest"
+    timeout: 5000
+- assertNotVisible: "maestrotest"

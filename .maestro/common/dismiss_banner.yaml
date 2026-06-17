@@ -1,0 +1,15 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin.dev
+---
+- runFlow:
+    when:
+      visible:
+        text: "닫기"
+    commands:
+      - tapOn:
+          text: "일주일 동안 그만 보기"
+          optional: true
+      - tapOn:
+          text: "닫기"
+          optional: true
