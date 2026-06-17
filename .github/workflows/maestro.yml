@@ -36,6 +36,7 @@ jobs:
           FIREBASE_STAGE: ${{ secrets.FIREBASE_STAGE }}
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         run: |
+          mkdir -p ./koin/src/qa
           echo "$FIREBASE" | base64 -di > ./koin/google-services.json
           echo "$FIREBASE_STAGE" | base64 -di > ./koin/src/qa/google-services.json
           echo "$GOOGLE_CREDENTIALS" | base64 -di > ./google-credentials.json 
