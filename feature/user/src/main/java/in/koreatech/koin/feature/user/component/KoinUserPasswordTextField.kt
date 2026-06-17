@@ -27,6 +27,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.BuildConfig
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.user.R
@@ -58,11 +59,15 @@ fun KoinUserPasswordTextField(
     onShowPasswordChange: (Boolean) -> Unit = {}
 ) {
     BasicTextField(
-        modifier = modifier.semantics {
-            setText { text ->
-                onValueChange(text.text)
-                true
+        modifier = if (BuildConfig.IS_QA) {
+            modifier.semantics {
+                setText { text ->
+                    onValueChange(text.text)
+                    true
+                }
             }
+        } else {
+            modifier
         },
         value = value,
         onValueChange = {
