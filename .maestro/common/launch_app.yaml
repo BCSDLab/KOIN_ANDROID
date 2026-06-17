@@ -7,5 +7,8 @@ env:
 - waitForAnimationToEnd:
     timeout: 15000
 - tapOn:
+    text: "허용"
+    optional: true
+- tapOn:
     text: "닫기"
     optional: true

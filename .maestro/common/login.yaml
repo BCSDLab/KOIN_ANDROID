@@ -1,0 +1,25 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin.dev
+---
+- stopApp
+- openLink: "koin://login/navigation"
+- extendedWaitUntil:
+    visible: "로그인"
+    timeout: 15000
+- tapOn: "아이디(Koreatech ID/전화번호)"
+- inputText: "androidqa"
+- hideKeyboard
+- tapOn: "비밀번호"
+- inputText: "${USER_PASSWORD}"
+- hideKeyboard
+- tapOn: "로그인"
+- tapOn:
+    text: "허용"
+    optional: true
+- tapOn:
+    text: "닫기"
+    optional: true
+- extendedWaitUntil:
+    visible: "게시판"
+    timeout: 20000

@@ -1,0 +1,24 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin.dev
+---
+- runFlow: ../common/launch_app.yaml
+- runFlow: ../common/open_drawer.yaml
+- tapOn:
+    id: "${APP_ID}:id/navi_item_setting"
+- extendedWaitUntil:
+    visible: "설정"
+    timeout: 10000
+
+- assertVisible: "프로필"
+- assertVisible: "비밀번호 변경"
+- assertVisible: "알림"
+
+- tapOn: "프로필"
+- extendedWaitUntil:
+    visible: "내 프로필"
+    timeout: 10000
+- assertVisible: "내 프로필"
+- assertVisible: "기본 정보"
+- assertVisible: "아이디"
+- assertVisible: "androidqa"

@@ -7,12 +7,19 @@ env:
 - extendedWaitUntil:
     visible: "로그인"
     timeout: 15000
+
+- assertVisible: "아이디(Koreatech ID/전화번호)"
+- assertVisible: "비밀번호"
 - assertVisible: "로그인"
 - assertVisible: "회원가입"
 - assertVisible: "아이디 찾기"
 - assertVisible: "비밀번호 찾기"
+- assertVisible: "둘러보기"
+- assertVisible: "사장님이신가요?"
+
 - tapOn: "아이디(Koreatech ID/전화번호)"
 - inputText: "invalid-user"
+- hideKeyboard
 - tapOn: "비밀번호"
 - inputText: "wrong-password"
 - hideKeyboard
@@ -21,3 +28,35 @@ env:
     visible: "아이디 또는 비밀번호가 올바르지 않습니다."
     timeout: 15000
 - assertVisible: "아이디 또는 비밀번호가 올바르지 않습니다."
+
+- tapOn: "invalid-user"
+- eraseText
+
+- tapOn: "아이디(Koreatech ID/전화번호)"
+- inputText: "01012345678"
+- assertVisible: "010-1234-5678"
+- hideKeyboard
+
+- tapOn: "회원가입"
+- waitForAnimationToEnd:
+    timeout: 5000
+- openLink: "koin://login/navigation"
+- extendedWaitUntil:
+    visible: "로그인"
+    timeout: 10000
+
+- tapOn: "아이디 찾기"
+- waitForAnimationToEnd:
+    timeout: 5000
+- openLink: "koin://login/navigation"
+- extendedWaitUntil:
+    visible: "로그인"
+    timeout: 10000
+
+- tapOn: "비밀번호 찾기"
+- waitForAnimationToEnd:
+    timeout: 5000
+- openLink: "koin://login/navigation"
+- extendedWaitUntil:
+    visible: "로그인"
+    timeout: 10000
