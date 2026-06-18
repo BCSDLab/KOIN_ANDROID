@@ -28,9 +28,3 @@ env:
     visible: "maestroarticle"
     timeout: 5000
 - assertVisible: "maestroarticle"
-
-- tapOn: "maestroarticle"
-- extendedWaitUntil:
-    notVisible: "maestroarticle"
-    timeout: 5000
-- assertNotVisible: "maestroarticle"

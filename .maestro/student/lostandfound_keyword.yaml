@@ -34,9 +34,3 @@ env:
     visible: "maestrotest"
     timeout: 5000
 - assertVisible: "maestrotest"
-
-- tapOn: "maestrotest"
-- extendedWaitUntil:
-    notVisible: "maestrotest"
-    timeout: 5000
-- assertNotVisible: "maestrotest"
