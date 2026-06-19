@@ -9,9 +9,9 @@ on:
 jobs:
   maestro-tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 180
     env:
-      APP_ID: in.koreatech.koin
+      APP_ID: in.koreatech.koin.dev
 
     steps:
       - uses: actions/checkout@v4
@@ -33,9 +33,12 @@ jobs:
       - name: Update Firebase
         env:
           FIREBASE: ${{ secrets.FIREBASE }}
+          FIREBASE_STAGE: ${{ secrets.FIREBASE_STAGE }}
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         run: |
-          echo "$FIREBASE" | base64 -di > ./koin/google-services.json  
+          mkdir -p ./koin/src/qa
+          echo "$FIREBASE" | base64 -di > ./koin/google-services.json
+          echo "$FIREBASE_STAGE" | base64 -di > ./koin/src/qa/google-services.json
           echo "$GOOGLE_CREDENTIALS" | base64 -di > ./google-credentials.json 
           for file in $(find . -name 'google-services.json')
           do
@@ -46,8 +49,8 @@ jobs:
            echo $file
           done
 
-      - name: Build release APK with Gradle
-        run: ./gradlew koin:assembleRelease
+      - name: Build QA APK with Gradle
+        run: ./gradlew koin:assembleQa
 
       - name: Enable KVM group perms
         run: |
@@ -94,9 +97,11 @@ jobs:
             mkdir -p recordings debug-output
             adb uninstall in.koreatech.koin || true
             adb uninstall in.koreatech.koin.dev || true
-            adb install -r koin/build/outputs/apk/release/koin-release.apk
+            adb install -r koin/build/outputs/apk/qa/koin-qa.apk
             chmod +x .github/scripts/run_maestro_suite.sh
-            bash .github/scripts/run_maestro_suite.sh ".maestro/suites/student_guest_smoke.yaml" "student_guest_smoke" "$APP_ID"
+            bash .github/scripts/run_maestro_suite.sh ".maestro/suites/student_smoke.yaml" "student_smoke" "$APP_ID"
+        env:
+          USER_PASSWORD: ${{ secrets.MAESTRO_USER_PASSWORD }}
 
       - name: Upload Maestro test results
         if: always()

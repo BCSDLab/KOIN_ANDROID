@@ -1,0 +1,11 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin.dev
+---
+- runFlow: ../common/open_drawer.yaml
+- tapOn:
+    id: "${APP_ID}:id/navi_item_chat"
+- extendedWaitUntil:
+    visible: "쪽지"
+    timeout: 15000
+- assertVisible: "쪽지"

@@ -1,0 +1,48 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin.dev
+---
+- runFlow: ../common/open_drawer.yaml
+- scrollUntilVisible:
+    element:
+      id: "${APP_ID}:id/navi_item_callvan"
+    direction: DOWN
+    timeout: 10000
+- tapOn:
+    id: "${APP_ID}:id/navi_item_callvan"
+- tapOn:
+    text: "알림 켜기"
+    optional: true
+- extendedWaitUntil:
+    visible: "모집하기"
+    timeout: 10000
+
+- tapOn: "모집하기"
+- extendedWaitUntil:
+    visible: "출발지 선택"
+    timeout: 10000
+- assertVisible: "출발"
+- assertVisible: "도착"
+- assertVisible: "출발일"
+- assertVisible: "출발 시각"
+- assertVisible: "참여 인원"
+- assertVisible: "작성 완료"
+
+- tapOn: "출발지 선택"
+- extendedWaitUntil:
+    visible: "출발지가 어디인가요?"
+    timeout: 5000
+- tapOn: "천안역"
+- tapOn: "선택하기"
+
+- tapOn: "도착지 선택"
+- extendedWaitUntil:
+    visible: "도착지가 어디인가요?"
+    timeout: 5000
+- tapOn: "정문"
+- tapOn: "선택하기"
+
+- pressKey: BACK
+- extendedWaitUntil:
+    visible: "모집하기"
+    timeout: 10000

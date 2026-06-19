@@ -1,0 +1,46 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin.dev
+---
+- runFlow: ../common/open_drawer.yaml
+- scrollUntilVisible:
+    element:
+      id: "${APP_ID}:id/navi_item_lost_and_found"
+    direction: DOWN
+    timeout: 10000
+- tapOn:
+    id: "${APP_ID}:id/navi_item_lost_and_found"
+- extendedWaitUntil:
+    visible: "분실물"
+    timeout: 15000
+
+- tapOn: "글쓰기"
+- extendedWaitUntil:
+    visible: "잃어버렸어요"
+    timeout: 5000
+- tapOn: "잃어버렸어요"
+- extendedWaitUntil:
+    visible: "분실물 신고"
+    timeout: 10000
+
+- assertVisible: "분실물 신고"
+
+- scrollUntilVisible:
+    element:
+      text: "분실 일자.*"
+    direction: DOWN
+    timeout: 10000
+- assertVisible: "분실 일자.*"
+- scrollUntilVisible:
+    element:
+      text: "분실 장소"
+    direction: DOWN
+    timeout: 10000
+- assertVisible: "분실 장소"
+
+- assertVisible: "작성 완료"
+- tapOn: "작성 완료"
+- extendedWaitUntil:
+    visible: "분실일자가 입력되지 않았습니다."
+    timeout: 5000
+- assertVisible: "분실일자가 입력되지 않았습니다."
