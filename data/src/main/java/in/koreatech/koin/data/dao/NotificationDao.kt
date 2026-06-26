@@ -19,7 +19,7 @@ interface NotificationDao {
     @Query("SELECT * FROM ${DBConstant.NOTIFICATION}")
     suspend fun getNotifications(): List<NotificationEntity>
 
-    @Query("DELETE FROM ${DBConstant.NOTIFICATION} WHERE datetime > :datetime")
+    @Query("DELETE FROM ${DBConstant.NOTIFICATION} WHERE datetime < :datetime")
     suspend fun deleteOldNotifications(datetime: LocalDateTime)
 
     @Query("DELETE FROM ${DBConstant.NOTIFICATION} WHERE id = :id")
