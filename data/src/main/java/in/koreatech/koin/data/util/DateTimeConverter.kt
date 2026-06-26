@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter
 class DateTimeConverter {
     @TypeConverter
     fun toLocalDateTime(localDateTime: String?): LocalDateTime? {
-        return LocalDateTime.parse(localDateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        return localDateTime?.let { LocalDateTime.parse(it, DateTimeFormatter.ISO_LOCAL_DATE_TIME) }
     }
 
     @TypeConverter

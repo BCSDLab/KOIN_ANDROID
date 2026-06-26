@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 import javax.inject.Inject
 
 class NotificationLocalDataSource @Inject constructor(
-    val notificationDao: NotificationDao
+    private val notificationDao: NotificationDao
 ) {
     suspend fun insertNotification(notificationEntity: NotificationEntity) {
         notificationDao.insertNotification(notificationEntity)

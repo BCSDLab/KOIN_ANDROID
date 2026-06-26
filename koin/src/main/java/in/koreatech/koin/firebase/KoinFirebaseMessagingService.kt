@@ -6,6 +6,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_URL
+import `in`.koreatech.koin.core.navigation.utils.toHost
 import `in`.koreatech.koin.core.notification.Notifier
 import `in`.koreatech.koin.core.qualifier.IoDispatcher
 import `in`.koreatech.koin.domain.repository.firebase.messaging.FirebaseMessagingRepository
@@ -92,5 +93,5 @@ class KoinFirebaseMessagingService : FirebaseMessagingService() {
         super.onDestroy()
     }
 
-    private fun String.schemeToNotificationType(): String = toUri().host.orEmpty()
+    private fun String.schemeToNotificationType(): String = toHost()
 }

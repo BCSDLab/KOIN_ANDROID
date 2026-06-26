@@ -11,14 +11,15 @@ class SaveNotificationUseCase @Inject constructor(
     suspend operator fun invoke(
         type: String,
         title: String,
-        content: String
+        content: String,
+        datetime: LocalDateTime = LocalDateTime.now()
     ): Result<Unit> {
         return notificationRepository.insertNotificationToLocal(
             notification = Notification(
                 type = type,
                 title = title,
                 content = content,
-                datetime = LocalDateTime.now()
+                datetime = datetime
             )
         )
     }
