@@ -1,0 +1,16 @@
+package `in`.koreatech.koin.data.entity
+
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import `in`.koreatech.koin.data.constant.DBConstant
+import java.time.LocalDateTime
+
+@Entity(tableName = DBConstant.NOTIFICATION)
+data class NotificationEntity(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @ColumnInfo val type: String,
+    @ColumnInfo val datetime: LocalDateTime,
+    @ColumnInfo val title: String,
+    @ColumnInfo val content: String
+)
