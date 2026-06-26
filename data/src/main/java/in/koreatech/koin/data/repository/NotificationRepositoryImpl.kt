@@ -18,6 +18,7 @@ import javax.inject.Inject
 import kotlin.collections.map
 import retrofit2.HttpException
 
+@Suppress("Detekt.TooManyFunctions")
 class NotificationRepositoryImpl @Inject constructor(
     private val notificationRemoteDataSource: NotificationRemoteDataSource,
     private val notificationLocalDataSource: NotificationLocalDataSource
