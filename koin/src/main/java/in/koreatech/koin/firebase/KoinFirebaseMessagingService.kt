@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.firebase
 
 import android.content.Intent
-import androidx.core.net.toUri
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
