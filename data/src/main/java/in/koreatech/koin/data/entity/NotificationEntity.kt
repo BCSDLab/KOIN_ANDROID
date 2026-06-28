@@ -12,5 +12,7 @@ data class NotificationEntity(
     @ColumnInfo val type: String,
     @ColumnInfo val datetime: LocalDateTime,
     @ColumnInfo val title: String,
-    @ColumnInfo val content: String
+    @ColumnInfo val content: String,
+    @ColumnInfo val originUrl: String,
+    @ColumnInfo val isRead: Boolean
 )

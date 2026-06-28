@@ -56,7 +56,9 @@ fun Notification.toNotificationEntity(): NotificationEntity = NotificationEntity
     type = type,
     datetime = datetime,
     title = title,
-    content = content
+    content = content,
+    originUrl = originUrl,
+    isRead = isRead
 )
 
 fun NotificationEntity.toNotification(): Notification = Notification(
@@ -64,5 +66,7 @@ fun NotificationEntity.toNotification(): Notification = Notification(
     type = type,
     datetime = datetime,
     title = title,
-    content = content
+    content = content,
+    originUrl = originUrl,
+    isRead = isRead
 )
