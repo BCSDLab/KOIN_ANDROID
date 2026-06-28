@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "2e2b9257bdabb1ca4d6f0f7800fe4f4f",
+    "identityHash": "dd12f144e279a3baf9af39855f09b3a0",
     "entities": [
       {
         "tableName": "cache_metadata",
@@ -97,7 +97,7 @@
       },
       {
         "tableName": "notification",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `type` TEXT NOT NULL, `datetime` TEXT NOT NULL, `title` TEXT NOT NULL, `content` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `type` TEXT NOT NULL, `datetime` TEXT NOT NULL, `title` TEXT NOT NULL, `content` TEXT NOT NULL, `originUrl` TEXT NOT NULL, `isRead` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -128,6 +128,18 @@
             "columnName": "content",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "originUrl",
+            "columnName": "originUrl",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isRead",
+            "columnName": "isRead",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -135,12 +147,23 @@
           "columnNames": [
             "id"
           ]
-        }
+        },
+        "indices": [
+          {
+            "name": "index_notification_originUrl",
+            "unique": true,
+            "columnNames": [
+              "originUrl"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_notification_originUrl` ON `${TABLE_NAME}` (`originUrl`)"
+          }
+        ]
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2e2b9257bdabb1ca4d6f0f7800fe4f4f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'dd12f144e279a3baf9af39855f09b3a0')"
     ]
   }
 }
