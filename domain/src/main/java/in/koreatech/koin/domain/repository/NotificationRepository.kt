@@ -5,6 +5,7 @@ import `in`.koreatech.koin.domain.model.notification.NotificationPermissionInfo
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
 
+@Suppress("Detekt.TooManyFunctions")
 interface NotificationRepository {
     suspend fun getPermissionInfo(): Result<NotificationPermissionInfo>
 
