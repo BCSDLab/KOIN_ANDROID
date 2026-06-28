@@ -22,18 +22,6 @@ class NewMainActivity : AppCompatActivity() {
         binding = ActivityNewMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.navHostFragmentMain) { view, insets ->
-            val statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
-
-            view.updatePadding(
-                top = statusBars.top
-            )
-
-            WindowInsetsCompat.Builder(insets)
-                .setInsets(WindowInsetsCompat.Type.statusBars(), Insets.NONE)
-                .build()
-        }
-
         ViewCompat.setOnApplyWindowInsetsListener(binding.bottomNavigationMain) { view, insets ->
             val navigationBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
 
