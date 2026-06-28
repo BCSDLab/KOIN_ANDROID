@@ -104,6 +104,18 @@ class NotificationRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun updateNotificationReadByUrl(url: String, isRead: Boolean): Result<Notification> {
+        return suspendRunCatching {
+            notificationLocalDataSource.updateNotificationReadByUrl(url, isRead).toNotification()
+        }
+    }
+
+    override suspend fun updateNotificationReadById(id: Int, isRead: Boolean): Result<Notification> {
+        return suspendRunCatching {
+            notificationLocalDataSource.updateNotificationReadById(id, isRead).toNotification()
+        }
+    }
+
     override suspend fun getNotificationsFromLocal(): Result<List<Notification>> {
         return suspendRunCatching {
             notificationLocalDataSource.getNotifications().map { it.toNotification() }

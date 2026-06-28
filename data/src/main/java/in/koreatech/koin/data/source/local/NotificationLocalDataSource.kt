@@ -20,6 +20,14 @@ class NotificationLocalDataSource @Inject constructor(
         return notificationDao.getNotifications()
     }
 
+    suspend fun updateNotificationReadByUrl(url: String, isRead: Boolean): NotificationEntity {
+        return notificationDao.updateReadByUrlAndReturn(url, isRead)
+    }
+
+    suspend fun updateNotificationReadById(id: Int, isRead: Boolean): NotificationEntity {
+        return notificationDao.updateReadByIdAndReturn(id, isRead)
+    }
+
     suspend fun deleteOldNotifications(dateTime: LocalDateTime) {
         notificationDao.deleteOldNotifications(dateTime)
     }

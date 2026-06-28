@@ -22,6 +22,10 @@ interface NotificationRepository {
 
     suspend fun insertNotificationsToLocal(notifications: List<Notification>): Result<Unit>
 
+    suspend fun updateNotificationReadByUrl(url: String, isRead: Boolean): Result<Notification>
+
+    suspend fun updateNotificationReadById(id: Int, isRead: Boolean): Result<Notification>
+
     suspend fun getNotificationsFromLocal(): Result<List<Notification>>
 
     suspend fun deleteNotificationFromLocal(id: Int): Result<Unit>
