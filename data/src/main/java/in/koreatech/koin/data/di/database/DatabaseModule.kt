@@ -9,6 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.data.dao.ABTestDao
 import `in`.koreatech.koin.data.dao.CacheMetadataDao
+import `in`.koreatech.koin.data.dao.NotificationDao
 import `in`.koreatech.koin.data.dao.StoreCategoriesDao
 import `in`.koreatech.koin.data.db.AppDatabase
 import javax.inject.Singleton
@@ -44,5 +45,11 @@ object DatabaseModule {
     @Singleton
     fun provideAbTestDao(appDatabase: AppDatabase): ABTestDao {
         return appDatabase.abTestDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideNotificationDao(appDatabase: AppDatabase): NotificationDao {
+        return appDatabase.notificationDao()
     }
 }

@@ -34,6 +34,7 @@ import `in`.koreatech.koin.data.source.local.ArticleLocalDataSource
 import `in`.koreatech.koin.data.source.local.BannerLocalDataSource
 import `in`.koreatech.koin.data.source.local.CacheLocalDataSource
 import `in`.koreatech.koin.data.source.local.DeptLocalDataSource
+import `in`.koreatech.koin.data.source.local.NotificationLocalDataSource
 import `in`.koreatech.koin.data.source.local.SessionLocalDataSource
 import `in`.koreatech.koin.data.source.local.SettingLocalDataSource
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
@@ -94,8 +95,11 @@ import kotlinx.coroutines.SupervisorJob
 object RepositoryModule {
     @Provides
     @Singleton
-    fun provideNotificationRepository(notificationRemoteDataSource: NotificationRemoteDataSource): NotificationRepository {
-        return NotificationRepositoryImpl(notificationRemoteDataSource)
+    fun provideNotificationRepository(
+        notificationRemoteDataSource: NotificationRemoteDataSource,
+        notificationLocalDataSource: NotificationLocalDataSource
+    ): NotificationRepository {
+        return NotificationRepositoryImpl(notificationRemoteDataSource, notificationLocalDataSource)
     }
 
     @Provides
