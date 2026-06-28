@@ -140,6 +140,7 @@ dependencies {
     implementation(projects.feature.lostandfound)
     implementation(projects.feature.callvan)
     implementation(projects.feature.home)
+    implementation(projects.feature.notification)
 
     implementation(libs.guava)
 
