@@ -9,6 +9,7 @@ import `in`.koreatech.koin.data.constant.DBConstant
 import `in`.koreatech.koin.data.entity.NotificationEntity
 import java.time.LocalDateTime
 
+@Suppress("Detekt.TooManyFunctions")
 @Dao
 interface NotificationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
