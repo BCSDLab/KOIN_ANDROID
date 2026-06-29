@@ -113,7 +113,8 @@ fun NotificationItem(
                     Icon(
                         imageVector = ImageVector.vectorResource(it),
                         contentDescription = type,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
+                        tint = if (isRead) Color(0xFF727272) else Color(0xFFB611F5)
                     )
                 }
             }
