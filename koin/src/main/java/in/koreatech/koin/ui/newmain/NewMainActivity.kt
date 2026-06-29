@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.databinding.ActivityNewMainBinding
 
@@ -38,5 +40,16 @@ class NewMainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         binding.bottomNavigationMain.setupWithNavController(navController)
+
+        val topLevelDestinations = setOf(
+            R.id.bottom_navigation_home,
+            R.id.bottom_navigation_category,
+            R.id.bottom_navigation_article,
+            R.id.bottom_navigation_profile
+        )
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.bottomNavigationMain.isVisible = destination.id in topLevelDestinations
+        }
     }
 }

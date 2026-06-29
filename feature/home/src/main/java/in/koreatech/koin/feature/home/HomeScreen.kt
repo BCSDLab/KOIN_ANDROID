@@ -61,7 +61,8 @@ import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    navigateToNotification: () -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
 
@@ -74,7 +75,8 @@ fun HomeScreen(
                 .fillMaxSize()
                 .background(Color(0xFFF8F8FA))
                 .padding(paddingValues),
-            uiState = uiState
+            uiState = uiState,
+            navigateToNotification = navigateToNotification
         )
     }
 }
@@ -82,13 +84,15 @@ fun HomeScreen(
 @Composable
 private fun HomeScreen(
     uiState: HomeState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateToNotification: () -> Unit = {}
 ) {
     Column(
         modifier = modifier.verticalScroll(rememberScrollState())
     ) {
         HeaderSection(
-            isNewNotificationReceived = uiState.isNewNotificationReceived
+            isNewNotificationReceived = uiState.isNewNotificationReceived,
+            onNotificationClick = navigateToNotification
         )
         InfoSection(
             username = uiState.username,
@@ -119,7 +123,8 @@ private fun HeaderSection(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 24.dp)
+            .padding(vertical = 8.dp, horizontal = 24.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             imageVector = ImageVector.vectorResource(R.drawable.ic_bcsd_symbol),
