@@ -46,6 +46,7 @@ import kotlin.math.roundToInt
 
 private enum class SwipeAnchor { Closed, Open, Dismissed }
 
+@Suppress("CyclomaticComplexMethod")
 @Composable
 fun NotificationItem(
     title: String,
