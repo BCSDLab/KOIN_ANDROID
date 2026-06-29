@@ -16,6 +16,8 @@ import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.domain.repository.NotificationRepository
 import javax.inject.Inject
 import kotlin.collections.map
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
 
 @Suppress("Detekt.TooManyFunctions")
@@ -120,6 +122,11 @@ class NotificationRepositoryImpl @Inject constructor(
         return suspendRunCatching {
             notificationLocalDataSource.getNotifications().map { it.toNotification() }
         }
+    }
+
+    override fun getNotificationsFlowFromLocal(): Flow<List<Notification>> {
+        return notificationLocalDataSource.getNotificationsFlow()
+            .map { list -> list.map { it.toNotification() } }
     }
 
     override suspend fun deleteNotificationFromLocal(id: Int): Result<Unit> {
