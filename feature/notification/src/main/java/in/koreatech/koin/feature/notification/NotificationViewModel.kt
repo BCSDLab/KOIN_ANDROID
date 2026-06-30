@@ -53,12 +53,18 @@ class NotificationViewModel @Inject constructor(
     }
 
     fun readAllNotifications() = intent {
-        updateNotificationsReadByIdUseCase(state.notifications.map { it.id }, true)
+        updateNotificationsReadByIdUseCase(state.notifications.map { it.id }, true).onFailure {
+            Timber.e("Mark notifications as read failed: $it")
+            postSideEffect(NotificationSideEffect.Error)
+        }
     }
 
     fun deleteAllNotifications() = intent {
         deleteNotificationsUseCase(state.notifications.map { it.id }).onSuccess {
             postSideEffect(NotificationSideEffect.Deleted)
+        }.onFailure {
+            Timber.e("Failed to delete all notifications: $it")
+            postSideEffect(NotificationSideEffect.Error)
         }
     }
 }
