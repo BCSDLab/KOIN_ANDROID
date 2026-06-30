@@ -26,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,7 +45,6 @@ import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.notification.component.NotificationItem
 import `in`.koreatech.koin.feature.notification.model.LocalNotification
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -59,7 +57,6 @@ fun NotificationScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val listState = rememberLazyListState()
 
-    val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
     val navigator = rememberNavigator()
 
@@ -77,7 +74,7 @@ fun NotificationScreen(
                 snackbarHostState.showSnackbar(context.getString(R.string.notification_deleted))
             }
 
-            NotificationSideEffect.NewNotificationReceived -> coroutineScope.launch {
+            NotificationSideEffect.NewNotificationReceived -> {
                 listState.animateScrollToItem(0)
             }
         }
