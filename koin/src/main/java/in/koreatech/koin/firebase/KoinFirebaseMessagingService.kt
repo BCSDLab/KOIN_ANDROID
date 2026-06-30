@@ -70,7 +70,8 @@ class KoinFirebaseMessagingService : FirebaseMessagingService() {
                         saveNotificationUseCase(
                             type = url.schemeToNotificationType(),
                             title = title,
-                            content = content
+                            content = content,
+                            originUrl = url
                         ).onFailure {
                             Timber.e("Notification save failed: $it")
                         }

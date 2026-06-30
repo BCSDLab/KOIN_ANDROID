@@ -7,5 +7,7 @@ data class Notification(
     val type: String,
     val datetime: LocalDateTime,
     val title: String,
-    val content: String
+    val content: String,
+    val originUrl: String,
+    val isRead: Boolean
 )

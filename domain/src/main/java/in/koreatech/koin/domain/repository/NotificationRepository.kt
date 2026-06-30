@@ -5,6 +5,7 @@ import `in`.koreatech.koin.domain.model.notification.NotificationPermissionInfo
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
 
+@Suppress("Detekt.TooManyFunctions")
 interface NotificationRepository {
     suspend fun getPermissionInfo(): Result<NotificationPermissionInfo>
 
@@ -21,6 +22,10 @@ interface NotificationRepository {
     suspend fun insertNotificationToLocal(notification: Notification): Result<Unit>
 
     suspend fun insertNotificationsToLocal(notifications: List<Notification>): Result<Unit>
+
+    suspend fun updateNotificationReadByUrl(url: String, isRead: Boolean): Result<Notification>
+
+    suspend fun updateNotificationReadById(id: Int, isRead: Boolean): Result<Notification>
 
     suspend fun getNotificationsFromLocal(): Result<List<Notification>>
 

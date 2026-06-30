@@ -12,6 +12,8 @@ class SaveNotificationUseCase @Inject constructor(
         type: String,
         title: String,
         content: String,
+        originUrl: String,
+        isRead: Boolean = false,
         datetime: LocalDateTime = LocalDateTime.now()
     ): Result<Unit> {
         return notificationRepository.insertNotificationToLocal(
@@ -19,7 +21,9 @@ class SaveNotificationUseCase @Inject constructor(
                 type = type,
                 title = title,
                 content = content,
-                datetime = datetime
+                datetime = datetime,
+                originUrl = originUrl,
+                isRead = isRead
             )
         )
     }
