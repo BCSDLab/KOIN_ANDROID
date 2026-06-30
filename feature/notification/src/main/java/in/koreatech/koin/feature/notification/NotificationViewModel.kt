@@ -44,9 +44,6 @@ class NotificationViewModel @Inject constructor(
     }
 
     fun deleteNotification(id: Int) = intent {
-        reduce {
-            state.copy(notifications = state.notifications.filter { it.id != id }.toImmutableList())
-        }
         deleteNotificationUseCase(id).onSuccess {
             postSideEffect(NotificationSideEffect.Deleted)
         }.onFailure {
