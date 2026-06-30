@@ -32,6 +32,8 @@ class NotificationViewModel @Inject constructor(
 
     private fun observeNotifications() = intent {
         getNotificationsFlowUseCase().collect { list ->
+            if (list.size > state.notifications.size) postSideEffect(NotificationSideEffect.NewNotificationReceived)
+
             reduce {
                 state.copy(notifications = list.sortedByDescending { it.datetime }.map { it.toLocalNotification() }.toImmutableList())
             }

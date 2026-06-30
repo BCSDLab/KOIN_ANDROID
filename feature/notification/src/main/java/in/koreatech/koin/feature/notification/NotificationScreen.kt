@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
@@ -22,10 +23,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +46,7 @@ import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.notification.component.NotificationItem
 import `in`.koreatech.koin.feature.notification.model.LocalNotification
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -55,7 +57,9 @@ fun NotificationScreen(
 ) {
     val uiState by viewModel.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
+    val listState = rememberLazyListState()
 
+    val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
     val navigator = rememberNavigator()
 
@@ -71,6 +75,10 @@ fun NotificationScreen(
 
             NotificationSideEffect.Deleted -> {
                 snackbarHostState.showSnackbar(context.getString(R.string.notification_deleted))
+            }
+
+            NotificationSideEffect.NewNotificationReceived -> coroutineScope.launch {
+                listState.animateScrollToItem(0)
             }
         }
     }
@@ -111,6 +119,7 @@ fun NotificationScreen(
     ) { paddingValues ->
         NotificationScreenImpl(
             modifier = Modifier.padding(paddingValues),
+            listState = listState,
             notifications = uiState.notifications,
             onNotificationClick = viewModel::onNotificationClick,
             onDelete = viewModel::deleteNotification
@@ -167,19 +176,12 @@ private fun NotificationMenuButton(
 
 @Composable
 private fun NotificationScreenImpl(
+    listState: LazyListState,
     notifications: ImmutableList<LocalNotification>,
     onNotificationClick: (LocalNotification) -> Unit,
     onDelete: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val listState = rememberLazyListState()
-
-    LaunchedEffect(notifications.size) {
-        if (listState.firstVisibleItemIndex > 0) {
-            listState.animateScrollToItem(0)
-        }
-    }
-
     if (notifications.isEmpty()) {
         Column(
             modifier = Modifier.fillMaxSize(),
