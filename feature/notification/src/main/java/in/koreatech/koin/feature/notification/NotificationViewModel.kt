@@ -43,7 +43,9 @@ class NotificationViewModel @Inject constructor(
     }
 
     fun onNotificationClick(notification: LocalNotification) = intent {
-        updateNotificationReadByIdUseCase(notification.id, isRead = true)
+        updateNotificationReadByIdUseCase(notification.id, isRead = true).onFailure {
+            Timber.e("Mark notification as read failed: $it")
+        }
         postSideEffect(NotificationSideEffect.NavigateTo(notification.originUrl))
     }
 
