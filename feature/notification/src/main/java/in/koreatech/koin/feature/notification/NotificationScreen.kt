@@ -184,7 +184,7 @@ private fun NotificationScreenImpl(
 ) {
     if (notifications.isEmpty()) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
