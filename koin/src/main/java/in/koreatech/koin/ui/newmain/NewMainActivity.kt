@@ -8,9 +8,12 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.databinding.ActivityNewMainBinding
 
@@ -18,6 +21,15 @@ import `in`.koreatech.koin.databinding.ActivityNewMainBinding
 class NewMainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNewMainBinding
+
+    private fun navigationLogValue(itemId: Int): Pair<String, String>? = when (itemId) {
+        R.id.bottom_navigation_home -> AnalyticsConstant.Label.NAV_HOME to "홈"
+        R.id.bottom_navigation_category -> AnalyticsConstant.Label.NAV_CATEGORY to "카테고리"
+        R.id.bottom_navigation_article -> AnalyticsConstant.Label.NAV_BULLETIN to "게시판"
+        R.id.bottom_navigation_profile -> AnalyticsConstant.Label.NAV_PROFILE to "프로필"
+        else -> null
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdgeWithLightStatusBar()
         super.onCreate(savedInstanceState)
@@ -40,6 +52,20 @@ class NewMainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         binding.bottomNavigationMain.setupWithNavController(navController)
+
+        binding.bottomNavigationMain.setOnItemSelectedListener { item ->
+            navigationLogValue(item.itemId)?.let { (label, value) ->
+                EventLogger.logCampusClickEvent(label, value)
+            }
+            NavigationUI.onNavDestinationSelected(item, navController)
+        }
+
+        binding.bottomNavigationMain.setOnItemReselectedListener { item ->
+            navigationLogValue(item.itemId)?.let { (label, value) ->
+                EventLogger.logCampusClickEvent(label, value)
+            }
+            navController.popBackStack(item.itemId, false)
+        }
 
         val topLevelDestinations = setOf(
             R.id.bottom_navigation_home,
