@@ -6,6 +6,7 @@ import `in`.koreatech.bus.BusSearchActivity
 import `in`.koreatech.bus.BusTimetableActivity
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_POST_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_URL
 import `in`.koreatech.koin.core.navigation.utils.buildDeepLinkIntent
 import `in`.koreatech.koin.core.navigation.utils.buildIntent
 import `in`.koreatech.koin.core.navigation.utils.isValidDeepLink
@@ -17,6 +18,7 @@ import `in`.koreatech.koin.feature.store.StoreActivity
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.notification.NotificationActivity
+import `in`.koreatech.koin.ui.scheme.SchemeActivity
 import `in`.koreatech.koin.ui.splash.SplashActivity
 import `in`.koreatech.koin.ui.unibus.UnibusActivity
 import javax.inject.Inject
@@ -49,6 +51,13 @@ class NavigatorImpl @Inject constructor() : Navigator {
         val intent = context.buildIntent(className, type, *args)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         return intent
+    }
+
+    override fun navigateToScheme(context: Context, extraUrl: String): Intent {
+        return context.buildIntent(SchemeActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra(EXTRA_URL, extraUrl)
+        }
     }
 
     override fun navigateToSignIn(context: Context, redirectUrl: String?): Intent {

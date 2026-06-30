@@ -18,6 +18,11 @@ interface Navigator {
         vararg args: Pair<String, Any?> // Extra IDs
     ): Intent
 
+    fun navigateToScheme(
+        context: Context,
+        extraUrl: String
+    ): Intent
+
     fun navigateToSignIn(
         context: Context,
         redirectUrl: String? = null

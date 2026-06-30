@@ -8,6 +8,7 @@ import androidx.room.Transaction
 import `in`.koreatech.koin.data.constant.DBConstant
 import `in`.koreatech.koin.data.entity.NotificationEntity
 import java.time.LocalDateTime
+import kotlinx.coroutines.flow.Flow
 
 @Suppress("Detekt.TooManyFunctions")
 @Dao
@@ -20,6 +21,9 @@ interface NotificationDao {
 
     @Query("SELECT * FROM ${DBConstant.NOTIFICATION}")
     suspend fun getNotifications(): List<NotificationEntity>
+
+    @Query("SELECT * FROM ${DBConstant.NOTIFICATION}")
+    fun getNotificationsFlow(): Flow<List<NotificationEntity>>
 
     @Query("SELECT * FROM ${DBConstant.NOTIFICATION} WHERE originUrl = :url")
     suspend fun getNotificationByUrl(url: String): NotificationEntity

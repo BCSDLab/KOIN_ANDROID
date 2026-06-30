@@ -6,7 +6,19 @@
 
     <fragment
         android:id="@+id/bottom_navigation_home"
-        android:name="in.koreatech.koin.ui.newmain.fragment.HomeFragment" />
+        android:name="in.koreatech.koin.ui.newmain.fragment.HomeFragment">
+        <action
+            android:id="@+id/action_home_to_notification"
+            app:destination="@id/notification"
+            app:enterAnim="@anim/slide_in_from_right_fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_in_from_left_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/notification"
+        android:name="in.koreatech.koin.ui.newmain.fragment.NotificationFragment" />
 
     <fragment
         android:id="@+id/bottom_navigation_category"

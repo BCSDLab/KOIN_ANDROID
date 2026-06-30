@@ -4,6 +4,7 @@ import `in`.koreatech.koin.domain.model.notification.Notification
 import `in`.koreatech.koin.domain.model.notification.NotificationPermissionInfo
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
+import kotlinx.coroutines.flow.Flow
 
 @Suppress("Detekt.TooManyFunctions")
 interface NotificationRepository {
@@ -28,6 +29,8 @@ interface NotificationRepository {
     suspend fun updateNotificationReadById(id: Int, isRead: Boolean): Result<Notification>
 
     suspend fun getNotificationsFromLocal(): Result<List<Notification>>
+
+    fun getNotificationsFlowFromLocal(): Flow<List<Notification>>
 
     suspend fun deleteNotificationFromLocal(id: Int): Result<Unit>
 

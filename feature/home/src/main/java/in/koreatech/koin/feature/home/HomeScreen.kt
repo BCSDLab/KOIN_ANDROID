@@ -7,15 +7,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -57,26 +61,38 @@ import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    navigateToNotification: () -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
 
-    HomeScreen(
-        modifier = Modifier.background(Color(0xFFF8F8FA)),
-        uiState = uiState
-    )
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        contentWindowInsets = WindowInsets.statusBars
+    ) { paddingValues ->
+        HomeScreen(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFFF8F8FA))
+                .padding(paddingValues),
+            uiState = uiState,
+            navigateToNotification = navigateToNotification
+        )
+    }
 }
 
 @Composable
 private fun HomeScreen(
     uiState: HomeState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateToNotification: () -> Unit = {}
 ) {
     Column(
         modifier = modifier.verticalScroll(rememberScrollState())
     ) {
         HeaderSection(
-            isNewNotificationReceived = uiState.isNewNotificationReceived
+            isNewNotificationReceived = uiState.isNewNotificationReceived,
+            onNotificationClick = navigateToNotification
         )
         InfoSection(
             username = uiState.username,
@@ -107,7 +123,8 @@ private fun HeaderSection(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 24.dp)
+            .padding(vertical = 8.dp, horizontal = 24.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             imageVector = ImageVector.vectorResource(R.drawable.ic_bcsd_symbol),
