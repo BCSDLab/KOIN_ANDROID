@@ -1,3 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="notification_title">알림</string>
+    <string name="notification_error">오류가 발생했습니다.</string>
+    <string name="notification_deleted">알림이 삭제되었습니다.</string>
+    <string name="notification_auto_delete_info">14일이 지난 알림은 자동으로 삭제됩니다.</string>
+    <string name="notification_mark_all_read">모두 읽음으로 표시</string>
+    <string name="notification_delete_all">알림 전체 삭제</string>
+    <string name="notification_empty">아직 알림이 없어요</string>
+    <string name="notification_delete_content_description">삭제</string>
 </resources>

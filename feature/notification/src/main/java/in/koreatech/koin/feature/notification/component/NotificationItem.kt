@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -162,7 +163,7 @@ fun NotificationItem(
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.ic_trash_can),
-                contentDescription = "삭제",
+                contentDescription = stringResource(R.string.notification_delete_content_description),
                 tint = Color.White,
                 modifier = Modifier.size(30.dp)
             )

@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -61,7 +62,7 @@ fun NotificationScreen(
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             is NotificationSideEffect.Error -> {
-                snackbarHostState.showSnackbar("오류가 발생했습니다.")
+                snackbarHostState.showSnackbar(context.getString(R.string.notification_error))
             }
 
             is NotificationSideEffect.NavigateTo -> {
@@ -69,7 +70,7 @@ fun NotificationScreen(
             }
 
             NotificationSideEffect.Deleted -> {
-                snackbarHostState.showSnackbar("알림이 삭제되었습니다.")
+                snackbarHostState.showSnackbar(context.getString(R.string.notification_deleted))
             }
         }
     }
@@ -78,7 +79,7 @@ fun NotificationScreen(
         modifier = Modifier,
         topBar = {
             KoinTopAppBar(
-                title = "알림",
+                title = stringResource(R.string.notification_title),
                 onNavigationIconClick = onBack,
                 actions = {
                     NotificationMenuButton(
@@ -94,7 +95,7 @@ fun NotificationScreen(
                     .fillMaxWidth()
                     .padding(vertical = 16.dp)
                     .windowInsetsPadding(WindowInsets.navigationBars),
-                text = "14일이 지난 알림은 자동으로 삭제됩니다.",
+                text = stringResource(R.string.notification_auto_delete_info),
                 style = RebrandKoinTheme.typography.regular14,
                 color = Color(0xFFCACACA),
                 textAlign = TextAlign.Center
@@ -139,7 +140,7 @@ private fun NotificationMenuButton(
         DropdownMenuItem(
             text = {
                 Text(
-                    text = "모두 읽음으로 표시",
+                    text = stringResource(R.string.notification_mark_all_read),
                     style = RebrandKoinTheme.typography.regular13
                 )
             },
@@ -151,7 +152,7 @@ private fun NotificationMenuButton(
         DropdownMenuItem(
             text = {
                 Text(
-                    text = "알림 전체 삭제",
+                    text = stringResource(R.string.notification_delete_all),
                     style = RebrandKoinTheme.typography.regular13,
                     color = Color(0xFFEC2D30)
                 )
@@ -191,7 +192,7 @@ private fun NotificationScreenImpl(
             )
 
             Text(
-                text = "아직 알림이 없어요",
+                text = stringResource(R.string.notification_empty),
                 style = RebrandKoinTheme.typography.medium18.merge(
                     color = RebrandKoinTheme.colors.primary500
                 )
