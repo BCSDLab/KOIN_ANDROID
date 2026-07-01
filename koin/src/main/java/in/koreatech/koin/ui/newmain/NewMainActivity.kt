@@ -53,18 +53,13 @@ class NewMainActivity : AppCompatActivity() {
 
         binding.bottomNavigationMain.setupWithNavController(navController)
 
+        // setOnItemReselectedListener를 따로 등록하면 재탭 시 기본 popUpTo/restoreState 동작이 사라지므로 등록하지 않는다.
+        // 리스너가 없으면 재탭도 이 setOnItemSelectedListener로 그대로 들어와 로깅과 기본 동작이 모두 보존된다.
         binding.bottomNavigationMain.setOnItemSelectedListener { item ->
             navigationLogValue(item.itemId)?.let { (label, value) ->
                 EventLogger.logCampusClickEvent(label, value)
             }
             NavigationUI.onNavDestinationSelected(item, navController)
-        }
-
-        binding.bottomNavigationMain.setOnItemReselectedListener { item ->
-            navigationLogValue(item.itemId)?.let { (label, value) ->
-                EventLogger.logCampusClickEvent(label, value)
-            }
-            navController.popBackStack(item.itemId, false)
         }
 
         val topLevelDestinations = setOf(

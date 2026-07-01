@@ -46,6 +46,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.notification.component.NotificationItem
 import `in`.koreatech.koin.feature.notification.model.LocalNotification
+import `in`.koreatech.koin.feature.notification.model.NotificationCategory
 import kotlinx.collections.immutable.ImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -175,18 +176,6 @@ private fun NotificationMenuButton(
     }
 }
 
-private fun notificationListEventValue(type: String): String =
-    when (type) {
-        "callvan", "callvan-chat" -> "콜밴팟"
-        "dining" -> "식단"
-        "shop" -> "상점"
-        "lost-item" -> "분실물"
-        "chat" -> "쪽지"
-        // Edge-case fallback for future backend-added notification types.
-        // If a new slug starts reaching this branch, add an explicit Korean label mapping in a follow-up issue.
-        else -> "기타"
-    }
-
 @Composable
 private fun NotificationScreenImpl(
     listState: LazyListState,
@@ -228,19 +217,23 @@ private fun NotificationScreenImpl(
                 content = notification.content,
                 timestamp = notification.datetimeDiff,
                 isRead = notification.isRead,
-                onDelete = {
-                    EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.NOTIFICATION_LIST_DELETE,
-                        "알림 삭제"
-                    )
-                    onDelete(notification.id)
+                onDelete = remember(notification.id) {
+                    {
+                        EventLogger.logCampusClickEvent(
+                            AnalyticsConstant.Label.NOTIFICATION_LIST_DELETE,
+                            "알림 삭제"
+                        )
+                        onDelete(notification.id)
+                    }
                 },
-                onClick = {
-                    EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.NOTIFICATION_LIST,
-                        notificationListEventValue(notification.type)
-                    )
-                    onNotificationClick(notification)
+                onClick = remember(notification.id, notification.type) {
+                    {
+                        EventLogger.logCampusClickEvent(
+                            AnalyticsConstant.Label.NOTIFICATION_LIST,
+                            NotificationCategory.from(notification.type).analyticsLabel
+                        )
+                        onNotificationClick(notification)
+                    }
                 }
             )
         }

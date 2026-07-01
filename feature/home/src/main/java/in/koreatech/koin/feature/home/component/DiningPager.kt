@@ -84,8 +84,8 @@ fun DiningPager(
                     place = data[page].place,
                     isSelected = isSelected
                 ) {
-                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.MENU_CORNER, data[page].place)
                     if (isSelected) return@DiningPagerIndicator
+                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.MENU_CORNER, data[page].place)
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(page)
                     }
