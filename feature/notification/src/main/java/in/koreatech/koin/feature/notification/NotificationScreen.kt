@@ -37,6 +37,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -44,6 +46,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.notification.component.NotificationItem
 import `in`.koreatech.koin.feature.notification.model.LocalNotification
+import `in`.koreatech.koin.feature.notification.model.NotificationCategory
 import kotlinx.collections.immutable.ImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -151,6 +154,7 @@ private fun NotificationMenuButton(
                 )
             },
             onClick = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.NOTIFICATION_LIST_READ_ALL, "모두 읽음으로 표시")
                 onMarkAllAsRead()
                 expanded = false
             }
@@ -164,6 +168,7 @@ private fun NotificationMenuButton(
                 )
             },
             onClick = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.NOTIFICATION_DELETE_ALL, "알림 전체 삭제")
                 onDeleteAll()
                 expanded = false
             }
@@ -212,8 +217,24 @@ private fun NotificationScreenImpl(
                 content = notification.content,
                 timestamp = notification.datetimeDiff,
                 isRead = notification.isRead,
-                onDelete = remember(notification.id) { { onDelete(notification.id) } },
-                onClick = remember(notification.id) { { onNotificationClick(notification) } }
+                onDelete = remember(notification.id) {
+                    {
+                        EventLogger.logCampusClickEvent(
+                            AnalyticsConstant.Label.NOTIFICATION_LIST_DELETE,
+                            "알림 삭제"
+                        )
+                        onDelete(notification.id)
+                    }
+                },
+                onClick = remember(notification.id, notification.type) {
+                    {
+                        EventLogger.logCampusClickEvent(
+                            AnalyticsConstant.Label.NOTIFICATION_LIST,
+                            NotificationCategory.from(notification.type).analyticsLabel
+                        )
+                        onNotificationClick(notification)
+                    }
+                }
             )
         }
     }

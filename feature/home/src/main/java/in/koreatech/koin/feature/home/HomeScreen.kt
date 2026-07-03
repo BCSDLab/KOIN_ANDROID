@@ -38,6 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.AsyncImage
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
@@ -134,7 +136,10 @@ private fun HeaderSection(
         Spacer(modifier = Modifier.weight(1f))
 
         Image(
-            modifier = Modifier.noRippleClickable(onClick = onNotificationClick),
+            modifier = Modifier.noRippleClickable {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.NOTIFICATION, "알림 아이콘")
+                onNotificationClick()
+            },
             imageVector = if (isNewNotificationReceived) {
                 ImageVector.vectorResource(R.drawable.ic_home_notification_dot)
             } else {
@@ -219,6 +224,7 @@ private fun DiningSection(
         more = {
             Row(
                 modifier = Modifier.noRippleClickable {
+                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TODAY_MEAL, "전체보기")
                     navigator.navigateToDining(context).let(context::startActivity)
                 },
                 verticalAlignment = Alignment.CenterVertically
@@ -259,6 +265,7 @@ private fun BusSection(
         },
         more = {
             ShuttleTicketCard {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.SHUTTLE_TICKET, "셔틀 탑승권")
                 navigator.navigateToUnibus(context).let(context::startActivity)
             }
         }
@@ -314,6 +321,7 @@ private fun BusSection(
                     }
                 },
                 onClick = {
+                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.CALLVANPOT, "콜밴팟 모집보기")
                     navigator.navigateToCallvan(context).let(context::startActivity)
                 }
             )
@@ -353,6 +361,7 @@ private fun BusSection(
                     )
                 },
                 onClick = {
+                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.BUS_TIMETABLE, "버스 시간표 조회하기")
                     navigator.navigateToBusTimeTable(context).let(context::startActivity)
                 }
             )
@@ -388,6 +397,7 @@ private fun BusSection(
                     )
                 },
                 onClick = {
+                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.BUS_ROUTE, "버스 노선 조회하기")
                     navigator.navigateToBusSearch(context).let(context::startActivity)
                 }
             )
@@ -418,6 +428,7 @@ private fun ShopSection(
         more = {
             Row(
                 modifier = Modifier.noRippleClickable {
+                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.SHOP, "전체보기")
                     navigator.navigateToStore(context).let(context::startActivity)
                 },
                 verticalAlignment = Alignment.CenterVertically
@@ -469,6 +480,7 @@ private fun ShopSection(
                 )
             },
             onClick = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.POPULAR_SHOP, "많이 찾는 상점 둘러보기")
                 navigator.navigateToStore(context).let(context::startActivity)
             }
         )

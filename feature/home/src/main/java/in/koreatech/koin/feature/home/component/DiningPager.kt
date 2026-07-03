@@ -30,6 +30,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.feature.home.R
@@ -83,6 +85,7 @@ fun DiningPager(
                     isSelected = isSelected
                 ) {
                     if (isSelected) return@DiningPagerIndicator
+                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.MENU_CORNER, data[page].place)
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(page)
                     }

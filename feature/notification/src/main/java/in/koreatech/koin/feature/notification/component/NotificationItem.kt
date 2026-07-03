@@ -43,6 +43,7 @@ import androidx.compose.ui.zIndex
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.notification.R
+import `in`.koreatech.koin.feature.notification.model.NotificationCategory
 import kotlin.math.roundToInt
 
 private enum class SwipeAnchor { Closed, Open, Dismissed }
@@ -63,16 +64,7 @@ fun NotificationItem(
     val state = remember { AnchoredDraggableState(initialValue = SwipeAnchor.Closed) }
     var itemSize by remember { mutableStateOf(IntSize.Zero) }
     val isOpen = state.settledValue != SwipeAnchor.Closed
-    val drawableRes = remember(type) {
-        when (type) {
-            "shop" -> R.drawable.ic_notification_store
-            "dining" -> R.drawable.ic_notification_dining
-            "lost-item" -> R.drawable.ic_notification_lostitem
-            "chat" -> R.drawable.ic_notification_chat
-            "callvan", "callvan-chat" -> R.drawable.ic_notification_callvan
-            else -> null
-        }
-    }
+    val drawableRes = remember(type) { NotificationCategory.from(type).drawableRes }
 
     LaunchedEffect(itemSize, isOpen) {
         if (itemSize == IntSize.Zero) return@LaunchedEffect

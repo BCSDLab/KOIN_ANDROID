@@ -115,6 +115,21 @@ object AnalyticsConstant {
         const val TO_MANAGE_KEYWORD = "to_manage_keyword"
 
         const val LOGIN_PROMPT = "login_prompt"
+        const val NOTIFICATION_LIST = "notification_list"
+        const val NOTIFICATION_LIST_READ_ALL = "notification_list_read_all"
+        const val NOTIFICATION_DELETE_ALL = "notification_delete_all"
+        const val NOTIFICATION_LIST_DELETE = "notification_list_delete"
+        const val TODAY_MEAL = "today_meal"
+        const val MENU_CORNER = "menu_corner"
+        const val SHUTTLE_TICKET = "shuttle_ticket"
+        const val CALLVANPOT = "callvanpot"
+        const val BUS_ROUTE = "bus_route"
+        const val SHOP = "shop"
+        const val POPULAR_SHOP = "popular_shop"
+        const val NAV_HOME = "nav_home"
+        const val NAV_CATEGORY = "nav_category"
+        const val NAV_BULLETIN = "nav_bulletin"
+        const val NAV_PROFILE = "nav_profile"
 
         object LostAndFound {
             const val LOST_ITEM_ADD_ITEM = "lost_item_add_item"
