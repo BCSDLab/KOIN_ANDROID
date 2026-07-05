@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnAttach
 import androidx.fragment.app.Fragment
@@ -19,6 +18,7 @@ import `in`.koreatech.koin.core.appbar.ToolbarMenu
 import `in`.koreatech.koin.databinding.FragmentArticleHostBinding
 import `in`.koreatech.koin.feature.article.R as ArticleR
 import `in`.koreatech.koin.feature.article.model.ArticleToolbarState
+import `in`.koreatech.koin.ui.newmain.ArticleBackgroundController
 
 @AndroidEntryPoint
 class ArticleFragment : Fragment() {
@@ -31,14 +31,12 @@ class ArticleFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        requireActivity().findViewById<View>(R.id.nav_host_fragment_main)
-            ?.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.rebrand_neutral_0))
+        (activity as? ArticleBackgroundController)?.setArticleBackground()
     }
 
     override fun onPause() {
         super.onPause()
-        requireActivity().findViewById<View>(R.id.nav_host_fragment_main)
-            ?.background = null
+        (activity as? ArticleBackgroundController)?.clearArticleBackground()
     }
 
     override fun onCreateView(
