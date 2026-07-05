@@ -1,10 +1,10 @@
 package `in`.koreatech.koin.ui.newmain.fragment
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnAttach
 import androidx.fragment.app.Fragment
@@ -28,7 +28,7 @@ class ArticleFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         requireActivity().findViewById<View>(R.id.nav_host_fragment_main)
-            ?.setBackgroundColor(Color.WHITE)
+            ?.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
     }
 
     override fun onPause() {
