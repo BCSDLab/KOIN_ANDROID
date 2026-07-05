@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnAttach
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
@@ -24,6 +25,9 @@ class ArticleFragment : Fragment() {
 
     private var _binding: FragmentArticleHostBinding? = null
     private val binding get() = _binding!!
+
+    private var destinationListener: NavController.OnDestinationChangedListener? = null
+    private var articleNavController: NavController? = null
 
     override fun onResume() {
         super.onResume()
@@ -53,8 +57,9 @@ class ArticleFragment : Fragment() {
         val navHostFragment =
             childFragmentManager.findFragmentById(R.id.nav_host_article_fragment) as NavHostFragment
         val navController = navHostFragment.navController
+        articleNavController = navController
 
-        navController.addOnDestinationChangedListener { _, dest, _ ->
+        destinationListener = NavController.OnDestinationChangedListener { _, dest, _ ->
             when (dest.id) {
                 ArticleR.id.articleListFragment -> setToolbar(ArticleToolbarState.ARTICLE_LIST, navController)
                 ArticleR.id.articleDetailFragment -> setToolbar(ArticleToolbarState.ARTICLE_DETAIL, navController)
@@ -62,9 +67,10 @@ class ArticleFragment : Fragment() {
                 ArticleR.id.articleKeywordFragment -> setToolbar(ArticleToolbarState.ARTICLE_KEYWORD, navController)
             }
         }
+        navController.addOnDestinationChangedListener(destinationListener!!)
     }
 
-    private fun setToolbar(state: ArticleToolbarState, navController: androidx.navigation.NavController) {
+    private fun setToolbar(state: ArticleToolbarState, navController: NavController) {
         binding.toolbarArticle.apply {
             setOnNavigationIconClickListener { navController.navigateUp() }
             setTitle(getString(state.title))
@@ -89,6 +95,9 @@ class ArticleFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        destinationListener?.let { articleNavController?.removeOnDestinationChangedListener(it) }
+        destinationListener = null
+        articleNavController = null
         super.onDestroyView()
         _binding = null
     }

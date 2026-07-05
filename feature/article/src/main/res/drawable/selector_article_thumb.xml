@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/shape_article_switch_thumb_off" android:state_checked="false" />
-    <item android:drawable="@drawable/shape_article_switch_thumb_on" android:state_checked="true" />
+    <item android:state_checked="false">
+        <shape android:shape="oval">
+            <size
+                android:width="24dp"
+                android:height="24dp" />
+            <solid android:color="@color/rebrand_neutral_0" />
+            <stroke
+                android:width="3dp"
+                android:color="@color/rebrand_neutral_300" />
+        </shape>
+    </item>
+    <item android:state_checked="true">
+        <shape android:shape="oval">
+            <size
+                android:width="24dp"
+                android:height="24dp" />
+            <solid android:color="@color/rebrand_neutral_0" />
+            <stroke
+                android:width="3dp"
+                android:color="@color/rebrand_primary_600" />
+        </shape>
+    </item>
 </selector>

@@ -100,15 +100,13 @@ class ArticleKeywordFragment : Fragment() {
     }
 
     private fun initNotificationSwitchTrack() {
-        val track = ContextCompat.getDrawable(requireContext(), R.drawable.selector_article_switch)
-        val thumb = ContextCompat.getDrawable(requireContext(), R.drawable.selector_article_thumb)
         listOf(
             `in`.koreatech.koin.core.R.id.btn_switch,
             `in`.koreatech.koin.core.R.id.btn_switch_fake
         ).forEach { id ->
             binding.notificationKeyword.findViewById<SwitchCompat>(id)?.apply {
-                trackDrawable = track
-                thumbDrawable = thumb
+                trackDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.selector_article_switch)
+                thumbDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.selector_article_thumb)
             }
         }
     }
@@ -321,7 +319,7 @@ class ArticleKeywordFragment : Fragment() {
                                 is KeywordInputUiState.Valid ->
                                     ContextCompat.getColor(
                                         requireContext(),
-                                        R.color.white
+                                        R.color.rebrand_neutral_0
                                     )
                             }
                         )
