@@ -9,7 +9,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_input_layout_search"
-            style="@style/OutlinedTextInputLayoutStyle"
+            style="@style/ArticleTextInputLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
@@ -44,7 +44,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/text_input_search"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/neutral_500" />
+                    app:tint="@color/rebrand_neutral_500" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.textfield.TextInputLayout>
 

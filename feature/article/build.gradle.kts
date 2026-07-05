@@ -25,12 +25,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.material)
-
-    implementation(libs.coil.compose)
-    implementation(libs.coil.gif)
     implementation(libs.glide)
 
     implementation(libs.timber)

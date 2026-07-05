@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.DrawableRes
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.widget.addTextChangedListener
@@ -88,6 +89,7 @@ class ArticleKeywordFragment : Fragment() {
             binding.textInputSearch.addTextChangedListener {
                 viewModel.onKeywordInputChanged(it.toString())
             }
+            initNotificationSwitchTrack()
             initKeywordNotification()
             setMyKeywords()
             setAddButtonState()
@@ -95,6 +97,20 @@ class ArticleKeywordFragment : Fragment() {
             handleKeywordAddResult()
         }
         return binding.root
+    }
+
+    private fun initNotificationSwitchTrack() {
+        val track = ContextCompat.getDrawable(requireContext(), R.drawable.selector_article_switch)
+        val thumb = ContextCompat.getDrawable(requireContext(), R.drawable.selector_article_thumb)
+        listOf(
+            `in`.koreatech.koin.core.R.id.btn_switch,
+            `in`.koreatech.koin.core.R.id.btn_switch_fake
+        ).forEach { id ->
+            binding.notificationKeyword.findViewById<SwitchCompat>(id)?.apply {
+                trackDrawable = track
+                thumbDrawable = thumb
+            }
+        }
     }
 
     private fun setMyKeywords() {
@@ -117,7 +133,7 @@ class ArticleKeywordFragment : Fragment() {
                         chipGroupMyKeyword.addView(
                             createChip(
                                 keyword,
-                                R.drawable.ic_close_round,
+                                R.drawable.ic_keyword_delete,
                                 binding.chipGroupMyKeyword,
                                 viewModel::deleteKeyword
                             )
@@ -170,7 +186,7 @@ class ArticleKeywordFragment : Fragment() {
                                 chipGroupSuggestionKeywords.addView(
                                     createChip(
                                         keyword,
-                                        R.drawable.ic_add_round,
+                                        R.drawable.ic_keyword_add,
                                         binding.chipGroupSuggestionKeywords,
                                         onCloseIconClicked = onClick,
                                         onClick = onClick
@@ -284,13 +300,13 @@ class ArticleKeywordFragment : Fragment() {
                                 is KeywordInputUiState.Empty ->
                                     ContextCompat.getColor(
                                         requireContext(),
-                                        R.color.gray16
+                                        R.color.rebrand_neutral_300
                                     )
 
                                 is KeywordInputUiState.Valid ->
                                     ContextCompat.getColor(
                                         requireContext(),
-                                        R.color.colorPrimary
+                                        R.color.rebrand_primary_600
                                     )
                             }
                         )
@@ -299,7 +315,7 @@ class ArticleKeywordFragment : Fragment() {
                                 is KeywordInputUiState.Empty ->
                                     ContextCompat.getColor(
                                         requireContext(),
-                                        R.color.gray14
+                                        R.color.rebrand_neutral_600
                                     )
 
                                 is KeywordInputUiState.Valid ->
