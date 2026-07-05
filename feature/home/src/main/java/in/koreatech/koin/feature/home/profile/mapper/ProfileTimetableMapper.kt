@@ -1,9 +1,10 @@
-package `in`.koreatech.koin.feature.home.profile.model
+package `in`.koreatech.koin.feature.home.profile.mapper
 
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectures
+import `in`.koreatech.koin.feature.home.profile.model.ProfileTimetableLecture
 import java.time.DayOfWeek
+import kotlin.collections.plusAssign
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 fun TimetableLectures.toProfileTimetableLectures(): ImmutableList<ProfileTimetableLecture> {
@@ -43,5 +44,3 @@ private fun DayOfWeek.toProfileDayIndex(): Int? = when (this) {
     DayOfWeek.FRIDAY -> 4
     else -> null
 }
-
-fun emptyProfileTimetableLectures(): ImmutableList<ProfileTimetableLecture> = persistentListOf()

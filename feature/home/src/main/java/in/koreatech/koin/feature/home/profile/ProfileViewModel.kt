@@ -8,7 +8,7 @@ import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableFramesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetUserSemestersUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLogoutUseCase
-import `in`.koreatech.koin.feature.home.profile.model.toProfileTimetableLectures
+import `in`.koreatech.koin.feature.home.profile.mapper.toProfileTimetableLectures
 import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.catch
