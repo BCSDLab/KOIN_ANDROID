@@ -25,6 +25,7 @@
             android:id="@+id/nested_scroll_view_article_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:fillViewport="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tab_layout_article_board">
 
@@ -87,17 +88,50 @@
                     </LinearLayout>
                 </HorizontalScrollView>
 
-                <TextView
+                <LinearLayout
                     android:id="@+id/text_view_empty_articles"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/empty_articles"
-                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/horizontal_scroll_view_article_keywords" />
+                    app:layout_constraintTop_toBottomOf="@id/horizontal_scroll_view_article_keywords">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clipChildren="false">
+
+                        <ImageView
+                            android:layout_width="95dp"
+                            android:layout_height="75dp"
+                            android:layout_gravity="bottom|end"
+                            android:layout_marginTop="16dp"
+                            android:src="@drawable/ic_bcsd_logo_symbol_sleep" />
+
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_gravity="top|start"
+                            android:layout_marginStart="-2dp"
+                            android:layout_marginTop="16dp"
+                            android:src="@drawable/ic_sleep_z" />
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="@string/empty_articles"
+                        android:textAlignment="center"
+                        android:textColor="@color/rebrand_neutral_500"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_article_list"

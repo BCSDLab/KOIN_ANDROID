@@ -86,6 +86,14 @@ class ArticleKeywordFragment : Fragment() {
                 }
             }
             binding.textInputSearch.addTextChangedListener {
+                val hasText = it?.isNotEmpty() == true
+                val strokeColor = ContextCompat.getColor(
+                    requireContext(),
+                    if (hasText) R.color.rebrand_primary_300 else R.color.rebrand_neutral_300
+                )
+                val strokeWidth = (resources.displayMetrics.density).toInt()
+                (binding.textInputLayoutKeyword.background.mutate() as? android.graphics.drawable.GradientDrawable)
+                    ?.setStroke(strokeWidth, strokeColor)
                 viewModel.onKeywordInputChanged(it.toString())
             }
             initNotificationSwitchTrack()
@@ -292,7 +300,7 @@ class ArticleKeywordFragment : Fragment() {
                                 is KeywordInputUiState.Empty ->
                                     ContextCompat.getColor(
                                         requireContext(),
-                                        R.color.rebrand_neutral_300
+                                        R.color.rebrand_neutral_200
                                     )
 
                                 is KeywordInputUiState.Valid ->
@@ -307,7 +315,7 @@ class ArticleKeywordFragment : Fragment() {
                                 is KeywordInputUiState.Empty ->
                                     ContextCompat.getColor(
                                         requireContext(),
-                                        R.color.rebrand_neutral_600
+                                        R.color.white
                                     )
 
                                 is KeywordInputUiState.Valid ->
