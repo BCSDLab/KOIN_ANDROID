@@ -1,0 +1,159 @@
+package `in`.koreatech.koin.feature.home.profile.component
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.home.R
+import `in`.koreatech.koin.feature.home.component.HomeIcon
+
+@Composable
+fun ProfileCard(
+    isLoggedIn: Boolean,
+    name: String,
+    studentNumber: String,
+    modifier: Modifier = Modifier,
+    onAuthClick: () -> Unit = {},
+    onSettingClick: () -> Unit = {}
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(20.dp))
+            .background(RebrandKoinTheme.colors.neutral0)
+            .padding(vertical = 20.dp, horizontal = 20.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            ProfileAvatar()
+            Spacer(modifier = Modifier.width(10.dp))
+            Column {
+                Text(
+                    text = if (isLoggedIn) {
+                        name.ifBlank { stringResource(R.string.home_username_default) }
+                    } else {
+                        stringResource(R.string.profile_login_prompt)
+                    },
+                    style = RebrandKoinTheme.typography.bold16,
+                    color = RebrandKoinTheme.colors.neutral800
+                )
+                if (isLoggedIn && studentNumber.isNotBlank()) {
+                    Text(
+                        text = studentNumber,
+                        style = RebrandKoinTheme.typography.regular12,
+                        color = RebrandKoinTheme.colors.neutral500
+                    )
+                }
+            }
+        }
+
+        ProfileMenuRow(
+            icon = ImageVector.vectorResource(
+                if (isLoggedIn) R.drawable.ic_home_logout else R.drawable.ic_home_login
+            ),
+            label = stringResource(
+                if (isLoggedIn) R.string.profile_logout else R.string.profile_login
+            ),
+            onClick = onAuthClick
+        )
+
+        ProfileMenuRow(
+            icon = ImageVector.vectorResource(R.drawable.ic_home_setting),
+            label = stringResource(R.string.profile_setting),
+            onClick = onSettingClick
+        )
+    }
+}
+
+@Composable
+private fun ProfileAvatar(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .size(44.dp)
+            .clip(CircleShape)
+            .border(0.5.dp, RebrandKoinTheme.colors.neutral300, CircleShape)
+            .background(RebrandKoinTheme.colors.neutral0)
+            .padding(10.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            modifier = Modifier.size(24.dp),
+            imageVector = ImageVector.vectorResource(R.drawable.ic_home_profile_avatar),
+            tint = RebrandKoinTheme.colors.primary500,
+            contentDescription = null
+        )
+    }
+}
+
+@Composable
+private fun ProfileMenuRow(
+    icon: ImageVector,
+    label: String,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        HomeIcon(
+            imageVector = icon,
+            tint = RebrandKoinTheme.colors.primary500,
+            backgroundColor = RebrandKoinTheme.colors.neutral100,
+            shape = RoundedCornerShape(10.dp),
+            contentDescription = null
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        Text(
+            text = label,
+            style = RebrandKoinTheme.typography.bold15,
+            color = RebrandKoinTheme.colors.neutral800
+        )
+    }
+}
+
+@Preview(showBackground = true, widthDp = 360)
+@Composable
+private fun ProfileCardLoggedInPreview() {
+    ProfileCard(
+        isLoggedIn = true,
+        name = "BCSD",
+        studentNumber = "20231020329",
+        modifier = Modifier.padding(16.dp)
+    )
+}
+
+@Preview(showBackground = true, widthDp = 360)
+@Composable
+private fun ProfileCardLoggedOutPreview() {
+    ProfileCard(
+        isLoggedIn = false,
+        name = "",
+        studentNumber = "",
+        modifier = Modifier.padding(16.dp)
+    )
+}
