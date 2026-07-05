@@ -187,6 +187,14 @@ class ArticleListFragment : Fragment() {
     }
 
     private fun handleKeywordChips() {
+        binding.imageViewToSearchPage.setOnClickListener {
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.NOTICE_SEARCH,
+                getString(R.string.search)
+            )
+            navController.navigate(R.id.action_articleListFragment_to_articleSearchFragment)
+        }
         binding.imageViewToKeywordAddPage.setOnClickListener {
             EventLogger.logClickEvent(
                 EventAction.CAMPUS,

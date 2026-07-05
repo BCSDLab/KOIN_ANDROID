@@ -26,7 +26,15 @@
 
     <fragment
         android:id="@+id/bottom_navigation_article"
-        android:name="in.koreatech.koin.ui.newmain.fragment.ArticleFragment" />
+        android:name="in.koreatech.koin.ui.newmain.fragment.ArticleFragment">
+        <action
+            android:id="@+id/action_article_to_notification"
+            app:destination="@id/notification"
+            app:enterAnim="@anim/slide_in_from_right_fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_in_from_left_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
 
     <fragment
         android:id="@+id/bottom_navigation_profile"
