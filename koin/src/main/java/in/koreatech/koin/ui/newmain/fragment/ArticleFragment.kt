@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.core.view.ViewCompat
+import androidx.core.view.doOnAttach
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
@@ -36,6 +38,7 @@ class ArticleFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         return ComposeView(requireContext()).apply {
+            doOnAttach { ViewCompat.requestApplyInsets(it) }
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 RebrandKoinTheme {
