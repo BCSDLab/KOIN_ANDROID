@@ -1,10 +1,13 @@
 package `in`.koreatech.koin.core.view.notificaiton
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
+import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.databinding.NotificationHeaderBinding
@@ -70,6 +73,13 @@ class NotificationHeader @JvmOverloads constructor(
             ).apply {
                 btnSwitch.setOnClickListener { onSwitchClickListener?.onSwitch(btnSwitch.isChecked) }
             }
+    }
+
+    fun setSwitchDrawables(@DrawableRes trackRes: Int, @DrawableRes thumbRes: Int) {
+        listOf(binding.btnSwitch, binding.btnSwitchFake).forEach { switch ->
+            switch.trackDrawable = ContextCompat.getDrawable(context, trackRes)
+            switch.thumbDrawable = ContextCompat.getDrawable(context, thumbRes)
+        }
     }
 
     fun disableAll() {

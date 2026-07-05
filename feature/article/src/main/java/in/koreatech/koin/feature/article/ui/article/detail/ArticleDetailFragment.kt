@@ -83,6 +83,9 @@ class ArticleDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.htmlView.setOnPreDrawListener { viewModel.setIsLoading(true) }
         binding.htmlView.setOnPostDrawListener { viewModel.setIsLoading(false) }
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
         initArticle()
         initAttachmentAdapter()
         initHotArticles()

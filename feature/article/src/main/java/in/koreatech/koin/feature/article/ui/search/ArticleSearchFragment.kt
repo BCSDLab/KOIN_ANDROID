@@ -97,6 +97,9 @@ class ArticleSearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
         ViewCompat.setOnApplyWindowInsetsListener(binding.recyclerViewSearchResult) { v, insets ->
             val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

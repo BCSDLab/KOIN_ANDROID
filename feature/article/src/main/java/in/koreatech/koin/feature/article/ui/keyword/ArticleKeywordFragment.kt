@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.DrawableRes
-import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.widget.addTextChangedListener
@@ -100,15 +99,10 @@ class ArticleKeywordFragment : Fragment() {
     }
 
     private fun initNotificationSwitchTrack() {
-        listOf(
-            `in`.koreatech.koin.core.R.id.btn_switch,
-            `in`.koreatech.koin.core.R.id.btn_switch_fake
-        ).forEach { id ->
-            binding.notificationKeyword.findViewById<SwitchCompat>(id)?.apply {
-                trackDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.selector_article_switch)
-                thumbDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.selector_article_thumb)
-            }
-        }
+        binding.notificationKeyword.setSwitchDrawables(
+            R.drawable.selector_article_switch,
+            R.drawable.selector_article_thumb
+        )
     }
 
     private fun setMyKeywords() {
