@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.core.view.notificaiton
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
