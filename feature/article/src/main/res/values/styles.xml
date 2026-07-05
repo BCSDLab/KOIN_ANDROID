@@ -12,7 +12,7 @@
         <item name="closeIconEndPadding">0dp</item>
     </style>
 
-    <style name="ArticlePageChip" parent="@style/Widget.MaterialComponents.Chip.Choice">
+    <style name="ArticlePageChip" parent="@style/RectangleChoiceChip">
         <item name="chipBackgroundColor">@color/color_article_page_chip_bg</item>
         <item name="android:textColor">@color/color_article_chip_text</item>
     </style>
