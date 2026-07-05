@@ -12,6 +12,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:indeterminateTint="@color/rebrand_primary_800"
             android:visibility="gone" />
 
         <androidx.core.widget.NestedScrollView
