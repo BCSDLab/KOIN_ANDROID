@@ -28,7 +28,7 @@ class ArticleFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         requireActivity().findViewById<View>(R.id.nav_host_fragment_main)
-            ?.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+            ?.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.rebrand_neutral_0))
     }
 
     override fun onPause() {
