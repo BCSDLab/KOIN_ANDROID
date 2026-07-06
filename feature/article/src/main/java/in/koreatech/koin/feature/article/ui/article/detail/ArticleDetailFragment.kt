@@ -218,8 +218,8 @@ class ArticleDetailFragment : Fragment() {
     }
 
     private fun setNavigateArticleButtonVisibility(article: ArticleState) {
-        binding.buttonToPrevArticle.isEnabled = article.prevArticleId != null
-        binding.buttonToNextArticle.isEnabled = article.nextArticleId != null
+        binding.buttonToPrevArticle.visibility = if (article.prevArticleId != null) View.VISIBLE else View.INVISIBLE
+        binding.buttonToNextArticle.visibility = if (article.nextArticleId != null) View.VISIBLE else View.INVISIBLE
     }
 
     private fun onAttachmentClick(attachment: AttachmentState) {
