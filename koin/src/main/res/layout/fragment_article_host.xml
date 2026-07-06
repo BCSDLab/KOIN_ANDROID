@@ -8,6 +8,7 @@
         android:id="@+id/toolbar_article"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/rebrand_neutral_0"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView

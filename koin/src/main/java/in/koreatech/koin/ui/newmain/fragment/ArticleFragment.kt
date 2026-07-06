@@ -18,8 +18,6 @@ import `in`.koreatech.koin.core.appbar.ToolbarMenu
 import `in`.koreatech.koin.databinding.FragmentArticleHostBinding
 import `in`.koreatech.koin.feature.article.R as ArticleR
 import `in`.koreatech.koin.feature.article.model.ArticleToolbarState
-import `in`.koreatech.koin.ui.newmain.ArticleBackgroundController
-
 @AndroidEntryPoint
 class ArticleFragment : Fragment() {
 
@@ -28,16 +26,6 @@ class ArticleFragment : Fragment() {
 
     private var destinationListener: NavController.OnDestinationChangedListener? = null
     private var articleNavController: NavController? = null
-
-    override fun onResume() {
-        super.onResume()
-        (activity as? ArticleBackgroundController)?.setArticleBackground()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        (activity as? ArticleBackgroundController)?.clearArticleBackground()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
