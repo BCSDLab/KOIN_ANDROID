@@ -2,7 +2,6 @@ package `in`.koreatech.koin.ui.newmain
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -19,7 +18,7 @@ import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatu
 import `in`.koreatech.koin.databinding.ActivityNewMainBinding
 
 @AndroidEntryPoint
-class NewMainActivity : AppCompatActivity(), ArticleBackgroundController {
+class NewMainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNewMainBinding
 
@@ -73,15 +72,5 @@ class NewMainActivity : AppCompatActivity(), ArticleBackgroundController {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.bottomNavigationMain.isVisible = destination.id in topLevelDestinations
         }
-    }
-
-    override fun setArticleBackground() {
-        binding.navHostFragmentMain.setBackgroundColor(
-            ContextCompat.getColor(this, R.color.rebrand_neutral_0)
-        )
-    }
-
-    override fun clearArticleBackground() {
-        binding.navHostFragmentMain.background = null
     }
 }
