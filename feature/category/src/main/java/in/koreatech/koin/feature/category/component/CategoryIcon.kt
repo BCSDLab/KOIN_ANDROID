@@ -44,8 +44,10 @@ fun CategoryIcon(
 @Preview
 @Composable
 private fun CategoryIconPreview() {
-    CategoryIcon(
-        imageVector = ImageVector.vectorResource(R.drawable.ic_calendar),
-        contentDescription = null
-    )
+    RebrandKoinTheme {
+        CategoryIcon(
+            imageVector = ImageVector.vectorResource(R.drawable.ic_calendar),
+            contentDescription = null
+        )
+    }
 }

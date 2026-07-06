@@ -53,14 +53,16 @@ fun CategoryCard(
 @Preview
 @Composable
 private fun CategoryCardPreview() {
-    CategoryCard(
-        categoryIcon = {
-            CategoryIcon(
-                imageVector = ImageVector.vectorResource(R.drawable.ic_calendar),
-                contentDescription = null
-            )
-        },
-        title = stringResource(R.string.category_timetable),
-        description = stringResource(R.string.timetable_description)
-    )
+    RebrandKoinTheme {
+        CategoryCard(
+            categoryIcon = {
+                CategoryIcon(
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_calendar),
+                    contentDescription = null
+                )
+            },
+            title = stringResource(R.string.category_timetable),
+            description = stringResource(R.string.timetable_description)
+        )
+    }
 }

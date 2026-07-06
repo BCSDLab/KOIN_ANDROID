@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,10 +48,12 @@ fun CategoryMenuList(
                 .background(RebrandKoinTheme.colors.neutral0)
         ) {
             items.forEach { menu ->
-                CategoryMenuRow(
-                    menu = menu,
-                    onClick = { onItemClick(menu) }
-                )
+                key(menu.id) {
+                    CategoryMenuRow(
+                        menu = menu,
+                        onItemClick = onItemClick
+                    )
+                }
             }
         }
     }
@@ -59,14 +62,14 @@ fun CategoryMenuList(
 @Composable
 private fun CategoryMenuRow(
     menu: CategoryMenu,
-    onClick: () -> Unit,
+    onItemClick: (CategoryMenu) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val title = stringResource(menu.titleRes)
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .noRippleClickable(onClick = onClick)
+            .noRippleClickable(onClick = { onItemClick(menu) })
             .padding(horizontal = 20.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -91,9 +94,11 @@ private fun CategoryMenuRow(
 @Preview
 @Composable
 private fun CategoryMenuListPreview() {
-    CategoryMenuList(
-        title = stringResource(R.string.campus),
-        items = CAMPUS_MENUS,
-        onItemClick = {}
-    )
+    RebrandKoinTheme {
+        CategoryMenuList(
+            title = stringResource(R.string.campus),
+            items = CAMPUS_MENUS,
+            onItemClick = {}
+        )
+    }
 }
