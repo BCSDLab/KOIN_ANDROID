@@ -89,11 +89,30 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toBottomOf="@id/text_attachment" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_to_portal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="24dp"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:visibility="gone"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp"
+                android:stateListAnimator="@null"
+                tools:text="@string/link_to_original_article"
+                android:textColor="@color/black"
+                android:backgroundTint="#E4EAF2"
+                app:cornerRadius="6dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_attachments" />
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_to_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginStart="24dp"
                 android:minHeight="0dp"
                 android:minWidth="0dp"
@@ -103,8 +122,9 @@
                 android:textColor="@color/gray14"
                 android:stateListAnimator="@null"
                 android:background="@drawable/bg_gray_button"
+                app:layout_goneMarginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recycler_view_attachments" />
+                app:layout_constraintTop_toBottomOf="@id/button_to_portal" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_to_next_article"
