@@ -56,6 +56,27 @@ interface Navigator {
         context: Context
     ): Intent
 
+    fun navigateToLand(
+        context: Context
+    ): Intent
+
+    fun navigateToBusiness(
+        context: Context
+    ): Intent
+
+    fun navigateToOperatingInfo(
+        context: Context
+    ): Intent
+
+    fun navigateToTimetable(
+        context: Context,
+        isAnonymous: Boolean = false
+    ): Intent
+
+    fun navigateToLostAndFound(
+        context: Context
+    ): Intent
+
     fun navigateToChatRoom(
         context: Context
     ): Intent
