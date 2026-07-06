@@ -10,6 +10,7 @@ import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLogoutUseCase
 import `in`.koreatech.koin.feature.home.profile.mapper.toProfileTimetableLectures
 import javax.inject.Inject
+import kotlin.math.pow
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
@@ -42,9 +43,12 @@ class ProfileViewModel @Inject constructor(
 
     private fun observeUserStatus() = intent {
         getUserStatusUseCase()
-            .retryWhen { cause, _ ->
+            .retryWhen { cause, attempt ->
                 Timber.e(cause)
-                delay(RETRY_DELAY_MS)
+                val backoffMs = (INITIAL_RETRY_DELAY_MS * 2.0.pow(attempt.toDouble()))
+                    .toLong()
+                    .coerceAtMost(MAX_RETRY_DELAY_MS)
+                delay(backoffMs)
                 true
             }
             .collectLatest { user ->
@@ -89,19 +93,28 @@ class ProfileViewModel @Inject constructor(
             .catch { Timber.e(it) }
             .firstOrNull()
             .orEmpty()
-        val semester = semesters.firstOrNull() ?: return@subIntent
+        val semester = semesters.firstOrNull() ?: run {
+            reduce { state.copy(timetable = persistentListOf()) }
+            return@subIntent
+        }
 
         val frames = getTimetableFramesUseCase(semester)
             .catch { Timber.e(it) }
             .firstOrNull()
             .orEmpty()
-        val mainFrame = frames.find { it.isMain } ?: return@subIntent
+        val mainFrame = frames.find { it.isMain } ?: run {
+            reduce { state.copy(timetable = persistentListOf()) }
+            return@subIntent
+        }
 
         getTimetableLecturesUseCase(mainFrame.id)
             .onSuccess { timetableLectures ->
                 reduce { state.copy(timetable = timetableLectures.toProfileTimetableLectures()) }
             }
-            .onFailure { Timber.e(it) }
+            .onFailure {
+                Timber.e(it)
+                reduce { state.copy(timetable = persistentListOf()) }
+            }
     }
 
     fun onLogoutClick() = intent {
@@ -115,6 +128,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     companion object {
-        private const val RETRY_DELAY_MS = 1000L
+        private const val INITIAL_RETRY_DELAY_MS = 1000L
+        private const val MAX_RETRY_DELAY_MS = 30_000L
     }
 }
