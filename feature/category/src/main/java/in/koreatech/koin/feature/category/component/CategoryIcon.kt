@@ -46,7 +46,7 @@ fun CategoryIcon(
 private fun CategoryIconPreview() {
     RebrandKoinTheme {
         CategoryIcon(
-            imageVector = ImageVector.vectorResource(R.drawable.ic_calendar),
+            imageVector = ImageVector.vectorResource(R.drawable.ic_calendar_category),
             contentDescription = null
         )
     }
