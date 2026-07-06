@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.category
 
+import android.content.ActivityNotFoundException
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -43,6 +44,7 @@ import `in`.koreatech.koin.feature.category.component.TRANSPORT_MENUS
 import `in`.koreatech.koin.feature.category.navigation.CategoryNavigationHandler
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import timber.log.Timber
 
 @Composable
 fun CategoryScreen(
@@ -59,7 +61,8 @@ fun CategoryScreen(
                 CategoryNavigationHandler.getIntent(effect.id, navigator, context, uiState.isAnonymous)?.let { intent ->
                     try {
                         context.startActivity(intent)
-                    } catch (e: Exception) {
+                    } catch (e: ActivityNotFoundException) {
+                        Timber.e(e)
                         ToastUtil.getInstance().makeShort(context.getString(R.string.category_cannot_open_link))
                     }
                 }
