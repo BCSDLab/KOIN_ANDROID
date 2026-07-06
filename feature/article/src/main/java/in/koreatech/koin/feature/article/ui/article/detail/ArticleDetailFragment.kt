@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.article.ui.article.detail
 
 import android.app.DownloadManager
+import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
@@ -18,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
@@ -30,6 +32,7 @@ import `in`.koreatech.koin.domain.util.DateFormatUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.feature.article.R
 import `in`.koreatech.koin.feature.article.databinding.FragmentArticleDetailBinding
+import `in`.koreatech.koin.feature.article.enums.LinkType
 import `in`.koreatech.koin.feature.article.model.ArticleHeaderState
 import `in`.koreatech.koin.feature.article.model.ArticleState
 import `in`.koreatech.koin.feature.article.model.AttachmentState
@@ -96,6 +99,7 @@ class ArticleDetailFragment : Fragment() {
                     setHeader(it)
                     setContent(it)
                     setNavigateArticleButtonVisibility(it)
+                    initPortalLinkButton(it)
 
                     if (it.attachments.isEmpty()) {
                         binding.groupAttachment.visibility = View.GONE
@@ -215,6 +219,39 @@ class ArticleDetailFragment : Fragment() {
                 dialog.show()
             }
         }.loadKoreatechHtml(requireContext(), article.content)
+    }
+
+    private fun initPortalLinkButton(article: ArticleState) {
+        var url = requireContext().getString(R.string.koreatech_url)
+        when (article.header.board.linkType) {
+            LinkType.NONE -> return
+            LinkType.ARTICLE -> {
+                url = article.url
+                binding.buttonToPortal.visibility = View.VISIBLE
+                binding.buttonToPortal.text = getString(R.string.link_to_original_article)
+            }
+
+            LinkType.PORTAL -> {
+                binding.buttonToPortal.visibility = View.VISIBLE
+                binding.buttonToPortal.text = getString(R.string.link_to_portal)
+            }
+
+            LinkType.STEMS -> {
+                url = requireContext().getString(R.string.koreatech_stems_url)
+                binding.buttonToPortal.visibility = View.VISIBLE
+                binding.buttonToPortal.text = getString(R.string.link_to_stems)
+            }
+        }
+        binding.buttonToPortal.setOnClickListener {
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.NOTICE_ORIGINAL_SHORTCUT,
+                binding.buttonToPortal.text.toString()
+            )
+            Intent(requireContext(), WebViewActivity::class.java).apply {
+                putExtra("url", url)
+            }.run(::startActivity)
+        }
     }
 
     private fun setNavigateArticleButtonVisibility(article: ArticleState) {
