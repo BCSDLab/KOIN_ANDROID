@@ -32,6 +32,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.feature.category.component.CAMPUS_MENUS
 import `in`.koreatech.koin.feature.category.component.CategoryCard
 import `in`.koreatech.koin.feature.category.component.CategoryIcon
@@ -55,7 +56,13 @@ fun CategoryScreen(
     viewModel.collectSideEffect { effect ->
         when (effect) {
             is CategorySideEffect.NavigateToMenu ->
-                CategoryNavigationHandler.getIntent(effect.id, navigator, context, uiState.isAnonymous)?.let { context.startActivity(it) }
+                CategoryNavigationHandler.getIntent(effect.id, navigator, context, uiState.isAnonymous)?.let { intent ->
+                    try {
+                        context.startActivity(intent)
+                    } catch (e: Exception) {
+                        ToastUtil.getInstance().makeShort(context.getString(R.string.category_cannot_open_link))
+                    }
+                }
         }
     }
 
@@ -164,13 +171,13 @@ private fun HeaderSection(
     ) {
         Image(
             imageVector = ImageVector.vectorResource(R.drawable.ic_bcsd_symbol),
-            contentDescription = "Logo"
+            contentDescription = null
         )
 
         Spacer(modifier = Modifier.width(4.dp))
 
         Text(
-            text = "KOIN",
+            text = stringResource(R.string.category_koin_logo),
             style = RebrandKoinTheme.typography.bold20.copy(fontSize = 26.sp),
             color = RebrandKoinTheme.colors.neutral700
         )

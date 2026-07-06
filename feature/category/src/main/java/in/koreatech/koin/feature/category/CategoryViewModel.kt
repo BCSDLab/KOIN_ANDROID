@@ -10,7 +10,6 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import timber.log.Timber
 
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
@@ -24,7 +23,7 @@ class CategoryViewModel @Inject constructor(
         getUserInfoUseCase().onSuccess { user ->
             reduce { state.copy(isAnonymous = user.isAnonymous) }
         }.onFailure {
-            Timber.e(it)
+            reduce { state.copy(isAnonymous = true) }
         }
     }
 
