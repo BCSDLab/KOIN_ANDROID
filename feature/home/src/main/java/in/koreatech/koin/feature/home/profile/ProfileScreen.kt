@@ -176,7 +176,7 @@ private fun TimetableSection(
                 .fillMaxWidth()
                 .border(0.5.dp, Color(0xFFE6E6E6), RoundedCornerShape(16.dp))
                 .clip(RoundedCornerShape(16.dp))
-                .background(Color(0xFFFFFFFF))
+                .background(RebrandKoinTheme.colors.neutral0)
                 .padding(vertical = 16.dp, horizontal = 16.dp)
         ) {
             ProfileTimetable(lectures = lectures)
