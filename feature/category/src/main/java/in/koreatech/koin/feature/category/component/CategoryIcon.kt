@@ -45,7 +45,7 @@ fun CategoryIcon(
 @Composable
 private fun CategoryIconPreview() {
     CategoryIcon(
-        imageVector = ImageVector.vectorResource(R.drawable.ic_calender),
+        imageVector = ImageVector.vectorResource(R.drawable.ic_calendar),
         contentDescription = null
     )
 }

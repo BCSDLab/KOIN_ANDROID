@@ -56,7 +56,7 @@ private fun CategoryCardPreview() {
     CategoryCard(
         categoryIcon = {
             CategoryIcon(
-                imageVector = ImageVector.vectorResource(R.drawable.ic_calender),
+                imageVector = ImageVector.vectorResource(R.drawable.ic_calendar),
                 contentDescription = null
             )
         },
