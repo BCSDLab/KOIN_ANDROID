@@ -139,7 +139,7 @@ private fun HeaderSection(
     ) {
         Image(
             imageVector = ImageVector.vectorResource(R.drawable.ic_bcsd_symbol),
-            contentDescription = "Logo"
+            contentDescription = ""
         )
 
         Spacer(modifier = Modifier.weight(1f))

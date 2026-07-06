@@ -43,12 +43,15 @@ fun ProfileCard(
             .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))
             .background(RebrandKoinTheme.colors.neutral0)
-            .padding(vertical = 20.dp, horizontal = 20.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(13.dp)
+        ) {
             ProfileAvatar()
-            Spacer(modifier = Modifier.width(10.dp))
             Column {
                 Text(
                     text = if (isLoggedIn) {
@@ -91,7 +94,6 @@ fun ProfileCard(
 private fun ProfileAvatar(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
-            .size(44.dp)
             .clip(CircleShape)
             .border(0.5.dp, RebrandKoinTheme.colors.neutral300, CircleShape)
             .background(RebrandKoinTheme.colors.neutral0)
@@ -117,7 +119,8 @@ private fun ProfileMenuRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onClick() },
+            .clickable(onClick = onClick)
+            .padding(start = 20.dp, top = 12.dp, bottom = 12.dp, end = 20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         HomeIcon(
@@ -136,24 +139,22 @@ private fun ProfileMenuRow(
     }
 }
 
-@Preview(showBackground = true, widthDp = 360)
+@Preview(showBackground = true)
 @Composable
 private fun ProfileCardLoggedInPreview() {
     ProfileCard(
         isLoggedIn = true,
         name = "BCSD",
-        studentNumber = "20231020329",
-        modifier = Modifier.padding(16.dp)
+        studentNumber = "20231020329"
     )
 }
 
-@Preview(showBackground = true, widthDp = 360)
+@Preview(showBackground = true)
 @Composable
 private fun ProfileCardLoggedOutPreview() {
     ProfileCard(
         isLoggedIn = false,
         name = "",
-        studentNumber = "",
-        modifier = Modifier.padding(16.dp)
+        studentNumber = ""
     )
 }

@@ -3,21 +3,25 @@ package `in`.koreatech.koin.feature.home.profile
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.repository.TimetableRepository
 import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableFramesUseCase
+import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableLecturesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetUserSemestersUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLogoutUseCase
 import `in`.koreatech.koin.feature.home.profile.mapper.toProfileTimetableLectures
 import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.retryWhen
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.subIntent
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 
@@ -27,7 +31,7 @@ class ProfileViewModel @Inject constructor(
     private val userLogoutUseCase: UserLogoutUseCase,
     private val getUserSemestersUseCase: GetUserSemestersUseCase,
     private val getTimetableFramesUseCase: GetTimetableFramesUseCase,
-    private val timetableRepository: TimetableRepository
+    private val getTimetableLecturesUseCase: GetTimetableLecturesUseCase
 ) : ViewModel(), ContainerHost<ProfileState, ProfileSideEffect> {
 
     override val container = container<ProfileState, ProfileSideEffect>(ProfileState())
@@ -38,7 +42,11 @@ class ProfileViewModel @Inject constructor(
 
     private fun observeUserStatus() = intent {
         getUserStatusUseCase()
-            .catch { Timber.e(it) }
+            .retryWhen { cause, _ ->
+                Timber.e(cause)
+                delay(RETRY_DELAY_MS)
+                true
+            }
             .collectLatest { user ->
                 when (user) {
                     is User.Student -> {
@@ -75,25 +83,27 @@ class ProfileViewModel @Inject constructor(
             }
     }
 
-    private fun loadTimetable() = intent {
+    @OptIn(OrbitExperimental::class)
+    private suspend fun loadTimetable() = subIntent {
         val semesters = getUserSemestersUseCase(false)
             .catch { Timber.e(it) }
             .firstOrNull()
             .orEmpty()
-        val semester = semesters.firstOrNull() ?: return@intent
+        val semester = semesters.firstOrNull() ?: return@subIntent
 
         val frames = getTimetableFramesUseCase(semester)
             .catch { Timber.e(it) }
             .firstOrNull()
             .orEmpty()
-        val mainFrame = frames.find { it.isMain } ?: return@intent
+        val mainFrame = frames.find { it.isMain } ?: return@subIntent
 
-        timetableRepository.getTimetableLectures(mainFrame.id)
+        getTimetableLecturesUseCase(mainFrame.id)
             .onSuccess { timetableLectures ->
                 reduce { state.copy(timetable = timetableLectures.toProfileTimetableLectures()) }
             }
             .onFailure { Timber.e(it) }
     }
+
     fun onLogoutClick() = intent {
         userLogoutUseCase()
             .onSuccess {
@@ -102,5 +112,9 @@ class ProfileViewModel @Inject constructor(
             .onFailure {
                 Timber.e(it)
             }
+    }
+
+    companion object {
+        private const val RETRY_DELAY_MS = 1000L
     }
 }

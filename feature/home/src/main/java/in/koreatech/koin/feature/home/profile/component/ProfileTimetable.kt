@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -24,6 +26,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.fastFirst
+import androidx.compose.ui.util.fastForEach
+import androidx.compose.ui.util.fastMapNotNull
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.home.profile.model.ProfileTimetableLecture
 import kotlin.math.roundToInt
@@ -35,13 +40,13 @@ fun ProfileTimetable(
     lectures: ImmutableList<ProfileTimetableLecture>,
     modifier: Modifier = Modifier
 ) {
-    val startHour = ProfileTimetableDefaults.START_HOUR
-    val endHour = ProfileTimetableDefaults.END_HOUR
-    val rowCount = endHour - startHour
-    val days = ProfileTimetableDefaults.days
+    val startHour = remember { ProfileTimetableDefaults.START_HOUR }
+    val endHour = remember { ProfileTimetableDefaults.END_HOUR }
+    val rowCount = remember(startHour, endHour) { endHour - startHour }
+    val days = remember { ProfileTimetableDefaults.days }
 
-    val timeCellPadding = PaddingValues(horizontal = 8.dp, vertical = 6.dp)
-    val headerCellPadding = PaddingValues(horizontal = 8.dp, vertical = 6.dp)
+    val timeCellPadding = remember { PaddingValues(horizontal = 8.dp, vertical = 6.dp) }
+    val headerCellPadding = remember { PaddingValues(horizontal = 8.dp, vertical = 6.dp) }
 
     Layout(
         modifier = modifier
@@ -78,18 +83,20 @@ fun ProfileTimetable(
                     }
             ) {
                 for (i in 0..rowCount) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(timeCellPadding),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = (startHour + i).toString(),
-                            textAlign = TextAlign.Center,
-                            color = RebrandKoinTheme.colors.neutral500,
-                            style = RebrandKoinTheme.typography.regular10
-                        )
+                    key(i) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(timeCellPadding),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = (startHour + i).toString(),
+                                textAlign = TextAlign.Center,
+                                color = RebrandKoinTheme.colors.neutral500,
+                                style = RebrandKoinTheme.typography.regular10
+                            )
+                        }
                     }
                 }
             }
@@ -106,18 +113,20 @@ fun ProfileTimetable(
                     }
             ) {
                 days.forEach { day ->
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(headerCellPadding),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = day,
-                            textAlign = TextAlign.Center,
-                            color = RebrandKoinTheme.colors.neutral500,
-                            style = RebrandKoinTheme.typography.regular12
-                        )
+                    key(day) {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(headerCellPadding),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = day,
+                                textAlign = TextAlign.Center,
+                                color = RebrandKoinTheme.colors.neutral500,
+                                style = RebrandKoinTheme.typography.regular12
+                            )
+                        }
                     }
                 }
             }
@@ -142,31 +151,33 @@ fun ProfileTimetable(
             )
 
             lectures.forEachIndexed { index, lecture ->
-                if (lecture.dayOfWeek in 0..4 && lecture.startTotalMinutes < lecture.endTotalMinutes) {
-                    val color = ProfileTimetableDefaults.colors[lecture.colorIndex % ProfileTimetableDefaults.colors.size]
-                    Column(
-                        modifier = Modifier
-                            .layoutId("lecture_$index")
-                            .background(color.content)
-                    ) {
-                        HorizontalDivider(color = color.header, thickness = 2.dp)
-                        Column(modifier = Modifier.padding(4.dp)) {
-                            Text(
-                                text = lecture.name,
-                                color = RebrandKoinTheme.colors.neutral800,
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis,
-                                style = RebrandKoinTheme.typography.medium13.copy(fontSize = 8.sp, lineHeight = 9.sp)
-                            )
-                            if (lecture.place.isNotBlank()) {
+                key(index) {
+                    if (lecture.dayOfWeek in 0..4 && lecture.startTotalMinutes < lecture.endTotalMinutes) {
+                        val color = ProfileTimetableDefaults.colors[lecture.colorIndex % ProfileTimetableDefaults.colors.size]
+                        Column(
+                            modifier = Modifier
+                                .layoutId("lecture_$index")
+                                .background(color.content)
+                        ) {
+                            HorizontalDivider(color = color.header, thickness = 2.dp)
+                            Column(modifier = Modifier.padding(4.dp)) {
                                 Text(
-                                    text = lecture.place,
-                                    modifier = Modifier.padding(top = 2.dp),
+                                    text = lecture.name,
                                     color = RebrandKoinTheme.colors.neutral800,
-                                    maxLines = 1,
+                                    maxLines = 2,
                                     overflow = TextOverflow.Ellipsis,
-                                    style = RebrandKoinTheme.typography.regular10.copy(fontSize = 7.sp, lineHeight = 8.sp)
+                                    style = RebrandKoinTheme.typography.medium13.copy(fontSize = 8.sp, lineHeight = 9.sp)
                                 )
+                                if (lecture.place.isNotBlank()) {
+                                    Text(
+                                        text = lecture.place,
+                                        modifier = Modifier.padding(top = 2.dp),
+                                        color = RebrandKoinTheme.colors.neutral800,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                        style = RebrandKoinTheme.typography.regular10.copy(fontSize = 7.sp, lineHeight = 8.sp)
+                                    )
+                                }
                             }
                         }
                     }
@@ -174,10 +185,10 @@ fun ProfileTimetable(
             }
         }
     ) { measurables, constraints ->
-        val topLeftMeasurable = measurables.first { it.layoutId == "topLeft" }
-        val timeColumnMeasurable = measurables.first { it.layoutId == "timeColumn" }
-        val headerRowMeasurable = measurables.first { it.layoutId == "headerRow" }
-        val gridAreaMeasurable = measurables.first { it.layoutId == "gridArea" }
+        val topLeftMeasurable = measurables.fastFirst { it.layoutId == "topLeft" }
+        val timeColumnMeasurable = measurables.fastFirst { it.layoutId == "timeColumn" }
+        val headerRowMeasurable = measurables.fastFirst { it.layoutId == "headerRow" }
+        val gridAreaMeasurable = measurables.fastFirst { it.layoutId == "gridArea" }
 
         val timeColPlaceable = timeColumnMeasurable.measure(constraints.copy(minWidth = 0))
         val timeColWidth = timeColPlaceable.width
@@ -211,7 +222,7 @@ fun ProfileTimetable(
             )
         )
 
-        val lectureItems = measurables.mapNotNull { measurable ->
+        val lectureItems = measurables.fastMapNotNull { measurable ->
             val layoutId = measurable.layoutId as? String
 
             if (layoutId?.startsWith("lecture_") == true) {
@@ -242,7 +253,7 @@ fun ProfileTimetable(
             timeColPlaceable.placeRelative(0, headerHeight)
             gridPlaceable.placeRelative(timeColWidth, headerHeight)
 
-            lectureItems.forEach { (placeable, lecture) ->
+            lectureItems.fastForEach { (placeable, lecture) ->
                 val startMinutes = lecture.startTotalMinutes - (startHour * 60)
                 val xOffset = timeColWidth + (dayWidth * lecture.dayOfWeek).roundToInt()
                 val yOffset = headerHeight + (hourHeight * (startMinutes / 60f)).roundToInt()

@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.home.profile.ProfileScreen
-import `in`.koreatech.koin.feature.user.ui.userinfo.UserInfoActivity
+import `in`.koreatech.koin.ui.setting.SettingActivity
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
@@ -28,7 +28,7 @@ class ProfileFragment : Fragment() {
                 RebrandKoinTheme {
                     ProfileScreen(
                         onNavigateToSetting = {
-                            startActivity(Intent(requireContext(), UserInfoActivity::class.java))
+                            startActivity(Intent(requireContext(), SettingActivity::class.java))
                         },
                         onNavigateToNotification = {
                             findNavController().navigate(R.id.notification)
