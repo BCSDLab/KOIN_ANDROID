@@ -25,7 +25,6 @@ import `in`.koreatech.koin.core.appbar.ToolbarMenu
 import `in`.koreatech.koin.databinding.FragmentArticleHostBinding
 import `in`.koreatech.koin.feature.article.R as ArticleR
 import `in`.koreatech.koin.feature.article.model.ArticleToolbarState
-import `in`.koreatech.koin.ui.newmain.ArticleBackgroundController
 import `in`.koreatech.koin.ui.newmain.ArticleHostViewModel
 import kotlinx.coroutines.launch
 
@@ -36,16 +35,6 @@ class ArticleFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<ArticleHostViewModel>()
-
-    override fun onResume() {
-        super.onResume()
-        (activity as? ArticleBackgroundController)?.setArticleBackground()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        (activity as? ArticleBackgroundController)?.clearArticleBackground()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
