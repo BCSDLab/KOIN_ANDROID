@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.feature.category.component
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import `in`.koreatech.koin.feature.category.R
 import kotlinx.collections.immutable.persistentListOf
 
@@ -19,8 +21,8 @@ enum class CategoryMenuId {
 
 data class CategoryMenu(
     val id: CategoryMenuId,
-    val iconRes: Int,
-    val titleRes: Int
+    @DrawableRes val iconRes: Int,
+    @StringRes val titleRes: Int
 )
 
 val CAMPUS_MENUS = persistentListOf(
