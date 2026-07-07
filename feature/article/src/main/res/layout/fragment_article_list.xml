@@ -53,6 +53,13 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/image_view_to_search_page"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:background="@drawable/background_chip_search" />
+
+                        <ImageView
                             android:id="@+id/image_view_to_keyword_add_page"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

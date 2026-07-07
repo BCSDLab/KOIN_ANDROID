@@ -8,6 +8,7 @@
     <color name="rebrand_neutral_100">#F5F5F5</color><!-- rebrand neutral 100 -->
     <color name="rebrand_neutral_200">#EEEEEE</color><!-- rebrand neutral 200 -->
     <color name="rebrand_neutral_300">#E1E1E1</color><!-- rebrand neutral 300 -->
+    <color name="rebrand_neutral_400">#CACACA</color><!-- rebrand neutral 400 -->
     <color name="rebrand_neutral_500">#727272</color><!-- rebrand neutral 500 -->
     <color name="rebrand_neutral_600">#4B4B4B</color><!-- rebrand neutral 600 -->
 </resources>

@@ -145,39 +145,6 @@ class ArticleDetailFragment : Fragment() {
         }
     }
 
-    private fun initPortalLinkButton(article: ArticleState) {
-        var url = requireContext().getString(R.string.koreatech_url)
-        when (article.header.board.linkType) {
-            LinkType.NONE -> return
-            LinkType.ARTICLE -> {
-                url = article.url
-                binding.buttonToPortal.visibility = View.VISIBLE
-                binding.buttonToPortal.text = getString(R.string.link_to_original_article)
-            }
-
-            LinkType.PORTAL -> {
-                binding.buttonToPortal.visibility = View.VISIBLE
-                binding.buttonToPortal.text = getString(R.string.link_to_portal)
-            }
-
-            LinkType.STEMS -> {
-                url = requireContext().getString(R.string.koreatech_stems_url)
-                binding.buttonToPortal.visibility = View.VISIBLE
-                binding.buttonToPortal.text = getString(R.string.link_to_stems)
-            }
-        }
-        binding.buttonToPortal.setOnClickListener {
-            EventLogger.logClickEvent(
-                EventAction.CAMPUS,
-                AnalyticsConstant.Label.NOTICE_ORIGINAL_SHORTCUT,
-                binding.buttonToPortal.text.toString()
-            )
-            Intent(requireContext(), WebViewActivity::class.java).apply {
-                putExtra("url", url)
-            }.run(::startActivity)
-        }
-    }
-
     private fun initButtonClickListeners() {
         binding.buttonToList.setOnClickListener {
             EventLogger.logClickEvent(
@@ -199,22 +166,26 @@ class ArticleDetailFragment : Fragment() {
             }
         }
         binding.buttonToPrevArticle.setOnClickListener {
-            navController.navigate(
-                R.id.action_articleDetailFragment_to_articleDetailFragment,
-                Bundle().apply {
-                    putInt(ARTICLE_ID, viewModel.article.value.prevArticleId!!)
-                    putInt(NAVIGATED_BOARD_ID, viewModel.navigatedBoardId)
-                }
-            )
+            viewModel.article.value.prevArticleId?.let { prevId ->
+                navController.navigate(
+                    R.id.action_articleDetailFragment_to_articleDetailFragment,
+                    Bundle().apply {
+                        putInt(ARTICLE_ID, prevId)
+                        putInt(NAVIGATED_BOARD_ID, viewModel.navigatedBoardId)
+                    }
+                )
+            }
         }
         binding.buttonToNextArticle.setOnClickListener {
-            navController.navigate(
-                R.id.action_articleDetailFragment_to_articleDetailFragment,
-                Bundle().apply {
-                    putInt(ARTICLE_ID, viewModel.article.value.nextArticleId!!)
-                    putInt(NAVIGATED_BOARD_ID, viewModel.navigatedBoardId)
-                }
-            )
+            viewModel.article.value.nextArticleId?.let { nextId ->
+                navController.navigate(
+                    R.id.action_articleDetailFragment_to_articleDetailFragment,
+                    Bundle().apply {
+                        putInt(ARTICLE_ID, nextId)
+                        putInt(NAVIGATED_BOARD_ID, viewModel.navigatedBoardId)
+                    }
+                )
+            }
         }
     }
 
@@ -250,11 +221,45 @@ class ArticleDetailFragment : Fragment() {
         }.loadKoreatechHtml(requireContext(), article.content)
     }
 
+    private fun initPortalLinkButton(article: ArticleState) {
+        var url = requireContext().getString(R.string.koreatech_url)
+        when (article.header.board.linkType) {
+            LinkType.NONE -> {
+                binding.buttonToPortal.visibility = View.GONE
+                return
+            }
+            LinkType.ARTICLE -> {
+                url = article.url
+                binding.buttonToPortal.visibility = View.VISIBLE
+                binding.buttonToPortal.text = getString(R.string.link_to_original_article)
+            }
+
+            LinkType.PORTAL -> {
+                binding.buttonToPortal.visibility = View.VISIBLE
+                binding.buttonToPortal.text = getString(R.string.link_to_portal)
+            }
+
+            LinkType.STEMS -> {
+                url = requireContext().getString(R.string.koreatech_stems_url)
+                binding.buttonToPortal.visibility = View.VISIBLE
+                binding.buttonToPortal.text = getString(R.string.link_to_stems)
+            }
+        }
+        binding.buttonToPortal.setOnClickListener {
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.NOTICE_ORIGINAL_SHORTCUT,
+                binding.buttonToPortal.text.toString()
+            )
+            Intent(requireContext(), WebViewActivity::class.java).apply {
+                putExtra("url", url)
+            }.run(::startActivity)
+        }
+    }
+
     private fun setNavigateArticleButtonVisibility(article: ArticleState) {
-        // binding.buttonToPrevArticle.visibility = if (article.prevArticleId == null) View.INVISIBLE else View.VISIBLE
-        // binding.buttonToNextArticle.visibility = if (article.nextArticleId == null) View.INVISIBLE else View.VISIBLE // TODO 잠시 배포에 포함 X
-        binding.buttonToPrevArticle.visibility = View.INVISIBLE
-        binding.buttonToNextArticle.visibility = View.INVISIBLE
+        binding.buttonToPrevArticle.visibility = if (article.prevArticleId != null) View.VISIBLE else View.INVISIBLE
+        binding.buttonToNextArticle.visibility = if (article.nextArticleId != null) View.VISIBLE else View.INVISIBLE
     }
 
     private fun onAttachmentClick(attachment: AttachmentState) {
