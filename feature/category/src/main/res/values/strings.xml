@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="category_timetable">시간표</string>
+    <string name="timetable_description">내 강의 정보 확인하기</string>
+    <string name="lost_and_found">분실물</string>
+    <string name="lost_and_found_description">분실물 신고/조회하기</string>
+
+    <string name="campus">캠퍼스</string>
+    <string name="campus_facility">캠퍼스 시설물 정보</string>
+    <string name="department_info">학교 부서정보</string>
+    <string name="dining">식단</string>
+    <string name="store">주변상점</string>
+    <string name="transport">교통</string>
+    <string name="bus_timetable">버스 시간표</string>
+    <string name="transport_search">교통편 조회하기</string>
+    <string name="callvan">콜밴팟 모집</string>
+    <string name="other">기타</string>
+    <string name="housing">복덕방</string>
+    <string name="koin_business">코인 for Business</string>
+</resources>
