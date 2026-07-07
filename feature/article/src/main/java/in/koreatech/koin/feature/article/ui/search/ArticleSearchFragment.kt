@@ -187,11 +187,6 @@ class ArticleSearchFragment : Fragment() {
     }
 
     private fun onSearchInputChanged(query: String) {
-        if (query.isEmpty()) {
-            binding.imageSearch.setColorFilter(R.color.neutral_500)
-        } else {
-            binding.imageSearch.setColorFilter(R.color.gray14)
-        }
         viewModel.onSearchInputChanged(query)
     }
 
