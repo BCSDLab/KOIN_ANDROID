@@ -36,6 +36,9 @@ class ArticleFragment : Fragment() {
 
     private val viewModel by viewModels<ArticleHostViewModel>()
 
+    private var destinationChangedListener: NavController.OnDestinationChangedListener? = null
+    private var articleNavController: NavController? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -77,8 +80,9 @@ class ArticleFragment : Fragment() {
         val navHostFragment =
             childFragmentManager.findFragmentById(R.id.nav_host_article_fragment) as NavHostFragment
         val navController = navHostFragment.navController
+        articleNavController = navController
 
-        navController.addOnDestinationChangedListener { _, dest, _ ->
+        val listener = NavController.OnDestinationChangedListener { _, dest, _ ->
             val isArticleList = dest.id == ArticleR.id.articleListFragment
             binding.topbarArticleList.visibility = if (isArticleList) View.VISIBLE else View.GONE
             binding.toolbarArticle.visibility = if (isArticleList) View.GONE else View.VISIBLE
@@ -91,6 +95,8 @@ class ArticleFragment : Fragment() {
                 }
             }
         }
+        destinationChangedListener = listener
+        navController.addOnDestinationChangedListener(listener)
     }
 
     private fun setToolbar(state: ArticleToolbarState, navController: NavController) {
@@ -119,6 +125,9 @@ class ArticleFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        destinationChangedListener?.let { articleNavController?.removeOnDestinationChangedListener(it) }
+        destinationChangedListener = null
+        articleNavController = null
         _binding = null
     }
 }
