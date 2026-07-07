@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="category_koin_logo">KOIN</string>
     <string name="category_timetable">시간표</string>
     <string name="timetable_description">내 강의 정보 확인하기</string>
     <string name="lost_and_found">분실물</string>
@@ -17,4 +18,5 @@
     <string name="other">기타</string>
     <string name="housing">복덕방</string>
     <string name="koin_business">코인 for Business</string>
+    <string name="category_cannot_open_link">링크를 열 수 없습니다.</string>
 </resources>
