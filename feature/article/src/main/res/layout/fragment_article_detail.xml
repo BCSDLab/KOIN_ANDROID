@@ -3,10 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.core.widget.NestedScrollView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical">
+        android:background="@color/rebrand_neutral_0">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/rebrand_primary_800"
+            android:visibility="gone" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -24,7 +37,7 @@
                 android:id="@+id/divider_header_content"
                 android:layout_width="match_parent"
                 android:layout_height="6dp"
-                android:background="@color/divider"
+                android:background="@color/rebrand_neutral_100"
                 app:layout_constraintTop_toBottomOf="@id/article_header" />
 
             <in.koreatech.koin.feature.article.util.HtmlView
@@ -152,7 +165,7 @@
                 android:id="@+id/divider_content_articles"
                 android:layout_width="match_parent"
                 android:layout_height="6dp"
-                android:background="@color/divider"
+                android:background="@color/rebrand_neutral_100"
                 android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@id/button_to_list" />
 
@@ -181,5 +194,7 @@
                 app:layout_constraintTop_toBottomOf="@id/text_view_hot_articles" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
+
+    </FrameLayout>
 </layout>

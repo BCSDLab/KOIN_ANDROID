@@ -30,8 +30,6 @@ import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.onboarding.ArrowDirection
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
-import `in`.koreatech.koin.core.progressdialog.IProgressDialog
-import `in`.koreatech.koin.core.util.withLoading
 import `in`.koreatech.koin.feature.article.R
 import `in`.koreatech.koin.feature.article.databinding.FragmentArticleListBinding
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
@@ -133,6 +131,9 @@ class ArticleListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.tabLayoutArticleBoard.addOnTabSelectedListener(onTabSelectedListener)
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
     }
 
     private fun initKeywordTooltip() {
@@ -301,7 +302,6 @@ class ArticleListFragment : Fragment() {
     }
 
     private fun collectData() {
-        (requireActivity() as IProgressDialog).withLoading(viewLifecycleOwner, viewModel)
         viewLifecycleOwner.lifecycleScope.run {
             this.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {

@@ -25,9 +25,7 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.core.download.FileDownloadManager
-import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.core.toast.ToastUtil
-import `in`.koreatech.koin.core.util.withLoading
 import `in`.koreatech.koin.core.webview.loadKoreatechHtml
 import `in`.koreatech.koin.core.webview.setOnImageClickListener
 import `in`.koreatech.koin.domain.util.DateFormatUtil
@@ -83,9 +81,11 @@ class ArticleDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (requireActivity() as IProgressDialog).withLoading(viewLifecycleOwner, viewModel)
         binding.htmlView.setOnPreDrawListener { viewModel.setIsLoading(true) }
         binding.htmlView.setOnPostDrawListener { viewModel.setIsLoading(false) }
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
         initArticle()
         initAttachmentAdapter()
         initHotArticles()

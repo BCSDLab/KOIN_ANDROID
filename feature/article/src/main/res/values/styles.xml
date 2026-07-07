@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ArticleChoiceChip" parent="@style/Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/color_article_chip_bg</item>
+        <item name="android:textColor">@color/color_article_chip_text</item>
+        <item name="closeIconTint">@color/rebrand_neutral_500</item>
+        <item name="chipStartPadding">16dp</item>
+        <item name="chipEndPadding">16dp</item>
+        <item name="textStartPadding">0dp</item>
+        <item name="textEndPadding">0dp</item>
+        <item name="closeIconStartPadding">2dp</item>
+        <item name="closeIconEndPadding">0dp</item>
+    </style>
+
+    <style name="ArticlePageChip" parent="@style/RectangleChoiceChip">
+        <item name="chipBackgroundColor">@color/color_article_page_chip_bg</item>
+        <item name="android:textColor">@color/color_article_chip_text</item>
+    </style>
+
+    <style name="ArticleTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeColor">@color/color_article_outline_text_field</item>
+    </style>
+</resources>

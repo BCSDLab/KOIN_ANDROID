@@ -5,7 +5,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/rebrand_neutral_0">
 
         <TextView
             android:id="@+id/text_my_keyword"
@@ -62,7 +63,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_input_layout_keyword"
-            style="@style/OutlinedTextInputLayoutStyle"
+            style="@style/ArticleTextInputLayoutStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
