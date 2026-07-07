@@ -224,7 +224,10 @@ class ArticleDetailFragment : Fragment() {
     private fun initPortalLinkButton(article: ArticleState) {
         var url = requireContext().getString(R.string.koreatech_url)
         when (article.header.board.linkType) {
-            LinkType.NONE -> return
+            LinkType.NONE -> {
+                binding.buttonToPortal.visibility = View.GONE
+                return
+            }
             LinkType.ARTICLE -> {
                 url = article.url
                 binding.buttonToPortal.visibility = View.VISIBLE
