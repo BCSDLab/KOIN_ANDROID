@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
@@ -101,11 +103,13 @@ private fun DiningEmpty(
 ) {
     Column(
         modifier = modifier
+            .heightIn(max = 160.dp)
+            .fillMaxHeight()
             .border(0.5.dp, Color(0xFFE6E6E6), RoundedCornerShape(24.dp))
             .clip(RoundedCornerShape(24.dp))
             .background(color = Color(0xFFFFFFFF))
             .padding(vertical = 20.dp, horizontal = 24.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically)
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
