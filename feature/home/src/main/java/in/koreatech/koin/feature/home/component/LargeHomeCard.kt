@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -71,6 +72,10 @@ fun LargeHomeCard(
             .padding(contentPadding),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        icon()
+
+        Spacer(modifier = Modifier.width(20.dp))
+
         Column(
             modifier = Modifier
         ) {
@@ -86,8 +91,6 @@ fun LargeHomeCard(
         }
 
         Spacer(modifier = Modifier.weight(1f))
-
-        icon()
 
         Icon(
             modifier = Modifier.size(20.dp),
