@@ -133,6 +133,11 @@ private fun HeaderSection(
             contentDescription = "Logo"
         )
 
+        Image(
+            imageVector = ImageVector.vectorResource(R.drawable.ic_koin_text),
+            contentDescription = "KOIN"
+        )
+
         Spacer(modifier = Modifier.weight(1f))
 
         Image(
