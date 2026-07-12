@@ -133,6 +133,11 @@ private fun HeaderSection(
             contentDescription = "Logo"
         )
 
+        Image(
+            imageVector = ImageVector.vectorResource(R.drawable.ic_koin_text),
+            contentDescription = "KOIN"
+        )
+
         Spacer(modifier = Modifier.weight(1f))
 
         Image(
@@ -285,7 +290,7 @@ private fun BusSection(
                     HomeIcon(
                         tint = Color(0xFFFFFFFF),
                         backgroundColor = Color(0xFFB611F5),
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_home_bus_timetable),
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_home_callvan),
                         contentDescription = null
                     )
                 },
