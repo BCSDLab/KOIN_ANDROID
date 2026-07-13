@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.home.profile.model
+package `in`.koreatech.koin.feature.profile.model
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
@@ -13,6 +13,7 @@ data class ProfileTimetableLecture(
     val colorIndex: Int
 )
 
+@Immutable
 data class ProfileTimetableColor(
     val header: Color,
     val content: Color

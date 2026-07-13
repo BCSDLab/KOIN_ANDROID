@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.home.profile
+package `in`.koreatech.koin.feature.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -34,11 +34,10 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
-import `in`.koreatech.koin.feature.home.R
-import `in`.koreatech.koin.feature.home.component.HomeSection
-import `in`.koreatech.koin.feature.home.profile.component.ProfileCard
-import `in`.koreatech.koin.feature.home.profile.component.ProfileTimetable
-import `in`.koreatech.koin.feature.home.profile.model.ProfileTimetableLecture
+import `in`.koreatech.koin.feature.profile.component.ProfileSection
+import `in`.koreatech.koin.feature.profile.component.ProfileCard
+import `in`.koreatech.koin.feature.profile.component.ProfileTimetable
+import `in`.koreatech.koin.feature.profile.model.ProfileTimetableLecture
 import kotlinx.collections.immutable.ImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -140,14 +139,19 @@ private fun HeaderSection(
             contentDescription = ""
         )
 
+        Image(
+            imageVector = ImageVector.vectorResource(R.drawable.ic_koin_text),
+            contentDescription = ""
+        )
+
         Spacer(modifier = Modifier.weight(1f))
 
         Image(
             modifier = Modifier.noRippleClickable { onNotificationClick() },
             imageVector = if (isNewNotificationReceived) {
-                ImageVector.vectorResource(R.drawable.ic_home_notification_dot)
+                ImageVector.vectorResource(R.drawable.ic_profile_notification_dot)
             } else {
-                ImageVector.vectorResource(R.drawable.ic_home_notification)
+                ImageVector.vectorResource(R.drawable.ic_profile_notification)
             },
             contentDescription = null
         )
@@ -159,7 +163,7 @@ private fun TimetableSection(
     lectures: ImmutableList<ProfileTimetableLecture>,
     modifier: Modifier = Modifier
 ) {
-    HomeSection(
+    ProfileSection(
         modifier = modifier.fillMaxWidth(),
         text = {
             Text(

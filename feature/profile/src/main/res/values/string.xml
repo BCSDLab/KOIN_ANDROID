@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_login_prompt">로그인해주세요.</string>
+    <string name="profile_login">로그인</string>
+    <string name="profile_logout">로그아웃</string>
+    <string name="profile_setting">설정</string>
+    <string name="profile_timetable_section">내 시간표</string>
+    <string name="profile_username_default">익명</string>
+</resources>
