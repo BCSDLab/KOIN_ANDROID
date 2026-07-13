@@ -98,7 +98,6 @@ class ArticleDetailFragment : Fragment() {
                 viewModel.article.collectLatest {
                     setHeader(it)
                     setContent(it)
-                    setNavigateArticleButtonVisibility(it)
                     initPortalLinkButton(it)
 
                     if (it.attachments.isEmpty()) {
@@ -161,28 +160,6 @@ class ArticleDetailFragment : Fragment() {
                             inclusive = true
                         }
                         launchSingleTop = true
-                    }
-                )
-            }
-        }
-        binding.buttonToPrevArticle.setOnClickListener {
-            viewModel.article.value.prevArticleId?.let { prevId ->
-                navController.navigate(
-                    R.id.action_articleDetailFragment_to_articleDetailFragment,
-                    Bundle().apply {
-                        putInt(ARTICLE_ID, prevId)
-                        putInt(NAVIGATED_BOARD_ID, viewModel.navigatedBoardId)
-                    }
-                )
-            }
-        }
-        binding.buttonToNextArticle.setOnClickListener {
-            viewModel.article.value.nextArticleId?.let { nextId ->
-                navController.navigate(
-                    R.id.action_articleDetailFragment_to_articleDetailFragment,
-                    Bundle().apply {
-                        putInt(ARTICLE_ID, nextId)
-                        putInt(NAVIGATED_BOARD_ID, viewModel.navigatedBoardId)
                     }
                 )
             }
@@ -255,11 +232,6 @@ class ArticleDetailFragment : Fragment() {
                 putExtra("url", url)
             }.run(::startActivity)
         }
-    }
-
-    private fun setNavigateArticleButtonVisibility(article: ArticleState) {
-        binding.buttonToPrevArticle.visibility = if (article.prevArticleId != null) View.VISIBLE else View.INVISIBLE
-        binding.buttonToNextArticle.visibility = if (article.nextArticleId != null) View.VISIBLE else View.INVISIBLE
     }
 
     private fun onAttachmentClick(attachment: AttachmentState) {
