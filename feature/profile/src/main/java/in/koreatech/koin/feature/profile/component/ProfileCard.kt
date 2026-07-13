@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.profile.R
 
-
 @Composable
 fun ProfileCard(
     isLoggedIn: Boolean,

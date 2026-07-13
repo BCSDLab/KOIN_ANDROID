@@ -34,8 +34,8 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
-import `in`.koreatech.koin.feature.profile.component.ProfileSection
 import `in`.koreatech.koin.feature.profile.component.ProfileCard
+import `in`.koreatech.koin.feature.profile.component.ProfileSection
 import `in`.koreatech.koin.feature.profile.component.ProfileTimetable
 import `in`.koreatech.koin.feature.profile.model.ProfileTimetableLecture
 import kotlinx.collections.immutable.ImmutableList
