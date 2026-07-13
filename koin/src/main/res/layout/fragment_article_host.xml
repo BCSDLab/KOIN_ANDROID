@@ -23,7 +23,7 @@
                 android:id="@+id/image_view_bcsd_symbol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_bcsd_logo_symbol"
+                android:src="@drawable/ic_bcsd_symbol"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -32,7 +32,6 @@
                 android:id="@+id/image_view_koin_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:src="@drawable/ic_koin_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/image_view_bcsd_symbol"
