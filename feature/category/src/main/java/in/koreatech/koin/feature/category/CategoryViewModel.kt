@@ -2,7 +2,7 @@ package `in`.koreatech.koin.feature.category
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
+import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
 import `in`.koreatech.koin.feature.category.component.CategoryMenuId
 import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
@@ -13,18 +13,15 @@ import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
-    private val getUserInfoUseCase: GetUserInfoUseCase
+    private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase
 ) : ViewModel(), ContainerHost<CategoryState, CategorySideEffect> {
     override val container = container<CategoryState, CategorySideEffect>(CategoryState()) {
-        getUserInfo()
+        checkLoginStatus()
     }
 
-    private fun getUserInfo() = intent {
-        getUserInfoUseCase().onSuccess { user ->
-            reduce { state.copy(isAnonymous = user.isAnonymous) }
-        }.onFailure {
-            reduce { state.copy(isAnonymous = true) }
-        }
+    private fun checkLoginStatus() = intent {
+        val isTokenSaved = isTokenSavedInDeviceUseCase()
+        reduce { state.copy(isAnonymous = !isTokenSaved) }
     }
 
     fun onMenuClick(id: CategoryMenuId) = intent {
