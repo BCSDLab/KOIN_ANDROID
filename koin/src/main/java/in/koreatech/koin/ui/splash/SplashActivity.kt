@@ -38,7 +38,7 @@ import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
 import `in`.koreatech.koin.feature.article.ArticleActivity
 import `in`.koreatech.koin.feature.lostandfound.ui.LostAndFoundActivity
 import `in`.koreatech.koin.ui.forceupdate.ForceUpdateActivity
-import `in`.koreatech.koin.ui.main.activity.MainActivity
+import `in`.koreatech.koin.ui.newmain.NewMainActivity
 import `in`.koreatech.koin.ui.splash.state.TokenState
 import `in`.koreatech.koin.ui.splash.viewmodel.SplashViewModel
 import `in`.koreatech.koin.util.FirebasePerformanceUtil
@@ -264,7 +264,7 @@ class SplashActivity : ActivityBase() {
                     Pair(EXTRA_POST_ID, targetPostId)
                 )
             } else {
-                Intent(this@SplashActivity, MainActivity::class.java)
+                Intent(this@SplashActivity, NewMainActivity::class.java)
             }
 
             startActivity(intent)
