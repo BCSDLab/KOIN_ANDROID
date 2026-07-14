@@ -10,8 +10,6 @@ import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLogoutUseCase
 import `in`.koreatech.koin.feature.profile.mapper.toProfileTimetableLectures
 import javax.inject.Inject
-import kotlin.collections.firstOrNull
-import kotlin.collections.orEmpty
 import kotlin.math.pow
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay

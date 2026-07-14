@@ -13,6 +13,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -38,7 +39,7 @@ fun ProfileTimetable(
     lectures: ImmutableList<ProfileTimetableLecture>,
     modifier: Modifier = Modifier
 ) {
-    val cellPadding = PaddingValues(horizontal = 8.dp, vertical = 6.dp)
+    val cellPadding = remember { PaddingValues(horizontal = 8.dp, vertical = 6.dp) }
     val startHour = ProfileTimetableDefaults.START_HOUR
     val endHour = ProfileTimetableDefaults.END_HOUR
     val rowCount = endHour - startHour

@@ -136,12 +136,12 @@ private fun HeaderSection(
     ) {
         Image(
             imageVector = ImageVector.vectorResource(R.drawable.ic_bcsd_symbol),
-            contentDescription = ""
+            contentDescription = null
         )
 
         Image(
             imageVector = ImageVector.vectorResource(R.drawable.ic_koin_text),
-            contentDescription = ""
+            contentDescription = null
         )
 
         Spacer(modifier = Modifier.weight(1f))
