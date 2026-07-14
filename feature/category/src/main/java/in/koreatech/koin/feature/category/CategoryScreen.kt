@@ -13,11 +13,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -28,10 +26,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.koreatech.koin.core.R as CoreR
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.feature.category.component.CAMPUS_MENUS
@@ -177,12 +174,9 @@ private fun HeaderSection(
             contentDescription = null
         )
 
-        Spacer(modifier = Modifier.width(4.dp))
-
-        Text(
-            text = stringResource(R.string.category_koin_logo),
-            style = RebrandKoinTheme.typography.bold20.copy(fontSize = 26.sp),
-            color = RebrandKoinTheme.colors.neutral700
+        Image(
+            imageVector = ImageVector.vectorResource(CoreR.drawable.ic_koin_text),
+            contentDescription = null
         )
 
         Spacer(modifier = Modifier.weight(1f))
