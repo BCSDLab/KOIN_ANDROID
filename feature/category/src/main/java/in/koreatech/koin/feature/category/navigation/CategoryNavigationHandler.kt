@@ -15,7 +15,7 @@ internal object CategoryNavigationHandler {
         CategoryMenuId.TIMETABLE -> navigator.navigateToTimetable(context, isAnonymous)
         CategoryMenuId.LOST_AND_FOUND -> navigator.navigateToLostAndFound(context)
         CategoryMenuId.OPERATING_INFO -> navigator.navigateToOperatingInfo(context)
-        // CategoryMenuId.DEPARTMENT_INFO -> nulls
+        // CategoryMenuId.DEPARTMENT_INFO -> null
         CategoryMenuId.DINING -> navigator.navigateToDining(context)
         CategoryMenuId.STORE -> navigator.navigateToStore(context)
         CategoryMenuId.BUS_TIMETABLE -> navigator.navigateToBusTimeTable(context)
