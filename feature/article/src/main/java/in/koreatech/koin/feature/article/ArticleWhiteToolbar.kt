@@ -34,7 +34,7 @@ class ArticleWhiteToolbar @JvmOverloads constructor(
         }
     }
 
-    fun setTitle(title: String?) {
+    override fun setTitle(title: CharSequence?) {
         binding.textArticleToolbarTitle.text = title ?: context.getString(CoreR.string.app_name)
     }
 
