@@ -109,6 +109,27 @@ private fun ProfileAvatar(modifier: Modifier = Modifier) {
 }
 
 @Composable
+private fun ProfileIcon(
+    imageVector: ImageVector,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(10.dp))
+            .background(RebrandKoinTheme.colors.neutral100)
+            .padding(vertical = 8.dp, horizontal = 8.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            modifier = Modifier.size(24.dp),
+            imageVector = imageVector,
+            contentDescription = null,
+            tint = RebrandKoinTheme.colors.primary500
+        )
+    }
+}
+
+@Composable
 private fun ProfileMenuRow(
     icon: ImageVector,
     label: String,
@@ -123,11 +144,7 @@ private fun ProfileMenuRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         ProfileIcon(
-            imageVector = icon,
-            tint = RebrandKoinTheme.colors.primary500,
-            backgroundColor = RebrandKoinTheme.colors.neutral100,
-            shape = RoundedCornerShape(10.dp),
-            contentDescription = null
+            imageVector = icon
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
