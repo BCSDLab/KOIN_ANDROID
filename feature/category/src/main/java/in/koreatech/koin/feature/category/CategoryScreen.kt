@@ -175,8 +175,6 @@ private fun HeaderSection(
             contentDescription = null
         )
 
-        Spacer(modifier = Modifier.width(4.dp))
-
         Image(
             imageVector = ImageVector.vectorResource(CoreR.drawable.ic_koin_text),
             contentDescription = null
