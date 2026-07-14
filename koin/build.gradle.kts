@@ -141,6 +141,7 @@ dependencies {
     implementation(projects.feature.callvan)
     implementation(projects.feature.home)
     implementation(projects.feature.notification)
+    implementation(projects.feature.category)
 
     implementation(libs.guava)
 
