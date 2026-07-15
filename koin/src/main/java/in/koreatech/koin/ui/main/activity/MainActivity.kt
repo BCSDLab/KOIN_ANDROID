@@ -1,35 +1,31 @@
 package `in`.koreatech.koin.ui.main.activity
 
+import android.Manifest
 import android.content.Intent
-import android.net.Uri
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
-import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updateLayoutParams
+import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.bus.BusSearchActivity
-import `in`.koreatech.bus.BusTimetableActivity
-import `in`.koreatech.bus.screen.MainEntryView
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
-import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.analytics.EventUtils
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
@@ -38,213 +34,108 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_CLUB_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_EVENT_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
-import `in`.koreatech.koin.core.util.blueStatusBar
-import `in`.koreatech.koin.core.util.dataBinding
-import `in`.koreatech.koin.databinding.ActivityMainBinding
-import `in`.koreatech.koin.domain.model.article.ArticleNotiType
-import `in`.koreatech.koin.feature.article.ArticleActivity
+import `in`.koreatech.koin.databinding.ActivityNewMainBinding
 import `in`.koreatech.koin.feature.banner.ui.BannerActivity
-import `in`.koreatech.koin.feature.callvan.CallvanEntry
-import `in`.koreatech.koin.feature.lostandfound.DEEP_LINK_LOST_AND_FOUND_BASE
-import `in`.koreatech.koin.feature.lostandfound.ui.LostAndFoundActivity
-import `in`.koreatech.koin.feature.lostandfound.ui.entry.LostAndFoundEntry
-import `in`.koreatech.koin.feature.store.MainStoreWidget
 import `in`.koreatech.koin.navigation.SchemeType
-import `in`.koreatech.koin.ui.main.compose.HotArticlePager
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
-import `in`.koreatech.koin.ui.main.widget.DiningWidget
-import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
-import `in`.koreatech.koin.ui.navigation.state.MenuState
-import `in`.koreatech.koin.ui.unibus.UnibusActivity
-import `in`.koreatech.koin.util.ext.observeLiveData
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : KoinNavigationDrawerTimeActivity() {
-    override val menuState = MenuState.Main
-    private val binding by dataBinding<ActivityMainBinding>(R.layout.activity_main)
-    override val screenTitle = "코인 - 메인"
-    private val viewModel by viewModels<MainActivityViewModel>()
+class MainActivity : AppCompatActivity() {
 
-    private var scrollPercentage = 0.0f
+    private lateinit var binding: ActivityNewMainBinding
+    private lateinit var navController: NavController
+    private val viewModel by viewModels<MainActivityViewModel>()
 
     @Inject
     lateinit var navigator: Navigator
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+    private fun navigationLogValue(itemId: Int): Pair<String, String>? = when (itemId) {
+        R.id.bottom_navigation_home -> AnalyticsConstant.Label.NAV_HOME to "홈"
+        R.id.bottom_navigation_category -> AnalyticsConstant.Label.NAV_CATEGORY to "카테고리"
+        R.id.bottom_navigation_article -> AnalyticsConstant.Label.NAV_BULLETIN to "게시판"
+        R.id.bottom_navigation_profile -> AnalyticsConstant.Label.NAV_PROFILE to "프로필"
+        else -> null
+    }
 
-        window.blueStatusBar()
+    private val requestMainPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permission ->
+            var permissionGranted = true
+            permission.entries.forEach {
+                if (it.key in MAIN_REQUIRED_PERMISSION && it.value == false) {
+                    permissionGranted = false
+                }
+            }
+
+            if (!permissionGranted) {
+                // handle permission granted
+            } else {
+                // handle permission denied
+            }
+        }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdgeWithLightStatusBar()
+        super.onCreate(savedInstanceState)
+        binding = ActivityNewMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         EventLogger.logScreenName("HomeActivity") // DA requirement
 
-        initView()
-        initViewModel()
+        ViewCompat.setOnApplyWindowInsetsListener(binding.bottomNavigationMain) { view, insets ->
+            val navigationBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+
+            view.updatePadding(
+                bottom = navigationBars.bottom
+            )
+
+            WindowInsetsCompat.Builder(insets)
+                .setInsets(WindowInsetsCompat.Type.navigationBars(), Insets.NONE)
+                .build()
+        }
+
+        val navHostFragment = supportFragmentManager.findFragmentById(binding.navHostFragmentMain.id) as NavHostFragment
+        navController = navHostFragment.navController
+
+        binding.bottomNavigationMain.setupWithNavController(navController)
+
+        // setOnItemReselectedListener를 따로 등록하면 재탭 시 기본 popUpTo/restoreState 동작이 사라지므로 등록하지 않는다.
+        // 리스너가 없으면 재탭도 이 setOnItemSelectedListener로 그대로 들어와 로깅과 기본 동작이 모두 보존된다.
+        binding.bottomNavigationMain.setOnItemSelectedListener { item ->
+            navigationLogValue(item.itemId)?.let { (label, value) ->
+                EventLogger.logCampusClickEvent(label, value)
+            }
+            NavigationUI.onNavDestinationSelected(item, navController)
+        }
+
+        val topLevelDestinations = setOf(
+            R.id.bottom_navigation_home,
+            R.id.bottom_navigation_category,
+            R.id.bottom_navigation_article,
+            R.id.bottom_navigation_profile
+        )
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.bottomNavigationMain.isVisible = destination.id in topLevelDestinations
+        }
+
+        init()
         handleIntent()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.checkKeywordNotiContent()
-        viewModel.updateDining()
-    }
-
-    private fun initView() = with(binding) {
-        viewModel.checkKeywordNotiContent()
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbarLayout) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                leftMargin = systemBars.left
-                topMargin = systemBars.top
-                rightMargin = systemBars.right
-            }
-            insets
-        }
-
-        binding.nestedScrollViewMain.setOnScrollChangeListener { _, _, _, _, _ ->
-            val offset = binding.nestedScrollViewMain.computeVerticalScrollOffset()
-            val extent = binding.nestedScrollViewMain.computeVerticalScrollExtent()
-            val range = binding.nestedScrollViewMain.computeVerticalScrollRange()
-
-            val newScrollPercentage = 100.0f * offset / (range - extent)
-            if (EventUtils.didCrossedScrollThreshold(
-                    scrollPercentage,
-                    newScrollPercentage
-                ) && scrollPercentage.toDouble() != .0
-            ) {
-                EventLogger.logScrollEvent(
-                    EventAction.CAMPUS,
-                    AnalyticsConstant.Label.MAIN_SCROLL,
-                    "70%"
-                )
-            }
-            scrollPercentage = 100.0f * offset / (range - extent)
-        }
-
-        buttonCategory.setOnClickListener {
-            toggleNavigationDrawer()
-        }
-
-        initHotArticleView()
-
-        textSeeMoreArticle.setOnClickListener {
-            EventLogger.logClickEvent(
-                EventAction.CAMPUS,
-                AnalyticsConstant.Label.APP_MAIN_NOTICE_DETAIL,
-                getString(R.string.article_more)
+    private fun init() {
+        if (!checkMainPermission()) {
+            requestMainPermissionLauncher.launch(
+                MAIN_REQUIRED_PERMISSION
             )
-            startActivity(Intent(this@MainActivity, ArticleActivity::class.java))
         }
-
-        busComposeView.apply {
-            setContent {
-                MainEntryView(
-                    onShuttleTicketClicked = {
-                        EventLogger.logCampusClickEvent(
-                            "shuttle_ticket",
-                            "셔틀 탑승권"
-                        )
-                        val intent = Intent(this@MainActivity, UnibusActivity::class.java)
-                        intent.putExtra("url", "https://koreatech.unibus.kr/")
-                        startActivity(intent)
-                    },
-                    onTimetableCardClicked = {
-                        EventLogger.logCampusClickEvent(
-                            "main_bus_timetable",
-                            "버스 시간표 바로가기"
-                        )
-                        val intent = Intent(this@MainActivity, BusTimetableActivity::class.java)
-                        startActivity(intent)
-                    },
-                    onSearchCardClicked = {
-                        EventLogger.logCampusClickEvent(
-                            "main_bus_search",
-                            "가장 빠른 버스 조회하기"
-                        )
-                        val intent = Intent(this@MainActivity, BusSearchActivity::class.java)
-                        startActivity(intent)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                )
-            }
-        }
-
-        callvanComposeView.setContent {
-            KoinTheme {
-                CallvanEntry()
-            }
-        }
-
-        lostandfoundComposeView.apply {
-            setContent {
-                KoinTheme {
-                    val lostAndFoundState by viewModel.lostAndFoundEntryState.collectAsStateWithLifecycle()
-                    lostAndFoundState?.let {
-                        LostAndFoundEntry(
-                            postCount = it.postCount,
-                            foundCount = it.foundCount,
-                            onClick = {
-                                EventLogger.logCampusClickEvent(
-                                    label = "lost_item_entry",
-                                    value = "분실물"
-                                )
-                                val intent = Intent(this@MainActivity, LostAndFoundActivity::class.java)
-                                startActivity(intent)
-                            }
-                        )
-                    }
-                }
-            }
-        }
-
-        shopComposeView.setContent {
-            val storeCategories by viewModel.storeCategories.collectAsState()
-
-            MainStoreWidget(
-                categories = storeCategories
-            ) { categoryId ->
-                gotoStoreActivity(categoryId)
-            }
-        }
-
-        mainSwipeRefreshLayout.setOnRefreshListener {
-            viewModel.updateDining()
-        }
-
-        diningComposeView.apply {
-            setContent {
-                KoinTheme {
-                    val diningData by viewModel.diningData.collectAsStateWithLifecycle()
-                    val selectedPosition by viewModel.selectedPosition.collectAsStateWithLifecycle()
-                    val selectedType by viewModel.selectedType.collectAsStateWithLifecycle()
-
-                    DiningWidget(
-                        diningData = diningData,
-                        selectedPosition = selectedPosition,
-                        selectedType = selectedType
-                    )
-                }
-            }
-        }
-    }
-
-    private fun initViewModel() = with(viewModel) {
-        observeLiveData(isLoading) {
-            binding.mainSwipeRefreshLayout.isRefreshing = it
-        }
-
-        lifecycleScope.launch {
-            getStoreCategories()
-            binding.textViewStore.visibility = View.GONE
-            binding.shopComposeView.visibility = View.VISIBLE
-        }
+        viewModel.checkKeywordNotiContent()
+        viewModel.getStoreCategories()
+        viewModel.updateDeviceToken()
     }
 
     private fun initBanner() {
@@ -258,53 +149,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 }
             }
         }
-    }
-
-    private fun initHotArticleView() {
-        binding.composeViewHotArticle.setContent {
-            KoinTheme {
-                val articleMain by viewModel.articleMain.collectAsState()
-
-                HotArticlePager(
-                    articles = articleMain,
-                    onNotiClick = {
-                        EventLogger.logClickEvent(
-                            EventAction.CAMPUS,
-                            AnalyticsConstant.Label.TO_MANAGE_KEYWORD,
-                            it.value
-                        )
-                        val intent =
-                            Intent(Intent.ACTION_VIEW).apply {
-                                data = when (it.type) {
-                                    ArticleNotiType.KEYWORD -> Uri.parse("koin://article/navigation?fragment=article_keyword")
-                                    ArticleNotiType.LOST_AND_FOUND -> Uri.parse(DEEP_LINK_LOST_AND_FOUND_BASE)
-                                }
-                            }
-                        intent.`package` = packageName
-                        startActivity(intent)
-                    },
-                    onArticleClick = {
-                        EventLogger.logClickEvent(
-                            EventAction.CAMPUS,
-                            AnalyticsConstant.Label.POPULAR_NOTICE_BANNER,
-                            it.title
-                        )
-                        val intent =
-                            Intent(Intent.ACTION_VIEW).apply {
-                                data = Uri.parse("koin://article/navigation?fragment=article_detail&article_id=${it.id}&board_id=${it.boardId}")
-                            }
-                        intent.`package` = packageName
-                        startActivity(intent)
-                    }
-                )
-            }
-        }
-    }
-
-    private fun gotoStoreActivity(id: Int) {
-        val bundle = Bundle()
-        bundle.putInt(STORE_CATEGORY, id)
-        callDrawerItem(R.id.navi_item_store, bundle)
     }
 
     private fun handleIntent() {
@@ -344,7 +188,18 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         }
     }
 
+    private fun checkMainPermission() = MAIN_REQUIRED_PERMISSION.all {
+        ContextCompat.checkSelfPermission(
+            this, it
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
     companion object {
-        private const val STORE_CATEGORY = "STORE_CATEGORY"
+        private val MAIN_REQUIRED_PERMISSION =
+            mutableListOf<String>().apply {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    add(Manifest.permission.POST_NOTIFICATIONS)
+                }
+            }.toTypedArray()
     }
 }

@@ -14,6 +14,7 @@ import `in`.koreatech.koin.domain.usecase.banner.CheckBannerRefusalUseCase
 import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
+import `in`.koreatech.koin.domain.usecase.user.UpdateDeviceTokenUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.domain.util.ext.arrange
@@ -32,9 +33,12 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
+    private val updateDeviceTokenUseCase: UpdateDeviceTokenUseCase,
     private val getDiningUseCase: GetDiningUseCase,
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
     private val checkBannerRefusalUseCase: CheckBannerRefusalUseCase,
@@ -110,6 +114,16 @@ class MainActivityViewModel @Inject constructor(
 
     fun setSelectedPosition(position: Int) {
         _selectedPosition.value = position
+    }
+
+    fun updateDeviceToken() {
+        viewModelScope.launch {
+            try {
+                updateDeviceTokenUseCase()
+            } catch (e: Exception) {
+                Timber.e("Failed Update Fcm Token : ${e.message}")
+            }
+        }
     }
 
     fun updateDining() {

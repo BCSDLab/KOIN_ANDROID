@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/bottom_navigation_home"
-        android:name="in.koreatech.koin.ui.newmain.fragment.HomeFragment">
+        android:name="in.koreatech.koin.ui.main.fragment.HomeFragment">
         <action
             android:id="@+id/action_home_to_notification"
             app:destination="@id/notification"
@@ -18,11 +18,11 @@
 
     <fragment
         android:id="@+id/notification"
-        android:name="in.koreatech.koin.ui.newmain.fragment.NotificationFragment" />
+        android:name="in.koreatech.koin.ui.main.fragment.NotificationFragment" />
 
     <fragment
         android:id="@+id/bottom_navigation_category"
-        android:name="in.koreatech.koin.ui.newmain.fragment.CategoryFragment">
+        android:name="in.koreatech.koin.ui.main.fragment.CategoryFragment">
         <action
             android:id="@+id/action_category_to_notification"
             app:destination="@id/notification"
@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/bottom_navigation_article"
-        android:name="in.koreatech.koin.ui.newmain.fragment.ArticleFragment">
+        android:name="in.koreatech.koin.ui.main.fragment.ArticleFragment">
         <action
             android:id="@+id/action_article_to_notification"
             app:destination="@id/notification"
@@ -46,5 +46,5 @@
 
     <fragment
         android:id="@+id/bottom_navigation_profile"
-        android:name="in.koreatech.koin.ui.newmain.fragment.ProfileFragment" />
+        android:name="in.koreatech.koin.ui.main.fragment.ProfileFragment" />
 </navigation>
