@@ -99,6 +99,16 @@
                     android:pathPrefix="/navigation"
                     android:scheme="koin" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="article"
+                    android:pathPrefix="/navigation"
+                    android:scheme="koin" />
+            </intent-filter>
         </activity>
 
         <meta-data

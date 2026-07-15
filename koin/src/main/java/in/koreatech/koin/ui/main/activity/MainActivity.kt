@@ -154,6 +154,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleIntent() {
+        if (navigateToArticleFromDeepLink()) return
+
         val targetId = intent.getIntExtra(EXTRA_ID, -1)
         val targetBoardId = intent.getIntExtra(EXTRA_BOARD_ID, -1)
         val targetArticleId = intent.getIntExtra(EXTRA_ARTICLE_ID, -1)
@@ -203,6 +205,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // koin://article/navigation?fragment=article_detail&article_id=..&board_id=.. 형태의 내부 딥링크 처리
+    private fun navigateToArticleFromDeepLink(): Boolean {
+        val uri = intent.data ?: return false
+        if (uri.host != ARTICLE_DEEP_LINK_HOST) return false
+
+        navController.navigate(
+            R.id.bottom_navigation_article,
+            bundleOf(
+                ArticleFragment.FRAGMENT to uri.getQueryParameter(ArticleFragment.FRAGMENT),
+                EXTRA_ARTICLE_ID to (uri.getQueryParameter("article_id")?.toIntOrNull() ?: -1),
+                EXTRA_BOARD_ID to (uri.getQueryParameter("board_id")?.toIntOrNull() ?: -1)
+            )
+        )
+        return true
+    }
+
     private fun checkMainPermission() = MAIN_REQUIRED_PERMISSION.all {
         ContextCompat.checkSelfPermission(
             this, it
@@ -210,6 +228,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
+        private const val ARTICLE_DEEP_LINK_HOST = "article"
+
         private val MAIN_REQUIRED_PERMISSION =
             mutableListOf<String>().apply {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
