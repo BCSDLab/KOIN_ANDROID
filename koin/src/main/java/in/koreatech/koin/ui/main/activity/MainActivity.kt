@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.Insets
+import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
@@ -37,6 +38,7 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
 import `in`.koreatech.koin.databinding.ActivityNewMainBinding
 import `in`.koreatech.koin.feature.banner.ui.BannerActivity
 import `in`.koreatech.koin.navigation.SchemeType
+import `in`.koreatech.koin.ui.main.fragment.ArticleFragment
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
@@ -161,9 +163,22 @@ class MainActivity : AppCompatActivity() {
         val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
 
         when (type) {
+            SchemeType.ARTICLE.type -> {
+                val articleId = if (targetId != -1) targetId else targetArticleId
+                if (articleId != -1) {
+                    navController.navigate(
+                        R.id.bottom_navigation_article,
+                        bundleOf(
+                            ArticleFragment.FRAGMENT to ArticleFragment.ARTICLE_DETAIL,
+                            EXTRA_ARTICLE_ID to articleId,
+                            EXTRA_BOARD_ID to targetBoardId
+                        )
+                    )
+                }
+            }
+
             SchemeType.SHOP.type,
             SchemeType.DINING.type,
-            SchemeType.ARTICLE.type,
             SchemeType.CHAT.type,
             SchemeType.CLUB_RECRUIT.type,
             SchemeType.CLUB.type -> {

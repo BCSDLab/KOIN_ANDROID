@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnAttach
@@ -22,9 +23,14 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.ToolbarMenu
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.databinding.FragmentArticleHostBinding
 import `in`.koreatech.koin.feature.article.R as ArticleR
+import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
 import `in`.koreatech.koin.feature.article.model.ArticleToolbarState
+import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.ARTICLE_ID
+import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
 import `in`.koreatech.koin.ui.newmain.ArticleHostViewModel
 import kotlinx.coroutines.launch
 
@@ -97,6 +103,33 @@ class ArticleFragment : Fragment() {
         }
         destinationChangedListener = listener
         navController.addOnDestinationChangedListener(listener)
+
+        if (savedInstanceState == null) {
+            navigateToDetailFragment(navController)
+        }
+    }
+
+    private fun navigateToDetailFragment(navController: NavController) {
+        when (arguments?.getString(FRAGMENT)) {
+            ARTICLE_KEYWORD -> {
+                navController.navigate(ArticleR.id.articleKeywordFragment)
+            }
+            ARTICLE_DETAIL -> {
+                val articleId = arguments?.getInt(EXTRA_ARTICLE_ID, -1) ?: -1
+                if (articleId == -1) return
+                val boardId = (arguments?.getInt(EXTRA_BOARD_ID, -1) ?: -1)
+                    .takeIf { it != -1 } ?: ArticleBoardType.ALL.id
+                navController.navigate(
+                    ArticleR.id.articleDetailFragment,
+                    bundleOf(
+                        ARTICLE_ID to articleId,
+                        NAVIGATED_BOARD_ID to boardId
+                    )
+                )
+            }
+            null -> Unit
+        }
+        arguments?.remove(FRAGMENT)
     }
 
     private fun setToolbar(state: ArticleToolbarState, navController: NavController) {
@@ -129,5 +162,11 @@ class ArticleFragment : Fragment() {
         destinationChangedListener = null
         articleNavController = null
         _binding = null
+    }
+
+    companion object {
+        const val FRAGMENT = "fragment"
+        const val ARTICLE_DETAIL = "article_detail"
+        const val ARTICLE_KEYWORD = "article_keyword"
     }
 }
