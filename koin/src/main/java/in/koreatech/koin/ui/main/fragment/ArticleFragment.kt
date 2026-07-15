@@ -31,6 +31,7 @@ import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
 import `in`.koreatech.koin.feature.article.model.ArticleToolbarState
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
+import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.newmain.ArticleHostViewModel
 import kotlinx.coroutines.launch
 
@@ -92,6 +93,7 @@ class ArticleFragment : Fragment() {
             val isArticleList = dest.id == ArticleR.id.articleListFragment
             binding.topbarArticleList.visibility = if (isArticleList) View.VISIBLE else View.GONE
             binding.toolbarArticle.visibility = if (isArticleList) View.GONE else View.VISIBLE
+            (activity as? MainActivity)?.setBottomNavigationVisible(isArticleList)
 
             if (!isArticleList) {
                 when (dest.id) {

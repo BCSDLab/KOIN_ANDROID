@@ -129,6 +129,10 @@ class MainActivity : AppCompatActivity() {
         handleIntent()
     }
 
+    fun setBottomNavigationVisible(visible: Boolean) {
+        binding.bottomNavigationMain.isVisible = visible
+    }
+
     private fun init() {
         if (!checkMainPermission()) {
             requestMainPermissionLauncher.launch(
