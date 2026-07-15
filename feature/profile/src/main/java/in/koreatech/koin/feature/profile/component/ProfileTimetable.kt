@@ -148,7 +148,7 @@ fun ProfileTimetable(
             )
 
             lectures.forEachIndexed { index, lecture ->
-                key(lecture.dayOfWeek,lecture.startTotalMinutes,lecture.name) {
+                key(lecture.dayOfWeek, lecture.startTotalMinutes, lecture.name) {
                     if (lecture.dayOfWeek in 0..4 && lecture.startTotalMinutes < lecture.endTotalMinutes) {
                         val color = ProfileTimetableDefaults.colors[lecture.colorIndex % ProfileTimetableDefaults.colors.size]
                         Column(
