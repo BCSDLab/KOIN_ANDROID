@@ -75,7 +75,7 @@ fun ProfileScreen(
                     viewModel.onLogoutClick()
                 } else {
                     EventLogger.logCampusClickEvent(AnalyticsConstant.Label.LOGIN, "로그인")
-                    navigator.navigateToSignIn(context, DEEPLINK_NEW_MAIN_PROFILE).let { context.startActivity(it) }
+                    navigator.navigateToSignIn(context, DEEPLINK_MAIN_PROFILE).let { context.startActivity(it) }
                 }
             },
             onSettingClick = {
@@ -83,7 +83,7 @@ fun ProfileScreen(
                     onNavigateToSetting()
                 } else {
                     EventLogger.logCampusClickEvent(AnalyticsConstant.Label.LOGIN_PROMPT, "설정(비로그인)")
-                    navigator.navigateToSignIn(context, DEEPLINK_NEW_MAIN_PROFILE).let { context.startActivity(it) }
+                    navigator.navigateToSignIn(context, DEEPLINK_MAIN_PROFILE).let { context.startActivity(it) }
                 }
             },
             onNotificationClick = {
