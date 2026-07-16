@@ -139,8 +139,6 @@ class MainActivity : AppCompatActivity() {
                 MAIN_REQUIRED_PERMISSION
             )
         }
-        viewModel.checkKeywordNotiContent()
-        viewModel.getStoreCategories()
         viewModel.updateDeviceToken()
     }
 

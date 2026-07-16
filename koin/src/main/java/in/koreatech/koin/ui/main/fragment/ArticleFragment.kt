@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnAttach
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -32,7 +32,7 @@ import `in`.koreatech.koin.feature.article.model.ArticleToolbarState
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
 import `in`.koreatech.koin.ui.main.activity.MainActivity
-import `in`.koreatech.koin.ui.newmain.ArticleHostViewModel
+import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -41,7 +41,7 @@ class ArticleFragment : Fragment() {
     private var _binding: FragmentArticleHostBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by viewModels<ArticleHostViewModel>()
+    private val viewModel by activityViewModels<MainActivityViewModel>()
 
     private var destinationChangedListener: NavController.OnDestinationChangedListener? = null
     private var articleNavController: NavController? = null
