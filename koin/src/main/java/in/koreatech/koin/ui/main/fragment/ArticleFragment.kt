@@ -31,7 +31,6 @@ import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
 import `in`.koreatech.koin.feature.article.model.ArticleToolbarState
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
-import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import kotlinx.coroutines.launch
 
