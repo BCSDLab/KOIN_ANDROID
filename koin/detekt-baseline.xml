@@ -15,12 +15,10 @@
     <ID>LongMethod:KoinNavigationDrawerActivity.kt$KoinNavigationDrawerActivity$override fun onPostCreate(savedInstanceState: Bundle?)</ID>
     <ID>LongMethod:KoinNavigationDrawerActivity.kt$KoinNavigationDrawerActivity$private fun initDrawerViewModel()</ID>
     <ID>LongMethod:LandDetailActivity.kt$LandDetailActivity$private fun setRoomOption(landDetail: LandDetail)</ID>
-    <ID>LongMethod:MainActivity.kt$MainActivity$private fun initView()</ID>
     <ID>LongMethod:NotificationActivity.kt$NotificationActivity$private fun observeData()</ID>
     <ID>LongMethod:SettingActivity.kt$SettingActivity$private fun initListeners()</ID>
     <ID>LongMethod:TimetableActivity.kt$TimetableActivity$private fun initComposeView()</ID>
     <ID>LongMethod:TimetableSemesterActivity.kt$TimetableSemesterActivity$override fun onCreate(savedInstanceState: Bundle?)</ID>
-    <ID>PrintStackTrace:MainActivity.kt$MainActivity$e</ID>
     <ID>SpreadOperator:MainActivity.kt$MainActivity$( context = this, type = Pair(EXTRA_TYPE, type), *arrayOf( Pair(EXTRA_ID, targetId), Pair(EXTRA_BOARD_ID, targetBoardId), Pair(EXTRA_ARTICLE_ID, targetArticleId), Pair(EXTRA_CHAT_ROOM_ID, targetChatId), Pair(EXTRA_CLUB_ID, targetClubId), Pair(EXTRA_EVENT_ID, targetEventId) ) )</ID>
     <ID>SpreadOperator:SchemeActivity.kt$SchemeActivity$( context = this, type = Pair(EXTRA_TYPE, url?.toHost()), *(getExtraIds(url ?: "").toTypedArray()) )</ID>
     <ID>SpreadOperator:SchemeActivity.kt$SchemeActivity$( context = this, type = Pair(EXTRA_TYPE, url?.toHost()), navType = Pair(EXTRA_NAV_TYPE, NavigatorType.MAIN.type), *(getExtraIds(url ?: "").toTypedArray()) )</ID>
@@ -29,7 +27,7 @@
     <ID>SwallowedException:KakaoTalkLinkExtensions.kt$e: NameNotFoundException</ID>
     <ID>TooGenericExceptionCaught:KoinFirebaseMessagingService.kt$KoinFirebaseMessagingService$e: Exception</ID>
     <ID>TooGenericExceptionCaught:KoinNavigationDrawerViewModel.kt$KoinNavigationDrawerViewModel$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:MainActivity.kt$MainActivity$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:MainActivityViewModel.kt$MainActivityViewModel$e: Exception</ID>
     <ID>TooManyFunctions:AuthNetworkModule.kt$AuthNetworkModule</ID>
     <ID>TooManyFunctions:KoinNavigationDrawerActivity.kt$KoinNavigationDrawerActivity : ActivityBaseOnNavigationItemSelectedListener</ID>
     <ID>TooManyFunctions:NotificationActivity.kt$NotificationActivity : ActivityBase</ID>
