@@ -131,7 +131,6 @@ class ArticleFragment : Fragment() {
             }
             null -> Unit
         }
-        arguments?.remove(FRAGMENT)
     }
 
     private fun setToolbar(state: ArticleToolbarState, navController: NavController) {
