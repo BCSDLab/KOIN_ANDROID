@@ -126,6 +126,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         init()
+        handleIntent()
     }
 
     override fun onNewIntent(intent: Intent) {
