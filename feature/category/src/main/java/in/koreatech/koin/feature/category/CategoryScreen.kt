@@ -28,8 +28,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.R as CoreR
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
-import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -120,10 +118,7 @@ private fun CategoryScreenImpl(
                     },
                     title = timetableTitle,
                     description = stringResource(R.string.timetable_description),
-                    onClick = {
-                        EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Category.CATEGORY_TIMETABLE, "시간표")
-                        onMenuClick(CategoryMenuId.TIMETABLE)
-                    }
+                    onClick = { onMenuClick(CategoryMenuId.TIMETABLE) }
                 )
 
                 val lostItemTitle = stringResource(R.string.lost_and_found)
@@ -137,53 +132,29 @@ private fun CategoryScreenImpl(
                     },
                     title = lostItemTitle,
                     description = stringResource(R.string.lost_and_found_description),
-                    onClick = {
-                        EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Category.CATEGORY_LOST_PROPERTY, "분실물")
-                        onMenuClick(CategoryMenuId.LOST_AND_FOUND)
-                    }
+                    onClick = { onMenuClick(CategoryMenuId.LOST_AND_FOUND) }
                 )
             }
 
             CategoryMenuList(
                 title = stringResource(R.string.campus),
                 items = CAMPUS_MENUS,
-                onItemClick = { menu ->
-                    categoryMenuLogValue(menu.id)?.let { EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Category.CATEGORY_CAMPUS, it) }
-                    onMenuClick(menu.id)
-                }
+                onItemClick = { menu -> onMenuClick(menu.id) }
             )
             CategoryMenuList(
                 title = stringResource(R.string.transport),
                 items = TRANSPORT_MENUS,
-                onItemClick = { menu ->
-                    categoryMenuLogValue(menu.id)?.let { EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Category.CATEGORY_TRANSPORTATION, it) }
-                    onMenuClick(menu.id)
-                }
+                onItemClick = { menu -> onMenuClick(menu.id) }
             )
             CategoryMenuList(
                 title = stringResource(R.string.other),
                 items = OTHER_MENUS,
-                onItemClick = { menu ->
-                    categoryMenuLogValue(menu.id)?.let { EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Category.CATEGORY_ETC, it) }
-                    onMenuClick(menu.id)
-                }
+                onItemClick = { menu -> onMenuClick(menu.id) }
             )
         }
 
         Spacer(modifier = Modifier.height(24.dp))
     }
-}
-
-private fun categoryMenuLogValue(id: CategoryMenuId): String? = when (id) {
-    CategoryMenuId.OPERATING_INFO -> "교내 시설물 정보"
-    CategoryMenuId.DINING -> "식단"
-    CategoryMenuId.STORE -> "주변상점"
-    CategoryMenuId.BUS_TIMETABLE -> "버스 시간표"
-    CategoryMenuId.TRANSPORT_SEARCH -> "교통편 조회하기"
-    CategoryMenuId.CALLVAN -> "콜벤팟 모집"
-    CategoryMenuId.HOUSING -> "복덕방"
-    CategoryMenuId.KOIN_BUSINESS -> "코인 for Business"
-    else -> null
 }
 
 @Composable
