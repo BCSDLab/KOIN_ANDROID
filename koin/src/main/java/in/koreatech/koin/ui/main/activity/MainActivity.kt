@@ -134,10 +134,6 @@ class MainActivity : AppCompatActivity() {
         handleIntent()
     }
 
-    fun setBottomNavigationVisible(visible: Boolean) {
-        binding.bottomNavigationMain.isVisible = visible
-    }
-
     private fun init() {
         if (!checkMainPermission()) {
             requestMainPermissionLauncher.launch(
@@ -145,6 +141,14 @@ class MainActivity : AppCompatActivity() {
             )
         }
         viewModel.updateDeviceToken()
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.showBottomNav.collectLatest {
+                    binding.bottomNavigationMain.isVisible = it
+                }
+            }
+        }
     }
 
     private fun initBanner() {

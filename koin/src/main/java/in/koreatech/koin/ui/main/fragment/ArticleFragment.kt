@@ -93,7 +93,7 @@ class ArticleFragment : Fragment() {
             val isArticleList = dest.id == ArticleR.id.articleListFragment
             binding.topbarArticleList.visibility = if (isArticleList) View.VISIBLE else View.GONE
             binding.toolbarArticle.visibility = if (isArticleList) View.GONE else View.VISIBLE
-            (activity as? MainActivity)?.setBottomNavigationVisible(isArticleList)
+            viewModel.updateShowBottomNav(isArticleList)
 
             if (!isArticleList) {
                 when (dest.id) {

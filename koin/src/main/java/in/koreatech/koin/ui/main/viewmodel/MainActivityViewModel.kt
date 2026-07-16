@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -34,6 +35,9 @@ class MainActivityViewModel @Inject constructor(
 
     private val _isBannerRefusal = MutableStateFlow<Boolean?>(null)
     val isBannerRefusal: StateFlow<Boolean?> get() = _isBannerRefusal
+
+    private val _showBottomNav = MutableStateFlow(true)
+    val showBottomNav: StateFlow<Boolean> get() = _showBottomNav
 
     val hasUnreadNotification: StateFlow<Boolean> = getNotificationsFlowUseCase()
         .map { notifications -> notifications.any { !it.isRead } }
@@ -73,6 +77,12 @@ class MainActivityViewModel @Inject constructor(
                     _diningData.value = listOf()
                     _isLoading.value = false
                 }
+        }
+    }
+
+    fun updateShowBottomNav(show: Boolean) {
+        viewModelScope.launch {
+            _showBottomNav.update { show }
         }
     }
 
