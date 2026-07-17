@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.ui.newmain.fragment
+package `in`.koreatech.koin.ui.main.fragment
 
 import android.content.Intent
 import android.os.Bundle

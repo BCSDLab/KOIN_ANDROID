@@ -41,7 +41,6 @@ import `in`.koreatech.koin.core.util.blueStatusBar
 import `in`.koreatech.koin.core.util.whiteStatusBar
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.feature.article.ArticleActivity
 import `in`.koreatech.koin.feature.callvan.CallvanActivity
 import `in`.koreatech.koin.feature.chat.ui.list.ChatListActivity
 import `in`.koreatech.koin.feature.club.ui.ClubActivity
@@ -640,7 +639,10 @@ abstract class KoinNavigationDrawerActivity :
     }
 
     private fun goToArticleActivity() {
-        val intent = Intent(this, ArticleActivity::class.java)
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse("koin://article/navigation")
+            `package` = packageName
+        }
 
         if (menuState != MenuState.Main) {
             goToActivityFinish(intent)

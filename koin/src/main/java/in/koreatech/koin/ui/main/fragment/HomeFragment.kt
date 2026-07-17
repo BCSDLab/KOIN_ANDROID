@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.ui.newmain.fragment
+package `in`.koreatech.koin.ui.main.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,11 +9,12 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
-import `in`.koreatech.koin.feature.notification.NotificationScreen
+import `in`.koreatech.koin.feature.home.HomeScreen
 
 @AndroidEntryPoint
-class NotificationFragment : Fragment() {
+class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -23,8 +24,10 @@ class NotificationFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 RebrandKoinTheme {
-                    NotificationScreen(
-                        onBack = { findNavController().popBackStack() }
+                    HomeScreen(
+                        navigateToNotification = {
+                            findNavController().navigate(R.id.action_home_to_notification)
+                        }
                     )
                 }
             }
