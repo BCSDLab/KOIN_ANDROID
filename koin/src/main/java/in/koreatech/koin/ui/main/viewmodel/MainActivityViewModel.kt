@@ -81,9 +81,7 @@ class MainActivityViewModel @Inject constructor(
     }
 
     fun updateShowBottomNav(show: Boolean) {
-        viewModelScope.launch {
-            _showBottomNav.update { show }
-        }
+        _showBottomNav.update { show }
     }
 
     private fun checkBannerRefusal() {
