@@ -1,9 +1,11 @@
 package `in`.koreatech.bus.type
 
+import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.serialization.Serializable
 
+@Keep
 @Serializable
 enum class PlaceType(
     @StringRes val titleRes: Int
