@@ -217,6 +217,14 @@ object AnalyticsConstant {
             const val CALLVAN_WRITE_DONE = "callvan_write_done"
             const val CALLVAN_WRITE_BACK = "callvan_write_back"
         }
+
+        object Category {
+            const val CATEGORY_TIMETABLE = "category_timetable"
+            const val CATEGORY_LOST_PROPERTY = "category_lost_property"
+            const val CATEGORY_CAMPUS = "category_campus"
+            const val CATEGORY_TRANSPORTATION = "category_transportation"
+            const val CATEGORY_ETC = "category_etc"
+        }
     }
 
     const val PREVIOUS_PAGE = "previous_page"
