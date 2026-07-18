@@ -1,8 +1,9 @@
-package `in`.koreatech.koin.feature.home.profile
+package `in`.koreatech.koin.feature.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -34,11 +35,9 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
-import `in`.koreatech.koin.feature.home.R
-import `in`.koreatech.koin.feature.home.component.HomeSection
-import `in`.koreatech.koin.feature.home.profile.component.ProfileCard
-import `in`.koreatech.koin.feature.home.profile.component.ProfileTimetable
-import `in`.koreatech.koin.feature.home.profile.model.ProfileTimetableLecture
+import `in`.koreatech.koin.feature.profile.component.ProfileCard
+import `in`.koreatech.koin.feature.profile.component.ProfileTimetable
+import `in`.koreatech.koin.feature.profile.model.ProfileTimetableLecture
 import kotlinx.collections.immutable.ImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -79,10 +78,12 @@ fun ProfileScreen(
                 }
             },
             onSettingClick = {
-                if (!uiState.isLoggedIn) {
+                if (uiState.isLoggedIn) {
+                    onNavigateToSetting()
+                } else {
                     EventLogger.logCampusClickEvent(AnalyticsConstant.Label.LOGIN_PROMPT, "설정(비로그인)")
+                    navigator.navigateToSignIn(context, DEEPLINK_MAIN_PROFILE).let { context.startActivity(it) }
                 }
-                onNavigateToSetting()
             },
             onNotificationClick = {
                 EventLogger.logCampusClickEvent(AnalyticsConstant.Label.NOTIFICATION, "알림 아이콘")
@@ -137,7 +138,12 @@ private fun HeaderSection(
     ) {
         Image(
             imageVector = ImageVector.vectorResource(R.drawable.ic_bcsd_symbol),
-            contentDescription = ""
+            contentDescription = null
+        )
+
+        Image(
+            imageVector = ImageVector.vectorResource(R.drawable.ic_koin_text),
+            contentDescription = null
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -145,9 +151,9 @@ private fun HeaderSection(
         Image(
             modifier = Modifier.noRippleClickable { onNotificationClick() },
             imageVector = if (isNewNotificationReceived) {
-                ImageVector.vectorResource(R.drawable.ic_home_notification_dot)
+                ImageVector.vectorResource(R.drawable.ic_profile_notification_dot)
             } else {
-                ImageVector.vectorResource(R.drawable.ic_home_notification)
+                ImageVector.vectorResource(R.drawable.ic_profile_notification)
             },
             contentDescription = null
         )
@@ -159,23 +165,23 @@ private fun TimetableSection(
     lectures: ImmutableList<ProfileTimetableLecture>,
     modifier: Modifier = Modifier
 ) {
-    HomeSection(
-        modifier = modifier.fillMaxWidth(),
-        text = {
-            Text(
-                text = stringResource(R.string.profile_timetable_section),
-                style = RebrandKoinTheme.typography.medium18
-            )
-        },
-        more = {}
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp, start = 24.dp, end = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+        Text(
+            text = stringResource(R.string.profile_timetable_section),
+            style = RebrandKoinTheme.typography.bold18
+        )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .border(0.5.dp, Color(0xFFE6E6E6), RoundedCornerShape(16.dp))
                 .clip(RoundedCornerShape(16.dp))
                 .background(RebrandKoinTheme.colors.neutral0)
-                .padding(vertical = 16.dp, horizontal = 16.dp)
+                .padding(16.dp)
         ) {
             ProfileTimetable(lectures = lectures)
         }

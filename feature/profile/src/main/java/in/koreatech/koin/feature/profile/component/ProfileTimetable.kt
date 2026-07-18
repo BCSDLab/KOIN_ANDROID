@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.home.profile.component
+package `in`.koreatech.koin.feature.profile.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -29,7 +29,7 @@ import androidx.compose.ui.util.fastFirst
 import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastMapNotNull
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
-import `in`.koreatech.koin.feature.home.profile.model.ProfileTimetableLecture
+import `in`.koreatech.koin.feature.profile.model.ProfileTimetableLecture
 import kotlin.math.roundToInt
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -39,13 +39,11 @@ fun ProfileTimetable(
     lectures: ImmutableList<ProfileTimetableLecture>,
     modifier: Modifier = Modifier
 ) {
-    val startHour = remember { ProfileTimetableDefaults.START_HOUR }
-    val endHour = remember { ProfileTimetableDefaults.END_HOUR }
-    val rowCount = remember(startHour, endHour) { endHour - startHour }
-    val days = remember { ProfileTimetableDefaults.days }
-
-    val timeCellPadding = remember { PaddingValues(horizontal = 8.dp, vertical = 6.dp) }
-    val headerCellPadding = remember { PaddingValues(horizontal = 8.dp, vertical = 6.dp) }
+    val cellPadding = remember { PaddingValues(horizontal = 8.dp, vertical = 6.dp) }
+    val startHour = ProfileTimetableDefaults.START_HOUR
+    val endHour = ProfileTimetableDefaults.END_HOUR
+    val rowCount = endHour - startHour
+    val days = ProfileTimetableDefaults.days
 
     Layout(
         modifier = modifier
@@ -63,7 +61,7 @@ fun ProfileTimetable(
             ) {
                 Text(
                     text = " ",
-                    modifier = Modifier.padding(headerCellPadding),
+                    modifier = Modifier.padding(cellPadding),
                     style = RebrandKoinTheme.typography.regular12
                 )
             }
@@ -86,7 +84,7 @@ fun ProfileTimetable(
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(timeCellPadding),
+                                .padding(cellPadding),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
@@ -116,7 +114,7 @@ fun ProfileTimetable(
                         Box(
                             modifier = Modifier
                                 .weight(1f)
-                                .padding(headerCellPadding),
+                                .padding(cellPadding),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
@@ -150,7 +148,7 @@ fun ProfileTimetable(
             )
 
             lectures.forEachIndexed { index, lecture ->
-                key(index) {
+                key(lecture.dayOfWeek, lecture.startTotalMinutes, lecture.name) {
                     if (lecture.dayOfWeek in 0..4 && lecture.startTotalMinutes < lecture.endTotalMinutes) {
                         val color = ProfileTimetableDefaults.colors[lecture.colorIndex % ProfileTimetableDefaults.colors.size]
                         Column(

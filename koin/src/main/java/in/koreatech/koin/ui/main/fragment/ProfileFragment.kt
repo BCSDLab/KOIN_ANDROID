@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
-import `in`.koreatech.koin.feature.home.profile.ProfileScreen
+import `in`.koreatech.koin.feature.profile.ProfileScreen
 import `in`.koreatech.koin.ui.setting.SettingActivity
 
 @AndroidEntryPoint

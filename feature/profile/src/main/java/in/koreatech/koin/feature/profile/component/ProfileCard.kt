@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.home.profile.component
+package `in`.koreatech.koin.feature.profile.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,8 +26,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
-import `in`.koreatech.koin.feature.home.R
-import `in`.koreatech.koin.feature.home.component.HomeIcon
+import `in`.koreatech.koin.feature.profile.R
 
 @Composable
 fun ProfileCard(
@@ -55,7 +54,7 @@ fun ProfileCard(
             Column {
                 Text(
                     text = if (isLoggedIn) {
-                        name.ifBlank { stringResource(R.string.home_username_default) }
+                        name.ifBlank { stringResource(R.string.profile_username_default) }
                     } else {
                         stringResource(R.string.profile_login_prompt)
                     },
@@ -74,7 +73,7 @@ fun ProfileCard(
 
         ProfileMenuRow(
             icon = ImageVector.vectorResource(
-                if (isLoggedIn) R.drawable.ic_home_logout else R.drawable.ic_home_login
+                if (isLoggedIn) R.drawable.ic_profile_logout else R.drawable.ic_profile_login
             ),
             label = stringResource(
                 if (isLoggedIn) R.string.profile_logout else R.string.profile_login
@@ -83,7 +82,7 @@ fun ProfileCard(
         )
 
         ProfileMenuRow(
-            icon = ImageVector.vectorResource(R.drawable.ic_home_setting),
+            icon = ImageVector.vectorResource(R.drawable.ic_profile_setting),
             label = stringResource(R.string.profile_setting),
             onClick = onSettingClick
         )
@@ -102,9 +101,30 @@ private fun ProfileAvatar(modifier: Modifier = Modifier) {
     ) {
         Icon(
             modifier = Modifier.size(24.dp),
-            imageVector = ImageVector.vectorResource(R.drawable.ic_home_profile_avatar),
+            imageVector = ImageVector.vectorResource(R.drawable.ic_profile_avatar),
             tint = RebrandKoinTheme.colors.primary500,
             contentDescription = null
+        )
+    }
+}
+
+@Composable
+private fun ProfileIcon(
+    imageVector: ImageVector,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(10.dp))
+            .background(RebrandKoinTheme.colors.neutral100)
+            .padding(vertical = 8.dp, horizontal = 8.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            modifier = Modifier.size(24.dp),
+            imageVector = imageVector,
+            contentDescription = null,
+            tint = RebrandKoinTheme.colors.primary500
         )
     }
 }
@@ -123,12 +143,8 @@ private fun ProfileMenuRow(
             .padding(start = 20.dp, top = 12.dp, bottom = 12.dp, end = 20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        HomeIcon(
-            imageVector = icon,
-            tint = RebrandKoinTheme.colors.primary500,
-            backgroundColor = RebrandKoinTheme.colors.neutral100,
-            shape = RoundedCornerShape(10.dp),
-            contentDescription = null
+        ProfileIcon(
+            imageVector = icon
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(

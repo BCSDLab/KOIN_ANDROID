@@ -1,7 +1,7 @@
-package `in`.koreatech.koin.feature.home.profile.component
+package `in`.koreatech.koin.feature.profile.component
 
 import androidx.compose.ui.graphics.Color
-import `in`.koreatech.koin.feature.home.profile.model.ProfileTimetableColor
+import `in`.koreatech.koin.feature.profile.model.ProfileTimetableColor
 
 internal object ProfileTimetableDefaults {
     const val START_HOUR = 9
@@ -9,7 +9,6 @@ internal object ProfileTimetableDefaults {
     val days = listOf("월", "화", "수", "목", "금")
 
     val gridLineColor = Color(0xFFF5F5F5)
-    val labelColor = Color(0xFFB0B0B0)
 
     val colors = listOf(
         ProfileTimetableColor(Color(0xFF890000), Color(0xFFE7CCCC)),

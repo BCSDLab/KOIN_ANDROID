@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.home.profile
+package `in`.koreatech.koin.feature.profile
 
 sealed class ProfileSideEffect {
     data object LogoutSuccess : ProfileSideEffect()

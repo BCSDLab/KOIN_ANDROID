@@ -1,7 +1,7 @@
-package `in`.koreatech.koin.feature.home.profile.mapper
+package `in`.koreatech.koin.feature.profile.mapper
 
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectures
-import `in`.koreatech.koin.feature.home.profile.model.ProfileTimetableLecture
+import `in`.koreatech.koin.feature.profile.model.ProfileTimetableLecture
 import java.time.DayOfWeek
 import kotlin.collections.plusAssign
 import kotlinx.collections.immutable.ImmutableList

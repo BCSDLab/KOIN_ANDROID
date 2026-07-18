@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.home.profile
+package `in`.koreatech.koin.feature.profile
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -8,7 +8,7 @@ import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableLecturesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetUserSemestersUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLogoutUseCase
-import `in`.koreatech.koin.feature.home.profile.mapper.toProfileTimetableLectures
+import `in`.koreatech.koin.feature.profile.mapper.toProfileTimetableLectures
 import javax.inject.Inject
 import kotlin.math.pow
 import kotlinx.collections.immutable.persistentListOf
