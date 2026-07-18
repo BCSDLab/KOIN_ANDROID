@@ -1,2 +1,2 @@
 package `in`.koreatech.koin.feature.profile
-internal const val DEEPLINK_NEW_MAIN_PROFILE = "koin://newmain/navigation"
+internal const val DEEPLINK_MAIN_PROFILE = "koin://main/navigation"

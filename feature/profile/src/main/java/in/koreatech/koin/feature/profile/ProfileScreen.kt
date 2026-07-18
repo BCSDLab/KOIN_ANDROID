@@ -78,10 +78,12 @@ fun ProfileScreen(
                 }
             },
             onSettingClick = {
-                if (!uiState.isLoggedIn) {
+                if (uiState.isLoggedIn) {
+                    onNavigateToSetting()
+                } else {
                     EventLogger.logCampusClickEvent(AnalyticsConstant.Label.LOGIN_PROMPT, "설정(비로그인)")
+                    navigator.navigateToSignIn(context, DEEPLINK_MAIN_PROFILE).let { context.startActivity(it) }
                 }
-                onNavigateToSetting()
             },
             onNotificationClick = {
                 EventLogger.logCampusClickEvent(AnalyticsConstant.Label.NOTIFICATION, "알림 아이콘")
