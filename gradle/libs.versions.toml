@@ -34,6 +34,7 @@ firebaseCrashlyticsBuildtools = "2.9.9"
 firebaseGradle = "2.9.9"
 googleServiceVersion = "4.3.14"
 glide = "4.14.2"
+gson = "2.11.0"
 guava = "33.0.0-android"
 hilt = "2.57.2"
 javaxInject = "1"
@@ -143,6 +144,7 @@ firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging
 firebase-perf = { group = "com.google.firebase", name = "firebase-perf" }
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 glide-ksp = { group = "com.github.bumptech.glide", name = "ksp", version.ref = "glide" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }

@@ -175,6 +175,8 @@ dependencies {
 
     implementation(libs.play.feature.delivery.ktx)
 
+    implementation(libs.gson)
+
     implementation(libs.timber)
 
     implementation(libs.firebase.crashlytics)
