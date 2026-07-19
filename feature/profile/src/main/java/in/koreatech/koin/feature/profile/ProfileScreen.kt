@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -68,23 +69,29 @@ fun ProfileScreen(
             uiState = uiState,
             onAuthClick = {
                 if (uiState.isLoggedIn) {
+                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Profile.PROFILE_LOGOUT, "로그아웃")
                     viewModel.onLogoutClick()
                 } else {
-                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.LOGIN, "로그인")
+                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Profile.PROFILE_LOGIN, "로그인")
                     navigator.navigateToSignIn(context, DEEPLINK_MAIN_PROFILE).let { context.startActivity(it) }
                 }
             },
             onSettingClick = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Profile.PROFILE_SETTINGS, "설정")
                 if (uiState.isLoggedIn) {
                     onNavigateToSetting()
                 } else {
-                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.LOGIN_PROMPT, "설정(비로그인)")
                     navigator.navigateToSignIn(context, DEEPLINK_MAIN_PROFILE).let { context.startActivity(it) }
                 }
             },
             onNotificationClick = {
                 EventLogger.logCampusClickEvent(AnalyticsConstant.Label.NOTIFICATION, "알림 아이콘")
                 onNavigateToNotification()
+            },
+            onTimetableClick = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Profile.PROFILE_TIMETABLE, "내 시간표")
+                navigator.navigateToTimetable(context, isAnonymous = !uiState.isLoggedIn)
+                    .let { context.startActivity(it) }
             }
         )
     }
@@ -96,7 +103,8 @@ private fun ProfileScreenContent(
     modifier: Modifier = Modifier,
     onAuthClick: () -> Unit = {},
     onSettingClick: () -> Unit = {},
-    onNotificationClick: () -> Unit = {}
+    onNotificationClick: () -> Unit = {},
+    onTimetableClick: () -> Unit = {}
 ) {
     Column(
         modifier = modifier.verticalScroll(rememberScrollState())
@@ -115,7 +123,10 @@ private fun ProfileScreenContent(
             onSettingClick = onSettingClick
         )
 
-        TimetableSection(lectures = uiState.timetable)
+        TimetableSection(
+            lectures = uiState.timetable,
+            onTimetableClick = onTimetableClick
+        )
 
         Spacer(modifier = Modifier.height(24.dp))
     }
@@ -143,7 +154,8 @@ private fun HeaderSection(
 @Composable
 private fun TimetableSection(
     lectures: ImmutableList<ProfileTimetableLecture>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onTimetableClick: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -161,6 +173,7 @@ private fun TimetableSection(
                 .border(0.5.dp, Color(0xFFE6E6E6), RoundedCornerShape(16.dp))
                 .clip(RoundedCornerShape(16.dp))
                 .background(RebrandKoinTheme.colors.neutral0)
+                .clickable { onTimetableClick() }
                 .padding(16.dp)
         ) {
             ProfileTimetable(lectures = lectures)

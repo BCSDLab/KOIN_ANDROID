@@ -225,6 +225,13 @@ object AnalyticsConstant {
             const val CATEGORY_TRANSPORTATION = "category_transportation"
             const val CATEGORY_ETC = "category_etc"
         }
+
+        object Profile {
+            const val PROFILE_TIMETABLE = "profile_timetable"
+            const val PROFILE_LOGIN = "profile_login"
+            const val PROFILE_LOGOUT = "profile_logout"
+            const val PROFILE_SETTINGS = "profile_settings"
+        }
     }
 
     const val PREVIOUS_PAGE = "previous_page"
