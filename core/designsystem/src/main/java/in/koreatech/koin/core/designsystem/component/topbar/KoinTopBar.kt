@@ -26,6 +26,7 @@ fun KoinTopBar(
     modifier: Modifier = Modifier,
     leftIconContentDescription: String? = null,
     middleIconContentDescription: String? = null,
+    rightIconContentDescription: String? = null,
     contentPadding: PaddingValues = PaddingValues(vertical = 8.dp, horizontal = 24.dp),
     onRightClick: () -> Unit = {}
 ) {
@@ -50,7 +51,7 @@ fun KoinTopBar(
         Image(
             modifier = Modifier.noRippleClickable(onClick = onRightClick),
             imageVector = rightIcon,
-            contentDescription = null
+            contentDescription = rightIconContentDescription
         )
     }
 }
