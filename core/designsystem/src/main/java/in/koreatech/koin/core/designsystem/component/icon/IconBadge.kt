@@ -24,7 +24,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 object IconBadgeDefaults {
     val Shape: Shape = RoundedCornerShape(8.dp)
-    val ContentPadding = PaddingValues(8.dp)
+    val ContentPadding: PaddingValues = PaddingValues(8.dp)
     val IconSize: Dp = 24.dp
 
     @Composable

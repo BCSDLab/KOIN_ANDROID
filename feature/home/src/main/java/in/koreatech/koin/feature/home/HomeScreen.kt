@@ -41,9 +41,11 @@ import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.card.FeatureCard
+import `in`.koreatech.koin.core.designsystem.component.card.FeatureCardDefaults
 import `in`.koreatech.koin.core.designsystem.component.card.FeatureRow
+import `in`.koreatech.koin.core.designsystem.component.card.FeatureRowDefaults
 import `in`.koreatech.koin.core.designsystem.component.icon.IconBadge
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinMainTopBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
@@ -124,18 +126,10 @@ private fun HeaderSection(
     modifier: Modifier = Modifier,
     onNotificationClick: () -> Unit = {}
 ) {
-    KoinTopBar(
+    KoinMainTopBar(
         modifier = modifier,
-        leftIcon = ImageVector.vectorResource(R.drawable.ic_bcsd_symbol),
-        leftIconContentDescription = "Logo",
-        middleIcon = ImageVector.vectorResource(R.drawable.ic_koin_text),
-        middleIconContentDescription = "KOIN",
-        rightIcon = if (isNewNotificationReceived) {
-            ImageVector.vectorResource(R.drawable.ic_rebrand_notification_dot)
-        } else {
-            ImageVector.vectorResource(R.drawable.ic_rebrand_notification)
-        },
-        onRightClick = {
+        isNewNotificationReceived = isNewNotificationReceived,
+        onNotificationClick = {
             EventLogger.logCampusClickEvent(AnalyticsConstant.Label.NOTIFICATION, "알림 아이콘")
             onNotificationClick()
         }
@@ -325,6 +319,7 @@ private fun BusSection(
             FeatureCard(
                 modifier = Modifier
                     .weight(1f)
+                    .clip(FeatureCardDefaults.Shape)
                     .clickable {
                         EventLogger.logCampusClickEvent(AnalyticsConstant.Label.BUS_TIMETABLE, "버스 시간표 조회하기")
                         navigator.navigateToBusTimeTable(context).let(context::startActivity)
@@ -360,6 +355,7 @@ private fun BusSection(
             FeatureCard(
                 modifier = Modifier
                     .weight(1f)
+                    .clip(FeatureCardDefaults.Shape)
                     .clickable {
                         EventLogger.logCampusClickEvent(AnalyticsConstant.Label.BUS_ROUTE, "버스 노선 조회하기")
                         navigator.navigateToBusSearch(context).let(context::startActivity)
@@ -436,10 +432,12 @@ private fun ShopSection(
         }
     ) {
         FeatureRow(
-            modifier = Modifier.clickable {
-                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.POPULAR_SHOP, "많이 찾는 상점 둘러보기")
-                navigator.navigateToStore(context).let(context::startActivity)
-            },
+            modifier = Modifier
+                .clip(FeatureRowDefaults.Shape)
+                .clickable {
+                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.POPULAR_SHOP, "많이 찾는 상점 둘러보기")
+                    navigator.navigateToStore(context).let(context::startActivity)
+                },
             title = {
                 Text(
                     text = stringResource(R.string.shop_title),

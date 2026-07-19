@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -74,7 +73,7 @@ private fun CategoryMenuRow(
         icon = {
             IconBadge(
                 imageVector = ImageVector.vectorResource(menu.iconRes),
-                contentDescription = null
+                contentDescription = title
             )
         },
         title = {
@@ -91,8 +90,7 @@ private fun CategoryMenuRow(
             )
         },
         colors = FeatureRowDefaults.colors(
-            backgroundColor = Color.Transparent,
-            borderColor = Color.Transparent
+            backgroundColor = RebrandKoinTheme.colors.neutral0
         ),
         shape = RectangleShape,
         contentPadding = PaddingValues(horizontal = 20.dp, vertical = 12.dp),

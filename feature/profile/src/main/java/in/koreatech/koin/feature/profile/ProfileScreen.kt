@@ -22,15 +22,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinMainTopBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.profile.component.ProfileCard
@@ -138,16 +136,10 @@ private fun HeaderSection(
     modifier: Modifier = Modifier,
     onNotificationClick: () -> Unit = {}
 ) {
-    KoinTopBar(
+    KoinMainTopBar(
         modifier = modifier,
-        leftIcon = ImageVector.vectorResource(R.drawable.ic_bcsd_symbol),
-        middleIcon = ImageVector.vectorResource(R.drawable.ic_koin_text),
-        rightIcon = if (isNewNotificationReceived) {
-            ImageVector.vectorResource(R.drawable.ic_rebrand_notification_dot)
-        } else {
-            ImageVector.vectorResource(R.drawable.ic_rebrand_notification)
-        },
-        onRightClick = onNotificationClick
+        isNewNotificationReceived = isNewNotificationReceived,
+        onNotificationClick = onNotificationClick
     )
 }
 

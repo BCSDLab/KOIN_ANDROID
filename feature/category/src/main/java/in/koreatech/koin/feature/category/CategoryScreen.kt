@@ -22,6 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -29,11 +30,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import `in`.koreatech.koin.core.R as CoreR
 import `in`.koreatech.koin.core.designsystem.component.card.FeatureCard
 import `in`.koreatech.koin.core.designsystem.component.card.FeatureCardDefaults
 import `in`.koreatech.koin.core.designsystem.component.icon.IconBadge
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinMainTopBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -115,6 +115,7 @@ private fun CategoryScreenImpl(
                 CategoryFeatureCard(
                     modifier = Modifier
                         .weight(1f)
+                        .clip(RoundedCornerShape(20.dp))
                         .clickable { onMenuClick(CategoryMenuId.TIMETABLE) },
                     icon = {
                         IconBadge(
@@ -140,6 +141,7 @@ private fun CategoryScreenImpl(
                 CategoryFeatureCard(
                     modifier = Modifier
                         .weight(1f)
+                        .clip(RoundedCornerShape(20.dp))
                         .clickable { onMenuClick(CategoryMenuId.LOST_AND_FOUND) },
                     icon = {
                         IconBadge(
@@ -196,8 +198,7 @@ private fun CategoryFeatureCard(
         title = title,
         description = description,
         colors = FeatureCardDefaults.colors(
-            backgroundColor = RebrandKoinTheme.colors.neutral0,
-            borderColor = Color.Transparent
+            backgroundColor = RebrandKoinTheme.colors.neutral0
         ),
         shape = RoundedCornerShape(20.dp),
         contentPadding = PaddingValues(16.dp),
@@ -212,15 +213,9 @@ private fun HeaderSection(
     modifier: Modifier = Modifier,
     onNotificationClick: () -> Unit = {}
 ) {
-    KoinTopBar(
+    KoinMainTopBar(
         modifier = modifier,
-        leftIcon = ImageVector.vectorResource(R.drawable.ic_bcsd_symbol),
-        middleIcon = ImageVector.vectorResource(CoreR.drawable.ic_koin_text),
-        rightIcon = if (isNewNotificationReceived) {
-            ImageVector.vectorResource(R.drawable.ic_rebrand_notification_dot)
-        } else {
-            ImageVector.vectorResource(R.drawable.ic_rebrand_notification)
-        },
-        onRightClick = onNotificationClick
+        isNewNotificationReceived = isNewNotificationReceived,
+        onNotificationClick = onNotificationClick
     )
 }

@@ -27,7 +27,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 object FeatureCardDefaults {
     val Shape: Shape = RoundedCornerShape(16.dp)
     val BorderWidth: Dp = 0.5.dp
-    val ContentPadding = PaddingValues(vertical = 20.dp, horizontal = 20.dp)
+    val ContentPadding: PaddingValues = PaddingValues(vertical = 20.dp, horizontal = 20.dp)
     val IconSpacing: Dp = 6.dp
 
     @Composable
