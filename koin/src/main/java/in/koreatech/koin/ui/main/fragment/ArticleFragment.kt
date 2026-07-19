@@ -67,6 +67,7 @@ class ArticleFragment : Fragment() {
         }
 
         binding.btnNotificationArticle.setOnClickListener {
+            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.NOTIFICATION, "알림 아이콘")
             findNavController().navigate(R.id.action_article_to_notification)
         }
 

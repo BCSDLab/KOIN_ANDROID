@@ -30,6 +30,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.card.FeatureCard
 import `in`.koreatech.koin.core.designsystem.component.card.FeatureCardDefaults
 import `in`.koreatech.koin.core.designsystem.component.icon.IconBadge
@@ -216,6 +218,9 @@ private fun HeaderSection(
     KoinMainTopBar(
         modifier = modifier,
         isNewNotificationReceived = isNewNotificationReceived,
-        onNotificationClick = onNotificationClick
+        onNotificationClick = {
+            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.NOTIFICATION, "알림 아이콘")
+            onNotificationClick()
+        }
     )
 }
