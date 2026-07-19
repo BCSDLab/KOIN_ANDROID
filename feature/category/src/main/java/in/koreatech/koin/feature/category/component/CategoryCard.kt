@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.designsystem.component.icon.IconBadge
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.category.R
@@ -56,7 +57,7 @@ private fun CategoryCardPreview() {
     RebrandKoinTheme {
         CategoryCard(
             categoryIcon = {
-                CategoryIcon(
+                IconBadge(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_calendar_category),
                     contentDescription = null
                 )

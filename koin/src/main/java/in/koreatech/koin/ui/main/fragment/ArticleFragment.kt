@@ -74,9 +74,9 @@ class ArticleFragment : Fragment() {
                 viewModel.hasUnreadNotification.collect { hasUnread ->
                     binding.btnNotificationArticle.setImageResource(
                         if (hasUnread) {
-                            ArticleR.drawable.ic_koin_notification_dot
+                            ArticleR.drawable.ic_rebrand_notification_dot
                         } else {
-                            ArticleR.drawable.ic_koin_notification
+                            ArticleR.drawable.ic_rebrand_notification
                         }
                     )
                 }

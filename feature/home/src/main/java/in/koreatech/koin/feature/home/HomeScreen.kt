@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.feature.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,6 +40,10 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.designsystem.component.card.FeatureCard
+import `in`.koreatech.koin.core.designsystem.component.card.FeatureRow
+import `in`.koreatech.koin.core.designsystem.component.icon.IconBadge
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
@@ -50,10 +54,8 @@ import `in`.koreatech.koin.feature.home.component.HomeChip
 import `in`.koreatech.koin.feature.home.component.HomeChipDefaults
 import `in`.koreatech.koin.feature.home.component.HomeIcon
 import `in`.koreatech.koin.feature.home.component.HomeSection
-import `in`.koreatech.koin.feature.home.component.LargeHomeCard
 import `in`.koreatech.koin.feature.home.component.MediumHomeCard
 import `in`.koreatech.koin.feature.home.component.ShuttleTicketCard
-import `in`.koreatech.koin.feature.home.component.SmallHomeCard
 import `in`.koreatech.koin.feature.home.model.LocalWeather
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -122,37 +124,22 @@ private fun HeaderSection(
     modifier: Modifier = Modifier,
     onNotificationClick: () -> Unit = {}
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 24.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            imageVector = ImageVector.vectorResource(R.drawable.ic_bcsd_symbol),
-            contentDescription = "Logo"
-        )
-
-        Image(
-            imageVector = ImageVector.vectorResource(R.drawable.ic_koin_text),
-            contentDescription = "KOIN"
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        Image(
-            modifier = Modifier.noRippleClickable {
-                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.NOTIFICATION, "알림 아이콘")
-                onNotificationClick()
-            },
-            imageVector = if (isNewNotificationReceived) {
-                ImageVector.vectorResource(R.drawable.ic_home_notification_dot)
-            } else {
-                ImageVector.vectorResource(R.drawable.ic_home_notification)
-            },
-            contentDescription = null
-        )
-    }
+    KoinTopBar(
+        modifier = modifier,
+        leftIcon = ImageVector.vectorResource(R.drawable.ic_bcsd_symbol),
+        leftIconContentDescription = "Logo",
+        middleIcon = ImageVector.vectorResource(R.drawable.ic_koin_text),
+        middleIconContentDescription = "KOIN",
+        rightIcon = if (isNewNotificationReceived) {
+            ImageVector.vectorResource(R.drawable.ic_rebrand_notification_dot)
+        } else {
+            ImageVector.vectorResource(R.drawable.ic_rebrand_notification)
+        },
+        onRightClick = {
+            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.NOTIFICATION, "알림 아이콘")
+            onNotificationClick()
+        }
+    )
 }
 
 @Composable
@@ -335,8 +322,13 @@ private fun BusSection(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            SmallHomeCard(
-                modifier = Modifier.weight(1f),
+            FeatureCard(
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable {
+                        EventLogger.logCampusClickEvent(AnalyticsConstant.Label.BUS_TIMETABLE, "버스 시간표 조회하기")
+                        navigator.navigateToBusTimeTable(context).let(context::startActivity)
+                    },
                 title = {
                     Text(
                         text = stringResource(R.string.bus_timetable),
@@ -344,9 +336,7 @@ private fun BusSection(
                     )
                 },
                 icon = {
-                    HomeIcon(
-                        tint = RebrandKoinTheme.colors.primary500,
-                        backgroundColor = RebrandKoinTheme.colors.neutral100,
+                    IconBadge(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_home_bus_timetable),
                         contentDescription = null
                     )
@@ -364,15 +354,16 @@ private fun BusSection(
                         color = Color(0xFFB611F5),
                         style = RebrandKoinTheme.typography.regular10
                     )
-                },
-                onClick = {
-                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.BUS_TIMETABLE, "버스 시간표 조회하기")
-                    navigator.navigateToBusTimeTable(context).let(context::startActivity)
                 }
             )
 
-            SmallHomeCard(
-                modifier = Modifier.weight(1f),
+            FeatureCard(
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable {
+                        EventLogger.logCampusClickEvent(AnalyticsConstant.Label.BUS_ROUTE, "버스 노선 조회하기")
+                        navigator.navigateToBusSearch(context).let(context::startActivity)
+                    },
                 title = {
                     Text(
                         text = stringResource(R.string.bus_route),
@@ -380,9 +371,7 @@ private fun BusSection(
                     )
                 },
                 icon = {
-                    HomeIcon(
-                        tint = RebrandKoinTheme.colors.primary500,
-                        backgroundColor = RebrandKoinTheme.colors.neutral100,
+                    IconBadge(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_home_bus_route),
                         contentDescription = null
                     )
@@ -400,10 +389,6 @@ private fun BusSection(
                         color = Color(0xFFB611F5),
                         style = RebrandKoinTheme.typography.regular10
                     )
-                },
-                onClick = {
-                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.BUS_ROUTE, "버스 노선 조회하기")
-                    navigator.navigateToBusSearch(context).let(context::startActivity)
                 }
             )
         }
@@ -450,7 +435,11 @@ private fun ShopSection(
             }
         }
     ) {
-        LargeHomeCard(
+        FeatureRow(
+            modifier = Modifier.clickable {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.POPULAR_SHOP, "많이 찾는 상점 둘러보기")
+                navigator.navigateToStore(context).let(context::startActivity)
+            },
             title = {
                 Text(
                     text = stringResource(R.string.shop_title),
@@ -458,9 +447,7 @@ private fun ShopSection(
                 )
             },
             icon = {
-                HomeIcon(
-                    tint = RebrandKoinTheme.colors.primary500,
-                    backgroundColor = RebrandKoinTheme.colors.neutral100,
+                IconBadge(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_home_store),
                     contentDescription = null
                 )
@@ -484,9 +471,12 @@ private fun ShopSection(
                     color = Color(0xFFA8A8A8)
                 )
             },
-            onClick = {
-                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.POPULAR_SHOP, "많이 찾는 상점 둘러보기")
-                navigator.navigateToStore(context).let(context::startActivity)
+            trailingIcon = {
+                Icon(
+                    modifier = Modifier.size(20.dp),
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_home_card_arrow),
+                    contentDescription = null
+                )
             }
         )
     }
