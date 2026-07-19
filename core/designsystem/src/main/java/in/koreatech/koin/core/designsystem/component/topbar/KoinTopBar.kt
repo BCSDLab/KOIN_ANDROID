@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 fun KoinTopBar(
@@ -59,9 +60,11 @@ fun KoinTopBar(
 @Preview
 @Composable
 private fun KoinTopBarPreview() {
-    KoinTopBar(
-        leftIcon = Icons.Default.Home,
-        middleIcon = Icons.Default.Menu,
-        rightIcon = Icons.Default.Search
-    )
+    RebrandKoinTheme {
+        KoinTopBar(
+            leftIcon = Icons.Default.Home,
+            middleIcon = Icons.Default.Menu,
+            rightIcon = Icons.Default.Search
+        )
+    }
 }

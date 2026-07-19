@@ -19,6 +19,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.R as CoreR
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
@@ -74,9 +75,9 @@ class ArticleFragment : Fragment() {
                 viewModel.hasUnreadNotification.collect { hasUnread ->
                     binding.btnNotificationArticle.setImageResource(
                         if (hasUnread) {
-                            ArticleR.drawable.ic_rebrand_notification_dot
+                            CoreR.drawable.ic_rebrand_notification_dot
                         } else {
-                            ArticleR.drawable.ic_rebrand_notification
+                            CoreR.drawable.ic_rebrand_notification
                         }
                     )
                 }

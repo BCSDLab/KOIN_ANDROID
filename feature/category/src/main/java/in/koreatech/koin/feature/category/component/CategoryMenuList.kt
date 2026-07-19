@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.category.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.card.FeatureRow
 import `in`.koreatech.koin.core.designsystem.component.card.FeatureRowDefaults
 import `in`.koreatech.koin.core.designsystem.component.icon.IconBadge
-import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.category.R
 import kotlinx.collections.immutable.ImmutableList
@@ -70,7 +70,7 @@ private fun CategoryMenuRow(
     FeatureRow(
         modifier = modifier
             .fillMaxWidth()
-            .noRippleClickable(onClick = { onItemClick(menu) }),
+            .clickable(onClick = { onItemClick(menu) }),
         icon = {
             IconBadge(
                 imageVector = ImageVector.vectorResource(menu.iconRes),

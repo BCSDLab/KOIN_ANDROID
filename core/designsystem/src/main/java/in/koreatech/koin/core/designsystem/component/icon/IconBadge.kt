@@ -72,8 +72,10 @@ fun IconBadge(
 @Preview
 @Composable
 private fun IconBadgePreview() {
-    IconBadge(
-        imageVector = Icons.Default.Home,
-        contentDescription = null
-    )
+    RebrandKoinTheme {
+        IconBadge(
+            imageVector = Icons.Default.Home,
+            contentDescription = null
+        )
+    }
 }

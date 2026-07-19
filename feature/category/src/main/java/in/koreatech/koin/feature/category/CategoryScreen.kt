@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.category
 
 import android.content.ActivityNotFoundException
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,7 +34,6 @@ import `in`.koreatech.koin.core.designsystem.component.card.FeatureCard
 import `in`.koreatech.koin.core.designsystem.component.card.FeatureCardDefaults
 import `in`.koreatech.koin.core.designsystem.component.icon.IconBadge
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopBar
-import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -112,10 +112,10 @@ private fun CategoryScreenImpl(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 val timetableTitle = stringResource(R.string.category_timetable)
-                FeatureCard(
+                CategoryFeatureCard(
                     modifier = Modifier
                         .weight(1f)
-                        .noRippleClickable { onMenuClick(CategoryMenuId.TIMETABLE) },
+                        .clickable { onMenuClick(CategoryMenuId.TIMETABLE) },
                     icon = {
                         IconBadge(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_calendar_category),
@@ -133,22 +133,14 @@ private fun CategoryScreenImpl(
                             text = stringResource(R.string.timetable_description),
                             style = RebrandKoinTheme.typography.regular12.copy(color = RebrandKoinTheme.colors.neutral500)
                         )
-                    },
-                    colors = FeatureCardDefaults.colors(
-                        backgroundColor = RebrandKoinTheme.colors.neutral0,
-                        borderColor = Color.Transparent
-                    ),
-                    shape = RoundedCornerShape(20.dp),
-                    contentPadding = PaddingValues(16.dp),
-                    borderWidth = 0.dp,
-                    iconSpacing = 8.dp
+                    }
                 )
 
                 val lostItemTitle = stringResource(R.string.lost_and_found)
-                FeatureCard(
+                CategoryFeatureCard(
                     modifier = Modifier
                         .weight(1f)
-                        .noRippleClickable { onMenuClick(CategoryMenuId.LOST_AND_FOUND) },
+                        .clickable { onMenuClick(CategoryMenuId.LOST_AND_FOUND) },
                     icon = {
                         IconBadge(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_delivery_box),
@@ -166,15 +158,7 @@ private fun CategoryScreenImpl(
                             text = stringResource(R.string.lost_and_found_description),
                             style = RebrandKoinTheme.typography.regular12.copy(color = RebrandKoinTheme.colors.neutral500)
                         )
-                    },
-                    colors = FeatureCardDefaults.colors(
-                        backgroundColor = RebrandKoinTheme.colors.neutral0,
-                        borderColor = Color.Transparent
-                    ),
-                    shape = RoundedCornerShape(20.dp),
-                    contentPadding = PaddingValues(16.dp),
-                    borderWidth = 0.dp,
-                    iconSpacing = 8.dp
+                    }
                 )
             }
 
@@ -197,6 +181,29 @@ private fun CategoryScreenImpl(
 
         Spacer(modifier = Modifier.height(24.dp))
     }
+}
+
+@Composable
+private fun CategoryFeatureCard(
+    icon: @Composable () -> Unit,
+    title: @Composable () -> Unit,
+    description: @Composable () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    FeatureCard(
+        modifier = modifier,
+        icon = icon,
+        title = title,
+        description = description,
+        colors = FeatureCardDefaults.colors(
+            backgroundColor = RebrandKoinTheme.colors.neutral0,
+            borderColor = Color.Transparent
+        ),
+        shape = RoundedCornerShape(20.dp),
+        contentPadding = PaddingValues(16.dp),
+        borderWidth = 0.dp,
+        iconSpacing = 8.dp
+    )
 }
 
 @Composable
