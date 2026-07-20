@@ -2,7 +2,6 @@ package `in`.koreatech.koin.feature.category
 
 import android.content.ActivityNotFoundException
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,13 +15,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -33,7 +30,6 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.card.FeatureCard
-import `in`.koreatech.koin.core.designsystem.component.card.FeatureCardDefaults
 import `in`.koreatech.koin.core.designsystem.component.icon.IconBadge
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinMainTopBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -115,54 +111,30 @@ private fun CategoryScreenImpl(
             ) {
                 val timetableTitle = stringResource(R.string.category_timetable)
                 CategoryFeatureCard(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(RoundedCornerShape(20.dp))
-                        .clickable { onMenuClick(CategoryMenuId.TIMETABLE) },
+                    modifier = Modifier.weight(1f),
+                    onClick = { onMenuClick(CategoryMenuId.TIMETABLE) },
                     icon = {
                         IconBadge(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_calendar_category),
                             contentDescription = timetableTitle
                         )
                     },
-                    title = {
-                        BasicText(
-                            text = timetableTitle,
-                            style = RebrandKoinTheme.typography.bold14.copy(color = RebrandKoinTheme.colors.neutral800)
-                        )
-                    },
-                    description = {
-                        BasicText(
-                            text = stringResource(R.string.timetable_description),
-                            style = RebrandKoinTheme.typography.regular12.copy(color = RebrandKoinTheme.colors.neutral500)
-                        )
-                    }
+                    title = timetableTitle,
+                    description = stringResource(R.string.timetable_description)
                 )
 
                 val lostItemTitle = stringResource(R.string.lost_and_found)
                 CategoryFeatureCard(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(RoundedCornerShape(20.dp))
-                        .clickable { onMenuClick(CategoryMenuId.LOST_AND_FOUND) },
+                    modifier = Modifier.weight(1f),
+                    onClick = { onMenuClick(CategoryMenuId.LOST_AND_FOUND) },
                     icon = {
                         IconBadge(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_delivery_box),
                             contentDescription = lostItemTitle
                         )
                     },
-                    title = {
-                        BasicText(
-                            text = lostItemTitle,
-                            style = RebrandKoinTheme.typography.bold14.copy(color = RebrandKoinTheme.colors.neutral800)
-                        )
-                    },
-                    description = {
-                        BasicText(
-                            text = stringResource(R.string.lost_and_found_description),
-                            style = RebrandKoinTheme.typography.regular12.copy(color = RebrandKoinTheme.colors.neutral500)
-                        )
-                    }
+                    title = lostItemTitle,
+                    description = stringResource(R.string.lost_and_found_description)
                 )
             }
 
@@ -190,22 +162,23 @@ private fun CategoryScreenImpl(
 @Composable
 private fun CategoryFeatureCard(
     icon: @Composable () -> Unit,
-    title: @Composable () -> Unit,
-    description: @Composable () -> Unit,
-    modifier: Modifier = Modifier
+    title: String,
+    description: String,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     FeatureCard(
         modifier = modifier,
         icon = icon,
         title = title,
+        titleStyle = RebrandKoinTheme.typography.bold14.copy(color = RebrandKoinTheme.colors.neutral800),
         description = description,
-        colors = FeatureCardDefaults.colors(
-            backgroundColor = RebrandKoinTheme.colors.neutral0
-        ),
+        descriptionStyle = RebrandKoinTheme.typography.regular12.copy(color = RebrandKoinTheme.colors.neutral500),
         shape = RoundedCornerShape(20.dp),
         contentPadding = PaddingValues(16.dp),
         borderWidth = 0.dp,
-        iconSpacing = 8.dp
+        iconSpacing = 8.dp,
+        onClick = onClick
     )
 }
 

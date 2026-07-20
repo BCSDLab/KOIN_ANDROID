@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,9 +40,7 @@ import coil.compose.AsyncImage
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.card.FeatureCard
-import `in`.koreatech.koin.core.designsystem.component.card.FeatureCardDefaults
 import `in`.koreatech.koin.core.designsystem.component.card.FeatureRow
-import `in`.koreatech.koin.core.designsystem.component.card.FeatureRowDefaults
 import `in`.koreatech.koin.core.designsystem.component.icon.IconBadge
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinMainTopBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -317,32 +314,20 @@ private fun BusSection(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             FeatureCard(
-                modifier = Modifier
-                    .weight(1f)
-                    .clip(FeatureCardDefaults.Shape)
-                    .clickable {
-                        EventLogger.logCampusClickEvent(AnalyticsConstant.Label.BUS_TIMETABLE, "버스 시간표 조회하기")
-                        navigator.navigateToBusTimeTable(context).let(context::startActivity)
-                    },
-                title = {
-                    Text(
-                        text = stringResource(R.string.bus_timetable),
-                        style = RebrandKoinTheme.typography.medium15
-                    )
+                modifier = Modifier.weight(1f),
+                onClick = {
+                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.BUS_TIMETABLE, "버스 시간표 조회하기")
+                    navigator.navigateToBusTimeTable(context).let(context::startActivity)
                 },
+                title = stringResource(R.string.bus_timetable),
                 icon = {
                     IconBadge(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_home_bus_timetable),
                         contentDescription = null
                     )
                 },
-                description = {
-                    Text(
-                        text = stringResource(R.string.bus_timetable_description),
-                        style = RebrandKoinTheme.typography.regular12,
-                        color = Color(0xFFA8A8A8)
-                    )
-                },
+                description = stringResource(R.string.bus_timetable_description),
+                descriptionStyle = RebrandKoinTheme.typography.regular12.copy(color = Color(0xFFA8A8A8)),
                 actionButton = {
                     Text(
                         text = stringResource(R.string.view_more),
@@ -353,32 +338,20 @@ private fun BusSection(
             )
 
             FeatureCard(
-                modifier = Modifier
-                    .weight(1f)
-                    .clip(FeatureCardDefaults.Shape)
-                    .clickable {
-                        EventLogger.logCampusClickEvent(AnalyticsConstant.Label.BUS_ROUTE, "버스 노선 조회하기")
-                        navigator.navigateToBusSearch(context).let(context::startActivity)
-                    },
-                title = {
-                    Text(
-                        text = stringResource(R.string.bus_route),
-                        style = RebrandKoinTheme.typography.medium15
-                    )
+                modifier = Modifier.weight(1f),
+                onClick = {
+                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.BUS_ROUTE, "버스 노선 조회하기")
+                    navigator.navigateToBusSearch(context).let(context::startActivity)
                 },
+                title = stringResource(R.string.bus_route),
                 icon = {
                     IconBadge(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_home_bus_route),
                         contentDescription = null
                     )
                 },
-                description = {
-                    Text(
-                        text = stringResource(R.string.bus_route_description),
-                        style = RebrandKoinTheme.typography.regular12,
-                        color = Color(0xFFA8A8A8)
-                    )
-                },
+                description = stringResource(R.string.bus_route_description),
+                descriptionStyle = RebrandKoinTheme.typography.regular12.copy(color = Color(0xFFA8A8A8)),
                 actionButton = {
                     Text(
                         text = stringResource(R.string.view_more),
@@ -432,18 +405,12 @@ private fun ShopSection(
         }
     ) {
         FeatureRow(
-            modifier = Modifier
-                .clip(FeatureRowDefaults.Shape)
-                .clickable {
-                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.POPULAR_SHOP, "많이 찾는 상점 둘러보기")
-                    navigator.navigateToStore(context).let(context::startActivity)
-                },
-            title = {
-                Text(
-                    text = stringResource(R.string.shop_title),
-                    style = RebrandKoinTheme.typography.medium16
-                )
+            onClick = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.POPULAR_SHOP, "많이 찾는 상점 둘러보기")
+                navigator.navigateToStore(context).let(context::startActivity)
             },
+            title = stringResource(R.string.shop_title),
+            titleStyle = RebrandKoinTheme.typography.medium16,
             icon = {
                 IconBadge(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_home_store),

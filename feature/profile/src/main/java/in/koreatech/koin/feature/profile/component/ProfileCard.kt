@@ -2,7 +2,6 @@ package `in`.koreatech.koin.feature.profile.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -119,21 +118,15 @@ private fun ProfileMenuRow(
     onClick: () -> Unit = {}
 ) {
     FeatureRow(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick),
+        modifier = modifier.fillMaxWidth(),
+        onClick = onClick,
+        title = label,
+        titleStyle = RebrandKoinTheme.typography.bold15.copy(color = RebrandKoinTheme.colors.neutral800),
         icon = {
             IconBadge(
                 imageVector = icon,
                 contentDescription = null,
                 shape = RoundedCornerShape(10.dp)
-            )
-        },
-        title = {
-            Text(
-                text = label,
-                style = RebrandKoinTheme.typography.bold15,
-                color = RebrandKoinTheme.colors.neutral800
             )
         },
         colors = FeatureRowDefaults.colors(

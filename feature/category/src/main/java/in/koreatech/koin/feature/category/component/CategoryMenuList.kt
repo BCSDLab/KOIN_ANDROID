@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.category.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -67,19 +66,14 @@ private fun CategoryMenuRow(
 ) {
     val title = stringResource(menu.titleRes)
     FeatureRow(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(onClick = { onItemClick(menu) }),
+        modifier = modifier.fillMaxWidth(),
+        onClick = { onItemClick(menu) },
+        title = title,
+        titleStyle = RebrandKoinTheme.typography.bold15.copy(color = RebrandKoinTheme.colors.neutral800),
         icon = {
             IconBadge(
                 imageVector = ImageVector.vectorResource(menu.iconRes),
                 contentDescription = title
-            )
-        },
-        title = {
-            BasicText(
-                text = title,
-                style = RebrandKoinTheme.typography.bold15.copy(color = RebrandKoinTheme.colors.neutral800)
             )
         },
         trailingIcon = {

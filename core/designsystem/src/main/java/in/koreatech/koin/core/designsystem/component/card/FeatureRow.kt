@@ -2,6 +2,7 @@ package `in`.koreatech.koin.core.designsystem.component.card
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Home
@@ -22,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -53,9 +56,10 @@ data class FeatureRowColors(
 
 @Composable
 fun FeatureRow(
-    title: @Composable () -> Unit,
+    title: String,
     icon: @Composable () -> Unit,
     modifier: Modifier = Modifier,
+    titleStyle: TextStyle = RebrandKoinTheme.typography.bold15,
     label: (@Composable () -> Unit)? = null,
     description: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
@@ -64,13 +68,15 @@ fun FeatureRow(
     contentPadding: PaddingValues = FeatureRowDefaults.ContentPadding,
     borderWidth: Dp = FeatureRowDefaults.BorderWidth,
     iconSpacing: Dp = FeatureRowDefaults.IconSpacing,
-    labelSpacing: Dp = FeatureRowDefaults.LabelSpacing
+    labelSpacing: Dp = FeatureRowDefaults.LabelSpacing,
+    onClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier
             .border(borderWidth, colors.borderColor, shape)
             .clip(shape)
             .background(color = colors.backgroundColor)
+            .clickable(onClick = onClick)
             .padding(contentPadding),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -83,7 +89,7 @@ fun FeatureRow(
                 label()
                 Spacer(modifier = Modifier.height(labelSpacing))
             }
-            title()
+            BasicText(text = title, style = titleStyle)
             if (description != null) {
                 description()
             }
@@ -101,12 +107,8 @@ fun FeatureRow(
 private fun FeatureRowPreview() {
     RebrandKoinTheme {
         FeatureRow(
-            title = {
-                Text(
-                    text = "많이 찾는 상점\n둘러보기",
-                    style = RebrandKoinTheme.typography.medium16
-                )
-            },
+            title = "많이 찾는 상점\n둘러보기",
+            titleStyle = RebrandKoinTheme.typography.medium16,
             icon = {
                 IconBadge(
                     imageVector = Icons.Default.Home,
