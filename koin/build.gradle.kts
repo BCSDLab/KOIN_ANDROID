@@ -43,7 +43,7 @@ android {
                 "proguard-rules.pro"
             )
             manifestPlaceholders["appName"] = "@string/app_name_dev"
-            manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_koin"
+            manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher"
             manifestPlaceholders["appLinkUri"] = "stage.koreatech.in"
             buildConfigField(
                 "String",
@@ -63,7 +63,7 @@ android {
                 "proguard-rules.pro"
             )
             manifestPlaceholders["appName"] = "@string/app_name"
-            manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_koin"
+            manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher"
             manifestPlaceholders["appLinkUri"] = "koreatech.in"
             signingConfig = signingConfigs.getByName("release")
             buildConfigField(
@@ -88,7 +88,7 @@ android {
                 "proguard-rules.pro"
             )
             manifestPlaceholders["appName"] = "@string/app_name_qa"
-            manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_koin"
+            manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher"
             manifestPlaceholders["appLinkUri"] = "stage.koreatech.in"
             configure<CrashlyticsExtension> {
                 mappingFileUploadEnabled = true
