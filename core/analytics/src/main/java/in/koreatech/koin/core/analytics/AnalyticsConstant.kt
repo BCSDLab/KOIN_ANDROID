@@ -227,10 +227,10 @@ object AnalyticsConstant {
         }
 
         object Profile {
-            const val PROFILE_TIMETABLE = "profile_timetable"
-            const val PROFILE_LOGIN = "profile_login"
-            const val PROFILE_LOGOUT = "profile_logout"
-            const val PROFILE_SETTINGS = "profile_settings"
+            const val HOME_TIMETABLE = "home_timetable"
+            const val HOME_LOGIN = "home_login"
+            const val HOME_LOGOUT = "home_logout"
+            const val HOME_SETTINGS = "home_settings"
         }
     }
 

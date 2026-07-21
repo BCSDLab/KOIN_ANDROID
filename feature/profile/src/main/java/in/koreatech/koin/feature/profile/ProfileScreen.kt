@@ -72,15 +72,15 @@ fun ProfileScreen(
             uiState = uiState,
             onAuthClick = {
                 if (uiState.isLoggedIn) {
-                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Profile.PROFILE_LOGOUT, "로그아웃")
+                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Profile.HOME_LOGOUT, "로그아웃")
                     viewModel.onLogoutClick()
                 } else {
-                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Profile.PROFILE_LOGIN, "로그인")
+                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Profile.HOME_LOGIN, "로그인")
                     navigator.navigateToSignIn(context, DEEPLINK_MAIN_PROFILE).let { context.startActivity(it) }
                 }
             },
             onSettingClick = {
-                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Profile.PROFILE_SETTINGS, "설정")
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Profile.HOME_SETTINGS, "설정")
                 if (uiState.isLoggedIn) {
                     onNavigateToSetting()
                 } else {
@@ -92,7 +92,7 @@ fun ProfileScreen(
                 onNavigateToNotification()
             },
             onTimetableClick = {
-                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Profile.PROFILE_TIMETABLE, "내 시간표")
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Profile.HOME_TIMETABLE, "내 시간표")
                 navigator.navigateToTimetable(context, isAnonymous = !uiState.isLoggedIn)
                     .let { context.startActivity(it) }
             }
