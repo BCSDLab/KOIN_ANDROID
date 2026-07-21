@@ -1,12 +1,10 @@
 package `in`.koreatech.koin.feature.profile
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,19 +19,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.noRippleClickable
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinMainTopBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.profile.component.ProfileCard
@@ -141,34 +136,11 @@ private fun HeaderSection(
     modifier: Modifier = Modifier,
     onNotificationClick: () -> Unit = {}
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 24.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            imageVector = ImageVector.vectorResource(R.drawable.ic_bcsd_symbol),
-            contentDescription = null
-        )
-
-        Image(
-            imageVector = ImageVector.vectorResource(R.drawable.ic_koin_text),
-            contentDescription = null
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        Image(
-            modifier = Modifier.noRippleClickable { onNotificationClick() },
-            imageVector = if (isNewNotificationReceived) {
-                ImageVector.vectorResource(R.drawable.ic_profile_notification_dot)
-            } else {
-                ImageVector.vectorResource(R.drawable.ic_profile_notification)
-            },
-            contentDescription = null
-        )
-    }
+    KoinMainTopBar(
+        modifier = modifier,
+        isNewNotificationReceived = isNewNotificationReceived,
+        onNotificationClick = onNotificationClick
+    )
 }
 
 @Composable

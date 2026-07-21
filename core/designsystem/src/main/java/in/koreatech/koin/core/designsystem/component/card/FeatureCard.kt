@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.home.component
+package `in`.koreatech.koin.core.designsystem.component.card
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -10,53 +10,58 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.designsystem.component.icon.IconBadge
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
-import `in`.koreatech.koin.feature.home.R
 
-object SmallHomeCardDefaults {
+object FeatureCardDefaults {
     val Shape: Shape = RoundedCornerShape(16.dp)
     val BorderWidth: Dp = 0.5.dp
-    val ContentPadding = PaddingValues(vertical = 20.dp, horizontal = 20.dp)
+    val ContentPadding: PaddingValues = PaddingValues(vertical = 20.dp, horizontal = 20.dp)
+    val IconSpacing: Dp = 6.dp
 
     @Composable
     fun colors(
-        backgroundColor: Color = Color(0xFFFFFFFF),
+        backgroundColor: Color = RebrandKoinTheme.colors.neutral0,
         borderColor: Color = Color(0xFFE6E6E6)
-    ): SmallHomeCardColors = SmallHomeCardColors(
+    ): FeatureCardColors = FeatureCardColors(
         backgroundColor = backgroundColor,
         borderColor = borderColor
     )
 }
 
 @Immutable
-data class SmallHomeCardColors(
+data class FeatureCardColors(
     val backgroundColor: Color,
     val borderColor: Color
 )
 
 @Composable
-fun SmallHomeCard(
-    title: @Composable () -> Unit,
+fun FeatureCard(
+    title: String,
     icon: @Composable () -> Unit,
     modifier: Modifier = Modifier,
-    description: (@Composable () -> Unit)? = null,
+    description: String? = null,
+    titleStyle: TextStyle = RebrandKoinTheme.typography.medium15,
+    descriptionStyle: TextStyle = RebrandKoinTheme.typography.regular12,
     actionButton: (@Composable () -> Unit)? = null,
-    colors: SmallHomeCardColors = SmallHomeCardDefaults.colors(),
-    shape: Shape = SmallHomeCardDefaults.Shape,
-    contentPadding: PaddingValues = SmallHomeCardDefaults.ContentPadding,
-    borderWidth: Dp = SmallHomeCardDefaults.BorderWidth,
+    colors: FeatureCardColors = FeatureCardDefaults.colors(),
+    shape: Shape = FeatureCardDefaults.Shape,
+    contentPadding: PaddingValues = FeatureCardDefaults.ContentPadding,
+    borderWidth: Dp = FeatureCardDefaults.BorderWidth,
+    iconSpacing: Dp = FeatureCardDefaults.IconSpacing,
     onClick: () -> Unit = {}
 ) {
     Column(
@@ -70,12 +75,12 @@ fun SmallHomeCard(
     ) {
         icon()
 
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(iconSpacing))
 
-        title()
+        BasicText(text = title, style = titleStyle)
 
         if (description != null) {
-            description()
+            BasicText(text = description, style = descriptionStyle)
         }
 
         if (actionButton != null) {
@@ -87,35 +92,18 @@ fun SmallHomeCard(
 
 @Preview
 @Composable
-private fun SmallHomeCardPreview() {
-    SmallHomeCard(
-        title = {
-            Text(
-                text = "버스 시간표",
-                style = RebrandKoinTheme.typography.medium15
-            )
-        },
-        icon = {
-            HomeIcon(
-                tint = RebrandKoinTheme.colors.primary500,
-                backgroundColor = RebrandKoinTheme.colors.neutral100,
-                imageVector = ImageVector.vectorResource(R.drawable.ic_home_bus_timetable),
-                contentDescription = null
-            )
-        },
-        description = {
-            Text(
-                text = "노선 별 출발 시간",
-                style = RebrandKoinTheme.typography.regular12,
-                color = Color(0xFFA8A8A8)
-            )
-        },
-        actionButton = {
-            Text(
-                text = "조회하기 →",
-                color = Color(0xFFB611F5),
-                style = RebrandKoinTheme.typography.regular10
-            )
-        }
-    )
+private fun FeatureCardPreview() {
+    RebrandKoinTheme {
+        FeatureCard(
+            title = "버스 시간표",
+            icon = {
+                IconBadge(
+                    imageVector = Icons.Default.Home,
+                    contentDescription = null
+                )
+            },
+            description = "노선 별 출발 시간",
+            descriptionStyle = RebrandKoinTheme.typography.regular12.copy(color = Color(0xFFA8A8A8))
+        )
+    }
 }

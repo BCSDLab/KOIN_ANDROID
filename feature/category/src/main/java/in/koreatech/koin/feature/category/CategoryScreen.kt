@@ -1,10 +1,10 @@
 package `in`.koreatech.koin.feature.category
 
 import android.content.ActivityNotFoundException
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -14,11 +14,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -27,13 +27,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import `in`.koreatech.koin.core.R as CoreR
-import `in`.koreatech.koin.core.designsystem.noRippleClickable
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.designsystem.component.card.FeatureCard
+import `in`.koreatech.koin.core.designsystem.component.icon.IconBadge
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinMainTopBar
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.feature.category.component.CAMPUS_MENUS
-import `in`.koreatech.koin.feature.category.component.CategoryCard
-import `in`.koreatech.koin.feature.category.component.CategoryIcon
 import `in`.koreatech.koin.feature.category.component.CategoryMenuId
 import `in`.koreatech.koin.feature.category.component.CategoryMenuList
 import `in`.koreatech.koin.feature.category.component.OTHER_MENUS
@@ -108,31 +110,31 @@ private fun CategoryScreenImpl(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 val timetableTitle = stringResource(R.string.category_timetable)
-                CategoryCard(
+                CategoryFeatureCard(
                     modifier = Modifier.weight(1f),
-                    categoryIcon = {
-                        CategoryIcon(
+                    onClick = { onMenuClick(CategoryMenuId.TIMETABLE) },
+                    icon = {
+                        IconBadge(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_calendar_category),
                             contentDescription = timetableTitle
                         )
                     },
                     title = timetableTitle,
-                    description = stringResource(R.string.timetable_description),
-                    onClick = { onMenuClick(CategoryMenuId.TIMETABLE) }
+                    description = stringResource(R.string.timetable_description)
                 )
 
                 val lostItemTitle = stringResource(R.string.lost_and_found)
-                CategoryCard(
+                CategoryFeatureCard(
                     modifier = Modifier.weight(1f),
-                    categoryIcon = {
-                        CategoryIcon(
+                    onClick = { onMenuClick(CategoryMenuId.LOST_AND_FOUND) },
+                    icon = {
+                        IconBadge(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_delivery_box),
                             contentDescription = lostItemTitle
                         )
                     },
                     title = lostItemTitle,
-                    description = stringResource(R.string.lost_and_found_description),
-                    onClick = { onMenuClick(CategoryMenuId.LOST_AND_FOUND) }
+                    description = stringResource(R.string.lost_and_found_description)
                 )
             }
 
@@ -158,37 +160,40 @@ private fun CategoryScreenImpl(
 }
 
 @Composable
+private fun CategoryFeatureCard(
+    icon: @Composable () -> Unit,
+    title: String,
+    description: String,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
+) {
+    FeatureCard(
+        modifier = modifier,
+        icon = icon,
+        title = title,
+        titleStyle = RebrandKoinTheme.typography.bold14.copy(color = RebrandKoinTheme.colors.neutral800),
+        description = description,
+        descriptionStyle = RebrandKoinTheme.typography.regular12.copy(color = RebrandKoinTheme.colors.neutral500),
+        shape = RoundedCornerShape(20.dp),
+        contentPadding = PaddingValues(16.dp),
+        borderWidth = 0.dp,
+        iconSpacing = 8.dp,
+        onClick = onClick
+    )
+}
+
+@Composable
 private fun HeaderSection(
     isNewNotificationReceived: Boolean,
     modifier: Modifier = Modifier,
     onNotificationClick: () -> Unit = {}
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 24.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            imageVector = ImageVector.vectorResource(R.drawable.ic_bcsd_symbol),
-            contentDescription = null
-        )
-
-        Image(
-            imageVector = ImageVector.vectorResource(CoreR.drawable.ic_koin_text),
-            contentDescription = null
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        Image(
-            modifier = Modifier.noRippleClickable(onClick = onNotificationClick),
-            imageVector = if (isNewNotificationReceived) {
-                ImageVector.vectorResource(R.drawable.ic_category_notification_dot)
-            } else {
-                ImageVector.vectorResource(R.drawable.ic_category_notification)
-            },
-            contentDescription = null
-        )
-    }
+    KoinMainTopBar(
+        modifier = modifier,
+        isNewNotificationReceived = isNewNotificationReceived,
+        onNotificationClick = {
+            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.NOTIFICATION, "알림 아이콘")
+            onNotificationClick()
+        }
+    )
 }
