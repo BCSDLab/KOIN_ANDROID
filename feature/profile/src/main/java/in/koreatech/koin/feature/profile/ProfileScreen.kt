@@ -76,11 +76,7 @@ fun ProfileScreen(
             },
             onSettingClick = {
                 EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Profile.HOME_SETTINGS, "설정")
-                if (uiState.isLoggedIn) {
-                    onNavigateToSetting()
-                } else {
-                    navigator.navigateToSignIn(context, DEEPLINK_MAIN_PROFILE).let { context.startActivity(it) }
-                }
+                onNavigateToSetting()
             },
             onNotificationClick = {
                 EventLogger.logCampusClickEvent(AnalyticsConstant.Label.NOTIFICATION, "알림 아이콘")
