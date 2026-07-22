@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/topbar_article_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/rebrand_neutral_0"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="8dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/image_view_bcsd_symbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_bcsd_symbol"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/image_view_koin_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_koin_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/image_view_bcsd_symbol"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/btn_notification_article"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_rebrand_notification"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <in.koreatech.koin.feature.article.ArticleWhiteToolbar
+            android:id="@+id/toolbar_article"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/rebrand_neutral_0" />
+
+    </FrameLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_article_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_container"
+        app:navGraph="@navigation/nav_graph_article" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

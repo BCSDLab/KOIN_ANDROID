@@ -1,9 +1,15 @@
 appId: ${APP_ID}
 env:
-  APP_ID: in.koreatech.koin
+  APP_ID: in.koreatech.koin.dev
 ---
 - runFlow: launch_app.yaml
+- extendedWaitUntil:
+    visible:
+      id: "${APP_ID}:id/button_category"
+    timeout: 15000
 - tapOn:
     id: "${APP_ID}:id/button_category"
-- waitForAnimationToEnd:
-    timeout: 5000
+- extendedWaitUntil:
+    visible:
+      id: "${APP_ID}:id/navi_item_setting"
+    timeout: 10000

@@ -23,9 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.core.util.SnackbarUtil
-import `in`.koreatech.koin.core.util.withLoading
 import `in`.koreatech.koin.feature.article.R
 import `in`.koreatech.koin.feature.article.databinding.FragmentArticleSearchBinding
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
@@ -62,7 +60,6 @@ class ArticleSearchFragment : Fragment() {
     ): View {
         if (_binding == null) {
             _binding = FragmentArticleSearchBinding.inflate(inflater, container, false)
-            (requireActivity() as IProgressDialog).withLoading(viewLifecycleOwner, viewModel)
             binding.textInputSearch.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     EventLogger.logClickEvent(
@@ -100,6 +97,9 @@ class ArticleSearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
         ViewCompat.setOnApplyWindowInsetsListener(binding.recyclerViewSearchResult) { v, insets ->
             val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -187,11 +187,6 @@ class ArticleSearchFragment : Fragment() {
     }
 
     private fun onSearchInputChanged(query: String) {
-        if (query.isEmpty()) {
-            binding.imageSearch.setColorFilter(R.color.neutral_500)
-        } else {
-            binding.imageSearch.setColorFilter(R.color.gray14)
-        }
         viewModel.onSearchInputChanged(query)
     }
 

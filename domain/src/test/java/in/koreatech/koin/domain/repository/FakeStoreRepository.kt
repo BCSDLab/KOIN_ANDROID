@@ -26,6 +26,7 @@ import `in`.koreatech.koin.domain.model.store.ShopSummary
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreBenefit
 import `in`.koreatech.koin.domain.model.store.StoreCategories
+import `in`.koreatech.koin.domain.model.store.StoreCount
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.model.store.StoreMenu
 import `in`.koreatech.koin.domain.model.store.StoreReport
@@ -198,6 +199,14 @@ class FakeStoreRepository : StoreRepository {
     }
 
     override suspend fun getOrderInProgress(): Result<List<OrderInProgress>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getStoreCount(): Result<StoreCount> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getStoreEventCount(): Result<Int> {
         TODO("Not yet implemented")
     }
 }

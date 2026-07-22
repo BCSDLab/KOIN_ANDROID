@@ -11,13 +11,11 @@
 
     <ImageView
         android:id="@+id/splash_icon_imageview"
-        android:layout_width="147dp"
-        android:layout_height="147dp"
-        android:layout_marginStart="114dp"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
         android:layout_marginTop="250dp"
-        android:layout_marginEnd="114dp"
         android:layout_marginBottom="224dp"
-        android:background="@drawable/ic_logo_intro"
+        android:background="@drawable/ic_launcher_koin"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toTopOf="@+id/splash_copywrite_LinearLayout"
         app:layout_constraintEnd_toEndOf="parent"

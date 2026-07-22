@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" tools:ignore="DuplicateDefinition">코인</string>
     <string name="app_name_dev" tools:ignore="DuplicateDefinition">코인D</string>
+    <string name="app_name_qa">코인QA</string>
 
     <string name="sign_up">회원가입</string>
     <string name="login_complete">로그인완료</string>
@@ -184,16 +185,6 @@
 
 
     <string name="file_path_base">/Pictures/koin/</string>
-
-    <string name="font_kr_bold">fonts/notosanscjkkr_bold.otf</string>
-    <string name="font_regular">fonts/notosans_regular.ttf</string>
-    <string name="font_semibold">fonts/notosans_semibold.ttf</string>
-    <string name="font_kr_light">fonts/notosanscjkkr_light.otf</string>
-    <string name="font_medium">fonts/notosans_medium.ttf</string>
-    <string name="font_light">fonts/notosans_light.ttf</string>
-    <string name="font_kr_medium">fonts/notosanscjkkr_medium.otf</string>
-    <string name="font_kr_regular">fonts/notosanscjkkr_regular.otf"</string>
-
 
     <string name="take_screen_shot_activity">Activity Screenshot</string>
     <string name="take_screen_shot_view">Layout Screenshot</string>
@@ -586,4 +577,9 @@
     <string name="inspection_title">개발 중인 페이지입니다</string>
     <string name="inspection_content">죄송합니다. 현재 개발 중인 페이지입니다.\n최대한 빠르게 오픈하도록 하겠습니다.</string>
     <string name="go_to_main">메인 화면 바로가기</string>
+
+    <string name="bottom_navigation_home">홈</string>
+    <string name="bottom_navigation_category">카테고리</string>
+    <string name="bottom_navigation_article">게시판</string>
+    <string name="bottom_navigation_profile">프로필</string>
 </resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_welcome_text_1">%1$s님,\n오늘도 잘 챙겨먹어요</string>
+    <string name="home_welcome_text_2">%1$s님,\n오늘의 학식을 확인해보세요</string>
+    <string name="home_welcome_text_3">%1$s님,\n식사 메뉴 정하셨나요?</string>
+    <string name="home_welcome_text_4">%1$s님,\n출출한 밤, 주변 상점을 둘러봐요</string>
+    <string name="home_welcome_text_5">%1$s님,\n오늘 하루도 수고 많으셨어요</string>
+    <string name="home_welcome_text_6">%1$s님,\n함께 콜밴 탈 사람을 찾아볼까요?</string>
+    <string name="home_welcome_text_7">%1$s님,\n좋은 하루 보내세요</string>
+    <string name="home_welcome_text_8">%1$s님,\n학교 소식을 확인해보세요</string>
+    <string name="home_welcome_text_9">%1$s님,\n셔틀버스 운행시간을 확인해보세요</string>
+    <string name="home_username_default">익명</string>
+
+    <string name="shuttle_ticket_title">셔틀 탑승권</string>
+    <string name="shuttle_ticket_description">QR 조회</string>
+
+    <string name="dining_open_time">%1$s - %2$s</string>
+    <string name="dining_price">₩%1$,d</string>
+    <string name="dining_kcal">%1$dkcal</string>
+    <string name="dining_empty">오늘은 식단이 없어요</string>
+
+    <string name="dining_section">오늘의 식단</string>
+    <string name="bus_section">교통</string>
+    <string name="shop_section">주변 상점</string>
+
+    <string name="callvan_title">콜밴팟</string>
+    <string name="callvan_recruit_count">%1$d건 모집중</string>
+    <string name="callvan_description">같이 콜밴 탈 사람을 찾아요</string>
+    <string name="callvan_action">모집 보기</string>
+
+    <string name="bus_timetable">버스 시간표</string>
+    <string name="bus_timetable_description">노선 별 출발 시간</string>
+    <string name="view_more">조회하기 →</string>
+    <string name="bus_route">버스 노선 조회</string>
+    <string name="bus_route_description">가장 빠른 버스 찾기</string>
+    <string name="view_all">전체보기</string>
+
+    <string name="shop_title">많이 찾는 상점\n둘러보기</string>
+    <string name="shop_event_count">KOIN 전용 이벤트 %1$d곳</string>
+    <string name="shop_open">영업중</string>
+    <string name="shop_total">전체 %1$d곳</string>
+
+    <string name="profile_login_prompt">로그인해주세요.</string>
+    <string name="profile_login">로그인</string>
+    <string name="profile_logout">로그아웃</string>
+    <string name="profile_setting">설정</string>
+    <string name="profile_timetable_section">내 시간표</string>
+</resources>

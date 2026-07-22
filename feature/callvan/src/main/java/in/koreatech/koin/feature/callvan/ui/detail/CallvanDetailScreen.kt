@@ -119,7 +119,10 @@ fun CallvanDetailScreenImpl(
                 onNavigationIconClick = onTopbarBackClick,
                 actions = {
                     IconButton(onClick = onNotificationClick) {
-                        CallvanNotificationIcon(hasNewNotification = hasNewNotification)
+                        CallvanNotificationIcon(
+                            hasNewNotification = hasNewNotification,
+                            contentDescription = stringResource(R.string.callvan_notification_top_bar)
+                        )
                     }
                 }
             )

@@ -5,9 +5,11 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_URL
+import `in`.koreatech.koin.core.navigation.utils.toHost
 import `in`.koreatech.koin.core.notification.Notifier
 import `in`.koreatech.koin.core.qualifier.IoDispatcher
 import `in`.koreatech.koin.domain.repository.firebase.messaging.FirebaseMessagingRepository
+import `in`.koreatech.koin.domain.usecase.notification.SaveNotificationUseCase
 import `in`.koreatech.koin.ui.scheme.SchemeActivity
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -20,7 +22,12 @@ import timber.log.Timber
 class KoinFirebaseMessagingService : FirebaseMessagingService() {
     companion object {
         private const val URL = "url"
+        private const val TITLE = "title"
+        private const val CONTENT = "content"
     }
+
+    @Inject
+    lateinit var saveNotificationUseCase: SaveNotificationUseCase
 
     @Inject
     lateinit var notifier: Notifier
@@ -54,9 +61,26 @@ class KoinFirebaseMessagingService : FirebaseMessagingService() {
         message.data.let { data ->
             Timber.e("FirebaseMessaging Received Data Payload : $data")
             if (data.isNotEmpty()) {
+                val url = data[URL]
+                val title = data[TITLE]
+                val content = data[CONTENT]
+
+                if (url != null && title != null && content != null) {
+                    coroutineScope.launch {
+                        saveNotificationUseCase(
+                            type = url.schemeToNotificationType(),
+                            title = title,
+                            content = content,
+                            originUrl = url
+                        ).onFailure {
+                            Timber.e("Notification save failed: $it")
+                        }
+                    }
+                }
+
                 val intent =
                     Intent(this, SchemeActivity::class.java).apply {
-                        putExtra(EXTRA_URL, data[URL])
+                        putExtra(EXTRA_URL, url)
                         addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     }
                 notifier.sendNotification(data, intent)
@@ -68,4 +92,6 @@ class KoinFirebaseMessagingService : FirebaseMessagingService() {
         coroutineScope.cancel()
         super.onDestroy()
     }
+
+    private fun String.schemeToNotificationType(): String = toHost()
 }

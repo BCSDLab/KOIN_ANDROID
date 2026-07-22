@@ -28,9 +28,9 @@ import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.bus.BusSearchActivity
 import `in`.koreatech.bus.BusTimetableActivity
-import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.URL
+import `in`.koreatech.koin.core.BuildConfig
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
@@ -41,7 +41,6 @@ import `in`.koreatech.koin.core.util.blueStatusBar
 import `in`.koreatech.koin.core.util.whiteStatusBar
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.feature.article.ArticleActivity
 import `in`.koreatech.koin.feature.callvan.CallvanActivity
 import `in`.koreatech.koin.feature.chat.ui.list.ChatListActivity
 import `in`.koreatech.koin.feature.club.ui.ClubActivity
@@ -223,7 +222,7 @@ abstract class KoinNavigationDrawerActivity :
                         val intent =
                             Intent(
                                 Intent.ACTION_VIEW,
-                                if (BuildConfig.IS_DEBUG) {
+                                if (BuildConfig.IS_DEBUG || BuildConfig.IS_QA) {
                                     Uri.parse(
                                         URLConstant.OWNER_URL_STAGE
                                     )
@@ -395,13 +394,6 @@ abstract class KoinNavigationDrawerActivity :
 
                 MenuState.Club -> {
                     goToClubActivity()
-                }
-
-                MenuState.LoginOrLogout -> {
-                    if (userInfoFlow.value.isStudent || userInfoFlow.value.isGeneral) {
-                        logout()
-                    }
-                    goToLoginActivity()
                 }
 
                 MenuState.Article -> goToArticleActivity()
@@ -647,7 +639,10 @@ abstract class KoinNavigationDrawerActivity :
     }
 
     private fun goToArticleActivity() {
-        val intent = Intent(this, ArticleActivity::class.java)
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse("koin://article/navigation")
+            `package` = packageName
+        }
 
         if (menuState != MenuState.Main) {
             goToActivityFinish(intent)

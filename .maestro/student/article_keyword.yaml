@@ -1,0 +1,30 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin.dev
+---
+- runFlow: ../common/launch_app.yaml
+- openLink: "koin://article/navigation"
+- extendedWaitUntil:
+    visible: "공지사항"
+    timeout: 15000
+
+- tapOn:
+    id: "${APP_ID}:id/image_view_to_keyword_add_page"
+- extendedWaitUntil:
+    visible: "키워드 관리"
+    timeout: 10000
+
+- assertNotVisible: "키워드 알림을 받으려면"
+- assertVisible: "키워드 관리"
+- assertVisible: "내 키워드"
+- assertVisible: "추천 키워드"
+- assertVisible: "알림받을 키워드를 입력해 주세요."
+
+- tapOn: "알림받을 키워드를 입력해 주세요."
+- inputText: "maestroarticle"
+- hideKeyboard
+- tapOn: "추가"
+- extendedWaitUntil:
+    visible: "maestroarticle"
+    timeout: 5000
+- assertVisible: "maestroarticle"

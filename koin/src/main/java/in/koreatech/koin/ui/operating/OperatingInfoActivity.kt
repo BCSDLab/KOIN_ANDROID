@@ -5,8 +5,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.BuildConfig
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.databinding.ActivityOperatingInfoBinding
 
@@ -34,7 +34,7 @@ class OperatingInfoActivity : AppCompatActivity() {
                 javaScriptEnabled = true
                 domStorageEnabled = true
             }
-            if (BuildConfig.IS_DEBUG) {
+            if (BuildConfig.IS_DEBUG || BuildConfig.IS_QA) {
                 loadUrl(getString(R.string.koreatech_operating_info_stage_url))
             } else {
                 loadUrl(getString(R.string.koreatech_operating_info_production_url))

@@ -26,6 +26,7 @@ import `in`.koreatech.koin.data.response.store.ShopResponse
 import `in`.koreatech.koin.data.response.store.ShopSearchRelatedResponse
 import `in`.koreatech.koin.data.response.store.ShopSummaryResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
+import `in`.koreatech.koin.data.response.store.StoreCountResponse
 import `in`.koreatech.koin.data.response.store.StoreDayOffResponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
 import `in`.koreatech.koin.data.response.store.StoreEventItemReponse
@@ -78,6 +79,7 @@ import `in`.koreatech.koin.domain.model.store.ShopSearchRelatedList
 import `in`.koreatech.koin.domain.model.store.ShopSummary
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreCategories
+import `in`.koreatech.koin.domain.model.store.StoreCount
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.model.store.StoreMenu
 import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
@@ -834,4 +836,9 @@ fun OrderInProgressResponse.toOrderInProgress() = OrderInProgress(
     orderStatus = orderStatus,
     orderTitle = orderTitle,
     totalAmount = totalAmount
+)
+
+fun StoreCountResponse.toStoreCount() = StoreCount(
+    openCount = openCount,
+    totalCount = totalCount
 )

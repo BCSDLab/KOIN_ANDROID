@@ -5,17 +5,10 @@
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.DIAL_PHONE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
@@ -30,13 +23,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/KAPTheme.NoActionBar"
-        android:usesCleartextTraffic="true"
         tools:replace="icon,label">
+        <activity
+            android:name=".ui.unibus.UnibusActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.error.InspectionActivity"
             android:exported="false"
             android:launchMode="singleTask" />
-
         <activity
             android:name=".ui.timetablev2.TimetableActivity"
             android:exported="true"
@@ -54,13 +48,11 @@
                     android:scheme="koin" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.timetablev2.TimetableSemesterActivity"
             android:exported="false"
             android:label="시간표 설정"
             android:theme="@style/KAPTheme.NoActionBar" />
-
         <activity
             android:name=".ui.scheme.SchemeActivity"
             android:exported="true"
@@ -73,20 +65,16 @@
 
                 <data android:scheme="koin" />
                 <data android:pathPrefix="/activity" />
-
                 <data android:host="article" />
                 <data android:host="callvan" />
                 <data android:host="lost-item" />
                 <data android:host="timetable" />
                 <data android:host="main" />
-
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.operating.OperatingInfoActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.forceupdate.ForceUpdateActivity"
             android:exported="false"
@@ -99,6 +87,7 @@
             android:name=".ui.main.activity.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -108,6 +97,16 @@
 
                 <data
                     android:host="main"
+                    android:pathPrefix="/navigation"
+                    android:scheme="koin" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="article"
                     android:pathPrefix="/navigation"
                     android:scheme="koin" />
             </intent-filter>
@@ -156,7 +155,6 @@
 
                 <data android:scheme="http" />
                 <data android:scheme="https" />
-
                 <data
                     android:host="${appLinkUri}"
                     tools:replace="host" />

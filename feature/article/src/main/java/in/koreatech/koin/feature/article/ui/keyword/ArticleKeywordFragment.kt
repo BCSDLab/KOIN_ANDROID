@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.article.ui.keyword
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,7 @@ import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.feature.article.R
 import `in`.koreatech.koin.feature.article.databinding.FragmentArticleKeywordBinding
 import javax.inject.Inject
+import kotlin.math.roundToInt
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -86,8 +88,21 @@ class ArticleKeywordFragment : Fragment() {
                 }
             }
             binding.textInputSearch.addTextChangedListener {
+                val hasText = it?.isNotEmpty() == true
+                val strokeColor = ContextCompat.getColor(
+                    requireContext(),
+                    if (hasText) R.color.rebrand_primary_300 else R.color.rebrand_neutral_300
+                )
+                val strokeWidth = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    1f,
+                    resources.displayMetrics
+                ).roundToInt()
+                (binding.textInputLayoutKeyword.background?.mutate() as? android.graphics.drawable.GradientDrawable)
+                    ?.setStroke(strokeWidth, strokeColor)
                 viewModel.onKeywordInputChanged(it.toString())
             }
+            initNotificationSwitchTrack()
             initKeywordNotification()
             setMyKeywords()
             setAddButtonState()
@@ -95,6 +110,13 @@ class ArticleKeywordFragment : Fragment() {
             handleKeywordAddResult()
         }
         return binding.root
+    }
+
+    private fun initNotificationSwitchTrack() {
+        binding.notificationKeyword.setSwitchDrawables(
+            R.drawable.selector_article_switch,
+            R.drawable.selector_article_thumb
+        )
     }
 
     private fun setMyKeywords() {
@@ -117,7 +139,7 @@ class ArticleKeywordFragment : Fragment() {
                         chipGroupMyKeyword.addView(
                             createChip(
                                 keyword,
-                                R.drawable.ic_close_round,
+                                R.drawable.ic_keyword_delete,
                                 binding.chipGroupMyKeyword,
                                 viewModel::deleteKeyword
                             )
@@ -170,7 +192,7 @@ class ArticleKeywordFragment : Fragment() {
                                 chipGroupSuggestionKeywords.addView(
                                     createChip(
                                         keyword,
-                                        R.drawable.ic_add_round,
+                                        R.drawable.ic_keyword_add,
                                         binding.chipGroupSuggestionKeywords,
                                         onCloseIconClicked = onClick,
                                         onClick = onClick
@@ -284,13 +306,13 @@ class ArticleKeywordFragment : Fragment() {
                                 is KeywordInputUiState.Empty ->
                                     ContextCompat.getColor(
                                         requireContext(),
-                                        R.color.gray16
+                                        R.color.rebrand_neutral_200
                                     )
 
                                 is KeywordInputUiState.Valid ->
                                     ContextCompat.getColor(
                                         requireContext(),
-                                        R.color.colorPrimary
+                                        R.color.rebrand_primary_600
                                     )
                             }
                         )
@@ -299,13 +321,13 @@ class ArticleKeywordFragment : Fragment() {
                                 is KeywordInputUiState.Empty ->
                                     ContextCompat.getColor(
                                         requireContext(),
-                                        R.color.gray14
+                                        R.color.white
                                     )
 
                                 is KeywordInputUiState.Valid ->
                                     ContextCompat.getColor(
                                         requireContext(),
-                                        R.color.white
+                                        R.color.rebrand_neutral_0
                                     )
                             }
                         )

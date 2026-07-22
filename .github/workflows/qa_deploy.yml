@@ -1,0 +1,49 @@
+name: QA Deploy
+
+on:
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/gradle-setup
+        with:
+          properties: ${{ secrets.PROPERTIES }}
+
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+
+      - name: Update Firebase
+        env:
+          FIREBASE: ${{ secrets.FIREBASE }}
+          FIREBASE_STAGE: ${{ secrets.FIREBASE_STAGE }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS_STAGE }}
+        run: |
+          mkdir -p ./koin/src/debug
+          echo $FIREBASE | base64 -di > ./koin/google-services.json
+          echo $FIREBASE_STAGE | base64 -di > ./koin/src/debug/google-services.json
+          echo $GOOGLE_CREDENTIALS | base64 -di > ./google-credentials.json
+          for file in $(find . -name 'google-services.json')
+          do
+           echo $file
+          done
+          for file in $(find . -name 'google-credentials.json')
+          do
+           echo $file
+          done
+
+      - name: Build with Gradle
+        run: ./gradlew koin:assembleQa koin:appDistributionUploadQa -PbuildDate="-${{ steps.date.outputs.date }}"
+
+      - name: Upload to Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: Android QA Deploy
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()

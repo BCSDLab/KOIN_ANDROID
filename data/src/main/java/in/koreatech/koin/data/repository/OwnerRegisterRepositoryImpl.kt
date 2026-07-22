@@ -11,13 +11,13 @@ import `in`.koreatech.koin.data.request.owner.OwnerEmailRegisterRequest
 import `in`.koreatech.koin.data.response.store.StoreMenuRegisterResponse
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
+import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.model.owner.OwnerRegisterUrl
 import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 import `in`.koreatech.koin.domain.repository.OwnerRegisterRepository
 import `in`.koreatech.koin.domain.util.ext.toSHA256
 import java.io.EOFException
-import kotlinx.coroutines.CancellationException
 import retrofit2.HttpException
 
 class OwnerRegisterRepositoryImpl(
@@ -94,7 +94,7 @@ class OwnerRegisterRepositoryImpl(
         isCardOk: Boolean,
         isBankOk: Boolean
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             ownerRemoteDataSource.postStoreRegister(
                 StoreRegisterResponse(
                     address = address,
@@ -111,8 +111,6 @@ class OwnerRegisterRepositoryImpl(
                     phone = phoneNumber.toPhoneNumber() ?: ""
                 )
             )
-        }.onFailure { exception ->
-            if (exception is CancellationException) throw exception
         }
     }
 
@@ -126,7 +124,7 @@ class OwnerRegisterRepositoryImpl(
         menuOptionPrice: List<StoreMenuOptionPrice>,
         menuSinglePrice: String
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             ownerRemoteDataSource.postStoreMenu(
                 storeId,
                 StoreMenuRegisterResponse(
@@ -139,8 +137,6 @@ class OwnerRegisterRepositoryImpl(
                     singlePrice = if (isSingle)menuSinglePrice.toInt() else null
                 )
             )
-        }.onFailure { exception ->
-            if (exception is CancellationException) throw exception
         }
     }
 
@@ -154,7 +150,7 @@ class OwnerRegisterRepositoryImpl(
         menuOptionPrice: List<StoreMenuOptionPrice>,
         menuSinglePrice: String
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             ownerRemoteDataSource.putStoreModifiedMenu(
                 menuId,
                 StoreMenuRegisterResponse(
@@ -167,8 +163,6 @@ class OwnerRegisterRepositoryImpl(
                     singlePrice = if (isSingle)menuSinglePrice.toInt() else null
                 )
             )
-        }.onFailure { exception ->
-            if (exception is CancellationException) throw exception
         }
     }
 }

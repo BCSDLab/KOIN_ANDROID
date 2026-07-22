@@ -56,6 +56,10 @@ class FakeCallvanRepository : CallvanRepository {
         limit: Int?
     ): Result<CallvanPostSearch> = throw NotImplementedError()
 
+    override suspend fun getRecruitingCallvanCount(): Result<Int> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun sendMessage(postId: Int, isImage: Boolean, content: String): Result<Unit> =
         throw NotImplementedError()
 

@@ -30,6 +30,12 @@ internal fun Project.configureAndroidLibrary(
             targetCompatibility = JavaVersion.VERSION_17
         }
 
+        buildTypes {
+            create("qa") {
+                matchingFallbacks += listOf("debug")
+            }
+        }
+
         packagingOptions {
             resources.excludes += "DebugProbesKt.bin"
         }

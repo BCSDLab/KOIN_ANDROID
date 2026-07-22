@@ -7,8 +7,6 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.usecase.session.GetSessionIdUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCase
-import `in`.koreatech.koin.domain.util.onFailure
-import `in`.koreatech.koin.domain.util.onSuccess
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -54,23 +52,25 @@ class SignInViewModel @Inject constructor(
     }
 
     fun signIn() = intent {
-        userLoginUseCase(state.loginId, state.password).onSuccess {
-            EventLogger.logClickEvent(
-                EventAction.USER,
-                AnalyticsConstant.Label.LOGIN,
-                "로그인 완료"
-            )
-            postSideEffect(SignInSideEffect.SignInSuccess)
-        }.onFailure {
-            EventLogger.logClickEvent(
-                EventAction.USER,
-                AnalyticsConstant.Label.LOGIN,
-                "로그인 실패"
-            )
-            reduce {
-                state.copy(loginError = SignInState.LoginError(true, it.message))
+        userLoginUseCase(state.loginId, state.password)
+            .onSuccess {
+                EventLogger.logClickEvent(
+                    EventAction.USER,
+                    AnalyticsConstant.Label.LOGIN,
+                    "로그인 완료"
+                )
+                postSideEffect(SignInSideEffect.SignInSuccess)
             }
-        }
+            .onFailure {
+                EventLogger.logClickEvent(
+                    EventAction.USER,
+                    AnalyticsConstant.Label.LOGIN,
+                    "로그인 실패"
+                )
+                reduce {
+                    state.copy(loginError = SignInState.LoginError(isError = true))
+                }
+            }
     }
 
     fun getSignUpSessionId() {

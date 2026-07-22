@@ -11,6 +11,11 @@ suite_path="$1"
 suite_name="$2"
 app_id="$3"
 
+if [[ -z "${USER_PASSWORD:-}" ]]; then
+  echo "USER_PASSWORD is required for auth Maestro suites. Set MAESTRO_USER_PASSWORD secret in GitHub Actions." >&2
+  exit 1
+fi
+
 mkdir -p recordings debug-output .maestro/.generated
 
 wrapper_flow=".maestro/.generated/${suite_name}_recorded.yaml"
@@ -44,6 +49,7 @@ record_args=(
   --local
   --debug-output "$debug_output"
   -e "APP_ID=$app_id"
+  -e "USER_PASSWORD=${USER_PASSWORD:-}"
   "$wrapper_flow"
   "$video_output"
 )

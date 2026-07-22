@@ -50,7 +50,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -61,13 +60,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.request.ImageRequest
@@ -86,6 +83,7 @@ import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
+import `in`.koreatech.koin.core.nestedscroll.rememberKoinNestedScrollHeaderState
 import `in`.koreatech.koin.core.onboarding.ArrowDirection
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.onboarding.rememberOnboardingManager
@@ -102,7 +100,7 @@ import `in`.koreatech.koin.feature.dining.component.dialog.DiningImageDialog
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_DATE
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_PLACE
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_TYPE
-import `in`.koreatech.koin.feature.dining.ui.diningdetail.scroll.diningScrollConnection
+import `in`.koreatech.koin.feature.dining.ui.diningdetail.scroll.DiningNestedScrollConnection
 import java.util.Date
 import kotlinx.coroutines.launch
 
@@ -219,7 +217,6 @@ private fun DiningDetailScreenImpl(
     getNotificationPermitInfo: () -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
-    val density = LocalDensity.current
 
     val onboardingManager = rememberOnboardingManager()
     var showToolTip by remember { mutableStateOf(false) }
@@ -329,19 +326,16 @@ private fun DiningDetailScreenImpl(
     }
 
     val maxToolbarHeight = 105.dp
-    val minToolbarHeight = 0.dp
-    val maxToolbarHeightPx = with(density) { maxToolbarHeight.toPx() }
-    val minToolbarHeightPx = with(density) { minToolbarHeight.toPx() }
 
-    val toolbarOffsetPx = remember { mutableFloatStateOf(0f) }
-
-    val toolbarHeight = lerp(
-        maxToolbarHeight,
-        minToolbarHeight,
-        -toolbarOffsetPx.floatValue / (maxToolbarHeightPx - minToolbarHeightPx)
+    val headerState = rememberKoinNestedScrollHeaderState(
+        headerCollapsedHeight = 0.dp,
+        headerExpandedHeight = maxToolbarHeight
     )
+    // toolbar 높이 애니메이션 보존: currentHeaderHeightDp()를 target으로 삼고 tween(50)으로 감싼다.
+    // snapOffset은 snapTo(즉각)이므로 animateDpAsState가 없으면 50ms tween 효과가 사라진다.
+    val toolbarHeightTarget by headerState.currentHeaderHeightDp()
     val animatedToolbarHeight by animateDpAsState(
-        targetValue = toolbarHeight,
+        targetValue = toolbarHeightTarget,
         animationSpec = tween(durationMillis = 50)
     )
 
@@ -356,12 +350,11 @@ private fun DiningDetailScreenImpl(
         }
     }
 
-    val nestedScrollConnection = remember {
-        diningScrollConnection(
-            currentScrollState = currentScrollState,
-            toolbarOffsetPx = toolbarOffsetPx,
-            maxToolbarHeightPx = maxToolbarHeightPx,
-            minToolbarHeightPx = minToolbarHeightPx
+    val nestedScrollConnection = remember(headerState, scope, currentScrollState) {
+        DiningNestedScrollConnection(
+            headerState = headerState,
+            coroutineScope = scope,
+            currentScrollState = currentScrollState
         )
     }
 

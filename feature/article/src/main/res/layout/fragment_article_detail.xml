@@ -3,10 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.core.widget.NestedScrollView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical">
+        android:background="@color/rebrand_neutral_0">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/rebrand_primary_800"
+            android:visibility="gone" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -24,7 +37,7 @@
                 android:id="@+id/divider_header_content"
                 android:layout_width="match_parent"
                 android:layout_height="6dp"
-                android:background="@color/divider"
+                android:background="@color/rebrand_neutral_100"
                 app:layout_constraintTop_toBottomOf="@id/article_header" />
 
             <in.koreatech.koin.feature.article.util.HtmlView
@@ -89,53 +102,14 @@
                 android:text="@string/list"
                 android:textColor="@color/gray14"
                 android:stateListAnimator="@null"
-                android:background="@drawable/bg_gray_button"
+                android:background="@drawable/bg_article_navigate_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recycler_view_attachments" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/button_to_next_article"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/button_to_list"
-                app:layout_constraintBottom_toBottomOf="@id/button_to_list"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-                tools:visibility="invisible"
-                android:layout_marginEnd="24dp"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="8dp"
-                android:stateListAnimator="@null"
-                android:text="@string/next_article"
-                android:textColor="@color/gray14"
-                android:background="@drawable/bg_gray_button" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/button_to_prev_article"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/button_to_list"
-                app:layout_constraintBottom_toBottomOf="@id/button_to_list"
-                app:layout_constraintEnd_toStartOf="@id/button_to_next_article"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-                tools:visibility="invisible"
-                android:layout_marginEnd="8dp"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="8dp"
-                android:stateListAnimator="@null"
-                android:text="@string/prev_article"
-                android:textColor="@color/gray14"
-                android:background="@drawable/bg_gray_button" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_to_portal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/button_to_list"
-                app:layout_constraintBottom_toBottomOf="@id/button_to_list"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="24dp"
                 android:minHeight="0dp"
                 android:minWidth="0dp"
@@ -143,16 +117,20 @@
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"
                 android:stateListAnimator="@null"
-                tools:text="원본 글 바로가기"
+                tools:text="@string/link_to_original_article"
                 android:textColor="@color/black"
                 android:backgroundTint="#E4EAF2"
-                app:cornerRadius="6dp" />
+                app:cornerRadius="6dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/button_to_list"
+                app:layout_constraintBottom_toBottomOf="@id/button_to_list" />
+
 
             <View
                 android:id="@+id/divider_content_articles"
                 android:layout_width="match_parent"
                 android:layout_height="6dp"
-                android:background="@color/divider"
+                android:background="@color/rebrand_neutral_100"
                 android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@id/button_to_list" />
 
@@ -181,5 +159,7 @@
                 app:layout_constraintTop_toBottomOf="@id/text_view_hot_articles" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
+
+    </FrameLayout>
 </layout>

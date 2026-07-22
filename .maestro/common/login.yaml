@@ -1,0 +1,29 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin.dev
+---
+- launchApp:
+    clearState: true
+    permissions:
+      notifications: allow
+- waitForAnimationToEnd:
+    timeout: 5000
+- runFlow: dismiss_banner.yaml
+- openLink: "koin://login/navigation"
+- extendedWaitUntil:
+    visible: "로그인"
+    timeout: 15000
+- tapOn: "아이디(Koreatech ID/전화번호)"
+- inputText: "androidqa"
+- hideKeyboard
+- tapOn: "비밀번호"
+- inputText: "${USER_PASSWORD}"
+- hideKeyboard
+- tapOn: "로그인"
+- waitForAnimationToEnd:
+    timeout: 5000
+- runFlow: dismiss_banner.yaml
+- extendedWaitUntil:
+    visible: "게시판"
+    timeout: 20000
+- assertVisible: "게시판"

@@ -35,7 +35,6 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
-import `in`.koreatech.koin.feature.article.ArticleActivity
 import `in`.koreatech.koin.feature.lostandfound.ui.LostAndFoundActivity
 import `in`.koreatech.koin.ui.forceupdate.ForceUpdateActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
@@ -210,7 +209,9 @@ class SplashActivity : ActivityBase() {
     private fun gotoArticleActivityOrDelay(state: TokenState) {
         lifecycleScope.launch {
             delay()
-            val intent = Intent(this@SplashActivity, ArticleActivity::class.java)
+            val intent = Intent(this@SplashActivity, MainActivity::class.java).apply {
+                data = "koin://article/navigation".toUri()
+            }
             startActivity(intent)
             overridePendingTransition(R.anim.fade, R.anim.hold)
             if (state == TokenState.Valid) {

@@ -5,6 +5,7 @@ import android.util.Log
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
+import `in`.koreatech.koin.core.BuildConfig as CoreBuildConfig
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.repository.TokenRepository
@@ -38,7 +39,7 @@ class KoinApplication : Application() {
     }
 
     private fun initTimber() {
-        if (BuildConfig.IS_DEBUG) {
+        if (CoreBuildConfig.IS_DEBUG) {
             plantDebugTimberTree()
         } else {
             plantReleaseTimberTree()

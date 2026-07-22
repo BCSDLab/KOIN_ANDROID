@@ -1,11 +1,13 @@
 appId: ${APP_ID}
 env:
-  APP_ID: in.koreatech.koin
+  APP_ID: in.koreatech.koin.dev
 ---
-- stopApp
+- launchApp:
+    permissions:
+      notifications: allow
+- waitForAnimationToEnd:
+    timeout: 5000
 - openLink: "koin://main/navigation"
 - waitForAnimationToEnd:
-    timeout: 15000
-- tapOn:
-    text: "닫기"
-    optional: true
+    timeout: 5000
+- runFlow: dismiss_banner.yaml

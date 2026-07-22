@@ -4,13 +4,14 @@ import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.CodeCount
 import `in`.koreatech.koin.domain.model.user.User
+import kotlin.Result
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
     suspend fun getToken(
         loginId: String,
         hashedPassword: String
-    ): AuthToken
+    ): Result<AuthToken>
 
     suspend fun getOwnerToken(
         phoneNumber: String,
@@ -27,17 +28,17 @@ interface UserRepository {
 
     fun getUserInfoFlow(): Flow<User>
 
-    suspend fun requestPasswordResetEmail(email: String)
+    suspend fun requestPasswordResetEmail(email: String): Result<Unit>
 
-    suspend fun deleteUser()
+    suspend fun deleteUser(): Result<Unit>
 
-    suspend fun isUserEmailDuplicated(email: String): Boolean // TODO: Remove after new sign up release
+    suspend fun isUserEmailDuplicated(email: String): Result<Boolean> // TODO: Remove after new sign up release
 
     suspend fun updateUser(user: User): Result<Unit>
 
-    suspend fun deleteDeviceToken()
+    suspend fun deleteDeviceToken(): Result<Unit>
 
-    suspend fun verifyPassword(hashedPassword: String)
+    suspend fun verifyPassword(hashedPassword: String): Result<Unit>
 
     suspend fun updateUserPassword(
         hashedPassword: String

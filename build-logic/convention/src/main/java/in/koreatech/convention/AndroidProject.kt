@@ -27,5 +27,11 @@ internal fun configureAndroidProject(
             sourceCompatibility = JavaVersion.VERSION_17
             targetCompatibility = JavaVersion.VERSION_17
         }
+
+        buildTypes {
+            create("qa") {
+                matchingFallbacks += listOf("debug")
+            }
+        }
     }
 }

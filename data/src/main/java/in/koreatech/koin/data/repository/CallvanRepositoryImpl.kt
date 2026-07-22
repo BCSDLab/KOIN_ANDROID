@@ -11,6 +11,7 @@ import `in`.koreatech.koin.data.request.callvan.CallvanPostCreateRequest
 import `in`.koreatech.koin.data.request.callvan.CallvanUserReportCreateRequest
 import `in`.koreatech.koin.data.source.remote.CallvanRemoteDataSource
 import `in`.koreatech.koin.data.util.mapHttpFailure
+import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.error.callvan.KoinCallvanException
 import `in`.koreatech.koin.domain.model.callvan.CallvanChatMessage
 import `in`.koreatech.koin.domain.model.callvan.CallvanNotification
@@ -33,7 +34,7 @@ class CallvanRepositoryImpl @Inject constructor(
         departureTime: String,
         maxParticipants: Int
     ): Result<CallvanPostCreate> {
-        return runCatching {
+        return suspendRunCatching {
             callvanRemoteDataSource.createCallvanPost(
                 CallvanPostCreateRequest(
                     departureType = departureType,
@@ -66,7 +67,7 @@ class CallvanRepositoryImpl @Inject constructor(
         page: Int?,
         limit: Int?
     ): Result<CallvanPostSearch> {
-        return runCatching {
+        return suspendRunCatching {
             callvanRemoteDataSource.getCallvanPosts(
                 author = author,
                 departures = departures,
@@ -86,12 +87,33 @@ class CallvanRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getRecruitingCallvanCount(): Result<Int> {
+        return suspendRunCatching {
+            callvanRemoteDataSource.getCallvanPosts(
+                author = null,
+                departures = null,
+                departureKeyword = null,
+                arrivals = null,
+                arrivalKeyword = null,
+                statuses = listOf("RECRUITING"),
+                title = null,
+                sort = null,
+                joined = false,
+                page = 1,
+                limit = 1
+            ).totalCount.toInt()
+        }.mapHttpFailure {
+            on(401) throws KoinCallvanException.UnauthorizedUserException()
+            on(404) throws KoinCallvanException.NotFoundUserException()
+        }
+    }
+
     override suspend fun sendMessage(
         postId: Int,
         isImage: Boolean,
         content: String
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             callvanRemoteDataSource.sendMessage(
                 postId = postId,
                 callvanChatMessageRequest = CallvanChatMessageRequest(
@@ -108,7 +130,7 @@ class CallvanRepositoryImpl @Inject constructor(
     override suspend fun getCallvanChatMessages(
         postId: Int
     ): Result<CallvanChatMessage> {
-        return runCatching {
+        return suspendRunCatching {
             callvanRemoteDataSource.getCallvanChatMessages(
                 postId = postId
             ).toCallvanChatMessage()
@@ -121,7 +143,7 @@ class CallvanRepositoryImpl @Inject constructor(
     override suspend fun getCallvanPostDetail(
         postId: Int
     ): Result<CallvanPostDetail> {
-        return runCatching {
+        return suspendRunCatching {
             callvanRemoteDataSource.getCallvanPostDetail(
                 postId = postId
             ).toCallvanPostDetail()
@@ -138,7 +160,7 @@ class CallvanRepositoryImpl @Inject constructor(
         reasons: List<Pair<String, String?>>,
         attachmentUrls: List<String>?
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             callvanRemoteDataSource.reportCallvanUser(
                 postId = postId,
                 callvanUserReportCreateRequest = CallvanUserReportCreateRequest(
@@ -171,7 +193,7 @@ class CallvanRepositoryImpl @Inject constructor(
     override suspend fun closeCallvanPost(
         postId: Int
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             callvanRemoteDataSource.closeCallvanPost(
                 postId = postId
             )
@@ -182,13 +204,13 @@ class CallvanRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getNotifications(): Result<List<CallvanNotification>> {
-        return runCatching {
+        return suspendRunCatching {
             callvanRemoteDataSource.getNotifications().map { it.toCallvanNotification() }
         }
     }
 
     override suspend fun deleteAllNotifications(): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             callvanRemoteDataSource.deleteAllNotifications()
         }
     }
@@ -196,7 +218,7 @@ class CallvanRepositoryImpl @Inject constructor(
     override suspend fun deleteNotification(
         notificationId: Int
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             callvanRemoteDataSource.deleteNotification(
                 notificationId = notificationId
             )
@@ -206,7 +228,7 @@ class CallvanRepositoryImpl @Inject constructor(
     override suspend fun markNotificationAsRead(
         notificationId: Int
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             callvanRemoteDataSource.markNotificationAsRead(
                 notificationId = notificationId
             )
@@ -214,7 +236,7 @@ class CallvanRepositoryImpl @Inject constructor(
     }
 
     override suspend fun markAllNotificationsAsRead(): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             callvanRemoteDataSource.markAllNotificationsAsRead()
         }
     }
@@ -222,7 +244,7 @@ class CallvanRepositoryImpl @Inject constructor(
     override suspend fun completeCallvanPost(
         postId: Int
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             callvanRemoteDataSource.completeCallvanPost(
                 postId = postId
             )
@@ -235,7 +257,7 @@ class CallvanRepositoryImpl @Inject constructor(
     override suspend fun joinCallvanPost(
         postId: Int
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             callvanRemoteDataSource.joinCallvanPost(
                 postId = postId
             )
@@ -251,7 +273,7 @@ class CallvanRepositoryImpl @Inject constructor(
     override suspend fun leaveCallvanPost(
         postId: Int
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             callvanRemoteDataSource.leaveCallvanPost(
                 postId = postId
             )
@@ -265,7 +287,7 @@ class CallvanRepositoryImpl @Inject constructor(
     override suspend fun reopenCallvanPost(
         postId: Int
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             callvanRemoteDataSource.reopenCallvanPost(
                 postId = postId
             )
@@ -278,7 +300,7 @@ class CallvanRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCallvanRestriction(): Result<CallvanRestriction> {
-        return runCatching {
+        return suspendRunCatching {
             callvanRemoteDataSource.getCallvanRestriction().toCallvanRestriction()
         }.mapHttpFailure {
             on(401) throws KoinCallvanException.UnauthorizedUserException()

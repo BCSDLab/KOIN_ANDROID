@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_article"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp"
+        android:theme="@style/WhiteToolbarIconTheme"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <TextView
+        android:id="@+id/text_article_toolbar_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:focusable="false"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.Koin.Medium.18"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar_article"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/toolbar_article" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

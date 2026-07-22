@@ -31,6 +31,10 @@ android {
                 "String.valueOf(\"${localProperties["order_base_url"]}\")"
             )
         }
+
+        getByName("qa") {
+            initWith(getByName("debug"))
+        }
     }
 
     composeOptions {

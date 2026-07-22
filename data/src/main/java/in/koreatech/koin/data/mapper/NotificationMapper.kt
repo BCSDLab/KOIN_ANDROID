@@ -1,8 +1,10 @@
 package `in`.koreatech.koin.data.mapper
 
+import `in`.koreatech.koin.data.entity.NotificationEntity
 import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfoResponse
 import `in`.koreatech.koin.data.response.notification.SubscribeDetailResponse
 import `in`.koreatech.koin.data.response.notification.SubscribesResponse
+import `in`.koreatech.koin.domain.model.notification.Notification
 import `in`.koreatech.koin.domain.model.notification.NotificationPermissionInfo
 import `in`.koreatech.koin.domain.model.notification.Subscribes
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetail
@@ -49,3 +51,22 @@ fun String.toSubscribesDetailType(): SubscribesDetailType =
         SubscribesDetail.DINNER -> SubscribesDetailType.DINNER
         else -> SubscribesDetailType.NOTHING
     }
+
+fun Notification.toNotificationEntity(): NotificationEntity = NotificationEntity(
+    type = type,
+    datetime = datetime,
+    title = title,
+    content = content,
+    originUrl = originUrl,
+    isRead = isRead
+)
+
+fun NotificationEntity.toNotification(): Notification = Notification(
+    id = id,
+    type = type,
+    datetime = datetime,
+    title = title,
+    content = content,
+    originUrl = originUrl,
+    isRead = isRead
+)

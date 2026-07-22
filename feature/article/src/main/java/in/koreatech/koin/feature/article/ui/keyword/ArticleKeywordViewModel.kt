@@ -13,8 +13,6 @@ import `in`.koreatech.koin.domain.usecase.notification.DeleteNotificationSubscri
 import `in`.koreatech.koin.domain.usecase.notification.GetNotificationPermissionInfoUseCase
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
-import `in`.koreatech.koin.domain.util.onFailure
-import `in`.koreatech.koin.domain.util.onSuccess
 import javax.inject.Inject
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -123,13 +121,15 @@ class ArticleKeywordViewModel @Inject constructor(
 
     fun getPermissionInfo() {
         viewModelScope.launchWithLoading {
-            getNotificationPermissionInfoUseCase().onSuccess { info ->
-                _notificationUiState.update {
-                    NotificationUiState.Success(info)
+            getNotificationPermissionInfoUseCase()
+                .onSuccess { info ->
+                    _notificationUiState.update {
+                        NotificationUiState.Success(info)
+                    }
                 }
-            }.onFailure {
-                _notificationUiState.update { NotificationUiState.Failed }
-            }
+                .onFailure {
+                    _notificationUiState.update { NotificationUiState.Failed }
+                }
         }
     }
 

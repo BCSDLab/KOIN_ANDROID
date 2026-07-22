@@ -1,7 +1,5 @@
 package `in`.koreatech.koin.domain.usecase.user
 
-import `in`.koreatech.koin.domain.error.user.FakeUserErrorHandler
-import `in`.koreatech.koin.domain.error.user.UserErrorHandler
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.UserType
 import `in`.koreatech.koin.domain.repository.FakeTokenRepository
@@ -14,13 +12,11 @@ import org.junit.Test
 class UserLoginUseCaseTest {
     private lateinit var userRepository: FakeUserRepository
     private lateinit var tokenRepository: FakeTokenRepository
-    private lateinit var userErrorHandler: UserErrorHandler
 
     @Before
     fun setUp() {
         userRepository = FakeUserRepository()
         tokenRepository = FakeTokenRepository()
-        userErrorHandler = FakeUserErrorHandler()
     }
 
     @Test
@@ -29,14 +25,13 @@ class UserLoginUseCaseTest {
         val refreshToken = "test_refresh_token"
         userRepository.setAccessToken(AuthToken(accessToken, refreshToken, UserType.STUDENT.name))
 
-        val userLoginUseCase = UserLoginUseCase(userRepository, tokenRepository, userErrorHandler)
+        val userLoginUseCase = UserLoginUseCase(userRepository, tokenRepository)
         val email = "student@koreatech.ac.kr"
         val password = "credential"
 
         val result = userLoginUseCase(email, password)
 
-        Assert.assertNotNull(result.first)
-        Assert.assertNull(result.second)
+        Assert.assertTrue(result.isSuccess)
         Assert.assertEquals(accessToken, tokenRepository.getAccessToken())
         Assert.assertEquals(refreshToken, tokenRepository.getRefreshToken())
         Assert.assertEquals(UserType.STUDENT, userRepository.userType)
@@ -48,31 +43,28 @@ class UserLoginUseCaseTest {
         val refreshToken = "test_refresh_token"
         userRepository.setAccessToken(AuthToken(accessToken, refreshToken, UserType.GENERAL.name))
 
-        val userLoginUseCase = UserLoginUseCase(userRepository, tokenRepository, userErrorHandler)
+        val userLoginUseCase = UserLoginUseCase(userRepository, tokenRepository)
         val email = "general@bcsdlab.com"
         val password = "credential"
 
         val result = userLoginUseCase(email, password)
 
-        Assert.assertNotNull(result.first)
-        Assert.assertNull(result.second)
+        Assert.assertTrue(result.isSuccess)
         Assert.assertEquals(accessToken, tokenRepository.getAccessToken())
         Assert.assertEquals(refreshToken, tokenRepository.getRefreshToken())
         Assert.assertEquals(UserType.GENERAL, userRepository.userType)
     }
 
     @Test
-    fun `로그인 실패 시 ErrorHandler를 반환한다`() = runTest {
+    fun `로그인 실패 시 Result failure를 반환한다`() = runTest {
         userRepository.setAccessToken(null)
 
-        val userLoginUseCase = UserLoginUseCase(userRepository, tokenRepository, userErrorHandler)
+        val userLoginUseCase = UserLoginUseCase(userRepository, tokenRepository)
         val email = "general@bcsdlab.com"
         val password = "credential"
 
         val result = userLoginUseCase(email, password)
 
-        Assert.assertNull(result.first)
-        Assert.assertNotNull(result.second)
-        Assert.assertFalse(result.second!!.isSuccess)
+        Assert.assertTrue(result.isFailure)
     }
 }

@@ -1,0 +1,134 @@
+package `in`.koreatech.koin.feature.profile
+
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableFramesUseCase
+import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableLecturesUseCase
+import `in`.koreatech.koin.domain.usecase.timetable.GetUserSemestersUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
+import `in`.koreatech.koin.domain.usecase.user.UserLogoutUseCase
+import `in`.koreatech.koin.feature.profile.mapper.toProfileTimetableLectures
+import javax.inject.Inject
+import kotlin.math.pow
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.retryWhen
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.annotation.OrbitExperimental
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.subIntent
+import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
+
+@HiltViewModel
+class ProfileViewModel @Inject constructor(
+    private val getUserStatusUseCase: GetUserStatusUseCase,
+    private val userLogoutUseCase: UserLogoutUseCase,
+    private val getUserSemestersUseCase: GetUserSemestersUseCase,
+    private val getTimetableFramesUseCase: GetTimetableFramesUseCase,
+    private val getTimetableLecturesUseCase: GetTimetableLecturesUseCase
+) : ViewModel(), ContainerHost<ProfileState, ProfileSideEffect> {
+
+    override val container = container<ProfileState, ProfileSideEffect>(ProfileState())
+
+    init {
+        observeUserStatus()
+    }
+
+    private fun observeUserStatus() = intent {
+        getUserStatusUseCase()
+            .retryWhen { cause, attempt ->
+                Timber.e(cause)
+                val backoffMs = (INITIAL_RETRY_DELAY_MS * 2.0.pow(attempt.toDouble()))
+                    .toLong()
+                    .coerceAtMost(MAX_RETRY_DELAY_MS)
+                delay(backoffMs)
+                true
+            }
+            .collectLatest { user ->
+                when (user) {
+                    is User.Student -> {
+                        reduce {
+                            state.copy(
+                                isLoggedIn = true,
+                                name = user.name.orEmpty(),
+                                studentNumber = user.studentNumber.orEmpty()
+                            )
+                        }
+                        loadTimetable()
+                    }
+
+                    is User.General -> {
+                        reduce {
+                            state.copy(
+                                isLoggedIn = true,
+                                name = user.name,
+                                studentNumber = ""
+                            )
+                        }
+                        loadTimetable()
+                    }
+
+                    User.Anonymous -> reduce {
+                        state.copy(
+                            isLoggedIn = false,
+                            name = "",
+                            studentNumber = "",
+                            timetable = persistentListOf()
+                        )
+                    }
+                }
+            }
+    }
+
+    @OptIn(OrbitExperimental::class)
+    private suspend fun loadTimetable() = subIntent {
+        val semesters = getUserSemestersUseCase(false)
+            .catch { Timber.e(it) }
+            .firstOrNull()
+            .orEmpty()
+        val semester = semesters.firstOrNull() ?: run {
+            reduce { state.copy(timetable = persistentListOf()) }
+            return@subIntent
+        }
+
+        val frames = getTimetableFramesUseCase(semester)
+            .catch { Timber.e(it) }
+            .firstOrNull()
+            .orEmpty()
+        val mainFrame = frames.find { it.isMain } ?: run {
+            reduce { state.copy(timetable = persistentListOf()) }
+            return@subIntent
+        }
+
+        getTimetableLecturesUseCase(mainFrame.id)
+            .onSuccess { timetableLectures ->
+                reduce { state.copy(timetable = timetableLectures.toProfileTimetableLectures()) }
+            }
+            .onFailure {
+                Timber.e(it)
+                reduce { state.copy(timetable = persistentListOf()) }
+            }
+    }
+
+    fun onLogoutClick() = intent {
+        userLogoutUseCase()
+            .onSuccess {
+                postSideEffect(ProfileSideEffect.LogoutSuccess)
+            }
+            .onFailure {
+                Timber.e(it)
+            }
+    }
+
+    companion object {
+        private const val INITIAL_RETRY_DELAY_MS = 1000L
+        private const val MAX_RETRY_DELAY_MS = 30_000L
+    }
+}

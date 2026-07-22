@@ -1,0 +1,31 @@
+appId: ${APP_ID}
+env:
+  APP_ID: in.koreatech.koin.dev
+---
+- runFlow: ../guest/home.yaml
+- runFlow: ../guest/auth_sign_in.yaml
+- runFlow: ../guest/auth_find_id.yaml
+- runFlow: ../guest/auth_find_password.yaml
+- runFlow: ../guest/auth_sign_up.yaml
+- runFlow: ../guest/article.yaml
+- runFlow: ../guest/lost_and_found.yaml
+- runFlow: ../guest/store.yaml
+- runFlow: ../guest/bus.yaml
+- runFlow: ../guest/dining.yaml
+- runFlow: ../guest/timetable.yaml
+- runFlow: ../guest/club.yaml
+- runFlow: ../guest/callvan.yaml
+- runFlow: ../guest/land.yaml
+- runFlow: ../guest/settings.yaml
+- runFlow: ../guest/operating_info.yaml
+- runFlow: ../guest/banner.yaml
+- runFlow: ../common/login.yaml
+- runFlow: ../student/settings_logged_in.yaml
+- runFlow: ../student/callvan_create.yaml
+- runFlow: ../student/callvan_notifications.yaml
+- runFlow: ../student/callvan_detail.yaml
+- runFlow: ../student/chat_list.yaml
+- runFlow: ../student/lostandfound_write.yaml
+- runFlow: ../student/lostandfound_keyword.yaml
+- runFlow: ../student/article_keyword.yaml
+- runFlow: ../common/logout.yaml

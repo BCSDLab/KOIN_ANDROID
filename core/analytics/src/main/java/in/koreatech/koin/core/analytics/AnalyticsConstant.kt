@@ -115,6 +115,21 @@ object AnalyticsConstant {
         const val TO_MANAGE_KEYWORD = "to_manage_keyword"
 
         const val LOGIN_PROMPT = "login_prompt"
+        const val NOTIFICATION_LIST = "notification_list"
+        const val NOTIFICATION_LIST_READ_ALL = "notification_list_read_all"
+        const val NOTIFICATION_DELETE_ALL = "notification_delete_all"
+        const val NOTIFICATION_LIST_DELETE = "notification_list_delete"
+        const val TODAY_MEAL = "today_meal"
+        const val MENU_CORNER = "menu_corner"
+        const val SHUTTLE_TICKET = "shuttle_ticket"
+        const val CALLVANPOT = "callvanpot"
+        const val BUS_ROUTE = "bus_route"
+        const val SHOP = "shop"
+        const val POPULAR_SHOP = "popular_shop"
+        const val NAV_HOME = "nav_home"
+        const val NAV_CATEGORY = "nav_category"
+        const val NAV_BULLETIN = "nav_bulletin"
+        const val NAV_PROFILE = "nav_profile"
 
         object LostAndFound {
             const val LOST_ITEM_ADD_ITEM = "lost_item_add_item"
@@ -201,6 +216,21 @@ object AnalyticsConstant {
             const val CALLVAN_WRITE_TIME = "callvan_write_time"
             const val CALLVAN_WRITE_DONE = "callvan_write_done"
             const val CALLVAN_WRITE_BACK = "callvan_write_back"
+        }
+
+        object Category {
+            const val CATEGORY_TIMETABLE = "category_timetable"
+            const val CATEGORY_LOST_PROPERTY = "category_lost_property"
+            const val CATEGORY_CAMPUS = "category_campus"
+            const val CATEGORY_TRANSPORTATION = "category_transportation"
+            const val CATEGORY_ETC = "category_etc"
+        }
+
+        object Profile {
+            const val HOME_TIMETABLE = "home_timetable"
+            const val HOME_LOGIN = "home_login"
+            const val HOME_LOGOUT = "home_logout"
+            const val HOME_SETTINGS = "home_settings"
         }
     }
 

@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.navigation
 
-import `in`.koreatech.koin.feature.article.ArticleActivity
 import `in`.koreatech.koin.feature.callvan.CallvanActivity
 import `in`.koreatech.koin.feature.chat.ui.groupchat.GroupChatActivity
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
@@ -8,6 +7,7 @@ import `in`.koreatech.koin.feature.club.ui.ClubActivity
 import `in`.koreatech.koin.feature.dining.ui.DiningActivity
 import `in`.koreatech.koin.feature.lostandfound.ui.LostAndFoundActivity
 import `in`.koreatech.koin.feature.store.StoreActivity
+import `in`.koreatech.koin.ui.main.activity.MainActivity
 
 enum class SchemeType(
     val type: String,
@@ -15,7 +15,7 @@ enum class SchemeType(
 ) {
     SHOP("shop", StoreActivity::class.java),
     DINING("dining", DiningActivity::class.java),
-    ARTICLE("keyword", ArticleActivity::class.java),
+    ARTICLE("keyword", MainActivity::class.java),
     CHAT("chat", ChatRoomActivity::class.java),
     CLUB_RECRUIT("club-recruitment", ClubActivity::class.java),
     CLUB("club", ClubActivity::class.java),

@@ -1,5 +1,6 @@
 package `in`.koreatech.business.feature.store.storedetail
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,6 +21,7 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import retrofit2.HttpException
 
 @HiltViewModel
 class MyStoreDetailViewModel @Inject constructor(
@@ -351,17 +353,30 @@ class MyStoreDetailViewModel @Inject constructor(
             }
         }
 
-    fun deleteUser() {
-        intent {
-            viewModelScope.launch {
-                userRemoveUseCase()
-                    .onSuccess {
-                        postSideEffect(MyStoreDetailSideEffect.DeleteUser)
-                    }
-                    .onFailure { errorHandler ->
-                        postSideEffect(MyStoreDetailSideEffect.ShowErrorMessage(errorHandler.message))
-                    }
+    fun deleteUser() = intent {
+        userRemoveUseCase().fold(
+            onSuccess = {
+                postSideEffect(MyStoreDetailSideEffect.DeleteUser)
+            },
+            onFailure = { throwable ->
+                postSideEffect(
+                    MyStoreDetailSideEffect.ShowErrorMessageRes(
+                        throwable.toDeleteUserErrorMessageRes()
+                    )
+                )
             }
-        }
+        )
+    }
+
+    @StringRes
+    private fun Throwable.toDeleteUserErrorMessageRes(): Int = when {
+        this is HttpException && this.code() == 500 ->
+            `in`.koreatech.koin.data.R.string.error_internal_server_error
+        this is java.net.ConnectException ||
+            this is java.net.SocketTimeoutException ||
+            this is java.net.UnknownHostException ->
+            `in`.koreatech.koin.data.R.string.error_network_connection
+        else ->
+            `in`.koreatech.koin.data.R.string.error_network_unknown
     }
 }

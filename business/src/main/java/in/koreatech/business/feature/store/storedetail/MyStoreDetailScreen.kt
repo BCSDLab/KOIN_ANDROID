@@ -124,6 +124,11 @@ fun MyStoreDetailScreen(
                 navigateToLoginScreen()
             }
 
+            is MyStoreDetailSideEffect.ShowErrorMessageRes -> {
+                ToastUtil.getInstance().makeShort(it.errorMessageRes)
+                navigateToLoginScreen()
+            }
+
             MyStoreDetailSideEffect.NavigateToUploadEventScreen -> navigateToUploadEventScreen()
             is MyStoreDetailSideEffect.NavigateToModifyScreen -> {
                 navigateToModifyScreen(it.storeId)

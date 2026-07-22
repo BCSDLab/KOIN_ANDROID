@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/bottom_navigation_home">
+
+    <fragment
+        android:id="@+id/bottom_navigation_home"
+        android:name="in.koreatech.koin.ui.main.fragment.HomeFragment">
+        <action
+            android:id="@+id/action_home_to_notification"
+            app:destination="@id/notification"
+            app:enterAnim="@anim/slide_in_from_right_fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_in_from_left_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/notification"
+        android:name="in.koreatech.koin.ui.main.fragment.NotificationFragment" />
+
+    <fragment
+        android:id="@+id/bottom_navigation_category"
+        android:name="in.koreatech.koin.ui.main.fragment.CategoryFragment">
+        <action
+            android:id="@+id/action_category_to_notification"
+            app:destination="@id/notification"
+            app:enterAnim="@anim/slide_in_from_right_fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_in_from_left_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/bottom_navigation_article"
+        android:name="in.koreatech.koin.ui.main.fragment.ArticleFragment">
+
+        <argument
+            android:name="fragment"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+
+        <argument
+            android:name="article_id"
+            app:argType="integer"
+            android:defaultValue="-1" />
+
+        <argument
+            android:name="extra_board_id"
+            app:argType="integer"
+            android:defaultValue="-1" />
+
+        <action
+            android:id="@+id/action_article_to_notification"
+            app:destination="@id/notification"
+            app:enterAnim="@anim/slide_in_from_right_fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_in_from_left_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/bottom_navigation_profile"
+        android:name="in.koreatech.koin.ui.main.fragment.ProfileFragment" />
+</navigation>

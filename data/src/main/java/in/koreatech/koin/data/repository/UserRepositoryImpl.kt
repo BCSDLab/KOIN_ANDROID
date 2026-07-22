@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.repository
 
-import `in`.koreatech.koin.data.mapper.safeApiCall
 import `in`.koreatech.koin.data.mapper.toCodeCount
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
@@ -17,6 +16,7 @@ import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.util.mapHttpFailure
+import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.error.user.KoinUserException
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
@@ -39,13 +39,18 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun getToken(
         loginId: String,
         hashedPassword: String
-    ): AuthToken {
-        val authResponse =
-            userRemoteDataSource.getToken(
-                LoginRequest(loginId, hashedPassword)
-            )
+    ): Result<AuthToken> {
+        return suspendRunCatching {
+            val authResponse =
+                userRemoteDataSource.getToken(
+                    LoginRequest(loginId, hashedPassword)
+                )
 
-        return AuthToken(authResponse.token, authResponse.refreshToken, authResponse.userType)
+            AuthToken(authResponse.token, authResponse.refreshToken, authResponse.userType)
+        }.mapHttpFailure {
+            on(400) throws KoinUserException.LoginCredentialInvalidException()
+            on(404) throws KoinUserException.UserNotFoundException()
+        }
     }
 
     override suspend fun getOwnerToken(
@@ -120,36 +125,42 @@ class UserRepositoryImpl @Inject constructor(
         return userLocalDataSource.user.map { it ?: getUserInfo() }
     }
 
-    override suspend fun requestPasswordResetEmail(email: String) {
-        userRemoteDataSource.sendPasswordResetEmail(IdRequest(email))
+    override suspend fun requestPasswordResetEmail(email: String): Result<Unit> {
+        return suspendRunCatching {
+            userRemoteDataSource.sendPasswordResetEmail(IdRequest(email))
+        }.mapHttpFailure {
+            on(404) throws KoinUserException.UserNotFoundException()
+            on(422) throws KoinUserException.EmailInvalidException()
+        }
     }
 
-    override suspend fun deleteUser() {
-        try {
+    override suspend fun deleteUser(): Result<Unit> {
+        return suspendRunCatching {
             userRemoteDataSource.deleteUser()
             userLocalDataSource.updateUserInfo(User.Anonymous)
             userLocalDataSource.updateIsLogin(false)
             tokenLocalDataSource.removeAccessToken()
             tokenLocalDataSource.removeRefreshToken()
-        } catch (e: HttpException) {
-            throw e
         }
     }
 
-    override suspend fun isUserEmailDuplicated(email: String): Boolean {
-        return try {
+    override suspend fun isUserEmailDuplicated(email: String): Result<Boolean> {
+        return suspendRunCatching {
             userRemoteDataSource.checkEmail(email)
             false
-        } catch (e: HttpException) {
-            if (e.code() == 409) {
+        }.mapHttpFailure {
+            on(400) throws KoinUserException.EmailInvalidException()
+            on(409) throws KoinUserException.EmailConflictException()
+        }.recoverCatching { exception ->
+            if (exception is KoinUserException.EmailConflictException) {
                 true
             } else {
-                throw e
+                throw exception
             }
         }
     }
 
-    override suspend fun updateUser(user: User): Result<Unit> = runCatching {
+    override suspend fun updateUser(user: User): Result<Unit> = suspendRunCatching {
         when (user) {
             User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
             is User.Student -> {
@@ -171,13 +182,19 @@ class UserRepositoryImpl @Inject constructor(
         e409 = KoinUserException.NicknameOrEmailConflictException()
     )
 
-    override suspend fun deleteDeviceToken() {
-        tokenLocalDataSource.removeDeviceToken()
-        userRemoteDataSource.deleteDeviceToken()
+    override suspend fun deleteDeviceToken(): Result<Unit> {
+        return suspendRunCatching {
+            tokenLocalDataSource.removeDeviceToken()
+            userRemoteDataSource.deleteDeviceToken()
+        }
     }
 
-    override suspend fun verifyPassword(hashedPassword: String) {
-        userRemoteDataSource.verifyPassword(PasswordRequest(hashedPassword))
+    override suspend fun verifyPassword(hashedPassword: String): Result<Unit> {
+        return suspendRunCatching {
+            userRemoteDataSource.verifyPassword(PasswordRequest(hashedPassword))
+        }.mapHttpFailure {
+            on(400) throws KoinUserException.DataInvalidException()
+        }
     }
 
     override suspend fun updateABTestToken() {
@@ -189,7 +206,7 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun postABTestAssign(title: String): ABTest {
         val (variableName, accessHistoryId) = userRemoteDataSource.postABTestAssign(ABTestRequest(title))
 
-        safeApiCall {
+        suspendRunCatching {
             userLocalDataSource.insertCachedABTest(title, accessHistoryId, variableName)
         }
 
@@ -204,13 +221,13 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun updateUserPassword(
         hashedPassword: String
     ): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             userRemoteDataSource.updateUserPassword(hashedPassword) // TODO: Handle error after error code PR is completed.
         }
     }
 
     override suspend fun requestSmsVerification(phoneNumber: String): Result<CodeCount> {
-        return runCatching {
+        return suspendRunCatching {
             userRemoteDataSource.sendSMS(SmsSendRequest(phoneNumber)).toCodeCount()
         }.mapHttpFailure(
             e400 = KoinUserException.PhoneNumberInvalidException(),
@@ -219,7 +236,7 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun requestEmailVerification(email: String): Result<CodeCount> {
-        return runCatching {
+        return suspendRunCatching {
             userRemoteDataSource.sendEmail(EmailSendRequest(email)).toCodeCount()
         }.mapHttpFailure(
             e400 = KoinUserException.EmailInvalidException(),
@@ -228,7 +245,7 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun verifyCertificationCode(phoneNumber: String, verificationCode: String): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             userRemoteDataSource.verifyCode(
                 SmsVerifyRequest(
                     phoneNumber = phoneNumber,
@@ -242,7 +259,7 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun verifyEmailCode(email: String, verificationCode: String): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             userRemoteDataSource.verifyEmailCode(
                 EmailVerifyRequest(
                     email = email,
@@ -256,7 +273,7 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun checkIdExists(loginId: String): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             userRemoteDataSource.idExists(loginId)
         }.mapHttpFailure(
             e400 = KoinUserException.LoginIdInvalidException(),
@@ -265,7 +282,7 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun checkIdMatchEmail(loginId: String, email: String): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             userRemoteDataSource.idMatchEmail(loginId, email)
         }.mapHttpFailure(
             e400 = KoinUserException.LoginIdNotMatchEmailException(),
@@ -274,7 +291,7 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun checkIdMatchPhone(loginId: String, phone: String): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             userRemoteDataSource.idMatchPhone(
                 loginId,
                 phone
@@ -286,7 +303,7 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun resetPasswordByEmail(loginId: String, email: String, newPassword: String): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             userRemoteDataSource.resetPasswordByEmail(
                 loginId,
                 email,
@@ -300,7 +317,7 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun resetPasswordBySms(loginId: String, phone: String, newPassword: String): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             userRemoteDataSource.resetPasswordBySms(loginId, phone, newPassword)
         }.mapHttpFailure(
             e400 = KoinUserException.LoginIdNotMatchPhoneException(),
@@ -310,7 +327,7 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun checkEmailExists(email: String): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             userRemoteDataSource.checkEmailExists(email)
         }.mapHttpFailure(
             e400 = KoinUserException.EmailInvalidException(),
@@ -319,7 +336,7 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun checkPhoneExists(phone: String): Result<Unit> {
-        return runCatching {
+        return suspendRunCatching {
             userRemoteDataSource.checkPhoneExists(phone)
         }.mapHttpFailure(
             e400 = KoinUserException.PhoneNumberInvalidException(),
@@ -328,7 +345,7 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun findLoginIdByEmail(email: String, verificationCode: String): Result<String> {
-        return runCatching {
+        return suspendRunCatching {
             userRemoteDataSource.findLoginIdByEmail(EmailVerifyRequest(email, verificationCode)).loginId
         }.mapHttpFailure(
             e400 = KoinUserException.EmailInvalidException(),
@@ -338,7 +355,7 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun findLoginIdBySms(phone: String, verificationCode: String): Result<String> {
-        return runCatching {
+        return suspendRunCatching {
             userRemoteDataSource.findLoginIdBySms(SmsVerifyRequest(phone, verificationCode)).loginId
         }.mapHttpFailure(
             e400 = KoinUserException.PhoneNumberInvalidException(),
