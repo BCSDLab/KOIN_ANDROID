@@ -75,11 +75,7 @@ fun ProfileScreen(
                 }
             },
             onSettingClick = {
-                if (uiState.isLoggedIn) {
-                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Profile.HOME_SETTINGS, "설정")
-                } else {
-                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.LOGIN_PROMPT, "설정(비로그인)")
-                }
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Profile.HOME_SETTINGS, "설정")
                 onNavigateToSetting()
             },
             onNotificationClick = {
