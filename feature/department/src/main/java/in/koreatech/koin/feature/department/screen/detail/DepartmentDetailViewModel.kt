@@ -1,0 +1,126 @@
+package `in`.koreatech.koin.feature.department.screen.detail
+
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
+import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.domain.repository.DepartmentRepository
+import `in`.koreatech.koin.feature.department.navigation.Routes
+import `in`.koreatech.koin.feature.department.state.DepartmentSearchUiState
+import `in`.koreatech.koin.feature.department.state.toDepartmentState
+import `in`.koreatech.koin.feature.department.util.DEPARTMENT_UPDATED_AT_FORMATTER
+import javax.inject.Inject
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
+
+@HiltViewModel
+class DepartmentDetailViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val departmentRepository: DepartmentRepository
+) : ViewModel(), ContainerHost<DepartmentDetailState, DepartmentDetailSideEffect> {
+
+    private val category = savedStateHandle.toRoute<Routes.DepartmentDetail>().category
+
+    override val container =
+        container<DepartmentDetailState, DepartmentDetailSideEffect>(
+            DepartmentDetailState(category = category)
+        ) {
+            fetchDepartments()
+        }
+
+    private var searchJob: Job? = null
+
+    private fun fetchDepartments() = intent {
+        reduce { state.copy(contentUiState = DepartmentSearchUiState.Loading) }
+
+        departmentRepository.getDepartmentContactsByCategory(category = category.name)
+            .onSuccess { result ->
+                val departmentStates = result.categoryContacts.departments.map { it.toDepartmentState() }
+                reduce {
+                    state.copy(
+                        updatedAt = result.updatedAt.format(DEPARTMENT_UPDATED_AT_FORMATTER),
+                        contentUiState = if (departmentStates.isEmpty()) {
+                            DepartmentSearchUiState.Empty
+                        } else {
+                            DepartmentSearchUiState.Success(departmentStates.toImmutableList())
+                        }
+                    )
+                }
+            }
+            .onFailure {
+                reduce { state.copy(contentUiState = DepartmentSearchUiState.Failure) }
+            }
+    }
+
+    fun onQueryChange(query: String) {
+        searchJob?.cancel()
+
+        if (query.isBlank()) {
+            intent {
+                reduce { state.copy(query = query, searchUiState = DepartmentSearchUiState.Idle) }
+            }
+            return
+        }
+
+        intent {
+            reduce { state.copy(query = query, searchUiState = DepartmentSearchUiState.Loading) }
+        }
+
+        searchJob = viewModelScope.launch {
+            delay(SEARCH_DEBOUNCE_MILLIS)
+            search(query)
+        }
+    }
+
+    fun onSearch() {
+        searchJob?.cancel()
+        val query = container.stateFlow.value.query
+        if (query.isBlank()) return
+        EventLogger.logCampusClickEvent(EVENT_LABEL_SEARCH, query)
+        searchJob = viewModelScope.launch { search(query) }
+    }
+
+    private fun search(keyword: String) = intent {
+        departmentRepository.getDepartmentContactsByCategory(category = category.name, keyword = keyword)
+            .onSuccess { result ->
+                val results = result.categoryContacts.departments.map { it.toDepartmentState() }
+                reduce {
+                    state.copy(
+                        searchUiState = if (results.isEmpty()) {
+                            DepartmentSearchUiState.Empty
+                        } else {
+                            DepartmentSearchUiState.Success(results.toImmutableList())
+                        }
+                    )
+                }
+            }
+            .onFailure {
+                reduce { state.copy(searchUiState = DepartmentSearchUiState.Failure) }
+            }
+    }
+
+    fun onPhoneNumberClick(phoneNumber: String) = intent {
+        EventLogger.logCampusClickEvent(EVENT_LABEL_COPY, phoneNumber)
+        postSideEffect(DepartmentDetailSideEffect.CopyPhoneNumber(phoneNumber))
+    }
+
+    fun onRefresh() {
+        val query = container.stateFlow.value.query
+        if (query.isBlank()) fetchDepartments() else onSearch()
+    }
+
+    companion object {
+        private const val SEARCH_DEBOUNCE_MILLIS = 300L
+        private const val EVENT_LABEL_SEARCH = "department_detail_search"
+        private const val EVENT_LABEL_COPY = "department_detail_copy_phone_number"
+    }
+}
