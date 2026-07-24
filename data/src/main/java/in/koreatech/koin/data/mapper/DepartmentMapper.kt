@@ -12,29 +12,29 @@ import `in`.koreatech.koin.domain.model.department.DepartmentContacts
 import `in`.koreatech.koin.domain.model.department.DepartmentContactsByCategory
 import java.time.LocalDateTime
 
-fun DepartmentContactResponse.toDepartmentContact() = DepartmentContact(
+fun DepartmentContactResponse.toDepartmentContact(): DepartmentContact = DepartmentContact(
     task = task,
     phoneNumber = phoneNumber
 )
 
-fun DepartmentResponse.toDepartment() = Department(
+fun DepartmentResponse.toDepartment(): Department = Department(
     name = name,
     isSingleContact = isSingleContact,
     contacts = contacts.map { it.toDepartmentContact() }
 )
 
-fun DepartmentCategoryContactsResponse.toDepartmentCategoryContacts() = DepartmentCategoryContacts(
+fun DepartmentCategoryContactsResponse.toDepartmentCategoryContacts(): DepartmentCategoryContacts = DepartmentCategoryContacts(
     category = category,
     categoryName = categoryName,
     departments = departments.map { it.toDepartment() }
 )
 
-fun DepartmentContactsResponse.toDepartmentContacts() = DepartmentContacts(
+fun DepartmentContactsResponse.toDepartmentContacts(): DepartmentContacts = DepartmentContacts(
     updatedAt = LocalDateTime.parse(updatedAt),
     categories = categories.map { it.toDepartmentCategoryContacts() }
 )
 
-fun DepartmentContactsByCategoryResponse.toDepartmentContactsByCategory() = DepartmentContactsByCategory(
+fun DepartmentContactsByCategoryResponse.toDepartmentContactsByCategory(): DepartmentContactsByCategory = DepartmentContactsByCategory(
     updatedAt = LocalDateTime.parse(updatedAt),
     categoryContacts = DepartmentCategoryContacts(
         category = category,
