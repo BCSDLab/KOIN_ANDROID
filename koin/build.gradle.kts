@@ -143,6 +143,7 @@ dependencies {
     implementation(projects.feature.profile)
     implementation(projects.feature.notification)
     implementation(projects.feature.category)
+    implementation(projects.feature.department)
 
     implementation(libs.guava)
 
