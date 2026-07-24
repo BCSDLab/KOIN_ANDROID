@@ -9,8 +9,7 @@ enum class CategoryMenuId {
     TIMETABLE,
     LOST_AND_FOUND,
     OPERATING_INFO,
-
-//     DEPARTMENT_INFO,
+    DEPARTMENT_INFO,
     DINING,
     STORE,
     BUS_TIMETABLE,
@@ -28,7 +27,7 @@ data class CategoryMenu(
 
 internal val CAMPUS_MENUS = persistentListOf(
     CategoryMenu(CategoryMenuId.OPERATING_INFO, R.drawable.ic_operating_info, R.string.campus_facility),
-    // CategoryMenu(CategoryMenuId.DEPARTMENT_INFO, R.drawable.ic_info, R.string.department_info),
+    CategoryMenu(CategoryMenuId.DEPARTMENT_INFO, R.drawable.ic_info, R.string.department_info),
     CategoryMenu(CategoryMenuId.DINING, R.drawable.ic_dish, R.string.dining),
     CategoryMenu(CategoryMenuId.STORE, R.drawable.ic_store_category, R.string.store)
 )
