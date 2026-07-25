@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.feature.department.screen.detail
 
-import `in`.koreatech.koin.feature.department.state.DepartmentSearchUiState
 import `in`.koreatech.koin.feature.department.state.DepartmentSearchState
+import `in`.koreatech.koin.feature.department.state.DepartmentSearchUiState
 import `in`.koreatech.koin.feature.department.type.DepartmentCategory
 
 data class DepartmentDetailState(
