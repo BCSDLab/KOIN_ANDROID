@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.domain.repository.DepartmentRepository
+import `in`.koreatech.koin.domain.usecase.department.GetDepartmentContactsByCategoryUseCase
 import `in`.koreatech.koin.feature.department.navigation.Routes
 import `in`.koreatech.koin.feature.department.state.DepartmentSearchUiState
 import `in`.koreatech.koin.feature.department.state.toDepartmentState
@@ -25,7 +25,7 @@ import org.orbitmvi.orbit.viewmodel.container
 @HiltViewModel
 class DepartmentDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val departmentRepository: DepartmentRepository
+    private val getDepartmentContactsByCategoryUseCase: GetDepartmentContactsByCategoryUseCase
 ) : ViewModel(), ContainerHost<DepartmentDetailState, DepartmentDetailSideEffect> {
 
     private val category = savedStateHandle.toRoute<Routes.DepartmentDetail>().category
@@ -42,7 +42,7 @@ class DepartmentDetailViewModel @Inject constructor(
     private fun fetchDepartments() = intent {
         reduce { state.copy(contentUiState = DepartmentSearchUiState.Loading) }
 
-        departmentRepository.getDepartmentContactsByCategory(category = category.name)
+        getDepartmentContactsByCategoryUseCase(category = category.name)
             .onSuccess { result ->
                 val departmentStates = result.categoryContacts.departments.map { it.toDepartmentState() }
                 reduce {
@@ -86,11 +86,16 @@ class DepartmentDetailViewModel @Inject constructor(
         val query = container.stateFlow.value.query
         if (query.isBlank()) return
         EventLogger.logCampusClickEvent(EVENT_LABEL_SEARCH, query)
+
+        intent {
+            reduce { state.copy(searchUiState = DepartmentSearchUiState.Loading) }
+        }
+
         searchJob = viewModelScope.launch { search(query) }
     }
 
     private fun search(keyword: String) = intent {
-        departmentRepository.getDepartmentContactsByCategory(category = category.name, keyword = keyword)
+        getDepartmentContactsByCategoryUseCase(category = category.name, keyword = keyword)
             .onSuccess { result ->
                 val results = result.categoryContacts.departments.map { it.toDepartmentState() }
                 reduce {

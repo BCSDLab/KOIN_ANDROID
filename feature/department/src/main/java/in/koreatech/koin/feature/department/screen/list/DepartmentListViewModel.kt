@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.domain.repository.DepartmentRepository
+import `in`.koreatech.koin.domain.usecase.department.GetDepartmentContactsUseCase
 import `in`.koreatech.koin.feature.department.state.DepartmentSearchUiState
 import `in`.koreatech.koin.feature.department.state.toDepartmentState
 import `in`.koreatech.koin.feature.department.type.DepartmentCategory
@@ -22,7 +22,7 @@ import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
 class DepartmentListViewModel @Inject constructor(
-    private val departmentRepository: DepartmentRepository
+    private val getDepartmentContactsUseCase: GetDepartmentContactsUseCase
 ) : ViewModel(), ContainerHost<DepartmentListState, DepartmentListSideEffect> {
 
     override val container =
@@ -33,7 +33,7 @@ class DepartmentListViewModel @Inject constructor(
     private var searchJob: Job? = null
 
     private fun fetchUpdatedAt() = intent {
-        departmentRepository.getDepartmentContacts()
+        getDepartmentContactsUseCase()
             .onSuccess { result ->
                 reduce { state.copy(updatedAt = result.updatedAt.format(DEPARTMENT_UPDATED_AT_FORMATTER)) }
             }
@@ -68,11 +68,16 @@ class DepartmentListViewModel @Inject constructor(
         val query = container.stateFlow.value.query
         if (query.isBlank()) return
         EventLogger.logCampusClickEvent(EVENT_LABEL_SEARCH, query)
+
+        intent {
+            reduce { state.copy(searchUiState = DepartmentSearchUiState.Loading) }
+        }
+
         searchJob = viewModelScope.launch { search(query) }
     }
 
     private fun search(keyword: String) = intent {
-        departmentRepository.getDepartmentContacts(keyword = keyword)
+        getDepartmentContactsUseCase(keyword = keyword)
             .onSuccess { result ->
                 val results = result.categories
                     .flatMap { it.departments }
