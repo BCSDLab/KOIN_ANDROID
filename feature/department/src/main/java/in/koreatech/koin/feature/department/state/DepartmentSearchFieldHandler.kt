@@ -21,6 +21,7 @@ class DepartmentSearchFieldHandler<S, SE : Any>(
 
     fun onQueryChange(query: String) {
         searchJob?.cancel()
+        val requestId = ++latestRequestId
 
         if (query.isBlank()) {
             host.intent {
@@ -35,7 +36,7 @@ class DepartmentSearchFieldHandler<S, SE : Any>(
 
         searchJob = scope.launch {
             delay(SEARCH_DEBOUNCE_MILLIS)
-            search(query)
+            search(query, requestId)
         }
     }
 
@@ -44,16 +45,16 @@ class DepartmentSearchFieldHandler<S, SE : Any>(
         val query = host.container.stateFlow.value.query
         if (query.isBlank()) return
         onSearchLog(query)
+        val requestId = ++latestRequestId
 
         host.intent {
             reduce { state.withSearch(searchUiState = DepartmentSearchUiState.Loading) }
         }
 
-        searchJob = scope.launch { search(query) }
+        searchJob = scope.launch { search(query, requestId) }
     }
 
-    private suspend fun search(keyword: String) {
-        val requestId = ++latestRequestId
+    private suspend fun search(keyword: String, requestId: Int) {
         val result = fetch(keyword)
         if (requestId != latestRequestId) return
 
