@@ -40,8 +40,7 @@ internal fun DepartmentDetailScreenContent(
     onNavigationIconClick: () -> Unit = {},
     onQueryChange: (String) -> Unit = {},
     onSearch: () -> Unit = {},
-    onPhoneNumberClick: (String) -> Unit = {},
-    onRefresh: () -> Unit = {}
+    onPhoneNumberClick: (String) -> Unit = {}
 ) {
     Column(
         modifier = modifier.background(Color(0xFFF8F8FA))
@@ -72,8 +71,7 @@ internal fun DepartmentDetailScreenContent(
             DepartmentSearchResult(
                 modifier = Modifier.fillMaxWidth(),
                 uiState = uiState.visibleUiState,
-                onPhoneNumberClick = onPhoneNumberClick,
-                onRefresh = onRefresh
+                onPhoneNumberClick = onPhoneNumberClick
             )
 
             Spacer(modifier = Modifier.height(8.dp))

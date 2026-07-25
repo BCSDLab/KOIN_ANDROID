@@ -43,8 +43,7 @@ internal fun DepartmentListScreenContent(
     onQueryChange: (String) -> Unit = {},
     onSearch: () -> Unit = {},
     onCategoryClick: (DepartmentCategory) -> Unit = {},
-    onPhoneNumberClick: (String) -> Unit = {},
-    onRefresh: () -> Unit = {}
+    onPhoneNumberClick: (String) -> Unit = {}
 ) {
     Column(
         modifier = modifier.background(Color(0xFFF8F8FA))
@@ -76,8 +75,7 @@ internal fun DepartmentListScreenContent(
                 DepartmentSearchResult(
                     modifier = Modifier.fillMaxWidth(),
                     uiState = uiState.searchUiState,
-                    onPhoneNumberClick = onPhoneNumberClick,
-                    onRefresh = onRefresh
+                    onPhoneNumberClick = onPhoneNumberClick
                 )
             } else {
                 DepartmentCategoryList(

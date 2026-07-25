@@ -34,7 +34,6 @@ fun DepartmentListScreen(
         onQueryChange = viewModel::onQueryChange,
         onSearch = viewModel::onSearch,
         onCategoryClick = viewModel::onCategoryClick,
-        onPhoneNumberClick = viewModel::onPhoneNumberClick,
-        onRefresh = viewModel::onRefresh
+        onPhoneNumberClick = viewModel::onPhoneNumberClick
     )
 }

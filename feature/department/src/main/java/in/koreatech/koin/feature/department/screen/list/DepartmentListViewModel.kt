@@ -5,15 +5,11 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.usecase.department.GetDepartmentContactsUseCase
-import `in`.koreatech.koin.feature.department.state.DepartmentSearchUiState
+import `in`.koreatech.koin.feature.department.state.DepartmentSearchFieldHandler
 import `in`.koreatech.koin.feature.department.state.toDepartmentState
 import `in`.koreatech.koin.feature.department.type.DepartmentCategory
 import `in`.koreatech.koin.feature.department.util.DEPARTMENT_UPDATED_AT_FORMATTER
 import javax.inject.Inject
-import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
@@ -30,7 +26,18 @@ class DepartmentListViewModel @Inject constructor(
             fetchUpdatedAt()
         }
 
-    private var searchJob: Job? = null
+    private val searchFieldHandler = DepartmentSearchFieldHandler(
+        host = this,
+        scope = viewModelScope,
+        fetch = { keyword ->
+            getDepartmentContactsUseCase(keyword = keyword).map { result ->
+                result.categories
+                    .flatMap { it.departments }
+                    .map { it.toDepartmentState() }
+            }
+        },
+        onSearchLog = { keyword -> EventLogger.logCampusClickEvent(EVENT_LABEL_SEARCH, keyword) }
+    )
 
     private fun fetchUpdatedAt() = intent {
         getDepartmentContactsUseCase()
@@ -39,63 +46,9 @@ class DepartmentListViewModel @Inject constructor(
             }
     }
 
-    fun onQueryChange(query: String) {
-        searchJob?.cancel()
+    fun onQueryChange(query: String) = searchFieldHandler.onQueryChange(query)
 
-        if (query.isBlank()) {
-            intent {
-                reduce {
-                    state.copy(query = query, searchUiState = DepartmentSearchUiState.Idle)
-                }
-            }
-            return
-        }
-
-        intent {
-            reduce {
-                state.copy(query = query, searchUiState = DepartmentSearchUiState.Loading)
-            }
-        }
-
-        searchJob = viewModelScope.launch {
-            delay(SEARCH_DEBOUNCE_MILLIS)
-            search(query)
-        }
-    }
-
-    fun onSearch() {
-        searchJob?.cancel()
-        val query = container.stateFlow.value.query
-        if (query.isBlank()) return
-        EventLogger.logCampusClickEvent(EVENT_LABEL_SEARCH, query)
-
-        intent {
-            reduce { state.copy(searchUiState = DepartmentSearchUiState.Loading) }
-        }
-
-        searchJob = viewModelScope.launch { search(query) }
-    }
-
-    private fun search(keyword: String) = intent {
-        getDepartmentContactsUseCase(keyword = keyword)
-            .onSuccess { result ->
-                val results = result.categories
-                    .flatMap { it.departments }
-                    .map { it.toDepartmentState() }
-                reduce {
-                    state.copy(
-                        searchUiState = if (results.isEmpty()) {
-                            DepartmentSearchUiState.Empty
-                        } else {
-                            DepartmentSearchUiState.Success(results.toImmutableList())
-                        }
-                    )
-                }
-            }
-            .onFailure {
-                reduce { state.copy(searchUiState = DepartmentSearchUiState.Failure) }
-            }
-    }
+    fun onSearch() = searchFieldHandler.onSearch()
 
     fun onCategoryClick(category: DepartmentCategory) = intent {
         EventLogger.logCampusClickEvent(EVENT_LABEL_CATEGORY, category.loggingValue)
@@ -107,13 +60,7 @@ class DepartmentListViewModel @Inject constructor(
         postSideEffect(DepartmentListSideEffect.CopyPhoneNumber(phoneNumber))
     }
 
-    fun onRefresh() {
-        val query = container.stateFlow.value.query
-        if (query.isBlank()) fetchUpdatedAt() else onSearch()
-    }
-
     companion object {
-        private const val SEARCH_DEBOUNCE_MILLIS = 300L
         private const val EVENT_LABEL_SEARCH = "department_search"
         private const val EVENT_LABEL_CATEGORY = "department_category"
         private const val EVENT_LABEL_COPY = "department_copy_phone_number"

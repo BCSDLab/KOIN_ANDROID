@@ -30,7 +30,6 @@ fun DepartmentDetailScreen(
         onNavigationIconClick = onNavigationIconClick,
         onQueryChange = viewModel::onQueryChange,
         onSearch = viewModel::onSearch,
-        onPhoneNumberClick = viewModel::onPhoneNumberClick,
-        onRefresh = viewModel::onRefresh
+        onPhoneNumberClick = viewModel::onPhoneNumberClick
     )
 }

@@ -19,8 +19,7 @@ import kotlinx.collections.immutable.ImmutableList
 internal fun DepartmentSearchResult(
     uiState: DepartmentSearchUiState,
     modifier: Modifier = Modifier,
-    onPhoneNumberClick: (String) -> Unit = {},
-    onRefresh: () -> Unit = {}
+    onPhoneNumberClick: (String) -> Unit = {}
 ) {
     when (uiState) {
         is DepartmentSearchUiState.Idle -> Unit
@@ -35,14 +34,9 @@ internal fun DepartmentSearchResult(
                 onPhoneNumberClick = onPhoneNumberClick
             )
 
-        is DepartmentSearchUiState.Empty ->
-            DepartmentEmptyView(modifier = modifier.padding(top = 80.dp))
-
+        is DepartmentSearchUiState.Empty,
         is DepartmentSearchUiState.Failure ->
-            DepartmentFailureView(
-                modifier = modifier.padding(top = 80.dp),
-                onRefresh = onRefresh
-            )
+            DepartmentStateView(modifier = modifier.padding(top = 80.dp))
     }
 }
 

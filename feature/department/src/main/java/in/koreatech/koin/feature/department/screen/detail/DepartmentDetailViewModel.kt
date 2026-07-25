@@ -8,14 +8,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.usecase.department.GetDepartmentContactsByCategoryUseCase
 import `in`.koreatech.koin.feature.department.navigation.Routes
+import `in`.koreatech.koin.feature.department.state.DepartmentSearchFieldHandler
 import `in`.koreatech.koin.feature.department.state.DepartmentSearchUiState
 import `in`.koreatech.koin.feature.department.state.toDepartmentState
 import `in`.koreatech.koin.feature.department.util.DEPARTMENT_UPDATED_AT_FORMATTER
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
@@ -37,7 +35,15 @@ class DepartmentDetailViewModel @Inject constructor(
             fetchDepartments()
         }
 
-    private var searchJob: Job? = null
+    private val searchFieldHandler = DepartmentSearchFieldHandler(
+        host = this,
+        scope = viewModelScope,
+        fetch = { keyword ->
+            getDepartmentContactsByCategoryUseCase(category = category.name, keyword = keyword)
+                .map { result -> result.categoryContacts.departments.map { it.toDepartmentState() } }
+        },
+        onSearchLog = { keyword -> EventLogger.logCampusClickEvent(EVENT_LABEL_SEARCH, keyword) }
+    )
 
     private fun fetchDepartments() = intent {
         reduce { state.copy(contentUiState = DepartmentSearchUiState.Loading) }
@@ -61,70 +67,16 @@ class DepartmentDetailViewModel @Inject constructor(
             }
     }
 
-    fun onQueryChange(query: String) {
-        searchJob?.cancel()
+    fun onQueryChange(query: String) = searchFieldHandler.onQueryChange(query)
 
-        if (query.isBlank()) {
-            intent {
-                reduce { state.copy(query = query, searchUiState = DepartmentSearchUiState.Idle) }
-            }
-            return
-        }
-
-        intent {
-            reduce { state.copy(query = query, searchUiState = DepartmentSearchUiState.Loading) }
-        }
-
-        searchJob = viewModelScope.launch {
-            delay(SEARCH_DEBOUNCE_MILLIS)
-            search(query)
-        }
-    }
-
-    fun onSearch() {
-        searchJob?.cancel()
-        val query = container.stateFlow.value.query
-        if (query.isBlank()) return
-        EventLogger.logCampusClickEvent(EVENT_LABEL_SEARCH, query)
-
-        intent {
-            reduce { state.copy(searchUiState = DepartmentSearchUiState.Loading) }
-        }
-
-        searchJob = viewModelScope.launch { search(query) }
-    }
-
-    private fun search(keyword: String) = intent {
-        getDepartmentContactsByCategoryUseCase(category = category.name, keyword = keyword)
-            .onSuccess { result ->
-                val results = result.categoryContacts.departments.map { it.toDepartmentState() }
-                reduce {
-                    state.copy(
-                        searchUiState = if (results.isEmpty()) {
-                            DepartmentSearchUiState.Empty
-                        } else {
-                            DepartmentSearchUiState.Success(results.toImmutableList())
-                        }
-                    )
-                }
-            }
-            .onFailure {
-                reduce { state.copy(searchUiState = DepartmentSearchUiState.Failure) }
-            }
-    }
+    fun onSearch() = searchFieldHandler.onSearch()
 
     fun onPhoneNumberClick(phoneNumber: String) = intent {
         EventLogger.logCampusClickEvent(EVENT_LABEL_COPY, phoneNumber)
         postSideEffect(DepartmentDetailSideEffect.CopyPhoneNumber(phoneNumber))
     }
 
-    fun onRefresh() {
-        val query = container.stateFlow.value.query
-        if (query.isBlank()) fetchDepartments() else onSearch()
-    }
-
     companion object {
-        private const val SEARCH_DEBOUNCE_MILLIS = 300L
         private const val EVENT_LABEL_SEARCH = "department_detail_search"
         private const val EVENT_LABEL_COPY = "department_detail_copy_phone_number"
     }
