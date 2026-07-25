@@ -14,6 +14,7 @@ import `in`.koreatech.koin.data.api.BusApi
 import `in`.koreatech.koin.data.api.ChatApi
 import `in`.koreatech.koin.data.api.ClubApi
 import `in`.koreatech.koin.data.api.CoopShopApi
+import `in`.koreatech.koin.data.api.DepartmentApi
 import `in`.koreatech.koin.data.api.DeptApi
 import `in`.koreatech.koin.data.api.DiningApi
 import `in`.koreatech.koin.data.api.LandApi
@@ -193,5 +194,13 @@ object NoAuthNetworkModule {
         @NoAuth retrofit: Retrofit
     ): WeatherApi {
         return retrofit.create(WeatherApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDepartmentApi(
+        @NoAuth retrofit: Retrofit
+    ): DepartmentApi {
+        return retrofit.create(DepartmentApi::class.java)
     }
 }
