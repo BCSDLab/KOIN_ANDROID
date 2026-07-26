@@ -36,7 +36,7 @@ class CategoryViewModel @Inject constructor(
             CategoryMenuId.TIMETABLE -> AnalyticsConstant.Label.Category.CATEGORY_TIMETABLE to "시간표"
             CategoryMenuId.LOST_AND_FOUND -> AnalyticsConstant.Label.Category.CATEGORY_LOST_PROPERTY to "분실물"
             CategoryMenuId.OPERATING_INFO -> AnalyticsConstant.Label.Category.CATEGORY_CAMPUS to "교내 시설물 정보"
-            CategoryMenuId.DEPARTMENT_INFO -> AnalyticsConstant.Label.Category.CATEGORY_CAMPUS to "학교 부서정보"
+            CategoryMenuId.DEPARTMENT_INFO -> AnalyticsConstant.Label.Category.CATEGORY_CAMPUS to "학교 부서 정보"
             CategoryMenuId.DINING -> AnalyticsConstant.Label.Category.CATEGORY_CAMPUS to "식단"
             CategoryMenuId.STORE -> AnalyticsConstant.Label.Category.CATEGORY_CAMPUS to "주변상점"
             CategoryMenuId.BUS_TIMETABLE -> AnalyticsConstant.Label.Category.CATEGORY_TRANSPORTATION to "버스 시간표"
