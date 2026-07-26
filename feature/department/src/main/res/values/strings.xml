@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="department_info_title">학교 부서정보</string>
+    <string name="department_search_placeholder">검색어를 입력해주세요.</string>
+    <string name="department_search_content_description">부서 검색하기</string>
+    <string name="department_updated_at">업데이트일 : %s</string>
+    <string name="department_wrong_information">정보가 정확하지 않나요?</string>
+
+    <string name="department_category_academic">학사 / 수업</string>
+    <string name="department_category_student_support">학생지원 / 행정</string>
+    <string name="department_category_employment">취업 / 현장실습</string>
+    <string name="department_category_international">국제 / 교환학생</string>
+    <string name="department_category_facility">시설 / 생활</string>
+    <string name="department_category_other">기타 기관</string>
+
+    <string name="department_phone_number_format">전화번호 : %s</string>
+    <string name="department_copy">전화번호 복사</string>
+    <string name="department_table_header_task">업무</string>
+    <string name="department_table_header_phone">전화번호</string>
+
+    <string name="department_search_empty_description">검색결과가 없습니다.\n다른 검색어로 다시 검색해주세요.</string>
+    <string name="department_load_failure_description">정보를 불러오지 못했어요</string>
+    <string name="department_refresh">다시 시도하기</string>
+    <string name="department_phone_number_copied">전화번호가 복사되었습니다.</string>
+    <string name="department_cannot_copy">복사할 수 없습니다.</string>
+    <string name="department_cannot_open_link">링크를 열 수 없습니다.</string>
+</resources>
