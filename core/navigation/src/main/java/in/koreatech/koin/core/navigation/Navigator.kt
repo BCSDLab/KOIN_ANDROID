@@ -85,4 +85,8 @@ interface Navigator {
         context: Context,
         extraPostId: Int
     ): Intent
+
+    fun navigateToDepartmentInfo(
+        context: Context
+    ): Intent
 }

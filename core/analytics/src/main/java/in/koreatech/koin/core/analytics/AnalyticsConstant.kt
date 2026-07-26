@@ -232,6 +232,12 @@ object AnalyticsConstant {
             const val HOME_LOGOUT = "home_logout"
             const val HOME_SETTINGS = "home_settings"
         }
+
+        object Department {
+            const val DEPARTMENT_SEARCH = "department_search"
+            const val DEPARTMENT_CATEGORY = "department_category"
+            const val DEPARTMENT_CONTACT_COPY = "department_contact_copy"
+        }
     }
 
     const val PREVIOUS_PAGE = "previous_page"

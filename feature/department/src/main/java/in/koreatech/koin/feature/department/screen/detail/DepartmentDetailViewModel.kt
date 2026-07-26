@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.usecase.department.GetDepartmentContactsByCategoryUseCase
 import `in`.koreatech.koin.feature.department.navigation.Routes
@@ -42,7 +43,7 @@ class DepartmentDetailViewModel @Inject constructor(
             getDepartmentContactsByCategoryUseCase(category = category.name, keyword = keyword)
                 .map { result -> result.categoryContacts.departments.map { it.toDepartmentState() } }
         },
-        onSearchLog = { keyword -> EventLogger.logCampusClickEvent(EVENT_LABEL_SEARCH, keyword) }
+        onSearchLog = { keyword -> EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Department.DEPARTMENT_SEARCH, keyword) }
     )
 
     private fun fetchDepartments() = intent {
@@ -72,12 +73,7 @@ class DepartmentDetailViewModel @Inject constructor(
     fun onSearch() = searchFieldHandler.onSearch()
 
     fun onPhoneNumberClick(phoneNumber: String) = intent {
-        EventLogger.logCampusClickEvent(EVENT_LABEL_COPY, phoneNumber)
+        EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Department.DEPARTMENT_CONTACT_COPY, "전화번호 복사")
         postSideEffect(DepartmentDetailSideEffect.CopyPhoneNumber(phoneNumber))
-    }
-
-    companion object {
-        private const val EVENT_LABEL_SEARCH = "department_detail_search"
-        private const val EVENT_LABEL_COPY = "department_detail_copy_phone_number"
     }
 }
