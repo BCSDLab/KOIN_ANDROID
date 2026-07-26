@@ -1,11 +1,13 @@
 package `in`.koreatech.koin.feature.department.type
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import `in`.koreatech.koin.feature.department.R
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
 
+@Keep
 @Serializable
 enum class DepartmentCategory(
     @param:StringRes val titleRes: Int,
