@@ -91,8 +91,7 @@ internal fun DepartmentListScreenContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = SCREEN_HORIZONTAL_PADDING, vertical = 12.dp),
-            updatedAt = uiState.updatedAt,
-            loggingEventValue = "학교 부서정보"
+            updatedAt = uiState.updatedAt
         )
 
         Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))

@@ -11,7 +11,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -21,8 +20,7 @@ import `in`.koreatech.koin.feature.department.util.openUrl
 @Composable
 internal fun DepartmentFooter(
     updatedAt: String,
-    modifier: Modifier = Modifier,
-    loggingEventValue: String = ""
+    modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
 
@@ -41,10 +39,6 @@ internal fun DepartmentFooter(
         LeadingIconText(
             modifier = Modifier
                 .noRippleClickable {
-                    EventLogger.logCampusClickEvent(
-                        "department_error_feedback_button",
-                        loggingEventValue
-                    )
                     context.openUrl(DEPARTMENT_FEEDBACK_FORM_URL)
                 }
                 .padding(top = 2.dp),
