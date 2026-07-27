@@ -81,8 +81,7 @@ internal fun DepartmentDetailScreenContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = SCREEN_HORIZONTAL_PADDING, vertical = 12.dp),
-            updatedAt = uiState.updatedAt,
-            loggingEventValue = uiState.category.loggingValue
+            updatedAt = uiState.updatedAt
         )
 
         Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))

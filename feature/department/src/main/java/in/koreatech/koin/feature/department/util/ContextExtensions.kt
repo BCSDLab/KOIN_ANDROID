@@ -11,7 +11,6 @@ import androidx.core.content.getSystemService
 import androidx.core.net.toUri
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.feature.department.R
-import timber.log.Timber
 
 internal fun Context.findActivity(): ComponentActivity? =
     when (this) {
@@ -35,8 +34,7 @@ internal fun Context.copyPhoneNumberToClipboard(phoneNumber: String) {
 internal fun Context.openUrl(url: String) {
     try {
         startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
-    } catch (e: ActivityNotFoundException) {
-        Timber.e(e)
+    } catch (_: ActivityNotFoundException) {
         ToastUtil.getInstance().makeShort(getString(R.string.department_cannot_open_link))
     }
 }
