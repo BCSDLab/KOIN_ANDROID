@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.profile
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.usecase.timetable.GetLocalTimetableLecturesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableFramesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableLecturesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetUserSemestersUseCase
@@ -32,7 +33,8 @@ class ProfileViewModel @Inject constructor(
     private val userLogoutUseCase: UserLogoutUseCase,
     private val getUserSemestersUseCase: GetUserSemestersUseCase,
     private val getTimetableFramesUseCase: GetTimetableFramesUseCase,
-    private val getTimetableLecturesUseCase: GetTimetableLecturesUseCase
+    private val getTimetableLecturesUseCase: GetTimetableLecturesUseCase,
+    private val getLocalTimetableLecturesUseCase: GetLocalTimetableLecturesUseCase
 ) : ViewModel(), ContainerHost<ProfileState, ProfileSideEffect> {
 
     override val container = container<ProfileState, ProfileSideEffect>(ProfileState())
@@ -61,7 +63,7 @@ class ProfileViewModel @Inject constructor(
                                 studentNumber = user.studentNumber.orEmpty()
                             )
                         }
-                        loadTimetable()
+                        loadTimetable(isAnonymous = false)
                     }
 
                     is User.General -> {
@@ -72,24 +74,30 @@ class ProfileViewModel @Inject constructor(
                                 studentNumber = ""
                             )
                         }
-                        loadTimetable()
+                        loadTimetable(isAnonymous = false)
                     }
 
-                    User.Anonymous -> reduce {
-                        state.copy(
-                            isLoggedIn = false,
-                            name = "",
-                            studentNumber = "",
-                            timetable = persistentListOf()
-                        )
+                    User.Anonymous -> {
+                        reduce {
+                            state.copy(
+                                isLoggedIn = false,
+                                name = "",
+                                studentNumber = ""
+                            )
+                        }
+                        loadTimetable(isAnonymous = true)
                     }
                 }
             }
     }
 
+    fun refreshTimetable() = intent {
+        loadTimetable(isAnonymous = !state.isLoggedIn)
+    }
+
     @OptIn(OrbitExperimental::class)
-    private suspend fun loadTimetable() = subIntent {
-        val semesters = getUserSemestersUseCase(false)
+    private suspend fun loadTimetable(isAnonymous: Boolean) = subIntent {
+        val semesters = getUserSemestersUseCase(isAnonymous)
             .catch { Timber.e(it) }
             .firstOrNull()
             .orEmpty()
@@ -98,16 +106,21 @@ class ProfileViewModel @Inject constructor(
             return@subIntent
         }
 
-        val frames = getTimetableFramesUseCase(semester)
-            .catch { Timber.e(it) }
-            .firstOrNull()
-            .orEmpty()
-        val mainFrame = frames.find { it.isMain } ?: run {
-            reduce { state.copy(timetable = persistentListOf()) }
-            return@subIntent
+        val result = if (isAnonymous) {
+            getLocalTimetableLecturesUseCase(semester)
+        } else {
+            val frames = getTimetableFramesUseCase(semester)
+                .catch { Timber.e(it) }
+                .firstOrNull()
+                .orEmpty()
+            val mainFrame = frames.find { it.isMain } ?: run {
+                reduce { state.copy(timetable = persistentListOf()) }
+                return@subIntent
+            }
+            getTimetableLecturesUseCase(mainFrame.id)
         }
 
-        getTimetableLecturesUseCase(mainFrame.id)
+        result
             .onSuccess { timetableLectures ->
                 reduce { state.copy(timetable = timetableLectures.toProfileTimetableLectures()) }
             }
