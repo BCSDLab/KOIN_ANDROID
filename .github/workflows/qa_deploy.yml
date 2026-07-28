@@ -24,7 +24,7 @@ jobs:
         run: |
           mkdir -p ./koin/src/debug
           echo $FIREBASE | base64 -di > ./koin/google-services.json
-          echo $FIREBASE_STAGE | base64 -di > ./koin/src/debug/google-services.json
+          echo $FIREBASE_STAGE | base64 -di > ./koin/src/qa/google-services.json
           echo $GOOGLE_CREDENTIALS | base64 -di > ./google-credentials.json
           for file in $(find . -name 'google-services.json')
           do
