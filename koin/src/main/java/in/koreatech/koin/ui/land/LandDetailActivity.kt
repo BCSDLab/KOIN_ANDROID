@@ -70,7 +70,7 @@ class LandDetailActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
         with(binding) {
             koinBaseAppBarDark.setOnClickListener {
                 when (it.id) {
-                    AppBarBase.getLeftButtonId() -> callDrawerItem(R.id.navi_item_home)
+                    AppBarBase.getLeftButtonId() -> onBackPressedDispatcher.onBackPressed()
                     AppBarBase.getRightButtonId() -> toggleNavigationDrawer()
                 }
             }
