@@ -34,7 +34,7 @@ import androidx.compose.ui.window.DialogProperties
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
-import `in`.koreatech.koin.feature.store.component.ZoomableImage
+import `in`.koreatech.koin.core.component.PinchToZoom
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -115,7 +115,7 @@ fun StoreImageDialog(
                             .fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        ZoomableImage(
+                        PinchToZoom(
                             modifier = Modifier.fillMaxSize(),
                             onScaleChanged = { currentScale = it }
                         ) {
