@@ -4,6 +4,7 @@
         <activity
             android:name="in.koreatech.koin.feature.department.DepartmentActivity"
             android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
             android:exported="false" />
     </application>
 </manifest>

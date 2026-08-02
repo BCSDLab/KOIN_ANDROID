@@ -7,12 +7,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -25,7 +24,8 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.department.component.DepartmentFooter
 import `in`.koreatech.koin.feature.department.component.DepartmentSearchField
-import `in`.koreatech.koin.feature.department.component.DepartmentSearchResult
+import `in`.koreatech.koin.feature.department.component.DepartmentSearchResultContent
+import `in`.koreatech.koin.feature.department.component.rememberDisplayedSearchUiState
 import `in`.koreatech.koin.feature.department.mock.departmentsPreviewMock
 import `in`.koreatech.koin.feature.department.state.DepartmentSearchUiState
 import `in`.koreatech.koin.feature.department.type.DepartmentCategory
@@ -53,38 +53,58 @@ internal fun DepartmentDetailScreenContent(
             )
         )
 
-        Column(
+        val displayedUiState = rememberDisplayedSearchUiState(uiState.visibleUiState)
+
+        LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .verticalScroll(rememberScrollState())
+                .imePadding()
                 .padding(horizontal = SCREEN_HORIZONTAL_PADDING),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            DepartmentSearchField(
-                modifier = Modifier.padding(top = 8.dp),
-                query = uiState.query,
-                onQueryChange = onQueryChange,
-                onSearch = onSearch
-            )
+            item {
+                val shouldFillRemainingHeight = displayedUiState is DepartmentSearchUiState.Empty ||
+                    displayedUiState is DepartmentSearchUiState.Failure
 
-            DepartmentSearchResult(
-                modifier = Modifier.fillMaxWidth(),
-                uiState = uiState.visibleUiState,
-                onPhoneNumberClick = onPhoneNumberClick
-            )
+                Column(
+                    modifier = if (shouldFillRemainingHeight) {
+                        Modifier.fillParentMaxHeight()
+                    } else {
+                        Modifier
+                    },
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    DepartmentSearchField(
+                        modifier = Modifier.padding(top = 8.dp),
+                        query = uiState.query,
+                        onQueryChange = onQueryChange,
+                        onSearch = onSearch
+                    )
 
-            Spacer(modifier = Modifier.height(8.dp))
+                    DepartmentSearchResultContent(
+                        modifier = if (shouldFillRemainingHeight) {
+                            Modifier.weight(1f)
+                        } else {
+                            Modifier
+                        },
+                        uiState = displayedUiState,
+                        onPhoneNumberClick = onPhoneNumberClick
+                    )
+                }
+            }
+
+            item {
+                Column {
+                    DepartmentFooter(
+                        modifier = Modifier.padding(vertical = 12.dp),
+                        updatedAt = uiState.updatedAt
+                    )
+
+                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
+                }
+            }
         }
-
-        DepartmentFooter(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = SCREEN_HORIZONTAL_PADDING, vertical = 12.dp),
-            updatedAt = uiState.updatedAt
-        )
-
-        Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
     }
 }
 
