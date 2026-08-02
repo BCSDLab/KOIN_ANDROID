@@ -43,8 +43,8 @@ internal fun DepartmentSearchResultContent(
                 modifier = modifier,
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                uiState.departments.forEach { department ->
-                    key(department.name) {
+                uiState.departments.forEachIndexed { index, department ->
+                    key(index, department.name) {
                         DepartmentCard(
                             department = department,
                             onPhoneNumberClick = onPhoneNumberClick
