@@ -60,8 +60,7 @@ internal fun DepartmentDetailScreenContent(
                 .fillMaxWidth()
                 .weight(1f)
                 .imePadding()
-                .padding(horizontal = SCREEN_HORIZONTAL_PADDING),
-            verticalArrangement = Arrangement.SpaceBetween
+                .padding(horizontal = SCREEN_HORIZONTAL_PADDING)
         ) {
             item {
                 val shouldFillRemainingHeight = displayedUiState is DepartmentSearchUiState.Empty ||
@@ -91,11 +90,7 @@ internal fun DepartmentDetailScreenContent(
                         uiState = displayedUiState,
                         onPhoneNumberClick = onPhoneNumberClick
                     )
-                }
-            }
 
-            item {
-                Column {
                     DepartmentFooter(
                         modifier = Modifier.padding(vertical = 12.dp),
                         updatedAt = uiState.updatedAt

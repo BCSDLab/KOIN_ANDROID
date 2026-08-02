@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -43,10 +44,12 @@ internal fun DepartmentSearchResultContent(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 uiState.departments.forEach { department ->
-                    DepartmentCard(
-                        department = department,
-                        onPhoneNumberClick = onPhoneNumberClick
-                    )
+                    key(department.name) {
+                        DepartmentCard(
+                            department = department,
+                            onPhoneNumberClick = onPhoneNumberClick
+                        )
+                    }
                 }
             }
 
