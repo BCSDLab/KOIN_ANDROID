@@ -2,62 +2,60 @@ package `in`.koreatech.koin.feature.department.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.department.mock.departmentsPreviewMock
 import `in`.koreatech.koin.feature.department.state.DepartmentSearchUiState
-import `in`.koreatech.koin.feature.department.state.DepartmentState
-import kotlinx.collections.immutable.ImmutableList
 
 @Composable
-internal fun DepartmentSearchResult(
+internal fun rememberDisplayedSearchUiState(
+    uiState: DepartmentSearchUiState
+): DepartmentSearchUiState {
+    var displayed by remember { mutableStateOf(uiState) }
+    if (uiState !is DepartmentSearchUiState.Loading) {
+        displayed = uiState
+    }
+    return displayed
+}
+
+@Composable
+internal fun DepartmentSearchResultContent(
     uiState: DepartmentSearchUiState,
     modifier: Modifier = Modifier,
     onPhoneNumberClick: (String) -> Unit = {}
 ) {
     when (uiState) {
-        is DepartmentSearchUiState.Idle -> Unit
-
-        is DepartmentSearchUiState.Loading ->
-            DepartmentLoadingList(modifier = modifier)
+        is DepartmentSearchUiState.Idle,
+        is DepartmentSearchUiState.Loading -> Unit
 
         is DepartmentSearchUiState.Success ->
-            DepartmentCardList(
+            Column(
                 modifier = modifier,
-                departments = uiState.departments,
-                onPhoneNumberClick = onPhoneNumberClick
-            )
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                uiState.departments.forEachIndexed { index, department ->
+                    key(index, department.name) {
+                        DepartmentCard(
+                            department = department,
+                            onPhoneNumberClick = onPhoneNumberClick
+                        )
+                    }
+                }
+            }
 
         is DepartmentSearchUiState.Empty,
         is DepartmentSearchUiState.Failure ->
-            DepartmentStateView(modifier = modifier.padding(top = 80.dp))
-    }
-}
-
-@Composable
-internal fun DepartmentCardList(
-    departments: ImmutableList<DepartmentState>,
-    modifier: Modifier = Modifier,
-    onPhoneNumberClick: (String) -> Unit = {}
-) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        departments.forEachIndexed { index, department ->
-            key(index, department.name) {
-                DepartmentCard(
-                    department = department,
-                    onPhoneNumberClick = onPhoneNumberClick
-                )
-            }
-        }
+            DepartmentStateView(modifier = modifier.fillMaxSize())
     }
 }
 
@@ -65,19 +63,21 @@ internal fun DepartmentCardList(
 @Composable
 private fun DepartmentSearchResultPreview() {
     RebrandKoinTheme {
-        DepartmentSearchResult(
+        DepartmentSearchResultContent(
             modifier = Modifier.padding(16.dp),
             uiState = DepartmentSearchUiState.Success(departmentsPreviewMock)
         )
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, heightDp = 500)
 @Composable
 private fun DepartmentSearchEmptyPreview() {
     RebrandKoinTheme {
-        DepartmentSearchResult(
-            modifier = Modifier.padding(16.dp),
+        DepartmentSearchResultContent(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize(),
             uiState = DepartmentSearchUiState.Empty
         )
     }
