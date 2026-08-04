@@ -17,6 +17,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -89,6 +93,7 @@ fun StoreImageDialog(
             },
             containerColor = RebrandKoinTheme.colors.neutral800
         ) { paddingValues ->
+            var currentScale by remember { mutableFloatStateOf(1f) }
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -101,7 +106,8 @@ fun StoreImageDialog(
                     modifier = Modifier
                         .fillMaxWidth(),
                     pageSpacing = 16.dp,
-                    beyondViewportPageCount = 1
+                    beyondViewportPageCount = 1,
+                    userScrollEnabled = currentScale == 1f
                 ) { pageIndex ->
                     val painter = rememberAsyncImagePainter(imageUrls[pageIndex])
                     Box(
@@ -110,7 +116,8 @@ fun StoreImageDialog(
                         contentAlignment = Alignment.Center
                     ) {
                         PinchToZoom(
-                            modifier = Modifier.fillMaxSize()
+                            modifier = Modifier.fillMaxSize(),
+                            onScaleChanged = { currentScale = it }
                         ) {
                             Image(
                                 painter = painter,

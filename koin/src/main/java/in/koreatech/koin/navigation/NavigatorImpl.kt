@@ -16,6 +16,7 @@ import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.feature.callvan.CallvanActivity
 import `in`.koreatech.koin.feature.chat.ui.groupchat.GroupChatActivity
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
+import `in`.koreatech.koin.feature.department.DepartmentActivity
 import `in`.koreatech.koin.feature.dining.ui.DiningActivity
 import `in`.koreatech.koin.feature.lostandfound.ui.LostAndFoundActivity
 import `in`.koreatech.koin.feature.store.StoreActivity
@@ -165,6 +166,12 @@ class NavigatorImpl @Inject constructor() : Navigator {
             GroupChatActivity::class.java,
             EXTRA_POST_ID to extraPostId
         ).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+    }
+
+    override fun navigateToDepartmentInfo(context: Context): Intent {
+        return Intent(context, DepartmentActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
     }

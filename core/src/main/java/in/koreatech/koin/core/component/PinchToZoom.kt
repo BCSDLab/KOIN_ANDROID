@@ -2,8 +2,11 @@ package `in`.koreatech.koin.core.component
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateOffsetAsState
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.calculatePan
+import androidx.compose.foundation.gestures.calculateZoom
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,6 +25,7 @@ fun PinchToZoom(
     modifier: Modifier = Modifier,
     minScale: Float = 1f,
     maxScale: Float = 5f,
+    onScaleChanged: (Float) -> Unit = {},
     content: @Composable () -> Unit
 ) {
     var scale by remember { mutableFloatStateOf(1f) }
@@ -43,26 +47,31 @@ fun PinchToZoom(
                             offset = Offset.Zero
                             scale = 1f
                         } else {
-                            offset = calculateOffset(tapOffset, size)
+                            offset = calculateDoubleTapOffset(tapOffset, size)
                             scale = 2f
                         }
+                        onScaleChanged(scale)
                     }
                 )
             }
             .pointerInput(Unit) {
-                detectTransformGestures { _, pan, zoom, _ ->
-                    val newScale = (scale * zoom).coerceIn(minScale, maxScale)
-                    offset += pan
-
-                    val maxX = (size.width * (scale - 1)) / 2
-                    val maxY = (size.height * (scale - 1)) / scale / 2
-
-                    offset = Offset(
-                        x = offset.x.coerceIn(-maxX, maxX),
-                        y = offset.y.coerceIn(-maxY, maxY)
-                    )
-
-                    scale = newScale
+                awaitEachGesture {
+                    awaitFirstDown(requireUnconsumed = false)
+                    do {
+                        val event = awaitPointerEvent()
+                        val pointerCount = event.changes.count { it.pressed }
+                        if (pointerCount >= 2) {
+                            val newScale = (scale * event.calculateZoom()).coerceIn(minScale, maxScale)
+                            offset = clampOffset(offset + event.calculatePan(), size, scale)
+                            scale = newScale
+                            onScaleChanged(scale)
+                            event.changes.forEach { it.consume() }
+                        } else if (scale > 1f) {
+                            offset = clampOffset(offset + event.calculatePan(), size, scale)
+                            event.changes.forEach { it.consume() }
+                        }
+                        // scale == 1f, 단일 터치 → 소비하지 않아 HorizontalPager 가 스와이프 처리
+                    } while (event.changes.any { it.pressed })
                 }
             }
             .graphicsLayer(
@@ -77,8 +86,17 @@ fun PinchToZoom(
     }
 }
 
-private fun calculateOffset(tapOffset: Offset, size: IntSize): Offset {
+private fun calculateDoubleTapOffset(tapOffset: Offset, size: IntSize): Offset {
     val offsetX = (-(tapOffset.x - (size.width / 2f)) * 2f)
         .coerceIn(-size.width / 2f, size.width / 2f)
     return Offset(offsetX, 0f)
+}
+
+private fun clampOffset(offset: Offset, size: IntSize, scale: Float): Offset {
+    val maxX = (size.width * (scale - 1)) / 2
+    val maxY = (size.height * (scale - 1)) / scale / 2
+    return Offset(
+        x = offset.x.coerceIn(-maxX, maxX),
+        y = offset.y.coerceIn(-maxY, maxY)
+    )
 }
