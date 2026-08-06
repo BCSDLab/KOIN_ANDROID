@@ -12,6 +12,10 @@ jobs:
        with:
         ref: 'develop'
 
+     - name: Get current date
+       id: date
+       run: echo "date=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+
      - uses: ./.github/actions/gradle-setup
        with:
          properties: ${{ secrets.PROPERTIES }}
@@ -63,7 +67,7 @@ jobs:
             "$apk_path" \
             --app "$FIREBASE_PROJECT_ID" \
             --groups "bcsd" \
-            --release-notes "${{ steps.date.outputs.time }} - develop" \
+            --release-notes "${{ steps.date.outputs.date }} - develop" \
             --debug
 
      - name: Upload to Slack
