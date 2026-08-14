@@ -5,9 +5,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.UploadLostAndFoundArticleUseCase
-import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
-import `in`.koreatech.koin.domain.usecase.presignedurl.GetLostAndFoundPreSignedUrlUseCase
+import `in`.koreatech.koin.domain.usecase.presignedurl.UploadImageUseCase
 import `in`.koreatech.koin.feature.lostandfound.IMAGE_MAX_COUNT
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
@@ -25,8 +25,7 @@ import org.orbitmvi.orbit.viewmodel.container
 class LostAndFoundWriteArticleViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val uploadLostAndFoundArticleUseCase: UploadLostAndFoundArticleUseCase,
-    private val getLostAndFoundPreSignedUrlUseCase: GetLostAndFoundPreSignedUrlUseCase,
-    private val uploadFilesUseCase: UploadFileUseCase
+    private val uploadImageUseCase: UploadImageUseCase
 ) : ViewModel(),
     ContainerHost<LostAndFoundWriteArticleState, LostAndFoundWriteArticleSideEffect> {
     override val container =
@@ -94,21 +93,21 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
         }
     }
 
-    private fun uploadImage(
-        preSignedUrl: String,
-        fileUrl: String,
-        mediaType: String,
-        mediaSize: Long,
+    fun getPreSignedUrl(
+        fileSize: Long,
+        fileType: String,
+        fileName: String,
         imageUri: Uri,
         itemIndex: Int,
         imageIndex: Int
     ) = viewModelScope.launch {
-        uploadFilesUseCase(
-            preSignedUrl,
-            mediaType,
-            mediaSize,
-            imageUri.toString()
-        ).onSuccess {
+        uploadImageUseCase(
+            domain = PreSignedUrlDomain.LOST_AND_FOUND,
+            contentLength = fileSize,
+            contentType = fileType,
+            fileName = fileName,
+            imageUri = imageUri.toString()
+        ).onSuccess { fileUrl ->
             intent {
                 reduce {
                     state.copy(
@@ -132,35 +131,6 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
                     )
                 }
             }
-        }.onFailure {
-            intent {
-                postSideEffect(LostAndFoundWriteArticleSideEffect.FailedToUploadImage)
-            }
-        }
-    }
-
-    fun getPreSignedUrl(
-        fileSize: Long,
-        fileType: String,
-        fileName: String,
-        imageUri: Uri,
-        itemIndex: Int,
-        imageIndex: Int
-    ) = viewModelScope.launch {
-        getLostAndFoundPreSignedUrlUseCase(
-            fileSize,
-            fileType,
-            fileName
-        ).onSuccess {
-            uploadImage(
-                preSignedUrl = it.second,
-                fileUrl = it.first,
-                mediaType = fileType,
-                mediaSize = fileSize,
-                imageUri = imageUri,
-                itemIndex = itemIndex,
-                imageIndex = imageIndex
-            )
         }.onFailure {
             intent {
                 postSideEffect(LostAndFoundWriteArticleSideEffect.FailedToUploadImage)
