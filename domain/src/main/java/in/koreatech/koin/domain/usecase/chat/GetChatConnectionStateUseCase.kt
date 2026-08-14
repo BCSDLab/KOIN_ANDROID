@@ -5,7 +5,7 @@ import `in`.koreatech.koin.domain.repository.ChatRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
-class ObserveChatConnectionStateUseCase @Inject constructor(
+class GetChatConnectionStateUseCase @Inject constructor(
     private val chatRepository: ChatRepository
 ) {
     operator fun invoke(): Flow<ChatConnectionState> {

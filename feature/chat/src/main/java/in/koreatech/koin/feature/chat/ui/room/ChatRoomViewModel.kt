@@ -13,9 +13,9 @@ import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.chat.ChatBlockUserUseCase
 import `in`.koreatech.koin.domain.usecase.chat.ChatWSConnectUseCase
 import `in`.koreatech.koin.domain.usecase.chat.ChatWSDisconnectUseCase
+import `in`.koreatech.koin.domain.usecase.chat.GetChatConnectionStateUseCase
 import `in`.koreatech.koin.domain.usecase.chat.GetChatMessageUseCase
 import `in`.koreatech.koin.domain.usecase.chat.GetChatRoomUseCase
-import `in`.koreatech.koin.domain.usecase.chat.ObserveChatConnectionStateUseCase
 import `in`.koreatech.koin.domain.usecase.chat.SendMessageUseCase
 import `in`.koreatech.koin.domain.usecase.chat.SubscribeChatRoomUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetLostAndFoundPreSignedUrlUseCase
@@ -55,7 +55,7 @@ class ChatRoomViewModel @Inject constructor(
     private val getChatRoomUseCase: GetChatRoomUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
     private val subscribeChatRoomUseCase: SubscribeChatRoomUseCase,
-    private val observeChatConnectionStateUseCase: ObserveChatConnectionStateUseCase,
+    private val getChatConnectionStateUseCase: GetChatConnectionStateUseCase,
     private val getChatMessageUseCase: GetChatMessageUseCase,
     private val sendMessageUseCase: SendMessageUseCase,
     private val getLostAndFoundPreSignedUrlUseCase: GetLostAndFoundPreSignedUrlUseCase,
@@ -81,7 +81,7 @@ class ChatRoomViewModel @Inject constructor(
 
     private fun observeConnectionState() = intent {
         var previousState: ChatConnectionState? = null
-        observeChatConnectionStateUseCase().collectLatest { current ->
+        getChatConnectionStateUseCase().collectLatest { current ->
             if (previousState != null && previousState != ChatConnectionState.CONNECTED && current == ChatConnectionState.CONNECTED) {
                 getChatMessageUseCase(state.articleId, state.chatRoomId).onSuccess { messages ->
                     reduce {
