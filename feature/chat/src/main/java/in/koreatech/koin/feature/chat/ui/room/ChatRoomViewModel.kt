@@ -23,6 +23,7 @@ import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
 import `in`.koreatech.koin.feature.chat.ui.model.appendMessage
 import `in`.koreatech.koin.feature.chat.ui.model.mapToConvertedChatMessages
+import `in`.koreatech.koin.feature.chat.ui.model.mergeWithChatMessages
 import java.net.UnknownHostException
 import java.time.LocalDateTime
 import java.util.UUID
@@ -85,7 +86,9 @@ class ChatRoomViewModel @Inject constructor(
             if (previousState != null && previousState != ChatConnectionState.CONNECTED && current == ChatConnectionState.CONNECTED) {
                 getChatMessageUseCase(state.articleId, state.chatRoomId).onSuccess { messages ->
                     reduce {
-                        state.copy(chatMessage = messages.mapToConvertedChatMessages(state.userId))
+                        state.copy(
+                            chatMessage = state.chatMessage.mergeWithChatMessages(messages, state.userId)
+                        )
                     }
                 }.onFailure {
                     Timber.e(it)
