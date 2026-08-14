@@ -45,23 +45,29 @@ class KoinStomp @Inject constructor(
 
     suspend fun connect(): StompSession {
         return mutex.withLock {
-            val session = stompSession
-            if (session != null) {
-                return@withLock session
-            }
-
             isIntentionallyDisconnected = false
-            _connectionState.value = KoinStompConnectionState.Connecting
-            Timber.d("Connecting to STOMP...")
-            val authToken = tokenProvider()
-            stompClient.connect(
-                url = "${baseUrl.replaceFirst("https", "wss")}/ws-stomp",
-                customStompConnectHeaders = mapOf("Authorization" to authToken)
-            ).also {
-                stompSession = it
-                _connectionState.value = KoinStompConnectionState.Connected
-                Timber.d("STOMP connected.")
-            }
+            stompSession ?: openSession()
+        }
+    }
+
+    private suspend fun reconnect(): StompSession? {
+        return mutex.withLock {
+            if (isIntentionallyDisconnected) return@withLock null
+            stompSession ?: openSession()
+        }
+    }
+
+    private suspend fun openSession(): StompSession {
+        _connectionState.value = KoinStompConnectionState.Connecting
+        Timber.d("Connecting to STOMP...")
+        val authToken = tokenProvider()
+        return stompClient.connect(
+            url = "${baseUrl.replaceFirst("https", "wss")}/ws-stomp",
+            customStompConnectHeaders = mapOf("Authorization" to authToken)
+        ).also {
+            stompSession = it
+            _connectionState.value = KoinStompConnectionState.Connected
+            Timber.d("STOMP connected.")
         }
     }
 
@@ -80,8 +86,8 @@ class KoinStomp @Inject constructor(
     }
 
     /**
-     * Retries [connect] with backoff until it succeeds or [isIntentionallyDisconnected] becomes true.
-     * A [connect] failure must never escape to the caller here — [subscribe]'s retryWhen predicate
+     * Retries [reconnect] with backoff until it succeeds or [isIntentionallyDisconnected] becomes true.
+     * A [reconnect] failure must never escape to the caller here — [subscribe]'s retryWhen predicate
      * treats any exception thrown from it as terminal and stops retrying entirely.
      */
     private suspend fun awaitReconnected(cause: Throwable): Boolean {
@@ -91,9 +97,10 @@ class KoinStomp @Inject constructor(
             Timber.d("${cause::class.simpleName}, reconnecting (attempt ${attempt + 1}) in $delayDuration...")
             _connectionState.value = KoinStompConnectionState.Reconnecting(attempt + 1)
             delay(delayDuration)
+            if (isIntentionallyDisconnected) return false
             mutex.withLock { stompSession = null }
             try {
-                connect()
+                if (reconnect() == null) return false
                 Timber.d("Reconnected.")
                 return true
             } catch (e: CancellationException) {
