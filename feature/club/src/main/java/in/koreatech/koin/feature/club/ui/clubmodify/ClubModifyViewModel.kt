@@ -63,6 +63,8 @@ class ClubModifyViewModel @Inject constructor(
                     clubImageUrl = it.imageUrl
                 )
             }
+        }.onFailure {
+            reduce { state.copy(isLoading = false) }
         }
     }
 

@@ -146,6 +146,8 @@ class ClubDetailViewModel @Inject constructor(
                     showQnasProgressBar = false
                 )
             }
+        }.onFailure {
+            reduce { state.copy(isLoading = false, showQnasProgressBar = false) }
         }
     }
 
