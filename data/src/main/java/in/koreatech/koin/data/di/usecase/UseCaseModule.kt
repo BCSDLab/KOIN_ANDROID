@@ -44,5 +44,4 @@ object UseCaseModule {
     ): UploadFileUseCase {
         return UploadFileUseCase(preSignedUrlRepository, coroutineDispatcher)
     }
-
 }
