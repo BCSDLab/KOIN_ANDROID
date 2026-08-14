@@ -11,6 +11,7 @@ import `in`.koreatech.koin.domain.usecase.club.SearchClubsUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubLikeUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.feature.club.model.ClubSort
+import `in`.koreatech.koin.feature.club.model.ParcelizeClubItem
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubItems
 import `in`.koreatech.koin.feature.club.navigation.CATEGORY_ID
 import javax.inject.Inject
@@ -154,65 +155,66 @@ class ClubListViewModel @Inject constructor(
         reduce {
             state.copy(isLoading = true)
         }
-        state.clubs.forEach { club ->
-            if (club.id == clubId) {
-                if (club.isLiked) {
-                    cancelClubLikeUseCase(clubId).onSuccess {
-                        reduce {
-                            state.copy(
-                                isLoading = false,
-                                clubs = state.clubs.map {
-                                    if (it.id == clubId) {
-                                        it.copy(
-                                            isLiked = !it.isLiked,
-                                            likes = it.likes - 1
-                                        )
-                                    } else {
-                                        it
-                                    }
-                                }
-                            )
-                        }
-                        EventLogger.logCampusClickEvent(
-                            AnalyticsConstant.Label.Club.MAIN_CLUB_LIKE_CANCEL,
-                            club.name
-                        )
-                    }.onFailure {
-                        reduce {
-                            state.copy(isLoading = false)
-                        }
-                        postSideEffect(ClubListSideEffect.ClubDislikeFailed)
-                    }
-                } else {
-                    setClubLikeUseCase(clubId).onSuccess {
-                        reduce {
-                            state.copy(
-                                isLoading = false,
-                                clubs = state.clubs.map {
-                                    if (it.id == clubId) {
-                                        it.copy(
-                                            isLiked = !it.isLiked,
-                                            likes = it.likes + 1
-                                        )
-                                    } else {
-                                        it
-                                    }
-                                }
-                            )
-                        }
-                        EventLogger.logCampusClickEvent(
-                            AnalyticsConstant.Label.Club.MAIN_CLUB_LIKE,
-                            club.name
-                        )
-                    }.onFailure {
-                        reduce {
-                            state.copy(isLoading = false)
-                        }
-                        postSideEffect(ClubListSideEffect.ClubLikeFailed)
-                    }
-                }
-                return@intent
+        val club = state.clubs.find { it.id == clubId } ?: return@intent
+        if (club.isLiked) {
+            unlikeClub(club)
+        } else {
+            likeClub(club)
+        }
+    }
+
+    @OptIn(OrbitExperimental::class)
+    private suspend fun unlikeClub(club: ParcelizeClubItem) = subIntent {
+        cancelClubLikeUseCase(club.id).onSuccess {
+            reduce {
+                state.copy(
+                    isLoading = false,
+                    clubs = updateClubLike(state.clubs, club.id, isLiked = false, likesDelta = -1)
+                )
             }
+            EventLogger.logCampusClickEvent(
+                AnalyticsConstant.Label.Club.MAIN_CLUB_LIKE_CANCEL,
+                club.name
+            )
+        }.onFailure {
+            reduce {
+                state.copy(isLoading = false)
+            }
+            postSideEffect(ClubListSideEffect.ClubDislikeFailed)
+        }
+    }
+
+    @OptIn(OrbitExperimental::class)
+    private suspend fun likeClub(club: ParcelizeClubItem) = subIntent {
+        setClubLikeUseCase(club.id).onSuccess {
+            reduce {
+                state.copy(
+                    isLoading = false,
+                    clubs = updateClubLike(state.clubs, club.id, isLiked = true, likesDelta = 1)
+                )
+            }
+            EventLogger.logCampusClickEvent(
+                AnalyticsConstant.Label.Club.MAIN_CLUB_LIKE,
+                club.name
+            )
+        }.onFailure {
+            reduce {
+                state.copy(isLoading = false)
+            }
+            postSideEffect(ClubListSideEffect.ClubLikeFailed)
+        }
+    }
+
+    private fun updateClubLike(
+        clubs: List<ParcelizeClubItem>,
+        clubId: Int,
+        isLiked: Boolean,
+        likesDelta: Int
+    ) = clubs.map {
+        if (it.id == clubId) {
+            it.copy(isLiked = isLiked, likes = it.likes + likesDelta)
+        } else {
+            it
         }
     }
 
