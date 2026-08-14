@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.error.chat.KoinChatException
+import `in`.koreatech.koin.domain.model.chat.ChatConnectionState
 import `in`.koreatech.koin.domain.model.chat.ChatMessage
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
@@ -14,6 +15,7 @@ import `in`.koreatech.koin.domain.usecase.chat.ChatWSConnectUseCase
 import `in`.koreatech.koin.domain.usecase.chat.ChatWSDisconnectUseCase
 import `in`.koreatech.koin.domain.usecase.chat.GetChatMessageUseCase
 import `in`.koreatech.koin.domain.usecase.chat.GetChatRoomUseCase
+import `in`.koreatech.koin.domain.usecase.chat.ObserveChatConnectionStateUseCase
 import `in`.koreatech.koin.domain.usecase.chat.SendMessageUseCase
 import `in`.koreatech.koin.domain.usecase.chat.SubscribeChatRoomUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetLostAndFoundPreSignedUrlUseCase
@@ -37,7 +39,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
 import org.hildan.krossbow.stomp.LostReceiptException
 import org.hildan.krossbow.websocket.WebSocketConnectionException
-import org.hildan.krossbow.websocket.reconnection.WebSocketReconnectionException
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -54,6 +55,7 @@ class ChatRoomViewModel @Inject constructor(
     private val getChatRoomUseCase: GetChatRoomUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
     private val subscribeChatRoomUseCase: SubscribeChatRoomUseCase,
+    private val observeChatConnectionStateUseCase: ObserveChatConnectionStateUseCase,
     private val getChatMessageUseCase: GetChatMessageUseCase,
     private val sendMessageUseCase: SendMessageUseCase,
     private val getLostAndFoundPreSignedUrlUseCase: GetLostAndFoundPreSignedUrlUseCase,
@@ -74,6 +76,23 @@ class ChatRoomViewModel @Inject constructor(
 
     init {
         getUserInfo()
+        observeConnectionState()
+    }
+
+    private fun observeConnectionState() = intent {
+        var previousState: ChatConnectionState? = null
+        observeChatConnectionStateUseCase().collectLatest { current ->
+            if (previousState != null && previousState != ChatConnectionState.CONNECTED && current == ChatConnectionState.CONNECTED) {
+                getChatMessageUseCase(state.articleId, state.chatRoomId).onSuccess { messages ->
+                    reduce {
+                        state.copy(chatMessage = messages.mapToConvertedChatMessages(state.userId))
+                    }
+                }.onFailure {
+                    Timber.e(it)
+                }
+            }
+            previousState = current
+        }
     }
 
     private fun getUserInfo() = intent {
@@ -136,13 +155,8 @@ class ChatRoomViewModel @Inject constructor(
         chatWSConnectUseCase().onSuccess {
             subscribeChatRoom(state.articleId, state.chatRoomId)
         }.onFailure { error ->
-            if (error is WebSocketReconnectionException) {
-                // Handle reconnection error
-                Timber.d("${error.message}")
-                intent {
-                    postSideEffect(ChatRoomSideEffect.FailedToConnectWS)
-                }
-            }
+            Timber.e(error)
+            postSideEffect(ChatRoomSideEffect.FailedToConnectWS)
         }
     }
 
