@@ -261,10 +261,20 @@ class ChatRoomViewModel @Inject constructor(
                     )
                 }
             }.onFailure {
+                reduce {
+                    state.copy(
+                        uploadingImage = state.uploadingImage.filterNot { it.uploadId == uploadingImage.uploadId }
+                    )
+                }
                 Timber.e(it)
                 postSideEffect(ChatRoomSideEffect.FailedToSendMessage)
             }
         }.onFailure {
+            reduce {
+                state.copy(
+                    uploadingImage = state.uploadingImage.filterNot { it.uploadId == uploadingImage.uploadId }
+                )
+            }
             postSideEffect(ChatRoomSideEffect.FailedToUploadImage)
         }
     }
