@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.club.ui.clubmodify
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
 import `in`.koreatech.koin.domain.usecase.club.GetClubDetailsUseCase
@@ -13,12 +12,13 @@ import `in`.koreatech.koin.feature.club.model.ClubCategories
 import `in`.koreatech.koin.feature.club.model.toClubCategory
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
 import javax.inject.Inject
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.subIntent
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 
@@ -32,39 +32,36 @@ class ClubModifyViewModel @Inject constructor(
     override val container = container<ClubModifyState, ClubModifySideEffect>(ClubModifyState(), savedStateHandle) {
         val clubId = savedStateHandle.get<Int>(CLUB_ID)
         checkNotNull(clubId)
-        intent {
-            reduce {
-                state.copy(
-                    clubId = clubId
-                )
-            }
+        reduce {
+            state.copy(
+                clubId = clubId
+            )
         }
         loadClubDetails(clubId)
     }
 
-    private fun loadClubDetails(clubId: Int) = viewModelScope.launch {
-        intent {
+    @OptIn(OrbitExperimental::class)
+    private suspend fun loadClubDetails(clubId: Int) = subIntent {
+        reduce {
+            state.copy(isLoading = true)
+        }
+        getClubDetailsUseCase(clubId).onSuccess {
+            Timber.d("Club details loaded: $it")
             reduce {
-                state.copy(isLoading = true)
-            }
-            getClubDetailsUseCase(clubId).onSuccess {
-                Timber.d("Club details loaded: $it")
-                reduce {
-                    state.copy(
-                        isLoading = false,
-                        clubName = it.name,
-                        clubDescription = it.description,
-                        clubCategory = it.category.toClubCategory(),
-                        location = it.location,
-                        instagramUrl = it.instagram ?: "",
-                        googleFormUrl = it.googleForm ?: "",
-                        openChatUrl = it.openChat ?: "",
-                        phoneNumber = it.phoneNumber ?: "",
-                        isLikeHidden = it.isLikeHidden,
-                        likes = it.likes,
-                        clubImageUrl = it.imageUrl
-                    )
-                }
+                state.copy(
+                    isLoading = false,
+                    clubName = it.name,
+                    clubDescription = it.description,
+                    clubCategory = it.category.toClubCategory(),
+                    location = it.location,
+                    instagramUrl = it.instagram ?: "",
+                    googleFormUrl = it.googleForm ?: "",
+                    openChatUrl = it.openChat ?: "",
+                    phoneNumber = it.phoneNumber ?: "",
+                    isLikeHidden = it.isLikeHidden,
+                    likes = it.likes,
+                    clubImageUrl = it.imageUrl
+                )
             }
         }
     }
@@ -162,80 +159,70 @@ class ClubModifyViewModel @Inject constructor(
         fileType: String,
         fileName: String,
         imageUri: Uri
-    ) {
-        intent {
-            reduce {
-                state.copy(isLoading = true)
-            }
+    ) = intent {
+        reduce {
+            state.copy(isLoading = true)
         }
-        viewModelScope.launch {
-            uploadImageUseCase(
-                domain = PreSignedUrlDomain.CLUB,
-                contentLength = fileSize,
-                contentType = fileType,
-                fileName = fileName,
-                imageUri = imageUri.toString()
-            ).onSuccess {
-                intent {
-                    reduce {
-                        state.copy(
-                            clubImageUrl = it,
-                            isLoading = false
-                        )
-                    }
-                }
-            }.onFailure {
-                intent {
-                    reduce {
-                        state.copy(isLoading = false)
-                    }
-                    postSideEffect(ClubModifySideEffect.ClubImageUploadFailure)
-                }
+        uploadImageUseCase(
+            domain = PreSignedUrlDomain.CLUB,
+            contentLength = fileSize,
+            contentType = fileType,
+            fileName = fileName,
+            imageUri = imageUri.toString()
+        ).onSuccess {
+            reduce {
+                state.copy(
+                    clubImageUrl = it,
+                    isLoading = false
+                )
             }
+        }.onFailure {
+            reduce {
+                state.copy(isLoading = false)
+            }
+            postSideEffect(ClubModifySideEffect.ClubImageUploadFailure)
         }
     }
 
-    fun requestModifyClub() = viewModelScope.launch {
-        intent {
+    fun requestModifyClub() = intent {
+        reduce {
+            state.copy(
+                shouldCheckRequiredField = true
+            )
+        }
+
+        if (state.clubNameRequired || state.clubCategoryRequired || state.locationRequired) return@intent
+
+        reduce {
+            state.copy(
+                isLoading = true
+            )
+        }
+
+        modifyClubUseCase(
+            clubId = state.clubId,
+            name = state.clubName,
+            imageUrl = state.clubImageUrl,
+            clubCategoryId = state.clubCategory!!.id,
+            location = state.location,
+            description = state.clubDescription,
+            instagram = state.instagramUrl,
+            googleForm = state.googleFormUrl,
+            openChat = state.openChatUrl,
+            phoneNumber = state.phoneNumber,
+            isLikeHidden = state.isLikeHidden
+        ).onSuccess {
             reduce {
                 state.copy(
-                    shouldCheckRequiredField = true
+                    isLoading = false
                 )
             }
-
-            if (state.clubNameRequired || state.clubCategoryRequired || state.locationRequired) return@intent
-
+            postSideEffect(ClubModifySideEffect.ClubModifySuccess)
+        }.onFailure {
             reduce {
                 state.copy(
-                    isLoading = true
+                    isLoading = false
                 )
-            }
-
-            modifyClubUseCase(
-                clubId = state.clubId,
-                name = state.clubName,
-                imageUrl = state.clubImageUrl,
-                clubCategoryId = state.clubCategory!!.id,
-                location = state.location,
-                description = state.clubDescription,
-                instagram = state.instagramUrl,
-                googleForm = state.googleFormUrl,
-                openChat = state.openChatUrl,
-                phoneNumber = state.phoneNumber,
-                isLikeHidden = state.isLikeHidden
-            ).onSuccess {
-                reduce {
-                    state.copy(
-                        isLoading = false
-                    )
-                }
-                postSideEffect(ClubModifySideEffect.ClubModifySuccess)
-            }.onFailure {
-                reduce {
-                    state.copy(
-                        isLoading = false
-                    )
-                }
             }
         }
     }

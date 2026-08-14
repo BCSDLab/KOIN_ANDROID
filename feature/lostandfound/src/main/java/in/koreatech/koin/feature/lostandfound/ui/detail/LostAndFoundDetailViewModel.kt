@@ -48,23 +48,21 @@ class LostAndFoundDetailViewModel @Inject constructor(
         initUserInfo()
     }
 
-    private fun initUserInfo() = viewModelScope.launch {
+    private fun initUserInfo() = intent {
         getUserStatusUseCase().collectLatest {
-            intent {
-                when (it) {
-                    is User.Student -> reduce {
-                        state.copy(
-                            isLoggedIn = true
-                        )
-                    }
-                    is User.General -> reduce {
-                        state.copy(
-                            isLoggedIn = true
-                        )
-                    }
-                    is User.Anonymous -> reduce {
-                        state.copy(isLoggedIn = false)
-                    }
+            when (it) {
+                is User.Student -> reduce {
+                    state.copy(
+                        isLoggedIn = true
+                    )
+                }
+                is User.General -> reduce {
+                    state.copy(
+                        isLoggedIn = true
+                    )
+                }
+                is User.Anonymous -> reduce {
+                    state.copy(isLoggedIn = false)
                 }
             }
         }
