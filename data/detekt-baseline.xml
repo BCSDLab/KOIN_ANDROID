@@ -10,7 +10,6 @@
     <ID>EmptyCatchBlock:ArticleResponse.kt${ }</ID>
     <ID>FunctionParameterNaming:StoreApi.kt$StoreApi$@Query("filter") DELIVERY: String = "DELIVERY"</ID>
     <ID>FunctionParameterNaming:StoreApi.kt$StoreApi$@Query("filter") OPEN: String = "OPEN"</ID>
-    <ID>InstanceOfCheckForException:KoinStomp.kt$KoinStomp$e is CancellationException</ID>
     <ID>InstanceOfCheckForException:VersionLocalDataSource.kt$VersionLocalDataSource$e !is IOException</ID>
     <ID>LongMethod:ArticleResponse.kt$fun Node.toHtmlModel(parentStyles: Map&lt;CssAttribute, String&gt;): HtmlModel</ID>
     <ID>LongParameterList:ArticleAuthApi.kt$ArticleAuthApi$( @Query("type") type: String?, @Query("page") page: Int, @Query("limit") limit: Int, @Query("category") category: List&lt;String&gt;, @Query("foundStatus") foundStatus: String?, @Query("sort") sort: String?, @Query("author") author: String?, @Query("title") title: String? )</ID>
@@ -23,15 +22,14 @@
     <ID>NestedBlockDepth:UploadImageLocalDataSource.kt$UploadImageLocalDataSource$fun uriToBitmap( uriString: String, fileSize: Long ): ByteArray</ID>
     <ID>RethrowCaughtException:OwnerChangePasswordRepositoryImpl.kt$OwnerChangePasswordRepositoryImpl$throw e</ID>
     <ID>RethrowCaughtException:OwnerSignupRepositoryImpl.kt$OwnerSignupRepositoryImpl$throw t</ID>
-    <ID>RethrowCaughtException:UserRepositoryImpl.kt$UserRepositoryImpl$throw e</ID>
     <ID>SwallowedException:ArticleResponse.kt$e: IllegalArgumentException</ID>
     <ID>SwallowedException:DeptRepositoryImpl.kt$DeptRepositoryImpl$t: Throwable</ID>
+    <ID>SwallowedException:KoinStomp.kt$KoinStomp$e: Exception</ID>
     <ID>SwallowedException:TimetableRepositoryImpl.kt$TimetableRepositoryImpl$e: NullPointerException</ID>
     <ID>SwallowedException:UserLocalDataSource.kt$UserLocalDataSource$e: Exception</ID>
     <ID>SwallowedException:UserLocalDataSource.kt$UserLocalDataSource$e: NullPointerException</ID>
     <ID>SwallowedException:VersionLocalDataSource.kt$VersionLocalDataSource$e: Exception</ID>
     <ID>ThrowingExceptionsWithoutMessageOrCause:DeptLocalDataSource.kt$DeptLocalDataSource$IllegalArgumentException()</ID>
-    <ID>ThrowingExceptionsWithoutMessageOrCause:DeptRepositoryImpl.kt$DeptRepositoryImpl$IllegalArgumentException()</ID>
     <ID>ThrowingExceptionsWithoutMessageOrCause:TimetableRepositoryImpl.kt$TimetableRepositoryImpl$Exception()</ID>
     <ID>ThrowingExceptionsWithoutMessageOrCause:UserMapper.kt$IllegalStateException()</ID>
     <ID>TooGenericExceptionCaught:ArticleRemoteDataSource.kt$ArticleRemoteDataSource$t: Throwable</ID>
@@ -57,6 +55,7 @@
     <ID>TooManyFunctions:CallvanAuthApi.kt$CallvanAuthApi</ID>
     <ID>TooManyFunctions:CallvanRemoteDataSource.kt$CallvanRemoteDataSource</ID>
     <ID>TooManyFunctions:CallvanRepositoryImpl.kt$CallvanRepositoryImpl : CallvanRepository</ID>
+    <ID>TooManyFunctions:ChatRepositoryImpl.kt$ChatRepositoryImpl : ChatRepository</ID>
     <ID>TooManyFunctions:ClubAuthApi.kt$ClubAuthApi</ID>
     <ID>TooManyFunctions:ClubMapper.kt$in.koreatech.koin.data.mapper.ClubMapper.kt</ID>
     <ID>TooManyFunctions:ClubRemoteDataSource.kt$ClubRemoteDataSource</ID>
