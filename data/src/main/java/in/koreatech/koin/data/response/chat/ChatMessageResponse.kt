@@ -12,7 +12,7 @@ data class ChatMessageResponse(
     val userId: Int,
     @SerializedName("user_nickname")
     @SerialName("user_nickname")
-    val userNickname: String,
+    val userNickname: String?,
     @SerializedName("content")
     @SerialName("content")
     val content: String,
@@ -26,7 +26,7 @@ data class ChatMessageResponse(
     fun toChatMessage() =
         ChatMessage(
             userId = userId,
-            userNickname = userNickname,
+            userNickname = userNickname ?: "",
             content = content,
             timestamp = timestamp,
             isImage = isImage

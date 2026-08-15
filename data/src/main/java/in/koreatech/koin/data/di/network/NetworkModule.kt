@@ -10,6 +10,7 @@ import `in`.koreatech.koin.core.qualifier.ServerUrl
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.stomp.KoinStomp
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.milliseconds
 import okhttp3.OkHttpClient
@@ -49,7 +50,11 @@ object NetworkModule {
     fun provideOkHttpWebSocketClient(
         @NoAuth okHttpClient: OkHttpClient
     ): OkHttpWebSocketClient {
-        return OkHttpWebSocketClient(okHttpClient)
+        val webSocketOkHttpClient = okHttpClient.newBuilder()
+            .readTimeout(0, TimeUnit.MILLISECONDS)
+            .pingInterval(20, TimeUnit.SECONDS)
+            .build()
+        return OkHttpWebSocketClient(webSocketOkHttpClient)
     }
 
     @Provides

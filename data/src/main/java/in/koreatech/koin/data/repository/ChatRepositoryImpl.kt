@@ -3,9 +3,11 @@ package `in`.koreatech.koin.data.repository
 import `in`.koreatech.koin.data.mapper.toChatMessageRequest
 import `in`.koreatech.koin.data.response.chat.toChatListItem
 import `in`.koreatech.koin.data.source.remote.ChatRemoteDataSource
+import `in`.koreatech.koin.data.stomp.KoinStompConnectionState
 import `in`.koreatech.koin.data.util.mapHttpFailure
 import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.error.chat.KoinChatException
+import `in`.koreatech.koin.domain.model.chat.ChatConnectionState
 import `in`.koreatech.koin.domain.model.chat.ChatListItem
 import `in`.koreatech.koin.domain.model.chat.ChatMessage
 import `in`.koreatech.koin.domain.model.chat.ChatRoom
@@ -24,6 +26,10 @@ class ChatRepositoryImpl @Inject constructor(
 
     override suspend fun disconnectWS() {
         chatRemoteDataSource.disconnectWS()
+    }
+
+    override fun observeConnectionState(): Flow<ChatConnectionState> {
+        return chatRemoteDataSource.connectionState.map { it.toChatConnectionState() }
     }
 
     override suspend fun getChatRoomList(): Flow<List<ChatListItem>> {
@@ -82,5 +88,14 @@ class ChatRepositoryImpl @Inject constructor(
         chatRoomId: Int
     ): Result<Unit> {
         return chatRemoteDataSource.blockUser(articleId, chatRoomId)
+    }
+
+    private fun KoinStompConnectionState.toChatConnectionState(): ChatConnectionState {
+        return when (this) {
+            is KoinStompConnectionState.Connecting -> ChatConnectionState.CONNECTING
+            is KoinStompConnectionState.Connected -> ChatConnectionState.CONNECTED
+            is KoinStompConnectionState.Reconnecting -> ChatConnectionState.RECONNECTING
+            is KoinStompConnectionState.Disconnected -> ChatConnectionState.DISCONNECTED
+        }
     }
 }
