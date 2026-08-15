@@ -35,13 +35,14 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import okhttp3.internal.immutableListOf
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.subIntent
 import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
@@ -70,12 +71,10 @@ class ClubDetailViewModel @Inject constructor(
     ) {
         val clubId = savedStateHandle.get<Int>(CLUB_ID)
         checkNotNull(clubId)
-        intent {
-            reduce {
-                state.copy(
-                    clubId = clubId
-                )
-            }
+        reduce {
+            state.copy(
+                clubId = clubId
+            )
         }
     }
 
@@ -110,49 +109,50 @@ class ClubDetailViewModel @Inject constructor(
         }
     }
 
-    private fun loadClubDetails() = viewModelScope.launch {
-        intent {
+    @OptIn(OrbitExperimental::class)
+    private suspend fun loadClubDetails() = subIntent {
+        reduce {
+            state.copy(isLoading = true, showDetailProgressBar = true)
+        }
+        getClubDetailsUseCase(state.clubId).onSuccess {
             reduce {
-                state.copy(isLoading = true, showDetailProgressBar = true)
+                state.copy(
+                    clubDetails = it.toParcelizeClubDetails(),
+                    isLoading = false,
+                    showDetailProgressBar = false
+                )
             }
-            getClubDetailsUseCase(state.clubId).onSuccess {
-                reduce {
-                    state.copy(
-                        clubDetails = it.toParcelizeClubDetails(),
-                        isLoading = false,
-                        showDetailProgressBar = false
-                    )
+        }.onFailure { e ->
+            reduce { state.copy(isLoading = false, showDetailProgressBar = false) }
+            when (e) {
+                is KoinClubException.ClubNotFoundException -> {
+                    postSideEffect(ClubDetailSideEffect.ClubNotFoundError)
                 }
-            }.onFailure { e ->
-                reduce { state.copy(isLoading = false, showDetailProgressBar = false) }
-                when (e) {
-                    is KoinClubException.ClubNotFoundException -> {
-                        postSideEffect(ClubDetailSideEffect.ClubNotFoundError)
-                    }
-                    else -> throw e
-                }
+                else -> throw e
             }
         }
     }
 
-    private fun loadClubQnas() = viewModelScope.launch {
-        intent {
+    @OptIn(OrbitExperimental::class)
+    private suspend fun loadClubQnas() = subIntent {
+        reduce {
+            state.copy(isLoading = true, showQnasProgressBar = true)
+        }
+        getClubQnasUseCase(state.clubId).onSuccess {
             reduce {
-                state.copy(isLoading = true, showQnasProgressBar = true)
+                state.copy(
+                    clubQnasInfo = it.toParcelizeClubQnasInfo(),
+                    isLoading = false,
+                    showQnasProgressBar = false
+                )
             }
-            getClubQnasUseCase(state.clubId).onSuccess {
-                reduce {
-                    state.copy(
-                        clubQnasInfo = it.toParcelizeClubQnasInfo(),
-                        isLoading = false,
-                        showQnasProgressBar = false
-                    )
-                }
-            }
+        }.onFailure {
+            reduce { state.copy(isLoading = false, showQnasProgressBar = false) }
         }
     }
 
-    private fun loadClubRecruitment() = intent {
+    @OptIn(OrbitExperimental::class)
+    private suspend fun loadClubRecruitment() = subIntent {
         reduce { state.copy(isLoading = true, showRecruitProgressBar = true) }
         getClubRecruitmentUseCase(state.clubId).onSuccess {
             reduce {
@@ -176,7 +176,8 @@ class ClubDetailViewModel @Inject constructor(
         }
     }
 
-    private fun loadClubEvents() = intent {
+    @OptIn(OrbitExperimental::class)
+    private suspend fun loadClubEvents() = subIntent {
         reduce { state.copy(isLoading = true, showEventsProgressBar = true) }
         getClubEventsUseCase(state.clubId, state.clubEventSearchType.value).onSuccess {
             reduce {

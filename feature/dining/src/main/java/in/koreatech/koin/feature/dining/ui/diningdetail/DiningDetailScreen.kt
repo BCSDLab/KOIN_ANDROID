@@ -103,6 +103,7 @@ import `in`.koreatech.koin.feature.dining.constants.PARAMS_TYPE
 import `in`.koreatech.koin.feature.dining.ui.diningdetail.scroll.DiningNestedScrollConnection
 import java.util.Date
 import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -114,17 +115,7 @@ fun DiningDetailScreen(
 ) {
     val userState by viewModel.userState.collectAsState()
 
-    val selectedDate by viewModel.selectedDate.collectAsState()
-
-    val showBottomSheet by viewModel.showBottomSheet.collectAsState()
-
-    val isSoldOutSubscribed by viewModel.isSoldOutSubscribed.collectAsState()
-
-    val isDiningImageSubscribed by viewModel.isDiningImageSubscribed.collectAsState()
-
-    val isDiningRefreshing by viewModel.isDiningRefreshing.collectAsState()
-
-    val diningList by viewModel.dining.collectAsState()
+    val diningState by viewModel.collectAsState()
 
     val abTestExperimentGroup by viewModel.abTestExperimentGroup.collectAsState()
 
@@ -176,16 +167,16 @@ fun DiningDetailScreen(
         contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { contentPadding ->
         DiningDetailScreenImpl(
-            diningList = diningList,
+            diningList = diningState.dining,
             contentPadding = contentPadding,
-            selectedDate = TimeUtil.stringToDateYYMMDD(selectedDate),
-            showBottomSheet = showBottomSheet,
+            selectedDate = TimeUtil.stringToDateYYMMDD(diningState.selectedDate),
+            showBottomSheet = diningState.showBottomSheet,
             experimentGroup = abTestExperimentGroup,
             isAnonymous = userState.isAnonymous,
-            isDiningRefreshing = isDiningRefreshing,
+            isDiningRefreshing = diningState.isDiningRefreshing,
             initialPage = if (initialPage != -1) initialPage else viewModel.getInitialPage(),
-            isSoldOutSubscribed = isSoldOutSubscribed,
-            isDiningImageSubscribed = isDiningImageSubscribed,
+            isSoldOutSubscribed = diningState.isSoldOutSubscribed,
+            isDiningImageSubscribed = diningState.isDiningImageSubscribed,
             refreshDining = viewModel::refreshDining,
             onDateClick = viewModel::setSelectedDate,
             changeSoldOutSubscribe = viewModel::changeIsSoldOutSubscribed,

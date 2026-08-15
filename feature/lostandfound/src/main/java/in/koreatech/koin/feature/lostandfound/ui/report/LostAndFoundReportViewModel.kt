@@ -1,19 +1,19 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.report
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundReportItem
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.ReportLostAndFoundArticleUseCase
 import `in`.koreatech.koin.feature.lostandfound.enums.ReportReason
 import `in`.koreatech.koin.feature.lostandfound.ui.report.component.lostAndFoundReportReasonList
 import javax.inject.Inject
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.subIntent
 import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
@@ -23,15 +23,17 @@ class LostAndFoundReportViewModel @Inject constructor(
     override val container =
         container<LostAndFoundReportState, LostAndFoundReportSideEffect>(LostAndFoundReportState())
 
-    private fun addReportReason(reportReason: ReportReason) =
-        intent {
+    @OptIn(OrbitExperimental::class)
+    private suspend fun addReportReason(reportReason: ReportReason) =
+        subIntent {
             reduce {
                 state.copy(selectedReason = state.selectedReason + lostAndFoundReportReasonList.indexOf(reportReason))
             }
         }
 
-    private fun removeReportReason(reportReason: ReportReason) =
-        intent {
+    @OptIn(OrbitExperimental::class)
+    private suspend fun removeReportReason(reportReason: ReportReason) =
+        subIntent {
             reduce {
                 state.copy(
                     selectedReason = state.selectedReason.filterNot { lostAndFoundReportReasonList[it] == reportReason }.toIntArray()
@@ -56,31 +58,29 @@ class LostAndFoundReportViewModel @Inject constructor(
         }
 
     fun reportArticle(articleId: Int) =
-        viewModelScope.launch {
+        intent {
             val reportReasonList = mutableListOf<ArticleLostAndFoundReportItem>()
-            intent {
-                state.selectedReason.forEach {
-                    if (lostAndFoundReportReasonList[it] == ReportReason.OTHER) {
-                        reportReasonList.add(
-                            ArticleLostAndFoundReportItem(lostAndFoundReportReasonList[it].title, state.reportReasonDescription)
+            state.selectedReason.forEach {
+                if (lostAndFoundReportReasonList[it] == ReportReason.OTHER) {
+                    reportReasonList.add(
+                        ArticleLostAndFoundReportItem(lostAndFoundReportReasonList[it].title, state.reportReasonDescription)
+                    )
+                } else {
+                    reportReasonList.add(
+                        ArticleLostAndFoundReportItem(
+                            lostAndFoundReportReasonList[it].title,
+                            lostAndFoundReportReasonList[it].description
                         )
-                    } else {
-                        reportReasonList.add(
-                            ArticleLostAndFoundReportItem(
-                                lostAndFoundReportReasonList[it].title,
-                                lostAndFoundReportReasonList[it].description
-                            )
-                        )
-                    }
+                    )
                 }
-                reportLostAndFoundArticleUseCase(
-                    articleId,
-                    reportReasonList
-                ).onSuccess {
-                    postSideEffect(LostAndFoundReportSideEffect.ReportSuccess)
-                }.onFailure {
-                    postSideEffect(LostAndFoundReportSideEffect.ReportFailure(it.message ?: ""))
-                }
+            }
+            reportLostAndFoundArticleUseCase(
+                articleId,
+                reportReasonList
+            ).onSuccess {
+                postSideEffect(LostAndFoundReportSideEffect.ReportSuccess)
+            }.onFailure {
+                postSideEffect(LostAndFoundReportSideEffect.ReportFailure(it.message ?: ""))
             }
         }
 }

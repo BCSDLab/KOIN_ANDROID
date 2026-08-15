@@ -7,7 +7,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
-import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
@@ -25,14 +24,15 @@ import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.feature.dining.navigation.INIT_DATE
 import java.util.Date
 import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.subIntent
 import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
@@ -46,13 +46,13 @@ class DiningViewModel @Inject constructor(
     private val updateNotificationSubscriptionUseCase: UpdateNotificationSubscriptionUseCase,
     private val updateNotificationSubscriptionDetailUseCase: UpdateNotificationSubscriptionDetailUseCase,
     private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase
-) : ViewModel(), ContainerHost<Unit, Nothing> {
-
-    override val container = container<Unit, Nothing>(Unit)
+) : ViewModel(), ContainerHost<DiningState, Nothing> {
 
     private val initDate = savedStateHandle.get<String>(INIT_DATE)
         .takeUnless { it.isNullOrBlank() }
         ?: TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate())
+
+    override val container = container<DiningState, Nothing>(DiningState(selectedDate = initDate))
 
     private val _userState: StateFlow<User> = getUserStatusUseCase().stateIn(
         scope = viewModelScope,
@@ -60,26 +60,6 @@ class DiningViewModel @Inject constructor(
         initialValue = User.Anonymous
     )
     val userState: StateFlow<User> get() = _userState
-
-    private val _isLoading = MutableStateFlow(false)
-
-    private val _selectedDate = MutableStateFlow(initDate)
-    val selectedDate: StateFlow<String> get() = _selectedDate
-
-    private val _dining = MutableStateFlow<List<Dining>>(emptyList())
-    val dining: StateFlow<List<Dining>> get() = _dining
-
-    private val _showBottomSheet = MutableStateFlow(false)
-    val showBottomSheet: StateFlow<Boolean> get() = _showBottomSheet
-
-    private val _isSoldOutSubscribed = MutableStateFlow(false)
-    val isSoldOutSubscribed: StateFlow<Boolean> get() = _isSoldOutSubscribed
-
-    private val _isDiningImageSubscribed = MutableStateFlow(false)
-    val isDiningImageSubscribed: StateFlow<Boolean> get() = _isDiningImageSubscribed
-
-    private val _isDiningRefreshing = MutableStateFlow(false)
-    val isDiningRefreshing: StateFlow<Boolean> get() = _isDiningRefreshing
 
     val abTestExperimentGroup = flow {
         abTestUseCase(Experiment.DINING_SHARE.experimentTitle).onSuccess {
@@ -93,31 +73,38 @@ class DiningViewModel @Inject constructor(
         initialValue = Experiment.DINING_SHARE.experimentGroups.first()
     )
 
-    fun setSelectedDate(date: Date) {
-        _selectedDate.value = TimeUtil.dateFormatToYYMMDD(date)
-        getDining(selectedDate.value)
+    fun setSelectedDate(date: Date) = intent {
+        val formattedDate = TimeUtil.dateFormatToYYMMDD(date)
+        reduce { state.copy(selectedDate = formattedDate) }
+        fetchDining(formattedDate)
     }
 
-    fun refreshDining() {
-        _isDiningRefreshing.value = true
-        getDining(selectedDate.value)
+    fun refreshDining() = intent {
+        reduce { state.copy(isDiningRefreshing = true) }
+        fetchDining(state.selectedDate)
     }
 
-    fun getDining(date: String = selectedDate.value) {
-        if (!_isLoading.value) {
-            _isLoading.value = true
-            viewModelScope.launch {
-                getNotOperationFilteredDiningUseCase(date)
-                    .onSuccess {
-                        _dining.value = it.sortedBy { diningOrder[it.place] ?: Int.MAX_VALUE }
-                        _isLoading.value = false
-                        _isDiningRefreshing.value = false
-                    }
-                    .onFailure {
-                        _dining.value = listOf()
-                    }
+    fun getDining(date: String? = null) = intent {
+        fetchDining(date ?: state.selectedDate)
+    }
+
+    @OptIn(OrbitExperimental::class)
+    private suspend fun fetchDining(date: String) = subIntent {
+        if (state.isLoading) return@subIntent
+        reduce { state.copy(isLoading = true) }
+        getNotOperationFilteredDiningUseCase(date)
+            .onSuccess { result ->
+                reduce {
+                    state.copy(
+                        dining = result.sortedBy { diningOrder[it.place] ?: Int.MAX_VALUE },
+                        isLoading = false,
+                        isDiningRefreshing = false
+                    )
+                }
             }
-        }
+            .onFailure {
+                reduce { state.copy(dining = emptyList(), isLoading = false, isDiningRefreshing = false) }
+            }
     }
 
     fun getInitialPage(): Int = getDiningTabByType(DiningUtil.getCurrentType())
@@ -133,9 +120,9 @@ class DiningViewModel @Inject constructor(
 
     fun getShowBottomSheetValue() {
         if (userState.value.isAnonymous) return
-        viewModelScope.launch {
+        intent {
             if (onboardingManager.getShouldOnboard(OnboardingType.DINING_NOTIFICATION)) {
-                _showBottomSheet.value = true
+                reduce { state.copy(showBottomSheet = true) }
                 onboardingManager.updateShouldOnboard(OnboardingType.DINING_NOTIFICATION, false)
             }
         }
@@ -145,53 +132,54 @@ class DiningViewModel @Inject constructor(
         if (userState.value.isAnonymous) return
         intent {
             getNotificationPermissionInfoUseCase().onSuccess { info ->
+                var soldOutSubscribed = state.isSoldOutSubscribed
+                var diningImageSubscribed = state.isDiningImageSubscribed
                 info.subscribes.forEach {
                     when (it.type) {
-                        SubscribesType.DINING_SOLD_OUT ->
-                            _isSoldOutSubscribed.value = it.isPermit
-                        SubscribesType.DINING_IMAGE_UPLOAD ->
-                            _isDiningImageSubscribed.value = it.isPermit
+                        SubscribesType.DINING_SOLD_OUT -> soldOutSubscribed = it.isPermit
+                        SubscribesType.DINING_IMAGE_UPLOAD -> diningImageSubscribed = it.isPermit
                         SubscribesType.NOTHING -> Unit
                         else -> Unit
                     }
+                }
+                reduce {
+                    state.copy(
+                        isSoldOutSubscribed = soldOutSubscribed,
+                        isDiningImageSubscribed = diningImageSubscribed
+                    )
                 }
             }
         }
     }
 
-    private fun onSoldOutSubscribe(boolean: Boolean) {
-        if (userState.value.isAnonymous) return
-        intent {
-            if (boolean) {
-                updateNotificationSubscriptionUseCase(SubscribesType.DINING_SOLD_OUT)
-                updateNotificationSubscriptionDetailUseCase(SubscribesDetailType.BREAKFAST)
-                updateNotificationSubscriptionDetailUseCase(SubscribesDetailType.LUNCH)
-                updateNotificationSubscriptionDetailUseCase(SubscribesDetailType.DINNER)
-            } else {
-                deleteNotificationSubscriptionUseCase(SubscribesType.DINING_SOLD_OUT)
+    fun changeIsSoldOutSubscribed(boolean: Boolean) = intent {
+        reduce { state.copy(isSoldOutSubscribed = boolean) }
+        if (userState.value.isAnonymous) return@intent
+        val result = if (boolean) {
+            updateNotificationSubscriptionUseCase(SubscribesType.DINING_SOLD_OUT).mapCatching {
+                updateNotificationSubscriptionDetailUseCase(SubscribesDetailType.BREAKFAST).getOrThrow()
+                updateNotificationSubscriptionDetailUseCase(SubscribesDetailType.LUNCH).getOrThrow()
+                updateNotificationSubscriptionDetailUseCase(SubscribesDetailType.DINNER).getOrThrow()
             }
+        } else {
+            deleteNotificationSubscriptionUseCase(SubscribesType.DINING_SOLD_OUT)
+        }
+        result.onFailure {
+            reduce { state.copy(isSoldOutSubscribed = !boolean) }
         }
     }
 
-    private fun onDiningImageSubscribe(boolean: Boolean) {
-        if (userState.value.isAnonymous) return
-        intent {
-            if (boolean) {
-                updateNotificationSubscriptionUseCase(SubscribesType.DINING_IMAGE_UPLOAD)
-            } else {
-                deleteNotificationSubscriptionUseCase(SubscribesType.DINING_IMAGE_UPLOAD)
-            }
+    fun changeIsDiningImageSubscribed(boolean: Boolean) = intent {
+        reduce { state.copy(isDiningImageSubscribed = boolean) }
+        if (userState.value.isAnonymous) return@intent
+        val result = if (boolean) {
+            updateNotificationSubscriptionUseCase(SubscribesType.DINING_IMAGE_UPLOAD)
+        } else {
+            deleteNotificationSubscriptionUseCase(SubscribesType.DINING_IMAGE_UPLOAD)
         }
-    }
-
-    fun changeIsSoldOutSubscribed(boolean: Boolean) {
-        _isSoldOutSubscribed.value = boolean
-        onSoldOutSubscribe(boolean)
-    }
-
-    fun changeIsDiningImageSubscribed(boolean: Boolean) {
-        _isDiningImageSubscribed.value = boolean
-        onDiningImageSubscribe(boolean)
+        result.onFailure {
+            reduce { state.copy(isDiningImageSubscribed = !boolean) }
+        }
     }
 }
 
