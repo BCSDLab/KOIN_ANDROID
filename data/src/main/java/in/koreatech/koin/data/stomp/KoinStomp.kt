@@ -36,6 +36,8 @@ class KoinStomp @Inject constructor(
 ) {
     private val mutex = Mutex()
     private var stompSession: StompSession? = null
+
+    @Volatile
     private var isIntentionallyDisconnected = false
 
     private val delayStrategy: RetryDelayStrategy = ExponentialBackOff()
