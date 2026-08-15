@@ -155,23 +155,30 @@ class DiningViewModel @Inject constructor(
     fun changeIsSoldOutSubscribed(boolean: Boolean) = intent {
         reduce { state.copy(isSoldOutSubscribed = boolean) }
         if (userState.value.isAnonymous) return@intent
-        if (boolean) {
-            updateNotificationSubscriptionUseCase(SubscribesType.DINING_SOLD_OUT)
-            updateNotificationSubscriptionDetailUseCase(SubscribesDetailType.BREAKFAST)
-            updateNotificationSubscriptionDetailUseCase(SubscribesDetailType.LUNCH)
-            updateNotificationSubscriptionDetailUseCase(SubscribesDetailType.DINNER)
+        val result = if (boolean) {
+            updateNotificationSubscriptionUseCase(SubscribesType.DINING_SOLD_OUT).mapCatching {
+                updateNotificationSubscriptionDetailUseCase(SubscribesDetailType.BREAKFAST).getOrThrow()
+                updateNotificationSubscriptionDetailUseCase(SubscribesDetailType.LUNCH).getOrThrow()
+                updateNotificationSubscriptionDetailUseCase(SubscribesDetailType.DINNER).getOrThrow()
+            }
         } else {
             deleteNotificationSubscriptionUseCase(SubscribesType.DINING_SOLD_OUT)
+        }
+        result.onFailure {
+            reduce { state.copy(isSoldOutSubscribed = !boolean) }
         }
     }
 
     fun changeIsDiningImageSubscribed(boolean: Boolean) = intent {
         reduce { state.copy(isDiningImageSubscribed = boolean) }
         if (userState.value.isAnonymous) return@intent
-        if (boolean) {
+        val result = if (boolean) {
             updateNotificationSubscriptionUseCase(SubscribesType.DINING_IMAGE_UPLOAD)
         } else {
             deleteNotificationSubscriptionUseCase(SubscribesType.DINING_IMAGE_UPLOAD)
+        }
+        result.onFailure {
+            reduce { state.copy(isDiningImageSubscribed = !boolean) }
         }
     }
 }
