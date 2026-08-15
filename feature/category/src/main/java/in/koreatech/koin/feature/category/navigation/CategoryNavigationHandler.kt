@@ -21,6 +21,7 @@ internal object CategoryNavigationHandler {
         CategoryMenuId.BUS_TIMETABLE -> navigator.navigateToBusTimeTable(context)
         CategoryMenuId.TRANSPORT_SEARCH -> navigator.navigateToBusSearch(context)
         CategoryMenuId.CALLVAN -> navigator.navigateToCallvan(context)
+        CategoryMenuId.CHAT -> navigator.navigateToChatList(context)
         CategoryMenuId.HOUSING -> navigator.navigateToLand(context)
         CategoryMenuId.KOIN_BUSINESS -> navigator.navigateToBusiness(context)
     }

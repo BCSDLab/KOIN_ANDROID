@@ -15,6 +15,7 @@ import `in`.koreatech.koin.core.navigation.utils.isValidDeepLink
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.feature.callvan.CallvanActivity
 import `in`.koreatech.koin.feature.chat.ui.groupchat.GroupChatActivity
+import `in`.koreatech.koin.feature.chat.ui.list.ChatListActivity
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
 import `in`.koreatech.koin.feature.department.DepartmentActivity
 import `in`.koreatech.koin.feature.dining.ui.DiningActivity
@@ -148,6 +149,12 @@ class NavigatorImpl @Inject constructor() : Navigator {
 
     override fun navigateToLostAndFound(context: Context): Intent {
         return context.buildIntent(LostAndFoundActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+    }
+
+    override fun navigateToChatList(context: Context): Intent {
+        return context.buildIntent(ChatListActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
     }

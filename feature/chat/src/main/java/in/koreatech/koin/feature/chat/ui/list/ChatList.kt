@@ -29,6 +29,7 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.domain.model.chat.ChatListItem
 import `in`.koreatech.koin.feature.chat.R
 import `in`.koreatech.koin.feature.chat.ui.component.ChatProgressIndicator
@@ -39,6 +40,7 @@ import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomViewModel.Companion.CHAT
 import java.time.LocalDateTime
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,6 +55,17 @@ fun ChatList(
     val snackbarHostState = remember { SnackbarHostState() }
 
     val lifecycleOwner = LocalLifecycleOwner.current
+
+    val navigator = rememberNavigator()
+
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            is ChatListSideEffect.NavigateToLogin -> {
+                context.startActivity(navigator.navigateToSignIn(context))
+                (context as? Activity)?.finish()
+            }
+        }
+    }
 
     LaunchedEffect(Unit) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
