@@ -37,6 +37,7 @@
     <string name="article_ipp_simple">현장실습</string>
     <string name="article_student">학생생활</string>
     <string name="article_student_simple">학생</string>
+    <string name="article_ai_summary_simple">AI 요약</string>
 
     <string name="keyword_see_all">모두보기</string>
     <string name="keyword_add_new">새 키워드 추가</string>

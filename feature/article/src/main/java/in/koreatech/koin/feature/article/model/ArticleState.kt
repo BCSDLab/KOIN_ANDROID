@@ -4,6 +4,7 @@ import `in`.koreatech.koin.domain.model.article.Article
 
 data class ArticleState(
     val header: ArticleHeaderState,
+    val aiSummary: ArticleAiSummaryState?,
     val content: String,
     val prevArticleId: Int?,
     val nextArticleId: Int?,
@@ -13,6 +14,7 @@ data class ArticleState(
 
 fun Article.toArticleState() = ArticleState(
     header = header.toArticleHeaderState(),
+    aiSummary = aiSummary?.toArticleAiSummaryState(),
     content = content,
     prevArticleId = prevArticleId,
     nextArticleId = nextArticleId,

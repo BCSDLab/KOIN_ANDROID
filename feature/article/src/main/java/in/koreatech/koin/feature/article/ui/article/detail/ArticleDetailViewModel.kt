@@ -8,6 +8,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.repository.ArticleRepository
+import `in`.koreatech.koin.domain.usecase.article.FetchArticleV2UseCase
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
 import `in`.koreatech.koin.feature.article.model.ArticleHeaderState
 import `in`.koreatech.koin.feature.article.model.ArticleState
@@ -23,9 +24,10 @@ import kotlinx.coroutines.flow.stateIn
 class ArticleDetailViewModel @AssistedInject constructor(
     @Assisted("articleId") articleId: Int,
     @Assisted("navigatedBoardId") val navigatedBoardId: Int,
-    private val articleRepository: ArticleRepository
+    private val articleRepository: ArticleRepository,
+    private val fetchArticleV2UseCase: FetchArticleV2UseCase
 ) : BaseViewModel() {
-    val article: StateFlow<ArticleState> = articleRepository.fetchArticle(articleId, navigatedBoardId)
+    val article: StateFlow<ArticleState> = fetchArticleV2UseCase(articleId, navigatedBoardId)
         .onStart {
             _isLoading.value = true
         }.map {
@@ -45,6 +47,7 @@ class ArticleDetailViewModel @AssistedInject constructor(
                     registeredAt = "",
                     updatedAt = ""
                 ),
+                aiSummary = null,
                 content = "",
                 prevArticleId = null,
                 nextArticleId = null,

@@ -36,6 +36,8 @@ import `in`.koreatech.koin.feature.article.enums.LinkType
 import `in`.koreatech.koin.feature.article.model.ArticleHeaderState
 import `in`.koreatech.koin.feature.article.model.ArticleState
 import `in`.koreatech.koin.feature.article.model.AttachmentState
+import `in`.koreatech.koin.feature.article.model.isSuccess
+import `in`.koreatech.koin.feature.article.model.toSummaryString
 import `in`.koreatech.koin.feature.article.ui.article.adapter.AttachmentAdapter
 import `in`.koreatech.koin.feature.article.ui.article.adapter.HotArticleAdapter
 import javax.inject.Inject
@@ -97,6 +99,7 @@ class ArticleDetailFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.article.collectLatest {
                     setHeader(it)
+                    setAiSummary(it)
                     setContent(it)
                     initPortalLinkButton(it)
 
@@ -181,6 +184,17 @@ class ArticleDetailFragment : Fragment() {
             } catch (_: Exception) {
             }
             textViewArticleViewCount.text = article.header.viewCount.toString()
+        }
+    }
+
+    private fun setAiSummary(article: ArticleState) {
+        val successSummary = article.aiSummary?.takeIf { it.isSuccess() }
+        val visibility = successSummary?.let { View.VISIBLE } ?: View.GONE
+        binding.articleAiSummary.root.visibility = visibility
+        binding.dividerAiSummaryContent.visibility = visibility
+        successSummary?.let {
+            binding.articleAiSummary.textViewArticleSummaryDescription.text =
+                it.summaryItems.toSummaryString()
         }
     }
 
