@@ -8,8 +8,6 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.usecase.session.GetSessionIdUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCase
 import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -23,9 +21,6 @@ class SignInViewModel @Inject constructor(
     private val getSessionIdUseCase: GetSessionIdUseCase
 ) : ViewModel(), ContainerHost<SignInState, SignInSideEffect> {
     override val container = container<SignInState, SignInSideEffect>(SignInState())
-
-    private val _sessionId = MutableStateFlow("")
-    val sessionId: StateFlow<String> = _sessionId
 
     fun setLoginId(loginId: String) {
         blockingIntent {
@@ -73,11 +68,12 @@ class SignInViewModel @Inject constructor(
             }
     }
 
-    fun getSignUpSessionId() {
-        _sessionId.value = getSessionIdUseCase(
+    fun getSignUpSessionId() = blockingIntent {
+        val sessionId = getSessionIdUseCase(
             sessionName = "sign_up",
             isLoggedIn = false,
             shouldExpireOtherSessions = true
         )
+        reduce { state.copy(sessionId = sessionId) }
     }
 }

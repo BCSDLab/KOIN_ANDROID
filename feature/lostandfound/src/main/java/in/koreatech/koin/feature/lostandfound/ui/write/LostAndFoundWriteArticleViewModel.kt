@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.lostandfound.ui.write
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.UploadLostAndFoundArticleUseCase
@@ -14,7 +13,6 @@ import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.navigation.LOST_OR_FOUND_TYPE
 import java.time.LocalDate
 import javax.inject.Inject
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
@@ -100,7 +98,7 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
         imageUri: Uri,
         itemIndex: Int,
         imageIndex: Int
-    ) = viewModelScope.launch {
+    ) = intent {
         uploadImageUseCase(
             domain = PreSignedUrlDomain.LOST_AND_FOUND,
             contentLength = fileSize,
@@ -108,33 +106,29 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
             fileName = fileName,
             imageUri = imageUri.toString()
         ).onSuccess { fileUrl ->
-            intent {
-                reduce {
-                    state.copy(
-                        itemList =
-                        state.itemList.mapIndexed { i, item ->
-                            if (i == itemIndex) {
-                                return@mapIndexed item.copy(
-                                    images =
-                                    item.images.mapIndexed { j, currentValue ->
-                                        if (j == imageIndex) {
-                                            return@mapIndexed fileUrl // Replace placeholder to real image url
-                                        } else {
-                                            currentValue
-                                        }
+            reduce {
+                state.copy(
+                    itemList =
+                    state.itemList.mapIndexed { i, item ->
+                        if (i == itemIndex) {
+                            return@mapIndexed item.copy(
+                                images =
+                                item.images.mapIndexed { j, currentValue ->
+                                    if (j == imageIndex) {
+                                        return@mapIndexed fileUrl // Replace placeholder to real image url
+                                    } else {
+                                        currentValue
                                     }
-                                )
-                            } else {
-                                item
-                            }
+                                }
+                            )
+                        } else {
+                            item
                         }
-                    )
-                }
+                    }
+                )
             }
         }.onFailure {
-            intent {
-                postSideEffect(LostAndFoundWriteArticleSideEffect.FailedToUploadImage)
-            }
+            postSideEffect(LostAndFoundWriteArticleSideEffect.FailedToUploadImage)
         }
     }
 
@@ -255,17 +249,15 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
         }
 
     fun writeArticle() =
-        viewModelScope.launch {
-            intent {
-                uploadLostAndFoundArticleUseCase(
-                    state.itemList.map {
-                        it.toArticleLostAndFoundUpload()
-                    }
-                ).onSuccess {
-                    postSideEffect(LostAndFoundWriteArticleSideEffect.LostAndFoundWriteArticle(it.id))
-                }.onFailure {
-                    postSideEffect(LostAndFoundWriteArticleSideEffect.LostAndFoundWriteArticleFailed)
+        intent {
+            uploadLostAndFoundArticleUseCase(
+                state.itemList.map {
+                    it.toArticleLostAndFoundUpload()
                 }
+            ).onSuccess {
+                postSideEffect(LostAndFoundWriteArticleSideEffect.LostAndFoundWriteArticle(it.id))
+            }.onFailure {
+                postSideEffect(LostAndFoundWriteArticleSideEffect.LostAndFoundWriteArticleFailed)
             }
         }
 }

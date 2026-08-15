@@ -70,8 +70,6 @@ fun SignInScreen(
 ) {
     val uiState by viewModel.collectAsState()
 
-    val sessionId by viewModel.sessionId.collectAsState()
-
     LaunchedEffect(Unit) {
         viewModel.getSignUpSessionId()
     }
@@ -88,7 +86,7 @@ fun SignInScreen(
         password = uiState.password,
         showPassword = uiState.showPassword,
         isError = uiState.loginError.isError,
-        sessionId = sessionId,
+        sessionId = uiState.sessionId,
         modifier = modifier,
         setLoginId = {
             viewModel.setLoginId(it)
