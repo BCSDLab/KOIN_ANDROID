@@ -49,6 +49,7 @@ data class ArticleResponse(
     fun toArticle() =
         Article(
             header = toArticleHeader(),
+            aiSummary = null,
             content = content ?: "",
             prevArticleId = prevArticleId,
             nextArticleId = nextArticleId,

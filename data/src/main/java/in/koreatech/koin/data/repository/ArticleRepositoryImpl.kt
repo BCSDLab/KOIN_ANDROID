@@ -122,6 +122,15 @@ class ArticleRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun fetchArticleV2(
+        articleId: Int,
+        boardId: Int
+    ): Flow<Article> {
+        return flow {
+            emit(articleRemoteDataSource.fetchArticleV2(articleId, boardId).toArticle())
+        }
+    }
+
     override fun fetchPreviousArticle(
         articleId: Int,
         boardId: Int

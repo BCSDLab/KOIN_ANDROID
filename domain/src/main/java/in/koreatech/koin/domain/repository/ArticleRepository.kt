@@ -24,6 +24,11 @@ interface ArticleRepository {
         boardId: Int
     ): Flow<Article>
 
+    fun fetchArticleV2(
+        articleId: Int,
+        boardId: Int
+    ): Flow<Article>
+
     fun fetchPreviousArticle(
         articleId: Int,
         boardId: Int
