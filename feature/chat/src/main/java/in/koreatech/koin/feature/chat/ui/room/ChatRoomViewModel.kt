@@ -8,8 +8,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.error.chat.KoinChatException
 import `in`.koreatech.koin.domain.model.chat.ChatConnectionState
 import `in`.koreatech.koin.domain.model.chat.ChatMessage
+import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.chat.ChatBlockUserUseCase
 import `in`.koreatech.koin.domain.usecase.chat.ChatWSConnectUseCase
 import `in`.koreatech.koin.domain.usecase.chat.ChatWSDisconnectUseCase
@@ -18,7 +18,7 @@ import `in`.koreatech.koin.domain.usecase.chat.GetChatMessageUseCase
 import `in`.koreatech.koin.domain.usecase.chat.GetChatRoomUseCase
 import `in`.koreatech.koin.domain.usecase.chat.SendMessageUseCase
 import `in`.koreatech.koin.domain.usecase.chat.SubscribeChatRoomUseCase
-import `in`.koreatech.koin.domain.usecase.presignedurl.GetLostAndFoundPreSignedUrlUseCase
+import `in`.koreatech.koin.domain.usecase.presignedurl.UploadImageUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
 import `in`.koreatech.koin.feature.chat.ui.model.appendMessage
@@ -59,8 +59,7 @@ class ChatRoomViewModel @Inject constructor(
     private val getChatConnectionStateUseCase: GetChatConnectionStateUseCase,
     private val getChatMessageUseCase: GetChatMessageUseCase,
     private val sendMessageUseCase: SendMessageUseCase,
-    private val getLostAndFoundPreSignedUrlUseCase: GetLostAndFoundPreSignedUrlUseCase,
-    private val uploadFilesUseCase: UploadFileUseCase,
+    private val uploadImageUseCase: UploadImageUseCase,
     private val chatBlockUserUseCase: ChatBlockUserUseCase
 ) : ViewModel(), ContainerHost<ChatRoomState, ChatRoomSideEffect> {
     override val container = container<ChatRoomState, ChatRoomSideEffect>(ChatRoomState(), savedStateHandle) {
@@ -235,44 +234,6 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
-    private fun uploadImage(
-        preSignedUrl: String,
-        fileUrl: String,
-        mediaType: String,
-        mediaSize: Long,
-        uploadingImage: ConvertedChatMessage
-    ) = intent {
-        uploadFilesUseCase(
-            preSignedUrl,
-            mediaType,
-            mediaSize,
-            uploadingImage.content
-        ).onSuccess {
-            sendMessageUseCase(
-                state.articleId,
-                state.chatRoomId,
-                ChatMessage(
-                    userId = state.userId,
-                    userNickname = state.userNickName,
-                    content = fileUrl,
-                    timestamp = LocalDateTime.now().toString(),
-                    isImage = true
-                )
-            ).onSuccess {
-                reduce {
-                    state.copy(
-                        uploadingImage = state.uploadingImage.filterNot { it.uploadId == uploadingImage.uploadId }
-                    )
-                }
-            }.onFailure {
-                Timber.e(it)
-                postSideEffect(ChatRoomSideEffect.FailedToSendMessage)
-            }
-        }.onFailure {
-            postSideEffect(ChatRoomSideEffect.FailedToUploadImage)
-        }
-    }
-
     fun getPreSignedUrl(
         fileSize: Long,
         fileType: String,
@@ -293,22 +254,45 @@ class ChatRoomViewModel @Inject constructor(
                 uploadingImage = state.uploadingImage.plus(uploadingImage)
             )
         }
-        getLostAndFoundPreSignedUrlUseCase(
-            fileSize,
-            fileType,
-            fileName
-        ).onSuccess {
-            uploadImage(
-                preSignedUrl = it.second,
-                fileUrl = it.first,
-                mediaType = fileType,
-                mediaSize = fileSize,
-                uploadingImage = uploadingImage
-            )
-        }.onFailure {
-            intent {
-                postSideEffect(ChatRoomSideEffect.FailedToUploadImage)
+        uploadImageUseCase(
+            domain = PreSignedUrlDomain.LOST_AND_FOUND,
+            contentLength = fileSize,
+            contentType = fileType,
+            fileName = fileName,
+            imageUri = imageUri.toString()
+        ).onSuccess { fileUrl ->
+            sendMessageUseCase(
+                state.articleId,
+                state.chatRoomId,
+                ChatMessage(
+                    userId = state.userId,
+                    userNickname = state.userNickName,
+                    content = fileUrl,
+                    timestamp = LocalDateTime.now().toString(),
+                    isImage = true
+                )
+            ).onSuccess {
+                reduce {
+                    state.copy(
+                        uploadingImage = state.uploadingImage.filterNot { it.uploadId == uploadingImage.uploadId }
+                    )
+                }
+            }.onFailure {
+                reduce {
+                    state.copy(
+                        uploadingImage = state.uploadingImage.filterNot { it.uploadId == uploadingImage.uploadId }
+                    )
+                }
+                Timber.e(it)
+                postSideEffect(ChatRoomSideEffect.FailedToSendMessage)
             }
+        }.onFailure {
+            reduce {
+                state.copy(
+                    uploadingImage = state.uploadingImage.filterNot { it.uploadId == uploadingImage.uploadId }
+                )
+            }
+            postSideEffect(ChatRoomSideEffect.FailedToUploadImage)
         }
     }
 
