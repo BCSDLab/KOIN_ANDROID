@@ -82,8 +82,8 @@ class ChatRoomViewModel @Inject constructor(
 
     private fun observeConnectionState() = intent {
         var previousState: ChatConnectionState? = null
-        getChatConnectionStateUseCase().collectLatest { current ->
-            if (previousState != null && previousState != ChatConnectionState.CONNECTED && current == ChatConnectionState.CONNECTED) {
+        getChatConnectionStateUseCase().collect { current ->
+            if (previousState == ChatConnectionState.RECONNECTING && current == ChatConnectionState.CONNECTED) {
                 getChatMessageUseCase(state.articleId, state.chatRoomId).onSuccess { messages ->
                     reduce {
                         state.copy(
