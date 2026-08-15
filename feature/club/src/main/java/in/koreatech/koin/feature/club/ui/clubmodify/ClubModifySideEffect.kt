@@ -3,4 +3,5 @@ package `in`.koreatech.koin.feature.club.ui.clubmodify
 sealed class ClubModifySideEffect {
     data object ClubModifySuccess : ClubModifySideEffect()
     data object ClubImageUploadFailure : ClubModifySideEffect()
+    data object ClubModifyFailure : ClubModifySideEffect()
 }

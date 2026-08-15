@@ -226,6 +226,7 @@ class ClubModifyViewModel @Inject constructor(
                     isLoading = false
                 )
             }
+            postSideEffect(ClubModifySideEffect.ClubModifyFailure)
         }
     }
 }
