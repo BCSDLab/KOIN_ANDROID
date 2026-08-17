@@ -113,6 +113,7 @@ class ArticleRepositoryImpl @Inject constructor(
         }
     }
 
+    @Deprecated("Use fetchArticleV2 instead")
     override fun fetchArticle(
         articleId: Int,
         boardId: Int

@@ -19,6 +19,7 @@ interface ArticleRepository {
         limit: Int
     ): Flow<ArticlePagination>
 
+    @Deprecated("Use fetchArticleV2 instead")
     fun fetchArticle(
         articleId: Int,
         boardId: Int
