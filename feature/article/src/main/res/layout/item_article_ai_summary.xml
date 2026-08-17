@@ -13,31 +13,45 @@
             android:id="@+id/text_view_article_summary_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/article_ai_summary_simple"
             android:textColor="@color/rebrand_primary_800"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="@string/article_ai_summary_simple" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:layout_width="18dp"
             android:layout_height="18dp"
-            android:src="@drawable/ic_ai_summary"
             android:layout_marginStart="2dp"
+            android:src="@drawable/ic_ai_summary"
             app:layout_constraintStart_toEndOf="@id/text_view_article_summary_name"
-            app:layout_constraintTop_toTopOf="@id/text_view_article_summary_name"/>
+            app:layout_constraintTop_toTopOf="@id/text_view_article_summary_name" />
 
         <TextView
             android:id="@+id/text_view_article_summary_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_view_article_summary_name"
             tools:text="근로기간은 2025년 3월 4일(화)부터 6월 20일(금)까지이며, 사무보조는 월~금 09시~18시 근무로 월 최대 40시간 근로 가능" />
+
+        <TextView
+            android:id="@+id/text_view_article_summary_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minHeight="80dp"
+            android:textColor="@color/gray8"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_view_article_summary_name" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

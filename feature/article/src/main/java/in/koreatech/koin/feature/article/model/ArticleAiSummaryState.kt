@@ -4,20 +4,28 @@ import android.os.Parcelable
 import `in`.koreatech.koin.domain.model.article.ArticleAiSummary
 import kotlinx.parcelize.Parcelize
 
+enum class AiSummaryStatus {
+    SUCCESS,
+    PENDING,
+    UNAVAILABLE;
+
+    companion object {
+        fun from(status: String) = entries.find { it.name == status } ?: UNAVAILABLE
+    }
+}
+
 @Parcelize
 data class ArticleAiSummaryState(
-    val status: String,
+    val status: AiSummaryStatus,
     val summaryItems: List<SummaryItemState>
 ) : Parcelable
 
 fun ArticleAiSummary.toArticleAiSummaryState() = ArticleAiSummaryState(
-    status = status,
+    status = AiSummaryStatus.from(status),
     summaryItems = summaryItems.map { it.toSummaryItemState() }
 )
 
-private const val AI_SUMMARY_SUCCESS = "SUCCESS"
-
-fun ArticleAiSummaryState.isSuccess() = status == AI_SUMMARY_SUCCESS
+fun ArticleAiSummaryState.isSuccess() = status == AiSummaryStatus.SUCCESS
 
 fun List<SummaryItemState>.toSummaryString() = this.joinToString(separator = "\n\n") { "${it.icon} ${it.text}" }
 
