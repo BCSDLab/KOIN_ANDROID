@@ -113,12 +113,22 @@ class ArticleRepositoryImpl @Inject constructor(
         }
     }
 
+    @Deprecated("Use fetchArticleV2 instead")
     override fun fetchArticle(
         articleId: Int,
         boardId: Int
     ): Flow<Article> {
         return flow {
             emit(articleRemoteDataSource.fetchArticle(articleId, boardId).toArticle())
+        }
+    }
+
+    override fun fetchArticleV2(
+        articleId: Int,
+        boardId: Int
+    ): Flow<Article> {
+        return flow {
+            emit(articleRemoteDataSource.fetchArticleV2(articleId, boardId).toArticle())
         }
     }
 

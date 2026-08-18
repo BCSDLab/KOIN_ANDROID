@@ -11,6 +11,7 @@ import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundPaginationRe
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundResponse
 import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleResponse
+import `in`.koreatech.koin.data.response.article.ArticleV2Response
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
 import `in`.koreatech.koin.domain.model.article.KeywordType
@@ -33,6 +34,13 @@ class ArticleRemoteDataSource @Inject constructor(
         boardId: Int
     ): ArticleResponse {
         return articleApi.fetchArticle(articleId, boardId)
+    }
+
+    suspend fun fetchArticleV2(
+        articleId: Int,
+        boardId: Int
+    ): ArticleV2Response {
+        return articleApi.fetchArticleV2(articleId, boardId)
     }
 
     suspend fun fetchPreviousArticle(
