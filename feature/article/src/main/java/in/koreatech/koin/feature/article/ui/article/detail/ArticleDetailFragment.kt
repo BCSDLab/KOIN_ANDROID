@@ -33,9 +33,11 @@ import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.feature.article.R
 import `in`.koreatech.koin.feature.article.databinding.FragmentArticleDetailBinding
 import `in`.koreatech.koin.feature.article.enums.LinkType
+import `in`.koreatech.koin.feature.article.model.AiSummaryStatus
 import `in`.koreatech.koin.feature.article.model.ArticleHeaderState
 import `in`.koreatech.koin.feature.article.model.ArticleState
 import `in`.koreatech.koin.feature.article.model.AttachmentState
+import `in`.koreatech.koin.feature.article.model.toSummaryString
 import `in`.koreatech.koin.feature.article.ui.article.adapter.AttachmentAdapter
 import `in`.koreatech.koin.feature.article.ui.article.adapter.HotArticleAdapter
 import javax.inject.Inject
@@ -97,6 +99,7 @@ class ArticleDetailFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.article.collectLatest {
                     setHeader(it)
+                    setAiSummary(it)
                     setContent(it)
                     initPortalLinkButton(it)
 
@@ -181,6 +184,38 @@ class ArticleDetailFragment : Fragment() {
             } catch (_: Exception) {
             }
             textViewArticleViewCount.text = article.header.viewCount.toString()
+        }
+    }
+
+    private fun setAiSummary(article: ArticleState) {
+        val summary = article.aiSummary
+        val aiSummaryBinding = binding.articleAiSummary
+        if (summary == null) {
+            aiSummaryBinding.root.visibility = View.GONE
+            binding.dividerAiSummaryContent.visibility = View.GONE
+            return
+        }
+        aiSummaryBinding.root.visibility = View.VISIBLE
+        binding.dividerAiSummaryContent.visibility = View.VISIBLE
+        when (summary.status) {
+            AiSummaryStatus.SUCCESS -> {
+                aiSummaryBinding.textViewArticleSummaryDescription.visibility = View.VISIBLE
+                aiSummaryBinding.textViewArticleSummaryStatus.visibility = View.GONE
+                aiSummaryBinding.textViewArticleSummaryDescription.text =
+                    summary.summaryItems.toSummaryString()
+            }
+            AiSummaryStatus.PENDING -> {
+                aiSummaryBinding.textViewArticleSummaryDescription.visibility = View.GONE
+                aiSummaryBinding.textViewArticleSummaryStatus.visibility = View.VISIBLE
+                aiSummaryBinding.textViewArticleSummaryStatus.text =
+                    getString(R.string.article_ai_summary_pending)
+            }
+            AiSummaryStatus.UNAVAILABLE -> {
+                aiSummaryBinding.textViewArticleSummaryDescription.visibility = View.GONE
+                aiSummaryBinding.textViewArticleSummaryStatus.visibility = View.VISIBLE
+                aiSummaryBinding.textViewArticleSummaryStatus.text =
+                    getString(R.string.article_ai_summary_unavailable)
+            }
         }
     }
 
