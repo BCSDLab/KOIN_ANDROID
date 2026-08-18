@@ -25,7 +25,7 @@ fun ArticleAiSummary.toArticleAiSummaryState() = ArticleAiSummaryState(
     summaryItems = summaryItems.map { it.toSummaryItemState() }
 )
 
-fun ArticleAiSummaryState.isSuccess() = status == AiSummaryStatus.SUCCESS
+val ArticleAiSummaryState.isSuccess: Boolean get() = status == AiSummaryStatus.SUCCESS
 
 fun List<SummaryItemState>.toSummaryString() = this.joinToString(separator = "\n\n") { "${it.icon} ${it.text}" }
 

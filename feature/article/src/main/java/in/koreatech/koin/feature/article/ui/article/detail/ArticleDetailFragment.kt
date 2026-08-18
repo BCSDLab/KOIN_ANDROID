@@ -189,30 +189,31 @@ class ArticleDetailFragment : Fragment() {
 
     private fun setAiSummary(article: ArticleState) {
         val summary = article.aiSummary
+        val aiSummaryBinding = binding.articleAiSummary
         if (summary == null) {
-            binding.articleAiSummary.root.visibility = View.GONE
+            aiSummaryBinding.root.visibility = View.GONE
             binding.dividerAiSummaryContent.visibility = View.GONE
             return
         }
-        binding.articleAiSummary.root.visibility = View.VISIBLE
+        aiSummaryBinding.root.visibility = View.VISIBLE
         binding.dividerAiSummaryContent.visibility = View.VISIBLE
         when (summary.status) {
             AiSummaryStatus.SUCCESS -> {
-                binding.articleAiSummary.textViewArticleSummaryDescription.visibility = View.VISIBLE
-                binding.articleAiSummary.textViewArticleSummaryStatus.visibility = View.GONE
-                binding.articleAiSummary.textViewArticleSummaryDescription.text =
+                aiSummaryBinding.textViewArticleSummaryDescription.visibility = View.VISIBLE
+                aiSummaryBinding.textViewArticleSummaryStatus.visibility = View.GONE
+                aiSummaryBinding.textViewArticleSummaryDescription.text =
                     summary.summaryItems.toSummaryString()
             }
             AiSummaryStatus.PENDING -> {
-                binding.articleAiSummary.textViewArticleSummaryDescription.visibility = View.GONE
-                binding.articleAiSummary.textViewArticleSummaryStatus.visibility = View.VISIBLE
-                binding.articleAiSummary.textViewArticleSummaryStatus.text =
+                aiSummaryBinding.textViewArticleSummaryDescription.visibility = View.GONE
+                aiSummaryBinding.textViewArticleSummaryStatus.visibility = View.VISIBLE
+                aiSummaryBinding.textViewArticleSummaryStatus.text =
                     getString(R.string.article_ai_summary_pending)
             }
             AiSummaryStatus.UNAVAILABLE -> {
-                binding.articleAiSummary.textViewArticleSummaryDescription.visibility = View.GONE
-                binding.articleAiSummary.textViewArticleSummaryStatus.visibility = View.VISIBLE
-                binding.articleAiSummary.textViewArticleSummaryStatus.text =
+                aiSummaryBinding.textViewArticleSummaryDescription.visibility = View.GONE
+                aiSummaryBinding.textViewArticleSummaryStatus.visibility = View.VISIBLE
+                aiSummaryBinding.textViewArticleSummaryStatus.text =
                     getString(R.string.article_ai_summary_unavailable)
             }
         }
