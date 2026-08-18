@@ -25,8 +25,6 @@ fun ArticleAiSummary.toArticleAiSummaryState() = ArticleAiSummaryState(
     summaryItems = summaryItems.map { it.toSummaryItemState() }
 )
 
-val ArticleAiSummaryState.isSuccess: Boolean get() = status == AiSummaryStatus.SUCCESS
-
 fun List<SummaryItemState>.toSummaryString() = this.joinToString(separator = "\n\n") { "${it.icon} ${it.text}" }
 
 @Parcelize
