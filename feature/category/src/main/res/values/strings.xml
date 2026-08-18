@@ -16,6 +16,7 @@
     <string name="callvan">콜밴팟 모집</string>
     <string name="other">기타</string>
     <string name="housing">복덕방</string>
+    <string name="chat">채팅</string>
     <string name="koin_business">코인 for Business</string>
     <string name="category_cannot_open_link">링크를 열 수 없습니다.</string>
 </resources>
