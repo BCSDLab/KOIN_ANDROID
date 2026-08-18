@@ -38,7 +38,7 @@ data class ArticleV2Response(
             content = content ?: "",
             prevArticleId = prevArticleId,
             nextArticleId = nextArticleId,
-            attachments = attachments?.map { it.toAttachment() } ?: listOf(),
+            attachments = attachments?.map { it.toAttachment() } ?: emptyList(),
             url = url ?: ""
         )
 }
