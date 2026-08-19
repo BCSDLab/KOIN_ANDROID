@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
+import timber.log.Timber
 import kotlinx.coroutines.flow.update
 
 @HiltViewModel
@@ -78,6 +79,10 @@ class ArticleKeywordViewModel @Inject constructor(
 
     val suggestedKeywords: StateFlow<List<String>> =
         articleRepository.fetchKeywordSuggestions(KEYWORD_TYPE)
+            .catch {
+                Timber.e(it)
+                emit(emptyList())
+            }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
