@@ -28,8 +28,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
-import timber.log.Timber
 import kotlinx.coroutines.flow.update
+import timber.log.Timber
 
 @HiltViewModel
 class ArticleKeywordViewModel @Inject constructor(
