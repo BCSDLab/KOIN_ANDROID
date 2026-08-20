@@ -26,7 +26,8 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
     onBackPressed: () -> Unit
 ) {
     val cancelRefreshList = { cancelRefresh: Boolean ->
-        navController.getBackStackEntry(LostAndFoundNavType.LostAndFoundListRoute)
+        runCatching { navController.getBackStackEntry(LostAndFoundNavType.LostAndFoundListRoute) }
+            .getOrNull()
             ?.savedStateHandle
             ?.let { handle ->
                 if (handle.get<Boolean>(CANCEL_REFRESH_LIST) != false) {
