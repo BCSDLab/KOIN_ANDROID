@@ -7,6 +7,7 @@ import `in`.koreatech.koin.data.response.chat.ChatListItemResponse
 import `in`.koreatech.koin.data.response.chat.ChatMessageResponse
 import `in`.koreatech.koin.data.response.chat.ChatRoomResponse
 import `in`.koreatech.koin.data.stomp.KoinStomp
+import `in`.koreatech.koin.data.stomp.KoinStompConnectionState
 import `in`.koreatech.koin.data.util.suspendRunCatching
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -17,6 +18,8 @@ class ChatRemoteDataSource @Inject constructor(
     private val chatAuthApi: ChatAuthApi,
     private val koinStomp: KoinStomp
 ) {
+    val connectionState: Flow<KoinStompConnectionState> = koinStomp.connectionState
+
     suspend fun connectWS() {
         koinStomp.connect()
     }

@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.lostandfound.ui.detail
 import android.webkit.URLUtil
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.article.LostAndFoundFilterParams
 import `in`.koreatech.koin.domain.model.user.User
@@ -19,7 +18,6 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
@@ -48,23 +46,21 @@ class LostAndFoundDetailViewModel @Inject constructor(
         initUserInfo()
     }
 
-    private fun initUserInfo() = viewModelScope.launch {
+    private fun initUserInfo() = intent {
         getUserStatusUseCase().collectLatest {
-            intent {
-                when (it) {
-                    is User.Student -> reduce {
-                        state.copy(
-                            isLoggedIn = true
-                        )
-                    }
-                    is User.General -> reduce {
-                        state.copy(
-                            isLoggedIn = true
-                        )
-                    }
-                    is User.Anonymous -> reduce {
-                        state.copy(isLoggedIn = false)
-                    }
+            when (it) {
+                is User.Student -> reduce {
+                    state.copy(
+                        isLoggedIn = true
+                    )
+                }
+                is User.General -> reduce {
+                    state.copy(
+                        isLoggedIn = true
+                    )
+                }
+                is User.Anonymous -> reduce {
+                    state.copy(isLoggedIn = false)
                 }
             }
         }

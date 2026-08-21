@@ -25,6 +25,7 @@ import org.hildan.krossbow.stomp.LostReceiptException
 import org.hildan.krossbow.websocket.WebSocketConnectionException
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
@@ -69,13 +70,17 @@ class ChatListViewModel @Inject constructor(
                     }
                 }
 
-                is User.Anonymous -> throw IllegalAccessException()
+                is User.Anonymous -> {
+                    postSideEffect(ChatListSideEffect.NavigateToLogin)
+                    return@collectLatest
+                }
             }
             _connectChannel.send(true)
         }
     }
 
     fun fetchChatList() = viewModelScope.launch {
+        if (container.stateFlow.value.userId == -1) return@launch
         getChatListUseCase().collect { data ->
             intent {
                 reduce {

@@ -4,7 +4,8 @@ data class SignInState(
     val loginId: String = "",
     val password: String = "",
     val showPassword: Boolean = false,
-    val loginError: LoginError = LoginError()
+    val loginError: LoginError = LoginError(),
+    val sessionId: String = ""
 ) {
     data class LoginError(
         val isError: Boolean = false,

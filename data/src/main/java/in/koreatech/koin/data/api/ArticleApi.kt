@@ -4,6 +4,7 @@ import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundPaginationRe
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundStatsResponse
 import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleResponse
+import `in`.koreatech.koin.data.response.article.ArticleV2Response
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -33,6 +34,17 @@ interface ArticleApi {
         @Path("id") articleId: Int,
         @Query("boardId") boardId: Int
     ): ArticleResponse
+
+    /**
+     * 단일 게시글 조회 + AI 요약
+     * @param id 게시글 아이디
+     * @param boardId 게시판 아이디, 이전 및 다음 게시글을 판별하기 위함
+     */
+    @GET("v2/articles/{id}")
+    suspend fun fetchArticleV2(
+        @Path("id") articleId: Int,
+        @Query("boardId") boardId: Int
+    ): ArticleV2Response
 
     @GET("articles/hot")
     suspend fun fetchHotArticles(): List<ArticleResponse>

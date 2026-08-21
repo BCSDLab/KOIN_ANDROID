@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.domain.repository
 
+import `in`.koreatech.koin.domain.model.chat.ChatConnectionState
 import `in`.koreatech.koin.domain.model.chat.ChatListItem
 import `in`.koreatech.koin.domain.model.chat.ChatMessage
 import `in`.koreatech.koin.domain.model.chat.ChatRoom
@@ -9,6 +10,8 @@ interface ChatRepository {
     suspend fun connectWS()
 
     suspend fun disconnectWS()
+
+    fun observeConnectionState(): Flow<ChatConnectionState>
 
     suspend fun getChatRoomList(): Flow<List<ChatListItem>>
 

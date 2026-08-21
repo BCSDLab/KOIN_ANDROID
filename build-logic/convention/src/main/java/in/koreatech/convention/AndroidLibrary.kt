@@ -9,15 +9,15 @@ internal fun Project.configureAndroidLibrary(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
     (commonExtension as? LibraryExtension)?.let {
-        it.defaultConfig.targetSdk = 35
+        it.defaultConfig.targetSdk = 36
     }
 
     commonExtension.apply {
         (this as? LibraryExtension)?.let {
-            it.defaultConfig.targetSdk = 35
+            it.defaultConfig.targetSdk = 36
         }
 
-        compileSdk = 35
+        compileSdk = 36
 
         defaultConfig {
             minSdk = 28

@@ -42,6 +42,7 @@ class CategoryViewModel @Inject constructor(
             CategoryMenuId.BUS_TIMETABLE -> AnalyticsConstant.Label.Category.CATEGORY_TRANSPORTATION to "버스 시간표"
             CategoryMenuId.TRANSPORT_SEARCH -> AnalyticsConstant.Label.Category.CATEGORY_TRANSPORTATION to "교통편 조회하기"
             CategoryMenuId.CALLVAN -> AnalyticsConstant.Label.Category.CATEGORY_TRANSPORTATION to "콜벤팟 모집"
+            CategoryMenuId.CHAT -> AnalyticsConstant.Label.Category.CATEGORY_ETC to "채팅"
             CategoryMenuId.HOUSING -> AnalyticsConstant.Label.Category.CATEGORY_ETC to "복덕방"
             CategoryMenuId.KOIN_BUSINESS -> AnalyticsConstant.Label.Category.CATEGORY_ETC to "코인 for Business"
         }

@@ -29,3 +29,15 @@ fun List<ConvertedChatMessages>.appendMessage(message: ChatMessage, userId: Int)
         dropLast(1).plus(ConvertedChatMessages(last().localDate, last().messages.plus(message.toConvertedChatMessage(userId))))
     }
 }
+
+fun List<ConvertedChatMessages>.mergeWithChatMessages(messages: List<ChatMessage>, userId: Int): List<ConvertedChatMessages> {
+    val existing = flatMap { it.messages }
+    val existingIds = existing.map { it.uploadId }.toSet()
+    val incoming = messages.map { it.toConvertedChatMessage(userId) }.filterNot { it.uploadId in existingIds }
+    if (incoming.isEmpty()) return this
+    return existing.plus(incoming)
+        .sortedBy { it.timestamp }
+        .groupBy { it.timestamp.toLocalDate() }
+        .toList()
+        .map { ConvertedChatMessages(it.first, it.second) }
+}

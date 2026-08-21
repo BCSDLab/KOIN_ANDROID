@@ -77,6 +77,10 @@ interface Navigator {
         context: Context
     ): Intent
 
+    fun navigateToChatList(
+        context: Context
+    ): Intent
+
     fun navigateToChatRoom(
         context: Context
     ): Intent

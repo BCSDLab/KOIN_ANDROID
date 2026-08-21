@@ -34,6 +34,7 @@ firebaseCrashlyticsBuildtools = "2.9.9"
 firebaseGradle = "2.9.9"
 googleServiceVersion = "4.3.14"
 glide = "4.14.2"
+gson = "2.11.0"
 guava = "33.0.0-android"
 hilt = "2.57.2"
 javaxInject = "1"
@@ -67,7 +68,7 @@ photoview = "2.3.0"
 playAppUpdate = "2.1.0"
 playFeatureDeliveryKtx = "2.1.0"
 powerSpinner = "1.2.7"
-retrofit = "2.9.0"
+retrofit = "2.10.0"
 rxjava = "2.1.2"
 rxandroid = "2.0.1"
 stickyScrollView = "1.0.3"
@@ -143,6 +144,7 @@ firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging
 firebase-perf = { group = "com.google.firebase", name = "firebase-perf" }
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 glide-ksp = { group = "com.github.bumptech.glide", name = "ksp", version.ref = "glide" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }

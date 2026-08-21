@@ -58,6 +58,7 @@ android {
 
         getByName("release") {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -83,6 +84,7 @@ android {
             initWith(getByName("debug"))
             isDebuggable = false
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -176,6 +178,8 @@ dependencies {
     implementation(libs.androidx.navigation.dynamic.features.fragment)
 
     implementation(libs.play.feature.delivery.ktx)
+
+    implementation(libs.gson)
 
     implementation(libs.timber)
 
