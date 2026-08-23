@@ -1,5 +1,8 @@
 package `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model
 
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
+
 data class MyRecruitmentPost(
     val id: Long,
     val category: RecruitmentCategory,
