@@ -41,8 +41,8 @@ import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.component.MyRecr
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.component.RecruitmentFilterBottomSheet
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.component.RecruitmentPostCard
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.MyRecruitmentPost
-import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentCategory
-import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentRole
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentStatus
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
