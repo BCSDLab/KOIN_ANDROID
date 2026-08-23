@@ -42,8 +42,8 @@ import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.component
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.component.AppliedRecruitmentPostCard
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.model.AppliedRecruitmentPost
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.model.AppliedRecruitmentStatus
-import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentCategory
-import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentRole
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState

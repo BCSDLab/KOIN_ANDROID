@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.model
 
-import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentCategory
-import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentRole
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
 
 data class AppliedRecruitmentPost(
     val id: Long,
