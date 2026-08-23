@@ -20,16 +20,15 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -44,13 +43,7 @@ fun RecruitmentFilterBottomSheetLayout(
     contentVerticalArrangement: Vertical = Arrangement.spacedBy(16.dp),
     content: @Composable () -> Unit
 ) {
-    ModalBottomSheet(
-        onDismissRequest = onDismiss,
-        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-        containerColor = RebrandKoinTheme.colors.neutral0,
-        shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
-        dragHandle = null
-    ) {
+    RecruitmentBottomSheet(onDismiss = onDismiss) {
         Column(modifier = Modifier.fillMaxWidth()) {
             Row(
                 modifier = Modifier
@@ -190,5 +183,29 @@ fun FilterChip(
             style = RebrandKoinTheme.typography.bold14,
             color = textColor
         )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+private fun RecruitmentFilterBottomSheetLayoutPreview() {
+    RebrandKoinTheme {
+        RecruitmentFilterBottomSheetLayout(
+            onDismiss = {},
+            onReset = {},
+            onApply = {}
+        ) {
+            FilterSection(
+                title = "상태",
+                chips = listOf("전체" to true, "모집 중" to false, "모집 완료" to false),
+                onChipClick = {}
+            )
+            FilterSection(
+                title = "정렬",
+                chips = listOf("최신순" to true, "마감 임박" to false),
+                onChipClick = {}
+            )
+        }
     }
 }
