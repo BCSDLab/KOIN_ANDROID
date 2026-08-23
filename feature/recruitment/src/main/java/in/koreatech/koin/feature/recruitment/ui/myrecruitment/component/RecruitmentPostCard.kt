@@ -35,9 +35,9 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
-import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.MyRecruitmentPost
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
+import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.MyRecruitmentPost
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentStatus
 
 @OptIn(ExperimentalLayoutApi::class)

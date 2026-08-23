@@ -36,13 +36,13 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.component.CloseRecruitmentDialog
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.component.MyRecruitmentEmptyState
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.component.RecruitmentFilterBottomSheet
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.component.RecruitmentPostCard
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.MyRecruitmentPost
-import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
-import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentStatus
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
