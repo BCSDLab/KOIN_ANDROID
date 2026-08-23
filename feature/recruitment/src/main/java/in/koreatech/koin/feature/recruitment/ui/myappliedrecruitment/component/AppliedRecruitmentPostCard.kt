@@ -166,7 +166,13 @@ private fun CategoryBadge(
             bgColor = RebrandKoinTheme.colors.primary100
             textColor = RebrandKoinTheme.colors.primary600
         }
+        RecruitmentCategory.PROJECT -> {
+            // TODO: 색상 미정 - 스터디 색상 임시 적용
+            bgColor = RebrandKoinTheme.colors.primary100
+            textColor = RebrandKoinTheme.colors.primary600
+        }
         RecruitmentCategory.ETC -> {
+            // TODO: 색상 미정 - neutral 임시 적용
             bgColor = RebrandKoinTheme.colors.neutral200
             textColor = RebrandKoinTheme.colors.neutral600
         }
