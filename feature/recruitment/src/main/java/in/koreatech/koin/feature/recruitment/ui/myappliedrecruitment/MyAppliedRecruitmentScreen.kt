@@ -20,7 +20,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -52,9 +51,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun MyAppliedRecruitmentScreen(
     viewModel: MyAppliedRecruitmentViewModel = hiltViewModel(),
-    onNavigateUp: () -> Unit = {},
-    onNotification: () -> Unit = {},
-    onMoreOptions: () -> Unit = {}
+    onNavigateUp: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
 
@@ -67,25 +64,7 @@ fun MyAppliedRecruitmentScreen(
                 onNavigationIconClick = onNavigateUp,
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = RebrandKoinTheme.colors.neutral50
-                ),
-                actions = {
-                    IconButton(onClick = onNotification) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_applied_notification),
-                            contentDescription = null,
-                            tint = RebrandKoinTheme.colors.neutral700,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                    IconButton(onClick = onMoreOptions) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_applied_more_vert),
-                            contentDescription = null,
-                            tint = RebrandKoinTheme.colors.neutral700,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                }
+                )
             )
         },
         contentWindowInsets = WindowInsets(0, 0, 0, 0)
