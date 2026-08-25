@@ -17,6 +17,7 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
+@Suppress("TooManyFunctions")
 class RecruitmentMainViewModel @Inject constructor() :
     ViewModel(),
     ContainerHost<RecruitmentMainState, RecruitmentMainSideEffect> {
