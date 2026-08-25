@@ -7,6 +7,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Vertical
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -23,16 +25,21 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
+import androidx.compose.ui.util.fastForEachIndexed
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,7 +66,7 @@ fun RecruitmentFilterBottomSheetLayout(
                 )
                 IconButton(onClick = onDismiss) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_recruitment_close),
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_close),
                         contentDescription = null,
                         tint = RebrandKoinTheme.colors.neutral700,
                         modifier = Modifier.size(24.dp)
@@ -108,7 +115,7 @@ fun RecruitmentFilterBottomSheetLayout(
                             style = RebrandKoinTheme.typography.bold16
                         )
                         Icon(
-                            painter = painterResource(R.drawable.ic_recruitment_uim_process),
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_uim_process),
                             contentDescription = null,
                             modifier = Modifier.size(16.dp)
                         )
@@ -136,9 +143,10 @@ fun RecruitmentFilterBottomSheetLayout(
 }
 
 @Composable
+@OptIn(ExperimentalLayoutApi::class)
 fun FilterSection(
     title: String,
-    chips: List<Pair<String, Boolean>>,
+    chips: ImmutableList<Pair<String, Boolean>>,
     onChipClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -148,13 +156,18 @@ fun FilterSection(
             style = RebrandKoinTheme.typography.bold16,
             color = RebrandKoinTheme.colors.neutral700
         )
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            chips.forEachIndexed { index, (label, isSelected) ->
-                FilterChip(
-                    text = label,
-                    isSelected = isSelected,
-                    onClick = { onChipClick(index) }
-                )
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            chips.fastForEachIndexed { index, (label, isSelected) ->
+                key(label) {
+                    FilterChip(
+                        text = label,
+                        isSelected = isSelected,
+                        onClick = { onChipClick(index) }
+                    )
+                }
             }
         }
     }
@@ -198,12 +211,12 @@ private fun RecruitmentFilterBottomSheetLayoutPreview() {
         ) {
             FilterSection(
                 title = "상태",
-                chips = listOf("전체" to true, "모집 중" to false, "모집 완료" to false),
+                chips = persistentListOf("전체" to true, "모집 중" to false, "모집 완료" to false),
                 onChipClick = {}
             )
             FilterSection(
                 title = "정렬",
-                chips = listOf("최신순" to true, "마감 임박" to false),
+                chips = persistentListOf("최신순" to true, "마감 임박" to false),
                 onChipClick = {}
             )
         }
