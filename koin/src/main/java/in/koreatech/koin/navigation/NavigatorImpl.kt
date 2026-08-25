@@ -20,7 +20,7 @@ import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
 import `in`.koreatech.koin.feature.department.DepartmentActivity
 import `in`.koreatech.koin.feature.dining.ui.DiningActivity
 import `in`.koreatech.koin.feature.lostandfound.ui.LostAndFoundActivity
-import `in`.koreatech.koin.feature.recruitment.RecruitmentActivity
+import `in`.koreatech.koin.feature.recruitment.ui.RecruitmentActivity
 import `in`.koreatech.koin.feature.store.StoreActivity
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import `in`.koreatech.koin.ui.land.LandActivity

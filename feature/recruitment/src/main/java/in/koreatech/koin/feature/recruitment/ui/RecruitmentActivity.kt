@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.recruitment
+package `in`.koreatech.koin.feature.recruitment.ui
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
