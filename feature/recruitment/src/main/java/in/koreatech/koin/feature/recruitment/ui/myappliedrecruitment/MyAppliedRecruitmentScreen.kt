@@ -28,7 +28,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,7 +43,6 @@ import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.component
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.component.AppliedRecruitmentFilterBottomSheet
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.component.AppliedRecruitmentPostCard
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.model.AppliedRecruitmentPost
-import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.model.AppliedRecruitmentStatus
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
@@ -78,11 +78,9 @@ fun MyAppliedRecruitmentScreen(
 
     if (state.showFilterSheet) {
         AppliedRecruitmentFilterBottomSheet(
-            currentFilter = state.pendingFilter,
+            currentFilter = state.filter,
             onDismiss = { viewModel.dismissFilterSheet() },
-            onFilterChange = { viewModel.updatePendingFilter(it) },
-            onReset = { viewModel.resetPendingFilter() },
-            onApply = { viewModel.applyFilter() }
+            onApply = { viewModel.applyFilter(it) }
         )
     }
 }
@@ -153,7 +151,7 @@ private fun FilterButton(
             color = RebrandKoinTheme.colors.neutral700
         )
         Icon(
-            painter = painterResource(R.drawable.ic_filter_horizontal),
+            imageVector = ImageVector.vectorResource(R.drawable.ic_filter_horizontal),
             contentDescription = null,
             modifier = Modifier.size(21.dp),
             tint = RebrandKoinTheme.colors.primary500
@@ -175,7 +173,7 @@ private fun MyAppliedRecruitmentScreenWithPostsPreview() {
                     applicationStatus = AppliedRecruitmentStatus.Approved,
                     daysLeft = 5,
                     title = "AI 아이디어 공모전 팀원 모집",
-                    roles = listOf(
+                    roles = persistentListOf(
                         RecruitmentRole("프론트엔드", 1),
                         RecruitmentRole("백엔드", 1)
                     ),

@@ -10,6 +10,5 @@ import kotlinx.collections.immutable.persistentListOf
 data class MyAppliedRecruitmentState(
     val posts: ImmutableList<AppliedRecruitmentPost> = persistentListOf(),
     val filter: AppliedFilterState = AppliedFilterState(),
-    val pendingFilter: AppliedFilterState = AppliedFilterState(),
     val showFilterSheet: Boolean = false
 )

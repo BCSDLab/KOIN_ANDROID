@@ -17,21 +17,27 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastForEach
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.model.AppliedRecruitmentPost
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.model.AppliedRecruitmentStatus
+import kotlinx.collections.immutable.persistentListOf
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -85,7 +91,11 @@ fun AppliedRecruitmentPostCard(
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        post.roles.forEach { RoleChip(role = it) }
+                        post.roles.fastForEach { role ->
+                            key(role.name) {
+                                RoleChip(role = role)
+                            }
+                        }
                     }
                 }
             }
@@ -101,7 +111,7 @@ fun AppliedRecruitmentPostCard(
                     InfoItem(
                         icon = {
                             Icon(
-                                painter = painterResource(R.drawable.ic_recruitment_location),
+                                imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_location),
                                 contentDescription = null,
                                 modifier = Modifier.size(12.dp),
                                 tint = RebrandKoinTheme.colors.neutral500
@@ -112,7 +122,7 @@ fun AppliedRecruitmentPostCard(
                     InfoItem(
                         icon = {
                             Icon(
-                                painter = painterResource(R.drawable.ic_recruitment_calendar),
+                                imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_calendar),
                                 contentDescription = null,
                                 modifier = Modifier.size(12.dp),
                                 tint = RebrandKoinTheme.colors.neutral500
@@ -123,7 +133,7 @@ fun AppliedRecruitmentPostCard(
                     InfoItem(
                         icon = {
                             Icon(
-                                painter = painterResource(R.drawable.ic_recruitment_user_group),
+                                imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_user_group),
                                 contentDescription = null,
                                 modifier = Modifier.size(12.dp),
                                 tint = RebrandKoinTheme.colors.neutral500
@@ -135,7 +145,7 @@ fun AppliedRecruitmentPostCard(
                 if (isApproved) {
                     Spacer(modifier = Modifier.weight(1f))
                     Icon(
-                        painter = painterResource(R.drawable.ic_recruitment_chat),
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_chat),
                         contentDescription = null,
                         tint = RebrandKoinTheme.colors.primary500,
                         modifier = Modifier.size(24.dp)
@@ -151,30 +161,14 @@ private fun CategoryBadge(
     category: RecruitmentCategory,
     modifier: Modifier = Modifier
 ) {
-    val bgColor: Color
-    val textColor: Color
-    when (category) {
-        RecruitmentCategory.CONTEST -> {
-            bgColor = RebrandKoinTheme.colors.info200
-            textColor = RebrandKoinTheme.colors.info700
-        }
-        RecruitmentCategory.EXTERNAL_ACTIVITY -> {
-            bgColor = RebrandKoinTheme.colors.success200
-            textColor = RebrandKoinTheme.colors.success700
-        }
-        RecruitmentCategory.STUDY -> {
-            bgColor = RebrandKoinTheme.colors.primary100
-            textColor = RebrandKoinTheme.colors.primary600
-        }
-        RecruitmentCategory.PROJECT -> {
-            // TODO: 색상 미정 - 스터디 색상 임시 적용
-            bgColor = RebrandKoinTheme.colors.primary100
-            textColor = RebrandKoinTheme.colors.primary600
-        }
-        RecruitmentCategory.ETC -> {
-            // TODO: 색상 미정 - neutral 임시 적용
-            bgColor = RebrandKoinTheme.colors.neutral200
-            textColor = RebrandKoinTheme.colors.neutral600
+    val colors = RebrandKoinTheme.colors
+    val (bgColor, textColor) = remember(category, colors) {
+        when (category) {
+            RecruitmentCategory.CONTEST -> colors.info200 to colors.info700
+            RecruitmentCategory.EXTERNAL_ACTIVITY -> colors.success200 to colors.success700
+            RecruitmentCategory.STUDY -> colors.primary100 to colors.primary600
+            RecruitmentCategory.PROJECT -> colors.primary100 to colors.primary600
+            RecruitmentCategory.ETC -> colors.neutral200 to colors.neutral600
         }
     }
     Box(
@@ -196,20 +190,16 @@ private fun ApplicationStatusLabel(
     status: AppliedRecruitmentStatus,
     modifier: Modifier = Modifier
 ) {
-    val text: String
-    val color: Color
-    when (status) {
-        AppliedRecruitmentStatus.Approved -> {
-            text = stringResource(R.string.recruitment_applied_status_approved)
-            color = RebrandKoinTheme.colors.primary600
-        }
-        AppliedRecruitmentStatus.Pending -> {
-            text = stringResource(R.string.recruitment_applied_status_pending)
-            color = RebrandKoinTheme.colors.neutral500
-        }
-        AppliedRecruitmentStatus.Rejected -> {
-            text = stringResource(R.string.recruitment_applied_status_rejected)
-            color = RebrandKoinTheme.colors.danger700
+    val context = LocalContext.current
+    val colors = RebrandKoinTheme.colors
+    val (text, color) = remember(status, colors) {
+        when (status) {
+            AppliedRecruitmentStatus.Approved ->
+                context.getString(R.string.recruitment_applied_status_approved) to colors.primary600
+            AppliedRecruitmentStatus.Pending ->
+                context.getString(R.string.recruitment_applied_status_pending) to colors.neutral500
+            AppliedRecruitmentStatus.Rejected ->
+                context.getString(R.string.recruitment_applied_status_rejected) to colors.danger700
         }
     }
     Text(
@@ -243,7 +233,8 @@ private fun RoleChip(
 private fun InfoItem(
     icon: @Composable () -> Unit,
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    textColor: Color = RebrandKoinTheme.colors.neutral500
 ) {
     Row(
         modifier = modifier,
@@ -254,10 +245,12 @@ private fun InfoItem(
         Text(
             text = text,
             style = RebrandKoinTheme.typography.regular10,
-            color = RebrandKoinTheme.colors.neutral500
+            color = textColor
         )
     }
 }
+
+private const val PREVIEW_DATE_RANGE = "2026.07.26 ~ 2026.08.07"
 
 @Preview(showBackground = true, backgroundColor = 0xFFF8F8FA)
 @Composable
@@ -270,12 +263,12 @@ private fun AppliedPostCardApprovedPreview() {
                 applicationStatus = AppliedRecruitmentStatus.Approved,
                 daysLeft = 5,
                 title = "AI 아이디어 공모전 팀원 모집",
-                roles = listOf(
+                roles = persistentListOf(
                     RecruitmentRole("프론트엔드", 1),
                     RecruitmentRole("백엔드", 1)
                 ),
                 location = "온라인",
-                dateRange = "2026.07.26 ~ 2026.08.07",
+                dateRange = PREVIEW_DATE_RANGE,
                 currentApplicants = 2,
                 maxApplicants = 3
             ),
@@ -296,7 +289,7 @@ private fun AppliedPostCardPendingPreview() {
                 daysLeft = 3,
                 title = "2026 스터디 팀원 모집",
                 location = "온·오프라인",
-                dateRange = "2026.07.26 ~ 2026.08.07",
+                dateRange = PREVIEW_DATE_RANGE,
                 currentApplicants = 1,
                 maxApplicants = 5
             ),
@@ -317,7 +310,7 @@ private fun AppliedPostCardRejectedPreview() {
                 daysLeft = null,
                 title = "2026 대외활동 팀원 모집",
                 location = "온·오프라인",
-                dateRange = "2026.07.26 ~ 2026.08.07",
+                dateRange = PREVIEW_DATE_RANGE,
                 currentApplicants = 5,
                 maxApplicants = 5
             ),
