@@ -66,7 +66,7 @@ fun MyRecruitmentScreen(
                     containerColor = RebrandKoinTheme.colors.neutral50
                 )
             )
-        },
+        }
     ) { innerPadding ->
         MyRecruitmentScreenImpl(
             posts = state.posts,
