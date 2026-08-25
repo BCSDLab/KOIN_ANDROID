@@ -15,6 +15,7 @@ enum class CategoryMenuId {
     BUS_TIMETABLE,
     TRANSPORT_SEARCH,
     CALLVAN,
+    RECRUITMENT,
     CHAT,
     HOUSING,
     KOIN_BUSINESS
@@ -40,6 +41,7 @@ internal val TRANSPORT_MENUS = persistentListOf(
 )
 
 internal val OTHER_MENUS = persistentListOf(
+    CategoryMenu(CategoryMenuId.RECRUITMENT, R.drawable.ic_recruitment_category, R.string.recruitment),
     CategoryMenu(CategoryMenuId.CHAT, R.drawable.ic_category_chat, R.string.chat),
     CategoryMenu(CategoryMenuId.HOUSING, R.drawable.ic_home, R.string.housing),
     CategoryMenu(CategoryMenuId.KOIN_BUSINESS, R.drawable.ic_koin_business, R.string.koin_business)

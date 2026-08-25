@@ -141,6 +141,7 @@ dependencies {
     implementation(projects.feature.dining)
     implementation(projects.feature.lostandfound)
     implementation(projects.feature.callvan)
+    implementation(projects.feature.recruitment)
     implementation(projects.feature.home)
     implementation(projects.feature.profile)
     implementation(projects.feature.notification)

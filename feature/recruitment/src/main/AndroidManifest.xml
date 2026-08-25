@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name=".ui.RecruitmentActivity"
+            android:name=".RecruitmentActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
     </application>
