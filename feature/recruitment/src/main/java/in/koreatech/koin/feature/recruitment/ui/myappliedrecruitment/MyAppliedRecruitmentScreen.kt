@@ -8,13 +8,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -61,14 +58,12 @@ fun MyAppliedRecruitmentScreen(
         topBar = {
             KoinTopAppBar(
                 title = stringResource(R.string.recruitment_applied_title),
-                textStyle = RebrandKoinTheme.typography.bold16,
                 onNavigationIconClick = onNavigateUp,
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = RebrandKoinTheme.colors.neutral50
                 )
             )
-        },
-        contentWindowInsets = WindowInsets(0, 0, 0, 0)
+        }
     ) { innerPadding ->
         MyAppliedRecruitmentScreenImpl(
             posts = state.posts,
@@ -123,9 +118,6 @@ private fun MyAppliedRecruitmentScreenImpl(
             ) {
                 items(posts, key = { it.id }) { post ->
                     AppliedRecruitmentPostCard(post = post)
-                }
-                item {
-                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
                 }
             }
         }

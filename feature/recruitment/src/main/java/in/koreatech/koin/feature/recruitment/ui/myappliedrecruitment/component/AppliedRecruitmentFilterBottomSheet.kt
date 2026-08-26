@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.component
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -11,7 +10,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.ui.component.FilterSection
@@ -60,8 +58,7 @@ fun AppliedRecruitmentFilterBottomSheet(
             localStatus = AppliedFilterStatus.ALL
             localSort = AppliedFilterSort.LATEST
         },
-        onApply = { onApply(AppliedFilterState(status = localStatus, sort = localSort)) },
-        contentVerticalArrangement = Arrangement.spacedBy(32.dp)
+        onApply = { onApply(AppliedFilterState(status = localStatus, sort = localSort)) }
     ) {
         FilterSection(
             title = stringResource(R.string.recruitment_applied_filter_status_section),
