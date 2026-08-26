@@ -45,7 +45,7 @@ fun AppliedRecruitmentPostCard(
     post: AppliedRecruitmentPost,
     modifier: Modifier = Modifier
 ) {
-    val isApproved = post.applicationStatus is AppliedRecruitmentStatus.Approved
+    val isApproved = remember(post.applicationStatus) { post.applicationStatus is AppliedRecruitmentStatus.Approved }
 
     Card(
         modifier = modifier.fillMaxWidth(),
