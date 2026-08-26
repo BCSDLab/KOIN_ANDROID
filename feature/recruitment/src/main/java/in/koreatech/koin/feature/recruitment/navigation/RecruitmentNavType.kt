@@ -5,8 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class RecruitmentNavType {
     @Serializable
-    data object MyRecruitmentList : RecruitmentNavType()
-
-    @Serializable
-    data object MyAppliedRecruitmentList : RecruitmentNavType()
+    data object MyRecruitment : RecruitmentNavType()
 }
