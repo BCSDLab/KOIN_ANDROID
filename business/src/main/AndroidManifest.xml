@@ -15,9 +15,7 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
 
-    <application
-        android:name=".KoinBusinessApplication"
-        android:allowBackup="false">
+    <application android:name=".KoinBusinessApplication">
         <activity
             android:name=".main.BusinessMainActivity"
             android:exported="true"
