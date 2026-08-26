@@ -18,7 +18,6 @@ class RecruitmentActivity : ComponentActivity() {
         try {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         } catch (ignore: IllegalStateException) {
-            // 투명 테마 Activity에서 방향 고정 시 발생하는 예외를 무시
         }
 
         setContent {
