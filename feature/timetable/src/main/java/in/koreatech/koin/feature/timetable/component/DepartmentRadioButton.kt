@@ -2,9 +2,7 @@ package `in`.koreatech.koin.feature.timetable.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
@@ -40,10 +38,7 @@ fun DepartmentRadioButton(
             )
         )
         Text(
-            modifier = Modifier
-                .wrapContentSize()
-                .weight(1f)
-                .fillMaxWidth(),
+            modifier = Modifier.weight(1f),
             textAlign = TextAlign.Start,
             text = text,
             style = KoinTheme.typography.regular15.copy(
