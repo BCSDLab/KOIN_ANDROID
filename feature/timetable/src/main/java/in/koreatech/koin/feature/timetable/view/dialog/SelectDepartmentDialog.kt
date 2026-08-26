@@ -34,7 +34,6 @@ import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.DepartmentRadioButton
 import `in`.koreatech.koin.feature.timetable.component.FilledButtonType
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
-import `in`.koreatech.koin.feature.timetable.model.TimetableConstants.departments
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -148,7 +147,7 @@ private fun SelectDepartmentDialogPreview() {
     KoinTheme {
         SelectDepartmentDialog(
             department = "",
-            departments = departments,
+            departments = emptyList(),
             onConfirm = {},
             onDismiss = {}
         )
