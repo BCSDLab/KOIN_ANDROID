@@ -17,6 +17,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentFilterBot
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentFilterSort
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentFilterState
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentFilterStatus
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,14 +32,14 @@ fun RecruitmentFilterBottomSheet(
 
     val context = LocalContext.current
     val statusOrder = remember {
-        listOf(
+        persistentListOf(
             RecruitmentFilterStatus.ALL to context.getString(R.string.recruitment_filter_status_all),
             RecruitmentFilterStatus.RECRUITING to context.getString(R.string.recruitment_filter_status_recruiting),
             RecruitmentFilterStatus.COMPLETE to context.getString(R.string.recruitment_filter_status_complete)
         )
     }
     val sortOrder = remember {
-        listOf(
+        persistentListOf(
             RecruitmentFilterSort.LATEST to context.getString(R.string.recruitment_filter_sort_latest),
             RecruitmentFilterSort.DEADLINE to context.getString(R.string.recruitment_filter_sort_deadline)
         )
