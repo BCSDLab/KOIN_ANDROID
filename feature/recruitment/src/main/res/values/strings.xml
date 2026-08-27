@@ -30,4 +30,13 @@
 
     <string name="recruitment_empty_title">작성한 모집글이 없어요.</string>
     <string name="recruitment_empty_subtitle">직접 모집글을 작성하여 팀원을 모집해보세요.</string>
+
+    <string name="recruitment_applied_title">내가 지원한 모집글</string>
+    <string name="recruitment_applied_post_count">총 %d개의 지원 내역</string>
+    <string name="recruitment_applied_status_approved">승인</string>
+    <string name="recruitment_applied_status_pending">대기</string>
+    <string name="recruitment_applied_status_rejected">거절</string>
+    <string name="recruitment_applied_filter_status_section">지원 상태</string>
+    <string name="recruitment_applied_empty_title">지원한 모집글이 없어요.</string>
+    <string name="recruitment_applied_empty_subtitle">다양한 모집글에 지원해 보세요.</string>
 </resources>
