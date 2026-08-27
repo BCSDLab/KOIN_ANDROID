@@ -1,0 +1,8 @@
+<resources>
+    <string name="recruitment_chat_member_count_icon">참여 인원</string>
+    <string name="recruitment_chat_toolbar_participants">%1$d/%2$d</string>
+    <string name="recruitment_chat_add_image">이미지 추가</string>
+    <string name="recruitment_chat_send">전송</string>
+    <string name="recruitment_chat_input_placeholder">메세지 보내기</string>
+    <string name="recruitment_chat_partner_profile_image">상대방 프로필 이미지</string>
+</resources>
