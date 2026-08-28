@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recruitment_my_post_title">내가 작성한 모집글</string>
+    <string name="recruitment_my_post_count">총 %d개의 모집글</string>
+    <string name="recruitment_filter">필터</string>
+
+    <string name="recruitment_status_d_day">D-%d</string>
+    <string name="recruitment_status_complete">모집완료</string>
+
+    <string name="recruitment_role_item">%1$s %2$d명</string>
+    <string name="recruitment_applicant_count">%1$d/%2$d명</string>
+
+    <string name="recruitment_button_applicant_manage">지원자 관리</string>
+    <string name="recruitment_button_close_recruitment">모집 마감</string>
+
+    <string name="recruitment_close_dialog_title">해당 모집글을 마감하시겠어요?</string>
+    <string name="recruitment_close_dialog_message">마감 후에는 더 이상 지원자를 받을 수 없습니다.</string>
+    <string name="recruitment_close_dialog_confirm">마감하기</string>
+    <string name="recruitment_close_dialog_cancel">취소</string>
+
+    <string name="recruitment_filter_status">모집 상태</string>
+    <string name="recruitment_filter_status_all">전체</string>
+    <string name="recruitment_filter_status_recruiting">모집 중</string>
+    <string name="recruitment_filter_status_complete">모집 완료</string>
+    <string name="recruitment_filter_sort">정렬</string>
+    <string name="recruitment_filter_sort_latest">최신순</string>
+    <string name="recruitment_filter_sort_deadline">마감 임박순</string>
+    <string name="recruitment_filter_reset">초기화</string>
+    <string name="recruitment_filter_apply">적용하기</string>
+
+    <string name="recruitment_empty_title">작성한 모집글이 없어요.</string>
+    <string name="recruitment_empty_subtitle">직접 모집글을 작성하여 팀원을 모집해보세요.</string>
+</resources>

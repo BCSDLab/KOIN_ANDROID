@@ -1,0 +1,24 @@
+plugins {
+    alias(libs.plugins.koin.feature)
+    alias(libs.plugins.koin.hilt)
+    alias(libs.plugins.koin.library.orbit)
+    alias(libs.plugins.kotlinx.serialization)
+}
+
+android {
+    namespace = "in.koreatech.koin.feature.recruitment"
+}
+
+dependencies {
+    implementation(projects.core)
+    implementation(projects.core.navigation)
+    implementation(projects.domain)
+    implementation(projects.core.designsystem)
+    implementation(projects.core.analytics)
+
+    implementation(libs.androidx.core.ktx)
+
+    implementation(libs.kotlinx.collections.immutable)
+
+    implementation(libs.timber)
+}
