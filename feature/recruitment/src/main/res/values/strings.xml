@@ -13,4 +13,63 @@
     <string name="recruitment_notification_category_application_rejected">팀원 모집 지원 거절</string>
     <string name="recruitment_notification_category_post_deleted">팀원 모집글 삭제</string>
     <string name="recruitment_notification_category_recruitment_closed">팀원 모집기간 종료</string>
+
+    <string name="recruitment_my_post_title">내가 작성한 모집글</string>
+    <string name="recruitment_my_post_count">총 %d개의 모집글</string>
+    <string name="recruitment_filter">필터</string>
+
+    <string name="recruitment_status_d_day">D-%d</string>
+    <string name="recruitment_status_complete">모집완료</string>
+
+    <string name="recruitment_role_item">%1$s %2$d명</string>
+    <string name="recruitment_applicant_count">%1$d/%2$d명</string>
+
+    <string name="recruitment_button_applicant_manage">지원자 관리</string>
+    <string name="recruitment_button_close_recruitment">모집 마감</string>
+
+    <string name="recruitment_close_dialog_title">해당 모집글을 마감하시겠어요?</string>
+    <string name="recruitment_close_dialog_message">마감 후에는 더 이상 지원자를 받을 수 없습니다.</string>
+    <string name="recruitment_close_dialog_confirm">마감하기</string>
+    <string name="recruitment_close_dialog_cancel">취소</string>
+
+    <string name="recruitment_filter_status">모집 상태</string>
+    <string name="recruitment_filter_status_all">전체</string>
+    <string name="recruitment_filter_status_recruiting">모집 중</string>
+    <string name="recruitment_filter_status_complete">모집 완료</string>
+    <string name="recruitment_filter_sort">정렬</string>
+    <string name="recruitment_filter_sort_latest">최신순</string>
+    <string name="recruitment_filter_sort_deadline">마감 임박순</string>
+    <string name="recruitment_filter_reset">초기화</string>
+    <string name="recruitment_filter_apply">적용하기</string>
+
+    <string name="recruitment_empty_title">작성한 모집글이 없어요.</string>
+    <string name="recruitment_empty_subtitle">직접 모집글을 작성하여 팀원을 모집해보세요.</string>
+
+    <string name="recruitment_applicant_management_title">지원자 관리</string>
+    <string name="recruitment_applicant_list_title">지원자 목록</string>
+    <string name="recruitment_applicant_list_count">총 %d명</string>
+    <string name="recruitment_applicant_role_info">%1$s |  %2$s · %3$s</string>
+    <string name="recruitment_applicant_empty_title">아직 지원자가 없어요.</string>
+    <string name="recruitment_applicant_empty_subtitle">새로운 지원자가 등록되면 이곳에서 확인할 수 있어요.</string>
+
+    <string name="recruitment_applicant_detail_title">지원자 상세</string>
+    <string name="recruitment_applicant_detail_basic_info">기본 정보</string>
+    <string name="recruitment_applicant_detail_skills">보유기술</string>
+    <string name="recruitment_applicant_detail_activities">활동 이력</string>
+    <string name="recruitment_applicant_detail_activity_period">활동 기간</string>
+    <string name="recruitment_applicant_detail_activity_content">활동 내용</string>
+    <string name="recruitment_applicant_detail_introduction">자기소개</string>
+    <string name="recruitment_applicant_detail_application_info">지원 내용</string>
+    <string name="recruitment_applicant_detail_motivation">지원 동기</string>
+    <string name="recruitment_applicant_detail_available_time">활동 가능 시간</string>
+    <string name="recruitment_applicant_detail_reject">거절하기</string>
+    <string name="recruitment_applicant_detail_approve">승인하기</string>
+
+    <string name="recruitment_applicant_approve_dialog_title">해당 지원자를 승인하시겠어요?</string>
+    <string name="recruitment_applicant_approve_dialog_message">승인 후 지원자와 채팅방이 생성됩니다.</string>
+    <string name="recruitment_applicant_approve_dialog_confirm">승인하기</string>
+    <string name="recruitment_applicant_reject_dialog_title">해당 지원자를 거절하시겠어요?</string>
+    <string name="recruitment_applicant_reject_dialog_message">거절 후에는 되돌릴 수 없습니다.</string>
+    <string name="recruitment_applicant_reject_dialog_confirm">거절하기</string>
+    <string name="recruitment_applicant_decision_dialog_cancel">취소</string>
 </resources>
