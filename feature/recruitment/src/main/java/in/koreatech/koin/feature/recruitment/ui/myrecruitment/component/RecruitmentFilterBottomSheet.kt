@@ -2,6 +2,12 @@ package `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.component
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -11,48 +17,58 @@ import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentFilterBot
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentFilterSort
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentFilterState
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentFilterStatus
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecruitmentFilterBottomSheet(
     currentFilter: RecruitmentFilterState,
     onDismiss: () -> Unit,
-    onFilterChange: (RecruitmentFilterState) -> Unit,
-    onReset: () -> Unit,
-    onApply: () -> Unit
+    onApply: (RecruitmentFilterState) -> Unit
 ) {
+    var localStatus by rememberSaveable { mutableStateOf(currentFilter.status) }
+    var localSort by rememberSaveable { mutableStateOf(currentFilter.sort) }
+
+    val context = LocalContext.current
+    val statusOrder = remember {
+        persistentListOf(
+            RecruitmentFilterStatus.ALL to context.getString(R.string.recruitment_filter_status_all),
+            RecruitmentFilterStatus.RECRUITING to context.getString(R.string.recruitment_filter_status_recruiting),
+            RecruitmentFilterStatus.COMPLETE to context.getString(R.string.recruitment_filter_status_complete)
+        )
+    }
+    val sortOrder = remember {
+        persistentListOf(
+            RecruitmentFilterSort.LATEST to context.getString(R.string.recruitment_filter_sort_latest),
+            RecruitmentFilterSort.DEADLINE to context.getString(R.string.recruitment_filter_sort_deadline)
+        )
+    }
+    val statusChips = remember(localStatus) {
+        statusOrder.map { (status, label) -> label to (localStatus == status) }.toPersistentList()
+    }
+    val sortChips = remember(localSort) {
+        sortOrder.map { (sort, label) -> label to (localSort == sort) }.toPersistentList()
+    }
+
     RecruitmentFilterBottomSheetLayout(
         onDismiss = onDismiss,
-        onReset = onReset,
-        onApply = onApply
+        onReset = {
+            localStatus = RecruitmentFilterStatus.ALL
+            localSort = RecruitmentFilterSort.LATEST
+        },
+        onApply = { onApply(RecruitmentFilterState(status = localStatus, sort = localSort)) }
     ) {
         FilterSection(
             title = stringResource(R.string.recruitment_filter_status),
-            chips = listOf(
-                stringResource(R.string.recruitment_filter_status_all) to (currentFilter.status == RecruitmentFilterStatus.ALL),
-                stringResource(R.string.recruitment_filter_status_recruiting) to (currentFilter.status == RecruitmentFilterStatus.RECRUITING),
-                stringResource(R.string.recruitment_filter_status_complete) to (currentFilter.status == RecruitmentFilterStatus.COMPLETE)
-            ),
-            onChipClick = { index ->
-                val newStatus = when (index) {
-                    0 -> RecruitmentFilterStatus.ALL
-                    1 -> RecruitmentFilterStatus.RECRUITING
-                    else -> RecruitmentFilterStatus.COMPLETE
-                }
-                onFilterChange(currentFilter.copy(status = newStatus))
-            }
+            chips = statusChips,
+            onChipClick = { index -> localStatus = statusOrder[index].first }
         )
 
         FilterSection(
             title = stringResource(R.string.recruitment_filter_sort),
-            chips = listOf(
-                stringResource(R.string.recruitment_filter_sort_latest) to (currentFilter.sort == RecruitmentFilterSort.LATEST),
-                stringResource(R.string.recruitment_filter_sort_deadline) to (currentFilter.sort == RecruitmentFilterSort.DEADLINE)
-            ),
-            onChipClick = { index ->
-                val newSort = if (index == 0) RecruitmentFilterSort.LATEST else RecruitmentFilterSort.DEADLINE
-                onFilterChange(currentFilter.copy(sort = newSort))
-            }
+            chips = sortChips,
+            onChipClick = { index -> localSort = sortOrder[index].first }
         )
     }
 }
@@ -65,8 +81,6 @@ private fun RecruitmentFilterBottomSheetPreview() {
         RecruitmentFilterBottomSheet(
             currentFilter = RecruitmentFilterState(),
             onDismiss = {},
-            onFilterChange = {},
-            onReset = {},
             onApply = {}
         )
     }

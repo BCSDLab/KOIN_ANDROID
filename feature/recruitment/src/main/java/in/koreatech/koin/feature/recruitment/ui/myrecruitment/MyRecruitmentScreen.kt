@@ -8,13 +8,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,8 +25,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -54,7 +52,7 @@ fun MyRecruitmentScreen(
     viewModel: MyRecruitmentViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit = {},
     onApplicantManage: (Long) -> Unit = {},
-    onMoreOptions: (Long) -> Unit = {}
+    onChat: (Long) -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
 
@@ -68,14 +66,13 @@ fun MyRecruitmentScreen(
                     containerColor = RebrandKoinTheme.colors.neutral50
                 )
             )
-        },
-        contentWindowInsets = WindowInsets(0, 0, 0, 0)
+        }
     ) { innerPadding ->
         MyRecruitmentScreenImpl(
             posts = state.posts,
             onApplicantManage = onApplicantManage,
             onCloseRecruitment = { postId -> viewModel.showCloseDialog(postId) },
-            onMoreOptions = onMoreOptions,
+            onChat = onChat,
             onFilter = { viewModel.showFilterSheet() },
             modifier = Modifier.padding(innerPadding)
         )
@@ -84,17 +81,15 @@ fun MyRecruitmentScreen(
     if (state.showCloseDialog) {
         CloseRecruitmentDialog(
             onDismiss = { viewModel.dismissCloseDialog() },
-            onConfirm = { state.closeTargetPostId?.let { viewModel.closeRecruitment(it) } }
+            onConfirm = { viewModel.confirmClose() }
         )
     }
 
     if (state.showFilterSheet) {
         RecruitmentFilterBottomSheet(
-            currentFilter = state.pendingFilter,
+            currentFilter = state.filter,
             onDismiss = { viewModel.dismissFilterSheet() },
-            onFilterChange = { viewModel.updatePendingFilter(it) },
-            onReset = { viewModel.resetPendingFilter() },
-            onApply = { viewModel.applyFilter() }
+            onApply = { viewModel.applyFilter(it) }
         )
     }
 }
@@ -105,7 +100,7 @@ private fun MyRecruitmentScreenImpl(
     modifier: Modifier = Modifier,
     onApplicantManage: (Long) -> Unit = {},
     onCloseRecruitment: (Long) -> Unit = {},
-    onMoreOptions: (Long) -> Unit = {},
+    onChat: (Long) -> Unit = {},
     onFilter: () -> Unit = {}
 ) {
     Column(modifier = modifier.fillMaxSize()) {
@@ -146,11 +141,8 @@ private fun MyRecruitmentScreenImpl(
                         } else {
                             null
                         },
-                        onMoreOptions = { onMoreOptions(post.id) }
+                        onChat = { onChat(post.id) }
                     )
-                }
-                item {
-                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
                 }
             }
         }
@@ -177,7 +169,7 @@ private fun FilterButton(
             color = RebrandKoinTheme.colors.neutral700
         )
         Icon(
-            painter = painterResource(R.drawable.ic_filter_horizontal),
+            imageVector = ImageVector.vectorResource(R.drawable.ic_filter_horizontal),
             contentDescription = null,
             modifier = Modifier.size(21.dp),
             tint = RebrandKoinTheme.colors.primary500
@@ -198,7 +190,7 @@ private fun MyRecruitmentScreenWithPostsPreview() {
                     category = RecruitmentCategory.CONTEST,
                     status = RecruitmentStatus.Recruiting(daysLeft = 5),
                     title = "AI 아이디어 공모전 팀원 모집",
-                    roles = listOf(
+                    roles = persistentListOf(
                         RecruitmentRole("프론트엔드", 1),
                         RecruitmentRole("백엔드", 1),
                         RecruitmentRole("디자인", 1)
