@@ -40,6 +40,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -92,6 +93,14 @@ class TimetableViewModel @Inject constructor(
             SharingStarted.WhileSubscribed(5_000),
             emptyList()
         )
+
+    val departments: StateFlow<List<String>> = _lectures.map { lectures ->
+        lectures.map { it.department }.filter { it.isNotBlank() }.distinct()
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5_000),
+        emptyList()
+    )
 
     fun getInitData() {
         viewModelScope.launch {
