@@ -20,9 +20,6 @@ fun NavGraphBuilder.koinRecruitmentGraph(
             }
         )
     }
-    composable<RecruitmentNavType.ApplicantManagement> {
-        ApplicantManagementScreen()
-    }
     composable<RecruitmentNavType.MyRecruitment> {
         MyRecruitmentScreen(
             onNavigateUp = { navController.navigateUp() }
