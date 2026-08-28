@@ -9,4 +9,7 @@ sealed class RecruitmentNavType {
 
     @Serializable
     data class ApplicantDetail(val postId: Long, val applicantId: Long) : RecruitmentNavType()
+
+    @Serializable
+    data object MyRecruitment : RecruitmentNavType()
 }

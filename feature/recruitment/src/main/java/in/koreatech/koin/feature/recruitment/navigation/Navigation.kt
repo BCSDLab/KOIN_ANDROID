@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import `in`.koreatech.koin.feature.recruitment.ui.applicantdetail.ApplicantDetailScreen
 import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.ApplicantManagementScreen
+import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.MyRecruitmentScreen
 
 fun NavGraphBuilder.koinRecruitmentGraph(
     navController: NavController
@@ -17,6 +18,14 @@ fun NavGraphBuilder.koinRecruitmentGraph(
             onApplicantDetail = { applicantId ->
                 navController.navigate(RecruitmentNavType.ApplicantDetail(route.postId, applicantId))
             }
+        )
+    }
+    composable<RecruitmentNavType.ApplicantManagement> {
+        ApplicantManagementScreen()
+    }
+    composable<RecruitmentNavType.MyRecruitment> {
+        MyRecruitmentScreen(
+            onNavigateUp = { navController.navigateUp() }
         )
     }
     composable<RecruitmentNavType.ApplicantDetail> {

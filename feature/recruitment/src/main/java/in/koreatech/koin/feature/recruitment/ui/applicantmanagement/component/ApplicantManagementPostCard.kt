@@ -19,8 +19,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,6 +34,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentInfoItem
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentRoleChip
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.MyRecruitmentPost
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentStatus
+import kotlinx.collections.immutable.persistentListOf
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -112,7 +114,7 @@ fun ApplicantManagementPostCard(
                     RecruitmentInfoItem(
                         icon = {
                             Icon(
-                                painter = painterResource(R.drawable.ic_recruitment_location),
+                                imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_location),
                                 contentDescription = null,
                                 modifier = Modifier.size(12.dp),
                                 tint = RebrandKoinTheme.colors.neutral500
@@ -123,7 +125,7 @@ fun ApplicantManagementPostCard(
                     RecruitmentInfoItem(
                         icon = {
                             Icon(
-                                painter = painterResource(R.drawable.ic_recruitment_calendar),
+                                imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_calendar),
                                 contentDescription = null,
                                 modifier = Modifier.size(12.dp),
                                 tint = RebrandKoinTheme.colors.neutral500
@@ -134,7 +136,7 @@ fun ApplicantManagementPostCard(
                     RecruitmentInfoItem(
                         icon = {
                             Icon(
-                                painter = painterResource(R.drawable.ic_recruitment_user_group),
+                                imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_user_group),
                                 contentDescription = null,
                                 modifier = Modifier.size(12.dp),
                                 tint = RebrandKoinTheme.colors.neutral500
@@ -148,7 +150,7 @@ fun ApplicantManagementPostCard(
                     modifier = Modifier.size(24.dp)
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_recruitment_chat),
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_chat),
                         contentDescription = null,
                         tint = RebrandKoinTheme.colors.primary500
                     )
@@ -168,7 +170,7 @@ private fun ApplicantManagementPostCardPreview() {
                 category = RecruitmentCategory.CONTEST,
                 status = RecruitmentStatus.Recruiting(daysLeft = 5),
                 title = "AI 아이디어 공모전 팀원 모집",
-                roles = listOf(
+                roles = persistentListOf(
                     RecruitmentRole("프론트엔드", 1),
                     RecruitmentRole("백엔드", 1),
                     RecruitmentRole("디자인", 1)
