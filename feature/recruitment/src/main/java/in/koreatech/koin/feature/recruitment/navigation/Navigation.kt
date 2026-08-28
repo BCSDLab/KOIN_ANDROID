@@ -10,7 +10,7 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     navController: NavController
 ) {
     composable<RecruitmentNavType.ApplicantManagement> {
-        ApplicantManagementScreen(
+        ApplicantManagementScreen()
     }
     composable<RecruitmentNavType.MyRecruitment> {
         MyRecruitmentScreen(
