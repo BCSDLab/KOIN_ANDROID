@@ -1,8 +1,6 @@
 package `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -21,8 +19,6 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -35,6 +31,9 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentCategoryBadge
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentInfoItem
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentRoleChip
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.model.AppliedRecruitmentPost
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.model.AppliedRecruitmentStatus
 import kotlinx.collections.immutable.persistentListOf
@@ -68,7 +67,7 @@ fun AppliedRecruitmentPostCard(
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    CategoryBadge(category = post.category)
+                    RecruitmentCategoryBadge(category = post.category)
                     if (post.daysLeft != null) {
                         Text(
                             text = stringResource(R.string.recruitment_status_d_day, post.daysLeft),
@@ -93,7 +92,7 @@ fun AppliedRecruitmentPostCard(
                     ) {
                         post.roles.fastForEach { role ->
                             key(role.name) {
-                                RoleChip(role = role)
+                                RecruitmentRoleChip(role = role)
                             }
                         }
                     }
@@ -108,7 +107,7 @@ fun AppliedRecruitmentPostCard(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    InfoItem(
+                    RecruitmentInfoItem(
                         icon = {
                             Icon(
                                 imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_location),
@@ -119,7 +118,7 @@ fun AppliedRecruitmentPostCard(
                         },
                         text = post.location
                     )
-                    InfoItem(
+                    RecruitmentInfoItem(
                         icon = {
                             Icon(
                                 imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_calendar),
@@ -130,7 +129,7 @@ fun AppliedRecruitmentPostCard(
                         },
                         text = post.dateRange
                     )
-                    InfoItem(
+                    RecruitmentInfoItem(
                         icon = {
                             Icon(
                                 imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_user_group),
@@ -157,35 +156,6 @@ fun AppliedRecruitmentPostCard(
 }
 
 @Composable
-private fun CategoryBadge(
-    category: RecruitmentCategory,
-    modifier: Modifier = Modifier
-) {
-    val colors = RebrandKoinTheme.colors
-    val (bgColor, textColor) = remember(category, colors) {
-        when (category) {
-            RecruitmentCategory.CONTEST -> colors.info200 to colors.info700
-            RecruitmentCategory.EXTERNAL_ACTIVITY -> colors.success200 to colors.success700
-            RecruitmentCategory.STUDY -> colors.primary100 to colors.primary600
-            RecruitmentCategory.PROJECT -> colors.primary100 to colors.primary600
-            RecruitmentCategory.ETC -> colors.neutral200 to colors.neutral600
-        }
-    }
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(100.dp))
-            .background(bgColor)
-            .padding(horizontal = 8.dp, vertical = 1.dp)
-    ) {
-        Text(
-            text = category.label,
-            style = RebrandKoinTheme.typography.regular10.copy(fontWeight = FontWeight.Medium),
-            color = textColor
-        )
-    }
-}
-
-@Composable
 private fun ApplicationStatusLabel(
     status: AppliedRecruitmentStatus,
     modifier: Modifier = Modifier
@@ -208,46 +178,6 @@ private fun ApplicationStatusLabel(
         color = color,
         modifier = modifier
     )
-}
-
-@Composable
-private fun RoleChip(
-    role: RecruitmentRole,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(100.dp))
-            .background(RebrandKoinTheme.colors.neutral200)
-            .padding(horizontal = 8.dp, vertical = 1.dp)
-    ) {
-        Text(
-            text = stringResource(R.string.recruitment_role_item, role.name, role.count),
-            style = RebrandKoinTheme.typography.regular10,
-            color = RebrandKoinTheme.colors.neutral500
-        )
-    }
-}
-
-@Composable
-private fun InfoItem(
-    icon: @Composable () -> Unit,
-    text: String,
-    modifier: Modifier = Modifier,
-    textColor: Color = RebrandKoinTheme.colors.neutral500
-) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(2.dp)
-    ) {
-        icon()
-        Text(
-            text = text,
-            style = RebrandKoinTheme.typography.regular10,
-            color = textColor
-        )
-    }
 }
 
 private const val PREVIEW_DATE_RANGE = "2026.07.26 ~ 2026.08.07"
