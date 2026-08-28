@@ -34,6 +34,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentInfoItem
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentRoleChip
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.MyRecruitmentPost
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentStatus
+import kotlinx.collections.immutable.persistentListOf
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -169,7 +170,7 @@ private fun ApplicantManagementPostCardPreview() {
                 category = RecruitmentCategory.CONTEST,
                 status = RecruitmentStatus.Recruiting(daysLeft = 5),
                 title = "AI 아이디어 공모전 팀원 모집",
-                roles = listOf(
+                roles = persistentListOf(
                     RecruitmentRole("프론트엔드", 1),
                     RecruitmentRole("백엔드", 1),
                     RecruitmentRole("디자인", 1)
