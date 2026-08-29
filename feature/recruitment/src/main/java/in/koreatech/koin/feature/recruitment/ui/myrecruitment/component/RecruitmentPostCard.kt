@@ -39,7 +39,7 @@ import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentCategoryBadge
-import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentInfoItem
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentPostMetaInfo
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentRoleChip
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.MyRecruitmentPost
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentStatus
@@ -115,45 +115,12 @@ fun RecruitmentPostCard(
                         }
                     }
                 }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    RecruitmentInfoItem(
-                        icon = {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_location),
-                                contentDescription = null,
-                                modifier = Modifier.size(12.dp),
-                                tint = RebrandKoinTheme.colors.neutral500
-                            )
-                        },
-                        text = post.location
-                    )
-                    RecruitmentInfoItem(
-                        icon = {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_calendar),
-                                contentDescription = null,
-                                modifier = Modifier.size(12.dp),
-                                tint = RebrandKoinTheme.colors.neutral500
-                            )
-                        },
-                        text = post.dateRange
-                    )
-                    RecruitmentInfoItem(
-                        icon = {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_user_group),
-                                contentDescription = null,
-                                modifier = Modifier.size(12.dp),
-                                tint = applicantColor
-                            )
-                        },
-                        text = stringResource(R.string.recruitment_applicant_count, post.currentApplicants, post.maxApplicants),
-                        textColor = applicantColor
-                    )
-                }
+                RecruitmentPostMetaInfo(
+                    location = post.location,
+                    dateRange = post.dateRange,
+                    applicantText = stringResource(R.string.recruitment_applicant_count, post.currentApplicants, post.maxApplicants),
+                    applicantColor = applicantColor
+                )
             }
 
             val buttonShape = RoundedCornerShape(16.dp)
