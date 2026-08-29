@@ -6,6 +6,7 @@ import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentPostInfo
 import `in`.koreatech.koin.domain.repository.TeamRecruitmentRepository
 import javax.inject.Inject
+import retrofit2.HttpException
 
 class TeamRecruitmentRepositoryImpl @Inject constructor(
     private val teamRecruitmentRemoteDataSource: TeamRecruitmentRemoteDataSource
@@ -28,7 +29,7 @@ class TeamRecruitmentRepositoryImpl @Inject constructor(
     override suspend fun closeRecruitmentPost(postId: Int): Result<Unit> {
         return suspendRunCatching {
             val response = teamRecruitmentRemoteDataSource.closeRecruitmentPost(postId)
-            if (!response.isSuccessful) throw Exception("close failed: ${response.code()}")
+            if (!response.isSuccessful) throw HttpException(response)
         }
     }
 }
