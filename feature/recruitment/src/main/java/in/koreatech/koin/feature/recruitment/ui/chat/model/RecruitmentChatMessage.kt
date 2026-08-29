@@ -4,10 +4,11 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 data class RecruitmentChatMessage(
-    val id: String,
+    val id: Int,
     val content: String,
     val timestamp: String,
     val isSentByMe: Boolean,
     val authorNickname: String = "",
-    val isFirstInGroup: Boolean = true
+    val isFirstInGroup: Boolean = true,
+    val isImage: Boolean = false
 )
