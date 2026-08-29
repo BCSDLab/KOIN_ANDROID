@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.domain.model.recruitment
 
-data class RecruitmentPostInfo(
+data class RecruitmentPost(
     val id: Int,
     val category: String,
     val title: String,
@@ -13,14 +13,10 @@ data class RecruitmentPostInfo(
     val recruitmentType: String,
     val currentParticipants: Int,
     val maxParticipants: Int,
-    val roles: List<RecruitmentRoleInfo>,
-    val applicantCount: Int,
-    val canClose: Boolean,
-    val teamChatAvailable: Boolean,
-    val teamChatRoomId: Int?
+    val roles: List<RecruitmentRole>
 )
 
-data class RecruitmentRoleInfo(
+data class RecruitmentRole(
     val id: Int,
     val name: String,
     val currentParticipants: Int,

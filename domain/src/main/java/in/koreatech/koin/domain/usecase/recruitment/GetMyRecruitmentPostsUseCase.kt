@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.domain.usecase.recruitment
 
-import `in`.koreatech.koin.domain.model.recruitment.RecruitmentPostInfo
+import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost
 import `in`.koreatech.koin.domain.repository.TeamRecruitmentRepository
 import javax.inject.Inject
 
@@ -12,6 +12,6 @@ class GetMyRecruitmentPostsUseCase @Inject constructor(
         sort: String = "LATEST_DESC",
         page: Int = 1,
         limit: Int = 20
-    ): Result<List<RecruitmentPostInfo>> =
+    ): Result<List<MyRecruitmentPost>> =
         teamRecruitmentRepository.getMyRecruitmentPosts(status, sort, page, limit)
 }
