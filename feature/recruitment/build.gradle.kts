@@ -20,5 +20,7 @@ dependencies {
 
     implementation(libs.kotlinx.collections.immutable)
 
+    implementation(libs.coil.compose)
+
     implementation(libs.timber)
 }
