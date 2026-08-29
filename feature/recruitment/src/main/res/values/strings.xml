@@ -13,8 +13,8 @@
     <string name="recruitment_notification_mark_all_read">모두 읽음으로 표시</string>
     <string name="recruitment_notification_delete_all">알림 전체 삭제</string>
     <string name="recruitment_notification_empty">아직 알림이 없어요</string>
-    <string name="recruitment_notification_delete_content_description">삭제</string>
     <string name="recruitment_notification_category_message">팀원모집 메세지</string>
+    <string name="recruitment_notification_category_new_application">팀원 모집 신규 지원</string>
     <string name="recruitment_notification_category_application_approved">팀원 모집 지원 승인</string>
     <string name="recruitment_notification_category_application_rejected">팀원 모집 지원 거절</string>
     <string name="recruitment_notification_category_post_deleted">팀원 모집글 삭제</string>
