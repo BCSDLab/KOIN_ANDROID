@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.user.ui.signup.usertype
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,6 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +24,8 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
-import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.user.R
 import `in`.koreatech.koin.feature.user.component.KoinUserProgressHeader
 import `in`.koreatech.koin.feature.user.component.KoinUserProgressIndicator
@@ -51,11 +56,28 @@ fun SignUpUserType(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Image(
-            modifier = Modifier.width(96.dp),
-            painter = painterResource(id = R.drawable.ic_logo_coin_color),
-            contentDescription = "Koin logo"
-        )
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                modifier = Modifier
+                    .width(80.dp)
+                    .height(60.dp),
+                painter = painterResource(id = R.drawable.ic_bcsd_symbol),
+                contentDescription = "Koin logo"
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Image(
+                modifier = Modifier
+                    .width(100.dp)
+                    .height(30.dp),
+                painter = painterResource(id = R.drawable.ic_koin_text),
+                contentDescription = "Koin logo"
+            )
+        }
 
         Spacer(modifier = Modifier.height(80.dp))
 
@@ -65,7 +87,10 @@ fun SignUpUserType(
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp),
             text = stringResource(R.string.sign_up_user_type_student),
-            colors = FilledButtonColors.Warning,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = RebrandKoinTheme.colors.primary500
+            ),
+            shape = KoinTheme.shapes.small,
             onClick = {
                 navigateToStudentScreen()
                 EventLogger.logClickEvent(
@@ -78,13 +103,16 @@ fun SignUpUserType(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        FilledButton(
+        Button(
+            shape = KoinTheme.shapes.small,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = RebrandKoinTheme.colors.neutral0
+            ),
+            border = BorderStroke(width = 1.dp, color = RebrandKoinTheme.colors.primary500),
             contentPadding = PaddingValues(12.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp),
-            text = stringResource(R.string.sign_up_user_type_general),
-            colors = FilledButtonColors.Primary,
             onClick = {
                 navigateToGeneralScreen()
                 EventLogger.logClickEvent(
@@ -93,7 +121,12 @@ fun SignUpUserType(
                     "외부인"
                 )
             }
-        )
+        ) {
+            Text(
+                text = stringResource(R.string.sign_up_user_type_general),
+                color = RebrandKoinTheme.colors.primary500
+            )
+        }
 
         Spacer(modifier = Modifier.weight(1f))
     }

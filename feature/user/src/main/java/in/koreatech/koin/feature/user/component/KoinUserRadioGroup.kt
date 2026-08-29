@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -75,8 +76,8 @@ fun KoinUserRadioButton(
                 selected = selected,
                 onClick = null,
                 colors = RadioButtonDefaults.colors(
-                    selectedColor = KoinTheme.colors.primary500,
-                    unselectedColor = KoinTheme.colors.primary500
+                    selectedColor = RebrandKoinTheme.colors.primary500,
+                    unselectedColor = RebrandKoinTheme.colors.primary500
                 )
             )
         }
