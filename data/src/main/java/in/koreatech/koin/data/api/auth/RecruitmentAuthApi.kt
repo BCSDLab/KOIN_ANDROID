@@ -3,7 +3,7 @@ package `in`.koreatech.koin.data.api.auth
 import `in`.koreatech.koin.data.response.recruitment.RecruitmentListResponse
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -17,8 +17,8 @@ interface RecruitmentAuthApi {
         @Query("limit") limit: Int
     ): RecruitmentListResponse
 
-    @POST("team-recruitments/{id}/close")
+    @PUT("team-recruitments/{recruitmentId}/close")
     suspend fun closeRecruitmentPost(
-        @Path("id") postId: Int
+        @Path("recruitmentId") postId: Int
     ): Response<Unit>
 }
