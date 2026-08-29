@@ -44,8 +44,8 @@ import org.orbitmvi.orbit.compose.collectAsState
 fun MyRecruitmentScreen(
     viewModel: MyRecruitmentViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit = {},
-    onApplicantManage: (Long) -> Unit = {},
-    onChat: (Long) -> Unit = {}
+    onApplicantManage: (Int) -> Unit = {},
+    onChat: (Int) -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
 
@@ -91,9 +91,9 @@ fun MyRecruitmentScreen(
 private fun MyRecruitmentScreenImpl(
     posts: ImmutableList<MyRecruitmentPost>,
     modifier: Modifier = Modifier,
-    onApplicantManage: (Long) -> Unit = {},
-    onCloseRecruitment: (Long) -> Unit = {},
-    onChat: (Long) -> Unit = {},
+    onApplicantManage: (Int) -> Unit = {},
+    onCloseRecruitment: (Int) -> Unit = {},
+    onChat: (Int) -> Unit = {},
     onFilter: () -> Unit = {}
 ) {
     Column(modifier = modifier.fillMaxSize()) {
@@ -151,7 +151,7 @@ private fun MyRecruitmentScreenWithPostsPreview() {
         MyRecruitmentScreenImpl(
             posts = persistentListOf(
                 MyRecruitmentPost(
-                    id = 1L,
+                    id = 1,
                     category = RecruitmentCategory.CONTEST,
                     status = RecruitmentStatus.Recruiting(daysLeft = 5),
                     title = "AI 아이디어 공모전 팀원 모집",
@@ -166,7 +166,7 @@ private fun MyRecruitmentScreenWithPostsPreview() {
                     maxApplicants = 3
                 ),
                 MyRecruitmentPost(
-                    id = 2L,
+                    id = 2,
                     category = RecruitmentCategory.EXTERNAL_ACTIVITY,
                     status = RecruitmentStatus.Complete,
                     title = "2026 대외활동 팀원 모집",
@@ -176,7 +176,7 @@ private fun MyRecruitmentScreenWithPostsPreview() {
                     maxApplicants = 5
                 ),
                 MyRecruitmentPost(
-                    id = 3L,
+                    id = 3,
                     category = RecruitmentCategory.STUDY,
                     status = RecruitmentStatus.Complete,
                     title = "2026 스터디 팀원 모집",

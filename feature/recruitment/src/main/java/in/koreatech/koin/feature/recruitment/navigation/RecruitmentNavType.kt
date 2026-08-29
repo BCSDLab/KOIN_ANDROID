@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class RecruitmentNavType {
     @Serializable
-    data class ApplicantManagement(val postId: Long) : RecruitmentNavType()
+    data class ApplicantManagement(val postId: Int) : RecruitmentNavType()
 
     @Serializable
     data object MyRecruitment : RecruitmentNavType()
