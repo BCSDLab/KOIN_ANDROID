@@ -38,16 +38,24 @@ import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.Recruitmen
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyRecruitmentScreen(
     viewModel: MyRecruitmentViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit = {},
+    onNavigateToLogin: () -> Unit = {},
     onApplicantManage: (Int) -> Unit = {},
     onChat: (Int) -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
+
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            MyRecruitmentSideEffect.NavigateToLogin -> onNavigateToLogin()
+        }
+    }
 
     Scaffold(
         containerColor = RebrandKoinTheme.colors.neutral50,

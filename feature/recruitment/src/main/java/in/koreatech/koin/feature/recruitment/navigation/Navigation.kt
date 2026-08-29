@@ -7,14 +7,16 @@ import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.ApplicantM
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.MyRecruitmentScreen
 
 fun NavGraphBuilder.koinRecruitmentGraph(
-    navController: NavController
+    navController: NavController,
+    onNavigateToLogin: () -> Unit = {}
 ) {
     composable<RecruitmentNavType.ApplicantManagement> {
         ApplicantManagementScreen()
     }
     composable<RecruitmentNavType.MyRecruitment> {
         MyRecruitmentScreen(
-            onNavigateUp = { navController.navigateUp() }
+            onNavigateUp = { navController.navigateUp() },
+            onNavigateToLogin = onNavigateToLogin
         )
     }
 }
