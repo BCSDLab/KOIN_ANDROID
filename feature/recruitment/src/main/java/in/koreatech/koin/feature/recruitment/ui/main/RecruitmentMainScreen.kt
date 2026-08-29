@@ -24,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -152,7 +151,7 @@ private fun RecruitmentMainScreenImpl(
                 contentPadding = PaddingValues(horizontal = 20.dp, vertical = 10.dp),
                 trailingIconSize = 22.dp,
                 trailingIconTint = Color.Unspecified,
-                trailingIcon = painterResource(R.drawable.ic_recruitment_edit),
+                trailingIcon = ImageVector.vectorResource(R.drawable.ic_recruitment_edit),
                 onClick = onWriteClick
             )
         },
@@ -188,7 +187,7 @@ private fun RecruitmentMainScreenImpl(
                         border = BorderStroke(1.dp, RebrandKoinTheme.colors.primary100),
                         trailingIconSize = 21.dp,
                         trailingIconTint = Color.Unspecified,
-                        trailingIcon = painterResource(R.drawable.ic_recruitment_filter),
+                        trailingIcon = ImageVector.vectorResource(R.drawable.ic_recruitment_filter),
                         onClick = onFilterClick
                     )
                 }

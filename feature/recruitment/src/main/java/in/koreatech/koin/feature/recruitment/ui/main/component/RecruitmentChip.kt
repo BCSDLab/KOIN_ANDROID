@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -86,7 +86,7 @@ fun RecruitmentChip(
     shape: Shape = RecruitmentChipDefaults.Shape,
     contentPadding: PaddingValues = RecruitmentChipDefaults.ContentPadding,
     border: BorderStroke? = null,
-    trailingIcon: Painter? = null,
+    trailingIcon: ImageVector? = null,
     trailingIconSize: Dp = RecruitmentChipDefaults.IconSize,
     trailingIconTint: Color = colors.contentColor,
     trailingIconContentDescription: String? = null,
@@ -117,7 +117,7 @@ fun RecruitmentChip(
         )
         if (trailingIcon != null) {
             Icon(
-                painter = trailingIcon,
+                imageVector = trailingIcon,
                 contentDescription = trailingIconContentDescription,
                 tint = trailingIconTint,
                 modifier = Modifier

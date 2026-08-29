@@ -27,7 +27,7 @@ enum class RecruitmentStatus(
     COMPLETED(R.string.recruitment_filter_status_completed);
 
     companion object {
-        val ALL = entries.toImmutableList()
+        val ALL: ImmutableList<RecruitmentStatus> = entries.toImmutableList()
     }
 }
 
@@ -38,7 +38,7 @@ enum class RecruitmentSort(
     DEADLINE_SOON(R.string.recruitment_filter_sort_deadline);
 
     companion object {
-        val ALL = entries.toImmutableList()
+        val ALL: ImmutableList<RecruitmentSort> = entries.toImmutableList()
     }
 }
 
@@ -52,7 +52,7 @@ enum class RecruitmentCategory(
     ETC(R.string.recruitment_category_etc);
 
     companion object {
-        val ALL = entries.toImmutableList()
+        val ALL: ImmutableList<RecruitmentCategory> = entries.toImmutableList()
     }
 }
 
@@ -64,6 +64,6 @@ enum class RecruitmentLocation(
     MIXED(R.string.recruitment_filter_location_mixed);
 
     companion object {
-        val ALL = entries.toImmutableList()
+        val ALL: ImmutableList<RecruitmentLocation> = entries.toImmutableList()
     }
 }
