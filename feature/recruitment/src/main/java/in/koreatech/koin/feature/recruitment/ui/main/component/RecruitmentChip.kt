@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
-import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 
 @Immutable
 data class RecruitmentChipColors(

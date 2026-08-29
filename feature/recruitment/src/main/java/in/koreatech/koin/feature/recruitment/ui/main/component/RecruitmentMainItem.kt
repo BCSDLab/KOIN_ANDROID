@@ -23,10 +23,10 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
-import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentStatus
 import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentItemModel
-import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentLocation
-import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentStatus
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable

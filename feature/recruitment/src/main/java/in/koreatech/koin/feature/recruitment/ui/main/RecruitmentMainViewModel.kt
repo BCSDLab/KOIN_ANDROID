@@ -2,11 +2,11 @@ package `in`.koreatech.koin.feature.recruitment.ui.main
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentStatus
 import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentFilterState
-import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentLocation
 import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentSort
-import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentStatus
 import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf

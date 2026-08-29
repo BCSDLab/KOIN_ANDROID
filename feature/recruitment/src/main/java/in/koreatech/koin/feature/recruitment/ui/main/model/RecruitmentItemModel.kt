@@ -1,6 +1,9 @@
 package `in`.koreatech.koin.feature.recruitment.ui.main.model
 
 import androidx.compose.runtime.Immutable
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentStatus
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
