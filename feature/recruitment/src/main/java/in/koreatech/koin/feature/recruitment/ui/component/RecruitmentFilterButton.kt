@@ -28,9 +28,9 @@ internal fun RecruitmentFilterButton(
 ) {
     Row(
         modifier = modifier
-            .background(RebrandKoinTheme.colors.neutral0, RoundedCornerShape(40.dp))
             .clip(RoundedCornerShape(40.dp))
-            .clickable { onClick() }
+            .background(RebrandKoinTheme.colors.neutral0)
+            .clickable(onClick = onClick)
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp)
