@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 /**
  * Koin User Progress Indicator
@@ -28,7 +29,7 @@ fun KoinUserProgressIndicator(
     currentStep: Int,
     maxStep: Int,
     modifier: Modifier = Modifier,
-    stepColor: Color = KoinTheme.colors.primary500,
+    stepColor: Color = RebrandKoinTheme.colors.primary500,
     backgroundColor: Color = KoinTheme.colors.neutral400
 ) {
     require(currentStep <= maxStep) { "Current step should be less than or equal to max step" }
@@ -66,7 +67,7 @@ private fun KoinUserProgressIndicatorPreview() {
         modifier = Modifier.padding(16.dp),
         currentStep = 1,
         maxStep = 4,
-        stepColor = KoinTheme.colors.primary500,
+        stepColor = RebrandKoinTheme.colors.primary500,
         backgroundColor = KoinTheme.colors.neutral400
     )
 }

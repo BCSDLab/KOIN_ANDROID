@@ -27,23 +27,19 @@ class MyRecruitmentViewModel @Inject constructor() : ViewModel(), ContainerHost<
     }
 
     fun showFilterSheet() = intent {
-        reduce { state.copy(showFilterSheet = true, pendingFilter = state.filter) }
+        reduce { state.copy(showFilterSheet = true) }
     }
 
     fun dismissFilterSheet() = intent {
         reduce { state.copy(showFilterSheet = false) }
     }
 
-    fun updatePendingFilter(filter: RecruitmentFilterState) = intent {
-        reduce { state.copy(pendingFilter = filter) }
+    fun applyFilter(filter: RecruitmentFilterState) = intent {
+        reduce { state.copy(filter = filter, showFilterSheet = false) }
     }
 
-    fun resetPendingFilter() = intent {
-        reduce { state.copy(pendingFilter = RecruitmentFilterState()) }
-    }
-
-    fun applyFilter() = intent {
-        reduce { state.copy(filter = state.pendingFilter, showFilterSheet = false) }
+    fun confirmClose() = intent {
+        state.closeTargetPostId?.let { closeRecruitment(it) }
     }
 
     fun closeRecruitment(postId: Long) = intent {

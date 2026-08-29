@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,6 +34,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -40,6 +42,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.util.KRPhoneNumberVisualTransformation
 import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.feature.user.R
 import `in`.koreatech.koin.feature.user.VERIFICATION_CODE_LENGTH
@@ -130,7 +134,8 @@ fun FindIdVerificationImpl(
                 ),
                 hint = stringResource(if (isSms) R.string.find_id_phone_number_hint else R.string.find_id_email_hint),
                 onValueChange = onVerificationMethodChange,
-                maxLength = if (isSms) 11 else Int.MAX_VALUE
+                maxLength = if (isSms) 11 else Int.MAX_VALUE,
+                visualTransformation = if (isSms) KRPhoneNumberVisualTransformation() else VisualTransformation.None
             )
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -140,6 +145,10 @@ fun FindIdVerificationImpl(
                     modifier = Modifier.widthIn(min = 86.dp),
                     text = if (verificationMethodState is VerificationMethodState.Sent) stringResource(R.string.find_id_resend) else stringResource(R.string.find_id_send),
                     textStyle = KoinTheme.typography.regular10,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = RebrandKoinTheme.colors.primary500
+                    ),
+                    shape = KoinTheme.shapes.extraSmall,
                     contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                     onClick = onVerificationCodeRequest,
                     enabled = (verificationMethod.isNotBlank() && verificationCodeState !is VerificationCodeState.Valid) && verificationMethodState !is VerificationMethodState.CountExceeded
@@ -197,6 +206,10 @@ fun FindIdVerificationImpl(
                 .padding(horizontal = 8.dp)
                 .fillMaxWidth(),
             text = stringResource(R.string.find_id_next),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = RebrandKoinTheme.colors.primary500
+            ),
+            shape = KoinTheme.shapes.small,
             contentPadding = PaddingValues(12.dp),
             onClick = navigateToCompleteScreen,
             enabled = verificationCodeState is VerificationCodeState.Valid
@@ -266,6 +279,10 @@ fun SignUpVerificationCodeVerificationStep(
                 modifier = Modifier.widthIn(min = 86.dp),
                 text = stringResource(R.string.find_id_verification_code_check),
                 textStyle = KoinTheme.typography.regular10,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = RebrandKoinTheme.colors.primary500
+                ),
+                shape = KoinTheme.shapes.extraSmall,
                 enabled = verificationCode.isNotBlank() && verificationCodeState != VerificationCodeState.Valid && verificationCodeState !is VerificationCodeState.Expired,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {
@@ -313,7 +330,7 @@ private fun EmailMessage(
                 navigateToEmailScreen()
             },
             text = stringResource(R.string.find_id_with_email),
-            color = KoinTheme.colors.primary500,
+            color = RebrandKoinTheme.colors.primary500,
             style = KoinTheme.typography.regular12
         )
     }

@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.component
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,10 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -26,6 +23,7 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,15 +32,9 @@ fun CloseRecruitmentDialog(
     onConfirm: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    BasicAlertDialog(
-        onDismissRequest = onDismiss,
+    RecruitmentDialog(
+        onDismiss = onDismiss,
         modifier = modifier
-            .fillMaxWidth()
-            .background(
-                color = RebrandKoinTheme.colors.neutral0,
-                shape = RoundedCornerShape(20.dp)
-            )
-            .padding(horizontal = 20.dp, vertical = 24.dp)
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -96,6 +88,7 @@ fun CloseRecruitmentDialog(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 private fun CloseRecruitmentDialogPreview() {
