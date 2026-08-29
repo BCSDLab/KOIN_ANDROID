@@ -5,8 +5,8 @@ import `in`.koreatech.koin.data.mapper.toMyRecruitmentPost
 import `in`.koreatech.koin.data.source.remote.TeamRecruitmentRemoteDataSource
 import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.model.recruitment.MyAppliedRecruitment
-import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost
 import `in`.koreatech.koin.domain.repository.TeamRecruitmentRepository
+import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost
 import javax.inject.Inject
 import retrofit2.HttpException
 
