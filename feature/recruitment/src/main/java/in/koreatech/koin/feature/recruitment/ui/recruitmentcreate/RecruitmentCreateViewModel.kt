@@ -3,8 +3,8 @@ package `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentProgressType
-import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model.TeamRecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
+import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model.TeamRecruitmentCategory
 import java.time.LocalDate
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList

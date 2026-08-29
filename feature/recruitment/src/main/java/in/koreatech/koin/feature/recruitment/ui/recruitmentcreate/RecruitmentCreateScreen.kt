@@ -32,7 +32,6 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
-import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model.TeamRecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentProgressType
 import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentConfirmDialog
@@ -43,6 +42,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentTextField
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.component.RecruitmentAddRoleButton
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.component.RecruitmentProgressTypeSelector
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.component.RecruitmentRoleRow
+import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model.TeamRecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.utils.toDateText
 import java.time.LocalDate
 import kotlinx.collections.immutable.persistentListOf

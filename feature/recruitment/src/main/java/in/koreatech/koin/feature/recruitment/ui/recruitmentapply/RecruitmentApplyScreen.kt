@@ -30,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
 import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentConfirmDialog
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDropdown
@@ -40,7 +41,6 @@ import `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply.component.Rec
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply.component.RecruitmentActivityForm
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply.component.RecruitmentSkillFieldRow
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply.component.RecruitmentStepIndicator
-import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect

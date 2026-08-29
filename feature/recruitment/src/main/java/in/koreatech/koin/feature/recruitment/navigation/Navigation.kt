@@ -22,5 +22,4 @@ fun NavGraphBuilder.koinRecruitmentGraph(
             onApplySuccess = { navController.navigateUp() }
         )
     }
-
 }

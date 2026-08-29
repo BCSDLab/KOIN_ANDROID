@@ -2,8 +2,8 @@ package `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
+import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.ContainerHost

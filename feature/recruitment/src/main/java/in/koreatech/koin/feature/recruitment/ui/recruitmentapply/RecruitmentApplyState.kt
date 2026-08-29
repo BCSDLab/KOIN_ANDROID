@@ -1,8 +1,8 @@
 package `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply
 
 import androidx.compose.runtime.Immutable
-import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
+import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -38,10 +38,10 @@ data class RecruitmentApplyState(
 ) {
     val isStepOneValid: Boolean
         get() = nickname.isNotBlank() &&
-                age.isNotBlank() &&
-                department.isNotBlank() &&
-                studentId.isNotBlank() &&
-                selfIntroduction.isNotBlank()
+            age.isNotBlank() &&
+            department.isNotBlank() &&
+            studentId.isNotBlank() &&
+            selfIntroduction.isNotBlank()
 
     val isSubmitEnabled: Boolean
         get() = selectedRole != null && motivation.isNotBlank() && availableTime.isNotBlank()
