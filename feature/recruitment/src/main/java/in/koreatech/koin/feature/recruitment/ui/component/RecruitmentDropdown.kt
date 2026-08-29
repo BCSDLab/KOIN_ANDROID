@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,6 +28,9 @@ import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+
+private val DropdownFieldShape = RoundedCornerShape(16.dp)
+private val DropdownMenuShape = RoundedCornerShape(16.dp)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,8 +57,8 @@ fun RecruitmentDropdown(
             modifier = Modifier
                 .fillMaxWidth()
                 .menuAnchor(MenuAnchorType.PrimaryNotEditable)
-                .border(1.dp, RebrandKoinTheme.colors.neutral200, RebrandKoinTheme.shapes.small)
-                .background(RebrandKoinTheme.colors.neutral0, RebrandKoinTheme.shapes.small)
+                .border(1.dp, RebrandKoinTheme.colors.neutral200, DropdownFieldShape)
+                .background(RebrandKoinTheme.colors.neutral0, DropdownFieldShape)
                 .padding(vertical = 12.dp, horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
@@ -77,9 +81,13 @@ fun RecruitmentDropdown(
             modifier = Modifier.wrapContentSize(),
             expanded = isExpanded,
             onDismissRequest = { onExpandedChange(false) },
-            containerColor = RebrandKoinTheme.colors.neutral0
+            containerColor = RebrandKoinTheme.colors.neutral0,
+            shape = DropdownMenuShape
         ) {
-            Column {
+            Column(
+                modifier = Modifier.padding(vertical = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
                 items.forEachIndexed { index, item ->
                     Text(
                         text = item,
@@ -91,7 +99,7 @@ fun RecruitmentDropdown(
                                 onItemSelected(index)
                                 onExpandedChange(false)
                             }
-                            .padding(vertical = 12.dp, horizontal = 16.dp)
+                            .padding(horizontal = 16.dp)
                     )
                 }
             }
@@ -105,10 +113,24 @@ fun RecruitmentDropdown(
 private fun RecruitmentDropdownPreview() {
     RebrandKoinTheme {
         RecruitmentDropdown(
-            text = "공모전",
+            text = "카테고리를 선택해주세요",
             items = persistentListOf("공모전", "대외활동", "스터디", "프로젝트", "기타"),
             isExpanded = false,
             isPlaceholder = true
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+private fun RecruitmentDropdownSelectedPreview() {
+    RebrandKoinTheme {
+        RecruitmentDropdown(
+            text = "공모전",
+            items = persistentListOf("공모전", "대외활동", "스터디", "프로젝트", "기타"),
+            isExpanded = false,
+            isPlaceholder = false
         )
     }
 }

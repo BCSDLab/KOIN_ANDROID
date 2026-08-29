@@ -30,7 +30,7 @@ class RecruitmentActivity : ComponentActivity() {
 
                 NavHost(
                     navController = navController,
-                    startDestination = RecruitmentNavType.RecruitmentList
+                    startDestination = RecruitmentNavType.RecruitmentCreate
                 ) {
                     koinRecruitmentGraph(navController = navController)
                 }

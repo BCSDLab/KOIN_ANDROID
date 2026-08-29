@@ -29,11 +29,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
-import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
+import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model.TeamRecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentProgressType
+import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentConfirmDialog
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDatePickerDialog
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDateSelectBox
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDropdown
@@ -41,8 +43,6 @@ import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentTextField
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.component.RecruitmentAddRoleButton
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.component.RecruitmentProgressTypeSelector
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.component.RecruitmentRoleRow
-import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model.TeamRecruitmentCategory
-import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model.TeamRecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.utils.toDateText
 import java.time.LocalDate
 import kotlinx.collections.immutable.persistentListOf
@@ -160,9 +160,8 @@ private fun RecruitmentCreateScreenImpl(
     }
 
     if (state.showSubmitConfirmDialog) {
-        ChoiceDialog(
+        RecruitmentConfirmDialog(
             title = stringResource(R.string.recruitment_create_submit_dialog_title),
-            description = "",
             positiveButtonText = stringResource(R.string.recruitment_create_submit_dialog_confirm),
             negativeButtonText = stringResource(R.string.recruitment_create_submit_dialog_cancel),
             onPositive = onConfirmSubmit,
@@ -171,7 +170,7 @@ private fun RecruitmentCreateScreenImpl(
     }
 
     if (state.showCancelConfirmDialog) {
-        ChoiceDialog(
+        RecruitmentConfirmDialog(
             title = stringResource(R.string.recruitment_create_cancel_dialog_title),
             description = stringResource(R.string.recruitment_create_cancel_dialog_description),
             positiveButtonText = stringResource(R.string.recruitment_create_dialog_yes),

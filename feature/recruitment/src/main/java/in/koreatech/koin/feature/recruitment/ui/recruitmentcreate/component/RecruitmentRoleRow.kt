@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
-import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model.TeamRecruitmentRole
+import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
 
 private val RoleRowItemShape = RoundedCornerShape(8.dp)
 private val RoleRowItemPadding = PaddingValues(
