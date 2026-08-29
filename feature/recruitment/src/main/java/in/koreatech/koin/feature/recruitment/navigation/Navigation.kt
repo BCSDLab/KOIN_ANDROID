@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.recruitment.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import `in`.koreatech.koin.feature.recruitment.ui.profile.ProfileScreen
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply.RecruitmentApplyScreen
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.RecruitmentCreateScreen
 
@@ -15,11 +16,17 @@ fun NavGraphBuilder.koinRecruitmentGraph(
             onRecruitmentCreated = { navController.navigateUp() }
         )
     }
-
     composable<RecruitmentNavType.RecruitmentApply> {
         RecruitmentApplyScreen(
             onNavigateUp = { navController.navigateUp() },
             onApplySuccess = { navController.navigateUp() }
+        )
+    }
+    composable<RecruitmentNavType.Profile> {
+        ProfileScreen(
+            onNavigateUp = { navController.navigateUp() },
+            onNavigateToMyRecruitment = { },
+            onNavigateToMyAppliedRecruitment = { }
         )
     }
 }

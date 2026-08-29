@@ -96,4 +96,14 @@
     <string name="recruitment_apply_submit_dialog_cancel">취소하기</string>
     <string name="recruitment_apply_cancel_dialog_title">지원서 작성을 취소하시겠어요?</string>
     <string name="recruitment_apply_cancel_dialog_description">작성 중인 내용은 저장되지 않습니다.</string>
+
+    <string name="recruitment_profile_title">프로필</string>
+    <string name="recruitment_profile_go_to_my_recruitment">내가 작성한 모집글</string>
+    <string name="recruitment_profile_go_to_my_recruitment_description">작성자 모집글과 지원자를 한눈에 확인할 수 있어요.</string>
+    <string name="recruitment_profile_go_to_my_applied_recruitment">내가 지원한 모집글</string>
+    <string name="recruitment_profile_go_to_my_applied_recruitment_description">지원한 모집글과 지원 상태를 확인할 수 있어요.</string>
+    <string name="recruitment_profile_empty_title">아직 팀원 모집 프로필을 작성하지 않았어요.</string>
+    <string name="recruitment_profile_empty_subtitle">프로필을 작성하면 지원 시 더 빠르고 편리하게 활동할 수 있어요.</string>
+    <string name="recruitment_profile_create">프로필 작성하기</string>
+    <string name="recruitment_profile_edit_button">프로필 수정하기</string>
 </resources>
