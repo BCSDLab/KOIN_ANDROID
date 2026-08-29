@@ -18,6 +18,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.feature.signin.ui.SignInScreen
@@ -42,7 +43,7 @@ class SignInActivity : ComponentActivity() {
         }
         enableEdgeToEdgeWithLightStatusBar()
         setContent {
-            KoinTheme {
+            RebrandKoinTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     containerColor = KoinTheme.colors.neutral0

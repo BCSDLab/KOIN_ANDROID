@@ -30,6 +30,6 @@ enum class RecruitmentSort(
     DEADLINE_SOON(R.string.recruitment_filter_sort_deadline);
 
     companion object {
-        val ALL = entries.toImmutableList()
+        val ALL: ImmutableList<RecruitmentSort> = entries.toImmutableList()
     }
 }

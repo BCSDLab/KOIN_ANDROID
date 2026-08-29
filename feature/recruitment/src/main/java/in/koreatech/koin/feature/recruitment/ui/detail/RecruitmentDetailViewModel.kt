@@ -16,11 +16,11 @@ class RecruitmentDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), ContainerHost<RecruitmentDetailState, RecruitmentDetailSideEffect> {
 
-    private val recruitmentId =
-        savedStateHandle.toRoute<RecruitmentNavType.RecruitmentDetail>().recruitmentId
+    private val postId =
+        savedStateHandle.toRoute<RecruitmentNavType.RecruitmentDetail>().postId
 
     override val container = container<RecruitmentDetailState, RecruitmentDetailSideEffect>(
-        RecruitmentDetailState(id = recruitmentId)
+        RecruitmentDetailState(id = postId)
     )
 
     fun updateMoreMenuVisible(visible: Boolean) = blockingIntent {
