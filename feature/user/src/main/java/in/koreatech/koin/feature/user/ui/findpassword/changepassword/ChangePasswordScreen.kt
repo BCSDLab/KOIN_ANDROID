@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.user.R
 import `in`.koreatech.koin.feature.user.component.KoinUserPasswordTextField
 import `in`.koreatech.koin.feature.user.component.KoinUserProgressHeader
@@ -153,6 +155,10 @@ fun ChangePasswordScreenImpl(
                 .padding(horizontal = 8.dp)
                 .fillMaxWidth(),
             text = stringResource(R.string.find_password_next),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = RebrandKoinTheme.colors.primary500
+            ),
+            shape = KoinTheme.shapes.small,
             contentPadding = PaddingValues(12.dp),
             onClick = onNextClick,
             enabled = isPasswordValid && password == passwordConfirm
