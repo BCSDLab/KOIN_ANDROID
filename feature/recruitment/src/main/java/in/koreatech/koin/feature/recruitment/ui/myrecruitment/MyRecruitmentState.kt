@@ -11,6 +11,6 @@ data class MyRecruitmentState(
     val posts: ImmutableList<MyRecruitmentPost> = persistentListOf(),
     val filter: RecruitmentFilterState = RecruitmentFilterState(),
     val showCloseDialog: Boolean = false,
-    val closeTargetPostId: Long? = null,
+    val closeTargetPostId: Int? = null,
     val showFilterSheet: Boolean = false
 )

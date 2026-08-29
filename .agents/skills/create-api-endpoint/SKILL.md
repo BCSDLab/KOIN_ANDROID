@@ -160,6 +160,20 @@ Templates: `references/Api-method.kt.tmpl`, `references/Request.kt.tmpl`, `refer
 - Response DTO: same shape with `Response` suffix.
 - Mapper: `fun <Feature><Action>Response.to<DomainModel>() = <DomainModel>(...)`.
 
+**Retrofit interface default values — prohibited:**
+
+Never add Kotlin default values to `@Query`, `@Path`, or `@Body` parameters in the Retrofit interface. Retrofit creates a runtime proxy and ignores Kotlin defaults entirely — they silently have no effect.
+
+```kotlin
+// ❌ 금지
+suspend fun getPosts(@Query("status") status: String = "ALL"): Response
+
+// ✅ 올바름
+suspend fun getPosts(@Query("status") status: String): Response
+```
+
+Defaults belong in the use case layer (`operator fun invoke(...)`), not in the Api interface.
+
 **Field types (OpenAPI → Kotlin):**
 
 | OpenAPI | Kotlin (required) | Kotlin (optional) |
@@ -334,6 +348,7 @@ Adapt the file list to what actually changed.
 - Don't trust the WebFetch result's *summary text* — it routinely hallucinates "not found" on long specs. Validate by `head -c 30` on the saved file (must start with `openapi:` or `{"openapi":`) then query with grep on disk. Only enter manual fallback when the saved file itself is unusable or grep finds zero candidates after trying naming variants.
 - Don't touch Java files. KOIN treats `.java` as legacy.
 - Don't create domain `use cases`. They are deliberately out of scope.
+- Don't add Kotlin default values to Retrofit interface parameters (`@Query`, `@Path`, `@Body`). Retrofit's runtime proxy ignores them. Defaults go in the use case layer.
 
 # Reference files
 
