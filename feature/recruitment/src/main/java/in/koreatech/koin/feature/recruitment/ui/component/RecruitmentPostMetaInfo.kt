@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
@@ -60,6 +61,31 @@ fun RecruitmentPostMetaInfo(
             },
             text = applicantText,
             textColor = applicantColor
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun RecruitmentPostMetaInfoPreview() {
+    RebrandKoinTheme {
+        RecruitmentPostMetaInfo(
+            location = "온라인",
+            dateRange = "2026.07.26 ~ 2026.08.07",
+            applicantText = "2/3명"
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun RecruitmentPostMetaInfoFullPreview() {
+    RebrandKoinTheme {
+        RecruitmentPostMetaInfo(
+            location = "온라인",
+            dateRange = "2026.07.26 ~ 2026.08.07",
+            applicantText = "3/3명",
+            applicantColor = RebrandKoinTheme.colors.primary600
         )
     }
 }
