@@ -6,6 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.ApplicantManagementScreen
+import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.MyAppliedRecruitmentScreen
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.MyRecruitmentScreen
 
 fun NavGraphBuilder.koinRecruitmentGraph(
@@ -13,6 +14,18 @@ fun NavGraphBuilder.koinRecruitmentGraph(
 ) {
     composable<RecruitmentNavType.ApplicantManagement> {
         ApplicantManagementScreen()
+    }
+    composable<RecruitmentNavType.MyAppliedRecruitment> {
+        val navigator = rememberNavigator()
+        val context = LocalContext.current
+        MyAppliedRecruitmentScreen(
+            onNavigateUp = { navController.navigateUp() },
+            onNavigateToLogin = {
+                navigator.navigateToSignIn(context).apply {
+                    context.startActivity(this)
+                }
+            }
+        )
     }
     composable<RecruitmentNavType.MyRecruitment> {
         val navigator = rememberNavigator()

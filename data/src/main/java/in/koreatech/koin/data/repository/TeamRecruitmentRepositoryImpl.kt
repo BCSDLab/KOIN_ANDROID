@@ -1,8 +1,10 @@
 package `in`.koreatech.koin.data.repository
 
+import `in`.koreatech.koin.data.mapper.toMyAppliedRecruitment
 import `in`.koreatech.koin.data.mapper.toMyRecruitmentPost
 import `in`.koreatech.koin.data.source.remote.TeamRecruitmentRemoteDataSource
 import `in`.koreatech.koin.data.util.suspendRunCatching
+import `in`.koreatech.koin.domain.model.recruitment.MyAppliedRecruitment
 import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost
 import `in`.koreatech.koin.domain.repository.TeamRecruitmentRepository
 import javax.inject.Inject
@@ -23,6 +25,20 @@ class TeamRecruitmentRepositoryImpl @Inject constructor(
                 .getMyRecruitmentPosts(status, sort, page, limit)
                 .recruitments
                 .map { it.toMyRecruitmentPost() }
+        }
+    }
+
+    override suspend fun getMyAppliedRecruitments(
+        statuses: List<String>,
+        sort: String,
+        page: Int,
+        limit: Int
+    ): Result<List<MyAppliedRecruitment>> {
+        return suspendRunCatching {
+            teamRecruitmentRemoteDataSource
+                .getMyAppliedRecruitments(statuses, sort, page, limit)
+                .applications
+                .map { it.toMyAppliedRecruitment() }
         }
     }
 
