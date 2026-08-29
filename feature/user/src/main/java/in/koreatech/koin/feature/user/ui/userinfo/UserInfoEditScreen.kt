@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
@@ -53,6 +54,7 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.util.KRPhoneNumberVisualTransformation
 import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.domain.model.user.Gender
@@ -219,6 +221,10 @@ fun UserInfoEditScreen(
                     .padding(horizontal = 32.dp),
                 text = stringResource(R.string.user_info_save),
                 textStyle = KoinTheme.typography.medium15,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = RebrandKoinTheme.colors.primary500
+                ),
+                shape = KoinTheme.shapes.small,
                 enabled = uiState.canSave,
                 onClick = viewModel::requestUserInfoEdit
             )
@@ -661,6 +667,10 @@ fun UserInfoVerificationCodeVerification(
                     .defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
                 text = stringResource(R.string.user_info_code_check),
                 textStyle = KoinTheme.typography.regular10,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = RebrandKoinTheme.colors.primary500
+                ),
+                shape = KoinTheme.shapes.extraSmall,
                 enabled = verificationCode.isNotBlank() && verificationCodeState != VerificationCodeState.Valid,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {

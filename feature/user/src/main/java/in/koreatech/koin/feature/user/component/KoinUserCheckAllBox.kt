@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.user.R
 
 /**
@@ -34,7 +35,7 @@ fun KoinUserCheckAllBox(
     checked: Boolean,
     trailingText: String,
     modifier: Modifier = Modifier,
-    textColor: Color = KoinTheme.colors.primary500,
+    textColor: Color = RebrandKoinTheme.colors.primary500,
     onCheckedChange: (Boolean) -> Unit = {}
 ) {
     Row(
