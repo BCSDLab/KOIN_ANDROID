@@ -162,7 +162,7 @@ private fun ApplicationStatusLabel(
 ) {
     val context = LocalContext.current
     val colors = RebrandKoinTheme.colors
-    val (text, color) = remember(status, colors) {
+    val (text, color) = remember(status, colors, context) {
         when (status) {
             AppliedRecruitmentStatus.Approved ->
                 context.getString(R.string.recruitment_applied_status_approved) to colors.primary600

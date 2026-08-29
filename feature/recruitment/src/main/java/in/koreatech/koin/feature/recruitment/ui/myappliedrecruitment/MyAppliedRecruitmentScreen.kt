@@ -28,8 +28,8 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentEmptyState
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentFilterButton
-import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.component.AppliedRecruitmentEmptyState
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.component.AppliedRecruitmentFilterBottomSheet
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.component.AppliedRecruitmentPostCard
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.model.AppliedRecruitmentPost
@@ -101,7 +101,10 @@ private fun MyAppliedRecruitmentScreenImpl(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                AppliedRecruitmentEmptyState()
+                RecruitmentEmptyState(
+                    title = stringResource(R.string.recruitment_applied_empty_title),
+                    subtitle = stringResource(R.string.recruitment_applied_empty_subtitle)
+                )
             }
         } else {
             LazyColumn(

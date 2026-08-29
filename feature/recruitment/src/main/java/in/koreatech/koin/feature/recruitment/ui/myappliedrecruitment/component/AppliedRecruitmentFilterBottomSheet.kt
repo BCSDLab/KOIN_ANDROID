@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -27,11 +26,11 @@ fun AppliedRecruitmentFilterBottomSheet(
     onDismiss: () -> Unit,
     onApply: (AppliedFilterState) -> Unit
 ) {
-    var localStatus by rememberSaveable { mutableStateOf(currentFilter.status) }
-    var localSort by rememberSaveable { mutableStateOf(currentFilter.sort) }
+    var localStatus by remember(currentFilter) { mutableStateOf(currentFilter.status) }
+    var localSort by remember(currentFilter) { mutableStateOf(currentFilter.sort) }
 
     val context = LocalContext.current
-    val statusOrder = remember {
+    val statusOrder = remember(context) {
         persistentListOf(
             AppliedFilterStatus.ALL to context.getString(R.string.recruitment_filter_status_all),
             AppliedFilterStatus.APPROVED to context.getString(R.string.recruitment_applied_status_approved),
@@ -39,7 +38,7 @@ fun AppliedRecruitmentFilterBottomSheet(
             AppliedFilterStatus.REJECTED to context.getString(R.string.recruitment_applied_status_rejected)
         )
     }
-    val sortOrder = remember {
+    val sortOrder = remember(context) {
         persistentListOf(
             AppliedFilterSort.LATEST to context.getString(R.string.recruitment_filter_sort_latest),
             AppliedFilterSort.DEADLINE to context.getString(R.string.recruitment_filter_sort_deadline)
