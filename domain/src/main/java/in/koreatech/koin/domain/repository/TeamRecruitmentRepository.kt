@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.domain.repository
 
-import `in`.koreatech.koin.domain.model.recruitment.RecruitmentPostInfo
+import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost
 
 interface TeamRecruitmentRepository {
 
@@ -9,7 +9,7 @@ interface TeamRecruitmentRepository {
         sort: String,
         page: Int,
         limit: Int
-    ): Result<List<RecruitmentPostInfo>>
+    ): Result<List<MyRecruitmentPost>>
 
     suspend fun closeRecruitmentPost(postId: Int): Result<Unit>
 }

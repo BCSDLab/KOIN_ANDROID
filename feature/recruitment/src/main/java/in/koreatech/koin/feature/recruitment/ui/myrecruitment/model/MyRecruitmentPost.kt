@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model
 
-import `in`.koreatech.koin.domain.model.recruitment.RecruitmentPostInfo
-import `in`.koreatech.koin.domain.model.recruitment.RecruitmentRoleInfo
+import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost as DomainMyRecruitmentPost
+import `in`.koreatech.koin.domain.model.recruitment.RecruitmentRole as DomainRecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
 import kotlinx.collections.immutable.ImmutableList
@@ -20,7 +20,7 @@ data class MyRecruitmentPost(
     val maxApplicants: Int
 )
 
-fun RecruitmentPostInfo.toMyRecruitmentPost() = MyRecruitmentPost(
+fun DomainMyRecruitmentPost.toMyRecruitmentPost() = MyRecruitmentPost(
     id = id,
     category = RecruitmentCategory.entries.firstOrNull { it.name == category } ?: RecruitmentCategory.ETC,
     status = when (status) {
@@ -39,7 +39,7 @@ fun RecruitmentPostInfo.toMyRecruitmentPost() = MyRecruitmentPost(
     maxApplicants = maxParticipants
 )
 
-fun RecruitmentRoleInfo.toRecruitmentRole() = RecruitmentRole(
+fun DomainRecruitmentRole.toRecruitmentRole() = RecruitmentRole(
     name = name,
     count = maxParticipants
 )

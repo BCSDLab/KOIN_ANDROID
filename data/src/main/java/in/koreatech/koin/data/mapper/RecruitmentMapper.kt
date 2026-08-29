@@ -1,11 +1,13 @@
 package `in`.koreatech.koin.data.mapper
 
+import `in`.koreatech.koin.data.response.recruitment.MyRecruitmentPostResponse
 import `in`.koreatech.koin.data.response.recruitment.RecruitmentResponse
 import `in`.koreatech.koin.data.response.recruitment.RecruitmentRoleResponse
-import `in`.koreatech.koin.domain.model.recruitment.RecruitmentPostInfo
-import `in`.koreatech.koin.domain.model.recruitment.RecruitmentRoleInfo
+import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost
+import `in`.koreatech.koin.domain.model.recruitment.RecruitmentPost
+import `in`.koreatech.koin.domain.model.recruitment.RecruitmentRole
 
-fun RecruitmentResponse.toRecruitmentPostInfo() = RecruitmentPostInfo(
+fun RecruitmentResponse.toRecruitmentPost() = RecruitmentPost(
     id = id,
     category = category,
     title = title,
@@ -18,14 +20,30 @@ fun RecruitmentResponse.toRecruitmentPostInfo() = RecruitmentPostInfo(
     recruitmentType = recruitmentType,
     currentParticipants = currentParticipants,
     maxParticipants = maxParticipants,
-    roles = roles.map { it.toRecruitmentRoleInfo() },
+    roles = roles.map { it.toRecruitmentRole() }
+)
+
+fun MyRecruitmentPostResponse.toMyRecruitmentPost() = MyRecruitmentPost(
+    id = id,
+    category = category,
+    title = title,
+    meetingType = meetingType,
+    activityStartDate = activityStartDate,
+    activityEndDate = activityEndDate,
+    deadlineDate = deadlineDate,
+    dDay = dDay,
+    status = status,
+    recruitmentType = recruitmentType,
+    currentParticipants = currentParticipants,
+    maxParticipants = maxParticipants,
+    roles = roles.map { it.toRecruitmentRole() },
     applicantCount = applicantCount,
     canClose = canClose,
     teamChatAvailable = teamChatAvailable,
     teamChatRoomId = teamChatRoomId
 )
 
-fun RecruitmentRoleResponse.toRecruitmentRoleInfo() = RecruitmentRoleInfo(
+fun RecruitmentRoleResponse.toRecruitmentRole() = RecruitmentRole(
     id = id,
     name = name,
     currentParticipants = currentParticipants,

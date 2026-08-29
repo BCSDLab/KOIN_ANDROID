@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.data.api.auth
 
-import `in`.koreatech.koin.data.response.recruitment.RecruitmentListResponse
+import `in`.koreatech.koin.data.response.recruitment.MyRecruitmentListResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.PUT
@@ -15,7 +15,7 @@ interface RecruitmentAuthApi {
         @Query("sort") sort: String,
         @Query("page") page: Int,
         @Query("limit") limit: Int
-    ): RecruitmentListResponse
+    ): MyRecruitmentListResponse
 
     @PUT("team-recruitments/{recruitmentId}/close")
     suspend fun closeRecruitmentPost(
