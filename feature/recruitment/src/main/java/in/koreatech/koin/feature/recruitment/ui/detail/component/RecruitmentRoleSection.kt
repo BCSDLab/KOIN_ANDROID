@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,32 +46,34 @@ fun RecruitmentRoleSection(
                 )
         ) {
             roles.forEachIndexed { index, role ->
-                if (index > 0) {
-                    HorizontalDivider(
-                        thickness = 0.5.dp,
-                        color = RebrandKoinTheme.colors.neutral300
+                key(role.id) {
+                    if (index > 0) {
+                        HorizontalDivider(
+                            thickness = 0.5.dp,
+                            color = RebrandKoinTheme.colors.neutral300
+                        )
+                    }
+                    RecruitmentDetailRow(
+                        modifier = Modifier
+                            .height(32.dp)
+                            .padding(horizontal = 10.dp),
+                        iconRes = R.drawable.ic_recruitment_role,
+                        label = role.name,
+                        value = if (role.isClosed) {
+                            stringResource(R.string.recruitment_closed)
+                        } else {
+                            stringResource(
+                                R.string.recruitment_role_participants_format,
+                                role.maxParticipants
+                            )
+                        },
+                        iconTint = if (role.isClosed) {
+                            RebrandKoinTheme.colors.neutral500
+                        } else {
+                            RebrandKoinTheme.colors.primary600
+                        }
                     )
                 }
-                RecruitmentDetailRow(
-                    modifier = Modifier
-                        .height(32.dp)
-                        .padding(horizontal = 10.dp),
-                    iconRes = R.drawable.ic_recruitment_role,
-                    label = role.name,
-                    value = if (role.isClosed) {
-                        stringResource(R.string.recruitment_closed)
-                    } else {
-                        stringResource(
-                            R.string.recruitment_role_participants_format,
-                            role.maxParticipants
-                        )
-                    },
-                    iconTint = if (role.isClosed) {
-                        RebrandKoinTheme.colors.neutral500
-                    } else {
-                        RebrandKoinTheme.colors.primary600
-                    }
-                )
             }
         }
     }
