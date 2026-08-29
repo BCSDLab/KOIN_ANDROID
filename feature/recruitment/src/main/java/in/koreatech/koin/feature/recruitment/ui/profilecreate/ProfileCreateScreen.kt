@@ -1,22 +1,17 @@
-package `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply
+package `in`.koreatech.koin.feature.recruitment.ui.profilecreate
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,7 +26,6 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
-import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentActivityCard
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentActivityForm
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentConfirmDialog
@@ -46,26 +40,24 @@ import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 private const val SELF_INTRODUCTION_MAX_LENGTH = 1000
-private const val MOTIVATION_MAX_LENGTH = 1000
-private const val AVAILABLE_TIME_MAX_LENGTH = 100
 
 private val DEPARTMENTS = persistentListOf("컴퓨터공학부", "전전통", "고용", "산경", "등등..")
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RecruitmentApplyScreen(
+fun ProfileCreateScreen(
     modifier: Modifier = Modifier,
-    viewModel: RecruitmentApplyViewModel = hiltViewModel(),
+    viewModel: ProfileCreateViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit = {},
-    onApplySuccess: () -> Unit = {}
+    onSaveSuccess: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            RecruitmentApplySideEffect.NavigateUp -> onNavigateUp()
-            RecruitmentApplySideEffect.ApplySuccess -> onApplySuccess()
-            RecruitmentApplySideEffect.ApplyFailure -> Unit
+            ProfileCreateSideEffect.NavigateUp -> onNavigateUp()
+            ProfileCreateSideEffect.SaveSuccess -> onSaveSuccess()
+            ProfileCreateSideEffect.SaveFailure -> Unit
         }
     }
 
@@ -74,7 +66,11 @@ fun RecruitmentApplyScreen(
         containerColor = RebrandKoinTheme.colors.neutral50,
         topBar = {
             KoinTopAppBar(
-                title = stringResource(R.string.recruitment_apply_title),
+                title = if (state.isEditMode) {
+                    stringResource(R.string.recruitment_profile_create_edit_title)
+                } else {
+                    stringResource(R.string.recruitment_profile_create_title)
+                },
                 onNavigationIconClick = {
                     if (state.currentStep == 1) viewModel.showCancelConfirmDialog() else viewModel.goToPreviousStep()
                 }
@@ -82,15 +78,15 @@ fun RecruitmentApplyScreen(
         },
         contentWindowInsets = WindowInsets.systemBars
     ) { contentPadding ->
-        RecruitmentApplyScreenImpl(
+        ProfileCreateScreenImpl(
             state = state,
             modifier = Modifier.padding(contentPadding),
             onLoadMemberInfoClick = viewModel::loadMemberInfo,
             onNicknameChange = viewModel::setNickname,
-            onAgeChange = viewModel::setAge,
             onDepartmentDropdownExpandChange = viewModel::setDepartmentDropdownExpanded,
             onDepartmentSelected = viewModel::setDepartment,
             onStudentIdChange = viewModel::setStudentId,
+            onPreferredRoleChange = viewModel::setPreferredRole,
             onAddSkillClick = viewModel::addSkill,
             onSkillTextChange = viewModel::setSkillText,
             onSkillRemoved = viewModel::removeSkill,
@@ -102,12 +98,10 @@ fun RecruitmentApplyScreen(
             onActivityRemoved = viewModel::removeActivity,
             onSelfIntroductionChange = viewModel::setSelfIntroduction,
             onNextStepClick = viewModel::goToNextStep,
-            onRoleSelected = viewModel::selectRole,
-            onMotivationChange = viewModel::setMotivation,
-            onAvailableTimeChange = viewModel::setAvailableTime,
-            onSubmitClick = viewModel::showSubmitConfirmDialog,
-            onDismissSubmitConfirmDialog = viewModel::dismissSubmitConfirmDialog,
-            onConfirmSubmit = viewModel::submitApplication,
+            onPreviousStepClick = viewModel::goToPreviousStep,
+            onSaveClick = viewModel::showSaveConfirmDialog,
+            onDismissSaveConfirmDialog = viewModel::dismissSaveConfirmDialog,
+            onConfirmSave = viewModel::saveProfile,
             onDismissCancelConfirmDialog = viewModel::dismissCancelConfirmDialog,
             onConfirmCancel = viewModel::confirmCancel
         )
@@ -116,15 +110,15 @@ fun RecruitmentApplyScreen(
 
 @Suppress("LongParameterList")
 @Composable
-private fun RecruitmentApplyScreenImpl(
-    state: RecruitmentApplyState,
+private fun ProfileCreateScreenImpl(
+    state: ProfileCreateState,
     modifier: Modifier = Modifier,
     onLoadMemberInfoClick: () -> Unit = {},
     onNicknameChange: (String) -> Unit = {},
-    onAgeChange: (String) -> Unit = {},
     onDepartmentDropdownExpandChange: (Boolean) -> Unit = {},
     onDepartmentSelected: (String) -> Unit = {},
     onStudentIdChange: (String) -> Unit = {},
+    onPreferredRoleChange: (String) -> Unit = {},
     onAddSkillClick: () -> Unit = {},
     onSkillTextChange: (Int, String) -> Unit = { _, _ -> },
     onSkillRemoved: (Int) -> Unit = {},
@@ -136,29 +130,31 @@ private fun RecruitmentApplyScreenImpl(
     onActivityRemoved: (RecruitmentActivityEntry) -> Unit = {},
     onSelfIntroductionChange: (String) -> Unit = {},
     onNextStepClick: () -> Unit = {},
-    onRoleSelected: (TeamRecruitmentRole) -> Unit = {},
-    onMotivationChange: (String) -> Unit = {},
-    onAvailableTimeChange: (String) -> Unit = {},
-    onSubmitClick: () -> Unit = {},
-    onDismissSubmitConfirmDialog: () -> Unit = {},
-    onConfirmSubmit: () -> Unit = {},
+    onPreviousStepClick: () -> Unit = {},
+    onSaveClick: () -> Unit = {},
+    onDismissSaveConfirmDialog: () -> Unit = {},
+    onConfirmSave: () -> Unit = {},
     onDismissCancelConfirmDialog: () -> Unit = {},
     onConfirmCancel: () -> Unit = {}
 ) {
-    if (state.showSubmitConfirmDialog) {
+    if (state.showSaveConfirmDialog) {
         RecruitmentConfirmDialog(
-            title = stringResource(R.string.recruitment_apply_submit_dialog_title),
-            positiveButtonText = stringResource(R.string.recruitment_apply_submit),
-            negativeButtonText = stringResource(R.string.recruitment_apply_submit_dialog_cancel),
-            onPositive = onConfirmSubmit,
-            onNegative = onDismissSubmitConfirmDialog
+            title = stringResource(R.string.recruitment_profile_save_dialog_title),
+            positiveButtonText = if (state.isEditMode) {
+                stringResource(R.string.recruitment_profile_update)
+            } else {
+                stringResource(R.string.recruitment_profile_save)
+            },
+            negativeButtonText = stringResource(R.string.recruitment_create_dialog_no),
+            onPositive = onConfirmSave,
+            onNegative = onDismissSaveConfirmDialog
         )
     }
 
     if (state.showCancelConfirmDialog) {
         RecruitmentConfirmDialog(
-            title = stringResource(R.string.recruitment_apply_cancel_dialog_title),
-            description = stringResource(R.string.recruitment_apply_cancel_dialog_description),
+            title = stringResource(R.string.recruitment_profile_cancel_dialog_title),
+            description = stringResource(R.string.recruitment_profile_cancel_dialog_description),
             positiveButtonText = stringResource(R.string.recruitment_create_dialog_yes),
             negativeButtonText = stringResource(R.string.recruitment_create_dialog_no),
             onPositive = onConfirmCancel,
@@ -169,10 +165,10 @@ private fun RecruitmentApplyScreenImpl(
     Column(modifier = modifier) {
         RecruitmentStepIndicator(
             currentStep = state.currentStep,
-            totalSteps = RECRUITMENT_APPLY_STEP_COUNT,
+            totalSteps = PROFILE_CREATE_STEP_COUNT,
             stepLabels = persistentListOf(
-                stringResource(R.string.recruitment_apply_step_one_label),
-                stringResource(R.string.recruitment_apply_step_two_label)
+                stringResource(R.string.recruitment_profile_create_step_one_label),
+                stringResource(R.string.recruitment_profile_create_step_two_label)
             )
         )
 
@@ -184,14 +180,18 @@ private fun RecruitmentApplyScreenImpl(
             verticalArrangement = Arrangement.spacedBy(28.dp)
         ) {
             if (state.currentStep == 1) {
-                RecruitmentApplyStepOne(
+                ProfileCreateStepOne(
                     state = state,
                     onLoadMemberInfoClick = onLoadMemberInfoClick,
                     onNicknameChange = onNicknameChange,
-                    onAgeChange = onAgeChange,
                     onDepartmentDropdownExpandChange = onDepartmentDropdownExpandChange,
                     onDepartmentSelected = onDepartmentSelected,
-                    onStudentIdChange = onStudentIdChange,
+                    onStudentIdChange = onStudentIdChange
+                )
+            } else {
+                ProfileCreateStepTwo(
+                    state = state,
+                    onPreferredRoleChange = onPreferredRoleChange,
                     onAddSkillClick = onAddSkillClick,
                     onSkillTextChange = onSkillTextChange,
                     onSkillRemoved = onSkillRemoved,
@@ -203,13 +203,6 @@ private fun RecruitmentApplyScreenImpl(
                     onActivityRemoved = onActivityRemoved,
                     onSelfIntroductionChange = onSelfIntroductionChange
                 )
-            } else {
-                RecruitmentApplyStepTwo(
-                    state = state,
-                    onRoleSelected = onRoleSelected,
-                    onMotivationChange = onMotivationChange,
-                    onAvailableTimeChange = onAvailableTimeChange
-                )
             }
         }
 
@@ -217,7 +210,7 @@ private fun RecruitmentApplyScreenImpl(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp, vertical = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             if (state.currentStep == 1) {
                 RecruitmentFilledActionButton(
@@ -226,37 +219,38 @@ private fun RecruitmentApplyScreenImpl(
                     onClick = onNextStepClick
                 )
             } else {
+                val saveText = if (state.isEditMode) {
+                    stringResource(R.string.recruitment_profile_update)
+                } else {
+                    stringResource(R.string.recruitment_profile_save)
+                }
+                RecruitmentOutlinedActionButton(
+                    text = stringResource(R.string.recruitment_profile_previous),
+                    onClick = onPreviousStepClick,
+                    modifier = Modifier.weight(1f),
+                    height = 48.dp,
+                    contentPadding = PaddingValues(top = 8.dp, end = 24.dp, bottom = 8.dp, start = 24.dp)
+                )
                 RecruitmentFilledActionButton(
-                    text = stringResource(R.string.recruitment_apply_submit),
-                    enabled = state.isSubmitEnabled && !state.isSubmitting,
-                    onClick = onSubmitClick
+                    text = saveText,
+                    enabled = state.isSaveEnabled && !state.isSaving,
+                    onClick = onSaveClick,
+                    modifier = Modifier.weight(1f)
                 )
             }
         }
     }
 }
 
-@Suppress("LongParameterList")
 @Composable
-private fun RecruitmentApplyStepOne(
-    state: RecruitmentApplyState,
+private fun ProfileCreateStepOne(
+    state: ProfileCreateState,
     modifier: Modifier = Modifier,
     onLoadMemberInfoClick: () -> Unit = {},
     onNicknameChange: (String) -> Unit = {},
-    onAgeChange: (String) -> Unit = {},
     onDepartmentDropdownExpandChange: (Boolean) -> Unit = {},
     onDepartmentSelected: (String) -> Unit = {},
-    onStudentIdChange: (String) -> Unit = {},
-    onAddSkillClick: () -> Unit = {},
-    onSkillTextChange: (Int, String) -> Unit = { _, _ -> },
-    onSkillRemoved: (Int) -> Unit = {},
-    onAddActivityClick: () -> Unit = {},
-    onEditActivityClick: (RecruitmentActivityEntry) -> Unit = {},
-    onCancelActivityForm: () -> Unit = {},
-    onActivityAdded: (RecruitmentActivityEntry) -> Unit = {},
-    onActivityEdited: (RecruitmentActivityEntry) -> Unit = {},
-    onActivityRemoved: (RecruitmentActivityEntry) -> Unit = {},
-    onSelfIntroductionChange: (String) -> Unit = {}
+    onStudentIdChange: (String) -> Unit = {}
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(28.dp)) {
         FormSection(
@@ -275,9 +269,9 @@ private fun RecruitmentApplyStepOne(
             trailingContent = {
                 Text(
                     text = stringResource(
-                        R.string.recruitment_apply_char_count,
+                        R.string.recruitment_profile_char_count,
                         state.nickname.length,
-                        NICKNAME_MAX_LENGTH
+                        PROFILE_NICKNAME_MAX_LENGTH
                     ),
                     style = RebrandKoinTheme.typography.regular12,
                     color = RebrandKoinTheme.colors.neutral400
@@ -288,15 +282,7 @@ private fun RecruitmentApplyStepOne(
                 value = state.nickname,
                 onValueChange = onNicknameChange,
                 hint = stringResource(R.string.recruitment_apply_nickname_hint),
-                maxLength = NICKNAME_MAX_LENGTH
-            )
-        }
-
-        FormSection(title = stringResource(R.string.recruitment_apply_age), isRequired = true) {
-            RecruitmentTextField(
-                value = state.age,
-                onValueChange = onAgeChange,
-                hint = stringResource(R.string.recruitment_apply_age_hint)
+                maxLength = PROFILE_NICKNAME_MAX_LENGTH
             )
         }
 
@@ -316,6 +302,49 @@ private fun RecruitmentApplyStepOne(
                 value = state.studentId,
                 onValueChange = onStudentIdChange,
                 hint = stringResource(R.string.recruitment_apply_student_id_hint)
+            )
+        }
+    }
+}
+
+@Suppress("LongParameterList")
+@Composable
+private fun ProfileCreateStepTwo(
+    state: ProfileCreateState,
+    modifier: Modifier = Modifier,
+    onPreferredRoleChange: (String) -> Unit = {},
+    onAddSkillClick: () -> Unit = {},
+    onSkillTextChange: (Int, String) -> Unit = { _, _ -> },
+    onSkillRemoved: (Int) -> Unit = {},
+    onAddActivityClick: () -> Unit = {},
+    onEditActivityClick: (RecruitmentActivityEntry) -> Unit = {},
+    onCancelActivityForm: () -> Unit = {},
+    onActivityAdded: (RecruitmentActivityEntry) -> Unit = {},
+    onActivityEdited: (RecruitmentActivityEntry) -> Unit = {},
+    onActivityRemoved: (RecruitmentActivityEntry) -> Unit = {},
+    onSelfIntroductionChange: (String) -> Unit = {}
+) {
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(28.dp)) {
+        FormSection(
+            title = stringResource(R.string.recruitment_profile_preferred_role),
+            isRequired = true,
+            trailingContent = {
+                Text(
+                    text = stringResource(
+                        R.string.recruitment_profile_char_count,
+                        state.preferredRole.length,
+                        PROFILE_PREFERRED_ROLE_MAX_LENGTH
+                    ),
+                    style = RebrandKoinTheme.typography.regular12,
+                    color = RebrandKoinTheme.colors.neutral400
+                )
+            }
+        ) {
+            RecruitmentTextField(
+                value = state.preferredRole,
+                onValueChange = onPreferredRoleChange,
+                hint = stringResource(R.string.recruitment_profile_preferred_role_hint),
+                maxLength = PROFILE_PREFERRED_ROLE_MAX_LENGTH
             )
         }
 
@@ -344,8 +373,8 @@ private fun RecruitmentApplyStepOne(
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 state.activities.forEach { activity ->
-                    val editState = state.activityFormState
-                    if (editState is ActivityFormState.Editing && editState.activityId == activity.id) {
+                    val formState = state.activityFormState
+                    if (formState is ProfileActivityFormState.Editing && formState.activityId == activity.id) {
                         RecruitmentActivityForm(
                             onCancel = onCancelActivityForm,
                             onConfirm = onActivityEdited,
@@ -359,7 +388,7 @@ private fun RecruitmentApplyStepOne(
                         )
                     }
                 }
-                if (state.activityFormState is ActivityFormState.Adding) {
+                if (state.activityFormState is ProfileActivityFormState.Adding) {
                     RecruitmentActivityForm(
                         onCancel = onCancelActivityForm,
                         onConfirm = onActivityAdded
@@ -378,7 +407,7 @@ private fun RecruitmentApplyStepOne(
             trailingContent = {
                 Text(
                     text = stringResource(
-                        R.string.recruitment_apply_char_count,
+                        R.string.recruitment_profile_char_count,
                         state.selfIntroduction.length,
                         SELF_INTRODUCTION_MAX_LENGTH
                     ),
@@ -394,134 +423,6 @@ private fun RecruitmentApplyStepOne(
                 singleLine = false,
                 minLines = 6,
                 maxLength = SELF_INTRODUCTION_MAX_LENGTH
-            )
-        }
-    }
-}
-
-@Composable
-private fun RecruitmentApplyStepTwo(
-    state: RecruitmentApplyState,
-    modifier: Modifier = Modifier,
-    onRoleSelected: (TeamRecruitmentRole) -> Unit = {},
-    onMotivationChange: (String) -> Unit = {},
-    onAvailableTimeChange: (String) -> Unit = {}
-) {
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(28.dp)) {
-        FormSection(title = stringResource(R.string.recruitment_apply_select_role), isRequired = true) {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                val roles = if (state.availableRoles.isNotEmpty()) {
-                    state.availableRoles
-                } else {
-                    persistentListOf(
-                        TeamRecruitmentRole("프론트엔드", 1),
-                        TeamRecruitmentRole("백엔드", 1),
-                        TeamRecruitmentRole("디자인", 1, isClosed = true)
-                    )
-                }
-                roles.forEach { role ->
-                    RecruitmentRoleRadioItem(
-                        role = role,
-                        isSelected = state.selectedRole == role,
-                        onClick = { onRoleSelected(role) }
-                    )
-                }
-            }
-        }
-
-        FormSection(
-            title = stringResource(R.string.recruitment_apply_motivation),
-            isRequired = true,
-            trailingContent = {
-                Text(
-                    text = stringResource(
-                        R.string.recruitment_apply_char_count,
-                        state.motivation.length,
-                        MOTIVATION_MAX_LENGTH
-                    ),
-                    style = RebrandKoinTheme.typography.regular12,
-                    color = RebrandKoinTheme.colors.neutral400
-                )
-            }
-        ) {
-            RecruitmentTextField(
-                value = state.motivation,
-                onValueChange = onMotivationChange,
-                hint = stringResource(R.string.recruitment_apply_motivation_hint),
-                singleLine = false,
-                minLines = 5,
-                maxLength = MOTIVATION_MAX_LENGTH
-            )
-        }
-
-        FormSection(
-            title = stringResource(R.string.recruitment_apply_available_time),
-            isRequired = true,
-            trailingContent = {
-                Text(
-                    text = stringResource(
-                        R.string.recruitment_apply_char_count,
-                        state.availableTime.length,
-                        AVAILABLE_TIME_MAX_LENGTH
-                    ),
-                    style = RebrandKoinTheme.typography.regular12,
-                    color = RebrandKoinTheme.colors.neutral400
-                )
-            }
-        ) {
-            RecruitmentTextField(
-                value = state.availableTime,
-                onValueChange = onAvailableTimeChange,
-                hint = stringResource(R.string.recruitment_apply_available_time_hint),
-                singleLine = false,
-                minLines = 2,
-                maxLength = AVAILABLE_TIME_MAX_LENGTH
-            )
-        }
-    }
-}
-
-@Composable
-private fun RecruitmentRoleRadioItem(
-    role: TeamRecruitmentRole,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(40.dp)
-            .background(
-                color = if (role.isClosed) RebrandKoinTheme.colors.neutral100 else RebrandKoinTheme.colors.neutral0,
-                shape = RoundedCornerShape(16.dp)
-            )
-            .clickable(enabled = !role.isClosed) { onClick() }
-            .padding(horizontal = 12.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            RadioButton(
-                selected = isSelected,
-                onClick = onClick,
-                enabled = !role.isClosed,
-                colors = RadioButtonDefaults.colors(selectedColor = RebrandKoinTheme.colors.primary500)
-            )
-            Text(
-                text = role.name,
-                style = RebrandKoinTheme.typography.regular15,
-                color = if (role.isClosed) RebrandKoinTheme.colors.neutral400 else RebrandKoinTheme.colors.neutral800
-            )
-        }
-        if (role.isClosed) {
-            Text(
-                text = stringResource(R.string.recruitment_apply_role_closed),
-                style = RebrandKoinTheme.typography.regular13,
-                color = RebrandKoinTheme.colors.neutral400
             )
         }
     }
@@ -569,18 +470,18 @@ private fun FormSection(
     }
 }
 
-@Preview(showBackground = true, heightDp = 1150)
+@Preview(showBackground = true)
 @Composable
-private fun RecruitmentApplyScreenStepOnePreview() {
+private fun ProfileCreateScreenStepOnePreview() {
     RebrandKoinTheme {
-        RecruitmentApplyScreenImpl(state = RecruitmentApplyState(currentStep = 1))
+        ProfileCreateScreenImpl(state = ProfileCreateState(currentStep = 1))
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun RecruitmentApplyScreenStepTwoPreview() {
+private fun ProfileCreateScreenStepTwoPreview() {
     RebrandKoinTheme {
-        RecruitmentApplyScreenImpl(state = RecruitmentApplyState(currentStep = 2))
+        ProfileCreateScreenImpl(state = ProfileCreateState(currentStep = 2))
     }
 }

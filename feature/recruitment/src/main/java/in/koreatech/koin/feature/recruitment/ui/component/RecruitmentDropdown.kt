@@ -66,7 +66,7 @@ fun RecruitmentDropdown(
             Text(
                 text = text,
                 style = RebrandKoinTheme.typography.regular14,
-                color = if (isPlaceholder) RebrandKoinTheme.colors.neutral400 else RebrandKoinTheme.colors.neutral800,
+                color = if (isPlaceholder) RebrandKoinTheme.colors.neutral500 else RebrandKoinTheme.colors.neutral800,
                 maxLines = 1
             )
             Icon(

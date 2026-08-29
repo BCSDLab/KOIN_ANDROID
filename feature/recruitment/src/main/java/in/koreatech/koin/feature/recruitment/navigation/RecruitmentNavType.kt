@@ -12,4 +12,7 @@ sealed class RecruitmentNavType {
 
     @Serializable
     data object Profile : RecruitmentNavType()
+
+    @Serializable
+    data class ProfileCreate(val isEditMode: Boolean = false) : RecruitmentNavType()
 }

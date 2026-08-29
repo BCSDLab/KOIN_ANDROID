@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply.component
+package `in`.koreatech.koin.feature.recruitment.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -26,10 +26,6 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
-import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDatePickerDialog
-import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDateSelectBox
-import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentFilledActionButton
-import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentTextField
 import `in`.koreatech.koin.feature.recruitment.utils.toDateText
 import java.time.LocalDate
 
