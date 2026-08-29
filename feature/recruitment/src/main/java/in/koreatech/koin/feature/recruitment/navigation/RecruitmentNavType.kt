@@ -21,6 +21,9 @@ sealed class RecruitmentNavType {
     ) : RecruitmentNavType()
 
     @Serializable
+    data object Notification : RecruitmentNavType()
+
+    @Serializable
     data class ApplicantManagement(val postId: Long) : RecruitmentNavType()
 
     @Serializable

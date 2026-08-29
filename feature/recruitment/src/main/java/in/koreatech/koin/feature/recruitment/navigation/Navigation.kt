@@ -9,6 +9,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.ApplicantM
 import `in`.koreatech.koin.feature.recruitment.ui.chat.directchat.RecruitmentDirectChatScreen
 import `in`.koreatech.koin.feature.recruitment.ui.chat.groupchat.RecruitmentGroupChatScreen
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.MyRecruitmentScreen
+import `in`.koreatech.koin.feature.recruitment.ui.notification.RecruitmentNotificationScreen
 
 fun NavGraphBuilder.koinRecruitmentGraph(
     navController: NavController
@@ -18,6 +19,14 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     }
     composable<RecruitmentNavType.RecruitmentDirectChat> {
         RecruitmentDirectChatScreen()
+    }
+    composable<RecruitmentNavType.Notification> {
+        RecruitmentNotificationScreen(
+            onBack = { navController.popBackStack() },
+            onNavigateToPost = {
+                // TODO: 모집글 상세 화면 라우트가 추가되면 postId 로 이동하도록 연결한다.
+            }
+        )
     }
     composable<RecruitmentNavType.ApplicantManagement> { backStackEntry ->
         val route = backStackEntry.toRoute<RecruitmentNavType.ApplicantManagement>()
