@@ -1,8 +1,6 @@
 package `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model
 
 import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost as DomainMyRecruitmentPost
-import `in`.koreatech.koin.domain.model.recruitment.RecruitmentRole as DomainRecruitmentRole
-import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost as DomainMyRecruitmentPost
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.model.toDateRange
@@ -38,9 +36,4 @@ fun DomainMyRecruitmentPost.toMyRecruitmentPost() = MyRecruitmentPost(
     dateRange = activityStartDate.toDateRange(activityEndDate),
     currentApplicants = currentParticipants,
     maxApplicants = maxParticipants
-)
-
-fun DomainRecruitmentRole.toRecruitmentRole() = RecruitmentRole(
-    name = name,
-    count = maxParticipants
 )
