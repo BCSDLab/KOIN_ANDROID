@@ -22,11 +22,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.ui.notification.model.RecruitmentNotificationCategory
 
 @Composable
 internal fun RecruitmentNotificationItem(
-    title: String,
+    senderNickname: String?,
     content: String,
     timestamp: String,
     isRead: Boolean,
@@ -34,6 +35,13 @@ internal fun RecruitmentNotificationItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
+    val title = when (category) {
+        RecruitmentNotificationCategory.MESSAGE -> senderNickname?.let {
+            stringResource(R.string.recruitment_notification_message_with_sender, it)
+        } ?: stringResource(category.labelRes)
+        else -> stringResource(category.labelRes)
+    }
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -89,7 +97,7 @@ private fun RecruitmentNotificationItemUnreadPreview() {
     RebrandKoinTheme {
         RecruitmentNotificationItem(
             category = RecruitmentNotificationCategory.MESSAGE,
-            title = "팀원모집 @@@님의 메세지",
+            senderNickname = "@@@",
             content = "메세지메세지",
             timestamp = "2시간 전",
             isRead = false,
@@ -104,7 +112,7 @@ private fun RecruitmentNotificationItemReadPreview() {
     RebrandKoinTheme {
         RecruitmentNotificationItem(
             category = RecruitmentNotificationCategory.APPLICATION_REJECTED,
-            title = "팀원 모집 지원 거절",
+            senderNickname = null,
             content = "지원했던 AI 공모전 팀원 모집에 승인 거절되었어요.\n다른 모집글에 지원해보세요.",
             timestamp = "2시간 전",
             isRead = true,

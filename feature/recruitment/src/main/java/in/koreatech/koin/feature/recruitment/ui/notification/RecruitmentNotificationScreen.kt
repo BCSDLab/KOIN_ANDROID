@@ -181,7 +181,7 @@ private fun RecruitmentNotificationScreenImpl(
             RecruitmentNotificationItem(
                 modifier = Modifier.animateItem(),
                 category = notification.category,
-                title = notification.title,
+                senderNickname = notification.senderNickname,
                 content = notification.content,
                 timestamp = notification.timestamp,
                 isRead = notification.isRead,

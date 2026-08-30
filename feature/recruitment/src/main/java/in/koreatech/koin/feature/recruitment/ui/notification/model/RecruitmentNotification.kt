@@ -10,7 +10,7 @@ internal data class RecruitmentNotification(
     val recruitmentId: Int,
     val targetType: String,
     val category: RecruitmentNotificationCategory,
-    val title: String,
+    val senderNickname: String?,
     val content: String,
     val timestamp: String,
     val isRead: Boolean
@@ -23,7 +23,7 @@ internal fun DomainRecruitmentNotification.toUiModel(): RecruitmentNotification 
         recruitmentId = recruitmentId,
         targetType = targetType,
         category = category,
-        title = category.toTitle(senderNickname),
+        senderNickname = senderNickname,
         content = messagePreview,
         timestamp = createdAt.toDatetimeDiff(),
         isRead = isRead
@@ -38,15 +38,6 @@ private fun String.toRecruitmentNotificationCategory(): RecruitmentNotificationC
     "RECRUITMENT_DELETED" -> RecruitmentNotificationCategory.POST_DELETED
     "NEW_CHAT_MESSAGE" -> RecruitmentNotificationCategory.MESSAGE
     else -> RecruitmentNotificationCategory.MESSAGE
-}
-
-private fun RecruitmentNotificationCategory.toTitle(senderNickname: String?): String = when (this) {
-    RecruitmentNotificationCategory.MESSAGE -> senderNickname?.let { "팀원모집 ${it}님의 메세지" } ?: "팀원모집 메세지"
-    RecruitmentNotificationCategory.NEW_APPLICATION -> "팀원 모집 신규 지원"
-    RecruitmentNotificationCategory.APPLICATION_APPROVED -> "팀원 모집 지원 승인"
-    RecruitmentNotificationCategory.APPLICATION_REJECTED -> "팀원 모집 지원 거절"
-    RecruitmentNotificationCategory.POST_DELETED -> "팀원 모집글 삭제"
-    RecruitmentNotificationCategory.RECRUITMENT_CLOSED -> "팀원 모집기간 종료"
 }
 
 private val CREATED_AT_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
