@@ -2,6 +2,8 @@ package `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate
 
 import androidx.compose.runtime.Immutable
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentProgressType
+import `in`.koreatech.koin.feature.recruitment.model.StableLocalDate
+import `in`.koreatech.koin.feature.recruitment.model.toStable
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model.TeamRecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model.TeamRecruitmentRole
 import java.time.LocalDate
@@ -19,9 +21,9 @@ data class RecruitmentCreateState(
     val category: TeamRecruitmentCategory = TeamRecruitmentCategory.CONTEST,
     val title: String = "",
     val progressType: RecruitmentProgressType? = null,
-    val recruitStartDate: LocalDate = LocalDate.now(),
-    val recruitEndDate: LocalDate = LocalDate.now().plusDays(DEFAULT_RECRUIT_PERIOD_DAYS),
-    val applicationDeadline: LocalDate = LocalDate.now().plusDays(DEFAULT_RECRUIT_PERIOD_DAYS),
+    val recruitStartDate: StableLocalDate = LocalDate.now().toStable(),
+    val recruitEndDate: StableLocalDate = LocalDate.now().plusDays(DEFAULT_RECRUIT_PERIOD_DAYS).toStable(),
+    val applicationDeadline: StableLocalDate = LocalDate.now().plusDays(DEFAULT_RECRUIT_PERIOD_DAYS).toStable(),
     val roles: ImmutableList<TeamRecruitmentRole> = persistentListOf(),
     val isRoleCountUndetermined: Boolean = false,
     val description: String = "",

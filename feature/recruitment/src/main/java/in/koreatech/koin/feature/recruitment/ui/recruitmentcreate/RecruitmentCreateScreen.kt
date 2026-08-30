@@ -34,6 +34,7 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentProgressType
+import `in`.koreatech.koin.feature.recruitment.model.StableLocalDate
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDatePickerDialog
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDateSelectBox
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDropdown
@@ -44,7 +45,6 @@ import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.component.Re
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model.TeamRecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model.TeamRecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.utils.toDateText
-import java.time.LocalDate
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
@@ -131,7 +131,7 @@ private fun RecruitmentCreateScreenImpl(
     onEndDateClick: () -> Unit = {},
     onDeadlineClick: () -> Unit = {},
     onDismissDatePickerDialog: () -> Unit = {},
-    onDateSelected: (LocalDate) -> Unit = {},
+    onDateSelected: (StableLocalDate) -> Unit = {},
     onAddRoleClick: () -> Unit = {},
     onRoleNameChange: (String, String) -> Unit = { _, _ -> },
     onRoleCountChange: (String, Int) -> Unit = { _, _ -> },
@@ -239,7 +239,7 @@ private fun RecruitmentCreateScreenImpl(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         RecruitmentDateSelectBox(
-                            text = state.recruitStartDate.toDateText(),
+                            text = state.recruitStartDate.value.toDateText(),
                             onClick = onStartDateClick,
                             modifier = Modifier.weight(1f)
                         )
@@ -250,7 +250,7 @@ private fun RecruitmentCreateScreenImpl(
                             modifier = Modifier.wrapContentHeight()
                         )
                         RecruitmentDateSelectBox(
-                            text = state.recruitEndDate.toDateText(),
+                            text = state.recruitEndDate.value.toDateText(),
                             onClick = onEndDateClick,
                             modifier = Modifier.weight(1f)
                         )
@@ -267,7 +267,7 @@ private fun RecruitmentCreateScreenImpl(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         RecruitmentDateSelectBox(
-                            text = state.applicationDeadline.toDateText(),
+                            text = state.applicationDeadline.value.toDateText(),
                             onClick = onDeadlineClick,
                             modifier = Modifier.weight(1f)
                         )

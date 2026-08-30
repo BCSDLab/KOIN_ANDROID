@@ -79,6 +79,9 @@
     <string name="recruitment_create_cancel_dialog_description">작성 중인 내용은 저장되지 않습니다.</string>
     <string name="recruitment_create_dialog_yes">네</string>
     <string name="recruitment_create_dialog_no">아니요</string>
+    <string name="recruitment_date_picker_cancel">취소</string>
+    <string name="recruitment_date_picker_confirm">확인</string>
+
     <string name="recruitment_applicant_management_title">지원자 관리</string>
     <string name="recruitment_applicant_list_title">지원자 목록</string>
     <string name="recruitment_applicant_list_count">총 %d명</string>
