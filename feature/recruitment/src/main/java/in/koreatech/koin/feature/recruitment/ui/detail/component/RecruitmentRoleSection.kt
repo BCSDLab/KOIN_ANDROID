@@ -47,36 +47,45 @@ fun RecruitmentRoleSection(
         ) {
             roles.forEachIndexed { index, role ->
                 key(role.id) {
-                    if (index > 0) {
-                        HorizontalDivider(
-                            thickness = 0.5.dp,
-                            color = RebrandKoinTheme.colors.neutral300
-                        )
-                    }
-                    RecruitmentDetailRow(
-                        modifier = Modifier
-                            .height(32.dp)
-                            .padding(horizontal = 10.dp),
-                        iconRes = R.drawable.ic_recruitment_role,
-                        label = role.name,
-                        value = if (role.isClosed) {
-                            stringResource(R.string.recruitment_closed)
-                        } else {
-                            stringResource(
-                                R.string.recruitment_role_participants_format,
-                                role.maxParticipants
-                            )
-                        },
-                        iconTint = if (role.isClosed) {
-                            RebrandKoinTheme.colors.neutral500
-                        } else {
-                            RebrandKoinTheme.colors.primary600
-                        }
-                    )
+                    RecruitmentRoleRow(role = role, showDivider = index > 0)
                 }
             }
         }
     }
+}
+
+@Composable
+private fun RecruitmentRoleRow(
+    role: RecruitmentRoleModel,
+    showDivider: Boolean,
+    modifier: Modifier = Modifier
+) {
+    val value = if (role.isClosed) {
+        stringResource(R.string.recruitment_closed)
+    } else {
+        stringResource(R.string.recruitment_role_participants_format, role.maxParticipants)
+    }
+    val iconTint = if (role.isClosed) {
+        RebrandKoinTheme.colors.neutral500
+    } else {
+        RebrandKoinTheme.colors.primary600
+    }
+
+    if (showDivider) {
+        HorizontalDivider(
+            thickness = 0.5.dp,
+            color = RebrandKoinTheme.colors.neutral300
+        )
+    }
+    RecruitmentDetailRow(
+        modifier = modifier
+            .height(32.dp)
+            .padding(horizontal = 10.dp),
+        iconRes = R.drawable.ic_recruitment_role,
+        label = role.name,
+        value = value,
+        iconTint = iconTint
+    )
 }
 
 @Preview(showBackground = true)
