@@ -28,6 +28,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -45,6 +46,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentFilterSt
 import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentLocation
 import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentSort
 import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentStatus
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -58,10 +60,21 @@ fun RecruitmentFilterBottomSheet(
     onApplyClick: () -> Unit,
     onDismissRequest: () -> Unit
 ) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val scope = rememberCoroutineScope()
+
+    // 스크림 탭·스와이프는 ModalBottomSheet 가 hide 애니메이션을 끝낸 뒤 onDismissRequest 를 호출하지만,
+    // 버튼으로 닫는 경로는 상태가 즉시 바뀌어 애니메이션이 생략되므로 직접 hide 를 기다린다.
+    val hideThen: (() -> Unit) -> Unit = { action ->
+        scope.launch { sheetState.hide() }.invokeOnCompletion {
+            if (!sheetState.isVisible) action()
+        }
+    }
+
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         containerColor = RebrandKoinTheme.colors.neutral0,
-        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        sheetState = sheetState,
         dragHandle = null
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -78,7 +91,7 @@ fun RecruitmentFilterBottomSheet(
                     color = RebrandKoinTheme.colors.primary500,
                     modifier = Modifier.padding(vertical = 12.dp)
                 )
-                IconButton(onClick = onDismissRequest) {
+                IconButton(onClick = { hideThen(onDismissRequest) }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_close),
                         contentDescription = stringResource(R.string.recruitment_filter_close_content_description),
@@ -93,7 +106,7 @@ fun RecruitmentFilterBottomSheet(
                 onCategoryClick = onCategoryClick,
                 onLocationClick = onLocationClick,
                 onReset = onReset,
-                onApplyClick = onApplyClick
+                onApplyClick = { hideThen(onApplyClick) }
             )
         }
     }
