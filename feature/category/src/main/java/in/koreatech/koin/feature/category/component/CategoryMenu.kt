@@ -31,7 +31,8 @@ internal val CAMPUS_MENUS = persistentListOf(
     CategoryMenu(CategoryMenuId.OPERATING_INFO, R.drawable.ic_operating_info, R.string.campus_facility),
     CategoryMenu(CategoryMenuId.DEPARTMENT_INFO, R.drawable.ic_info, R.string.department_info),
     CategoryMenu(CategoryMenuId.DINING, R.drawable.ic_dish, R.string.dining),
-    CategoryMenu(CategoryMenuId.STORE, R.drawable.ic_store_category, R.string.store)
+    CategoryMenu(CategoryMenuId.STORE, R.drawable.ic_store_category, R.string.store),
+    CategoryMenu(CategoryMenuId.TIMETABLE, R.drawable.ic_calendar_category, R.string.category_timetable)
 )
 
 internal val TRANSPORT_MENUS = persistentListOf(
@@ -41,7 +42,6 @@ internal val TRANSPORT_MENUS = persistentListOf(
 )
 
 internal val OTHER_MENUS = persistentListOf(
-    CategoryMenu(CategoryMenuId.RECRUITMENT, R.drawable.ic_recruitment_category, R.string.recruitment),
     CategoryMenu(CategoryMenuId.CHAT, R.drawable.ic_category_chat, R.string.chat),
     CategoryMenu(CategoryMenuId.HOUSING, R.drawable.ic_home, R.string.housing),
     CategoryMenu(CategoryMenuId.KOIN_BUSINESS, R.drawable.ic_koin_business, R.string.koin_business)

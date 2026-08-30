@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="category_timetable">시간표</string>
-    <string name="timetable_description">내 강의 정보 확인하기</string>
     <string name="lost_and_found">분실물</string>
     <string name="lost_and_found_description">분실물 신고/조회하기</string>
 
@@ -15,7 +14,8 @@
     <string name="transport_search">교통편 조회하기</string>
     <string name="callvan">콜밴팟 모집</string>
     <string name="other">기타</string>
-    <string name="recruitment">팀원모집</string>
+    <string name="recruitment">팀원 모집</string>
+    <string name="recruitment_description">교내 활동 팀원 구하기</string>
     <string name="housing">복덕방</string>
     <string name="chat">채팅</string>
     <string name="koin_business">코인 for Business</string>
