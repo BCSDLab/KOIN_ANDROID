@@ -3,9 +3,9 @@ package `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentProgressType
+import `in`.koreatech.koin.feature.recruitment.model.StableLocalDate
 import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model.TeamRecruitmentCategory
-import java.time.LocalDate
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.ContainerHost
@@ -52,15 +52,15 @@ class RecruitmentCreateViewModel @Inject constructor() :
         reduce { state.copy(showDatePickerDialog = false) }
     }
 
-    fun setRecruitStartDate(date: LocalDate) = intent {
+    fun setRecruitStartDate(date: StableLocalDate) = intent {
         reduce { state.copy(recruitStartDate = date, showDatePickerDialog = false) }
     }
 
-    fun setRecruitEndDate(date: LocalDate) = intent {
+    fun setRecruitEndDate(date: StableLocalDate) = intent {
         reduce { state.copy(recruitEndDate = date, showDatePickerDialog = false) }
     }
 
-    fun setApplicationDeadline(date: LocalDate) = intent {
+    fun setApplicationDeadline(date: StableLocalDate) = intent {
         reduce { state.copy(applicationDeadline = date, showDatePickerDialog = false) }
     }
 

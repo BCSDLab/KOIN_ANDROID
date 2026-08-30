@@ -16,11 +16,15 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.recruitment.R
+import `in`.koreatech.koin.feature.recruitment.model.StableLocalDate
+import `in`.koreatech.koin.feature.recruitment.model.toStable
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -28,13 +32,13 @@ import java.time.ZoneId
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecruitmentDatePickerDialog(
-    defaultDate: LocalDate,
+    defaultDate: StableLocalDate,
     modifier: Modifier = Modifier,
     datePickerState: DatePickerState = rememberDatePickerState(
-        initialSelectedDateMillis = defaultDate.toEpochMillisUtc()
+        initialSelectedDateMillis = defaultDate.value.toEpochMillisUtc()
     ),
     onDismiss: () -> Unit = {},
-    onPositive: (LocalDate) -> Unit = {},
+    onPositive: (StableLocalDate) -> Unit = {},
     onNegative: () -> Unit = {}
 ) {
     BasicAlertDialog(
@@ -61,19 +65,19 @@ fun RecruitmentDatePickerDialog(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 OutlinedBoxButton(
-                    text = "취소",
+                    text = stringResource(R.string.recruitment_date_picker_cancel),
                     onClick = onNegative,
                     modifier = Modifier.weight(1f)
                 )
                 FilledButton(
-                    text = "확인",
+                    text = stringResource(R.string.recruitment_date_picker_confirm),
                     onClick = {
                         val date = datePickerState.selectedDateMillis?.let {
                             Instant.ofEpochMilli(it)
                                 .atZone(ZoneId.of("UTC"))
                                 .toLocalDate()
                         } ?: LocalDate.now()
-                        onPositive(date)
+                        onPositive(date.toStable())
                     },
                     modifier = Modifier.weight(1f)
                 )
@@ -90,6 +94,6 @@ private fun LocalDate.toEpochMillisUtc(): Long =
 @Composable
 private fun RecruitmentDatePickerDialogPreview() {
     RebrandKoinTheme {
-        RecruitmentDatePickerDialog(defaultDate = LocalDate.now())
+        RecruitmentDatePickerDialog(defaultDate = StableLocalDate.now())
     }
 }

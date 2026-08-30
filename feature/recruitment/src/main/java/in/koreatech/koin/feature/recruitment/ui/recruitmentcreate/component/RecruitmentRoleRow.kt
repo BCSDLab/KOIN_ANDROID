@@ -62,7 +62,7 @@ fun RecruitmentRoleRow(
             BasicTextField(
                 value = role.name,
                 onValueChange = { newValue ->
-                    if (newValue.length <= TeamRecruitmentRole.NAME_MAX_LENGTH) onNameChange(newValue)
+                    onNameChange(newValue.take(TeamRecruitmentRole.NAME_MAX_LENGTH))
                 },
                 singleLine = true,
                 textStyle = RebrandKoinTheme.typography.regular14.copy(
@@ -96,7 +96,7 @@ fun RecruitmentRoleRow(
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_stepper_minus),
-                    contentDescription = "인원 감소",
+                    contentDescription = null,
                     tint = RebrandKoinTheme.colors.neutral700,
                     modifier = Modifier.size(16.dp)
                 )
@@ -117,7 +117,7 @@ fun RecruitmentRoleRow(
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_stepper_plus),
-                    contentDescription = "인원 증가",
+                    contentDescription = null,
                     tint = RebrandKoinTheme.colors.neutral700,
                     modifier = Modifier.size(16.dp)
                 )
@@ -132,7 +132,7 @@ fun RecruitmentRoleRow(
         ) {
             Icon(
                 imageVector = Icons.Filled.Close,
-                contentDescription = "역할 삭제",
+                contentDescription = null,
                 tint = RebrandKoinTheme.colors.neutral500
             )
         }
