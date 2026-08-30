@@ -4,11 +4,11 @@ import `in`.koreatech.koin.data.mapper.toDepartmentContacts
 import `in`.koreatech.koin.data.mapper.toDepartmentContactsByCategory
 import `in`.koreatech.koin.data.source.remote.DepartmentRemoteDataSource
 import `in`.koreatech.koin.data.util.mapHttpFailure
-import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.error.department.KoinDepartmentException
 import `in`.koreatech.koin.domain.model.department.DepartmentContacts
 import `in`.koreatech.koin.domain.model.department.DepartmentContactsByCategory
 import `in`.koreatech.koin.domain.repository.DepartmentRepository
+import `in`.koreatech.koin.domain.util.suspendRunCatching
 import javax.inject.Inject
 
 class DepartmentRepositoryImpl @Inject constructor(
