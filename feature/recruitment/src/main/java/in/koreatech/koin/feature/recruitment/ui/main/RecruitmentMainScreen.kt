@@ -127,7 +127,7 @@ private fun RecruitmentMainScreenImpl(
                                 .noRippleClickable(onClick = onNotificationClick)
                         )
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_user),
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_user_bold),
                             contentDescription = stringResource(R.string.recruitment_profile_content_description),
                             tint = RebrandKoinTheme.colors.neutral700,
                             modifier = Modifier
