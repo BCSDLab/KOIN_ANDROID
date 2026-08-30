@@ -63,11 +63,9 @@ fun RecruitmentFilterBottomSheet(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
 
-    // 스크림 탭·스와이프는 ModalBottomSheet 가 hide 애니메이션을 끝낸 뒤 onDismissRequest 를 호출하지만,
-    // 버튼으로 닫는 경로는 상태가 즉시 바뀌어 애니메이션이 생략되므로 직접 hide 를 기다린다.
     val hideThen: (() -> Unit) -> Unit = { action ->
-        scope.launch { sheetState.hide() }.invokeOnCompletion {
-            if (!sheetState.isVisible) action()
+        scope.launch { sheetState.hide() }.invokeOnCompletion { cause ->
+            if (cause == null && !sheetState.isVisible) action()
         }
     }
 

@@ -112,7 +112,7 @@ private fun RecruitmentItemHeader(
             dDayText to RebrandKoinTheme.colors.danger700
         }
         RecruitmentStatus.COMPLETED ->
-            stringResource(R.string.recruitment_status_completed) to
+            stringResource(R.string.recruitment_status_complete) to
                 RebrandKoinTheme.colors.primary600
     }
 
