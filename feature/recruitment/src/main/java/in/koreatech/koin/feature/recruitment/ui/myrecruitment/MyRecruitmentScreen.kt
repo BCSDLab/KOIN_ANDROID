@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -71,6 +72,7 @@ fun MyRecruitmentScreen(
     ) { innerPadding ->
         MyRecruitmentScreenImpl(
             posts = state.posts,
+            isLoading = state.isLoading,
             onApplicantManage = onApplicantManage,
             onCloseRecruitment = { postId -> viewModel.showCloseDialog(postId) },
             onChat = onChat,
@@ -98,6 +100,7 @@ fun MyRecruitmentScreen(
 @Composable
 private fun MyRecruitmentScreenImpl(
     posts: ImmutableList<MyRecruitmentPost>,
+    isLoading: Boolean,
     modifier: Modifier = Modifier,
     onApplicantManage: (Int) -> Unit = {},
     onCloseRecruitment: (Int) -> Unit = {},
@@ -120,7 +123,14 @@ private fun MyRecruitmentScreenImpl(
             RecruitmentFilterButton(onClick = onFilter)
         }
 
-        if (posts.isEmpty()) {
+        if (isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else if (posts.isEmpty()) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -157,6 +167,7 @@ private const val PREVIEW_DATE_RANGE = "2026.07.26 ~ 2026.08.07"
 private fun MyRecruitmentScreenWithPostsPreview() {
     RebrandKoinTheme {
         MyRecruitmentScreenImpl(
+            isLoading = false,
             posts = persistentListOf(
                 MyRecruitmentPost(
                     id = 1,
@@ -202,6 +213,6 @@ private fun MyRecruitmentScreenWithPostsPreview() {
 @Composable
 private fun MyRecruitmentScreenEmptyPreview() {
     RebrandKoinTheme {
-        MyRecruitmentScreenImpl(posts = persistentListOf())
+        MyRecruitmentScreenImpl(isLoading = false, posts = persistentListOf())
     }
 }

@@ -12,12 +12,14 @@ import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.toApiValue
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.toMyRecruitmentPost
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.subIntent
 import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
@@ -35,21 +37,22 @@ class MyRecruitmentViewModel @Inject constructor(
     }
 
     private fun checkLoginAndLoad() = intent {
-        getUserStatusUseCase().collectLatest { user ->
-            if (user is User.Anonymous) {
-                postSideEffect(MyRecruitmentSideEffect.NavigateToLogin)
-            } else {
-                loadMyRecruitmentPosts(state.filter)
-            }
+        val user = getUserStatusUseCase().first()
+        if (user is User.Anonymous) {
+            postSideEffect(MyRecruitmentSideEffect.NavigateToLogin)
+        } else {
+            loadMyRecruitmentPosts(state.filter)
         }
     }
 
-    private fun loadMyRecruitmentPosts(filter: RecruitmentFilterState) = intent {
+    @OptIn(OrbitExperimental::class)
+    private suspend fun loadMyRecruitmentPosts(filter: RecruitmentFilterState) = subIntent {
+        reduce { state.copy(isLoading = true) }
         getMyRecruitmentPostsUseCase(
             status = filter.status.toApiValue(),
             sort = filter.sort.toApiValue()
         ).onSuccess { posts ->
-            reduce { state.copy(posts = posts.map { it.toMyRecruitmentPost() }.toPersistentList()) }
+            reduce { state.copy(isLoading = false, posts = posts.map { it.toMyRecruitmentPost() }.toPersistentList()) }
         }
     }
 
@@ -86,6 +89,8 @@ class MyRecruitmentViewModel @Inject constructor(
                     }.toPersistentList()
                 )
             }
+        }.onFailure {
+            reduce { state.copy(showCloseDialog = false, closeTargetPostId = null) }
         }
     }
 }
