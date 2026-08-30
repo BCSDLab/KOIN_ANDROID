@@ -279,10 +279,7 @@ private fun RecruitmentFilterSection(
             color = RebrandKoinTheme.colors.neutral800,
             modifier = Modifier.padding(bottom = 12.dp)
         )
-        FlowRow(
-            modifier = Modifier.fillMaxWidth(),
-            maxItemsInEachRow = 5
-        ) {
+        FlowRow(modifier = Modifier.fillMaxWidth()) {
             content()
         }
     }

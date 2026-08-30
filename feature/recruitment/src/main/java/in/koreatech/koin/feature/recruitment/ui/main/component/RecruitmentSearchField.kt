@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,7 +31,11 @@ fun RecruitmentSearchField(
     modifier: Modifier = Modifier,
     hint: String = stringResource(R.string.recruitment_search_hint)
 ) {
-    val textStyle = RebrandKoinTheme.typography.regular12.copy(color = RebrandKoinTheme.colors.neutral600)
+    val typography = RebrandKoinTheme.typography
+    val contentColor = RebrandKoinTheme.colors.neutral600
+    val textStyle = remember(typography, contentColor) {
+        typography.regular12.copy(color = contentColor)
+    }
 
     Row(
         modifier = modifier

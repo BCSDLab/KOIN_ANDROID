@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,38 +45,7 @@ fun RecruitmentMainItem(
             .padding(horizontal = 20.dp, vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            val labelStyle = RebrandKoinTheme.typography.regular10.copy(
-                fontWeight = FontWeight.Medium
-            )
-            val (statusText, statusColor) = when (item.status) {
-                RecruitmentStatus.RECRUITING -> {
-                    val dDayText = if (item.dDay <= 0) {
-                        stringResource(R.string.recruitment_d_day_today)
-                    } else {
-                        stringResource(R.string.recruitment_d_day, item.dDay)
-                    }
-                    dDayText to RebrandKoinTheme.colors.danger700
-                }
-                RecruitmentStatus.COMPLETED ->
-                    stringResource(R.string.recruitment_status_completed) to
-                        RebrandKoinTheme.colors.primary600
-            }
-
-            RecruitmentChip(
-                text = stringResource(item.category.labelRes),
-                colors = RecruitmentChipDefaults.categoryColors(item.category),
-                textStyle = labelStyle
-            )
-            Text(
-                text = statusText,
-                style = labelStyle,
-                color = statusColor
-            )
-        }
+        RecruitmentItemHeader(item = item)
 
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -120,6 +90,47 @@ fun RecruitmentMainItem(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun RecruitmentItemHeader(
+    item: RecruitmentItemModel,
+    modifier: Modifier = Modifier
+) {
+    val typography = RebrandKoinTheme.typography
+    val labelStyle = remember(typography) {
+        typography.regular10.copy(fontWeight = FontWeight.Medium)
+    }
+    val (statusText, statusColor) = when (item.status) {
+        RecruitmentStatus.RECRUITING -> {
+            val dDayText = if (item.dDay <= 0) {
+                stringResource(R.string.recruitment_d_day_today)
+            } else {
+                stringResource(R.string.recruitment_d_day, item.dDay)
+            }
+            dDayText to RebrandKoinTheme.colors.danger700
+        }
+        RecruitmentStatus.COMPLETED ->
+            stringResource(R.string.recruitment_status_completed) to
+                RebrandKoinTheme.colors.primary600
+    }
+
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        RecruitmentChip(
+            text = stringResource(item.category.labelRes),
+            colors = RecruitmentChipDefaults.categoryColors(item.category),
+            textStyle = labelStyle
+        )
+        Text(
+            text = statusText,
+            style = labelStyle,
+            color = statusColor
+        )
     }
 }
 

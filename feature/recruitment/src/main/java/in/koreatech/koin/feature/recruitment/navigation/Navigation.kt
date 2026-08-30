@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.recruitment.navigation
 
-import androidx.activity.ComponentActivity
-import androidx.compose.ui.platform.LocalContext
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -18,9 +17,9 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     navController: NavController
 ) {
     composable<RecruitmentNavType.RecruitmentMain> {
-        val context = LocalContext.current
+        val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
         RecruitmentMainScreen(
-            onTopbarBackClick = { (context as? ComponentActivity)?.finish() }
+            onTopbarBackClick = { onBackPressedDispatcher?.onBackPressed() }
         )
     }
     composable<RecruitmentNavType.RecruitmentGroupChat> {
