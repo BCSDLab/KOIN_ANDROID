@@ -19,6 +19,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
 
     implementation(libs.kotlinx.collections.immutable)
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.timber)
 }

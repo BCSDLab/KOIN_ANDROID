@@ -1,0 +1,44 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="21dp"
+    android:height="21dp"
+    android:viewportWidth="21"
+    android:viewportHeight="21">
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#B611F5"
+        android:strokeWidth="1.3125"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M2.625 6.125H5.25" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#B611F5"
+        android:strokeWidth="1.3125"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M2.625 14.875H7.875" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#B611F5"
+        android:strokeWidth="1.3125"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M15.75 14.875H18.375" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#B611F5"
+        android:strokeWidth="1.3125"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M13.125 6.125H18.375" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#B611F5"
+        android:strokeWidth="1.3125"
+        android:pathData="M5.25 6.125C5.25 5.30961 5.25 4.90191 5.38321 4.5803C5.56083 4.15151 5.90151 3.81083 6.3303 3.63321C6.65191 3.5 7.05961 3.5 7.875 3.5C8.69039 3.5 9.09807 3.5 9.41972 3.63321C9.84847 3.81083 10.1892 4.15151 10.3668 4.5803C10.5 4.90191 10.5 5.30961 10.5 6.125C10.5 6.94039 10.5 7.34809 10.3668 7.6697C10.1892 8.09849 9.84847 8.43917 9.41972 8.61679C9.09807 8.75 8.69039 8.75 7.875 8.75C7.05961 8.75 6.65191 8.75 6.3303 8.61679C5.90151 8.43917 5.56083 8.09849 5.38321 7.6697C5.25 7.34809 5.25 6.94039 5.25 6.125Z" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#B611F5"
+        android:strokeWidth="1.3125"
+        android:pathData="M10.5 14.875C10.5 14.0596 10.5 13.6519 10.6332 13.3303C10.8108 12.9015 11.1515 12.5608 11.5803 12.3832C11.9019 12.25 12.3096 12.25 13.125 12.25C13.9404 12.25 14.3481 12.25 14.6697 12.3832C15.0985 12.5608 15.4392 12.9015 15.6168 13.3303C15.75 13.6519 15.75 14.0596 15.75 14.875C15.75 15.6904 15.75 16.0981 15.6168 16.4197C15.4392 16.8485 15.0985 17.1892 14.6697 17.3668C14.3481 17.5 13.9404 17.5 13.125 17.5C12.3096 17.5 11.9019 17.5 11.5803 17.3668C11.1515 17.1892 10.8108 16.8485 10.6332 16.4197C10.5 16.0981 10.5 15.6904 10.5 14.875Z" />
+</vector>
