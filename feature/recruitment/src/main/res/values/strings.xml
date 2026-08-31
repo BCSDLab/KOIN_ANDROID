@@ -88,4 +88,30 @@
     <string name="recruitment_applicant_reject_dialog_message">거절 후에는 되돌릴 수 없습니다.</string>
     <string name="recruitment_applicant_reject_dialog_confirm">거절하기</string>
     <string name="recruitment_applicant_decision_dialog_cancel">취소</string>
+
+    <string name="recruitment_top_bar_title">팀원모집</string>
+    <string name="recruitment_notification_content_description">알림</string>
+    <string name="recruitment_profile_content_description">내 정보</string>
+    <string name="recruitment_search_hint">검색어를 입력해주세요.</string>
+    <string name="recruitment_total_count">전체(%1$d)</string>
+    <string name="recruitment_write_button">모집하기</string>
+    <string name="recruitment_d_day">D-%1$d</string>
+    <string name="recruitment_d_day_today">D-DAY</string>
+    <string name="recruitment_participants_count">%1$d/%2$d명</string>
+    <string name="recruitment_category_contest">공모전</string>
+    <string name="recruitment_category_activity">대외활동</string>
+    <string name="recruitment_category_study">스터디</string>
+    <string name="recruitment_category_project">프로젝트</string>
+    <string name="recruitment_category_etc">기타</string>
+    <string name="recruitment_filter_close_content_description">닫기</string>
+    <string name="recruitment_filter_all">전체</string>
+    <string name="recruitment_filter_section_status">모집 상태</string>
+    <string name="recruitment_filter_section_sort">정렬</string>
+    <string name="recruitment_filter_section_category">카테고리</string>
+    <string name="recruitment_filter_section_location">진행 방식</string>
+    <string name="recruitment_filter_location_online">온라인</string>
+    <string name="recruitment_filter_location_offline">오프라인</string>
+    <string name="recruitment_filter_location_mixed">온 · 오프라인</string>
+    <string name="recruitment_applied_filter_remove_content_description">필터 제거</string>
+    <string name="recruitment_empty_result">조건에 맞는 모집글이 없어요.</string>
 </resources>

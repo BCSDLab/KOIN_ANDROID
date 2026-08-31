@@ -219,11 +219,19 @@ object AnalyticsConstant {
         }
 
         object Category {
+            const val CATEGORY_TEAM_RECRUITMENT = "category_team_recruitment"
+            const val CATEGORY_LOST_AND_FOUND = "category_lost_and_found"
+            const val CATEGORY_FACILITY = "category_facility"
+            const val CATEGORY_DEPARTMENT = "category_department"
+            const val CATEGORY_DINING = "category_dining"
+            const val CATEGORY_NEARBY_STORE = "category_nearby_store"
             const val CATEGORY_TIMETABLE = "category_timetable"
-            const val CATEGORY_LOST_PROPERTY = "category_lost_property"
-            const val CATEGORY_CAMPUS = "category_campus"
+            const val CATEGORY_BUS_TIMETABLE = "category_bus_timetable"
             const val CATEGORY_TRANSPORTATION = "category_transportation"
-            const val CATEGORY_ETC = "category_etc"
+            const val CATEGORY_CALLVAN_RECRUITMENT = "category_callvan_recruitment"
+            const val CATEGORY_CHAT = "category_chat"
+            const val CATEGORY_ROOM = "category_room"
+            const val CATEGORY_KOIN_FOR_BUSINESS = "category_koin_for_business"
         }
 
         object Profile {
