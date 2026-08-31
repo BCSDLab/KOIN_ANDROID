@@ -6,7 +6,6 @@ import `in`.koreatech.koin.data.mapper.toNotificationPermissionInfo
 import `in`.koreatech.koin.data.source.local.NotificationLocalDataSource
 import `in`.koreatech.koin.data.source.remote.NotificationRemoteDataSource
 import `in`.koreatech.koin.data.util.mapHttpFailure
-import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.error.notification.KoinNotificationException
 import `in`.koreatech.koin.domain.error.store.KoinStoreException
 import `in`.koreatech.koin.domain.model.notification.Notification
@@ -14,6 +13,7 @@ import `in`.koreatech.koin.domain.model.notification.NotificationPermissionInfo
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.domain.repository.NotificationRepository
+import `in`.koreatech.koin.domain.util.suspendRunCatching
 import javax.inject.Inject
 import kotlin.collections.map
 import kotlinx.coroutines.flow.Flow
