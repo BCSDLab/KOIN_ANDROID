@@ -87,7 +87,7 @@ private fun ApplicantManagementScreenImpl(
     applicants: ImmutableList<Applicant>,
     modifier: Modifier = Modifier,
     onChat: () -> Unit = {},
-    onApplicantDetail: (Long) -> Unit = {}
+    onApplicantDetail: (Int) -> Unit = {}
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
