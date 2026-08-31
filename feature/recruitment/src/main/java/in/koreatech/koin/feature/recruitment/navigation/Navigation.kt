@@ -31,9 +31,10 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     composable<RecruitmentNavType.Notification> {
         RecruitmentNotificationScreen(
             onBack = { navController.popBackStack() },
-            onNavigateToPost = {
-                // TODO: 모집글 상세 화면 라우트가 추가되면 postId 로 이동하도록 연결한다.
+            onNavigateToApplicantManagement = { recruitmentId ->
+                navController.navigate(RecruitmentNavType.ApplicantManagement(recruitmentId))
             }
+            // TODO: CHAT_ROOM / MY_APPLICATIONS / 모집글 상세 라우트가 추가되면 콜백을 추가 연결한다.
         )
     }
     composable<RecruitmentNavType.ApplicantManagement> { backStackEntry ->
