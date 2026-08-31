@@ -17,51 +17,26 @@ class RecruitmentRepositoryImpl @Inject constructor(
     private val recruitmentRemoteDataSource: RecruitmentRemoteDataSource
 ) : RecruitmentRepository {
     override suspend fun getNotifications(page: Int, limit: Int): Result<RecruitmentNotifications> {
-
-    override suspend fun getMyRecruitmentPosts(
-        status: String,
-        sort: String,
-        page: Int,
-        limit: Int
-    ): Result<List<MyRecruitmentPost>> {
         return suspendRunCatching {
             recruitmentRemoteDataSource.getNotifications(
                 page = page,
                 limit = limit
             ).toRecruitmentNotifications()
-            recruitmentRemoteDataSource
-                .getMyRecruitmentPosts(status, sort, page, limit)
-                .recruitments
-                .map { it.toMyRecruitmentPost() }
         }.mapHttpFailure {
-            on(400, "ILLEGAL_ARGUMENT") throws KoinRecruitmentException.IllegalArgumentException()
-            on(401) throws KoinRecruitmentException.UnauthorizedUserException()
             on(403) throws KoinRecruitmentException.ForbiddenException()
         }
     }
 
-    override suspend fun getMyAppliedRecruitments(
-        statuses: List<String>,
-        sort: String,
-        page: Int,
-        limit: Int
-    ): Result<List<MyAppliedRecruitment>> {
     override suspend fun deleteAllNotifications(): Result<Unit> {
         return suspendRunCatching {
-            recruitmentRemoteDataSource
-                .getMyAppliedRecruitments(statuses, sort, page, limit)
-                .applications
-                .map { it.toMyAppliedRecruitment() }
             recruitmentRemoteDataSource.deleteAllNotifications()
         }.mapHttpFailure {
             on(403) throws KoinRecruitmentException.ForbiddenException()
         }
     }
 
-    override suspend fun closeRecruitmentPost(postId: Int): Result<Unit> {
     override suspend fun readNotification(notificationId: Int): Result<Unit> {
         return suspendRunCatching {
-            recruitmentRemoteDataSource.closeRecruitmentPost(postId)
             recruitmentRemoteDataSource.readNotification(
                 notificationId = notificationId
             )
@@ -74,9 +49,52 @@ class RecruitmentRepositoryImpl @Inject constructor(
         return suspendRunCatching {
             recruitmentRemoteDataSource.readAllNotifications()
         }.mapHttpFailure {
+            on(403) throws KoinRecruitmentException.ForbiddenException()
+        }
+    }
+
+    override suspend fun getMyRecruitmentPosts(
+        status: String,
+        sort: String,
+        page: Int,
+        limit: Int
+    ): Result<List<MyRecruitmentPost>> {
+        return suspendRunCatching {
+            recruitmentRemoteDataSource
+                .getMyRecruitmentPosts(status, sort, page, limit)
+                .recruitments
+                .map { it.toMyRecruitmentPost() }
+        }.mapHttpFailure {
+            on(400, "ILLEGAL_ARGUMENT") throws KoinRecruitmentException.IllegalArgumentException()
+            on(401) throws KoinRecruitmentException.UnauthorizedUserException()
+            on(403) throws KoinRecruitmentException.ForbiddenException()
+        }
+    }
+
+    override suspend fun closeRecruitmentPost(postId: Int): Result<Unit> {
+        return suspendRunCatching {
+            recruitmentRemoteDataSource.closeRecruitmentPost(postId)
+        }.mapHttpFailure {
             on(401) throws KoinRecruitmentException.UnauthorizedUserException()
             on(403) throws KoinRecruitmentException.ForbiddenException()
             on(404) throws KoinRecruitmentException.NotFoundException()
+        }
+    }
+    override suspend fun getMyAppliedRecruitments(
+        statuses: List<String>,
+        sort: String,
+        page: Int,
+        limit: Int
+    ): Result<List<MyAppliedRecruitment>> {
+        return suspendRunCatching {
+            recruitmentRemoteDataSource
+                .getMyAppliedRecruitments(statuses, sort, page, limit)
+                .applications
+                .map { it.toMyAppliedRecruitment() }
+        }.mapHttpFailure {
+            on(400, "ILLEGAL_ARGUMENT") throws KoinRecruitmentException.IllegalArgumentException()
+            on(401) throws KoinRecruitmentException.UnauthorizedUserException()
+            on(403) throws KoinRecruitmentException.ForbiddenException()
         }
     }
 }
