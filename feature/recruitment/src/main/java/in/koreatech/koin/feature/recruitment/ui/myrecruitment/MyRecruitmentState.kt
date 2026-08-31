@@ -10,7 +10,8 @@ import kotlinx.collections.immutable.persistentListOf
 data class MyRecruitmentState(
     val posts: ImmutableList<MyRecruitmentPost> = persistentListOf(),
     val filter: RecruitmentFilterState = RecruitmentFilterState(),
+    val isLoading: Boolean = true,
     val showCloseDialog: Boolean = false,
-    val closeTargetPostId: Long? = null,
+    val closeTargetPostId: Int? = null,
     val showFilterSheet: Boolean = false
 )

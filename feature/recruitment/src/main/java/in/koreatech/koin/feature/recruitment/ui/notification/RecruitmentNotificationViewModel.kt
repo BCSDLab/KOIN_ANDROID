@@ -89,7 +89,7 @@ internal class RecruitmentNotificationViewModel @Inject constructor(
 
         when (notification.targetType) {
             "APPLICANT_MANAGEMENT" -> postSideEffect(
-                RecruitmentNotificationSideEffect.NavigateToApplicantManagement(notification.recruitmentId.toLong())
+                RecruitmentNotificationSideEffect.NavigateToApplicantManagement(notification.recruitmentId)
             )
             // TODO: CHAT_ROOM / MY_APPLICATIONS 라우트가 추가되면 연결한다.
             "CHAT_ROOM", "MY_APPLICATIONS", "NONE" -> Unit

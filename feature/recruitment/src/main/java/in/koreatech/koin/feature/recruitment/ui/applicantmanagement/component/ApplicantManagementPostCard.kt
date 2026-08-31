@@ -30,7 +30,7 @@ import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentCategoryBadge
-import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentInfoItem
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentPostMetaInfo
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentRoleChip
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.MyRecruitmentPost
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentStatus
@@ -106,45 +106,12 @@ fun ApplicantManagementPostCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(
-                    modifier = Modifier.weight(1f),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    RecruitmentInfoItem(
-                        icon = {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_location),
-                                contentDescription = null,
-                                modifier = Modifier.size(12.dp),
-                                tint = RebrandKoinTheme.colors.neutral500
-                            )
-                        },
-                        text = post.location
-                    )
-                    RecruitmentInfoItem(
-                        icon = {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_calendar),
-                                contentDescription = null,
-                                modifier = Modifier.size(12.dp),
-                                tint = RebrandKoinTheme.colors.neutral500
-                            )
-                        },
-                        text = post.dateRange
-                    )
-                    RecruitmentInfoItem(
-                        icon = {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_user_group),
-                                contentDescription = null,
-                                modifier = Modifier.size(12.dp),
-                                tint = RebrandKoinTheme.colors.neutral500
-                            )
-                        },
-                        text = stringResource(R.string.recruitment_applicant_count, post.currentApplicants, post.maxApplicants)
-                    )
-                }
+                RecruitmentPostMetaInfo(
+                    location = post.location,
+                    dateRange = post.dateRange,
+                    applicantText = stringResource(R.string.recruitment_applicant_count, post.currentApplicants, post.maxApplicants),
+                    modifier = Modifier.weight(1f)
+                )
                 IconButton(
                     onClick = onChat,
                     modifier = Modifier.size(24.dp)
@@ -166,7 +133,7 @@ private fun ApplicantManagementPostCardPreview() {
     RebrandKoinTheme {
         ApplicantManagementPostCard(
             post = MyRecruitmentPost(
-                id = 1L,
+                id = 1,
                 category = RecruitmentCategory.CONTEST,
                 status = RecruitmentStatus.Recruiting(daysLeft = 5),
                 title = "AI 아이디어 공모전 팀원 모집",
