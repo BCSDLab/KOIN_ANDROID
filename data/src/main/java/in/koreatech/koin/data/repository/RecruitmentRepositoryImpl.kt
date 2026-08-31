@@ -1,10 +1,14 @@
 package `in`.koreatech.koin.data.repository
 
+import `in`.koreatech.koin.data.mapper.toRecruitmentDetail
 import `in`.koreatech.koin.data.mapper.toRecruitmentNotifications
+import `in`.koreatech.koin.data.mapper.toRecruitments
 import `in`.koreatech.koin.data.source.remote.RecruitmentRemoteDataSource
 import `in`.koreatech.koin.data.util.mapHttpFailure
 import `in`.koreatech.koin.domain.error.recruitment.KoinRecruitmentException
+import `in`.koreatech.koin.domain.model.recruitment.RecruitmentDetail
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentNotifications
+import `in`.koreatech.koin.domain.model.recruitment.Recruitments
 import `in`.koreatech.koin.domain.repository.RecruitmentRepository
 import `in`.koreatech.koin.domain.util.suspendRunCatching
 import javax.inject.Inject
@@ -12,6 +16,51 @@ import javax.inject.Inject
 class RecruitmentRepositoryImpl @Inject constructor(
     private val recruitmentRemoteDataSource: RecruitmentRemoteDataSource
 ) : RecruitmentRepository {
+    @Suppress("LongParameterList")
+    override suspend fun getRecruitments(
+        keyword: String?,
+        status: String?,
+        categories: List<String>?,
+        meetingType: String?,
+        sort: String?,
+        page: Int,
+        limit: Int
+    ): Result<Recruitments> {
+        return suspendRunCatching {
+            recruitmentRemoteDataSource.getRecruitments(
+                keyword = keyword,
+                status = status,
+                categories = categories,
+                meetingType = meetingType,
+                sort = sort,
+                page = page,
+                limit = limit
+            ).toRecruitments()
+        }.mapHttpFailure {
+            on(400) throws KoinRecruitmentException.InvalidRequestException()
+        }
+    }
+
+    override suspend fun getRecruitmentDetail(recruitmentId: Int): Result<RecruitmentDetail> {
+        return suspendRunCatching {
+            recruitmentRemoteDataSource.getRecruitmentDetail(
+                recruitmentId = recruitmentId
+            ).toRecruitmentDetail()
+        }.mapHttpFailure {
+            on(404) throws KoinRecruitmentException.NotFoundException()
+        }
+    }
+
+    override suspend fun deleteRecruitment(recruitmentId: Int): Result<Unit> {
+        return suspendRunCatching {
+            recruitmentRemoteDataSource.deleteRecruitment(recruitmentId = recruitmentId)
+        }.mapHttpFailure {
+            on(401) throws KoinRecruitmentException.UnauthorizedException()
+            on(403) throws KoinRecruitmentException.ForbiddenException()
+            on(404) throws KoinRecruitmentException.NotFoundException()
+        }
+    }
+
     override suspend fun getNotifications(page: Int, limit: Int): Result<RecruitmentNotifications> {
         return suspendRunCatching {
             recruitmentRemoteDataSource.getNotifications(

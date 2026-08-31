@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
-import `in`.koreatech.koin.feature.recruitment.ui.detail.model.RecruitmentRoleModel
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRoleModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -63,7 +63,11 @@ private fun RecruitmentRoleRow(
     val value = if (role.isClosed) {
         stringResource(R.string.recruitment_closed)
     } else {
-        stringResource(R.string.recruitment_role_participants_format, role.maxParticipants)
+        stringResource(
+            R.string.recruitment_participants_count,
+            role.currentParticipants,
+            role.maxParticipants
+        )
     }
     val iconTint = if (role.isClosed) {
         RebrandKoinTheme.colors.neutral500
@@ -94,9 +98,9 @@ private fun RecruitmentRoleSectionPreview() {
     RebrandKoinTheme {
         RecruitmentRoleSection(
             roles = persistentListOf(
-                RecruitmentRoleModel(id = 1, name = "프론트엔드", maxParticipants = 1, isClosed = true),
-                RecruitmentRoleModel(id = 2, name = "백엔드", maxParticipants = 1),
-                RecruitmentRoleModel(id = 3, name = "디자인", maxParticipants = 1)
+                RecruitmentRoleModel(id = 1, name = "프론트엔드", currentParticipants = 1, maxParticipants = 1, isClosed = true),
+                RecruitmentRoleModel(id = 2, name = "백엔드", currentParticipants = 0, maxParticipants = 2),
+                RecruitmentRoleModel(id = 3, name = "디자인", currentParticipants = 1, maxParticipants = 2)
             )
         )
     }

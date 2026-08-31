@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.data.api.auth
 
+import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentDetailResponse
+import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentListResponse
 import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentNotificationListResponse
 import retrofit2.Response
 import retrofit2.http.DELETE
@@ -9,6 +11,28 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface RecruitmentAuthApi {
+    @Suppress("LongParameterList")
+    @GET("/team-recruitments")
+    suspend fun getRecruitments(
+        @Query("keyword") keyword: String? = null,
+        @Query("status") status: String? = null,
+        @Query("categories") categories: List<String>? = null,
+        @Query("meetingType") meetingType: String? = null,
+        @Query("sort") sort: String? = null,
+        @Query("page") page: Int? = 1,
+        @Query("limit") limit: Int? = 10
+    ): TeamRecruitmentListResponse
+
+    @GET("/team-recruitments/{recruitmentId}")
+    suspend fun getRecruitmentDetail(
+        @Path("recruitmentId") recruitmentId: Int
+    ): TeamRecruitmentDetailResponse
+
+    @DELETE("/team-recruitments/{recruitmentId}")
+    suspend fun deleteRecruitment(
+        @Path("recruitmentId") recruitmentId: Int
+    ): Response<Unit>
+
     @GET("/team-recruitments/notifications")
     suspend fun getNotifications(
         @Query("page") page: Int? = 1,

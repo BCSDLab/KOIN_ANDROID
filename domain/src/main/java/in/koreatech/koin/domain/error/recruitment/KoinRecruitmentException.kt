@@ -4,7 +4,22 @@ import `in`.koreatech.koin.domain.error.KoinErrorException
 
 sealed class KoinRecruitmentException : KoinErrorException() {
     /*
+     * Exceptions for 400
+     */
+    class InvalidRequestException : KoinRecruitmentException()
+
+    /*
+     * Exceptions for 401
+     */
+    class UnauthorizedException : KoinRecruitmentException()
+
+    /*
      * Exceptions for 403
      */
     class ForbiddenException : KoinRecruitmentException()
+
+    /*
+     * Exceptions for 404
+     */
+    class NotFoundException : KoinRecruitmentException()
 }

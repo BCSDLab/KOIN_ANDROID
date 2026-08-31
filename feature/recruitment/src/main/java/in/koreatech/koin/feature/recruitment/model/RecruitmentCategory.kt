@@ -6,15 +6,19 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 enum class RecruitmentCategory(
-    @StringRes val labelRes: Int
+    @StringRes val labelRes: Int,
+    val apiValue: String
 ) {
-    CONTEST(R.string.recruitment_category_contest),
-    EXTERNAL_ACTIVITY(R.string.recruitment_category_activity),
-    STUDY(R.string.recruitment_category_study),
-    PROJECT(R.string.recruitment_category_project),
-    ETC(R.string.recruitment_category_etc);
+    CONTEST(R.string.recruitment_category_contest, "CONTEST"),
+    EXTERNAL_ACTIVITY(R.string.recruitment_category_activity, "EXTERNAL_ACTIVITY"),
+    STUDY(R.string.recruitment_category_study, "STUDY"),
+    PROJECT(R.string.recruitment_category_project, "PROJECT"),
+    ETC(R.string.recruitment_category_etc, "OTHER");
 
     companion object {
         val ALL: ImmutableList<RecruitmentCategory> = entries.toImmutableList()
+
+        fun from(value: String): RecruitmentCategory =
+            entries.firstOrNull { it.apiValue == value } ?: ETC
     }
 }

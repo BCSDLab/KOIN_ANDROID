@@ -20,7 +20,10 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     composable<RecruitmentNavType.RecruitmentMain> {
         val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
         RecruitmentMainScreen(
-            onTopbarBackClick = { onBackPressedDispatcher?.onBackPressed() }
+            onTopbarBackClick = { onBackPressedDispatcher?.onBackPressed() },
+            onItemClick = { postId ->
+                navController.navigate(RecruitmentNavType.RecruitmentDetail(postId))
+            }
         )
     }
     composable<RecruitmentNavType.RecruitmentDetail> {

@@ -1,3 +1,5 @@
 package `in`.koreatech.koin.feature.recruitment.ui.main
 
-sealed interface RecruitmentMainSideEffect
+sealed interface RecruitmentMainSideEffect {
+    data object ShowError : RecruitmentMainSideEffect
+}

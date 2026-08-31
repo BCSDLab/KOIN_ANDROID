@@ -1,9 +1,19 @@
 package `in`.koreatech.koin.data.mapper
 
+import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentApplicationResponse
+import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentDetailResponse
+import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentListResponse
 import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentNotificationListResponse
 import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentNotificationResponse
+import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentResponse
+import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentRoleResponse
+import `in`.koreatech.koin.domain.model.recruitment.Recruitment
+import `in`.koreatech.koin.domain.model.recruitment.RecruitmentApplication
+import `in`.koreatech.koin.domain.model.recruitment.RecruitmentDetail
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentNotification
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentNotifications
+import `in`.koreatech.koin.domain.model.recruitment.RecruitmentRole
+import `in`.koreatech.koin.domain.model.recruitment.Recruitments
 
 fun TeamRecruitmentNotificationResponse.toRecruitmentNotification() = RecruitmentNotification(
     id = id,
@@ -25,4 +35,69 @@ fun TeamRecruitmentNotificationListResponse.toRecruitmentNotifications() = Recru
     currentCount = currentCount,
     totalPage = totalPage,
     currentPage = currentPage
+)
+
+fun TeamRecruitmentRoleResponse.toRecruitmentRole() = RecruitmentRole(
+    id = id,
+    name = name,
+    currentParticipants = currentParticipants,
+    maxParticipants = maxParticipants,
+    isClosed = isClosed
+)
+
+fun TeamRecruitmentResponse.toRecruitment() = Recruitment(
+    id = id,
+    category = category,
+    title = title,
+    meetingType = meetingType,
+    activityStartDate = activityStartDate,
+    activityEndDate = activityEndDate,
+    deadlineDate = deadlineDate,
+    dDay = dDay,
+    status = status,
+    recruitmentType = recruitmentType,
+    currentParticipants = currentParticipants,
+    maxParticipants = maxParticipants,
+    roles = roles.map { it.toRecruitmentRole() }
+)
+
+fun TeamRecruitmentListResponse.toRecruitments() = Recruitments(
+    recruitments = recruitments.map { it.toRecruitment() },
+    totalCount = totalCount,
+    currentCount = currentCount,
+    totalPage = totalPage,
+    currentPage = currentPage
+)
+
+fun TeamRecruitmentApplicationResponse.toRecruitmentApplication() = RecruitmentApplication(
+    applicationId = applicationId,
+    status = status
+)
+
+fun TeamRecruitmentDetailResponse.toRecruitmentDetail() = RecruitmentDetail(
+    id = id,
+    category = category,
+    title = title,
+    meetingType = meetingType,
+    activityStartDate = activityStartDate,
+    activityEndDate = activityEndDate,
+    deadlineDate = deadlineDate,
+    dDay = dDay,
+    status = status,
+    recruitmentType = recruitmentType,
+    currentParticipants = currentParticipants,
+    maxParticipants = maxParticipants,
+    roles = roles.map { it.toRecruitmentRole() },
+    authorNickname = authorNickname,
+    description = description,
+    relatedUrl = relatedUrl,
+    qualification = qualification,
+    createdAt = createdAt,
+    isAuthor = isAuthor,
+    canApply = canApply,
+    applyBlockReason = applyBlockReason,
+    application = application?.toRecruitmentApplication(),
+    canManageApplicants = canManageApplicants,
+    teamChatAvailable = teamChatAvailable,
+    teamChatRoomId = teamChatRoomId
 )

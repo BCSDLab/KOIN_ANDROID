@@ -7,6 +7,36 @@ import retrofit2.HttpException
 class RecruitmentRemoteDataSource @Inject constructor(
     private val recruitmentAuthApi: RecruitmentAuthApi
 ) {
+    @Suppress("LongParameterList")
+    suspend fun getRecruitments(
+        keyword: String?,
+        status: String?,
+        categories: List<String>?,
+        meetingType: String?,
+        sort: String?,
+        page: Int?,
+        limit: Int?
+    ) = recruitmentAuthApi.getRecruitments(
+        keyword = keyword,
+        status = status,
+        categories = categories,
+        meetingType = meetingType,
+        sort = sort,
+        page = page,
+        limit = limit
+    )
+
+    suspend fun getRecruitmentDetail(
+        recruitmentId: Int
+    ) = recruitmentAuthApi.getRecruitmentDetail(recruitmentId = recruitmentId)
+
+    suspend fun deleteRecruitment(
+        recruitmentId: Int
+    ) {
+        val response = recruitmentAuthApi.deleteRecruitment(recruitmentId = recruitmentId)
+        if (!response.isSuccessful) throw HttpException(response)
+    }
+
     suspend fun getNotifications(
         page: Int?,
         limit: Int?

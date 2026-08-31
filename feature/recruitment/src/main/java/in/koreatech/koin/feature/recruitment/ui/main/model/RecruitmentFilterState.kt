@@ -24,10 +24,11 @@ data class RecruitmentFilterState(
 }
 
 enum class RecruitmentSort(
-    @StringRes val labelRes: Int
+    @StringRes val labelRes: Int,
+    val apiValue: String
 ) {
-    LATEST(R.string.recruitment_filter_sort_latest),
-    DEADLINE_SOON(R.string.recruitment_filter_sort_deadline);
+    LATEST(R.string.recruitment_filter_sort_latest, "LATEST_DESC"),
+    DEADLINE_SOON(R.string.recruitment_filter_sort_deadline, "DEADLINE_ASC");
 
     companion object {
         val ALL: ImmutableList<RecruitmentSort> = entries.toImmutableList()
