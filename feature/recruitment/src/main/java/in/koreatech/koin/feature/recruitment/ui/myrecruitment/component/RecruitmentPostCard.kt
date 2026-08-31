@@ -181,35 +181,6 @@ fun RecruitmentPostCard(
 }
 
 @Composable
-private fun CategoryBadge(
-    category: RecruitmentCategory,
-    modifier: Modifier = Modifier
-) {
-    val colors = RebrandKoinTheme.colors
-    val (bgColor, textColor) = remember(category, colors) {
-        when (category) {
-            RecruitmentCategory.CONTEST -> colors.info200 to colors.info700
-            RecruitmentCategory.EXTERNAL_ACTIVITY -> colors.success200 to colors.success700
-            RecruitmentCategory.STUDY -> colors.primary100 to colors.primary600
-            RecruitmentCategory.PROJECT -> colors.primary100 to colors.primary600 // TODO: 색상 미정 - 스터디 색상 임시 적용
-            RecruitmentCategory.ETC -> colors.neutral200 to colors.neutral600 // TODO: 색상 미정 - neutral 임시 적용
-        }
-    }
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(100.dp))
-            .background(bgColor)
-            .padding(horizontal = 8.dp, vertical = 1.dp)
-    ) {
-        Text(
-            text = stringResource(category.labelRes),
-            style = RebrandKoinTheme.typography.regular10.copy(fontWeight = FontWeight.Medium),
-            color = textColor
-        )
-    }
-}
-
-@Composable
 private fun StatusLabel(
     status: RecruitmentStatus,
     modifier: Modifier = Modifier
