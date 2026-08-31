@@ -1,11 +1,13 @@
 package `in`.koreatech.koin.data.repository
 
+import `in`.koreatech.koin.data.mapper.toMyRecruitmentPost
 import `in`.koreatech.koin.data.mapper.toRecruitmentDetail
 import `in`.koreatech.koin.data.mapper.toRecruitmentNotifications
 import `in`.koreatech.koin.data.mapper.toRecruitments
 import `in`.koreatech.koin.data.source.remote.RecruitmentRemoteDataSource
 import `in`.koreatech.koin.data.util.mapHttpFailure
 import `in`.koreatech.koin.domain.error.recruitment.KoinRecruitmentException
+import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentDetail
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentNotifications
 import `in`.koreatech.koin.domain.model.recruitment.Recruitments
@@ -95,6 +97,35 @@ class RecruitmentRepositoryImpl @Inject constructor(
             recruitmentRemoteDataSource.readAllNotifications()
         }.mapHttpFailure {
             on(403) throws KoinRecruitmentException.ForbiddenException()
+        }
+    }
+
+    override suspend fun getMyRecruitmentPosts(
+        status: String,
+        sort: String,
+        page: Int,
+        limit: Int
+    ): Result<List<MyRecruitmentPost>> {
+        return suspendRunCatching {
+            recruitmentRemoteDataSource
+                .getMyRecruitmentPosts(status, sort, page, limit)
+                .recruitments
+                .map { it.toMyRecruitmentPost() }
+        }.mapHttpFailure {
+            @Suppress("ThrowingExceptionsWithoutMessageOrCause")
+            on(400, "ILLEGAL_ARGUMENT") throws KoinRecruitmentException.IllegalArgumentException()
+            on(401) throws KoinRecruitmentException.UnauthorizedUserException()
+            on(403) throws KoinRecruitmentException.ForbiddenException()
+        }
+    }
+
+    override suspend fun closeRecruitmentPost(postId: Int): Result<Unit> {
+        return suspendRunCatching {
+            recruitmentRemoteDataSource.closeRecruitmentPost(postId)
+        }.mapHttpFailure {
+            on(401) throws KoinRecruitmentException.UnauthorizedUserException()
+            on(403) throws KoinRecruitmentException.ForbiddenException()
+            on(404) throws KoinRecruitmentException.NotFoundException()
         }
     }
 }
