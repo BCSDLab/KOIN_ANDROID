@@ -9,7 +9,7 @@ enum class RecruitmentStatus(
     @StringRes val labelRes: Int
 ) {
     RECRUITING(R.string.recruitment_filter_status_recruiting),
-    COMPLETED(R.string.recruitment_filter_status_completed);
+    COMPLETED(R.string.recruitment_filter_status_complete);
 
     companion object {
         val ALL: ImmutableList<RecruitmentStatus> = entries.toImmutableList()

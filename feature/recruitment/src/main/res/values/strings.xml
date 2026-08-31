@@ -85,7 +85,6 @@
     <string name="recruitment_search_hint">검색어를 입력해주세요.</string>
     <string name="recruitment_total_count">전체(%1$d)</string>
     <string name="recruitment_write_button">모집하기</string>
-    <string name="recruitment_status_completed">모집완료</string>
     <string name="recruitment_d_day">D-%1$d</string>
     <string name="recruitment_d_day_today">D-DAY</string>
     <string name="recruitment_participants_count">%1$d/%2$d명</string>
@@ -99,7 +98,6 @@
     <string name="recruitment_filter_section_status">모집 상태</string>
     <string name="recruitment_filter_section_sort">정렬</string>
     <string name="recruitment_filter_section_category">카테고리</string>
-    <string name="recruitment_filter_status_completed">모집 완료</string>
     <string name="recruitment_applied_filter_remove_content_description">필터 제거</string>
     <string name="recruitment_empty_result">조건에 맞는 모집글이 없어요.</string>
 
