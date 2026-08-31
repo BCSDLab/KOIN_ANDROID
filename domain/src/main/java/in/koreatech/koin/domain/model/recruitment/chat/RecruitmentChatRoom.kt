@@ -12,12 +12,24 @@ data class RecruitmentChatRoom(
 
 enum class RecruitmentChatRoomType {
     TEAM,
-    DIRECT
+    DIRECT,
+    UNKNOWN;
+
+    companion object {
+        fun fromString(value: String): RecruitmentChatRoomType =
+            entries.find { it.name == value } ?: UNKNOWN
+    }
 }
 
 enum class RecruitmentChatRoomStatus {
     ACTIVE,
-    READ_ONLY
+    READ_ONLY,
+    UNKNOWN;
+
+    companion object {
+        fun fromString(value: String): RecruitmentChatRoomStatus =
+            entries.find { it.name == value } ?: UNKNOWN
+    }
 }
 
 data class RecruitmentChatCounterpart(

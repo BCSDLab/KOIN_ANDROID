@@ -9,7 +9,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.error.recruitment.KoinRecruitmentChatException
 import `in`.koreatech.koin.domain.model.recruitment.chat.RecruitmentChatMessage as DomainRecruitmentChatMessage
 import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
-import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.presignedurl.UploadImageUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.chat.CreateOrGetRecruitmentDirectChatRoomUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.chat.GetRecruitmentChatMessagesUseCase
@@ -17,12 +16,14 @@ import `in`.koreatech.koin.domain.usecase.recruitment.chat.SendRecruitmentChatMe
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.feature.recruitment.navigation.RecruitmentNavType
 import `in`.koreatech.koin.feature.recruitment.ui.chat.model.toRecruitmentChatMessageGroups
+import `in`.koreatech.koin.feature.recruitment.ui.chat.util.userId
 import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -55,10 +56,11 @@ class RecruitmentDirectChatViewModel @Inject constructor(
 
     private fun loadCurrentUser() = intent {
         getUserInfoUseCase().onSuccess { user ->
+            val messages = loadMessagesMutex.withLock { accumulatedMessages }
             reduce {
                 state.copy(
                     currentUserId = user.userId(),
-                    messages = accumulatedMessages.toRecruitmentChatMessageGroups(user.userId())
+                    messages = messages.toRecruitmentChatMessageGroups(user.userId())
                 )
             }
         }
@@ -165,7 +167,12 @@ class RecruitmentDirectChatViewModel @Inject constructor(
         imageUri: Uri
     ) = intent {
         val chatRoomId = state.chatRoomId ?: return@intent
-        reduce { state.copy(isUploadingImage = true) }
+        reduce { state.copy(uploadingImageCount = state.uploadingImageCount + 1) }
+
+        suspend fun finishUpload() {
+            reduce { state.copy(uploadingImageCount = (state.uploadingImageCount - 1).coerceAtLeast(0)) }
+        }
+
         uploadImageUseCase(
             domain = PreSignedUrlDomain.TEAM_RECRUITMENT,
             contentLength = fileSize,
@@ -179,14 +186,14 @@ class RecruitmentDirectChatViewModel @Inject constructor(
                 content = fileUrl,
                 isImage = true
             ).onSuccess {
-                reduce { state.copy(isUploadingImage = false) }
+                finishUpload()
                 loadMessages()
             }.onFailure { e ->
-                reduce { state.copy(isUploadingImage = false) }
+                finishUpload()
                 postSideEffect(e.toSendMessageSideEffect())
             }
         }.onFailure {
-            reduce { state.copy(isUploadingImage = false) }
+            finishUpload()
             postSideEffect(RecruitmentDirectChatSideEffect.FailedToUploadImage)
         }
     }
@@ -200,10 +207,4 @@ class RecruitmentDirectChatViewModel @Inject constructor(
     companion object {
         const val POLLING_INTERVAL_MS = 1000L
     }
-}
-
-private fun User.userId(): Int = when (this) {
-    is User.Student -> id
-    is User.General -> id
-    User.Anonymous -> 0
 }

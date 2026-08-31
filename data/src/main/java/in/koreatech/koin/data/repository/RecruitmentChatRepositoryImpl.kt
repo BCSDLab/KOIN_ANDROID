@@ -19,6 +19,7 @@ class RecruitmentChatRepositoryImpl @Inject constructor(
         return suspendRunCatching {
             recruitmentChatRemoteDataSource.getChatRoom(recruitmentId, chatRoomId).toRecruitmentChatRoom()
         }.mapHttpFailure {
+            on(401) throws KoinRecruitmentChatException.UnauthorizedException()
             on(403) throws KoinRecruitmentChatException.ChatMemberForbiddenException()
             on(404) throws KoinRecruitmentChatException.ChatRoomNotFoundException()
         }
@@ -28,6 +29,7 @@ class RecruitmentChatRepositoryImpl @Inject constructor(
         return suspendRunCatching {
             recruitmentChatRemoteDataSource.createOrGetDirectChatRoom(recruitmentId, applicationId).toRecruitmentChatRoom()
         }.mapHttpFailure {
+            on(401) throws KoinRecruitmentChatException.UnauthorizedException()
             on(403) throws KoinRecruitmentChatException.DirectChatForbiddenException()
             on(404) throws KoinRecruitmentChatException.ApplicationNotFoundException()
             on(409) throws KoinRecruitmentChatException.DirectChatConflictException()
@@ -51,6 +53,7 @@ class RecruitmentChatRepositoryImpl @Inject constructor(
             ).map { it.toRecruitmentChatMessage() }
         }.mapHttpFailure {
             on(400) throws KoinRecruitmentChatException.InvalidParameterException()
+            on(401) throws KoinRecruitmentChatException.UnauthorizedException()
             on(403) throws KoinRecruitmentChatException.ChatMemberForbiddenException()
             on(404) throws KoinRecruitmentChatException.ChatRoomNotFoundException()
         }
@@ -71,6 +74,7 @@ class RecruitmentChatRepositoryImpl @Inject constructor(
         }.mapHttpFailure {
             on(400, "NOT_READABLE_HTTP_MESSAGE") throws KoinRecruitmentChatException.NotReadableHttpMessageException()
             on(400, "INVALID_REQUEST_BODY") throws KoinRecruitmentChatException.InvalidRequestBodyException()
+            on(401) throws KoinRecruitmentChatException.UnauthorizedException()
             on(403) throws KoinRecruitmentChatException.ChatMemberForbiddenException()
             on(404) throws KoinRecruitmentChatException.ChatRoomNotFoundException()
             on(409, "TEAM_RECRUITMENT_CHAT_READ_ONLY") throws KoinRecruitmentChatException.ChatReadOnlyException()

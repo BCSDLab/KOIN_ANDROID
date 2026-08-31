@@ -17,14 +17,11 @@ private val CHAT_TIMESTAMP_FORMATTER: DateTimeFormatter = DateTimeFormatterBuild
     .appendFraction(ChronoField.NANO_OF_SECOND, 0, 9, true)
     .toFormatter()
 
-private val CHAT_DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일")
-private val CHAT_TIME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
-
-fun RecruitmentChatRoomResponse.toRecruitmentChatRoom() = RecruitmentChatRoom(
+fun RecruitmentChatRoomResponse.toRecruitmentChatRoom(): RecruitmentChatRoom = RecruitmentChatRoom(
     chatRoomId = chatRoomId,
     roomName = roomName,
-    roomType = RecruitmentChatRoomType.valueOf(roomType),
-    status = RecruitmentChatRoomStatus.valueOf(status),
+    roomType = RecruitmentChatRoomType.fromString(roomType),
+    status = RecruitmentChatRoomStatus.fromString(status),
     memberCount = memberCount,
     maxMemberCount = maxMemberCount,
     counterpart = counterpart?.let {
@@ -32,16 +29,12 @@ fun RecruitmentChatRoomResponse.toRecruitmentChatRoom() = RecruitmentChatRoom(
     }
 )
 
-fun RecruitmentChatMessageResponse.toRecruitmentChatMessage(): RecruitmentChatMessage {
-    val parsedTimestamp = LocalDateTime.parse(timestamp, CHAT_TIMESTAMP_FORMATTER)
-    return RecruitmentChatMessage(
-        messageId = messageId,
-        userId = userId,
-        userNickname = userNickname,
-        content = content,
-        date = parsedTimestamp.format(CHAT_DATE_FORMATTER),
-        time = parsedTimestamp.format(CHAT_TIME_FORMATTER),
-        isImage = isImage,
-        unreadCount = unreadCount
-    )
-}
+fun RecruitmentChatMessageResponse.toRecruitmentChatMessage(): RecruitmentChatMessage = RecruitmentChatMessage(
+    messageId = messageId,
+    userId = userId,
+    userNickname = userNickname,
+    content = content,
+    timestamp = LocalDateTime.parse(timestamp, CHAT_TIMESTAMP_FORMATTER),
+    isImage = isImage,
+    unreadCount = unreadCount
+)

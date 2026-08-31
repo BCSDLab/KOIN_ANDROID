@@ -31,8 +31,8 @@ import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 
-private val ImageMaxWidthFraction = 0.6f
-private val ImageMinHeight = 100.dp
+private const val IMAGE_MAX_WIDTH_FRACTION = 0.6f
+private val IMAGE_MIN_HEIGHT = 100.dp
 
 object RecruitmentChatMessageDefaults {
     @Composable
@@ -193,8 +193,8 @@ private fun RecruitmentChatMessageFromOther(
 private fun RecruitmentChatMessageImage(imageUrl: String) {
     SubcomposeAsyncImage(
         modifier = Modifier
-            .fillMaxWidth(ImageMaxWidthFraction)
-            .heightIn(min = ImageMinHeight)
+            .fillMaxWidth(IMAGE_MAX_WIDTH_FRACTION)
+            .heightIn(min = IMAGE_MIN_HEIGHT)
             .clip(RebrandKoinTheme.shapes.small),
         model = ImageRequest.Builder(LocalContext.current)
             .data(imageUrl)

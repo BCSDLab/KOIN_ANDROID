@@ -4,7 +4,7 @@
     <string name="recruitment_chat_toolbar_participants">%1$d/%2$d</string>
     <string name="recruitment_chat_add_image">이미지 추가</string>
     <string name="recruitment_chat_send">전송</string>
-    <string name="recruitment_chat_input_placeholder">메세지 보내기</string>
+    <string name="recruitment_chat_input_placeholder">메시지 보내기</string>
     <string name="recruitment_chat_partner_profile_image">상대방 프로필 이미지</string>
     <string name="recruitment_chat_message_image">채팅 이미지</string>
     <string name="recruitment_chat_failed_to_load_chat_room">채팅방을 불러오지 못했습니다.</string>
@@ -21,8 +21,8 @@
     <string name="recruitment_notification_mark_all_read">모두 읽음으로 표시</string>
     <string name="recruitment_notification_delete_all">알림 전체 삭제</string>
     <string name="recruitment_notification_empty">아직 알림이 없어요</string>
-    <string name="recruitment_notification_category_message">팀원모집 메세지</string>
-    <string name="recruitment_notification_message_with_sender">팀원모집 %1$s님의 메세지</string>
+    <string name="recruitment_notification_category_message">팀원모집 메시지</string>
+    <string name="recruitment_notification_message_with_sender">팀원모집 %1$s님의 메시지</string>
     <string name="recruitment_notification_category_new_application">팀원 모집 신규 지원</string>
     <string name="recruitment_notification_category_application_approved">팀원 모집 지원 승인</string>
     <string name="recruitment_notification_category_application_rejected">팀원 모집 지원 거절</string>

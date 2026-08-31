@@ -1,8 +1,6 @@
 package `in`.koreatech.koin.feature.recruitment.ui.chat.groupchat
 
 import android.content.Context
-import android.net.Uri
-import android.provider.OpenableColumns
 import android.widget.Toast
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -57,6 +55,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.chat.components.RecruitmentCha
 import `in`.koreatech.koin.feature.recruitment.ui.chat.components.RecruitmentChatMessageBubble
 import `in`.koreatech.koin.feature.recruitment.ui.chat.components.RecruitmentChatTopBar
 import `in`.koreatech.koin.feature.recruitment.ui.chat.model.RecruitmentChatMessageGroup
+import `in`.koreatech.koin.feature.recruitment.ui.chat.util.handleSelectedImages
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
@@ -231,7 +230,7 @@ private fun RecruitmentGroupChatScreenImpl(
                 onValueChange = onChatInputValueChange,
                 onImageButtonClick = onImageButtonClick,
                 onSendClick = onSendClick,
-                enabled = !isReadOnly && !isUploadingImage
+                enabled = !isLoading && !isReadOnly && !isUploadingImage
             )
         }
     }
@@ -250,29 +249,6 @@ private fun handleSideEffect(
         RecruitmentGroupChatSideEffect.MessageTooFast -> R.string.recruitment_chat_message_too_fast
     }
     Toast.makeText(context, context.getString(messageRes), Toast.LENGTH_SHORT).show()
-}
-
-private fun handleSelectedImages(
-    uris: List<Uri>,
-    context: Context,
-    uploadImage: (Long, String, String, Uri) -> Unit
-) {
-    uris.forEach { uri ->
-        context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-            if (!cursor.moveToFirst()) return@use
-
-            val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-            val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
-
-            if (fileNameIndex == -1 || fileSizeIndex == -1) return@use
-
-            val fileName = cursor.getString(fileNameIndex)
-            val fileSize = cursor.getLong(fileSizeIndex)
-            val fileType = context.contentResolver.getType(uri) ?: "image/${fileName.substringAfterLast(".")}"
-
-            uploadImage(fileSize, fileType, fileName, uri)
-        }
-    }
 }
 
 @Preview(showBackground = true)

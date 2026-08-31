@@ -17,5 +17,7 @@ data class RecruitmentDirectChatState(
     val currentUserId: Int = 0,
     val messages: ImmutableList<RecruitmentChatMessageGroup> = persistentListOf(),
     val chatInputValue: String = "",
-    val isUploadingImage: Boolean = false
-)
+    val uploadingImageCount: Int = 0
+) {
+    val isUploadingImage: Boolean get() = uploadingImageCount > 0
+}
