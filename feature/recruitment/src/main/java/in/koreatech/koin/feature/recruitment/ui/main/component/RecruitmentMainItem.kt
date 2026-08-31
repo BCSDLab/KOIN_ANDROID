@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.recruitment.ui.main.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -57,7 +58,10 @@ fun RecruitmentMainItem(
                     color = RebrandKoinTheme.colors.neutral700
                 )
                 if (item.roles.isNotEmpty()) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
                         item.roles.forEach { role ->
                             key(role.id) {
                                 RecruitmentChip(
