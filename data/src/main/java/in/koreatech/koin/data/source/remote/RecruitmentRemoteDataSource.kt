@@ -9,13 +9,6 @@ import retrofit2.HttpException
 class RecruitmentRemoteDataSource @Inject constructor(
     private val recruitmentAuthApi: RecruitmentAuthApi
 ) {
-    suspend fun getMyRecruitmentPosts(
-        status: String,
-        sort: String,
-        page: Int,
-        limit: Int
-    ): MyRecruitmentListResponse = recruitmentAuthApi.getMyRecruitmentPosts(status, sort, page, limit)
-
     suspend fun getNotifications(
         page: Int?,
         limit: Int?
@@ -24,20 +17,8 @@ class RecruitmentRemoteDataSource @Inject constructor(
         limit = limit
     )
 
-    suspend fun getMyAppliedRecruitments(
-        statuses: List<String>,
-        sort: String,
-        page: Int,
-        limit: Int
-    ): MyAppliedRecruitmentListResponse = recruitmentAuthApi.getMyAppliedRecruitments(statuses, sort, page, limit)
-
     suspend fun deleteAllNotifications() {
         val response = recruitmentAuthApi.deleteAllNotifications()
-        if (!response.isSuccessful) throw HttpException(response)
-    }
-
-    suspend fun closeRecruitmentPost(postId: Int) {
-        val response = recruitmentAuthApi.closeRecruitmentPost(postId)
         if (!response.isSuccessful) throw HttpException(response)
     }
 
@@ -50,6 +31,25 @@ class RecruitmentRemoteDataSource @Inject constructor(
 
     suspend fun readAllNotifications() {
         val response = recruitmentAuthApi.readAllNotifications()
+        if (!response.isSuccessful) throw HttpException(response)
+    }
+
+    suspend fun getMyRecruitmentPosts(
+        status: String,
+        sort: String,
+        page: Int,
+        limit: Int
+    ): MyRecruitmentListResponse = recruitmentAuthApi.getMyRecruitmentPosts(status, sort, page, limit)
+
+    suspend fun getMyAppliedRecruitments(
+        statuses: List<String>,
+        sort: String,
+        page: Int,
+        limit: Int
+    ): MyAppliedRecruitmentListResponse = recruitmentAuthApi.getMyAppliedRecruitments(statuses, sort, page, limit)
+
+    suspend fun closeRecruitmentPost(postId: Int) {
+        val response = recruitmentAuthApi.closeRecruitmentPost(postId)
         if (!response.isSuccessful) throw HttpException(response)
     }
 }

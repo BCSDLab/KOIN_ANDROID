@@ -72,15 +72,6 @@ class RecruitmentRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun closeRecruitmentPost(postId: Int): Result<Unit> {
-        return suspendRunCatching {
-            recruitmentRemoteDataSource.closeRecruitmentPost(postId)
-        }.mapHttpFailure {
-            on(401) throws KoinRecruitmentException.UnauthorizedUserException()
-            on(403) throws KoinRecruitmentException.ForbiddenException()
-            on(404) throws KoinRecruitmentException.NotFoundException()
-        }
-    }
     override suspend fun getMyAppliedRecruitments(
         statuses: List<String>,
         sort: String,
@@ -97,6 +88,16 @@ class RecruitmentRepositoryImpl @Inject constructor(
             on(400, "ILLEGAL_ARGUMENT") throws KoinRecruitmentException.IllegalArgumentException()
             on(401) throws KoinRecruitmentException.UnauthorizedUserException()
             on(403) throws KoinRecruitmentException.ForbiddenException()
+        }
+    }
+
+    override suspend fun closeRecruitmentPost(postId: Int): Result<Unit> {
+        return suspendRunCatching {
+            recruitmentRemoteDataSource.closeRecruitmentPost(postId)
+        }.mapHttpFailure {
+            on(401) throws KoinRecruitmentException.UnauthorizedUserException()
+            on(403) throws KoinRecruitmentException.ForbiddenException()
+            on(404) throws KoinRecruitmentException.NotFoundException()
         }
     }
 }
