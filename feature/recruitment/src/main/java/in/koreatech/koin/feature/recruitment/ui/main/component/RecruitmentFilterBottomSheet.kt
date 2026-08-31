@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -261,12 +260,9 @@ private fun RecruitmentFilterChip(
 ) {
     RecruitmentChip(
         text = text,
-        modifier = Modifier
-            .padding(end = 8.dp, bottom = 8.dp)
-            .semantics { selected = isSelected },
+        modifier = Modifier.semantics { selected = isSelected },
         colors = RecruitmentChipDefaults.selectableColors(isSelected),
         textStyle = RebrandKoinTheme.typography.bold14,
-        shape = RoundedCornerShape(24.dp),
         contentPadding = PaddingValues(vertical = 8.dp, horizontal = 12.dp),
         border = BorderStroke(
             width = 1.dp,
@@ -293,7 +289,11 @@ private fun RecruitmentFilterSection(
             color = RebrandKoinTheme.colors.neutral800,
             modifier = Modifier.padding(bottom = 12.dp)
         )
-        FlowRow(modifier = Modifier.fillMaxWidth()) {
+        FlowRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
             content()
         }
     }
