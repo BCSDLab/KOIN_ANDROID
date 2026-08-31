@@ -4,10 +4,10 @@ import `in`.koreatech.koin.data.mapper.toCoopShop
 import `in`.koreatech.koin.data.response.coopshop.CoopShopResponse
 import `in`.koreatech.koin.data.source.remote.CoopShopRemoteDataSource
 import `in`.koreatech.koin.data.util.mapHttpFailure
-import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.error.coopshop.KoinCoopShopException
 import `in`.koreatech.koin.domain.model.coopshop.CoopShop
 import `in`.koreatech.koin.domain.repository.CoopShopRepository
+import `in`.koreatech.koin.domain.util.suspendRunCatching
 import javax.inject.Inject
 
 class CoopShopRepositoryImpl @Inject constructor(

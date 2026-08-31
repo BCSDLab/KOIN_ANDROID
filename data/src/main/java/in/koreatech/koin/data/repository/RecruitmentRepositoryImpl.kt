@@ -2,18 +2,21 @@ package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.mapper.toMyAppliedRecruitment
 import `in`.koreatech.koin.data.mapper.toMyRecruitmentPost
+import `in`.koreatech.koin.data.mapper.toRecruitmentNotifications
 import `in`.koreatech.koin.data.source.remote.RecruitmentRemoteDataSource
 import `in`.koreatech.koin.data.util.mapHttpFailure
-import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.error.recruitment.KoinRecruitmentException
 import `in`.koreatech.koin.domain.model.recruitment.MyAppliedRecruitment
 import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost
+import `in`.koreatech.koin.domain.model.recruitment.RecruitmentNotifications
 import `in`.koreatech.koin.domain.repository.RecruitmentRepository
+import `in`.koreatech.koin.domain.util.suspendRunCatching
 import javax.inject.Inject
 
 class RecruitmentRepositoryImpl @Inject constructor(
     private val recruitmentRemoteDataSource: RecruitmentRemoteDataSource
 ) : RecruitmentRepository {
+    override suspend fun getNotifications(page: Int, limit: Int): Result<RecruitmentNotifications> {
 
     override suspend fun getMyRecruitmentPosts(
         status: String,
@@ -22,6 +25,10 @@ class RecruitmentRepositoryImpl @Inject constructor(
         limit: Int
     ): Result<List<MyRecruitmentPost>> {
         return suspendRunCatching {
+            recruitmentRemoteDataSource.getNotifications(
+                page = page,
+                limit = limit
+            ).toRecruitmentNotifications()
             recruitmentRemoteDataSource
                 .getMyRecruitmentPosts(status, sort, page, limit)
                 .recruitments
@@ -39,17 +46,33 @@ class RecruitmentRepositoryImpl @Inject constructor(
         page: Int,
         limit: Int
     ): Result<List<MyAppliedRecruitment>> {
+    override suspend fun deleteAllNotifications(): Result<Unit> {
         return suspendRunCatching {
             recruitmentRemoteDataSource
                 .getMyAppliedRecruitments(statuses, sort, page, limit)
                 .applications
                 .map { it.toMyAppliedRecruitment() }
+            recruitmentRemoteDataSource.deleteAllNotifications()
+        }.mapHttpFailure {
+            on(403) throws KoinRecruitmentException.ForbiddenException()
         }
     }
 
     override suspend fun closeRecruitmentPost(postId: Int): Result<Unit> {
+    override suspend fun readNotification(notificationId: Int): Result<Unit> {
         return suspendRunCatching {
             recruitmentRemoteDataSource.closeRecruitmentPost(postId)
+            recruitmentRemoteDataSource.readNotification(
+                notificationId = notificationId
+            )
+        }.mapHttpFailure {
+            on(403) throws KoinRecruitmentException.ForbiddenException()
+        }
+    }
+
+    override suspend fun readAllNotifications(): Result<Unit> {
+        return suspendRunCatching {
+            recruitmentRemoteDataSource.readAllNotifications()
         }.mapHttpFailure {
             on(401) throws KoinRecruitmentException.UnauthorizedUserException()
             on(403) throws KoinRecruitmentException.ForbiddenException()

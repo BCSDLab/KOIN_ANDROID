@@ -16,6 +16,14 @@ class RecruitmentRemoteDataSource @Inject constructor(
         limit: Int
     ): MyRecruitmentListResponse = recruitmentAuthApi.getMyRecruitmentPosts(status, sort, page, limit)
 
+    suspend fun getNotifications(
+        page: Int?,
+        limit: Int?
+    ) = recruitmentAuthApi.getNotifications(
+        page = page,
+        limit = limit
+    )
+
     suspend fun getMyAppliedRecruitments(
         statuses: List<String>,
         sort: String,
@@ -23,8 +31,25 @@ class RecruitmentRemoteDataSource @Inject constructor(
         limit: Int
     ): MyAppliedRecruitmentListResponse = recruitmentAuthApi.getMyAppliedRecruitments(statuses, sort, page, limit)
 
+    suspend fun deleteAllNotifications() {
+        val response = recruitmentAuthApi.deleteAllNotifications()
+        if (!response.isSuccessful) throw HttpException(response)
+    }
+
     suspend fun closeRecruitmentPost(postId: Int) {
         val response = recruitmentAuthApi.closeRecruitmentPost(postId)
+        if (!response.isSuccessful) throw HttpException(response)
+    }
+
+    suspend fun readNotification(
+        notificationId: Int
+    ) {
+        val response = recruitmentAuthApi.readNotification(notificationId = notificationId)
+        if (!response.isSuccessful) throw HttpException(response)
+    }
+
+    suspend fun readAllNotifications() {
+        val response = recruitmentAuthApi.readAllNotifications()
         if (!response.isSuccessful) throw HttpException(response)
     }
 }
