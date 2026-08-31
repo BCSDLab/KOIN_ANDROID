@@ -63,6 +63,7 @@ class RecruitmentRepositoryImpl @Inject constructor(
                 .recruitments
                 .map { it.toMyRecruitmentPost() }
         }.mapHttpFailure {
+            @Suppress("ThrowingExceptionsWithoutMessageOrCause")
             on(400, "ILLEGAL_ARGUMENT") throws KoinRecruitmentException.IllegalArgumentException()
             on(401) throws KoinRecruitmentException.UnauthorizedUserException()
             on(403) throws KoinRecruitmentException.ForbiddenException()
