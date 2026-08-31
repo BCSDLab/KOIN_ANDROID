@@ -1,40 +1,21 @@
-package `in`.koreatech.koin.data.mapper
+﻿package `in`.koreatech.koin.data.mapper
 
 import `in`.koreatech.koin.data.response.recruitment.MyRecruitmentPostResponse
+import `in`.koreatech.koin.data.response.recruitment.RecruitmentApplicationResponse
+import `in`.koreatech.koin.data.response.recruitment.RecruitmentDetailResponse
+import `in`.koreatech.koin.data.response.recruitment.RecruitmentListResponse
+import `in`.koreatech.koin.data.response.recruitment.RecruitmentNotificationListResponse
+import `in`.koreatech.koin.data.response.recruitment.RecruitmentNotificationResponse
 import `in`.koreatech.koin.data.response.recruitment.RecruitmentResponse
 import `in`.koreatech.koin.data.response.recruitment.RecruitmentRoleResponse
-import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentApplicationResponse
-import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentDetailResponse
-import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentListResponse
-import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentNotificationListResponse
-import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentNotificationResponse
-import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentResponse
-import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentRoleResponse
 import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost
 import `in`.koreatech.koin.domain.model.recruitment.Recruitment
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentApplication
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentDetail
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentNotification
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentNotifications
-import `in`.koreatech.koin.domain.model.recruitment.RecruitmentPost
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentRole
 import `in`.koreatech.koin.domain.model.recruitment.Recruitments
-
-fun RecruitmentResponse.toRecruitmentPost() = RecruitmentPost(
-    id = id,
-    category = category,
-    title = title,
-    meetingType = meetingType,
-    activityStartDate = activityStartDate,
-    activityEndDate = activityEndDate,
-    deadlineDate = deadlineDate,
-    dDay = dDay,
-    status = status,
-    recruitmentType = recruitmentType,
-    currentParticipants = currentParticipants,
-    maxParticipants = maxParticipants,
-    roles = roles.map { it.toRecruitmentRole() }
-)
 
 fun MyRecruitmentPostResponse.toMyRecruitmentPost() = MyRecruitmentPost(
     id = id,
@@ -64,7 +45,7 @@ fun RecruitmentRoleResponse.toRecruitmentRole() = RecruitmentRole(
     isClosed = isClosed
 )
 
-fun TeamRecruitmentNotificationResponse.toRecruitmentNotification() = RecruitmentNotification(
+fun RecruitmentNotificationResponse.toRecruitmentNotification() = RecruitmentNotification(
     id = id,
     type = type,
     targetType = targetType,
@@ -77,7 +58,7 @@ fun TeamRecruitmentNotificationResponse.toRecruitmentNotification() = Recruitmen
     chatRoomId = chatRoomId
 )
 
-fun TeamRecruitmentNotificationListResponse.toRecruitmentNotifications() = RecruitmentNotifications(
+fun RecruitmentNotificationListResponse.toRecruitmentNotifications() = RecruitmentNotifications(
     notifications = notifications.map { it.toRecruitmentNotification() },
     unreadCount = unreadCount,
     totalCount = totalCount,
@@ -86,15 +67,7 @@ fun TeamRecruitmentNotificationListResponse.toRecruitmentNotifications() = Recru
     currentPage = currentPage
 )
 
-fun TeamRecruitmentRoleResponse.toRecruitmentRole() = RecruitmentRole(
-    id = id,
-    name = name,
-    currentParticipants = currentParticipants,
-    maxParticipants = maxParticipants,
-    isClosed = isClosed
-)
-
-fun TeamRecruitmentResponse.toRecruitment() = Recruitment(
+fun RecruitmentResponse.toRecruitment() = Recruitment(
     id = id,
     category = category,
     title = title,
@@ -110,7 +83,7 @@ fun TeamRecruitmentResponse.toRecruitment() = Recruitment(
     roles = roles.map { it.toRecruitmentRole() }
 )
 
-fun TeamRecruitmentListResponse.toRecruitments() = Recruitments(
+fun RecruitmentListResponse.toRecruitments() = Recruitments(
     recruitments = recruitments.map { it.toRecruitment() },
     totalCount = totalCount,
     currentCount = currentCount,
@@ -118,12 +91,12 @@ fun TeamRecruitmentListResponse.toRecruitments() = Recruitments(
     currentPage = currentPage
 )
 
-fun TeamRecruitmentApplicationResponse.toRecruitmentApplication() = RecruitmentApplication(
+fun RecruitmentApplicationResponse.toRecruitmentApplication() = RecruitmentApplication(
     applicationId = applicationId,
     status = status
 )
 
-fun TeamRecruitmentDetailResponse.toRecruitmentDetail() = RecruitmentDetail(
+fun RecruitmentDetailResponse.toRecruitmentDetail() = RecruitmentDetail(
     id = id,
     category = category,
     title = title,

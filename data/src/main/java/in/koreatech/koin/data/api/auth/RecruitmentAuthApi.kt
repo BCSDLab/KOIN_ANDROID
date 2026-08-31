@@ -1,9 +1,9 @@
-package `in`.koreatech.koin.data.api.auth
+﻿package `in`.koreatech.koin.data.api.auth
 
 import `in`.koreatech.koin.data.response.recruitment.MyRecruitmentListResponse
-import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentDetailResponse
-import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentListResponse
-import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentNotificationListResponse
+import `in`.koreatech.koin.data.response.recruitment.RecruitmentDetailResponse
+import `in`.koreatech.koin.data.response.recruitment.RecruitmentListResponse
+import `in`.koreatech.koin.data.response.recruitment.RecruitmentNotificationListResponse
 import retrofit2.Response
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -23,12 +23,12 @@ interface RecruitmentAuthApi {
         @Query("sort") sort: String? = null,
         @Query("page") page: Int? = 1,
         @Query("limit") limit: Int? = 10
-    ): TeamRecruitmentListResponse
+    ): RecruitmentListResponse
 
     @GET("/team-recruitments/{recruitmentId}")
     suspend fun getRecruitmentDetail(
         @Path("recruitmentId") recruitmentId: Int
-    ): TeamRecruitmentDetailResponse
+    ): RecruitmentDetailResponse
 
     @DELETE("/team-recruitments/{recruitmentId}")
     suspend fun deleteRecruitment(
@@ -39,7 +39,7 @@ interface RecruitmentAuthApi {
     suspend fun getNotifications(
         @Query("page") page: Int? = 1,
         @Query("limit") limit: Int? = 10
-    ): TeamRecruitmentNotificationListResponse
+    ): RecruitmentNotificationListResponse
 
     @DELETE("/team-recruitments/notifications")
     suspend fun deleteAllNotifications(): Response<Unit>

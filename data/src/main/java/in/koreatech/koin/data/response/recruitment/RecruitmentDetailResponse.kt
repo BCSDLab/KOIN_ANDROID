@@ -2,7 +2,7 @@ package `in`.koreatech.koin.data.response.recruitment
 
 import com.google.gson.annotations.SerializedName
 
-data class TeamRecruitmentDetailResponse(
+data class RecruitmentDetailResponse(
     @SerializedName("id")
     val id: Int,
     @SerializedName("category")
@@ -28,7 +28,7 @@ data class TeamRecruitmentDetailResponse(
     @SerializedName("max_participants")
     val maxParticipants: Int,
     @SerializedName("roles")
-    val roles: List<TeamRecruitmentRoleResponse>,
+    val roles: List<RecruitmentRoleResponse>,
     @SerializedName("author_nickname")
     val authorNickname: String?,
     @SerializedName("description")
@@ -46,7 +46,7 @@ data class TeamRecruitmentDetailResponse(
     @SerializedName("apply_block_reason")
     val applyBlockReason: String?,
     @SerializedName("application")
-    val application: TeamRecruitmentApplicationResponse?,
+    val application: RecruitmentApplicationResponse?,
     @SerializedName("can_manage_applicants")
     val canManageApplicants: Boolean,
     @SerializedName("team_chat_available")
@@ -55,7 +55,7 @@ data class TeamRecruitmentDetailResponse(
     val teamChatRoomId: Int?
 )
 
-data class TeamRecruitmentApplicationResponse(
+data class RecruitmentApplicationResponse(
     @SerializedName("application_id")
     val applicationId: Int,
     @SerializedName("status")

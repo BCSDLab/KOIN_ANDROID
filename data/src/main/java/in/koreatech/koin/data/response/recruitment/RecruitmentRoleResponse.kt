@@ -2,7 +2,7 @@ package `in`.koreatech.koin.data.response.recruitment
 
 import com.google.gson.annotations.SerializedName
 
-data class TeamRecruitmentRoleResponse(
+data class RecruitmentRoleResponse(
     @SerializedName("id")
     val id: Int,
     @SerializedName("name")
