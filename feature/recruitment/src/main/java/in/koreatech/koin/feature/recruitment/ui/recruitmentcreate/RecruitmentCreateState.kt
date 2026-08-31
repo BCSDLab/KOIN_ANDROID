@@ -2,8 +2,8 @@ package `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate
 
 import androidx.compose.runtime.Immutable
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentProgressType
-import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.model.StableLocalDate
+import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.model.toStable
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model.TeamRecruitmentCategory
 import java.time.LocalDate

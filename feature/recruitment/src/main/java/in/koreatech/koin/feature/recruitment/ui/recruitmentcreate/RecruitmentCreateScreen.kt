@@ -21,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,9 +34,9 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentProgressType
+import `in`.koreatech.koin.feature.recruitment.model.StableLocalDate
 import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentConfirmDialog
-import `in`.koreatech.koin.feature.recruitment.model.StableLocalDate
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDatePickerDialog
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDateSelectBox
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDropdown
@@ -320,13 +321,15 @@ private fun RecruitmentCreateScreenImpl(
                     )
                 }
                 state.roles.forEach { role ->
-                    RecruitmentRoleRow(
-                        role = role,
-                        onNameChange = { name -> onRoleNameChange(role.id, name) },
-                        onCountChange = { count -> onRoleCountChange(role.id, count) },
-                        onRemove = { onRoleRemoved(role.id) },
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    key(role.id) {
+                        RecruitmentRoleRow(
+                            role = role,
+                            onNameChange = { name -> onRoleNameChange(role.id, name) },
+                            onCountChange = { count -> onRoleCountChange(role.id, count) },
+                            onRemove = { onRoleRemoved(role.id) },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
                 }
             }
         }

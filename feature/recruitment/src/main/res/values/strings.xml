@@ -80,6 +80,23 @@
     <string name="recruitment_create_dialog_yes">네</string>
     <string name="recruitment_create_dialog_no">아니요</string>
 
+    <string name="recruitment_activity_name">활동명</string>
+    <string name="recruitment_activity_name_hint">활동명을 작성해주세요.</string>
+    <string name="recruitment_activity_required_mark"> *</string>
+    <string name="recruitment_activity_close_content_description">취소</string>
+    <string name="recruitment_activity_period">활동기간</string>
+    <string name="recruitment_activity_period_separator">-</string>
+    <string name="recruitment_activity_start_date">시작일</string>
+    <string name="recruitment_activity_end_date">종료일</string>
+    <string name="recruitment_activity_ongoing">진행 중</string>
+    <string name="recruitment_activity_content">활동내용</string>
+    <string name="recruitment_activity_content_hint">활동 내용을 간단히 작성해주세요.</string>
+    <string name="recruitment_skill_field_hint">기술 또는 자격증을 입력해주세요.</string>
+    <string name="recruitment_activity_card_edit">수정</string>
+    <string name="recruitment_activity_card_period_label">활동 기간</string>
+    <string name="recruitment_activity_card_content_label">활동 내용</string>
+    <string name="recruitment_activity_confirm">완료</string>
+
     <string name="recruitment_apply_title">팀원 모집 지원</string>
     <string name="recruitment_apply_step_one_label">기본 정보</string>
     <string name="recruitment_apply_step_two_label">지원서 작성</string>
