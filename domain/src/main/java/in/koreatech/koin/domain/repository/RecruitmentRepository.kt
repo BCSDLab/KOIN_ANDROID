@@ -3,7 +3,7 @@ package `in`.koreatech.koin.domain.repository
 import `in`.koreatech.koin.domain.model.recruitment.MyAppliedRecruitment
 import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost
 
-interface TeamRecruitmentRepository {
+interface RecruitmentRepository {
 
     suspend fun getMyRecruitmentPosts(
         status: String,

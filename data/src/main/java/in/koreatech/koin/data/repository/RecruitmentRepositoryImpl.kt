@@ -2,19 +2,18 @@ package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.mapper.toMyAppliedRecruitment
 import `in`.koreatech.koin.data.mapper.toMyRecruitmentPost
-import `in`.koreatech.koin.data.source.remote.TeamRecruitmentRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.RecruitmentRemoteDataSource
 import `in`.koreatech.koin.data.util.mapHttpFailure
 import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.error.recruitment.KoinRecruitmentException
 import `in`.koreatech.koin.domain.model.recruitment.MyAppliedRecruitment
-import `in`.koreatech.koin.domain.error.recruitment.KoinRecruitmentException
 import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost
-import `in`.koreatech.koin.domain.repository.TeamRecruitmentRepository
+import `in`.koreatech.koin.domain.repository.RecruitmentRepository
 import javax.inject.Inject
 
-class TeamRecruitmentRepositoryImpl @Inject constructor(
-    private val teamRecruitmentRemoteDataSource: TeamRecruitmentRemoteDataSource
-) : TeamRecruitmentRepository {
+class RecruitmentRepositoryImpl @Inject constructor(
+    private val recruitmentRemoteDataSource: RecruitmentRemoteDataSource
+) : RecruitmentRepository {
 
     override suspend fun getMyRecruitmentPosts(
         status: String,
@@ -23,14 +22,10 @@ class TeamRecruitmentRepositoryImpl @Inject constructor(
         limit: Int
     ): Result<List<MyRecruitmentPost>> {
         return suspendRunCatching {
-            teamRecruitmentRemoteDataSource
+            recruitmentRemoteDataSource
                 .getMyRecruitmentPosts(status, sort, page, limit)
                 .recruitments
                 .map { it.toMyRecruitmentPost() }
-        }.mapHttpFailure {
-            on(400, "ILLEGAL_ARGUMENT") throws KoinRecruitmentException.IllegalArgumentException()
-            on(401) throws KoinRecruitmentException.UnauthorizedUserException()
-            on(403) throws KoinRecruitmentException.ForbiddenException()
         }.mapHttpFailure {
             on(400, "ILLEGAL_ARGUMENT") throws KoinRecruitmentException.IllegalArgumentException()
             on(401) throws KoinRecruitmentException.UnauthorizedUserException()
@@ -45,7 +40,7 @@ class TeamRecruitmentRepositoryImpl @Inject constructor(
         limit: Int
     ): Result<List<MyAppliedRecruitment>> {
         return suspendRunCatching {
-            teamRecruitmentRemoteDataSource
+            recruitmentRemoteDataSource
                 .getMyAppliedRecruitments(statuses, sort, page, limit)
                 .applications
                 .map { it.toMyAppliedRecruitment() }
@@ -54,7 +49,7 @@ class TeamRecruitmentRepositoryImpl @Inject constructor(
 
     override suspend fun closeRecruitmentPost(postId: Int): Result<Unit> {
         return suspendRunCatching {
-            teamRecruitmentRemoteDataSource.closeRecruitmentPost(postId)
+            recruitmentRemoteDataSource.closeRecruitmentPost(postId)
         }.mapHttpFailure {
             on(401) throws KoinRecruitmentException.UnauthorizedUserException()
             on(403) throws KoinRecruitmentException.ForbiddenException()

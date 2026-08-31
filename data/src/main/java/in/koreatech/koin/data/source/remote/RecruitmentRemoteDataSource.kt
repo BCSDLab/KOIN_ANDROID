@@ -6,7 +6,7 @@ import `in`.koreatech.koin.data.response.recruitment.MyRecruitmentListResponse
 import javax.inject.Inject
 import retrofit2.HttpException
 
-class TeamRecruitmentRemoteDataSource @Inject constructor(
+class RecruitmentRemoteDataSource @Inject constructor(
     private val recruitmentAuthApi: RecruitmentAuthApi
 ) {
     suspend fun getMyRecruitmentPosts(

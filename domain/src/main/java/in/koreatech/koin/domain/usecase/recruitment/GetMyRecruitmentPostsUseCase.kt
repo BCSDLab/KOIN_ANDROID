@@ -1,11 +1,11 @@
 package `in`.koreatech.koin.domain.usecase.recruitment
 
 import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost
-import `in`.koreatech.koin.domain.repository.TeamRecruitmentRepository
+import `in`.koreatech.koin.domain.repository.RecruitmentRepository
 import javax.inject.Inject
 
 class GetMyRecruitmentPostsUseCase @Inject constructor(
-    private val teamRecruitmentRepository: TeamRecruitmentRepository
+    private val recruitmentRepository: RecruitmentRepository
 ) {
     suspend operator fun invoke(
         status: String = "ALL",
@@ -13,5 +13,5 @@ class GetMyRecruitmentPostsUseCase @Inject constructor(
         page: Int = 1,
         limit: Int = 20
     ): Result<List<MyRecruitmentPost>> =
-        teamRecruitmentRepository.getMyRecruitmentPosts(status, sort, page, limit)
+        recruitmentRepository.getMyRecruitmentPosts(status, sort, page, limit)
 }
