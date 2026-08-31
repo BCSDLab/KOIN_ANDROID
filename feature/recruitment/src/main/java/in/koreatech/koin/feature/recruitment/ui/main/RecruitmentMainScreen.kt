@@ -88,7 +88,7 @@ fun RecruitmentMainScreen(
             onStatusClick = viewModel::selectPendingStatus,
             onSortClick = viewModel::selectPendingSort,
             onCategoryClick = viewModel::togglePendingCategory,
-            onLocationClick = viewModel::togglePendingLocation,
+            onLocationClick = viewModel::selectPendingLocation,
             onReset = viewModel::resetPendingFilter,
             onApplyClick = viewModel::applyPendingFilter,
             onDismissRequest = { viewModel.updateFilterVisible(false) }
@@ -129,7 +129,7 @@ private fun RecruitmentMainScreenImpl(
     onFilterClick: () -> Unit = {},
     onRemoveStatus: () -> Unit = {},
     onRemoveCategory: (RecruitmentCategory) -> Unit = {},
-    onRemoveLocation: (RecruitmentLocation) -> Unit = {},
+    onRemoveLocation: () -> Unit = {},
     onTopbarBackClick: () -> Unit = {},
     onNotificationClick: () -> Unit = {},
     onProfileClick: () -> Unit = {},

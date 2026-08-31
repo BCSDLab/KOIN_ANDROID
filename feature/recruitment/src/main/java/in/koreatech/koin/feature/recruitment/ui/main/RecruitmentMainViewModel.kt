@@ -49,7 +49,7 @@ class RecruitmentMainViewModel @Inject constructor(
             categories = filter.selectedCategories
                 .takeIf { it.isNotEmpty() }
                 ?.map { it.apiValue },
-            meetingType = filter.selectedLocations.singleOrNull()?.apiValue,
+            meetingType = filter.selectedLocation?.apiValue,
             sort = filter.selectedSort.apiValue
         ).onSuccess { recruitments ->
             reduce {
@@ -96,8 +96,8 @@ class RecruitmentMainViewModel @Inject constructor(
     fun togglePendingCategory(category: RecruitmentCategory?) =
         updatePendingFilter { it.copy(selectedCategories = it.selectedCategories.toggle(category)) }
 
-    fun togglePendingLocation(location: RecruitmentLocation?) =
-        updatePendingFilter { it.copy(selectedLocations = it.selectedLocations.toggle(location)) }
+    fun selectPendingLocation(location: RecruitmentLocation?) =
+        updatePendingFilter { it.copy(selectedLocation = location) }
 
     fun resetPendingFilter() = updatePendingFilter { RecruitmentFilterState() }
 
@@ -111,8 +111,7 @@ class RecruitmentMainViewModel @Inject constructor(
     fun removeCategoryFilter(category: RecruitmentCategory) =
         updateFilter { it.copy(selectedCategories = (it.selectedCategories - category).toPersistentList()) }
 
-    fun removeLocationFilter(location: RecruitmentLocation) =
-        updateFilter { it.copy(selectedLocations = (it.selectedLocations - location).toPersistentList()) }
+    fun removeLocationFilter() = updateFilter { it.copy(selectedLocation = null) }
 
     private fun updatePendingFilter(transform: (RecruitmentFilterState) -> RecruitmentFilterState) =
         blockingIntent {

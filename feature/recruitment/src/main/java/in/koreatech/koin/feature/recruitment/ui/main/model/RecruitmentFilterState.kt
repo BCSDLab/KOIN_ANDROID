@@ -15,12 +15,12 @@ data class RecruitmentFilterState(
     val selectedStatus: RecruitmentStatus? = null,
     val selectedSort: RecruitmentSort = RecruitmentSort.LATEST,
     val selectedCategories: ImmutableList<RecruitmentCategory> = persistentListOf(),
-    val selectedLocations: ImmutableList<RecruitmentLocation> = persistentListOf()
+    val selectedLocation: RecruitmentLocation? = null
 ) {
     val hasVisibleChips: Boolean
         get() = selectedStatus != null ||
             selectedCategories.isNotEmpty() ||
-            selectedLocations.isNotEmpty()
+            selectedLocation != null
 }
 
 enum class RecruitmentSort(
