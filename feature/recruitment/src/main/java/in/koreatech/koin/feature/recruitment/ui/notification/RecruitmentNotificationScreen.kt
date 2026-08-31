@@ -50,7 +50,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 internal fun RecruitmentNotificationScreen(
     onBack: () -> Unit = {},
-    onNavigateToApplicantManagement: (Long) -> Unit = {},
+    onNavigateToApplicantManagement: (Int) -> Unit = {},
     viewModel: RecruitmentNotificationViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.collectAsState()

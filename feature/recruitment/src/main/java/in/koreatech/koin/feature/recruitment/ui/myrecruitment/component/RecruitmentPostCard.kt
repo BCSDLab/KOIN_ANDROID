@@ -209,7 +209,7 @@ private fun RecruitmentPostCardRecruitingPreview() {
     RebrandKoinTheme {
         RecruitmentPostCard(
             post = MyRecruitmentPost(
-                id = 1L,
+                id = 1,
                 category = RecruitmentCategory.CONTEST,
                 status = RecruitmentStatus.Recruiting(daysLeft = 5),
                 title = "AI 아이디어 공모전 팀원 모집",
@@ -237,7 +237,7 @@ private fun RecruitmentPostCardCompletePreview() {
     RebrandKoinTheme {
         RecruitmentPostCard(
             post = MyRecruitmentPost(
-                id = 2L,
+                id = 2,
                 category = RecruitmentCategory.STUDY,
                 status = RecruitmentStatus.Complete,
                 title = "2026 스터디 팀원 모집",
@@ -260,7 +260,7 @@ private fun RecruitmentPostCardExternalActivityPreview() {
     RebrandKoinTheme {
         RecruitmentPostCard(
             post = MyRecruitmentPost(
-                id = 3L,
+                id = 3,
                 category = RecruitmentCategory.EXTERNAL_ACTIVITY,
                 status = RecruitmentStatus.Complete,
                 title = "2026 대외활동 팀원 모집",

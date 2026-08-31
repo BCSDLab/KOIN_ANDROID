@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -38,16 +39,24 @@ import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.Recruitmen
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyRecruitmentScreen(
     viewModel: MyRecruitmentViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit = {},
-    onApplicantManage: (Long) -> Unit = {},
-    onChat: (Long) -> Unit = {}
+    onNavigateToLogin: () -> Unit = {},
+    onApplicantManage: (Int) -> Unit = {},
+    onChat: (Int) -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
+
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            MyRecruitmentSideEffect.NavigateToLogin -> onNavigateToLogin()
+        }
+    }
 
     Scaffold(
         containerColor = RebrandKoinTheme.colors.neutral50,
@@ -63,6 +72,7 @@ fun MyRecruitmentScreen(
     ) { innerPadding ->
         MyRecruitmentScreenImpl(
             posts = state.posts,
+            isLoading = state.isLoading,
             onApplicantManage = onApplicantManage,
             onCloseRecruitment = { postId -> viewModel.showCloseDialog(postId) },
             onChat = onChat,
@@ -90,10 +100,11 @@ fun MyRecruitmentScreen(
 @Composable
 private fun MyRecruitmentScreenImpl(
     posts: ImmutableList<MyRecruitmentPost>,
+    isLoading: Boolean,
     modifier: Modifier = Modifier,
-    onApplicantManage: (Long) -> Unit = {},
-    onCloseRecruitment: (Long) -> Unit = {},
-    onChat: (Long) -> Unit = {},
+    onApplicantManage: (Int) -> Unit = {},
+    onCloseRecruitment: (Int) -> Unit = {},
+    onChat: (Int) -> Unit = {},
     onFilter: () -> Unit = {}
 ) {
     Column(modifier = modifier.fillMaxSize()) {
@@ -112,7 +123,14 @@ private fun MyRecruitmentScreenImpl(
             RecruitmentFilterButton(onClick = onFilter)
         }
 
-        if (posts.isEmpty()) {
+        if (isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else if (posts.isEmpty()) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -149,9 +167,10 @@ private const val PREVIEW_DATE_RANGE = "2026.07.26 ~ 2026.08.07"
 private fun MyRecruitmentScreenWithPostsPreview() {
     RebrandKoinTheme {
         MyRecruitmentScreenImpl(
+            isLoading = false,
             posts = persistentListOf(
                 MyRecruitmentPost(
-                    id = 1L,
+                    id = 1,
                     category = RecruitmentCategory.CONTEST,
                     status = RecruitmentStatus.Recruiting(daysLeft = 5),
                     title = "AI 아이디어 공모전 팀원 모집",
@@ -166,7 +185,7 @@ private fun MyRecruitmentScreenWithPostsPreview() {
                     maxApplicants = 3
                 ),
                 MyRecruitmentPost(
-                    id = 2L,
+                    id = 2,
                     category = RecruitmentCategory.EXTERNAL_ACTIVITY,
                     status = RecruitmentStatus.Complete,
                     title = "2026 대외활동 팀원 모집",
@@ -176,7 +195,7 @@ private fun MyRecruitmentScreenWithPostsPreview() {
                     maxApplicants = 5
                 ),
                 MyRecruitmentPost(
-                    id = 3L,
+                    id = 3,
                     category = RecruitmentCategory.STUDY,
                     status = RecruitmentStatus.Complete,
                     title = "2026 스터디 팀원 모집",
@@ -194,6 +213,6 @@ private fun MyRecruitmentScreenWithPostsPreview() {
 @Composable
 private fun MyRecruitmentScreenEmptyPreview() {
     RebrandKoinTheme {
-        MyRecruitmentScreenImpl(posts = persistentListOf())
+        MyRecruitmentScreenImpl(isLoading = false, posts = persistentListOf())
     }
 }

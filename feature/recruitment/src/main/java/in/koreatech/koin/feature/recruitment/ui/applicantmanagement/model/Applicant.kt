@@ -5,7 +5,7 @@ import `in`.koreatech.koin.feature.recruitment.model.ApplicantStatus
 
 @Immutable
 data class Applicant(
-    val id: Long,
+    val id: Int,
     val name: String,
     val role: String,
     val department: String,

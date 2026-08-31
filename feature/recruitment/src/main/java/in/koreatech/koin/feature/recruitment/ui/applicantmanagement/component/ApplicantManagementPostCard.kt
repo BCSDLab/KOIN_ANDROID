@@ -133,7 +133,7 @@ private fun ApplicantManagementPostCardPreview() {
     RebrandKoinTheme {
         ApplicantManagementPostCard(
             post = MyRecruitmentPost(
-                id = 1L,
+                id = 1,
                 category = RecruitmentCategory.CONTEST,
                 status = RecruitmentStatus.Recruiting(daysLeft = 5),
                 title = "AI 아이디어 공모전 팀원 모집",
