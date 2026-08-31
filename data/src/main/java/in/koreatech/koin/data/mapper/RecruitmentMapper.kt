@@ -10,15 +10,15 @@ import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentNotification
 import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentNotificationResponse
 import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentResponse
 import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentRoleResponse
+import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost
 import `in`.koreatech.koin.domain.model.recruitment.Recruitment
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentApplication
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentDetail
-import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentNotification
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentNotifications
+import `in`.koreatech.koin.domain.model.recruitment.RecruitmentPost
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentRole
 import `in`.koreatech.koin.domain.model.recruitment.Recruitments
-import `in`.koreatech.koin.domain.model.recruitment.RecruitmentPost
 
 fun RecruitmentResponse.toRecruitmentPost() = RecruitmentPost(
     id = id,
