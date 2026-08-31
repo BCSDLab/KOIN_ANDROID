@@ -7,6 +7,7 @@ import `in`.koreatech.koin.data.util.mapHttpFailure
 import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.error.recruitment.KoinRecruitmentException
 import `in`.koreatech.koin.domain.model.recruitment.MyAppliedRecruitment
+import `in`.koreatech.koin.domain.error.recruitment.KoinRecruitmentException
 import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost
 import `in`.koreatech.koin.domain.repository.TeamRecruitmentRepository
 import javax.inject.Inject
@@ -26,6 +27,10 @@ class TeamRecruitmentRepositoryImpl @Inject constructor(
                 .getMyRecruitmentPosts(status, sort, page, limit)
                 .recruitments
                 .map { it.toMyRecruitmentPost() }
+        }.mapHttpFailure {
+            on(400, "ILLEGAL_ARGUMENT") throws KoinRecruitmentException.IllegalArgumentException()
+            on(401) throws KoinRecruitmentException.UnauthorizedUserException()
+            on(403) throws KoinRecruitmentException.ForbiddenException()
         }.mapHttpFailure {
             on(400, "ILLEGAL_ARGUMENT") throws KoinRecruitmentException.IllegalArgumentException()
             on(401) throws KoinRecruitmentException.UnauthorizedUserException()
