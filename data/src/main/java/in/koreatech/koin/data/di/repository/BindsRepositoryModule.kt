@@ -8,7 +8,6 @@ import `in`.koreatech.koin.data.repository.BusRepositoryImpl
 import `in`.koreatech.koin.data.repository.CallvanRepositoryImpl
 import `in`.koreatech.koin.data.repository.DepartmentRepositoryImpl
 import `in`.koreatech.koin.data.repository.RecruitmentRepositoryImpl
-import `in`.koreatech.koin.data.repository.TeamRecruitmentRepositoryImpl
 import `in`.koreatech.koin.data.repository.TimetableRepositoryImpl
 import `in`.koreatech.koin.data.repository.WeatherRepositoryImpl
 import `in`.koreatech.koin.data.repository.firebase.messaging.FirebaseMessagingRepositoryImpl
@@ -16,7 +15,6 @@ import `in`.koreatech.koin.domain.repository.BusRepository
 import `in`.koreatech.koin.domain.repository.CallvanRepository
 import `in`.koreatech.koin.domain.repository.DepartmentRepository
 import `in`.koreatech.koin.domain.repository.RecruitmentRepository
-import `in`.koreatech.koin.domain.repository.TeamRecruitmentRepository
 import `in`.koreatech.koin.domain.repository.TimetableRepository
 import `in`.koreatech.koin.domain.repository.WeatherRepository
 import `in`.koreatech.koin.domain.repository.firebase.messaging.FirebaseMessagingRepository

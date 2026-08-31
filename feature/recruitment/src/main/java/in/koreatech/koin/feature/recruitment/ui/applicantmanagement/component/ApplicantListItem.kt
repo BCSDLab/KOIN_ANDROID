@@ -93,7 +93,7 @@ private fun ApplicantListItemPendingPreview() {
     RebrandKoinTheme {
         ApplicantListItem(
             applicant = Applicant(
-                id = 1L,
+                id = 1,
                 name = "김철수",
                 role = "프론트엔드",
                 department = "컴퓨터공학부",
@@ -111,7 +111,7 @@ private fun ApplicantListItemApprovedPreview() {
     RebrandKoinTheme {
         ApplicantListItem(
             applicant = Applicant(
-                id = 2L,
+                id = 2,
                 name = "김철수",
                 role = "디자인",
                 department = "컴퓨터공학부",
@@ -130,7 +130,7 @@ private fun ApplicantListItemRejectedPreview() {
     RebrandKoinTheme {
         ApplicantListItem(
             applicant = Applicant(
-                id = 3L,
+                id = 3,
                 name = "김철수",
                 role = "백엔드",
                 department = "컴퓨터공학부",

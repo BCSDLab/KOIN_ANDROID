@@ -45,7 +45,7 @@ fun ApplicantManagementScreen(
     viewModel: ApplicantManagementViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit = {},
     onChat: () -> Unit = {},
-    onApplicantDetail: (Long) -> Unit = {},
+    onApplicantDetail: (Int) -> Unit = {},
     onMoreOptions: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
@@ -87,7 +87,7 @@ private fun ApplicantManagementScreenImpl(
     applicants: ImmutableList<Applicant>,
     modifier: Modifier = Modifier,
     onChat: () -> Unit = {},
-    onApplicantDetail: (Long) -> Unit = {}
+    onApplicantDetail: (Int) -> Unit = {}
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
@@ -149,9 +149,9 @@ private fun ApplicantManagementScreenWithApplicantsPreview() {
                 maxApplicants = 3
             ),
             applicants = persistentListOf(
-                Applicant(1L, "김철수", "백엔드", "컴퓨터공학부", "23학번", ApplicantStatus.REJECTED),
-                Applicant(2L, "김철수", "디자인", "컴퓨터공학부", "23학번", ApplicantStatus.APPROVED, hasChatRoom = true),
-                Applicant(3L, "김철수", "프론트엔드", "컴퓨터공학부", "23학번", ApplicantStatus.PENDING)
+                Applicant(1, "김철수", "백엔드", "컴퓨터공학부", "23학번", ApplicantStatus.REJECTED),
+                Applicant(2, "김철수", "디자인", "컴퓨터공학부", "23학번", ApplicantStatus.APPROVED, hasChatRoom = true),
+                Applicant(3, "김철수", "프론트엔드", "컴퓨터공학부", "23학번", ApplicantStatus.PENDING)
             )
         )
     }
