@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.data.api.auth
 
-import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentNotificationListResponse
 import `in`.koreatech.koin.data.response.recruitment.MyRecruitmentListResponse
+import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentNotificationListResponse
 import retrofit2.Response
 import retrofit2.http.DELETE
 import retrofit2.http.GET
