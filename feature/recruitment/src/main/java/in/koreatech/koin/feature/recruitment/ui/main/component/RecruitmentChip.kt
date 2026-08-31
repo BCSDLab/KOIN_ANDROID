@@ -38,8 +38,7 @@ data class RecruitmentChipColors(
 )
 
 object RecruitmentChipDefaults {
-    val Shape: Shape = RoundedCornerShape(100.dp)
-    val PillShape: Shape = RoundedCornerShape(40.dp)
+    val PillShape: Shape = RoundedCornerShape(percent = 50)
     val PillHeight = 36.dp
     val ContentPadding = PaddingValues(horizontal = 8.dp, vertical = 1.dp)
     val IconSize = 14.dp
@@ -83,7 +82,7 @@ fun RecruitmentChip(
     modifier: Modifier = Modifier,
     colors: RecruitmentChipColors = RecruitmentChipDefaults.colors(),
     textStyle: TextStyle = RebrandKoinTheme.typography.regular10,
-    shape: Shape = RecruitmentChipDefaults.Shape,
+    shape: Shape = RecruitmentChipDefaults.PillShape,
     contentPadding: PaddingValues = RecruitmentChipDefaults.ContentPadding,
     border: BorderStroke? = null,
     trailingIcon: ImageVector? = null,
