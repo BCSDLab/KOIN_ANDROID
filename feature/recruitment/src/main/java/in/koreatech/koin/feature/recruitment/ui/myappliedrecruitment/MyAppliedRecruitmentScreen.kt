@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.recruitment.ui.myrecruitment
+package `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,24 +28,21 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentEmptyState
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentFilterButton
-import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.component.CloseRecruitmentDialog
-import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.component.MyRecruitmentEmptyState
-import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.component.RecruitmentFilterBottomSheet
-import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.component.RecruitmentPostCard
-import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.MyRecruitmentPost
-import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentStatus
+import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.component.AppliedRecruitmentFilterBottomSheet
+import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.component.AppliedRecruitmentPostCard
+import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.model.AppliedRecruitmentPost
+import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.model.AppliedRecruitmentStatus
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyRecruitmentScreen(
-    viewModel: MyRecruitmentViewModel = hiltViewModel(),
-    onNavigateUp: () -> Unit = {},
-    onApplicantManage: (Long) -> Unit = {},
-    onChat: (Long) -> Unit = {}
+fun MyAppliedRecruitmentScreen(
+    viewModel: MyAppliedRecruitmentViewModel = hiltViewModel(),
+    onNavigateUp: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
 
@@ -53,7 +50,7 @@ fun MyRecruitmentScreen(
         containerColor = RebrandKoinTheme.colors.neutral50,
         topBar = {
             KoinTopAppBar(
-                title = stringResource(R.string.recruitment_my_post_title),
+                title = stringResource(R.string.recruitment_applied_title),
                 onNavigationIconClick = onNavigateUp,
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = RebrandKoinTheme.colors.neutral50
@@ -61,25 +58,15 @@ fun MyRecruitmentScreen(
             )
         }
     ) { innerPadding ->
-        MyRecruitmentScreenImpl(
+        MyAppliedRecruitmentScreenImpl(
             posts = state.posts,
-            onApplicantManage = onApplicantManage,
-            onCloseRecruitment = { postId -> viewModel.showCloseDialog(postId) },
-            onChat = onChat,
             onFilter = { viewModel.showFilterSheet() },
             modifier = Modifier.padding(innerPadding)
         )
     }
 
-    if (state.showCloseDialog) {
-        CloseRecruitmentDialog(
-            onDismiss = { viewModel.dismissCloseDialog() },
-            onConfirm = { viewModel.confirmClose() }
-        )
-    }
-
     if (state.showFilterSheet) {
-        RecruitmentFilterBottomSheet(
+        AppliedRecruitmentFilterBottomSheet(
             currentFilter = state.filter,
             onDismiss = { viewModel.dismissFilterSheet() },
             onApply = { viewModel.applyFilter(it) }
@@ -88,12 +75,9 @@ fun MyRecruitmentScreen(
 }
 
 @Composable
-private fun MyRecruitmentScreenImpl(
-    posts: ImmutableList<MyRecruitmentPost>,
+private fun MyAppliedRecruitmentScreenImpl(
+    posts: ImmutableList<AppliedRecruitmentPost>,
     modifier: Modifier = Modifier,
-    onApplicantManage: (Long) -> Unit = {},
-    onCloseRecruitment: (Long) -> Unit = {},
-    onChat: (Long) -> Unit = {},
     onFilter: () -> Unit = {}
 ) {
     Column(modifier = modifier.fillMaxSize()) {
@@ -104,7 +88,7 @@ private fun MyRecruitmentScreenImpl(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = stringResource(R.string.recruitment_my_post_count, posts.size),
+                text = stringResource(R.string.recruitment_applied_post_count, posts.size),
                 style = RebrandKoinTheme.typography.regular12,
                 color = RebrandKoinTheme.colors.neutral500
             )
@@ -117,7 +101,10 @@ private fun MyRecruitmentScreenImpl(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                MyRecruitmentEmptyState()
+                RecruitmentEmptyState(
+                    title = stringResource(R.string.recruitment_applied_empty_title),
+                    subtitle = stringResource(R.string.recruitment_applied_empty_subtitle)
+                )
             }
         } else {
             LazyColumn(
@@ -126,16 +113,7 @@ private fun MyRecruitmentScreenImpl(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(posts, key = { it.id }) { post ->
-                    RecruitmentPostCard(
-                        post = post,
-                        onApplicantManage = { onApplicantManage(post.id) },
-                        onCloseRecruitment = if (post.status is RecruitmentStatus.Recruiting) {
-                            { onCloseRecruitment(post.id) }
-                        } else {
-                            null
-                        },
-                        onChat = { onChat(post.id) }
-                    )
+                    AppliedRecruitmentPostCard(post = post)
                 }
             }
         }
@@ -146,44 +124,46 @@ private const val PREVIEW_DATE_RANGE = "2026.07.26 ~ 2026.08.07"
 
 @Preview(showBackground = true, backgroundColor = 0xFFF8F8FA)
 @Composable
-private fun MyRecruitmentScreenWithPostsPreview() {
+private fun MyAppliedRecruitmentScreenWithPostsPreview() {
     RebrandKoinTheme {
-        MyRecruitmentScreenImpl(
+        MyAppliedRecruitmentScreenImpl(
             posts = persistentListOf(
-                MyRecruitmentPost(
+                AppliedRecruitmentPost(
                     id = 1L,
                     category = RecruitmentCategory.CONTEST,
-                    status = RecruitmentStatus.Recruiting(daysLeft = 5),
+                    applicationStatus = AppliedRecruitmentStatus.Approved,
+                    daysLeft = 5,
                     title = "AI 아이디어 공모전 팀원 모집",
                     roles = persistentListOf(
                         RecruitmentRole("프론트엔드", 1),
-                        RecruitmentRole("백엔드", 1),
-                        RecruitmentRole("디자인", 1)
+                        RecruitmentRole("백엔드", 1)
                     ),
                     location = "온라인",
                     dateRange = PREVIEW_DATE_RANGE,
-                    currentApplicants = 0,
+                    currentApplicants = 2,
                     maxApplicants = 3
                 ),
-                MyRecruitmentPost(
+                AppliedRecruitmentPost(
                     id = 2L,
+                    category = RecruitmentCategory.STUDY,
+                    applicationStatus = AppliedRecruitmentStatus.Pending,
+                    daysLeft = 3,
+                    title = "2026 스터디 팀원 모집",
+                    location = "온·오프라인",
+                    dateRange = PREVIEW_DATE_RANGE,
+                    currentApplicants = 1,
+                    maxApplicants = 5
+                ),
+                AppliedRecruitmentPost(
+                    id = 3L,
                     category = RecruitmentCategory.EXTERNAL_ACTIVITY,
-                    status = RecruitmentStatus.Complete,
+                    applicationStatus = AppliedRecruitmentStatus.Rejected,
+                    daysLeft = null,
                     title = "2026 대외활동 팀원 모집",
                     location = "온·오프라인",
                     dateRange = PREVIEW_DATE_RANGE,
                     currentApplicants = 5,
                     maxApplicants = 5
-                ),
-                MyRecruitmentPost(
-                    id = 3L,
-                    category = RecruitmentCategory.STUDY,
-                    status = RecruitmentStatus.Complete,
-                    title = "2026 스터디 팀원 모집",
-                    location = "온·오프라인",
-                    dateRange = PREVIEW_DATE_RANGE,
-                    currentApplicants = 3,
-                    maxApplicants = 3
                 )
             )
         )
@@ -192,8 +172,8 @@ private fun MyRecruitmentScreenWithPostsPreview() {
 
 @Preview(showBackground = true, backgroundColor = 0xFFF8F8FA)
 @Composable
-private fun MyRecruitmentScreenEmptyPreview() {
+private fun MyAppliedRecruitmentScreenEmptyPreview() {
     RebrandKoinTheme {
-        MyRecruitmentScreenImpl(posts = persistentListOf())
+        MyAppliedRecruitmentScreenImpl(posts = persistentListOf())
     }
 }
