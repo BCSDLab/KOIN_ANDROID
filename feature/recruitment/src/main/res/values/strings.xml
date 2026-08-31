@@ -146,6 +146,20 @@
     <string name="recruitment_date_picker_cancel">취소</string>
     <string name="recruitment_date_picker_confirm">확인</string>
 
+
+    <string name="recruitment_profile_create_title">팀원 모집 프로필 작성</string>
+    <string name="recruitment_profile_create_edit_title">팀원 모집 프로필 수정</string>
+    <string name="recruitment_profile_create_step_one_label">기본 정보</string>
+    <string name="recruitment_profile_create_step_two_label">활동 정보</string>
+    <string name="recruitment_profile_char_count">%1$d/%2$d</string>
+    <string name="recruitment_profile_preferred_role">선호 역할</string>
+    <string name="recruitment_profile_preferred_role_hint">선호 역할을 작성해주세요. ex) 프론트엔드, 디자인 등</string>
+    <string name="recruitment_profile_save">저장하기</string>
+    <string name="recruitment_profile_update">수정하기</string>
+    <string name="recruitment_profile_previous">이전</string>
+    <string name="recruitment_profile_save_dialog_title">프로필을 저장하시겠어요?</string>
+    <string name="recruitment_profile_cancel_dialog_title">프로필 작성을 취소하시겠어요?</string>
+    <string name="recruitment_profile_cancel_dialog_description">작성 중인 내용은 저장되지 않습니다.</string>
     <string name="recruitment_applicant_management_title">지원자 관리</string>
     <string name="recruitment_applicant_list_title">지원자 목록</string>
     <string name="recruitment_applicant_list_count">총 %d명</string>

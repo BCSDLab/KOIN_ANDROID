@@ -14,6 +14,9 @@ sealed class RecruitmentNavType {
     data object Profile : RecruitmentNavType()
 
     @Serializable
+    data class ProfileCreate(val isEditMode: Boolean = false) : RecruitmentNavType()
+
+    @Serializable
     data class RecruitmentGroupChat(
         val postId: Int,
         val title: String,
