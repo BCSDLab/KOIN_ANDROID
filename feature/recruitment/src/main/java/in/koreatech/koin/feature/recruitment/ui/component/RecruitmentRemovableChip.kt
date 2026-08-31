@@ -38,7 +38,7 @@ fun RecruitmentRemovableChip(
         )
         Icon(
             imageVector = Icons.Filled.Close,
-            contentDescription = "삭제",
+            contentDescription = null,
             tint = RebrandKoinTheme.colors.neutral500,
             modifier = Modifier
                 .size(16.dp)

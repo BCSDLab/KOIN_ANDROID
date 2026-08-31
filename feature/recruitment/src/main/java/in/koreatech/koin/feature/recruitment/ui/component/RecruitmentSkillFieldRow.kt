@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply.component
+package `in`.koreatech.koin.feature.recruitment.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -19,10 +19,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.recruitment.R
 
 private val RowShape = RoundedCornerShape(16.dp)
 private val RowHeight = 40.dp
@@ -34,7 +36,7 @@ fun RecruitmentSkillFieldRow(
     onValueChange: (String) -> Unit,
     onRemove: () -> Unit,
     modifier: Modifier = Modifier,
-    hint: String = "기술 또는 자격증을 입력해주세요."
+    hint: String = stringResource(R.string.recruitment_skill_field_hint)
 ) {
     Row(
         modifier = modifier
@@ -66,7 +68,7 @@ fun RecruitmentSkillFieldRow(
         }
         Icon(
             imageVector = Icons.Filled.Close,
-            contentDescription = "삭제",
+            contentDescription = null,
             tint = RebrandKoinTheme.colors.neutral500,
             modifier = Modifier
                 .size(20.dp)

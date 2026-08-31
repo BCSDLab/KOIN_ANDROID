@@ -80,6 +80,23 @@
     <string name="recruitment_create_dialog_yes">네</string>
     <string name="recruitment_create_dialog_no">아니요</string>
 
+    <string name="recruitment_activity_name">활동명</string>
+    <string name="recruitment_activity_name_hint">활동명을 작성해주세요.</string>
+    <string name="recruitment_activity_required_mark"> *</string>
+    <string name="recruitment_activity_close_content_description">취소</string>
+    <string name="recruitment_activity_period">활동기간</string>
+    <string name="recruitment_activity_period_separator">-</string>
+    <string name="recruitment_activity_start_date">시작일</string>
+    <string name="recruitment_activity_end_date">종료일</string>
+    <string name="recruitment_activity_ongoing">진행 중</string>
+    <string name="recruitment_activity_content">활동내용</string>
+    <string name="recruitment_activity_content_hint">활동 내용을 간단히 작성해주세요.</string>
+    <string name="recruitment_skill_field_hint">기술 또는 자격증을 입력해주세요.</string>
+    <string name="recruitment_activity_card_edit">수정</string>
+    <string name="recruitment_activity_card_period_label">활동 기간</string>
+    <string name="recruitment_activity_card_content_label">활동 내용</string>
+    <string name="recruitment_activity_confirm">완료</string>
+
     <string name="recruitment_apply_title">팀원 모집 지원</string>
     <string name="recruitment_apply_step_one_label">기본 정보</string>
     <string name="recruitment_apply_step_two_label">지원서 작성</string>
@@ -126,6 +143,9 @@
     <string name="recruitment_profile_empty_subtitle">프로필을 작성하면 지원 시 더 빠르고 편리하게 활동할 수 있어요.</string>
     <string name="recruitment_profile_create">프로필 작성하기</string>
     <string name="recruitment_profile_edit_button">프로필 수정하기</string>
+    <string name="recruitment_date_picker_cancel">취소</string>
+    <string name="recruitment_date_picker_confirm">확인</string>
+
     <string name="recruitment_applicant_management_title">지원자 관리</string>
     <string name="recruitment_applicant_list_title">지원자 목록</string>
     <string name="recruitment_applicant_list_count">총 %d명</string>

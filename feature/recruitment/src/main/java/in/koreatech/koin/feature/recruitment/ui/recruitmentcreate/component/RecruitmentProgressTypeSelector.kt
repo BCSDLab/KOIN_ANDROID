@@ -12,9 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,36 +35,38 @@ fun RecruitmentProgressTypeSelector(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         RecruitmentProgressType.entries.forEach { type ->
-            val isSelected = type == selected
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .border(
-                        width = 1.dp,
-                        color = if (isSelected) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral200,
-                        shape = RebrandKoinTheme.shapes.small
+            key(type) {
+                val isSelected = type == selected
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .border(
+                            width = 1.dp,
+                            color = if (isSelected) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral200,
+                            shape = RebrandKoinTheme.shapes.small
+                        )
+                        .background(
+                            color = if (isSelected) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral0,
+                            shape = RebrandKoinTheme.shapes.small
+                        )
+                        .clickable { onSelect(type) }
+                        .padding(vertical = 10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = type.iconRes()),
+                        contentDescription = null,
+                        tint = if (isSelected) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.neutral600,
+                        modifier = Modifier.padding(bottom = 2.dp)
                     )
-                    .background(
-                        color = if (isSelected) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral0,
-                        shape = RebrandKoinTheme.shapes.small
+                    Text(
+                        text = type.label,
+                        style = if (isSelected) RebrandKoinTheme.typography.medium14 else RebrandKoinTheme.typography.regular14,
+                        color = if (isSelected) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.neutral600,
+                        textAlign = TextAlign.Center
                     )
-                    .clickable { onSelect(type) }
-                    .padding(vertical = 10.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                Icon(
-                    painter = painterResource(id = type.iconRes()),
-                    contentDescription = null,
-                    tint = if (isSelected) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.neutral600,
-                    modifier = Modifier.padding(bottom = 2.dp)
-                )
-                Text(
-                    text = type.label,
-                    style = if (isSelected) RebrandKoinTheme.typography.medium14 else RebrandKoinTheme.typography.regular14,
-                    color = if (isSelected) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.neutral600,
-                    textAlign = TextAlign.Center
-                )
+                }
             }
         }
     }

@@ -9,17 +9,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
 import `in`.koreatech.koin.feature.recruitment.utils.toDateText
 import java.time.LocalDate
@@ -55,7 +57,7 @@ fun RecruitmentActivityCard(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = "수정",
+                    text = stringResource(R.string.recruitment_activity_card_edit),
                     style = RebrandKoinTheme.typography.medium13,
                     color = RebrandKoinTheme.colors.primary500,
                     modifier = Modifier
@@ -64,8 +66,8 @@ fun RecruitmentActivityCard(
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 )
                 Icon(
-                    imageVector = Icons.Filled.Close,
-                    contentDescription = "삭제",
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_close),
+                    contentDescription = null,
                     tint = RebrandKoinTheme.colors.neutral500,
                     modifier = Modifier.noRippleClickable { onRemove() }
                 )
@@ -73,14 +75,14 @@ fun RecruitmentActivityCard(
         }
         Row {
             Text(
-                text = "활동 기간",
+                text = stringResource(R.string.recruitment_activity_card_period_label),
                 style = RebrandKoinTheme.typography.regular12,
                 color = RebrandKoinTheme.colors.neutral500,
                 modifier = Modifier.width(LabelColumnWidth)
             )
             Text(
                 text = if (activity.isOngoing || activity.endDate == null) {
-                    "${activity.startDate.toDateText()} - 진행 중"
+                    "${activity.startDate.toDateText()} - ${stringResource(R.string.recruitment_activity_ongoing)}"
                 } else {
                     "${activity.startDate.toDateText()} - ${activity.endDate.toDateText()}"
                 },
@@ -90,7 +92,7 @@ fun RecruitmentActivityCard(
         }
         Row {
             Text(
-                text = "활동 내용",
+                text = stringResource(R.string.recruitment_activity_card_content_label),
                 style = RebrandKoinTheme.typography.regular12,
                 color = RebrandKoinTheme.colors.neutral500,
                 modifier = Modifier.width(LabelColumnWidth)

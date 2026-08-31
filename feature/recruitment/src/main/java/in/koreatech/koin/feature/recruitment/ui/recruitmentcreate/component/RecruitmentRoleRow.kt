@@ -12,14 +12,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -62,7 +62,7 @@ fun RecruitmentRoleRow(
             BasicTextField(
                 value = role.name,
                 onValueChange = { newValue ->
-                    if (newValue.length <= TeamRecruitmentRole.NAME_MAX_LENGTH) onNameChange(newValue)
+                    onNameChange(newValue.take(TeamRecruitmentRole.NAME_MAX_LENGTH))
                 },
                 singleLine = true,
                 textStyle = RebrandKoinTheme.typography.regular14.copy(
@@ -96,7 +96,7 @@ fun RecruitmentRoleRow(
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_stepper_minus),
-                    contentDescription = "인원 감소",
+                    contentDescription = null,
                     tint = RebrandKoinTheme.colors.neutral700,
                     modifier = Modifier.size(16.dp)
                 )
@@ -117,7 +117,7 @@ fun RecruitmentRoleRow(
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_stepper_plus),
-                    contentDescription = "인원 증가",
+                    contentDescription = null,
                     tint = RebrandKoinTheme.colors.neutral700,
                     modifier = Modifier.size(16.dp)
                 )
@@ -131,8 +131,8 @@ fun RecruitmentRoleRow(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = Icons.Filled.Close,
-                contentDescription = "역할 삭제",
+                imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_close),
+                contentDescription = null,
                 tint = RebrandKoinTheme.colors.neutral500
             )
         }

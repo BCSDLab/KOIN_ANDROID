@@ -21,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -32,14 +33,14 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
 import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentActivityForm
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentConfirmDialog
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDropdown
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentFilledActionButton
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentOutlinedActionButton
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentSkillFieldRow
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentTextField
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply.component.RecruitmentActivityCard
-import `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply.component.RecruitmentActivityForm
-import `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply.component.RecruitmentSkillFieldRow
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply.component.RecruitmentStepIndicator
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
@@ -344,19 +345,21 @@ private fun RecruitmentApplyStepOne(
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 state.activities.forEach { activity ->
-                    val editState = state.activityFormState
-                    if (editState is ActivityFormState.Editing && editState.activityId == activity.id) {
-                        RecruitmentActivityForm(
-                            onCancel = onCancelActivityForm,
-                            onConfirm = onActivityEdited,
-                            existingActivity = activity
-                        )
-                    } else {
-                        RecruitmentActivityCard(
-                            activity = activity,
-                            onRemove = { onActivityRemoved(activity) },
-                            onEdit = { onEditActivityClick(activity) }
-                        )
+                    key(activity.id) {
+                        val editState = state.activityFormState
+                        if (editState is ActivityFormState.Editing && editState.activityId == activity.id) {
+                            RecruitmentActivityForm(
+                                onCancel = onCancelActivityForm,
+                                onConfirm = onActivityEdited,
+                                existingActivity = activity
+                            )
+                        } else {
+                            RecruitmentActivityCard(
+                                activity = activity,
+                                onRemove = { onActivityRemoved(activity) },
+                                onEdit = { onEditActivityClick(activity) }
+                            )
+                        }
                     }
                 }
                 if (state.activityFormState is ActivityFormState.Adding) {
@@ -410,9 +413,7 @@ private fun RecruitmentApplyStepTwo(
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(28.dp)) {
         FormSection(title = stringResource(R.string.recruitment_apply_select_role), isRequired = true) {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                val roles = if (state.availableRoles.isNotEmpty()) {
-                    state.availableRoles
-                } else {
+                val roles = state.availableRoles.ifEmpty {
                     persistentListOf(
                         TeamRecruitmentRole("프론트엔드", 1),
                         TeamRecruitmentRole("백엔드", 1),
@@ -420,11 +421,13 @@ private fun RecruitmentApplyStepTwo(
                     )
                 }
                 roles.forEach { role ->
-                    RecruitmentRoleRadioItem(
-                        role = role,
-                        isSelected = state.selectedRole == role,
-                        onClick = { onRoleSelected(role) }
-                    )
+                    key(role.id) {
+                        RecruitmentRoleRadioItem(
+                            role = role,
+                            isSelected = state.selectedRole == role,
+                            onClick = { onRoleSelected(role) }
+                        )
+                    }
                 }
             }
         }

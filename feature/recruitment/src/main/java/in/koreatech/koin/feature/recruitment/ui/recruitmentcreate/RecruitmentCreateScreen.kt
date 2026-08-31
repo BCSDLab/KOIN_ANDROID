@@ -21,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,6 +34,7 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentProgressType
+import `in`.koreatech.koin.feature.recruitment.model.StableLocalDate
 import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentConfirmDialog
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDatePickerDialog
@@ -44,7 +46,6 @@ import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.component.Re
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.component.RecruitmentRoleRow
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model.TeamRecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.utils.toDateText
-import java.time.LocalDate
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
@@ -131,7 +132,7 @@ private fun RecruitmentCreateScreenImpl(
     onEndDateClick: () -> Unit = {},
     onDeadlineClick: () -> Unit = {},
     onDismissDatePickerDialog: () -> Unit = {},
-    onDateSelected: (LocalDate) -> Unit = {},
+    onDateSelected: (StableLocalDate) -> Unit = {},
     onAddRoleClick: () -> Unit = {},
     onRoleNameChange: (String, String) -> Unit = { _, _ -> },
     onRoleCountChange: (String, Int) -> Unit = { _, _ -> },
@@ -238,7 +239,7 @@ private fun RecruitmentCreateScreenImpl(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         RecruitmentDateSelectBox(
-                            text = state.recruitStartDate.toDateText(),
+                            text = state.recruitStartDate.value.toDateText(),
                             onClick = onStartDateClick,
                             modifier = Modifier.weight(1f)
                         )
@@ -249,7 +250,7 @@ private fun RecruitmentCreateScreenImpl(
                             modifier = Modifier.wrapContentHeight()
                         )
                         RecruitmentDateSelectBox(
-                            text = state.recruitEndDate.toDateText(),
+                            text = state.recruitEndDate.value.toDateText(),
                             onClick = onEndDateClick,
                             modifier = Modifier.weight(1f)
                         )
@@ -266,7 +267,7 @@ private fun RecruitmentCreateScreenImpl(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         RecruitmentDateSelectBox(
-                            text = state.applicationDeadline.toDateText(),
+                            text = state.applicationDeadline.value.toDateText(),
                             onClick = onDeadlineClick,
                             modifier = Modifier.weight(1f)
                         )
@@ -320,13 +321,15 @@ private fun RecruitmentCreateScreenImpl(
                     )
                 }
                 state.roles.forEach { role ->
-                    RecruitmentRoleRow(
-                        role = role,
-                        onNameChange = { name -> onRoleNameChange(role.id, name) },
-                        onCountChange = { count -> onRoleCountChange(role.id, count) },
-                        onRemove = { onRoleRemoved(role.id) },
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    key(role.id) {
+                        RecruitmentRoleRow(
+                            role = role,
+                            onNameChange = { name -> onRoleNameChange(role.id, name) },
+                            onCountChange = { count -> onRoleCountChange(role.id, count) },
+                            onRemove = { onRoleRemoved(role.id) },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
                 }
             }
         }
