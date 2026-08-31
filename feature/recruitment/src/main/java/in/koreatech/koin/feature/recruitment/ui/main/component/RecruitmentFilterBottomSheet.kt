@@ -63,9 +63,11 @@ fun RecruitmentFilterBottomSheet(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
 
-    val hideThen: (() -> Unit) -> Unit = { action ->
-        scope.launch { sheetState.hide() }.invokeOnCompletion { cause ->
-            if (cause == null && !sheetState.isVisible) action()
+    val hideThen: (() -> Unit) -> Unit = remember(scope, sheetState) {
+        { action ->
+            scope.launch { sheetState.hide() }.invokeOnCompletion { cause ->
+                if (cause == null && !sheetState.isVisible) action()
+            }
         }
     }
 
@@ -127,13 +129,14 @@ private fun RecruitmentFilterContent(
         (configuration.screenHeightDp * 0.7f).dp
     }
 
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = modifier
             .fillMaxWidth()
             .heightIn(max = maxHeight)
             .padding(bottom = 20.dp)
     ) {
-        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .weight(1f, fill = false)
