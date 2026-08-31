@@ -3,10 +3,10 @@ package `in`.koreatech.koin.data.repository
 import `in`.koreatech.koin.data.mapper.toRecruitmentNotifications
 import `in`.koreatech.koin.data.source.remote.RecruitmentRemoteDataSource
 import `in`.koreatech.koin.data.util.mapHttpFailure
-import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.error.recruitment.KoinRecruitmentException
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentNotifications
 import `in`.koreatech.koin.domain.repository.RecruitmentRepository
+import `in`.koreatech.koin.domain.util.suspendRunCatching
 import javax.inject.Inject
 
 class RecruitmentRepositoryImpl @Inject constructor(

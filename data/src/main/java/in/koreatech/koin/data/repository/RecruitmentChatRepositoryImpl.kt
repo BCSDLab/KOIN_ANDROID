@@ -5,11 +5,11 @@ import `in`.koreatech.koin.data.mapper.toRecruitmentChatRoom
 import `in`.koreatech.koin.data.request.recruitment.chat.CreateChatMessageRequest
 import `in`.koreatech.koin.data.source.remote.RecruitmentChatRemoteDataSource
 import `in`.koreatech.koin.data.util.mapHttpFailure
-import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.error.recruitment.KoinRecruitmentChatException
 import `in`.koreatech.koin.domain.model.recruitment.chat.RecruitmentChatMessage
 import `in`.koreatech.koin.domain.model.recruitment.chat.RecruitmentChatRoom
 import `in`.koreatech.koin.domain.repository.RecruitmentChatRepository
+import `in`.koreatech.koin.domain.util.suspendRunCatching
 import javax.inject.Inject
 
 class RecruitmentChatRepositoryImpl @Inject constructor(
