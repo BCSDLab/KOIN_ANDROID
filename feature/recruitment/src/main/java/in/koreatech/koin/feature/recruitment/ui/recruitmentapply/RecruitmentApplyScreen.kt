@@ -33,15 +33,15 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
 import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentActivityCard
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentActivityForm
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentConfirmDialog
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDropdown
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentFilledActionButton
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentOutlinedActionButton
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentSkillFieldRow
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentStepIndicator
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentTextField
-import `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply.component.RecruitmentActivityCard
-import `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply.component.RecruitmentStepIndicator
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
