@@ -14,6 +14,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.chat.groupchat.RecruitmentGrou
 import `in`.koreatech.koin.feature.recruitment.ui.main.RecruitmentMainScreen
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.MyRecruitmentScreen
 import `in`.koreatech.koin.feature.recruitment.ui.notification.RecruitmentNotificationScreen
+import `in`.koreatech.koin.feature.recruitment.ui.recruitmentmodify.RecruitmentModifyScreen
 
 fun NavGraphBuilder.koinRecruitmentGraph(
     navController: NavController
@@ -63,6 +64,12 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     composable<RecruitmentNavType.ApplicantDetail> {
         ApplicantDetailScreen(
             onNavigateUp = { navController.navigateUp() }
+        )
+    }
+    composable<RecruitmentNavType.RecruitmentModify> {
+        RecruitmentModifyScreen(
+            onNavigateUp = { navController.navigateUp() },
+            onRecruitmentModified = { navController.navigateUp() }
         )
     }
 }
