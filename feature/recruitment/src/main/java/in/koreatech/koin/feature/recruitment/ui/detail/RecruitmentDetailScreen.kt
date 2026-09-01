@@ -60,8 +60,11 @@ fun RecruitmentDetailScreen(
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            RecruitmentDetailSideEffect.ShowError ->
+            RecruitmentDetailSideEffect.ShowLoadError ->
                 ToastUtil.getInstance().makeShort(context.getString(R.string.recruitment_load_error))
+
+            RecruitmentDetailSideEffect.ShowDeleteError ->
+                ToastUtil.getInstance().makeShort(context.getString(R.string.recruitment_delete_error))
 
             RecruitmentDetailSideEffect.DeleteSuccess -> onTopbarBackClick()
         }

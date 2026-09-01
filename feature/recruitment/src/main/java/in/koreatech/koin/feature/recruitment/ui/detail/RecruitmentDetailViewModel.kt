@@ -75,7 +75,7 @@ class RecruitmentDetailViewModel @Inject constructor(
             }
             .onFailure {
                 reduce { state.copy(isLoading = false) }
-                postSideEffect(RecruitmentDetailSideEffect.ShowError)
+                postSideEffect(RecruitmentDetailSideEffect.ShowLoadError)
             }
     }
 
@@ -88,7 +88,7 @@ class RecruitmentDetailViewModel @Inject constructor(
             }
             .onFailure {
                 reduce { state.copy(isLoading = false) }
-                postSideEffect(RecruitmentDetailSideEffect.ShowError)
+                postSideEffect(RecruitmentDetailSideEffect.ShowDeleteError)
             }
     }
 
