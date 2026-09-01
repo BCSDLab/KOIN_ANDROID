@@ -16,6 +16,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.MyApplied
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.MyRecruitmentScreen
 import `in`.koreatech.koin.feature.recruitment.ui.notification.RecruitmentNotificationScreen
 
+@Suppress("LongMethod")
 fun NavGraphBuilder.koinRecruitmentGraph(
     navController: NavController
 ) {
