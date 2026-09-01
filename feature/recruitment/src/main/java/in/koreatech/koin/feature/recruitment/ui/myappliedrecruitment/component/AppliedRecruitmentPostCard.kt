@@ -155,7 +155,7 @@ private fun AppliedPostCardApprovedPreview() {
     RebrandKoinTheme {
         AppliedRecruitmentPostCard(
             post = AppliedRecruitmentPost(
-                id = 1L,
+                id = 1,
                 category = RecruitmentCategory.CONTEST,
                 applicationStatus = AppliedRecruitmentStatus.Approved,
                 daysLeft = 5,
@@ -180,7 +180,7 @@ private fun AppliedPostCardPendingPreview() {
     RebrandKoinTheme {
         AppliedRecruitmentPostCard(
             post = AppliedRecruitmentPost(
-                id = 2L,
+                id = 2,
                 category = RecruitmentCategory.STUDY,
                 applicationStatus = AppliedRecruitmentStatus.Pending,
                 daysLeft = 3,
@@ -201,7 +201,7 @@ private fun AppliedPostCardRejectedPreview() {
     RebrandKoinTheme {
         AppliedRecruitmentPostCard(
             post = AppliedRecruitmentPost(
-                id = 3L,
+                id = 3,
                 category = RecruitmentCategory.EXTERNAL_ACTIVITY,
                 applicationStatus = AppliedRecruitmentStatus.Rejected,
                 daysLeft = null,

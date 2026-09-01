@@ -6,12 +6,22 @@ sealed class KoinRecruitmentException : KoinErrorException() {
     /*
      * Exceptions for 400
      */
-    class IllegalArgumentException : KoinRecruitmentException()
+    class InvalidArgumentException : KoinRecruitmentException()
 
     /*
      * Exceptions for 401
      */
     class UnauthorizedUserException : KoinRecruitmentException()
+
+    /*
+     * Exceptions for 400
+     */
+    class InvalidRequestException : KoinRecruitmentException()
+
+    /*
+     * Exceptions for 401
+     */
+    class UnauthorizedException : KoinRecruitmentException()
 
     /*
      * Exceptions for 403
