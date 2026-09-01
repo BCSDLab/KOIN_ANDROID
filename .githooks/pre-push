@@ -83,7 +83,7 @@ echo "[pre-push] Affected modules: ${!MODULES[*]}"
 TASKS=("spotlessCheck")
 for module in "${!MODULES[@]}"; do
   TASKS+=("${module}:ktlintCheck")
-  if ./gradlew "${module}:tasks" --quiet 2>/dev/null | grep -qE "^detekt( |$)"; then
+  if ./gradlew "${module}:tasks" --quiet 2>/dev/null | grep -q "^detekt "; then
     TASKS+=("${module}:detekt")
   fi
 done
