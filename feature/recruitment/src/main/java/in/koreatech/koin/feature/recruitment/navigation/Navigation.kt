@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.recruitment.navigation
 
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -11,6 +10,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.applicantdetail.ApplicantDetai
 import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.ApplicantManagementScreen
 import `in`.koreatech.koin.feature.recruitment.ui.chat.directchat.RecruitmentDirectChatScreen
 import `in`.koreatech.koin.feature.recruitment.ui.chat.groupchat.RecruitmentGroupChatScreen
+import `in`.koreatech.koin.feature.recruitment.ui.detail.RecruitmentDetailScreen
 import `in`.koreatech.koin.feature.recruitment.ui.main.RecruitmentMainScreen
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.MyAppliedRecruitmentScreen
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.MyRecruitmentScreen
@@ -21,9 +21,13 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     navController: NavController
 ) {
     composable<RecruitmentNavType.RecruitmentMain> {
-        val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
         RecruitmentMainScreen(
-            onTopbarBackClick = { onBackPressedDispatcher?.onBackPressed() }
+            onTopbarBackClick = { navController.navigateUp() }
+        )
+    }
+    composable<RecruitmentNavType.RecruitmentDetail> {
+        RecruitmentDetailScreen(
+            onTopbarBackClick = { navController.navigateUp() }
         )
     }
     composable<RecruitmentNavType.RecruitmentGroupChat> {
