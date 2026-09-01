@@ -6,7 +6,7 @@ sealed class KoinRecruitmentException : KoinErrorException() {
     /*
      * Exceptions for 400
      */
-    class IllegalArgumentException : KoinRecruitmentException()
+    class InvalidArgumentException : KoinRecruitmentException()
 
     /*
      * Exceptions for 401

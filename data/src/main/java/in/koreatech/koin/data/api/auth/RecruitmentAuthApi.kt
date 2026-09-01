@@ -1,5 +1,6 @@
 ﻿package `in`.koreatech.koin.data.api.auth
 
+import `in`.koreatech.koin.data.response.recruitment.MyAppliedRecruitmentListResponse
 import `in`.koreatech.koin.data.response.recruitment.MyRecruitmentListResponse
 import `in`.koreatech.koin.data.response.recruitment.RecruitmentDetailResponse
 import `in`.koreatech.koin.data.response.recruitment.RecruitmentListResponse
@@ -56,6 +57,14 @@ interface RecruitmentAuthApi {
     suspend fun readNotification(
         @Path("notificationId") notificationId: Int
     ): Response<Unit>
+
+    @GET("team-recruitments/me/applications")
+    suspend fun getMyAppliedRecruitments(
+        @Query("statuses") statuses: List<String>,
+        @Query("sort") sort: String,
+        @Query("page") page: Int,
+        @Query("limit") limit: Int
+    ): MyAppliedRecruitmentListResponse
 
     @PUT("team-recruitments/{recruitmentId}/close")
     suspend fun closeRecruitmentPost(

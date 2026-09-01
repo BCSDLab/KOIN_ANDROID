@@ -22,3 +22,15 @@ enum class RecruitmentCategory(
             entries.firstOrNull { it.apiValue == value } ?: ETC
     }
 }
+
+fun String.toRecruitmentCategory(): RecruitmentCategory =
+    RecruitmentCategory.entries.firstOrNull { it.name == this } ?: RecruitmentCategory.ETC
+
+fun String.toRecruitmentLocation(): String = when (this) {
+    "ONLINE" -> "온라인"
+    "OFFLINE" -> "오프라인"
+    else -> "온·오프라인"
+}
+
+fun String.toDateRange(endDate: String): String =
+    "${replace("-", ".")} ~ ${endDate.replace("-", ".")}"
