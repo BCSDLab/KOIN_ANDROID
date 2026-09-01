@@ -37,14 +37,22 @@ import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.model.App
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyAppliedRecruitmentScreen(
     viewModel: MyAppliedRecruitmentViewModel = hiltViewModel(),
-    onNavigateUp: () -> Unit = {}
+    onNavigateUp: () -> Unit = {},
+    onNavigateToLogin: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
+
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            MyAppliedRecruitmentSideEffect.NavigateToLogin -> onNavigateToLogin()
+        }
+    }
 
     Scaffold(
         containerColor = RebrandKoinTheme.colors.neutral50,
@@ -129,7 +137,7 @@ private fun MyAppliedRecruitmentScreenWithPostsPreview() {
         MyAppliedRecruitmentScreenImpl(
             posts = persistentListOf(
                 AppliedRecruitmentPost(
-                    id = 1L,
+                    id = 1,
                     category = RecruitmentCategory.CONTEST,
                     applicationStatus = AppliedRecruitmentStatus.Approved,
                     daysLeft = 5,
@@ -144,7 +152,7 @@ private fun MyAppliedRecruitmentScreenWithPostsPreview() {
                     maxApplicants = 3
                 ),
                 AppliedRecruitmentPost(
-                    id = 2L,
+                    id = 2,
                     category = RecruitmentCategory.STUDY,
                     applicationStatus = AppliedRecruitmentStatus.Pending,
                     daysLeft = 3,
@@ -155,7 +163,7 @@ private fun MyAppliedRecruitmentScreenWithPostsPreview() {
                     maxApplicants = 5
                 ),
                 AppliedRecruitmentPost(
-                    id = 3L,
+                    id = 3,
                     category = RecruitmentCategory.EXTERNAL_ACTIVITY,
                     applicationStatus = AppliedRecruitmentStatus.Rejected,
                     daysLeft = null,

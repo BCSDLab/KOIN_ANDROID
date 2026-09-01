@@ -12,9 +12,11 @@ import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.ApplicantM
 import `in`.koreatech.koin.feature.recruitment.ui.chat.directchat.RecruitmentDirectChatScreen
 import `in`.koreatech.koin.feature.recruitment.ui.chat.groupchat.RecruitmentGroupChatScreen
 import `in`.koreatech.koin.feature.recruitment.ui.main.RecruitmentMainScreen
+import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.MyAppliedRecruitmentScreen
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.MyRecruitmentScreen
 import `in`.koreatech.koin.feature.recruitment.ui.notification.RecruitmentNotificationScreen
 
+@Suppress("LongMethod")
 fun NavGraphBuilder.koinRecruitmentGraph(
     navController: NavController
 ) {
@@ -45,6 +47,18 @@ fun NavGraphBuilder.koinRecruitmentGraph(
             onNavigateUp = { navController.navigateUp() },
             onApplicantDetail = { applicantId ->
                 navController.navigate(RecruitmentNavType.ApplicantDetail(route.postId, applicantId))
+            }
+        )
+    }
+    composable<RecruitmentNavType.MyAppliedRecruitment> {
+        val navigator = rememberNavigator()
+        val context = LocalContext.current
+        MyAppliedRecruitmentScreen(
+            onNavigateUp = { navController.navigateUp() },
+            onNavigateToLogin = {
+                navigator.navigateToSignIn(context).apply {
+                    context.startActivity(this)
+                }
             }
         )
     }
