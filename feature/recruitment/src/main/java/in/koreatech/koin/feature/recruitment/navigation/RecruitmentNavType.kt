@@ -8,6 +8,9 @@ sealed class RecruitmentNavType {
     data object RecruitmentMain : RecruitmentNavType()
 
     @Serializable
+    data class RecruitmentDetail(val postId: Int) : RecruitmentNavType()
+
+    @Serializable
     data class RecruitmentGroupChat(
         val postId: Int,
         val title: String,
@@ -34,6 +37,9 @@ sealed class RecruitmentNavType {
 
     @Serializable
     data object MyRecruitment : RecruitmentNavType()
+
+    @Serializable
+    data object MyAppliedRecruitment : RecruitmentNavType()
 
     @Serializable
     data class RecruitmentModify(val postId: Int) : RecruitmentNavType()

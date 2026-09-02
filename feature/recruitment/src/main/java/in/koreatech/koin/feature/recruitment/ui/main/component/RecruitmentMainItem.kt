@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,10 +26,11 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
-import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRoleModel
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentStatus
 import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentItemModel
-import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentLocation
-import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentStatus
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -61,7 +63,15 @@ fun RecruitmentMainItem(
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         item.roles.forEach { role ->
-                            RecruitmentChip(text = role)
+                            key(role.id) {
+                                RecruitmentChip(
+                                    text = stringResource(
+                                        R.string.recruitment_role_item,
+                                        role.name,
+                                        role.maxParticipants
+                                    )
+                                )
+                            }
                         }
                     }
                 }
@@ -77,7 +87,11 @@ fun RecruitmentMainItem(
                 )
                 RecruitmentMetaItem(
                     iconRes = R.drawable.ic_recruitment_calendar,
-                    text = item.period
+                    text = stringResource(
+                        R.string.recruitment_period_format,
+                        item.activityStartDate,
+                        item.activityEndDate
+                    )
                 )
                 RecruitmentMetaItem(
                     iconRes = R.drawable.ic_recruitment_participants,
@@ -108,10 +122,11 @@ private fun RecruitmentItemHeader(
     }
     val (statusText, statusColor) = when (item.status) {
         RecruitmentStatus.RECRUITING -> {
-            val dDayText = if (item.dDay <= 0) {
-                stringResource(R.string.recruitment_d_day_today)
-            } else {
-                stringResource(R.string.recruitment_d_day, item.dDay)
+            val dDay = item.dDay
+            val dDayText = when {
+                dDay == null -> stringResource(R.string.recruitment_closed)
+                dDay <= 0 -> stringResource(R.string.recruitment_d_day_today)
+                else -> stringResource(R.string.recruitment_d_day, dDay)
             }
             dDayText to RebrandKoinTheme.colors.danger700
         }
@@ -175,9 +190,14 @@ private fun RecruitmentMainItemPreview() {
                 status = RecruitmentStatus.RECRUITING,
                 dDay = 5,
                 title = "AI 아이디어 공모전 팀원 모집",
-                roles = persistentListOf("프론트엔드 1명", "백엔드 1명", "디자인 1명"),
+                roles = persistentListOf(
+                    RecruitmentRoleModel(id = 1, name = "프론트엔드", maxParticipants = 1),
+                    RecruitmentRoleModel(id = 2, name = "백엔드", maxParticipants = 1),
+                    RecruitmentRoleModel(id = 3, name = "디자인", maxParticipants = 1)
+                ),
                 location = RecruitmentLocation.ONLINE,
-                period = "2026.07.26 ~ 2026.08.07",
+                activityStartDate = "2026.07.26",
+                activityEndDate = "2026.08.07",
                 currentCount = 0,
                 maxCount = 3
             )

@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
-import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 
 @Immutable
 data class RecruitmentChipColors(
@@ -57,7 +57,7 @@ object RecruitmentChipDefaults {
         val palette = RebrandKoinTheme.colors
         return when (category) {
             RecruitmentCategory.CONTEST -> colors(palette.info200, palette.info700)
-            RecruitmentCategory.ACTIVITY -> colors(palette.success200, palette.success700)
+            RecruitmentCategory.EXTERNAL_ACTIVITY -> colors(palette.success200, palette.success700)
             RecruitmentCategory.STUDY -> colors(palette.primary100, palette.primary600)
             RecruitmentCategory.PROJECT -> colors(palette.warning100, palette.warning700)
             RecruitmentCategory.ETC -> colors(palette.neutral200, palette.neutral600)

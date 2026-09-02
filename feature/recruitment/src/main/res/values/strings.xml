@@ -39,6 +39,8 @@
     <string name="recruitment_chat_partner_profile_image">상대방 프로필 이미지</string>
     <string name="recruitment_notification_title">알림</string>
     <string name="recruitment_notification_error">오류가 발생했습니다.</string>
+    <string name="recruitment_load_error">모집글을 불러오지 못했습니다.</string>
+    <string name="recruitment_delete_error">모집글을 삭제하지 못했습니다.</string>
     <string name="recruitment_notification_deleted">알림이 삭제되었습니다.</string>
     <string name="recruitment_notification_auto_delete_info">14일이 지난 알림은 자동으로 삭제됩니다.</string>
     <string name="recruitment_notification_mark_all_read">모두 읽음으로 표시</string>
@@ -139,10 +141,33 @@
     <string name="recruitment_filter_section_status">모집 상태</string>
     <string name="recruitment_filter_section_sort">정렬</string>
     <string name="recruitment_filter_section_category">카테고리</string>
-    <string name="recruitment_filter_section_location">진행 방식</string>
-    <string name="recruitment_filter_location_online">온라인</string>
-    <string name="recruitment_filter_location_offline">오프라인</string>
-    <string name="recruitment_filter_location_mixed">온 · 오프라인</string>
     <string name="recruitment_applied_filter_remove_content_description">필터 제거</string>
     <string name="recruitment_empty_result">조건에 맞는 모집글이 없어요.</string>
+
+    <string name="recruitment_location_label">진행 방식</string>
+    <string name="recruitment_location_online">온라인</string>
+    <string name="recruitment_location_offline">오프라인</string>
+    <string name="recruitment_location_mixed">온 · 오프라인</string>
+    <string name="recruitment_closed">마감</string>
+    <string name="recruitment_bullet">•</string>
+    <string name="recruitment_info_period">활동 기간</string>
+    <string name="recruitment_info_participants">모집 인원</string>
+    <string name="recruitment_info_created_at">작성일</string>
+    <string name="recruitment_info_author">작성자</string>
+    <string name="recruitment_anonymous_author">익명</string>
+    <string name="recruitment_period_format">%1$s ~ %2$s</string>
+    <string name="recruitment_role_participants_format">%1$d명</string>
+    <string name="recruitment_section_roles">모집 역할 및 인원</string>
+    <string name="recruitment_section_description">모집 소개</string>
+    <string name="recruitment_section_qualification">지원 자격</string>
+    <string name="recruitment_section_preference">우대사항</string>
+    <string name="recruitment_action_apply">지원하기</string>
+    <string name="recruitment_action_recruitment_closed">모집 마감</string>
+    <string name="recruitment_action_check_applicants">지원자 확인하기</string>
+    <string name="recruitment_more_content_description">더보기</string>
+    <string name="recruitment_more_edit">편집하기</string>
+    <string name="recruitment_more_delete">삭제하기</string>
+    <string name="recruitment_delete_dialog_message">해당 모집글을 삭제하시겠습니까?</string>
+    <string name="recruitment_delete_dialog_cancel">취소하기</string>
+    <string name="recruitment_delete_dialog_confirm">삭제하기</string>
 </resources>
