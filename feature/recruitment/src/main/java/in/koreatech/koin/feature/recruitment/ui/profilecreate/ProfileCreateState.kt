@@ -21,6 +21,7 @@ data class ProfileCreateState(
     val currentStep: Int = 1,
     val nickname: String = "",
     val department: String = "",
+    val departments: ImmutableList<String> = persistentListOf(),
     val isDepartmentDropdownExpanded: Boolean = false,
     val studentId: String = "",
     val preferredRole: String = "",
@@ -30,7 +31,9 @@ data class ProfileCreateState(
     val selfIntroduction: String = "",
     val showSaveConfirmDialog: Boolean = false,
     val showCancelConfirmDialog: Boolean = false,
-    val isSaving: Boolean = false
+    val isLoadingExistingProfile: Boolean = false,
+    val isSaving: Boolean = false,
+    val errorMessage: String? = null
 ) {
     val isStepOneValid: Boolean
         get() = nickname.isNotBlank() && department.isNotBlank() && studentId.isNotBlank()

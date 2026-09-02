@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
@@ -42,6 +44,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDateSelec
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDropdown
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentTextField
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.component.RecruitmentAddRoleButton
+import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.component.RecruitmentCountStepper
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.component.RecruitmentProgressTypeSelector
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.component.RecruitmentRoleRow
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model.TeamRecruitmentCategory
@@ -107,6 +110,7 @@ fun RecruitmentCreateScreen(
             onRoleCountChange = viewModel::setRoleCount,
             onRoleRemoved = viewModel::removeRole,
             onRoleCountUndeterminedChange = viewModel::setRoleCountUndetermined,
+            onMaxParticipantsChange = viewModel::setMaxParticipants,
             onDescriptionChange = viewModel::setDescription,
             onRelatedUrlChange = viewModel::setRelatedUrl,
             onQualificationChange = viewModel::setQualification,
@@ -138,6 +142,7 @@ private fun RecruitmentCreateScreenImpl(
     onRoleCountChange: (String, Int) -> Unit = { _, _ -> },
     onRoleRemoved: (String) -> Unit = {},
     onRoleCountUndeterminedChange: (Boolean) -> Unit = {},
+    onMaxParticipantsChange: (Int) -> Unit = {},
     onDescriptionChange: (String) -> Unit = {},
     onRelatedUrlChange: (String) -> Unit = {},
     onQualificationChange: (String) -> Unit = {},
@@ -286,11 +291,13 @@ private fun RecruitmentCreateScreenImpl(
                 TeamRecruitmentRole.MAX_ROLE_COUNT
             ),
             trailingContent = {
-                RecruitmentAddRoleButton(
-                    text = stringResource(R.string.recruitment_create_add_role),
-                    enabled = state.roles.size < TeamRecruitmentRole.MAX_ROLE_COUNT,
-                    onClick = onAddRoleClick
-                )
+                if (!state.isRoleCountUndetermined) {
+                    RecruitmentAddRoleButton(
+                        text = stringResource(R.string.recruitment_create_add_role),
+                        enabled = state.roles.size < TeamRecruitmentRole.MAX_ROLE_COUNT,
+                        onClick = onAddRoleClick
+                    )
+                }
             }
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -320,15 +327,25 @@ private fun RecruitmentCreateScreenImpl(
                         modifier = Modifier.offset(x = (-28).dp)
                     )
                 }
-                state.roles.forEach { role ->
-                    key(role.id) {
-                        RecruitmentRoleRow(
-                            role = role,
-                            onNameChange = { name -> onRoleNameChange(role.id, name) },
-                            onCountChange = { count -> onRoleCountChange(role.id, count) },
-                            onRemove = { onRoleRemoved(role.id) },
-                            modifier = Modifier.fillMaxWidth()
-                        )
+                if (state.isRoleCountUndetermined) {
+                    RecruitmentCountStepper(
+                        count = state.maxParticipants,
+                        onCountChange = onMaxParticipantsChange,
+                        minCount = MIN_TOTAL_PARTICIPANTS,
+                        maxCount = MAX_TOTAL_PARTICIPANTS,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                } else {
+                    state.roles.forEach { role ->
+                        key(role.id) {
+                            RecruitmentRoleRow(
+                                role = role,
+                                onNameChange = { name -> onRoleNameChange(role.id, name) },
+                                onCountChange = { count -> onRoleCountChange(role.id, count) },
+                                onRemove = { onRoleRemoved(role.id) },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
                     }
                 }
             }
@@ -388,6 +405,14 @@ private fun RecruitmentCreateScreenImpl(
                 singleLine = false,
                 minLines = 3,
                 maxLength = QUALIFICATION_MAX_LENGTH
+            )
+        }
+
+        if (state.errorMessage != null) {
+            Text(
+                text = state.errorMessage,
+                style = RebrandKoinTheme.typography.regular13,
+                color = RebrandKoinTheme.colors.danger700
             )
         }
 

@@ -4,6 +4,14 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.usecase.dept.GetDeptNamesUseCase
+import `in`.koreatech.koin.domain.usecase.recruitment.GetTeamRecruitmentProfileUseCase
+import `in`.koreatech.koin.domain.usecase.recruitment.SaveTeamRecruitmentProfileUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
+import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentActivityEntry
+import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentErrorMessage
+import `in`.koreatech.koin.feature.recruitment.mapper.toTeamRecruitmentActivityInput
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
 import `in`.koreatech.koin.feature.recruitment.navigation.RecruitmentNavType
 import javax.inject.Inject
@@ -16,23 +24,74 @@ import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
 class ProfileCreateViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val getTeamRecruitmentProfileUseCase: GetTeamRecruitmentProfileUseCase,
+    private val saveTeamRecruitmentProfileUseCase: SaveTeamRecruitmentProfileUseCase,
+    private val getUserInfoUseCase: GetUserInfoUseCase,
+    private val getDeptNamesUseCase: GetDeptNamesUseCase
 ) : ViewModel(), ContainerHost<ProfileCreateState, ProfileCreateSideEffect> {
 
     private val arguments = savedStateHandle.toRoute<RecruitmentNavType.ProfileCreate>()
 
     override val container = container<ProfileCreateState, ProfileCreateSideEffect>(
         ProfileCreateState(isEditMode = arguments.isEditMode)
-    )
+    ) {
+        loadDepartments()
+        if (arguments.isEditMode) {
+            loadExistingProfile()
+        }
+    }
+
+    private fun loadDepartments() = intent {
+        val departments = getDeptNamesUseCase()
+        reduce { state.copy(departments = departments.toPersistentList()) }
+    }
+
+    private fun loadExistingProfile() = intent {
+        reduce { state.copy(isLoadingExistingProfile = true) }
+        getTeamRecruitmentProfileUseCase()
+            .onSuccess { profile ->
+                reduce {
+                    state.copy(
+                        isLoadingExistingProfile = false,
+                        nickname = profile.profileNickname,
+                        department = profile.department,
+                        studentId = profile.studentNumber,
+                        preferredRole = profile.preferredRole,
+                        skills = profile.skills.toPersistentList(),
+                        activities = profile.activities
+                            .map { it.toRecruitmentActivityEntry() }
+                            .toPersistentList(),
+                        selfIntroduction = profile.selfIntroduction
+                    )
+                }
+            }
+            .onFailure { throwable ->
+                reduce {
+                    state.copy(
+                        isLoadingExistingProfile = false,
+                        errorMessage = throwable.toRecruitmentErrorMessage()
+                    )
+                }
+            }
+    }
 
     fun loadMemberInfo() = intent {
-        reduce {
-            state.copy(
-                nickname = state.nickname.ifEmpty { "코인유저" },
-                department = "컴퓨터공학부",
-                studentId = state.studentId.ifEmpty { "2023100000" }
-            )
-        }
+        getUserInfoUseCase()
+            .onSuccess { user ->
+                if (user is User.Student) {
+                    reduce {
+                        state.copy(
+                            nickname = user.nickname ?: state.nickname,
+                            department = user.major ?: state.department,
+                            studentId = user.studentNumber ?: state.studentId
+                        )
+                    }
+                }
+            }
+            .onFailure { throwable ->
+                reduce { state.copy(errorMessage = throwable.toRecruitmentErrorMessage()) }
+            }
     }
 
     fun setNickname(nickname: String) = intent {
@@ -147,7 +206,19 @@ class ProfileCreateViewModel @Inject constructor(
     }
 
     fun saveProfile() = intent {
-        reduce { state.copy(isSaving = true, showSaveConfirmDialog = false) }
-        postSideEffect(ProfileCreateSideEffect.SaveSuccess)
+        reduce { state.copy(isSaving = true, showSaveConfirmDialog = false, errorMessage = null) }
+        saveTeamRecruitmentProfileUseCase(
+            profileNickname = state.nickname,
+            preferredRole = state.preferredRole,
+            skills = state.skills.filter { it.isNotBlank() },
+            activities = state.activities.map { it.toTeamRecruitmentActivityInput() },
+            selfIntroduction = state.selfIntroduction
+        ).onSuccess {
+            reduce { state.copy(isSaving = false) }
+            postSideEffect(ProfileCreateSideEffect.SaveSuccess)
+        }.onFailure { throwable ->
+            reduce { state.copy(isSaving = false, errorMessage = throwable.toRecruitmentErrorMessage()) }
+            postSideEffect(ProfileCreateSideEffect.SaveFailure)
+        }
     }
 }

@@ -26,6 +26,7 @@ data class RecruitmentCreateState(
     val applicationDeadline: StableLocalDate = LocalDate.now().plusDays(DEFAULT_RECRUIT_PERIOD_DAYS).toStable(),
     val roles: ImmutableList<TeamRecruitmentRole> = persistentListOf(),
     val isRoleCountUndetermined: Boolean = false,
+    val maxParticipants: Int = DEFAULT_MAX_PARTICIPANTS,
     val description: String = "",
     val relatedUrl: String = "",
     val qualification: String = "",
@@ -34,13 +35,20 @@ data class RecruitmentCreateState(
     val dateSelectionTarget: DateSelectionTarget = DateSelectionTarget.RECRUIT_START,
     val showSubmitConfirmDialog: Boolean = false,
     val showCancelConfirmDialog: Boolean = false,
-    val isSubmitting: Boolean = false
+    val isSubmitting: Boolean = false,
+    val errorMessage: String? = null
 ) {
     val isSubmitEnabled: Boolean
         get() = title.isNotBlank() &&
-            progressType != null &&
-            (roles.isNotEmpty() || isRoleCountUndetermined) &&
-            description.isNotBlank()
+                progressType != null &&
+                (
+                        (isRoleCountUndetermined && maxParticipants >= MIN_TOTAL_PARTICIPANTS) ||
+                                (!isRoleCountUndetermined && roles.isNotEmpty())
+                        ) &&
+                description.isNotBlank()
 }
 
 private const val DEFAULT_RECRUIT_PERIOD_DAYS = 14L
+const val DEFAULT_MAX_PARTICIPANTS = 2
+const val MIN_TOTAL_PARTICIPANTS = 1
+const val MAX_TOTAL_PARTICIPANTS = 10
