@@ -208,6 +208,21 @@ private fun RecruitmentChatMessageImage(imageUrl: String) {
                 CircularProgressIndicator()
             }
         },
+        error = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = IMAGE_MIN_HEIGHT)
+                    .background(RebrandKoinTheme.colors.neutral100),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(id = R.string.recruitment_chat_message_image_load_failed),
+                    style = RebrandKoinTheme.typography.regular12,
+                    color = RebrandKoinTheme.colors.neutral500
+                )
+            }
+        },
         contentScale = ContentScale.Fit,
         contentDescription = stringResource(id = R.string.recruitment_chat_message_image)
     )

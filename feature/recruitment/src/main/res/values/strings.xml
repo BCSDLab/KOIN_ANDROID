@@ -7,6 +7,7 @@
     <string name="recruitment_chat_input_placeholder">메시지 보내기</string>
     <string name="recruitment_chat_partner_profile_image">상대방 프로필 이미지</string>
     <string name="recruitment_chat_message_image">채팅 이미지</string>
+    <string name="recruitment_chat_message_image_load_failed">이미지를 불러올 수 없습니다.</string>
     <string name="recruitment_chat_failed_to_load_chat_room">채팅방을 불러오지 못했습니다.</string>
     <string name="recruitment_chat_failed_to_load_messages">메시지를 불러오지 못했습니다.</string>
     <string name="recruitment_chat_failed_to_send_message">메시지 전송에 실패했습니다.</string>
