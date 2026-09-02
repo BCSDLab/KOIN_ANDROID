@@ -21,7 +21,7 @@ import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 @Composable
 fun RecruitmentTitleSection(
     category: RecruitmentCategory,
-    dDay: Int,
+    dDay: Int?,
     isClosed: Boolean,
     title: String,
     modifier: Modifier = Modifier
@@ -62,8 +62,8 @@ fun RecruitmentTitleSection(
 }
 
 @Composable
-private fun dDayText(dDay: Int, isClosed: Boolean): String = when {
-    isClosed || dDay < 0 -> stringResource(R.string.recruitment_closed)
+private fun dDayText(dDay: Int?, isClosed: Boolean): String = when {
+    isClosed || dDay == null || dDay < 0 -> stringResource(R.string.recruitment_closed)
     dDay == 0 -> stringResource(R.string.recruitment_d_day_today)
     else -> stringResource(R.string.recruitment_d_day, dDay)
 }

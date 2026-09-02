@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.recruitment.ui.detail.model
+package `in`.koreatech.koin.feature.recruitment.model
 
 import androidx.compose.runtime.Immutable
 
