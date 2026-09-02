@@ -19,10 +19,12 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.subIntent
 import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
@@ -39,6 +41,11 @@ class RecruitmentMainViewModel @Inject constructor(
     private var searchJob: Job? = null
 
     fun fetchRecruitments(isRefresh: Boolean = false) = intent {
+        fetchRecruitmentsSub(isRefresh)
+    }
+
+    @OptIn(OrbitExperimental::class)
+    private suspend fun fetchRecruitmentsSub(isRefresh: Boolean = false) = subIntent {
         reduce {
             if (isRefresh) state.copy(isRefreshing = true) else state.copy(isLoading = true)
         }
@@ -103,7 +110,7 @@ class RecruitmentMainViewModel @Inject constructor(
 
     fun applyPendingFilter() = intent {
         reduce { state.copy(filterState = state.pendingFilterState, isFilterVisible = false) }
-        fetchRecruitments()
+        fetchRecruitmentsSub()
     }
 
     fun removeStatusFilter() = updateFilter { it.copy(selectedStatus = null) }
@@ -121,7 +128,7 @@ class RecruitmentMainViewModel @Inject constructor(
     private fun updateFilter(transform: (RecruitmentFilterState) -> RecruitmentFilterState) =
         intent {
             reduce { state.copy(filterState = transform(state.filterState)) }
-            fetchRecruitments()
+            fetchRecruitmentsSub()
         }
 
     companion object {

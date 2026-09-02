@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.source.remote
 
 import `in`.koreatech.koin.data.api.auth.RecruitmentAuthApi
+import `in`.koreatech.koin.data.request.recruitment.RecruitmentUpdateRequest
 import `in`.koreatech.koin.data.response.recruitment.MyAppliedRecruitmentListResponse
 import `in`.koreatech.koin.data.response.recruitment.MyRecruitmentListResponse
 import javax.inject.Inject
@@ -38,6 +39,14 @@ class RecruitmentRemoteDataSource @Inject constructor(
         val response = recruitmentAuthApi.deleteRecruitment(recruitmentId = recruitmentId)
         if (!response.isSuccessful) throw HttpException(response)
     }
+
+    suspend fun updateRecruitment(
+        recruitmentId: Int,
+        request: RecruitmentUpdateRequest
+    ) = recruitmentAuthApi.updateRecruitment(
+        recruitmentId = recruitmentId,
+        request = request
+    )
 
     suspend fun getNotifications(
         page: Int?,

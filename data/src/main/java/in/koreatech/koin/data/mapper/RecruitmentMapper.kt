@@ -1,5 +1,6 @@
 ﻿package `in`.koreatech.koin.data.mapper
 
+import `in`.koreatech.koin.data.request.recruitment.RecruitmentUpdateRequest
 import `in`.koreatech.koin.data.response.recruitment.MyAppliedRecruitmentResponse
 import `in`.koreatech.koin.data.response.recruitment.MyRecruitmentPostResponse
 import `in`.koreatech.koin.data.response.recruitment.RecruitmentApplicationResponse
@@ -17,6 +18,7 @@ import `in`.koreatech.koin.domain.model.recruitment.RecruitmentDetail
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentNotification
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentNotifications
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentRole
+import `in`.koreatech.koin.domain.model.recruitment.RecruitmentUpdate
 import `in`.koreatech.koin.domain.model.recruitment.Recruitments
 
 fun MyRecruitmentPostResponse.toMyRecruitmentPost() = MyRecruitmentPost(
@@ -134,4 +136,25 @@ fun RecruitmentDetailResponse.toRecruitmentDetail() = RecruitmentDetail(
     canManageApplicants = canManageApplicants,
     teamChatAvailable = teamChatAvailable,
     teamChatRoomId = teamChatRoomId
+)
+
+fun RecruitmentUpdate.toRecruitmentUpdateRequest() = RecruitmentUpdateRequest(
+    category = category,
+    title = title,
+    meetingType = meetingType,
+    activityStartDate = activityStartDate,
+    activityEndDate = activityEndDate,
+    deadlineDate = deadlineDate,
+    recruitmentType = recruitmentType,
+    maxParticipants = maxParticipants,
+    roles = roles.map { role ->
+        RecruitmentUpdateRequest.RecruitmentUpdateRoleRequest(
+            id = role.id,
+            name = role.name,
+            maxParticipants = role.maxParticipants
+        )
+    },
+    description = description,
+    relatedUrl = relatedUrl,
+    qualification = qualification
 )
