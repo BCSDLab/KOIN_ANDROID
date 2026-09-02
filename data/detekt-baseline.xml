@@ -64,6 +64,9 @@
     <ID>TooManyFunctions:OwnerApi.kt$OwnerApi</ID>
     <ID>TooManyFunctions:OwnerAuthApi.kt$OwnerAuthApi</ID>
     <ID>TooManyFunctions:OwnerRemoteDataSource.kt$OwnerRemoteDataSource</ID>
+    <ID>TooManyFunctions:RecruitmentAuthApi.kt$RecruitmentAuthApi</ID>
+    <ID>TooManyFunctions:RecruitmentRemoteDataSource.kt$RecruitmentRemoteDataSource</ID>
+    <ID>TooManyFunctions:RecruitmentRepositoryImpl.kt$RecruitmentRepositoryImpl : RecruitmentRepository</ID>
     <ID>TooManyFunctions:RemoteDataSourceModule.kt$RemoteDataSourceModule</ID>
     <ID>TooManyFunctions:RepositoryModule.kt$RepositoryModule</ID>
     <ID>TooManyFunctions:SignupRepositoryImpl.kt$SignupRepositoryImpl : SignupRepository</ID>

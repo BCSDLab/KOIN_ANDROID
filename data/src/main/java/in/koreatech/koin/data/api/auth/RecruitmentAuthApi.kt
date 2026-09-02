@@ -1,11 +1,13 @@
 ﻿package `in`.koreatech.koin.data.api.auth
 
+import `in`.koreatech.koin.data.request.recruitment.RecruitmentUpdateRequest
 import `in`.koreatech.koin.data.response.recruitment.MyAppliedRecruitmentListResponse
 import `in`.koreatech.koin.data.response.recruitment.MyRecruitmentListResponse
 import `in`.koreatech.koin.data.response.recruitment.RecruitmentDetailResponse
 import `in`.koreatech.koin.data.response.recruitment.RecruitmentListResponse
 import `in`.koreatech.koin.data.response.recruitment.RecruitmentNotificationListResponse
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -35,6 +37,12 @@ interface RecruitmentAuthApi {
     suspend fun deleteRecruitment(
         @Path("recruitmentId") recruitmentId: Int
     ): Response<Unit>
+
+    @PUT("/team-recruitments/{recruitmentId}")
+    suspend fun updateRecruitment(
+        @Path("recruitmentId") recruitmentId: Int,
+        @Body request: RecruitmentUpdateRequest
+    ): RecruitmentDetailResponse
 
     @GET("/team-recruitments/notifications")
     suspend fun getNotifications(
