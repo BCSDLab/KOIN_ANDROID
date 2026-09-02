@@ -189,10 +189,10 @@ private fun RecruitmentModifyScreenImpl(
     ) {
         FormSection(title = stringResource(R.string.recruitment_modify_category), isRequired = true) {
             RecruitmentDropdown(
-                text = state.category.label,
+                text = stringResource(state.category.labelRes),
                 // category는 non-nullable이라 항상 선택된 값이 있음 → placeholder 상태 자체가 없음
                 isPlaceholder = false,
-                items = RecruitmentCategory.entries.map { it.label }.toImmutableList(),
+                items = RecruitmentCategory.entries.map { stringResource(it.labelRes) }.toImmutableList(),
                 isExpanded = state.isCategoryDropdownExpanded,
                 onExpandedChange = onCategoryDropdownExpandChange,
                 onItemSelected = { index -> onCategorySelected(RecruitmentCategory.entries[index]) }
