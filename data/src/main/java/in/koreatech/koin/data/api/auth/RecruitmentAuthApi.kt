@@ -1,9 +1,16 @@
 package `in`.koreatech.koin.data.api.auth
 
+import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentApplicationRequest
+import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentCreateRequest
+import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentProfileRequest
 import `in`.koreatech.koin.data.response.recruitment.MyAppliedRecruitmentListResponse
 import `in`.koreatech.koin.data.response.recruitment.MyRecruitmentListResponse
+import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentApplicationResponse
+import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentCreateResponse
 import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentNotificationListResponse
+import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentProfileResponse
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -49,4 +56,23 @@ interface RecruitmentAuthApi {
 
     @POST("/team-recruitments/notifications/mark-all-read")
     suspend fun readAllNotifications(): Response<Unit>
+
+    @GET("team-recruitment-profiles/me")
+    suspend fun getTeamRecruitmentProfile(): TeamRecruitmentProfileResponse
+
+    @PUT("team-recruitment-profiles/me")
+    suspend fun saveTeamRecruitmentProfile(
+        @Body request: TeamRecruitmentProfileRequest
+    ): TeamRecruitmentProfileResponse
+
+    @POST("team-recruitments")
+    suspend fun createTeamRecruitment(
+        @Body request: TeamRecruitmentCreateRequest
+    ): Response<TeamRecruitmentCreateResponse>
+
+    @POST("team-recruitments/{recruitmentId}/applications")
+    suspend fun applyTeamRecruitment(
+        @Path("recruitmentId") recruitmentId: Int,
+        @Body request: TeamRecruitmentApplicationRequest
+    ): Response<TeamRecruitmentApplicationResponse>
 }
