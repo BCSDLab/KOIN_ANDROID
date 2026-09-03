@@ -122,8 +122,6 @@
     <string name="recruitment_create_cancel_dialog_description">작성 중인 내용은 저장되지 않습니다.</string>
     <string name="recruitment_create_dialog_yes">네</string>
     <string name="recruitment_create_dialog_no">아니요</string>
-    <string name="recruitment_date_picker_cancel">취소</string>
-    <string name="recruitment_date_picker_confirm">확인</string>
     <string name="recruitment_applied_title">내가 지원한 모집글</string>
     <string name="recruitment_applied_post_count">총 %d개의 지원 내역</string>
     <string name="recruitment_applied_status_approved">승인</string>
