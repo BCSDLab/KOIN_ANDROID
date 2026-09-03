@@ -2,9 +2,7 @@ package `in`.koreatech.koin.feature.recruitment.ui.detail.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,10 +11,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.component.chip.ReadOnlyTextChip
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentCategoryBadge
 
 @Composable
 fun RecruitmentTitleSection(
@@ -34,16 +32,7 @@ fun RecruitmentTitleSection(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ReadOnlyTextChip(
-                title = stringResource(category.labelRes),
-                containerColor = RebrandKoinTheme.colors.info200,
-                textStyle = RebrandKoinTheme.typography.regular10.copy(
-                    fontWeight = FontWeight.Medium,
-                    color = RebrandKoinTheme.colors.info700
-                ),
-                shape = RoundedCornerShape(percent = 50),
-                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 1.dp)
-            )
+            RecruitmentCategoryBadge(category = category)
             Text(
                 text = dDayText(dDay = dDay, isClosed = isClosed),
                 style = RebrandKoinTheme.typography.regular10.copy(

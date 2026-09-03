@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.recruitment.navigation
 
+import android.app.Activity
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -29,8 +30,14 @@ fun NavGraphBuilder.koinRecruitmentGraph(
         )
     }
     composable<RecruitmentNavType.RecruitmentMain> {
+        val context = LocalContext.current
+
         RecruitmentMainScreen(
-            onTopbarBackClick = { navController.navigateUp() },
+            onTopbarBackClick = {
+                if (!navController.popBackStack()) {
+                    (context as? Activity)?.finish()
+                }
+            },
             onItemClick = { postId ->
                 navController.navigate(RecruitmentNavType.RecruitmentDetail(postId))
             }
