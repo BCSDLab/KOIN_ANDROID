@@ -8,7 +8,6 @@ import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model.TeamRecruitmentCategory
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.Job
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
@@ -25,122 +24,168 @@ class RecruitmentCreateViewModel @Inject constructor() :
         RecruitmentCreateState()
     )
 
-    fun setCategory(category: TeamRecruitmentCategory): Job = intent {
-        reduce { state.copy(category = category, isCategoryDropdownExpanded = false) }
-    }
-
-    fun setCategoryDropdownExpanded(expanded: Boolean): Job = intent {
-        reduce { state.copy(isCategoryDropdownExpanded = expanded) }
-    }
-
-    fun setTitle(title: String): Job = intent {
-        reduce { state.copy(title = title) }
-    }
-
-    fun setProgressType(progressType: RecruitmentProgressType): Job = intent {
-        reduce { state.copy(progressType = progressType) }
-    }
-
-    fun showDatePickerDialog(target: DateSelectionTarget): Job = intent {
-        reduce {
-            state.copy(
-                showDatePickerDialog = true,
-                dateSelectionTarget = target
-            )
+    fun setCategory(category: TeamRecruitmentCategory) {
+        intent {
+            reduce { state.copy(category = category, isCategoryDropdownExpanded = false) }
         }
     }
 
-    fun dismissDatePickerDialog(): Job = intent {
-        reduce { state.copy(showDatePickerDialog = false) }
+    fun setCategoryDropdownExpanded(expanded: Boolean) {
+        intent {
+            reduce { state.copy(isCategoryDropdownExpanded = expanded) }
+        }
     }
 
-    fun setRecruitStartDate(date: StableLocalDate): Job = intent {
-        reduce { state.copy(recruitStartDate = date, showDatePickerDialog = false) }
+    fun setTitle(title: String) {
+        intent {
+            reduce { state.copy(title = title) }
+        }
     }
 
-    fun setRecruitEndDate(date: StableLocalDate): Job = intent {
-        reduce { state.copy(recruitEndDate = date, showDatePickerDialog = false) }
+    fun setProgressType(progressType: RecruitmentProgressType) {
+        intent {
+            reduce { state.copy(progressType = progressType) }
+        }
     }
 
-    fun setApplicationDeadline(date: StableLocalDate): Job = intent {
-        reduce { state.copy(applicationDeadline = date, showDatePickerDialog = false) }
-    }
-
-    fun setRoleCountUndetermined(undetermined: Boolean): Job = intent {
-        reduce { state.copy(isRoleCountUndetermined = undetermined) }
-    }
-
-    fun addRole(): Job = intent {
-        reduce {
-            if (state.roles.size >= TeamRecruitmentRole.MAX_ROLE_COUNT) {
-                state
-            } else {
-                state.copy(roles = (state.roles + TeamRecruitmentRole()).toPersistentList())
+    fun showDatePickerDialog(target: DateSelectionTarget) {
+        intent {
+            reduce {
+                state.copy(
+                    showDatePickerDialog = true,
+                    dateSelectionTarget = target
+                )
             }
         }
     }
 
-    fun setRoleName(id: String, name: String): Job = intent {
-        reduce {
-            state.copy(
-                roles = state.roles
-                    .map { if (it.id == id) it.copy(name = name) else it }
-                    .toPersistentList()
-            )
+    fun dismissDatePickerDialog() {
+        intent {
+            reduce { state.copy(showDatePickerDialog = false) }
         }
     }
 
-    fun setRoleCount(id: String, count: Int): Job = intent {
-        reduce {
-            state.copy(
-                roles = state.roles
-                    .map { if (it.id == id) it.copy(count = count) else it }
-                    .toPersistentList()
-            )
+    fun setRecruitStartDate(date: StableLocalDate) {
+        intent {
+            reduce { state.copy(recruitStartDate = date, showDatePickerDialog = false) }
         }
     }
 
-    fun removeRole(id: String): Job = intent {
-        reduce {
-            state.copy(roles = state.roles.filterNot { it.id == id }.toPersistentList())
+    fun setRecruitEndDate(date: StableLocalDate) {
+        intent {
+            reduce { state.copy(recruitEndDate = date, showDatePickerDialog = false) }
         }
     }
 
-    fun setDescription(description: String): Job = intent {
-        reduce { state.copy(description = description) }
+    fun setApplicationDeadline(date: StableLocalDate) {
+        intent {
+            reduce { state.copy(applicationDeadline = date, showDatePickerDialog = false) }
+        }
     }
 
-    fun setRelatedUrl(url: String): Job = intent {
-        reduce { state.copy(relatedUrl = url) }
+    fun setRoleCountUndetermined(undetermined: Boolean) {
+        intent {
+            reduce { state.copy(isRoleCountUndetermined = undetermined) }
+        }
     }
 
-    fun setQualification(qualification: String): Job = intent {
-        reduce { state.copy(qualification = qualification) }
+    fun addRole() {
+        intent {
+            reduce {
+                if (state.roles.size >= TeamRecruitmentRole.MAX_ROLE_COUNT) {
+                    state
+                } else {
+                    state.copy(roles = (state.roles + TeamRecruitmentRole()).toPersistentList())
+                }
+            }
+        }
     }
 
-    fun showSubmitConfirmDialog(): Job = intent {
-        reduce { state.copy(showSubmitConfirmDialog = true) }
+    fun setRoleName(id: String, name: String) {
+        intent {
+            reduce {
+                state.copy(
+                    roles = state.roles
+                        .map { if (it.id == id) it.copy(name = name) else it }
+                        .toPersistentList()
+                )
+            }
+        }
     }
 
-    fun dismissSubmitConfirmDialog(): Job = intent {
-        reduce { state.copy(showSubmitConfirmDialog = false) }
+    fun setRoleCount(id: String, count: Int) {
+        intent {
+            reduce {
+                state.copy(
+                    roles = state.roles
+                        .map { if (it.id == id) it.copy(count = count) else it }
+                        .toPersistentList()
+                )
+            }
+        }
     }
 
-    fun showCancelConfirmDialog(): Job = intent {
-        reduce { state.copy(showCancelConfirmDialog = true) }
+    fun removeRole(id: String) {
+        intent {
+            reduce {
+                state.copy(roles = state.roles.filterNot { it.id == id }.toPersistentList())
+            }
+        }
     }
 
-    fun dismissCancelConfirmDialog(): Job = intent {
-        reduce { state.copy(showCancelConfirmDialog = false) }
+    fun setDescription(description: String) {
+        intent {
+            reduce { state.copy(description = description) }
+        }
     }
 
-    fun confirmCancel(): Job = intent {
-        reduce { state.copy(showCancelConfirmDialog = false) }
-        postSideEffect(RecruitmentCreateSideEffect.NavigateUp)
+    fun setRelatedUrl(url: String) {
+        intent {
+            reduce { state.copy(relatedUrl = url) }
+        }
     }
 
-    fun createRecruitment(): Job = intent {
-        reduce { state.copy(isSubmitting = true, showSubmitConfirmDialog = false) }
-        postSideEffect(RecruitmentCreateSideEffect.RecruitmentCreateSuccess)
+    fun setQualification(qualification: String) {
+        intent {
+            reduce { state.copy(qualification = qualification) }
+        }
+    }
+
+    fun showSubmitConfirmDialog() {
+        intent {
+            reduce { state.copy(showSubmitConfirmDialog = true) }
+        }
+    }
+
+    fun dismissSubmitConfirmDialog() {
+        intent {
+            reduce { state.copy(showSubmitConfirmDialog = false) }
+        }
+    }
+
+    fun showCancelConfirmDialog() {
+        intent {
+            reduce { state.copy(showCancelConfirmDialog = true) }
+        }
+    }
+
+    fun dismissCancelConfirmDialog() {
+        intent {
+            reduce { state.copy(showCancelConfirmDialog = false) }
+        }
+    }
+
+    fun confirmCancel() {
+        intent {
+            reduce { state.copy(showCancelConfirmDialog = false) }
+            postSideEffect(RecruitmentCreateSideEffect.NavigateUp)
+        }
+    }
+
+    fun createRecruitment() {
+        intent {
+            reduce { state.copy(isSubmitting = true, showSubmitConfirmDialog = false) }
+            postSideEffect(RecruitmentCreateSideEffect.RecruitmentCreateSuccess)
+        }
     }
 }
