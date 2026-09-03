@@ -75,6 +75,7 @@ fun RecruitmentChatInput(
     onImageButtonClick: () -> Unit,
     onSendClick: () -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     windowInsets: WindowInsets = RecruitmentChatInputDefaults.windowInsets,
     colors: RecruitmentChatInputColors = RecruitmentChatInputDefaults.colors()
 ) {
@@ -95,7 +96,7 @@ fun RecruitmentChatInput(
             Icon(
                 modifier = Modifier
                     .background(colors.iconContainerColor, RebrandKoinTheme.shapes.medium)
-                    .noRippleClickable { onImageButtonClick() }
+                    .noRippleClickable(enabled = enabled) { onImageButtonClick() }
                     .padding(12.dp),
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_recruitment_chat_add_photo),
                 tint = colors.iconContentColor,
@@ -105,6 +106,7 @@ fun RecruitmentChatInput(
             RecruitmentChatTextField(
                 value = value,
                 onValueChange = onValueChange,
+                enabled = enabled,
                 placeholder = stringResource(id = R.string.recruitment_chat_input_placeholder),
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
@@ -121,7 +123,7 @@ fun RecruitmentChatInput(
             Icon(
                 modifier = Modifier
                     .background(colors.iconContainerColor, RebrandKoinTheme.shapes.medium)
-                    .noRippleClickable { onSendClick() }
+                    .noRippleClickable(enabled = enabled) { onSendClick() }
                     .padding(12.dp),
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_recruitment_chat_send),
                 tint = colors.iconContentColor,
@@ -136,12 +138,14 @@ private fun RecruitmentChatTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     placeholder: String = "",
     colors: RecruitmentChatInputColors = RecruitmentChatInputDefaults.colors()
 ) {
     BasicTextField(
         modifier = modifier,
         value = value,
+        enabled = enabled,
         textStyle = RebrandKoinTheme.typography.regular12.copy(color = colors.textContentColor),
         onValueChange = { onValueChange(it.take(RECRUITMENT_CHAT_MESSAGE_MAX_LENGTH)) },
         decorationBox = { innerTextField ->
