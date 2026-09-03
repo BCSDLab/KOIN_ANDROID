@@ -9,7 +9,7 @@ sealed class RecruitmentNavType {
 
     @Serializable
     data object RecruitmentApply : RecruitmentNavType()
-    
+
     @Serializable
     data object RecruitmentMain : RecruitmentNavType()
 
