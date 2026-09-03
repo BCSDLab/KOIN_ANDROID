@@ -73,18 +73,7 @@ fun RecruitmentActivityForm(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row {
-                    Text(
-                        text = stringResource(R.string.recruitment_activity_name),
-                        style = RebrandKoinTheme.typography.medium16,
-                        color = RebrandKoinTheme.colors.neutral800
-                    )
-                    Text(
-                        text = stringResource(R.string.recruitment_activity_required_mark),
-                        style = RebrandKoinTheme.typography.medium16,
-                        color = RebrandKoinTheme.colors.primary500
-                    )
-                }
+                RecruitmentActivityRequiredLabel(text = stringResource(R.string.recruitment_activity_name))
                 Icon(
                     imageVector = Icons.Filled.Close,
                     contentDescription = stringResource(R.string.recruitment_activity_close_content_description),
@@ -102,81 +91,27 @@ fun RecruitmentActivityForm(
         }
 
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Row {
-                Text(
-                    text = stringResource(R.string.recruitment_activity_period),
-                    style = RebrandKoinTheme.typography.medium16,
-                    color = RebrandKoinTheme.colors.neutral800
-                )
-                Text(
-                    text = stringResource(R.string.recruitment_activity_required_mark),
-                    style = RebrandKoinTheme.typography.medium16,
-                    color = RebrandKoinTheme.colors.primary500
-                )
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                RecruitmentDateSelectBox(
-                    text = startDate?.value?.toDateText() ?: stringResource(R.string.recruitment_activity_start_date),
-                    isPlaceholder = startDate == null,
-                    onClick = {
-                        isSelectingStartDate = true
+            RecruitmentActivityRequiredLabel(text = stringResource(R.string.recruitment_activity_period))
+            RecruitmentActivityPeriodPicker(
+                startDate = startDate,
+                endDate = endDate,
+                isOngoing = isOngoing,
+                onStartDateClick = {
+                    isSelectingStartDate = true
+                    showDatePicker = true
+                },
+                onEndDateClick = {
+                    if (!isOngoing) {
+                        isSelectingStartDate = false
                         showDatePicker = true
-                    },
-                    modifier = Modifier.weight(1f)
-                )
-                Text(
-                    text = stringResource(R.string.recruitment_activity_period_separator),
-                    style = RebrandKoinTheme.typography.medium16,
-                    color = RebrandKoinTheme.colors.neutral400
-                )
-                RecruitmentDateSelectBox(
-                    text = endDate?.value?.toDateText() ?: stringResource(R.string.recruitment_activity_end_date),
-                    isPlaceholder = endDate == null,
-                    onClick = {
-                        if (!isOngoing) {
-                            isSelectingStartDate = false
-                            showDatePicker = true
-                        }
-                    },
-                    modifier = Modifier.weight(1f)
-                )
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(2.dp)
-                ) {
-                    RadioButton(
-                        selected = isOngoing,
-                        onClick = { isOngoing = !isOngoing },
-                        colors = RadioButtonDefaults.colors(
-                            selectedColor = RebrandKoinTheme.colors.primary500
-                        ),
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Text(
-                        text = stringResource(R.string.recruitment_activity_ongoing),
-                        style = RebrandKoinTheme.typography.regular14,
-                        color = RebrandKoinTheme.colors.neutral700
-                    )
-                }
-            }
+                    }
+                },
+                onOngoingToggle = { isOngoing = !isOngoing }
+            )
         }
 
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Row {
-                Text(
-                    text = stringResource(R.string.recruitment_activity_content),
-                    style = RebrandKoinTheme.typography.medium16,
-                    color = RebrandKoinTheme.colors.neutral800
-                )
-                Text(
-                    text = stringResource(R.string.recruitment_activity_required_mark),
-                    style = RebrandKoinTheme.typography.medium16,
-                    color = RebrandKoinTheme.colors.primary500
-                )
-            }
+            RecruitmentActivityRequiredLabel(text = stringResource(R.string.recruitment_activity_content))
             RecruitmentTextField(
                 value = content,
                 onValueChange = { content = it },
@@ -189,10 +124,7 @@ fun RecruitmentActivityForm(
 
         RecruitmentFilledActionButton(
             text = stringResource(R.string.recruitment_activity_confirm),
-            enabled = name.isNotBlank() &&
-                content.isNotBlank() &&
-                startDate != null &&
-                (isOngoing || endDate != null),
+            enabled = isRecruitmentActivityFormValid(name, content, startDate, isOngoing, endDate),
             onClick = {
                 onConfirm(
                     RecruitmentActivityEntry(
@@ -208,6 +140,86 @@ fun RecruitmentActivityForm(
         )
     }
 }
+
+@Composable
+private fun RecruitmentActivityRequiredLabel(text: String, modifier: Modifier = Modifier) {
+    Row(modifier = modifier) {
+        Text(
+            text = text,
+            style = RebrandKoinTheme.typography.medium16,
+            color = RebrandKoinTheme.colors.neutral800
+        )
+        Text(
+            text = stringResource(R.string.recruitment_activity_required_mark),
+            style = RebrandKoinTheme.typography.medium16,
+            color = RebrandKoinTheme.colors.primary500
+        )
+    }
+}
+
+@Composable
+private fun RecruitmentActivityPeriodPicker(
+    startDate: StableLocalDate?,
+    endDate: StableLocalDate?,
+    isOngoing: Boolean,
+    onStartDateClick: () -> Unit,
+    onEndDateClick: () -> Unit,
+    onOngoingToggle: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        RecruitmentDateSelectBox(
+            text = startDate?.value?.toDateText() ?: stringResource(R.string.recruitment_activity_start_date),
+            isPlaceholder = startDate == null,
+            onClick = onStartDateClick,
+            modifier = Modifier.weight(1f)
+        )
+        Text(
+            text = stringResource(R.string.recruitment_activity_period_separator),
+            style = RebrandKoinTheme.typography.medium16,
+            color = RebrandKoinTheme.colors.neutral400
+        )
+        RecruitmentDateSelectBox(
+            text = endDate?.value?.toDateText() ?: stringResource(R.string.recruitment_activity_end_date),
+            isPlaceholder = endDate == null,
+            onClick = onEndDateClick,
+            modifier = Modifier.weight(1f)
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            RadioButton(
+                selected = isOngoing,
+                onClick = onOngoingToggle,
+                colors = RadioButtonDefaults.colors(
+                    selectedColor = RebrandKoinTheme.colors.primary500
+                ),
+                modifier = Modifier.size(20.dp)
+            )
+            Text(
+                text = stringResource(R.string.recruitment_activity_ongoing),
+                style = RebrandKoinTheme.typography.regular14,
+                color = RebrandKoinTheme.colors.neutral700
+            )
+        }
+    }
+}
+
+private fun isRecruitmentActivityFormValid(
+    name: String,
+    content: String,
+    startDate: StableLocalDate?,
+    isOngoing: Boolean,
+    endDate: StableLocalDate?
+): Boolean = name.isNotBlank() &&
+        content.isNotBlank() &&
+        startDate != null &&
+        (isOngoing || endDate != null)
 
 @Preview(showBackground = true)
 @Composable
