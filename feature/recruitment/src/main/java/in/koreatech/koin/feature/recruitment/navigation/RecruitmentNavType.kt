@@ -6,30 +6,35 @@ import kotlinx.serialization.Serializable
 sealed class RecruitmentNavType {
     @Serializable
     data object RecruitmentCreate : RecruitmentNavType()
+    data object RecruitmentMain : RecruitmentNavType()
+
+    @Serializable
+    data class RecruitmentDetail(val postId: Int) : RecruitmentNavType()
+
+    @Serializable
     data class RecruitmentGroupChat(
-        val postId: Int,
-        val title: String,
-        val currentMemberCount: Int,
-        val maxMemberCount: Int,
-        val date: String
+        val recruitmentId: Int,
+        val chatRoomId: Int
     ) : RecruitmentNavType()
 
     @Serializable
     data class RecruitmentDirectChat(
-        val postId: Int,
-        val partnerNickname: String,
-        val date: String
+        val recruitmentId: Int,
+        val applicationId: Int
     ) : RecruitmentNavType()
 
     @Serializable
     data object Notification : RecruitmentNavType()
 
     @Serializable
-    data class ApplicantManagement(val postId: Long) : RecruitmentNavType()
+    data class ApplicantManagement(val postId: Int) : RecruitmentNavType()
 
     @Serializable
-    data class ApplicantDetail(val postId: Long, val applicantId: Long) : RecruitmentNavType()
+    data class ApplicantDetail(val postId: Int, val applicantId: Int) : RecruitmentNavType()
 
     @Serializable
     data object MyRecruitment : RecruitmentNavType()
+
+    @Serializable
+    data object MyAppliedRecruitment : RecruitmentNavType()
 }

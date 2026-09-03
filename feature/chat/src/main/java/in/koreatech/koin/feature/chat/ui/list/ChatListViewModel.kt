@@ -81,7 +81,9 @@ class ChatListViewModel @Inject constructor(
 
     fun fetchChatList() = viewModelScope.launch {
         if (container.stateFlow.value.userId == -1) return@launch
-        getChatListUseCase().collect { data ->
+        getChatListUseCase().catch {
+            Timber.e(it)
+        }.collect { data ->
             intent {
                 reduce {
                     state.copy(chatList = data, isLoading = false)

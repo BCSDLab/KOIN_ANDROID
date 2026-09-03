@@ -9,6 +9,10 @@ internal enum class RecruitmentNotificationCategory(
     @param:StringRes val labelRes: Int
 ) {
     MESSAGE(R.drawable.ic_notification_recruitment_chat, R.string.recruitment_notification_category_message),
+    NEW_APPLICATION(
+        R.drawable.ic_notification_recruitment,
+        R.string.recruitment_notification_category_new_application
+    ),
     APPLICATION_APPROVED(
         R.drawable.ic_notification_recruitment,
         R.string.recruitment_notification_category_application_approved

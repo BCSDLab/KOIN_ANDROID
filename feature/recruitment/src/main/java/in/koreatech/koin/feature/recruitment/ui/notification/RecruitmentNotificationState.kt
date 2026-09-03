@@ -6,5 +6,9 @@ import kotlinx.collections.immutable.persistentListOf
 
 internal data class RecruitmentNotificationState(
     val notifications: ImmutableList<RecruitmentNotification> = persistentListOf(),
-    val isLoading: Boolean = false
+    val unreadCount: Int = 0,
+    val currentPage: Int = 1,
+    val totalPage: Int = 1,
+    val isLoading: Boolean = false,
+    val isLoadingMore: Boolean = false
 )

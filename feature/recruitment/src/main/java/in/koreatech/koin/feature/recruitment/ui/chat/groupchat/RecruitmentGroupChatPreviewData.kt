@@ -17,7 +17,7 @@ object RecruitmentGroupChatPreviewData {
             date = DATE,
             messages = listOf(
                 RecruitmentChatMessage(
-                    id = "1",
+                    id = 1,
                     authorNickname = "낭만고양이",
                     content = "안녕하세요! 팀 합류하게 되어 반갑습니다.",
                     timestamp = "13:53",
@@ -25,7 +25,7 @@ object RecruitmentGroupChatPreviewData {
                     isFirstInGroup = true
                 ),
                 RecruitmentChatMessage(
-                    id = "2",
+                    id = 2,
                     authorNickname = "나",
                     content = "네 반갑습니다! 잘 부탁드려요.",
                     timestamp = "13:54",
