@@ -6,7 +6,6 @@ import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
 import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.Job
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
@@ -26,7 +25,7 @@ class RecruitmentApplyViewModel @Inject constructor() :
         RecruitmentApplyState()
     )
 
-    fun loadMemberInfo(): Job = intent {
+    fun loadMemberInfo() = intent {
         reduce {
             state.copy(
                 isMemberInfoLoaded = true,
@@ -37,35 +36,35 @@ class RecruitmentApplyViewModel @Inject constructor() :
         }
     }
 
-    fun setNickname(nickname: String): Job = intent {
+    fun setNickname(nickname: String) = intent {
         if (nickname.length <= NICKNAME_MAX_LENGTH) {
             reduce { state.copy(nickname = nickname) }
         }
     }
 
-    fun setAge(age: String): Job = intent {
+    fun setAge(age: String) = intent {
         if (age.isEmpty() || (age.all { it.isDigit() } && age.toIntOrNull() in MIN_AGE..MAX_AGE)) {
             reduce { state.copy(age = age) }
         }
     }
 
-    fun setDepartmentDropdownExpanded(expanded: Boolean): Job = intent {
+    fun setDepartmentDropdownExpanded(expanded: Boolean) = intent {
         reduce { state.copy(isDepartmentDropdownExpanded = expanded) }
     }
 
-    fun setDepartment(department: String): Job = intent {
+    fun setDepartment(department: String) = intent {
         reduce { state.copy(department = department, isDepartmentDropdownExpanded = false) }
     }
 
-    fun setStudentId(studentId: String): Job = intent {
+    fun setStudentId(studentId: String) = intent {
         reduce { state.copy(studentId = studentId) }
     }
 
-    fun addSkill(): Job = intent {
+    fun addSkill() = intent {
         reduce { state.copy(skills = (state.skills + "").toPersistentList()) }
     }
 
-    fun setSkillText(index: Int, text: String): Job = intent {
+    fun setSkillText(index: Int, text: String) = intent {
         reduce {
             state.copy(
                 skills = state.skills.mapIndexed { i, skill -> if (i == index) text else skill }.toPersistentList()
@@ -73,7 +72,7 @@ class RecruitmentApplyViewModel @Inject constructor() :
         }
     }
 
-    fun removeSkill(index: Int): Job = intent {
+    fun removeSkill(index: Int) = intent {
         reduce {
             state.copy(
                 skills = state.skills.filterIndexed { i, _ -> i != index }.toPersistentList()
@@ -81,19 +80,19 @@ class RecruitmentApplyViewModel @Inject constructor() :
         }
     }
 
-    fun showActivityAddForm(): Job = intent {
+    fun showActivityAddForm() = intent {
         reduce { state.copy(activityFormState = ActivityFormState.Adding) }
     }
 
-    fun showActivityEditForm(activity: RecruitmentActivityEntry): Job = intent {
+    fun showActivityEditForm(activity: RecruitmentActivityEntry) = intent {
         reduce { state.copy(activityFormState = ActivityFormState.Editing(activity.id)) }
     }
 
-    fun hideActivityForm(): Job = intent {
+    fun hideActivityForm() = intent {
         reduce { state.copy(activityFormState = ActivityFormState.Hidden) }
     }
 
-    fun addActivity(activity: RecruitmentActivityEntry): Job = intent {
+    fun addActivity(activity: RecruitmentActivityEntry) = intent {
         reduce {
             state.copy(
                 activities = (state.activities + activity).toPersistentList(),
@@ -102,7 +101,7 @@ class RecruitmentApplyViewModel @Inject constructor() :
         }
     }
 
-    fun editActivity(activity: RecruitmentActivityEntry): Job = intent {
+    fun editActivity(activity: RecruitmentActivityEntry) = intent {
         reduce {
             state.copy(
                 activities = state.activities
@@ -113,58 +112,58 @@ class RecruitmentApplyViewModel @Inject constructor() :
         }
     }
 
-    fun removeActivity(activity: RecruitmentActivityEntry): Job = intent {
+    fun removeActivity(activity: RecruitmentActivityEntry) = intent {
         reduce { state.copy(activities = state.activities.minus(activity).toPersistentList()) }
     }
 
-    fun setSelfIntroduction(text: String): Job = intent {
+    fun setSelfIntroduction(text: String) = intent {
         reduce { state.copy(selfIntroduction = text) }
     }
 
-    fun goToNextStep(): Job = intent {
+    fun goToNextStep() = intent {
         reduce { state.copy(currentStep = RECRUITMENT_APPLY_STEP_COUNT) }
     }
 
-    fun goToPreviousStep(): Job = intent {
+    fun goToPreviousStep() = intent {
         reduce { state.copy(currentStep = 1) }
     }
 
-    fun selectRole(role: TeamRecruitmentRole): Job = intent {
+    fun selectRole(role: TeamRecruitmentRole) = intent {
         if (!role.isClosed) {
             reduce { state.copy(selectedRole = role) }
         }
     }
 
-    fun setMotivation(text: String): Job = intent {
+    fun setMotivation(text: String) = intent {
         reduce { state.copy(motivation = text) }
     }
 
-    fun setAvailableTime(text: String): Job = intent {
+    fun setAvailableTime(text: String) = intent {
         reduce { state.copy(availableTime = text) }
     }
 
-    fun showSubmitConfirmDialog(): Job = intent {
+    fun showSubmitConfirmDialog() = intent {
         reduce { state.copy(showSubmitConfirmDialog = true) }
     }
 
-    fun dismissSubmitConfirmDialog(): Job = intent {
+    fun dismissSubmitConfirmDialog() = intent {
         reduce { state.copy(showSubmitConfirmDialog = false) }
     }
 
-    fun showCancelConfirmDialog(): Job = intent {
+    fun showCancelConfirmDialog() = intent {
         reduce { state.copy(showCancelConfirmDialog = true) }
     }
 
-    fun dismissCancelConfirmDialog(): Job = intent {
+    fun dismissCancelConfirmDialog() = intent {
         reduce { state.copy(showCancelConfirmDialog = false) }
     }
 
-    fun confirmCancel(): Job = intent {
+    fun confirmCancel() = intent {
         reduce { state.copy(showCancelConfirmDialog = false) }
         postSideEffect(RecruitmentApplySideEffect.NavigateUp)
     }
 
-    fun submitApplication(): Job = intent {
+    fun submitApplication() = intent {
         reduce { state.copy(isSubmitting = true, showSubmitConfirmDialog = false) }
         postSideEffect(RecruitmentApplySideEffect.ApplySuccess)
     }
