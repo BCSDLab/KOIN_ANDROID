@@ -16,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -43,6 +44,28 @@ private const val SELF_INTRODUCTION_MAX_LENGTH = 1000
 
 private val DEPARTMENTS = persistentListOf("컴퓨터공학부", "전전통", "고용", "산경", "등등..")
 
+data class ProfileCreateStepOneActions(
+    val onLoadMemberInfoClick: () -> Unit = {},
+    val onNicknameChange: (String) -> Unit = {},
+    val onDepartmentDropdownExpandChange: (Boolean) -> Unit = {},
+    val onDepartmentSelected: (String) -> Unit = {},
+    val onStudentIdChange: (String) -> Unit = {}
+)
+
+data class ProfileCreateStepTwoActions(
+    val onPreferredRoleChange: (String) -> Unit = {},
+    val onAddSkillClick: () -> Unit = {},
+    val onSkillTextChange: (Int, String) -> Unit = { _, _ -> },
+    val onSkillRemoved: (Int) -> Unit = {},
+    val onAddActivityClick: () -> Unit = {},
+    val onEditActivityClick: (RecruitmentActivityEntry) -> Unit = {},
+    val onCancelActivityForm: () -> Unit = {},
+    val onActivityAdded: (RecruitmentActivityEntry) -> Unit = {},
+    val onActivityEdited: (RecruitmentActivityEntry) -> Unit = {},
+    val onActivityRemoved: (RecruitmentActivityEntry) -> Unit = {},
+    val onSelfIntroductionChange: (String) -> Unit = {}
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileCreateScreen(
@@ -59,6 +82,32 @@ fun ProfileCreateScreen(
             ProfileCreateSideEffect.SaveSuccess -> onSaveSuccess()
             ProfileCreateSideEffect.SaveFailure -> Unit
         }
+    }
+
+    val stepOneActions = remember {
+        ProfileCreateStepOneActions(
+            onLoadMemberInfoClick = { viewModel.loadMemberInfo() },
+            onNicknameChange = { viewModel.setNickname(it) },
+            onDepartmentDropdownExpandChange = { viewModel.setDepartmentDropdownExpanded(it) },
+            onDepartmentSelected = { viewModel.setDepartment(it) },
+            onStudentIdChange = { viewModel.setStudentId(it) }
+        )
+    }
+
+    val stepTwoActions = remember {
+        ProfileCreateStepTwoActions(
+            onPreferredRoleChange = { viewModel.setPreferredRole(it) },
+            onAddSkillClick = { viewModel.addSkill() },
+            onSkillTextChange = { index, text -> viewModel.setSkillText(index, text) },
+            onSkillRemoved = { viewModel.removeSkill(it) },
+            onAddActivityClick = { viewModel.showActivityAddForm() },
+            onEditActivityClick = { viewModel.showActivityEditForm(it) },
+            onCancelActivityForm = { viewModel.hideActivityForm() },
+            onActivityAdded = { viewModel.addActivity(it) },
+            onActivityEdited = { viewModel.editActivity(it) },
+            onActivityRemoved = { viewModel.removeActivity(it) },
+            onSelfIntroductionChange = { viewModel.setSelfIntroduction(it) }
+        )
     }
 
     Scaffold(
@@ -81,29 +130,15 @@ fun ProfileCreateScreen(
         ProfileCreateScreenImpl(
             state = state,
             modifier = Modifier.padding(contentPadding),
-            onLoadMemberInfoClick = viewModel::loadMemberInfo,
-            onNicknameChange = viewModel::setNickname,
-            onDepartmentDropdownExpandChange = viewModel::setDepartmentDropdownExpanded,
-            onDepartmentSelected = viewModel::setDepartment,
-            onStudentIdChange = viewModel::setStudentId,
-            onPreferredRoleChange = viewModel::setPreferredRole,
-            onAddSkillClick = viewModel::addSkill,
-            onSkillTextChange = viewModel::setSkillText,
-            onSkillRemoved = viewModel::removeSkill,
-            onAddActivityClick = viewModel::showActivityAddForm,
-            onEditActivityClick = viewModel::showActivityEditForm,
-            onCancelActivityForm = viewModel::hideActivityForm,
-            onActivityAdded = viewModel::addActivity,
-            onActivityEdited = viewModel::editActivity,
-            onActivityRemoved = viewModel::removeActivity,
-            onSelfIntroductionChange = viewModel::setSelfIntroduction,
-            onNextStepClick = viewModel::goToNextStep,
-            onPreviousStepClick = viewModel::goToPreviousStep,
-            onSaveClick = viewModel::showSaveConfirmDialog,
-            onDismissSaveConfirmDialog = viewModel::dismissSaveConfirmDialog,
-            onConfirmSave = viewModel::saveProfile,
-            onDismissCancelConfirmDialog = viewModel::dismissCancelConfirmDialog,
-            onConfirmCancel = viewModel::confirmCancel
+            stepOneActions = stepOneActions,
+            stepTwoActions = stepTwoActions,
+            onNextStepClick = { viewModel.goToNextStep() },
+            onPreviousStepClick = { viewModel.goToPreviousStep() },
+            onSaveClick = { viewModel.showSaveConfirmDialog() },
+            onDismissSaveConfirmDialog = { viewModel.dismissSaveConfirmDialog() },
+            onConfirmSave = { viewModel.saveProfile() },
+            onDismissCancelConfirmDialog = { viewModel.dismissCancelConfirmDialog() },
+            onConfirmCancel = { viewModel.confirmCancel() }
         )
     }
 }
@@ -113,22 +148,8 @@ fun ProfileCreateScreen(
 private fun ProfileCreateScreenImpl(
     state: ProfileCreateState,
     modifier: Modifier = Modifier,
-    onLoadMemberInfoClick: () -> Unit = {},
-    onNicknameChange: (String) -> Unit = {},
-    onDepartmentDropdownExpandChange: (Boolean) -> Unit = {},
-    onDepartmentSelected: (String) -> Unit = {},
-    onStudentIdChange: (String) -> Unit = {},
-    onPreferredRoleChange: (String) -> Unit = {},
-    onAddSkillClick: () -> Unit = {},
-    onSkillTextChange: (Int, String) -> Unit = { _, _ -> },
-    onSkillRemoved: (Int) -> Unit = {},
-    onAddActivityClick: () -> Unit = {},
-    onEditActivityClick: (RecruitmentActivityEntry) -> Unit = {},
-    onCancelActivityForm: () -> Unit = {},
-    onActivityAdded: (RecruitmentActivityEntry) -> Unit = {},
-    onActivityEdited: (RecruitmentActivityEntry) -> Unit = {},
-    onActivityRemoved: (RecruitmentActivityEntry) -> Unit = {},
-    onSelfIntroductionChange: (String) -> Unit = {},
+    stepOneActions: ProfileCreateStepOneActions = ProfileCreateStepOneActions(),
+    stepTwoActions: ProfileCreateStepTwoActions = ProfileCreateStepTwoActions(),
     onNextStepClick: () -> Unit = {},
     onPreviousStepClick: () -> Unit = {},
     onSaveClick: () -> Unit = {},
@@ -182,26 +203,12 @@ private fun ProfileCreateScreenImpl(
             if (state.currentStep == 1) {
                 ProfileCreateStepOne(
                     state = state,
-                    onLoadMemberInfoClick = onLoadMemberInfoClick,
-                    onNicknameChange = onNicknameChange,
-                    onDepartmentDropdownExpandChange = onDepartmentDropdownExpandChange,
-                    onDepartmentSelected = onDepartmentSelected,
-                    onStudentIdChange = onStudentIdChange
+                    actions = stepOneActions
                 )
             } else {
                 ProfileCreateStepTwo(
                     state = state,
-                    onPreferredRoleChange = onPreferredRoleChange,
-                    onAddSkillClick = onAddSkillClick,
-                    onSkillTextChange = onSkillTextChange,
-                    onSkillRemoved = onSkillRemoved,
-                    onAddActivityClick = onAddActivityClick,
-                    onEditActivityClick = onEditActivityClick,
-                    onCancelActivityForm = onCancelActivityForm,
-                    onActivityAdded = onActivityAdded,
-                    onActivityEdited = onActivityEdited,
-                    onActivityRemoved = onActivityRemoved,
-                    onSelfIntroductionChange = onSelfIntroductionChange
+                    actions = stepTwoActions
                 )
             }
         }
@@ -245,12 +252,8 @@ private fun ProfileCreateScreenImpl(
 @Composable
 private fun ProfileCreateStepOne(
     state: ProfileCreateState,
-    modifier: Modifier = Modifier,
-    onLoadMemberInfoClick: () -> Unit = {},
-    onNicknameChange: (String) -> Unit = {},
-    onDepartmentDropdownExpandChange: (Boolean) -> Unit = {},
-    onDepartmentSelected: (String) -> Unit = {},
-    onStudentIdChange: (String) -> Unit = {}
+    actions: ProfileCreateStepOneActions,
+    modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(28.dp)) {
         FormSection(
@@ -259,7 +262,7 @@ private fun ProfileCreateStepOne(
             content = {
                 RecruitmentOutlinedActionButton(
                     text = stringResource(R.string.recruitment_apply_load_member_info_button),
-                    onClick = onLoadMemberInfoClick
+                    onClick = actions.onLoadMemberInfoClick
                 )
             }
         )
@@ -281,7 +284,7 @@ private fun ProfileCreateStepOne(
             content = {
                 RecruitmentTextField(
                     value = state.nickname,
-                    onValueChange = onNicknameChange,
+                    onValueChange = actions.onNicknameChange,
                     hint = stringResource(R.string.recruitment_apply_nickname_hint),
                     maxLength = PROFILE_NICKNAME_MAX_LENGTH
                 )
@@ -297,8 +300,8 @@ private fun ProfileCreateStepOne(
                     isPlaceholder = state.department.isBlank(),
                     items = DEPARTMENTS,
                     isExpanded = state.isDepartmentDropdownExpanded,
-                    onExpandedChange = onDepartmentDropdownExpandChange,
-                    onItemSelected = { index -> onDepartmentSelected(DEPARTMENTS[index]) }
+                    onExpandedChange = actions.onDepartmentDropdownExpandChange,
+                    onItemSelected = { index -> actions.onDepartmentSelected(DEPARTMENTS[index]) }
                 )
             }
         )
@@ -309,7 +312,7 @@ private fun ProfileCreateStepOne(
             content = {
                 RecruitmentTextField(
                     value = state.studentId,
-                    onValueChange = onStudentIdChange,
+                    onValueChange = actions.onStudentIdChange,
                     hint = stringResource(R.string.recruitment_apply_student_id_hint)
                 )
             }
@@ -317,22 +320,11 @@ private fun ProfileCreateStepOne(
     }
 }
 
-@Suppress("LongParameterList")
 @Composable
 private fun ProfileCreateStepTwo(
     state: ProfileCreateState,
-    modifier: Modifier = Modifier,
-    onPreferredRoleChange: (String) -> Unit = {},
-    onAddSkillClick: () -> Unit = {},
-    onSkillTextChange: (Int, String) -> Unit = { _, _ -> },
-    onSkillRemoved: (Int) -> Unit = {},
-    onAddActivityClick: () -> Unit = {},
-    onEditActivityClick: (RecruitmentActivityEntry) -> Unit = {},
-    onCancelActivityForm: () -> Unit = {},
-    onActivityAdded: (RecruitmentActivityEntry) -> Unit = {},
-    onActivityEdited: (RecruitmentActivityEntry) -> Unit = {},
-    onActivityRemoved: (RecruitmentActivityEntry) -> Unit = {},
-    onSelfIntroductionChange: (String) -> Unit = {}
+    actions: ProfileCreateStepTwoActions,
+    modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(28.dp)) {
         FormSection(
@@ -352,7 +344,7 @@ private fun ProfileCreateStepTwo(
             content = {
                 RecruitmentTextField(
                     value = state.preferredRole,
-                    onValueChange = onPreferredRoleChange,
+                    onValueChange = actions.onPreferredRoleChange,
                     hint = stringResource(R.string.recruitment_profile_preferred_role_hint),
                     maxLength = PROFILE_PREFERRED_ROLE_MAX_LENGTH
                 )
@@ -367,13 +359,13 @@ private fun ProfileCreateStepTwo(
                     state.skills.forEachIndexed { index, skill ->
                         RecruitmentSkillFieldRow(
                             value = skill,
-                            onValueChange = { text -> onSkillTextChange(index, text) },
-                            onRemove = { onSkillRemoved(index) }
+                            onValueChange = { text -> actions.onSkillTextChange(index, text) },
+                            onRemove = { actions.onSkillRemoved(index) }
                         )
                     }
                     RecruitmentOutlinedActionButton(
                         text = stringResource(R.string.recruitment_apply_add_skill),
-                        onClick = onAddSkillClick
+                        onClick = actions.onAddSkillClick
                     )
                 }
             }
@@ -388,27 +380,27 @@ private fun ProfileCreateStepTwo(
                         val formState = state.activityFormState
                         if (formState is ProfileActivityFormState.Editing && formState.activityId == activity.id) {
                             RecruitmentActivityForm(
-                                onCancel = onCancelActivityForm,
-                                onConfirm = onActivityEdited,
+                                onCancel = actions.onCancelActivityForm,
+                                onConfirm = actions.onActivityEdited,
                                 existingActivity = activity
                             )
                         } else {
                             RecruitmentActivityCard(
                                 activity = activity,
-                                onRemove = { onActivityRemoved(activity) },
-                                onEdit = { onEditActivityClick(activity) }
+                                onRemove = { actions.onActivityRemoved(activity) },
+                                onEdit = { actions.onEditActivityClick(activity) }
                             )
                         }
                     }
                     if (state.activityFormState is ProfileActivityFormState.Adding) {
                         RecruitmentActivityForm(
-                            onCancel = onCancelActivityForm,
-                            onConfirm = onActivityAdded
+                            onCancel = actions.onCancelActivityForm,
+                            onConfirm = actions.onActivityAdded
                         )
                     }
                     RecruitmentOutlinedActionButton(
                         text = stringResource(R.string.recruitment_apply_add_activity),
-                        onClick = onAddActivityClick
+                        onClick = actions.onAddActivityClick
                     )
                 }
             }
@@ -431,7 +423,7 @@ private fun ProfileCreateStepTwo(
             content = {
                 RecruitmentTextField(
                     value = state.selfIntroduction,
-                    onValueChange = onSelfIntroductionChange,
+                    onValueChange = actions.onSelfIntroductionChange,
                     hint = stringResource(R.string.recruitment_apply_self_introduction_hint),
                     singleLine = false,
                     minLines = 6,
