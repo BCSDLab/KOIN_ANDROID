@@ -31,6 +31,7 @@ import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
 import `in`.koreatech.koin.feature.recruitment.model.StableLocalDate
 import `in`.koreatech.koin.feature.recruitment.model.toStable
 import `in`.koreatech.koin.feature.recruitment.utils.toDateText
+import java.util.UUID
 
 private val FormShape = RoundedCornerShape(16.dp)
 
@@ -128,7 +129,7 @@ fun RecruitmentActivityForm(
             onClick = {
                 onConfirm(
                     RecruitmentActivityEntry(
-                        id = existingActivity?.id ?: System.currentTimeMillis(),
+                        id = existingActivity?.id ?: UUID.randomUUID().mostSignificantBits,
                         name = name,
                         startDate = requireNotNull(startDate).value,
                         endDate = if (isOngoing) null else endDate?.value,
@@ -217,9 +218,9 @@ private fun isRecruitmentActivityFormValid(
     isOngoing: Boolean,
     endDate: StableLocalDate?
 ): Boolean = name.isNotBlank() &&
-    content.isNotBlank() &&
-    startDate != null &&
-    (isOngoing || (endDate != null && !endDate.value.isBefore(startDate.value)))
+        content.isNotBlank() &&
+        startDate != null &&
+        (isOngoing || (endDate != null && !endDate.value.isBefore(startDate.value)))
 
 @Preview(showBackground = true)
 @Composable

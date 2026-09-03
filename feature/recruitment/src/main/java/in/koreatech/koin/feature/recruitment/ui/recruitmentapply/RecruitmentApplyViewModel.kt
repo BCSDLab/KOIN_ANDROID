@@ -12,6 +12,9 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
+private const val MIN_AGE = 1
+private const val MAX_AGE = 99
+
 @HiltViewModel
 @Suppress("TooManyFunctions")
 class RecruitmentApplyViewModel @Inject constructor() :
@@ -40,7 +43,9 @@ class RecruitmentApplyViewModel @Inject constructor() :
     }
 
     fun setAge(age: String) = intent {
-        reduce { state.copy(age = age) }
+        if (age.isEmpty() || (age.all { it.isDigit() } && age.toIntOrNull() in MIN_AGE..MAX_AGE)) {
+            reduce { state.copy(age = age) }
+        }
     }
 
     fun setDepartmentDropdownExpanded(expanded: Boolean) = intent {

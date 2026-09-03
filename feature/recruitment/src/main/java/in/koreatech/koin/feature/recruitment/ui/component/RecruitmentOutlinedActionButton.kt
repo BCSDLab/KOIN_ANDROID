@@ -14,29 +14,35 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 private val ButtonShape = RoundedCornerShape(16.dp)
-private val ButtonHeight = 40.dp
-private val ButtonPadding = PaddingValues(top = 8.dp, end = 12.dp, bottom = 8.dp, start = 12.dp)
+private val DefaultButtonHeight = 40.dp
+private val DefaultButtonPadding = PaddingValues(top = 8.dp, end = 12.dp, bottom = 8.dp, start = 12.dp)
 
 @Composable
 fun RecruitmentOutlinedActionButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    height: Dp = DefaultButtonHeight,
+    contentPadding: PaddingValues = DefaultButtonPadding
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(ButtonHeight)
+            .height(height)
+            .clip(ButtonShape)
             .border(0.5.dp, RebrandKoinTheme.colors.primary500, ButtonShape)
             .background(RebrandKoinTheme.colors.neutral0, ButtonShape)
-            .clickable(enabled = enabled) { onClick() }
-            .padding(ButtonPadding),
+            .clickable(enabled = enabled, role = Role.Button) { onClick() }
+            .padding(contentPadding),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
