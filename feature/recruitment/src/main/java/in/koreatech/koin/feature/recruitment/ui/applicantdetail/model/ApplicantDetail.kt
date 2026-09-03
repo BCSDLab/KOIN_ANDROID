@@ -6,7 +6,7 @@ import kotlinx.collections.immutable.ImmutableList
 
 @Immutable
 data class ApplicantDetail(
-    val id: Long,
+    val id: Int,
     val name: String,
     val role: String,
     val department: String,

@@ -1,13 +1,18 @@
 package `in`.koreatech.koin.feature.recruitment.navigation
 
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.recruitment.ui.applicantdetail.ApplicantDetailScreen
 import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.ApplicantManagementScreen
 import `in`.koreatech.koin.feature.recruitment.ui.chat.directchat.RecruitmentDirectChatScreen
 import `in`.koreatech.koin.feature.recruitment.ui.chat.groupchat.RecruitmentGroupChatScreen
+import `in`.koreatech.koin.feature.recruitment.ui.detail.RecruitmentDetailScreen
+import `in`.koreatech.koin.feature.recruitment.ui.main.RecruitmentMainScreen
+import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.MyAppliedRecruitmentScreen
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.MyRecruitmentScreen
 import `in`.koreatech.koin.feature.recruitment.ui.notification.RecruitmentNotificationScreen
 import `in`.koreatech.koin.feature.recruitment.ui.profile.ProfileScreen
@@ -15,6 +20,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.profilecreate.ProfileCreateScr
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply.RecruitmentApplyScreen
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.RecruitmentCreateScreen
 
+@Suppress("LongMethod")
 fun NavGraphBuilder.koinRecruitmentGraph(
     navController: NavController
 ) {
@@ -44,6 +50,17 @@ fun NavGraphBuilder.koinRecruitmentGraph(
         ProfileCreateScreen(
             onNavigateUp = { navController.navigateUp() },
             onSaveSuccess = { navController.navigateUp() }
+    composable<RecruitmentNavType.RecruitmentMain> {
+        RecruitmentMainScreen(
+            onTopbarBackClick = { navController.navigateUp() },
+            onItemClick = { postId ->
+                navController.navigate(RecruitmentNavType.RecruitmentDetail(postId))
+            }
+        )
+    }
+    composable<RecruitmentNavType.RecruitmentDetail> {
+        RecruitmentDetailScreen(
+            onTopbarBackClick = { navController.navigateUp() }
         )
     }
     composable<RecruitmentNavType.RecruitmentGroupChat> {
@@ -55,9 +72,10 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     composable<RecruitmentNavType.Notification> {
         RecruitmentNotificationScreen(
             onBack = { navController.popBackStack() },
-            onNavigateToPost = {
-                // TODO: 모집글 상세 화면 라우트가 추가되면 postId 로 이동하도록 연결한다.
+            onNavigateToApplicantManagement = { recruitmentId ->
+                navController.navigate(RecruitmentNavType.ApplicantManagement(recruitmentId))
             }
+            // TODO: CHAT_ROOM / MY_APPLICATIONS / 모집글 상세 라우트가 추가되면 콜백을 추가 연결한다.
         )
     }
     composable<RecruitmentNavType.ApplicantManagement> { backStackEntry ->
@@ -69,9 +87,28 @@ fun NavGraphBuilder.koinRecruitmentGraph(
             }
         )
     }
+    composable<RecruitmentNavType.MyAppliedRecruitment> {
+        val navigator = rememberNavigator()
+        val context = LocalContext.current
+        MyAppliedRecruitmentScreen(
+            onNavigateUp = { navController.navigateUp() },
+            onNavigateToLogin = {
+                navigator.navigateToSignIn(context).apply {
+                    context.startActivity(this)
+                }
+            }
+        )
+    }
     composable<RecruitmentNavType.MyRecruitment> {
+        val navigator = rememberNavigator()
+        val context = LocalContext.current
         MyRecruitmentScreen(
-            onNavigateUp = { navController.navigateUp() }
+            onNavigateUp = { navController.navigateUp() },
+            onNavigateToLogin = {
+                navigator.navigateToSignIn(context).apply {
+                    context.startActivity(this)
+                }
+            }
         )
     }
     composable<RecruitmentNavType.ApplicantDetail> {

@@ -42,7 +42,7 @@ fun RecruitmentRemovableChip(
             tint = RebrandKoinTheme.colors.neutral500,
             modifier = Modifier
                 .size(16.dp)
-                .noRippleClickable { onRemove() }
+                .noRippleClickable(onClick = onRemove)
         )
     }
 }

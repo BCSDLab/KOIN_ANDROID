@@ -13,6 +13,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -32,11 +34,12 @@ fun RecruitmentFilledActionButton(
         modifier = modifier
             .fillMaxWidth()
             .height(ButtonHeight)
+            .clip(ButtonShape)
             .background(
                 color = if (enabled) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral200,
                 shape = ButtonShape
             )
-            .clickable(enabled = enabled) { onClick() }
+            .clickable(enabled = enabled, role = Role.Button) { onClick() }
             .padding(ButtonPadding),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically

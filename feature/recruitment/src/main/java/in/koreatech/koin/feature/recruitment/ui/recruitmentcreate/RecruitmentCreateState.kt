@@ -39,8 +39,13 @@ data class RecruitmentCreateState(
     val isSubmitEnabled: Boolean
         get() = title.isNotBlank() &&
             progressType != null &&
-            (roles.isNotEmpty() || isRoleCountUndetermined) &&
+            ((roles.isNotEmpty() && roles.all { it.isValid }) || isRoleCountUndetermined) &&
             description.isNotBlank()
 }
+
+private val TeamRecruitmentRole.isValid: Boolean
+    get() = name.isNotBlank() &&
+        name.length <= TeamRecruitmentRole.NAME_MAX_LENGTH &&
+        count in TeamRecruitmentRole.MIN_MEMBER_COUNT..TeamRecruitmentRole.MAX_MEMBER_COUNT
 
 private const val DEFAULT_RECRUIT_PERIOD_DAYS = 14L
