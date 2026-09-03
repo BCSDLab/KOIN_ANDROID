@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class RecruitmentNavType {
     @Serializable
+    data object RecruitmentCreate : RecruitmentNavType()
     data object RecruitmentMain : RecruitmentNavType()
 
     @Serializable
