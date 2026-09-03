@@ -255,7 +255,7 @@ private fun RecruitmentCreateScreenImpl(
                                 modifier = Modifier.weight(1f)
                             )
                             Text(
-                                text = text = "-",
+                                text = "-",
                                 style = RebrandKoinTheme.typography.medium16,
                                 color = RebrandKoinTheme.colors.neutral400,
                                 modifier = Modifier.wrapContentHeight()
