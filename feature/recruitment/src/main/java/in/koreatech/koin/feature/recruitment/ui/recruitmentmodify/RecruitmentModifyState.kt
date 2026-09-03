@@ -25,6 +25,7 @@ data class RecruitmentModifyState(
     val applicationDeadline: StableLocalDate = StableLocalDate.now(),
     val roles: ImmutableList<RecruitmentModifyRole> = persistentListOf(),
     val isRoleCountUndetermined: Boolean = false,
+    val participantCount: Int = RecruitmentModifyRole.MIN_MEMBER_COUNT,
     val description: String = "",
     val relatedUrl: String = "",
     val qualification: String = "",
@@ -33,7 +34,8 @@ data class RecruitmentModifyState(
     val dateSelectionTarget: DateSelectionTarget = DateSelectionTarget.RECRUIT_START,
     val showSubmitConfirmDialog: Boolean = false,
     val showCancelConfirmDialog: Boolean = false,
-    val isSubmitting: Boolean = false
+    val isSubmitting: Boolean = false,
+    val isLoading: Boolean = false
 ) {
     val isSubmitEnabled: Boolean
         get() = title.isNotBlank() &&
