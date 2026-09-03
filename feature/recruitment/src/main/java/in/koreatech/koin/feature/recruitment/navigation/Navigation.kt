@@ -25,7 +25,7 @@ fun NavGraphBuilder.koinRecruitmentGraph(
         RecruitmentCreateScreen(
             onNavigateUp = { navController.navigateUp() },
             onRecruitmentCreated = { navController.navigateUp() }
-            )
+        )
     }
     composable<RecruitmentNavType.RecruitmentMain> {
         RecruitmentMainScreen(
