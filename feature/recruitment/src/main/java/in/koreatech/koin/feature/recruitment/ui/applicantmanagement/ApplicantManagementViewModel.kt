@@ -36,7 +36,7 @@ class ApplicantManagementViewModel @Inject constructor(
             ),
             applicants = persistentListOf(
                 Applicant(
-                    id = 1L,
+                    id = 1,
                     name = "김철수",
                     role = "프론트엔드",
                     department = "컴퓨터공학부",

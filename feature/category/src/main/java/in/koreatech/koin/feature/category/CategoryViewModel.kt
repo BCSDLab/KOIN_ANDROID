@@ -33,18 +33,19 @@ class CategoryViewModel @Inject constructor(
 
     private fun logCategoryMenuClick(id: CategoryMenuId) {
         val (label, value) = when (id) {
+            CategoryMenuId.RECRUITMENT -> AnalyticsConstant.Label.Category.CATEGORY_TEAM_RECRUITMENT to "팀원 모집"
+            CategoryMenuId.LOST_AND_FOUND -> AnalyticsConstant.Label.Category.CATEGORY_LOST_AND_FOUND to "분실물"
+            CategoryMenuId.OPERATING_INFO -> AnalyticsConstant.Label.Category.CATEGORY_FACILITY to "교내 시설물 정보"
+            CategoryMenuId.DEPARTMENT_INFO -> AnalyticsConstant.Label.Category.CATEGORY_DEPARTMENT to "학교 부서 정보"
+            CategoryMenuId.DINING -> AnalyticsConstant.Label.Category.CATEGORY_DINING to "식단"
+            CategoryMenuId.STORE -> AnalyticsConstant.Label.Category.CATEGORY_NEARBY_STORE to "주변상점"
             CategoryMenuId.TIMETABLE -> AnalyticsConstant.Label.Category.CATEGORY_TIMETABLE to "시간표"
-            CategoryMenuId.LOST_AND_FOUND -> AnalyticsConstant.Label.Category.CATEGORY_LOST_PROPERTY to "분실물"
-            CategoryMenuId.OPERATING_INFO -> AnalyticsConstant.Label.Category.CATEGORY_CAMPUS to "교내 시설물 정보"
-            CategoryMenuId.DEPARTMENT_INFO -> AnalyticsConstant.Label.Category.CATEGORY_CAMPUS to "학교 부서정보"
-            CategoryMenuId.DINING -> AnalyticsConstant.Label.Category.CATEGORY_CAMPUS to "식단"
-            CategoryMenuId.STORE -> AnalyticsConstant.Label.Category.CATEGORY_CAMPUS to "주변상점"
-            CategoryMenuId.BUS_TIMETABLE -> AnalyticsConstant.Label.Category.CATEGORY_TRANSPORTATION to "버스 시간표"
+            CategoryMenuId.BUS_TIMETABLE -> AnalyticsConstant.Label.Category.CATEGORY_BUS_TIMETABLE to "버스 시간표"
             CategoryMenuId.TRANSPORT_SEARCH -> AnalyticsConstant.Label.Category.CATEGORY_TRANSPORTATION to "교통편 조회하기"
-            CategoryMenuId.CALLVAN -> AnalyticsConstant.Label.Category.CATEGORY_TRANSPORTATION to "콜벤팟 모집"
-            CategoryMenuId.CHAT -> AnalyticsConstant.Label.Category.CATEGORY_ETC to "채팅"
-            CategoryMenuId.HOUSING -> AnalyticsConstant.Label.Category.CATEGORY_ETC to "복덕방"
-            CategoryMenuId.KOIN_BUSINESS -> AnalyticsConstant.Label.Category.CATEGORY_ETC to "코인 for Business"
+            CategoryMenuId.CALLVAN -> AnalyticsConstant.Label.Category.CATEGORY_CALLVAN_RECRUITMENT to "콜벤팟 모집"
+            CategoryMenuId.CHAT -> AnalyticsConstant.Label.Category.CATEGORY_CHAT to "채팅"
+            CategoryMenuId.HOUSING -> AnalyticsConstant.Label.Category.CATEGORY_ROOM to "복덕방"
+            CategoryMenuId.KOIN_BUSINESS -> AnalyticsConstant.Label.Category.CATEGORY_KOIN_FOR_BUSINESS to "코인 for Business"
         }
         EventLogger.logCampusClickEvent(label, value)
     }

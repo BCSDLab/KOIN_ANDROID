@@ -7,12 +7,16 @@ import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.data.repository.BusRepositoryImpl
 import `in`.koreatech.koin.data.repository.CallvanRepositoryImpl
 import `in`.koreatech.koin.data.repository.DepartmentRepositoryImpl
+import `in`.koreatech.koin.data.repository.RecruitmentChatRepositoryImpl
+import `in`.koreatech.koin.data.repository.RecruitmentRepositoryImpl
 import `in`.koreatech.koin.data.repository.TimetableRepositoryImpl
 import `in`.koreatech.koin.data.repository.WeatherRepositoryImpl
 import `in`.koreatech.koin.data.repository.firebase.messaging.FirebaseMessagingRepositoryImpl
 import `in`.koreatech.koin.domain.repository.BusRepository
 import `in`.koreatech.koin.domain.repository.CallvanRepository
 import `in`.koreatech.koin.domain.repository.DepartmentRepository
+import `in`.koreatech.koin.domain.repository.RecruitmentChatRepository
+import `in`.koreatech.koin.domain.repository.RecruitmentRepository
 import `in`.koreatech.koin.domain.repository.TimetableRepository
 import `in`.koreatech.koin.domain.repository.WeatherRepository
 import `in`.koreatech.koin.domain.repository.firebase.messaging.FirebaseMessagingRepository
@@ -46,4 +50,14 @@ abstract class BindsRepositoryModule {
     @Binds
     @Singleton
     abstract fun bindsDepartmentRepository(departmentRepositoryImpl: DepartmentRepositoryImpl): DepartmentRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsRecruitmentRepository(recruitmentRepositoryImpl: RecruitmentRepositoryImpl): RecruitmentRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsRecruitmentChatRepository(
+        recruitmentChatRepositoryImpl: RecruitmentChatRepositoryImpl
+    ): RecruitmentChatRepository
 }
