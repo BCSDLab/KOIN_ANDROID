@@ -15,8 +15,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -25,7 +27,9 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -56,8 +60,12 @@ import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentFilterSt
 import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentItemModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+
+private const val LOAD_MORE_THRESHOLD = 3
 
 @Composable
 fun RecruitmentMainScreen(
@@ -101,6 +109,9 @@ fun RecruitmentMainScreen(
         totalCount = state.totalCount,
         isRefreshing = state.isRefreshing,
         onRefresh = { viewModel.fetchRecruitments(isRefresh = true) },
+        isLoadingMore = state.isLoadingMore,
+        hasMore = state.currentPage < state.totalPage,
+        onLoadMore = viewModel::loadMoreRecruitments,
         filterState = state.filterState,
         onSearchValueChange = viewModel::updateSearch,
         onFilterClick = { viewModel.updateFilterVisible(true) },
@@ -125,6 +136,9 @@ private fun RecruitmentMainScreenImpl(
     filterState: RecruitmentFilterState,
     isRefreshing: Boolean = false,
     onRefresh: () -> Unit = {},
+    isLoadingMore: Boolean = false,
+    hasMore: Boolean = false,
+    onLoadMore: () -> Unit = {},
     onSearchValueChange: (String) -> Unit = {},
     onFilterClick: () -> Unit = {},
     onRemoveStatus: () -> Unit = {},
@@ -264,8 +278,22 @@ private fun RecruitmentMainScreenImpl(
                         RecruitmentEmptyContent(modifier = Modifier.padding(bottom = 40.dp))
                     }
                 } else {
+                    val listState = rememberLazyListState()
+
+                    LaunchedEffect(listState, hasMore, isLoadingMore, items.size) {
+                        snapshotFlow {
+                            val layoutInfo = listState.layoutInfo
+                            val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+                            lastVisibleItemIndex >= layoutInfo.totalItemsCount - LOAD_MORE_THRESHOLD
+                        }
+                            .distinctUntilChanged()
+                            .filter { it }
+                            .collect { if (hasMore && !isLoadingMore) onLoadMore() }
+                    }
+
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
+                        state = listState,
                         contentPadding = PaddingValues(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 96.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
@@ -274,6 +302,21 @@ private fun RecruitmentMainScreenImpl(
                                 item = item,
                                 onClick = { onItemClick(item.id) }
                             )
+                        }
+                        if (isLoadingMore) {
+                            item {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 16.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier.size(24.dp),
+                                        color = RebrandKoinTheme.colors.primary500
+                                    )
+                                }
+                            }
                         }
                     }
                 }

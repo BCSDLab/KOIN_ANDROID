@@ -11,8 +11,11 @@ data class RecruitmentMainState(
     val searchValue: String = "",
     val items: ImmutableList<RecruitmentItemModel> = persistentListOf(),
     val totalCount: Long = 0,
+    val currentPage: Int = 1,
+    val totalPage: Int = 1,
     val isLoading: Boolean = false,
     val isRefreshing: Boolean = false,
+    val isLoadingMore: Boolean = false,
     val filterState: RecruitmentFilterState = RecruitmentFilterState(),
     val pendingFilterState: RecruitmentFilterState = RecruitmentFilterState(),
     val isFilterVisible: Boolean = false
