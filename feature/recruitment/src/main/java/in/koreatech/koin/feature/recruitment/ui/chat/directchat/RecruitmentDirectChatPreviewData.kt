@@ -15,13 +15,13 @@ object RecruitmentDirectChatPreviewData {
             date = DATE,
             messages = listOf(
                 RecruitmentChatMessage(
-                    id = "1",
+                    id = 1,
                     content = "안녕하세요! 지원서 잘 봤습니다.",
                     timestamp = "13:53",
                     isSentByMe = false
                 ),
                 RecruitmentChatMessage(
-                    id = "2",
+                    id = 2,
                     content = "감사합니다! 잘 부탁드려요.",
                     timestamp = "13:54",
                     isSentByMe = true

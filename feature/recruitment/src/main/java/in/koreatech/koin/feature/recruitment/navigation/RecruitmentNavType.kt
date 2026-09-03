@@ -12,18 +12,14 @@ sealed class RecruitmentNavType {
 
     @Serializable
     data class RecruitmentGroupChat(
-        val postId: Int,
-        val title: String,
-        val currentMemberCount: Int,
-        val maxMemberCount: Int,
-        val date: String
+        val recruitmentId: Int,
+        val chatRoomId: Int
     ) : RecruitmentNavType()
 
     @Serializable
     data class RecruitmentDirectChat(
-        val postId: Int,
-        val partnerNickname: String,
-        val date: String
+        val recruitmentId: Int,
+        val applicationId: Int
     ) : RecruitmentNavType()
 
     @Serializable
