@@ -50,6 +50,8 @@ fun NavGraphBuilder.koinRecruitmentGraph(
         ProfileCreateScreen(
             onNavigateUp = { navController.navigateUp() },
             onSaveSuccess = { navController.navigateUp() }
+        )
+    }
     composable<RecruitmentNavType.RecruitmentMain> {
         RecruitmentMainScreen(
             onTopbarBackClick = { navController.navigateUp() },
