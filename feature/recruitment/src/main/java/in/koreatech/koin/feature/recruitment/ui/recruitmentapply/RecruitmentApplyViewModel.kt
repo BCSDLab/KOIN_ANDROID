@@ -25,200 +25,146 @@ class RecruitmentApplyViewModel @Inject constructor() :
         RecruitmentApplyState()
     )
 
-    fun loadMemberInfo() {
-        intent {
-            reduce {
-                state.copy(
-                    isMemberInfoLoaded = true,
-                    nickname = state.nickname.ifEmpty { "코인유저" },
-                    department = "컴퓨터공학부",
-                    studentId = state.studentId.ifEmpty { "2023120203219" }
-                )
-            }
+    fun loadMemberInfo() = intent {
+        reduce {
+            state.copy(
+                isMemberInfoLoaded = true,
+                nickname = state.nickname.ifEmpty { "코인유저" },
+                department = "컴퓨터공학부",
+                studentId = state.studentId.ifEmpty { "2023120203219" }
+            )
         }
     }
 
-    fun setNickname(nickname: String) {
-        intent {
-            if (nickname.length <= NICKNAME_MAX_LENGTH) {
-                reduce { state.copy(nickname = nickname) }
-            }
+    fun setNickname(nickname: String) = intent {
+        if (nickname.length <= NICKNAME_MAX_LENGTH) {
+            reduce { state.copy(nickname = nickname) }
         }
     }
 
-    fun setAge(age: String) {
-        intent {
-            if (age.isEmpty() || (age.all { it.isDigit() } && age.toIntOrNull() in MIN_AGE..MAX_AGE)) {
-                reduce { state.copy(age = age) }
-            }
+    fun setAge(age: String) = intent {
+        if (age.isEmpty() || (age.all { it.isDigit() } && age.toIntOrNull() in MIN_AGE..MAX_AGE)) {
+            reduce { state.copy(age = age) }
         }
     }
 
-    fun setDepartmentDropdownExpanded(expanded: Boolean) {
-        intent {
-            reduce { state.copy(isDepartmentDropdownExpanded = expanded) }
+    fun setDepartmentDropdownExpanded(expanded: Boolean) = intent {
+        reduce { state.copy(isDepartmentDropdownExpanded = expanded) }
+    }
+
+    fun setDepartment(department: String) = intent {
+        reduce { state.copy(department = department, isDepartmentDropdownExpanded = false) }
+    }
+
+    fun setStudentId(studentId: String) = intent {
+        reduce { state.copy(studentId = studentId) }
+    }
+
+    fun addSkill() = intent {
+        reduce { state.copy(skills = (state.skills + "").toPersistentList()) }
+    }
+
+    fun setSkillText(index: Int, text: String) = intent {
+        reduce {
+            state.copy(
+                skills = state.skills.mapIndexed { i, skill -> if (i == index) text else skill }.toPersistentList()
+            )
         }
     }
 
-    fun setDepartment(department: String) {
-        intent {
-            reduce { state.copy(department = department, isDepartmentDropdownExpanded = false) }
+    fun removeSkill(index: Int) = intent {
+        reduce {
+            state.copy(
+                skills = state.skills.filterIndexed { i, _ -> i != index }.toPersistentList()
+            )
         }
     }
 
-    fun setStudentId(studentId: String) {
-        intent {
-            reduce { state.copy(studentId = studentId) }
+    fun showActivityAddForm() = intent {
+        reduce { state.copy(activityFormState = ActivityFormState.Adding) }
+    }
+
+    fun showActivityEditForm(activity: RecruitmentActivityEntry) = intent {
+        reduce { state.copy(activityFormState = ActivityFormState.Editing(activity.id)) }
+    }
+
+    fun hideActivityForm() = intent {
+        reduce { state.copy(activityFormState = ActivityFormState.Hidden) }
+    }
+
+    fun addActivity(activity: RecruitmentActivityEntry) = intent {
+        reduce {
+            state.copy(
+                activities = (state.activities + activity).toPersistentList(),
+                activityFormState = ActivityFormState.Hidden
+            )
         }
     }
 
-    fun addSkill() {
-        intent {
-            reduce { state.copy(skills = (state.skills + "").toPersistentList()) }
+    fun editActivity(activity: RecruitmentActivityEntry) = intent {
+        reduce {
+            state.copy(
+                activities = state.activities
+                    .map { if (it.id == activity.id) activity else it }
+                    .toPersistentList(),
+                activityFormState = ActivityFormState.Hidden
+            )
         }
     }
 
-    fun setSkillText(index: Int, text: String) {
-        intent {
-            reduce {
-                state.copy(
-                    skills = state.skills.mapIndexed { i, skill -> if (i == index) text else skill }.toPersistentList()
-                )
-            }
+    fun removeActivity(activity: RecruitmentActivityEntry) = intent {
+        reduce { state.copy(activities = state.activities.minus(activity).toPersistentList()) }
+    }
+
+    fun setSelfIntroduction(text: String) = intent {
+        reduce { state.copy(selfIntroduction = text) }
+    }
+
+    fun goToNextStep() = intent {
+        reduce { state.copy(currentStep = RECRUITMENT_APPLY_STEP_COUNT) }
+    }
+
+    fun goToPreviousStep() = intent {
+        reduce { state.copy(currentStep = 1) }
+    }
+
+    fun selectRole(role: TeamRecruitmentRole) = intent {
+        if (!role.isClosed) {
+            reduce { state.copy(selectedRole = role) }
         }
     }
 
-    fun removeSkill(index: Int) {
-        intent {
-            reduce {
-                state.copy(
-                    skills = state.skills.filterIndexed { i, _ -> i != index }.toPersistentList()
-                )
-            }
-        }
+    fun setMotivation(text: String) = intent {
+        reduce { state.copy(motivation = text) }
     }
 
-    fun showActivityAddForm() {
-        intent {
-            reduce { state.copy(activityFormState = ActivityFormState.Adding) }
-        }
+    fun setAvailableTime(text: String) = intent {
+        reduce { state.copy(availableTime = text) }
     }
 
-    fun showActivityEditForm(activity: RecruitmentActivityEntry) {
-        intent {
-            reduce { state.copy(activityFormState = ActivityFormState.Editing(activity.id)) }
-        }
+    fun showSubmitConfirmDialog() = intent {
+        reduce { state.copy(showSubmitConfirmDialog = true) }
     }
 
-    fun hideActivityForm() {
-        intent {
-            reduce { state.copy(activityFormState = ActivityFormState.Hidden) }
-        }
+    fun dismissSubmitConfirmDialog() = intent {
+        reduce { state.copy(showSubmitConfirmDialog = false) }
     }
 
-    fun addActivity(activity: RecruitmentActivityEntry) {
-        intent {
-            reduce {
-                state.copy(
-                    activities = (state.activities + activity).toPersistentList(),
-                    activityFormState = ActivityFormState.Hidden
-                )
-            }
-        }
+    fun showCancelConfirmDialog() = intent {
+        reduce { state.copy(showCancelConfirmDialog = true) }
     }
 
-    fun editActivity(activity: RecruitmentActivityEntry) {
-        intent {
-            reduce {
-                state.copy(
-                    activities = state.activities
-                        .map { if (it.id == activity.id) activity else it }
-                        .toPersistentList(),
-                    activityFormState = ActivityFormState.Hidden
-                )
-            }
-        }
+    fun dismissCancelConfirmDialog() = intent {
+        reduce { state.copy(showCancelConfirmDialog = false) }
     }
 
-    fun removeActivity(activity: RecruitmentActivityEntry) {
-        intent {
-            reduce { state.copy(activities = state.activities.minus(activity).toPersistentList()) }
-        }
+    fun confirmCancel() = intent {
+        reduce { state.copy(showCancelConfirmDialog = false) }
+        postSideEffect(RecruitmentApplySideEffect.NavigateUp)
     }
 
-    fun setSelfIntroduction(text: String) {
-        intent {
-            reduce { state.copy(selfIntroduction = text) }
-        }
-    }
-
-    fun goToNextStep() {
-        intent {
-            reduce { state.copy(currentStep = RECRUITMENT_APPLY_STEP_COUNT) }
-        }
-    }
-
-    fun goToPreviousStep() {
-        intent {
-            reduce { state.copy(currentStep = 1) }
-        }
-    }
-
-    fun selectRole(role: TeamRecruitmentRole) {
-        intent {
-            if (!role.isClosed) {
-                reduce { state.copy(selectedRole = role) }
-            }
-        }
-    }
-
-    fun setMotivation(text: String) {
-        intent {
-            reduce { state.copy(motivation = text) }
-        }
-    }
-
-    fun setAvailableTime(text: String) {
-        intent {
-            reduce { state.copy(availableTime = text) }
-        }
-    }
-
-    fun showSubmitConfirmDialog() {
-        intent {
-            reduce { state.copy(showSubmitConfirmDialog = true) }
-        }
-    }
-
-    fun dismissSubmitConfirmDialog() {
-        intent {
-            reduce { state.copy(showSubmitConfirmDialog = false) }
-        }
-    }
-
-    fun showCancelConfirmDialog() {
-        intent {
-            reduce { state.copy(showCancelConfirmDialog = true) }
-        }
-    }
-
-    fun dismissCancelConfirmDialog() {
-        intent {
-            reduce { state.copy(showCancelConfirmDialog = false) }
-        }
-    }
-
-    fun confirmCancel() {
-        intent {
-            reduce { state.copy(showCancelConfirmDialog = false) }
-            postSideEffect(RecruitmentApplySideEffect.NavigateUp)
-        }
-    }
-
-    fun submitApplication() {
-        intent {
-            reduce { state.copy(isSubmitting = true, showSubmitConfirmDialog = false) }
-            postSideEffect(RecruitmentApplySideEffect.ApplySuccess)
-        }
+    fun submitApplication() = intent {
+        reduce { state.copy(isSubmitting = true, showSubmitConfirmDialog = false) }
+        postSideEffect(RecruitmentApplySideEffect.ApplySuccess)
     }
 }

@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -54,6 +55,25 @@ private const val AVAILABLE_TIME_MAX_LENGTH = 100
 
 private val DEPARTMENTS = persistentListOf("컴퓨터공학부", "전전통", "고용", "산경", "등등..")
 
+data class RecruitmentApplyStepOneActions(
+    val onLoadMemberInfoClick: () -> Unit = {},
+    val onNicknameChange: (String) -> Unit = {},
+    val onAgeChange: (String) -> Unit = {},
+    val onDepartmentDropdownExpandChange: (Boolean) -> Unit = {},
+    val onDepartmentSelected: (String) -> Unit = {},
+    val onStudentIdChange: (String) -> Unit = {},
+    val onAddSkillClick: () -> Unit = {},
+    val onSkillTextChange: (Int, String) -> Unit = { _, _ -> },
+    val onSkillRemoved: (Int) -> Unit = {},
+    val onAddActivityClick: () -> Unit = {},
+    val onEditActivityClick: (RecruitmentActivityEntry) -> Unit = {},
+    val onCancelActivityForm: () -> Unit = {},
+    val onActivityAdded: (RecruitmentActivityEntry) -> Unit = {},
+    val onActivityEdited: (RecruitmentActivityEntry) -> Unit = {},
+    val onActivityRemoved: (RecruitmentActivityEntry) -> Unit = {},
+    val onSelfIntroductionChange: (String) -> Unit = {}
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecruitmentApplyScreen(
@@ -72,6 +92,27 @@ fun RecruitmentApplyScreen(
         }
     }
 
+    val stepOneActions = remember {
+        RecruitmentApplyStepOneActions(
+            onLoadMemberInfoClick = { viewModel.loadMemberInfo() },
+            onNicknameChange = { viewModel.setNickname(it) },
+            onAgeChange = { viewModel.setAge(it) },
+            onDepartmentDropdownExpandChange = { viewModel.setDepartmentDropdownExpanded(it) },
+            onDepartmentSelected = { viewModel.setDepartment(it) },
+            onStudentIdChange = { viewModel.setStudentId(it) },
+            onAddSkillClick = { viewModel.addSkill() },
+            onSkillTextChange = { index, text -> viewModel.setSkillText(index, text) },
+            onSkillRemoved = { viewModel.removeSkill(it) },
+            onAddActivityClick = { viewModel.showActivityAddForm() },
+            onEditActivityClick = { viewModel.showActivityEditForm(it) },
+            onCancelActivityForm = { viewModel.hideActivityForm() },
+            onActivityAdded = { viewModel.addActivity(it) },
+            onActivityEdited = { viewModel.editActivity(it) },
+            onActivityRemoved = { viewModel.removeActivity(it) },
+            onSelfIntroductionChange = { viewModel.setSelfIntroduction(it) }
+        )
+    }
+
     Scaffold(
         modifier = modifier.imePadding(),
         containerColor = RebrandKoinTheme.colors.neutral50,
@@ -88,31 +129,16 @@ fun RecruitmentApplyScreen(
         RecruitmentApplyScreenImpl(
             state = state,
             modifier = Modifier.padding(contentPadding),
-            onLoadMemberInfoClick = viewModel::loadMemberInfo,
-            onNicknameChange = viewModel::setNickname,
-            onAgeChange = viewModel::setAge,
-            onDepartmentDropdownExpandChange = viewModel::setDepartmentDropdownExpanded,
-            onDepartmentSelected = viewModel::setDepartment,
-            onStudentIdChange = viewModel::setStudentId,
-            onAddSkillClick = viewModel::addSkill,
-            onSkillTextChange = viewModel::setSkillText,
-            onSkillRemoved = viewModel::removeSkill,
-            onAddActivityClick = viewModel::showActivityAddForm,
-            onEditActivityClick = viewModel::showActivityEditForm,
-            onCancelActivityForm = viewModel::hideActivityForm,
-            onActivityAdded = viewModel::addActivity,
-            onActivityEdited = viewModel::editActivity,
-            onActivityRemoved = viewModel::removeActivity,
-            onSelfIntroductionChange = viewModel::setSelfIntroduction,
-            onNextStepClick = viewModel::goToNextStep,
-            onRoleSelected = viewModel::selectRole,
-            onMotivationChange = viewModel::setMotivation,
-            onAvailableTimeChange = viewModel::setAvailableTime,
-            onSubmitClick = viewModel::showSubmitConfirmDialog,
-            onDismissSubmitConfirmDialog = viewModel::dismissSubmitConfirmDialog,
-            onConfirmSubmit = viewModel::submitApplication,
-            onDismissCancelConfirmDialog = viewModel::dismissCancelConfirmDialog,
-            onConfirmCancel = viewModel::confirmCancel
+            stepOneActions = stepOneActions,
+            onNextStepClick = { viewModel.goToNextStep() },
+            onRoleSelected = { viewModel.selectRole(it) },
+            onMotivationChange = { viewModel.setMotivation(it) },
+            onAvailableTimeChange = { viewModel.setAvailableTime(it) },
+            onSubmitClick = { viewModel.showSubmitConfirmDialog() },
+            onDismissSubmitConfirmDialog = { viewModel.dismissSubmitConfirmDialog() },
+            onConfirmSubmit = { viewModel.submitApplication() },
+            onDismissCancelConfirmDialog = { viewModel.dismissCancelConfirmDialog() },
+            onConfirmCancel = { viewModel.confirmCancel() }
         )
     }
 }
@@ -122,22 +148,7 @@ fun RecruitmentApplyScreen(
 private fun RecruitmentApplyScreenImpl(
     state: RecruitmentApplyState,
     modifier: Modifier = Modifier,
-    onLoadMemberInfoClick: () -> Unit = {},
-    onNicknameChange: (String) -> Unit = {},
-    onAgeChange: (String) -> Unit = {},
-    onDepartmentDropdownExpandChange: (Boolean) -> Unit = {},
-    onDepartmentSelected: (String) -> Unit = {},
-    onStudentIdChange: (String) -> Unit = {},
-    onAddSkillClick: () -> Unit = {},
-    onSkillTextChange: (Int, String) -> Unit = { _, _ -> },
-    onSkillRemoved: (Int) -> Unit = {},
-    onAddActivityClick: () -> Unit = {},
-    onEditActivityClick: (RecruitmentActivityEntry) -> Unit = {},
-    onCancelActivityForm: () -> Unit = {},
-    onActivityAdded: (RecruitmentActivityEntry) -> Unit = {},
-    onActivityEdited: (RecruitmentActivityEntry) -> Unit = {},
-    onActivityRemoved: (RecruitmentActivityEntry) -> Unit = {},
-    onSelfIntroductionChange: (String) -> Unit = {},
+    stepOneActions: RecruitmentApplyStepOneActions = RecruitmentApplyStepOneActions(),
     onNextStepClick: () -> Unit = {},
     onRoleSelected: (TeamRecruitmentRole) -> Unit = {},
     onMotivationChange: (String) -> Unit = {},
@@ -189,22 +200,7 @@ private fun RecruitmentApplyScreenImpl(
             if (state.currentStep == 1) {
                 RecruitmentApplyStepOne(
                     state = state,
-                    onLoadMemberInfoClick = onLoadMemberInfoClick,
-                    onNicknameChange = onNicknameChange,
-                    onAgeChange = onAgeChange,
-                    onDepartmentDropdownExpandChange = onDepartmentDropdownExpandChange,
-                    onDepartmentSelected = onDepartmentSelected,
-                    onStudentIdChange = onStudentIdChange,
-                    onAddSkillClick = onAddSkillClick,
-                    onSkillTextChange = onSkillTextChange,
-                    onSkillRemoved = onSkillRemoved,
-                    onAddActivityClick = onAddActivityClick,
-                    onEditActivityClick = onEditActivityClick,
-                    onCancelActivityForm = onCancelActivityForm,
-                    onActivityAdded = onActivityAdded,
-                    onActivityEdited = onActivityEdited,
-                    onActivityRemoved = onActivityRemoved,
-                    onSelfIntroductionChange = onSelfIntroductionChange
+                    actions = stepOneActions
                 )
             } else {
                 RecruitmentApplyStepTwo(
@@ -239,27 +235,11 @@ private fun RecruitmentApplyScreenImpl(
     }
 }
 
-@Suppress("LongParameterList")
 @Composable
 private fun RecruitmentApplyStepOne(
     state: RecruitmentApplyState,
-    modifier: Modifier = Modifier,
-    onLoadMemberInfoClick: () -> Unit = {},
-    onNicknameChange: (String) -> Unit = {},
-    onAgeChange: (String) -> Unit = {},
-    onDepartmentDropdownExpandChange: (Boolean) -> Unit = {},
-    onDepartmentSelected: (String) -> Unit = {},
-    onStudentIdChange: (String) -> Unit = {},
-    onAddSkillClick: () -> Unit = {},
-    onSkillTextChange: (Int, String) -> Unit = { _, _ -> },
-    onSkillRemoved: (Int) -> Unit = {},
-    onAddActivityClick: () -> Unit = {},
-    onEditActivityClick: (RecruitmentActivityEntry) -> Unit = {},
-    onCancelActivityForm: () -> Unit = {},
-    onActivityAdded: (RecruitmentActivityEntry) -> Unit = {},
-    onActivityEdited: (RecruitmentActivityEntry) -> Unit = {},
-    onActivityRemoved: (RecruitmentActivityEntry) -> Unit = {},
-    onSelfIntroductionChange: (String) -> Unit = {}
+    actions: RecruitmentApplyStepOneActions,
+    modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(28.dp)) {
         FormSection(
@@ -268,7 +248,7 @@ private fun RecruitmentApplyStepOne(
             content = {
                 RecruitmentOutlinedActionButton(
                     text = stringResource(R.string.recruitment_apply_load_member_info_button),
-                    onClick = onLoadMemberInfoClick
+                    onClick = actions.onLoadMemberInfoClick
                 )
             }
         )
@@ -290,7 +270,7 @@ private fun RecruitmentApplyStepOne(
             content = {
                 RecruitmentTextField(
                     value = state.nickname,
-                    onValueChange = onNicknameChange,
+                    onValueChange = actions.onNicknameChange,
                     hint = stringResource(R.string.recruitment_apply_nickname_hint),
                     maxLength = NICKNAME_MAX_LENGTH
                 )
@@ -303,7 +283,7 @@ private fun RecruitmentApplyStepOne(
             content = {
                 RecruitmentTextField(
                     value = state.age,
-                    onValueChange = onAgeChange,
+                    onValueChange = actions.onAgeChange,
                     hint = stringResource(R.string.recruitment_apply_age_hint),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
@@ -319,8 +299,8 @@ private fun RecruitmentApplyStepOne(
                     isPlaceholder = state.department.isBlank(),
                     items = DEPARTMENTS,
                     isExpanded = state.isDepartmentDropdownExpanded,
-                    onExpandedChange = onDepartmentDropdownExpandChange,
-                    onItemSelected = { index -> onDepartmentSelected(DEPARTMENTS[index]) }
+                    onExpandedChange = actions.onDepartmentDropdownExpandChange,
+                    onItemSelected = { index -> actions.onDepartmentSelected(DEPARTMENTS[index]) }
                 )
             }
         )
@@ -331,7 +311,7 @@ private fun RecruitmentApplyStepOne(
             content = {
                 RecruitmentTextField(
                     value = state.studentId,
-                    onValueChange = onStudentIdChange,
+                    onValueChange = actions.onStudentIdChange,
                     hint = stringResource(R.string.recruitment_apply_student_id_hint)
                 )
             }
@@ -345,13 +325,13 @@ private fun RecruitmentApplyStepOne(
                     state.skills.forEachIndexed { index, skill ->
                         RecruitmentSkillFieldRow(
                             value = skill,
-                            onValueChange = { text -> onSkillTextChange(index, text) },
-                            onRemove = { onSkillRemoved(index) }
+                            onValueChange = { text -> actions.onSkillTextChange(index, text) },
+                            onRemove = { actions.onSkillRemoved(index) }
                         )
                     }
                     RecruitmentOutlinedActionButton(
                         text = stringResource(R.string.recruitment_apply_add_skill),
-                        onClick = onAddSkillClick
+                        onClick = actions.onAddSkillClick
                     )
                 }
             }
@@ -367,28 +347,28 @@ private fun RecruitmentApplyStepOne(
                             val editState = state.activityFormState
                             if (editState is ActivityFormState.Editing && editState.activityId == activity.id) {
                                 RecruitmentActivityForm(
-                                    onCancel = onCancelActivityForm,
-                                    onConfirm = onActivityEdited,
+                                    onCancel = actions.onCancelActivityForm,
+                                    onConfirm = actions.onActivityEdited,
                                     existingActivity = activity
                                 )
                             } else {
                                 RecruitmentActivityCard(
                                     activity = activity,
-                                    onRemove = { onActivityRemoved(activity) },
-                                    onEdit = { onEditActivityClick(activity) }
+                                    onRemove = { actions.onActivityRemoved(activity) },
+                                    onEdit = { actions.onEditActivityClick(activity) }
                                 )
                             }
                         }
                     }
                     if (state.activityFormState is ActivityFormState.Adding) {
                         RecruitmentActivityForm(
-                            onCancel = onCancelActivityForm,
-                            onConfirm = onActivityAdded
+                            onCancel = actions.onCancelActivityForm,
+                            onConfirm = actions.onActivityAdded
                         )
                     }
                     RecruitmentOutlinedActionButton(
                         text = stringResource(R.string.recruitment_apply_add_activity),
-                        onClick = onAddActivityClick
+                        onClick = actions.onAddActivityClick
                     )
                 }
             }
@@ -411,7 +391,7 @@ private fun RecruitmentApplyStepOne(
             content = {
                 RecruitmentTextField(
                     value = state.selfIntroduction,
-                    onValueChange = onSelfIntroductionChange,
+                    onValueChange = actions.onSelfIntroductionChange,
                     hint = stringResource(R.string.recruitment_apply_self_introduction_hint),
                     singleLine = false,
                     minLines = 6,
