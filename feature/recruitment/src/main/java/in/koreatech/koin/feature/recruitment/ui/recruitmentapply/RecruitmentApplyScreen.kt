@@ -55,6 +55,10 @@ private const val AVAILABLE_TIME_MAX_LENGTH = 100
 
 private val DEPARTMENTS = persistentListOf("컴퓨터공학부", "전전통", "고용", "산경", "등등..")
 
+/**
+ * 1단계(기본 정보) 폼에서 쓰는 콜백들을 하나로 묶어서, ScreenImpl → StepOne으로
+ * 넘길 때 파라미터 목록이 두 곳에 중복 선언되는 것을 방지합니다.
+ */
 data class RecruitmentApplyStepOneActions(
     val onLoadMemberInfoClick: () -> Unit = {},
     val onNicknameChange: (String) -> Unit = {},
@@ -416,14 +420,7 @@ private fun RecruitmentApplyStepTwo(
             isRequired = true,
             content = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    val roles = state.availableRoles.ifEmpty {
-                        persistentListOf(
-                            TeamRecruitmentRole("프론트엔드", 1),
-                            TeamRecruitmentRole("백엔드", 1),
-                            TeamRecruitmentRole("디자인", 1, isClosed = true)
-                        )
-                    }
-                    roles.forEach { role ->
+                    state.availableRoles.forEach { role ->
                         key(role.id) {
                             RecruitmentRoleRadioItem(
                                 role = role,
@@ -590,6 +587,15 @@ private fun RecruitmentApplyScreenStepOnePreview() {
 @Composable
 private fun RecruitmentApplyScreenStepTwoPreview() {
     RebrandKoinTheme {
-        RecruitmentApplyScreenImpl(state = RecruitmentApplyState(currentStep = 2))
+        RecruitmentApplyScreenImpl(
+            state = RecruitmentApplyState(
+                currentStep = 2,
+                availableRoles = persistentListOf(
+                    TeamRecruitmentRole("프론트엔드", 1),
+                    TeamRecruitmentRole("백엔드", 1),
+                    TeamRecruitmentRole("디자인", 1, isClosed = true)
+                )
+            )
+        )
     }
 }
