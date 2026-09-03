@@ -217,9 +217,9 @@ private fun isRecruitmentActivityFormValid(
     isOngoing: Boolean,
     endDate: StableLocalDate?
 ): Boolean = name.isNotBlank() &&
-        content.isNotBlank() &&
-        startDate != null &&
-        (isOngoing || endDate != null)
+    content.isNotBlank() &&
+    startDate != null &&
+    (isOngoing || endDate != null)
 
 @Preview(showBackground = true)
 @Composable
