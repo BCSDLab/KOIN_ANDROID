@@ -57,8 +57,8 @@ data class ProfileCreateStepOneActions(
 data class ProfileCreateStepTwoActions(
     val onPreferredRoleChange: (String) -> Unit = {},
     val onAddSkillClick: () -> Unit = {},
-    val onSkillTextChange: (Int, String) -> Unit = { _, _ -> },
-    val onSkillRemoved: (Int) -> Unit = {},
+    val onSkillTextChange: (Long, String) -> Unit = { _, _ -> },
+    val onSkillRemoved: (Long) -> Unit = {},
     val onAddActivityClick: () -> Unit = {},
     val onEditActivityClick: (RecruitmentActivityEntry) -> Unit = {},
     val onCancelActivityForm: () -> Unit = {},
@@ -100,7 +100,7 @@ fun ProfileCreateScreen(
         ProfileCreateStepTwoActions(
             onPreferredRoleChange = { viewModel.setPreferredRole(it) },
             onAddSkillClick = { viewModel.addSkill() },
-            onSkillTextChange = { index, text -> viewModel.setSkillText(index, text) },
+            onSkillTextChange = { id, text -> viewModel.setSkillText(id, text) },
             onSkillRemoved = { viewModel.removeSkill(it) },
             onAddActivityClick = { viewModel.showActivityAddForm() },
             onEditActivityClick = { viewModel.showActivityEditForm(it) },

@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
+import `in`.koreatech.koin.feature.recruitment.model.SkillEntry
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -112,9 +113,9 @@ fun RecruitmentStudentIdSection(
 
 @Composable
 fun RecruitmentSkillsSection(
-    skills: ImmutableList<String>,
-    onSkillTextChange: (Int, String) -> Unit,
-    onSkillRemoved: (Int) -> Unit,
+    skills: ImmutableList<SkillEntry>,
+    onSkillTextChange: (Long, String) -> Unit,
+    onSkillRemoved: (Long) -> Unit,
     onAddSkillClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -124,12 +125,12 @@ fun RecruitmentSkillsSection(
         titleHint = stringResource(R.string.recruitment_apply_skills_hint),
         content = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                skills.forEachIndexed { index, skill ->
-                    key(index, skill) {
+                skills.forEach { skill ->
+                    key(skill.id) {
                         RecruitmentSkillFieldRow(
-                            value = skill,
-                            onValueChange = { text -> onSkillTextChange(index, text) },
-                            onRemove = { onSkillRemoved(index) }
+                            value = skill.text,
+                            onValueChange = { text -> onSkillTextChange(skill.id, text) },
+                            onRemove = { onSkillRemoved(skill.id) }
                         )
                     }
                 }

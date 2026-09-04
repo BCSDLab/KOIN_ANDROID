@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
+import `in`.koreatech.koin.feature.recruitment.model.SkillEntry
 import `in`.koreatech.koin.feature.recruitment.navigation.RecruitmentNavType
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
@@ -62,20 +63,25 @@ class ProfileCreateViewModel @Inject constructor(
     }
 
     fun addSkill(): Job = intent {
-        reduce { state.copy(skills = (state.skills + "").toPersistentList()) }
+        reduce {
+            val nextId = (state.skills.maxOfOrNull { it.id } ?: 0L) + 1L
+            state.copy(skills = (state.skills + SkillEntry(id = nextId, text = "")).toPersistentList())
+        }
     }
 
-    fun setSkillText(index: Int, text: String): Job = intent {
+    fun setSkillText(id: Long, text: String): Job = intent {
         reduce {
             state.copy(
-                skills = state.skills.mapIndexed { i, skill -> if (i == index) text else skill }.toPersistentList()
+                skills = state.skills.map { skill ->
+                    if (skill.id == id) skill.copy(text = text) else skill
+                }.toPersistentList()
             )
         }
     }
 
-    fun removeSkill(index: Int): Job = intent {
+    fun removeSkill(id: Long): Job = intent {
         reduce {
-            state.copy(skills = state.skills.filterIndexed { i, _ -> i != index }.toPersistentList())
+            state.copy(skills = state.skills.filterNot { it.id == id }.toPersistentList())
         }
     }
 

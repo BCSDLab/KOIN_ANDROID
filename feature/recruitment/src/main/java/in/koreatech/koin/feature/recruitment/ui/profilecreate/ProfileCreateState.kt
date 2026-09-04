@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.recruitment.ui.profilecreate
 
 import androidx.compose.runtime.Immutable
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
+import `in`.koreatech.koin.feature.recruitment.model.SkillEntry
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -25,7 +26,7 @@ data class ProfileCreateState(
     val isDepartmentDropdownExpanded: Boolean = false,
     val studentId: String = "",
     val preferredRole: String = "",
-    val skills: ImmutableList<String> = persistentListOf(),
+    val skills: ImmutableList<SkillEntry> = persistentListOf(),
     val activities: ImmutableList<RecruitmentActivityEntry> = persistentListOf(),
     val activityFormState: ProfileActivityFormState = ProfileActivityFormState.Hidden,
     val selfIntroduction: String = "",
