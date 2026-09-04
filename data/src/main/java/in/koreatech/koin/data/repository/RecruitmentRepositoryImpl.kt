@@ -4,6 +4,8 @@ import `in`.koreatech.koin.data.mapper.toMyAppliedRecruitment
 import `in`.koreatech.koin.data.mapper.toMyRecruitmentPost
 import `in`.koreatech.koin.data.mapper.toRecruitmentDetail
 import `in`.koreatech.koin.data.mapper.toRecruitmentNotifications
+import `in`.koreatech.koin.data.mapper.toRecruitmentUpdateRequest
+import `in`.koreatech.koin.data.mapper.toRecruitments
 import `in`.koreatech.koin.data.mapper.toTeamRecruitmentActivityRequest
 import `in`.koreatech.koin.data.mapper.toTeamRecruitmentApplication
 import `in`.koreatech.koin.data.mapper.toTeamRecruitmentProfile
@@ -11,8 +13,6 @@ import `in`.koreatech.koin.data.mapper.toTeamRecruitmentRoleRequest
 import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentApplicationRequest
 import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentCreateRequest
 import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentProfileRequest
-import `in`.koreatech.koin.data.mapper.toRecruitmentUpdateRequest
-import `in`.koreatech.koin.data.mapper.toRecruitments
 import `in`.koreatech.koin.data.source.remote.RecruitmentRemoteDataSource
 import `in`.koreatech.koin.data.util.mapHttpFailure
 import `in`.koreatech.koin.domain.error.recruitment.KoinRecruitmentException
@@ -20,12 +20,12 @@ import `in`.koreatech.koin.domain.model.recruitment.MyAppliedRecruitment
 import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentDetail
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentNotifications
+import `in`.koreatech.koin.domain.model.recruitment.RecruitmentUpdate
+import `in`.koreatech.koin.domain.model.recruitment.Recruitments
 import `in`.koreatech.koin.domain.model.recruitment.TeamRecruitmentActivityInput
 import `in`.koreatech.koin.domain.model.recruitment.TeamRecruitmentApplication
 import `in`.koreatech.koin.domain.model.recruitment.TeamRecruitmentProfile
 import `in`.koreatech.koin.domain.model.recruitment.TeamRecruitmentRoleInput
-import `in`.koreatech.koin.domain.model.recruitment.RecruitmentUpdate
-import `in`.koreatech.koin.domain.model.recruitment.Recruitments
 import `in`.koreatech.koin.domain.repository.RecruitmentRepository
 import `in`.koreatech.koin.domain.util.suspendRunCatching
 import javax.inject.Inject
@@ -170,7 +170,7 @@ class RecruitmentRepositoryImpl @Inject constructor(
             on(403, "FORBIDDEN_USER_TYPE") throws KoinRecruitmentException.ForbiddenUserTypeException(errorResponse.message)
             on(404, "NOT_FOUND_USER") throws KoinRecruitmentException.NotFoundUserException(errorResponse.message)
             on(404, "TEAM_RECRUITMENT_PROFILE_NOT_FOUND") throws
-                    KoinRecruitmentException.ProfileNotFoundException(errorResponse.message)
+                KoinRecruitmentException.ProfileNotFoundException(errorResponse.message)
         }
     }
 
@@ -193,11 +193,11 @@ class RecruitmentRepositoryImpl @Inject constructor(
             ).toTeamRecruitmentProfile()
         }.mapHttpFailure {
             on(400, "TEAM_RECRUITMENT_ACTIVITY_END_DATE_REQUIRED") throws
-                    KoinRecruitmentException.ActivityEndDateRequiredException(errorResponse.message)
+                KoinRecruitmentException.ActivityEndDateRequiredException(errorResponse.message)
             on(400, "TEAM_RECRUITMENT_ACTIVITY_END_DATE_MUST_BE_NULL") throws
-                    KoinRecruitmentException.ActivityEndDateMustBeNullException(errorResponse.message)
+                KoinRecruitmentException.ActivityEndDateMustBeNullException(errorResponse.message)
             on(400, "INVALID_START_DATE_AFTER_END_DATE") throws
-                    KoinRecruitmentException.InvalidStartDateAfterEndDateException(errorResponse.message)
+                KoinRecruitmentException.InvalidStartDateAfterEndDateException(errorResponse.message)
             on(400, "INVALID_REQUEST_BODY") throws KoinRecruitmentException.InvalidRequestBodyException(errorResponse.message)
             on(401) throws KoinRecruitmentException.UnauthorizedUserException(errorResponse.message)
             on(403, "FORBIDDEN_USER_TYPE") throws KoinRecruitmentException.ForbiddenUserTypeException(errorResponse.message)
@@ -238,11 +238,11 @@ class RecruitmentRepositoryImpl @Inject constructor(
             ).id
         }.mapHttpFailure {
             on(400, "TEAM_RECRUITMENT_INVALID_DEADLINE_DATE") throws
-                    KoinRecruitmentException.InvalidDeadlineDateException(errorResponse.message)
+                KoinRecruitmentException.InvalidDeadlineDateException(errorResponse.message)
             on(400, "TEAM_RECRUITMENT_INVALID_ROLE_COMPOSITION") throws
-                    KoinRecruitmentException.InvalidRoleCompositionException(errorResponse.message)
+                KoinRecruitmentException.InvalidRoleCompositionException(errorResponse.message)
             on(400, "INVALID_START_DATE_AFTER_END_DATE") throws
-                    KoinRecruitmentException.InvalidStartDateAfterEndDateException(errorResponse.message)
+                KoinRecruitmentException.InvalidStartDateAfterEndDateException(errorResponse.message)
             on(400, "INVALID_REQUEST_BODY") throws KoinRecruitmentException.InvalidRequestBodyException(errorResponse.message)
             on(401) throws KoinRecruitmentException.UnauthorizedUserException(errorResponse.message)
             on(403, "FORBIDDEN_USER_TYPE") throws KoinRecruitmentException.ForbiddenUserTypeException(errorResponse.message)
@@ -269,20 +269,20 @@ class RecruitmentRepositoryImpl @Inject constructor(
             on(400, "ILLEGAL_ARGUMENT") throws KoinRecruitmentException.InvalidArgumentException(errorResponse.message)
             on(400, "INVALID_REQUEST_BODY") throws KoinRecruitmentException.InvalidRequestBodyException(errorResponse.message)
             on(400, "NOT_READABLE_HTTP_MESSAGE") throws
-                    KoinRecruitmentException.NotReadableHttpMessageException(errorResponse.message)
+                KoinRecruitmentException.NotReadableHttpMessageException(errorResponse.message)
             on(401) throws KoinRecruitmentException.UnauthorizedUserException(errorResponse.message)
             on(403, "TEAM_RECRUITMENT_FORBIDDEN") throws
-                    KoinRecruitmentException.RecruitmentForbiddenException(errorResponse.message)
+                KoinRecruitmentException.RecruitmentForbiddenException(errorResponse.message)
             on(404, "TEAM_RECRUITMENT_NOT_FOUND") throws
-                    KoinRecruitmentException.RecruitmentNotFoundException(errorResponse.message)
+                KoinRecruitmentException.RecruitmentNotFoundException(errorResponse.message)
             on(409, "TEAM_RECRUITMENT_PROFILE_REQUIRED") throws
-                    KoinRecruitmentException.ProfileRequiredException(errorResponse.message)
+                KoinRecruitmentException.ProfileRequiredException(errorResponse.message)
             on(409, "TEAM_RECRUITMENT_CLOSED") throws KoinRecruitmentException.RecruitmentClosedException(errorResponse.message)
             on(409, "TEAM_RECRUITMENT_ROLE_CLOSED") throws
-                    KoinRecruitmentException.RecruitmentRoleClosedException(errorResponse.message)
+                KoinRecruitmentException.RecruitmentRoleClosedException(errorResponse.message)
             on(409, "TEAM_RECRUITMENT_CAPACITY_FULL") throws KoinRecruitmentException.CapacityFullException(errorResponse.message)
             on(409, "TEAM_RECRUITMENT_APPLICATION_DUPLICATE") throws
-                    KoinRecruitmentException.ApplicationDuplicateException(errorResponse.message)
+                KoinRecruitmentException.ApplicationDuplicateException(errorResponse.message)
             on(409, "REQUEST_TOO_FAST") throws KoinRecruitmentException.RequestTooFastException(errorResponse.message)
         }
     }

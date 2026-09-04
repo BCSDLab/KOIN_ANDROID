@@ -45,10 +45,10 @@ data class RecruitmentApplyState(
 ) {
     val isStepOneValid: Boolean
         get() = nickname.isNotBlank() &&
-                age.isNotBlank() &&
-                department.isNotBlank() &&
-                studentId.isNotBlank() &&
-                selfIntroduction.isNotBlank()
+            age.isNotBlank() &&
+            department.isNotBlank() &&
+            studentId.isNotBlank() &&
+            selfIntroduction.isNotBlank()
 
     val isSubmitEnabled: Boolean
         get() = selectedRole != null && motivation.isNotBlank() && availableTime.isNotBlank()

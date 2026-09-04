@@ -4,12 +4,12 @@ import `in`.koreatech.koin.domain.model.recruitment.MyAppliedRecruitment
 import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentDetail
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentNotifications
+import `in`.koreatech.koin.domain.model.recruitment.RecruitmentUpdate
+import `in`.koreatech.koin.domain.model.recruitment.Recruitments
 import `in`.koreatech.koin.domain.model.recruitment.TeamRecruitmentActivityInput
 import `in`.koreatech.koin.domain.model.recruitment.TeamRecruitmentApplication
 import `in`.koreatech.koin.domain.model.recruitment.TeamRecruitmentProfile
 import `in`.koreatech.koin.domain.model.recruitment.TeamRecruitmentRoleInput
-import `in`.koreatech.koin.domain.model.recruitment.RecruitmentUpdate
-import `in`.koreatech.koin.domain.model.recruitment.Recruitments
 
 interface RecruitmentRepository {
     @Suppress("LongParameterList")

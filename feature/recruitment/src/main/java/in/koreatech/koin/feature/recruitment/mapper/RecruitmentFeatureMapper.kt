@@ -37,4 +37,3 @@ fun RecruitmentActivityEntry.toTeamRecruitmentActivityInput() = TeamRecruitmentA
     isOngoing = isOngoing,
     description = content
 )
-

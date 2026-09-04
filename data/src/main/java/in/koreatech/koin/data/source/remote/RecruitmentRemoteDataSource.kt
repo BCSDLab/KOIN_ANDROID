@@ -1,10 +1,10 @@
 package `in`.koreatech.koin.data.source.remote
 
 import `in`.koreatech.koin.data.api.auth.RecruitmentAuthApi
+import `in`.koreatech.koin.data.request.recruitment.RecruitmentUpdateRequest
 import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentApplicationRequest
 import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentCreateRequest
 import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentProfileRequest
-import `in`.koreatech.koin.data.request.recruitment.RecruitmentUpdateRequest
 import `in`.koreatech.koin.data.response.recruitment.MyAppliedRecruitmentListResponse
 import `in`.koreatech.koin.data.response.recruitment.MyRecruitmentListResponse
 import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentApplicationResponse

@@ -6,13 +6,12 @@ import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentCreateRequest
 import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentProfileRequest
 import `in`.koreatech.koin.data.response.recruitment.MyAppliedRecruitmentListResponse
 import `in`.koreatech.koin.data.response.recruitment.MyRecruitmentListResponse
-import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentApplicationResponse
-import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentCreateResponse
-import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentNotificationListResponse
-import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentProfileResponse
 import `in`.koreatech.koin.data.response.recruitment.RecruitmentDetailResponse
 import `in`.koreatech.koin.data.response.recruitment.RecruitmentListResponse
 import `in`.koreatech.koin.data.response.recruitment.RecruitmentNotificationListResponse
+import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentApplicationResponse
+import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentCreateResponse
+import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentProfileResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE

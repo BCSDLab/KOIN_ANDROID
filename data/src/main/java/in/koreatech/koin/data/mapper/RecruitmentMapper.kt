@@ -15,8 +15,6 @@ import `in`.koreatech.koin.data.response.recruitment.RecruitmentRoleResponse
 import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentActivityResponse
 import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentApplicationResponse
 import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentApplicationRoleResponse
-import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentNotificationListResponse
-import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentNotificationResponse
 import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentProfileResponse
 import `in`.koreatech.koin.domain.model.recruitment.MyAppliedRecruitment
 import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost

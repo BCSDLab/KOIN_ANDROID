@@ -13,6 +13,7 @@ import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentActivityEntry
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentErrorMessage
 import `in`.koreatech.koin.feature.recruitment.mapper.toTeamRecruitmentActivityInput
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
+import `in`.koreatech.koin.feature.recruitment.model.SkillEntry
 import `in`.koreatech.koin.feature.recruitment.model.withNewSkill
 import `in`.koreatech.koin.feature.recruitment.model.withSkillText
 import `in`.koreatech.koin.feature.recruitment.model.withoutSkill
@@ -62,7 +63,9 @@ class ProfileCreateViewModel @Inject constructor(
                         department = profile.department,
                         studentId = profile.studentNumber,
                         preferredRole = profile.preferredRole,
-                        skills = profile.skills.toPersistentList(),
+                        skills = profile.skills.mapIndexed { index, text ->
+                            SkillEntry(id = index.toLong() + 1L, text = text)
+                        }.toPersistentList(),
                         activities = profile.activities
                             .map { it.toRecruitmentActivityEntry() }
                             .toPersistentList(),
@@ -210,7 +213,7 @@ class ProfileCreateViewModel @Inject constructor(
         saveTeamRecruitmentProfileUseCase(
             profileNickname = state.nickname,
             preferredRole = state.preferredRole,
-            skills = state.skills.filter { it.isNotBlank() },
+            skills = state.skills.map { it.text }.filter { it.isNotBlank() },
             activities = state.activities.map { it.toTeamRecruitmentActivityInput() },
             selfIntroduction = state.selfIntroduction
         ).onSuccess {
