@@ -25,6 +25,7 @@ import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,6 +34,7 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentProgressType
@@ -42,6 +44,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDateSelec
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDropdown
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentTextField
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentmodify.component.RecruitmentAddRoleButton
+import `in`.koreatech.koin.feature.recruitment.ui.recruitmentmodify.component.RecruitmentParticipantCountRow
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentmodify.component.RecruitmentProgressTypeSelector
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentmodify.component.RecruitmentRoleRow
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentmodify.model.RecruitmentModifyRole
@@ -64,12 +67,23 @@ fun RecruitmentModifyScreen(
     onRecruitmentModified: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
+    val context = LocalContext.current
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             RecruitmentModifySideEffect.NavigateUp -> onNavigateUp()
             RecruitmentModifySideEffect.RecruitmentModifySuccess -> onRecruitmentModified()
-            RecruitmentModifySideEffect.RecruitmentModifyFailure -> Unit
+            is RecruitmentModifySideEffect.RecruitmentModifyFailure ->
+                ToastUtil.getInstance().makeShort(
+                    sideEffect.message?.takeIf { it.isNotBlank() }
+                        ?: context.getString(R.string.recruitment_modify_error)
+                )
+
+            is RecruitmentModifySideEffect.ShowLoadError ->
+                ToastUtil.getInstance().makeShort(
+                    sideEffect.message?.takeIf { it.isNotBlank() }
+                        ?: context.getString(R.string.recruitment_load_error)
+                )
         }
     }
 
@@ -107,6 +121,7 @@ fun RecruitmentModifyScreen(
             onRoleCountChange = viewModel::setRoleCount,
             onRoleRemoved = viewModel::removeRole,
             onRoleCountUndeterminedChange = viewModel::setRoleCountUndetermined,
+            onParticipantCountChange = viewModel::setParticipantCount,
             onDescriptionChange = viewModel::setDescription,
             onRelatedUrlChange = viewModel::setRelatedUrl,
             onQualificationChange = viewModel::setQualification,
@@ -138,6 +153,7 @@ private fun RecruitmentModifyScreenImpl(
     onRoleCountChange: (String, Int) -> Unit = { _, _ -> },
     onRoleRemoved: (String) -> Unit = {},
     onRoleCountUndeterminedChange: (Boolean) -> Unit = {},
+    onParticipantCountChange: (Int) -> Unit = {},
     onDescriptionChange: (String) -> Unit = {},
     onRelatedUrlChange: (String) -> Unit = {},
     onQualificationChange: (String) -> Unit = {},
@@ -281,17 +297,25 @@ private fun RecruitmentModifyScreenImpl(
         FormSection(
             title = stringResource(R.string.recruitment_modify_roles),
             isRequired = true,
-            titleSuffix = stringResource(
-                R.string.recruitment_modify_roles_count,
-                state.roles.size,
-                RecruitmentModifyRole.MAX_ROLE_COUNT
-            ),
-            trailingContent = {
-                RecruitmentAddRoleButton(
-                    text = stringResource(R.string.recruitment_modify_add_role),
-                    enabled = state.roles.size < RecruitmentModifyRole.MAX_ROLE_COUNT,
-                    onClick = onAddRoleClick
+            titleSuffix = if (state.isRoleCountUndetermined) {
+                null
+            } else {
+                stringResource(
+                    R.string.recruitment_modify_roles_count,
+                    state.roles.size,
+                    RecruitmentModifyRole.MAX_ROLE_COUNT
                 )
+            },
+            trailingContent = if (state.isRoleCountUndetermined) {
+                null
+            } else {
+                {
+                    RecruitmentAddRoleButton(
+                        text = stringResource(R.string.recruitment_modify_add_role),
+                        enabled = state.roles.size < RecruitmentModifyRole.MAX_ROLE_COUNT,
+                        onClick = onAddRoleClick
+                    )
+                }
             }
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -321,15 +345,22 @@ private fun RecruitmentModifyScreenImpl(
                         modifier = Modifier.offset(x = (-28).dp)
                     )
                 }
-                state.roles.forEach { role ->
-                    key(role.id) {
-                        RecruitmentRoleRow(
-                            role = role,
-                            onNameChange = { name -> onRoleNameChange(role.id, name) },
-                            onCountChange = { count -> onRoleCountChange(role.id, count) },
-                            onRemove = { onRoleRemoved(role.id) },
-                            modifier = Modifier.fillMaxWidth()
-                        )
+                if (state.isRoleCountUndetermined) {
+                    RecruitmentParticipantCountRow(
+                        count = state.participantCount,
+                        onCountChange = onParticipantCountChange
+                    )
+                } else {
+                    state.roles.forEach { role ->
+                        key(role.id) {
+                            RecruitmentRoleRow(
+                                role = role,
+                                onNameChange = { name -> onRoleNameChange(role.id, name) },
+                                onCountChange = { count -> onRoleCountChange(role.id, count) },
+                                onRemove = { onRoleRemoved(role.id) },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
                     }
                 }
             }
@@ -456,6 +487,20 @@ private fun RecruitmentModifyScreenPreview() {
             state = RecruitmentModifyState(
                 category = RecruitmentCategory.PROJECT,
                 roles = persistentListOf(RecruitmentModifyRole("프론트엔드", 2), RecruitmentModifyRole("디자인", 1))
+            )
+        )
+    }
+}
+
+@Preview(showBackground = true, heightDp = 1800)
+@Composable
+private fun RecruitmentModifyScreenRoleUndeterminedPreview() {
+    RebrandKoinTheme {
+        RecruitmentModifyScreenImpl(
+            state = RecruitmentModifyState(
+                category = RecruitmentCategory.PROJECT,
+                isRoleCountUndetermined = true,
+                participantCount = 5
             )
         )
     }

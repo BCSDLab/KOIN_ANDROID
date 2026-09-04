@@ -53,7 +53,8 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun RecruitmentDetailScreen(
     viewModel: RecruitmentDetailViewModel = hiltViewModel(),
-    onTopbarBackClick: () -> Unit = {}
+    onTopbarBackClick: () -> Unit = {},
+    onNavigateToModify: (Int) -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
     val context = LocalContext.current
@@ -75,7 +76,10 @@ fun RecruitmentDetailScreen(
         onTopbarBackClick = onTopbarBackClick,
         onMoreClick = { viewModel.updateMoreMenuVisible(true) },
         onMoreMenuDismiss = { viewModel.updateMoreMenuVisible(false) },
-        onEditClick = { viewModel.updateMoreMenuVisible(false) },
+        onEditClick = {
+            viewModel.updateMoreMenuVisible(false)
+            onNavigateToModify(state.id)
+        },
         onDeleteClick = { viewModel.updateDeleteDialogVisible(true) },
         onDeleteConfirm = viewModel::deleteRecruitment,
         onDeleteDialogDismiss = { viewModel.updateDeleteDialogVisible(false) }

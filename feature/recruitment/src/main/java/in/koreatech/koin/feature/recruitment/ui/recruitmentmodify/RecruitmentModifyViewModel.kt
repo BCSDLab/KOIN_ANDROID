@@ -4,12 +4,20 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.recruitment.RecruitmentUpdate
+import `in`.koreatech.koin.domain.model.recruitment.RecruitmentUpdateRole
+import `in`.koreatech.koin.domain.usecase.recruitment.GetRecruitmentDetailUseCase
+import `in`.koreatech.koin.domain.usecase.recruitment.UpdateRecruitmentUseCase
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentProgressType
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentType
 import `in`.koreatech.koin.feature.recruitment.model.StableLocalDate
 import `in`.koreatech.koin.feature.recruitment.navigation.RecruitmentNavType
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentmodify.model.RecruitmentModifyRole
+import `in`.koreatech.koin.feature.recruitment.utils.toApiDateText
+import `in`.koreatech.koin.feature.recruitment.utils.toStableLocalDate
 import javax.inject.Inject
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -20,16 +28,58 @@ import org.orbitmvi.orbit.viewmodel.container
 @Suppress("TooManyFunctions")
 @HiltViewModel
 class RecruitmentModifyViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val getRecruitmentDetailUseCase: GetRecruitmentDetailUseCase,
+    private val updateRecruitmentUseCase: UpdateRecruitmentUseCase
 ) : ViewModel(),
     ContainerHost<RecruitmentModifyState, RecruitmentModifySideEffect> {
 
     private val postId = savedStateHandle.toRoute<RecruitmentNavType.RecruitmentModify>().postId
 
-    // TODO: 모집글 상세 조회 API가 추가되면 postId로 실제 데이터를 불러와 초기 state를 구성한다.
     override val container = container<RecruitmentModifyState, RecruitmentModifySideEffect>(
         RecruitmentModifyState(postId = postId)
-    )
+    ) {
+        fetchRecruitmentDetail()
+    }
+
+    fun fetchRecruitmentDetail() = intent {
+        reduce { state.copy(isLoading = true) }
+        getRecruitmentDetailUseCase(recruitmentId = postId)
+            .onSuccess { detail ->
+                val isRoleBased = RecruitmentType.from(detail.recruitmentType) == RecruitmentType.ROLE_BASED
+                reduce {
+                    state.copy(
+                        category = RecruitmentCategory.from(detail.category),
+                        title = detail.title,
+                        progressType = RecruitmentProgressType.from(detail.meetingType),
+                        recruitStartDate = detail.activityStartDate.toStableLocalDate(),
+                        recruitEndDate = detail.activityEndDate.toStableLocalDate(),
+                        applicationDeadline = detail.deadlineDate.toStableLocalDate(),
+                        roles = if (isRoleBased) {
+                            detail.roles.map { role ->
+                                RecruitmentModifyRole(
+                                    name = role.name,
+                                    count = role.maxParticipants,
+                                    roleId = role.id
+                                )
+                            }.toPersistentList()
+                        } else {
+                            persistentListOf()
+                        },
+                        isRoleCountUndetermined = !isRoleBased,
+                        participantCount = if (isRoleBased) state.participantCount else detail.maxParticipants,
+                        description = detail.description,
+                        relatedUrl = detail.relatedUrl.orEmpty(),
+                        qualification = detail.qualification.orEmpty(),
+                        isLoading = false
+                    )
+                }
+            }
+            .onFailure { exception ->
+                reduce { state.copy(isLoading = false) }
+                postSideEffect(RecruitmentModifySideEffect.ShowLoadError(exception.message))
+            }
+    }
 
     fun setCategory(category: RecruitmentCategory) = intent {
         reduce { state.copy(category = category, isCategoryDropdownExpanded = false) }
@@ -74,6 +124,10 @@ class RecruitmentModifyViewModel @Inject constructor(
 
     fun setRoleCountUndetermined(undetermined: Boolean) = intent {
         reduce { state.copy(isRoleCountUndetermined = undetermined) }
+    }
+
+    fun setParticipantCount(count: Int) = intent {
+        reduce { state.copy(participantCount = count) }
     }
 
     fun addRole() = intent {
@@ -146,7 +200,45 @@ class RecruitmentModifyViewModel @Inject constructor(
     }
 
     fun modifyRecruitment() = intent {
+        val progressType = state.progressType
+        if (progressType == null) {
+            reduce { state.copy(showSubmitConfirmDialog = false) }
+            postSideEffect(RecruitmentModifySideEffect.RecruitmentModifyFailure(null))
+            return@intent
+        }
         reduce { state.copy(isSubmitting = true, showSubmitConfirmDialog = false) }
-        postSideEffect(RecruitmentModifySideEffect.RecruitmentModifySuccess)
+        updateRecruitmentUseCase(recruitmentId = postId, update = state.toRecruitmentUpdate(progressType))
+            .onSuccess {
+                reduce { state.copy(isSubmitting = false) }
+                postSideEffect(RecruitmentModifySideEffect.RecruitmentModifySuccess)
+            }
+            .onFailure { exception ->
+                reduce { state.copy(isSubmitting = false) }
+                postSideEffect(RecruitmentModifySideEffect.RecruitmentModifyFailure(exception.message))
+            }
+    }
+
+    private fun RecruitmentModifyState.toRecruitmentUpdate(progressType: RecruitmentProgressType): RecruitmentUpdate {
+        val isRoleBased = !isRoleCountUndetermined
+        return RecruitmentUpdate(
+            category = category.apiValue,
+            title = title,
+            meetingType = progressType.apiValue,
+            activityStartDate = recruitStartDate.value.toApiDateText(),
+            activityEndDate = recruitEndDate.value.toApiDateText(),
+            deadlineDate = applicationDeadline.value.toApiDateText(),
+            recruitmentType = if (isRoleBased) RecruitmentType.ROLE_BASED.apiValue else RecruitmentType.GENERAL.apiValue,
+            maxParticipants = if (isRoleBased) null else participantCount,
+            roles = if (isRoleBased) {
+                roles.map { role ->
+                    RecruitmentUpdateRole(id = role.roleId, name = role.name, maxParticipants = role.count)
+                }
+            } else {
+                emptyList()
+            },
+            description = description,
+            relatedUrl = relatedUrl.ifBlank { null },
+            qualification = qualification.ifBlank { null }
+        )
     }
 }

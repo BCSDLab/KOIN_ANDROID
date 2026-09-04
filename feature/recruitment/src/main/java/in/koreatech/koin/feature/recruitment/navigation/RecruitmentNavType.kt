@@ -47,8 +47,8 @@ sealed class RecruitmentNavType {
     data object MyRecruitment : RecruitmentNavType()
 
     @Serializable
-    data object MyAppliedRecruitment : RecruitmentNavType()
+    data class RecruitmentModify(val postId: Int) : RecruitmentNavType()
 
     @Serializable
-    data class RecruitmentModify(val postId: Int) : RecruitmentNavType()
+    data object MyAppliedRecruitment : RecruitmentNavType()
 }

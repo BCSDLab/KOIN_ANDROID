@@ -63,7 +63,10 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     }
     composable<RecruitmentNavType.RecruitmentDetail> {
         RecruitmentDetailScreen(
-            onTopbarBackClick = { navController.navigateUp() }
+            onTopbarBackClick = { navController.navigateUp() },
+            onNavigateToModify = { postId ->
+                navController.navigate(RecruitmentNavType.RecruitmentModify(postId))
+            }
         )
     }
     composable<RecruitmentNavType.RecruitmentGroupChat> {

@@ -3,7 +3,8 @@ package `in`.koreatech.koin.feature.recruitment.ui.recruitmentmodify.model
 data class RecruitmentModifyRole(
     val name: String = "",
     val count: Int = 1,
-    val id: String = java.util.UUID.randomUUID().toString()
+    val id: String = java.util.UUID.randomUUID().toString(),
+    val roleId: Int? = null
 ) {
     companion object {
         const val NAME_MAX_LENGTH = 10

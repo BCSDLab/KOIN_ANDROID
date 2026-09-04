@@ -28,8 +28,8 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentmodify.model.RecruitmentModifyRole
 
-private val RoleRowItemShape = RoundedCornerShape(8.dp)
-private val RoleRowItemPadding = PaddingValues(
+internal val RoleRowItemShape = RoundedCornerShape(8.dp)
+internal val RoleRowItemPadding = PaddingValues(
     top = 8.dp,
     end = 12.dp,
     bottom = 8.dp,
@@ -77,52 +77,11 @@ fun RecruitmentRoleRow(
             )
         }
 
-        Row(
-            modifier = Modifier
-                .width(StepperBoxWidth)
-                .border(1.dp, RebrandKoinTheme.colors.neutral200, RoleRowItemShape)
-                .background(RebrandKoinTheme.colors.neutral0, RoleRowItemShape)
-                .padding(RoleRowItemPadding),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(20.dp)
-                    .noRippleClickable {
-                        if (role.count > RecruitmentModifyRole.MIN_MEMBER_COUNT) onCountChange(role.count - 1)
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_stepper_minus),
-                    contentDescription = null,
-                    tint = RebrandKoinTheme.colors.neutral700,
-                    modifier = Modifier.size(16.dp)
-                )
-            }
-            Text(
-                text = "${role.count}",
-                style = RebrandKoinTheme.typography.regular14,
-                color = RebrandKoinTheme.colors.neutral800,
-                textAlign = TextAlign.Center
-            )
-            Box(
-                modifier = Modifier
-                    .size(20.dp)
-                    .noRippleClickable {
-                        if (role.count < RecruitmentModifyRole.MAX_MEMBER_COUNT) onCountChange(role.count + 1)
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_stepper_plus),
-                    contentDescription = null,
-                    tint = RebrandKoinTheme.colors.neutral700,
-                    modifier = Modifier.size(16.dp)
-                )
-            }
-        }
+        RecruitmentCountStepper(
+            count = role.count,
+            onCountChange = onCountChange,
+            modifier = Modifier.width(StepperBoxWidth)
+        )
 
         Box(
             modifier = Modifier
@@ -134,6 +93,59 @@ fun RecruitmentRoleRow(
                 imageVector = Icons.Filled.Close,
                 contentDescription = null,
                 tint = RebrandKoinTheme.colors.neutral500
+            )
+        }
+    }
+}
+
+@Composable
+internal fun RecruitmentCountStepper(
+    count: Int,
+    onCountChange: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .border(1.dp, RebrandKoinTheme.colors.neutral200, RoleRowItemShape)
+            .background(RebrandKoinTheme.colors.neutral0, RoleRowItemShape)
+            .padding(RoleRowItemPadding),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(20.dp)
+                .noRippleClickable {
+                    if (count > RecruitmentModifyRole.MIN_MEMBER_COUNT) onCountChange(count - 1)
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_stepper_minus),
+                contentDescription = null,
+                tint = RebrandKoinTheme.colors.neutral700,
+                modifier = Modifier.size(16.dp)
+            )
+        }
+        Text(
+            text = "$count",
+            style = RebrandKoinTheme.typography.regular14,
+            color = RebrandKoinTheme.colors.neutral800,
+            textAlign = TextAlign.Center
+        )
+        Box(
+            modifier = Modifier
+                .size(20.dp)
+                .noRippleClickable {
+                    if (count < RecruitmentModifyRole.MAX_MEMBER_COUNT) onCountChange(count + 1)
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_stepper_plus),
+                contentDescription = null,
+                tint = RebrandKoinTheme.colors.neutral700,
+                modifier = Modifier.size(16.dp)
             )
         }
     }

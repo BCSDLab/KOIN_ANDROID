@@ -27,6 +27,7 @@
     <string name="recruitment_modify_cancel_dialog_description">수정 중인 내용은 저장되지 않습니다.</string>
     <string name="recruitment_modify_dialog_yes">네</string>
     <string name="recruitment_modify_dialog_no">아니요</string>
+    <string name="recruitment_modify_error">모집글을 수정하지 못했습니다.</string>
 
     <string name="recruitment_chat_member_count_icon">참여 인원</string>
     <string name="recruitment_chat_toolbar_participants">%1$d/%2$d</string>
