@@ -21,6 +21,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.profilecreate.ProfileCreateScr
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply.RecruitmentApplyScreen
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.RecruitmentCreateScreen
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentmodify.RecruitmentModifyScreen
+import kotlin.reflect.typeOf
 
 @Suppress("LongMethod")
 fun NavGraphBuilder.koinRecruitmentGraph(
@@ -32,7 +33,11 @@ fun NavGraphBuilder.koinRecruitmentGraph(
             onRecruitmentCreated = { navController.navigateUp() }
         )
     }
-    composable<RecruitmentNavType.RecruitmentApply> {
+    composable<RecruitmentNavType.RecruitmentApply>(
+        typeMap = mapOf(
+            typeOf<List<RecruitmentRoleArg>>() to RecruitmentRoleArgListNavType
+        )
+    ) {
         RecruitmentApplyScreen(
             onNavigateUp = { navController.navigateUp() },
             onApplySuccess = { navController.navigateUp() }
