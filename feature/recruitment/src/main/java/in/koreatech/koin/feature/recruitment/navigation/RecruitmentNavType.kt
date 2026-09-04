@@ -8,7 +8,10 @@ sealed class RecruitmentNavType {
     data object RecruitmentCreate : RecruitmentNavType()
 
     @Serializable
-    data object RecruitmentApply : RecruitmentNavType()
+    data class RecruitmentApply(
+        val recruitmentId: Int,
+        val roles: List<RecruitmentRoleArg> = emptyList()
+    ) : RecruitmentNavType()
 
     @Serializable
     data object Profile : RecruitmentNavType()
@@ -52,3 +55,10 @@ sealed class RecruitmentNavType {
     @Serializable
     data object MyAppliedRecruitment : RecruitmentNavType()
 }
+
+@Serializable
+data class RecruitmentRoleArg(
+    val id: Int,
+    val name: String,
+    val isClosed: Boolean = false
+)

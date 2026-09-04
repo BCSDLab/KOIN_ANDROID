@@ -195,7 +195,6 @@
     <string name="recruitment_applied_empty_title">지원한 모집글이 없어요.</string>
     <string name="recruitment_applied_empty_subtitle">다양한 모집글에 지원해 보세요.</string>
 
-
     <string name="recruitment_profile_create_title">팀원 모집 프로필 작성</string>
     <string name="recruitment_profile_create_edit_title">팀원 모집 프로필 수정</string>
     <string name="recruitment_profile_create_step_one_label">기본 정보</string>
