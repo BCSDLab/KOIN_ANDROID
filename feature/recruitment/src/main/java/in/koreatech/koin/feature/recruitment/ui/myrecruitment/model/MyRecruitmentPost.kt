@@ -20,7 +20,8 @@ data class MyRecruitmentPost(
     val location: String,
     val dateRange: String,
     val currentApplicants: Int,
-    val maxApplicants: Int
+    val maxApplicants: Int,
+    val teamChatRoomId: Int? = null
 )
 
 fun DomainMyRecruitmentPost.toMyRecruitmentPost() = MyRecruitmentPost(
@@ -35,5 +36,6 @@ fun DomainMyRecruitmentPost.toMyRecruitmentPost() = MyRecruitmentPost(
     location = meetingType.toRecruitmentLocation(),
     dateRange = activityStartDate.toDateRange(activityEndDate),
     currentApplicants = currentParticipants,
-    maxApplicants = maxParticipants
+    maxApplicants = maxParticipants,
+    teamChatRoomId = teamChatRoomId
 )

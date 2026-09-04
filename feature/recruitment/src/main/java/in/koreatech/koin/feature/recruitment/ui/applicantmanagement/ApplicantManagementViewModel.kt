@@ -32,7 +32,8 @@ class ApplicantManagementViewModel @Inject constructor(
                 location = "온라인",
                 dateRange = "2026.07.26 ~ 2026.08.07",
                 currentApplicants = 0,
-                maxApplicants = 3
+                maxApplicants = 3,
+                teamChatRoomId = 1
             ),
             applicants = persistentListOf(
                 Applicant(
