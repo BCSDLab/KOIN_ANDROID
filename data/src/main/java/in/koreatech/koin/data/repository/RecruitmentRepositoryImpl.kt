@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.data.repository
 
+import `in`.koreatech.koin.data.mapper.toApplicantDetail
+import `in`.koreatech.koin.data.mapper.toApplicantList
 import `in`.koreatech.koin.data.mapper.toMyAppliedRecruitments
 import `in`.koreatech.koin.data.mapper.toMyRecruitmentPosts
 import `in`.koreatech.koin.data.mapper.toRecruitmentDetail
@@ -13,9 +15,12 @@ import `in`.koreatech.koin.data.mapper.toTeamRecruitmentRoleRequest
 import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentApplicationRequest
 import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentCreateRequest
 import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentProfileRequest
+import `in`.koreatech.koin.data.request.recruitment.UpdateApplicationStatusRequest
 import `in`.koreatech.koin.data.source.remote.RecruitmentRemoteDataSource
 import `in`.koreatech.koin.data.util.mapHttpFailure
 import `in`.koreatech.koin.domain.error.recruitment.KoinRecruitmentException
+import `in`.koreatech.koin.domain.model.recruitment.ApplicantDetail
+import `in`.koreatech.koin.domain.model.recruitment.ApplicantList
 import `in`.koreatech.koin.domain.model.recruitment.MyAppliedRecruitments
 import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPosts
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentDetail
@@ -282,6 +287,59 @@ class RecruitmentRepositoryImpl @Inject constructor(
             on(409, "TEAM_RECRUITMENT_APPLICATION_DUPLICATE") throws
                 KoinRecruitmentException.ApplicationDuplicateException(errorResponse.message)
             on(409, "REQUEST_TOO_FAST") throws KoinRecruitmentException.RequestTooFastException(errorResponse.message)
+        }
+    }
+
+    override suspend fun getApplicants(
+        recruitmentId: Int,
+        statuses: List<String>?,
+        page: Int,
+        limit: Int
+    ): Result<ApplicantList> {
+        return suspendRunCatching {
+            recruitmentRemoteDataSource.getApplicants(
+                recruitmentId = recruitmentId,
+                statuses = statuses,
+                page = page,
+                limit = limit
+            ).toApplicantList()
+        }.mapHttpFailure {
+            on(400, "ILLEGAL_ARGUMENT") throws KoinRecruitmentException.InvalidArgumentException(errorResponse.message)
+            on(401) throws KoinRecruitmentException.UnauthorizedUserException(errorResponse.message)
+            on(403, "TEAM_RECRUITMENT_FORBIDDEN") throws
+                KoinRecruitmentException.RecruitmentForbiddenException(errorResponse.message)
+        }
+    }
+
+    override suspend fun getApplicantDetail(recruitmentId: Int, applicationId: Int): Result<ApplicantDetail> {
+        return suspendRunCatching {
+            recruitmentRemoteDataSource.getApplicantDetail(
+                recruitmentId = recruitmentId,
+                applicationId = applicationId
+            ).toApplicantDetail()
+        }.mapHttpFailure {
+            on(400, "ILLEGAL_ARGUMENT") throws KoinRecruitmentException.InvalidArgumentException(errorResponse.message)
+            on(401) throws KoinRecruitmentException.UnauthorizedUserException(errorResponse.message)
+            on(403, "TEAM_RECRUITMENT_FORBIDDEN") throws
+                KoinRecruitmentException.RecruitmentForbiddenException(errorResponse.message)
+        }
+    }
+
+    override suspend fun updateApplicationStatus(recruitmentId: Int, applicationId: Int, status: String): Result<Unit> {
+        return suspendRunCatching {
+            recruitmentRemoteDataSource.updateApplicationStatus(
+                recruitmentId = recruitmentId,
+                applicationId = applicationId,
+                request = UpdateApplicationStatusRequest(status = status)
+            )
+        }.mapHttpFailure {
+            on(400, "ILLEGAL_ARGUMENT") throws KoinRecruitmentException.InvalidArgumentException(errorResponse.message)
+            on(400, "INVALID_REQUEST_BODY") throws KoinRecruitmentException.InvalidRequestBodyException(errorResponse.message)
+            on(400, "NOT_READABLE_HTTP_MESSAGE") throws
+                KoinRecruitmentException.NotReadableHttpMessageException(errorResponse.message)
+            on(401) throws KoinRecruitmentException.UnauthorizedUserException(errorResponse.message)
+            on(403, "TEAM_RECRUITMENT_FORBIDDEN") throws
+                KoinRecruitmentException.RecruitmentForbiddenException(errorResponse.message)
         }
     }
 
