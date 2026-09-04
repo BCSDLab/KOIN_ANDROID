@@ -15,6 +15,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.main.RecruitmentMainScreen
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.MyAppliedRecruitmentScreen
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.MyRecruitmentScreen
 import `in`.koreatech.koin.feature.recruitment.ui.notification.RecruitmentNotificationScreen
+import `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply.RecruitmentApplyScreen
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.RecruitmentCreateScreen
 
 @Suppress("LongMethod")
@@ -91,6 +92,13 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     composable<RecruitmentNavType.ApplicantDetail> {
         ApplicantDetailScreen(
             onNavigateUp = { navController.navigateUp() }
+        )
+    }
+
+    composable<RecruitmentNavType.RecruitmentApply> {
+        RecruitmentApplyScreen(
+            onNavigateUp = { navController.navigateUp() },
+            onApplySuccess = { navController.navigateUp() }
         )
     }
 }

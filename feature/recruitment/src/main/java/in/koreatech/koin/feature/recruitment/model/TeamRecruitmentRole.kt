@@ -1,9 +1,10 @@
-package `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model
+package `in`.koreatech.koin.feature.recruitment.model
 
 data class TeamRecruitmentRole(
     val name: String = "",
     val count: Int = 1,
-    val id: String = java.util.UUID.randomUUID().toString()
+    val id: String = java.util.UUID.randomUUID().toString(),
+    val isClosed: Boolean = false
 ) {
     companion object {
         const val NAME_MAX_LENGTH = 10

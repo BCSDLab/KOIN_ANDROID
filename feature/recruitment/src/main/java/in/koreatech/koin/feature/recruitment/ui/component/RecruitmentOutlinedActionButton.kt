@@ -7,55 +7,59 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
-private val DateSelectBoxShape = RoundedCornerShape(16.dp)
-private val DateSelectBoxPadding = PaddingValues(
-    top = 8.dp,
-    end = 12.dp,
-    bottom = 8.dp,
-    start = 12.dp
-)
+private val ButtonShape = RoundedCornerShape(16.dp)
+private val DefaultButtonHeight = 40.dp
+private val DefaultButtonPadding = PaddingValues(top = 8.dp, end = 12.dp, bottom = 8.dp, start = 12.dp)
 
 @Composable
-fun RecruitmentDateSelectBox(
+fun RecruitmentOutlinedActionButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    isPlaceholder: Boolean = false
+    enabled: Boolean = true,
+    height: Dp = DefaultButtonHeight,
+    contentPadding: PaddingValues = DefaultButtonPadding
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .border(1.dp, RebrandKoinTheme.colors.neutral200, DateSelectBoxShape)
-            .background(RebrandKoinTheme.colors.neutral0, DateSelectBoxShape)
-            .clickable { onClick() }
-            .padding(DateSelectBoxPadding),
+            .height(height)
+            .clip(ButtonShape)
+            .border(0.5.dp, RebrandKoinTheme.colors.primary500, ButtonShape)
+            .background(RebrandKoinTheme.colors.neutral0, ButtonShape)
+            .clickable(enabled = enabled, role = Role.Button) { onClick() }
+            .padding(contentPadding),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = text,
-            style = RebrandKoinTheme.typography.regular14,
-            color = if (isPlaceholder) RebrandKoinTheme.colors.neutral400 else RebrandKoinTheme.colors.neutral800
+            style = RebrandKoinTheme.typography.medium14,
+            color = RebrandKoinTheme.colors.primary500
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun RecruitmentDateSelectBoxPreview() {
+private fun RecruitmentOutlinedActionButtonPreview() {
     RebrandKoinTheme {
-        RecruitmentDateSelectBox(
-            text = "2026.08.24",
+        RecruitmentOutlinedActionButton(
+            text = "회원정보 불러오기",
             onClick = {}
         )
     }

@@ -21,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,12 +30,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
-import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentProgressType
 import `in`.koreatech.koin.feature.recruitment.model.StableLocalDate
+import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentConfirmDialog
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDatePickerDialog
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDateSelectBox
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDropdown
@@ -43,7 +45,6 @@ import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.component.Re
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.component.RecruitmentProgressTypeSelector
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.component.RecruitmentRoleRow
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model.TeamRecruitmentCategory
-import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model.TeamRecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.utils.toDateText
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -160,9 +161,8 @@ private fun RecruitmentCreateScreenImpl(
     }
 
     if (state.showSubmitConfirmDialog) {
-        ChoiceDialog(
+        RecruitmentConfirmDialog(
             title = stringResource(R.string.recruitment_create_submit_dialog_title),
-            description = "",
             positiveButtonText = stringResource(R.string.recruitment_create_submit_dialog_confirm),
             negativeButtonText = stringResource(R.string.recruitment_create_submit_dialog_cancel),
             onPositive = onConfirmSubmit,
@@ -171,7 +171,7 @@ private fun RecruitmentCreateScreenImpl(
     }
 
     if (state.showCancelConfirmDialog) {
-        ChoiceDialog(
+        RecruitmentConfirmDialog(
             title = stringResource(R.string.recruitment_create_cancel_dialog_title),
             description = stringResource(R.string.recruitment_create_cancel_dialog_description),
             positiveButtonText = stringResource(R.string.recruitment_create_dialog_yes),
@@ -193,7 +193,6 @@ private fun RecruitmentCreateScreenImpl(
             content = {
                 RecruitmentDropdown(
                     text = state.category.label,
-                    // category는 non-nullable이라 항상 선택된 값이 있음 → placeholder 상태 자체가 없음
                     isPlaceholder = false,
                     items = TeamRecruitmentCategory.entries.map { it.label }.toImmutableList(),
                     isExpanded = state.isCategoryDropdownExpanded,
@@ -322,8 +321,6 @@ private fun RecruitmentCreateScreenImpl(
                             colors = RadioButtonDefaults.colors(
                                 selectedColor = RebrandKoinTheme.colors.primary500
                             ),
-                            // RadioButton은 기본적으로 48dp 최소 터치 영역을 가져서 시각적으로 좌측에
-                            // 여백((48-20)/2=14dp)이 생깁니다. 디자인처럼 좌측 정렬시키기 위해 상쇄합니다.
                             modifier = Modifier.offset(x = (-14).dp)
                         )
                         Text(
@@ -334,13 +331,15 @@ private fun RecruitmentCreateScreenImpl(
                         )
                     }
                     state.roles.forEach { role ->
-                        RecruitmentRoleRow(
-                            role = role,
-                            onNameChange = { name -> onRoleNameChange(role.id, name) },
-                            onCountChange = { count -> onRoleCountChange(role.id, count) },
-                            onRemove = { onRoleRemoved(role.id) },
-                            modifier = Modifier.fillMaxWidth()
-                        )
+                        key(role.id) {
+                            RecruitmentRoleRow(
+                                role = role,
+                                onNameChange = { name -> onRoleNameChange(role.id, name) },
+                                onCountChange = { count -> onRoleCountChange(role.id, count) },
+                                onRemove = { onRoleRemoved(role.id) },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
                     }
                 }
             }
