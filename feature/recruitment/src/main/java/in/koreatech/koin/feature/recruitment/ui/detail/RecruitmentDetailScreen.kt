@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,19 +34,21 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRoleModel
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentType
 import `in`.koreatech.koin.feature.recruitment.ui.detail.component.RecruitmentDeleteDialog
 import `in`.koreatech.koin.feature.recruitment.ui.detail.component.RecruitmentInfoSection
 import `in`.koreatech.koin.feature.recruitment.ui.detail.component.RecruitmentMoreMenu
 import `in`.koreatech.koin.feature.recruitment.ui.detail.component.RecruitmentRoleSection
 import `in`.koreatech.koin.feature.recruitment.ui.detail.component.RecruitmentTextSection
 import `in`.koreatech.koin.feature.recruitment.ui.detail.component.RecruitmentTitleSection
-import `in`.koreatech.koin.feature.recruitment.ui.detail.model.RecruitmentRoleModel
-import `in`.koreatech.koin.feature.recruitment.ui.detail.model.RecruitmentType
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun RecruitmentDetailScreen(
@@ -53,6 +56,19 @@ fun RecruitmentDetailScreen(
     onTopbarBackClick: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
+    val context = LocalContext.current
+
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            RecruitmentDetailSideEffect.ShowLoadError ->
+                ToastUtil.getInstance().makeShort(context.getString(R.string.recruitment_load_error))
+
+            RecruitmentDetailSideEffect.ShowDeleteError ->
+                ToastUtil.getInstance().makeShort(context.getString(R.string.recruitment_delete_error))
+
+            RecruitmentDetailSideEffect.DeleteSuccess -> onTopbarBackClick()
+        }
+    }
 
     RecruitmentDetailScreenImpl(
         state = state,
@@ -61,6 +77,7 @@ fun RecruitmentDetailScreen(
         onMoreMenuDismiss = { viewModel.updateMoreMenuVisible(false) },
         onEditClick = { viewModel.updateMoreMenuVisible(false) },
         onDeleteClick = { viewModel.updateDeleteDialogVisible(true) },
+        onDeleteConfirm = viewModel::deleteRecruitment,
         onDeleteDialogDismiss = { viewModel.updateDeleteDialogVisible(false) }
     )
 }
@@ -75,6 +92,7 @@ private fun RecruitmentDetailScreenImpl(
     onMoreMenuDismiss: () -> Unit = {},
     onEditClick: () -> Unit = {},
     onDeleteClick: () -> Unit = {},
+    onDeleteConfirm: () -> Unit = {},
     onDeleteDialogDismiss: () -> Unit = {}
 ) {
     Scaffold(
@@ -160,7 +178,8 @@ private fun RecruitmentDetailScreenImpl(
                     currentParticipants = state.currentParticipants,
                     maxParticipants = state.maxParticipants,
                     createdAt = state.createdAt,
-                    authorNickname = state.authorNickname
+                    authorNickname = state.authorNickname?.takeIf { it.isNotBlank() }
+                        ?: stringResource(R.string.recruitment_anonymous_author)
                 )
                 if (state.recruitmentType == RecruitmentType.ROLE_BASED) {
                     RecruitmentRoleSection(roles = state.roles)
@@ -185,7 +204,7 @@ private fun RecruitmentDetailScreenImpl(
 
     if (state.isDeleteDialogVisible) {
         RecruitmentDeleteDialog(
-            onConfirm = onDeleteDialogDismiss,
+            onConfirm = onDeleteConfirm,
             onDismiss = onDeleteDialogDismiss
         )
     }

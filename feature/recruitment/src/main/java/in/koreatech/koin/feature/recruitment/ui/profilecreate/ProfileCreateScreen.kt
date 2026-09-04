@@ -15,32 +15,58 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
-import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentActivityCard
-import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentActivityForm
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentActivitiesSection
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentConfirmDialog
-import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDropdown
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDepartmentSection
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentFilledActionButton
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentFormSection
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentLoadMemberInfoSection
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentNicknameSection
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentOutlinedActionButton
-import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentSkillFieldRow
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentSelfIntroductionSection
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentSkillsSection
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentStepIndicator
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentStudentIdSection
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentTextField
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
-private const val SELF_INTRODUCTION_MAX_LENGTH = 1000
+@Stable
+data class ProfileCreateStepOneActions(
+    val onLoadMemberInfoClick: () -> Unit = {},
+    val onNicknameChange: (String) -> Unit = {},
+    val onDepartmentDropdownExpandChange: (Boolean) -> Unit = {},
+    val onDepartmentSelected: (String) -> Unit = {},
+    val onStudentIdChange: (String) -> Unit = {}
+)
 
+@Stable
+data class ProfileCreateStepTwoActions(
+    val onPreferredRoleChange: (String) -> Unit = {},
+    val onAddSkillClick: () -> Unit = {},
+    val onSkillTextChange: (Long, String) -> Unit = { _, _ -> },
+    val onSkillRemoved: (Long) -> Unit = {},
+    val onAddActivityClick: () -> Unit = {},
+    val onEditActivityClick: (RecruitmentActivityEntry) -> Unit = {},
+    val onCancelActivityForm: () -> Unit = {},
+    val onActivityAdded: (RecruitmentActivityEntry) -> Unit = {},
+    val onActivityEdited: (RecruitmentActivityEntry) -> Unit = {},
+    val onActivityRemoved: (RecruitmentActivityEntry) -> Unit = {},
+    val onSelfIntroductionChange: (String) -> Unit = {}
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -58,6 +84,32 @@ fun ProfileCreateScreen(
             ProfileCreateSideEffect.SaveSuccess -> onSaveSuccess()
             ProfileCreateSideEffect.SaveFailure -> Unit
         }
+    }
+
+    val stepOneActions = remember {
+        ProfileCreateStepOneActions(
+            onLoadMemberInfoClick = { viewModel.loadMemberInfo() },
+            onNicknameChange = { viewModel.setNickname(it) },
+            onDepartmentDropdownExpandChange = { viewModel.setDepartmentDropdownExpanded(it) },
+            onDepartmentSelected = { viewModel.setDepartment(it) },
+            onStudentIdChange = { viewModel.setStudentId(it) }
+        )
+    }
+
+    val stepTwoActions = remember {
+        ProfileCreateStepTwoActions(
+            onPreferredRoleChange = { viewModel.setPreferredRole(it) },
+            onAddSkillClick = { viewModel.addSkill() },
+            onSkillTextChange = { id, text -> viewModel.setSkillText(id, text) },
+            onSkillRemoved = { viewModel.removeSkill(it) },
+            onAddActivityClick = { viewModel.showActivityAddForm() },
+            onEditActivityClick = { viewModel.showActivityEditForm(it) },
+            onCancelActivityForm = { viewModel.hideActivityForm() },
+            onActivityAdded = { viewModel.addActivity(it) },
+            onActivityEdited = { viewModel.editActivity(it) },
+            onActivityRemoved = { viewModel.removeActivity(it) },
+            onSelfIntroductionChange = { viewModel.setSelfIntroduction(it) }
+        )
     }
 
     Scaffold(
@@ -80,29 +132,15 @@ fun ProfileCreateScreen(
         ProfileCreateScreenImpl(
             state = state,
             modifier = Modifier.padding(contentPadding),
-            onLoadMemberInfoClick = viewModel::loadMemberInfo,
-            onNicknameChange = viewModel::setNickname,
-            onDepartmentDropdownExpandChange = viewModel::setDepartmentDropdownExpanded,
-            onDepartmentSelected = viewModel::setDepartment,
-            onStudentIdChange = viewModel::setStudentId,
-            onPreferredRoleChange = viewModel::setPreferredRole,
-            onAddSkillClick = viewModel::addSkill,
-            onSkillTextChange = viewModel::setSkillText,
-            onSkillRemoved = viewModel::removeSkill,
-            onAddActivityClick = viewModel::showActivityAddForm,
-            onEditActivityClick = viewModel::showActivityEditForm,
-            onCancelActivityForm = viewModel::hideActivityForm,
-            onActivityAdded = viewModel::addActivity,
-            onActivityEdited = viewModel::editActivity,
-            onActivityRemoved = viewModel::removeActivity,
-            onSelfIntroductionChange = viewModel::setSelfIntroduction,
-            onNextStepClick = viewModel::goToNextStep,
-            onPreviousStepClick = viewModel::goToPreviousStep,
-            onSaveClick = viewModel::showSaveConfirmDialog,
-            onDismissSaveConfirmDialog = viewModel::dismissSaveConfirmDialog,
-            onConfirmSave = viewModel::saveProfile,
-            onDismissCancelConfirmDialog = viewModel::dismissCancelConfirmDialog,
-            onConfirmCancel = viewModel::confirmCancel
+            stepOneActions = stepOneActions,
+            stepTwoActions = stepTwoActions,
+            onNextStepClick = { viewModel.goToNextStep() },
+            onPreviousStepClick = { viewModel.goToPreviousStep() },
+            onSaveClick = { viewModel.showSaveConfirmDialog() },
+            onDismissSaveConfirmDialog = { viewModel.dismissSaveConfirmDialog() },
+            onConfirmSave = { viewModel.saveProfile() },
+            onDismissCancelConfirmDialog = { viewModel.dismissCancelConfirmDialog() },
+            onConfirmCancel = { viewModel.confirmCancel() }
         )
     }
 }
@@ -112,22 +150,8 @@ fun ProfileCreateScreen(
 private fun ProfileCreateScreenImpl(
     state: ProfileCreateState,
     modifier: Modifier = Modifier,
-    onLoadMemberInfoClick: () -> Unit = {},
-    onNicknameChange: (String) -> Unit = {},
-    onDepartmentDropdownExpandChange: (Boolean) -> Unit = {},
-    onDepartmentSelected: (String) -> Unit = {},
-    onStudentIdChange: (String) -> Unit = {},
-    onPreferredRoleChange: (String) -> Unit = {},
-    onAddSkillClick: () -> Unit = {},
-    onSkillTextChange: (Int, String) -> Unit = { _, _ -> },
-    onSkillRemoved: (Int) -> Unit = {},
-    onAddActivityClick: () -> Unit = {},
-    onEditActivityClick: (RecruitmentActivityEntry) -> Unit = {},
-    onCancelActivityForm: () -> Unit = {},
-    onActivityAdded: (RecruitmentActivityEntry) -> Unit = {},
-    onActivityEdited: (RecruitmentActivityEntry) -> Unit = {},
-    onActivityRemoved: (RecruitmentActivityEntry) -> Unit = {},
-    onSelfIntroductionChange: (String) -> Unit = {},
+    stepOneActions: ProfileCreateStepOneActions = ProfileCreateStepOneActions(),
+    stepTwoActions: ProfileCreateStepTwoActions = ProfileCreateStepTwoActions(),
     onNextStepClick: () -> Unit = {},
     onPreviousStepClick: () -> Unit = {},
     onSaveClick: () -> Unit = {},
@@ -181,26 +205,12 @@ private fun ProfileCreateScreenImpl(
             if (state.currentStep == 1) {
                 ProfileCreateStepOne(
                     state = state,
-                    onLoadMemberInfoClick = onLoadMemberInfoClick,
-                    onNicknameChange = onNicknameChange,
-                    onDepartmentDropdownExpandChange = onDepartmentDropdownExpandChange,
-                    onDepartmentSelected = onDepartmentSelected,
-                    onStudentIdChange = onStudentIdChange
+                    actions = stepOneActions
                 )
             } else {
                 ProfileCreateStepTwo(
                     state = state,
-                    onPreferredRoleChange = onPreferredRoleChange,
-                    onAddSkillClick = onAddSkillClick,
-                    onSkillTextChange = onSkillTextChange,
-                    onSkillRemoved = onSkillRemoved,
-                    onAddActivityClick = onAddActivityClick,
-                    onEditActivityClick = onEditActivityClick,
-                    onCancelActivityForm = onCancelActivityForm,
-                    onActivityAdded = onActivityAdded,
-                    onActivityEdited = onActivityEdited,
-                    onActivityRemoved = onActivityRemoved,
-                    onSelfIntroductionChange = onSelfIntroductionChange
+                    actions = stepTwoActions
                 )
             }
         }
@@ -253,228 +263,87 @@ private fun ProfileCreateScreenImpl(
 @Composable
 private fun ProfileCreateStepOne(
     state: ProfileCreateState,
-    modifier: Modifier = Modifier,
-    onLoadMemberInfoClick: () -> Unit = {},
-    onNicknameChange: (String) -> Unit = {},
-    onDepartmentDropdownExpandChange: (Boolean) -> Unit = {},
-    onDepartmentSelected: (String) -> Unit = {},
-    onStudentIdChange: (String) -> Unit = {}
+    actions: ProfileCreateStepOneActions,
+    modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(28.dp)) {
-        FormSection(
-            title = stringResource(R.string.recruitment_apply_load_member_info),
-            titleHint = stringResource(R.string.recruitment_apply_load_member_info_hint)
-        ) {
-            RecruitmentOutlinedActionButton(
-                text = stringResource(R.string.recruitment_apply_load_member_info_button),
-                onClick = onLoadMemberInfoClick
-            )
-        }
+        RecruitmentLoadMemberInfoSection(onLoadMemberInfoClick = actions.onLoadMemberInfoClick)
 
-        FormSection(
-            title = stringResource(R.string.recruitment_apply_nickname),
-            isRequired = true,
-            trailingContent = {
-                Text(
-                    text = stringResource(
-                        R.string.recruitment_profile_char_count,
-                        state.nickname.length,
-                        PROFILE_NICKNAME_MAX_LENGTH
-                    ),
-                    style = RebrandKoinTheme.typography.regular12,
-                    color = RebrandKoinTheme.colors.neutral400
-                )
-            }
-        ) {
-            RecruitmentTextField(
-                value = state.nickname,
-                onValueChange = onNicknameChange,
-                hint = stringResource(R.string.recruitment_apply_nickname_hint),
-                maxLength = PROFILE_NICKNAME_MAX_LENGTH
-            )
-        }
+        RecruitmentNicknameSection(
+            nickname = state.nickname,
+            onNicknameChange = actions.onNicknameChange,
+            maxLength = PROFILE_NICKNAME_MAX_LENGTH
+        )
 
-        FormSection(title = stringResource(R.string.recruitment_apply_department), isRequired = true) {
-            RecruitmentDropdown(
-                text = state.department.ifEmpty { stringResource(R.string.recruitment_apply_department_hint) },
-                isPlaceholder = state.department.isBlank(),
-                items = state.departments,
-                isExpanded = state.isDepartmentDropdownExpanded,
-                onExpandedChange = onDepartmentDropdownExpandChange,
-                onItemSelected = { index -> onDepartmentSelected(state.departments[index]) }
-            )
-        }
+        RecruitmentDepartmentSection(
+            department = state.department,
+            isDropdownExpanded = state.isDepartmentDropdownExpanded,
+            onDropdownExpandChange = actions.onDepartmentDropdownExpandChange,
+            onDepartmentSelected = actions.onDepartmentSelected
+        )
 
-        FormSection(title = stringResource(R.string.recruitment_apply_student_id), isRequired = true) {
-            RecruitmentTextField(
-                value = state.studentId,
-                onValueChange = onStudentIdChange,
-                hint = stringResource(R.string.recruitment_apply_student_id_hint)
-            )
-        }
+        RecruitmentStudentIdSection(
+            studentId = state.studentId,
+            onStudentIdChange = actions.onStudentIdChange
+        )
     }
 }
 
-@Suppress("LongParameterList")
 @Composable
 private fun ProfileCreateStepTwo(
     state: ProfileCreateState,
-    modifier: Modifier = Modifier,
-    onPreferredRoleChange: (String) -> Unit = {},
-    onAddSkillClick: () -> Unit = {},
-    onSkillTextChange: (Int, String) -> Unit = { _, _ -> },
-    onSkillRemoved: (Int) -> Unit = {},
-    onAddActivityClick: () -> Unit = {},
-    onEditActivityClick: (RecruitmentActivityEntry) -> Unit = {},
-    onCancelActivityForm: () -> Unit = {},
-    onActivityAdded: (RecruitmentActivityEntry) -> Unit = {},
-    onActivityEdited: (RecruitmentActivityEntry) -> Unit = {},
-    onActivityRemoved: (RecruitmentActivityEntry) -> Unit = {},
-    onSelfIntroductionChange: (String) -> Unit = {}
+    actions: ProfileCreateStepTwoActions,
+    modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(28.dp)) {
-        FormSection(
+        RecruitmentFormSection(
             title = stringResource(R.string.recruitment_profile_preferred_role),
             isRequired = true,
             trailingContent = {
                 Text(
                     text = stringResource(
-                        R.string.recruitment_profile_char_count,
+                        R.string.recruitment_apply_char_count,
                         state.preferredRole.length,
                         PROFILE_PREFERRED_ROLE_MAX_LENGTH
                     ),
                     style = RebrandKoinTheme.typography.regular12,
                     color = RebrandKoinTheme.colors.neutral400
                 )
-            }
-        ) {
-            RecruitmentTextField(
-                value = state.preferredRole,
-                onValueChange = onPreferredRoleChange,
-                hint = stringResource(R.string.recruitment_profile_preferred_role_hint),
-                maxLength = PROFILE_PREFERRED_ROLE_MAX_LENGTH
-            )
-        }
-
-        FormSection(
-            title = stringResource(R.string.recruitment_apply_skills),
-            titleHint = stringResource(R.string.recruitment_apply_skills_hint)
-        ) {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                state.skills.forEachIndexed { index, skill ->
-                    RecruitmentSkillFieldRow(
-                        value = skill,
-                        onValueChange = { text -> onSkillTextChange(index, text) },
-                        onRemove = { onSkillRemoved(index) }
-                    )
-                }
-                RecruitmentOutlinedActionButton(
-                    text = stringResource(R.string.recruitment_apply_add_skill),
-                    onClick = onAddSkillClick
+            },
+            content = {
+                RecruitmentTextField(
+                    value = state.preferredRole,
+                    onValueChange = actions.onPreferredRoleChange,
+                    hint = stringResource(R.string.recruitment_profile_preferred_role_hint),
+                    maxLength = PROFILE_PREFERRED_ROLE_MAX_LENGTH
                 )
             }
-        }
+        )
 
-        FormSection(
-            title = stringResource(R.string.recruitment_apply_activities),
-            titleHint = stringResource(R.string.recruitment_apply_activities_hint)
-        ) {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                state.activities.forEach { activity ->
-                    val formState = state.activityFormState
-                    if (formState is ProfileActivityFormState.Editing && formState.activityId == activity.id) {
-                        RecruitmentActivityForm(
-                            onCancel = onCancelActivityForm,
-                            onConfirm = onActivityEdited,
-                            existingActivity = activity
-                        )
-                    } else {
-                        RecruitmentActivityCard(
-                            activity = activity,
-                            onRemove = { onActivityRemoved(activity) },
-                            onEdit = { onEditActivityClick(activity) }
-                        )
-                    }
-                }
-                if (state.activityFormState is ProfileActivityFormState.Adding) {
-                    RecruitmentActivityForm(
-                        onCancel = onCancelActivityForm,
-                        onConfirm = onActivityAdded
-                    )
-                }
-                RecruitmentOutlinedActionButton(
-                    text = stringResource(R.string.recruitment_apply_add_activity),
-                    onClick = onAddActivityClick
-                )
-            }
-        }
+        RecruitmentSkillsSection(
+            skills = state.skills,
+            onSkillTextChange = actions.onSkillTextChange,
+            onSkillRemoved = actions.onSkillRemoved,
+            onAddSkillClick = actions.onAddSkillClick
+        )
 
-        FormSection(
-            title = stringResource(R.string.recruitment_apply_self_introduction),
-            isRequired = true,
-            trailingContent = {
-                Text(
-                    text = stringResource(
-                        R.string.recruitment_profile_char_count,
-                        state.selfIntroduction.length,
-                        SELF_INTRODUCTION_MAX_LENGTH
-                    ),
-                    style = RebrandKoinTheme.typography.regular12,
-                    color = RebrandKoinTheme.colors.neutral400
-                )
-            }
-        ) {
-            RecruitmentTextField(
-                value = state.selfIntroduction,
-                onValueChange = onSelfIntroductionChange,
-                hint = stringResource(R.string.recruitment_apply_self_introduction_hint),
-                singleLine = false,
-                minLines = 6,
-                maxLength = SELF_INTRODUCTION_MAX_LENGTH
-            )
-        }
-    }
-}
+        RecruitmentActivitiesSection(
+            activities = state.activities,
+            isAddingActivity = state.activityFormState is ProfileActivityFormState.Adding,
+            editingActivityId = (state.activityFormState as? ProfileActivityFormState.Editing)?.activityId,
+            onAddActivityClick = actions.onAddActivityClick,
+            onEditActivityClick = actions.onEditActivityClick,
+            onCancelActivityForm = actions.onCancelActivityForm,
+            onActivityAdded = actions.onActivityAdded,
+            onActivityEdited = actions.onActivityEdited,
+            onActivityRemoved = actions.onActivityRemoved
+        )
 
-@Composable
-private fun FormSection(
-    title: String,
-    modifier: Modifier = Modifier,
-    isRequired: Boolean = false,
-    titleHint: String? = null,
-    trailingContent: (@Composable () -> Unit)? = null,
-    content: @Composable () -> Unit
-) {
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = title,
-                    style = RebrandKoinTheme.typography.medium16,
-                    color = RebrandKoinTheme.colors.neutral800
-                )
-                if (isRequired) {
-                    Text(
-                        text = " *",
-                        style = RebrandKoinTheme.typography.medium16,
-                        color = RebrandKoinTheme.colors.primary500
-                    )
-                }
-                if (titleHint != null) {
-                    Text(
-                        text = "  $titleHint",
-                        style = RebrandKoinTheme.typography.regular12,
-                        color = RebrandKoinTheme.colors.neutral500
-                    )
-                }
-            }
-            trailingContent?.invoke()
-        }
-        content()
+        RecruitmentSelfIntroductionSection(
+            selfIntroduction = state.selfIntroduction,
+            onSelfIntroductionChange = actions.onSelfIntroductionChange,
+            maxLength = SELF_INTRODUCTION_MAX_LENGTH
+        )
     }
 }
 

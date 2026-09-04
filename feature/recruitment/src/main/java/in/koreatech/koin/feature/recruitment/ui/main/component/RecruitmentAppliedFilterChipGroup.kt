@@ -26,7 +26,7 @@ fun RecruitmentAppliedFilterChipGroup(
     filterState: RecruitmentFilterState,
     onRemoveStatus: () -> Unit,
     onRemoveCategory: (RecruitmentCategory) -> Unit,
-    onRemoveLocation: (RecruitmentLocation) -> Unit,
+    onRemoveLocation: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     FlowRow(
@@ -44,9 +44,9 @@ fun RecruitmentAppliedFilterChipGroup(
                 AppliedFilterChip(labelRes = category.labelRes) { onRemoveCategory(category) }
             }
         }
-        filterState.selectedLocations.forEach { location ->
+        filterState.selectedLocation?.let { location ->
             key(location) {
-                AppliedFilterChip(labelRes = location.labelRes) { onRemoveLocation(location) }
+                AppliedFilterChip(labelRes = location.labelRes, onRemove = onRemoveLocation)
             }
         }
     }
@@ -84,7 +84,7 @@ private fun RecruitmentAppliedFilterChipGroupPreview() {
                     RecruitmentCategory.CONTEST,
                     RecruitmentCategory.STUDY
                 ),
-                selectedLocations = persistentListOf(RecruitmentLocation.ONLINE)
+                selectedLocation = RecruitmentLocation.ONLINE
             ),
             onRemoveStatus = {},
             onRemoveCategory = {},

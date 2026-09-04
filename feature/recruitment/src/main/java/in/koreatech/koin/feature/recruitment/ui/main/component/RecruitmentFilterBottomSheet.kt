@@ -191,14 +191,14 @@ private fun RecruitmentFilterContent(
             RecruitmentFilterSection(title = stringResource(R.string.recruitment_location_label)) {
                 RecruitmentFilterChip(
                     text = allLabel,
-                    isSelected = state.selectedLocations.isEmpty(),
+                    isSelected = state.selectedLocation == null,
                     onClick = { onLocationClick(null) }
                 )
                 RecruitmentLocation.ALL.forEach { location ->
                     key(location) {
                         RecruitmentFilterChip(
                             text = stringResource(location.labelRes),
-                            isSelected = location in state.selectedLocations,
+                            isSelected = state.selectedLocation == location,
                             onClick = { onLocationClick(location) }
                         )
                     }

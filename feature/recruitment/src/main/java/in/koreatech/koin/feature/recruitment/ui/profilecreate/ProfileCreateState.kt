@@ -2,12 +2,14 @@ package `in`.koreatech.koin.feature.recruitment.ui.profilecreate
 
 import androidx.compose.runtime.Immutable
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
+import `in`.koreatech.koin.feature.recruitment.model.SkillEntry
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 const val PROFILE_CREATE_STEP_COUNT = 2
 const val PROFILE_NICKNAME_MAX_LENGTH = 20
 const val PROFILE_PREFERRED_ROLE_MAX_LENGTH = 20
+const val SELF_INTRODUCTION_MAX_LENGTH = 1000
 
 sealed interface ProfileActivityFormState {
     data object Hidden : ProfileActivityFormState
@@ -25,7 +27,7 @@ data class ProfileCreateState(
     val isDepartmentDropdownExpanded: Boolean = false,
     val studentId: String = "",
     val preferredRole: String = "",
-    val skills: ImmutableList<String> = persistentListOf(),
+    val skills: ImmutableList<SkillEntry> = persistentListOf(),
     val activities: ImmutableList<RecruitmentActivityEntry> = persistentListOf(),
     val activityFormState: ProfileActivityFormState = ProfileActivityFormState.Hidden,
     val selfIntroduction: String = "",

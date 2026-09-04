@@ -15,23 +15,33 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
@@ -47,6 +57,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentItemMode
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun RecruitmentMainScreen(
@@ -58,6 +69,18 @@ fun RecruitmentMainScreen(
     onItemClick: (Int) -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
+    val context = LocalContext.current
+
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+        viewModel.fetchRecruitments()
+    }
+
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            RecruitmentMainSideEffect.ShowError ->
+                ToastUtil.getInstance().makeShort(context.getString(R.string.recruitment_load_error))
+        }
+    }
 
     if (state.isFilterVisible) {
         RecruitmentFilterBottomSheet(
@@ -65,7 +88,7 @@ fun RecruitmentMainScreen(
             onStatusClick = viewModel::selectPendingStatus,
             onSortClick = viewModel::selectPendingSort,
             onCategoryClick = viewModel::togglePendingCategory,
-            onLocationClick = viewModel::togglePendingLocation,
+            onLocationClick = viewModel::selectPendingLocation,
             onReset = viewModel::resetPendingFilter,
             onApplyClick = viewModel::applyPendingFilter,
             onDismissRequest = { viewModel.updateFilterVisible(false) }
@@ -75,6 +98,9 @@ fun RecruitmentMainScreen(
     RecruitmentMainScreenImpl(
         searchValue = state.searchValue,
         items = state.items,
+        totalCount = state.totalCount,
+        isRefreshing = state.isRefreshing,
+        onRefresh = { viewModel.fetchRecruitments(isRefresh = true) },
         filterState = state.filterState,
         onSearchValueChange = viewModel::updateSearch,
         onFilterClick = { viewModel.updateFilterVisible(true) },
@@ -89,17 +115,21 @@ fun RecruitmentMainScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Suppress("LongParameterList")
 @Composable
 private fun RecruitmentMainScreenImpl(
     searchValue: String,
     items: ImmutableList<RecruitmentItemModel>,
+    totalCount: Long,
     filterState: RecruitmentFilterState,
+    isRefreshing: Boolean = false,
+    onRefresh: () -> Unit = {},
     onSearchValueChange: (String) -> Unit = {},
     onFilterClick: () -> Unit = {},
     onRemoveStatus: () -> Unit = {},
     onRemoveCategory: (RecruitmentCategory) -> Unit = {},
-    onRemoveLocation: (RecruitmentLocation) -> Unit = {},
+    onRemoveLocation: () -> Unit = {},
     onTopbarBackClick: () -> Unit = {},
     onNotificationClick: () -> Unit = {},
     onProfileClick: () -> Unit = {},
@@ -202,32 +232,49 @@ private fun RecruitmentMainScreenImpl(
                 }
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = stringResource(R.string.recruitment_total_count, items.size),
+                    text = stringResource(R.string.recruitment_total_count, totalCount),
                     style = RebrandKoinTheme.typography.regular12,
                     color = RebrandKoinTheme.colors.neutral500
                 )
             }
 
-            if (items.isEmpty()) {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    RecruitmentEmptyContent(modifier = Modifier.padding(bottom = 40.dp))
+            val pullToRefreshState = rememberPullToRefreshState()
+            PullToRefreshBox(
+                modifier = Modifier.weight(1f),
+                isRefreshing = isRefreshing,
+                onRefresh = onRefresh,
+                state = pullToRefreshState,
+                indicator = {
+                    Indicator(
+                        modifier = Modifier.align(Alignment.TopCenter),
+                        isRefreshing = isRefreshing,
+                        containerColor = RebrandKoinTheme.colors.neutral0,
+                        color = RebrandKoinTheme.colors.primary500,
+                        state = pullToRefreshState
+                    )
                 }
-            } else {
-                LazyColumn(
-                    modifier = Modifier.weight(1f),
-                    contentPadding = PaddingValues(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 96.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(items, key = { it.id }) { item ->
-                        RecruitmentMainItem(
-                            item = item,
-                            onClick = { onItemClick(item.id) }
-                        )
+            ) {
+                if (items.isEmpty()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState()),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        RecruitmentEmptyContent(modifier = Modifier.padding(bottom = 40.dp))
+                    }
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 96.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(items, key = { it.id }) { item ->
+                            RecruitmentMainItem(
+                                item = item,
+                                onClick = { onItemClick(item.id) }
+                            )
+                        }
                     }
                 }
             }
@@ -241,6 +288,7 @@ private fun RecruitmentMainScreenAppliedFilterPreview() {
     RebrandKoinTheme {
         RecruitmentMainScreenImpl(
             searchValue = "",
+            totalCount = 1,
             items = persistentListOf(
                 RecruitmentItemModel(
                     id = 1,
@@ -249,7 +297,8 @@ private fun RecruitmentMainScreenAppliedFilterPreview() {
                     dDay = 13,
                     title = "2026 스터디 팀원 모집",
                     location = RecruitmentLocation.MIXED,
-                    period = "2026.07.26 ~ 2026.08.07",
+                    activityStartDate = "2026.07.26",
+                    activityEndDate = "2026.08.07",
                     currentCount = 2,
                     maxCount = 3
                 )
@@ -268,6 +317,7 @@ private fun RecruitmentMainScreenEmptyPreview() {
     RebrandKoinTheme {
         RecruitmentMainScreenImpl(
             searchValue = "검색결과없음",
+            totalCount = 0,
             items = persistentListOf(),
             filterState = RecruitmentFilterState()
         )

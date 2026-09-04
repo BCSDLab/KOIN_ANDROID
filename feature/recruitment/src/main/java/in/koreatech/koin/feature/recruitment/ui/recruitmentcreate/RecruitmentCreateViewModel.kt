@@ -22,6 +22,7 @@ import org.orbitmvi.orbit.viewmodel.container
 private val ISO_DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE
 
 @HiltViewModel
+@Suppress("TooManyFunctions")
 class RecruitmentCreateViewModel @Inject constructor(
     private val createTeamRecruitmentUseCase: CreateTeamRecruitmentUseCase
 ) : ViewModel(), ContainerHost<RecruitmentCreateState, RecruitmentCreateSideEffect> {
@@ -75,8 +76,6 @@ class RecruitmentCreateViewModel @Inject constructor(
         reduce {
             state.copy(
                 isRoleCountUndetermined = undetermined,
-                // GENERAL(역할 구분 없음)과 ROLE_BASED(역할별 모집)는 동시에 값을 보낼 수 없으므로
-                // 모드를 전환하면 역할 목록을 비웁니다.
                 roles = if (undetermined) persistentListOf() else state.roles
             )
         }

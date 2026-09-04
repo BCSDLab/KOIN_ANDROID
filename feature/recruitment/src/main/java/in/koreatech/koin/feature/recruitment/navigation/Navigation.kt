@@ -24,16 +24,6 @@ import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.RecruitmentC
 fun NavGraphBuilder.koinRecruitmentGraph(
     navController: NavController
 ) {
-    composable<RecruitmentNavType.RecruitmentMain> {
-        RecruitmentMainScreen(
-            onTopbarBackClick = { navController.navigateUp() }
-        )
-    }
-    composable<RecruitmentNavType.RecruitmentDetail> {
-        RecruitmentDetailScreen(
-            onTopbarBackClick = { navController.navigateUp() }
-        )
-    }
     composable<RecruitmentNavType.RecruitmentCreate> {
         RecruitmentCreateScreen(
             onNavigateUp = { navController.navigateUp() },
@@ -60,6 +50,19 @@ fun NavGraphBuilder.koinRecruitmentGraph(
         ProfileCreateScreen(
             onNavigateUp = { navController.navigateUp() },
             onSaveSuccess = { navController.navigateUp() }
+        )
+    }
+    composable<RecruitmentNavType.RecruitmentMain> {
+        RecruitmentMainScreen(
+            onTopbarBackClick = { navController.navigateUp() },
+            onItemClick = { postId ->
+                navController.navigate(RecruitmentNavType.RecruitmentDetail(postId))
+            }
+        )
+    }
+    composable<RecruitmentNavType.RecruitmentDetail> {
+        RecruitmentDetailScreen(
+            onTopbarBackClick = { navController.navigateUp() }
         )
     }
     composable<RecruitmentNavType.RecruitmentGroupChat> {

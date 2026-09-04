@@ -5,12 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class RecruitmentNavType {
     @Serializable
-    data object RecruitmentMain : RecruitmentNavType()
-
-    @Serializable
-    data class RecruitmentDetail(val postId: Int) : RecruitmentNavType()
-
-    @Serializable
     data object RecruitmentCreate : RecruitmentNavType()
 
     @Serializable
@@ -26,19 +20,21 @@ sealed class RecruitmentNavType {
     data class ProfileCreate(val isEditMode: Boolean = false) : RecruitmentNavType()
 
     @Serializable
+    data object RecruitmentMain : RecruitmentNavType()
+
+    @Serializable
+    data class RecruitmentDetail(val postId: Int) : RecruitmentNavType()
+
+    @Serializable
     data class RecruitmentGroupChat(
-        val postId: Int,
-        val title: String,
-        val currentMemberCount: Int,
-        val maxMemberCount: Int,
-        val date: String
+        val recruitmentId: Int,
+        val chatRoomId: Int
     ) : RecruitmentNavType()
 
     @Serializable
     data class RecruitmentDirectChat(
-        val postId: Int,
-        val partnerNickname: String,
-        val date: String
+        val recruitmentId: Int,
+        val applicationId: Int
     ) : RecruitmentNavType()
 
     @Serializable

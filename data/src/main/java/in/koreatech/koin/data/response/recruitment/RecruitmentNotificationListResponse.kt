@@ -2,9 +2,9 @@ package `in`.koreatech.koin.data.response.recruitment
 
 import com.google.gson.annotations.SerializedName
 
-data class TeamRecruitmentNotificationListResponse(
+data class RecruitmentNotificationListResponse(
     @SerializedName("notifications")
-    val notifications: List<TeamRecruitmentNotificationResponse>,
+    val notifications: List<RecruitmentNotificationResponse>,
     @SerializedName("unread_count")
     val unreadCount: Int,
     @SerializedName("total_count")

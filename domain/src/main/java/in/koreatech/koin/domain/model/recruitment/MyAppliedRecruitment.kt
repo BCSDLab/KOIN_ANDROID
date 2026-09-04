@@ -7,5 +7,5 @@ data class MyAppliedRecruitment(
     val teamChatRoomId: Int?,
     val directChatRoomId: Int?,
     val roleName: String,
-    val recruitment: RecruitmentPost
+    val recruitment: Recruitment
 )

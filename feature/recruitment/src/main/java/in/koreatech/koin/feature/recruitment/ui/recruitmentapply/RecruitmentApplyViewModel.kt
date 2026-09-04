@@ -11,6 +11,9 @@ import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentErrorMessage
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
 import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRoleOption
+import `in`.koreatech.koin.feature.recruitment.model.withNewSkill
+import `in`.koreatech.koin.feature.recruitment.model.withSkillText
+import `in`.koreatech.koin.feature.recruitment.model.withoutSkill
 import `in`.koreatech.koin.feature.recruitment.navigation.RecruitmentNavType
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
@@ -19,6 +22,9 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+
+private const val MIN_AGE = 1
+private const val MAX_AGE = 99
 
 @HiltViewModel
 class RecruitmentApplyViewModel @Inject constructor(
@@ -72,7 +78,9 @@ class RecruitmentApplyViewModel @Inject constructor(
     }
 
     fun setAge(age: String) = intent {
-        reduce { state.copy(age = age) }
+        if (age.isEmpty() || (age.all { it.isDigit() } && age.toIntOrNull() in MIN_AGE..MAX_AGE)) {
+            reduce { state.copy(age = age) }
+        }
     }
 
     fun setDepartmentDropdownExpanded(expanded: Boolean) = intent {
@@ -88,21 +96,15 @@ class RecruitmentApplyViewModel @Inject constructor(
     }
 
     fun addSkill() = intent {
-        reduce { state.copy(skills = (state.skills + "").toPersistentList()) }
+        reduce { state.copy(skills = state.skills.withNewSkill()) }
     }
 
-    fun setSkillText(index: Int, text: String) = intent {
-        reduce {
-            state.copy(
-                skills = state.skills.mapIndexed { i, skill -> if (i == index) text else skill }.toPersistentList()
-            )
-        }
+    fun setSkillText(id: Long, text: String) = intent {
+        reduce { state.copy(skills = state.skills.withSkillText(id, text)) }
     }
 
-    fun removeSkill(index: Int) = intent {
-        reduce {
-            state.copy(skills = state.skills.filterIndexed { i, _ -> i != index }.toPersistentList())
-        }
+    fun removeSkill(id: Long) = intent {
+        reduce { state.copy(skills = state.skills.withoutSkill(id)) }
     }
 
     fun showActivityAddForm() = intent {
@@ -142,7 +144,9 @@ class RecruitmentApplyViewModel @Inject constructor(
     }
 
     fun setSelfIntroduction(text: String) = intent {
-        reduce { state.copy(selfIntroduction = text) }
+        if (text.length <= SELF_INTRODUCTION_MAX_LENGTH) {
+            reduce { state.copy(selfIntroduction = text) }
+        }
     }
 
     fun goToNextStep() = intent {
