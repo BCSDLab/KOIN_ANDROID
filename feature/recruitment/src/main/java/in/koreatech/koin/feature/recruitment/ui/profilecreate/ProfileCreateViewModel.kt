@@ -1,12 +1,14 @@
-package `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply
+package `in`.koreatech.koin.feature.recruitment.ui.profilecreate
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
-import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.model.withNewSkill
 import `in`.koreatech.koin.feature.recruitment.model.withSkillText
 import `in`.koreatech.koin.feature.recruitment.model.withoutSkill
+import `in`.koreatech.koin.feature.recruitment.navigation.RecruitmentNavType
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.ContainerHost
@@ -15,39 +17,31 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
-private const val MIN_AGE = 1
-private const val MAX_AGE = 99
-
 @HiltViewModel
 @Suppress("TooManyFunctions")
-class RecruitmentApplyViewModel @Inject constructor() :
-    ViewModel(),
-    ContainerHost<RecruitmentApplyState, RecruitmentApplySideEffect> {
+class ProfileCreateViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle
+) : ViewModel(), ContainerHost<ProfileCreateState, ProfileCreateSideEffect> {
 
-    override val container = container<RecruitmentApplyState, RecruitmentApplySideEffect>(
-        RecruitmentApplyState()
+    private val arguments = savedStateHandle.toRoute<RecruitmentNavType.ProfileCreate>()
+
+    override val container = container<ProfileCreateState, ProfileCreateSideEffect>(
+        ProfileCreateState(isEditMode = arguments.isEditMode)
     )
 
     fun loadMemberInfo() = intent {
         reduce {
             state.copy(
-                isMemberInfoLoaded = true,
                 nickname = state.nickname.ifEmpty { "코인유저" },
                 department = "컴퓨터공학부",
-                studentId = state.studentId.ifEmpty { "2023120203219" }
+                studentId = state.studentId.ifEmpty { "2023100000" }
             )
         }
     }
 
     fun setNickname(nickname: String) = intent {
-        if (nickname.length <= NICKNAME_MAX_LENGTH) {
+        if (nickname.length <= PROFILE_NICKNAME_MAX_LENGTH) {
             reduce { state.copy(nickname = nickname) }
-        }
-    }
-
-    fun setAge(age: String) = intent {
-        if (age.isEmpty() || (age.all { it.isDigit() } && age.toIntOrNull() in MIN_AGE..MAX_AGE)) {
-            reduce { state.copy(age = age) }
         }
     }
 
@@ -63,6 +57,12 @@ class RecruitmentApplyViewModel @Inject constructor() :
         reduce { state.copy(studentId = studentId) }
     }
 
+    fun setPreferredRole(role: String) = intent {
+        if (role.length <= PROFILE_PREFERRED_ROLE_MAX_LENGTH) {
+            reduce { state.copy(preferredRole = role) }
+        }
+    }
+
     fun addSkill() = intent {
         reduce { state.copy(skills = state.skills.withNewSkill()) }
     }
@@ -76,22 +76,22 @@ class RecruitmentApplyViewModel @Inject constructor() :
     }
 
     fun showActivityAddForm() = intent {
-        reduce { state.copy(activityFormState = ActivityFormState.Adding) }
+        reduce { state.copy(activityFormState = ProfileActivityFormState.Adding) }
     }
 
     fun showActivityEditForm(activity: RecruitmentActivityEntry) = intent {
-        reduce { state.copy(activityFormState = ActivityFormState.Editing(activity.id)) }
+        reduce { state.copy(activityFormState = ProfileActivityFormState.Editing(activity.id)) }
     }
 
     fun hideActivityForm() = intent {
-        reduce { state.copy(activityFormState = ActivityFormState.Hidden) }
+        reduce { state.copy(activityFormState = ProfileActivityFormState.Hidden) }
     }
 
     fun addActivity(activity: RecruitmentActivityEntry) = intent {
         reduce {
             state.copy(
                 activities = (state.activities + activity).toPersistentList(),
-                activityFormState = ActivityFormState.Hidden
+                activityFormState = ProfileActivityFormState.Hidden
             )
         }
     }
@@ -102,7 +102,7 @@ class RecruitmentApplyViewModel @Inject constructor() :
                 activities = state.activities
                     .map { if (it.id == activity.id) activity else it }
                     .toPersistentList(),
-                activityFormState = ActivityFormState.Hidden
+                activityFormState = ProfileActivityFormState.Hidden
             )
         }
     }
@@ -112,37 +112,25 @@ class RecruitmentApplyViewModel @Inject constructor() :
     }
 
     fun setSelfIntroduction(text: String) = intent {
-        reduce { state.copy(selfIntroduction = text) }
+        if (text.length <= SELF_INTRODUCTION_MAX_LENGTH) {
+            reduce { state.copy(selfIntroduction = text) }
+        }
     }
 
     fun goToNextStep() = intent {
-        reduce { state.copy(currentStep = RECRUITMENT_APPLY_STEP_COUNT) }
+        reduce { state.copy(currentStep = PROFILE_CREATE_STEP_COUNT) }
     }
 
     fun goToPreviousStep() = intent {
         reduce { state.copy(currentStep = 1) }
     }
 
-    fun selectRole(role: TeamRecruitmentRole) = intent {
-        if (!role.isClosed) {
-            reduce { state.copy(selectedRole = role) }
-        }
+    fun showSaveConfirmDialog() = intent {
+        reduce { state.copy(showSaveConfirmDialog = true) }
     }
 
-    fun setMotivation(text: String) = intent {
-        reduce { state.copy(motivation = text) }
-    }
-
-    fun setAvailableTime(text: String) = intent {
-        reduce { state.copy(availableTime = text) }
-    }
-
-    fun showSubmitConfirmDialog() = intent {
-        reduce { state.copy(showSubmitConfirmDialog = true) }
-    }
-
-    fun dismissSubmitConfirmDialog() = intent {
-        reduce { state.copy(showSubmitConfirmDialog = false) }
+    fun dismissSaveConfirmDialog() = intent {
+        reduce { state.copy(showSaveConfirmDialog = false) }
     }
 
     fun showCancelConfirmDialog() = intent {
@@ -155,11 +143,11 @@ class RecruitmentApplyViewModel @Inject constructor() :
 
     fun confirmCancel() = intent {
         reduce { state.copy(showCancelConfirmDialog = false) }
-        postSideEffect(RecruitmentApplySideEffect.NavigateUp)
+        postSideEffect(ProfileCreateSideEffect.NavigateUp)
     }
 
-    fun submitApplication() = intent {
-        reduce { state.copy(isSubmitting = true, showSubmitConfirmDialog = false) }
-        postSideEffect(RecruitmentApplySideEffect.ApplySuccess)
+    fun saveProfile() = intent {
+        reduce { state.copy(isSaving = true, showSaveConfirmDialog = false) }
+        postSideEffect(ProfileCreateSideEffect.SaveSuccess)
     }
 }

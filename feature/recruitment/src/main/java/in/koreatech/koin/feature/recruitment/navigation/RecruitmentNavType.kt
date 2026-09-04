@@ -11,6 +11,12 @@ sealed class RecruitmentNavType {
     data object RecruitmentApply : RecruitmentNavType()
 
     @Serializable
+    data object Profile : RecruitmentNavType()
+
+    @Serializable
+    data class ProfileCreate(val isEditMode: Boolean = false) : RecruitmentNavType()
+
+    @Serializable
     data object RecruitmentMain : RecruitmentNavType()
 
     @Serializable

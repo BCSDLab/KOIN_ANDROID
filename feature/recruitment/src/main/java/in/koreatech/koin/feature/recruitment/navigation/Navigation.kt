@@ -15,6 +15,8 @@ import `in`.koreatech.koin.feature.recruitment.ui.main.RecruitmentMainScreen
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.MyAppliedRecruitmentScreen
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.MyRecruitmentScreen
 import `in`.koreatech.koin.feature.recruitment.ui.notification.RecruitmentNotificationScreen
+import `in`.koreatech.koin.feature.recruitment.ui.profile.ProfileScreen
+import `in`.koreatech.koin.feature.recruitment.ui.profilecreate.ProfileCreateScreen
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply.RecruitmentApplyScreen
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.RecruitmentCreateScreen
 
@@ -26,6 +28,28 @@ fun NavGraphBuilder.koinRecruitmentGraph(
         RecruitmentCreateScreen(
             onNavigateUp = { navController.navigateUp() },
             onRecruitmentCreated = { navController.navigateUp() }
+        )
+    }
+    composable<RecruitmentNavType.RecruitmentApply> {
+        RecruitmentApplyScreen(
+            onNavigateUp = { navController.navigateUp() },
+            onApplySuccess = { navController.navigateUp() }
+        )
+    }
+    composable<RecruitmentNavType.Profile> {
+        ProfileScreen(
+            onNavigateUp = { navController.navigateUp() },
+            onNavigateToMyRecruitment = { },
+            onNavigateToMyAppliedRecruitment = { },
+            onNavigateToProfileCreate = { isEditMode ->
+                navController.navigate(RecruitmentNavType.ProfileCreate(isEditMode = isEditMode))
+            }
+        )
+    }
+    composable<RecruitmentNavType.ProfileCreate> {
+        ProfileCreateScreen(
+            onNavigateUp = { navController.navigateUp() },
+            onSaveSuccess = { navController.navigateUp() }
         )
     }
     composable<RecruitmentNavType.RecruitmentMain> {
@@ -92,13 +116,6 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     composable<RecruitmentNavType.ApplicantDetail> {
         ApplicantDetailScreen(
             onNavigateUp = { navController.navigateUp() }
-        )
-    }
-
-    composable<RecruitmentNavType.RecruitmentApply> {
-        RecruitmentApplyScreen(
-            onNavigateUp = { navController.navigateUp() },
-            onApplySuccess = { navController.navigateUp() }
         )
     }
 }
