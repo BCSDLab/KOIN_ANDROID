@@ -128,6 +128,6 @@ class MyRecruitmentViewModel @Inject constructor(
     }
 
     companion object {
-        private const val MY_RECRUITMENT_PAGE_SIZE = 20
+        private const val MY_RECRUITMENT_PAGE_SIZE = 10
     }
 }

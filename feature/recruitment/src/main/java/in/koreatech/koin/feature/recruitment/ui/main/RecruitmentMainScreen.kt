@@ -275,7 +275,6 @@ private fun RecruitmentMainScreenImpl(
                     val listState = rememberRecruitmentPaginationListState(
                         hasMore = hasMore,
                         isLoadingMore = isLoadingMore,
-                        itemCount = items.size,
                         onLoadMore = onLoadMore
                     )
 

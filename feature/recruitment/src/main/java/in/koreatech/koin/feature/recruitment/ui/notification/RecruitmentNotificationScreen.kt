@@ -127,7 +127,6 @@ private fun RecruitmentNotificationScreenImpl(
     val listState = rememberRecruitmentPaginationListState(
         hasMore = hasMore,
         isLoadingMore = isLoadingMore,
-        itemCount = notifications.size,
         onLoadMore = onLoadMore
     )
 

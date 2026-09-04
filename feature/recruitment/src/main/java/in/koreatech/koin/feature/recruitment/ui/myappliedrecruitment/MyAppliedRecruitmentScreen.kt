@@ -127,7 +127,6 @@ private fun MyAppliedRecruitmentScreenImpl(
             val listState = rememberRecruitmentPaginationListState(
                 hasMore = hasMore,
                 isLoadingMore = isLoadingMore,
-                itemCount = posts.size,
                 onLoadMore = onLoadMore
             )
 
