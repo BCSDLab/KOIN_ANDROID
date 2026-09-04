@@ -63,6 +63,9 @@ fun NavGraphBuilder.koinRecruitmentGraph(
                     (context as? Activity)?.finish()
                 }
             },
+            onNotificationClick = { navController.navigate(RecruitmentNavType.Notification) },
+            onProfileClick = { navController.navigate(RecruitmentNavType.Profile) },
+            onWriteClick = { navController.navigate(RecruitmentNavType.RecruitmentCreate) },
             onItemClick = { postId ->
                 navController.navigate(RecruitmentNavType.RecruitmentDetail(postId))
             }
@@ -73,6 +76,19 @@ fun NavGraphBuilder.koinRecruitmentGraph(
             onTopbarBackClick = { navController.navigateUp() },
             onNavigateToModify = { postId ->
                 navController.navigate(RecruitmentNavType.RecruitmentModify(postId))
+            },
+            onNavigateToApply = { postId, roles ->
+                navController.navigate(
+                    RecruitmentNavType.RecruitmentApply(
+                        recruitmentId = postId,
+                        roles = roles.map { role ->
+                            RecruitmentRoleArg(id = role.id, name = role.name, isClosed = role.isClosed)
+                        }
+                    )
+                )
+            },
+            onNavigateToApplicantManagement = { postId ->
+                navController.navigate(RecruitmentNavType.ApplicantManagement(postId))
             }
         )
     }
