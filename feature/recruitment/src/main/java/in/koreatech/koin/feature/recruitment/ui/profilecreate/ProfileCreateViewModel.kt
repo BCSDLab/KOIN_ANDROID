@@ -15,6 +15,8 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
+private const val SELF_INTRODUCTION_MAX_LENGTH = 1000
+
 @HiltViewModel
 @Suppress("TooManyFunctions")
 class ProfileCreateViewModel @Inject constructor(
@@ -116,7 +118,9 @@ class ProfileCreateViewModel @Inject constructor(
     }
 
     fun setSelfIntroduction(text: String): Job = intent {
-        reduce { state.copy(selfIntroduction = text) }
+        if (text.length <= SELF_INTRODUCTION_MAX_LENGTH) {
+            reduce { state.copy(selfIntroduction = text) }
+        }
     }
 
     fun goToNextStep(): Job = intent {

@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.recruitment.ui.profile
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.Job
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
@@ -14,19 +13,19 @@ class ProfileViewModel @Inject constructor() : ViewModel(), ContainerHost<Profil
 
     override val container = container<ProfileState, ProfileSideEffect>(ProfileState())
 
-    fun onMyRecruitmentClick(): Job = intent {
+    fun onMyRecruitmentClick() = intent {
         postSideEffect(ProfileSideEffect.NavigateToMyRecruitment)
     }
 
-    fun onMyAppliedRecruitmentClick(): Job = intent {
+    fun onMyAppliedRecruitmentClick() = intent {
         postSideEffect(ProfileSideEffect.NavigateToMyAppliedRecruitment)
     }
 
-    fun onCreateProfileClick(): Job = intent {
+    fun onCreateProfileClick() = intent {
         postSideEffect(ProfileSideEffect.NavigateToProfileCreate(isEditMode = false))
     }
 
-    fun onEditProfileClick(): Job = intent {
+    fun onEditProfileClick() = intent {
         postSideEffect(ProfileSideEffect.NavigateToProfileCreate(isEditMode = true))
     }
 }
