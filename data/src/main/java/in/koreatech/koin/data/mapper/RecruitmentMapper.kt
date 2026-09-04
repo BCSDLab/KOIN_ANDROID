@@ -1,4 +1,5 @@
 ﻿@file:Suppress("TooManyFunctions")
+
 package `in`.koreatech.koin.data.mapper
 
 import `in`.koreatech.koin.data.request.recruitment.RecruitmentUpdateRequest
