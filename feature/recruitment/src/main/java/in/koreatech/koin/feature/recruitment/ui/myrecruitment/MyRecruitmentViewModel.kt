@@ -50,9 +50,42 @@ class MyRecruitmentViewModel @Inject constructor(
         reduce { state.copy(isLoading = true) }
         getMyRecruitmentPostsUseCase(
             status = filter.status.toApiValue(),
-            sort = filter.sort.toApiValue()
-        ).onSuccess { posts ->
-            reduce { state.copy(isLoading = false, posts = posts.map { it.toMyRecruitmentPost() }.toPersistentList()) }
+            sort = filter.sort.toApiValue(),
+            page = 1,
+            limit = MY_RECRUITMENT_PAGE_SIZE
+        ).onSuccess { result ->
+            reduce {
+                state.copy(
+                    isLoading = false,
+                    posts = result.posts.map { it.toMyRecruitmentPost() }.toPersistentList(),
+                    currentPage = result.currentPage,
+                    totalPage = result.totalPage
+                )
+            }
+        }.onFailure {
+            reduce { state.copy(isLoading = false) }
+        }
+    }
+
+    fun loadMoreMyRecruitmentPosts() = intent {
+        if (state.isLoadingMore || state.currentPage >= state.totalPage) return@intent
+        reduce { state.copy(isLoadingMore = true) }
+        getMyRecruitmentPostsUseCase(
+            status = state.filter.status.toApiValue(),
+            sort = state.filter.sort.toApiValue(),
+            page = state.currentPage + 1,
+            limit = MY_RECRUITMENT_PAGE_SIZE
+        ).onSuccess { result ->
+            reduce {
+                state.copy(
+                    isLoadingMore = false,
+                    posts = (state.posts + result.posts.map { it.toMyRecruitmentPost() }).toPersistentList(),
+                    currentPage = result.currentPage,
+                    totalPage = result.totalPage
+                )
+            }
+        }.onFailure {
+            reduce { state.copy(isLoadingMore = false) }
         }
     }
 
@@ -92,5 +125,9 @@ class MyRecruitmentViewModel @Inject constructor(
         }.onFailure {
             reduce { state.copy(showCloseDialog = false, closeTargetPostId = null) }
         }
+    }
+
+    companion object {
+        private const val MY_RECRUITMENT_PAGE_SIZE = 10
     }
 }

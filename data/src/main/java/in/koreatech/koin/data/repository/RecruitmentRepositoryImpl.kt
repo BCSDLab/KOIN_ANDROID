@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.data.repository
 
-import `in`.koreatech.koin.data.mapper.toMyAppliedRecruitment
-import `in`.koreatech.koin.data.mapper.toMyRecruitmentPost
+import `in`.koreatech.koin.data.mapper.toMyAppliedRecruitments
+import `in`.koreatech.koin.data.mapper.toMyRecruitmentPosts
 import `in`.koreatech.koin.data.mapper.toRecruitmentDetail
 import `in`.koreatech.koin.data.mapper.toRecruitmentNotifications
 import `in`.koreatech.koin.data.mapper.toRecruitmentUpdateRequest
@@ -9,8 +9,8 @@ import `in`.koreatech.koin.data.mapper.toRecruitments
 import `in`.koreatech.koin.data.source.remote.RecruitmentRemoteDataSource
 import `in`.koreatech.koin.data.util.mapHttpFailure
 import `in`.koreatech.koin.domain.error.recruitment.KoinRecruitmentException
-import `in`.koreatech.koin.domain.model.recruitment.MyAppliedRecruitment
-import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost
+import `in`.koreatech.koin.domain.model.recruitment.MyAppliedRecruitments
+import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPosts
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentDetail
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentNotifications
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentUpdate
@@ -109,12 +109,11 @@ class RecruitmentRepositoryImpl @Inject constructor(
         sort: String,
         page: Int,
         limit: Int
-    ): Result<List<MyRecruitmentPost>> {
+    ): Result<MyRecruitmentPosts> {
         return suspendRunCatching {
             recruitmentRemoteDataSource
                 .getMyRecruitmentPosts(status, sort, page, limit)
-                .recruitments
-                .map { it.toMyRecruitmentPost() }
+                .toMyRecruitmentPosts()
         }.mapHttpFailure {
             on(400, "ILLEGAL_ARGUMENT") throws KoinRecruitmentException.InvalidArgumentException()
             on(401) throws KoinRecruitmentException.UnauthorizedUserException()
@@ -127,12 +126,11 @@ class RecruitmentRepositoryImpl @Inject constructor(
         sort: String,
         page: Int,
         limit: Int
-    ): Result<List<MyAppliedRecruitment>> {
+    ): Result<MyAppliedRecruitments> {
         return suspendRunCatching {
             recruitmentRemoteDataSource
                 .getMyAppliedRecruitments(statuses, sort, page, limit)
-                .applications
-                .map { it.toMyAppliedRecruitment() }
+                .toMyAppliedRecruitments()
         }.mapHttpFailure {
             on(400, "ILLEGAL_ARGUMENT") throws KoinRecruitmentException.InvalidArgumentException()
             on(401) throws KoinRecruitmentException.UnauthorizedUserException()

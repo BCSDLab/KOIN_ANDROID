@@ -47,14 +47,42 @@ class MyAppliedRecruitmentViewModel @Inject constructor(
         reduce { state.copy(isLoading = true) }
         getMyAppliedRecruitmentsUseCase(
             statuses = filter.status.toApiValue(),
-            sort = filter.sort.toApiValue()
-        ).onSuccess { applications ->
+            sort = filter.sort.toApiValue(),
+            page = 1,
+            limit = MY_APPLIED_RECRUITMENT_PAGE_SIZE
+        ).onSuccess { result ->
             reduce {
                 state.copy(
                     isLoading = false,
-                    posts = applications.map { it.toAppliedRecruitmentPost() }.toPersistentList()
+                    posts = result.applications.map { it.toAppliedRecruitmentPost() }.toPersistentList(),
+                    currentPage = result.currentPage,
+                    totalPage = result.totalPage
                 )
             }
+        }.onFailure {
+            reduce { state.copy(isLoading = false) }
+        }
+    }
+
+    fun loadMoreMyAppliedRecruitments() = intent {
+        if (state.isLoadingMore || state.currentPage >= state.totalPage) return@intent
+        reduce { state.copy(isLoadingMore = true) }
+        getMyAppliedRecruitmentsUseCase(
+            statuses = state.filter.status.toApiValue(),
+            sort = state.filter.sort.toApiValue(),
+            page = state.currentPage + 1,
+            limit = MY_APPLIED_RECRUITMENT_PAGE_SIZE
+        ).onSuccess { result ->
+            reduce {
+                state.copy(
+                    isLoadingMore = false,
+                    posts = (state.posts + result.applications.map { it.toAppliedRecruitmentPost() }).toPersistentList(),
+                    currentPage = result.currentPage,
+                    totalPage = result.totalPage
+                )
+            }
+        }.onFailure {
+            reduce { state.copy(isLoadingMore = false) }
         }
     }
 
@@ -69,5 +97,9 @@ class MyAppliedRecruitmentViewModel @Inject constructor(
     fun applyFilter(filter: AppliedFilterState) = intent {
         reduce { state.copy(filter = filter, showFilterSheet = false) }
         loadMyAppliedRecruitments(filter)
+    }
+
+    companion object {
+        private const val MY_APPLIED_RECRUITMENT_PAGE_SIZE = 10
     }
 }

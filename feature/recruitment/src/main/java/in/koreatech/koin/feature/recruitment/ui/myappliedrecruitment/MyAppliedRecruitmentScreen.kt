@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -30,6 +32,7 @@ import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentEmptyState
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentFilterButton
+import `in`.koreatech.koin.feature.recruitment.ui.component.rememberRecruitmentPaginationListState
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.component.AppliedRecruitmentFilterBottomSheet
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.component.AppliedRecruitmentPostCard
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.model.AppliedRecruitmentPost
@@ -68,6 +71,9 @@ fun MyAppliedRecruitmentScreen(
     ) { innerPadding ->
         MyAppliedRecruitmentScreenImpl(
             posts = state.posts,
+            isLoadingMore = state.isLoadingMore,
+            hasMore = state.currentPage < state.totalPage,
+            onLoadMore = viewModel::loadMoreMyAppliedRecruitments,
             onFilter = { viewModel.showFilterSheet() },
             modifier = Modifier.padding(innerPadding)
         )
@@ -86,6 +92,9 @@ fun MyAppliedRecruitmentScreen(
 private fun MyAppliedRecruitmentScreenImpl(
     posts: ImmutableList<AppliedRecruitmentPost>,
     modifier: Modifier = Modifier,
+    isLoadingMore: Boolean = false,
+    hasMore: Boolean = false,
+    onLoadMore: () -> Unit = {},
     onFilter: () -> Unit = {}
 ) {
     Column(modifier = modifier.fillMaxSize()) {
@@ -115,13 +124,32 @@ private fun MyAppliedRecruitmentScreenImpl(
                 )
             }
         } else {
+            val listState = rememberRecruitmentPaginationListState(
+                hasMore = hasMore,
+                isLoadingMore = isLoadingMore,
+                onLoadMore = onLoadMore
+            )
+
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
+                state = listState,
                 contentPadding = PaddingValues(start = 21.5.dp, end = 21.5.dp, bottom = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(posts, key = { it.id }) { post ->
                     AppliedRecruitmentPostCard(post = post)
+                }
+                if (isLoadingMore) {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                        }
+                    }
                 }
             }
         }

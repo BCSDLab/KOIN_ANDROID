@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
@@ -30,6 +31,7 @@ import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentFilterButton
+import `in`.koreatech.koin.feature.recruitment.ui.component.rememberRecruitmentPaginationListState
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.component.CloseRecruitmentDialog
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.component.MyRecruitmentEmptyState
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.component.RecruitmentFilterBottomSheet
@@ -73,6 +75,9 @@ fun MyRecruitmentScreen(
         MyRecruitmentScreenImpl(
             posts = state.posts,
             isLoading = state.isLoading,
+            isLoadingMore = state.isLoadingMore,
+            hasMore = state.currentPage < state.totalPage,
+            onLoadMore = viewModel::loadMoreMyRecruitmentPosts,
             onApplicantManage = onApplicantManage,
             onCloseRecruitment = { postId -> viewModel.showCloseDialog(postId) },
             onChat = onChat,
@@ -102,6 +107,9 @@ private fun MyRecruitmentScreenImpl(
     posts: ImmutableList<MyRecruitmentPost>,
     isLoading: Boolean,
     modifier: Modifier = Modifier,
+    isLoadingMore: Boolean = false,
+    hasMore: Boolean = false,
+    onLoadMore: () -> Unit = {},
     onApplicantManage: (Int) -> Unit = {},
     onCloseRecruitment: (Int) -> Unit = {},
     onChat: (Int) -> Unit = {},
@@ -138,8 +146,15 @@ private fun MyRecruitmentScreenImpl(
                 MyRecruitmentEmptyState()
             }
         } else {
+            val listState = rememberRecruitmentPaginationListState(
+                hasMore = hasMore,
+                isLoadingMore = isLoadingMore,
+                onLoadMore = onLoadMore
+            )
+
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
+                state = listState,
                 contentPadding = PaddingValues(start = 21.5.dp, end = 21.5.dp, bottom = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
@@ -154,6 +169,18 @@ private fun MyRecruitmentScreenImpl(
                         },
                         onChat = { onChat(post.id) }
                     )
+                }
+                if (isLoadingMore) {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                        }
+                    }
                 }
             }
         }
