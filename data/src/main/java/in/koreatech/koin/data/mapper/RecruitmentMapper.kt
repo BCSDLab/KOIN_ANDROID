@@ -1,4 +1,5 @@
-﻿package `in`.koreatech.koin.data.mapper
+﻿@file:Suppress("TooManyFunctions")
+package `in`.koreatech.koin.data.mapper
 
 import `in`.koreatech.koin.data.request.recruitment.RecruitmentUpdateRequest
 import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentActivityRequest
