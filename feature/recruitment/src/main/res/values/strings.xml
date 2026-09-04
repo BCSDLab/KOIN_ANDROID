@@ -1,5 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="recruitment_modify_title">모집글 수정</string>
+    <string name="recruitment_modify_category">카테고리</string>
+    <string name="recruitment_modify_title_field">제목</string>
+    <string name="recruitment_modify_title_hint">제목을 입력해주세요</string>
+    <string name="recruitment_modify_progress_type">진행방식</string>
+    <string name="recruitment_modify_period">일정</string>
+    <string name="recruitment_modify_period_range">활동기간</string>
+    <string name="recruitment_modify_deadline">마감일</string>
+    <string name="recruitment_modify_roles">모집 인원 및 역할</string>
+    <string name="recruitment_modify_roles_count">%1$d/%2$d</string>
+    <string name="recruitment_modify_add_role">역할 추가 +</string>
+    <string name="recruitment_modify_roles_description">역할을 추가하고 필요한 인원을 선택해주세요</string>
+    <string name="recruitment_modify_role_undetermined">역할 구분 없이 모집하기</string>
+    <string name="recruitment_modify_description">모집 소개</string>
+    <string name="recruitment_modify_description_hint">모집 소개를 작성해주세요</string>
+    <string name="recruitment_modify_related_url">관련 URL</string>
+    <string name="recruitment_modify_related_url_hint">공모전/대외활동 등 모집글 관련 URL을 작성해주세요.</string>
+    <string name="recruitment_modify_qualification">지원 자격</string>
+    <string name="recruitment_modify_qualification_hint">지원 자격 또는 우대사항을 작성해주세요.</string>
+    <string name="recruitment_modify_submit">수정 완료</string>
+    <string name="recruitment_modify_submit_dialog_title">해당 모집글을 수정하시겠습니까?</string>
+    <string name="recruitment_modify_submit_dialog_confirm">수정하기</string>
+    <string name="recruitment_modify_submit_dialog_cancel">취소하기</string>
+    <string name="recruitment_modify_cancel_dialog_title">모집글 수정을 취소하시겠어요?</string>
+    <string name="recruitment_modify_cancel_dialog_description">수정 중인 내용은 저장되지 않습니다.</string>
+    <string name="recruitment_modify_dialog_yes">네</string>
+    <string name="recruitment_modify_dialog_no">아니요</string>
+    <string name="recruitment_modify_error">모집글을 수정하지 못했습니다.</string>
+
     <string name="recruitment_chat_member_count_icon">참여 인원</string>
     <string name="recruitment_chat_toolbar_participants">%1$d/%2$d</string>
     <string name="recruitment_chat_add_image">이미지 추가</string>

@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.domain.repository
 
-import `in`.koreatech.koin.domain.model.recruitment.MyAppliedRecruitment
-import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost
+import `in`.koreatech.koin.domain.model.recruitment.MyAppliedRecruitments
+import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPosts
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentDetail
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentNotifications
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentUpdate
@@ -42,14 +42,14 @@ interface RecruitmentRepository {
         sort: String,
         page: Int,
         limit: Int
-    ): Result<List<MyRecruitmentPost>>
+    ): Result<MyRecruitmentPosts>
 
     suspend fun getMyAppliedRecruitments(
         statuses: List<String>,
         sort: String,
         page: Int,
         limit: Int
-    ): Result<List<MyAppliedRecruitment>>
+    ): Result<MyAppliedRecruitments>
 
     suspend fun closeRecruitmentPost(postId: Int): Result<Unit>
 

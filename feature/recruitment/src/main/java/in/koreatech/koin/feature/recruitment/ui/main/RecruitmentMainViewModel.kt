@@ -57,7 +57,9 @@ class RecruitmentMainViewModel @Inject constructor(
                 .takeIf { it.isNotEmpty() }
                 ?.map { it.apiValue },
             meetingType = filter.selectedLocation?.apiValue,
-            sort = filter.selectedSort.apiValue
+            sort = filter.selectedSort.apiValue,
+            page = 1,
+            limit = RECRUITMENTS_PAGE_SIZE
         ).onSuccess { recruitments ->
             reduce {
                 state.copy(
@@ -65,12 +67,46 @@ class RecruitmentMainViewModel @Inject constructor(
                         .map { it.toRecruitmentItemModel() }
                         .toImmutableList(),
                     totalCount = recruitments.totalCount,
+                    currentPage = recruitments.currentPage,
+                    totalPage = recruitments.totalPage,
                     isLoading = false,
                     isRefreshing = false
                 )
             }
         }.onFailure {
             reduce { state.copy(isLoading = false, isRefreshing = false) }
+            postSideEffect(RecruitmentMainSideEffect.ShowError)
+        }
+    }
+
+    fun loadMoreRecruitments() = intent {
+        if (state.isLoadingMore || state.currentPage >= state.totalPage) return@intent
+        reduce { state.copy(isLoadingMore = true) }
+        val filter = state.filterState
+        getRecruitmentsUseCase(
+            keyword = state.searchValue.takeIf { it.isNotBlank() },
+            status = filter.selectedStatus?.apiValue,
+            categories = filter.selectedCategories
+                .takeIf { it.isNotEmpty() }
+                ?.map { it.apiValue },
+            meetingType = filter.selectedLocation?.apiValue,
+            sort = filter.selectedSort.apiValue,
+            page = state.currentPage + 1,
+            limit = RECRUITMENTS_PAGE_SIZE
+        ).onSuccess { recruitments ->
+            reduce {
+                state.copy(
+                    items = (
+                        state.items + recruitments.recruitments.map { it.toRecruitmentItemModel() }
+                        ).toImmutableList(),
+                    totalCount = recruitments.totalCount,
+                    currentPage = recruitments.currentPage,
+                    totalPage = recruitments.totalPage,
+                    isLoadingMore = false
+                )
+            }
+        }.onFailure {
+            reduce { state.copy(isLoadingMore = false) }
             postSideEffect(RecruitmentMainSideEffect.ShowError)
         }
     }
@@ -133,6 +169,7 @@ class RecruitmentMainViewModel @Inject constructor(
 
     companion object {
         private const val SEARCH_DEBOUNCE_MILLIS = 300L
+        private const val RECRUITMENTS_PAGE_SIZE = 10
     }
 }
 

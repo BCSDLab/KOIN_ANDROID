@@ -53,7 +53,10 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun RecruitmentDetailScreen(
     viewModel: RecruitmentDetailViewModel = hiltViewModel(),
-    onTopbarBackClick: () -> Unit = {}
+    onTopbarBackClick: () -> Unit = {},
+    onNavigateToModify: (Int) -> Unit = {},
+    onNavigateToApply: (Int, List<RecruitmentRoleModel>) -> Unit = { _, _ -> },
+    onNavigateToApplicantManagement: (Int) -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
     val context = LocalContext.current
@@ -75,14 +78,20 @@ fun RecruitmentDetailScreen(
         onTopbarBackClick = onTopbarBackClick,
         onMoreClick = { viewModel.updateMoreMenuVisible(true) },
         onMoreMenuDismiss = { viewModel.updateMoreMenuVisible(false) },
-        onEditClick = { viewModel.updateMoreMenuVisible(false) },
+        onEditClick = {
+            viewModel.updateMoreMenuVisible(false)
+            onNavigateToModify(state.id)
+        },
         onDeleteClick = { viewModel.updateDeleteDialogVisible(true) },
         onDeleteConfirm = viewModel::deleteRecruitment,
-        onDeleteDialogDismiss = { viewModel.updateDeleteDialogVisible(false) }
+        onDeleteDialogDismiss = { viewModel.updateDeleteDialogVisible(false) },
+        onApplyClick = { onNavigateToApply(state.id, state.roles) },
+        onCheckApplicantsClick = { onNavigateToApplicantManagement(state.id) }
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Suppress("LongParameterList")
 @Composable
 private fun RecruitmentDetailScreenImpl(
     state: RecruitmentDetailState,
@@ -93,7 +102,9 @@ private fun RecruitmentDetailScreenImpl(
     onEditClick: () -> Unit = {},
     onDeleteClick: () -> Unit = {},
     onDeleteConfirm: () -> Unit = {},
-    onDeleteDialogDismiss: () -> Unit = {}
+    onDeleteDialogDismiss: () -> Unit = {},
+    onApplyClick: () -> Unit = {},
+    onCheckApplicantsClick: () -> Unit = {}
 ) {
     Scaffold(
         modifier = modifier,
@@ -138,7 +149,9 @@ private fun RecruitmentDetailScreenImpl(
         bottomBar = {
             RecruitmentDetailBottomAction(
                 isAuthor = state.isAuthor,
-                isClosed = state.isClosed
+                isClosed = state.isClosed,
+                onApplyClick = onApplyClick,
+                onCheckApplicantsClick = onCheckApplicantsClick
             )
         }
     ) { contentPadding ->
@@ -214,7 +227,9 @@ private fun RecruitmentDetailScreenImpl(
 private fun RecruitmentDetailBottomAction(
     isAuthor: Boolean,
     isClosed: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onApplyClick: () -> Unit = {},
+    onCheckApplicantsClick: () -> Unit = {}
 ) {
     val textRes = when {
         isAuthor -> R.string.recruitment_action_check_applicants
@@ -228,7 +243,7 @@ private fun RecruitmentDetailBottomAction(
             .padding(horizontal = 36.dp, vertical = 16.dp)
             .height(48.dp),
         text = stringResource(textRes),
-        onClick = {},
+        onClick = { if (isAuthor) onCheckApplicantsClick() else onApplyClick() },
         enabled = isAuthor || !isClosed,
         textStyle = RebrandKoinTheme.typography.bold15,
         shape = RoundedCornerShape(16.dp),

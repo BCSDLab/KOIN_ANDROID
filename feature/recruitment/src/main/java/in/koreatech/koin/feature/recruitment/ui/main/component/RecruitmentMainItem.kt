@@ -30,6 +30,7 @@ import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRoleModel
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentStatus
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentCategoryBadge
 import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentItemModel
 import kotlinx.collections.immutable.persistentListOf
 
@@ -140,11 +141,7 @@ private fun RecruitmentItemHeader(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        RecruitmentChip(
-            text = stringResource(item.category.labelRes),
-            colors = RecruitmentChipDefaults.categoryColors(item.category),
-            textStyle = labelStyle
-        )
+        RecruitmentCategoryBadge(category = item.category)
         Text(
             text = statusText,
             style = labelStyle,

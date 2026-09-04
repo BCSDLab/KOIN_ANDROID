@@ -19,6 +19,3 @@ fun getDayOfWeek(dayOfWeek: DayOfWeek): String =
 
 fun LocalDate.toDateWithDayOfWeekText(): String =
     "${this.format(DATE_FORMATTER)} (${getDayOfWeek(this.dayOfWeek)})"
-
-fun LocalDate.toDateText(): String =
-    this.format(DATE_FORMATTER)
