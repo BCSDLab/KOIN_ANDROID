@@ -46,8 +46,8 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     composable<RecruitmentNavType.Profile> {
         ProfileScreen(
             onNavigateUp = { navController.navigateUp() },
-            onNavigateToMyRecruitment = { },
-            onNavigateToMyAppliedRecruitment = { },
+            onNavigateToMyRecruitment = { navController.navigate(RecruitmentNavType.MyRecruitment) },
+            onNavigateToMyAppliedRecruitment = { navController.navigate(RecruitmentNavType.MyAppliedRecruitment) },
             onNavigateToProfileCreate = { isEditMode ->
                 navController.navigate(RecruitmentNavType.ProfileCreate(isEditMode = isEditMode))
             }
