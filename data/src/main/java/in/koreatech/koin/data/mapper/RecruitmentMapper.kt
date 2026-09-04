@@ -3,6 +3,11 @@
 import `in`.koreatech.koin.data.request.recruitment.RecruitmentUpdateRequest
 import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentActivityRequest
 import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentRoleRequest
+import `in`.koreatech.koin.data.response.recruitment.ApplicantDetailResponse
+import `in`.koreatech.koin.data.response.recruitment.ApplicantListResponse
+import `in`.koreatech.koin.data.response.recruitment.ApplicantRecruitmentResponse
+import `in`.koreatech.koin.data.response.recruitment.ApplicantSummaryResponse
+import `in`.koreatech.koin.data.response.recruitment.ApplicationRoleResponse
 import `in`.koreatech.koin.data.response.recruitment.MyAppliedRecruitmentResponse
 import `in`.koreatech.koin.data.response.recruitment.MyRecruitmentPostResponse
 import `in`.koreatech.koin.data.response.recruitment.RecruitmentApplicationResponse
@@ -16,6 +21,12 @@ import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentActivityResp
 import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentApplicationResponse
 import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentApplicationRoleResponse
 import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentProfileResponse
+import `in`.koreatech.koin.domain.model.recruitment.ApplicantDetail
+import `in`.koreatech.koin.domain.model.recruitment.ApplicantList
+import `in`.koreatech.koin.domain.model.recruitment.ApplicantProfileSnapshot
+import `in`.koreatech.koin.domain.model.recruitment.ApplicantRecruitment
+import `in`.koreatech.koin.domain.model.recruitment.ApplicantSummary
+import `in`.koreatech.koin.domain.model.recruitment.ApplicationRole
 import `in`.koreatech.koin.domain.model.recruitment.MyAppliedRecruitment
 import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost
 import `in`.koreatech.koin.domain.model.recruitment.Recruitment
@@ -215,4 +226,65 @@ fun TeamRecruitmentApplicationResponse.toTeamRecruitmentApplication() = TeamRecr
 fun TeamRecruitmentApplicationRoleResponse.toTeamRecruitmentApplicationRole() = TeamRecruitmentApplicationRole(
     id = id,
     name = name
+)
+
+fun ApplicationRoleResponse.toApplicationRole() = ApplicationRole(
+    id = id,
+    name = name
+)
+
+fun ApplicantRecruitmentResponse.toApplicantRecruitment() = ApplicantRecruitment(
+    id = id,
+    category = category,
+    title = title,
+    meetingType = meetingType,
+    activityStartDate = activityStartDate,
+    activityEndDate = activityEndDate,
+    deadlineDate = deadlineDate,
+    dDay = dDay,
+    status = status,
+    recruitmentType = recruitmentType,
+    currentParticipants = currentParticipants,
+    maxParticipants = maxParticipants,
+    roles = roles.map { it.toRecruitmentRole() },
+    teamChatAvailable = teamChatAvailable,
+    teamChatRoomId = teamChatRoomId
+)
+
+fun ApplicantSummaryResponse.toApplicantSummary() = ApplicantSummary(
+    applicationId = applicationId,
+    nickname = nickname,
+    department = department,
+    studentYear = studentYear,
+    role = role?.toApplicationRole(),
+    status = status,
+    canOpenDirectChat = canOpenDirectChat
+)
+
+fun ApplicantListResponse.toApplicantList() = ApplicantList(
+    recruitment = recruitment.toApplicantRecruitment(),
+    applications = applications.map { it.toApplicantSummary() },
+    totalCount = totalCount,
+    currentCount = currentCount,
+    totalPage = totalPage,
+    currentPage = currentPage
+)
+
+fun ApplicantDetailResponse.toApplicantDetail() = ApplicantDetail(
+    applicationId = applicationId,
+    status = status,
+    profileSnapshot = ApplicantProfileSnapshot(
+        nickname = profileSnapshot.nickname,
+        department = profileSnapshot.department,
+        studentYear = profileSnapshot.studentYear,
+        preferredRole = profileSnapshot.preferredRole,
+        skills = profileSnapshot.skills,
+        activities = profileSnapshot.activities.map { it.toTeamRecruitmentActivity() },
+        selfIntroduction = profileSnapshot.selfIntroduction
+    ),
+    motivation = motivation,
+    availability = availability,
+    role = role?.toApplicationRole(),
+    canDecide = canDecide,
+    canOpenDirectChat = canOpenDirectChat
 )
