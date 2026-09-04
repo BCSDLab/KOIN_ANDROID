@@ -38,7 +38,7 @@ fun ProfileSummaryCard(
         modifier = modifier
             .fillMaxWidth()
             .background(RebrandKoinTheme.colors.neutral0, CardShape)
-            .padding(16.dp, 20.dp, 16.dp, 20.dp),
+            .padding(horizontal = 16.dp, vertical = 20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Row(

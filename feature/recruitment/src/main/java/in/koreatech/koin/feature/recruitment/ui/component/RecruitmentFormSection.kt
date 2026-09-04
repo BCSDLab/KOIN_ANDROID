@@ -3,7 +3,9 @@ package `in`.koreatech.koin.feature.recruitment.ui.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -40,8 +42,9 @@ fun RecruitmentFormSection(
                     )
                 }
                 if (titleHint != null) {
+                    Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = "  $titleHint",
+                        text = titleHint,
                         style = RebrandKoinTheme.typography.regular12,
                         color = RebrandKoinTheme.colors.neutral500
                     )

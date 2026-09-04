@@ -8,6 +8,7 @@ import kotlinx.collections.immutable.persistentListOf
 const val PROFILE_CREATE_STEP_COUNT = 2
 const val PROFILE_NICKNAME_MAX_LENGTH = 20
 const val PROFILE_PREFERRED_ROLE_MAX_LENGTH = 20
+const val SELF_INTRODUCTION_MAX_LENGTH = 1000
 
 sealed interface ProfileActivityFormState {
     data object Hidden : ProfileActivityFormState

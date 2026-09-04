@@ -15,6 +15,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -43,8 +44,7 @@ import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
-private const val SELF_INTRODUCTION_MAX_LENGTH = 1000
-
+@Stable
 data class ProfileCreateStepOneActions(
     val onLoadMemberInfoClick: () -> Unit = {},
     val onNicknameChange: (String) -> Unit = {},
@@ -53,6 +53,7 @@ data class ProfileCreateStepOneActions(
     val onStudentIdChange: (String) -> Unit = {}
 )
 
+@Stable
 data class ProfileCreateStepTwoActions(
     val onPreferredRoleChange: (String) -> Unit = {},
     val onAddSkillClick: () -> Unit = {},

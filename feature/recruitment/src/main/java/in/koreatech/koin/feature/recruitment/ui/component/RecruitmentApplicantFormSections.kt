@@ -125,11 +125,13 @@ fun RecruitmentSkillsSection(
         content = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 skills.forEachIndexed { index, skill ->
-                    RecruitmentSkillFieldRow(
-                        value = skill,
-                        onValueChange = { text -> onSkillTextChange(index, text) },
-                        onRemove = { onSkillRemoved(index) }
-                    )
+                    key(index, skill) {
+                        RecruitmentSkillFieldRow(
+                            value = skill,
+                            onValueChange = { text -> onSkillTextChange(index, text) },
+                            onRemove = { onSkillRemoved(index) }
+                        )
+                    }
                 }
                 RecruitmentOutlinedActionButton(
                     text = stringResource(R.string.recruitment_apply_add_skill),
