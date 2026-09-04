@@ -101,6 +101,7 @@ fun RecruitmentMainScreen(
         searchValue = state.searchValue,
         items = state.items,
         totalCount = state.totalCount,
+        isLoading = state.isLoading,
         isRefreshing = state.isRefreshing,
         onRefresh = { viewModel.fetchRecruitments(isRefresh = true) },
         isLoadingMore = state.isLoadingMore,
@@ -128,6 +129,7 @@ private fun RecruitmentMainScreenImpl(
     items: ImmutableList<RecruitmentItemModel>,
     totalCount: Long,
     filterState: RecruitmentFilterState,
+    isLoading: Boolean = false,
     isRefreshing: Boolean = false,
     onRefresh: () -> Unit = {},
     isLoadingMore: Boolean = false,
@@ -262,7 +264,14 @@ private fun RecruitmentMainScreenImpl(
                     )
                 }
             ) {
-                if (items.isEmpty()) {
+                if (isLoading) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(color = RebrandKoinTheme.colors.primary500)
+                    }
+                } else if (items.isEmpty()) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
