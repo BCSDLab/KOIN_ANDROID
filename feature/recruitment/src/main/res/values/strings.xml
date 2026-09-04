@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="recruitment_date_picker_cancel">취소</string>
-    <string name="recruitment_date_picker_confirm">확인</string>
-
     <string name="recruitment_modify_title">모집글 수정</string>
     <string name="recruitment_modify_category">카테고리</string>
     <string name="recruitment_modify_title_field">제목</string>
@@ -123,6 +120,72 @@
     <string name="recruitment_create_cancel_dialog_description">작성 중인 내용은 저장되지 않습니다.</string>
     <string name="recruitment_create_dialog_yes">네</string>
     <string name="recruitment_create_dialog_no">아니요</string>
+
+    <string name="recruitment_activity_name">활동명</string>
+    <string name="recruitment_activity_name_hint">활동명을 작성해주세요.</string>
+    <string name="recruitment_activity_required_mark"> *</string>
+    <string name="recruitment_activity_close_content_description">취소</string>
+    <string name="recruitment_activity_period">활동기간</string>
+    <string name="recruitment_activity_period_separator">-</string>
+    <string name="recruitment_activity_start_date">시작일</string>
+    <string name="recruitment_activity_end_date">종료일</string>
+    <string name="recruitment_activity_ongoing">진행 중</string>
+    <string name="recruitment_activity_content">활동내용</string>
+    <string name="recruitment_activity_content_hint">활동 내용을 간단히 작성해주세요.</string>
+    <string name="recruitment_skill_field_hint">기술 또는 자격증을 입력해주세요.</string>
+    <string name="recruitment_activity_card_edit">수정</string>
+    <string name="recruitment_activity_card_period_label">활동 기간</string>
+    <string name="recruitment_activity_card_content_label">활동 내용</string>
+    <string name="recruitment_activity_confirm">완료</string>
+
+    <string name="recruitment_apply_title">팀원 모집 지원</string>
+    <string name="recruitment_apply_step_one_label">기본 정보</string>
+    <string name="recruitment_apply_step_two_label">지원서 작성</string>
+    <string name="recruitment_apply_char_count">%1$d/%2$d</string>
+    <string name="recruitment_apply_load_member_info">코인 회원정보 불러오기</string>
+    <string name="recruitment_apply_load_member_info_hint">닉네임, 학과(학부), 학번</string>
+    <string name="recruitment_apply_load_member_info_button">회원정보 불러오기</string>
+    <string name="recruitment_apply_nickname">닉네임</string>
+    <string name="recruitment_apply_nickname_hint">닉네임을 입력해주세요.</string>
+    <string name="recruitment_apply_age">나이</string>
+    <string name="recruitment_apply_age_hint">나이를 입력해주세요</string>
+    <string name="recruitment_apply_department">학과 · 학부</string>
+    <string name="recruitment_apply_department_and_student_id">학과 · 학번</string>
+    <string name="recruitment_apply_department_hint">학과 · 학부를 선택해주세요.</string>
+    <string name="recruitment_apply_student_id">학번</string>
+    <string name="recruitment_apply_student_id_hint">학번을 작성해주세요.</string>
+    <string name="recruitment_apply_skills">보유기술 / 자격증</string>
+    <string name="recruitment_apply_skills_hint">기술 / 자격증은 항목별로 하나씩 작성해주세요.</string>
+    <string name="recruitment_apply_add_skill">기술 / 자격증 추가</string>
+    <string name="recruitment_apply_activities">활동 이력</string>
+    <string name="recruitment_apply_activities_hint">공모전, 대외활동, 자치단체 등 활동 이력을 작성해주세요.</string>
+    <string name="recruitment_apply_add_activity">활동 이력 추가</string>
+    <string name="recruitment_apply_self_introduction">자기소개</string>
+    <string name="recruitment_apply_self_introduction_hint">자기소개를 작성해주세요.</string>
+    <string name="recruitment_apply_next">다음</string>
+    <string name="recruitment_apply_select_role">지원 역할 선택</string>
+    <string name="recruitment_apply_role_closed">모집 마감</string>
+    <string name="recruitment_apply_motivation">지원동기</string>
+    <string name="recruitment_apply_motivation_hint">지원동기를 작성해주세요.</string>
+    <string name="recruitment_apply_available_time">참여 가능 시간</string>
+    <string name="recruitment_apply_available_time_hint">참여 가능한 시간을 작성해주세요.</string>
+    <string name="recruitment_apply_submit">지원하기</string>
+    <string name="recruitment_apply_submit_dialog_title">해당 팀원 모집에 지원하시겠어요?</string>
+    <string name="recruitment_apply_submit_dialog_cancel">취소하기</string>
+    <string name="recruitment_apply_cancel_dialog_title">지원서 작성을 취소하시겠어요?</string>
+    <string name="recruitment_apply_cancel_dialog_description">작성 중인 내용은 저장되지 않습니다.</string>
+
+    <string name="recruitment_profile_title">프로필</string>
+    <string name="recruitment_profile_go_to_my_recruitment">내가 작성한 모집글</string>
+    <string name="recruitment_profile_go_to_my_recruitment_description">작성자 모집글과 지원자를 한눈에 확인할 수 있어요.</string>
+    <string name="recruitment_profile_go_to_my_applied_recruitment">내가 지원한 모집글</string>
+    <string name="recruitment_profile_go_to_my_applied_recruitment_description">지원한 모집글과 지원 상태를 확인할 수 있어요.</string>
+    <string name="recruitment_profile_empty_title">아직 팀원 모집 프로필을 작성하지 않았어요.</string>
+    <string name="recruitment_profile_empty_subtitle">프로필을 작성하면 지원 시 더 빠르고 편리하게 활동할 수 있어요.</string>
+    <string name="recruitment_profile_create">프로필 작성하기</string>
+    <string name="recruitment_profile_edit_button">프로필 수정하기</string>
+    <string name="recruitment_date_picker_cancel">취소</string>
+    <string name="recruitment_date_picker_confirm">확인</string>
     <string name="recruitment_applied_title">내가 지원한 모집글</string>
     <string name="recruitment_applied_post_count">총 %d개의 지원 내역</string>
     <string name="recruitment_applied_status_approved">승인</string>
@@ -132,6 +195,20 @@
     <string name="recruitment_applied_empty_title">지원한 모집글이 없어요.</string>
     <string name="recruitment_applied_empty_subtitle">다양한 모집글에 지원해 보세요.</string>
 
+
+    <string name="recruitment_profile_create_title">팀원 모집 프로필 작성</string>
+    <string name="recruitment_profile_create_edit_title">팀원 모집 프로필 수정</string>
+    <string name="recruitment_profile_create_step_one_label">기본 정보</string>
+    <string name="recruitment_profile_create_step_two_label">활동 정보</string>
+    <string name="recruitment_profile_char_count">%1$d/%2$d</string>
+    <string name="recruitment_profile_preferred_role">선호 역할</string>
+    <string name="recruitment_profile_preferred_role_hint">선호 역할을 작성해주세요. ex) 프론트엔드, 디자인 등</string>
+    <string name="recruitment_profile_save">저장하기</string>
+    <string name="recruitment_profile_update">수정하기</string>
+    <string name="recruitment_profile_previous">이전</string>
+    <string name="recruitment_profile_save_dialog_title">프로필을 저장하시겠어요?</string>
+    <string name="recruitment_profile_cancel_dialog_title">프로필 작성을 취소하시겠어요?</string>
+    <string name="recruitment_profile_cancel_dialog_description">작성 중인 내용은 저장되지 않습니다.</string>
     <string name="recruitment_applicant_management_title">지원자 관리</string>
     <string name="recruitment_applicant_list_title">지원자 목록</string>
     <string name="recruitment_applicant_list_count">총 %d명</string>

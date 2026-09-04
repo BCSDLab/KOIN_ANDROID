@@ -200,8 +200,14 @@ class RecruitmentModifyViewModel @Inject constructor(
     }
 
     fun modifyRecruitment() = intent {
+        val progressType = state.progressType
+        if (progressType == null) {
+            reduce { state.copy(showSubmitConfirmDialog = false) }
+            postSideEffect(RecruitmentModifySideEffect.RecruitmentModifyFailure(null))
+            return@intent
+        }
         reduce { state.copy(isSubmitting = true, showSubmitConfirmDialog = false) }
-        updateRecruitmentUseCase(recruitmentId = postId, update = state.toRecruitmentUpdate())
+        updateRecruitmentUseCase(recruitmentId = postId, update = state.toRecruitmentUpdate(progressType))
             .onSuccess {
                 reduce { state.copy(isSubmitting = false) }
                 postSideEffect(RecruitmentModifySideEffect.RecruitmentModifySuccess)
@@ -212,12 +218,12 @@ class RecruitmentModifyViewModel @Inject constructor(
             }
     }
 
-    private fun RecruitmentModifyState.toRecruitmentUpdate(): RecruitmentUpdate {
+    private fun RecruitmentModifyState.toRecruitmentUpdate(progressType: RecruitmentProgressType): RecruitmentUpdate {
         val isRoleBased = !isRoleCountUndetermined
         return RecruitmentUpdate(
             category = category.apiValue,
             title = title,
-            meetingType = requireNotNull(progressType).apiValue,
+            meetingType = progressType.apiValue,
             activityStartDate = recruitStartDate.value.toApiDateText(),
             activityEndDate = recruitEndDate.value.toApiDateText(),
             deadlineDate = applicationDeadline.value.toApiDateText(),
