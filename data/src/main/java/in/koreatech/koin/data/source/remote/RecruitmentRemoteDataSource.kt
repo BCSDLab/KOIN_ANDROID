@@ -2,8 +2,14 @@ package `in`.koreatech.koin.data.source.remote
 
 import `in`.koreatech.koin.data.api.auth.RecruitmentAuthApi
 import `in`.koreatech.koin.data.request.recruitment.RecruitmentUpdateRequest
+import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentApplicationRequest
+import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentCreateRequest
+import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentProfileRequest
 import `in`.koreatech.koin.data.response.recruitment.MyAppliedRecruitmentListResponse
 import `in`.koreatech.koin.data.response.recruitment.MyRecruitmentListResponse
+import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentApplicationResponse
+import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentCreateResponse
+import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentProfileResponse
 import javax.inject.Inject
 import retrofit2.HttpException
 
@@ -90,5 +96,29 @@ class RecruitmentRemoteDataSource @Inject constructor(
     suspend fun closeRecruitmentPost(postId: Int) {
         val response = recruitmentAuthApi.closeRecruitmentPost(postId)
         if (!response.isSuccessful) throw HttpException(response)
+    }
+
+    suspend fun getTeamRecruitmentProfile(): TeamRecruitmentProfileResponse =
+        recruitmentAuthApi.getTeamRecruitmentProfile()
+
+    suspend fun saveTeamRecruitmentProfile(
+        request: TeamRecruitmentProfileRequest
+    ): TeamRecruitmentProfileResponse = recruitmentAuthApi.saveTeamRecruitmentProfile(request)
+
+    suspend fun createTeamRecruitment(
+        request: TeamRecruitmentCreateRequest
+    ): TeamRecruitmentCreateResponse {
+        val response = recruitmentAuthApi.createTeamRecruitment(request)
+        if (!response.isSuccessful) throw HttpException(response)
+        return response.body()!!
+    }
+
+    suspend fun applyTeamRecruitment(
+        recruitmentId: Int,
+        request: TeamRecruitmentApplicationRequest
+    ): TeamRecruitmentApplicationResponse {
+        val response = recruitmentAuthApi.applyTeamRecruitment(recruitmentId, request)
+        if (!response.isSuccessful) throw HttpException(response)
+        return response.body()!!
     }
 }

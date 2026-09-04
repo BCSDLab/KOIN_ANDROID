@@ -1,12 +1,20 @@
 package `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.usecase.dept.GetDeptNamesUseCase
+import `in`.koreatech.koin.domain.usecase.recruitment.ApplyTeamRecruitmentUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
+import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentErrorMessage
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
-import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
+import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRoleOption
 import `in`.koreatech.koin.feature.recruitment.model.withNewSkill
 import `in`.koreatech.koin.feature.recruitment.model.withSkillText
 import `in`.koreatech.koin.feature.recruitment.model.withoutSkill
+import `in`.koreatech.koin.feature.recruitment.navigation.RecruitmentNavType
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.ContainerHost
@@ -19,24 +27,48 @@ private const val MIN_AGE = 1
 private const val MAX_AGE = 99
 
 @HiltViewModel
-@Suppress("TooManyFunctions")
-class RecruitmentApplyViewModel @Inject constructor() :
-    ViewModel(),
-    ContainerHost<RecruitmentApplyState, RecruitmentApplySideEffect> {
+class RecruitmentApplyViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val applyTeamRecruitmentUseCase: ApplyTeamRecruitmentUseCase,
+    private val getUserInfoUseCase: GetUserInfoUseCase,
+    private val getDeptNamesUseCase: GetDeptNamesUseCase
+) : ViewModel(), ContainerHost<RecruitmentApplyState, RecruitmentApplySideEffect> {
+
+    private val arguments = savedStateHandle.toRoute<RecruitmentNavType.RecruitmentApply>()
 
     override val container = container<RecruitmentApplyState, RecruitmentApplySideEffect>(
-        RecruitmentApplyState()
-    )
+        RecruitmentApplyState(
+            recruitmentId = arguments.recruitmentId,
+            availableRoles = arguments.roles
+                .map { TeamRecruitmentRoleOption(id = it.id, name = it.name, isClosed = it.isClosed) }
+                .toPersistentList()
+        )
+    ) {
+        loadDepartments()
+    }
+
+    private fun loadDepartments() = intent {
+        val departments = getDeptNamesUseCase()
+        reduce { state.copy(departments = departments.toPersistentList()) }
+    }
 
     fun loadMemberInfo() = intent {
-        reduce {
-            state.copy(
-                isMemberInfoLoaded = true,
-                nickname = state.nickname.ifEmpty { "코인유저" },
-                department = "컴퓨터공학부",
-                studentId = state.studentId.ifEmpty { "2023120203219" }
-            )
-        }
+        getUserInfoUseCase()
+            .onSuccess { user ->
+                if (user is User.Student) {
+                    reduce {
+                        state.copy(
+                            isMemberInfoLoaded = true,
+                            nickname = user.nickname ?: state.nickname,
+                            department = user.major ?: state.department,
+                            studentId = user.studentNumber ?: state.studentId
+                        )
+                    }
+                }
+            }
+            .onFailure { throwable ->
+                reduce { state.copy(errorMessage = throwable.toRecruitmentErrorMessage()) }
+            }
     }
 
     fun setNickname(nickname: String) = intent {
@@ -112,7 +144,9 @@ class RecruitmentApplyViewModel @Inject constructor() :
     }
 
     fun setSelfIntroduction(text: String) = intent {
-        reduce { state.copy(selfIntroduction = text) }
+        if (text.length <= SELF_INTRODUCTION_MAX_LENGTH) {
+            reduce { state.copy(selfIntroduction = text) }
+        }
     }
 
     fun goToNextStep() = intent {
@@ -123,18 +157,22 @@ class RecruitmentApplyViewModel @Inject constructor() :
         reduce { state.copy(currentStep = 1) }
     }
 
-    fun selectRole(role: TeamRecruitmentRole) = intent {
+    fun selectRole(role: TeamRecruitmentRoleOption) = intent {
         if (!role.isClosed) {
             reduce { state.copy(selectedRole = role) }
         }
     }
 
     fun setMotivation(text: String) = intent {
-        reduce { state.copy(motivation = text) }
+        if (text.length <= MOTIVATION_MAX_LENGTH) {
+            reduce { state.copy(motivation = text) }
+        }
     }
 
     fun setAvailableTime(text: String) = intent {
-        reduce { state.copy(availableTime = text) }
+        if (text.length <= AVAILABLE_TIME_MAX_LENGTH) {
+            reduce { state.copy(availableTime = text) }
+        }
     }
 
     fun showSubmitConfirmDialog() = intent {
@@ -159,7 +197,20 @@ class RecruitmentApplyViewModel @Inject constructor() :
     }
 
     fun submitApplication() = intent {
-        reduce { state.copy(isSubmitting = true, showSubmitConfirmDialog = false) }
-        postSideEffect(RecruitmentApplySideEffect.ApplySuccess)
+        val role = state.selectedRole ?: return@intent
+        reduce { state.copy(isSubmitting = true, showSubmitConfirmDialog = false, errorMessage = null) }
+
+        applyTeamRecruitmentUseCase(
+            recruitmentId = state.recruitmentId,
+            roleId = role.id,
+            motivation = state.motivation,
+            availability = state.availableTime
+        ).onSuccess {
+            reduce { state.copy(isSubmitting = false) }
+            postSideEffect(RecruitmentApplySideEffect.ApplySuccess)
+        }.onFailure { throwable ->
+            reduce { state.copy(isSubmitting = false, errorMessage = throwable.toRecruitmentErrorMessage()) }
+            postSideEffect(RecruitmentApplySideEffect.ApplyFailure)
+        }
     }
 }

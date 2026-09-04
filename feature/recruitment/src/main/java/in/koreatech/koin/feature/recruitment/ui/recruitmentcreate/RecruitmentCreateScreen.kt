@@ -42,6 +42,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDateSelec
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDropdown
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentTextField
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.component.RecruitmentAddRoleButton
+import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.component.RecruitmentCountStepper
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.component.RecruitmentProgressTypeSelector
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.component.RecruitmentRoleRow
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model.TeamRecruitmentCategory
@@ -107,6 +108,7 @@ fun RecruitmentCreateScreen(
             onRoleCountChange = viewModel::setRoleCount,
             onRoleRemoved = viewModel::removeRole,
             onRoleCountUndeterminedChange = viewModel::setRoleCountUndetermined,
+            onMaxParticipantsChange = viewModel::setMaxParticipants,
             onDescriptionChange = viewModel::setDescription,
             onRelatedUrlChange = viewModel::setRelatedUrl,
             onQualificationChange = viewModel::setQualification,
@@ -138,6 +140,7 @@ private fun RecruitmentCreateScreenImpl(
     onRoleCountChange: (String, Int) -> Unit = { _, _ -> },
     onRoleRemoved: (String) -> Unit = {},
     onRoleCountUndeterminedChange: (Boolean) -> Unit = {},
+    onMaxParticipantsChange: (Int) -> Unit = {},
     onDescriptionChange: (String) -> Unit = {},
     onRelatedUrlChange: (String) -> Unit = {},
     onQualificationChange: (String) -> Unit = {},
@@ -187,20 +190,17 @@ private fun RecruitmentCreateScreenImpl(
             .padding(horizontal = 20.dp, vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(28.dp)
     ) {
-        FormSection(
-            title = stringResource(R.string.recruitment_create_category),
-            isRequired = true,
-            content = {
-                RecruitmentDropdown(
-                    text = state.category.label,
-                    isPlaceholder = false,
-                    items = TeamRecruitmentCategory.entries.map { it.label }.toImmutableList(),
-                    isExpanded = state.isCategoryDropdownExpanded,
-                    onExpandedChange = onCategoryDropdownExpandChange,
-                    onItemSelected = { index -> onCategorySelected(TeamRecruitmentCategory.entries[index]) }
-                )
-            }
-        )
+        FormSection(title = stringResource(R.string.recruitment_create_category), isRequired = true) {
+            RecruitmentDropdown(
+                text = state.category.label,
+                // category는 non-nullable이라 항상 선택된 값이 있음 → placeholder 상태 자체가 없음
+                isPlaceholder = false,
+                items = TeamRecruitmentCategory.entries.map { it.label }.toImmutableList(),
+                isExpanded = state.isCategoryDropdownExpanded,
+                onExpandedChange = onCategoryDropdownExpandChange,
+                onItemSelected = { index -> onCategorySelected(TeamRecruitmentCategory.entries[index]) }
+            )
+        }
 
         FormSection(
             title = stringResource(R.string.recruitment_create_title_field),
@@ -211,83 +211,74 @@ private fun RecruitmentCreateScreenImpl(
                     style = RebrandKoinTheme.typography.regular12,
                     color = RebrandKoinTheme.colors.neutral400
                 )
-            },
-            content = {
-                RecruitmentTextField(
-                    value = state.title,
-                    onValueChange = onTitleChange,
-                    hint = stringResource(R.string.recruitment_create_title_hint),
-                    maxLength = TITLE_MAX_LENGTH
-                )
             }
-        )
+        ) {
+            RecruitmentTextField(
+                value = state.title,
+                onValueChange = onTitleChange,
+                hint = stringResource(R.string.recruitment_create_title_hint),
+                maxLength = TITLE_MAX_LENGTH
+            )
+        }
 
-        FormSection(
-            title = stringResource(R.string.recruitment_create_progress_type),
-            isRequired = true,
-            content = {
-                RecruitmentProgressTypeSelector(
-                    selected = state.progressType,
-                    onSelect = onProgressTypeSelected
-                )
-            }
-        )
+        FormSection(title = stringResource(R.string.recruitment_create_progress_type), isRequired = true) {
+            RecruitmentProgressTypeSelector(
+                selected = state.progressType,
+                onSelect = onProgressTypeSelected
+            )
+        }
 
-        FormSection(
-            title = stringResource(R.string.recruitment_create_period),
-            isRequired = true,
-            content = {
-                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text(
-                            text = stringResource(R.string.recruitment_create_period_range),
-                            style = RebrandKoinTheme.typography.regular12,
-                            color = RebrandKoinTheme.colors.neutral500
+        FormSection(title = stringResource(R.string.recruitment_create_period), isRequired = true) {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(
+                        text = stringResource(R.string.recruitment_create_period_range),
+                        style = RebrandKoinTheme.typography.regular12,
+                        color = RebrandKoinTheme.colors.neutral500
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(20.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RecruitmentDateSelectBox(
+                            text = state.recruitStartDate.value.toDateText(),
+                            onClick = onStartDateClick,
+                            modifier = Modifier.weight(1f)
                         )
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(20.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            RecruitmentDateSelectBox(
-                                text = state.recruitStartDate.value.toDateText(),
-                                onClick = onStartDateClick,
-                                modifier = Modifier.weight(1f)
-                            )
-                            Text(
-                                text = "-",
-                                style = RebrandKoinTheme.typography.medium16,
-                                color = RebrandKoinTheme.colors.neutral400,
-                                modifier = Modifier.wrapContentHeight()
-                            )
-                            RecruitmentDateSelectBox(
-                                text = state.recruitEndDate.value.toDateText(),
-                                onClick = onEndDateClick,
-                                modifier = Modifier.weight(1f)
-                            )
-                        }
+                        Text(
+                            text = "-",
+                            style = RebrandKoinTheme.typography.medium16,
+                            color = RebrandKoinTheme.colors.neutral400,
+                            modifier = Modifier.wrapContentHeight()
+                        )
+                        RecruitmentDateSelectBox(
+                            text = state.recruitEndDate.value.toDateText(),
+                            onClick = onEndDateClick,
+                            modifier = Modifier.weight(1f)
+                        )
                     }
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text(
-                            text = stringResource(R.string.recruitment_create_deadline),
-                            style = RebrandKoinTheme.typography.regular12,
-                            color = RebrandKoinTheme.colors.neutral500
+                }
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(
+                        text = stringResource(R.string.recruitment_create_deadline),
+                        style = RebrandKoinTheme.typography.regular12,
+                        color = RebrandKoinTheme.colors.neutral500
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        RecruitmentDateSelectBox(
+                            text = state.applicationDeadline.value.toDateText(),
+                            onClick = onDeadlineClick,
+                            modifier = Modifier.weight(1f)
                         )
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            RecruitmentDateSelectBox(
-                                text = state.applicationDeadline.value.toDateText(),
-                                onClick = onDeadlineClick,
-                                modifier = Modifier.weight(1f)
-                            )
-                            Spacer(modifier = Modifier.weight(1f))
-                        }
+                        Spacer(modifier = Modifier.weight(1f))
                     }
                 }
             }
-        )
+        }
 
         FormSection(
             title = stringResource(R.string.recruitment_create_roles),
@@ -298,38 +289,51 @@ private fun RecruitmentCreateScreenImpl(
                 TeamRecruitmentRole.MAX_ROLE_COUNT
             ),
             trailingContent = {
-                RecruitmentAddRoleButton(
-                    text = stringResource(R.string.recruitment_create_add_role),
-                    enabled = state.roles.size < TeamRecruitmentRole.MAX_ROLE_COUNT,
-                    onClick = onAddRoleClick
-                )
-            },
-            content = {
-                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text(
-                        text = stringResource(R.string.recruitment_create_roles_description),
-                        style = RebrandKoinTheme.typography.regular12,
-                        color = RebrandKoinTheme.colors.neutral500
+                if (!state.isRoleCountUndetermined) {
+                    RecruitmentAddRoleButton(
+                        text = stringResource(R.string.recruitment_create_add_role),
+                        enabled = state.roles.size < TeamRecruitmentRole.MAX_ROLE_COUNT,
+                        onClick = onAddRoleClick
                     )
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        RadioButton(
-                            selected = state.isRoleCountUndetermined,
-                            onClick = { onRoleCountUndeterminedChange(!state.isRoleCountUndetermined) },
-                            colors = RadioButtonDefaults.colors(
-                                selectedColor = RebrandKoinTheme.colors.primary500
-                            ),
-                            modifier = Modifier.offset(x = (-14).dp)
-                        )
-                        Text(
-                            text = stringResource(R.string.recruitment_create_role_undetermined),
-                            style = RebrandKoinTheme.typography.regular14,
-                            color = RebrandKoinTheme.colors.neutral700,
-                            modifier = Modifier.offset(x = (-28).dp)
-                        )
-                    }
+                }
+            }
+        ) {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text(
+                    text = stringResource(R.string.recruitment_create_roles_description),
+                    style = RebrandKoinTheme.typography.regular12,
+                    color = RebrandKoinTheme.colors.neutral500
+                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    RadioButton(
+                        selected = state.isRoleCountUndetermined,
+                        onClick = { onRoleCountUndeterminedChange(!state.isRoleCountUndetermined) },
+                        colors = RadioButtonDefaults.colors(
+                            selectedColor = RebrandKoinTheme.colors.primary500
+                        ),
+                        // RadioButton은 기본적으로 48dp 최소 터치 영역을 가져서 시각적으로 좌측에
+                        // 여백((48-20)/2=14dp)이 생깁니다. 디자인처럼 좌측 정렬시키기 위해 상쇄합니다.
+                        modifier = Modifier.offset(x = (-14).dp)
+                    )
+                    Text(
+                        text = stringResource(R.string.recruitment_create_role_undetermined),
+                        style = RebrandKoinTheme.typography.regular14,
+                        color = RebrandKoinTheme.colors.neutral700,
+                        modifier = Modifier.offset(x = (-28).dp)
+                    )
+                }
+                if (state.isRoleCountUndetermined) {
+                    RecruitmentCountStepper(
+                        count = state.maxParticipants,
+                        onCountChange = onMaxParticipantsChange,
+                        minCount = MIN_TOTAL_PARTICIPANTS,
+                        maxCount = MAX_TOTAL_PARTICIPANTS,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                } else {
                     state.roles.forEach { role ->
                         key(role.id) {
                             RecruitmentRoleRow(
@@ -343,7 +347,7 @@ private fun RecruitmentCreateScreenImpl(
                     }
                 }
             }
-        )
+        }
 
         FormSection(
             title = stringResource(R.string.recruitment_create_description),
@@ -358,29 +362,25 @@ private fun RecruitmentCreateScreenImpl(
                     style = RebrandKoinTheme.typography.regular12,
                     color = RebrandKoinTheme.colors.neutral400
                 )
-            },
-            content = {
-                RecruitmentTextField(
-                    value = state.description,
-                    onValueChange = onDescriptionChange,
-                    hint = stringResource(R.string.recruitment_create_description_hint),
-                    singleLine = false,
-                    minLines = 5,
-                    maxLength = DESCRIPTION_MAX_LENGTH
-                )
             }
-        )
+        ) {
+            RecruitmentTextField(
+                value = state.description,
+                onValueChange = onDescriptionChange,
+                hint = stringResource(R.string.recruitment_create_description_hint),
+                singleLine = false,
+                minLines = 5,
+                maxLength = DESCRIPTION_MAX_LENGTH
+            )
+        }
 
-        FormSection(
-            title = stringResource(R.string.recruitment_create_related_url),
-            content = {
-                RecruitmentTextField(
-                    value = state.relatedUrl,
-                    onValueChange = onRelatedUrlChange,
-                    hint = stringResource(R.string.recruitment_create_related_url_hint)
-                )
-            }
-        )
+        FormSection(title = stringResource(R.string.recruitment_create_related_url)) {
+            RecruitmentTextField(
+                value = state.relatedUrl,
+                onValueChange = onRelatedUrlChange,
+                hint = stringResource(R.string.recruitment_create_related_url_hint)
+            )
+        }
 
         FormSection(
             title = stringResource(R.string.recruitment_create_qualification),
@@ -394,18 +394,25 @@ private fun RecruitmentCreateScreenImpl(
                     style = RebrandKoinTheme.typography.regular12,
                     color = RebrandKoinTheme.colors.neutral400
                 )
-            },
-            content = {
-                RecruitmentTextField(
-                    value = state.qualification,
-                    onValueChange = onQualificationChange,
-                    hint = stringResource(R.string.recruitment_create_qualification_hint),
-                    singleLine = false,
-                    minLines = 3,
-                    maxLength = QUALIFICATION_MAX_LENGTH
-                )
             }
-        )
+        ) {
+            RecruitmentTextField(
+                value = state.qualification,
+                onValueChange = onQualificationChange,
+                hint = stringResource(R.string.recruitment_create_qualification_hint),
+                singleLine = false,
+                minLines = 3,
+                maxLength = QUALIFICATION_MAX_LENGTH
+            )
+        }
+
+        if (state.errorMessage != null) {
+            Text(
+                text = state.errorMessage,
+                style = RebrandKoinTheme.typography.regular13,
+                color = RebrandKoinTheme.colors.danger700
+            )
+        }
 
         FilledButton(
             text = stringResource(R.string.recruitment_create_submit),
@@ -421,11 +428,11 @@ private fun RecruitmentCreateScreenImpl(
 @Composable
 private fun FormSection(
     title: String,
-    content: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     isRequired: Boolean = false,
     titleSuffix: String? = null,
-    trailingContent: (@Composable () -> Unit)? = null
+    trailingContent: (@Composable () -> Unit)? = null,
+    content: @Composable () -> Unit
 ) {
     Column(
         modifier = modifier,

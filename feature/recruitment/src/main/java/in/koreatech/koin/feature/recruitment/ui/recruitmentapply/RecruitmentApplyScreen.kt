@@ -36,7 +36,7 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
-import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRole
+import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRoleOption
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentActivitiesSection
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentConfirmDialog
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDepartmentSection
@@ -52,10 +52,6 @@ import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentTextField
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-
-private const val SELF_INTRODUCTION_MAX_LENGTH = 1000
-private const val MOTIVATION_MAX_LENGTH = 1000
-private const val AVAILABLE_TIME_MAX_LENGTH = 100
 
 @Stable
 data class RecruitmentApplyStepOneActions(
@@ -79,7 +75,7 @@ data class RecruitmentApplyStepOneActions(
 
 @Stable
 data class RecruitmentApplyStepTwoActions(
-    val onRoleSelected: (TeamRecruitmentRole) -> Unit = {},
+    val onRoleSelected: (TeamRecruitmentRoleOption) -> Unit = {},
     val onMotivationChange: (String) -> Unit = {},
     val onAvailableTimeChange: (String) -> Unit = {}
 )
@@ -224,6 +220,15 @@ private fun RecruitmentApplyScreenImpl(
             }
         }
 
+        if (state.errorMessage != null) {
+            Text(
+                text = state.errorMessage,
+                style = RebrandKoinTheme.typography.regular13,
+                color = RebrandKoinTheme.colors.danger700,
+                modifier = Modifier.padding(horizontal = 20.dp)
+            )
+        }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -277,6 +282,7 @@ private fun RecruitmentApplyStepOne(
 
         RecruitmentDepartmentSection(
             department = state.department,
+            departments = state.departments,
             isDropdownExpanded = state.isDepartmentDropdownExpanded,
             onDropdownExpandChange = actions.onDepartmentDropdownExpandChange,
             onDepartmentSelected = actions.onDepartmentSelected
@@ -326,14 +332,7 @@ private fun RecruitmentApplyStepTwo(
             isRequired = true,
             content = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    val roles = state.availableRoles.ifEmpty {
-                        persistentListOf(
-                            TeamRecruitmentRole("프론트엔드", 1),
-                            TeamRecruitmentRole("백엔드", 2),
-                            TeamRecruitmentRole("디자인", 3, isClosed = true)
-                        )
-                    }
-                    roles.forEach { role ->
+                    state.availableRoles.forEach { role ->
                         key(role.id) {
                             RecruitmentRoleRadioItem(
                                 role = role,
@@ -402,7 +401,7 @@ private fun RecruitmentApplyStepTwo(
 
 @Composable
 private fun RecruitmentRoleRadioItem(
-    role: TeamRecruitmentRole,
+    role: TeamRecruitmentRoleOption,
     isSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -458,6 +457,15 @@ private fun RecruitmentApplyScreenStepOnePreview() {
 @Composable
 private fun RecruitmentApplyScreenStepTwoPreview() {
     RebrandKoinTheme {
-        RecruitmentApplyScreenImpl(state = RecruitmentApplyState(currentStep = 2))
+        RecruitmentApplyScreenImpl(
+            state = RecruitmentApplyState(
+                currentStep = 2,
+                availableRoles = persistentListOf(
+                    TeamRecruitmentRoleOption(id = 1, name = "프론트엔드"),
+                    TeamRecruitmentRoleOption(id = 2, name = "백엔드"),
+                    TeamRecruitmentRoleOption(id = 3, name = "디자인", isClosed = true)
+                )
+            )
+        )
     }
 }
