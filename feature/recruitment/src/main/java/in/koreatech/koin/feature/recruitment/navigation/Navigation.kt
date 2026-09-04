@@ -19,6 +19,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.profile.ProfileScreen
 import `in`.koreatech.koin.feature.recruitment.ui.profilecreate.ProfileCreateScreen
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply.RecruitmentApplyScreen
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.RecruitmentCreateScreen
+import `in`.koreatech.koin.feature.recruitment.ui.recruitmentmodify.RecruitmentModifyScreen
 
 @Suppress("LongMethod")
 fun NavGraphBuilder.koinRecruitmentGraph(
@@ -116,6 +117,12 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     composable<RecruitmentNavType.ApplicantDetail> {
         ApplicantDetailScreen(
             onNavigateUp = { navController.navigateUp() }
+        )
+    }
+    composable<RecruitmentNavType.RecruitmentModify> {
+        RecruitmentModifyScreen(
+            onNavigateUp = { navController.navigateUp() },
+            onRecruitmentModified = { navController.navigateUp() }
         )
     }
 }
