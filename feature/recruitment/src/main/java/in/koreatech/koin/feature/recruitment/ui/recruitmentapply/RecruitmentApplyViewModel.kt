@@ -29,6 +29,7 @@ import org.orbitmvi.orbit.viewmodel.container
 private const val MIN_AGE = 1
 private const val MAX_AGE = 99
 
+@Suppress("TooManyFunctions")
 @HiltViewModel
 class RecruitmentApplyViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
