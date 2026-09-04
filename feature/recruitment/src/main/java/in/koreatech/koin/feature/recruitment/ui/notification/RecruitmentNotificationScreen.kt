@@ -46,6 +46,9 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 internal fun RecruitmentNotificationScreen(
     onBack: () -> Unit = {},
     onNavigateToApplicantManagement: (Int) -> Unit = {},
+    onNavigateToGroupChat: (recruitmentId: Int, chatRoomId: Int) -> Unit = { _, _ -> },
+    onNavigateToDirectChat: (recruitmentId: Int, applicationId: Int) -> Unit = { _, _ -> },
+    onNavigateToMyAppliedRecruitment: () -> Unit = {},
     viewModel: RecruitmentNotificationViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.collectAsState()
@@ -60,6 +63,18 @@ internal fun RecruitmentNotificationScreen(
 
             is RecruitmentNotificationSideEffect.NavigateToApplicantManagement -> {
                 onNavigateToApplicantManagement(sideEffect.recruitmentId)
+            }
+
+            is RecruitmentNotificationSideEffect.NavigateToGroupChat -> {
+                onNavigateToGroupChat(sideEffect.recruitmentId, sideEffect.chatRoomId)
+            }
+
+            is RecruitmentNotificationSideEffect.NavigateToDirectChat -> {
+                onNavigateToDirectChat(sideEffect.recruitmentId, sideEffect.applicationId)
+            }
+
+            RecruitmentNotificationSideEffect.NavigateToMyAppliedRecruitment -> {
+                onNavigateToMyAppliedRecruitment()
             }
 
             RecruitmentNotificationSideEffect.Deleted -> {
