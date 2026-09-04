@@ -23,7 +23,6 @@ import `in`.koreatech.koin.domain.model.recruitment.RecruitmentApplication
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentDetail
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentNotification
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentNotifications
-import `in`.koreatech.koin.domain.model.recruitment.RecruitmentPost
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentRole
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentUpdate
 import `in`.koreatech.koin.domain.model.recruitment.Recruitments
@@ -33,22 +32,6 @@ import `in`.koreatech.koin.domain.model.recruitment.TeamRecruitmentApplication
 import `in`.koreatech.koin.domain.model.recruitment.TeamRecruitmentApplicationRole
 import `in`.koreatech.koin.domain.model.recruitment.TeamRecruitmentProfile
 import `in`.koreatech.koin.domain.model.recruitment.TeamRecruitmentRoleInput
-
-fun RecruitmentResponse.toRecruitmentPost() = RecruitmentPost(
-    id = id,
-    category = category,
-    title = title,
-    meetingType = meetingType,
-    activityStartDate = activityStartDate,
-    activityEndDate = activityEndDate,
-    deadlineDate = deadlineDate,
-    dDay = dDay,
-    status = status,
-    recruitmentType = recruitmentType,
-    currentParticipants = currentParticipants,
-    maxParticipants = maxParticipants,
-    roles = roles.map { it.toRecruitmentRole() }
-)
 
 fun MyRecruitmentPostResponse.toMyRecruitmentPost() = MyRecruitmentPost(
     id = id,
