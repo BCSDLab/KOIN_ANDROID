@@ -12,16 +12,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -35,18 +32,15 @@ import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentEmptyState
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentFilterButton
+import `in`.koreatech.koin.feature.recruitment.ui.component.rememberRecruitmentPaginationListState
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.component.AppliedRecruitmentFilterBottomSheet
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.component.AppliedRecruitmentPostCard
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.model.AppliedRecruitmentPost
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.model.AppliedRecruitmentStatus
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-
-private const val LOAD_MORE_THRESHOLD = 3
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -130,18 +124,12 @@ private fun MyAppliedRecruitmentScreenImpl(
                 )
             }
         } else {
-            val listState = rememberLazyListState()
-
-            LaunchedEffect(listState, hasMore, isLoadingMore, posts.size) {
-                snapshotFlow {
-                    val layoutInfo = listState.layoutInfo
-                    val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-                    lastVisibleItemIndex >= layoutInfo.totalItemsCount - LOAD_MORE_THRESHOLD
-                }
-                    .distinctUntilChanged()
-                    .filter { it }
-                    .collect { if (hasMore && !isLoadingMore) onLoadMore() }
-            }
+            val listState = rememberRecruitmentPaginationListState(
+                hasMore = hasMore,
+                isLoadingMore = isLoadingMore,
+                itemCount = posts.size,
+                onLoadMore = onLoadMore
+            )
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),

@@ -12,18 +12,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,12 +34,11 @@ import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHo
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
+import `in`.koreatech.koin.feature.recruitment.ui.component.rememberRecruitmentPaginationListState
 import `in`.koreatech.koin.feature.recruitment.ui.notification.component.RecruitmentNotificationItem
 import `in`.koreatech.koin.feature.recruitment.ui.notification.component.RecruitmentNotificationMenuButton
 import `in`.koreatech.koin.feature.recruitment.ui.notification.model.RecruitmentNotification
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -55,7 +50,6 @@ internal fun RecruitmentNotificationScreen(
 ) {
     val uiState by viewModel.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
-    val listState = rememberLazyListState()
     val context = LocalContext.current
 
     viewModel.collectSideEffect { sideEffect ->
@@ -110,7 +104,6 @@ internal fun RecruitmentNotificationScreen(
     ) { paddingValues ->
         RecruitmentNotificationScreenImpl(
             modifier = Modifier.padding(paddingValues),
-            listState = listState,
             notifications = uiState.notifications,
             isLoading = uiState.isLoading,
             isLoadingMore = uiState.isLoadingMore,
@@ -123,7 +116,6 @@ internal fun RecruitmentNotificationScreen(
 
 @Composable
 private fun RecruitmentNotificationScreenImpl(
-    listState: LazyListState,
     notifications: ImmutableList<RecruitmentNotification>,
     isLoading: Boolean,
     isLoadingMore: Boolean,
@@ -132,16 +124,12 @@ private fun RecruitmentNotificationScreenImpl(
     onLoadMore: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LaunchedEffect(listState, hasMore, isLoadingMore, notifications.size) {
-        snapshotFlow {
-            val layoutInfo = listState.layoutInfo
-            val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-            lastVisibleItemIndex >= layoutInfo.totalItemsCount - LOAD_MORE_THRESHOLD
-        }
-            .distinctUntilChanged()
-            .filter { it }
-            .collect { if (hasMore && !isLoadingMore) onLoadMore() }
-    }
+    val listState = rememberRecruitmentPaginationListState(
+        hasMore = hasMore,
+        isLoadingMore = isLoadingMore,
+        itemCount = notifications.size,
+        onLoadMore = onLoadMore
+    )
 
     if (isLoading) {
         Box(
@@ -205,5 +193,3 @@ private fun RecruitmentNotificationScreenImpl(
         }
     }
 }
-
-private const val LOAD_MORE_THRESHOLD = 3
