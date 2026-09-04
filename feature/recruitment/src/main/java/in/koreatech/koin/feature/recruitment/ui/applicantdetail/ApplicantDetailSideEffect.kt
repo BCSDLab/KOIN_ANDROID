@@ -1,3 +1,5 @@
 package `in`.koreatech.koin.feature.recruitment.ui.applicantdetail
 
-sealed interface ApplicantDetailSideEffect
+sealed interface ApplicantDetailSideEffect {
+    data object Error : ApplicantDetailSideEffect
+}

@@ -4,6 +4,9 @@ import `in`.koreatech.koin.data.request.recruitment.RecruitmentUpdateRequest
 import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentApplicationRequest
 import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentCreateRequest
 import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentProfileRequest
+import `in`.koreatech.koin.data.request.recruitment.UpdateApplicationStatusRequest
+import `in`.koreatech.koin.data.response.recruitment.ApplicantDetailResponse
+import `in`.koreatech.koin.data.response.recruitment.ApplicantListResponse
 import `in`.koreatech.koin.data.response.recruitment.MyAppliedRecruitmentListResponse
 import `in`.koreatech.koin.data.response.recruitment.MyRecruitmentListResponse
 import `in`.koreatech.koin.data.response.recruitment.RecruitmentDetailResponse
@@ -106,4 +109,25 @@ interface RecruitmentAuthApi {
         @Path("recruitmentId") recruitmentId: Int,
         @Body request: TeamRecruitmentApplicationRequest
     ): Response<TeamRecruitmentApplicationResponse>
+
+    @GET("team-recruitments/{recruitmentId}/applications")
+    suspend fun getApplicants(
+        @Path("recruitmentId") recruitmentId: Int,
+        @Query("statuses") statuses: List<String>? = null,
+        @Query("page") page: Int? = 1,
+        @Query("limit") limit: Int? = 10
+    ): ApplicantListResponse
+
+    @GET("team-recruitments/{recruitmentId}/applications/{applicationId}")
+    suspend fun getApplicantDetail(
+        @Path("recruitmentId") recruitmentId: Int,
+        @Path("applicationId") applicationId: Int
+    ): ApplicantDetailResponse
+
+    @PUT("team-recruitments/{recruitmentId}/applications/{applicationId}/status")
+    suspend fun updateApplicationStatus(
+        @Path("recruitmentId") recruitmentId: Int,
+        @Path("applicationId") applicationId: Int,
+        @Body request: UpdateApplicationStatusRequest
+    ): Response<Unit>
 }
