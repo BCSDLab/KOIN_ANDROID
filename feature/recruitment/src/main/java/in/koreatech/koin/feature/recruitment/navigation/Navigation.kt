@@ -46,8 +46,8 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     composable<RecruitmentNavType.Profile> {
         ProfileScreen(
             onNavigateUp = { navController.navigateUp() },
-            onNavigateToMyRecruitment = { },
-            onNavigateToMyAppliedRecruitment = { },
+            onNavigateToMyRecruitment = { navController.navigate(RecruitmentNavType.MyRecruitment) },
+            onNavigateToMyAppliedRecruitment = { navController.navigate(RecruitmentNavType.MyAppliedRecruitment) },
             onNavigateToProfileCreate = { isEditMode ->
                 navController.navigate(RecruitmentNavType.ProfileCreate(isEditMode = isEditMode))
             }
@@ -116,6 +116,14 @@ fun NavGraphBuilder.koinRecruitmentGraph(
         val route = backStackEntry.toRoute<RecruitmentNavType.ApplicantManagement>()
         ApplicantManagementScreen(
             onNavigateUp = { navController.navigateUp() },
+            onChat = { chatRoomId ->
+                navController.navigate(
+                    RecruitmentNavType.RecruitmentGroupChat(
+                        recruitmentId = route.postId,
+                        chatRoomId = chatRoomId
+                    )
+                )
+            },
             onApplicantDetail = { applicantId ->
                 navController.navigate(RecruitmentNavType.ApplicantDetail(route.postId, applicantId))
             },
@@ -147,6 +155,9 @@ fun NavGraphBuilder.koinRecruitmentGraph(
                 navigator.navigateToSignIn(context).apply {
                     context.startActivity(this)
                 }
+            },
+            onApplicantManage = { postId ->
+                navController.navigate(RecruitmentNavType.ApplicantManagement(postId))
             }
         )
     }

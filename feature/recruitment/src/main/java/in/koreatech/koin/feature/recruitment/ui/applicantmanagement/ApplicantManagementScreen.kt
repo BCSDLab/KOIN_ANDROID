@@ -44,7 +44,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 fun ApplicantManagementScreen(
     viewModel: ApplicantManagementViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit = {},
-    onChat: () -> Unit = {},
+    onChat: (chatRoomId: Int) -> Unit = {},
     onApplicantDetail: (Int) -> Unit = {},
     onApplicantChat: (Int) -> Unit = {},
     onMoreOptions: () -> Unit = {}
@@ -75,7 +75,7 @@ fun ApplicantManagementScreen(
         ApplicantManagementScreenImpl(
             post = state.post,
             applicants = state.applicants,
-            onChat = onChat,
+            onChat = { state.post?.teamChatRoomId?.let(onChat) },
             onApplicantDetail = onApplicantDetail,
             onApplicantChat = onApplicantChat,
             modifier = Modifier.padding(innerPadding)
