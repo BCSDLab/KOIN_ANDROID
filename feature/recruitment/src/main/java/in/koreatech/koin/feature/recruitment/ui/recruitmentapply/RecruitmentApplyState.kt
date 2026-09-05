@@ -25,7 +25,6 @@ data class RecruitmentApplyState(
     val currentStep: Int = 1,
     val isMemberInfoLoaded: Boolean = false,
     val nickname: String = "",
-    val age: String = "",
     val department: String = "",
     val departments: ImmutableList<String> = persistentListOf(),
     val isDepartmentDropdownExpanded: Boolean = false,
@@ -45,7 +44,6 @@ data class RecruitmentApplyState(
 ) {
     val isStepOneValid: Boolean
         get() = nickname.isNotBlank() &&
-            age.isNotBlank() &&
             department.isNotBlank() &&
             studentId.isNotBlank() &&
             selfIntroduction.isNotBlank()

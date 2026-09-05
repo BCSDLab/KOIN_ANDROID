@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -35,6 +36,7 @@ fun RecruitmentDateSelectBox(
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .clip(DateSelectBoxShape)
             .border(1.dp, RebrandKoinTheme.colors.neutral200, DateSelectBoxShape)
             .background(RebrandKoinTheme.colors.neutral0, DateSelectBoxShape)
             .clickable { onClick() }

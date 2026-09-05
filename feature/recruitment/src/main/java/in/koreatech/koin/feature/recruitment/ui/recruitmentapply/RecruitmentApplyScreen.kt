@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.RadioButton
@@ -27,8 +26,8 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -57,7 +56,6 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 data class RecruitmentApplyStepOneActions(
     val onLoadMemberInfoClick: () -> Unit = {},
     val onNicknameChange: (String) -> Unit = {},
-    val onAgeChange: (String) -> Unit = {},
     val onDepartmentDropdownExpandChange: (Boolean) -> Unit = {},
     val onDepartmentSelected: (String) -> Unit = {},
     val onStudentIdChange: (String) -> Unit = {},
@@ -102,7 +100,6 @@ fun RecruitmentApplyScreen(
         RecruitmentApplyStepOneActions(
             onLoadMemberInfoClick = { viewModel.loadMemberInfo() },
             onNicknameChange = { viewModel.setNickname(it) },
-            onAgeChange = { viewModel.setAge(it) },
             onDepartmentDropdownExpandChange = { viewModel.setDepartmentDropdownExpanded(it) },
             onDepartmentSelected = { viewModel.setDepartment(it) },
             onStudentIdChange = { viewModel.setStudentId(it) },
@@ -267,19 +264,6 @@ private fun RecruitmentApplyStepOne(
             maxLength = NICKNAME_MAX_LENGTH
         )
 
-        RecruitmentFormSection(
-            title = stringResource(R.string.recruitment_apply_age),
-            isRequired = true,
-            content = {
-                RecruitmentTextField(
-                    value = state.age,
-                    onValueChange = actions.onAgeChange,
-                    hint = stringResource(R.string.recruitment_apply_age_hint),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                )
-            }
-        )
-
         RecruitmentDepartmentSection(
             department = state.department,
             departments = state.departments,
@@ -410,6 +394,7 @@ private fun RecruitmentRoleRadioItem(
         modifier = modifier
             .fillMaxWidth()
             .height(40.dp)
+            .clip(RoundedCornerShape(16.dp))
             .background(
                 color = if (role.isClosed) RebrandKoinTheme.colors.neutral100 else RebrandKoinTheme.colors.neutral0,
                 shape = RoundedCornerShape(16.dp)
