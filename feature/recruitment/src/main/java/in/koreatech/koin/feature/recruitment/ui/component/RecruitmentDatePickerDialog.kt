@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.recruitment.ui.component
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerState
@@ -57,7 +59,20 @@ fun RecruitmentDatePickerDialog(
                 modifier = Modifier.fillMaxWidth(),
                 state = datePickerState,
                 colors = DatePickerDefaults.colors(
-                    containerColor = RebrandKoinTheme.colors.neutral0
+                    containerColor = RebrandKoinTheme.colors.neutral0,
+                    titleContentColor = RebrandKoinTheme.colors.neutral800,
+                    headlineContentColor = RebrandKoinTheme.colors.neutral800,
+                    weekdayContentColor = RebrandKoinTheme.colors.neutral500,
+                    subheadContentColor = RebrandKoinTheme.colors.neutral800,
+                    yearContentColor = RebrandKoinTheme.colors.neutral800,
+                    currentYearContentColor = RebrandKoinTheme.colors.primary500,
+                    selectedYearContentColor = RebrandKoinTheme.colors.neutral0,
+                    selectedYearContainerColor = RebrandKoinTheme.colors.primary500,
+                    dayContentColor = RebrandKoinTheme.colors.neutral800,
+                    selectedDayContentColor = RebrandKoinTheme.colors.neutral0,
+                    selectedDayContainerColor = RebrandKoinTheme.colors.primary500,
+                    todayContentColor = RebrandKoinTheme.colors.primary500,
+                    todayDateBorderColor = RebrandKoinTheme.colors.primary500
                 )
             )
             Row(
@@ -67,7 +82,14 @@ fun RecruitmentDatePickerDialog(
                 OutlinedBoxButton(
                     text = stringResource(R.string.recruitment_date_picker_cancel),
                     onClick = onNegative,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonColors(
+                        containerColor = RebrandKoinTheme.colors.neutral0,
+                        contentColor = RebrandKoinTheme.colors.primary500,
+                        disabledContainerColor = RebrandKoinTheme.colors.neutral400,
+                        disabledContentColor = RebrandKoinTheme.colors.neutral500
+                    ),
+                    border = BorderStroke(1.dp, RebrandKoinTheme.colors.primary500)
                 )
                 FilledButton(
                     text = stringResource(R.string.recruitment_date_picker_confirm),
@@ -79,7 +101,13 @@ fun RecruitmentDatePickerDialog(
                         } ?: LocalDate.now()
                         onPositive(date.toStable())
                     },
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonColors(
+                        containerColor = RebrandKoinTheme.colors.primary500,
+                        contentColor = RebrandKoinTheme.colors.neutral0,
+                        disabledContainerColor = RebrandKoinTheme.colors.neutral300,
+                        disabledContentColor = RebrandKoinTheme.colors.neutral600
+                    )
                 )
             }
         }
