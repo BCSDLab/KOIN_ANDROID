@@ -5,6 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.callvan.GetRecruitingCallvanCountUseCase
 import `in`.koreatech.koin.domain.usecase.dining.GetDiningWithOperationTimeUseCase
+import `in`.koreatech.koin.domain.usecase.notification.GetNotificationsFlowUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCountUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreEventCountUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
@@ -15,6 +16,7 @@ import `in`.koreatech.koin.feature.home.mapper.toDiningPagerDataList
 import `in`.koreatech.koin.feature.home.model.toLocalWeather
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.catch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -28,7 +30,8 @@ class HomeViewModel @Inject constructor(
     private val getStoreEventCountUseCase: GetStoreEventCountUseCase,
     private val getRecruitingCallvanCountUseCase: GetRecruitingCallvanCountUseCase,
     private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val getWeatherUseCase: GetWeatherUseCase
+    private val getWeatherUseCase: GetWeatherUseCase,
+    private val getNotificationsFlowUseCase: GetNotificationsFlowUseCase
 ) : ViewModel(), ContainerHost<HomeState, HomeSideEffect> {
     override val container = container<HomeState, HomeSideEffect>(HomeState()) {
         getDining()
@@ -37,6 +40,7 @@ class HomeViewModel @Inject constructor(
         getRecruitingCallvanCount()
         getUserName()
         getWeather()
+        observeNotifications()
     }
 
     private fun getWeather() = intent {
@@ -99,5 +103,13 @@ class HomeViewModel @Inject constructor(
         }.onFailure {
             Timber.e(it)
         }
+    }
+
+    private fun observeNotifications() = intent {
+        getNotificationsFlowUseCase()
+            .catch { Timber.e(it) }
+            .collect { notifications ->
+                reduce { state.copy(isNewNotificationReceived = notifications.any { !it.isRead }) }
+            }
     }
 }

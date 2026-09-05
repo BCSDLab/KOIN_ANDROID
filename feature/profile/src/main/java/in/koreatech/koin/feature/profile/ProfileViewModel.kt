@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.profile
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.usecase.notification.GetNotificationsFlowUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetLocalTimetableLecturesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableFramesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableLecturesUseCase
@@ -34,13 +35,15 @@ class ProfileViewModel @Inject constructor(
     private val getUserSemestersUseCase: GetUserSemestersUseCase,
     private val getTimetableFramesUseCase: GetTimetableFramesUseCase,
     private val getTimetableLecturesUseCase: GetTimetableLecturesUseCase,
-    private val getLocalTimetableLecturesUseCase: GetLocalTimetableLecturesUseCase
+    private val getLocalTimetableLecturesUseCase: GetLocalTimetableLecturesUseCase,
+    private val getNotificationsFlowUseCase: GetNotificationsFlowUseCase
 ) : ViewModel(), ContainerHost<ProfileState, ProfileSideEffect> {
 
     override val container = container<ProfileState, ProfileSideEffect>(ProfileState())
 
     init {
         observeUserStatus()
+        observeNotifications()
     }
 
     private fun observeUserStatus() = intent {
@@ -88,6 +91,14 @@ class ProfileViewModel @Inject constructor(
                         loadTimetable(isAnonymous = true)
                     }
                 }
+            }
+    }
+
+    private fun observeNotifications() = intent {
+        getNotificationsFlowUseCase()
+            .catch { Timber.e(it) }
+            .collect { notifications ->
+                reduce { state.copy(isNewNotificationReceived = notifications.any { !it.isRead }) }
             }
     }
 
