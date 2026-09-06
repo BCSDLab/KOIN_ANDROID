@@ -24,6 +24,7 @@ import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 
 @HiltViewModel
+@Suppress("LongParameterList")
 class HomeViewModel @Inject constructor(
     private val getDiningWithOperationTimeUseCase: GetDiningWithOperationTimeUseCase,
     private val getStoreCountUseCase: GetStoreCountUseCase,
