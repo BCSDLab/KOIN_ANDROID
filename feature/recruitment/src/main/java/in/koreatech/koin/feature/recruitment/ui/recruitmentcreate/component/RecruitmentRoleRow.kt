@@ -77,52 +77,13 @@ fun RecruitmentRoleRow(
             )
         }
 
-        Row(
-            modifier = Modifier
-                .width(StepperBoxWidth)
-                .border(1.dp, RebrandKoinTheme.colors.neutral200, RoleRowItemShape)
-                .background(RebrandKoinTheme.colors.neutral0, RoleRowItemShape)
-                .padding(RoleRowItemPadding),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(20.dp)
-                    .noRippleClickable {
-                        if (role.count > TeamRecruitmentRole.MIN_MEMBER_COUNT) onCountChange(role.count - 1)
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_stepper_minus),
-                    contentDescription = null,
-                    tint = RebrandKoinTheme.colors.neutral700,
-                    modifier = Modifier.size(16.dp)
-                )
-            }
-            Text(
-                text = "${role.count}",
-                style = RebrandKoinTheme.typography.regular14,
-                color = RebrandKoinTheme.colors.neutral800,
-                textAlign = TextAlign.Center
-            )
-            Box(
-                modifier = Modifier
-                    .size(20.dp)
-                    .noRippleClickable {
-                        if (role.count < TeamRecruitmentRole.MAX_MEMBER_COUNT) onCountChange(role.count + 1)
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_stepper_plus),
-                    contentDescription = null,
-                    tint = RebrandKoinTheme.colors.neutral700,
-                    modifier = Modifier.size(16.dp)
-                )
-            }
-        }
+        RecruitmentCountStepper(
+            count = role.count,
+            onCountChange = onCountChange,
+            minCount = TeamRecruitmentRole.MIN_MEMBER_COUNT,
+            maxCount = TeamRecruitmentRole.MAX_MEMBER_COUNT,
+            modifier = Modifier.width(StepperBoxWidth)
+        )
 
         Box(
             modifier = Modifier
@@ -139,6 +100,61 @@ fun RecruitmentRoleRow(
     }
 }
 
+@Composable
+fun RecruitmentCountStepper(
+    count: Int,
+    onCountChange: (Int) -> Unit,
+    minCount: Int,
+    maxCount: Int,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .border(1.dp, RebrandKoinTheme.colors.neutral200, RoleRowItemShape)
+            .background(RebrandKoinTheme.colors.neutral0, RoleRowItemShape)
+            .padding(RoleRowItemPadding),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(20.dp)
+                .noRippleClickable {
+                    if (count > minCount) onCountChange(count - 1)
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_stepper_minus),
+                contentDescription = null,
+                tint = RebrandKoinTheme.colors.neutral700,
+                modifier = Modifier.size(16.dp)
+            )
+        }
+        Text(
+            text = "$count",
+            style = RebrandKoinTheme.typography.regular14,
+            color = RebrandKoinTheme.colors.neutral800,
+            textAlign = TextAlign.Center
+        )
+        Box(
+            modifier = Modifier
+                .size(20.dp)
+                .noRippleClickable {
+                    if (count < maxCount) onCountChange(count + 1)
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_stepper_plus),
+                contentDescription = null,
+                tint = RebrandKoinTheme.colors.neutral700,
+                modifier = Modifier.size(16.dp)
+            )
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun RecruitmentRoleRowPreview() {
@@ -148,6 +164,19 @@ private fun RecruitmentRoleRowPreview() {
             onNameChange = {},
             onCountChange = {},
             onRemove = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun RecruitmentCountStepperPreview() {
+    RebrandKoinTheme {
+        RecruitmentCountStepper(
+            count = 1,
+            onCountChange = {},
+            minCount = 1,
+            maxCount = 10
         )
     }
 }

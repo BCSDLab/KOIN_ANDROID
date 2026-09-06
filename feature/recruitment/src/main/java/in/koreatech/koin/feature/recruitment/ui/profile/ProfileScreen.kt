@@ -14,12 +14,14 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -104,14 +106,39 @@ private fun ProfileScreenImpl(
             .padding(horizontal = 20.dp, vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        val profile = state.profile
-        if (profile == null) {
-            ProfileEmptyState(onCreateProfileClick = onCreateProfileClick)
-        } else {
-            ProfileSummaryCard(
-                profile = profile,
-                onEditClick = onEditProfileClick
-            )
+        when (val loadState = state.loadState) {
+            is ProfileLoadState.Loading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentSize(Alignment.Center)
+                        .padding(vertical = 24.dp)
+                ) {
+                    CircularProgressIndicator(color = RebrandKoinTheme.colors.primary500)
+                }
+            }
+
+            is ProfileLoadState.NotFound -> {
+                ProfileEmptyState(onCreateProfileClick = onCreateProfileClick)
+            }
+
+            is ProfileLoadState.Loaded -> {
+                ProfileSummaryCard(
+                    profile = loadState.profile,
+                    onEditClick = onEditProfileClick
+                )
+            }
+
+            is ProfileLoadState.Error -> {
+                Text(
+                    text = loadState.message.orEmpty(),
+                    style = RebrandKoinTheme.typography.regular14,
+                    color = RebrandKoinTheme.colors.neutral500,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 24.dp)
+                )
+            }
         }
 
         ProfileLinkItem(
@@ -191,7 +218,7 @@ private fun ProfileLinkItem(
 @Composable
 private fun ProfileScreenEmptyPreview() {
     RebrandKoinTheme {
-        ProfileScreenImpl(state = ProfileState())
+        ProfileScreenImpl(state = ProfileState(loadState = ProfileLoadState.NotFound))
     }
 }
 
@@ -201,10 +228,12 @@ private fun ProfileScreenWithProfilePreview() {
     RebrandKoinTheme {
         ProfileScreenImpl(
             state = ProfileState(
-                profile = RecruitmentProfile(
-                    nickname = "BCSD",
-                    department = "컴퓨터공학부",
-                    studentId = "2023100000"
+                loadState = ProfileLoadState.Loaded(
+                    RecruitmentProfile(
+                        nickname = "BCSD",
+                        department = "컴퓨터공학부",
+                        studentId = "2023100000"
+                    )
                 )
             )
         )

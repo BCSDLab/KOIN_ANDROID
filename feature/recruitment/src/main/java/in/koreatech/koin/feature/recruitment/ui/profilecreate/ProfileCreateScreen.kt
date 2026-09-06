@@ -215,6 +215,15 @@ private fun ProfileCreateScreenImpl(
             }
         }
 
+        if (state.errorMessage != null) {
+            Text(
+                text = state.errorMessage,
+                style = RebrandKoinTheme.typography.regular13,
+                color = RebrandKoinTheme.colors.danger700,
+                modifier = Modifier.padding(horizontal = 20.dp)
+            )
+        }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
