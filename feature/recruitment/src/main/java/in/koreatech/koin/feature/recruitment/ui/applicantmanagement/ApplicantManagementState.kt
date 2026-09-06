@@ -9,5 +9,6 @@ import kotlinx.collections.immutable.persistentListOf
 @Immutable
 data class ApplicantManagementState(
     val post: MyRecruitmentPost? = null,
-    val applicants: ImmutableList<Applicant> = persistentListOf()
+    val applicants: ImmutableList<Applicant> = persistentListOf(),
+    val isLoading: Boolean = false
 )

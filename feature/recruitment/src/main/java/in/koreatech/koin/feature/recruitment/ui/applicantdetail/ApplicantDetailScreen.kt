@@ -55,7 +55,7 @@ fun ApplicantDetailScreen(
             )
         },
         bottomBar = {
-            if (applicant != null) {
+            if (applicant != null && applicant.canDecide) {
                 ApplicantDecisionButtons(
                     onReject = { viewModel.showRejectDialog() },
                     onApprove = { viewModel.showApproveDialog() },

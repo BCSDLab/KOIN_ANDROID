@@ -6,6 +6,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.applicantdetail.model.Applican
 @Immutable
 data class ApplicantDetailState(
     val applicant: ApplicantDetail? = null,
+    val isLoading: Boolean = false,
     val showApproveDialog: Boolean = false,
     val showRejectDialog: Boolean = false
 )

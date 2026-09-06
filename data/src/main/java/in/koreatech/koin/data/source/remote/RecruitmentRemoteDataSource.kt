@@ -5,6 +5,9 @@ import `in`.koreatech.koin.data.request.recruitment.RecruitmentUpdateRequest
 import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentApplicationRequest
 import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentCreateRequest
 import `in`.koreatech.koin.data.request.recruitment.TeamRecruitmentProfileRequest
+import `in`.koreatech.koin.data.request.recruitment.UpdateApplicationStatusRequest
+import `in`.koreatech.koin.data.response.recruitment.ApplicantDetailResponse
+import `in`.koreatech.koin.data.response.recruitment.ApplicantListResponse
 import `in`.koreatech.koin.data.response.recruitment.MyAppliedRecruitmentListResponse
 import `in`.koreatech.koin.data.response.recruitment.MyRecruitmentListResponse
 import `in`.koreatech.koin.data.response.recruitment.TeamRecruitmentApplicationResponse
@@ -120,5 +123,38 @@ class RecruitmentRemoteDataSource @Inject constructor(
         val response = recruitmentAuthApi.applyTeamRecruitment(recruitmentId, request)
         if (!response.isSuccessful) throw HttpException(response)
         return response.body()!!
+    }
+
+    suspend fun getApplicants(
+        recruitmentId: Int,
+        statuses: List<String>?,
+        page: Int?,
+        limit: Int?
+    ): ApplicantListResponse = recruitmentAuthApi.getApplicants(
+        recruitmentId = recruitmentId,
+        statuses = statuses,
+        page = page,
+        limit = limit
+    )
+
+    suspend fun getApplicantDetail(
+        recruitmentId: Int,
+        applicationId: Int
+    ): ApplicantDetailResponse = recruitmentAuthApi.getApplicantDetail(
+        recruitmentId = recruitmentId,
+        applicationId = applicationId
+    )
+
+    suspend fun updateApplicationStatus(
+        recruitmentId: Int,
+        applicationId: Int,
+        request: UpdateApplicationStatusRequest
+    ) {
+        val response = recruitmentAuthApi.updateApplicationStatus(
+            recruitmentId = recruitmentId,
+            applicationId = applicationId,
+            request = request
+        )
+        if (!response.isSuccessful) throw HttpException(response)
     }
 }

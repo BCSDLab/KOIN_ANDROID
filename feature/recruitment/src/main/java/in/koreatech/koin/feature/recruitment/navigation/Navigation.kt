@@ -129,8 +129,20 @@ fun NavGraphBuilder.koinRecruitmentGraph(
             onBack = { navController.popBackStack() },
             onNavigateToApplicantManagement = { recruitmentId ->
                 navController.navigate(RecruitmentNavType.ApplicantManagement(recruitmentId))
+            },
+            onNavigateToGroupChat = { recruitmentId, chatRoomId ->
+                navController.navigate(
+                    RecruitmentNavType.RecruitmentGroupChat(recruitmentId = recruitmentId, chatRoomId = chatRoomId)
+                )
+            },
+            onNavigateToDirectChat = { recruitmentId, applicationId ->
+                navController.navigate(
+                    RecruitmentNavType.RecruitmentDirectChat(recruitmentId = recruitmentId, applicationId = applicationId)
+                )
+            },
+            onNavigateToMyAppliedRecruitment = {
+                navController.navigate(RecruitmentNavType.MyAppliedRecruitment)
             }
-            // TODO: CHAT_ROOM / MY_APPLICATIONS / 모집글 상세 라우트가 추가되면 콜백을 추가 연결한다.
         )
     }
     composable<RecruitmentNavType.ApplicantManagement> { backStackEntry ->
@@ -147,6 +159,11 @@ fun NavGraphBuilder.koinRecruitmentGraph(
             },
             onApplicantDetail = { applicantId ->
                 navController.navigate(RecruitmentNavType.ApplicantDetail(route.postId, applicantId))
+            },
+            onApplicantChat = { applicantId ->
+                navController.navigate(
+                    RecruitmentNavType.RecruitmentDirectChat(recruitmentId = route.postId, applicationId = applicantId)
+                )
             }
         )
     }
