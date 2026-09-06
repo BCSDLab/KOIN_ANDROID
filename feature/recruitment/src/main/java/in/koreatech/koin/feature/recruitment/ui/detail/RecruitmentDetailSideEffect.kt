@@ -6,4 +6,8 @@ sealed interface RecruitmentDetailSideEffect {
     data object ShowDeleteError : RecruitmentDetailSideEffect
 
     data object DeleteSuccess : RecruitmentDetailSideEffect
+
+    data object NavigateToApply : RecruitmentDetailSideEffect
+
+    data object NavigateToLogin : RecruitmentDetailSideEffect
 }

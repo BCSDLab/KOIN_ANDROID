@@ -31,7 +31,8 @@ data class RecruitmentDetailState(
     val isAuthor: Boolean = false,
     val isLoading: Boolean = false,
     val isMoreMenuVisible: Boolean = false,
-    val isDeleteDialogVisible: Boolean = false
+    val isDeleteDialogVisible: Boolean = false,
+    val isLoginRequiredDialogVisible: Boolean = false
 ) {
     val isClosed: Boolean get() = status == RecruitmentStatus.COMPLETED
 }

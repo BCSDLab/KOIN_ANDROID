@@ -88,6 +88,8 @@ fun NavGraphBuilder.koinRecruitmentGraph(
         val isRecruitmentModified by entry.savedStateHandle
             .getStateFlow(IS_RECRUITMENT_MODIFIED, initialValue = false)
             .collectAsStateWithLifecycle()
+        val navigator = rememberNavigator()
+        val context = LocalContext.current
 
         RecruitmentDetailScreen(
             isModified = isRecruitmentModified,
@@ -95,6 +97,11 @@ fun NavGraphBuilder.koinRecruitmentGraph(
             onTopbarBackClick = { navController.navigateUp() },
             onNavigateToModify = { postId ->
                 navController.navigate(RecruitmentNavType.RecruitmentModify(postId))
+            },
+            onNavigateToLogin = {
+                navigator.navigateToSignIn(context).apply {
+                    context.startActivity(this)
+                }
             },
             onNavigateToApply = { postId, roles ->
                 navController.navigate(
