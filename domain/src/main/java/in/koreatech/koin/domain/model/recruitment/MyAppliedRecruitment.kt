@@ -6,6 +6,6 @@ data class MyAppliedRecruitment(
     val teamChatAvailable: Boolean,
     val teamChatRoomId: Int?,
     val directChatRoomId: Int?,
-    val roleName: String,
+    val role: TeamRecruitmentApplicationRole?,
     val recruitment: Recruitment
 )

@@ -47,7 +47,7 @@ fun MyAppliedRecruitmentResponse.toMyAppliedRecruitment() = MyAppliedRecruitment
     teamChatAvailable = teamChatAvailable,
     teamChatRoomId = teamChatRoomId,
     directChatRoomId = directChatRoomId,
-    roleName = roleName,
+    role = role?.toTeamRecruitmentApplicationRole(),
     recruitment = recruitment.toRecruitment()
 )
 
