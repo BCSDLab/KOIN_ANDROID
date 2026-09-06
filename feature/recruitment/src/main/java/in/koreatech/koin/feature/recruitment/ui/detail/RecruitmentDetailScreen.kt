@@ -21,6 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -53,6 +54,8 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun RecruitmentDetailScreen(
     viewModel: RecruitmentDetailViewModel = hiltViewModel(),
+    isModified: Boolean = false,
+    onResetModified: () -> Unit = {},
     onTopbarBackClick: () -> Unit = {},
     onNavigateToModify: (Int) -> Unit = {},
     onNavigateToApply: (Int, List<RecruitmentRoleModel>) -> Unit = { _, _ -> },
@@ -60,6 +63,13 @@ fun RecruitmentDetailScreen(
 ) {
     val state by viewModel.collectAsState()
     val context = LocalContext.current
+
+    LaunchedEffect(isModified) {
+        if (isModified) {
+            viewModel.fetchRecruitmentDetail()
+            onResetModified()
+        }
+    }
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {

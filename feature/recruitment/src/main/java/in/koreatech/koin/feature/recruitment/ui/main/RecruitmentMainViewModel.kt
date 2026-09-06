@@ -3,7 +3,9 @@ package `in`.koreatech.koin.feature.recruitment.ui.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.recruitment.GetRecruitmentsUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentStatus
@@ -17,6 +19,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.annotation.OrbitExperimental
@@ -30,7 +33,8 @@ import org.orbitmvi.orbit.viewmodel.container
 @HiltViewModel
 @Suppress("TooManyFunctions")
 class RecruitmentMainViewModel @Inject constructor(
-    private val getRecruitmentsUseCase: GetRecruitmentsUseCase
+    private val getRecruitmentsUseCase: GetRecruitmentsUseCase,
+    private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(),
     ContainerHost<RecruitmentMainState, RecruitmentMainSideEffect> {
 
@@ -39,6 +43,10 @@ class RecruitmentMainViewModel @Inject constructor(
     )
 
     private var searchJob: Job? = null
+
+    init {
+        fetchRecruitments()
+    }
 
     fun fetchRecruitments(isRefresh: Boolean = false) = intent {
         fetchRecruitmentsSub(isRefresh)
@@ -77,6 +85,24 @@ class RecruitmentMainViewModel @Inject constructor(
             reduce { state.copy(isLoading = false, isRefreshing = false) }
             postSideEffect(RecruitmentMainSideEffect.ShowError)
         }
+    }
+
+    fun onWriteClick() = intent {
+        val user = getUserStatusUseCase().first()
+        if (user is User.Anonymous) {
+            reduce { state.copy(isLoginRequiredDialogVisible = true) }
+        } else {
+            postSideEffect(RecruitmentMainSideEffect.NavigateToWrite)
+        }
+    }
+
+    fun dismissLoginRequiredDialog() = blockingIntent {
+        reduce { state.copy(isLoginRequiredDialogVisible = false) }
+    }
+
+    fun confirmLoginRequiredDialog() = intent {
+        reduce { state.copy(isLoginRequiredDialogVisible = false) }
+        postSideEffect(RecruitmentMainSideEffect.NavigateToLogin)
     }
 
     fun loadMoreRecruitments() = intent {

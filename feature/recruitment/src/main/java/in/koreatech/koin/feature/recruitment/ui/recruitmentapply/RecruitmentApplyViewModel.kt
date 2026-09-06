@@ -31,7 +31,6 @@ private const val MAX_AGE = 99
 
 @Suppress("TooManyFunctions")
 @HiltViewModel
-@Suppress("TooManyFunctions")
 class RecruitmentApplyViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val applyTeamRecruitmentUseCase: ApplyTeamRecruitmentUseCase,

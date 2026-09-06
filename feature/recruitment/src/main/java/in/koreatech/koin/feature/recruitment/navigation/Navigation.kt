@@ -1,7 +1,9 @@
 package `in`.koreatech.koin.feature.recruitment.navigation
 
 import android.app.Activity
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -61,6 +63,7 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     }
     composable<RecruitmentNavType.RecruitmentMain> {
         val context = LocalContext.current
+        val navigator = rememberNavigator()
 
         RecruitmentMainScreen(
             onTopbarBackClick = {
@@ -71,13 +74,24 @@ fun NavGraphBuilder.koinRecruitmentGraph(
             onNotificationClick = { navController.navigate(RecruitmentNavType.Notification) },
             onProfileClick = { navController.navigate(RecruitmentNavType.Profile) },
             onWriteClick = { navController.navigate(RecruitmentNavType.RecruitmentCreate) },
+            onNavigateToLogin = {
+                navigator.navigateToSignIn(context).apply {
+                    context.startActivity(this)
+                }
+            },
             onItemClick = { postId ->
                 navController.navigate(RecruitmentNavType.RecruitmentDetail(postId))
             }
         )
     }
-    composable<RecruitmentNavType.RecruitmentDetail> {
+    composable<RecruitmentNavType.RecruitmentDetail> { entry ->
+        val isRecruitmentModified by entry.savedStateHandle
+            .getStateFlow(IS_RECRUITMENT_MODIFIED, initialValue = false)
+            .collectAsStateWithLifecycle()
+
         RecruitmentDetailScreen(
+            isModified = isRecruitmentModified,
+            onResetModified = { entry.savedStateHandle[IS_RECRUITMENT_MODIFIED] = false },
             onTopbarBackClick = { navController.navigateUp() },
             onNavigateToModify = { postId ->
                 navController.navigate(RecruitmentNavType.RecruitmentModify(postId))
@@ -164,7 +178,15 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     composable<RecruitmentNavType.RecruitmentModify> {
         RecruitmentModifyScreen(
             onNavigateUp = { navController.navigateUp() },
-            onRecruitmentModified = { navController.navigateUp() }
+            onRecruitmentModified = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(
+                    IS_RECRUITMENT_MODIFIED,
+                    true
+                )
+                navController.navigateUp()
+            }
         )
     }
 }
+
+private const val IS_RECRUITMENT_MODIFIED = "isRecruitmentModified"
