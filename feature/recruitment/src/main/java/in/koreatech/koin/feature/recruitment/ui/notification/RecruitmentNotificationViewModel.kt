@@ -91,8 +91,24 @@ internal class RecruitmentNotificationViewModel @Inject constructor(
             "APPLICANT_MANAGEMENT" -> postSideEffect(
                 RecruitmentNotificationSideEffect.NavigateToApplicantManagement(notification.recruitmentId)
             )
-            // TODO: CHAT_ROOM / MY_APPLICATIONS 라우트가 추가되면 연결한다.
-            "CHAT_ROOM", "MY_APPLICATIONS", "NONE" -> Unit
+            "CHAT_ROOM" -> when {
+                // 지원서 기준 알림(승인/거절 등)은 1:1 다이렉트 채팅으로, 그 외 채팅 알림은 팀 그룹 채팅으로 연결한다.
+                notification.applicationId != null -> postSideEffect(
+                    RecruitmentNotificationSideEffect.NavigateToDirectChat(
+                        recruitmentId = notification.recruitmentId,
+                        applicationId = notification.applicationId
+                    )
+                )
+                notification.chatRoomId != null -> postSideEffect(
+                    RecruitmentNotificationSideEffect.NavigateToGroupChat(
+                        recruitmentId = notification.recruitmentId,
+                        chatRoomId = notification.chatRoomId
+                    )
+                )
+                else -> Unit
+            }
+            "MY_APPLICATIONS" -> postSideEffect(RecruitmentNotificationSideEffect.NavigateToMyAppliedRecruitment)
+            "NONE" -> Unit
         }
     }
 
