@@ -29,6 +29,7 @@ import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 
 @HiltViewModel
+@Suppress("LongParameterList")
 class ProfileViewModel @Inject constructor(
     private val getUserStatusUseCase: GetUserStatusUseCase,
     private val userLogoutUseCase: UserLogoutUseCase,
