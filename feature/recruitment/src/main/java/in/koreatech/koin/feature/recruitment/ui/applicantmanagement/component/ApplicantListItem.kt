@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.ApplicantStatus
@@ -31,7 +32,8 @@ import `in`.koreatech.koin.feature.recruitment.ui.component.ApplicantStatusText
 fun ApplicantListItem(
     applicant: Applicant,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onChatClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -68,7 +70,9 @@ fun ApplicantListItem(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_chat),
                         contentDescription = null,
                         tint = RebrandKoinTheme.colors.primary500,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier
+                            .size(20.dp)
+                            .noRippleClickable { onChatClick() }
                     )
                 }
             }
