@@ -191,6 +191,14 @@ fun NavGraphBuilder.koinRecruitmentGraph(
                 navigator.navigateToSignIn(context).apply {
                     context.startActivity(this)
                 }
+            },
+            onNavigateToMain = {
+                navController.popBackStack(RecruitmentNavType.RecruitmentMain, inclusive = false)
+            },
+            onNavigateToGroupChat = { recruitmentId, chatRoomId ->
+                navController.navigate(
+                    RecruitmentNavType.RecruitmentGroupChat(recruitmentId = recruitmentId, chatRoomId = chatRoomId)
+                )
             }
         )
     }
