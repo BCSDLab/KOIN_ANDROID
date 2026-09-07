@@ -27,6 +27,7 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,6 +65,8 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun RecruitmentMainScreen(
     viewModel: RecruitmentMainViewModel = hiltViewModel(),
+    isRecruitmentCreated: Boolean = false,
+    onResetRecruitmentCreated: () -> Unit = {},
     onTopbarBackClick: () -> Unit = {},
     onNotificationClick: () -> Unit = {},
     onProfileClick: () -> Unit = {},
@@ -73,6 +76,13 @@ fun RecruitmentMainScreen(
 ) {
     val state by viewModel.collectAsState()
     val context = LocalContext.current
+
+    LaunchedEffect(isRecruitmentCreated) {
+        if (isRecruitmentCreated) {
+            viewModel.fetchRecruitments()
+            onResetRecruitmentCreated()
+        }
+    }
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
