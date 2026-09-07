@@ -15,7 +15,10 @@ import `in`.koreatech.koin.feature.recruitment.model.withNewSkill
 import `in`.koreatech.koin.feature.recruitment.model.withSkillText
 import `in`.koreatech.koin.feature.recruitment.model.withoutSkill
 import `in`.koreatech.koin.feature.recruitment.navigation.RecruitmentNavType
+import `in`.koreatech.koin.feature.recruitment.navigation.RecruitmentRoleArg
+import `in`.koreatech.koin.feature.recruitment.navigation.RecruitmentRoleArgListNavType
 import javax.inject.Inject
+import kotlin.reflect.typeOf
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -26,8 +29,8 @@ import org.orbitmvi.orbit.viewmodel.container
 private const val MIN_AGE = 1
 private const val MAX_AGE = 99
 
-@HiltViewModel
 @Suppress("TooManyFunctions")
+@HiltViewModel
 class RecruitmentApplyViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val applyTeamRecruitmentUseCase: ApplyTeamRecruitmentUseCase,
@@ -35,7 +38,11 @@ class RecruitmentApplyViewModel @Inject constructor(
     private val getDeptNamesUseCase: GetDeptNamesUseCase
 ) : ViewModel(), ContainerHost<RecruitmentApplyState, RecruitmentApplySideEffect> {
 
-    private val arguments = savedStateHandle.toRoute<RecruitmentNavType.RecruitmentApply>()
+    private val arguments = savedStateHandle.toRoute<RecruitmentNavType.RecruitmentApply>(
+        typeMap = mapOf(
+            typeOf<List<RecruitmentRoleArg>>() to RecruitmentRoleArgListNavType
+        )
+    )
 
     override val container = container<RecruitmentApplyState, RecruitmentApplySideEffect>(
         RecruitmentApplyState(

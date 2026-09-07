@@ -1,6 +1,10 @@
 package `in`.koreatech.koin.feature.recruitment.navigation
 
+import android.os.Bundle
+import androidx.navigation.NavType
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @Serializable
 sealed class RecruitmentNavType {
@@ -62,3 +66,21 @@ data class RecruitmentRoleArg(
     val name: String,
     val isClosed: Boolean = false
 )
+
+val RecruitmentRoleArgListNavType = object : NavType<List<RecruitmentRoleArg>>(isNullableAllowed = false) {
+    override fun get(bundle: Bundle, key: String): List<RecruitmentRoleArg>? {
+        return bundle.getString(key)?.let { Json.decodeFromString(it) }
+    }
+
+    override fun parseValue(value: String): List<RecruitmentRoleArg> {
+        return Json.decodeFromString(value)
+    }
+
+    override fun put(bundle: Bundle, key: String, value: List<RecruitmentRoleArg>) {
+        bundle.putString(key, Json.encodeToString(value))
+    }
+
+    override fun serializeAsValue(value: List<RecruitmentRoleArg>): String {
+        return Json.encodeToString(value)
+    }
+}

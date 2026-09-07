@@ -21,6 +21,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.profilecreate.ProfileCreateScr
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentapply.RecruitmentApplyScreen
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.RecruitmentCreateScreen
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentmodify.RecruitmentModifyScreen
+import kotlin.reflect.typeOf
 
 @Suppress("LongMethod")
 fun NavGraphBuilder.koinRecruitmentGraph(
@@ -32,7 +33,11 @@ fun NavGraphBuilder.koinRecruitmentGraph(
             onRecruitmentCreated = { navController.navigateUp() }
         )
     }
-    composable<RecruitmentNavType.RecruitmentApply> {
+    composable<RecruitmentNavType.RecruitmentApply>(
+        typeMap = mapOf(
+            typeOf<List<RecruitmentRoleArg>>() to RecruitmentRoleArgListNavType
+        )
+    ) {
         RecruitmentApplyScreen(
             onNavigateUp = { navController.navigateUp() },
             onApplySuccess = { navController.navigateUp() }
@@ -41,8 +46,8 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     composable<RecruitmentNavType.Profile> {
         ProfileScreen(
             onNavigateUp = { navController.navigateUp() },
-            onNavigateToMyRecruitment = { },
-            onNavigateToMyAppliedRecruitment = { },
+            onNavigateToMyRecruitment = { navController.navigate(RecruitmentNavType.MyRecruitment) },
+            onNavigateToMyAppliedRecruitment = { navController.navigate(RecruitmentNavType.MyAppliedRecruitment) },
             onNavigateToProfileCreate = { isEditMode ->
                 navController.navigate(RecruitmentNavType.ProfileCreate(isEditMode = isEditMode))
             }
@@ -63,6 +68,9 @@ fun NavGraphBuilder.koinRecruitmentGraph(
                     (context as? Activity)?.finish()
                 }
             },
+            onNotificationClick = { navController.navigate(RecruitmentNavType.Notification) },
+            onProfileClick = { navController.navigate(RecruitmentNavType.Profile) },
+            onWriteClick = { navController.navigate(RecruitmentNavType.RecruitmentCreate) },
             onItemClick = { postId ->
                 navController.navigate(RecruitmentNavType.RecruitmentDetail(postId))
             }
@@ -73,6 +81,19 @@ fun NavGraphBuilder.koinRecruitmentGraph(
             onTopbarBackClick = { navController.navigateUp() },
             onNavigateToModify = { postId ->
                 navController.navigate(RecruitmentNavType.RecruitmentModify(postId))
+            },
+            onNavigateToApply = { postId, roles ->
+                navController.navigate(
+                    RecruitmentNavType.RecruitmentApply(
+                        recruitmentId = postId,
+                        roles = roles.map { role ->
+                            RecruitmentRoleArg(id = role.id, name = role.name, isClosed = role.isClosed)
+                        }
+                    )
+                )
+            },
+            onNavigateToApplicantManagement = { postId ->
+                navController.navigate(RecruitmentNavType.ApplicantManagement(postId))
             }
         )
     }
@@ -87,16 +108,41 @@ fun NavGraphBuilder.koinRecruitmentGraph(
             onBack = { navController.popBackStack() },
             onNavigateToApplicantManagement = { recruitmentId ->
                 navController.navigate(RecruitmentNavType.ApplicantManagement(recruitmentId))
+            },
+            onNavigateToGroupChat = { recruitmentId, chatRoomId ->
+                navController.navigate(
+                    RecruitmentNavType.RecruitmentGroupChat(recruitmentId = recruitmentId, chatRoomId = chatRoomId)
+                )
+            },
+            onNavigateToDirectChat = { recruitmentId, applicationId ->
+                navController.navigate(
+                    RecruitmentNavType.RecruitmentDirectChat(recruitmentId = recruitmentId, applicationId = applicationId)
+                )
+            },
+            onNavigateToMyAppliedRecruitment = {
+                navController.navigate(RecruitmentNavType.MyAppliedRecruitment)
             }
-            // TODO: CHAT_ROOM / MY_APPLICATIONS / 모집글 상세 라우트가 추가되면 콜백을 추가 연결한다.
         )
     }
     composable<RecruitmentNavType.ApplicantManagement> { backStackEntry ->
         val route = backStackEntry.toRoute<RecruitmentNavType.ApplicantManagement>()
         ApplicantManagementScreen(
             onNavigateUp = { navController.navigateUp() },
+            onChat = { chatRoomId ->
+                navController.navigate(
+                    RecruitmentNavType.RecruitmentGroupChat(
+                        recruitmentId = route.postId,
+                        chatRoomId = chatRoomId
+                    )
+                )
+            },
             onApplicantDetail = { applicantId ->
                 navController.navigate(RecruitmentNavType.ApplicantDetail(route.postId, applicantId))
+            },
+            onApplicantChat = { applicantId ->
+                navController.navigate(
+                    RecruitmentNavType.RecruitmentDirectChat(recruitmentId = route.postId, applicationId = applicantId)
+                )
             }
         )
     }
@@ -121,6 +167,9 @@ fun NavGraphBuilder.koinRecruitmentGraph(
                 navigator.navigateToSignIn(context).apply {
                     context.startActivity(this)
                 }
+            },
+            onApplicantManage = { postId ->
+                navController.navigate(RecruitmentNavType.ApplicantManagement(postId))
             }
         )
     }

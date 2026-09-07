@@ -13,7 +13,9 @@ internal data class RecruitmentNotification(
     val senderNickname: String?,
     val content: String,
     val timestamp: String,
-    val isRead: Boolean
+    val isRead: Boolean,
+    val applicationId: Int?,
+    val chatRoomId: Int?
 )
 
 internal fun DomainRecruitmentNotification.toUiModel(): RecruitmentNotification {
@@ -26,7 +28,9 @@ internal fun DomainRecruitmentNotification.toUiModel(): RecruitmentNotification 
         senderNickname = senderNickname,
         content = messagePreview,
         timestamp = createdAt.toDatetimeDiff(),
-        isRead = isRead
+        isRead = isRead,
+        applicationId = applicationId,
+        chatRoomId = chatRoomId
     )
 }
 

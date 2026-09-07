@@ -44,8 +44,9 @@ import org.orbitmvi.orbit.compose.collectAsState
 fun ApplicantManagementScreen(
     viewModel: ApplicantManagementViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit = {},
-    onChat: () -> Unit = {},
+    onChat: (chatRoomId: Int) -> Unit = {},
     onApplicantDetail: (Int) -> Unit = {},
+    onApplicantChat: (Int) -> Unit = {},
     onMoreOptions: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
@@ -74,8 +75,9 @@ fun ApplicantManagementScreen(
         ApplicantManagementScreenImpl(
             post = state.post,
             applicants = state.applicants,
-            onChat = onChat,
+            onChat = { state.post?.teamChatRoomId?.let(onChat) },
             onApplicantDetail = onApplicantDetail,
+            onApplicantChat = onApplicantChat,
             modifier = Modifier.padding(innerPadding)
         )
     }
@@ -87,7 +89,8 @@ private fun ApplicantManagementScreenImpl(
     applicants: ImmutableList<Applicant>,
     modifier: Modifier = Modifier,
     onChat: () -> Unit = {},
-    onApplicantDetail: (Int) -> Unit = {}
+    onApplicantDetail: (Int) -> Unit = {},
+    onApplicantChat: (Int) -> Unit = {}
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
@@ -126,7 +129,8 @@ private fun ApplicantManagementScreenImpl(
             items(applicants, key = { it.id }) { applicant ->
                 ApplicantListItem(
                     applicant = applicant,
-                    onClick = { onApplicantDetail(applicant.id) }
+                    onClick = { onApplicantDetail(applicant.id) },
+                    onChatClick = { onApplicantChat(applicant.id) }
                 )
             }
         }
