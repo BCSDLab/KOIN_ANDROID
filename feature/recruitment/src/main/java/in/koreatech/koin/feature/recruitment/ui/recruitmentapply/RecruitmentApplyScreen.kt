@@ -19,6 +19,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -38,6 +39,7 @@ import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
 import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRoleOption
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentActivitiesSection
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentConfirmDialog
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDialog
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDepartmentSection
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentFilledActionButton
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentFormSection
@@ -132,7 +134,10 @@ fun RecruitmentApplyScreen(
                 title = stringResource(R.string.recruitment_apply_title),
                 onNavigationIconClick = {
                     if (state.currentStep == 1) viewModel.showCancelConfirmDialog() else viewModel.goToPreviousStep()
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = RebrandKoinTheme.colors.neutral50
+                )
             )
         },
         contentWindowInsets = WindowInsets.systemBars
@@ -147,7 +152,8 @@ fun RecruitmentApplyScreen(
             onDismissSubmitConfirmDialog = { viewModel.dismissSubmitConfirmDialog() },
             onConfirmSubmit = { viewModel.submitApplication() },
             onDismissCancelConfirmDialog = { viewModel.dismissCancelConfirmDialog() },
-            onConfirmCancel = { viewModel.confirmCancel() }
+            onConfirmCancel = { viewModel.confirmCancel() },
+            onConfirmRecruitmentClosedDialog = { viewModel.confirmRecruitmentClosedDialog() }
         )
     }
 }
@@ -164,8 +170,26 @@ private fun RecruitmentApplyScreenImpl(
     onDismissSubmitConfirmDialog: () -> Unit = {},
     onConfirmSubmit: () -> Unit = {},
     onDismissCancelConfirmDialog: () -> Unit = {},
-    onConfirmCancel: () -> Unit = {}
+    onConfirmCancel: () -> Unit = {},
+    onConfirmRecruitmentClosedDialog: () -> Unit = {}
 ) {
+    if (state.showRecruitmentClosedDialog) {
+        RecruitmentDialog(onDismiss = onConfirmRecruitmentClosedDialog) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(onClick = onConfirmRecruitmentClosedDialog),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = stringResource(R.string.recruitment_apply_closed_message),
+                    style = RebrandKoinTheme.typography.medium15,
+                    color = RebrandKoinTheme.colors.neutral700
+                )
+            }
+        }
+    }
+
     if (state.showSubmitConfirmDialog) {
         RecruitmentConfirmDialog(
             title = stringResource(R.string.recruitment_apply_submit_dialog_title),
@@ -311,23 +335,25 @@ private fun RecruitmentApplyStepTwo(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(28.dp)) {
-        RecruitmentFormSection(
-            title = stringResource(R.string.recruitment_apply_select_role),
-            isRequired = true,
-            content = {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    state.availableRoles.forEach { role ->
-                        key(role.id) {
-                            RecruitmentRoleRadioItem(
-                                role = role,
-                                isSelected = state.selectedRole == role,
-                                onClick = { actions.onRoleSelected(role) }
-                            )
+        if (state.availableRoles.isNotEmpty()) {
+            RecruitmentFormSection(
+                title = stringResource(R.string.recruitment_apply_select_role),
+                isRequired = true,
+                content = {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        state.availableRoles.forEach { role ->
+                            key(role.id) {
+                                RecruitmentRoleRadioItem(
+                                    role = role,
+                                    isSelected = state.selectedRole == role,
+                                    onClick = { actions.onRoleSelected(role) }
+                                )
+                            }
                         }
                     }
                 }
-            }
-        )
+            )
+        }
 
         RecruitmentFormSection(
             title = stringResource(R.string.recruitment_apply_motivation),

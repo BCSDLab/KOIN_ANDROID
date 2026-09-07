@@ -2,21 +2,19 @@ package `in`.koreatech.koin.feature.recruitment.ui.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
 import `in`.koreatech.koin.feature.recruitment.model.SkillEntry
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
-
-val RECRUITMENT_DEPARTMENTS: ImmutableList<String> =
-    persistentListOf("컴퓨터공학부", "전전통", "고용", "산경", "등등..")
 
 @Composable
 fun RecruitmentLoadMemberInfoSection(
@@ -68,11 +66,11 @@ fun RecruitmentNicknameSection(
 @Composable
 fun RecruitmentDepartmentSection(
     department: String,
+    departments: ImmutableList<String>,
     isDropdownExpanded: Boolean,
     onDropdownExpandChange: (Boolean) -> Unit,
     onDepartmentSelected: (String) -> Unit,
-    modifier: Modifier = Modifier,
-    departments: ImmutableList<String> = RECRUITMENT_DEPARTMENTS
+    modifier: Modifier = Modifier
 ) {
     RecruitmentFormSection(
         modifier = modifier,
@@ -105,7 +103,8 @@ fun RecruitmentStudentIdSection(
             RecruitmentTextField(
                 value = studentId,
                 onValueChange = onStudentIdChange,
-                hint = stringResource(R.string.recruitment_apply_student_id_hint)
+                hint = stringResource(R.string.recruitment_apply_student_id_hint),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
         }
     )

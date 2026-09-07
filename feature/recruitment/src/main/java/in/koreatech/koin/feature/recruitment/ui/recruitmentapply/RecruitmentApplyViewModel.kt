@@ -116,7 +116,9 @@ class RecruitmentApplyViewModel @Inject constructor(
     }
 
     fun setStudentId(studentId: String) = intent {
-        reduce { state.copy(studentId = studentId) }
+        if (studentId.isEmpty() || studentId.all { it.isDigit() }) {
+            reduce { state.copy(studentId = studentId) }
+        }
     }
 
     fun addSkill() = intent {
@@ -233,8 +235,17 @@ class RecruitmentApplyViewModel @Inject constructor(
             reduce { state.copy(isSubmitting = false) }
             postSideEffect(RecruitmentApplySideEffect.ApplySuccess)
         }.onFailure { throwable ->
-            reduce { state.copy(isSubmitting = false, errorMessage = throwable.toRecruitmentErrorMessage()) }
-            postSideEffect(RecruitmentApplySideEffect.ApplyFailure)
+            if (throwable is KoinRecruitmentException.RecruitmentClosedException) {
+                reduce { state.copy(isSubmitting = false, showRecruitmentClosedDialog = true) }
+            } else {
+                reduce { state.copy(isSubmitting = false, errorMessage = throwable.toRecruitmentErrorMessage()) }
+                postSideEffect(RecruitmentApplySideEffect.ApplyFailure)
+            }
         }
+    }
+
+    fun confirmRecruitmentClosedDialog() = intent {
+        reduce { state.copy(showRecruitmentClosedDialog = false) }
+        postSideEffect(RecruitmentApplySideEffect.NavigateUp)
     }
 }

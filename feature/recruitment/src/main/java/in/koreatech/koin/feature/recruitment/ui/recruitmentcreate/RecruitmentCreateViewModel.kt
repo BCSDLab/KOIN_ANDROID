@@ -163,7 +163,7 @@ class RecruitmentCreateViewModel @Inject constructor(
         createTeamRecruitmentUseCase(
             category = state.category.name,
             title = state.title,
-            meetingType = progressType.name,
+            meetingType = progressType.apiValue,
             activityStartDate = state.recruitStartDate.value.format(ISO_DATE_FORMATTER),
             activityEndDate = state.recruitEndDate.value.format(ISO_DATE_FORMATTER),
             deadlineDate = state.applicationDeadline.value.format(ISO_DATE_FORMATTER),

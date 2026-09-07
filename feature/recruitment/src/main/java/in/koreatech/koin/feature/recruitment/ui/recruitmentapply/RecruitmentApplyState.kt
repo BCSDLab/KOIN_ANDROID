@@ -39,15 +39,18 @@ data class RecruitmentApplyState(
     val availableTime: String = "",
     val showSubmitConfirmDialog: Boolean = false,
     val showCancelConfirmDialog: Boolean = false,
+    val showRecruitmentClosedDialog: Boolean = false,
     val isSubmitting: Boolean = false,
     val errorMessage: String? = null
 ) {
     val isStepOneValid: Boolean
         get() = nickname.isNotBlank() &&
-            department.isNotBlank() &&
-            studentId.isNotBlank() &&
-            selfIntroduction.isNotBlank()
+                department.isNotBlank() &&
+                studentId.isNotBlank() &&
+                selfIntroduction.isNotBlank()
 
     val isSubmitEnabled: Boolean
-        get() = selectedRole != null && motivation.isNotBlank() && availableTime.isNotBlank()
+        get() = (availableRoles.isEmpty() || selectedRole != null) &&
+                motivation.isNotBlank() &&
+                availableTime.isNotBlank()
 }

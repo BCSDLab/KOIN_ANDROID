@@ -14,6 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -124,7 +125,10 @@ fun ProfileCreateScreen(
                 },
                 onNavigationIconClick = {
                     if (state.currentStep == 1) viewModel.showCancelConfirmDialog() else viewModel.goToPreviousStep()
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = RebrandKoinTheme.colors.neutral50
+                )
             )
         },
         contentWindowInsets = WindowInsets.systemBars
@@ -277,6 +281,7 @@ private fun ProfileCreateStepOne(
 
         RecruitmentDepartmentSection(
             department = state.department,
+            departments = state.departments,
             isDropdownExpanded = state.isDepartmentDropdownExpanded,
             onDropdownExpandChange = actions.onDepartmentDropdownExpandChange,
             onDepartmentSelected = actions.onDepartmentSelected
