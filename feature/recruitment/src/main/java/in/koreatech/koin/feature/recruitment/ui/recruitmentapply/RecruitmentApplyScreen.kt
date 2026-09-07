@@ -39,8 +39,8 @@ import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
 import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRoleOption
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentActivitiesSection
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentConfirmDialog
-import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDialog
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDepartmentSection
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDialog
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentFilledActionButton
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentFormSection
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentLoadMemberInfoSection
