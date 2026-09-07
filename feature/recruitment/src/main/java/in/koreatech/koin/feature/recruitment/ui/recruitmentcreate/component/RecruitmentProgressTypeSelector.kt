@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -40,6 +41,7 @@ fun RecruitmentProgressTypeSelector(
                 Column(
                     modifier = Modifier
                         .weight(1f)
+                        .clip(RebrandKoinTheme.shapes.small)
                         .border(
                             width = 1.dp,
                             color = if (isSelected) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral200,

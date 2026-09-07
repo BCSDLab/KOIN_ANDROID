@@ -4,9 +4,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.error.recruitment.KoinRecruitmentException
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.dept.GetDeptNamesUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.ApplyTeamRecruitmentUseCase
+import `in`.koreatech.koin.domain.usecase.recruitment.GetTeamRecruitmentProfileUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentErrorMessage
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
@@ -21,19 +23,18 @@ import javax.inject.Inject
 import kotlin.reflect.typeOf
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
-private const val MIN_AGE = 1
-private const val MAX_AGE = 99
-
-@Suppress("TooManyFunctions")
 @HiltViewModel
+@Suppress("TooManyFunctions")
 class RecruitmentApplyViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val applyTeamRecruitmentUseCase: ApplyTeamRecruitmentUseCase,
+    private val getTeamRecruitmentProfileUseCase: GetTeamRecruitmentProfileUseCase,
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val getDeptNamesUseCase: GetDeptNamesUseCase
 ) : ViewModel(), ContainerHost<RecruitmentApplyState, RecruitmentApplySideEffect> {
@@ -61,13 +62,34 @@ class RecruitmentApplyViewModel @Inject constructor(
     }
 
     fun loadMemberInfo() = intent {
+        getTeamRecruitmentProfileUseCase()
+            .onSuccess { profile ->
+                reduce {
+                    state.copy(
+                        isMemberInfoLoaded = true,
+                        nickname = profile.profileNickname,
+                        department = profile.department,
+                        studentId = profile.studentNumber
+                    )
+                }
+            }
+            .onFailure { throwable ->
+                if (throwable is KoinRecruitmentException.ProfileNotFoundException) {
+                    loadMemberInfoFromUserInfo()
+                } else {
+                    reduce { state.copy(errorMessage = throwable.toRecruitmentErrorMessage()) }
+                }
+            }
+    }
+
+    private suspend fun SimpleSyntax<RecruitmentApplyState, RecruitmentApplySideEffect>.loadMemberInfoFromUserInfo() {
         getUserInfoUseCase()
             .onSuccess { user ->
                 if (user is User.Student) {
                     reduce {
                         state.copy(
                             isMemberInfoLoaded = true,
-                            nickname = user.nickname ?: state.nickname,
+                            nickname = user.anonymousNickname ?: user.nickname ?: state.nickname,
                             department = user.major ?: state.department,
                             studentId = user.studentNumber ?: state.studentId
                         )
@@ -82,12 +104,6 @@ class RecruitmentApplyViewModel @Inject constructor(
     fun setNickname(nickname: String) = intent {
         if (nickname.length <= NICKNAME_MAX_LENGTH) {
             reduce { state.copy(nickname = nickname) }
-        }
-    }
-
-    fun setAge(age: String) = intent {
-        if (age.isEmpty() || (age.all { it.isDigit() } && age.toIntOrNull() in MIN_AGE..MAX_AGE)) {
-            reduce { state.copy(age = age) }
         }
     }
 
