@@ -10,20 +10,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -135,9 +129,15 @@ private fun RecruitmentDirectChatScreenImpl(
                 onNavigationIconClick = onNavigationIconClick
             )
         },
-        contentWindowInsets = ScaffoldDefaults.contentWindowInsets
-            .exclude(WindowInsets.navigationBars)
-            .exclude(WindowInsets.ime),
+        bottomBar = {
+            RecruitmentChatInput(
+                value = chatInputValue,
+                onValueChange = onChatInputValueChange,
+                onImageButtonClick = onImageButtonClick,
+                onSendClick = onSendClick,
+                enabled = !isLoading && !isReadOnly && !isUploadingImage
+            )
+        },
         containerColor = RebrandKoinTheme.colors.neutral0
     ) { contentPadding ->
         Column(
@@ -151,58 +151,44 @@ private fun RecruitmentDirectChatScreenImpl(
                 }
             }
 
-            Box(
+            LazyColumn(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
+                    .fillMaxSize()
+                    .background(RebrandKoinTheme.colors.neutral0),
+                state = scrollState,
+                reverseLayout = true,
+                verticalArrangement = Arrangement.Top
             ) {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(RebrandKoinTheme.colors.neutral0),
-                    state = scrollState,
-                    reverseLayout = true,
-                    verticalArrangement = Arrangement.Top
-                ) {
-                    messages.asReversed().forEach { group ->
-                        items(
-                            items = group.messages.asReversed(),
-                            key = { message -> message.id }
-                        ) { message ->
-                            RecruitmentChatMessageBubble(
-                                content = message.content,
-                                timestamp = message.timestamp,
-                                isSentByMe = message.isSentByMe,
-                                isImage = message.isImage,
-                                authorNickname = if (message.isSentByMe) null else partnerNickname,
-                                avatar = { RecruitmentChatUserIcon() }
-                            )
-                        }
-                        item(key = "date_${group.date}") {
-                            RecruitmentChatDateChip(date = group.date)
-                        }
+                messages.asReversed().forEach { group ->
+                    items(
+                        items = group.messages.asReversed(),
+                        key = { message -> message.id }
+                    ) { message ->
+                        RecruitmentChatMessageBubble(
+                            content = message.content,
+                            timestamp = message.timestamp,
+                            isSentByMe = message.isSentByMe,
+                            isImage = message.isImage,
+                            authorNickname = if (message.isSentByMe) null else partnerNickname,
+                            avatar = { RecruitmentChatUserIcon() }
+                        )
                     }
-                }
-
-                if (isLoading) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(RebrandKoinTheme.colors.neutral0),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
+                    item(key = "date_${group.date}") {
+                        RecruitmentChatDateChip(date = group.date)
                     }
                 }
             }
 
-            RecruitmentChatInput(
-                value = chatInputValue,
-                onValueChange = onChatInputValueChange,
-                onImageButtonClick = onImageButtonClick,
-                onSendClick = onSendClick,
-                enabled = !isLoading && !isReadOnly && !isUploadingImage
-            )
+            if (isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(RebrandKoinTheme.colors.neutral0),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
         }
     }
 }
