@@ -111,7 +111,7 @@ fun RecruitmentMainScreen(
     }
 
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
-        viewModel.fetchRecruitments(true)
+        viewModel.fetchRecruitments()
     }
 
     viewModel.collectSideEffect { sideEffect ->
@@ -138,9 +138,8 @@ fun RecruitmentMainScreen(
         searchValue = state.searchValue,
         items = state.items,
         totalCount = state.totalCount,
-        isLoading = state.isLoading,
         isRefreshing = state.isRefreshing,
-        onRefresh = { viewModel.fetchRecruitments(isRefresh = true) },
+        onRefresh = viewModel::fetchRecruitments,
         isLoadingMore = state.isLoadingMore,
         hasMore = state.currentPage < state.totalPage,
         isUnreadNotificationAvailable = state.isUnreadNotificationAvailable,
@@ -167,7 +166,6 @@ private fun RecruitmentMainScreenImpl(
     items: ImmutableList<RecruitmentItemModel>,
     totalCount: Long,
     filterState: RecruitmentFilterState,
-    isLoading: Boolean = false,
     isRefreshing: Boolean = false,
     onRefresh: () -> Unit = {},
     isLoadingMore: Boolean = false,
@@ -307,14 +305,7 @@ private fun RecruitmentMainScreenImpl(
                     )
                 }
             ) {
-                if (isLoading) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(color = RebrandKoinTheme.colors.primary500)
-                    }
-                } else if (items.isEmpty()) {
+                if (items.isEmpty()) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -338,6 +329,7 @@ private fun RecruitmentMainScreenImpl(
                     ) {
                         items(items, key = { it.id }) { item ->
                             RecruitmentMainItem(
+                                modifier = Modifier.animateItem(),
                                 item = item,
                                 onClick = { onItemClick(item.id) }
                             )

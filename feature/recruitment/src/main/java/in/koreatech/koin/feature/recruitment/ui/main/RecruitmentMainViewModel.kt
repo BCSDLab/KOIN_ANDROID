@@ -44,8 +44,8 @@ class RecruitmentMainViewModel @Inject constructor(
 
     private var searchJob: Job? = null
 
-    fun fetchRecruitments(isRefresh: Boolean = false) = intent {
-        fetchRecruitmentsSub(isRefresh)
+    fun fetchRecruitments() = intent {
+        fetchRecruitmentsSub()
     }
 
     fun getNotificationCount() = intent {
@@ -59,9 +59,9 @@ class RecruitmentMainViewModel @Inject constructor(
     }
 
     @OptIn(OrbitExperimental::class)
-    private suspend fun fetchRecruitmentsSub(isRefresh: Boolean = false) = subIntent {
+    private suspend fun fetchRecruitmentsSub() = subIntent {
         reduce {
-            if (isRefresh) state.copy(isRefreshing = true) else state.copy(isLoading = true)
+            state.copy(isRefreshing = true)
         }
         val filter = state.filterState
         getRecruitmentsUseCase(
@@ -83,12 +83,11 @@ class RecruitmentMainViewModel @Inject constructor(
                     totalCount = recruitments.totalCount,
                     currentPage = recruitments.currentPage,
                     totalPage = recruitments.totalPage,
-                    isLoading = false,
                     isRefreshing = false
                 )
             }
         }.onFailure {
-            reduce { state.copy(isLoading = false, isRefreshing = false) }
+            reduce { state.copy(isRefreshing = false) }
             postSideEffect(RecruitmentMainSideEffect.ShowError)
         }
     }
