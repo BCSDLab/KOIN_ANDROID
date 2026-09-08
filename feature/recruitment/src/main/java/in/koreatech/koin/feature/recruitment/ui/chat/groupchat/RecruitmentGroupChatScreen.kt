@@ -37,6 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -211,6 +212,7 @@ private fun RecruitmentGroupChatScreenImpl(
             if (isLoading) {
                 Box(
                     modifier = Modifier
+                        .zIndex(2f)
                         .fillMaxSize()
                         .background(RebrandKoinTheme.colors.neutral0),
                     contentAlignment = Alignment.Center

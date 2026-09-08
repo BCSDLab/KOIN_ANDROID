@@ -84,11 +84,12 @@ fun RecruitmentMainScreen(
     val state by viewModel.collectAsState()
     val context = LocalContext.current
 
-    val unreadNotificationStateUpdated = navController.previousBackStackEntry?.savedStateHandle?.getStateFlow(UNREAD_NOTIFICATION_STATE_UPDATE, false)?.collectAsState()
+    val unreadNotificationStateUpdated = navController.currentBackStackEntry?.savedStateHandle?.getStateFlow(UNREAD_NOTIFICATION_STATE_UPDATE, false)?.collectAsState()
 
-    LaunchedEffect(unreadNotificationStateUpdated) {
+    LaunchedEffect(unreadNotificationStateUpdated?.value) {
         if (unreadNotificationStateUpdated?.value == true) {
             viewModel.getNotificationCount()
+            navController.currentBackStackEntry?.savedStateHandle?.set(UNREAD_NOTIFICATION_STATE_UPDATE, false)
         }
     }
 

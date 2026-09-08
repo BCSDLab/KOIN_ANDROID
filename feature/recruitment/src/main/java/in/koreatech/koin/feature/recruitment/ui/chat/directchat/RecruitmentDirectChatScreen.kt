@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -182,6 +183,7 @@ private fun RecruitmentDirectChatScreenImpl(
             if (isLoading) {
                 Box(
                     modifier = Modifier
+                        .zIndex(2f)
                         .fillMaxSize()
                         .background(RebrandKoinTheme.colors.neutral0),
                     contentAlignment = Alignment.Center

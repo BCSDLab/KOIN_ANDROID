@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.recruitment.navigation
 
 import android.app.Activity
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -106,10 +105,6 @@ fun NavGraphBuilder.koinRecruitmentGraph(
         RecruitmentDirectChatScreen()
     }
     composable<RecruitmentNavType.Notification> {
-        LaunchedEffect(Unit) {
-            navController.currentBackStackEntry?.savedStateHandle?.set(UNREAD_NOTIFICATION_STATE_UPDATE, false)
-        }
-
         RecruitmentNotificationScreen(
             onBack = { navController.popBackStack() },
             onNavigateToApplicantManagement = { recruitmentId ->
@@ -129,7 +124,7 @@ fun NavGraphBuilder.koinRecruitmentGraph(
                 navController.navigate(RecruitmentNavType.MyAppliedRecruitment)
             },
             onUnreadNotificationStateChanged = {
-                navController.currentBackStackEntry?.savedStateHandle?.set(UNREAD_NOTIFICATION_STATE_UPDATE, true)
+                navController.previousBackStackEntry?.savedStateHandle?.set(UNREAD_NOTIFICATION_STATE_UPDATE, true)
             }
         )
     }

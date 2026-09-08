@@ -61,9 +61,10 @@ fun ApplicantManagementScreen(
 
     val applicantUpdated = navController.previousBackStackEntry?.savedStateHandle?.getStateFlow(APPLICANT_STATE_UPDATE, false)?.collectAsState()
 
-    LaunchedEffect(applicantUpdated) {
+    LaunchedEffect(applicantUpdated?.value) {
         if (applicantUpdated?.value == true) {
             viewModel.loadApplicants()
+            navController.previousBackStackEntry?.savedStateHandle?.set(APPLICANT_STATE_UPDATE, false)
         }
     }
 
