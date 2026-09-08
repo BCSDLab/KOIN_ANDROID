@@ -19,7 +19,7 @@ fun RecruitmentChatTopBar(
     KoinTopAppBar(
         modifier = modifier,
         title = title,
-        textStyle = RebrandKoinTheme.typography.medium18,
+        textStyle = RebrandKoinTheme.typography.bold16,
         onNavigationIconClick = onNavigationIconClick,
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = RebrandKoinTheme.colors.neutral0,

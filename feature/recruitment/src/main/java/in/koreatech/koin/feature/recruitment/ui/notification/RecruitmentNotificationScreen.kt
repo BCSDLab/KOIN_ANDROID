@@ -93,6 +93,7 @@ internal fun RecruitmentNotificationScreen(
         topBar = {
             KoinTopAppBar(
                 title = stringResource(R.string.recruitment_notification_title),
+                textStyle = RebrandKoinTheme.typography.bold16,
                 onNavigationIconClick = onBack,
                 actions = {
                     RecruitmentNotificationMenuButton(

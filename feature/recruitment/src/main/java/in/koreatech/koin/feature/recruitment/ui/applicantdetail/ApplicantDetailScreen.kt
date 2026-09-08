@@ -70,6 +70,7 @@ fun ApplicantDetailScreen(
         topBar = {
             KoinTopAppBar(
                 title = stringResource(R.string.recruitment_applicant_detail_title),
+                textStyle = RebrandKoinTheme.typography.bold16,
                 onNavigationIconClick = onNavigateUp,
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = RebrandKoinTheme.colors.neutral50
