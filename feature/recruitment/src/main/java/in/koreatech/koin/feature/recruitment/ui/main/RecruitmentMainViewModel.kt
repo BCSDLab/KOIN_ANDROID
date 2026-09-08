@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.recruitment.ui.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.usecase.recruitment.GetRecruitmentNotificationsUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.GetRecruitmentsUseCase
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
@@ -30,18 +31,31 @@ import org.orbitmvi.orbit.viewmodel.container
 @HiltViewModel
 @Suppress("TooManyFunctions")
 class RecruitmentMainViewModel @Inject constructor(
-    private val getRecruitmentsUseCase: GetRecruitmentsUseCase
+    private val getRecruitmentsUseCase: GetRecruitmentsUseCase,
+    private val getRecruitmentNotificationsUseCase: GetRecruitmentNotificationsUseCase
 ) : ViewModel(),
     ContainerHost<RecruitmentMainState, RecruitmentMainSideEffect> {
 
     override val container = container<RecruitmentMainState, RecruitmentMainSideEffect>(
         RecruitmentMainState()
-    )
+    ) {
+        getNotificationCount()
+    }
 
     private var searchJob: Job? = null
 
     fun fetchRecruitments(isRefresh: Boolean = false) = intent {
         fetchRecruitmentsSub(isRefresh)
+    }
+
+    private fun getNotificationCount() = intent {
+        getRecruitmentNotificationsUseCase(page = 1, limit = 1).onSuccess {
+            if (it.unreadCount == 0) {
+                reduce { state.copy(isUnreadNotificationAvailable = false) }
+            } else {
+                reduce { state.copy(isUnreadNotificationAvailable = true) }
+            }
+        }
     }
 
     @OptIn(OrbitExperimental::class)

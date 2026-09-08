@@ -134,6 +134,7 @@ private fun RecruitmentMainScreenImpl(
     onRefresh: () -> Unit = {},
     isLoadingMore: Boolean = false,
     hasMore: Boolean = false,
+    isUnreadNotificationAvailable: Boolean = false,
     onLoadMore: () -> Unit = {},
     onSearchValueChange: (String) -> Unit = {},
     onFilterClick: () -> Unit = {},
@@ -159,7 +160,11 @@ private fun RecruitmentMainScreenImpl(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_notification),
+                            imageVector = if (isUnreadNotificationAvailable) {
+                                ImageVector.vectorResource(R.drawable.ic_rebrand_notification_dot)
+                            } else {
+                                ImageVector.vectorResource(R.drawable.ic_rebrand_notification)
+                            },
                             contentDescription = stringResource(R.string.recruitment_notification_content_description),
                             tint = Color.Unspecified,
                             modifier = Modifier
