@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,6 +24,22 @@ fun ApplicantDecisionButtons(
     onApprove: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val rejectButtonColors = remember(RebrandKoinTheme.colors) {
+        ButtonColors(
+            containerColor = RebrandKoinTheme.colors.neutral0,
+            contentColor = RebrandKoinTheme.colors.primary500,
+            disabledContainerColor = RebrandKoinTheme.colors.neutral300,
+            disabledContentColor = RebrandKoinTheme.colors.neutral600
+        )
+    }
+    val approveButtonColors = remember(RebrandKoinTheme.colors) {
+        ButtonColors(
+            containerColor = RebrandKoinTheme.colors.primary500,
+            contentColor = RebrandKoinTheme.colors.neutral0,
+            disabledContainerColor = RebrandKoinTheme.colors.neutral300,
+            disabledContentColor = RebrandKoinTheme.colors.neutral600
+        )
+    }
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -32,12 +49,7 @@ fun ApplicantDecisionButtons(
             onClick = onReject,
             textStyle = RebrandKoinTheme.typography.bold15,
             shape = RoundedCornerShape(16.dp),
-            colors = ButtonColors(
-                containerColor = RebrandKoinTheme.colors.neutral0,
-                contentColor = RebrandKoinTheme.colors.primary500,
-                disabledContainerColor = RebrandKoinTheme.colors.neutral300,
-                disabledContentColor = RebrandKoinTheme.colors.neutral600
-            ),
+            colors = rejectButtonColors,
             border = BorderStroke(0.5.dp, RebrandKoinTheme.colors.primary500),
             modifier = Modifier
                 .weight(1f)
@@ -48,12 +60,7 @@ fun ApplicantDecisionButtons(
             onClick = onApprove,
             textStyle = RebrandKoinTheme.typography.bold15,
             shape = RoundedCornerShape(16.dp),
-            colors = ButtonColors(
-                containerColor = RebrandKoinTheme.colors.primary500,
-                contentColor = RebrandKoinTheme.colors.neutral0,
-                disabledContainerColor = RebrandKoinTheme.colors.neutral300,
-                disabledContentColor = RebrandKoinTheme.colors.neutral600
-            ),
+            colors = approveButtonColors,
             modifier = Modifier
                 .weight(1f)
                 .height(48.dp)

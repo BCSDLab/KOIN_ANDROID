@@ -15,6 +15,7 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -47,6 +48,22 @@ fun RecruitmentDeleteDialog(
                     color = RebrandKoinTheme.colors.neutral600
                 )
             )
+            val cancelButtonColors = remember(RebrandKoinTheme.colors) {
+                ButtonColors(
+                    containerColor = RebrandKoinTheme.colors.neutral0,
+                    contentColor = RebrandKoinTheme.colors.neutral600,
+                    disabledContainerColor = RebrandKoinTheme.colors.neutral400,
+                    disabledContentColor = RebrandKoinTheme.colors.neutral500
+                )
+            }
+            val confirmButtonColors = remember(RebrandKoinTheme.colors) {
+                ButtonColors(
+                    containerColor = RebrandKoinTheme.colors.primary500,
+                    contentColor = RebrandKoinTheme.colors.neutral0,
+                    disabledContainerColor = RebrandKoinTheme.colors.neutral400,
+                    disabledContentColor = RebrandKoinTheme.colors.neutral0
+                )
+            }
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedBoxButton(
                     modifier = Modifier
@@ -55,12 +72,7 @@ fun RecruitmentDeleteDialog(
                     text = stringResource(R.string.recruitment_delete_dialog_cancel),
                     onClick = onDismiss,
                     shape = RoundedCornerShape(8.dp),
-                    colors = ButtonColors(
-                        containerColor = RebrandKoinTheme.colors.neutral0,
-                        contentColor = RebrandKoinTheme.colors.neutral600,
-                        disabledContainerColor = RebrandKoinTheme.colors.neutral400,
-                        disabledContentColor = RebrandKoinTheme.colors.neutral500
-                    ),
+                    colors = cancelButtonColors,
                     border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral500),
                     contentPadding = PaddingValues(12.dp)
                 )
@@ -71,12 +83,7 @@ fun RecruitmentDeleteDialog(
                     text = stringResource(R.string.recruitment_delete_dialog_confirm),
                     onClick = onConfirm,
                     shape = RoundedCornerShape(8.dp),
-                    colors = ButtonColors(
-                        containerColor = RebrandKoinTheme.colors.primary500,
-                        contentColor = RebrandKoinTheme.colors.neutral0,
-                        disabledContainerColor = RebrandKoinTheme.colors.neutral400,
-                        disabledContentColor = RebrandKoinTheme.colors.neutral0
-                    ),
+                    colors = confirmButtonColors,
                     contentPadding = PaddingValues(12.dp)
                 )
             }

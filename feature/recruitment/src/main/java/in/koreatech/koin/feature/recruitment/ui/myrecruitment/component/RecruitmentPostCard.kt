@@ -124,12 +124,14 @@ fun RecruitmentPostCard(
             }
 
             val buttonShape = RoundedCornerShape(16.dp)
-            val buttonColors = ButtonColors(
-                containerColor = RebrandKoinTheme.colors.neutral0,
-                contentColor = RebrandKoinTheme.colors.primary500,
-                disabledContainerColor = RebrandKoinTheme.colors.neutral400,
-                disabledContentColor = RebrandKoinTheme.colors.neutral500
-            )
+            val buttonColors = remember(RebrandKoinTheme.colors) {
+                ButtonColors(
+                    containerColor = RebrandKoinTheme.colors.neutral0,
+                    contentColor = RebrandKoinTheme.colors.primary500,
+                    disabledContainerColor = RebrandKoinTheme.colors.neutral400,
+                    disabledContentColor = RebrandKoinTheme.colors.neutral500
+                )
+            }
             val buttonBorder = BorderStroke(0.5.dp, RebrandKoinTheme.colors.primary500)
 
             if (onCloseRecruitment != null) {

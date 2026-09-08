@@ -26,6 +26,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -85,6 +86,22 @@ fun RecruitmentFilterBottomSheetLayout(
 
             Spacer(modifier = Modifier.height(20.dp))
 
+            val resetButtonColors = remember(RebrandKoinTheme.colors) {
+                ButtonColors(
+                    containerColor = RebrandKoinTheme.colors.neutral0,
+                    contentColor = RebrandKoinTheme.colors.neutral700,
+                    disabledContainerColor = RebrandKoinTheme.colors.neutral300,
+                    disabledContentColor = RebrandKoinTheme.colors.neutral600
+                )
+            }
+            val applyButtonColors = remember(RebrandKoinTheme.colors) {
+                ButtonColors(
+                    containerColor = RebrandKoinTheme.colors.primary500,
+                    contentColor = RebrandKoinTheme.colors.neutral0,
+                    disabledContainerColor = RebrandKoinTheme.colors.neutral300,
+                    disabledContentColor = RebrandKoinTheme.colors.neutral600
+                )
+            }
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -94,12 +111,7 @@ fun RecruitmentFilterBottomSheetLayout(
                 OutlinedButton(
                     onClick = onReset,
                     shape = RoundedCornerShape(20.dp),
-                    colors = ButtonColors(
-                        containerColor = RebrandKoinTheme.colors.neutral0,
-                        contentColor = RebrandKoinTheme.colors.neutral700,
-                        disabledContainerColor = RebrandKoinTheme.colors.neutral300,
-                        disabledContentColor = RebrandKoinTheme.colors.neutral600
-                    ),
+                    colors = resetButtonColors,
                     border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral400),
                     contentPadding = PaddingValues(vertical = 12.dp),
                     modifier = Modifier
@@ -126,12 +138,7 @@ fun RecruitmentFilterBottomSheetLayout(
                     onClick = onApply,
                     textStyle = RebrandKoinTheme.typography.bold16,
                     shape = RoundedCornerShape(20.dp),
-                    colors = ButtonColors(
-                        containerColor = RebrandKoinTheme.colors.primary500,
-                        contentColor = RebrandKoinTheme.colors.neutral0,
-                        disabledContainerColor = RebrandKoinTheme.colors.neutral300,
-                        disabledContentColor = RebrandKoinTheme.colors.neutral600
-                    ),
+                    colors = applyButtonColors,
                     contentPadding = PaddingValues(vertical = 12.dp),
                     modifier = Modifier
                         .weight(2f)
