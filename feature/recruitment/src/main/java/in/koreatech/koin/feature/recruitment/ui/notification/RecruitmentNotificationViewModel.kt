@@ -85,6 +85,7 @@ internal class RecruitmentNotificationViewModel @Inject constructor(
                             .toImmutableList()
                     )
                 }
+                postSideEffect(RecruitmentNotificationSideEffect.UnreadNotificationStateChanged)
             }
 
         when (notification.targetType) {
@@ -121,6 +122,7 @@ internal class RecruitmentNotificationViewModel @Inject constructor(
                         unreadCount = 0
                     )
                 }
+                postSideEffect(RecruitmentNotificationSideEffect.UnreadNotificationStateChanged)
             }
             .onFailure { postSideEffect(RecruitmentNotificationSideEffect.Error) }
     }
@@ -130,6 +132,7 @@ internal class RecruitmentNotificationViewModel @Inject constructor(
             .onSuccess {
                 reduce { state.copy(notifications = persistentListOf(), unreadCount = 0) }
                 postSideEffect(RecruitmentNotificationSideEffect.Deleted)
+                postSideEffect(RecruitmentNotificationSideEffect.UnreadNotificationStateChanged)
             }
             .onFailure { postSideEffect(RecruitmentNotificationSideEffect.Error) }
     }

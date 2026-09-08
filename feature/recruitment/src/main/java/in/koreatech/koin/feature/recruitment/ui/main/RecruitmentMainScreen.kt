@@ -1,5 +1,9 @@
 package `in`.koreatech.koin.feature.recruitment.ui.main
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +30,8 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,14 +45,17 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import androidx.navigation.NavController
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.notification.FirebaseMessagingType
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentStatus
+import `in`.koreatech.koin.feature.recruitment.navigation.UNREAD_NOTIFICATION_STATE_UPDATE
 import `in`.koreatech.koin.feature.recruitment.ui.component.rememberRecruitmentPaginationListState
 import `in`.koreatech.koin.feature.recruitment.ui.main.component.RecruitmentAppliedFilterChipGroup
 import `in`.koreatech.koin.feature.recruitment.ui.main.component.RecruitmentChip
@@ -60,9 +69,11 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import timber.log.Timber
 
 @Composable
 fun RecruitmentMainScreen(
+    navController: NavController,
     viewModel: RecruitmentMainViewModel = hiltViewModel(),
     onTopbarBackClick: () -> Unit = {},
     onNotificationClick: () -> Unit = {},
@@ -72,6 +83,29 @@ fun RecruitmentMainScreen(
 ) {
     val state by viewModel.collectAsState()
     val context = LocalContext.current
+
+    val unreadNotificationStateUpdated = navController.previousBackStackEntry?.savedStateHandle?.getStateFlow(UNREAD_NOTIFICATION_STATE_UPDATE, false)
+
+    LaunchedEffect(unreadNotificationStateUpdated) {
+        viewModel.getNotificationCount()
+    }
+
+    DisposableEffect(Unit) {
+        val receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                if (intent?.getStringExtra("NOTIFICATION_TYPE") == FirebaseMessagingType.TEAM_RECRUITMENT.name) {
+                    viewModel.getNotificationCount()
+                }
+            }
+        }
+
+        val filter = IntentFilter("${context.packageName}.ACTION_NOTIFICAION_RECEIVED")
+        context.registerReceiver(receiver, filter, Context.RECEIVER_NOT_EXPORTED)
+
+        onDispose {
+            context.unregisterReceiver(receiver)
+        }
+    }
 
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
         viewModel.fetchRecruitments()
@@ -106,6 +140,7 @@ fun RecruitmentMainScreen(
         onRefresh = { viewModel.fetchRecruitments(isRefresh = true) },
         isLoadingMore = state.isLoadingMore,
         hasMore = state.currentPage < state.totalPage,
+        isUnreadNotificationAvailable = state.isUnreadNotificationAvailable,
         onLoadMore = viewModel::loadMoreRecruitments,
         filterState = state.filterState,
         onSearchValueChange = viewModel::updateSearch,

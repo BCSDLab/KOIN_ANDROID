@@ -48,7 +48,7 @@ class RecruitmentMainViewModel @Inject constructor(
         fetchRecruitmentsSub(isRefresh)
     }
 
-    private fun getNotificationCount() = intent {
+    fun getNotificationCount() = intent {
         getRecruitmentNotificationsUseCase(page = 1, limit = 1).onSuccess {
             if (it.unreadCount == 0) {
                 reduce { state.copy(isUnreadNotificationAvailable = false) }
