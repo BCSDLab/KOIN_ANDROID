@@ -4,26 +4,39 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.domain.usecase.notification.GetNotificationsFlowUseCase
 import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
 import `in`.koreatech.koin.feature.category.component.CategoryMenuId
 import javax.inject.Inject
+import kotlinx.coroutines.flow.catch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
-    private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase
+    private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase,
+    private val getNotificationsFlowUseCase: GetNotificationsFlowUseCase
 ) : ViewModel(), ContainerHost<CategoryState, CategorySideEffect> {
     override val container = container<CategoryState, CategorySideEffect>(CategoryState()) {
         checkLoginStatus()
+        observeNotifications()
     }
 
     private fun checkLoginStatus() = intent {
         val isTokenSaved = isTokenSavedInDeviceUseCase()
         reduce { state.copy(isAnonymous = !isTokenSaved) }
+    }
+
+    private fun observeNotifications() = intent {
+        getNotificationsFlowUseCase()
+            .catch { Timber.e(it) }
+            .collect { notifications ->
+                reduce { state.copy(isNewNotificationReceived = notifications.any { !it.isRead }) }
+            }
     }
 
     fun onMenuClick(id: CategoryMenuId) = intent {
