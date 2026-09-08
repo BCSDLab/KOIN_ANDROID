@@ -23,6 +23,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -263,6 +264,15 @@ private fun RecruitmentDetailBottomAction(
         isClosed -> R.string.recruitment_action_recruitment_closed
         else -> R.string.recruitment_action_apply
     }
+    val colors = RebrandKoinTheme.colors
+    val buttonColors = remember(colors) {
+        ButtonColors(
+            containerColor = colors.primary500,
+            contentColor = colors.neutral0,
+            disabledContainerColor = colors.neutral400,
+            disabledContentColor = colors.neutral0
+        )
+    }
     FilledButton(
         modifier = modifier
             .fillMaxWidth()
@@ -274,12 +284,7 @@ private fun RecruitmentDetailBottomAction(
         enabled = isAuthor || !isClosed,
         textStyle = RebrandKoinTheme.typography.bold15,
         shape = RoundedCornerShape(16.dp),
-        colors = ButtonColors(
-            containerColor = RebrandKoinTheme.colors.primary500,
-            contentColor = RebrandKoinTheme.colors.neutral0,
-            disabledContainerColor = RebrandKoinTheme.colors.neutral400,
-            disabledContentColor = RebrandKoinTheme.colors.neutral0
-        )
+        colors = buttonColors
     )
 }
 
