@@ -24,9 +24,7 @@ data class RecruitmentItemModel(
     val activityEndDate: String,
     val currentCount: Int,
     val maxCount: Int
-) {
-    val isFull: Boolean get() = currentCount >= maxCount
-}
+)
 
 fun Recruitment.toRecruitmentItemModel() = RecruitmentItemModel(
     id = id,

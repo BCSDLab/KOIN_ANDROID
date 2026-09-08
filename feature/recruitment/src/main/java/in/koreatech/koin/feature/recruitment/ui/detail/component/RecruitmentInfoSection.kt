@@ -42,7 +42,7 @@ fun RecruitmentInfoSection(
             )
         )
         RecruitmentDetailRow(
-            iconRes = R.drawable.ic_recruitment_participants,
+            iconRes = R.drawable.ic_recruitment_user_group,
             label = stringResource(R.string.recruitment_info_participants),
             value = stringResource(
                 R.string.recruitment_participants_count,
