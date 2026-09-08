@@ -30,6 +30,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -79,14 +81,30 @@ fun RecruitmentDetailScreen(
         onMoreClick = { viewModel.updateMoreMenuVisible(true) },
         onMoreMenuDismiss = { viewModel.updateMoreMenuVisible(false) },
         onEditClick = {
+            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.POST_EDIT, "편집하기")
             viewModel.updateMoreMenuVisible(false)
             onNavigateToModify(state.id)
         },
-        onDeleteClick = { viewModel.updateDeleteDialogVisible(true) },
-        onDeleteConfirm = viewModel::deleteRecruitment,
-        onDeleteDialogDismiss = { viewModel.updateDeleteDialogVisible(false) },
-        onApplyClick = { onNavigateToApply(state.id, state.roles) },
-        onCheckApplicantsClick = { onNavigateToApplicantManagement(state.id) }
+        onDeleteClick = {
+            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.POST_DELETE, "삭제하기")
+            viewModel.updateDeleteDialogVisible(true)
+        },
+        onDeleteConfirm = {
+            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.POST_DELETE_CONFIRM, "삭제하기")
+            viewModel.deleteRecruitment()
+        },
+        onDeleteDialogDismiss = {
+            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.POST_DELETE_CANCEL, "취소하기")
+            viewModel.updateDeleteDialogVisible(false)
+        },
+        onApplyClick = {
+            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.POST_APPLY, state.title)
+            onNavigateToApply(state.id, state.roles)
+        },
+        onCheckApplicantsClick = {
+            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.POST_APPLICANT_CHECK, state.title)
+            onNavigateToApplicantManagement(state.id)
+        }
     )
 }
 

@@ -29,6 +29,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.notification.FirebaseMessagingType
@@ -155,8 +157,20 @@ private fun ApplicantManagementScreenImpl(
             items(applicants, key = { it.id }) { applicant ->
                 ApplicantListItem(
                     applicant = applicant,
-                    onClick = { onApplicantDetail(applicant.id) },
-                    onChatClick = { onApplicantChat(applicant.id) }
+                    onClick = {
+                        EventLogger.logCampusClickEvent(
+                            AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_APPLICANT_SELECT,
+                            "지원자 선택"
+                        )
+                        onApplicantDetail(applicant.id)
+                    },
+                    onChatClick = {
+                        EventLogger.logCampusClickEvent(
+                            AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_APPLICANT_CHAT,
+                            "채팅"
+                        )
+                        onApplicantChat(applicant.id)
+                    }
                 )
             }
         }

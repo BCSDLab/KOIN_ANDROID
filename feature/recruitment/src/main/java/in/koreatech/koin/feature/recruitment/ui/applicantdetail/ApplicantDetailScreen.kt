@@ -25,6 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -80,8 +82,20 @@ fun ApplicantDetailScreen(
         bottomBar = {
             if (applicant != null && applicant.canDecide) {
                 ApplicantDecisionButtons(
-                    onReject = { viewModel.showRejectDialog() },
-                    onApprove = { viewModel.showApproveDialog() },
+                    onReject = {
+                        EventLogger.logCampusClickEvent(
+                            AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_APPLICANT_REJECT,
+                            "거절하기"
+                        )
+                        viewModel.showRejectDialog()
+                    },
+                    onApprove = {
+                        EventLogger.logCampusClickEvent(
+                            AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_APPLICANT_APPROVE,
+                            "승인하기"
+                        )
+                        viewModel.showApproveDialog()
+                    },
                     modifier = Modifier
                         .windowInsetsPadding(WindowInsets.navigationBars)
                         .padding(horizontal = 21.5.dp, vertical = 16.dp)
@@ -108,8 +122,20 @@ fun ApplicantDetailScreen(
             title = stringResource(R.string.recruitment_applicant_approve_dialog_title),
             message = stringResource(R.string.recruitment_applicant_approve_dialog_message),
             confirmText = stringResource(R.string.recruitment_applicant_approve_dialog_confirm),
-            onDismiss = { viewModel.dismissApproveDialog() },
-            onConfirm = { viewModel.approve() }
+            onDismiss = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_APPLICANT_APPROVE_CANCEL,
+                    "취소하기"
+                )
+                viewModel.dismissApproveDialog()
+            },
+            onConfirm = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_APPLICANT_APPROVE_CONFIRM,
+                    "승인하기"
+                )
+                viewModel.approve()
+            }
         )
     }
 
@@ -118,8 +144,20 @@ fun ApplicantDetailScreen(
             title = stringResource(R.string.recruitment_applicant_reject_dialog_title),
             message = stringResource(R.string.recruitment_applicant_reject_dialog_message),
             confirmText = stringResource(R.string.recruitment_applicant_reject_dialog_confirm),
-            onDismiss = { viewModel.dismissRejectDialog() },
-            onConfirm = { viewModel.reject() }
+            onDismiss = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_APPLICANT_REJECT_CANCEL,
+                    "취소하기"
+                )
+                viewModel.dismissRejectDialog()
+            },
+            onConfirm = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_APPLICANT_REJECT_CONFIRM,
+                    "거절하기"
+                )
+                viewModel.reject()
+            }
         )
     }
 }

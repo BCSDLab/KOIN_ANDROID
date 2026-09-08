@@ -25,6 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
@@ -81,15 +83,30 @@ fun MyRecruitmentScreen(
             onApplicantManage = onApplicantManage,
             onCloseRecruitment = { postId -> viewModel.showCloseDialog(postId) },
             onChat = onChat,
-            onFilter = { viewModel.showFilterSheet() },
+            onFilter = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_FILTER, "필터")
+                viewModel.showFilterSheet()
+            },
             modifier = Modifier.padding(innerPadding)
         )
     }
 
     if (state.showCloseDialog) {
         CloseRecruitmentDialog(
-            onDismiss = { viewModel.dismissCloseDialog() },
-            onConfirm = { viewModel.confirmClose() }
+            onDismiss = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_CLOSE_CANCEL,
+                    "취소하기"
+                )
+                viewModel.dismissCloseDialog()
+            },
+            onConfirm = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_CLOSE_CONFIRM,
+                    "마감하기"
+                )
+                viewModel.confirmClose()
+            }
         )
     }
 
@@ -161,13 +178,28 @@ private fun MyRecruitmentScreenImpl(
                 items(posts, key = { it.id }) { post ->
                     RecruitmentPostCard(
                         post = post,
-                        onApplicantManage = { onApplicantManage(post.id) },
+                        onApplicantManage = {
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_APPLICANT,
+                                post.title
+                            )
+                            onApplicantManage(post.id)
+                        },
                         onCloseRecruitment = if (post.status is RecruitmentStatus.Recruiting) {
-                            { onCloseRecruitment(post.id) }
+                            {
+                                EventLogger.logCampusClickEvent(
+                                    AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_CLOSE,
+                                    post.title
+                                )
+                                onCloseRecruitment(post.id)
+                            }
                         } else {
                             null
                         },
-                        onChat = { onChat(post.id) }
+                        onChat = {
+                            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_CHAT, post.title)
+                            onChat(post.id)
+                        }
                     )
                 }
                 if (isLoadingMore) {

@@ -30,6 +30,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
@@ -68,6 +70,7 @@ fun RecruitmentModifyScreen(
 ) {
     val state by viewModel.collectAsState()
     val context = LocalContext.current
+    val categoryLabels = RecruitmentCategory.entries.map { stringResource(it.labelRes) }
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
@@ -101,10 +104,19 @@ fun RecruitmentModifyScreen(
         RecruitmentModifyScreenImpl(
             state = state,
             modifier = Modifier.padding(contentPadding),
-            onCategorySelected = viewModel::setCategory,
+            onCategorySelected = { category ->
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.TeamRecruitment.POST_EDIT_CATEGORY,
+                    categoryLabels[RecruitmentCategory.entries.indexOf(category)]
+                )
+                viewModel.setCategory(category)
+            },
             onCategoryDropdownExpandChange = viewModel::setCategoryDropdownExpanded,
             onTitleChange = viewModel::setTitle,
-            onProgressTypeSelected = viewModel::setProgressType,
+            onProgressTypeSelected = { type ->
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.POST_EDIT_METHOD, type.label)
+                viewModel.setProgressType(type)
+            },
             onStartDateClick = { viewModel.showDatePickerDialog(DateSelectionTarget.RECRUIT_START) },
             onEndDateClick = { viewModel.showDatePickerDialog(DateSelectionTarget.RECRUIT_END) },
             onDeadlineClick = { viewModel.showDatePickerDialog(DateSelectionTarget.DEADLINE) },
@@ -116,18 +128,44 @@ fun RecruitmentModifyScreen(
                     DateSelectionTarget.DEADLINE -> viewModel.setApplicationDeadline(date)
                 }
             },
-            onAddRoleClick = viewModel::addRole,
+            onAddRoleClick = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.POST_EDIT_ROLE, "역할 추가")
+                viewModel.addRole()
+            },
             onRoleNameChange = viewModel::setRoleName,
             onRoleCountChange = viewModel::setRoleCount,
             onRoleRemoved = viewModel::removeRole,
-            onRoleCountUndeterminedChange = viewModel::setRoleCountUndetermined,
+            onRoleCountUndeterminedChange = { undetermined ->
+                if (undetermined) {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.TeamRecruitment.POST_EDIT_ROLE,
+                        "역할 구분 없이 모집하기"
+                    )
+                }
+                viewModel.setRoleCountUndetermined(undetermined)
+            },
             onParticipantCountChange = viewModel::setParticipantCount,
             onDescriptionChange = viewModel::setDescription,
             onRelatedUrlChange = viewModel::setRelatedUrl,
             onQualificationChange = viewModel::setQualification,
-            onSubmitClick = viewModel::showSubmitConfirmDialog,
-            onDismissSubmitConfirmDialog = viewModel::dismissSubmitConfirmDialog,
-            onConfirmSubmit = viewModel::modifyRecruitment,
+            onSubmitClick = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.POST_EDIT_SUBMIT, "수정 완료")
+                viewModel.showSubmitConfirmDialog()
+            },
+            onDismissSubmitConfirmDialog = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.TeamRecruitment.POST_EDIT_SUBMIT_CANCEL,
+                    "취소하기"
+                )
+                viewModel.dismissSubmitConfirmDialog()
+            },
+            onConfirmSubmit = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.TeamRecruitment.POST_EDIT_SUBMIT_CONFIRM,
+                    "수정하기"
+                )
+                viewModel.modifyRecruitment()
+            },
             onDismissCancelConfirmDialog = viewModel::dismissCancelConfirmDialog,
             onConfirmCancel = viewModel::confirmCancel
         )
