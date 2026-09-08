@@ -111,7 +111,7 @@ fun RecruitmentMainScreen(
     }
 
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
-        viewModel.fetchRecruitments()
+        viewModel.fetchRecruitments(true)
     }
 
     viewModel.collectSideEffect { sideEffect ->
