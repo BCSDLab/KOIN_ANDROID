@@ -52,8 +52,7 @@ fun ApplicantManagementScreen(
     onNavigateUp: () -> Unit = {},
     onChat: (chatRoomId: Int) -> Unit = {},
     onApplicantDetail: (Int) -> Unit = {},
-    onApplicantChat: (Int) -> Unit = {},
-    onMoreOptions: () -> Unit = {}
+    onApplicantChat: (Int) -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
 
@@ -74,16 +73,7 @@ fun ApplicantManagementScreen(
                 onNavigationIconClick = onNavigateUp,
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = RebrandKoinTheme.colors.neutral50
-                ),
-                actions = {
-                    IconButton(onClick = onMoreOptions) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_uim_process),
-                            contentDescription = null,
-                            tint = RebrandKoinTheme.colors.neutral700
-                        )
-                    }
-                }
+                )
             )
         }
     ) { innerPadding ->
