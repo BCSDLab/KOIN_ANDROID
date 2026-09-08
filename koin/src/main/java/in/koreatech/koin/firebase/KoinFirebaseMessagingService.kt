@@ -6,6 +6,7 @@ import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_URL
 import `in`.koreatech.koin.core.navigation.utils.toHost
+import `in`.koreatech.koin.core.notification.FirebaseMessagingType
 import `in`.koreatech.koin.core.notification.Notifier
 import `in`.koreatech.koin.core.qualifier.IoDispatcher
 import `in`.koreatech.koin.domain.repository.firebase.messaging.FirebaseMessagingRepository
@@ -24,6 +25,7 @@ class KoinFirebaseMessagingService : FirebaseMessagingService() {
         private const val URL = "url"
         private const val TITLE = "title"
         private const val CONTENT = "content"
+        private const val TYPE = "type"
     }
 
     @Inject
@@ -64,6 +66,7 @@ class KoinFirebaseMessagingService : FirebaseMessagingService() {
                 val url = data[URL]
                 val title = data[TITLE]
                 val content = data[CONTENT]
+                val type = data[TYPE]
 
                 if (url != null && title != null && content != null) {
                     coroutineScope.launch {
@@ -84,6 +87,12 @@ class KoinFirebaseMessagingService : FirebaseMessagingService() {
                         addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     }
                 notifier.sendNotification(data, intent)
+
+                val broadcastIntent = Intent("${packageName}.ACTION_NOTIFICAION_RECEIVED").apply {
+                    putExtra("NOTIFICATION_TYPE", FirebaseMessagingType.toFirebaseMessagingType(type ?: "").name)
+                    setPackage(packageName)
+                }
+                sendBroadcast(broadcastIntent)
             }
         }
     }
