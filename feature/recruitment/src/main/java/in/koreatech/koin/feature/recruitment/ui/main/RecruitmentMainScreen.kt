@@ -32,6 +32,7 @@ import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -84,10 +85,12 @@ fun RecruitmentMainScreen(
     val state by viewModel.collectAsState()
     val context = LocalContext.current
 
-    val unreadNotificationStateUpdated = navController.previousBackStackEntry?.savedStateHandle?.getStateFlow(UNREAD_NOTIFICATION_STATE_UPDATE, false)
+    val unreadNotificationStateUpdated = navController.previousBackStackEntry?.savedStateHandle?.getStateFlow(UNREAD_NOTIFICATION_STATE_UPDATE, false)?.collectAsState()
 
     LaunchedEffect(unreadNotificationStateUpdated) {
-        viewModel.getNotificationCount()
+        if (unreadNotificationStateUpdated?.value == true) {
+            viewModel.getNotificationCount()
+        }
     }
 
     DisposableEffect(Unit) {
