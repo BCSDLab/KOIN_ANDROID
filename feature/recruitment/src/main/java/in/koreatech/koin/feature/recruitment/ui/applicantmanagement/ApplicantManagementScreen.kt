@@ -1,5 +1,9 @@
 package `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,12 +19,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,6 +35,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.notification.FirebaseMessagingType
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.ApplicantStatus
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
@@ -55,12 +62,30 @@ fun ApplicantManagementScreen(
     onApplicantChat: (Int) -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
+    val context = LocalContext.current
 
     val applicantUpdated = navController.previousBackStackEntry?.savedStateHandle?.getStateFlow(APPLICANT_STATE_UPDATE, false)?.collectAsState()
 
     LaunchedEffect(applicantUpdated) {
         if (applicantUpdated?.value == true) {
             viewModel.loadApplicants()
+        }
+    }
+
+    DisposableEffect(Unit) {
+        val receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                if (intent?.getStringExtra("NOTIFICATION_TYPE") == FirebaseMessagingType.TEAM_RECRUITMENT.name) {
+                    viewModel.loadApplicants()
+                }
+            }
+        }
+
+        val filter = IntentFilter("${context.packageName}.ACTION_NOTIFICAION_RECEIVED")
+        context.registerReceiver(receiver, filter, Context.RECEIVER_NOT_EXPORTED)
+
+        onDispose {
+            context.unregisterReceiver(receiver)
         }
     }
 
