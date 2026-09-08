@@ -3,7 +3,7 @@ package `in`.koreatech.koin.feature.recruitment.ui.notification
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.recruitment.DeleteAllNotificationsUseCase
-import `in`.koreatech.koin.domain.usecase.recruitment.GetNotificationsUseCase
+import `in`.koreatech.koin.domain.usecase.recruitment.GetRecruitmentNotificationsUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.ReadAllNotificationsUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.ReadNotificationUseCase
 import `in`.koreatech.koin.feature.recruitment.ui.notification.model.RecruitmentNotification
@@ -21,7 +21,7 @@ private const val NOTIFICATIONS_PAGE_SIZE = 20
 
 @HiltViewModel
 internal class RecruitmentNotificationViewModel @Inject constructor(
-    private val getNotificationsUseCase: GetNotificationsUseCase,
+    private val getRecruitmentNotificationsUseCase: GetRecruitmentNotificationsUseCase,
     private val deleteAllNotificationsUseCase: DeleteAllNotificationsUseCase,
     private val readNotificationUseCase: ReadNotificationUseCase,
     private val readAllNotificationsUseCase: ReadAllNotificationsUseCase
@@ -34,7 +34,7 @@ internal class RecruitmentNotificationViewModel @Inject constructor(
 
     private fun loadNotifications() = intent {
         reduce { state.copy(isLoading = true) }
-        getNotificationsUseCase(page = 1, limit = NOTIFICATIONS_PAGE_SIZE)
+        getRecruitmentNotificationsUseCase(page = 1, limit = NOTIFICATIONS_PAGE_SIZE)
             .onSuccess { notifications ->
                 reduce {
                     state.copy(
@@ -55,7 +55,7 @@ internal class RecruitmentNotificationViewModel @Inject constructor(
     fun loadMoreNotifications() = intent {
         if (state.isLoadingMore || state.currentPage >= state.totalPage) return@intent
         reduce { state.copy(isLoadingMore = true) }
-        getNotificationsUseCase(page = state.currentPage + 1, limit = NOTIFICATIONS_PAGE_SIZE)
+        getRecruitmentNotificationsUseCase(page = state.currentPage + 1, limit = NOTIFICATIONS_PAGE_SIZE)
             .onSuccess { notifications ->
                 reduce {
                     state.copy(
