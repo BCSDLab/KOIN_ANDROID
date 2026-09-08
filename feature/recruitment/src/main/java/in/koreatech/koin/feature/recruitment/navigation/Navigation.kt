@@ -136,6 +136,7 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     composable<RecruitmentNavType.ApplicantManagement> { backStackEntry ->
         val route = backStackEntry.toRoute<RecruitmentNavType.ApplicantManagement>()
         ApplicantManagementScreen(
+            navController = navController,
             onNavigateUp = { navController.navigateUp() },
             onChat = { chatRoomId ->
                 navController.navigate(
@@ -184,6 +185,7 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     }
     composable<RecruitmentNavType.ApplicantDetail> {
         ApplicantDetailScreen(
+            navController = navController,
             onNavigateUp = { navController.navigateUp() }
         )
     }
@@ -196,3 +198,4 @@ fun NavGraphBuilder.koinRecruitmentGraph(
 }
 
 const val UNREAD_NOTIFICATION_STATE_UPDATE = "unreadNotificationStateUpdate"
+const val APPLICANT_STATE_UPDATE = "applicantStateUpdate"

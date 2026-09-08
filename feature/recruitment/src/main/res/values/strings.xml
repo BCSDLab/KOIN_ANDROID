@@ -227,6 +227,7 @@
     <string name="recruitment_applicant_detail_available_time">활동 가능 시간</string>
     <string name="recruitment_applicant_detail_reject">거절하기</string>
     <string name="recruitment_applicant_detail_approve">승인하기</string>
+    <string name="recruitment_applicant_detail_error">오류가 발생했습니다.</string>
 
     <string name="recruitment_applicant_approve_dialog_title">해당 지원자를 승인하시겠어요?</string>
     <string name="recruitment_applicant_approve_dialog_message">승인 후 지원자와 채팅방이 생성됩니다.</string>

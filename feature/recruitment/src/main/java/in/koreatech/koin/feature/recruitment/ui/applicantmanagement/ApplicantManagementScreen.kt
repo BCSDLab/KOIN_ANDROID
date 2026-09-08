@@ -15,6 +15,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,11 +26,13 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.navigation.NavController
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.ApplicantStatus
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.navigation.APPLICANT_STATE_UPDATE
 import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.component.ApplicantListItem
 import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.component.ApplicantManagementEmptyState
 import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.component.ApplicantManagementPostCard
@@ -38,10 +42,12 @@ import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.Recruitmen
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ApplicantManagementScreen(
+    navController: NavController,
     viewModel: ApplicantManagementViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit = {},
     onChat: (chatRoomId: Int) -> Unit = {},
@@ -50,6 +56,14 @@ fun ApplicantManagementScreen(
     onMoreOptions: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
+
+    val applicantUpdated = navController.previousBackStackEntry?.savedStateHandle?.getStateFlow(APPLICANT_STATE_UPDATE, false)?.collectAsState()
+
+    LaunchedEffect(applicantUpdated) {
+        if (applicantUpdated?.value == true) {
+            viewModel.loadApplicants()
+        }
+    }
 
     Scaffold(
         containerColor = RebrandKoinTheme.colors.neutral50,
