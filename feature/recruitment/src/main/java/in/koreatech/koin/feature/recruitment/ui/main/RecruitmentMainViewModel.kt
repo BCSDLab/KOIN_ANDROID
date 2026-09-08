@@ -21,6 +21,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -43,6 +44,7 @@ class RecruitmentMainViewModel @Inject constructor(
     )
 
     private var searchJob: Job? = null
+    private val loadMoreMutex = Mutex()
 
     init {
         fetchRecruitments()
@@ -106,34 +108,39 @@ class RecruitmentMainViewModel @Inject constructor(
     }
 
     fun loadMoreRecruitments() = intent {
-        if (state.isLoadingMore || state.currentPage >= state.totalPage) return@intent
-        reduce { state.copy(isLoadingMore = true) }
-        val filter = state.filterState
-        getRecruitmentsUseCase(
-            keyword = state.searchValue.takeIf { it.isNotBlank() },
-            status = filter.selectedStatus?.apiValue,
-            categories = filter.selectedCategories
-                .takeIf { it.isNotEmpty() }
-                ?.map { it.apiValue },
-            meetingType = filter.selectedLocation?.apiValue,
-            sort = filter.selectedSort.apiValue,
-            page = state.currentPage + 1,
-            limit = RECRUITMENTS_PAGE_SIZE
-        ).onSuccess { recruitments ->
-            reduce {
-                state.copy(
-                    items = (
-                        state.items + recruitments.recruitments.map { it.toRecruitmentItemModel() }
-                        ).toImmutableList(),
-                    totalCount = recruitments.totalCount,
-                    currentPage = recruitments.currentPage,
-                    totalPage = recruitments.totalPage,
-                    isLoadingMore = false
-                )
+        if (!loadMoreMutex.tryLock()) return@intent
+        try {
+            if (state.currentPage >= state.totalPage) return@intent
+            reduce { state.copy(isLoadingMore = true) }
+            val filter = state.filterState
+            getRecruitmentsUseCase(
+                keyword = state.searchValue.takeIf { it.isNotBlank() },
+                status = filter.selectedStatus?.apiValue,
+                categories = filter.selectedCategories
+                    .takeIf { it.isNotEmpty() }
+                    ?.map { it.apiValue },
+                meetingType = filter.selectedLocation?.apiValue,
+                sort = filter.selectedSort.apiValue,
+                page = state.currentPage + 1,
+                limit = RECRUITMENTS_PAGE_SIZE
+            ).onSuccess { recruitments ->
+                reduce {
+                    state.copy(
+                        items = (
+                            state.items + recruitments.recruitments.map { it.toRecruitmentItemModel() }
+                            ).distinctBy { it.id }.toImmutableList(),
+                        totalCount = recruitments.totalCount,
+                        currentPage = recruitments.currentPage,
+                        totalPage = recruitments.totalPage,
+                        isLoadingMore = false
+                    )
+                }
+            }.onFailure {
+                reduce { state.copy(isLoadingMore = false) }
+                postSideEffect(RecruitmentMainSideEffect.ShowError)
             }
-        }.onFailure {
-            reduce { state.copy(isLoadingMore = false) }
-            postSideEffect(RecruitmentMainSideEffect.ShowError)
+        } finally {
+            loadMoreMutex.unlock()
         }
     }
 
