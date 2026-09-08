@@ -44,7 +44,7 @@ private fun String.toRecruitmentNotificationCategory(): RecruitmentNotificationC
     else -> RecruitmentNotificationCategory.MESSAGE
 }
 
-private val CREATED_AT_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+private val CREATED_AT_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
 
 private fun String.toDatetimeDiff(): String {
     val createdAt = LocalDateTime.parse(this, CREATED_AT_FORMATTER)
