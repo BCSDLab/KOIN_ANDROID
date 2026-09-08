@@ -54,7 +54,7 @@ fun ApplicantDetailScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
 
-    viewModel.collectSideEffect {  sideEffect ->
+    viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             ApplicantDetailSideEffect.ApplicantStateUpdated -> {
                 navController.previousBackStackEntry?.savedStateHandle?.set(APPLICANT_STATE_UPDATE, true)

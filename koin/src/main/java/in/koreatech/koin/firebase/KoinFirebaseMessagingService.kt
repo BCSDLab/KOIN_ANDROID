@@ -88,7 +88,7 @@ class KoinFirebaseMessagingService : FirebaseMessagingService() {
                     }
                 notifier.sendNotification(data, intent)
 
-                val broadcastIntent = Intent("${packageName}.ACTION_NOTIFICAION_RECEIVED").apply {
+                val broadcastIntent = Intent("$packageName.ACTION_NOTIFICAION_RECEIVED").apply {
                     putExtra("NOTIFICATION_TYPE", FirebaseMessagingType.toFirebaseMessagingType(type ?: "").name)
                     setPackage(packageName)
                 }
