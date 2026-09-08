@@ -73,6 +73,8 @@ class RecruitmentDetailViewModel @Inject constructor(
                         qualification = detail.qualification.orEmpty(),
                         createdAt = detail.createdAt.toRecruitmentDisplayDate(),
                         isAuthor = detail.isAuthor,
+                        canApply = detail.canApply,
+                        hasApplied = detail.application != null,
                         isLoading = false
                     )
                 }

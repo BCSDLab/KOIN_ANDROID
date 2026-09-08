@@ -29,6 +29,8 @@ data class RecruitmentDetailState(
     val preference: String = "",
     val createdAt: String = "",
     val isAuthor: Boolean = false,
+    val canApply: Boolean = true,
+    val hasApplied: Boolean = false,
     val isLoading: Boolean = false,
     val isMoreMenuVisible: Boolean = false,
     val isDeleteDialogVisible: Boolean = false,

@@ -178,6 +178,8 @@ private fun RecruitmentDetailScreenImpl(
             RecruitmentDetailBottomAction(
                 isAuthor = state.isAuthor,
                 isClosed = state.isClosed,
+                canApply = state.canApply,
+                hasApplied = state.hasApplied,
                 onApplyClick = onApplyClick,
                 onCheckApplicantsClick = onCheckApplicantsClick
             )
@@ -255,6 +257,8 @@ private fun RecruitmentDetailScreenImpl(
 private fun RecruitmentDetailBottomAction(
     isAuthor: Boolean,
     isClosed: Boolean,
+    canApply: Boolean,
+    hasApplied: Boolean,
     modifier: Modifier = Modifier,
     onApplyClick: () -> Unit = {},
     onCheckApplicantsClick: () -> Unit = {}
@@ -262,6 +266,7 @@ private fun RecruitmentDetailBottomAction(
     val textRes = when {
         isAuthor -> R.string.recruitment_action_check_applicants
         isClosed -> R.string.recruitment_action_recruitment_closed
+        hasApplied -> R.string.recruitment_action_already_applied
         else -> R.string.recruitment_action_apply
     }
     val colors = RebrandKoinTheme.colors
@@ -281,7 +286,7 @@ private fun RecruitmentDetailBottomAction(
             .height(48.dp),
         text = stringResource(textRes),
         onClick = { if (isAuthor) onCheckApplicantsClick() else onApplyClick() },
-        enabled = isAuthor || !isClosed,
+        enabled = isAuthor || (!isClosed && canApply && !hasApplied),
         textStyle = RebrandKoinTheme.typography.bold15,
         shape = RoundedCornerShape(16.dp),
         colors = buttonColors
