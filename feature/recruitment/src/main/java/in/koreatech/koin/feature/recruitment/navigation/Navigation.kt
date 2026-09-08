@@ -63,6 +63,7 @@ fun NavGraphBuilder.koinRecruitmentGraph(
         val context = LocalContext.current
 
         RecruitmentMainScreen(
+            navController = navController,
             onTopbarBackClick = {
                 if (!navController.popBackStack()) {
                     (context as? Activity)?.finish()
@@ -121,12 +122,16 @@ fun NavGraphBuilder.koinRecruitmentGraph(
             },
             onNavigateToMyAppliedRecruitment = {
                 navController.navigate(RecruitmentNavType.MyAppliedRecruitment)
+            },
+            onUnreadNotificationStateChanged = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(UNREAD_NOTIFICATION_STATE_UPDATE, true)
             }
         )
     }
     composable<RecruitmentNavType.ApplicantManagement> { backStackEntry ->
         val route = backStackEntry.toRoute<RecruitmentNavType.ApplicantManagement>()
         ApplicantManagementScreen(
+            navController = navController,
             onNavigateUp = { navController.navigateUp() },
             onChat = { chatRoomId ->
                 navController.navigate(
@@ -175,6 +180,7 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     }
     composable<RecruitmentNavType.ApplicantDetail> {
         ApplicantDetailScreen(
+            navController = navController,
             onNavigateUp = { navController.navigateUp() }
         )
     }
@@ -185,3 +191,6 @@ fun NavGraphBuilder.koinRecruitmentGraph(
         )
     }
 }
+
+const val UNREAD_NOTIFICATION_STATE_UPDATE = "unreadNotificationStateUpdate"
+const val APPLICANT_STATE_UPDATE = "applicantStateUpdate"
