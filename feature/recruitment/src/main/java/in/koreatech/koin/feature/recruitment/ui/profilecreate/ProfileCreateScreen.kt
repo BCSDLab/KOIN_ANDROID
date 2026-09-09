@@ -70,6 +70,7 @@ data class ProfileCreateStepTwoActions(
     val onSelfIntroductionChange: (String) -> Unit = {}
 )
 
+@Suppress("CyclomaticComplexMethod")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileCreateScreen(
