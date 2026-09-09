@@ -20,7 +20,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import org.orbitmvi.orbit.ContainerHost
@@ -44,7 +44,7 @@ class RecruitmentMainViewModel @Inject constructor(
     override val container = container<RecruitmentMainState, RecruitmentMainSideEffect>(
         RecruitmentMainState()
     ) {
-        getNotificationCount()
+        observeUserStatus()
     }
 
     private var searchJob: Job? = null
@@ -58,7 +58,20 @@ class RecruitmentMainViewModel @Inject constructor(
         fetchRecruitmentsSub()
     }
 
+    fun observeUserStatus() = intent {
+        getUserStatusUseCase().distinctUntilChanged().collect { user ->
+            val isLoggedIn = user !is User.Anonymous
+            reduce { state.copy(isLoggedIn = isLoggedIn) }
+            if (isLoggedIn) {
+                getNotificationCount()
+            } else {
+                reduce { state.copy(isUnreadNotificationAvailable = false) }
+            }
+        }
+    }
+
     fun getNotificationCount() = intent {
+        if (!state.isLoggedIn) return@intent
         getRecruitmentNotificationsUseCase(page = 1, limit = 1).onSuccess {
             if (it.unreadCount == 0) {
                 reduce { state.copy(isUnreadNotificationAvailable = false) }
@@ -103,11 +116,18 @@ class RecruitmentMainViewModel @Inject constructor(
     }
 
     fun onWriteClick() = intent {
-        val user = getUserStatusUseCase().first()
-        if (user is User.Anonymous) {
-            reduce { state.copy(isLoginRequiredDialogVisible = true) }
-        } else {
+        if (state.isLoggedIn) {
             postSideEffect(RecruitmentMainSideEffect.NavigateToWrite)
+        } else {
+            reduce { state.copy(isLoginRequiredDialogVisible = true) }
+        }
+    }
+
+    fun onNotificationClick() = intent {
+        if (state.isLoggedIn) {
+            postSideEffect(RecruitmentMainSideEffect.NavigateToNotification)
+        } else {
+            reduce { state.copy(isLoginRequiredDialogVisible = true) }
         }
     }
 
