@@ -77,12 +77,18 @@ fun NavGraphBuilder.koinRecruitmentGraph(
         val isRecruitmentCreated by entry.savedStateHandle
             .getStateFlow(IS_RECRUITMENT_CREATED, initialValue = false)
             .collectAsStateWithLifecycle()
+        val isRecruitmentModified by entry.savedStateHandle
+            .getStateFlow(IS_RECRUITMENT_MODIFIED, initialValue = false)
+            .collectAsStateWithLifecycle()
         val context = LocalContext.current
         val navigator = rememberNavigator()
 
         RecruitmentMainScreen(
             isRecruitmentCreated = isRecruitmentCreated,
             onResetRecruitmentCreated = { entry.savedStateHandle[IS_RECRUITMENT_CREATED] = false },
+            isRecruitmentModified = isRecruitmentModified,
+            onResetRecruitmentModified = { entry.savedStateHandle[IS_RECRUITMENT_MODIFIED] = false },
+            navController = navController,
             onTopbarBackClick = {
                 if (!navController.popBackStack()) {
                     (context as? Activity)?.finish()
@@ -163,12 +169,16 @@ fun NavGraphBuilder.koinRecruitmentGraph(
             },
             onNavigateToMyAppliedRecruitment = {
                 navController.navigate(RecruitmentNavType.MyAppliedRecruitment)
+            },
+            onUnreadNotificationStateChanged = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(UNREAD_NOTIFICATION_STATE_UPDATE, true)
             }
         )
     }
     composable<RecruitmentNavType.ApplicantManagement> { backStackEntry ->
         val route = backStackEntry.toRoute<RecruitmentNavType.ApplicantManagement>()
         ApplicantManagementScreen(
+            navController = navController,
             onNavigateUp = { navController.navigateUp() },
             onChat = { chatRoomId ->
                 navController.navigate(
@@ -225,6 +235,7 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     }
     composable<RecruitmentNavType.ApplicantDetail> {
         ApplicantDetailScreen(
+            navController = navController,
             onNavigateUp = { navController.navigateUp() }
         )
     }
@@ -236,11 +247,17 @@ fun NavGraphBuilder.koinRecruitmentGraph(
                     IS_RECRUITMENT_REFRESH_NEEDED,
                     true
                 )
+                navController.getBackStackEntry(RecruitmentNavType.RecruitmentMain)
+                    .savedStateHandle[IS_RECRUITMENT_MODIFIED] = true
                 navController.navigateUp()
             }
         )
     }
 }
 
+const val UNREAD_NOTIFICATION_STATE_UPDATE = "unreadNotificationStateUpdate"
+const val APPLICANT_STATE_UPDATE = "applicantStateUpdate"
+
+private const val IS_RECRUITMENT_MODIFIED = "isRecruitmentModified"
 private const val IS_RECRUITMENT_REFRESH_NEEDED = "isRecruitmentRefreshNeeded"
 private const val IS_RECRUITMENT_CREATED = "isRecruitmentCreated"

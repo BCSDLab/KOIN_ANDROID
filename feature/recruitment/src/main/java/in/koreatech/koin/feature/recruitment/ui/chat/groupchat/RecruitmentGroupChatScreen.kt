@@ -12,13 +12,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -28,7 +23,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -43,6 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -165,9 +160,15 @@ private fun RecruitmentGroupChatScreenImpl(
                 }
             )
         },
-        contentWindowInsets = ScaffoldDefaults.contentWindowInsets
-            .exclude(WindowInsets.navigationBars)
-            .exclude(WindowInsets.ime),
+        bottomBar = {
+            RecruitmentChatInput(
+                value = chatInputValue,
+                onValueChange = onChatInputValueChange,
+                onImageButtonClick = onImageButtonClick,
+                onSendClick = onSendClick,
+                enabled = !isLoading && !isReadOnly && !isUploadingImage
+            )
+        },
         containerColor = RebrandKoinTheme.colors.neutral0
     ) { contentPadding ->
         Column(
@@ -181,57 +182,44 @@ private fun RecruitmentGroupChatScreenImpl(
                 }
             }
 
-            Box(
+            LazyColumn(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
+                    .fillMaxSize()
+                    .background(RebrandKoinTheme.colors.neutral0),
+                state = scrollState,
+                reverseLayout = true,
+                verticalArrangement = Arrangement.Top
             ) {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(RebrandKoinTheme.colors.neutral0),
-                    state = scrollState,
-                    reverseLayout = true,
-                    verticalArrangement = Arrangement.Top
-                ) {
-                    messages.asReversed().forEach { group ->
-                        items(
-                            items = group.messages.asReversed(),
-                            key = { message -> message.id }
-                        ) { message ->
-                            RecruitmentChatMessageBubble(
-                                content = message.content,
-                                timestamp = message.timestamp,
-                                isSentByMe = message.isSentByMe,
-                                isImage = message.isImage,
-                                authorNickname = if (message.isFirstInGroup) message.authorNickname else null
-                            )
-                        }
-                        item(key = "date_${group.date}") {
-                            RecruitmentChatDateChip(date = group.date)
-                        }
+                messages.asReversed().forEach { group ->
+                    items(
+                        items = group.messages.asReversed(),
+                        key = { message -> message.id }
+                    ) { message ->
+                        RecruitmentChatMessageBubble(
+                            content = message.content,
+                            timestamp = message.timestamp,
+                            isSentByMe = message.isSentByMe,
+                            isImage = message.isImage,
+                            authorNickname = if (message.isFirstInGroup) message.authorNickname else null
+                        )
                     }
-                }
-
-                if (isLoading) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(RebrandKoinTheme.colors.neutral0),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
+                    item(key = "date_${group.date}") {
+                        RecruitmentChatDateChip(date = group.date)
                     }
                 }
             }
 
-            RecruitmentChatInput(
-                value = chatInputValue,
-                onValueChange = onChatInputValueChange,
-                onImageButtonClick = onImageButtonClick,
-                onSendClick = onSendClick,
-                enabled = !isLoading && !isReadOnly && !isUploadingImage
-            )
+            if (isLoading) {
+                Box(
+                    modifier = Modifier
+                        .zIndex(2f)
+                        .fillMaxSize()
+                        .background(RebrandKoinTheme.colors.neutral0),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
         }
     }
 }
