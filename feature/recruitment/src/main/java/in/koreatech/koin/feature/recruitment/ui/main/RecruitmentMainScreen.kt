@@ -26,6 +26,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -44,8 +45,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.navigation.NavController
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -57,6 +56,7 @@ import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentStatus
 import `in`.koreatech.koin.feature.recruitment.navigation.UNREAD_NOTIFICATION_STATE_UPDATE
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentConfirmDialog
 import `in`.koreatech.koin.feature.recruitment.ui.component.rememberRecruitmentPaginationListState
 import `in`.koreatech.koin.feature.recruitment.ui.main.component.RecruitmentAppliedFilterChipGroup
 import `in`.koreatech.koin.feature.recruitment.ui.main.component.RecruitmentChip
@@ -75,10 +75,15 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun RecruitmentMainScreen(
     navController: NavController,
     viewModel: RecruitmentMainViewModel = hiltViewModel(),
+    isRecruitmentCreated: Boolean = false,
+    onResetRecruitmentCreated: () -> Unit = {},
+    isRecruitmentModified: Boolean = false,
+    onResetRecruitmentModified: () -> Unit = {},
     onTopbarBackClick: () -> Unit = {},
     onNotificationClick: () -> Unit = {},
     onProfileClick: () -> Unit = {},
     onWriteClick: () -> Unit = {},
+    onNavigateToLogin: () -> Unit = {},
     onItemClick: (Int) -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
@@ -110,14 +115,26 @@ fun RecruitmentMainScreen(
         }
     }
 
-    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
-        viewModel.fetchRecruitments()
+    LaunchedEffect(isRecruitmentCreated) {
+        if (isRecruitmentCreated) {
+            viewModel.fetchRecruitments()
+            onResetRecruitmentCreated()
+        }
+    }
+
+    LaunchedEffect(isRecruitmentModified) {
+        if (isRecruitmentModified) {
+            viewModel.fetchRecruitments()
+            onResetRecruitmentModified()
+        }
     }
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             RecruitmentMainSideEffect.ShowError ->
                 ToastUtil.getInstance().makeShort(context.getString(R.string.recruitment_load_error))
+            RecruitmentMainSideEffect.NavigateToWrite -> onWriteClick()
+            RecruitmentMainSideEffect.NavigateToLogin -> onNavigateToLogin()
         }
     }
 
@@ -131,6 +148,17 @@ fun RecruitmentMainScreen(
             onReset = viewModel::resetPendingFilter,
             onApplyClick = viewModel::applyPendingFilter,
             onDismissRequest = { viewModel.updateFilterVisible(false) }
+        )
+    }
+
+    if (state.isLoginRequiredDialogVisible) {
+        RecruitmentConfirmDialog(
+            title = stringResource(R.string.recruitment_login_required_dialog_title),
+            message = stringResource(R.string.recruitment_login_required_dialog_message),
+            confirmText = stringResource(R.string.recruitment_login_required_dialog_confirm),
+            cancelText = stringResource(R.string.recruitment_login_required_dialog_cancel),
+            onDismiss = viewModel::dismissLoginRequiredDialog,
+            onConfirm = viewModel::confirmLoginRequiredDialog
         )
     }
 
@@ -153,7 +181,7 @@ fun RecruitmentMainScreen(
         onTopbarBackClick = onTopbarBackClick,
         onNotificationClick = onNotificationClick,
         onProfileClick = onProfileClick,
-        onWriteClick = onWriteClick,
+        onWriteClick = viewModel::onWriteClick,
         onItemClick = onItemClick
     )
 }
@@ -189,6 +217,9 @@ private fun RecruitmentMainScreenImpl(
                 title = stringResource(R.string.recruitment_top_bar_title),
                 textStyle = RebrandKoinTheme.typography.bold16,
                 onNavigationIconClick = onTopbarBackClick,
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = RebrandKoinTheme.colors.neutral50
+                ),
                 actions = {
                     Row(
                         modifier = Modifier.padding(end = 24.dp),

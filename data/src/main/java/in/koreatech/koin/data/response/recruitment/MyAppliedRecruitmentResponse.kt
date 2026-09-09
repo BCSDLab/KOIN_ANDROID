@@ -16,6 +16,6 @@ data class MyAppliedRecruitmentResponse(
     @SerializedName("team_chat_available") val teamChatAvailable: Boolean,
     @SerializedName("team_chat_room_id") val teamChatRoomId: Int?,
     @SerializedName("direct_chat_room_id") val directChatRoomId: Int?,
-    @SerializedName("role_name") val roleName: String,
+    @SerializedName("role") val role: TeamRecruitmentApplicationRoleResponse?,
     @SerializedName("recruitment") val recruitment: RecruitmentResponse
 )

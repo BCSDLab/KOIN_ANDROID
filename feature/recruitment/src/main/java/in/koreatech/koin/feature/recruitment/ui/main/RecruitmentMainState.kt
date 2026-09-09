@@ -18,5 +18,6 @@ data class RecruitmentMainState(
     val filterState: RecruitmentFilterState = RecruitmentFilterState(),
     val pendingFilterState: RecruitmentFilterState = RecruitmentFilterState(),
     val isFilterVisible: Boolean = false,
-    val isUnreadNotificationAvailable: Boolean = false
+    val isUnreadNotificationAvailable: Boolean = false,
+    val isLoginRequiredDialogVisible: Boolean = false
 )
