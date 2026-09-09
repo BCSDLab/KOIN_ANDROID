@@ -107,6 +107,7 @@ class RecruitmentDetailViewModel @Inject constructor(
     }
 
     fun onApplyClick() = intent {
+        if (!state.canApply || state.hasApplied) return@intent
         val user = getUserStatusUseCase().first()
         if (user is User.Anonymous) {
             reduce { state.copy(isLoginRequiredDialogVisible = true) }

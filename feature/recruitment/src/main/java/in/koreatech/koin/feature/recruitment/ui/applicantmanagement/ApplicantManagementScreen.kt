@@ -1,5 +1,9 @@
 package `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,26 +13,29 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.navigation.NavController
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.notification.FirebaseMessagingType
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.ApplicantStatus
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.navigation.APPLICANT_STATE_UPDATE
 import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.component.ApplicantListItem
 import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.component.ApplicantManagementEmptyState
 import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.component.ApplicantManagementPostCard
@@ -42,33 +49,52 @@ import org.orbitmvi.orbit.compose.collectAsState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ApplicantManagementScreen(
+    navController: NavController,
     viewModel: ApplicantManagementViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit = {},
     onChat: (chatRoomId: Int) -> Unit = {},
     onApplicantDetail: (Int) -> Unit = {},
-    onApplicantChat: (Int) -> Unit = {},
-    onMoreOptions: () -> Unit = {}
+    onApplicantChat: (Int) -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
+    val context = LocalContext.current
+
+    val applicantUpdated = navController.previousBackStackEntry?.savedStateHandle?.getStateFlow(APPLICANT_STATE_UPDATE, false)?.collectAsState()
+
+    LaunchedEffect(applicantUpdated?.value) {
+        if (applicantUpdated?.value == true) {
+            viewModel.loadApplicants()
+            navController.previousBackStackEntry?.savedStateHandle?.set(APPLICANT_STATE_UPDATE, false)
+        }
+    }
+
+    DisposableEffect(Unit) {
+        val receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                if (intent?.getStringExtra("NOTIFICATION_TYPE") == FirebaseMessagingType.TEAM_RECRUITMENT.name) {
+                    viewModel.loadApplicants()
+                }
+            }
+        }
+
+        val filter = IntentFilter("${context.packageName}.ACTION_NOTIFICAION_RECEIVED")
+        context.registerReceiver(receiver, filter, Context.RECEIVER_NOT_EXPORTED)
+
+        onDispose {
+            context.unregisterReceiver(receiver)
+        }
+    }
 
     Scaffold(
         containerColor = RebrandKoinTheme.colors.neutral50,
         topBar = {
             KoinTopAppBar(
                 title = stringResource(R.string.recruitment_applicant_management_title),
+                textStyle = RebrandKoinTheme.typography.bold16,
                 onNavigationIconClick = onNavigateUp,
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = RebrandKoinTheme.colors.neutral50
-                ),
-                actions = {
-                    IconButton(onClick = onMoreOptions) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_uim_process),
-                            contentDescription = null,
-                            tint = RebrandKoinTheme.colors.neutral700
-                        )
-                    }
-                }
+                )
             )
         }
     ) { innerPadding ->
