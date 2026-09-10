@@ -4,8 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.recruitment.DeleteRecruitmentUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.GetRecruitmentDetailUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRoleModel
@@ -15,6 +17,7 @@ import `in`.koreatech.koin.feature.recruitment.model.toRecruitmentDisplayDate
 import `in`.koreatech.koin.feature.recruitment.navigation.RecruitmentNavType
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.first
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -26,7 +29,8 @@ import org.orbitmvi.orbit.viewmodel.container
 class RecruitmentDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getRecruitmentDetailUseCase: GetRecruitmentDetailUseCase,
-    private val deleteRecruitmentUseCase: DeleteRecruitmentUseCase
+    private val deleteRecruitmentUseCase: DeleteRecruitmentUseCase,
+    private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<RecruitmentDetailState, RecruitmentDetailSideEffect> {
 
     private val postId =
@@ -98,5 +102,23 @@ class RecruitmentDetailViewModel @Inject constructor(
 
     fun updateDeleteDialogVisible(visible: Boolean) = blockingIntent {
         reduce { state.copy(isDeleteDialogVisible = visible, isMoreMenuVisible = false) }
+    }
+
+    fun onApplyClick() = intent {
+        val user = getUserStatusUseCase().first()
+        if (user is User.Anonymous) {
+            reduce { state.copy(isLoginRequiredDialogVisible = true) }
+        } else {
+            postSideEffect(RecruitmentDetailSideEffect.NavigateToApply)
+        }
+    }
+
+    fun dismissLoginRequiredDialog() = blockingIntent {
+        reduce { state.copy(isLoginRequiredDialogVisible = false) }
+    }
+
+    fun confirmLoginRequiredDialog() = intent {
+        reduce { state.copy(isLoginRequiredDialogVisible = false) }
+        postSideEffect(RecruitmentDetailSideEffect.NavigateToLogin)
     }
 }

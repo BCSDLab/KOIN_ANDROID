@@ -12,19 +12,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,8 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
-import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -41,9 +38,11 @@ import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentProgressType
 import `in`.koreatech.koin.feature.recruitment.model.StableLocalDate
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentConfirmDialog
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDatePickerDialog
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDateSelectBox
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDropdown
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentFilledActionButton
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentTextField
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentmodify.component.RecruitmentAddRoleButton
 import `in`.koreatech.koin.feature.recruitment.ui.recruitmentmodify.component.RecruitmentParticipantCountRow
@@ -96,7 +95,10 @@ fun RecruitmentModifyScreen(
         topBar = {
             KoinTopAppBar(
                 title = stringResource(R.string.recruitment_modify_title),
-                onNavigationIconClick = viewModel::showCancelConfirmDialog
+                onNavigationIconClick = viewModel::showCancelConfirmDialog,
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = RebrandKoinTheme.colors.neutral50
+                )
             )
         },
         contentWindowInsets = WindowInsets.systemBars
@@ -215,9 +217,8 @@ private fun RecruitmentModifyScreenImpl(
     }
 
     if (state.showSubmitConfirmDialog) {
-        ChoiceDialog(
+        RecruitmentConfirmDialog(
             title = stringResource(R.string.recruitment_modify_submit_dialog_title),
-            description = "",
             positiveButtonText = stringResource(R.string.recruitment_modify_submit_dialog_confirm),
             negativeButtonText = stringResource(R.string.recruitment_modify_submit_dialog_cancel),
             onPositive = onConfirmSubmit,
@@ -226,7 +227,7 @@ private fun RecruitmentModifyScreenImpl(
     }
 
     if (state.showCancelConfirmDialog) {
-        ChoiceDialog(
+        RecruitmentConfirmDialog(
             title = stringResource(R.string.recruitment_modify_cancel_dialog_title),
             description = stringResource(R.string.recruitment_modify_cancel_dialog_description),
             positiveButtonText = stringResource(R.string.recruitment_modify_dialog_yes),
@@ -461,13 +462,10 @@ private fun RecruitmentModifyScreenImpl(
             )
         }
 
-        FilledButton(
+        RecruitmentFilledActionButton(
             text = stringResource(R.string.recruitment_modify_submit),
             enabled = state.isSubmitEnabled && !state.isSubmitting,
-            onClick = onSubmitClick,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(16.dp))
+            onClick = onSubmitClick
         )
     }
 }

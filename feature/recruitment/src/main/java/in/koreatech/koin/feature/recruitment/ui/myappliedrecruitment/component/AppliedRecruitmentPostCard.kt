@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -14,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
@@ -45,7 +45,8 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun AppliedRecruitmentPostCard(
     post: AppliedRecruitmentPost,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onChatClick: () -> Unit = {}
 ) {
     val isApproved = remember(post.applicationStatus) { post.applicationStatus is AppliedRecruitmentStatus.Approved }
 
@@ -113,19 +114,23 @@ fun AppliedRecruitmentPostCard(
                 )
                 if (isApproved) {
                     Spacer(modifier = Modifier.weight(1f))
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_chat),
-                        contentDescription = null,
-                        tint = RebrandKoinTheme.colors.primary500,
-                        modifier = Modifier
-                            .size(24.dp)
-                            .clickable {
-                                EventLogger.logCampusClickEvent(
-                                    AnalyticsConstant.Label.TeamRecruitment.APPLIED_POST_CHAT,
-                                    post.title
-                                )
-                            }
-                    )
+                    IconButton(
+                        onClick = {
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.TeamRecruitment.APPLIED_POST_CHAT,
+                                post.title
+                            )
+                            onChatClick()
+                        },
+                        modifier = Modifier.size(36.dp)
+                    ) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_chat),
+                            contentDescription = null,
+                            tint = RebrandKoinTheme.colors.primary500,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
                 }
             }
         }
@@ -166,6 +171,7 @@ private fun AppliedPostCardApprovedPreview() {
         AppliedRecruitmentPostCard(
             post = AppliedRecruitmentPost(
                 id = 1,
+                recruitmentId = 17,
                 category = RecruitmentCategory.CONTEST,
                 applicationStatus = AppliedRecruitmentStatus.Approved,
                 daysLeft = 5,
@@ -177,9 +183,11 @@ private fun AppliedPostCardApprovedPreview() {
                 location = "온라인",
                 dateRange = PREVIEW_DATE_RANGE,
                 currentApplicants = 2,
-                maxApplicants = 3
+                maxApplicants = 3,
+                teamChatRoomId = 31
             ),
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp),
+            onChatClick = {}
         )
     }
 }
@@ -191,6 +199,7 @@ private fun AppliedPostCardPendingPreview() {
         AppliedRecruitmentPostCard(
             post = AppliedRecruitmentPost(
                 id = 2,
+                recruitmentId = 18,
                 category = RecruitmentCategory.STUDY,
                 applicationStatus = AppliedRecruitmentStatus.Pending,
                 daysLeft = 3,
@@ -212,6 +221,7 @@ private fun AppliedPostCardRejectedPreview() {
         AppliedRecruitmentPostCard(
             post = AppliedRecruitmentPost(
                 id = 3,
+                recruitmentId = 19,
                 category = RecruitmentCategory.EXTERNAL_ACTIVITY,
                 applicationStatus = AppliedRecruitmentStatus.Rejected,
                 daysLeft = null,

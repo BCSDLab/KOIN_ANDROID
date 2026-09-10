@@ -18,6 +18,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -80,7 +81,10 @@ fun RecruitmentCreateScreen(
         topBar = {
             KoinTopAppBar(
                 title = stringResource(R.string.recruitment_create_title),
-                onNavigationIconClick = viewModel::showCancelConfirmDialog
+                onNavigationIconClick = viewModel::showCancelConfirmDialog,
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = RebrandKoinTheme.colors.neutral50
+                )
             )
         },
         contentWindowInsets = WindowInsets.systemBars

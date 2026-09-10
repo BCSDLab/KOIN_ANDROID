@@ -49,7 +49,9 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun MyAppliedRecruitmentScreen(
     viewModel: MyAppliedRecruitmentViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit = {},
-    onNavigateToLogin: () -> Unit = {}
+    onNavigateToLogin: () -> Unit = {},
+    onNavigateToMain: () -> Unit = {},
+    onNavigateToGroupChat: (recruitmentId: Int, chatRoomId: Int) -> Unit = { _, _ -> }
 ) {
     val state by viewModel.collectAsState()
 
@@ -80,6 +82,8 @@ fun MyAppliedRecruitmentScreen(
                 EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.APPLIED_POST_FILTER, "필터")
                 viewModel.showFilterSheet()
             },
+            onNavigateToMain = onNavigateToMain,
+            onNavigateToGroupChat = onNavigateToGroupChat,
             modifier = Modifier.padding(innerPadding)
         )
     }
@@ -100,7 +104,9 @@ private fun MyAppliedRecruitmentScreenImpl(
     isLoadingMore: Boolean = false,
     hasMore: Boolean = false,
     onLoadMore: () -> Unit = {},
-    onFilter: () -> Unit = {}
+    onFilter: () -> Unit = {},
+    onNavigateToMain: () -> Unit = {},
+    onNavigateToGroupChat: (recruitmentId: Int, chatRoomId: Int) -> Unit = { _, _ -> }
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         Row(
@@ -125,7 +131,9 @@ private fun MyAppliedRecruitmentScreenImpl(
             ) {
                 RecruitmentEmptyState(
                     title = stringResource(R.string.recruitment_applied_empty_title),
-                    subtitle = stringResource(R.string.recruitment_applied_empty_subtitle)
+                    subtitle = stringResource(R.string.recruitment_applied_empty_subtitle),
+                    buttonText = stringResource(R.string.recruitment_applied_empty_button),
+                    onButtonClick = onNavigateToMain
                 )
             }
         } else {
@@ -142,7 +150,14 @@ private fun MyAppliedRecruitmentScreenImpl(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(posts, key = { it.id }) { post ->
-                    AppliedRecruitmentPostCard(post = post)
+                    AppliedRecruitmentPostCard(
+                        post = post,
+                        onChatClick = {
+                            post.teamChatRoomId?.let { chatRoomId ->
+                                onNavigateToGroupChat(post.recruitmentId, chatRoomId)
+                            }
+                        }
+                    )
                 }
                 if (isLoadingMore) {
                     item {
@@ -171,6 +186,7 @@ private fun MyAppliedRecruitmentScreenWithPostsPreview() {
             posts = persistentListOf(
                 AppliedRecruitmentPost(
                     id = 1,
+                    recruitmentId = 17,
                     category = RecruitmentCategory.CONTEST,
                     applicationStatus = AppliedRecruitmentStatus.Approved,
                     daysLeft = 5,
@@ -182,10 +198,12 @@ private fun MyAppliedRecruitmentScreenWithPostsPreview() {
                     location = "온라인",
                     dateRange = PREVIEW_DATE_RANGE,
                     currentApplicants = 2,
-                    maxApplicants = 3
+                    maxApplicants = 3,
+                    teamChatRoomId = 31
                 ),
                 AppliedRecruitmentPost(
                     id = 2,
+                    recruitmentId = 18,
                     category = RecruitmentCategory.STUDY,
                     applicationStatus = AppliedRecruitmentStatus.Pending,
                     daysLeft = 3,
@@ -197,6 +215,7 @@ private fun MyAppliedRecruitmentScreenWithPostsPreview() {
                 ),
                 AppliedRecruitmentPost(
                     id = 3,
+                    recruitmentId = 19,
                     category = RecruitmentCategory.EXTERNAL_ACTIVITY,
                     applicationStatus = AppliedRecruitmentStatus.Rejected,
                     daysLeft = null,
@@ -206,7 +225,8 @@ private fun MyAppliedRecruitmentScreenWithPostsPreview() {
                     currentApplicants = 5,
                     maxApplicants = 5
                 )
-            )
+            ),
+            onNavigateToGroupChat = { _, _ -> }
         )
     }
 }
@@ -215,6 +235,6 @@ private fun MyAppliedRecruitmentScreenWithPostsPreview() {
 @Composable
 private fun MyAppliedRecruitmentScreenEmptyPreview() {
     RebrandKoinTheme {
-        MyAppliedRecruitmentScreenImpl(posts = persistentListOf())
+        MyAppliedRecruitmentScreenImpl(posts = persistentListOf(), onNavigateToMain = {})
     }
 }
