@@ -223,12 +223,11 @@ class RecruitmentApplyViewModel @Inject constructor(
     }
 
     fun submitApplication() = intent {
-        val role = state.selectedRole ?: return@intent
         reduce { state.copy(isSubmitting = true, showSubmitConfirmDialog = false, errorMessage = null) }
 
         applyTeamRecruitmentUseCase(
             recruitmentId = state.recruitmentId,
-            roleId = role.id,
+            roleId = state.selectedRole?.id,
             motivation = state.motivation,
             availability = state.availableTime
         ).onSuccess {

@@ -138,7 +138,9 @@ class ProfileCreateViewModel @Inject constructor(
     }
 
     fun setStudentId(studentId: String) = intent {
-        reduce { state.copy(studentId = studentId) }
+        if (studentId.isEmpty() || studentId.all { it.isDigit() }) {
+            reduce { state.copy(studentId = studentId) }
+        }
     }
 
     fun setPreferredRole(role: String) = intent {

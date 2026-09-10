@@ -255,7 +255,7 @@ class RecruitmentRepositoryImpl @Inject constructor(
 
     override suspend fun applyTeamRecruitment(
         recruitmentId: Int,
-        roleId: Int,
+        roleId: Int?,
         motivation: String,
         availability: String
     ): Result<TeamRecruitmentApplication> {
