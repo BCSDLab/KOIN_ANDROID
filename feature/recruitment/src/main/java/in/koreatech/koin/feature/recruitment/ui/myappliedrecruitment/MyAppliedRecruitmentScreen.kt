@@ -25,6 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
@@ -76,7 +78,10 @@ fun MyAppliedRecruitmentScreen(
             isLoadingMore = state.isLoadingMore,
             hasMore = state.currentPage < state.totalPage,
             onLoadMore = viewModel::loadMoreMyAppliedRecruitments,
-            onFilter = { viewModel.showFilterSheet() },
+            onFilter = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.APPLIED_POST_FILTER, "필터")
+                viewModel.showFilterSheet()
+            },
             onNavigateToMain = onNavigateToMain,
             onNavigateToGroupChat = onNavigateToGroupChat,
             modifier = Modifier.padding(innerPadding)

@@ -10,6 +10,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.ui.component.FilterSection
@@ -54,21 +56,37 @@ fun RecruitmentFilterBottomSheet(
     RecruitmentFilterBottomSheetLayout(
         onDismiss = onDismiss,
         onReset = {
+            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_FILTER_RESET, "초기화")
             localStatus = RecruitmentFilterStatus.ALL
             localSort = RecruitmentFilterSort.LATEST
         },
-        onApply = { onApply(RecruitmentFilterState(status = localStatus, sort = localSort)) }
+        onApply = {
+            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_FILTER_APPLY, "적용하기")
+            onApply(RecruitmentFilterState(status = localStatus, sort = localSort))
+        }
     ) {
         FilterSection(
             title = stringResource(R.string.recruitment_filter_status),
             chips = statusChips,
-            onChipClick = { index -> localStatus = statusOrder[index].first }
+            onChipClick = { index ->
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_FILTER_STATUS,
+                    statusOrder[index].second
+                )
+                localStatus = statusOrder[index].first
+            }
         )
 
         FilterSection(
             title = stringResource(R.string.recruitment_filter_sort),
             chips = sortChips,
-            onChipClick = { index -> localSort = sortOrder[index].first }
+            onChipClick = { index ->
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_FILTER_SORT,
+                    sortOrder[index].second
+                )
+                localSort = sortOrder[index].first
+            }
         )
     }
 }

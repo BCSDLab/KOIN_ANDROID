@@ -3,6 +3,8 @@ package `in`.koreatech.koin.feature.recruitment.ui.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.recruitment.GetRecruitmentNotificationsUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.GetRecruitmentsUseCase
@@ -155,6 +157,7 @@ class RecruitmentMainViewModel @Inject constructor(
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(SEARCH_DEBOUNCE_MILLIS)
+            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.SEARCH, query)
             fetchRecruitments()
         }
     }

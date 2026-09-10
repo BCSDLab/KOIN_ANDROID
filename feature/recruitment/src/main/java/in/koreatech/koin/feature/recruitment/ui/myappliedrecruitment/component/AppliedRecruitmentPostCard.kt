@@ -28,6 +28,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
@@ -113,7 +115,13 @@ fun AppliedRecruitmentPostCard(
                 if (isApproved) {
                     Spacer(modifier = Modifier.weight(1f))
                     IconButton(
-                        onClick = onChatClick,
+                        onClick = {
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.TeamRecruitment.APPLIED_POST_CHAT,
+                                post.title
+                            )
+                            onChatClick()
+                        },
                         modifier = Modifier.size(36.dp)
                     ) {
                         Icon(

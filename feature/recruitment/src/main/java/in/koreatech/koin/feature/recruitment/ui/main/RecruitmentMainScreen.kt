@@ -46,6 +46,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -236,7 +238,13 @@ private fun RecruitmentMainScreenImpl(
                             tint = Color.Unspecified,
                             modifier = Modifier
                                 .size(24.dp)
-                                .noRippleClickable(onClick = onNotificationClick)
+                                .noRippleClickable(onClick = {
+                                    EventLogger.logCampusClickEvent(
+                                        AnalyticsConstant.Label.TeamRecruitment.NOTIFICATION,
+                                        "알림"
+                                    )
+                                    onNotificationClick()
+                                })
                         )
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_user_bold),
@@ -244,7 +252,13 @@ private fun RecruitmentMainScreenImpl(
                             tint = RebrandKoinTheme.colors.neutral700,
                             modifier = Modifier
                                 .size(24.dp)
-                                .noRippleClickable(onClick = onProfileClick)
+                                .noRippleClickable(onClick = {
+                                    EventLogger.logCampusClickEvent(
+                                        AnalyticsConstant.Label.TeamRecruitment.PROFILE,
+                                        "프로필"
+                                    )
+                                    onProfileClick()
+                                })
                         )
                     }
                 }
@@ -264,7 +278,10 @@ private fun RecruitmentMainScreenImpl(
                 trailingIconSize = 22.dp,
                 trailingIconTint = Color.Unspecified,
                 trailingIcon = ImageVector.vectorResource(R.drawable.ic_recruitment_edit),
-                onClick = onWriteClick
+                onClick = {
+                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.RECRUIT, "모집하기")
+                    onWriteClick()
+                }
             )
         },
         containerColor = RebrandKoinTheme.colors.neutral50
@@ -300,7 +317,10 @@ private fun RecruitmentMainScreenImpl(
                         trailingIconSize = 21.dp,
                         trailingIconTint = Color.Unspecified,
                         trailingIcon = ImageVector.vectorResource(R.drawable.ic_recruitment_filter),
-                        onClick = onFilterClick
+                        onClick = {
+                            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.FILTER, "필터")
+                            onFilterClick()
+                        }
                     )
                 }
                 if (filterState.hasVisibleChips) {
@@ -362,7 +382,13 @@ private fun RecruitmentMainScreenImpl(
                             RecruitmentMainItem(
                                 modifier = Modifier.animateItem(),
                                 item = item,
-                                onClick = { onItemClick(item.id) }
+                                onClick = {
+                                    EventLogger.logCampusClickEvent(
+                                        AnalyticsConstant.Label.TeamRecruitment.POST_SELECT,
+                                        item.title
+                                    )
+                                    onItemClick(item.id)
+                                }
                             )
                         }
                         if (isLoadingMore) {

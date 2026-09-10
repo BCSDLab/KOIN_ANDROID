@@ -31,6 +31,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
@@ -98,19 +100,43 @@ fun RecruitmentApplyScreen(
 
     val stepOneActions = remember {
         RecruitmentApplyStepOneActions(
-            onLoadMemberInfoClick = { viewModel.loadMemberInfo() },
+            onLoadMemberInfoClick = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.TeamRecruitment.APPLY_LOAD,
+                    "회원정보 불러오기"
+                )
+                viewModel.loadMemberInfo()
+            },
             onNicknameChange = { viewModel.setNickname(it) },
             onDepartmentDropdownExpandChange = { viewModel.setDepartmentDropdownExpanded(it) },
-            onDepartmentSelected = { viewModel.setDepartment(it) },
+            onDepartmentSelected = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.APPLY_MAJOR_SELECT, it)
+                viewModel.setDepartment(it)
+            },
             onStudentIdChange = { viewModel.setStudentId(it) },
-            onAddSkillClick = { viewModel.addSkill() },
+            onAddSkillClick = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.APPLY_SKILL_ADD, "기술 / 자격증 추가")
+                viewModel.addSkill()
+            },
             onSkillTextChange = { id, text -> viewModel.setSkillText(id, text) },
             onSkillRemoved = { viewModel.removeSkill(it) },
-            onAddActivityClick = { viewModel.showActivityAddForm() },
-            onEditActivityClick = { viewModel.showActivityEditForm(it) },
+            onAddActivityClick = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.APPLY_ACTIVITY_ADD, "활동 이력 추가")
+                viewModel.showActivityAddForm()
+            },
+            onEditActivityClick = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.APPLY_ACTIVITY_MODIFY, "수정")
+                viewModel.showActivityEditForm(it)
+            },
             onCancelActivityForm = { viewModel.hideActivityForm() },
             onActivityAdded = { viewModel.addActivity(it) },
-            onActivityEdited = { viewModel.editActivity(it) },
+            onActivityEdited = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.TeamRecruitment.APPLY_ACTIVITY_MODIFY_COMPLETE,
+                    "수정하기"
+                )
+                viewModel.editActivity(it)
+            },
             onActivityRemoved = { viewModel.removeActivity(it) },
             onSelfIntroductionChange = { viewModel.setSelfIntroduction(it) }
         )
@@ -118,7 +144,10 @@ fun RecruitmentApplyScreen(
 
     val stepTwoActions = remember {
         RecruitmentApplyStepTwoActions(
-            onRoleSelected = { viewModel.selectRole(it) },
+            onRoleSelected = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.APPLY_ROLE_SELECT, it.name)
+                viewModel.selectRole(it)
+            },
             onMotivationChange = { viewModel.setMotivation(it) },
             onAvailableTimeChange = { viewModel.setAvailableTime(it) }
         )
@@ -142,10 +171,22 @@ fun RecruitmentApplyScreen(
             modifier = Modifier.padding(contentPadding),
             stepOneActions = stepOneActions,
             stepTwoActions = stepTwoActions,
-            onNextStepClick = { viewModel.goToNextStep() },
-            onSubmitClick = { viewModel.showSubmitConfirmDialog() },
-            onDismissSubmitConfirmDialog = { viewModel.dismissSubmitConfirmDialog() },
-            onConfirmSubmit = { viewModel.submitApplication() },
+            onNextStepClick = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.APPLY_NEXT, "다음")
+                viewModel.goToNextStep()
+            },
+            onSubmitClick = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.APPLY_SUBMIT, "지원하기")
+                viewModel.showSubmitConfirmDialog()
+            },
+            onDismissSubmitConfirmDialog = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.APPLY_SUBMIT_CANCEL, "취소하기")
+                viewModel.dismissSubmitConfirmDialog()
+            },
+            onConfirmSubmit = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.APPLY_SUBMIT_CONFIRM, "지원하기")
+                viewModel.submitApplication()
+            },
             onDismissCancelConfirmDialog = { viewModel.dismissCancelConfirmDialog() },
             onConfirmCancel = { viewModel.confirmCancel() }
         )

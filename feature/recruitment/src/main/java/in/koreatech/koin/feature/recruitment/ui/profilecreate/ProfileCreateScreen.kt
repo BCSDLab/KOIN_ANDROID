@@ -23,6 +23,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
@@ -68,6 +70,7 @@ data class ProfileCreateStepTwoActions(
     val onSelfIntroductionChange: (String) -> Unit = {}
 )
 
+@Suppress("CyclomaticComplexMethod")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileCreateScreen(
@@ -86,27 +89,76 @@ fun ProfileCreateScreen(
         }
     }
 
-    val stepOneActions = remember {
+    val isEditMode = state.isEditMode
+    val labels = AnalyticsConstant.Label.TeamRecruitment
+
+    val stepOneActions = remember(isEditMode) {
         ProfileCreateStepOneActions(
-            onLoadMemberInfoClick = { viewModel.loadMemberInfo() },
+            onLoadMemberInfoClick = {
+                EventLogger.logCampusClickEvent(
+                    if (isEditMode) labels.PROFILE_MODIFY_LOAD else labels.PROFILE_CREATE_LOAD,
+                    "회원정보 불러오기"
+                )
+                viewModel.loadMemberInfo()
+            },
             onNicknameChange = { viewModel.setNickname(it) },
             onDepartmentDropdownExpandChange = { viewModel.setDepartmentDropdownExpanded(it) },
-            onDepartmentSelected = { viewModel.setDepartment(it) },
+            onDepartmentSelected = {
+                EventLogger.logCampusClickEvent(
+                    if (isEditMode) labels.PROFILE_MODIFY_MAJOR_SELECT else labels.PROFILE_CREATE_MAJOR,
+                    it
+                )
+                viewModel.setDepartment(it)
+            },
             onStudentIdChange = { viewModel.setStudentId(it) }
         )
     }
 
-    val stepTwoActions = remember {
+    val stepTwoActions = remember(isEditMode) {
         ProfileCreateStepTwoActions(
             onPreferredRoleChange = { viewModel.setPreferredRole(it) },
-            onAddSkillClick = { viewModel.addSkill() },
+            onAddSkillClick = {
+                EventLogger.logCampusClickEvent(
+                    if (isEditMode) labels.PROFILE_MODIFY_SKILL_ADD else labels.PROFILE_CREATE_SKILL_ADD,
+                    "기술 / 자격증 추가"
+                )
+                viewModel.addSkill()
+            },
             onSkillTextChange = { id, text -> viewModel.setSkillText(id, text) },
             onSkillRemoved = { viewModel.removeSkill(it) },
-            onAddActivityClick = { viewModel.showActivityAddForm() },
-            onEditActivityClick = { viewModel.showActivityEditForm(it) },
+            onAddActivityClick = {
+                EventLogger.logCampusClickEvent(
+                    if (isEditMode) labels.PROFILE_MODIFY_ACTIVITY_ADD else labels.PROFILE_CREATE_ACTIVITY_ADD,
+                    "활동 이력 추가"
+                )
+                viewModel.showActivityAddForm()
+            },
+            onEditActivityClick = {
+                EventLogger.logCampusClickEvent(
+                    if (isEditMode) labels.PROFILE_MODIFY_ACTIVITY_MODIFY else labels.PROFILE_CREATE_ACTIVITY_MODIFY,
+                    "수정"
+                )
+                viewModel.showActivityEditForm(it)
+            },
             onCancelActivityForm = { viewModel.hideActivityForm() },
-            onActivityAdded = { viewModel.addActivity(it) },
-            onActivityEdited = { viewModel.editActivity(it) },
+            onActivityAdded = {
+                EventLogger.logCampusClickEvent(
+                    if (isEditMode) labels.PROFILE_MODIFY_ACTIVITY_COMPLETE else labels.PROFILE_CREATE_ACTIVITY_ADD_COMPLETE,
+                    "완료"
+                )
+                viewModel.addActivity(it)
+            },
+            onActivityEdited = {
+                EventLogger.logCampusClickEvent(
+                    if (isEditMode) {
+                        labels.PROFILE_MODIFY_ACTIVITY_MODIFY_COMPLETE
+                    } else {
+                        labels.PROFILE_CREATE_ACTIVITY_MODIFY_COMPLETE
+                    },
+                    "수정하기"
+                )
+                viewModel.editActivity(it)
+            },
             onActivityRemoved = { viewModel.removeActivity(it) },
             onSelfIntroductionChange = { viewModel.setSelfIntroduction(it) }
         )
@@ -134,11 +186,35 @@ fun ProfileCreateScreen(
             modifier = Modifier.padding(contentPadding),
             stepOneActions = stepOneActions,
             stepTwoActions = stepTwoActions,
-            onNextStepClick = { viewModel.goToNextStep() },
+            onNextStepClick = {
+                EventLogger.logCampusClickEvent(
+                    if (isEditMode) labels.PROFILE_MODIFY_NEXT else labels.PROFILE_CREATE_NEXT,
+                    "다음"
+                )
+                viewModel.goToNextStep()
+            },
             onPreviousStepClick = { viewModel.goToPreviousStep() },
-            onSaveClick = { viewModel.showSaveConfirmDialog() },
-            onDismissSaveConfirmDialog = { viewModel.dismissSaveConfirmDialog() },
-            onConfirmSave = { viewModel.saveProfile() },
+            onSaveClick = {
+                EventLogger.logCampusClickEvent(
+                    if (isEditMode) labels.PROFILE_MODIFY_SUBMIT else labels.PROFILE_CREATE_SUBMIT,
+                    if (isEditMode) "수정하기" else "저장"
+                )
+                viewModel.showSaveConfirmDialog()
+            },
+            onDismissSaveConfirmDialog = {
+                EventLogger.logCampusClickEvent(
+                    if (isEditMode) labels.PROFILE_MODIFY_SUBMIT_CANCEL else labels.PROFILE_CREATE_SUBMIT_CANCEL,
+                    "취소하기"
+                )
+                viewModel.dismissSaveConfirmDialog()
+            },
+            onConfirmSave = {
+                EventLogger.logCampusClickEvent(
+                    if (isEditMode) labels.PROFILE_MODIFY_SUBMIT_CONFIRM else labels.PROFILE_CREATE_SUBMIT_CONFIRM,
+                    if (isEditMode) "수정하기" else "저장하기"
+                )
+                viewModel.saveProfile()
+            },
             onDismissCancelConfirmDialog = { viewModel.dismissCancelConfirmDialog() },
             onConfirmCancel = { viewModel.confirmCancel() }
         )
