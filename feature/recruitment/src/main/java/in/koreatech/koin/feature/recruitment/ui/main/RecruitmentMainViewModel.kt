@@ -3,7 +3,12 @@ package `in`.koreatech.koin.feature.recruitment.ui.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.usecase.recruitment.GetRecruitmentNotificationsUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.GetRecruitmentsUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentStatus
@@ -17,6 +22,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.annotation.OrbitExperimental
@@ -30,24 +36,42 @@ import org.orbitmvi.orbit.viewmodel.container
 @HiltViewModel
 @Suppress("TooManyFunctions")
 class RecruitmentMainViewModel @Inject constructor(
-    private val getRecruitmentsUseCase: GetRecruitmentsUseCase
+    private val getRecruitmentsUseCase: GetRecruitmentsUseCase,
+    private val getRecruitmentNotificationsUseCase: GetRecruitmentNotificationsUseCase,
+    private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(),
     ContainerHost<RecruitmentMainState, RecruitmentMainSideEffect> {
 
     override val container = container<RecruitmentMainState, RecruitmentMainSideEffect>(
         RecruitmentMainState()
-    )
+    ) {
+        getNotificationCount()
+    }
 
     private var searchJob: Job? = null
 
-    fun fetchRecruitments(isRefresh: Boolean = false) = intent {
-        fetchRecruitmentsSub(isRefresh)
+    init {
+        fetchRecruitments()
+    }
+
+    fun fetchRecruitments() = intent {
+        fetchRecruitmentsSub()
+    }
+
+    fun getNotificationCount() = intent {
+        getRecruitmentNotificationsUseCase(page = 1, limit = 1).onSuccess {
+            if (it.unreadCount == 0) {
+                reduce { state.copy(isUnreadNotificationAvailable = false) }
+            } else {
+                reduce { state.copy(isUnreadNotificationAvailable = true) }
+            }
+        }
     }
 
     @OptIn(OrbitExperimental::class)
-    private suspend fun fetchRecruitmentsSub(isRefresh: Boolean = false) = subIntent {
+    private suspend fun fetchRecruitmentsSub() = subIntent {
         reduce {
-            if (isRefresh) state.copy(isRefreshing = true) else state.copy(isLoading = true)
+            state.copy(isRefreshing = true)
         }
         val filter = state.filterState
         getRecruitmentsUseCase(
@@ -69,14 +93,31 @@ class RecruitmentMainViewModel @Inject constructor(
                     totalCount = recruitments.totalCount,
                     currentPage = recruitments.currentPage,
                     totalPage = recruitments.totalPage,
-                    isLoading = false,
                     isRefreshing = false
                 )
             }
         }.onFailure {
-            reduce { state.copy(isLoading = false, isRefreshing = false) }
+            reduce { state.copy(isRefreshing = false) }
             postSideEffect(RecruitmentMainSideEffect.ShowError)
         }
+    }
+
+    fun onWriteClick() = intent {
+        val user = getUserStatusUseCase().first()
+        if (user is User.Anonymous) {
+            reduce { state.copy(isLoginRequiredDialogVisible = true) }
+        } else {
+            postSideEffect(RecruitmentMainSideEffect.NavigateToWrite)
+        }
+    }
+
+    fun dismissLoginRequiredDialog() = blockingIntent {
+        reduce { state.copy(isLoginRequiredDialogVisible = false) }
+    }
+
+    fun confirmLoginRequiredDialog() = intent {
+        reduce { state.copy(isLoginRequiredDialogVisible = false) }
+        postSideEffect(RecruitmentMainSideEffect.NavigateToLogin)
     }
 
     fun loadMoreRecruitments() = intent {
@@ -116,6 +157,7 @@ class RecruitmentMainViewModel @Inject constructor(
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(SEARCH_DEBOUNCE_MILLIS)
+            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.SEARCH, query)
             fetchRecruitments()
         }
     }

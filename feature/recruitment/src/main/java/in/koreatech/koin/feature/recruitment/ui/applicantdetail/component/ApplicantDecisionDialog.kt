@@ -14,6 +14,7 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -55,19 +56,31 @@ fun ApplicantDecisionDialog(
                 color = RebrandKoinTheme.colors.neutral500
             )
             Spacer(modifier = Modifier.height(20.dp))
+            val colors = RebrandKoinTheme.colors
+            val cancelButtonColors = remember(colors) {
+                ButtonColors(
+                    containerColor = colors.neutral0,
+                    contentColor = colors.neutral600,
+                    disabledContainerColor = colors.neutral300,
+                    disabledContentColor = colors.neutral600
+                )
+            }
+            val confirmButtonColors = remember(colors) {
+                ButtonColors(
+                    containerColor = colors.primary500,
+                    contentColor = colors.neutral0,
+                    disabledContainerColor = colors.neutral300,
+                    disabledContentColor = colors.neutral600
+                )
+            }
             Row(modifier = Modifier.fillMaxWidth()) {
                 OutlinedBoxButton(
                     text = stringResource(R.string.recruitment_applicant_decision_dialog_cancel),
                     onClick = onDismiss,
                     textStyle = RebrandKoinTheme.typography.medium16,
                     shape = RoundedCornerShape(16.dp),
-                    colors = ButtonColors(
-                        containerColor = RebrandKoinTheme.colors.neutral0,
-                        contentColor = RebrandKoinTheme.colors.neutral600,
-                        disabledContainerColor = RebrandKoinTheme.colors.neutral300,
-                        disabledContentColor = RebrandKoinTheme.colors.neutral600
-                    ),
-                    border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral500),
+                    colors = cancelButtonColors,
+                    border = BorderStroke(1.dp, colors.neutral500),
                     contentPadding = PaddingValues(vertical = 12.dp),
                     modifier = Modifier.weight(1f)
                 )
@@ -77,12 +90,7 @@ fun ApplicantDecisionDialog(
                     onClick = onConfirm,
                     textStyle = RebrandKoinTheme.typography.medium16,
                     shape = RoundedCornerShape(16.dp),
-                    colors = ButtonColors(
-                        containerColor = RebrandKoinTheme.colors.primary500,
-                        contentColor = RebrandKoinTheme.colors.neutral0,
-                        disabledContainerColor = RebrandKoinTheme.colors.neutral300,
-                        disabledContentColor = RebrandKoinTheme.colors.neutral600
-                    ),
+                    colors = confirmButtonColors,
                     contentPadding = PaddingValues(vertical = 12.dp),
                     modifier = Modifier.weight(1f)
                 )

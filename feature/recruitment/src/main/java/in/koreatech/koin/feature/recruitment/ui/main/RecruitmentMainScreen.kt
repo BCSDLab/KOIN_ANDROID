@@ -1,5 +1,9 @@
 package `in`.koreatech.koin.feature.recruitment.ui.main
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -22,10 +26,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,16 +45,20 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
+import androidx.navigation.NavController
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.notification.FirebaseMessagingType
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentStatus
+import `in`.koreatech.koin.feature.recruitment.navigation.UNREAD_NOTIFICATION_STATE_UPDATE
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentConfirmDialog
 import `in`.koreatech.koin.feature.recruitment.ui.component.rememberRecruitmentPaginationListState
 import `in`.koreatech.koin.feature.recruitment.ui.main.component.RecruitmentAppliedFilterChipGroup
 import `in`.koreatech.koin.feature.recruitment.ui.main.component.RecruitmentChip
@@ -63,24 +75,68 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun RecruitmentMainScreen(
+    navController: NavController,
     viewModel: RecruitmentMainViewModel = hiltViewModel(),
+    isRecruitmentCreated: Boolean = false,
+    onResetRecruitmentCreated: () -> Unit = {},
+    isRecruitmentModified: Boolean = false,
+    onResetRecruitmentModified: () -> Unit = {},
     onTopbarBackClick: () -> Unit = {},
     onNotificationClick: () -> Unit = {},
     onProfileClick: () -> Unit = {},
     onWriteClick: () -> Unit = {},
+    onNavigateToLogin: () -> Unit = {},
     onItemClick: (Int) -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
     val context = LocalContext.current
 
-    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
-        viewModel.fetchRecruitments()
+    val unreadNotificationStateUpdated = navController.currentBackStackEntry?.savedStateHandle?.getStateFlow(UNREAD_NOTIFICATION_STATE_UPDATE, false)?.collectAsState()
+
+    LaunchedEffect(unreadNotificationStateUpdated?.value) {
+        if (unreadNotificationStateUpdated?.value == true) {
+            viewModel.getNotificationCount()
+            navController.currentBackStackEntry?.savedStateHandle?.set(UNREAD_NOTIFICATION_STATE_UPDATE, false)
+        }
+    }
+
+    DisposableEffect(Unit) {
+        val receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                if (intent?.getStringExtra("NOTIFICATION_TYPE") == FirebaseMessagingType.TEAM_RECRUITMENT.name) {
+                    viewModel.getNotificationCount()
+                }
+            }
+        }
+
+        val filter = IntentFilter("${context.packageName}.ACTION_NOTIFICAION_RECEIVED")
+        context.registerReceiver(receiver, filter, Context.RECEIVER_NOT_EXPORTED)
+
+        onDispose {
+            context.unregisterReceiver(receiver)
+        }
+    }
+
+    LaunchedEffect(isRecruitmentCreated) {
+        if (isRecruitmentCreated) {
+            viewModel.fetchRecruitments()
+            onResetRecruitmentCreated()
+        }
+    }
+
+    LaunchedEffect(isRecruitmentModified) {
+        if (isRecruitmentModified) {
+            viewModel.fetchRecruitments()
+            onResetRecruitmentModified()
+        }
     }
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             RecruitmentMainSideEffect.ShowError ->
                 ToastUtil.getInstance().makeShort(context.getString(R.string.recruitment_load_error))
+            RecruitmentMainSideEffect.NavigateToWrite -> onWriteClick()
+            RecruitmentMainSideEffect.NavigateToLogin -> onNavigateToLogin()
         }
     }
 
@@ -97,15 +153,26 @@ fun RecruitmentMainScreen(
         )
     }
 
+    if (state.isLoginRequiredDialogVisible) {
+        RecruitmentConfirmDialog(
+            title = stringResource(R.string.recruitment_login_required_dialog_title),
+            message = stringResource(R.string.recruitment_login_required_dialog_message),
+            confirmText = stringResource(R.string.recruitment_login_required_dialog_confirm),
+            cancelText = stringResource(R.string.recruitment_login_required_dialog_cancel),
+            onDismiss = viewModel::dismissLoginRequiredDialog,
+            onConfirm = viewModel::confirmLoginRequiredDialog
+        )
+    }
+
     RecruitmentMainScreenImpl(
         searchValue = state.searchValue,
         items = state.items,
         totalCount = state.totalCount,
-        isLoading = state.isLoading,
         isRefreshing = state.isRefreshing,
-        onRefresh = { viewModel.fetchRecruitments(isRefresh = true) },
+        onRefresh = viewModel::fetchRecruitments,
         isLoadingMore = state.isLoadingMore,
         hasMore = state.currentPage < state.totalPage,
+        isUnreadNotificationAvailable = state.isUnreadNotificationAvailable,
         onLoadMore = viewModel::loadMoreRecruitments,
         filterState = state.filterState,
         onSearchValueChange = viewModel::updateSearch,
@@ -116,7 +183,7 @@ fun RecruitmentMainScreen(
         onTopbarBackClick = onTopbarBackClick,
         onNotificationClick = onNotificationClick,
         onProfileClick = onProfileClick,
-        onWriteClick = onWriteClick,
+        onWriteClick = viewModel::onWriteClick,
         onItemClick = onItemClick
     )
 }
@@ -129,11 +196,11 @@ private fun RecruitmentMainScreenImpl(
     items: ImmutableList<RecruitmentItemModel>,
     totalCount: Long,
     filterState: RecruitmentFilterState,
-    isLoading: Boolean = false,
     isRefreshing: Boolean = false,
     onRefresh: () -> Unit = {},
     isLoadingMore: Boolean = false,
     hasMore: Boolean = false,
+    isUnreadNotificationAvailable: Boolean = false,
     onLoadMore: () -> Unit = {},
     onSearchValueChange: (String) -> Unit = {},
     onFilterClick: () -> Unit = {},
@@ -152,6 +219,9 @@ private fun RecruitmentMainScreenImpl(
                 title = stringResource(R.string.recruitment_top_bar_title),
                 textStyle = RebrandKoinTheme.typography.bold16,
                 onNavigationIconClick = onTopbarBackClick,
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = RebrandKoinTheme.colors.neutral50
+                ),
                 actions = {
                     Row(
                         modifier = Modifier.padding(end = 24.dp),
@@ -159,12 +229,22 @@ private fun RecruitmentMainScreenImpl(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_notification),
+                            imageVector = if (isUnreadNotificationAvailable) {
+                                ImageVector.vectorResource(R.drawable.ic_rebrand_notification_dot)
+                            } else {
+                                ImageVector.vectorResource(R.drawable.ic_rebrand_notification)
+                            },
                             contentDescription = stringResource(R.string.recruitment_notification_content_description),
                             tint = Color.Unspecified,
                             modifier = Modifier
                                 .size(24.dp)
-                                .noRippleClickable(onClick = onNotificationClick)
+                                .noRippleClickable(onClick = {
+                                    EventLogger.logCampusClickEvent(
+                                        AnalyticsConstant.Label.TeamRecruitment.NOTIFICATION,
+                                        "알림"
+                                    )
+                                    onNotificationClick()
+                                })
                         )
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_user_bold),
@@ -172,7 +252,13 @@ private fun RecruitmentMainScreenImpl(
                             tint = RebrandKoinTheme.colors.neutral700,
                             modifier = Modifier
                                 .size(24.dp)
-                                .noRippleClickable(onClick = onProfileClick)
+                                .noRippleClickable(onClick = {
+                                    EventLogger.logCampusClickEvent(
+                                        AnalyticsConstant.Label.TeamRecruitment.PROFILE,
+                                        "프로필"
+                                    )
+                                    onProfileClick()
+                                })
                         )
                     }
                 }
@@ -192,7 +278,10 @@ private fun RecruitmentMainScreenImpl(
                 trailingIconSize = 22.dp,
                 trailingIconTint = Color.Unspecified,
                 trailingIcon = ImageVector.vectorResource(R.drawable.ic_recruitment_edit),
-                onClick = onWriteClick
+                onClick = {
+                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.RECRUIT, "모집하기")
+                    onWriteClick()
+                }
             )
         },
         containerColor = RebrandKoinTheme.colors.neutral50
@@ -228,7 +317,10 @@ private fun RecruitmentMainScreenImpl(
                         trailingIconSize = 21.dp,
                         trailingIconTint = Color.Unspecified,
                         trailingIcon = ImageVector.vectorResource(R.drawable.ic_recruitment_filter),
-                        onClick = onFilterClick
+                        onClick = {
+                            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.FILTER, "필터")
+                            onFilterClick()
+                        }
                     )
                 }
                 if (filterState.hasVisibleChips) {
@@ -264,14 +356,7 @@ private fun RecruitmentMainScreenImpl(
                     )
                 }
             ) {
-                if (isLoading) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(color = RebrandKoinTheme.colors.primary500)
-                    }
-                } else if (items.isEmpty()) {
+                if (items.isEmpty()) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -295,8 +380,15 @@ private fun RecruitmentMainScreenImpl(
                     ) {
                         items(items, key = { it.id }) { item ->
                             RecruitmentMainItem(
+                                modifier = Modifier.animateItem(),
                                 item = item,
-                                onClick = { onItemClick(item.id) }
+                                onClick = {
+                                    EventLogger.logCampusClickEvent(
+                                        AnalyticsConstant.Label.TeamRecruitment.POST_SELECT,
+                                        item.title
+                                    )
+                                    onItemClick(item.id)
+                                }
                             )
                         }
                         if (isLoadingMore) {

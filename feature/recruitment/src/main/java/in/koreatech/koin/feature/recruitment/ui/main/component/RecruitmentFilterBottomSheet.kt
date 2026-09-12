@@ -38,6 +38,8 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
@@ -146,14 +148,21 @@ private fun RecruitmentFilterContent(
                 RecruitmentFilterChip(
                     text = allLabel,
                     isSelected = state.selectedStatus == null,
-                    onClick = { onStatusClick(null) }
+                    onClick = {
+                        EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.FILTER_STATUS, allLabel)
+                        onStatusClick(null)
+                    }
                 )
                 RecruitmentStatus.ALL.forEach { status ->
                     key(status) {
+                        val statusLabel = stringResource(status.labelRes)
                         RecruitmentFilterChip(
-                            text = stringResource(status.labelRes),
+                            text = statusLabel,
                             isSelected = state.selectedStatus == status,
-                            onClick = { onStatusClick(status) }
+                            onClick = {
+                                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.FILTER_STATUS, statusLabel)
+                                onStatusClick(status)
+                            }
                         )
                     }
                 }
@@ -162,10 +171,14 @@ private fun RecruitmentFilterContent(
             RecruitmentFilterSection(title = stringResource(R.string.recruitment_filter_section_sort)) {
                 RecruitmentSort.ALL.forEach { sort ->
                     key(sort) {
+                        val sortLabel = stringResource(sort.labelRes)
                         RecruitmentFilterChip(
-                            text = stringResource(sort.labelRes),
+                            text = sortLabel,
                             isSelected = state.selectedSort == sort,
-                            onClick = { onSortClick(sort) }
+                            onClick = {
+                                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.FILTER_SORT, sortLabel)
+                                onSortClick(sort)
+                            }
                         )
                     }
                 }
@@ -175,14 +188,21 @@ private fun RecruitmentFilterContent(
                 RecruitmentFilterChip(
                     text = allLabel,
                     isSelected = state.selectedCategories.isEmpty(),
-                    onClick = { onCategoryClick(null) }
+                    onClick = {
+                        EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.FILTER_CATEGORY, allLabel)
+                        onCategoryClick(null)
+                    }
                 )
                 RecruitmentCategory.ALL.forEach { category ->
                     key(category) {
+                        val categoryLabel = stringResource(category.labelRes)
                         RecruitmentFilterChip(
-                            text = stringResource(category.labelRes),
+                            text = categoryLabel,
                             isSelected = category in state.selectedCategories,
-                            onClick = { onCategoryClick(category) }
+                            onClick = {
+                                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.FILTER_CATEGORY, categoryLabel)
+                                onCategoryClick(category)
+                            }
                         )
                     }
                 }
@@ -192,14 +212,21 @@ private fun RecruitmentFilterContent(
                 RecruitmentFilterChip(
                     text = allLabel,
                     isSelected = state.selectedLocation == null,
-                    onClick = { onLocationClick(null) }
+                    onClick = {
+                        EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.FILTER_METHOD, allLabel)
+                        onLocationClick(null)
+                    }
                 )
                 RecruitmentLocation.ALL.forEach { location ->
                     key(location) {
+                        val locationLabel = stringResource(location.labelRes)
                         RecruitmentFilterChip(
-                            text = stringResource(location.labelRes),
+                            text = locationLabel,
                             isSelected = state.selectedLocation == location,
-                            onClick = { onLocationClick(location) }
+                            onClick = {
+                                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.FILTER_METHOD, locationLabel)
+                                onLocationClick(location)
+                            }
                         )
                     }
                 }
@@ -213,7 +240,10 @@ private fun RecruitmentFilterContent(
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             OutlinedButton(
-                onClick = onReset,
+                onClick = {
+                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.FILTER_RESET, "초기화")
+                    onReset()
+                },
                 shape = RebrandKoinTheme.shapes.medium,
                 border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral300),
                 colors = ButtonDefaults.outlinedButtonColors(containerColor = RebrandKoinTheme.colors.neutral0),
@@ -235,7 +265,10 @@ private fun RecruitmentFilterContent(
                 )
             }
             Button(
-                onClick = onApplyClick,
+                onClick = {
+                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.FILTER_APPLY, "적용하기")
+                    onApplyClick()
+                },
                 shape = RebrandKoinTheme.shapes.medium,
                 colors = ButtonDefaults.buttonColors(containerColor = RebrandKoinTheme.colors.primary500),
                 modifier = Modifier
