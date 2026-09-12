@@ -40,7 +40,6 @@ import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRoleOption
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentActivitiesSection
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentConfirmDialog
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDepartmentSection
-import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentDialog
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentFilledActionButton
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentFormSection
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentLoadMemberInfoSection
@@ -152,8 +151,7 @@ fun RecruitmentApplyScreen(
             onDismissSubmitConfirmDialog = { viewModel.dismissSubmitConfirmDialog() },
             onConfirmSubmit = { viewModel.submitApplication() },
             onDismissCancelConfirmDialog = { viewModel.dismissCancelConfirmDialog() },
-            onConfirmCancel = { viewModel.confirmCancel() },
-            onConfirmRecruitmentClosedDialog = { viewModel.confirmRecruitmentClosedDialog() }
+            onConfirmCancel = { viewModel.confirmCancel() }
         )
     }
 }
@@ -170,26 +168,8 @@ private fun RecruitmentApplyScreenImpl(
     onDismissSubmitConfirmDialog: () -> Unit = {},
     onConfirmSubmit: () -> Unit = {},
     onDismissCancelConfirmDialog: () -> Unit = {},
-    onConfirmCancel: () -> Unit = {},
-    onConfirmRecruitmentClosedDialog: () -> Unit = {}
+    onConfirmCancel: () -> Unit = {}
 ) {
-    if (state.showRecruitmentClosedDialog) {
-        RecruitmentDialog(onDismiss = onConfirmRecruitmentClosedDialog) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable(onClick = onConfirmRecruitmentClosedDialog),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = stringResource(R.string.recruitment_apply_closed_message),
-                    style = RebrandKoinTheme.typography.medium15,
-                    color = RebrandKoinTheme.colors.neutral700
-                )
-            }
-        }
-    }
-
     if (state.showSubmitConfirmDialog) {
         RecruitmentConfirmDialog(
             title = stringResource(R.string.recruitment_apply_submit_dialog_title),

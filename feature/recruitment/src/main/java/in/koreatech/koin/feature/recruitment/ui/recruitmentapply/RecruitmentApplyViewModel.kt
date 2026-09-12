@@ -9,8 +9,10 @@ import `in`.koreatech.koin.domain.usecase.dept.GetDeptNamesUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.ApplyTeamRecruitmentUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.GetTeamRecruitmentProfileUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
+import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentActivityEntry
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentErrorMessage
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
+import `in`.koreatech.koin.feature.recruitment.model.SkillEntry
 import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRoleOption
 import `in`.koreatech.koin.feature.recruitment.model.loadMemberInfoOrFallback
 import `in`.koreatech.koin.feature.recruitment.model.withNewSkill
@@ -69,13 +71,20 @@ class RecruitmentApplyViewModel @Inject constructor(
                     isMemberInfoLoaded = true,
                     nickname = profile.profileNickname,
                     department = profile.department,
-                    studentId = profile.studentNumber
+                    studentId = profile.studentNumber,
+                    skills = profile.skills.mapIndexed { index, text ->
+                        SkillEntry(id = index.toLong() + 1L, text = text)
+                    }.toPersistentList(),
+                    activities = profile.activities
+                        .map { it.toRecruitmentActivityEntry() }
+                        .toPersistentList(),
+                    selfIntroduction = profile.selfIntroduction
                 )
             },
             onUserLoaded = { user ->
                 copy(
                     isMemberInfoLoaded = true,
-                    nickname = user.anonymousNickname ?: user.nickname ?: nickname,
+                    nickname = user.nickname ?: nickname,
                     department = user.major ?: department,
                     studentId = user.studentNumber ?: studentId
                 )
@@ -218,16 +227,12 @@ class RecruitmentApplyViewModel @Inject constructor(
             postSideEffect(RecruitmentApplySideEffect.ApplySuccess)
         }.onFailure { throwable ->
             if (throwable is KoinRecruitmentException.RecruitmentClosedException) {
-                reduce { state.copy(isSubmitting = false, showRecruitmentClosedDialog = true) }
+                reduce { state.copy(isSubmitting = false) }
+                postSideEffect(RecruitmentApplySideEffect.NavigateUp)
             } else {
                 reduce { state.copy(isSubmitting = false, errorMessage = throwable.toRecruitmentErrorMessage()) }
                 postSideEffect(RecruitmentApplySideEffect.ApplyFailure)
             }
         }
-    }
-
-    fun confirmRecruitmentClosedDialog() = intent {
-        reduce { state.copy(showRecruitmentClosedDialog = false) }
-        postSideEffect(RecruitmentApplySideEffect.NavigateUp)
     }
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.dept.GetDeptNamesUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.GetTeamRecruitmentProfileUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.SaveTeamRecruitmentProfileUseCase
@@ -13,7 +14,6 @@ import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentErrorMessage
 import `in`.koreatech.koin.feature.recruitment.mapper.toTeamRecruitmentActivityInput
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
 import `in`.koreatech.koin.feature.recruitment.model.SkillEntry
-import `in`.koreatech.koin.feature.recruitment.model.loadMemberInfoOrFallback
 import `in`.koreatech.koin.feature.recruitment.model.withNewSkill
 import `in`.koreatech.koin.feature.recruitment.model.withSkillText
 import `in`.koreatech.koin.feature.recruitment.model.withoutSkill
@@ -84,25 +84,25 @@ class ProfileCreateViewModel @Inject constructor(
     }
 
     fun loadMemberInfo() = intent {
-        loadMemberInfoOrFallback(
-            getTeamRecruitmentProfileUseCase = getTeamRecruitmentProfileUseCase,
-            getUserInfoUseCase = getUserInfoUseCase,
-            onProfileLoaded = { profile ->
-                copy(
-                    nickname = profile.profileNickname,
-                    department = profile.department,
-                    studentId = profile.studentNumber
-                )
-            },
-            onUserLoaded = { user ->
-                copy(
-                    nickname = user.anonymousNickname ?: user.nickname ?: nickname,
-                    department = user.major ?: department,
-                    studentId = user.studentNumber ?: studentId
-                )
-            },
-            onError = { throwable -> copy(errorMessage = throwable.toRecruitmentErrorMessage()) }
-        )
+        getUserInfoUseCase()
+            .onSuccess { user ->
+                if (user is User.Student) {
+                    reduce {
+                        state.copy(
+                            nickname = user.nickname ?: state.nickname,
+                            department = user.major ?: state.department,
+                            studentId = user.studentNumber ?: state.studentId
+                        )
+                    }
+                } else {
+                    reduce {
+                        state.copy(errorMessage = "학생 회원만 회원정보를 불러올 수 있습니다.")
+                    }
+                }
+            }
+            .onFailure { throwable ->
+                reduce { state.copy(errorMessage = throwable.toRecruitmentErrorMessage()) }
+            }
     }
 
     fun setNickname(nickname: String) = intent {

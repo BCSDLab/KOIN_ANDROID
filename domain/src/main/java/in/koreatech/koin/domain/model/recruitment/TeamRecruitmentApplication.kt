@@ -4,7 +4,7 @@ data class TeamRecruitmentApplication(
     val applicationId: Int,
     val recruitmentId: Int,
     val status: String,
-    val role: TeamRecruitmentApplicationRole,
+    val role: TeamRecruitmentApplicationRole?,
     val createdAt: String
 )
 

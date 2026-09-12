@@ -39,7 +39,6 @@ data class RecruitmentApplyState(
     val availableTime: String = "",
     val showSubmitConfirmDialog: Boolean = false,
     val showCancelConfirmDialog: Boolean = false,
-    val showRecruitmentClosedDialog: Boolean = false,
     val isSubmitting: Boolean = false,
     val errorMessage: String? = null
 ) {
