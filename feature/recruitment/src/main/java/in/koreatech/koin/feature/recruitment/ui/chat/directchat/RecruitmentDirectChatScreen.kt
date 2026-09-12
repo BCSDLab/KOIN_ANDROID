@@ -202,7 +202,6 @@ private fun handleSideEffect(
         RecruitmentDirectChatSideEffect.FailedToLoadMessages -> R.string.recruitment_chat_failed_to_load_messages
         RecruitmentDirectChatSideEffect.FailedToSendMessage -> R.string.recruitment_chat_failed_to_send_message
         RecruitmentDirectChatSideEffect.FailedToUploadImage -> R.string.recruitment_chat_failed_to_upload_image
-        RecruitmentDirectChatSideEffect.ChatRoomReadOnly -> R.string.recruitment_chat_read_only
         RecruitmentDirectChatSideEffect.MessageTooFast -> R.string.recruitment_chat_message_too_fast
         RecruitmentDirectChatSideEffect.DirectChatUnavailable -> R.string.recruitment_direct_chat_unavailable
     }

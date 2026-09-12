@@ -198,7 +198,6 @@ class RecruitmentDirectChatViewModel @Inject constructor(
     }
 
     private fun Throwable.toSendMessageSideEffect(): RecruitmentDirectChatSideEffect = when (this) {
-        is KoinRecruitmentChatException.ChatReadOnlyException -> RecruitmentDirectChatSideEffect.ChatRoomReadOnly
         is KoinRecruitmentChatException.RequestTooFastException -> RecruitmentDirectChatSideEffect.MessageTooFast
         else -> RecruitmentDirectChatSideEffect.FailedToSendMessage
     }

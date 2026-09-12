@@ -31,6 +31,5 @@ sealed class KoinRecruitmentChatException : KoinErrorException() {
      * Exceptions for 409
      */
     class DirectChatConflictException : KoinRecruitmentChatException()
-    class ChatReadOnlyException : KoinRecruitmentChatException()
     class RequestTooFastException : KoinRecruitmentChatException()
 }

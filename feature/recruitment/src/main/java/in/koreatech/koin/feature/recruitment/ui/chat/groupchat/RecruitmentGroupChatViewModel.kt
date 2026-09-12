@@ -190,7 +190,6 @@ class RecruitmentGroupChatViewModel @Inject constructor(
     }
 
     private fun Throwable.toSendMessageSideEffect(): RecruitmentGroupChatSideEffect = when (this) {
-        is KoinRecruitmentChatException.ChatReadOnlyException -> RecruitmentGroupChatSideEffect.ChatRoomReadOnly
         is KoinRecruitmentChatException.RequestTooFastException -> RecruitmentGroupChatSideEffect.MessageTooFast
         else -> RecruitmentGroupChatSideEffect.FailedToSendMessage
     }

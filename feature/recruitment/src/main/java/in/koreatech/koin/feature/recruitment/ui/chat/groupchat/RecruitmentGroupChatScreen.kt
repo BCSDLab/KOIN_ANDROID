@@ -230,7 +230,6 @@ private fun handleSideEffect(
         RecruitmentGroupChatSideEffect.FailedToLoadMessages -> R.string.recruitment_chat_failed_to_load_messages
         RecruitmentGroupChatSideEffect.FailedToSendMessage -> R.string.recruitment_chat_failed_to_send_message
         RecruitmentGroupChatSideEffect.FailedToUploadImage -> R.string.recruitment_chat_failed_to_upload_image
-        RecruitmentGroupChatSideEffect.ChatRoomReadOnly -> R.string.recruitment_chat_read_only
         RecruitmentGroupChatSideEffect.MessageTooFast -> R.string.recruitment_chat_message_too_fast
     }
     Toast.makeText(context, context.getString(messageRes), Toast.LENGTH_SHORT).show()
