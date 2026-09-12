@@ -94,10 +94,6 @@ class ProfileCreateViewModel @Inject constructor(
                             studentId = user.studentNumber ?: state.studentId
                         )
                     }
-                } else {
-                    reduce {
-                        state.copy(errorMessage = "학생 회원만 회원정보를 불러올 수 있습니다.")
-                    }
                 }
             }
             .onFailure { throwable ->
