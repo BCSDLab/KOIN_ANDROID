@@ -74,7 +74,6 @@ class RecruitmentDirectChatViewModel @Inject constructor(
                         isLoading = false,
                         chatRoomId = room.chatRoomId,
                         partnerNickname = room.counterpart?.nickname.orEmpty(),
-                        status = room.status
                     )
                 }
                 loadMessages()

@@ -33,7 +33,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
-import `in`.koreatech.koin.domain.model.recruitment.chat.RecruitmentChatRoomStatus
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.ui.chat.components.RecruitmentChatDateChip
 import `in`.koreatech.koin.feature.recruitment.ui.chat.components.RecruitmentChatInput
@@ -91,7 +90,6 @@ fun RecruitmentDirectChatScreen(
 
     RecruitmentDirectChatScreenImpl(
         partnerNickname = uiState.partnerNickname,
-        isReadOnly = uiState.status == RecruitmentChatRoomStatus.READ_ONLY,
         isLoading = uiState.isLoading,
         isUploadingImage = uiState.isUploadingImage,
         messages = uiState.messages,
@@ -108,7 +106,6 @@ fun RecruitmentDirectChatScreen(
 @Composable
 private fun RecruitmentDirectChatScreenImpl(
     partnerNickname: String,
-    isReadOnly: Boolean,
     isLoading: Boolean,
     isUploadingImage: Boolean,
     messages: ImmutableList<RecruitmentChatMessageGroup>,
@@ -136,7 +133,7 @@ private fun RecruitmentDirectChatScreenImpl(
                 onValueChange = onChatInputValueChange,
                 onImageButtonClick = onImageButtonClick,
                 onSendClick = onSendClick,
-                enabled = !isLoading && !isReadOnly && !isUploadingImage
+                enabled = !isLoading && !isUploadingImage
             )
         },
         containerColor = RebrandKoinTheme.colors.neutral0
@@ -221,7 +218,6 @@ private fun RecruitmentDirectChatScreenPreview() {
     RebrandKoinTheme {
         RecruitmentDirectChatScreenImpl(
             partnerNickname = RecruitmentDirectChatPreviewData.PARTNER_NICKNAME,
-            isReadOnly = false,
             isLoading = false,
             isUploadingImage = false,
             messages = RecruitmentDirectChatPreviewData.messages(),
@@ -236,7 +232,6 @@ private fun RecruitmentDirectChatScreenEmptyPreview() {
     RebrandKoinTheme {
         RecruitmentDirectChatScreenImpl(
             partnerNickname = RecruitmentDirectChatPreviewData.PARTNER_NICKNAME,
-            isReadOnly = false,
             isLoading = false,
             isUploadingImage = false,
             messages = persistentListOf(),

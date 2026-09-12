@@ -9,8 +9,6 @@ data class RecruitmentChatRoomResponse(
     val roomName: String,
     @SerializedName("room_type")
     val roomType: String,
-    @SerializedName("status")
-    val status: String,
     @SerializedName("member_count")
     val memberCount: Int,
     @SerializedName("max_member_count")

@@ -43,7 +43,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
-import `in`.koreatech.koin.domain.model.recruitment.chat.RecruitmentChatRoomStatus
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.ui.chat.components.RecruitmentChatDateChip
 import `in`.koreatech.koin.feature.recruitment.ui.chat.components.RecruitmentChatInput
@@ -98,7 +97,6 @@ fun RecruitmentGroupChatScreen(
         title = uiState.title,
         currentMemberCount = uiState.currentMemberCount,
         maxMemberCount = uiState.maxMemberCount,
-        isReadOnly = uiState.status == RecruitmentChatRoomStatus.READ_ONLY,
         isLoading = uiState.isLoading,
         isUploadingImage = uiState.isUploadingImage,
         messages = uiState.messages,
@@ -117,7 +115,6 @@ private fun RecruitmentGroupChatScreenImpl(
     title: String,
     currentMemberCount: Int,
     maxMemberCount: Int,
-    isReadOnly: Boolean,
     isLoading: Boolean,
     isUploadingImage: Boolean,
     messages: ImmutableList<RecruitmentChatMessageGroup>,
@@ -166,7 +163,7 @@ private fun RecruitmentGroupChatScreenImpl(
                 onValueChange = onChatInputValueChange,
                 onImageButtonClick = onImageButtonClick,
                 onSendClick = onSendClick,
-                enabled = !isLoading && !isReadOnly && !isUploadingImage
+                enabled = !isLoading && !isUploadingImage
             )
         },
         containerColor = RebrandKoinTheme.colors.neutral0
@@ -247,7 +244,6 @@ private fun RecruitmentGroupChatScreenPreview() {
             title = RecruitmentGroupChatPreviewData.TITLE,
             currentMemberCount = RecruitmentGroupChatPreviewData.CURRENT_MEMBER_COUNT,
             maxMemberCount = RecruitmentGroupChatPreviewData.MAX_MEMBER_COUNT,
-            isReadOnly = false,
             isLoading = false,
             isUploadingImage = false,
             messages = RecruitmentGroupChatPreviewData.messages(),
@@ -264,7 +260,6 @@ private fun RecruitmentGroupChatScreenEmptyPreview() {
             title = RecruitmentGroupChatPreviewData.TITLE,
             currentMemberCount = RecruitmentGroupChatPreviewData.CURRENT_MEMBER_COUNT,
             maxMemberCount = RecruitmentGroupChatPreviewData.MAX_MEMBER_COUNT,
-            isReadOnly = false,
             isLoading = false,
             isUploadingImage = false,
             messages = persistentListOf(),
