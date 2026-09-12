@@ -74,7 +74,7 @@ class RecruitmentGroupChatViewModel @Inject constructor(
                         isLoading = false,
                         title = room.roomName,
                         currentMemberCount = room.memberCount,
-                        maxMemberCount = room.maxMemberCount,
+                        maxMemberCount = room.maxMemberCount
                     )
                 }
                 loadMessages()
