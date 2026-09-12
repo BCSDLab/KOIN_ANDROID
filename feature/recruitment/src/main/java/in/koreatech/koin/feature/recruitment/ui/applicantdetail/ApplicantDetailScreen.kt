@@ -11,19 +11,28 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.navigation.NavController
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.ApplicantStatus
+import `in`.koreatech.koin.feature.recruitment.navigation.APPLICANT_STATE_UPDATE
 import `in`.koreatech.koin.feature.recruitment.ui.applicantdetail.component.ApplicantActivityInfoBox
 import `in`.koreatech.koin.feature.recruitment.ui.applicantdetail.component.ApplicantDecisionButtons
 import `in`.koreatech.koin.feature.recruitment.ui.applicantdetail.component.ApplicantDecisionDialog
@@ -33,21 +42,37 @@ import `in`.koreatech.koin.feature.recruitment.ui.applicantdetail.model.Applican
 import `in`.koreatech.koin.feature.recruitment.ui.applicantdetail.model.ApplicantDetail
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ApplicantDetailScreen(
+    navController: NavController,
     viewModel: ApplicantDetailViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
     val applicant = state.applicant
+    val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            ApplicantDetailSideEffect.ApplicantStateUpdated -> {
+                navController.previousBackStackEntry?.savedStateHandle?.set(APPLICANT_STATE_UPDATE, true)
+            }
+            ApplicantDetailSideEffect.Error -> {
+                snackbarHostState.showSnackbar(context.getString(R.string.recruitment_applicant_detail_error))
+            }
+        }
+    }
 
     Scaffold(
         containerColor = RebrandKoinTheme.colors.neutral50,
         topBar = {
             KoinTopAppBar(
                 title = stringResource(R.string.recruitment_applicant_detail_title),
+                textStyle = RebrandKoinTheme.typography.bold16,
                 onNavigationIconClick = onNavigateUp,
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = RebrandKoinTheme.colors.neutral50
@@ -57,13 +82,31 @@ fun ApplicantDetailScreen(
         bottomBar = {
             if (applicant != null && applicant.canDecide) {
                 ApplicantDecisionButtons(
-                    onReject = { viewModel.showRejectDialog() },
-                    onApprove = { viewModel.showApproveDialog() },
+                    onReject = {
+                        EventLogger.logCampusClickEvent(
+                            AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_APPLICANT_REJECT,
+                            "거절하기"
+                        )
+                        viewModel.showRejectDialog()
+                    },
+                    onApprove = {
+                        EventLogger.logCampusClickEvent(
+                            AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_APPLICANT_APPROVE,
+                            "승인하기"
+                        )
+                        viewModel.showApproveDialog()
+                    },
                     modifier = Modifier
                         .windowInsetsPadding(WindowInsets.navigationBars)
                         .padding(horizontal = 21.5.dp, vertical = 16.dp)
                 )
             }
+        },
+        snackbarHost = {
+            CustomSnackBarHost(
+                hotState = snackbarHostState,
+                background = Color(0xCC727272)
+            )
         }
     ) { innerPadding ->
         if (applicant != null) {
@@ -79,8 +122,20 @@ fun ApplicantDetailScreen(
             title = stringResource(R.string.recruitment_applicant_approve_dialog_title),
             message = stringResource(R.string.recruitment_applicant_approve_dialog_message),
             confirmText = stringResource(R.string.recruitment_applicant_approve_dialog_confirm),
-            onDismiss = { viewModel.dismissApproveDialog() },
-            onConfirm = { viewModel.approve() }
+            onDismiss = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_APPLICANT_APPROVE_CANCEL,
+                    "취소하기"
+                )
+                viewModel.dismissApproveDialog()
+            },
+            onConfirm = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_APPLICANT_APPROVE_CONFIRM,
+                    "승인하기"
+                )
+                viewModel.approve()
+            }
         )
     }
 
@@ -89,8 +144,20 @@ fun ApplicantDetailScreen(
             title = stringResource(R.string.recruitment_applicant_reject_dialog_title),
             message = stringResource(R.string.recruitment_applicant_reject_dialog_message),
             confirmText = stringResource(R.string.recruitment_applicant_reject_dialog_confirm),
-            onDismiss = { viewModel.dismissRejectDialog() },
-            onConfirm = { viewModel.reject() }
+            onDismiss = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_APPLICANT_REJECT_CANCEL,
+                    "취소하기"
+                )
+                viewModel.dismissRejectDialog()
+            },
+            onConfirm = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_APPLICANT_REJECT_CONFIRM,
+                    "거절하기"
+                )
+                viewModel.reject()
+            }
         )
     }
 }

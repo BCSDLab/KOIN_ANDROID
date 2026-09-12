@@ -39,6 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
@@ -90,10 +92,22 @@ fun ProfileScreen(
         ProfileScreenImpl(
             state = state,
             modifier = Modifier.padding(innerPadding),
-            onMyRecruitmentClick = viewModel::onMyRecruitmentClick,
-            onMyAppliedRecruitmentClick = viewModel::onMyAppliedRecruitmentClick,
-            onCreateProfileClick = viewModel::onCreateProfileClick,
-            onEditProfileClick = viewModel::onEditProfileClick
+            onMyRecruitmentClick = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.PROFILE_CREATED, "내가 작성한 모집글")
+                viewModel.onMyRecruitmentClick()
+            },
+            onMyAppliedRecruitmentClick = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.PROFILE_APPLIED, "내가 지원한 모집글")
+                viewModel.onMyAppliedRecruitmentClick()
+            },
+            onCreateProfileClick = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.PROFILE_CREATE, "프로필 작성하기")
+                viewModel.onCreateProfileClick()
+            },
+            onEditProfileClick = {
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.PROFILE_MODIFY, "프로필 수정하기")
+                viewModel.onEditProfileClick()
+            }
         )
     }
 }

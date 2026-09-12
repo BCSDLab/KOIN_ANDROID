@@ -17,6 +17,7 @@ import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -75,6 +76,23 @@ fun RecruitmentDatePickerDialog(
                     todayDateBorderColor = RebrandKoinTheme.colors.primary500
                 )
             )
+            val colors = RebrandKoinTheme.colors
+            val cancelButtonColors = remember(colors) {
+                ButtonColors(
+                    containerColor = colors.neutral0,
+                    contentColor = colors.primary500,
+                    disabledContainerColor = colors.neutral400,
+                    disabledContentColor = colors.neutral500
+                )
+            }
+            val confirmButtonColors = remember(colors) {
+                ButtonColors(
+                    containerColor = colors.primary500,
+                    contentColor = colors.neutral0,
+                    disabledContainerColor = colors.neutral300,
+                    disabledContentColor = colors.neutral600
+                )
+            }
             Row(
                 modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -83,13 +101,8 @@ fun RecruitmentDatePickerDialog(
                     text = stringResource(R.string.recruitment_date_picker_cancel),
                     onClick = onNegative,
                     modifier = Modifier.weight(1f),
-                    colors = ButtonColors(
-                        containerColor = RebrandKoinTheme.colors.neutral0,
-                        contentColor = RebrandKoinTheme.colors.primary500,
-                        disabledContainerColor = RebrandKoinTheme.colors.neutral400,
-                        disabledContentColor = RebrandKoinTheme.colors.neutral500
-                    ),
-                    border = BorderStroke(1.dp, RebrandKoinTheme.colors.primary500)
+                    colors = cancelButtonColors,
+                    border = BorderStroke(1.dp, colors.primary500)
                 )
                 FilledButton(
                     text = stringResource(R.string.recruitment_date_picker_confirm),
@@ -102,12 +115,7 @@ fun RecruitmentDatePickerDialog(
                         onPositive(date.toStable())
                     },
                     modifier = Modifier.weight(1f),
-                    colors = ButtonColors(
-                        containerColor = RebrandKoinTheme.colors.primary500,
-                        contentColor = RebrandKoinTheme.colors.neutral0,
-                        disabledContainerColor = RebrandKoinTheme.colors.neutral300,
-                        disabledContentColor = RebrandKoinTheme.colors.neutral600
-                    )
+                    colors = confirmButtonColors
                 )
             }
         }

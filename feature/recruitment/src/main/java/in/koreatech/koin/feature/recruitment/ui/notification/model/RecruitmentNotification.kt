@@ -44,10 +44,10 @@ private fun String.toRecruitmentNotificationCategory(): RecruitmentNotificationC
     else -> RecruitmentNotificationCategory.MESSAGE
 }
 
-private val CREATED_AT_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+private val CREATED_AT_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
 
 private fun String.toDatetimeDiff(): String {
-    val createdAt = LocalDateTime.parse(this, CREATED_AT_FORMATTER)
+    val createdAt = LocalDateTime.parse(this, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
     val now = LocalDateTime.now()
     val days = ChronoUnit.DAYS.between(createdAt, now)
     if (days > 0) return "${days}일 전"

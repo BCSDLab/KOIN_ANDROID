@@ -21,7 +21,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -30,6 +32,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -40,6 +44,7 @@ import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRoleModel
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentType
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentConfirmDialog
 import `in`.koreatech.koin.feature.recruitment.ui.detail.component.RecruitmentDeleteDialog
 import `in`.koreatech.koin.feature.recruitment.ui.detail.component.RecruitmentInfoSection
 import `in`.koreatech.koin.feature.recruitment.ui.detail.component.RecruitmentMoreMenu
@@ -53,13 +58,23 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun RecruitmentDetailScreen(
     viewModel: RecruitmentDetailViewModel = hiltViewModel(),
+    isModified: Boolean = false,
+    onResetModified: () -> Unit = {},
     onTopbarBackClick: () -> Unit = {},
     onNavigateToModify: (Int) -> Unit = {},
     onNavigateToApply: (Int, List<RecruitmentRoleModel>) -> Unit = { _, _ -> },
-    onNavigateToApplicantManagement: (Int) -> Unit = {}
+    onNavigateToApplicantManagement: (Int) -> Unit = {},
+    onNavigateToLogin: () -> Unit = {}
 ) {
     val state by viewModel.collectAsState()
     val context = LocalContext.current
+
+    LaunchedEffect(isModified) {
+        if (isModified) {
+            viewModel.fetchRecruitmentDetail()
+            onResetModified()
+        }
+    }
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
@@ -70,7 +85,22 @@ fun RecruitmentDetailScreen(
                 ToastUtil.getInstance().makeShort(context.getString(R.string.recruitment_delete_error))
 
             RecruitmentDetailSideEffect.DeleteSuccess -> onTopbarBackClick()
+
+            RecruitmentDetailSideEffect.NavigateToApply -> onNavigateToApply(state.id, state.roles)
+
+            RecruitmentDetailSideEffect.NavigateToLogin -> onNavigateToLogin()
         }
+    }
+
+    if (state.isLoginRequiredDialogVisible) {
+        RecruitmentConfirmDialog(
+            title = stringResource(R.string.recruitment_login_required_dialog_title),
+            message = stringResource(R.string.recruitment_login_required_dialog_message),
+            confirmText = stringResource(R.string.recruitment_login_required_dialog_confirm),
+            cancelText = stringResource(R.string.recruitment_login_required_dialog_cancel),
+            onDismiss = viewModel::dismissLoginRequiredDialog,
+            onConfirm = viewModel::confirmLoginRequiredDialog
+        )
     }
 
     RecruitmentDetailScreenImpl(
@@ -79,14 +109,30 @@ fun RecruitmentDetailScreen(
         onMoreClick = { viewModel.updateMoreMenuVisible(true) },
         onMoreMenuDismiss = { viewModel.updateMoreMenuVisible(false) },
         onEditClick = {
+            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.POST_EDIT, "편집하기")
             viewModel.updateMoreMenuVisible(false)
             onNavigateToModify(state.id)
         },
-        onDeleteClick = { viewModel.updateDeleteDialogVisible(true) },
-        onDeleteConfirm = viewModel::deleteRecruitment,
-        onDeleteDialogDismiss = { viewModel.updateDeleteDialogVisible(false) },
-        onApplyClick = { onNavigateToApply(state.id, state.roles) },
-        onCheckApplicantsClick = { onNavigateToApplicantManagement(state.id) }
+        onDeleteClick = {
+            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.POST_DELETE, "삭제하기")
+            viewModel.updateDeleteDialogVisible(true)
+        },
+        onDeleteConfirm = {
+            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.POST_DELETE_CONFIRM, "삭제하기")
+            viewModel.deleteRecruitment()
+        },
+        onDeleteDialogDismiss = {
+            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.POST_DELETE_CANCEL, "취소하기")
+            viewModel.updateDeleteDialogVisible(false)
+        },
+        onApplyClick = {
+            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.POST_APPLY, state.title)
+            viewModel.onApplyClick()
+        },
+        onCheckApplicantsClick = {
+            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.POST_APPLICANT_CHECK, state.title)
+            onNavigateToApplicantManagement(state.id)
+        }
     )
 }
 
@@ -236,6 +282,15 @@ private fun RecruitmentDetailBottomAction(
         isClosed -> R.string.recruitment_action_recruitment_closed
         else -> R.string.recruitment_action_apply
     }
+    val colors = RebrandKoinTheme.colors
+    val buttonColors = remember(colors) {
+        ButtonColors(
+            containerColor = colors.primary500,
+            contentColor = colors.neutral0,
+            disabledContainerColor = colors.neutral400,
+            disabledContentColor = colors.neutral0
+        )
+    }
     FilledButton(
         modifier = modifier
             .fillMaxWidth()
@@ -247,12 +302,7 @@ private fun RecruitmentDetailBottomAction(
         enabled = isAuthor || !isClosed,
         textStyle = RebrandKoinTheme.typography.bold15,
         shape = RoundedCornerShape(16.dp),
-        colors = ButtonColors(
-            containerColor = RebrandKoinTheme.colors.primary500,
-            contentColor = RebrandKoinTheme.colors.neutral0,
-            disabledContainerColor = RebrandKoinTheme.colors.neutral400,
-            disabledContentColor = RebrandKoinTheme.colors.neutral0
-        )
+        colors = buttonColors
     )
 }
 

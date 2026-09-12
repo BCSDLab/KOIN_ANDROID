@@ -13,6 +13,7 @@ import kotlinx.collections.immutable.toPersistentList
 
 data class AppliedRecruitmentPost(
     val id: Int,
+    val recruitmentId: Int,
     val category: RecruitmentCategory,
     val applicationStatus: AppliedRecruitmentStatus,
     val daysLeft: Int?,
@@ -21,11 +22,13 @@ data class AppliedRecruitmentPost(
     val location: String,
     val dateRange: String,
     val currentApplicants: Int,
-    val maxApplicants: Int
+    val maxApplicants: Int,
+    val teamChatRoomId: Int? = null
 )
 
 fun MyAppliedRecruitment.toAppliedRecruitmentPost() = AppliedRecruitmentPost(
     id = applicationId,
+    recruitmentId = recruitment.id,
     category = recruitment.category.toRecruitmentCategory(),
     applicationStatus = when (status) {
         "ACCEPTED" -> AppliedRecruitmentStatus.Approved
@@ -38,5 +41,6 @@ fun MyAppliedRecruitment.toAppliedRecruitmentPost() = AppliedRecruitmentPost(
     location = recruitment.meetingType.toRecruitmentLocation(),
     dateRange = recruitment.activityStartDate.toDateRange(recruitment.activityEndDate),
     currentApplicants = recruitment.currentParticipants,
-    maxApplicants = recruitment.maxParticipants
+    maxApplicants = recruitment.maxParticipants,
+    teamChatRoomId = teamChatRoomId
 )

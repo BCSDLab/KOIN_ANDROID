@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.data.mapper
+﻿package `in`.koreatech.koin.data.mapper
 
 import `in`.koreatech.koin.data.request.recruitment.RecruitmentUpdateRequest
 import `in`.koreatech.koin.data.response.recruitment.MyAppliedRecruitmentResponse
@@ -47,7 +47,7 @@ fun MyAppliedRecruitmentResponse.toMyAppliedRecruitment() = MyAppliedRecruitment
     teamChatAvailable = teamChatAvailable,
     teamChatRoomId = teamChatRoomId,
     directChatRoomId = directChatRoomId,
-    roleName = roleName,
+    role = role?.toTeamRecruitmentApplicationRole(),
     recruitment = recruitment.toRecruitment()
 )
 

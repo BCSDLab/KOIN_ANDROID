@@ -79,6 +79,11 @@
     <string name="recruitment_close_dialog_confirm">마감하기</string>
     <string name="recruitment_close_dialog_cancel">취소</string>
 
+    <string name="recruitment_login_required_dialog_title">로그인이 필요해요</string>
+    <string name="recruitment_login_required_dialog_message">모집글 작성은 로그인 후 이용할 수 있어요.</string>
+    <string name="recruitment_login_required_dialog_confirm">로그인하기</string>
+    <string name="recruitment_login_required_dialog_cancel">취소</string>
+
     <string name="recruitment_filter_status">모집 상태</string>
     <string name="recruitment_filter_status_all">전체</string>
     <string name="recruitment_filter_status_recruiting">모집 중</string>
@@ -193,6 +198,7 @@
     <string name="recruitment_applied_filter_status_section">지원 상태</string>
     <string name="recruitment_applied_empty_title">지원한 모집글이 없어요.</string>
     <string name="recruitment_applied_empty_subtitle">다양한 모집글에 지원해 보세요.</string>
+    <string name="recruitment_applied_empty_button">모집글 둘러보기</string>
 
     <string name="recruitment_profile_create_title">팀원 모집 프로필 작성</string>
     <string name="recruitment_profile_create_edit_title">팀원 모집 프로필 수정</string>
@@ -226,6 +232,7 @@
     <string name="recruitment_applicant_detail_available_time">활동 가능 시간</string>
     <string name="recruitment_applicant_detail_reject">거절하기</string>
     <string name="recruitment_applicant_detail_approve">승인하기</string>
+    <string name="recruitment_applicant_detail_error">오류가 발생했습니다.</string>
 
     <string name="recruitment_applicant_approve_dialog_title">해당 지원자를 승인하시겠어요?</string>
     <string name="recruitment_applicant_approve_dialog_message">승인 후 지원자와 채팅방이 생성됩니다.</string>

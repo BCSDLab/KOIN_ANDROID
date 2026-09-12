@@ -49,6 +49,7 @@ internal fun RecruitmentNotificationScreen(
     onNavigateToGroupChat: (recruitmentId: Int, chatRoomId: Int) -> Unit = { _, _ -> },
     onNavigateToDirectChat: (recruitmentId: Int, applicationId: Int) -> Unit = { _, _ -> },
     onNavigateToMyAppliedRecruitment: () -> Unit = {},
+    onUnreadNotificationStateChanged: () -> Unit = {},
     viewModel: RecruitmentNotificationViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.collectAsState()
@@ -80,6 +81,10 @@ internal fun RecruitmentNotificationScreen(
             RecruitmentNotificationSideEffect.Deleted -> {
                 snackbarHostState.showSnackbar(context.getString(R.string.recruitment_notification_deleted))
             }
+
+            RecruitmentNotificationSideEffect.UnreadNotificationStateChanged -> {
+                onUnreadNotificationStateChanged()
+            }
         }
     }
 
@@ -88,6 +93,7 @@ internal fun RecruitmentNotificationScreen(
         topBar = {
             KoinTopAppBar(
                 title = stringResource(R.string.recruitment_notification_title),
+                textStyle = RebrandKoinTheme.typography.bold16,
                 onNavigationIconClick = onBack,
                 actions = {
                     RecruitmentNotificationMenuButton(
