@@ -284,6 +284,7 @@
     <string name="recruitment_action_apply">지원하기</string>
     <string name="recruitment_action_recruitment_closed">모집 마감</string>
     <string name="recruitment_action_check_applicants">지원자 확인하기</string>
+    <string name="recruitment_action_already_applied">지원 완료</string>
     <string name="recruitment_more_content_description">더보기</string>
     <string name="recruitment_more_edit">편집하기</string>
     <string name="recruitment_more_delete">삭제하기</string>

@@ -48,7 +48,13 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     ) {
         RecruitmentApplyScreen(
             onNavigateUp = { navController.navigateUp() },
-            onApplySuccess = { navController.navigateUp() }
+            onApplySuccess = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(
+                    IS_RECRUITMENT_REFRESH_NEEDED,
+                    true
+                )
+                navController.navigateUp()
+            }
         )
     }
     composable<RecruitmentNavType.Profile> {
@@ -106,15 +112,15 @@ fun NavGraphBuilder.koinRecruitmentGraph(
         )
     }
     composable<RecruitmentNavType.RecruitmentDetail> { entry ->
-        val isRecruitmentModified by entry.savedStateHandle
-            .getStateFlow(IS_RECRUITMENT_MODIFIED, initialValue = false)
+        val isRecruitmentRefreshNeeded by entry.savedStateHandle
+            .getStateFlow(IS_RECRUITMENT_REFRESH_NEEDED, initialValue = false)
             .collectAsStateWithLifecycle()
         val navigator = rememberNavigator()
         val context = LocalContext.current
 
         RecruitmentDetailScreen(
-            isModified = isRecruitmentModified,
-            onResetModified = { entry.savedStateHandle[IS_RECRUITMENT_MODIFIED] = false },
+            isModified = isRecruitmentRefreshNeeded,
+            onResetModified = { entry.savedStateHandle[IS_RECRUITMENT_REFRESH_NEEDED] = false },
             onTopbarBackClick = { navController.navigateUp() },
             onNavigateToModify = { postId ->
                 navController.navigate(RecruitmentNavType.RecruitmentModify(postId))
@@ -238,7 +244,7 @@ fun NavGraphBuilder.koinRecruitmentGraph(
             onNavigateUp = { navController.navigateUp() },
             onRecruitmentModified = {
                 navController.previousBackStackEntry?.savedStateHandle?.set(
-                    IS_RECRUITMENT_MODIFIED,
+                    IS_RECRUITMENT_REFRESH_NEEDED,
                     true
                 )
                 navController.getBackStackEntry(RecruitmentNavType.RecruitmentMain)
@@ -253,4 +259,5 @@ const val UNREAD_NOTIFICATION_STATE_UPDATE = "unreadNotificationStateUpdate"
 const val APPLICANT_STATE_UPDATE = "applicantStateUpdate"
 
 private const val IS_RECRUITMENT_MODIFIED = "isRecruitmentModified"
+private const val IS_RECRUITMENT_REFRESH_NEEDED = "isRecruitmentRefreshNeeded"
 private const val IS_RECRUITMENT_CREATED = "isRecruitmentCreated"
