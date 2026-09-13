@@ -58,15 +58,24 @@ class RecruitmentMainViewModel @Inject constructor(
         fetchRecruitmentsSub()
     }
 
-    fun observeUserStatus() = intent {
-        getUserStatusUseCase().distinctUntilChanged().collect { user ->
-            val isLoggedIn = user !is User.Anonymous
-            reduce { state.copy(isLoggedIn = isLoggedIn) }
-            if (isLoggedIn) {
-                getNotificationCount()
-            } else {
-                reduce { state.copy(isUnreadNotificationAvailable = false) }
+    fun observeUserStatus() {
+        viewModelScope.launch {
+            getUserStatusUseCase().distinctUntilChanged().collect { user ->
+                val isLoggedIn = user !is User.Anonymous
+                updateLoginState(isLoggedIn)
+                if (isLoggedIn) {
+                    getNotificationCount()
+                }
             }
+        }
+    }
+
+    private fun updateLoginState(isLoggedIn: Boolean) = intent {
+        reduce {
+            state.copy(
+                isLoggedIn = isLoggedIn,
+                isUnreadNotificationAvailable = if (isLoggedIn) state.isUnreadNotificationAvailable else false
+            )
         }
     }
 
