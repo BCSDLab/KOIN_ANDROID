@@ -43,7 +43,8 @@ fun RecruitmentRoleRow(
     onNameChange: (String) -> Unit,
     onCountChange: (Int) -> Unit,
     onRemove: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    maxCount: Int = TeamRecruitmentRole.MAX_MEMBER_COUNT
 ) {
     Row(
         modifier = modifier,
@@ -81,7 +82,7 @@ fun RecruitmentRoleRow(
             count = role.count,
             onCountChange = onCountChange,
             minCount = TeamRecruitmentRole.MIN_MEMBER_COUNT,
-            maxCount = TeamRecruitmentRole.MAX_MEMBER_COUNT,
+            maxCount = maxCount,
             modifier = Modifier.width(StepperBoxWidth)
         )
 

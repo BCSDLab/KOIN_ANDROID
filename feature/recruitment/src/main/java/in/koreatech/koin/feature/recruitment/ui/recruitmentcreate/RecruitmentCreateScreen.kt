@@ -328,7 +328,8 @@ private fun RecruitmentCreateScreenImpl(
                 if (!state.isRoleCountUndetermined) {
                     RecruitmentAddRoleButton(
                         text = stringResource(R.string.recruitment_create_add_role),
-                        enabled = state.roles.size < TeamRecruitmentRole.MAX_ROLE_COUNT,
+                        enabled = state.roles.size < TeamRecruitmentRole.MAX_ROLE_COUNT &&
+                            state.roles.sumOf { it.count } < MAX_TOTAL_PARTICIPANTS,
                         onClick = onAddRoleClick
                     )
                 }
@@ -372,12 +373,14 @@ private fun RecruitmentCreateScreenImpl(
                 } else {
                     state.roles.forEach { role ->
                         key(role.id) {
+                            val remainingCapacity = MAX_TOTAL_PARTICIPANTS - state.roles.sumOf { it.count }
                             RecruitmentRoleRow(
                                 role = role,
                                 onNameChange = { name -> onRoleNameChange(role.id, name) },
                                 onCountChange = { count -> onRoleCountChange(role.id, count) },
                                 onRemove = { onRoleRemoved(role.id) },
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier.fillMaxWidth(),
+                                maxCount = minOf(TeamRecruitmentRole.MAX_MEMBER_COUNT, role.count + remainingCapacity)
                             )
                         }
                     }

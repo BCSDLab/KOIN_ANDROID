@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.error.recruitment.KoinRecruitmentException
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.dept.GetDeptNamesUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.GetTeamRecruitmentProfileUseCase
@@ -22,7 +21,6 @@ import `in`.koreatech.koin.feature.recruitment.navigation.RecruitmentNavType
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.ContainerHost
-import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -86,32 +84,12 @@ class ProfileCreateViewModel @Inject constructor(
     }
 
     fun loadMemberInfo() = intent {
-        getTeamRecruitmentProfileUseCase()
-            .onSuccess { profile ->
-                reduce {
-                    state.copy(
-                        nickname = profile.profileNickname,
-                        department = profile.department,
-                        studentId = profile.studentNumber
-                    )
-                }
-            }
-            .onFailure { throwable ->
-                if (throwable is KoinRecruitmentException.ProfileNotFoundException) {
-                    loadMemberInfoFromUserInfo()
-                } else {
-                    reduce { state.copy(errorMessage = throwable.toRecruitmentErrorMessage()) }
-                }
-            }
-    }
-
-    private suspend fun SimpleSyntax<ProfileCreateState, ProfileCreateSideEffect>.loadMemberInfoFromUserInfo() {
         getUserInfoUseCase()
             .onSuccess { user ->
                 if (user is User.Student) {
                     reduce {
                         state.copy(
-                            nickname = user.anonymousNickname ?: user.nickname ?: state.nickname,
+                            nickname = user.nickname ?: state.nickname,
                             department = user.major ?: state.department,
                             studentId = user.studentNumber ?: state.studentId
                         )
@@ -138,7 +116,9 @@ class ProfileCreateViewModel @Inject constructor(
     }
 
     fun setStudentId(studentId: String) = intent {
-        reduce { state.copy(studentId = studentId) }
+        if (studentId.isEmpty() || studentId.all { it.isDigit() }) {
+            reduce { state.copy(studentId = studentId) }
+        }
     }
 
     fun setPreferredRole(role: String) = intent {

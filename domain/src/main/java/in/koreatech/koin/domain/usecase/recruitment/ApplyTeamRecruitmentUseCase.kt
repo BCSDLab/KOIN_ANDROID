@@ -9,7 +9,7 @@ class ApplyTeamRecruitmentUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         recruitmentId: Int,
-        roleId: Int,
+        roleId: Int?,
         motivation: String,
         availability: String
     ): Result<TeamRecruitmentApplication> =

@@ -50,7 +50,7 @@ fun TeamRecruitmentApplicationResponse.toTeamRecruitmentApplication() = TeamRecr
     applicationId = applicationId,
     recruitmentId = recruitmentId,
     status = status,
-    role = role.toTeamRecruitmentApplicationRole(),
+    role = role?.toTeamRecruitmentApplicationRole(),
     createdAt = createdAt
 )
 

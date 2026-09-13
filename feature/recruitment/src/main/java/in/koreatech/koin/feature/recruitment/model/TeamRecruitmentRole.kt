@@ -10,6 +10,6 @@ data class TeamRecruitmentRole(
         const val NAME_MAX_LENGTH = 10
         const val MAX_ROLE_COUNT = 5
         const val MIN_MEMBER_COUNT = 1
-        const val MAX_MEMBER_COUNT = 99
+        const val MAX_MEMBER_COUNT = 10
     }
 }

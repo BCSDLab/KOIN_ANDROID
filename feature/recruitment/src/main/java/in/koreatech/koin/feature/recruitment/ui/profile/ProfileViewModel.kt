@@ -18,12 +18,12 @@ class ProfileViewModel @Inject constructor(
     private val getTeamRecruitmentProfileUseCase: GetTeamRecruitmentProfileUseCase
 ) : ViewModel(), ContainerHost<ProfileState, ProfileSideEffect> {
 
-    override val container = container<ProfileState, ProfileSideEffect>(ProfileState()) {
-        loadProfile()
-    }
+    override val container = container<ProfileState, ProfileSideEffect>(ProfileState())
 
-    fun loadProfile() = intent {
-        reduce { state.copy(loadState = ProfileLoadState.Loading) }
+    fun loadProfile(showLoading: Boolean = true) = intent {
+        if (showLoading) {
+            reduce { state.copy(loadState = ProfileLoadState.Loading) }
+        }
         getTeamRecruitmentProfileUseCase()
             .onSuccess { profile ->
                 reduce { state.copy(loadState = ProfileLoadState.Loaded(profile.toRecruitmentProfile())) }

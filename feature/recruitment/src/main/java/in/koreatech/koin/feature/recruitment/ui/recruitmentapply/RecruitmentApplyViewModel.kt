@@ -5,14 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.error.recruitment.KoinRecruitmentException
-import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.dept.GetDeptNamesUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.ApplyTeamRecruitmentUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.GetTeamRecruitmentProfileUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
+import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentActivityEntry
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentErrorMessage
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
+import `in`.koreatech.koin.feature.recruitment.model.SkillEntry
 import `in`.koreatech.koin.feature.recruitment.model.TeamRecruitmentRoleOption
+import `in`.koreatech.koin.feature.recruitment.model.loadMemberInfoOrFallback
 import `in`.koreatech.koin.feature.recruitment.model.withNewSkill
 import `in`.koreatech.koin.feature.recruitment.model.withSkillText
 import `in`.koreatech.koin.feature.recruitment.model.withoutSkill
@@ -23,7 +25,6 @@ import javax.inject.Inject
 import kotlin.reflect.typeOf
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.ContainerHost
-import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -62,43 +63,34 @@ class RecruitmentApplyViewModel @Inject constructor(
     }
 
     fun loadMemberInfo() = intent {
-        getTeamRecruitmentProfileUseCase()
-            .onSuccess { profile ->
-                reduce {
-                    state.copy(
-                        isMemberInfoLoaded = true,
-                        nickname = profile.profileNickname,
-                        department = profile.department,
-                        studentId = profile.studentNumber
-                    )
-                }
-            }
-            .onFailure { throwable ->
-                if (throwable is KoinRecruitmentException.ProfileNotFoundException) {
-                    loadMemberInfoFromUserInfo()
-                } else {
-                    reduce { state.copy(errorMessage = throwable.toRecruitmentErrorMessage()) }
-                }
-            }
-    }
-
-    private suspend fun SimpleSyntax<RecruitmentApplyState, RecruitmentApplySideEffect>.loadMemberInfoFromUserInfo() {
-        getUserInfoUseCase()
-            .onSuccess { user ->
-                if (user is User.Student) {
-                    reduce {
-                        state.copy(
-                            isMemberInfoLoaded = true,
-                            nickname = user.anonymousNickname ?: user.nickname ?: state.nickname,
-                            department = user.major ?: state.department,
-                            studentId = user.studentNumber ?: state.studentId
-                        )
-                    }
-                }
-            }
-            .onFailure { throwable ->
-                reduce { state.copy(errorMessage = throwable.toRecruitmentErrorMessage()) }
-            }
+        loadMemberInfoOrFallback(
+            getTeamRecruitmentProfileUseCase = getTeamRecruitmentProfileUseCase,
+            getUserInfoUseCase = getUserInfoUseCase,
+            onProfileLoaded = { profile ->
+                copy(
+                    isMemberInfoLoaded = true,
+                    nickname = profile.profileNickname,
+                    department = profile.department,
+                    studentId = profile.studentNumber,
+                    skills = profile.skills.mapIndexed { index, text ->
+                        SkillEntry(id = index.toLong() + 1L, text = text)
+                    }.toPersistentList(),
+                    activities = profile.activities
+                        .map { it.toRecruitmentActivityEntry() }
+                        .toPersistentList(),
+                    selfIntroduction = profile.selfIntroduction
+                )
+            },
+            onUserLoaded = { user ->
+                copy(
+                    isMemberInfoLoaded = true,
+                    nickname = user.nickname ?: nickname,
+                    department = user.major ?: department,
+                    studentId = user.studentNumber ?: studentId
+                )
+            },
+            onError = { throwable -> copy(errorMessage = throwable.toRecruitmentErrorMessage()) }
+        )
     }
 
     fun setNickname(nickname: String) = intent {
@@ -116,7 +108,9 @@ class RecruitmentApplyViewModel @Inject constructor(
     }
 
     fun setStudentId(studentId: String) = intent {
-        reduce { state.copy(studentId = studentId) }
+        if (studentId.isEmpty() || studentId.all { it.isDigit() }) {
+            reduce { state.copy(studentId = studentId) }
+        }
     }
 
     fun addSkill() = intent {
@@ -221,20 +215,24 @@ class RecruitmentApplyViewModel @Inject constructor(
     }
 
     fun submitApplication() = intent {
-        val role = state.selectedRole ?: return@intent
         reduce { state.copy(isSubmitting = true, showSubmitConfirmDialog = false, errorMessage = null) }
 
         applyTeamRecruitmentUseCase(
             recruitmentId = state.recruitmentId,
-            roleId = role.id,
+            roleId = state.selectedRole?.id,
             motivation = state.motivation,
             availability = state.availableTime
         ).onSuccess {
             reduce { state.copy(isSubmitting = false) }
             postSideEffect(RecruitmentApplySideEffect.ApplySuccess)
         }.onFailure { throwable ->
-            reduce { state.copy(isSubmitting = false, errorMessage = throwable.toRecruitmentErrorMessage()) }
-            postSideEffect(RecruitmentApplySideEffect.ApplyFailure)
+            if (throwable is KoinRecruitmentException.RecruitmentClosedException) {
+                reduce { state.copy(isSubmitting = false) }
+                postSideEffect(RecruitmentApplySideEffect.NavigateUp)
+            } else {
+                reduce { state.copy(isSubmitting = false, errorMessage = throwable.toRecruitmentErrorMessage()) }
+                postSideEffect(RecruitmentApplySideEffect.ApplyFailure)
+            }
         }
     }
 }

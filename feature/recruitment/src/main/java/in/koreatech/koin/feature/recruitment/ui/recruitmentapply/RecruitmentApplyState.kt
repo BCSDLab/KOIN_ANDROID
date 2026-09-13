@@ -49,5 +49,7 @@ data class RecruitmentApplyState(
             selfIntroduction.isNotBlank()
 
     val isSubmitEnabled: Boolean
-        get() = selectedRole != null && motivation.isNotBlank() && availableTime.isNotBlank()
+        get() = (availableRoles.isEmpty() || selectedRole != null) &&
+            motivation.isNotBlank() &&
+            availableTime.isNotBlank()
 }
