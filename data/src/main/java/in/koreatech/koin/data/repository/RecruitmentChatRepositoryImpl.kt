@@ -77,7 +77,6 @@ class RecruitmentChatRepositoryImpl @Inject constructor(
             on(401) throws KoinRecruitmentChatException.UnauthorizedException()
             on(403) throws KoinRecruitmentChatException.ChatMemberForbiddenException()
             on(404) throws KoinRecruitmentChatException.ChatRoomNotFoundException()
-            on(409, "TEAM_RECRUITMENT_CHAT_READ_ONLY") throws KoinRecruitmentChatException.ChatReadOnlyException()
             on(409, "REQUEST_TOO_FAST") throws KoinRecruitmentChatException.RequestTooFastException()
         }
     }

@@ -74,8 +74,7 @@ class RecruitmentGroupChatViewModel @Inject constructor(
                         isLoading = false,
                         title = room.roomName,
                         currentMemberCount = room.memberCount,
-                        maxMemberCount = room.maxMemberCount,
-                        status = room.status
+                        maxMemberCount = room.maxMemberCount
                     )
                 }
                 loadMessages()
@@ -191,7 +190,6 @@ class RecruitmentGroupChatViewModel @Inject constructor(
     }
 
     private fun Throwable.toSendMessageSideEffect(): RecruitmentGroupChatSideEffect = when (this) {
-        is KoinRecruitmentChatException.ChatReadOnlyException -> RecruitmentGroupChatSideEffect.ChatRoomReadOnly
         is KoinRecruitmentChatException.RequestTooFastException -> RecruitmentGroupChatSideEffect.MessageTooFast
         else -> RecruitmentGroupChatSideEffect.FailedToSendMessage
     }

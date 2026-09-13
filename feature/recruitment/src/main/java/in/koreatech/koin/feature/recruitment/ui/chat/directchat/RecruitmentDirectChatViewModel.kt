@@ -73,8 +73,7 @@ class RecruitmentDirectChatViewModel @Inject constructor(
                     state.copy(
                         isLoading = false,
                         chatRoomId = room.chatRoomId,
-                        partnerNickname = room.counterpart?.nickname.orEmpty(),
-                        status = room.status
+                        partnerNickname = room.counterpart?.nickname.orEmpty()
                     )
                 }
                 loadMessages()
@@ -199,7 +198,6 @@ class RecruitmentDirectChatViewModel @Inject constructor(
     }
 
     private fun Throwable.toSendMessageSideEffect(): RecruitmentDirectChatSideEffect = when (this) {
-        is KoinRecruitmentChatException.ChatReadOnlyException -> RecruitmentDirectChatSideEffect.ChatRoomReadOnly
         is KoinRecruitmentChatException.RequestTooFastException -> RecruitmentDirectChatSideEffect.MessageTooFast
         else -> RecruitmentDirectChatSideEffect.FailedToSendMessage
     }

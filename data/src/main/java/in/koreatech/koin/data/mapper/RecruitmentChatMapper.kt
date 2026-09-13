@@ -5,7 +5,6 @@ import `in`.koreatech.koin.data.response.recruitment.chat.RecruitmentChatRoomRes
 import `in`.koreatech.koin.domain.model.recruitment.chat.RecruitmentChatCounterpart
 import `in`.koreatech.koin.domain.model.recruitment.chat.RecruitmentChatMessage
 import `in`.koreatech.koin.domain.model.recruitment.chat.RecruitmentChatRoom
-import `in`.koreatech.koin.domain.model.recruitment.chat.RecruitmentChatRoomStatus
 import `in`.koreatech.koin.domain.model.recruitment.chat.RecruitmentChatRoomType
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -21,7 +20,6 @@ fun RecruitmentChatRoomResponse.toRecruitmentChatRoom(): RecruitmentChatRoom = R
     chatRoomId = chatRoomId,
     roomName = roomName,
     roomType = RecruitmentChatRoomType.fromString(roomType),
-    status = RecruitmentChatRoomStatus.fromString(status),
     memberCount = memberCount,
     maxMemberCount = maxMemberCount,
     counterpart = counterpart?.let {
