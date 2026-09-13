@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
@@ -16,10 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,6 +26,7 @@ import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRoleModel
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentStatus
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentCategoryBadge
+import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentPostMetaInfo
 import `in`.koreatech.koin.feature.recruitment.ui.main.model.RecruitmentItemModel
 import kotlinx.collections.immutable.persistentListOf
 
@@ -78,36 +74,24 @@ fun RecruitmentMainItem(
                 }
             }
 
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                RecruitmentMetaItem(
-                    iconRes = R.drawable.ic_recruitment_location,
-                    text = stringResource(item.location.labelRes)
-                )
-                RecruitmentMetaItem(
-                    iconRes = R.drawable.ic_recruitment_calendar,
-                    text = stringResource(
-                        R.string.recruitment_period_format,
-                        item.activityStartDate,
-                        item.activityEndDate
-                    )
-                )
-                RecruitmentMetaItem(
-                    iconRes = R.drawable.ic_recruitment_participants,
-                    text = stringResource(
-                        R.string.recruitment_participants_count,
-                        item.currentCount,
-                        item.maxCount
-                    ),
-                    tint = if (item.isFull) {
-                        RebrandKoinTheme.colors.primary600
-                    } else {
-                        RebrandKoinTheme.colors.neutral500
-                    }
-                )
-            }
+            RecruitmentPostMetaInfo(
+                location = stringResource(item.location.labelRes),
+                dateRange = stringResource(
+                    R.string.recruitment_period_format,
+                    item.activityStartDate,
+                    item.activityEndDate
+                ),
+                applicantText = stringResource(
+                    R.string.recruitment_participants_count,
+                    item.currentCount,
+                    item.maxCount
+                ),
+                applicantColor = if (item.status == RecruitmentStatus.COMPLETED) {
+                    RebrandKoinTheme.colors.primary600
+                } else {
+                    RebrandKoinTheme.colors.neutral500
+                }
+            )
         }
     }
 }
@@ -146,32 +130,6 @@ private fun RecruitmentItemHeader(
             text = statusText,
             style = labelStyle,
             color = statusColor
-        )
-    }
-}
-
-@Composable
-private fun RecruitmentMetaItem(
-    iconRes: Int,
-    text: String,
-    modifier: Modifier = Modifier,
-    tint: Color = RebrandKoinTheme.colors.neutral500
-) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(2.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            imageVector = ImageVector.vectorResource(iconRes),
-            contentDescription = null,
-            tint = tint,
-            modifier = Modifier.size(12.dp)
-        )
-        Text(
-            text = text,
-            style = RebrandKoinTheme.typography.regular10,
-            color = tint
         )
     }
 }

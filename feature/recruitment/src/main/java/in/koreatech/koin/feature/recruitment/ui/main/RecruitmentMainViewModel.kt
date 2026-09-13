@@ -22,8 +22,9 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -45,10 +46,11 @@ class RecruitmentMainViewModel @Inject constructor(
     override val container = container<RecruitmentMainState, RecruitmentMainSideEffect>(
         RecruitmentMainState()
     ) {
-        getNotificationCount()
+        observeUserStatus()
     }
 
     private var searchJob: Job? = null
+    private val loadMoreMutex = Mutex()
 
     init {
         fetchRecruitments()
@@ -58,7 +60,29 @@ class RecruitmentMainViewModel @Inject constructor(
         fetchRecruitmentsSub()
     }
 
+    fun observeUserStatus() {
+        viewModelScope.launch {
+            getUserStatusUseCase().distinctUntilChanged().collect { user ->
+                val isLoggedIn = user !is User.Anonymous
+                updateLoginState(isLoggedIn)
+                if (isLoggedIn) {
+                    getNotificationCount()
+                }
+            }
+        }
+    }
+
+    private fun updateLoginState(isLoggedIn: Boolean) = intent {
+        reduce {
+            state.copy(
+                isLoggedIn = isLoggedIn,
+                isUnreadNotificationAvailable = if (isLoggedIn) state.isUnreadNotificationAvailable else false
+            )
+        }
+    }
+
     fun getNotificationCount() = intent {
+        if (!state.isLoggedIn) return@intent
         getRecruitmentNotificationsUseCase(page = 1, limit = 1).onSuccess {
             if (it.unreadCount == 0) {
                 reduce { state.copy(isUnreadNotificationAvailable = false) }
@@ -103,11 +127,18 @@ class RecruitmentMainViewModel @Inject constructor(
     }
 
     fun onWriteClick() = intent {
-        val user = getUserStatusUseCase().first()
-        if (user is User.Anonymous) {
-            reduce { state.copy(isLoginRequiredDialogVisible = true) }
-        } else {
+        if (state.isLoggedIn) {
             postSideEffect(RecruitmentMainSideEffect.NavigateToWrite)
+        } else {
+            reduce { state.copy(isLoginRequiredDialogVisible = true) }
+        }
+    }
+
+    fun onNotificationClick() = intent {
+        if (state.isLoggedIn) {
+            postSideEffect(RecruitmentMainSideEffect.NavigateToNotification)
+        } else {
+            reduce { state.copy(isLoginRequiredDialogVisible = true) }
         }
     }
 
@@ -121,34 +152,39 @@ class RecruitmentMainViewModel @Inject constructor(
     }
 
     fun loadMoreRecruitments() = intent {
-        if (state.isLoadingMore || state.currentPage >= state.totalPage) return@intent
-        reduce { state.copy(isLoadingMore = true) }
-        val filter = state.filterState
-        getRecruitmentsUseCase(
-            keyword = state.searchValue.takeIf { it.isNotBlank() },
-            status = filter.selectedStatus?.apiValue,
-            categories = filter.selectedCategories
-                .takeIf { it.isNotEmpty() }
-                ?.map { it.apiValue },
-            meetingType = filter.selectedLocation?.apiValue,
-            sort = filter.selectedSort.apiValue,
-            page = state.currentPage + 1,
-            limit = RECRUITMENTS_PAGE_SIZE
-        ).onSuccess { recruitments ->
-            reduce {
-                state.copy(
-                    items = (
-                        state.items + recruitments.recruitments.map { it.toRecruitmentItemModel() }
-                        ).toImmutableList(),
-                    totalCount = recruitments.totalCount,
-                    currentPage = recruitments.currentPage,
-                    totalPage = recruitments.totalPage,
-                    isLoadingMore = false
-                )
+        if (!loadMoreMutex.tryLock()) return@intent
+        try {
+            if (state.currentPage >= state.totalPage) return@intent
+            reduce { state.copy(isLoadingMore = true) }
+            val filter = state.filterState
+            getRecruitmentsUseCase(
+                keyword = state.searchValue.takeIf { it.isNotBlank() },
+                status = filter.selectedStatus?.apiValue,
+                categories = filter.selectedCategories
+                    .takeIf { it.isNotEmpty() }
+                    ?.map { it.apiValue },
+                meetingType = filter.selectedLocation?.apiValue,
+                sort = filter.selectedSort.apiValue,
+                page = state.currentPage + 1,
+                limit = RECRUITMENTS_PAGE_SIZE
+            ).onSuccess { recruitments ->
+                reduce {
+                    state.copy(
+                        items = (
+                            state.items + recruitments.recruitments.map { it.toRecruitmentItemModel() }
+                            ).distinctBy { it.id }.toImmutableList(),
+                        totalCount = recruitments.totalCount,
+                        currentPage = recruitments.currentPage,
+                        totalPage = recruitments.totalPage,
+                        isLoadingMore = false
+                    )
+                }
+            }.onFailure {
+                reduce { state.copy(isLoadingMore = false) }
+                postSideEffect(RecruitmentMainSideEffect.ShowError)
             }
-        }.onFailure {
-            reduce { state.copy(isLoadingMore = false) }
-            postSideEffect(RecruitmentMainSideEffect.ShowError)
+        } finally {
+            loadMoreMutex.unlock()
         }
     }
 
