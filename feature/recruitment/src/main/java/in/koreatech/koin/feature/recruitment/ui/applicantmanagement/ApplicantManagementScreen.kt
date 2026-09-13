@@ -1,0 +1,222 @@
+package `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement
+
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.navigation.NavController
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.notification.FirebaseMessagingType
+import `in`.koreatech.koin.feature.recruitment.R
+import `in`.koreatech.koin.feature.recruitment.model.ApplicantStatus
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.navigation.APPLICANT_STATE_UPDATE
+import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.component.ApplicantListItem
+import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.component.ApplicantManagementEmptyState
+import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.component.ApplicantManagementPostCard
+import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.model.Applicant
+import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.MyRecruitmentPost
+import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentStatus
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import org.orbitmvi.orbit.compose.collectAsState
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ApplicantManagementScreen(
+    navController: NavController,
+    viewModel: ApplicantManagementViewModel = hiltViewModel(),
+    onNavigateUp: () -> Unit = {},
+    onChat: (chatRoomId: Int) -> Unit = {},
+    onApplicantDetail: (Int) -> Unit = {},
+    onApplicantChat: (Int) -> Unit = {}
+) {
+    val state by viewModel.collectAsState()
+    val context = LocalContext.current
+
+    val applicantUpdated = navController.previousBackStackEntry?.savedStateHandle?.getStateFlow(APPLICANT_STATE_UPDATE, false)?.collectAsState()
+
+    LaunchedEffect(applicantUpdated?.value) {
+        if (applicantUpdated?.value == true) {
+            viewModel.loadApplicants()
+            navController.previousBackStackEntry?.savedStateHandle?.set(APPLICANT_STATE_UPDATE, false)
+        }
+    }
+
+    DisposableEffect(Unit) {
+        val receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                if (intent?.getStringExtra("NOTIFICATION_TYPE") == FirebaseMessagingType.TEAM_RECRUITMENT.name) {
+                    viewModel.loadApplicants()
+                }
+            }
+        }
+
+        val filter = IntentFilter("${context.packageName}.ACTION_NOTIFICAION_RECEIVED")
+        context.registerReceiver(receiver, filter, Context.RECEIVER_NOT_EXPORTED)
+
+        onDispose {
+            context.unregisterReceiver(receiver)
+        }
+    }
+
+    Scaffold(
+        containerColor = RebrandKoinTheme.colors.neutral50,
+        topBar = {
+            KoinTopAppBar(
+                title = stringResource(R.string.recruitment_applicant_management_title),
+                textStyle = RebrandKoinTheme.typography.bold16,
+                onNavigationIconClick = onNavigateUp,
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = RebrandKoinTheme.colors.neutral50
+                )
+            )
+        }
+    ) { innerPadding ->
+        ApplicantManagementScreenImpl(
+            post = state.post,
+            applicants = state.applicants,
+            onChat = { state.post?.teamChatRoomId?.let(onChat) },
+            onApplicantDetail = onApplicantDetail,
+            onApplicantChat = onApplicantChat,
+            modifier = Modifier.padding(innerPadding)
+        )
+    }
+}
+
+@Composable
+private fun ApplicantManagementScreenImpl(
+    post: MyRecruitmentPost?,
+    applicants: ImmutableList<Applicant>,
+    modifier: Modifier = Modifier,
+    onChat: () -> Unit = {},
+    onApplicantDetail: (Int) -> Unit = {},
+    onApplicantChat: (Int) -> Unit = {}
+) {
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(horizontal = 21.5.dp, vertical = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
+        if (post != null) {
+            item {
+                ApplicantManagementPostCard(post = post, onChat = onChat)
+            }
+        }
+        item {
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(
+                    text = stringResource(R.string.recruitment_applicant_list_title),
+                    style = RebrandKoinTheme.typography.bold16,
+                    color = RebrandKoinTheme.colors.neutral800
+                )
+                Text(
+                    text = stringResource(R.string.recruitment_applicant_list_count, applicants.size),
+                    style = RebrandKoinTheme.typography.regular12,
+                    color = RebrandKoinTheme.colors.neutral500
+                )
+            }
+        }
+        if (applicants.isEmpty()) {
+            item {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    ApplicantManagementEmptyState()
+                }
+            }
+        } else {
+            items(applicants, key = { it.id }) { applicant ->
+                ApplicantListItem(
+                    applicant = applicant,
+                    onClick = {
+                        EventLogger.logCampusClickEvent(
+                            AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_APPLICANT_SELECT,
+                            "지원자 선택"
+                        )
+                        onApplicantDetail(applicant.id)
+                    },
+                    onChatClick = {
+                        EventLogger.logCampusClickEvent(
+                            AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_APPLICANT_CHAT,
+                            "채팅"
+                        )
+                        onApplicantChat(applicant.id)
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFF8F8FA)
+@Composable
+private fun ApplicantManagementScreenWithApplicantsPreview() {
+    RebrandKoinTheme {
+        ApplicantManagementScreenImpl(
+            post = MyRecruitmentPost(
+                id = 1,
+                category = RecruitmentCategory.CONTEST,
+                status = RecruitmentStatus.Recruiting(daysLeft = 5),
+                title = "AI 아이디어 공모전 팀원 모집",
+                location = "온라인",
+                dateRange = "2026.07.26 ~ 2026.08.07",
+                currentApplicants = 2,
+                maxApplicants = 3
+            ),
+            applicants = persistentListOf(
+                Applicant(1, "김철수", "백엔드", "컴퓨터공학부", "23학번", ApplicantStatus.REJECTED),
+                Applicant(2, "김철수", "디자인", "컴퓨터공학부", "23학번", ApplicantStatus.APPROVED, hasChatRoom = true),
+                Applicant(3, "김철수", "프론트엔드", "컴퓨터공학부", "23학번", ApplicantStatus.PENDING)
+            )
+        )
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFF8F8FA)
+@Composable
+private fun ApplicantManagementScreenEmptyPreview() {
+    RebrandKoinTheme {
+        ApplicantManagementScreenImpl(
+            post = MyRecruitmentPost(
+                id = 1,
+                category = RecruitmentCategory.CONTEST,
+                status = RecruitmentStatus.Recruiting(daysLeft = 5),
+                title = "AI 아이디어 공모전 팀원 모집",
+                location = "온라인",
+                dateRange = "2026.07.26 ~ 2026.08.07",
+                currentApplicants = 0,
+                maxApplicants = 3
+            ),
+            applicants = persistentListOf()
+        )
+    }
+}

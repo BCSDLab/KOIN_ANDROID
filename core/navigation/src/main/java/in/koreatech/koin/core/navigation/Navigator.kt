@@ -56,6 +56,10 @@ interface Navigator {
         context: Context
     ): Intent
 
+    fun navigateToRecruitment(
+        context: Context
+    ): Intent
+
     fun navigateToLand(
         context: Context
     ): Intent

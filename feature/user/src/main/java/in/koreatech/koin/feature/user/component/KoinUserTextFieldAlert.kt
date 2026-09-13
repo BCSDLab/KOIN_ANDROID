@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.user.R
 
 @Composable
@@ -43,7 +44,7 @@ fun KoinUserTextFieldAlert(
             style = KoinTheme.typography.regular12,
             color = when (state) {
                 KoinUserTextFieldAlertState.Error -> KoinTheme.colors.danger600
-                KoinUserTextFieldAlertState.Warning -> KoinTheme.colors.sub500
+                KoinUserTextFieldAlertState.Warning -> RebrandKoinTheme.colors.primary600
                 KoinUserTextFieldAlertState.Success -> KoinTheme.colors.success700
             }
         )
@@ -53,7 +54,7 @@ fun KoinUserTextFieldAlert(
 @Preview(showBackground = true)
 @Composable
 private fun KoinUserTextFieldAlertErrorPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         KoinUserTextFieldAlert(
             text = "This is an error alert",
             state = KoinUserTextFieldAlertState.Error
@@ -64,7 +65,7 @@ private fun KoinUserTextFieldAlertErrorPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun KoinUserTextFieldAlertWarningPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         KoinUserTextFieldAlert(
             text = "This is a warning alert",
             state = KoinUserTextFieldAlertState.Warning
@@ -75,7 +76,7 @@ private fun KoinUserTextFieldAlertWarningPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun KoinUserTextFieldAlertSuccessPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         KoinUserTextFieldAlert(
             text = "This is a success alert",
             state = KoinUserTextFieldAlertState.Success

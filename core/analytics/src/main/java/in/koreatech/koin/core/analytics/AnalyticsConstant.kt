@@ -219,11 +219,19 @@ object AnalyticsConstant {
         }
 
         object Category {
+            const val CATEGORY_TEAM_RECRUITMENT = "category_team_recruitment"
+            const val CATEGORY_LOST_AND_FOUND = "category_lost_and_found"
+            const val CATEGORY_FACILITY = "category_facility"
+            const val CATEGORY_DEPARTMENT = "category_department"
+            const val CATEGORY_DINING = "category_dining"
+            const val CATEGORY_NEARBY_STORE = "category_nearby_store"
             const val CATEGORY_TIMETABLE = "category_timetable"
-            const val CATEGORY_LOST_PROPERTY = "category_lost_property"
-            const val CATEGORY_CAMPUS = "category_campus"
+            const val CATEGORY_BUS_TIMETABLE = "category_bus_timetable"
             const val CATEGORY_TRANSPORTATION = "category_transportation"
-            const val CATEGORY_ETC = "category_etc"
+            const val CATEGORY_CALLVAN_RECRUITMENT = "category_callvan_recruitment"
+            const val CATEGORY_CHAT = "category_chat"
+            const val CATEGORY_ROOM = "category_room"
+            const val CATEGORY_KOIN_FOR_BUSINESS = "category_koin_for_business"
         }
 
         object Profile {
@@ -231,6 +239,113 @@ object AnalyticsConstant {
             const val HOME_LOGIN = "home_login"
             const val HOME_LOGOUT = "home_logout"
             const val HOME_SETTINGS = "home_settings"
+        }
+
+        object TeamRecruitment {
+            const val NOTIFICATION = "team_recruitment_notification"
+
+            const val SEARCH = "team_recruitment_search"
+            const val FILTER = "team_recruitment_filter"
+            const val FILTER_STATUS = "team_recruitment_filter_status"
+            const val FILTER_SORT = "team_recruitment_filter_sort"
+            const val FILTER_CATEGORY = "team_recruitment_filter_category"
+            const val FILTER_METHOD = "team_recruitment_filter_method"
+            const val FILTER_RESET = "team_recruitment_filter_reset"
+            const val FILTER_APPLY = "team_recruitment_filter_apply"
+            const val POST_SELECT = "team_recruitment_post_select"
+
+            const val POST_APPLY = "team_recruitment_post_apply"
+            const val POST_APPLICANT_CHECK = "team_recruitment_post_applicant_check"
+
+            const val POST_DELETE = "team_recruitment_post_delete"
+            const val POST_DELETE_CONFIRM = "team_recruitment_post_delete_confirm"
+            const val POST_DELETE_CANCEL = "team_recruitment_post_delete_cancel"
+
+            const val POST_EDIT = "team_recruitment_post_edit"
+            const val POST_EDIT_CATEGORY = "team_recruitment_post_edit_category"
+            const val POST_EDIT_METHOD = "team_recruitment_post_edit_method"
+            const val POST_EDIT_ROLE = "team_recruitment_post_edit_role"
+            const val POST_EDIT_SUBMIT = "team_recruitment_post_edit_submit"
+            const val POST_EDIT_SUBMIT_CANCEL = "team_recruitment_post_edit_submit_cancel"
+            const val POST_EDIT_SUBMIT_CONFIRM = "team_recruitment_post_edit_submit_confirm"
+
+            const val RECRUIT = "team_recruitment_recruit"
+            const val RECRUIT_CATEGORY = "team_recruitment_recruit_category"
+            const val RECRUIT_METHOD = "team_recruitment_recruit_method"
+            const val RECRUIT_ROLE = "team_recruitment_recruit_role"
+            const val RECRUIT_SUBMIT = "team_recruitment_recruit_submit"
+            const val RECRUIT_SUBMIT_CANCEL = "team_recruitment_recruit_submit_cancel"
+            const val RECRUIT_SUBMIT_CONFIRM = "team_recruitment_recruit_submit_confirm"
+
+            const val APPLY_LOAD = "team_recruitment_apply_load"
+            const val APPLY_MAJOR_SELECT = "team_recruitment_apply_major_select"
+            const val APPLY_SKILL_ADD = "team_recruitment_apply_skill_add"
+            const val APPLY_ACTIVITY_ADD = "team_recruitment_apply_activity_add"
+            const val APPLY_ACTIVITY_MODIFY = "team_recruitment_apply_activity_modify"
+            const val APPLY_ACTIVITY_MODIFY_COMPLETE = "team_recruitment_apply_activity_modify_complete"
+            const val APPLY_NEXT = "team_recruitment_apply_next"
+            const val APPLY_ROLE_SELECT = "team_recruitment_apply_role_select"
+            const val APPLY_SUBMIT = "team_recruitment_apply_submit"
+            const val APPLY_SUBMIT_CONFIRM = "team_recruitment_apply_submit_confirm"
+            const val APPLY_SUBMIT_CANCEL = "team_recruitment_apply_submit_cancel"
+
+            const val PROFILE = "team_recruitment_profile"
+            const val PROFILE_MODIFY = "team_recruitment_profile_modify"
+            const val PROFILE_CREATE = "team_recruitment_profile_create"
+            const val PROFILE_CREATED = "team_recruitment_profile_created"
+            const val PROFILE_APPLIED = "team_recruitment_profile_applied"
+
+            const val PROFILE_MODIFY_LOAD = "team_recruitment_profile_modify_load"
+            const val PROFILE_MODIFY_MAJOR_SELECT = "team_recruitment_profile_modify_major_select"
+            const val PROFILE_MODIFY_NEXT = "team_recruitment_profile_modify_next"
+            const val PROFILE_MODIFY_SKILL_ADD = "team_recruitment_profile_modify_skill_add"
+            const val PROFILE_MODIFY_ACTIVITY_MODIFY = "team_recruitment_profile_modify_activity_modify"
+            const val PROFILE_MODIFY_ACTIVITY_MODIFY_COMPLETE = "team_recruitment_profile_modify_activity_modify_complete"
+            const val PROFILE_MODIFY_ACTIVITY_ADD = "team_recruitment_profile_modify_activity_add"
+            const val PROFILE_MODIFY_ACTIVITY_COMPLETE = "team_recruitment_profile_modify_activity_complete"
+            const val PROFILE_MODIFY_SUBMIT = "team_recruitment_profile_modify_submit"
+            const val PROFILE_MODIFY_SUBMIT_CONFIRM = "team_recruitment_profile_modify_submit_confirm"
+            const val PROFILE_MODIFY_SUBMIT_CANCEL = "team_recruitment_profile_modify_submit_cancel"
+
+            const val PROFILE_CREATE_LOAD = "team_recruitment_profile_create_load"
+            const val PROFILE_CREATE_MAJOR = "team_recruitment_profile_create_major"
+            const val PROFILE_CREATE_NEXT = "team_recruitment_profile_create_next"
+            const val PROFILE_CREATE_SKILL_ADD = "team_recruitment_profile_create_skill_add"
+            const val PROFILE_CREATE_ACTIVITY_ADD = "team_recruitment_profile_create_activity_add"
+            const val PROFILE_CREATE_ACTIVITY_ADD_COMPLETE = "team_recruitment_profile_create_activity_add_complete"
+            const val PROFILE_CREATE_ACTIVITY_MODIFY = "team_recruitment_profile_create_activity_modify"
+            const val PROFILE_CREATE_ACTIVITY_MODIFY_COMPLETE = "team_recruitment_profile_create_activity_modify_complete"
+            const val PROFILE_CREATE_SUBMIT = "team_recruitment_profile_create_submit"
+            const val PROFILE_CREATE_SUBMIT_CANCEL = "team_recruitment_profile_create_submit_cancel"
+            const val PROFILE_CREATE_SUBMIT_CONFIRM = "team_recruitment_profile_create_submit_confirm"
+
+            const val APPLIED_POST_FILTER = "team_recruitment_applied_post_filter"
+            const val APPLIED_POST_FILTER_STATUS = "team_recruitment_applied_post_filter_status"
+            const val APPLIED_POST_FILTER_SORT = "team_recruitment_applied_post_filter_sort"
+            const val APPLIED_POST_FILTER_RESET = "team_recruitment_applied_post_filter_reset"
+            const val APPLIED_POST_FILTER_APPLY = "team_recruitment_applied_post_filter_apply"
+            const val APPLIED_POST_CHAT = "team_recruitment_applied_post_chat"
+
+            const val CREATED_POST_APPLICANT = "team_recruitment_created_post_applicant"
+            const val CREATED_POST_CLOSE = "team_recruitment_created_post_close"
+            const val CREATED_POST_CLOSE_CANCEL = "team_recruitment_created_post_close_cancel"
+            const val CREATED_POST_CLOSE_CONFIRM = "team_recruitment_created_post_close_confirm"
+            const val CREATED_POST_CHAT = "team_recruitment_created_post_chat"
+
+            const val CREATED_POST_FILTER = "team_recruitment_created_post_filter"
+            const val CREATED_POST_FILTER_STATUS = "team_recruitment_created_post_filter_status"
+            const val CREATED_POST_FILTER_SORT = "team_recruitment_created_post_filter_sort"
+            const val CREATED_POST_FILTER_RESET = "team_recruitment_created_post_filter_reset"
+            const val CREATED_POST_FILTER_APPLY = "team_recruitment_created_post_filter_apply"
+
+            const val CREATED_POST_APPLICANT_SELECT = "team_recruitment_created_post_applicant_select"
+            const val CREATED_POST_APPLICANT_CHAT = "team_recruitment_created_post_applicant_chat"
+            const val CREATED_POST_APPLICANT_APPROVE = "team_recruitment_created_post_applicant_approve"
+            const val CREATED_POST_APPLICANT_APPROVE_CONFIRM = "team_recruitment_created_post_applicant_approve_confirm"
+            const val CREATED_POST_APPLICANT_APPROVE_CANCEL = "team_recruitment_created_post_applicant_approve_cancel"
+            const val CREATED_POST_APPLICANT_REJECT = "team_recruitment_created_post_applicant_reject"
+            const val CREATED_POST_APPLICANT_REJECT_CONFIRM = "team_recruitment_created_post_applicant_reject_confirm"
+            const val CREATED_POST_APPLICANT_REJECT_CANCEL = "team_recruitment_created_post_applicant_reject_cancel"
         }
 
         object Department {

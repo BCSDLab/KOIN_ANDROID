@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.user.R
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 
@@ -60,7 +62,7 @@ fun FindPasswordCompleteScreen() {
             Text(
                 text = stringResource(R.string.find_password_change_password_success),
                 style = KoinTheme.typography.bold20.copy(fontSize = 24.sp),
-                color = KoinTheme.colors.primary500
+                color = RebrandKoinTheme.colors.primary500
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -77,6 +79,9 @@ fun FindPasswordCompleteScreen() {
             FilledButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.find_password_change_password_login),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = RebrandKoinTheme.colors.primary500
+                ),
                 onClick = {
                     Intent(context, SignInActivity::class.java).let {
                         context.startActivity(it)

@@ -5,13 +5,13 @@ import `in`.koreatech.koin.data.response.chat.toChatListItem
 import `in`.koreatech.koin.data.source.remote.ChatRemoteDataSource
 import `in`.koreatech.koin.data.stomp.KoinStompConnectionState
 import `in`.koreatech.koin.data.util.mapHttpFailure
-import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.error.chat.KoinChatException
 import `in`.koreatech.koin.domain.model.chat.ChatConnectionState
 import `in`.koreatech.koin.domain.model.chat.ChatListItem
 import `in`.koreatech.koin.domain.model.chat.ChatMessage
 import `in`.koreatech.koin.domain.model.chat.ChatRoom
 import `in`.koreatech.koin.domain.repository.ChatRepository
+import `in`.koreatech.koin.domain.util.suspendRunCatching
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

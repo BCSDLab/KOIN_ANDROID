@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,6 +45,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.util.KRPhoneNumberVisualTransformation
 import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.feature.user.PHONE_NUMBER_LENGTH
@@ -197,6 +199,10 @@ fun FindPasswordVerificationImpl(
                     modifier = Modifier.widthIn(min = 86.dp),
                     text = if (verificationMethodState is VerificationMethodState.Sent) stringResource(R.string.find_password_resend) else stringResource(R.string.find_password_send),
                     textStyle = KoinTheme.typography.regular10,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = RebrandKoinTheme.colors.primary500
+                    ),
+                    shape = KoinTheme.shapes.extraSmall,
                     contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                     onClick = onVerificationCodeRequest,
                     enabled = verificationMethod.isNotBlank() && verificationCodeState !is VerificationCodeState.Valid
@@ -247,6 +253,10 @@ fun FindPasswordVerificationImpl(
                 .padding(horizontal = 8.dp)
                 .fillMaxWidth(),
             text = stringResource(R.string.find_password_next),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = RebrandKoinTheme.colors.primary500
+            ),
+            shape = KoinTheme.shapes.small,
             contentPadding = PaddingValues(12.dp),
             onClick = navigateToPasswordScreen,
             enabled = verificationCodeState is VerificationCodeState.Valid
@@ -318,6 +328,10 @@ fun SignUpVerificationCodeVerificationStep(
                 modifier = Modifier.widthIn(min = 86.dp),
                 text = stringResource(R.string.find_password_verification_code_check),
                 textStyle = KoinTheme.typography.regular10,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = RebrandKoinTheme.colors.primary500
+                ),
+                shape = KoinTheme.shapes.extraSmall,
                 enabled = verificationCode.isNotBlank() && verificationCodeState != VerificationCodeState.Valid,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {

@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 /**
  * Koin User Progress Header
@@ -30,7 +31,7 @@ fun KoinUserProgressHeader(
         Text(
             text = "$currentStep. $text",
             style = KoinTheme.typography.medium16,
-            color = KoinTheme.colors.primary500
+            color = RebrandKoinTheme.colors.primary500
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -38,7 +39,7 @@ fun KoinUserProgressHeader(
         Text(
             text = "$currentStep / $maxStep",
             style = KoinTheme.typography.medium16,
-            color = KoinTheme.colors.primary500
+            color = RebrandKoinTheme.colors.primary500
         )
     }
 }
@@ -46,7 +47,7 @@ fun KoinUserProgressHeader(
 @Preview(showBackground = true)
 @Composable
 private fun KoinUserProgressPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         KoinUserProgressHeader(
             text = "약관 동의",
             currentStep = 1,

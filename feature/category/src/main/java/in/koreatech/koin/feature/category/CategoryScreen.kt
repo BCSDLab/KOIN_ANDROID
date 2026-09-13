@@ -109,18 +109,17 @@ private fun CategoryScreenImpl(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                val timetableTitle = stringResource(R.string.category_timetable)
                 CategoryFeatureCard(
                     modifier = Modifier.weight(1f),
-                    onClick = { onMenuClick(CategoryMenuId.TIMETABLE) },
+                    onClick = { onMenuClick(CategoryMenuId.RECRUITMENT) },
                     icon = {
                         IconBadge(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_calendar_category),
-                            contentDescription = timetableTitle
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_category),
+                            contentDescription = stringResource(R.string.recruitment)
                         )
                     },
-                    title = timetableTitle,
-                    description = stringResource(R.string.timetable_description)
+                    title = stringResource(R.string.recruitment),
+                    description = stringResource(R.string.recruitment_description)
                 )
 
                 val lostItemTitle = stringResource(R.string.lost_and_found)

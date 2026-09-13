@@ -16,11 +16,13 @@ import `in`.koreatech.koin.feature.store.enums.CartValidation
 import `in`.koreatech.koin.feature.store.model.CartState
 import javax.inject.Inject
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.catch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
 @HiltViewModel
 class ShoppingCartViewModel @Inject constructor(
@@ -124,7 +126,10 @@ class ShoppingCartViewModel @Inject constructor(
         reduce {
             state.copy(isLoading = true)
         }
-        cartMenuQuantityUseCase(cartMenuItemId, quantity).collect {
+        cartMenuQuantityUseCase(cartMenuItemId, quantity).catch {
+            Timber.e(it)
+            reduce { state.copy(isLoading = false) }
+        }.collect {
             reduce {
                 state.copy(
                     isLoading = false,
@@ -144,7 +149,9 @@ class ShoppingCartViewModel @Inject constructor(
     }
 
     fun deleteCartMenuItem(cartMenuItemId: Int) = intent {
-        deleteCartMenuItemUseCase(cartMenuItemId).collect {
+        deleteCartMenuItemUseCase(cartMenuItemId).catch {
+            Timber.e(it)
+        }.collect {
             reduce {
                 state.copy(
                     cart = state.cart.copy(
@@ -159,7 +166,9 @@ class ShoppingCartViewModel @Inject constructor(
     }
 
     fun resetCart() = intent {
-        resetCartUseCase().collect {
+        resetCartUseCase().catch {
+            Timber.e(it)
+        }.collect {
             reduce {
                 state.copy(
                     cart = state.cart.copy(

@@ -20,6 +20,7 @@ import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
 import `in`.koreatech.koin.feature.department.DepartmentActivity
 import `in`.koreatech.koin.feature.dining.ui.DiningActivity
 import `in`.koreatech.koin.feature.lostandfound.ui.LostAndFoundActivity
+import `in`.koreatech.koin.feature.recruitment.ui.RecruitmentActivity
 import `in`.koreatech.koin.feature.store.StoreActivity
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import `in`.koreatech.koin.ui.land.LandActivity
@@ -115,6 +116,12 @@ class NavigatorImpl @Inject constructor() : Navigator {
 
     override fun navigateToCallvan(context: Context): Intent {
         return context.buildIntent(CallvanActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+    }
+
+    override fun navigateToRecruitment(context: Context): Intent {
+        return context.buildIntent(RecruitmentActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
     }

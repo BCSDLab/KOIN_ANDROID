@@ -39,7 +39,6 @@ import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.util.KeyboardUtils
 import `in`.koreatech.koin.databinding.ActivityTimetableBinding
 import `in`.koreatech.koin.feature.timetable.component.CircleLoadingBar
-import `in`.koreatech.koin.feature.timetable.model.TimetableConstants.departments
 import `in`.koreatech.koin.feature.timetable.state.BottomSheetUI
 import `in`.koreatech.koin.feature.timetable.state.TimetableSideEffect
 import `in`.koreatech.koin.feature.timetable.utils.BitmapUtils
@@ -135,6 +134,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
             val customContentState by viewModel.customContentState.collectAsStateWithLifecycle()
             val searchEngineState by viewModel.searchEngineState.collectAsStateWithLifecycle()
             val lectures by viewModel.lectures.collectAsStateWithLifecycle()
+            val departments by viewModel.departments.collectAsStateWithLifecycle()
             val sheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
             val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(sheetState)
             val scrollState = rememberLazyListState()

@@ -11,7 +11,6 @@ import `in`.koreatech.koin.data.request.callvan.CallvanPostCreateRequest
 import `in`.koreatech.koin.data.request.callvan.CallvanUserReportCreateRequest
 import `in`.koreatech.koin.data.source.remote.CallvanRemoteDataSource
 import `in`.koreatech.koin.data.util.mapHttpFailure
-import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.error.callvan.KoinCallvanException
 import `in`.koreatech.koin.domain.model.callvan.CallvanChatMessage
 import `in`.koreatech.koin.domain.model.callvan.CallvanNotification
@@ -20,6 +19,7 @@ import `in`.koreatech.koin.domain.model.callvan.CallvanPostDetail
 import `in`.koreatech.koin.domain.model.callvan.CallvanPostSearch
 import `in`.koreatech.koin.domain.model.callvan.CallvanRestriction
 import `in`.koreatech.koin.domain.repository.CallvanRepository
+import `in`.koreatech.koin.domain.util.suspendRunCatching
 import javax.inject.Inject
 
 class CallvanRepositoryImpl @Inject constructor(

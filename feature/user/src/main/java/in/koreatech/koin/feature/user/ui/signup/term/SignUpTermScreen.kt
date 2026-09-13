@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -22,6 +23,8 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.feature.user.R
 import `in`.koreatech.koin.feature.user.component.KoinUserCheckAllBox
@@ -161,6 +164,10 @@ private fun SignUpTermScreenImpl(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.sign_up_next),
             contentPadding = PaddingValues(12.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = RebrandKoinTheme.colors.primary500
+            ),
+            shape = KoinTheme.shapes.small,
             onClick = {
                 navigateToNextScreen()
                 EventLogger.logClickEvent(

@@ -2,7 +2,6 @@ package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.source.local.BusLocalDataSource
 import `in`.koreatech.koin.data.source.remote.BusRemoteDataSource
-import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.model.bus.BusNotice
 import `in`.koreatech.koin.domain.model.bus.BusSearchResult
 import `in`.koreatech.koin.domain.model.bus.CityTimetable
@@ -10,6 +9,7 @@ import `in`.koreatech.koin.domain.model.bus.ExpressTimetable
 import `in`.koreatech.koin.domain.model.bus.ShuttleCourses
 import `in`.koreatech.koin.domain.model.bus.ShuttleTimetable
 import `in`.koreatech.koin.domain.repository.BusRepository
+import `in`.koreatech.koin.domain.util.suspendRunCatching
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
