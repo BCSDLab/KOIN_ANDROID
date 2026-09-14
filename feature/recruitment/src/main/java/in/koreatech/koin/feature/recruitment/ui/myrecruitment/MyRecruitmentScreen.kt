@@ -52,7 +52,7 @@ fun MyRecruitmentScreen(
     onNavigateUp: () -> Unit = {},
     onNavigateToLogin: () -> Unit = {},
     onApplicantManage: (Int) -> Unit = {},
-    onChat: (Int) -> Unit = {}
+    onChat: (recruitmentId: Int, chatRoomId: Int) -> Unit = { _, _ -> }
 ) {
     val state by viewModel.collectAsState()
 
@@ -129,7 +129,7 @@ private fun MyRecruitmentScreenImpl(
     onLoadMore: () -> Unit = {},
     onApplicantManage: (Int) -> Unit = {},
     onCloseRecruitment: (Int) -> Unit = {},
-    onChat: (Int) -> Unit = {},
+    onChat: (recruitmentId: Int, chatRoomId: Int) -> Unit = { _, _ -> },
     onFilter: () -> Unit = {}
 ) {
     Column(modifier = modifier.fillMaxSize()) {
@@ -197,8 +197,10 @@ private fun MyRecruitmentScreenImpl(
                             null
                         },
                         onChat = {
-                            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_CHAT, post.title)
-                            onChat(post.id)
+                            post.teamChatRoomId?.let { chatRoomId ->
+                                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_CHAT, post.title)
+                                onChat(post.id, chatRoomId)
+                            }
                         }
                     )
                 }
