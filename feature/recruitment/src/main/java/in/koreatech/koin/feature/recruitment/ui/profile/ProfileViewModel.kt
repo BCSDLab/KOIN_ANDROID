@@ -3,9 +3,12 @@ package `in`.koreatech.koin.feature.recruitment.ui.profile
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.error.recruitment.KoinRecruitmentException
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.recruitment.GetTeamRecruitmentProfileUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentErrorMessage
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentProfile
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -15,10 +18,23 @@ import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val getTeamRecruitmentProfileUseCase: GetTeamRecruitmentProfileUseCase
+    private val getTeamRecruitmentProfileUseCase: GetTeamRecruitmentProfileUseCase,
+    private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<ProfileState, ProfileSideEffect> {
 
-    override val container = container<ProfileState, ProfileSideEffect>(ProfileState())
+    override val container = container<ProfileState, ProfileSideEffect>(ProfileState()) {
+        checkLoginAndLoad()
+    }
+
+    private fun checkLoginAndLoad() = intent {
+        val user = getUserStatusUseCase().first()
+        if (user is User.Anonymous) {
+            postSideEffect(ProfileSideEffect.ShowLoginRequiredToast)
+            postSideEffect(ProfileSideEffect.NavigateUp)
+        } else {
+            loadProfile()
+        }
+    }
 
     fun loadProfile(showLoading: Boolean = true) = intent {
         if (showLoading) {
