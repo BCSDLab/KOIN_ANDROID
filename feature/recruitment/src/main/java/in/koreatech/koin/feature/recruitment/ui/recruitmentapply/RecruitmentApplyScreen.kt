@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentActivityEntry
@@ -158,8 +158,13 @@ fun RecruitmentApplyScreen(
         modifier = modifier.imePadding(),
         containerColor = RebrandKoinTheme.colors.neutral50,
         topBar = {
-            KoinTopAppBar(
-                title = stringResource(R.string.recruitment_apply_title),
+            KoinTopAppBar2(
+                title = {
+                    Text(
+                        text = stringResource(R.string.recruitment_apply_title),
+                        style = RebrandKoinTheme.typography.bold16
+                    )
+                },
                 onNavigationIconClick = {
                     if (state.currentStep == 1) viewModel.showCancelConfirmDialog() else viewModel.goToPreviousStep()
                 },
