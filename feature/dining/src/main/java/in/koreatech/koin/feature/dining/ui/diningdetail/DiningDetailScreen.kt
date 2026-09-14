@@ -22,9 +22,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -39,6 +41,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
@@ -120,9 +123,11 @@ fun DiningDetailScreen(
     val userState by viewModel.userState.collectAsState()
 
     val diningState by viewModel.collectAsState()
+    val scope = rememberCoroutineScope()
 
     val view = LocalView.current
     val activity = LocalActivity.current
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) { // userState NPE error in viewModel init{}; Flow is null
         viewModel.getDining()
@@ -138,6 +143,48 @@ fun DiningDetailScreen(
     if (!view.isInEditMode && activity != null) {
         SideEffect {
             WindowCompat.getInsetsController(activity.window, view).isAppearanceLightStatusBars = true
+        }
+    }
+
+    val sheetState = rememberModalBottomSheetState()
+    val navigator = rememberNavigator()
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) {
+        viewModel.getNotificationPermissionInfo()
+    }
+
+    LaunchedEffect(Unit) {
+        if (true) {
+            sheetState.show()
+        }
+    }
+
+    if (sheetState.isVisible) {
+        ModalBottomSheet(
+            contentWindowInsets = { WindowInsets(0, 0, 0, 0) },
+            sheetState = sheetState,
+            onDismissRequest = {
+                scope.launch { sheetState.hide() }
+            },
+            dragHandle = {}, // to delete drag Handle
+            containerColor = Color.Transparent,
+            tonalElevation = 0.dp
+        ) {
+            DiningBottomSheet(
+                soldOutChecked = diningState.isSoldOutSubscribed,
+                imageUploadChecked = diningState.isDiningImageSubscribed,
+                onDismiss = { scope.launch { sheetState.hide() } },
+                onPositive = {
+                    if (!userState.isAnonymous) {
+                        navigator.navigateToNotificationSetting(context).let {
+                            launcher.launch(it)
+                        }
+                    }
+                },
+                onSoldOutChange = viewModel::changeIsSoldOutSubscribed,
+                onImageUploadChange = viewModel::changeIsDiningImageSubscribed
+            )
         }
     }
 
@@ -174,23 +221,16 @@ fun DiningDetailScreen(
                 onNavigationIconClick = onTopbarBackClick
             )
         },
-        contentWindowInsets = WindowInsets(0, 0, 0, 0)
+        contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(WindowInsets.navigationBars)
     ) { contentPadding ->
         DiningDetailScreenImpl(
             diningList = diningState.dining,
             contentPadding = contentPadding,
             selectedDate = TimeUtil.stringToDateYYMMDD(diningState.selectedDate),
-            showBottomSheet = diningState.showBottomSheet,
-            isAnonymous = userState.isAnonymous,
             isDiningRefreshing = diningState.isDiningRefreshing,
             initialPage = if (initialPage != -1) initialPage else viewModel.getInitialPage(),
-            isSoldOutSubscribed = diningState.isSoldOutSubscribed,
-            isDiningImageSubscribed = diningState.isDiningImageSubscribed,
             refreshDining = viewModel::refreshDining,
             onDateClick = viewModel::setSelectedDate,
-            changeSoldOutSubscribe = viewModel::changeIsSoldOutSubscribed,
-            changeDiningImageSubscribe = viewModel::changeIsDiningImageSubscribed,
-            getNotificationPermitInfo = viewModel::getNotificationPermissionInfo
         )
     }
 }
@@ -201,18 +241,11 @@ private fun DiningDetailScreenImpl(
     diningList: ImmutableList<Dining>,
     contentPadding: PaddingValues,
     selectedDate: Date,
-    showBottomSheet: Boolean,
     modifier: Modifier = Modifier,
-    isSoldOutSubscribed: Boolean = false,
-    isDiningImageSubscribed: Boolean = false,
-    isAnonymous: Boolean = true,
     isDiningRefreshing: Boolean = false,
     initialPage: Int = 0,
     refreshDining: () -> Unit = {},
     onDateClick: (Date) -> Unit = {},
-    changeSoldOutSubscribe: (Boolean) -> Unit = {},
-    changeDiningImageSubscribe: (Boolean) -> Unit = {},
-    getNotificationPermitInfo: () -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -222,8 +255,6 @@ private fun DiningDetailScreenImpl(
     LaunchedEffect(onboardingManager) {
         showToolTip = onboardingManager.getShouldOnboard(OnboardingType.DINING_SHARE)
     }
-
-    val navigator = rememberNavigator()
 
     val tabSize = 3
     val tabList = DiningType.entries.take(tabSize).map { it.typeKorean }
@@ -272,47 +303,6 @@ private fun DiningDetailScreenImpl(
                     }
                 }
             }
-    }
-
-    val sheetState = rememberModalBottomSheetState()
-
-    LaunchedEffect(showBottomSheet) {
-        if (showBottomSheet) {
-            sheetState.show()
-        }
-    }
-
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) {
-        getNotificationPermitInfo()
-    }
-
-    if (sheetState.isVisible) {
-        ModalBottomSheet(
-            sheetState = sheetState,
-            onDismissRequest = {
-                scope.launch { sheetState.hide() }
-            },
-            dragHandle = {}, // to delete drag Handle
-            containerColor = Color.Transparent,
-            tonalElevation = 0.dp
-        ) {
-            DiningBottomSheet(
-                soldOutChecked = isSoldOutSubscribed,
-                imageUploadChecked = isDiningImageSubscribed,
-                onDismiss = { scope.launch { sheetState.hide() } },
-                onPositive = {
-                    if (!isAnonymous) {
-                        navigator.navigateToNotificationSetting(context).let {
-                            launcher.launch(it)
-                        }
-                    }
-                },
-                onSoldOutChange = changeSoldOutSubscribe,
-                onImageUploadChange = changeDiningImageSubscribe
-            )
-        }
     }
 
     if (showImageDialog) {
@@ -645,9 +635,7 @@ private fun DiningScreenPreview() {
                 changedAt = "2025.05.17"
             )
         ),
-        isAnonymous = true,
         contentPadding = PaddingValues(),
         selectedDate = TimeUtil.getNextDayDate(TimeUtil.getCurrentTime()),
-        showBottomSheet = false
     )
 }
