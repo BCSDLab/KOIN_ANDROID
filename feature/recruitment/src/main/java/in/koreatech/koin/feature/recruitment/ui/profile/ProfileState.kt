@@ -12,7 +12,8 @@ sealed interface ProfileLoadState {
 
 @Immutable
 data class ProfileState(
-    val loadState: ProfileLoadState = ProfileLoadState.Loading
+    val loadState: ProfileLoadState = ProfileLoadState.Loading,
+    val isLoggedIn: Boolean? = null
 ) {
     val profile: RecruitmentProfile?
         get() = (loadState as? ProfileLoadState.Loaded)?.profile
