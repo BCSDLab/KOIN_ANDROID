@@ -1,5 +1,9 @@
-package `in`.koreatech.koin.feature.chat.ui.room.component
+package `in`.koreatech.koin.core.designsystem.component.input
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,14 +31,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.designsystem.R
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
-import `in`.koreatech.koin.feature.chat.R
-import `in`.koreatech.koin.feature.chat.ui.CHAT_MESSAGE_MAX_LENGTH
 
-object ChatInputDefaults {
+const val CHAT_MESSAGE_MAX_LENGTH = 1500
+
+object KoinChatInputDefaults {
     val windowInsets: WindowInsets
         @Composable
         get() =
@@ -50,7 +55,7 @@ object ChatInputDefaults {
         textContainerColor: Color = KoinTheme.colors.neutral0,
         placeholderContentColor: Color = KoinTheme.colors.neutral500,
         backgroundColor: Color = KoinTheme.colors.neutral100
-    ): ChatInputColors = ChatInputColors(
+    ): KoinChatInputColors = KoinChatInputColors(
         iconContentColor = iconContentColor,
         iconContainerColor = iconContainerColor,
         textContentColor = textContentColor,
@@ -67,7 +72,7 @@ object ChatInputDefaults {
         textContainerColor: Color = RebrandKoinTheme.colors.neutral0,
         placeholderContentColor: Color = RebrandKoinTheme.colors.neutral500,
         backgroundColor: Color = RebrandKoinTheme.colors.neutral100
-    ): ChatInputColors = ChatInputColors(
+    ): KoinChatInputColors = KoinChatInputColors(
         iconContentColor = iconContentColor,
         iconContainerColor = iconContainerColor,
         textContentColor = textContentColor,
@@ -78,7 +83,7 @@ object ChatInputDefaults {
 }
 
 @Immutable
-class ChatInputColors(
+class KoinChatInputColors(
     val iconContentColor: Color,
     val iconContainerColor: Color,
     val textContentColor: Color,
@@ -88,15 +93,20 @@ class ChatInputColors(
 )
 
 @Composable
-fun ChatInput(
+fun KoinChatInput(
     value: String,
     onValueChange: (String) -> Unit,
-    onImageButtonClick: () -> Unit,
+    onImageSelected: (uris: List<Uri>) -> Unit,
     onSendClick: () -> Unit,
     modifier: Modifier = Modifier,
-    windowInsets: WindowInsets = ChatInputDefaults.windowInsets,
-    colors: ChatInputColors = ChatInputDefaults.colors()
+    windowInsets: WindowInsets = KoinChatInputDefaults.windowInsets,
+    colors: KoinChatInputColors = KoinChatInputDefaults.colors(),
+    enabled: Boolean = true
 ) {
+    val pickMultipleMedia = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(10)) { uris ->
+        onImageSelected(uris)
+    }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -114,17 +124,23 @@ fun ChatInput(
             Icon(
                 modifier = Modifier
                     .background(colors.iconContainerColor, KoinTheme.shapes.medium)
-                    .noRippleClickable { onImageButtonClick() }
+                    .noRippleClickable(
+                        enabled = enabled,
+                        onClick = {
+                            pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                        }
+                    )
                     .padding(12.dp),
                 painter = painterResource(id = R.drawable.ic_chat_add_photo),
                 tint = colors.iconContentColor,
                 contentDescription = stringResource(id = R.string.chat_add_image)
             )
 
-            ChatTextField(
+            KoinChatTextField(
                 value = value,
                 onValueChange = onValueChange,
                 placeholder = stringResource(id = R.string.chat_input_placeholder),
+                enabled = enabled,
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
                     .background(
@@ -140,7 +156,7 @@ fun ChatInput(
             Icon(
                 modifier = Modifier
                     .background(colors.iconContainerColor, KoinTheme.shapes.medium)
-                    .noRippleClickable { onSendClick() }
+                    .noRippleClickable(enabled = enabled, onClick = onSendClick)
                     .padding(12.dp),
                 painter = painterResource(id = R.drawable.ic_chat_send),
                 tint = colors.iconContentColor,
@@ -151,17 +167,19 @@ fun ChatInput(
 }
 
 @Composable
-fun ChatTextField(
+private fun KoinChatTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String = "",
-    colors: ChatInputColors = ChatInputDefaults.colors()
+    colors: KoinChatInputColors = KoinChatInputDefaults.colors(),
+    enabled: Boolean = true
 ) {
     BasicTextField(
         modifier = modifier,
         value = value,
-        textStyle = KoinTheme.typography.regular14.copy(color = colors.textContentColor),
+        textStyle = KoinTheme.typography.regular12.copy(color = colors.textContentColor),
+        enabled = enabled,
         onValueChange = {
             if (value.length < CHAT_MESSAGE_MAX_LENGTH) {
                 onValueChange(it)
@@ -188,15 +206,15 @@ fun ChatTextField(
 
 @Preview
 @Composable
-private fun ChatInputPreview() {
+private fun KoinChatInputPreview() {
     KoinSurface {
-        ChatInput(
+        KoinChatInput(
             modifier = Modifier,
             value = "",
             onValueChange = {},
-            onImageButtonClick = {},
+            onImageSelected = {},
             onSendClick = {},
-            colors = ChatInputDefaults.purpleColors()
+            colors = KoinChatInputDefaults.purpleColors()
         )
     }
 }

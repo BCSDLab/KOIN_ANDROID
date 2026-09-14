@@ -22,11 +22,14 @@ import androidx.compose.ui.res.stringResource
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
+import `in`.koreatech.koin.core.designsystem.component.input.KoinChatInput
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.chat.R
 import `in`.koreatech.koin.feature.chat.ui.component.ChatProgressIndicator
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessages
+import `in`.koreatech.koin.feature.chat.util.handleSelectedImages
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
@@ -41,7 +44,7 @@ fun ChatRoomContent(
     onBlockUser: () -> Unit,
     onBlockCancel: () -> Unit,
     onChatInputValueChange: (String) -> Unit,
-    onImageButtonClick: () -> Unit,
+    uploadImage: (Long, String, String, Uri) -> Unit,
     onSendClick: () -> Unit,
     onShowImageChange: (Boolean, Uri) -> Unit,
     modifier: Modifier = Modifier
@@ -52,6 +55,7 @@ fun ChatRoomContent(
     }
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     if (showImage.first) {
         BackHandler {
@@ -118,10 +122,16 @@ fun ChatRoomContent(
                     }
                 }
             }
-            ChatInput(
+            KoinChatInput(
                 value = chatInputValue,
                 onValueChange = onChatInputValueChange,
-                onImageButtonClick = onImageButtonClick,
+                onImageSelected = { uris ->
+                    if (uris.isNotEmpty()) {
+                        scope.launch(Dispatchers.IO) {
+                            handleSelectedImages(uris, context, uploadImage)
+                        }
+                    }
+                },
                 onSendClick = onSendClick
             )
             if (showBlockDialog) {
