@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -31,7 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.ui.component.rememberRecruitmentPaginationListState
@@ -42,6 +43,7 @@ import kotlinx.collections.immutable.ImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun RecruitmentNotificationScreen(
     onBack: () -> Unit = {},
@@ -91,9 +93,13 @@ internal fun RecruitmentNotificationScreen(
     Scaffold(
         modifier = Modifier,
         topBar = {
-            KoinTopAppBar(
-                title = stringResource(R.string.recruitment_notification_title),
-                textStyle = RebrandKoinTheme.typography.bold16,
+            KoinTopAppBar2(
+                title = {
+                    Text(
+                        text = stringResource(R.string.recruitment_notification_title),
+                        style = RebrandKoinTheme.typography.bold16
+                    )
+                },
                 onNavigationIconClick = onBack,
                 actions = {
                     RecruitmentNotificationMenuButton(

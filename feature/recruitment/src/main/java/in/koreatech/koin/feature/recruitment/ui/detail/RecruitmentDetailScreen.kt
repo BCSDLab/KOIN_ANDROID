@@ -19,6 +19,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,7 +36,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -156,9 +157,13 @@ private fun RecruitmentDetailScreenImpl(
         modifier = modifier,
         containerColor = RebrandKoinTheme.colors.neutral50,
         topBar = {
-            KoinTopAppBar(
-                title = stringResource(R.string.recruitment_top_bar_title),
-                textStyle = RebrandKoinTheme.typography.bold16,
+            KoinTopAppBar2(
+                title = {
+                    Text(
+                        text = stringResource(R.string.recruitment_top_bar_title),
+                        style = RebrandKoinTheme.typography.bold16
+                    )
+                },
                 onNavigationIconClick = onTopbarBackClick,
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = RebrandKoinTheme.colors.neutral50,

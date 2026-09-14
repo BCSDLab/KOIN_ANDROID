@@ -31,7 +31,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.notification.FirebaseMessagingType
 import `in`.koreatech.koin.feature.recruitment.R
@@ -90,9 +90,13 @@ fun ApplicantManagementScreen(
     Scaffold(
         containerColor = RebrandKoinTheme.colors.neutral50,
         topBar = {
-            KoinTopAppBar(
-                title = stringResource(R.string.recruitment_applicant_management_title),
-                textStyle = RebrandKoinTheme.typography.bold16,
+            KoinTopAppBar2(
+                title = {
+                    Text(
+                        text = stringResource(R.string.recruitment_applicant_management_title),
+                        style = RebrandKoinTheme.typography.bold16
+                    )
+                },
                 onNavigationIconClick = onNavigateUp,
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = RebrandKoinTheme.colors.neutral50

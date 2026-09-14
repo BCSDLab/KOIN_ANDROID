@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -42,11 +43,11 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import `in`.koreatech.koin.core.designsystem.component.input.KoinChatInput
 import `in`.koreatech.koin.core.designsystem.component.input.KoinChatInputDefaults
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.ui.chat.components.RecruitmentChatDateChip
 import `in`.koreatech.koin.feature.recruitment.ui.chat.components.RecruitmentChatMessageBubble
-import `in`.koreatech.koin.feature.recruitment.ui.chat.components.RecruitmentChatTopBar
 import `in`.koreatech.koin.feature.recruitment.ui.chat.model.RecruitmentChatMessageGroup
 import `in`.koreatech.koin.feature.recruitment.ui.chat.util.handleSelectedImages
 import kotlinx.collections.immutable.ImmutableList
@@ -98,6 +99,7 @@ fun RecruitmentGroupChatScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun RecruitmentGroupChatScreenImpl(
     title: String,
@@ -121,8 +123,13 @@ private fun RecruitmentGroupChatScreenImpl(
     Scaffold(
         modifier = modifier.imePadding(),
         topBar = {
-            RecruitmentChatTopBar(
-                title = title,
+            KoinTopAppBar2(
+                title = {
+                    Text(
+                        text = title,
+                        style = RebrandKoinTheme.typography.bold16
+                    )
+                },
                 onNavigationIconClick = onNavigationIconClick,
                 actions = {
                     Row(verticalAlignment = Alignment.CenterVertically) {

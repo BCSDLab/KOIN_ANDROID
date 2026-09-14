@@ -15,7 +15,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -32,11 +34,11 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import `in`.koreatech.koin.core.designsystem.component.input.KoinChatInput
 import `in`.koreatech.koin.core.designsystem.component.input.KoinChatInputDefaults
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.ui.chat.components.RecruitmentChatDateChip
 import `in`.koreatech.koin.feature.recruitment.ui.chat.components.RecruitmentChatMessageBubble
-import `in`.koreatech.koin.feature.recruitment.ui.chat.components.RecruitmentChatTopBar
 import `in`.koreatech.koin.feature.recruitment.ui.chat.components.RecruitmentChatUserIcon
 import `in`.koreatech.koin.feature.recruitment.ui.chat.model.RecruitmentChatMessageGroup
 import `in`.koreatech.koin.feature.recruitment.ui.chat.util.handleSelectedImages
@@ -91,6 +93,7 @@ fun RecruitmentDirectChatScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun RecruitmentDirectChatScreenImpl(
     partnerNickname: String,
@@ -112,8 +115,13 @@ private fun RecruitmentDirectChatScreenImpl(
     Scaffold(
         modifier = modifier.imePadding(),
         topBar = {
-            RecruitmentChatTopBar(
-                title = partnerNickname,
+            KoinTopAppBar2(
+                title = {
+                    Text(
+                        text = partnerNickname,
+                        style = RebrandKoinTheme.typography.bold16
+                    )
+                },
                 onNavigationIconClick = onNavigationIconClick
             )
         },

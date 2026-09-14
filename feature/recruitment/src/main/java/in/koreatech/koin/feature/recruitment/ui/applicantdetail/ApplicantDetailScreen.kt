@@ -28,7 +28,7 @@ import androidx.navigation.NavController
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.ApplicantStatus
@@ -61,6 +61,7 @@ fun ApplicantDetailScreen(
             ApplicantDetailSideEffect.ApplicantStateUpdated -> {
                 navController.previousBackStackEntry?.savedStateHandle?.set(APPLICANT_STATE_UPDATE, true)
             }
+
             ApplicantDetailSideEffect.Error -> {
                 snackbarHostState.showSnackbar(context.getString(R.string.recruitment_applicant_detail_error))
             }
@@ -70,9 +71,13 @@ fun ApplicantDetailScreen(
     Scaffold(
         containerColor = RebrandKoinTheme.colors.neutral50,
         topBar = {
-            KoinTopAppBar(
-                title = stringResource(R.string.recruitment_applicant_detail_title),
-                textStyle = RebrandKoinTheme.typography.bold16,
+            KoinTopAppBar2(
+                title = {
+                    Text(
+                        text = stringResource(R.string.recruitment_applicant_detail_title),
+                        style = RebrandKoinTheme.typography.bold16
+                    )
+                },
                 onNavigationIconClick = onNavigateUp,
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = RebrandKoinTheme.colors.neutral50
