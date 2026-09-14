@@ -27,14 +27,14 @@ object KoinTopAppBar2Defaults {
         navigationIconContentColor: Color = RebrandKoinTheme.colors.neutral800,
         titleContentColor: Color = RebrandKoinTheme.colors.neutral800,
         actionIconContentColor: Color = RebrandKoinTheme.colors.neutral800,
-        subtitleContentColor: Color = Color.Unspecified,
+        subtitleContentColor: Color = Color.Unspecified
     ): TopAppBarColors = TopAppBarDefaults.topAppBarColors(
         containerColor,
         scrolledContainerColor,
         navigationIconContentColor,
         titleContentColor,
         actionIconContentColor,
-        subtitleContentColor,
+        subtitleContentColor
     )
 }
 

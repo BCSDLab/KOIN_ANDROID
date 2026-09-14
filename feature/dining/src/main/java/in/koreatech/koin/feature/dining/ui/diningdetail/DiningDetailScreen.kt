@@ -648,6 +648,6 @@ private fun DiningScreenPreview() {
         isAnonymous = true,
         contentPadding = PaddingValues(),
         selectedDate = TimeUtil.getNextDayDate(TimeUtil.getCurrentTime()),
-        showBottomSheet = false,
+        showBottomSheet = false
     )
 }

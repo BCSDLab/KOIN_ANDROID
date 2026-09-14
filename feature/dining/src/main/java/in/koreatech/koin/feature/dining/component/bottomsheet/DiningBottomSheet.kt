@@ -115,7 +115,7 @@ fun DiningBottomSheet(
             ) {
                 Text(
                     text = stringResource(R.string.navigate_to_notification_setting),
-                    style = KoinTheme.typography.medium15,
+                    style = KoinTheme.typography.medium15
                 )
             }
             Text(
