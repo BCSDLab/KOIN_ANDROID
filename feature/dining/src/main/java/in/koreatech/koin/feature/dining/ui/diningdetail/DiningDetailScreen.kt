@@ -140,9 +140,11 @@ fun DiningDetailScreen(
             }
     }
 
-    if (!view.isInEditMode && activity != null) {
+    if (!view.isInEditMode) {
         SideEffect {
-            WindowCompat.getInsetsController(activity.window, view).isAppearanceLightStatusBars = true
+            activity?.window?.let {
+                WindowCompat.getInsetsController(it, view).isAppearanceLightStatusBars = true
+            }
         }
     }
 

@@ -49,9 +49,11 @@ fun DiningNoticeScreen(
     val view = LocalView.current
     val activity = LocalActivity.current
 
-    if (!view.isInEditMode && activity != null) {
+    if (!view.isInEditMode) {
         SideEffect {
-            WindowCompat.getInsetsController(activity.window, view).isAppearanceLightStatusBars = true
+            activity?.window?.let {
+                WindowCompat.getInsetsController(it, view).isAppearanceLightStatusBars = true
+            }
         }
     }
 
