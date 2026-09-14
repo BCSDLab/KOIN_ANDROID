@@ -104,6 +104,8 @@ import `in`.koreatech.koin.feature.dining.constants.PARAMS_PLACE
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_TYPE
 import `in`.koreatech.koin.feature.dining.ui.diningdetail.scroll.DiningNestedScrollConnection
 import java.util.Date
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 
@@ -191,12 +193,11 @@ fun DiningDetailScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DiningDetailScreenImpl(
-    diningList: List<Dining>,
+    diningList: ImmutableList<Dining>,
     contentPadding: PaddingValues,
     selectedDate: Date,
     showBottomSheet: Boolean,
     modifier: Modifier = Modifier,
-    context: Context = LocalContext.current,
     isSoldOutSubscribed: Boolean = false,
     isDiningImageSubscribed: Boolean = false,
     isAnonymous: Boolean = true,
@@ -209,6 +210,7 @@ private fun DiningDetailScreenImpl(
     getNotificationPermitInfo: () -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     val onboardingManager = rememberOnboardingManager()
     var showToolTip by remember { mutableStateOf(false) }
@@ -576,7 +578,7 @@ private fun createFeedMessageTemplate(dining: Dining): FeedTemplate {
 @Composable
 private fun DiningScreenPreview() {
     DiningDetailScreenImpl(
-        diningList = listOf(
+        diningList = persistentListOf(
             Dining(
                 id = 0,
                 date = "2025.05.17",
@@ -640,7 +642,6 @@ private fun DiningScreenPreview() {
         ),
         isAnonymous = true,
         contentPadding = PaddingValues(),
-        context = LocalContext.current,
         selectedDate = TimeUtil.getNextDayDate(TimeUtil.getCurrentTime()),
         showBottomSheet = false,
     )

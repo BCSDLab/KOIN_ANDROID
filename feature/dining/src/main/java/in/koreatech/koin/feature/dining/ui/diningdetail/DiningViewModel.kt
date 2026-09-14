@@ -22,6 +22,8 @@ import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.feature.dining.navigation.INIT_DATE
 import java.util.Date
 import javax.inject.Inject
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -80,14 +82,14 @@ class DiningViewModel @Inject constructor(
             .onSuccess { result ->
                 reduce {
                     state.copy(
-                        dining = result.sortedBy { diningOrder[it.place] ?: Int.MAX_VALUE },
+                        dining = result.sortedBy { diningOrder[it.place] ?: Int.MAX_VALUE }.toImmutableList(),
                         isLoading = false,
                         isDiningRefreshing = false
                     )
                 }
             }
             .onFailure {
-                reduce { state.copy(dining = emptyList(), isLoading = false, isDiningRefreshing = false) }
+                reduce { state.copy(dining = persistentListOf(), isLoading = false, isDiningRefreshing = false) }
             }
     }
 
