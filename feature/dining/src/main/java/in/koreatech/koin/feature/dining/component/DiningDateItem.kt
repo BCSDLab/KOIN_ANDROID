@@ -17,7 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.util.DateFormatUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
 import java.time.ZoneId
@@ -42,19 +42,19 @@ fun DiningDateItem(
     ) {
         Text(
             text = DateFormatUtil.getDayOfWeek(date),
-            style = KoinTheme.typography.regular13,
-            color = if (isBeforeDate) KoinTheme.colors.neutral500 else KoinTheme.colors.neutral800
+            style = RebrandKoinTheme.typography.regular13,
+            color = if (isBeforeDate) RebrandKoinTheme.colors.neutral500 else RebrandKoinTheme.colors.neutral800
         )
         Spacer(Modifier.height(8.dp))
         Box(
             modifier = Modifier
                 .size(28.dp)
                 .background(
-                    color = if (isSelected) KoinTheme.colors.primary500 else KoinTheme.colors.neutral0,
+                    color = if (isSelected) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral0,
                     shape = CircleShape
                 ).then(
                     if (isToday) {
-                        Modifier.border(1.dp, KoinTheme.colors.primary500, CircleShape)
+                        Modifier.border(1.dp, RebrandKoinTheme.colors.primary500, CircleShape)
                     } else {
                         Modifier
                     }
@@ -63,12 +63,12 @@ fun DiningDateItem(
         ) {
             Text(
                 text = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().dayOfMonth.toString(),
-                style = KoinTheme.typography.medium16,
+                style = RebrandKoinTheme.typography.medium16,
                 color = when {
-                    isSelected -> KoinTheme.colors.neutral0
-                    isToday -> KoinTheme.colors.primary500
-                    isBeforeDate -> KoinTheme.colors.neutral500
-                    else -> KoinTheme.colors.neutral800
+                    isSelected -> RebrandKoinTheme.colors.neutral0
+                    isToday -> RebrandKoinTheme.colors.primary500
+                    isBeforeDate -> RebrandKoinTheme.colors.neutral500
+                    else -> RebrandKoinTheme.colors.neutral800
                 }
             )
         }
@@ -78,8 +78,8 @@ fun DiningDateItem(
                 .size(12.dp, 2.dp)
                 .border(
                     1.dp,
-                    color = if (isToday) KoinTheme.colors.primary500 else KoinTheme.colors.neutral0,
-                    shape = KoinTheme.shapes.extraLarge
+                    color = if (isToday) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral0,
+                    shape = RebrandKoinTheme.shapes.extraLarge
                 )
         )
     }

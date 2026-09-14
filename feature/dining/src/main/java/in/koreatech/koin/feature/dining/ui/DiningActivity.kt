@@ -12,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.domain.model.dining.DiningType
@@ -44,7 +44,7 @@ class DiningActivity : ComponentActivity() {
         }
 
         setContent {
-            KoinTheme {
+            RebrandKoinTheme {
                 navController = rememberNavController()
 
                 NavHost(

@@ -18,7 +18,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.coopshop.OpenCloseTimeInfo
 import `in`.koreatech.koin.feature.dining.R
 
@@ -31,7 +31,7 @@ fun DiningTimetableItem(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(color = KoinTheme.colors.neutral0)
+            .background(color = RebrandKoinTheme.colors.neutral0)
             .padding(
                 start = 24.dp,
                 end = 24.dp,
@@ -41,23 +41,23 @@ fun DiningTimetableItem(
     ) {
         Text(
             text = titleText,
-            style = KoinTheme.typography.bold18,
-            color = KoinTheme.colors.primary500
+            style = RebrandKoinTheme.typography.bold18,
+            color = RebrandKoinTheme.colors.primary500
         )
         Spacer(Modifier.height(8.dp))
-        HorizontalDivider(color = KoinTheme.colors.neutral400)
+        HorizontalDivider(color = RebrandKoinTheme.colors.neutral400)
         DiningTimetableItemSheets(
             modifier = Modifier
                 .background(
-                    color = KoinTheme.colors.neutral50
+                    color = RebrandKoinTheme.colors.neutral50
                 )
                 .padding(vertical = 5.dp),
             typeText = stringResource(R.string.dining_notice_timetable_type),
             openTimeText = stringResource(R.string.dining_notice_timetable_open_time),
             closeTimeText = stringResource(R.string.dining_notice_timetable_close_time),
-            style = KoinTheme.typography.medium14
+            style = RebrandKoinTheme.typography.medium14
         )
-        HorizontalDivider(color = KoinTheme.colors.neutral400)
+        HorizontalDivider(color = RebrandKoinTheme.colors.neutral400)
         Spacer(Modifier.height(2.dp))
         Column(
             modifier = Modifier.padding(vertical = 4.dp),
@@ -68,18 +68,18 @@ fun DiningTimetableItem(
                     typeText = it.type,
                     openTimeText = it.openTime,
                     closeTimeText = it.closeTime,
-                    style = KoinTheme.typography.regular16
+                    style = RebrandKoinTheme.typography.regular16
                 )
                 if (index != openCloseTimeInfoList.lastIndex) {
                     HorizontalDivider(
                         thickness = 0.5.dp,
-                        color = KoinTheme.colors.neutral300
+                        color = RebrandKoinTheme.colors.neutral300
                     )
                 }
             }
         }
         Spacer(Modifier.height(2.dp))
-        HorizontalDivider(color = KoinTheme.colors.neutral400)
+        HorizontalDivider(color = RebrandKoinTheme.colors.neutral400)
     }
 }
 
@@ -89,8 +89,8 @@ fun DiningTimetableItemSheets(
     typeText: String,
     openTimeText: String,
     closeTimeText: String,
-    style: TextStyle = KoinTheme.typography.medium14,
-    color: Color = KoinTheme.colors.neutral800
+    style: TextStyle = RebrandKoinTheme.typography.medium14,
+    color: Color = RebrandKoinTheme.colors.neutral800
 ) {
     Row(
         modifier = modifier.fillMaxWidth()

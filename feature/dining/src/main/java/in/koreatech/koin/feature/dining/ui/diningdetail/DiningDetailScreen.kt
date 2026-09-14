@@ -82,6 +82,7 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.core.nestedscroll.rememberKoinNestedScrollHeaderState
 import `in`.koreatech.koin.core.onboarding.ArrowDirection
@@ -135,12 +136,6 @@ fun DiningDetailScreen(
         topBar = {
             KoinTopAppBar(
                 title = stringResource(R.string.dining_appbar_title),
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = KoinTheme.colors.primary500,
-                    navigationIconContentColor = Color.White,
-                    titleContentColor = Color.White,
-                    actionIconContentColor = Color.White
-                ),
                 actions = {
                     Icon(
                         modifier = Modifier
@@ -391,6 +386,8 @@ private fun DiningDetailScreenImpl(
                         pagerState.animateScrollToPage(it)
                     }
                 },
+                indicatorColor = RebrandKoinTheme.colors.primary500,
+                selectedTextColor = RebrandKoinTheme.colors.primary500,
                 titles = tabList.map { it }
             )
             HorizontalPager(
