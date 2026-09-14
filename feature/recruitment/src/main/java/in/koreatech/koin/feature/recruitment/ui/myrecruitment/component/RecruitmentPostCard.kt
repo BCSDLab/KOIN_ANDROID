@@ -76,16 +76,18 @@ fun RecruitmentPostCard(
                 Spacer(modifier = Modifier.width(4.dp))
                 StatusLabel(status = post.status)
                 Spacer(modifier = Modifier.weight(1f))
-                IconButton(
-                    onClick = onChat,
-                    modifier = Modifier.size(36.dp)
-                ) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_chat),
-                        contentDescription = null,
-                        tint = RebrandKoinTheme.colors.primary500,
-                        modifier = Modifier.size(24.dp)
-                    )
+                if (post.teamChatRoomId != null) {
+                    IconButton(
+                        onClick = onChat,
+                        modifier = Modifier.size(36.dp)
+                    ) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_chat),
+                            contentDescription = null,
+                            tint = RebrandKoinTheme.colors.primary500,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
                 }
             }
 
