@@ -178,7 +178,7 @@ private fun KoinChatTextField(
     BasicTextField(
         modifier = modifier,
         value = value,
-        textStyle = KoinTheme.typography.regular14.copy(color = colors.textContentColor),
+        textStyle = KoinTheme.typography.regular12.copy(color = colors.textContentColor),
         enabled = enabled,
         onValueChange = {
             if (value.length < CHAT_MESSAGE_MAX_LENGTH) {
