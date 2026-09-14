@@ -16,7 +16,7 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:text="일반공지"
             android:textStyle="bold"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/rebrand_primary_800"
             android:textSize="12sp" />
 
         <TextView
