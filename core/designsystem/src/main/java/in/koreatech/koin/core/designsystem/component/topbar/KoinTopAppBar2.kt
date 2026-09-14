@@ -19,25 +19,6 @@ import `in`.koreatech.koin.core.designsystem.R
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
-object KoinTopAppBar2Defaults {
-    @Composable
-    fun topAppBarColors(
-        containerColor: Color = RebrandKoinTheme.colors.neutral0,
-        scrolledContainerColor: Color = Color.Unspecified,
-        navigationIconContentColor: Color = RebrandKoinTheme.colors.neutral800,
-        titleContentColor: Color = RebrandKoinTheme.colors.neutral800,
-        actionIconContentColor: Color = RebrandKoinTheme.colors.neutral800,
-        subtitleContentColor: Color = Color.Unspecified
-    ): TopAppBarColors = TopAppBarDefaults.topAppBarColors(
-        containerColor,
-        scrolledContainerColor,
-        navigationIconContentColor,
-        titleContentColor,
-        actionIconContentColor,
-        subtitleContentColor
-    )
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KoinTopAppBar2(
@@ -61,5 +42,24 @@ fun KoinTopAppBar2(
         },
         actions = actions,
         colors = colors
+    )
+}
+
+object KoinTopAppBar2Defaults {
+    @Composable
+    fun topAppBarColors(
+        containerColor: Color = RebrandKoinTheme.colors.neutral0,
+        scrolledContainerColor: Color = Color.Unspecified,
+        navigationIconContentColor: Color = RebrandKoinTheme.colors.neutral800,
+        titleContentColor: Color = RebrandKoinTheme.colors.neutral800,
+        actionIconContentColor: Color = RebrandKoinTheme.colors.neutral800,
+        subtitleContentColor: Color = Color.Unspecified
+    ): TopAppBarColors = TopAppBarDefaults.topAppBarColors(
+        containerColor,
+        scrolledContainerColor,
+        navigationIconContentColor,
+        titleContentColor,
+        actionIconContentColor,
+        subtitleContentColor
     )
 }
