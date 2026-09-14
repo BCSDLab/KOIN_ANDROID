@@ -31,9 +31,6 @@
 
     <string name="recruitment_chat_member_count_icon">참여 인원</string>
     <string name="recruitment_chat_toolbar_participants">%1$d/%2$d</string>
-    <string name="recruitment_chat_add_image">이미지 추가</string>
-    <string name="recruitment_chat_send">전송</string>
-    <string name="recruitment_chat_input_placeholder">메시지 보내기</string>
     <string name="recruitment_chat_partner_profile_image">상대방 프로필 이미지</string>
     <string name="recruitment_chat_message_image">채팅 이미지</string>
     <string name="recruitment_chat_message_image_load_failed">이미지를 불러올 수 없습니다.</string>

@@ -2,12 +2,8 @@ package `in`.koreatech.koin.feature.chat.ui.groupchat
 
 import android.content.Context
 import android.net.Uri
-import android.provider.OpenableColumns
 import android.widget.Toast
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.ime
@@ -19,7 +15,6 @@ import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,8 +35,6 @@ import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -53,15 +46,6 @@ fun GroupChatScreen(
     val uiState by viewModel.collectAsState()
     val lifecycleOwner = LocalLifecycleOwner.current
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-    val coroutineScope = rememberCoroutineScope()
-
-    val pickMultipleMedia = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(10)) { uris ->
-        if (uris.isNotEmpty()) {
-            coroutineScope.launch(Dispatchers.IO) {
-                handleSelectedImages(uris, context, viewModel::uploadImage)
-            }
-        }
-    }
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
@@ -98,9 +82,7 @@ fun GroupChatScreen(
         showImage = Pair(uiState.showImage.first, uiState.showImage.second.toUri()),
         onNavigationIconClick = { onBackPressedDispatcher?.onBackPressed() },
         onChatInputValueChange = viewModel::onChatInputValueChange,
-        onImageButtonClick = {
-            pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-        },
+        uploadImage = viewModel::uploadImage,
         onSendClick = viewModel::sendMessage,
         onShowImageChange = viewModel::changeShowImageState
     )
@@ -122,7 +104,7 @@ private fun GroupChatScreenImpl(
     modifier: Modifier = Modifier,
     onNavigationIconClick: () -> Unit = {},
     onChatInputValueChange: (String) -> Unit = {},
-    onImageButtonClick: () -> Unit = {},
+    uploadImage: (Long, String, String, Uri) -> Unit = { _, _, _, _ -> },
     onSendClick: () -> Unit = {},
     onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> }
 ) {
@@ -153,7 +135,7 @@ private fun GroupChatScreenImpl(
             uploadingImage = uploadingImage,
             showImage = showImage,
             onChatInputValueChange = onChatInputValueChange,
-            onImageButtonClick = onImageButtonClick,
+            uploadImage = uploadImage,
             onSendClick = {
                 EventLogger.logCampusClickEvent(
                     AnalyticsConstant.Label.Callvan.CALLVAN_CHAT_SEND,
@@ -233,27 +215,4 @@ private fun GroupChatScreenEmptyPreview() {
         showImage = GroupChatPreviewData.emptyImageState,
         onNavigationIconClick = {}
     )
-}
-
-private fun handleSelectedImages(
-    uris: List<Uri>,
-    context: Context,
-    uploadImage: (Long, String, String, Uri) -> Unit
-) {
-    uris.forEach { uri ->
-        context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-            if (!cursor.moveToFirst()) return@use
-
-            val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-            val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
-
-            if (fileNameIndex == -1 || fileSizeIndex == -1) return@use
-
-            val fileName = cursor.getString(fileNameIndex)
-            val fileSize = cursor.getLong(fileSizeIndex)
-            val fileType = context.contentResolver.getType(uri) ?: "image/${fileName.substringAfterLast(".")}"
-
-            uploadImage(fileSize, fileType, fileName, uri)
-        }
-    }
 }
