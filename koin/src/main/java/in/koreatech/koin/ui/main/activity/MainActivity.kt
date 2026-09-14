@@ -19,6 +19,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
@@ -186,7 +187,8 @@ class MainActivity : AppCompatActivity() {
                             ArticleFragment.FRAGMENT to ArticleFragment.ARTICLE_DETAIL,
                             EXTRA_ARTICLE_ID to articleId,
                             EXTRA_BOARD_ID to targetBoardId
-                        )
+                        ),
+                        tabReplaceNavOptions()
                     )
                 }
             }
@@ -228,10 +230,19 @@ class MainActivity : AppCompatActivity() {
                 ArticleFragment.FRAGMENT to uri.getQueryParameter(ArticleFragment.FRAGMENT),
                 EXTRA_ARTICLE_ID to (uri.getQueryParameter("article_id")?.toIntOrNull() ?: -1),
                 EXTRA_BOARD_ID to (uri.getQueryParameter("board_id")?.toIntOrNull() ?: -1)
-            )
+            ),
+            tabReplaceNavOptions()
         )
         return true
     }
+
+    // 바텀 네비게이션 탭을 직접 눌렀을 때(NavigationUI.onNavDestinationSelected)와 동일하게,
+    // 쌓이지 않고 시작 목적지 위에서 교체되도록 하는 NavOptions
+    private fun tabReplaceNavOptions(): NavOptions = NavOptions.Builder()
+        .setLaunchSingleTop(true)
+        .setRestoreState(true)
+        .setPopUpTo(navController.graph.startDestinationId, false, true)
+        .build()
 
     private fun checkMainPermission() = MAIN_REQUIRED_PERMISSION.all {
         ContextCompat.checkSelfPermission(
