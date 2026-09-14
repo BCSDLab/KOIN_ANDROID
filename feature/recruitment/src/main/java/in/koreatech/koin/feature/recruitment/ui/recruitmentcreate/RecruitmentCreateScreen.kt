@@ -333,8 +333,7 @@ private fun RecruitmentCreateScreenImpl(
                 if (!state.isRoleCountUndetermined) {
                     RecruitmentAddRoleButton(
                         text = stringResource(R.string.recruitment_create_add_role),
-                        enabled = state.roles.size < TeamRecruitmentRole.MAX_ROLE_COUNT &&
-                                state.roles.sumOf { it.count } < MAX_TOTAL_PARTICIPANTS,
+                        enabled = state.roles.size < TeamRecruitmentRole.MAX_ROLE_COUNT && state.roles.sumOf { it.count } < MAX_TOTAL_PARTICIPANTS,
                         onClick = onAddRoleClick
                     )
                 }
