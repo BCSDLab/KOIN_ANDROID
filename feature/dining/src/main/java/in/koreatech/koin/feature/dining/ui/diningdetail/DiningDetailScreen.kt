@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.dining.ui.diningdetail
 
 import android.content.Context
 import android.widget.Toast
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.LinearEasing
@@ -40,13 +41,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -60,12 +61,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.request.ImageRequest
 import com.kakao.sdk.share.ShareClient
@@ -120,6 +123,9 @@ fun DiningDetailScreen(
 
     val abTestExperimentGroup by viewModel.abTestExperimentGroup.collectAsState()
 
+    val view = LocalView.current
+    val activity = LocalActivity.current
+
     LaunchedEffect(Unit) { // userState NPE error in viewModel init{}; Flow is null
         viewModel.getDining()
         snapshotFlow { userState }
@@ -129,6 +135,12 @@ fun DiningDetailScreen(
                     viewModel.getNotificationPermissionInfo()
                 }
             }
+    }
+
+    if (!view.isInEditMode && activity != null) {
+        SideEffect {
+            WindowCompat.getInsetsController(activity.window, view).isAppearanceLightStatusBars = true
+        }
     }
 
     Scaffold(
