@@ -1,19 +1,25 @@
 package `in`.koreatech.koin.core.designsystem.component.topbar
 
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.R
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -26,7 +32,10 @@ fun KoinTopAppBar2(
     modifier: Modifier = Modifier,
     onNavigationIconClick: () -> Unit = {},
     actions: @Composable (RowScope.() -> Unit) = {},
-    colors: TopAppBarColors = KoinTopAppBar2Defaults.topAppBarColors()
+    colors: TopAppBarColors = KoinTopAppBar2Defaults.topAppBarColors(),
+    windowInsets: WindowInsets = KoinTopAppBar2Defaults.windowInsets,
+    expandedHeight: Dp = KoinTopAppBar2Defaults.KoinTopAppBar2ExpandedHeight,
+    scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
     CenterAlignedTopAppBar(
         title = title,
@@ -41,7 +50,10 @@ fun KoinTopAppBar2(
             )
         },
         actions = actions,
-        colors = colors
+        colors = colors,
+        windowInsets = windowInsets,
+        expandedHeight = expandedHeight,
+        scrollBehavior = scrollBehavior
     )
 }
 
@@ -62,4 +74,9 @@ object KoinTopAppBar2Defaults {
         actionIconContentColor,
         subtitleContentColor
     )
+
+    val KoinTopAppBar2ExpandedHeight: Dp = 56.dp
+
+    val windowInsets: WindowInsets
+        @Composable get() = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top)
 }
