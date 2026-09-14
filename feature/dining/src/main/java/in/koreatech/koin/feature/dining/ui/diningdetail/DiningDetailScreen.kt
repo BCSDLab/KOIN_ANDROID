@@ -154,8 +154,8 @@ fun DiningDetailScreen(
         viewModel.getNotificationPermissionInfo()
     }
 
-    LaunchedEffect(Unit) {
-        if (true) {
+    LaunchedEffect(diningState.showBottomSheet) {
+        if (diningState.showBottomSheet) {
             sheetState.show()
         }
     }
