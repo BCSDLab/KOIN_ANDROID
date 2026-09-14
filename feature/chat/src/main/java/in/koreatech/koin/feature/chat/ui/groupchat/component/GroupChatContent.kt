@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.feature.chat.ui.groupchat.component
 
+import android.content.Context
 import android.net.Uri
+import android.provider.OpenableColumns
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +17,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -24,6 +27,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
+import `in`.koreatech.koin.core.designsystem.component.input.KoinChatInput
+import `in`.koreatech.koin.core.designsystem.component.input.KoinChatInputDefaults
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.chat.R
 import `in`.koreatech.koin.feature.chat.ui.component.ChatProgressIndicator
@@ -33,12 +38,13 @@ import `in`.koreatech.koin.feature.chat.ui.groupchat.model.GroupChatMessageGroup
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
 import `in`.koreatech.koin.feature.chat.ui.room.component.ChatDateTitle
 import `in`.koreatech.koin.feature.chat.ui.room.component.ChatDateTitleDefaults
-import `in`.koreatech.koin.feature.chat.ui.room.component.ChatInput
-import `in`.koreatech.koin.feature.chat.ui.room.component.ChatInputDefaults
+import `in`.koreatech.koin.feature.chat.util.handleSelectedImages
 import `in`.koreatech.koin.feature.chat.util.parseDateString
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun GroupChatContent(
@@ -50,11 +56,13 @@ fun GroupChatContent(
     showImage: Pair<Boolean, Uri>,
     modifier: Modifier = Modifier,
     onChatInputValueChange: (String) -> Unit = {},
-    onImageButtonClick: () -> Unit = {},
+    uploadImage: (Long, String, String, Uri) -> Unit = { _, _, _, _ -> },
     onSendClick: () -> Unit = {},
     onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> }
 ) {
     val scrollState = rememberLazyListState()
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
     val latestMessageId = messages.lastOrNull()?.messages?.lastOrNull()?.id
 
     if (isLoading) {
@@ -159,12 +167,18 @@ fun GroupChatContent(
                 }
             }
 
-            ChatInput(
+            KoinChatInput(
                 value = chatInputValue,
                 onValueChange = onChatInputValueChange,
-                onImageButtonClick = onImageButtonClick,
+                onImageSelected = { uris ->
+                    if (uris.isNotEmpty()) {
+                        coroutineScope.launch(Dispatchers.IO) {
+                            handleSelectedImages(uris, context, uploadImage)
+                        }
+                    }
+                },
                 onSendClick = onSendClick,
-                colors = ChatInputDefaults.purpleColors()
+                colors = KoinChatInputDefaults.purpleColors()
             )
         }
     }

@@ -2,12 +2,8 @@ package `in`.koreatech.koin.feature.chat.ui.room
 
 import android.app.Activity
 import android.content.Context
-import android.provider.OpenableColumns
 import android.widget.Toast
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.ime
@@ -49,36 +45,6 @@ fun ChatRoom(
     navigateToChatList: (isBlocked: Boolean) -> Unit
 ) {
     val context = LocalContext.current
-
-    val pickMultipleMedia =
-        rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(10)) { uris ->
-            if (uris.isNotEmpty()) {
-                uris.forEach { uri ->
-                    val cursor = context.contentResolver.query(uri, null, null, null, null)
-                    cursor.use {
-                        if (cursor != null && cursor.moveToFirst()) {
-                            val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                            val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
-
-                            if (fileNameIndex != -1 && fileSizeIndex != -1) {
-                                val fileName = cursor.getString(fileNameIndex)
-                                val fileSize = cursor.getLong(fileSizeIndex)
-                                val fileType =
-                                    context.contentResolver.getType(uri)
-                                        ?: "image/${fileName.split(".").last()}"
-
-                                viewModel.getPreSignedUrl(
-                                    fileSize,
-                                    fileType,
-                                    fileName,
-                                    uri
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
     viewModel.collectSideEffect {
         handleSideEffect(it, context, navigateToChatList)
@@ -167,9 +133,7 @@ fun ChatRoom(
             },
             onBlockCancel = { viewModel.changeBlockDialogState(false) },
             onChatInputValueChange = { viewModel.onChatInputValueChange(it) },
-            onImageButtonClick = {
-                pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            },
+            uploadImage = viewModel::getPreSignedUrl,
             onSendClick = { viewModel.sendMessage() },
             onShowImageChange = { state, url ->
                 viewModel.changeShowImageState(state, url)

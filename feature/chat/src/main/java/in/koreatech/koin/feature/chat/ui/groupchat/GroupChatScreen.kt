@@ -53,15 +53,6 @@ fun GroupChatScreen(
     val uiState by viewModel.collectAsState()
     val lifecycleOwner = LocalLifecycleOwner.current
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-    val coroutineScope = rememberCoroutineScope()
-
-    val pickMultipleMedia = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(10)) { uris ->
-        if (uris.isNotEmpty()) {
-            coroutineScope.launch(Dispatchers.IO) {
-                handleSelectedImages(uris, context, viewModel::uploadImage)
-            }
-        }
-    }
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
@@ -98,9 +89,7 @@ fun GroupChatScreen(
         showImage = Pair(uiState.showImage.first, uiState.showImage.second.toUri()),
         onNavigationIconClick = { onBackPressedDispatcher?.onBackPressed() },
         onChatInputValueChange = viewModel::onChatInputValueChange,
-        onImageButtonClick = {
-            pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-        },
+        uploadImage = viewModel::uploadImage,
         onSendClick = viewModel::sendMessage,
         onShowImageChange = viewModel::changeShowImageState
     )
@@ -122,7 +111,7 @@ private fun GroupChatScreenImpl(
     modifier: Modifier = Modifier,
     onNavigationIconClick: () -> Unit = {},
     onChatInputValueChange: (String) -> Unit = {},
-    onImageButtonClick: () -> Unit = {},
+    uploadImage: (Long, String, String, Uri) -> Unit = { _, _, _, _ -> },
     onSendClick: () -> Unit = {},
     onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> }
 ) {
@@ -153,7 +142,7 @@ private fun GroupChatScreenImpl(
             uploadingImage = uploadingImage,
             showImage = showImage,
             onChatInputValueChange = onChatInputValueChange,
-            onImageButtonClick = onImageButtonClick,
+            uploadImage = uploadImage,
             onSendClick = {
                 EventLogger.logCampusClickEvent(
                     AnalyticsConstant.Label.Callvan.CALLVAN_CHAT_SEND,
@@ -233,27 +222,4 @@ private fun GroupChatScreenEmptyPreview() {
         showImage = GroupChatPreviewData.emptyImageState,
         onNavigationIconClick = {}
     )
-}
-
-private fun handleSelectedImages(
-    uris: List<Uri>,
-    context: Context,
-    uploadImage: (Long, String, String, Uri) -> Unit
-) {
-    uris.forEach { uri ->
-        context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-            if (!cursor.moveToFirst()) return@use
-
-            val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-            val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
-
-            if (fileNameIndex == -1 || fileSizeIndex == -1) return@use
-
-            val fileName = cursor.getString(fileNameIndex)
-            val fileSize = cursor.getLong(fileSizeIndex)
-            val fileType = context.contentResolver.getType(uri) ?: "image/${fileName.substringAfterLast(".")}"
-
-            uploadImage(fileSize, fileType, fileName, uri)
-        }
-    }
 }
