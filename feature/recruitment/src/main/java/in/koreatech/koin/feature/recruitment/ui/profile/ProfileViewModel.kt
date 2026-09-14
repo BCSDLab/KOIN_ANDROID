@@ -8,8 +8,8 @@ import `in`.koreatech.koin.domain.usecase.recruitment.GetTeamRecruitmentProfileU
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentErrorMessage
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentProfile
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
