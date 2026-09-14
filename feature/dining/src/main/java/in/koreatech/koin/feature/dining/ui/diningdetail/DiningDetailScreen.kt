@@ -230,7 +230,7 @@ fun DiningDetailScreen(
             isDiningRefreshing = diningState.isDiningRefreshing,
             initialPage = if (initialPage != -1) initialPage else viewModel.getInitialPage(),
             refreshDining = viewModel::refreshDining,
-            onDateClick = viewModel::setSelectedDate,
+            onDateClick = viewModel::setSelectedDate
         )
     }
 }
@@ -245,7 +245,7 @@ private fun DiningDetailScreenImpl(
     isDiningRefreshing: Boolean = false,
     initialPage: Int = 0,
     refreshDining: () -> Unit = {},
-    onDateClick: (Date) -> Unit = {},
+    onDateClick: (Date) -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -636,6 +636,6 @@ private fun DiningScreenPreview() {
             )
         ),
         contentPadding = PaddingValues(),
-        selectedDate = TimeUtil.getNextDayDate(TimeUtil.getCurrentTime()),
+        selectedDate = TimeUtil.getNextDayDate(TimeUtil.getCurrentTime())
     )
 }
