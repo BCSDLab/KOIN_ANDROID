@@ -10,10 +10,13 @@ import `in`.koreatech.koin.feature.banner.model.BannerState
 import `in`.koreatech.koin.feature.banner.model.toLocalBanner
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -26,13 +29,19 @@ class BannerViewModel @Inject constructor(
     private val _bannerState = MutableStateFlow(BannerState())
     val bannerState: StateFlow<BannerState> = _bannerState.asStateFlow()
 
+    private val _sideEffect: Channel<BannerSideEffect> = Channel()
+    val sideEffect = _sideEffect.receiveAsFlow()
+
     init {
         fetchCurrentVersionCode()
         fetchBanners()
     }
 
     private fun fetchBanners() = viewModelScope.launch {
-        getBannersByCategoryUseCase(MAIN_BANNER_CATEGORY).collectLatest {
+        getBannersByCategoryUseCase(MAIN_BANNER_CATEGORY).catch {
+            _sideEffect.send(BannerSideEffect.Dismiss)
+            Timber.e(it)
+        }.collectLatest {
             _bannerState.value = _bannerState.value.copy(
                 bannerList = it.map { banner -> banner.toLocalBanner() }.toImmutableList(),
                 isLoading = false
