@@ -10,6 +10,7 @@ import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentErrorMessage
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentProfile
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withTimeoutOrNull
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
@@ -26,13 +27,13 @@ class ProfileViewModel @Inject constructor(
         checkLoginAndLoad()
     }
 
-    private fun checkLoginAndLoad() = intent {
-        val user = getUserStatusUseCase().first()
-        if (user is User.Anonymous) {
+    private fun checkLoginAndLoad(showLoading: Boolean = true) = intent {
+        val user = withTimeoutOrNull(3_000L) { getUserStatusUseCase().first() }
+        if (user == null || user is User.Anonymous) {
             postSideEffect(ProfileSideEffect.ShowLoginRequiredToast)
             postSideEffect(ProfileSideEffect.NavigateUp)
         } else {
-            loadProfile()
+            loadProfile(showLoading)
         }
     }
 
