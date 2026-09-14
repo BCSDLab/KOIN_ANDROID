@@ -78,7 +78,6 @@ import com.kakao.sdk.template.model.FeedTemplate
 import com.kakao.sdk.template.model.ItemContent
 import com.kakao.sdk.template.model.ItemInfo
 import com.kakao.sdk.template.model.Link
-import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
@@ -98,7 +97,6 @@ import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.feature.dining.R
 import `in`.koreatech.koin.feature.dining.component.DiningDateItem
 import `in`.koreatech.koin.feature.dining.component.DiningItem
-import `in`.koreatech.koin.feature.dining.component.DiningItemOriginal
 import `in`.koreatech.koin.feature.dining.component.bottomsheet.DiningBottomSheet
 import `in`.koreatech.koin.feature.dining.component.dialog.DiningImageDialog
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_DATE
@@ -120,8 +118,6 @@ fun DiningDetailScreen(
     val userState by viewModel.userState.collectAsState()
 
     val diningState by viewModel.collectAsState()
-
-    val abTestExperimentGroup by viewModel.abTestExperimentGroup.collectAsState()
 
     val view = LocalView.current
     val activity = LocalActivity.current
@@ -178,7 +174,6 @@ fun DiningDetailScreen(
             contentPadding = contentPadding,
             selectedDate = TimeUtil.stringToDateYYMMDD(diningState.selectedDate),
             showBottomSheet = diningState.showBottomSheet,
-            experimentGroup = abTestExperimentGroup,
             isAnonymous = userState.isAnonymous,
             isDiningRefreshing = diningState.isDiningRefreshing,
             initialPage = if (initialPage != -1) initialPage else viewModel.getInitialPage(),
@@ -200,7 +195,6 @@ private fun DiningDetailScreenImpl(
     contentPadding: PaddingValues,
     selectedDate: Date,
     showBottomSheet: Boolean,
-    experimentGroup: String,
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
     isSoldOutSubscribed: Boolean = false,
@@ -463,8 +457,8 @@ private fun DiningDetailScreenImpl(
                             Box(
                                 contentAlignment = Alignment.BottomCenter
                             ) {
-                                DiningItemByABTest(
-                                    experimentGroup = experimentGroup,
+                                DiningItem(
+                                    modifier = Modifier.padding(horizontal = 24.dp),
                                     dining = dining,
                                     isWeekend = isWeekend,
                                     onImageClick = {
@@ -535,36 +529,6 @@ private fun DiningDetailScreenImpl(
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun DiningItemByABTest(
-    experimentGroup: String,
-    dining: Dining,
-    isWeekend: Boolean,
-    onImageClick: () -> Unit = {},
-    onShareClick: () -> Unit = {}
-) {
-    when (experimentGroup) {
-        ExperimentGroup.SHARE_NEW -> {
-            DiningItem(
-                modifier = Modifier.padding(horizontal = 24.dp),
-                dining = dining,
-                isWeekend = isWeekend,
-                onImageClick = onImageClick,
-                onShareClick = onShareClick
-            )
-        }
-
-        ExperimentGroup.SHARE_ORIGINAL -> {
-            DiningItemOriginal(
-                dining = dining,
-                isWeekend = isWeekend,
-                onImageClick = onImageClick,
-                onShareClick = onShareClick
-            )
         }
     }
 }
@@ -679,6 +643,5 @@ private fun DiningScreenPreview() {
         context = LocalContext.current,
         selectedDate = TimeUtil.getNextDayDate(TimeUtil.getCurrentTime()),
         showBottomSheet = false,
-        experimentGroup = ExperimentGroup.SHARE_NEW
     )
 }

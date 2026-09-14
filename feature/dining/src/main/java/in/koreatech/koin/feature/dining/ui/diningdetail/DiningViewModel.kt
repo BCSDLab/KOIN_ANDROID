@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
@@ -17,7 +16,6 @@ import `in`.koreatech.koin.domain.usecase.notification.DeleteNotificationSubscri
 import `in`.koreatech.koin.domain.usecase.notification.GetNotificationPermissionInfoUseCase
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionDetailUseCase
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionUseCase
-import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
@@ -26,7 +24,6 @@ import java.util.Date
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.annotation.OrbitExperimental
@@ -40,7 +37,6 @@ class DiningViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getNotOperationFilteredDiningUseCase: GetNotOperationFilteredDiningUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
-    private val abTestUseCase: ABTestUseCase,
     private val onboardingManager: OnboardingManager,
     private val getNotificationPermissionInfoUseCase: GetNotificationPermissionInfoUseCase,
     private val updateNotificationSubscriptionUseCase: UpdateNotificationSubscriptionUseCase,
@@ -60,18 +56,6 @@ class DiningViewModel @Inject constructor(
         initialValue = User.Anonymous
     )
     val userState: StateFlow<User> get() = _userState
-
-    val abTestExperimentGroup = flow {
-        abTestUseCase(Experiment.DINING_SHARE.experimentTitle).onSuccess {
-            emit(it)
-        }.onFailure {
-            emit(Experiment.DINING_SHARE.experimentGroups.first())
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = Experiment.DINING_SHARE.experimentGroups.first()
-    )
 
     fun setSelectedDate(date: Date) = intent {
         val formattedDate = TimeUtil.dateFormatToYYMMDD(date)
