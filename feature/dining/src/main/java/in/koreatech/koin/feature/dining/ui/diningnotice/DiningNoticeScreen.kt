@@ -29,8 +29,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.coopshop.CoopShop
 import `in`.koreatech.koin.domain.model.coopshop.CoopShopDayType
 import `in`.koreatech.koin.domain.model.coopshop.OpenCloseInfo
@@ -57,8 +58,13 @@ fun DiningNoticeScreen(
     Scaffold(
         containerColor = KoinTheme.colors.neutral0,
         topBar = {
-            KoinTopAppBar(
-                title = stringResource(R.string.dining_notice_appbar_title),
+            KoinTopAppBar2(
+                title = {
+                    Text(
+                        text = stringResource(R.string.dining_notice_appbar_title),
+                        style = RebrandKoinTheme.typography.medium18
+                    )
+                },
                 onNavigationIconClick = onTopbarBackClick
             )
         }
