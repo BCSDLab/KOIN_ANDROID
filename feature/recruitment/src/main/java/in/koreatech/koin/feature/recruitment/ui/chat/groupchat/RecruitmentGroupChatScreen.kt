@@ -41,9 +41,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.component.input.KoinChatInput
 import `in`.koreatech.koin.core.designsystem.component.input.KoinChatInputDefaults
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.ui.chat.components.RecruitmentChatDateChip
