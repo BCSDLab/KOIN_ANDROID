@@ -1,8 +1,6 @@
 package `in`.koreatech.koin.feature.chat.ui.groupchat.component
 
-import android.content.Context
 import android.net.Uri
-import android.provider.OpenableColumns
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
