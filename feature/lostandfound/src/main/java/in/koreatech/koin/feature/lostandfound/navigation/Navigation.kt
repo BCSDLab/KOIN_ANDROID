@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.lostandfound.navigation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,7 +27,8 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
     onBackPressed: () -> Unit
 ) {
     val cancelRefreshList = { cancelRefresh: Boolean ->
-        navController.getBackStackEntry(LostAndFoundNavType.LostAndFoundListRoute)
+        runCatching { navController.getBackStackEntry(LostAndFoundNavType.LostAndFoundListRoute) }
+            .getOrNull()
             ?.savedStateHandle
             ?.let { handle ->
                 if (handle.get<Boolean>(CANCEL_REFRESH_LIST) != false) {
@@ -35,9 +37,11 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
             }
     }
 
-    val onBackPressedWithCancel = {
+    val popBackStackWithCancel = {
         cancelRefreshList(true)
-        onBackPressed()
+        if (!navController.popBackStack()) {
+            onBackPressed()
+        }
     }
 
     val navigateToList = { cancelRefresh: Boolean ->
@@ -90,9 +94,12 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
     composable<LostAndFoundNavType.LostAndFoundDetailRoute> {
         val navigator = rememberNavigator()
         val context = LocalContext.current
+        BackHandler(enabled = navController.previousBackStackEntry != null) {
+            popBackStackWithCancel()
+        }
         LostAndFoundDetail(
             navigateToArticleList = navigateToList,
-            onTopbarBackClick = onBackPressedWithCancel,
+            onTopbarBackClick = popBackStackWithCancel,
             refreshList = { cancelRefreshList(false) },
             navigateToChatRoom = { articleId ->
                 val intent = navigator.navigateToChatRoom(context)
@@ -121,23 +128,32 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
 
     composable<LostAndFoundNavType.LostAndFoundReportRoute> { backStackEntry ->
         val route = backStackEntry.toRoute<LostAndFoundNavType.LostAndFoundReportRoute>()
+        BackHandler(enabled = navController.previousBackStackEntry != null) {
+            popBackStackWithCancel()
+        }
         LostAndFoundReport(
             articleId = route.articleId,
-            onTopbarBackClick = onBackPressedWithCancel,
+            onTopbarBackClick = popBackStackWithCancel,
             onSuccess = { navigateToList(false) }
         )
     }
 
     composable<LostAndFoundNavType.LostAndFoundWriteRoute> {
+        BackHandler(enabled = navController.previousBackStackEntry != null) {
+            popBackStackWithCancel()
+        }
         LostAndFoundWriteArticle(
-            onBackClick = onBackPressedWithCancel,
+            onBackClick = popBackStackWithCancel,
             onComplete = { navigateToList(false) }
         )
     }
 
     composable<LostAndFoundNavType.LostAndFoundModifyRoute> {
+        BackHandler(enabled = navController.previousBackStackEntry != null) {
+            popBackStackWithCancel()
+        }
         LostAndFoundModify(
-            onBackClick = onBackPressedWithCancel,
+            onBackClick = popBackStackWithCancel,
             onComplete = { articleId ->
                 navigateToList(false)
                 navController.navigate(LostAndFoundNavType.LostAndFoundDetailRoute(articleId))

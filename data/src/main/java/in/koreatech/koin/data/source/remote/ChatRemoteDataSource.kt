@@ -8,7 +8,7 @@ import `in`.koreatech.koin.data.response.chat.ChatMessageResponse
 import `in`.koreatech.koin.data.response.chat.ChatRoomResponse
 import `in`.koreatech.koin.data.stomp.KoinStomp
 import `in`.koreatech.koin.data.stomp.KoinStompConnectionState
-import `in`.koreatech.koin.data.util.suspendRunCatching
+import `in`.koreatech.koin.domain.util.suspendRunCatching
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.builtins.ListSerializer

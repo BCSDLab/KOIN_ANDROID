@@ -90,8 +90,10 @@ fun pickRandomReviewer(developer: Developer?) {
 fun pickMentor() {
     val shouldAddMentor = Random.nextInt() % 10 == 0 // 10%
     if (shouldAddMentor) {
-        val mentor = Developer.entries.filter { it.isMentor }.random()
-        exportMentor(mentor.githubName)
+        val mentor = Developer.entries.filter { it.isMentor }.randomOrNull()
+        if (mentor != null) {
+            exportMentor(mentor.githubName)
+        }
     }
 }
 

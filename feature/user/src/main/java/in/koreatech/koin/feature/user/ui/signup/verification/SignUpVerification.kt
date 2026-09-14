@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,6 +45,7 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.util.KRPhoneNumberVisualTransformation
 import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.domain.constant.CONTACT_URL
@@ -192,6 +194,10 @@ fun SignUpVerificationImpl(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.sign_up_next),
             enabled = enabled,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = RebrandKoinTheme.colors.primary500
+            ),
+            shape = KoinTheme.shapes.small,
             contentPadding = PaddingValues(12.dp),
             onClick = { navigateToNextScreen(name, phoneNumber, gender) }
         )
@@ -296,6 +302,10 @@ fun SignUpVerificationPhoneNumberStep(
                 } else {
                     stringResource(R.string.sign_up_phone_number_send_verification)
                 },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = RebrandKoinTheme.colors.primary500
+                ),
+                shape = KoinTheme.shapes.extraSmall,
                 textStyle = KoinTheme.typography.regular10,
                 enabled = (phoneNumber.isNotBlank() || phoneNumberState != VerificationMethodState.CountExceeded) && verificationCodeState !is VerificationCodeState.Valid,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
@@ -375,7 +385,7 @@ fun SignUpVerificationCodeVerificationStep(
                         modifier = Modifier.padding(end = if (verificationCode.isBlank()) 8.dp else 28.dp),
                         text = verificationTimeLeft.secondToMinute(),
                         style = KoinTheme.typography.regular14,
-                        color = KoinTheme.colors.neutral500
+                        color = RebrandKoinTheme.colors.neutral500
                     )
                 }
             }
@@ -388,6 +398,10 @@ fun SignUpVerificationCodeVerificationStep(
                 modifier = Modifier.widthIn(min = 86.dp),
                 text = stringResource(R.string.sign_up_verification_code_check),
                 textStyle = KoinTheme.typography.regular10,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = RebrandKoinTheme.colors.primary500
+                ),
+                shape = KoinTheme.shapes.extraSmall,
                 enabled = verificationCode.isNotBlank() && verificationCodeState != VerificationCodeState.Valid,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {
@@ -434,7 +448,7 @@ private fun VerificationCodeSentSuccessMessage(
                 remainingCount,
                 totalCount
             ),
-            color = KoinTheme.colors.neutral500,
+            color = RebrandKoinTheme.colors.neutral500,
             style = KoinTheme.typography.regular12
         )
     }
@@ -464,7 +478,7 @@ private fun PhoneNumberDuplicateMessage() {
                         (context as Activity).finish()
                     },
                 text = stringResource(R.string.sign_up_phone_number_already_sign_up),
-                color = KoinTheme.colors.primary500,
+                color = RebrandKoinTheme.colors.primary500,
                 style = KoinTheme.typography.regular12
             )
         }
@@ -476,7 +490,7 @@ private fun PhoneNumberDuplicateMessage() {
         ) {
             Text(
                 text = stringResource(R.string.sign_up_phone_number_never_sign_up_before),
-                color = KoinTheme.colors.neutral500,
+                color = RebrandKoinTheme.colors.neutral500,
                 style = KoinTheme.typography.regular12
             )
 
@@ -491,7 +505,7 @@ private fun PhoneNumberDuplicateMessage() {
                     context.startActivity(intent)
                 },
                 text = stringResource(R.string.sign_up_phone_number_never_sign_up_before_inquiry),
-                color = KoinTheme.colors.primary500,
+                color = RebrandKoinTheme.colors.primary500,
                 style = KoinTheme.typography.regular12
             )
         }

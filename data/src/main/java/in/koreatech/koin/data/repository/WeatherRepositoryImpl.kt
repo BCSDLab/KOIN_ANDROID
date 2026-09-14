@@ -3,10 +3,10 @@ package `in`.koreatech.koin.data.repository
 import `in`.koreatech.koin.data.mapper.toWeather
 import `in`.koreatech.koin.data.source.remote.WeatherRemoteDataSource
 import `in`.koreatech.koin.data.util.mapHttpFailure
-import `in`.koreatech.koin.data.util.suspendRunCatching
 import `in`.koreatech.koin.domain.error.weather.KoinWeatherException
 import `in`.koreatech.koin.domain.model.weather.Weather
 import `in`.koreatech.koin.domain.repository.WeatherRepository
+import `in`.koreatech.koin.domain.util.suspendRunCatching
 import javax.inject.Inject
 
 class WeatherRepositoryImpl @Inject constructor(

@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.signin.ui
 
 import android.content.Intent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,14 +13,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,9 +43,9 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
-import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.util.KRPhoneNumberVisualTransformation
 import `in`.koreatech.koin.feature.user.OWNER_URL_PRODUCTION
 import `in`.koreatech.koin.feature.user.OWNER_URL_STAGE
@@ -147,11 +150,26 @@ fun SignInScreenImpl(
         }
 
         Column {
-            Image(
-                modifier = Modifier.height(60.dp),
-                painter = painterResource(id = R.drawable.ic_logo_coin_color),
-                contentDescription = "Koin logo"
-            )
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    modifier = Modifier.width(80.dp).height(60.dp),
+                    painter = painterResource(id = R.drawable.ic_bcsd_symbol),
+                    contentDescription = "Koin logo"
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Image(
+                    modifier = Modifier.width(100.dp).height(30.dp),
+                    painter = painterResource(id = R.drawable.ic_koin_text),
+                    contentDescription = "Koin logo"
+                )
+            }
+
+            Spacer(modifier = Modifier.height(50.dp))
 
             KoinUserBasicTextField(
                 modifier = Modifier
@@ -192,7 +210,9 @@ fun SignInScreenImpl(
             CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
                 FilledButton(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = FilledButtonColors.Warning,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = RebrandKoinTheme.colors.primary500
+                    ),
                     shape = KoinTheme.shapes.small,
                     text = stringResource(R.string.sign_in_sign_in),
                     onClick = signIn
@@ -202,10 +222,13 @@ fun SignInScreenImpl(
             Spacer(modifier = Modifier.height(24.dp))
 
             CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
-                FilledButton(
+                Button(
                     modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(R.string.sign_in_sign_up),
                     shape = KoinTheme.shapes.small,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = RebrandKoinTheme.colors.neutral0
+                    ),
+                    border = BorderStroke(width = 1.dp, color = RebrandKoinTheme.colors.primary500),
                     onClick = {
                         EventLogger.logSessionEvent(
                             action = EventAction.USER,
@@ -218,7 +241,12 @@ fun SignInScreenImpl(
                             context.startActivity(it)
                         }
                     }
-                )
+                ) {
+                    Text(
+                        text = stringResource(R.string.sign_in_sign_up),
+                        color = RebrandKoinTheme.colors.primary500
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -286,7 +314,7 @@ fun SignInScreenImpl(
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(R.string.sign_in_business),
-                color = KoinTheme.colors.sub500,
+                color = RebrandKoinTheme.colors.primary500,
                 textAlign = TextAlign.Center,
                 style = KoinTheme.typography.regular18,
                 modifier = Modifier

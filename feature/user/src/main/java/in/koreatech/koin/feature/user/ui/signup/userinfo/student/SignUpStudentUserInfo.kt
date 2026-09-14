@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,6 +35,7 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.util.ext.isValidNickname
 import `in`.koreatech.koin.domain.util.ext.isValidStudentId
 import `in`.koreatech.koin.feature.user.NICKNAME_MAX_LENGTH
@@ -209,6 +211,10 @@ fun SignUpStudentUserInfoImpl(
         FilledButton(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.sign_up_next),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = RebrandKoinTheme.colors.primary500
+            ),
+            shape = KoinTheme.shapes.small,
             enabled = enabled,
             contentPadding = PaddingValues(12.dp),
             onClick = {
@@ -268,6 +274,10 @@ private fun SignUpStudentUserInfoInitialStep(
                 modifier = Modifier.widthIn(min = 86.dp),
                 text = stringResource(R.string.sign_up_user_info_id_check_duplicate),
                 textStyle = KoinTheme.typography.regular10,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = RebrandKoinTheme.colors.primary500
+                ),
+                shape = KoinTheme.shapes.extraSmall,
                 enabled = loginId.isNotEmpty() && isLoginIdAvailable != true && isLoginIdValid,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {
@@ -432,6 +442,10 @@ private fun SignUpStudentUserInfoNickNameEmailStep(
                 modifier = Modifier.widthIn(min = 86.dp),
                 text = stringResource(R.string.sign_up_user_info_nickname_check_duplicate),
                 textStyle = KoinTheme.typography.regular10,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = RebrandKoinTheme.colors.primary500
+                ),
+                shape = KoinTheme.shapes.extraSmall,
                 enabled = nickname.isNotEmpty() && nickname.isValidNickname() && isNicknameAvailable != true,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {

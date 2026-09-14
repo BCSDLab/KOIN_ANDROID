@@ -11,7 +11,9 @@ fun HttpException.getErrorResponse(): ErrorResponse {
 }
 
 fun ErrorResponse.toKoinUnknownErrorException(): KoinUnknownErrorException {
-    return KoinUnknownErrorException(this.code, this.message, this.errorTraceId)
+    return KoinUnknownErrorException(this.code, this.message, this.errorTraceId).apply {
+        message = this@toKoinUnknownErrorException.message
+    }
 }
 
 @Deprecated(
@@ -92,5 +94,9 @@ class HttpExceptionMapper(private val exception: HttpException) {
 
     fun on(statusCodes: IntRange, errorCode: String) = OnBuilder(exception.code() in statusCodes && errorCode == errorResponse.code)
 
-    internal fun map(): KoinErrorException = mappedException ?: errorResponse.toKoinUnknownErrorException()
+    internal fun map(): KoinErrorException {
+        val exception = mappedException ?: return errorResponse.toKoinUnknownErrorException()
+        exception.message = errorResponse.message
+        return exception
+    }
 }
