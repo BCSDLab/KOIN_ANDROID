@@ -13,16 +13,20 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
 import `in`.koreatech.koin.feature.banner.component.BannerA
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class BannerActivity : ComponentActivity() {
@@ -35,6 +39,18 @@ class BannerActivity : ComponentActivity() {
 
         setContent {
             val uiState by viewModel.bannerState.collectAsState()
+
+            LaunchedEffect(Unit) {
+                lifecycleScope.launch {
+                    viewModel.sideEffect.collectLatest { sideEffect ->
+                        when (sideEffect) {
+                            BannerSideEffect.Dismiss -> {
+                                finish()
+                            }
+                        }
+                    }
+                }
+            }
 
             KoinTheme {
                 if (!uiState.isLoading) {
