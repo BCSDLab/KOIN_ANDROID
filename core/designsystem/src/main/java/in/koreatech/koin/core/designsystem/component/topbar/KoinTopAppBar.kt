@@ -21,6 +21,7 @@ import `in`.koreatech.koin.core.designsystem.R
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
+@Deprecated(message = "Use KoinTopAppBar2 instead")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KoinTopAppBar(

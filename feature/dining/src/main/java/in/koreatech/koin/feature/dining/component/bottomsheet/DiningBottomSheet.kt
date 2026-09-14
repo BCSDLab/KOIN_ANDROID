@@ -9,8 +9,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,10 +23,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.dining.R
 import `in`.koreatech.koin.feature.dining.component.switch.KoinSwitch
+import `in`.koreatech.koin.feature.dining.component.switch.KoinSwitchDefaults
 
 @Composable
 fun DiningBottomSheet(
@@ -51,6 +55,7 @@ fun DiningBottomSheet(
                 top = 24.dp,
                 bottom = 28.dp
             )
+            .navigationBarsPadding()
     ) {
         Text(
             text = stringResource(R.string.dining_notification_on_boarding),
@@ -73,7 +78,10 @@ fun DiningBottomSheet(
                 )
                 KoinSwitch(
                     checked = soldOutChecked,
-                    onCheckedChange = onSoldOutChange
+                    onCheckedChange = onSoldOutChange,
+                    switchColors = KoinSwitchDefaults.koinSwitchColors(
+                        selectedContainerColor = RebrandKoinTheme.colors.primary500
+                    )
                 )
             }
             Row(
@@ -87,7 +95,10 @@ fun DiningBottomSheet(
                 )
                 KoinSwitch(
                     checked = imageUploadChecked,
-                    onCheckedChange = onImageUploadChange
+                    onCheckedChange = onImageUploadChange,
+                    switchColors = KoinSwitchDefaults.koinSwitchColors(
+                        selectedContainerColor = RebrandKoinTheme.colors.primary500
+                    )
                 )
             }
         }
@@ -95,13 +106,20 @@ fun DiningBottomSheet(
             modifier = Modifier.padding(top = 16.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            FilledButton(
+            Button(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(R.string.navigate_to_notification_setting),
-                textStyle = KoinTheme.typography.medium15,
+                onClick = onPositive,
                 contentPadding = PaddingValues(12.dp),
-                onClick = onPositive
-            )
+                shape = RoundedCornerShape(4.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = RebrandKoinTheme.colors.primary500
+                )
+            ) {
+                Text(
+                    text = stringResource(R.string.navigate_to_notification_setting),
+                    style = KoinTheme.typography.medium15
+                )
+            }
             Text(
                 modifier = Modifier
                     .fillMaxWidth()

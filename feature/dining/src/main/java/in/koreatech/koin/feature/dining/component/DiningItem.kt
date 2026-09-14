@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.feature.dining.R
@@ -63,18 +63,18 @@ fun DiningItem(
             .fillMaxWidth()
             .shadow(
                 elevation = 4.dp,
-                spotColor = KoinTheme.colors.neutral800.copy(alpha = 0.2f),
-                ambientColor = KoinTheme.colors.neutral800.copy(alpha = 0.2f),
+                spotColor = RebrandKoinTheme.colors.neutral800.copy(alpha = 0.2f),
+                ambientColor = RebrandKoinTheme.colors.neutral800.copy(alpha = 0.2f),
                 shape = RoundedCornerShape(16.dp) // not in design theme value
             )
             .shadow(
                 elevation = 2.dp,
-                spotColor = KoinTheme.colors.neutral800.copy(alpha = 0.1f),
-                ambientColor = KoinTheme.colors.neutral800.copy(alpha = 0.1f),
+                spotColor = RebrandKoinTheme.colors.neutral800.copy(alpha = 0.1f),
+                ambientColor = RebrandKoinTheme.colors.neutral800.copy(alpha = 0.1f),
                 shape = RoundedCornerShape(16.dp) // not in design theme value
             )
             .background(
-                color = KoinTheme.colors.neutral0,
+                color = RebrandKoinTheme.colors.neutral0,
                 shape = RoundedCornerShape(16.dp) // not in design theme value
             )
     ) {
@@ -91,21 +91,21 @@ fun DiningItem(
             ) {
                 Text(
                     text = dining.place,
-                    style = KoinTheme.typography.bold16.copy(fontWeight = FontWeight.SemiBold)
+                    style = RebrandKoinTheme.typography.bold16.copy(fontWeight = FontWeight.SemiBold)
                 )
                 if (dining.soldOutAt.isNotBlank()) {
                     Box(
                         modifier = Modifier
                             .background(
-                                color = KoinTheme.colors.warning200,
-                                shape = KoinTheme.shapes.extraSmall
+                                color = RebrandKoinTheme.colors.primary100,
+                                shape = RebrandKoinTheme.shapes.extraSmall
                             )
                             .padding(vertical = 4.dp, horizontal = 8.dp)
                     ) {
                         Text(
                             text = stringResource(R.string.sold_out),
-                            style = KoinTheme.typography.medium14,
-                            color = KoinTheme.colors.warning600
+                            style = RebrandKoinTheme.typography.medium14,
+                            color = RebrandKoinTheme.colors.primary500
                         )
                     }
                 }
@@ -116,18 +116,18 @@ fun DiningItem(
             ) {
                 Text(
                     text = stringResource(R.string.dining_item_kcal_format, dining.kcal),
-                    style = KoinTheme.typography.regular12,
-                    color = KoinTheme.colors.neutral500
+                    style = RebrandKoinTheme.typography.regular12,
+                    color = RebrandKoinTheme.colors.neutral500
                 )
                 Text(
                     text = "•",
-                    style = KoinTheme.typography.regular12,
-                    color = KoinTheme.colors.neutral500
+                    style = RebrandKoinTheme.typography.regular12,
+                    color = RebrandKoinTheme.colors.neutral500
                 )
                 Text(
                     text = stringResource(R.string.dining_item_price_format, dining.priceCard, dining.priceCash),
-                    style = KoinTheme.typography.regular12,
-                    color = KoinTheme.colors.neutral500
+                    style = RebrandKoinTheme.typography.regular12,
+                    color = RebrandKoinTheme.colors.neutral500
                 )
             }
         }
@@ -151,13 +151,13 @@ fun DiningItem(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .background(
-                                    color = KoinTheme.colors.neutral50,
-                                    shape = KoinTheme.shapes.small
+                                    color = RebrandKoinTheme.colors.neutral50,
+                                    shape = RebrandKoinTheme.shapes.small
                                 )
                                 .border(
                                     width = 1.dp,
-                                    color = KoinTheme.colors.neutral400,
-                                    shape = KoinTheme.shapes.small
+                                    color = RebrandKoinTheme.colors.neutral400,
+                                    shape = RebrandKoinTheme.shapes.small
                                 ),
                             contentAlignment = Alignment.Center
                         ) {
@@ -177,8 +177,8 @@ fun DiningItem(
                                             R.string.no_photo
                                         }
                                     ),
-                                    style = KoinTheme.typography.regular14,
-                                    color = KoinTheme.colors.neutral500 // Change to a similar color; original color is 0xFF8E8E8E
+                                    style = RebrandKoinTheme.typography.regular14,
+                                    color = RebrandKoinTheme.colors.neutral500 // Change to a similar color; original color is 0xFF8E8E8E
                                 )
                             }
                         }
@@ -186,7 +186,7 @@ fun DiningItem(
                         SubcomposeAsyncImage(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .clip(shape = KoinTheme.shapes.small)
+                                .clip(shape = RebrandKoinTheme.shapes.small)
                                 .clickable(onClick = onImageClick),
                             model = ImageRequest.Builder(context)
                                 .data(dining.imageUrl)
@@ -208,8 +208,8 @@ fun DiningItem(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .background(
-                                    color = KoinTheme.colors.neutral800.copy(alpha = 0.5f),
-                                    shape = KoinTheme.shapes.small
+                                    color = RebrandKoinTheme.colors.neutral800.copy(alpha = 0.5f),
+                                    shape = RebrandKoinTheme.shapes.small
                                 )
                                 .zIndex(1f),
                             contentAlignment = Alignment.Center
@@ -225,8 +225,8 @@ fun DiningItem(
                                 )
                                 Text(
                                     text = stringResource(R.string.sold_out_menu),
-                                    style = KoinTheme.typography.regular14,
-                                    color = KoinTheme.colors.neutral0
+                                    style = RebrandKoinTheme.typography.regular14,
+                                    color = RebrandKoinTheme.colors.neutral0
                                 )
                             }
                         }
@@ -239,12 +239,12 @@ fun DiningItem(
                 menu = dining.menu
             )
         }
-        HorizontalDivider(color = KoinTheme.colors.neutral100)
+        HorizontalDivider(color = RebrandKoinTheme.colors.neutral100)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(
-                    shape = KoinTheme.shapes.small.copy(
+                    shape = RebrandKoinTheme.shapes.small.copy(
                         topStart = CornerSize(0.dp),
                         topEnd = CornerSize(0.dp)
                     )
@@ -253,7 +253,7 @@ fun DiningItem(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = ripple(
                         bounded = true,
-                        color = KoinTheme.colors.neutral500
+                        color = RebrandKoinTheme.colors.neutral500
                     )
                 ) {
                     onShareClick()
@@ -271,8 +271,8 @@ fun DiningItem(
                 )
                 Text(
                     text = stringResource(R.string.action_share),
-                    style = KoinTheme.typography.regular14,
-                    color = KoinTheme.colors.neutral600
+                    style = RebrandKoinTheme.typography.regular14,
+                    color = RebrandKoinTheme.colors.neutral600
                 )
             }
         }

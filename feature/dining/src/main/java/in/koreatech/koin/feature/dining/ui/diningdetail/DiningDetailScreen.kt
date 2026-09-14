@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.feature.dining.ui.diningdetail
 
-import android.content.Context
 import android.widget.Toast
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.LinearEasing
@@ -22,9 +22,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -39,14 +41,15 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -58,14 +61,17 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.request.ImageRequest
 import com.kakao.sdk.share.ShareClient
@@ -75,13 +81,13 @@ import com.kakao.sdk.template.model.FeedTemplate
 import com.kakao.sdk.template.model.ItemContent
 import com.kakao.sdk.template.model.ItemInfo
 import com.kakao.sdk.template.model.Link
-import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.core.nestedscroll.rememberKoinNestedScrollHeaderState
 import `in`.koreatech.koin.core.onboarding.ArrowDirection
@@ -94,7 +100,6 @@ import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.feature.dining.R
 import `in`.koreatech.koin.feature.dining.component.DiningDateItem
 import `in`.koreatech.koin.feature.dining.component.DiningItem
-import `in`.koreatech.koin.feature.dining.component.DiningItemOriginal
 import `in`.koreatech.koin.feature.dining.component.bottomsheet.DiningBottomSheet
 import `in`.koreatech.koin.feature.dining.component.dialog.DiningImageDialog
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_DATE
@@ -102,6 +107,8 @@ import `in`.koreatech.koin.feature.dining.constants.PARAMS_PLACE
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_TYPE
 import `in`.koreatech.koin.feature.dining.ui.diningdetail.scroll.DiningNestedScrollConnection
 import java.util.Date
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 
@@ -116,8 +123,11 @@ fun DiningDetailScreen(
     val userState by viewModel.userState.collectAsState()
 
     val diningState by viewModel.collectAsState()
+    val scope = rememberCoroutineScope()
 
-    val abTestExperimentGroup by viewModel.abTestExperimentGroup.collectAsState()
+    val view = LocalView.current
+    val activity = LocalActivity.current
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) { // userState NPE error in viewModel init{}; Flow is null
         viewModel.getDining()
@@ -130,17 +140,66 @@ fun DiningDetailScreen(
             }
     }
 
+    if (!view.isInEditMode) {
+        SideEffect {
+            activity?.window?.let {
+                WindowCompat.getInsetsController(it, view).isAppearanceLightStatusBars = true
+            }
+        }
+    }
+
+    val sheetState = rememberModalBottomSheetState()
+    val navigator = rememberNavigator()
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) {
+        viewModel.getNotificationPermissionInfo()
+    }
+
+    LaunchedEffect(diningState.showBottomSheet) {
+        if (diningState.showBottomSheet) {
+            sheetState.show()
+        }
+    }
+
+    if (sheetState.isVisible) {
+        ModalBottomSheet(
+            contentWindowInsets = { WindowInsets(0, 0, 0, 0) },
+            sheetState = sheetState,
+            onDismissRequest = {
+                scope.launch { sheetState.hide() }
+            },
+            dragHandle = {}, // to delete drag Handle
+            containerColor = Color.Transparent,
+            tonalElevation = 0.dp
+        ) {
+            DiningBottomSheet(
+                soldOutChecked = diningState.isSoldOutSubscribed,
+                imageUploadChecked = diningState.isDiningImageSubscribed,
+                onDismiss = { scope.launch { sheetState.hide() } },
+                onPositive = {
+                    if (!userState.isAnonymous) {
+                        navigator.navigateToNotificationSetting(context).let {
+                            launcher.launch(it)
+                        }
+                    }
+                },
+                onSoldOutChange = viewModel::changeIsSoldOutSubscribed,
+                onImageUploadChange = viewModel::changeIsDiningImageSubscribed
+            )
+        }
+    }
+
     Scaffold(
         containerColor = KoinTheme.colors.neutral0,
         topBar = {
-            KoinTopAppBar(
-                title = stringResource(R.string.dining_appbar_title),
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = KoinTheme.colors.primary500,
-                    navigationIconContentColor = Color.White,
-                    titleContentColor = Color.White,
-                    actionIconContentColor = Color.White
-                ),
+            KoinTopAppBar2(
+                title = {
+                    Text(
+                        text = stringResource(R.string.dining_appbar_title),
+                        style = RebrandKoinTheme.typography.medium18
+                    )
+                },
                 actions = {
                     Icon(
                         modifier = Modifier
@@ -157,31 +216,23 @@ fun DiningDetailScreen(
                                 )
                                 onTopbarActionClick()
                             },
-                        painter = painterResource(R.drawable.ic_notice),
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_notice),
                         contentDescription = ""
                     )
                 },
                 onNavigationIconClick = onTopbarBackClick
             )
         },
-        contentWindowInsets = WindowInsets(0, 0, 0, 0)
+        contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(WindowInsets.navigationBars)
     ) { contentPadding ->
         DiningDetailScreenImpl(
             diningList = diningState.dining,
             contentPadding = contentPadding,
             selectedDate = TimeUtil.stringToDateYYMMDD(diningState.selectedDate),
-            showBottomSheet = diningState.showBottomSheet,
-            experimentGroup = abTestExperimentGroup,
-            isAnonymous = userState.isAnonymous,
             isDiningRefreshing = diningState.isDiningRefreshing,
             initialPage = if (initialPage != -1) initialPage else viewModel.getInitialPage(),
-            isSoldOutSubscribed = diningState.isSoldOutSubscribed,
-            isDiningImageSubscribed = diningState.isDiningImageSubscribed,
             refreshDining = viewModel::refreshDining,
-            onDateClick = viewModel::setSelectedDate,
-            changeSoldOutSubscribe = viewModel::changeIsSoldOutSubscribed,
-            changeDiningImageSubscribe = viewModel::changeIsDiningImageSubscribed,
-            getNotificationPermitInfo = viewModel::getNotificationPermissionInfo
+            onDateClick = viewModel::setSelectedDate
         )
     }
 }
@@ -189,33 +240,23 @@ fun DiningDetailScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DiningDetailScreenImpl(
-    diningList: List<Dining>,
+    diningList: ImmutableList<Dining>,
     contentPadding: PaddingValues,
     selectedDate: Date,
-    showBottomSheet: Boolean,
-    experimentGroup: String,
     modifier: Modifier = Modifier,
-    context: Context = LocalContext.current,
-    isSoldOutSubscribed: Boolean = false,
-    isDiningImageSubscribed: Boolean = false,
-    isAnonymous: Boolean = true,
     isDiningRefreshing: Boolean = false,
     initialPage: Int = 0,
     refreshDining: () -> Unit = {},
-    onDateClick: (Date) -> Unit = {},
-    changeSoldOutSubscribe: (Boolean) -> Unit = {},
-    changeDiningImageSubscribe: (Boolean) -> Unit = {},
-    getNotificationPermitInfo: () -> Unit = {}
+    onDateClick: (Date) -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     val onboardingManager = rememberOnboardingManager()
     var showToolTip by remember { mutableStateOf(false) }
     LaunchedEffect(onboardingManager) {
         showToolTip = onboardingManager.getShouldOnboard(OnboardingType.DINING_SHARE)
     }
-
-    val navigator = rememberNavigator()
 
     val tabSize = 3
     val tabList = DiningType.entries.take(tabSize).map { it.typeKorean }
@@ -264,47 +305,6 @@ private fun DiningDetailScreenImpl(
                     }
                 }
             }
-    }
-
-    val sheetState = rememberModalBottomSheetState()
-
-    LaunchedEffect(showBottomSheet) {
-        if (showBottomSheet) {
-            sheetState.show()
-        }
-    }
-
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) {
-        getNotificationPermitInfo()
-    }
-
-    if (sheetState.isVisible) {
-        ModalBottomSheet(
-            sheetState = sheetState,
-            onDismissRequest = {
-                scope.launch { sheetState.hide() }
-            },
-            dragHandle = {}, // to delete drag Handle
-            containerColor = Color.Transparent,
-            tonalElevation = 0.dp
-        ) {
-            DiningBottomSheet(
-                soldOutChecked = isSoldOutSubscribed,
-                imageUploadChecked = isDiningImageSubscribed,
-                onDismiss = { scope.launch { sheetState.hide() } },
-                onPositive = {
-                    if (!isAnonymous) {
-                        navigator.navigateToNotificationSetting(context).let {
-                            launcher.launch(it)
-                        }
-                    }
-                },
-                onSoldOutChange = changeSoldOutSubscribe,
-                onImageUploadChange = changeDiningImageSubscribe
-            )
-        }
     }
 
     if (showImageDialog) {
@@ -391,6 +391,8 @@ private fun DiningDetailScreenImpl(
                         pagerState.animateScrollToPage(it)
                     }
                 },
+                indicatorColor = RebrandKoinTheme.colors.primary500,
+                selectedTextColor = RebrandKoinTheme.colors.primary500,
                 titles = tabList.map { it }
             )
             HorizontalPager(
@@ -454,8 +456,8 @@ private fun DiningDetailScreenImpl(
                             Box(
                                 contentAlignment = Alignment.BottomCenter
                             ) {
-                                DiningItemByABTest(
-                                    experimentGroup = experimentGroup,
+                                DiningItem(
+                                    modifier = Modifier.padding(horizontal = 24.dp),
                                     dining = dining,
                                     isWeekend = isWeekend,
                                     onImageClick = {
@@ -530,36 +532,6 @@ private fun DiningDetailScreenImpl(
     }
 }
 
-@Composable
-private fun DiningItemByABTest(
-    experimentGroup: String,
-    dining: Dining,
-    isWeekend: Boolean,
-    onImageClick: () -> Unit = {},
-    onShareClick: () -> Unit = {}
-) {
-    when (experimentGroup) {
-        ExperimentGroup.SHARE_NEW -> {
-            DiningItem(
-                modifier = Modifier.padding(horizontal = 24.dp),
-                dining = dining,
-                isWeekend = isWeekend,
-                onImageClick = onImageClick,
-                onShareClick = onShareClick
-            )
-        }
-
-        ExperimentGroup.SHARE_ORIGINAL -> {
-            DiningItemOriginal(
-                dining = dining,
-                isWeekend = isWeekend,
-                onImageClick = onImageClick,
-                onShareClick = onShareClick
-            )
-        }
-    }
-}
-
 private fun createFeedMessageTemplate(dining: Dining): FeedTemplate {
     val executionParams = mapOf(
         PARAMS_DATE to dining.date,
@@ -603,7 +575,7 @@ private fun createFeedMessageTemplate(dining: Dining): FeedTemplate {
 @Composable
 private fun DiningScreenPreview() {
     DiningDetailScreenImpl(
-        diningList = listOf(
+        diningList = persistentListOf(
             Dining(
                 id = 0,
                 date = "2025.05.17",
@@ -665,11 +637,7 @@ private fun DiningScreenPreview() {
                 changedAt = "2025.05.17"
             )
         ),
-        isAnonymous = true,
         contentPadding = PaddingValues(),
-        context = LocalContext.current,
-        selectedDate = TimeUtil.getNextDayDate(TimeUtil.getCurrentTime()),
-        showBottomSheet = false,
-        experimentGroup = ExperimentGroup.SHARE_NEW
+        selectedDate = TimeUtil.getNextDayDate(TimeUtil.getCurrentTime())
     )
 }

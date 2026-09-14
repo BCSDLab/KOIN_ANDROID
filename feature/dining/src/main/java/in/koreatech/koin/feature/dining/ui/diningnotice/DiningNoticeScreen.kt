@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.feature.dining.ui.diningnotice
 
-import android.app.Activity
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,20 +18,20 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.coopshop.CoopShop
 import `in`.koreatech.koin.domain.model.coopshop.CoopShopDayType
 import `in`.koreatech.koin.domain.model.coopshop.OpenCloseInfo
@@ -46,18 +46,13 @@ fun DiningNoticeScreen(
     onTopbarBackClick: () -> Unit = {}
 ) {
     val diningNotice by viewModel.diningNotice.collectAsState()
-    val context = LocalContext.current
+    val view = LocalView.current
+    val activity = LocalActivity.current
 
-    val window = (context as Activity).window
-    LaunchedEffect(Unit) {
-        WindowCompat.getInsetsController(window, window.decorView).apply {
-            isAppearanceLightStatusBars = true
-        }
-    }
-    DisposableEffect(Unit) {
-        onDispose {
-            WindowCompat.getInsetsController(window, window.decorView).apply {
-                isAppearanceLightStatusBars = false
+    if (!view.isInEditMode) {
+        SideEffect {
+            activity?.window?.let {
+                WindowCompat.getInsetsController(it, view).isAppearanceLightStatusBars = true
             }
         }
     }
@@ -65,8 +60,13 @@ fun DiningNoticeScreen(
     Scaffold(
         containerColor = KoinTheme.colors.neutral0,
         topBar = {
-            KoinTopAppBar(
-                title = stringResource(R.string.dining_notice_appbar_title),
+            KoinTopAppBar2(
+                title = {
+                    Text(
+                        text = stringResource(R.string.dining_notice_appbar_title),
+                        style = RebrandKoinTheme.typography.medium18
+                    )
+                },
                 onNavigationIconClick = onTopbarBackClick
             )
         }
