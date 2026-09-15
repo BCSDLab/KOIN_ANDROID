@@ -9,12 +9,15 @@ import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentErrorMessage
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentProfile
 import javax.inject.Inject
-import kotlinx.coroutines.flow.collectLatest
+import kotlin.math.pow
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.retryWhen
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
@@ -24,19 +27,31 @@ class ProfileViewModel @Inject constructor(
 
     override val container = container<ProfileState, ProfileSideEffect>(ProfileState())
 
+    private var isLoggedIn: Boolean? = null
+
     init {
         observeUserStatus()
     }
 
     private fun observeUserStatus() = intent {
-        getUserStatusUseCase().collectLatest { user ->
-            val isLoggedIn = user !is User.Anonymous
-            reduce { state.copy(isLoggedIn = isLoggedIn) }
-            if (!isLoggedIn) {
-                postSideEffect(ProfileSideEffect.ShowLoginRequiredToast)
-                postSideEffect(ProfileSideEffect.NavigateUp)
+        getUserStatusUseCase()
+            .retryWhen { cause, attempt ->
+                Timber.e(cause)
+                delay(INITIAL_RETRY_DELAY_MS * 2.0.pow(attempt.toDouble()).toLong())
+                true
             }
-        }
+            .collect { user ->
+                val currentIsLoggedIn = user !is User.Anonymous
+                if (isLoggedIn == currentIsLoggedIn) {
+                    return@collect
+                }
+                isLoggedIn = currentIsLoggedIn
+
+                if (!currentIsLoggedIn) {
+                    postSideEffect(ProfileSideEffect.ShowLoginRequiredToast)
+                    postSideEffect(ProfileSideEffect.NavigateUp)
+                }
+            }
     }
 
     fun loadProfile(showLoading: Boolean = true) = intent {
@@ -70,5 +85,9 @@ class ProfileViewModel @Inject constructor(
 
     fun onEditProfileClick() = intent {
         postSideEffect(ProfileSideEffect.NavigateToProfileCreate(isEditMode = true))
+    }
+
+    companion object {
+        private const val INITIAL_RETRY_DELAY_MS = 1_000L
     }
 }
