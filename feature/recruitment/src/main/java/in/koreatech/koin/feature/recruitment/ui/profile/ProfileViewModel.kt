@@ -10,7 +10,6 @@ import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentErrorMessage
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentProfile
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
@@ -41,12 +40,6 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun loadProfile(showLoading: Boolean = true) = intent {
-        val isLoggedIn = state.isLoggedIn
-            ?: container.stateFlow.first { it.isLoggedIn != null }.isLoggedIn
-        if (isLoggedIn != true) {
-            return@intent
-        }
-
         if (showLoading) {
             reduce { state.copy(loadState = ProfileLoadState.Loading) }
         }
