@@ -230,6 +230,11 @@ fun NavGraphBuilder.koinRecruitmentGraph(
             },
             onApplicantManage = { postId ->
                 navController.navigate(RecruitmentNavType.ApplicantManagement(postId))
+            },
+            onChat = { recruitmentId, chatRoomId ->
+                navController.navigate(
+                    RecruitmentNavType.RecruitmentGroupChat(recruitmentId = recruitmentId, chatRoomId = chatRoomId)
+                )
             }
         )
     }
