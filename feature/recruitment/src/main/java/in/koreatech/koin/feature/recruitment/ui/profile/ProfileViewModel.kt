@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.recruitment.ui.profile
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.error.recruitment.KoinRecruitmentException
 import `in`.koreatech.koin.domain.model.user.User
@@ -10,8 +9,8 @@ import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentErrorMessage
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentProfile
 import javax.inject.Inject
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
@@ -24,30 +23,27 @@ class ProfileViewModel @Inject constructor(
     private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<ProfileState, ProfileSideEffect> {
 
-    override val container = container<ProfileState, ProfileSideEffect>(ProfileState()) {
+    override val container = container<ProfileState, ProfileSideEffect>(ProfileState())
+
+    init {
         observeUserStatus()
     }
 
-    private fun observeUserStatus() {
-        viewModelScope.launch {
-            getUserStatusUseCase().distinctUntilChanged().collect { user ->
-                updateLoginState(user !is User.Anonymous)
+    private fun observeUserStatus() = intent {
+        getUserStatusUseCase().collectLatest { user ->
+            val isLoggedIn = user !is User.Anonymous
+            reduce { state.copy(isLoggedIn = isLoggedIn) }
+            if (!isLoggedIn) {
+                postSideEffect(ProfileSideEffect.ShowLoginRequiredToast)
+                postSideEffect(ProfileSideEffect.NavigateUp)
             }
         }
     }
 
-    private fun updateLoginState(isLoggedIn: Boolean) = intent {
-        reduce { state.copy(isLoggedIn = isLoggedIn) }
-        if (!isLoggedIn) {
-            postSideEffect(ProfileSideEffect.ShowLoginRequiredToast)
-            postSideEffect(ProfileSideEffect.NavigateUp)
-        }
-    }
-
     fun loadProfile(showLoading: Boolean = true) = intent {
-        if (state.isLoggedIn == false) {
-            postSideEffect(ProfileSideEffect.ShowLoginRequiredToast)
-            postSideEffect(ProfileSideEffect.NavigateUp)
+        val isLoggedIn = state.isLoggedIn
+            ?: container.stateFlow.first { it.isLoggedIn != null }.isLoggedIn
+        if (isLoggedIn != true) {
             return@intent
         }
 
