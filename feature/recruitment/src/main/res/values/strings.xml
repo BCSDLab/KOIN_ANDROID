@@ -31,9 +31,6 @@
 
     <string name="recruitment_chat_member_count_icon">참여 인원</string>
     <string name="recruitment_chat_toolbar_participants">%1$d/%2$d</string>
-    <string name="recruitment_chat_add_image">이미지 추가</string>
-    <string name="recruitment_chat_send">전송</string>
-    <string name="recruitment_chat_input_placeholder">메시지 보내기</string>
     <string name="recruitment_chat_partner_profile_image">상대방 프로필 이미지</string>
     <string name="recruitment_chat_message_image">채팅 이미지</string>
     <string name="recruitment_chat_message_image_load_failed">이미지를 불러올 수 없습니다.</string>
@@ -82,6 +79,7 @@
     <string name="recruitment_login_required_dialog_message">모집글 작성은 로그인 후 이용할 수 있어요.</string>
     <string name="recruitment_login_required_dialog_confirm">로그인하기</string>
     <string name="recruitment_login_required_dialog_cancel">취소</string>
+    <string name="recruitment_login_required">로그인이 필요한 기능입니다.</string>
 
     <string name="recruitment_filter_status">모집 상태</string>
     <string name="recruitment_filter_status_all">전체</string>

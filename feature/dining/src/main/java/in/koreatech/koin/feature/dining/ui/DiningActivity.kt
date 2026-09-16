@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -12,8 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.util.DiningUtil
@@ -34,7 +34,7 @@ class DiningActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdgeWithDarkStatusBar()
+        enableEdgeToEdge()
 
         val startDestination: Any = if (Intent.ACTION_VIEW == intent.action) {
             val initPair = onActionView()
@@ -44,7 +44,7 @@ class DiningActivity : ComponentActivity() {
         }
 
         setContent {
-            KoinTheme {
+            RebrandKoinTheme {
                 navController = rememberNavController()
 
                 NavHost(

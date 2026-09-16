@@ -5,4 +5,8 @@
     <!-- Content Description -->
     <string name="navigate_up_content_description">뒤로가기</string>
     <string name="navigate_back_content_description">돌아가기</string>
+
+    <string name="chat_add_image">Add Image</string>
+    <string name="chat_send">Send</string>
+    <string name="chat_input_placeholder">메시지 보내기</string>
 </resources>

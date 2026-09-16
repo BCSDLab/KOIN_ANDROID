@@ -134,6 +134,14 @@ class RecruitmentMainViewModel @Inject constructor(
         }
     }
 
+    fun onProfileClick() = intent {
+        if (state.isLoggedIn) {
+            postSideEffect(RecruitmentMainSideEffect.NavigateToProfile)
+        } else {
+            postSideEffect(RecruitmentMainSideEffect.ShowLoginRequiredToast)
+        }
+    }
+
     fun onNotificationClick() = intent {
         if (state.isLoggedIn) {
             postSideEffect(RecruitmentMainSideEffect.NavigateToNotification)

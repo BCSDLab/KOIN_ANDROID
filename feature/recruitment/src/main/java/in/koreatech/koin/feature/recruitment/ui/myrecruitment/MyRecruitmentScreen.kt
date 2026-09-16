@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
@@ -52,7 +52,7 @@ fun MyRecruitmentScreen(
     onNavigateUp: () -> Unit = {},
     onNavigateToLogin: () -> Unit = {},
     onApplicantManage: (Int) -> Unit = {},
-    onChat: (Int) -> Unit = {}
+    onChat: (recruitmentId: Int, chatRoomId: Int) -> Unit = { _, _ -> }
 ) {
     val state by viewModel.collectAsState()
 
@@ -65,8 +65,13 @@ fun MyRecruitmentScreen(
     Scaffold(
         containerColor = RebrandKoinTheme.colors.neutral50,
         topBar = {
-            KoinTopAppBar(
-                title = stringResource(R.string.recruitment_my_post_title),
+            KoinTopAppBar2(
+                title = {
+                    Text(
+                        text = stringResource(R.string.recruitment_my_post_title),
+                        style = RebrandKoinTheme.typography.bold16
+                    )
+                },
                 onNavigationIconClick = onNavigateUp,
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = RebrandKoinTheme.colors.neutral50
@@ -129,7 +134,7 @@ private fun MyRecruitmentScreenImpl(
     onLoadMore: () -> Unit = {},
     onApplicantManage: (Int) -> Unit = {},
     onCloseRecruitment: (Int) -> Unit = {},
-    onChat: (Int) -> Unit = {},
+    onChat: (recruitmentId: Int, chatRoomId: Int) -> Unit = { _, _ -> },
     onFilter: () -> Unit = {}
 ) {
     Column(modifier = modifier.fillMaxSize()) {
@@ -197,8 +202,10 @@ private fun MyRecruitmentScreenImpl(
                             null
                         },
                         onChat = {
-                            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_CHAT, post.title)
-                            onChat(post.id)
+                            post.teamChatRoomId?.let { chatRoomId ->
+                                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.CREATED_POST_CHAT, post.title)
+                                onChat(post.id, chatRoomId)
+                            }
                         }
                     )
                 }

@@ -48,7 +48,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.notification.FirebaseMessagingType
@@ -135,8 +135,11 @@ fun RecruitmentMainScreen(
         when (sideEffect) {
             RecruitmentMainSideEffect.ShowError ->
                 ToastUtil.getInstance().makeShort(context.getString(R.string.recruitment_load_error))
+            RecruitmentMainSideEffect.ShowLoginRequiredToast ->
+                ToastUtil.getInstance().makeShort(context.getString(R.string.recruitment_login_required))
             RecruitmentMainSideEffect.NavigateToWrite -> onWriteClick()
             RecruitmentMainSideEffect.NavigateToNotification -> onNotificationClick()
+            RecruitmentMainSideEffect.NavigateToProfile -> onProfileClick()
             RecruitmentMainSideEffect.NavigateToLogin -> onNavigateToLogin()
         }
     }
@@ -183,7 +186,7 @@ fun RecruitmentMainScreen(
         onRemoveLocation = viewModel::removeLocationFilter,
         onTopbarBackClick = onTopbarBackClick,
         onNotificationClick = viewModel::onNotificationClick,
-        onProfileClick = onProfileClick,
+        onProfileClick = viewModel::onProfileClick,
         onWriteClick = viewModel::onWriteClick,
         onItemClick = onItemClick
     )
@@ -216,9 +219,13 @@ private fun RecruitmentMainScreenImpl(
 ) {
     Scaffold(
         topBar = {
-            KoinTopAppBar(
-                title = stringResource(R.string.recruitment_top_bar_title),
-                textStyle = RebrandKoinTheme.typography.bold16,
+            KoinTopAppBar2(
+                title = {
+                    Text(
+                        text = stringResource(R.string.recruitment_top_bar_title),
+                        style = RebrandKoinTheme.typography.bold16
+                    )
+                },
                 onNavigationIconClick = onTopbarBackClick,
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = RebrandKoinTheme.colors.neutral50
