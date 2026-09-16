@@ -135,8 +135,11 @@ fun RecruitmentMainScreen(
         when (sideEffect) {
             RecruitmentMainSideEffect.ShowError ->
                 ToastUtil.getInstance().makeShort(context.getString(R.string.recruitment_load_error))
+            RecruitmentMainSideEffect.ShowLoginRequiredToast ->
+                ToastUtil.getInstance().makeShort(context.getString(R.string.recruitment_login_required))
             RecruitmentMainSideEffect.NavigateToWrite -> onWriteClick()
             RecruitmentMainSideEffect.NavigateToNotification -> onNotificationClick()
+            RecruitmentMainSideEffect.NavigateToProfile -> onProfileClick()
             RecruitmentMainSideEffect.NavigateToLogin -> onNavigateToLogin()
         }
     }
@@ -183,7 +186,7 @@ fun RecruitmentMainScreen(
         onRemoveLocation = viewModel::removeLocationFilter,
         onTopbarBackClick = onTopbarBackClick,
         onNotificationClick = viewModel::onNotificationClick,
-        onProfileClick = onProfileClick,
+        onProfileClick = viewModel::onProfileClick,
         onWriteClick = viewModel::onWriteClick,
         onItemClick = onItemClick
     )
