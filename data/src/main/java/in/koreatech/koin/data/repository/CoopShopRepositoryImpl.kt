@@ -37,6 +37,5 @@ class CoopShopRepositoryImpl @Inject constructor(
                 ).toCoopShopEntity(coopNameId = type.id)
             )
         }
-
     }
 }

@@ -7,9 +7,9 @@ import `in`.koreatech.koin.domain.model.coopshop.CoopShop
 import `in`.koreatech.koin.domain.model.coopshop.CoopShopType
 import `in`.koreatech.koin.domain.usecase.coopshop.GetCoopShopUseCase
 import javax.inject.Inject
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
 @HiltViewModel

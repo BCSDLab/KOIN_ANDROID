@@ -31,5 +31,4 @@ class ImageSyncWorker @AssistedInject constructor(
         onSuccess = { Result.success() },
         onFailure = { error -> if (error is IOException) Result.retry() else Result.failure() }
     )
-
 }

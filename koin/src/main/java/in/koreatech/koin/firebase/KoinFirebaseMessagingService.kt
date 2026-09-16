@@ -9,8 +9,8 @@ import `in`.koreatech.koin.core.navigation.utils.toHost
 import `in`.koreatech.koin.core.notification.FirebaseMessagingType
 import `in`.koreatech.koin.core.notification.Notifier
 import `in`.koreatech.koin.core.qualifier.IoDispatcher
-import `in`.koreatech.koin.domain.repository.firebase.messaging.FirebaseMessagingRepository
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
+import `in`.koreatech.koin.domain.repository.firebase.messaging.FirebaseMessagingRepository
 import `in`.koreatech.koin.domain.usecase.notification.SaveNotificationUseCase
 import `in`.koreatech.koin.sync.DiningSyncWorker
 import `in`.koreatech.koin.sync.KoinSyncScheduler

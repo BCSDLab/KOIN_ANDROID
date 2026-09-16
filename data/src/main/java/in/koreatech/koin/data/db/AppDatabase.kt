@@ -18,9 +18,9 @@ import `in`.koreatech.koin.data.entity.ABTestEntity
 import `in`.koreatech.koin.data.entity.CacheMetadataEntity
 import `in`.koreatech.koin.data.entity.CoopShopEntity
 import `in`.koreatech.koin.data.entity.DiningEntity
-import `in`.koreatech.koin.data.entity.WeatherEntity
 import `in`.koreatech.koin.data.entity.NotificationEntity
 import `in`.koreatech.koin.data.entity.StoreCategoriesEntity
+import `in`.koreatech.koin.data.entity.WeatherEntity
 import `in`.koreatech.koin.data.util.DateTimeConverter
 import `in`.koreatech.koin.data.util.OpenCloseInfoListConverter
 import `in`.koreatech.koin.data.util.StringListConverter
