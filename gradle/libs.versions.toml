@@ -12,6 +12,7 @@ androidxCore = "1.16.0"
 androidxDatastore = "1.1.7"
 androidxFragment = "1.8.9"
 androidxHiltNavigationCompose = "1.3.0"
+androidxHiltWork = "1.3.0"
 androidxLifecycle = "2.9.4"
 androidxNavigation = "2.9.5"
 androidxRecyclerview = "1.4.0"
@@ -21,6 +22,7 @@ androidxTestEspresso = "3.7.0"
 androidxTestJunit = "1.3.0"
 androidxTestRunner = "1.7.0"
 androidxViewpager2 = "1.1.0"
+androidxWork = "2.11.2"
 balloon = "1.5.0"
 balloonCompose = "1.6.4"
 coil = "2.6.0"
@@ -103,6 +105,8 @@ androidx-datastore = { group = "androidx.datastore", name = "datastore", version
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidxDatastore" }
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "androidxFragment" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
+androidx-hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "androidxHiltWork" }
+androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "androidxHiltWork" }
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
@@ -120,6 +124,7 @@ androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version
 androidx-test-ext-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "androidxTestJunit" }
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidxTestRunner" }
 androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "androidxViewpager2" }
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "androidxWork" }
 balloon = { module = "com.github.skydoves:balloon", version.ref = "balloon" }
 balloon-compose = { module = "com.github.skydoves:balloon-compose", version.ref = "balloonCompose" }
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
