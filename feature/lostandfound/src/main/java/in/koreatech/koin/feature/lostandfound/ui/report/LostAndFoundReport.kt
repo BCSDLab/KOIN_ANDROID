@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.ui.report.component.LostAndFoundReportContent
@@ -43,15 +45,13 @@ fun LostAndFoundReport(
     KoinTheme {
         Scaffold(
             topBar = {
-                KoinTopAppBar(
-                    title = stringResource(R.string.report_title),
-                    onNavigationIconClick = onTopbarBackClick,
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors().copy(
-                        containerColor = KoinTheme.colors.primary500,
-                        navigationIconContentColor = KoinTheme.colors.neutral0,
-                        titleContentColor = KoinTheme.colors.neutral0,
-                        actionIconContentColor = KoinTheme.colors.neutral0
-                    )
+                KoinTopAppBar2(
+                    title = {
+                        Text(
+                            text = stringResource(R.string.report_title)
+                        )
+                    },
+                    onNavigationIconClick = onTopbarBackClick
                 )
             },
             containerColor = KoinTheme.colors.neutral0

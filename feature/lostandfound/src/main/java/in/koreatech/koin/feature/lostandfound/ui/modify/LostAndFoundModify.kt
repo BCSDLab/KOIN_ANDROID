@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.EditArticleDoneButton
@@ -62,7 +63,7 @@ fun LostAndFoundModify(
         modifier = Modifier.fillMaxWidth(),
         containerColor = KoinTheme.colors.neutral0,
         topBar = {
-            CenterAlignedTopAppBar(
+            KoinTopAppBar2(
                 title = {
                     Text(
                         text = stringResource(R.string.top_container_text),
@@ -70,18 +71,7 @@ fun LostAndFoundModify(
                         color = KoinTheme.colors.neutral800
                     )
                 },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_back),
-                            contentDescription = stringResource(R.string.top_container_icon),
-                            tint = KoinTheme.colors.neutral800
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = KoinTheme.colors.neutral0
-                )
+                onNavigationIconClick = onBackClick
             )
         }
     ) { innerPadding ->
