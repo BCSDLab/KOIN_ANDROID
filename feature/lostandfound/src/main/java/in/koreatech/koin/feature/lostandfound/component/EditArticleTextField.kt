@@ -9,7 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 fun EditArticleTextField(
@@ -25,8 +25,8 @@ fun EditArticleTextField(
             Text(
                 modifier = Modifier.padding(textPaddingValues),
                 text = hint,
-                color = KoinTheme.colors.neutral500,
-                style = KoinTheme.typography.regular12
+                color = RebrandKoinTheme.colors.neutral500,
+                style = RebrandKoinTheme.typography.regular12
             )
         }
 
@@ -37,7 +37,7 @@ fun EditArticleTextField(
                 .fillMaxWidth(),
             value = value,
             singleLine = singleLine,
-            textStyle = KoinTheme.typography.regular14,
+            textStyle = RebrandKoinTheme.typography.regular14,
             onValueChange = onValueChange
         )
     }

@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.LostItemTypeChip
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
@@ -77,9 +77,9 @@ fun ListItem(
     ) {
         Text(
             text = if (lostOrFound == LostOrFoundType.LOST) stringResource(R.string.lost_item) else stringResource(R.string.found_item),
-            style = KoinTheme.typography.bold12.copy(
+            style = RebrandKoinTheme.typography.bold12.copy(
                 fontWeight = FontWeight.SemiBold,
-                color = KoinTheme.colors.primary600
+                color = RebrandKoinTheme.colors.primary600
             )
         )
 
@@ -94,8 +94,8 @@ fun ListItem(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(id = R.string.article_reported),
-                    color = KoinTheme.colors.neutral500,
-                    style = KoinTheme.typography.regular14
+                    color = RebrandKoinTheme.colors.neutral500,
+                    style = RebrandKoinTheme.typography.regular14
                 )
             }
         } else {
@@ -110,7 +110,7 @@ fun ListItem(
                     text = formatLostAndFoundTitle(foundPlace = foundPlace, foundDate = foundDate),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    style = KoinTheme.typography.medium14.copy(
+                    style = RebrandKoinTheme.typography.medium14.copy(
                         color = Color.Black
                     ),
                     modifier = Modifier.weight(1f)
@@ -123,8 +123,8 @@ fun ListItem(
             if (content.isNotEmpty()) {
                 Text(
                     text = content,
-                    color = KoinTheme.colors.neutral800,
-                    style = KoinTheme.typography.regular12,
+                    color = RebrandKoinTheme.colors.neutral800,
+                    style = RebrandKoinTheme.typography.regular12,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1
                 )
@@ -136,10 +136,10 @@ fun ListItem(
             horizontalArrangement = Arrangement.spacedBy(2.dp)
         ) {
             ProvideTextStyle(
-                value = KoinTheme.typography.regular12.copy(color = KoinTheme.colors.neutral500)
+                value = RebrandKoinTheme.typography.regular12.copy(color = RebrandKoinTheme.colors.neutral500)
             ) {
                 Text(text = author)
-                Text(text = "•", color = KoinTheme.colors.neutral400)
+                Text(text = "•", color = RebrandKoinTheme.colors.neutral400)
                 Text(text = registeredAt.getKoreanMMddEForm())
             }
         }

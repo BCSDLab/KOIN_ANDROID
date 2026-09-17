@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.LostAndFoundTextChipScrollGroup
 import `in`.koreatech.koin.feature.lostandfound.component.keywordChipColors
@@ -63,7 +63,7 @@ fun KeywordNotificationRow(
             modifier = Modifier
                 .size(32.dp)
                 .clip(CircleShape)
-                .background(KoinTheme.colors.neutral100)
+                .background(RebrandKoinTheme.colors.neutral100)
                 .clickable(
                     role = Role.Button,
                     onClick = onSettingClick
@@ -74,7 +74,7 @@ fun KeywordNotificationRow(
                 modifier = Modifier.size(20.dp),
                 painter = painterResource(R.drawable.ic_keyword_notification_setting),
                 contentDescription = stringResource(R.string.keyword_notification_setting),
-                tint = KoinTheme.colors.neutral500
+                tint = RebrandKoinTheme.colors.neutral500
             )
         }
 
@@ -99,7 +99,7 @@ fun KeywordNotificationRow(
 @Preview(name = "키워드 없음", showBackground = true)
 @Composable
 private fun KeywordNotificationRowEmptyPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         KeywordNotificationRow(
             keywords = persistentListOf(),
             selectedKeywordIndex = 0,
@@ -112,7 +112,7 @@ private fun KeywordNotificationRowEmptyPreview() {
 @Preview(name = "키워드 있음", showBackground = true)
 @Composable
 private fun KeywordNotificationRowWithKeywordsPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         KeywordNotificationRow(
             keywords = persistentListOf("태블릿", "애플펜슬", "키링"),
             selectedKeywordIndex = 0,

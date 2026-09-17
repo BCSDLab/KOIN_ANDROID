@@ -39,7 +39,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.EditArticleDoneButton
 import `in`.koreatech.koin.feature.lostandfound.component.EditArticleHeader
@@ -61,14 +61,14 @@ fun LostAndFoundModify(
 ) {
     Scaffold(
         modifier = Modifier.fillMaxWidth(),
-        containerColor = KoinTheme.colors.neutral0,
+        containerColor = RebrandKoinTheme.colors.neutral0,
         topBar = {
             KoinTopAppBar2(
                 title = {
                     Text(
                         text = stringResource(R.string.top_container_text),
-                        style = KoinTheme.typography.medium18,
-                        color = KoinTheme.colors.neutral800
+                        style = RebrandKoinTheme.typography.medium18,
+                        color = RebrandKoinTheme.colors.neutral800
                     )
                 },
                 onNavigationIconClick = onBackClick
@@ -113,13 +113,13 @@ fun LostAndFoundWriteArticleImpl(
         )
     }
 
-    KoinTheme {
+    RebrandKoinTheme {
         Scaffold(
             modifier = modifier
                 .fillMaxSize()
                 .consumeWindowInsets(WindowInsets.navigationBars)
                 .imePadding(),
-            containerColor = KoinTheme.colors.neutral0,
+            containerColor = RebrandKoinTheme.colors.neutral0,
             bottomBar = {
                 EditArticleDoneButton(
                     text = stringResource(R.string.modify_done)
@@ -244,7 +244,7 @@ fun ModifyFoundItemArticleImpl(
             }
         }
 
-    HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
+    HorizontalDivider(thickness = 6.dp, color = RebrandKoinTheme.colors.neutral100)
 
     Column(
         modifier = modifier.padding(vertical = 16.dp, horizontal = 24.dp)

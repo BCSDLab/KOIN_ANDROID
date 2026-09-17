@@ -19,7 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 object EditArticleDoneButtonDefaults {
     val windowInsets: WindowInsets
@@ -42,7 +42,7 @@ fun EditArticleDoneButton(
     HorizontalDivider(
         thickness = 1.dp,
         modifier = Modifier.fillMaxWidth(),
-        color = KoinTheme.colors.neutral100
+        color = RebrandKoinTheme.colors.neutral100
     )
     Box(
         modifier = Modifier
@@ -57,11 +57,11 @@ fun EditArticleDoneButton(
                 .padding(vertical = 8.dp, horizontal = 24.dp)
                 .fillMaxWidth()
                 .height(48.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = KoinTheme.colors.primary500),
+            colors = ButtonDefaults.buttonColors(containerColor = RebrandKoinTheme.colors.primary500),
             shape = RoundedCornerShape(8.dp)
         ) {
             Text(
-                style = KoinTheme.typography.bold15,
+                style = RebrandKoinTheme.typography.bold15,
                 text = text
             )
         }

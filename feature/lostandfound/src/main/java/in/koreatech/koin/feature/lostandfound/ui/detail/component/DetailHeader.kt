@@ -12,7 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.component.LostItemTypeChip
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
@@ -42,9 +42,9 @@ fun DetailHeader(
         Text(
             modifier = Modifier.padding(bottom = 2.dp),
             text = stringResource(lostOrFound.stringRes),
-            color = KoinTheme.colors.primary600,
+            color = RebrandKoinTheme.colors.primary600,
             fontWeight = FontWeight(600),
-            style = KoinTheme.typography.medium12
+            style = RebrandKoinTheme.typography.medium12
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -57,7 +57,7 @@ fun DetailHeader(
                     .padding(horizontal = 8.dp),
                 text = headerText,
                 fontWeight = FontWeight(500),
-                style = KoinTheme.typography.medium14,
+                style = RebrandKoinTheme.typography.medium14,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis
             )
@@ -71,8 +71,8 @@ fun DetailHeader(
         ) {
             Text(
                 text = "${createdDate.format(foundDateFormatType)} • $author",
-                color = KoinTheme.colors.neutral500,
-                style = KoinTheme.typography.regular12
+                color = RebrandKoinTheme.colors.neutral500,
+                style = RebrandKoinTheme.typography.regular12
             )
         }
     }

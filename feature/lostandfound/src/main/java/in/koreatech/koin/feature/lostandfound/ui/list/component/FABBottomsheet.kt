@@ -27,7 +27,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import kotlinx.coroutines.launch
 
@@ -46,7 +46,7 @@ fun LostAndFoundFABBottomSheet(
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismissRequest,
-        containerColor = KoinTheme.colors.neutral0,
+        containerColor = RebrandKoinTheme.colors.neutral0,
         dragHandle = null
     ) {
         LostAndFoundFABContent(
@@ -71,7 +71,7 @@ fun LostAndFoundFABContent(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = KoinTheme.colors.neutral0,
+                color = RebrandKoinTheme.colors.neutral0,
                 shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
             )
     ) {
@@ -89,7 +89,7 @@ fun LostAndFoundFABContent(
         ) {
             Text(
                 text = stringResource(R.string.bottom_sheet_title),
-                style = KoinTheme.typography.bold18
+                style = RebrandKoinTheme.typography.bold18
             )
             IconButton(onClick = onDismissRequest) {
                 Icon(
@@ -103,7 +103,7 @@ fun LostAndFoundFABContent(
                 .fillMaxWidth()
                 .border(
                     width = 1.dp,
-                    color = KoinTheme.colors.neutral300
+                    color = RebrandKoinTheme.colors.neutral300
                 )
                 .padding(
                     top = 16.dp,
@@ -142,11 +142,11 @@ private fun LostAndFoundSheetButton(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = KoinTheme.colors.neutral0, shape = KoinTheme.shapes.small)
+            .background(color = RebrandKoinTheme.colors.neutral0, shape = RebrandKoinTheme.shapes.small)
             .border(
                 width = 1.dp,
-                color = KoinTheme.colors.neutral300,
-                shape = KoinTheme.shapes.small
+                color = RebrandKoinTheme.colors.neutral300,
+                shape = RebrandKoinTheme.shapes.small
             )
             .clickable(onClick = onClick)
             .padding(vertical = 8.dp, horizontal = 12.dp),
@@ -157,13 +157,13 @@ private fun LostAndFoundSheetButton(
             imageVector = icon,
             contentDescription = text,
             modifier = Modifier.size(24.dp),
-            tint = KoinTheme.colors.neutral600
+            tint = RebrandKoinTheme.colors.neutral600
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = text,
-            style = KoinTheme.typography.bold18,
-            color = KoinTheme.colors.neutral600
+            style = RebrandKoinTheme.typography.bold18,
+            color = RebrandKoinTheme.colors.neutral600
         )
     }
 }

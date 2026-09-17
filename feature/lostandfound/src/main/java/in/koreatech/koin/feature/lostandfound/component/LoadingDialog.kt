@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 
 @Composable
@@ -27,15 +27,15 @@ fun LoadingDialog() {
         Row(
             modifier =
             Modifier
-                .background(KoinTheme.colors.primary500)
+                .background(RebrandKoinTheme.colors.primary500)
                 .padding(vertical = 24.dp, horizontal = 24.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            CircularProgressIndicator(color = KoinTheme.colors.neutral0)
+            CircularProgressIndicator(color = RebrandKoinTheme.colors.neutral0)
             Spacer(modifier = Modifier.width(32.dp))
             Text(
                 text = stringResource(R.string.dialog_loading),
-                color = KoinTheme.colors.neutral0
+                color = RebrandKoinTheme.colors.neutral0
             )
         }
     }

@@ -36,7 +36,7 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.LoadingDialog
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
@@ -64,7 +64,7 @@ fun LostAndFoundDetail(
     navigateToModify: (articleId: Int) -> Unit = {}
 ) {
     Scaffold(
-        containerColor = KoinTheme.colors.neutral0,
+        containerColor = RebrandKoinTheme.colors.neutral0,
         topBar = {
             KoinTopAppBar2(
                 title = {
@@ -100,7 +100,7 @@ fun LostAndFoundDetail(
                 onNegative = {
                     viewModel.setShowFoundDialog(false)
                 },
-                titleStyle = KoinTheme.typography.medium16.copy(color = KoinTheme.colors.neutral600)
+                titleStyle = RebrandKoinTheme.typography.medium16.copy(color = RebrandKoinTheme.colors.neutral600)
             )
         }
 
@@ -125,8 +125,8 @@ fun LostAndFoundDetail(
                     )
                     viewModel.setShowLoginDialog(false)
                 },
-                titleStyle = KoinTheme.typography.medium18.copy(color = KoinTheme.colors.neutral600, textAlign = TextAlign.Center),
-                descriptionStyle = KoinTheme.typography.regular14.copy(color = Color(0xFF8E8E8E))
+                titleStyle = RebrandKoinTheme.typography.medium18.copy(color = RebrandKoinTheme.colors.neutral600, textAlign = TextAlign.Center),
+                descriptionStyle = RebrandKoinTheme.typography.regular14.copy(color = Color(0xFF8E8E8E))
             )
         }
 
@@ -168,7 +168,7 @@ fun LostAndFoundDetail(
                             isFound = uiState.isFound
                         )
 
-                        HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
+                        HorizontalDivider(thickness = 6.dp, color = RebrandKoinTheme.colors.neutral100)
 
                         DetailContent(
                             imageUris = uiState.images,
@@ -245,7 +245,7 @@ fun LostAndFoundDetail(
                             }
                         )
 
-                        HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
+                        HorizontalDivider(thickness = 6.dp, color = RebrandKoinTheme.colors.neutral100)
                     }
                 }
             ) { measurables, constraints ->

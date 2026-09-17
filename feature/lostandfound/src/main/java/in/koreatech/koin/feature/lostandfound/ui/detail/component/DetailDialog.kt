@@ -24,7 +24,7 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButtonColors
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 
 /**
@@ -46,7 +46,7 @@ fun DetailDialog(
     onPositive: () -> Unit = {},
     onNegative: () -> Unit = {},
     modifier: Modifier = Modifier,
-    titleStyle: TextStyle = KoinTheme.typography.medium16,
+    titleStyle: TextStyle = RebrandKoinTheme.typography.medium16,
     positiveButtonText: String = stringResource(id = R.string.common_confirmation),
     negativeButtonText: String = stringResource(id = R.string.common_cancellation),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
@@ -57,8 +57,8 @@ fun DetailDialog(
             .fillMaxWidth()
             .wrapContentHeight()
             .background(
-                color = KoinTheme.colors.neutral0,
-                shape = KoinTheme.shapes.small
+                color = RebrandKoinTheme.colors.neutral0,
+                shape = RebrandKoinTheme.shapes.small
             )
             .padding(horizontal = 32.dp, vertical = 24.dp),
         onDismissRequest = { onNegative() }
@@ -79,7 +79,7 @@ fun DetailDialog(
                     modifier = Modifier.weight(1.0F),
                     text = negativeButtonText,
                     onClick = onNegative,
-                    shape = KoinTheme.shapes.small,
+                    shape = RebrandKoinTheme.shapes.small,
                     colors = negativeButtonColors,
                     contentPadding = PaddingValues(40.dp, 12.dp)
                 )
@@ -87,7 +87,7 @@ fun DetailDialog(
                     modifier = Modifier.weight(1.0F),
                     text = positiveButtonText,
                     onClick = onPositive,
-                    shape = KoinTheme.shapes.small,
+                    shape = RebrandKoinTheme.shapes.small,
                     colors = positiveButtonColors,
                     contentPadding = PaddingValues(40.dp, 12.dp)
                 )

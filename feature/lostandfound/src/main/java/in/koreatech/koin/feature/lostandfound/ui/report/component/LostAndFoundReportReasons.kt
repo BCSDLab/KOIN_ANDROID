@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.REPORT_OTHER_REASON_MAX_LENGTH
 import `in`.koreatech.koin.feature.lostandfound.enums.ReportReason
@@ -64,7 +64,7 @@ fun LostAndFoundReportReasons(
                 )
                 HorizontalDivider(
                     thickness = 1.dp,
-                    color = KoinTheme.colors.neutral200
+                    color = RebrandKoinTheme.colors.neutral200
                 )
             }
         }
@@ -91,13 +91,13 @@ fun LostAndFoundReportReasonItem(
         ) {
             Text(
                 text = reportReason.title,
-                style = KoinTheme.typography.medium16,
-                color = KoinTheme.colors.neutral800
+                style = RebrandKoinTheme.typography.medium16,
+                color = RebrandKoinTheme.colors.neutral800
             )
             Text(
                 text = reportReason.description,
-                style = KoinTheme.typography.regular14,
-                color = KoinTheme.colors.neutral500
+                style = RebrandKoinTheme.typography.regular14,
+                color = RebrandKoinTheme.colors.neutral500
             )
         }
     }
@@ -134,15 +134,15 @@ fun LostAndFoundReportReasonOtherItem(
             ) {
                 Text(
                     text = ReportReason.OTHER.title,
-                    style = KoinTheme.typography.medium16,
-                    color = KoinTheme.colors.neutral800
+                    style = RebrandKoinTheme.typography.medium16,
+                    color = RebrandKoinTheme.colors.neutral800
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
 
                 Text(
                     text = "${reason.length}/$REPORT_OTHER_REASON_MAX_LENGTH",
-                    style = KoinTheme.typography.regular12,
+                    style = RebrandKoinTheme.typography.regular12,
                     color = Color(0xFF8E8E8E)
                 )
             }
@@ -183,11 +183,11 @@ fun ReportTextField(
     BasicTextField(
         modifier = modifier
             .fillMaxWidth()
-            .border(1.dp, color = KoinTheme.colors.neutral300, shape = KoinTheme.shapes.extraSmall)
+            .border(1.dp, color = RebrandKoinTheme.colors.neutral300, shape = RebrandKoinTheme.shapes.extraSmall)
             .padding(vertical = 12.dp, horizontal = 16.dp),
         interactionSource = interactionSource,
         value = value,
-        textStyle = KoinTheme.typography.regular14,
+        textStyle = RebrandKoinTheme.typography.regular14,
         onValueChange = {
             if (value.length < maxLength) {
                 onValueChange(it)
@@ -202,7 +202,7 @@ fun ReportTextField(
                 if (value.isEmpty()) {
                     Text(
                         text = placeholder,
-                        style = KoinTheme.typography.regular14,
+                        style = RebrandKoinTheme.typography.regular14,
                         color = Color(0xFF8E8E8E)
                     )
                 } else {

@@ -18,7 +18,7 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.ui.report.component.LostAndFoundReportContent
 import `in`.koreatech.koin.feature.lostandfound.ui.report.component.lostAndFoundReportReasonList
@@ -42,7 +42,7 @@ fun LostAndFoundReport(
         handleSideEffect(sideEffect = it, context = context, onSuccess = onSuccess)
     }
 
-    KoinTheme {
+    RebrandKoinTheme {
         Scaffold(
             topBar = {
                 KoinTopAppBar2(
@@ -54,7 +54,7 @@ fun LostAndFoundReport(
                     onNavigationIconClick = onTopbarBackClick
                 )
             },
-            containerColor = KoinTheme.colors.neutral0
+            containerColor = RebrandKoinTheme.colors.neutral0
         ) { contentPadding ->
             LostAndFoundReportContent(
                 modifier = Modifier
