@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.core.designsystem.component.topbar
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -25,7 +26,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.R
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,17 +44,24 @@ fun KoinTopAppBar2(
     CompositionLocalProvider(LocalTextStyle provides defaultTextStyle) {
         CenterAlignedTopAppBar(
             title = title,
-            modifier = modifier.padding(horizontal = 20.dp),
+            modifier = modifier,
             navigationIcon = {
-                Icon(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .noRippleClickable { onNavigationIconClick() },
-                    imageVector = ImageVector.vectorResource(R.drawable.ic_toolbar_navigate_back),
-                    contentDescription = stringResource(R.string.navigate_up_content_description)
+                Row(modifier = Modifier.padding(start = 20.dp)) {
+                    Icon(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .noRippleClickable { onNavigationIconClick() },
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_toolbar_navigate_back),
+                        contentDescription = stringResource(R.string.navigate_up_content_description)
+                    )
+                }
+            },
+            actions = {
+                Row(
+                    modifier = Modifier.padding(end = 20.dp),
+                    content = actions
                 )
             },
-            actions = actions,
             colors = colors,
             windowInsets = windowInsets,
             expandedHeight = expandedHeight,
