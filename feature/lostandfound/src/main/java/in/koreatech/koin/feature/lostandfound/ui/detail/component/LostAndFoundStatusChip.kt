@@ -23,14 +23,14 @@ fun LostAndFoundStatusChip(
     val chipState = if (isFound) {
         ChipState(
             text = stringResource(id = R.string.lost_and_found_found),
-            backgroundColor = RebrandKoinTheme.colors.neutral100,
-            textColor = RebrandKoinTheme.colors.neutral400,
+            backgroundColor = RebrandKoinTheme.colors.neutral400,
+            textColor = RebrandKoinTheme.colors.neutral0,
             horizontalPadding = 9.5.dp
         )
     } else {
         ChipState(
             text = stringResource(id = R.string.lost_and_found_finding),
-            backgroundColor = Color(0xFFFFA928),
+            backgroundColor = RebrandKoinTheme.colors.primary700,
             textColor = RebrandKoinTheme.colors.neutral0,
             horizontalPadding = 4.dp
         )

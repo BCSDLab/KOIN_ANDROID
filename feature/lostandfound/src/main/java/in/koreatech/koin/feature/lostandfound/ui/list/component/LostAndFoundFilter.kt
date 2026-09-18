@@ -12,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,8 +34,8 @@ fun LostAndFoundChip(onClick: () -> Unit) {
         modifier = Modifier
             .height(34.dp),
         shape = RoundedCornerShape(24.dp),
-        color = RebrandKoinTheme.colors.info200,
-        contentColor = RebrandKoinTheme.colors.neutral600
+        color = RebrandKoinTheme.colors.primary500,
+        contentColor = RebrandKoinTheme.colors.neutral0
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -52,7 +51,7 @@ fun LostAndFoundChip(onClick: () -> Unit) {
                 painter = painterResource(R.drawable.ic_list_filter),
                 contentDescription = "",
                 modifier = Modifier.size(16.dp),
-                tint = Color.Unspecified
+                tint = RebrandKoinTheme.colors.neutral0
             )
         }
     }

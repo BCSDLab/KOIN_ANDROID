@@ -19,19 +19,84 @@ import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
  * @param lostItemType 분실물 종류
  * @param modifier Modifier
  */
+
+object LostItemTypeChipDefaults {
+    @Composable
+    fun colors(
+        chipColor: Color = RebrandKoinTheme.colors.primary100,
+        textColor: Color = RebrandKoinTheme.colors.primary600
+    ) = LostItemTypeChipColors(
+        chipColor = chipColor,
+        textColor = textColor
+    )
+
+    @Composable
+    fun blueColors() = colors(
+        chipColor = Color(0xFFE4F2FF),
+        textColor = Color(0xFF3A70E2)
+    )
+
+    @Composable
+    fun greenColors() = colors(
+        chipColor = Color(0xFFE5F5EC),
+        textColor = Color(0xFF0C9D61)
+    )
+
+    @Composable
+    fun yellowColors() = colors(
+        chipColor = Color(0xFFFFF9EE),
+        textColor = Color(0xFFFFAD0D)
+    )
+
+    @Composable
+    fun redColors() = colors(
+        chipColor = Color(0xFFFFEBEE),
+        textColor = Color(0xFFF64C4C)
+    )
+}
+
+data class LostItemTypeChipColors(
+    val chipColor: Color,
+    val textColor: Color
+)
+
 @Composable
 fun LostItemTypeChip(
     category: LostItemCategory,
+    modifier: Modifier = Modifier,
     textStyle: TextStyle = RebrandKoinTheme.typography.medium14,
-    modifier: Modifier = Modifier
+    chipColors: LostItemTypeChipColors = LostItemTypeChipDefaults.colors()
 ) {
     ReadOnlyTextChip(
         title = stringResource(category.stringRes),
         contentPadding = PaddingValues(vertical = 0.dp, horizontal = 8.dp),
-        chipColor = RebrandKoinTheme.colors.primary500,
+        chipColor = chipColors.chipColor,
         textStyle = textStyle,
-        textColor = Color.White,
+        textColor = chipColors.textColor,
         modifier = modifier
+    )
+}
+
+@Composable
+fun LostItemTypeChip(
+    category: LostItemCategory,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = RebrandKoinTheme.typography.medium14
+) {
+    val colors = when (category) {
+        LostItemCategory.CARD -> LostItemTypeChipDefaults.greenColors()
+        LostItemCategory.ID -> LostItemTypeChipDefaults.yellowColors()
+        LostItemCategory.WALLET -> LostItemTypeChipDefaults.colors()
+        LostItemCategory.ELECTRONIC_DEVICE -> LostItemTypeChipDefaults.blueColors()
+        LostItemCategory.OTHER -> LostItemTypeChipDefaults.redColors()
+        LostItemCategory.NONE -> LostItemTypeChipDefaults.colors()
+    }
+
+    LostItemTypeChip(
+        category = category,
+        textStyle = textStyle,
+        modifier = modifier,
+        chipColors = colors
     )
 }
 

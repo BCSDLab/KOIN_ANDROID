@@ -197,7 +197,7 @@ fun LostAndFoundTextChip(
 fun keywordChipColors() =
     TextChipDefaults.chipColors(
         selectedContainerColor = RebrandKoinTheme.colors.primary500,
-        unselectedContainerColor = RebrandKoinTheme.colors.neutral100,
-        selectedContentColor = RebrandKoinTheme.colors.neutral100,
-        unselectedContentColor = RebrandKoinTheme.colors.neutral500
+        unselectedContainerColor = RebrandKoinTheme.colors.neutral0,
+        selectedContentColor = RebrandKoinTheme.colors.neutral0,
+        unselectedContentColor = RebrandKoinTheme.colors.primary500
     )

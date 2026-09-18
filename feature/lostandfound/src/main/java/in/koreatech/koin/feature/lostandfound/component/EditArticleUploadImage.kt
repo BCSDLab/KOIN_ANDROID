@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,12 +33,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
@@ -114,21 +117,22 @@ fun EditArticleUploadImage(
             onClick = onUploadImage,
             colors =
             ButtonDefaults.buttonColors(
-                containerColor = RebrandKoinTheme.colors.info200
+                containerColor = RebrandKoinTheme.colors.primary500
             ),
             modifier = Modifier.fillMaxWidth(),
             shape = RebrandKoinTheme.shapes.small,
             contentPadding = PaddingValues(8.dp)
         ) {
             Row {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_upload_image),
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_upload_image),
                     contentDescription = null,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(20.dp),
+                    tint = RebrandKoinTheme.colors.primary500
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    color = RebrandKoinTheme.colors.primary600,
+                    color = RebrandKoinTheme.colors.neutral0,
                     style = RebrandKoinTheme.typography.medium14,
                     text = stringResource(id = R.string.upload_image)
                 )

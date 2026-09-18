@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.report.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -13,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,8 +21,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
@@ -81,10 +82,11 @@ fun LostAndFoundReportReasonItem(
         modifier = modifier.padding(vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
+        Icon(
             modifier = Modifier.padding(horizontal = 8.dp),
-            painter = painterResource(id = if (isSelected) R.drawable.ic_report_item_selected else R.drawable.ic_report_item_unselected),
-            contentDescription = null
+            imageVector = ImageVector.vectorResource(id = if (isSelected) R.drawable.ic_report_item_selected else R.drawable.ic_report_item_unselected),
+            contentDescription = null,
+            tint = if (isSelected) RebrandKoinTheme.colors.primary500 else Color(0xFF8E8E8E)
         )
         Column(
             modifier = Modifier.padding(horizontal = 8.dp)
@@ -121,12 +123,13 @@ fun LostAndFoundReportReasonOtherItem(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
+            Icon(
                 modifier = Modifier.padding(horizontal = 8.dp),
-                painter = painterResource(
+                imageVector = ImageVector.vectorResource(
                     id = if (isSelected) R.drawable.ic_report_item_selected else R.drawable.ic_report_item_unselected
                 ),
-                contentDescription = null
+                contentDescription = null,
+                tint = if (isSelected) RebrandKoinTheme.colors.primary500 else Color(0xFF8E8E8E)
             )
             Row(
                 modifier = Modifier.padding(horizontal = 8.dp),
