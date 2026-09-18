@@ -33,7 +33,9 @@ import `in`.koreatech.koin.data.repository.VersionRepositoryImpl
 import `in`.koreatech.koin.data.source.local.ArticleLocalDataSource
 import `in`.koreatech.koin.data.source.local.BannerLocalDataSource
 import `in`.koreatech.koin.data.source.local.CacheLocalDataSource
+import `in`.koreatech.koin.data.source.local.CoopShopLocalDataSource
 import `in`.koreatech.koin.data.source.local.DeptLocalDataSource
+import `in`.koreatech.koin.data.source.local.DiningLocalDataSource
 import `in`.koreatech.koin.data.source.local.NotificationLocalDataSource
 import `in`.koreatech.koin.data.source.local.SessionLocalDataSource
 import `in`.koreatech.koin.data.source.local.SettingLocalDataSource
@@ -183,8 +185,11 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideDiningRepository(diningRemoteDataSource: DiningRemoteDataSource): DiningRepository {
-        return DiningRepositoryImpl(diningRemoteDataSource)
+    fun provideDiningRepository(
+        diningRemoteDataSource: DiningRemoteDataSource,
+        diningLocalDataSource: DiningLocalDataSource
+    ): DiningRepository {
+        return DiningRepositoryImpl(diningRemoteDataSource, diningLocalDataSource)
     }
 
     @Provides
@@ -242,8 +247,11 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideCoopShopRepository(coopShopRemoteDataSource: CoopShopRemoteDataSource): CoopShopRepository {
-        return CoopShopRepositoryImpl(coopShopRemoteDataSource)
+    fun provideCoopShopRepository(
+        coopShopLocalDataSource: CoopShopLocalDataSource,
+        coopShopRemoteDataSource: CoopShopRemoteDataSource
+    ): CoopShopRepository {
+        return CoopShopRepositoryImpl(coopShopLocalDataSource, coopShopRemoteDataSource)
     }
 
     @Provides

@@ -4,9 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.network.service.NetworkConnectivityService
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
-import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
@@ -26,6 +26,8 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.annotation.OrbitExperimental
@@ -43,7 +45,8 @@ class DiningViewModel @Inject constructor(
     private val getNotificationPermissionInfoUseCase: GetNotificationPermissionInfoUseCase,
     private val updateNotificationSubscriptionUseCase: UpdateNotificationSubscriptionUseCase,
     private val updateNotificationSubscriptionDetailUseCase: UpdateNotificationSubscriptionDetailUseCase,
-    private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase
+    private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase,
+    private val networkConnectivityService: NetworkConnectivityService
 ) : ViewModel(), ContainerHost<DiningState, Nothing> {
 
     private val initDate = savedStateHandle.get<String>(INIT_DATE)
@@ -62,35 +65,33 @@ class DiningViewModel @Inject constructor(
     fun setSelectedDate(date: Date) = intent {
         val formattedDate = TimeUtil.dateFormatToYYMMDD(date)
         reduce { state.copy(selectedDate = formattedDate) }
-        fetchDining(formattedDate)
+        fetchDining(formattedDate, forceRefresh = false)
     }
 
     fun refreshDining() = intent {
         reduce { state.copy(isDiningRefreshing = true) }
-        fetchDining(state.selectedDate)
+        fetchDining(state.selectedDate, forceRefresh = networkConnectivityService.isConnected())
     }
 
     fun getDining(date: String? = null) = intent {
-        fetchDining(date ?: state.selectedDate)
+        fetchDining(date ?: state.selectedDate, forceRefresh = false)
     }
 
     @OptIn(OrbitExperimental::class)
-    private suspend fun fetchDining(date: String) = subIntent {
+    private suspend fun fetchDining(date: String, forceRefresh: Boolean) = subIntent {
         if (state.isLoading) return@subIntent
         reduce { state.copy(isLoading = true) }
-        getNotOperationFilteredDiningUseCase(date)
-            .onSuccess { result ->
-                reduce {
-                    state.copy(
-                        dining = result.sortedBy { diningOrder[it.place] ?: Int.MAX_VALUE }.toImmutableList(),
-                        isLoading = false,
-                        isDiningRefreshing = false
-                    )
-                }
+        getNotOperationFilteredDiningUseCase(date, forceRefresh).catch {
+            reduce { state.copy(dining = persistentListOf(), isLoading = false, isDiningRefreshing = false) }
+        }.collectLatest { result ->
+            reduce {
+                state.copy(
+                    dining = result.toImmutableList(),
+                    isLoading = false,
+                    isDiningRefreshing = false
+                )
             }
-            .onFailure {
-                reduce { state.copy(dining = persistentListOf(), isLoading = false, isDiningRefreshing = false) }
-            }
+        }
     }
 
     fun getInitialPage(): Int = getDiningTabByType(DiningUtil.getCurrentType())
@@ -168,11 +169,3 @@ class DiningViewModel @Inject constructor(
         }
     }
 }
-
-private val diningOrder = mapOf(
-    DiningPlace.CornerA.place to 0,
-    DiningPlace.CornerB.place to 1,
-    DiningPlace.CornerC.place to 2,
-    DiningPlace.Nungsu.place to 3,
-    DiningPlace.Campus2.place to 4
-)
