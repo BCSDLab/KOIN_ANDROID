@@ -46,7 +46,7 @@ import `in`.koreatech.koin.core.designsystem.component.picker.KoinPicker
 import `in`.koreatech.koin.core.designsystem.component.picker.rememberPickerState
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.DESCRIPTION_MAX_LENGTH
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
@@ -106,7 +106,7 @@ fun EditArticleItemDetail(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                style = KoinTheme.typography.medium14,
+                style = RebrandKoinTheme.typography.medium14,
                 text = buildAnnotatedString {
                     append(
                         when (type) {
@@ -122,7 +122,7 @@ fun EditArticleItemDetail(
 
             if (dateRequired) {
                 LeadingIconText(
-                    textStyle = KoinTheme.typography.regular12.copy(color = Color(0xFFF7941E)),
+                    textStyle = RebrandKoinTheme.typography.regular12.copy(color = Color(0xFFF7941E)),
                     text =
                     when (type) {
                         LostOrFoundType.LOST -> stringResource(id = R.string.lost_date_required)
@@ -141,7 +141,7 @@ fun EditArticleItemDetail(
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(8.dp))
-                .background(KoinTheme.colors.neutral100)
+                .background(RebrandKoinTheme.colors.neutral100)
                 .padding(vertical = 8.dp, horizontal = 16.dp)
                 .noRippleClickable {
                     isPickerExpanded = !isPickerExpanded
@@ -160,8 +160,8 @@ fun EditArticleItemDetail(
                 if (dayPickerState.selectedItem == "" || monthPickerState.selectedItem == "" || yearPickerState.selectedItem == "") {
                     Text(
                         modifier = Modifier.weight(1f),
-                        color = KoinTheme.colors.neutral500,
-                        style = KoinTheme.typography.regular12,
+                        color = RebrandKoinTheme.colors.neutral500,
+                        style = RebrandKoinTheme.typography.regular12,
                         text =
                         when (type) {
                             LostOrFoundType.LOST -> stringResource(id = R.string.lost_date_hint)
@@ -171,7 +171,7 @@ fun EditArticleItemDetail(
                 } else {
                     Text(
                         modifier = Modifier.weight(1f),
-                        style = KoinTheme.typography.regular14,
+                        style = RebrandKoinTheme.typography.regular14,
                         text = "${yearPickerState.selectedItem.substring(
                             2
                         )}.${monthPickerState.selectedItem}.${dayPickerState.selectedItem}"
@@ -269,8 +269,8 @@ fun EditArticleItemDetail(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp)
-                        .clip(KoinTheme.shapes.small)
-                        .background(KoinTheme.colors.neutral100),
+                        .clip(RebrandKoinTheme.shapes.small)
+                        .background(RebrandKoinTheme.colors.neutral100),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Row(
@@ -288,11 +288,11 @@ fun EditArticleItemDetail(
                             infiniteScroll = false,
                             fetchStartIndexEvent = isPickerResetEvent,
                             selectedTextStyle =
-                            KoinTheme.typography.medium16.copy(
+                            RebrandKoinTheme.typography.medium16.copy(
                                 textAlign = TextAlign.Center
                             ),
                             unselectedTextStyle =
-                            KoinTheme.typography.medium16.copy(
+                            RebrandKoinTheme.typography.medium16.copy(
                                 textAlign = TextAlign.Center
                             )
                         )
@@ -306,11 +306,11 @@ fun EditArticleItemDetail(
                             infiniteScroll = false,
                             fetchStartIndexEvent = isPickerResetEvent,
                             selectedTextStyle =
-                            KoinTheme.typography.medium16.copy(
+                            RebrandKoinTheme.typography.medium16.copy(
                                 textAlign = TextAlign.Center
                             ),
                             unselectedTextStyle =
-                            KoinTheme.typography.medium16.copy(
+                            RebrandKoinTheme.typography.medium16.copy(
                                 textAlign = TextAlign.Center
                             )
                         )
@@ -324,16 +324,16 @@ fun EditArticleItemDetail(
                             infiniteScroll = false,
                             fetchStartIndexEvent = isPickerResetEvent,
                             selectedTextStyle =
-                            KoinTheme.typography.medium16.copy(
+                            RebrandKoinTheme.typography.medium16.copy(
                                 textAlign = TextAlign.Center
                             ),
                             unselectedTextStyle =
-                            KoinTheme.typography.medium16.copy(
+                            RebrandKoinTheme.typography.medium16.copy(
                                 textAlign = TextAlign.Center
                             )
                         )
                     }
-                    HorizontalDivider(color = KoinTheme.colors.neutral300)
+                    HorizontalDivider(color = RebrandKoinTheme.colors.neutral300)
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -343,8 +343,8 @@ fun EditArticleItemDetail(
                     ) {
                         Text(
                             text = stringResource(id = R.string.date_reset),
-                            style = KoinTheme.typography.medium14,
-                            color = KoinTheme.colors.primary600,
+                            style = RebrandKoinTheme.typography.medium14,
+                            color = RebrandKoinTheme.colors.primary600,
                             modifier = Modifier
                                 .clickable {
                                     yearPickerState.selectedItemIndex = yearList.indexOf(now.year.toString())
@@ -357,8 +357,8 @@ fun EditArticleItemDetail(
                         Spacer(modifier = Modifier.width(24.dp))
                         Text(
                             text = stringResource(id = R.string.date_confirm),
-                            style = KoinTheme.typography.medium14,
-                            color = KoinTheme.colors.primary600,
+                            style = RebrandKoinTheme.typography.medium14,
+                            color = RebrandKoinTheme.colors.primary600,
                             modifier = Modifier
                                 .clickable {
                                     isPickerExpanded = false
@@ -379,7 +379,7 @@ fun EditArticleItemDetail(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            style = KoinTheme.typography.medium14,
+            style = RebrandKoinTheme.typography.medium14,
             text = buildAnnotatedString {
                 when (type) {
                     LostOrFoundType.LOST -> append(stringResource(id = R.string.lost_location))
@@ -395,7 +395,7 @@ fun EditArticleItemDetail(
 
         if (locationRequired) {
             LeadingIconText(
-                textStyle = KoinTheme.typography.medium12.copy(color = Color(0xFFF7941E)),
+                textStyle = RebrandKoinTheme.typography.medium12.copy(color = Color(0xFFF7941E)),
                 text =
                 when (type) {
                     LostOrFoundType.LOST -> stringResource(id = R.string.lost_location_required)
@@ -422,7 +422,7 @@ fun EditArticleItemDetail(
         Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
-            .background(KoinTheme.colors.neutral100),
+            .background(RebrandKoinTheme.colors.neutral100),
         textPaddingValues = PaddingValues(16.dp, 8.dp)
     )
 
@@ -434,13 +434,13 @@ fun EditArticleItemDetail(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            style = KoinTheme.typography.medium14,
+            style = RebrandKoinTheme.typography.medium14,
             text = stringResource(id = R.string.more_description)
         )
         Text(
-            style = KoinTheme.typography.regular12,
+            style = RebrandKoinTheme.typography.regular12,
             text = "${moreDescription.length}/$DESCRIPTION_MAX_LENGTH",
-            color = KoinTheme.colors.neutral500
+            color = RebrandKoinTheme.colors.neutral500
         )
     }
 
@@ -460,7 +460,7 @@ fun EditArticleItemDetail(
         Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
-            .background(KoinTheme.colors.neutral100),
+            .background(RebrandKoinTheme.colors.neutral100),
         textPaddingValues = PaddingValues(16.dp, 8.dp, 16.dp, 32.dp)
     )
 

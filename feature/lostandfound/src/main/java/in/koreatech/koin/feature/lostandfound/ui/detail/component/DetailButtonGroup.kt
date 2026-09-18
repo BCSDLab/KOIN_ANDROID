@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 
@@ -47,7 +47,7 @@ fun DetailButtonGroup(
     if (showDeleteDialog) {
         DetailDialog(
             title = stringResource(R.string.detail_delete_dialog_title),
-            titleStyle = KoinTheme.typography.medium14.copy(color = KoinTheme.colors.neutral600),
+            titleStyle = RebrandKoinTheme.typography.medium14.copy(color = RebrandKoinTheme.colors.neutral600),
             onPositive = {
                 EventLogger.logCampusClickEvent(
                     AnalyticsConstant.Label.LostAndFound.FIND_USER_DELETE_CONFIRM,
@@ -72,14 +72,14 @@ fun DetailButtonGroup(
             contentPadding = PaddingValues(12.dp, 6.dp),
             onClick = onArticleListClick,
             colors = ButtonDefaults.buttonColors(
-                containerColor = KoinTheme.colors.neutral300,
-                contentColor = KoinTheme.colors.neutral600
+                containerColor = RebrandKoinTheme.colors.neutral300,
+                contentColor = RebrandKoinTheme.colors.neutral600
             ),
-            shape = KoinTheme.shapes.extraSmall
+            shape = RebrandKoinTheme.shapes.extraSmall
         ) {
             Text(
                 modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                style = KoinTheme.typography.regular12,
+                style = RebrandKoinTheme.typography.regular12,
                 text = stringResource(R.string.detail_article_list_button)
             )
         }
@@ -93,13 +93,13 @@ fun DetailButtonGroup(
                     contentPadding = PaddingValues(10.dp, 6.dp),
                     onClick = onModifyArticleClick,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = KoinTheme.colors.neutral300,
-                        contentColor = KoinTheme.colors.neutral600
+                        containerColor = RebrandKoinTheme.colors.neutral300,
+                        contentColor = RebrandKoinTheme.colors.neutral600
                     ),
-                    shape = KoinTheme.shapes.extraSmall
+                    shape = RebrandKoinTheme.shapes.extraSmall
                 ) {
                     Text(
-                        style = KoinTheme.typography.regular12,
+                        style = RebrandKoinTheme.typography.regular12,
                         text = stringResource(R.string.detail_edit_button)
                     )
                 }
@@ -116,14 +116,14 @@ fun DetailButtonGroup(
                     )
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = KoinTheme.colors.neutral300,
-                    contentColor = KoinTheme.colors.neutral600
+                    containerColor = RebrandKoinTheme.colors.neutral300,
+                    contentColor = RebrandKoinTheme.colors.neutral600
                 ),
-                shape = KoinTheme.shapes.extraSmall
+                shape = RebrandKoinTheme.shapes.extraSmall
             ) {
                 Text(
                     modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                    style = KoinTheme.typography.regular12,
+                    style = RebrandKoinTheme.typography.regular12,
                     text = stringResource(R.string.detail_delete_button)
                 )
             }
@@ -134,10 +134,10 @@ fun DetailButtonGroup(
                     contentPadding = PaddingValues(10.dp, 6.dp),
                     onClick = onChatRoomClick,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = KoinTheme.colors.neutral300,
-                        contentColor = KoinTheme.colors.neutral600
+                        containerColor = RebrandKoinTheme.colors.neutral300,
+                        contentColor = RebrandKoinTheme.colors.neutral600
                     ),
-                    shape = KoinTheme.shapes.extraSmall
+                    shape = RebrandKoinTheme.shapes.extraSmall
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
@@ -151,7 +151,7 @@ fun DetailButtonGroup(
                         Spacer(modifier = Modifier.width(4.dp))
 
                         Text(
-                            style = KoinTheme.typography.regular12,
+                            style = RebrandKoinTheme.typography.regular12,
                             text = stringResource(R.string.detail_chat_room_button)
                         )
                     }
@@ -163,10 +163,10 @@ fun DetailButtonGroup(
                         contentPadding = PaddingValues(10.dp, 6.dp),
                         onClick = onReportArticleClick,
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = KoinTheme.colors.neutral300,
-                            contentColor = KoinTheme.colors.neutral600
+                            containerColor = RebrandKoinTheme.colors.neutral300,
+                            contentColor = RebrandKoinTheme.colors.neutral600
                         ),
-                        shape = KoinTheme.shapes.extraSmall
+                        shape = RebrandKoinTheme.shapes.extraSmall
                     ) {
                         Image(
                             modifier = Modifier.size(20.dp),

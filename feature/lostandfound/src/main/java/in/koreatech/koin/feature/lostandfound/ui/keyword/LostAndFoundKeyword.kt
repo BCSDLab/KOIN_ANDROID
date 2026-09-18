@@ -28,6 +28,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -54,8 +55,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.LoginDialog
 import `in`.koreatech.koin.feature.lostandfound.component.LostAndFoundAddableChipFlowGroup
@@ -129,6 +130,7 @@ fun LostAndFoundKeyword(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Suppress("LongParameterList")
 @Composable
 private fun LostAndFoundKeywordContent(
@@ -145,10 +147,14 @@ private fun LostAndFoundKeywordContent(
 ) {
     Scaffold(
         modifier = modifier,
-        containerColor = KoinTheme.colors.neutral0,
+        containerColor = RebrandKoinTheme.colors.neutral0,
         topBar = {
-            KoinTopAppBar(
-                title = stringResource(R.string.lost_and_found_keyword_management),
+            KoinTopAppBar2(
+                title = {
+                    Text(
+                        text = stringResource(R.string.lost_and_found_keyword_management)
+                    )
+                },
                 onNavigationIconClick = onBackClick
             )
         },
@@ -180,7 +186,7 @@ private fun LostAndFoundKeywordContent(
             // Section divider (Figma: 6dp neutral100)
             HorizontalDivider(
                 modifier = Modifier.fillMaxWidth(),
-                color = KoinTheme.colors.neutral100,
+                color = RebrandKoinTheme.colors.neutral100,
                 thickness = 6.dp
             )
 
@@ -217,13 +223,13 @@ private fun MyKeywordSection(
         ) {
             Text(
                 text = stringResource(R.string.lost_and_found_my_keyword_label),
-                style = KoinTheme.typography.bold18,
-                color = KoinTheme.colors.neutral800
+                style = RebrandKoinTheme.typography.bold18,
+                color = RebrandKoinTheme.colors.neutral800
             )
             Text(
                 text = stringResource(R.string.lost_and_found_my_keyword_count, keywords.size),
-                style = KoinTheme.typography.regular14,
-                color = KoinTheme.colors.neutral500
+                style = RebrandKoinTheme.typography.regular14,
+                color = RebrandKoinTheme.colors.neutral500
             )
         }
 
@@ -231,8 +237,8 @@ private fun MyKeywordSection(
 
         Text(
             text = stringResource(R.string.keyword_notice_description),
-            style = KoinTheme.typography.medium12,
-            color = KoinTheme.colors.neutral500
+            style = RebrandKoinTheme.typography.medium12,
+            color = RebrandKoinTheme.colors.neutral500
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -250,19 +256,19 @@ private fun MyKeywordSection(
                 modifier = Modifier
                     .weight(1f)
                     .heightIn(min = 38.dp)
-                    .background(KoinTheme.colors.neutral100, ButtonShape)
+                    .background(RebrandKoinTheme.colors.neutral100, ButtonShape)
                     .border(
                         width = 1.dp,
-                        color = if (isFocused) KoinTheme.colors.primary400 else KoinTheme.colors.neutral100,
+                        color = if (isFocused) RebrandKoinTheme.colors.primary400 else RebrandKoinTheme.colors.neutral100,
                         shape = ButtonShape
                     )
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 value = keywordInput,
                 onValueChange = onKeywordInputChanged,
                 enabled = !isLoading,
-                textStyle = KoinTheme.typography.medium14.copy(color = KoinTheme.colors.neutral800),
+                textStyle = RebrandKoinTheme.typography.medium14.copy(color = RebrandKoinTheme.colors.neutral800),
                 singleLine = true,
-                cursorBrush = SolidColor(KoinTheme.colors.primary400),
+                cursorBrush = SolidColor(RebrandKoinTheme.colors.primary400),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
                     onDone = {
@@ -282,8 +288,8 @@ private fun MyKeywordSection(
                         if (keywordInput.isEmpty()) {
                             Text(
                                 text = stringResource(R.string.lost_and_found_keyword_input_hint),
-                                style = KoinTheme.typography.medium14,
-                                color = KoinTheme.colors.neutral500
+                                style = RebrandKoinTheme.typography.medium14,
+                                color = RebrandKoinTheme.colors.neutral500
                             )
                         }
                         innerTextField()
@@ -304,16 +310,16 @@ private fun MyKeywordSection(
                 enabled = isAddButtonEnabled,
                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = KoinTheme.colors.primary500,
-                    contentColor = KoinTheme.colors.neutral0,
-                    disabledContainerColor = KoinTheme.colors.neutral100,
-                    disabledContentColor = KoinTheme.colors.neutral500
+                    containerColor = RebrandKoinTheme.colors.primary500,
+                    contentColor = RebrandKoinTheme.colors.neutral0,
+                    disabledContainerColor = RebrandKoinTheme.colors.neutral100,
+                    disabledContentColor = RebrandKoinTheme.colors.neutral500
                 ),
                 shape = ButtonShape
             ) {
                 Text(
                     text = stringResource(R.string.add_keyword),
-                    style = KoinTheme.typography.medium13
+                    style = RebrandKoinTheme.typography.medium13
                 )
             }
         }
@@ -350,8 +356,8 @@ private fun SuggestedKeywordSection(
         // 추천 키워드 섹션 (Figma 51322:186023, Medium 16)
         Text(
             text = stringResource(R.string.suggestion_keywords),
-            style = KoinTheme.typography.medium16,
-            color = KoinTheme.colors.neutral800
+            style = RebrandKoinTheme.typography.medium16,
+            color = RebrandKoinTheme.colors.neutral800
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -379,8 +385,8 @@ private fun KeywordNotificationSection(
         // "키워드 알림" 섹션 헤더 (Figma 51322:186042)
         Text(
             text = stringResource(R.string.lost_and_found_keyword_notification_section_title),
-            style = KoinTheme.typography.bold18,
-            color = KoinTheme.colors.neutral800,
+            style = RebrandKoinTheme.typography.bold18,
+            color = RebrandKoinTheme.colors.neutral800,
             modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp)
         )
 
@@ -408,16 +414,16 @@ private fun KeywordNotificationSection(
             ) {
                 Text(
                     text = stringResource(R.string.lost_and_found_keyword_notification_title),
-                    style = KoinTheme.typography.medium16,
-                    color = KoinTheme.colors.neutral800
+                    style = RebrandKoinTheme.typography.medium16,
+                    color = RebrandKoinTheme.colors.neutral800
                 )
 
                 Spacer(modifier = Modifier.height(2.dp))
 
                 Text(
                     text = stringResource(R.string.lost_and_found_keyword_notification_description),
-                    style = KoinTheme.typography.medium12,
-                    color = KoinTheme.colors.neutral500
+                    style = RebrandKoinTheme.typography.medium12,
+                    color = RebrandKoinTheme.colors.neutral500
                 )
             }
 
@@ -426,7 +432,7 @@ private fun KeywordNotificationSection(
 
         HorizontalDivider(
             modifier = Modifier.fillMaxWidth(),
-            color = KoinTheme.colors.neutral100,
+            color = RebrandKoinTheme.colors.neutral100,
             thickness = 1.dp
         )
     }
@@ -439,9 +445,9 @@ private fun KeywordNotificationSection(
  */
 @Composable
 private fun KoinKeywordSwitch(checked: Boolean) {
-    val trackColor = if (checked) KoinTheme.colors.primary500 else KeywordSwitchTrackOff
-    val thumbFill = if (checked) KoinTheme.colors.neutral0 else KeywordSwitchThumbOffFill
-    val thumbRing = if (checked) KoinTheme.colors.primary500 else KeywordSwitchTrackOff
+    val trackColor = if (checked) RebrandKoinTheme.colors.primary500 else KeywordSwitchTrackOff
+    val thumbFill = if (checked) RebrandKoinTheme.colors.neutral0 else KeywordSwitchThumbOffFill
+    val thumbRing = if (checked) RebrandKoinTheme.colors.primary500 else KeywordSwitchTrackOff
     val thumbOffsetX by animateDpAsState(
         targetValue = if (checked) 28.dp else 0.dp,
         label = "thumbOffsetX"
@@ -470,7 +476,7 @@ private val KeywordSwitchThumbOffFill = Color(0xFF828282)
 private fun PreviewLostAndFoundKeywordContent(
     uiState: LostAndFoundKeywordState
 ) {
-    KoinTheme {
+    RebrandKoinTheme {
         LostAndFoundKeywordContent(
             uiState = uiState,
             snackbarHostState = remember { SnackbarHostState() },

@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 
 @Composable
@@ -33,9 +33,9 @@ fun WriteArticleAddItemButton(
             onClick = onItemAdd,
             colors =
             ButtonDefaults.buttonColors(
-                containerColor = KoinTheme.colors.info200
+                containerColor = RebrandKoinTheme.colors.info200
             ),
-            shape = KoinTheme.shapes.small,
+            shape = RebrandKoinTheme.shapes.small,
             contentPadding = PaddingValues(12.dp, 8.dp)
         ) {
             Row(
@@ -49,8 +49,8 @@ fun WriteArticleAddItemButton(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    color = KoinTheme.colors.primary600,
-                    style = KoinTheme.typography.regular14,
+                    color = RebrandKoinTheme.colors.primary600,
+                    style = RebrandKoinTheme.typography.regular14,
                     fontWeight = FontWeight.Medium,
                     text = stringResource(id = R.string.add_item)
                 )

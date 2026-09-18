@@ -14,28 +14,28 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.LoadingDialog
+import `in`.koreatech.koin.feature.lostandfound.component.LoginDialog
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailButtonGroup
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailContent
@@ -46,6 +46,7 @@ import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.RecentArticl
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LostAndFoundDetail(
     viewModel: LostAndFoundDetailViewModel = hiltViewModel(),
@@ -60,10 +61,14 @@ fun LostAndFoundDetail(
     navigateToModify: (articleId: Int) -> Unit = {}
 ) {
     Scaffold(
-        containerColor = KoinTheme.colors.neutral0,
+        containerColor = RebrandKoinTheme.colors.neutral0,
         topBar = {
-            KoinTopAppBar(
-                title = stringResource(R.string.lost_and_found),
+            KoinTopAppBar2(
+                title = {
+                    Text(
+                        text = stringResource(R.string.lost_and_found)
+                    )
+                },
                 onNavigationIconClick = {
                     onTopbarBackClick()
                 }
@@ -92,16 +97,14 @@ fun LostAndFoundDetail(
                 onNegative = {
                     viewModel.setShowFoundDialog(false)
                 },
-                titleStyle = KoinTheme.typography.medium16.copy(color = KoinTheme.colors.neutral600)
+                titleStyle = RebrandKoinTheme.typography.medium16.copy(color = RebrandKoinTheme.colors.neutral600)
             )
         }
 
         if (uiState.showLoginDialog) {
-            ChoiceDialog(
+            LoginDialog(
                 title = stringResource(id = R.string.detail_chat_login_dialog_title),
                 description = stringResource(id = R.string.detail_chat_login_dialog_description),
-                positiveButtonText = stringResource(id = R.string.detail_chat_login_dialog_positive),
-                negativeButtonText = stringResource(id = R.string.detail_chat_login_dialog_negative),
                 onPositive = {
                     EventLogger.logCampusClickEvent(
                         AnalyticsConstant.Label.LostAndFound.LOST_ITEM_MESSAGE_LOGIN_REQUEST,
@@ -116,9 +119,7 @@ fun LostAndFoundDetail(
                         "닫기"
                     )
                     viewModel.setShowLoginDialog(false)
-                },
-                titleStyle = KoinTheme.typography.medium18.copy(color = KoinTheme.colors.neutral600, textAlign = TextAlign.Center),
-                descriptionStyle = KoinTheme.typography.regular14.copy(color = Color(0xFF8E8E8E))
+                }
             )
         }
 
@@ -160,7 +161,7 @@ fun LostAndFoundDetail(
                             isFound = uiState.isFound
                         )
 
-                        HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
+                        HorizontalDivider(thickness = 6.dp, color = RebrandKoinTheme.colors.neutral100)
 
                         DetailContent(
                             imageUris = uiState.images,
@@ -237,7 +238,7 @@ fun LostAndFoundDetail(
                             }
                         )
 
-                        HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
+                        HorizontalDivider(thickness = 6.dp, color = RebrandKoinTheme.colors.neutral100)
                     }
                 }
             ) { measurables, constraints ->

@@ -37,7 +37,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType.AuthorFilterType
@@ -72,7 +72,7 @@ fun LostAndFoundFilterBottomSheet(
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismissRequest,
-        containerColor = KoinTheme.colors.neutral0,
+        containerColor = RebrandKoinTheme.colors.neutral0,
         dragHandle = null
     ) {
         FilterBottomSheetContent(
@@ -148,8 +148,8 @@ fun FilterBottomSheetContent(
         ) {
             Text(
                 text = stringResource(R.string.filter_container),
-                style = KoinTheme.typography.bold18,
-                color = KoinTheme.colors.primary500,
+                style = RebrandKoinTheme.typography.bold18,
+                color = RebrandKoinTheme.colors.primary500,
                 modifier = Modifier.align(Alignment.CenterStart)
             )
             IconButton(
@@ -163,7 +163,7 @@ fun FilterBottomSheetContent(
             }
         }
 
-        HorizontalDivider(color = KoinTheme.colors.neutral300)
+        HorizontalDivider(color = RebrandKoinTheme.colors.neutral300)
 
         Column(
             modifier = Modifier
@@ -178,7 +178,7 @@ fun FilterBottomSheetContent(
                 selectedItem = selectedAuthorType,
                 onItemSelected = onAuthorTypeChange
             )
-            HorizontalDivider(color = KoinTheme.colors.neutral300)
+            HorizontalDivider(color = RebrandKoinTheme.colors.neutral300)
             FilterSection(
                 title = stringResource(R.string.filter_list_category),
                 items = persistentListOf(
@@ -189,7 +189,7 @@ fun FilterBottomSheetContent(
                 selectedItem = selectedLostOrFoundType,
                 onItemSelected = onLostOrFoundTypeChange
             )
-            HorizontalDivider(color = KoinTheme.colors.neutral300)
+            HorizontalDivider(color = RebrandKoinTheme.colors.neutral300)
             FilterDuplicateSection(
                 title = stringResource(R.string.filter_list_type),
                 items = persistentListOf(
@@ -203,7 +203,7 @@ fun FilterBottomSheetContent(
                 selectedItems = selectedCategoryType,
                 onItemSelected = onCategoryTypeChange
             )
-            HorizontalDivider(color = KoinTheme.colors.neutral300)
+            HorizontalDivider(color = RebrandKoinTheme.colors.neutral300)
             FilterSection(
                 title = stringResource(R.string.filter_list_condition),
                 items = persistentListOf(
@@ -224,24 +224,24 @@ fun FilterBottomSheetContent(
         ) {
             OutlinedButton(
                 onClick = onReset,
-                shape = KoinTheme.shapes.medium,
-                border = BorderStroke(1.dp, KoinTheme.colors.neutral300),
+                shape = RebrandKoinTheme.shapes.medium,
+                border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral300),
                 modifier = Modifier
                     .weight(1f)
                     .height(48.dp),
-                colors = ButtonDefaults.outlinedButtonColors(containerColor = KoinTheme.colors.neutral0)
+                colors = ButtonDefaults.outlinedButtonColors(containerColor = RebrandKoinTheme.colors.neutral0)
             ) {
                 Text(
                     text = stringResource(R.string.filter_list_reset),
-                    color = KoinTheme.colors.neutral600,
-                    style = KoinTheme.typography.bold16
+                    color = RebrandKoinTheme.colors.neutral600,
+                    style = RebrandKoinTheme.typography.bold16
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_process),
                     contentDescription = null,
                     modifier = Modifier.size(16.dp),
-                    tint = KoinTheme.colors.neutral500
+                    tint = RebrandKoinTheme.colors.neutral500
                 )
             }
             Button(
@@ -253,16 +253,16 @@ fun FilterBottomSheetContent(
                     onApplyClick()
                     onDismissRequest()
                 },
-                shape = KoinTheme.shapes.medium,
-                colors = ButtonDefaults.buttonColors(containerColor = KoinTheme.colors.primary500),
+                shape = RebrandKoinTheme.shapes.medium,
+                colors = ButtonDefaults.buttonColors(containerColor = RebrandKoinTheme.colors.primary500),
                 modifier = Modifier
                     .weight(2f)
                     .height(48.dp)
             ) {
                 Text(
                     text = stringResource(R.string.filter_list_adapt),
-                    color = KoinTheme.colors.neutral0,
-                    style = KoinTheme.typography.bold16
+                    color = RebrandKoinTheme.colors.neutral0,
+                    style = RebrandKoinTheme.typography.bold16
                 )
             }
         }
@@ -279,8 +279,8 @@ fun FilterSection(
     Column(modifier = Modifier.padding(vertical = 12.dp)) {
         Text(
             text = title,
-            style = KoinTheme.typography.bold16,
-            color = KoinTheme.colors.neutral800,
+            style = RebrandKoinTheme.typography.bold16,
+            color = RebrandKoinTheme.colors.neutral800,
             modifier = Modifier.padding(bottom = 12.dp)
         )
         val chunkedItems = remember(items) { items.chunked(3) }
@@ -314,8 +314,8 @@ fun FilterDuplicateSection(
     Column(modifier = Modifier.padding(vertical = 12.dp)) {
         Text(
             text = title,
-            style = KoinTheme.typography.bold16,
-            color = KoinTheme.colors.neutral800,
+            style = RebrandKoinTheme.typography.bold16,
+            color = RebrandKoinTheme.colors.neutral800,
             modifier = Modifier.padding(bottom = 12.dp)
         )
         FlowRow(

@@ -25,7 +25,7 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButtonColors
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 /**
  * @see in.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
@@ -57,8 +57,8 @@ fun LostAndFoundDialog(
             .fillMaxWidth()
             .wrapContentHeight()
             .background(
-                color = KoinTheme.colors.neutral0,
-                shape = KoinTheme.shapes.small
+                color = RebrandKoinTheme.colors.neutral0,
+                shape = RebrandKoinTheme.shapes.small
             )
             .padding(horizontal = 32.dp, vertical = 24.dp),
         onDismissRequest = { onNegative() }
@@ -83,7 +83,7 @@ fun LostAndFoundDialog(
                     modifier = Modifier.weight(1.0F),
                     text = lostAndFoundDialogStyle.negativeButtonText,
                     onClick = onNegative,
-                    shape = KoinTheme.shapes.small,
+                    shape = RebrandKoinTheme.shapes.small,
                     colors = lostAndFoundDialogStyle.negativeButtonColors,
                     contentPadding = PaddingValues(12.dp, 12.dp)
                 )
@@ -91,7 +91,7 @@ fun LostAndFoundDialog(
                     modifier = Modifier.weight(1.0F),
                     text = lostAndFoundDialogStyle.positiveButtonText,
                     onClick = onPositive,
-                    shape = KoinTheme.shapes.small,
+                    shape = RebrandKoinTheme.shapes.small,
                     colors = lostAndFoundDialogStyle.positiveButtonColors,
                     contentPadding = PaddingValues(12.dp, 12.dp)
                 )
@@ -102,8 +102,8 @@ fun LostAndFoundDialog(
 
 @Composable
 fun lostAndFoundDialogStyle(
-    titleStyle: TextStyle = KoinTheme.typography.medium18,
-    descriptionStyle: TextStyle = KoinTheme.typography.regular14,
+    titleStyle: TextStyle = RebrandKoinTheme.typography.medium18,
+    descriptionStyle: TextStyle = RebrandKoinTheme.typography.regular14,
     positiveButtonText: String = stringResource(id = R.string.common_confirmation),
     negativeButtonText: String = stringResource(id = R.string.common_cancellation),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,

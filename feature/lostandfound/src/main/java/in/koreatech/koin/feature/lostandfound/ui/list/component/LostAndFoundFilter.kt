@@ -12,14 +12,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 
 @Composable
@@ -35,8 +34,8 @@ fun LostAndFoundChip(onClick: () -> Unit) {
         modifier = Modifier
             .height(34.dp),
         shape = RoundedCornerShape(24.dp),
-        color = KoinTheme.colors.info200,
-        contentColor = KoinTheme.colors.neutral600
+        color = RebrandKoinTheme.colors.primary500,
+        contentColor = RebrandKoinTheme.colors.neutral0
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -46,13 +45,13 @@ fun LostAndFoundChip(onClick: () -> Unit) {
         ) {
             Text(
                 text = stringResource(R.string.filter_container),
-                style = KoinTheme.typography.bold14
+                style = RebrandKoinTheme.typography.bold14
             )
             Icon(
                 painter = painterResource(R.drawable.ic_list_filter),
                 contentDescription = "",
                 modifier = Modifier.size(16.dp),
-                tint = Color.Unspecified
+                tint = RebrandKoinTheme.colors.neutral0
             )
         }
     }
@@ -61,7 +60,7 @@ fun LostAndFoundChip(onClick: () -> Unit) {
 @Preview(name = "Chip Only", showBackground = true)
 @Composable
 private fun LostAndFoundChipPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         LostAndFoundChip(onClick = {})
     }
 }

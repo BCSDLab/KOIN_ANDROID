@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,17 +33,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.util.pxToDp
 import `in`.koreatech.koin.feature.lostandfound.IMAGE_MAX_COUNT
 import `in`.koreatech.koin.feature.lostandfound.R
@@ -64,13 +67,13 @@ fun EditArticleUploadImage(
             .padding(bottom = 24.dp)
     ) {
         Text(
-            style = KoinTheme.typography.medium14,
+            style = RebrandKoinTheme.typography.medium14,
             text = stringResource(id = R.string.image)
         )
         Row {
             Text(
                 modifier = Modifier.weight(1f),
-                style = KoinTheme.typography.regular12,
+                style = RebrandKoinTheme.typography.regular12,
                 text =
                 when (type) {
                     LostOrFoundType.LOST -> stringResource(id = R.string.upload_image_of_lost_item)
@@ -79,9 +82,9 @@ fun EditArticleUploadImage(
                 color = Color(0xFF8E8E8E)
             )
             Text(
-                style = KoinTheme.typography.regular12,
+                style = RebrandKoinTheme.typography.regular12,
                 text = "$uploadedImageCount/$IMAGE_MAX_COUNT",
-                color = KoinTheme.colors.neutral500
+                color = RebrandKoinTheme.colors.neutral500
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -91,8 +94,8 @@ fun EditArticleUploadImage(
                 modifier =
                 Modifier
                     .fillMaxWidth()
-                    .clip(shape = KoinTheme.shapes.small)
-                    .background(KoinTheme.colors.neutral100)
+                    .clip(shape = RebrandKoinTheme.shapes.small)
+                    .background(RebrandKoinTheme.colors.neutral100)
                     .height(123.dp),
                 contentPadding = PaddingValues(12.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -114,22 +117,23 @@ fun EditArticleUploadImage(
             onClick = onUploadImage,
             colors =
             ButtonDefaults.buttonColors(
-                containerColor = KoinTheme.colors.info200
+                containerColor = RebrandKoinTheme.colors.primary500
             ),
             modifier = Modifier.fillMaxWidth(),
-            shape = KoinTheme.shapes.small,
+            shape = RebrandKoinTheme.shapes.small,
             contentPadding = PaddingValues(8.dp)
         ) {
             Row {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_upload_image),
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_upload_image),
                     contentDescription = null,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(20.dp),
+                    tint = RebrandKoinTheme.colors.primary500
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    color = KoinTheme.colors.primary600,
-                    style = KoinTheme.typography.medium14,
+                    color = RebrandKoinTheme.colors.neutral0,
+                    style = RebrandKoinTheme.typography.medium14,
                     text = stringResource(id = R.string.upload_image)
                 )
             }
