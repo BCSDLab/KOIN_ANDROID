@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import coil.request.ErrorResult
 import coil.request.ImageRequest
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -21,11 +22,13 @@ class ImageSyncWorker @AssistedInject constructor(
         val imageUrls = imageUrlProvider.getImageUrls()
 
         imageUrls.forEach { imageUrl ->
-            imageLoader.execute(
+            val result = imageLoader.execute(
                 ImageRequest.Builder(applicationContext)
                     .data(imageUrl)
                     .build()
             )
+
+            if (result is ErrorResult) throw result.throwable
         }
     }.fold(
         onSuccess = { Result.success() },
