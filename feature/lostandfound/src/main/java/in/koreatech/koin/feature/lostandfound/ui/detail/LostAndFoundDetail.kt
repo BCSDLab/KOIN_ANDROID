@@ -23,22 +23,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.LoadingDialog
+import `in`.koreatech.koin.feature.lostandfound.component.LoginDialog
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailButtonGroup
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailContent
@@ -105,11 +102,9 @@ fun LostAndFoundDetail(
         }
 
         if (uiState.showLoginDialog) {
-            ChoiceDialog(
+            LoginDialog(
                 title = stringResource(id = R.string.detail_chat_login_dialog_title),
                 description = stringResource(id = R.string.detail_chat_login_dialog_description),
-                positiveButtonText = stringResource(id = R.string.detail_chat_login_dialog_positive),
-                negativeButtonText = stringResource(id = R.string.detail_chat_login_dialog_negative),
                 onPositive = {
                     EventLogger.logCampusClickEvent(
                         AnalyticsConstant.Label.LostAndFound.LOST_ITEM_MESSAGE_LOGIN_REQUEST,
@@ -124,9 +119,7 @@ fun LostAndFoundDetail(
                         "닫기"
                     )
                     viewModel.setShowLoginDialog(false)
-                },
-                titleStyle = RebrandKoinTheme.typography.medium18.copy(color = RebrandKoinTheme.colors.neutral600, textAlign = TextAlign.Center),
-                descriptionStyle = RebrandKoinTheme.typography.regular14.copy(color = Color(0xFF8E8E8E))
+                }
             )
         }
 
