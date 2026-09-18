@@ -14,20 +14,20 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.zip
+import kotlinx.coroutines.flow.combine
 
 class GetDiningWithOperationTimeUseCase @Inject constructor(
     private val diningRepository: DiningRepository,
     private val coopShopRepository: CoopShopRepository
 ) {
     operator fun invoke(date: String): Flow<List<DiningWithOperationTime>> =
-        diningRepository.getDining(date)
-            .zip(coopShopRepository.getCoopShopById(CoopShopType.Dining.id)) { dining, diningCoopShop ->
-                dining to diningCoopShop
-            }
-            .zip(coopShopRepository.getCoopShopById(CoopShopType.NungSu.id)) { (dining, diningCoopShop), nungsuCoopShop ->
-                map(dining, nungsuCoopShop, diningCoopShop)
-            }
+        combine(
+            diningRepository.getDining(date),
+            coopShopRepository.getCoopShopById(CoopShopType.Dining.id),
+            coopShopRepository.getCoopShopById(CoopShopType.NungSu.id)
+        ) { dining, diningCoopShop, nungSuCoopShop ->
+            map(dining, diningCoopShop, nungSuCoopShop)
+        }
 
     private fun map(diningList: List<Dining>, nungsuCoopShop: CoopShop?, diningCoopShop: CoopShop?): List<DiningWithOperationTime> {
         return diningList.filter { it.place != DiningPlace.Campus2.place }.map { dining ->
