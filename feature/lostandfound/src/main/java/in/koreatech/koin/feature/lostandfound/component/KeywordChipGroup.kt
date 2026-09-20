@@ -31,7 +31,7 @@ import `in`.koreatech.koin.core.designsystem.component.chip.ChipOverflowStrategy
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipColors
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipDefaults
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 fun KeywordChipGroup(
@@ -157,7 +157,7 @@ internal fun LostAndFoundTextChipScrollGroup(
 fun LostAndFoundTextChip(
     title: String,
     modifier: Modifier = Modifier,
-    textStyle: TextStyle = KoinTheme.typography.medium14,
+    textStyle: TextStyle = RebrandKoinTheme.typography.medium14,
     isSelected: Boolean = false,
     shape: Shape = RoundedCornerShape(50),
     showClickRipple: Boolean = true,
@@ -196,8 +196,8 @@ fun LostAndFoundTextChip(
 @Composable
 fun keywordChipColors() =
     TextChipDefaults.chipColors(
-        selectedContainerColor = KoinTheme.colors.primary500,
-        unselectedContainerColor = KoinTheme.colors.neutral100,
-        selectedContentColor = KoinTheme.colors.neutral100,
-        unselectedContentColor = KoinTheme.colors.neutral500
+        selectedContainerColor = RebrandKoinTheme.colors.primary500,
+        unselectedContainerColor = RebrandKoinTheme.colors.neutral0,
+        selectedContentColor = RebrandKoinTheme.colors.neutral0,
+        unselectedContentColor = RebrandKoinTheme.colors.primary500
     )

@@ -23,7 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 
 object LostAndFoundFABDefaults {
@@ -50,11 +50,11 @@ fun LostAndFoundFAB(
             modifier = Modifier
                 .border(
                     width = 1.dp,
-                    color = KoinTheme.colors.neutral400,
+                    color = RebrandKoinTheme.colors.neutral400,
                     shape = RoundedCornerShape(50)
                 )
                 .background(
-                    color = KoinTheme.colors.neutral50,
+                    color = RebrandKoinTheme.colors.neutral50,
                     shape = RoundedCornerShape(50)
                 )
                 .padding(vertical = 8.dp, horizontal = 12.dp)
@@ -70,8 +70,8 @@ fun LostAndFoundFAB(
                 )
                 Text(
                     text = stringResource(R.string.write_btn),
-                    style = KoinTheme.typography.medium16,
-                    color = KoinTheme.colors.neutral600
+                    style = RebrandKoinTheme.typography.medium16,
+                    color = RebrandKoinTheme.colors.neutral600
                 )
             }
         }

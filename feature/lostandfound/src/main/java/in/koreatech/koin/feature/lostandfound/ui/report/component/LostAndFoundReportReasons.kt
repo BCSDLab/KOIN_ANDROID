@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.report.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -13,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,13 +21,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.REPORT_OTHER_REASON_MAX_LENGTH
 import `in`.koreatech.koin.feature.lostandfound.enums.ReportReason
@@ -64,7 +65,7 @@ fun LostAndFoundReportReasons(
                 )
                 HorizontalDivider(
                     thickness = 1.dp,
-                    color = KoinTheme.colors.neutral200
+                    color = RebrandKoinTheme.colors.neutral200
                 )
             }
         }
@@ -81,23 +82,24 @@ fun LostAndFoundReportReasonItem(
         modifier = modifier.padding(vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
+        Icon(
             modifier = Modifier.padding(horizontal = 8.dp),
-            painter = painterResource(id = if (isSelected) R.drawable.ic_report_item_selected else R.drawable.ic_report_item_unselected),
-            contentDescription = null
+            imageVector = ImageVector.vectorResource(id = if (isSelected) R.drawable.ic_report_item_selected else R.drawable.ic_report_item_unselected),
+            contentDescription = null,
+            tint = if (isSelected) RebrandKoinTheme.colors.primary500 else Color(0xFF8E8E8E)
         )
         Column(
             modifier = Modifier.padding(horizontal = 8.dp)
         ) {
             Text(
                 text = reportReason.title,
-                style = KoinTheme.typography.medium16,
-                color = KoinTheme.colors.neutral800
+                style = RebrandKoinTheme.typography.medium16,
+                color = RebrandKoinTheme.colors.neutral800
             )
             Text(
                 text = reportReason.description,
-                style = KoinTheme.typography.regular14,
-                color = KoinTheme.colors.neutral500
+                style = RebrandKoinTheme.typography.regular14,
+                color = RebrandKoinTheme.colors.neutral500
             )
         }
     }
@@ -121,12 +123,13 @@ fun LostAndFoundReportReasonOtherItem(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
+            Icon(
                 modifier = Modifier.padding(horizontal = 8.dp),
-                painter = painterResource(
+                imageVector = ImageVector.vectorResource(
                     id = if (isSelected) R.drawable.ic_report_item_selected else R.drawable.ic_report_item_unselected
                 ),
-                contentDescription = null
+                contentDescription = null,
+                tint = if (isSelected) RebrandKoinTheme.colors.primary500 else Color(0xFF8E8E8E)
             )
             Row(
                 modifier = Modifier.padding(horizontal = 8.dp),
@@ -134,15 +137,15 @@ fun LostAndFoundReportReasonOtherItem(
             ) {
                 Text(
                     text = ReportReason.OTHER.title,
-                    style = KoinTheme.typography.medium16,
-                    color = KoinTheme.colors.neutral800
+                    style = RebrandKoinTheme.typography.medium16,
+                    color = RebrandKoinTheme.colors.neutral800
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
 
                 Text(
                     text = "${reason.length}/$REPORT_OTHER_REASON_MAX_LENGTH",
-                    style = KoinTheme.typography.regular12,
+                    style = RebrandKoinTheme.typography.regular12,
                     color = Color(0xFF8E8E8E)
                 )
             }
@@ -183,11 +186,11 @@ fun ReportTextField(
     BasicTextField(
         modifier = modifier
             .fillMaxWidth()
-            .border(1.dp, color = KoinTheme.colors.neutral300, shape = KoinTheme.shapes.extraSmall)
+            .border(1.dp, color = RebrandKoinTheme.colors.neutral300, shape = RebrandKoinTheme.shapes.extraSmall)
             .padding(vertical = 12.dp, horizontal = 16.dp),
         interactionSource = interactionSource,
         value = value,
-        textStyle = KoinTheme.typography.regular14,
+        textStyle = RebrandKoinTheme.typography.regular14,
         onValueChange = {
             if (value.length < maxLength) {
                 onValueChange(it)
@@ -202,7 +205,7 @@ fun ReportTextField(
                 if (value.isEmpty()) {
                     Text(
                         text = placeholder,
-                        style = KoinTheme.typography.regular14,
+                        style = RebrandKoinTheme.typography.regular14,
                         color = Color(0xFF8E8E8E)
                     )
                 } else {

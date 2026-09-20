@@ -41,7 +41,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -72,7 +72,7 @@ fun LostAndFoundKeywordChip(
         Text(
             modifier = Modifier.weight(1f, fill = false),
             text = title,
-            style = KoinTheme.typography.medium14.copy(
+            style = RebrandKoinTheme.typography.medium14.copy(
                 lineHeight = 14.sp,
                 platformStyle = PlatformTextStyle(includeFontPadding = false)
             ),
@@ -99,8 +99,8 @@ fun LostAndFoundDeletableKeywordChip(
 ) {
     LostAndFoundKeywordChip(
         title = title,
-        backgroundColor = KoinTheme.colors.neutral100,
-        textColor = KoinTheme.colors.neutral500,
+        backgroundColor = RebrandKoinTheme.colors.neutral100,
+        textColor = RebrandKoinTheme.colors.neutral500,
         iconVector = Icons.Default.Close,
         onClick = { onDelete(title) },
         modifier = modifier
@@ -115,8 +115,8 @@ fun LostAndFoundAddableKeywordChip(
 ) {
     LostAndFoundKeywordChip(
         title = title,
-        backgroundColor = KoinTheme.colors.neutral100,
-        textColor = KoinTheme.colors.neutral500,
+        backgroundColor = RebrandKoinTheme.colors.neutral100,
+        textColor = RebrandKoinTheme.colors.neutral500,
         iconVector = Icons.Default.Add,
         onClick = { onAdd(title) },
         modifier = modifier
