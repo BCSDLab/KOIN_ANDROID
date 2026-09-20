@@ -56,7 +56,6 @@ class HomeViewModel @Inject constructor(
         getDiningWithOperationTimeUseCase(TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate()))
             .catch { Timber.e(it) }
             .collect { data ->
-                Timber.d("diningData: $data")
                 reduce {
                     state.copy(diningData = data.filter { it.type == DiningUtil.getCurrentType().typeEnglish }.map { it.toDiningPagerDataList() }.toImmutableList())
                 }
