@@ -23,7 +23,7 @@ class DiningRepositoryImpl @Inject constructor(
             .map { dining -> dining.map { it.toDining() } }
             .onStart {
                 if (forceRefresh || diningLocalDataSource.observeDining(date).first().isEmpty()) {
-                    fetchDining(date).getOrThrow()
+                    fetchDining(date)
                 }
             }
     }
