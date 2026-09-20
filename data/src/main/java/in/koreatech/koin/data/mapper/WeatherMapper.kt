@@ -11,7 +11,7 @@ fun WeatherResponse.toWeather() = Weather(
     weatherIconUrl = weatherIconUrl
 )
 
-fun Weather.toHomeWeatherEntity() = WeatherEntity(
+fun Weather.toWeatherEntity() = WeatherEntity(
     temperature = temperature,
     weather = weather,
     weatherId = weatherId,

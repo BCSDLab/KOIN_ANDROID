@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.data.repository
 
-import `in`.koreatech.koin.data.mapper.toHomeWeatherEntity
+import `in`.koreatech.koin.data.mapper.toWeatherEntity
 import `in`.koreatech.koin.data.mapper.toWeather
 import `in`.koreatech.koin.data.source.local.WeatherLocalDataSource
 import `in`.koreatech.koin.data.source.remote.WeatherRemoteDataSource
@@ -18,7 +18,7 @@ class WeatherRepositoryImpl @Inject constructor(
     override suspend fun getWeather(forceRefresh: Boolean): Result<Weather> {
         if (!forceRefresh) weatherLocalDataSource.getWeather()?.toWeather()?.let { return Result.success(it) }
         return suspendRunCatching {
-            weatherRemoteDataSource.getWeather().toWeather().also { weatherLocalDataSource.saveWeather(it.toHomeWeatherEntity()) }
+            weatherRemoteDataSource.getWeather().toWeather().also { weatherLocalDataSource.saveWeather(it.toWeatherEntity()) }
         }.mapHttpFailure {
             on(500, "EXTERNAL_API_ERROR") throws KoinWeatherException.ExternalApiErrorException()
         }
