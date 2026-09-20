@@ -1,15 +1,13 @@
 package `in`.koreatech.koin.data.util
 
 import androidx.room.TypeConverter
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class StringListConverter {
     @TypeConverter
-    fun fromString(value: String): List<String> {
-        return Gson().fromJson(value, object : TypeToken<List<String>>() {}.type)
-    }
+    fun fromString(value: String): List<String> = Json.decodeFromString(value)
 
     @TypeConverter
-    fun toString(value: List<String>): String = Gson().toJson(value)
+    fun toString(value: List<String>): String = Json.encodeToString(value)
 }
