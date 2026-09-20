@@ -24,16 +24,16 @@ import java.util.Date
 import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
 import org.orbitmvi.orbit.ContainerHost
-import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
-import org.orbitmvi.orbit.syntax.simple.subIntent
 import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
@@ -47,13 +47,13 @@ class DiningViewModel @Inject constructor(
     private val updateNotificationSubscriptionDetailUseCase: UpdateNotificationSubscriptionDetailUseCase,
     private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase,
     private val networkConnectivityService: NetworkConnectivityService
-) : ViewModel(), ContainerHost<DiningState, Nothing> {
+) : ViewModel(), ContainerHost<DiningState, DiningSideEffect> {
 
     private val initDate = savedStateHandle.get<String>(INIT_DATE)
         .takeUnless { it.isNullOrBlank() }
         ?: TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate())
 
-    override val container = container<DiningState, Nothing>(DiningState(selectedDate = initDate))
+    override val container = container<DiningState, DiningSideEffect>(DiningState(selectedDate = initDate))
 
     private val _userState: StateFlow<User> = getUserStatusUseCase().stateIn(
         scope = viewModelScope,
@@ -62,34 +62,41 @@ class DiningViewModel @Inject constructor(
     )
     val userState: StateFlow<User> get() = _userState
 
-    fun setSelectedDate(date: Date) = intent {
+    private var fetchDiningJob: Job? = null
+
+    fun setSelectedDate(date: Date) {
         val formattedDate = TimeUtil.dateFormatToYYMMDD(date)
-        reduce { state.copy(selectedDate = formattedDate) }
-        fetchDining(formattedDate, forceRefresh = false)
+        intent {
+            reduce { state.copy(selectedDate = formattedDate) }
+            postSideEffect(DiningSideEffect.FetchDining(false))
+        }
     }
 
-    fun refreshDining() = intent {
-        reduce { state.copy(isDiningRefreshing = true) }
-        fetchDining(state.selectedDate, forceRefresh = networkConnectivityService.isConnected())
+    fun refreshDining() {
+        intent {
+            reduce { state.copy(isDiningRefreshing = true) }
+            postSideEffect(DiningSideEffect.FetchDining(networkConnectivityService.isConnected()))
+        }
     }
 
-    fun getDining(date: String? = null) = intent {
-        fetchDining(date ?: state.selectedDate, forceRefresh = false)
+    fun getDining() = intent {
+        postSideEffect(DiningSideEffect.FetchDining(false))
     }
 
-    @OptIn(OrbitExperimental::class)
-    private suspend fun fetchDining(date: String, forceRefresh: Boolean) = subIntent {
-        if (state.isLoading) return@subIntent
-        reduce { state.copy(isLoading = true) }
-        getNotOperationFilteredDiningUseCase(date, forceRefresh).catch {
-            reduce { state.copy(dining = persistentListOf(), isLoading = false, isDiningRefreshing = false) }
-        }.collectLatest { result ->
-            reduce {
-                state.copy(
-                    dining = result.toImmutableList(),
-                    isLoading = false,
-                    isDiningRefreshing = false
-                )
+    fun fetchDining(forceRefresh: Boolean = false) {
+        fetchDiningJob?.cancel()
+        fetchDiningJob = intent {
+            reduce { state.copy(isLoading = true) }
+            getNotOperationFilteredDiningUseCase(state.selectedDate, forceRefresh).catch {
+                reduce { state.copy(dining = persistentListOf(), isLoading = false, isDiningRefreshing = false) }
+            }.collectLatest { result ->
+                reduce {
+                    state.copy(
+                        dining = result.toImmutableList(),
+                        isLoading = false,
+                        isDiningRefreshing = false
+                    )
+                }
             }
         }
     }
