@@ -26,7 +26,7 @@ class GetDiningWithOperationTimeUseCase @Inject constructor(
             coopShopRepository.getCoopShopById(CoopShopType.Dining.id),
             coopShopRepository.getCoopShopById(CoopShopType.NungSu.id)
         ) { dining, diningCoopShop, nungSuCoopShop ->
-            map(dining, diningCoopShop, nungSuCoopShop)
+            map(dining, nungSuCoopShop, diningCoopShop)
         }
 
     private fun map(diningList: List<Dining>, nungsuCoopShop: CoopShop?, diningCoopShop: CoopShop?): List<DiningWithOperationTime> {
