@@ -24,7 +24,7 @@ class KoinSyncScheduler @Inject constructor(
 
         workManager.enqueueUniqueWork(
             "${workName}_once",
-            ExistingWorkPolicy.KEEP,
+            ExistingWorkPolicy.APPEND_OR_REPLACE,
             oneTimeWorkRequest(workerClass)
         )
         schedulePeriodic(workManager, workerClass, workName)
@@ -33,7 +33,7 @@ class KoinSyncScheduler @Inject constructor(
     fun enqueue(workerClass: Class<out ListenableWorker>, workName: String) {
         WorkManager.getInstance(context).enqueueUniqueWork(
             "${workName}_immediate",
-            ExistingWorkPolicy.KEEP,
+            ExistingWorkPolicy.APPEND_OR_REPLACE,
             oneTimeWorkRequest(workerClass)
         )
     }
