@@ -24,13 +24,14 @@ class CoopShopRepositoryImpl @Inject constructor(
 
     override suspend fun sync(): Result<Unit> = suspendRunCatching {
         val response = coopShopRemoteDataSource.getCoopShopAll()
-        val coopShopTypeIds = CoopShopType.entries.map { it.id }.toSet()
-        val entities = response.coopShops.map { coopShop ->
-            coopShop.toCoopShop(
-                semester = coopShop.semester ?: response.semester,
-                updatedAt = coopShop.updatedAt ?: response.updatedAt
-            ).toCoopShopEntity(coopNameId = coopShop.id.takeIf { it in coopShopTypeIds })
+        CoopShopType.entries.forEach { type ->
+            val coopShop = coopShopRemoteDataSource.getCoopShopById(type.id)
+            coopShopLocalDataSource.saveCoopShop(
+                coopShop.toCoopShop(
+                    semester = coopShop.semester ?: response.semester,
+                    updatedAt = coopShop.updatedAt ?: response.updatedAt
+                ).toCoopShopEntity(coopNameId = type.id)
+            )
         }
-        coopShopLocalDataSource.saveCoopShops(response.semester, entities)
     }
 }
