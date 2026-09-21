@@ -10,7 +10,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.state.DepartureState
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 internal fun CommonTimetableItem(
@@ -27,7 +27,7 @@ internal fun CommonTimetableItem(
             style = textStyle
         )
         HorizontalDivider(
-            color = KoinTheme.colors.neutral200
+            color = RebrandKoinTheme.colors.neutral200
         )
     }
 }
@@ -41,8 +41,8 @@ private fun CommonTimetableItemPreview() {
             departureTime = "09:00"
         ),
         textStyle =
-        KoinTheme.typography.bold18.copy(
-            color = KoinTheme.colors.warning500
+        RebrandKoinTheme.typography.bold18.copy(
+            color = RebrandKoinTheme.colors.warning500
         ),
         modifier = Modifier.padding(vertical = 12.dp)
     )

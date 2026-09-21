@@ -60,7 +60,7 @@ import `in`.koreatech.bus.util.formatDepartureTime
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.bus.R
 import java.time.LocalDate
 import java.time.LocalTime
@@ -146,7 +146,7 @@ internal fun BusSearchResultScreenContent(
                                     isDropdownExpanded = !isDropdownExpanded
                                 }
                                 .background(
-                                    color = KoinTheme.colors.neutral50,
+                                    color = RebrandKoinTheme.colors.neutral50,
                                     shape = RoundedCornerShape(12.dp)
                                 )
                                 .padding(8.dp),
@@ -162,8 +162,8 @@ internal fun BusSearchResultScreenContent(
                                     } else {
                                         ""
                                     },
-                                style = KoinTheme.typography.medium14,
-                                color = KoinTheme.colors.neutral800,
+                                style = RebrandKoinTheme.typography.medium14,
+                                color = RebrandKoinTheme.colors.neutral800,
                                 modifier = Modifier.padding(start = 8.dp),
                                 maxLines = 1
                             )
@@ -180,7 +180,7 @@ internal fun BusSearchResultScreenContent(
                             expanded = isDropdownExpanded,
                             onDismissRequest = { isDropdownExpanded = false },
                             shape = RoundedCornerShape(12.dp),
-                            containerColor = KoinTheme.colors.neutral50
+                            containerColor = RebrandKoinTheme.colors.neutral50
                         ) {
                             BusType.entries.fastForEach { busType ->
                                 DropdownMenuItem(
@@ -195,7 +195,7 @@ internal fun BusSearchResultScreenContent(
                                                 } else {
                                                     ""
                                                 },
-                                            style = KoinTheme.typography.medium14
+                                            style = RebrandKoinTheme.typography.medium14
                                         )
                                     },
                                     onClick = {
@@ -227,7 +227,7 @@ internal fun BusSearchResultScreenContent(
                         modifier = Modifier.padding(start = 4.dp),
                         imageVector = Icons.Rounded.KeyboardArrowDown,
                         contentDescription = stringResource(R.string.set_time_content_description),
-                        tint = KoinTheme.colors.neutral500
+                        tint = RebrandKoinTheme.colors.neutral500
                     )
                     Text(
                         text =
@@ -243,8 +243,8 @@ internal fun BusSearchResultScreenContent(
                                 append(" " + stringResource(R.string.departure))
                             }
                         },
-                        style = KoinTheme.typography.bold16,
-                        color = KoinTheme.colors.info700,
+                        style = RebrandKoinTheme.typography.bold16,
+                        color = RebrandKoinTheme.colors.info700,
                         fontSize = departureTimeTextSize,
                         maxLines = 1,
                         onTextLayout = {

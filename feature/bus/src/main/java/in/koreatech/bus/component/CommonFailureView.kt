@@ -27,7 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.util.LocalOnRefresh
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
 @Composable
@@ -46,7 +46,7 @@ fun CommonFailureView(modifier: Modifier = Modifier) {
         Text(
             modifier = Modifier,
             text = stringResource(R.string.fail_to_load_screen_description),
-            style = KoinTheme.typography.bold15,
+            style = RebrandKoinTheme.typography.bold15,
             fontWeight = FontWeight.SemiBold
         )
         Spacer(modifier = Modifier.height(12.dp))
@@ -58,7 +58,7 @@ fun CommonFailureView(modifier: Modifier = Modifier) {
                 containerColor = Color.White,
                 contentColor = Color.Black
             ),
-            border = BorderStroke(1.dp, KoinTheme.colors.neutral300),
+            border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral300),
             shape = CircleShape
         ) {
             Icon(
@@ -68,7 +68,7 @@ fun CommonFailureView(modifier: Modifier = Modifier) {
             Text(
                 modifier = Modifier.padding(start = 6.dp),
                 text = stringResource(R.string.refresh),
-                style = KoinTheme.typography.regular14
+                style = RebrandKoinTheme.typography.regular14
             )
         }
     }

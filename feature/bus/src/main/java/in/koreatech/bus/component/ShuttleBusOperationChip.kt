@@ -7,7 +7,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import `in`.koreatech.bus.type.ShuttleBusOperationType
 import `in`.koreatech.koin.core.designsystem.component.chip.ReadOnlyTextChip
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 internal fun ShuttleBusOperationChip(
@@ -24,7 +24,7 @@ internal fun ShuttleBusOperationChip(
             ShuttleBusOperationType.CIRCULATION -> Color(0xFF4ED92C)
             else -> Color.Transparent
         },
-        textStyle = KoinTheme.typography.regular12.copy(color = Color.White)
+        textStyle = RebrandKoinTheme.typography.regular12.copy(color = Color.White)
     )
 }
 

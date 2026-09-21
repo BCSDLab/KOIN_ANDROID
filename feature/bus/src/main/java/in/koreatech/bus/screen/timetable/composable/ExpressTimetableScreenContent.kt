@@ -25,7 +25,7 @@ import `in`.koreatech.bus.type.CommonDirectionType
 import `in`.koreatech.bus.util.formatUpdatedTime
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
 @Composable
@@ -49,8 +49,8 @@ internal fun ExpressTimetableScreenContent(
         ) {
             Text(
                 text = stringResource(R.string.operating),
-                style = KoinTheme.typography.regular16,
-                color = KoinTheme.colors.neutral600
+                style = RebrandKoinTheme.typography.regular16,
+                color = RebrandKoinTheme.colors.neutral600
             )
 
             TextChipGroup(
@@ -85,7 +85,7 @@ internal fun ExpressTimetableScreenContent(
 @Composable
 private fun ExpressTimetableScreenPreview() {
     ExpressTimetableScreenContent(
-        modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
+        modifier = Modifier.fillMaxSize().background(RebrandKoinTheme.colors.neutral100),
         expressTimetable = expressTimetableMock
     )
 }

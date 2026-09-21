@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.picker.KoinPicker
 import `in`.koreatech.koin.core.designsystem.component.picker.rememberPickerState
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.collections.immutable.ImmutableList
 
@@ -54,19 +54,19 @@ internal fun BusSearchConditionSelectDialog(
             Text(
                 modifier = Modifier.padding(top = 24.dp, start = 24.dp, end = 24.dp),
                 text = stringResource(R.string.set_departure_time),
-                style = KoinTheme.typography.medium18
+                style = RebrandKoinTheme.typography.medium18
             )
             Text(
                 modifier = Modifier.padding(top = 8.dp, start = 24.dp, end = 24.dp),
                 text = stringResource(R.string.caution_timetable_period),
-                style = KoinTheme.typography.regular14
+                style = RebrandKoinTheme.typography.regular14
             )
             Row(
                 modifier =
                 Modifier
                     .fillMaxWidth()
                     .padding(top = 24.dp)
-                    .background(KoinTheme.colors.neutral50)
+                    .background(RebrandKoinTheme.colors.neutral50)
                     .padding(horizontal = 32.dp, vertical = 16.dp)
             ) {
                 KoinPicker(
@@ -77,11 +77,11 @@ internal fun BusSearchConditionSelectDialog(
                     infiniteScroll = false,
                     contentPadding = PaddingValues(vertical = 3.dp),
                     selectedTextStyle =
-                    KoinTheme.typography.medium16.copy(
+                    RebrandKoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
                     unselectedTextStyle =
-                    KoinTheme.typography.medium16.copy(
+                    RebrandKoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
                     modifier = Modifier.weight(.45f)
@@ -94,11 +94,11 @@ internal fun BusSearchConditionSelectDialog(
                     infiniteScroll = false,
                     contentPadding = PaddingValues(top = 3.dp, bottom = 3.dp, start = 18.dp),
                     selectedTextStyle =
-                    KoinTheme.typography.medium16.copy(
+                    RebrandKoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
                     unselectedTextStyle =
-                    KoinTheme.typography.medium16.copy(
+                    RebrandKoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
                     modifier = Modifier.weight(.25f)
@@ -111,11 +111,11 @@ internal fun BusSearchConditionSelectDialog(
                     infiniteScroll = true,
                     contentPadding = PaddingValues(top = 3.dp, bottom = 3.dp, start = 10.dp),
                     selectedTextStyle =
-                    KoinTheme.typography.medium16.copy(
+                    RebrandKoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
                     unselectedTextStyle =
-                    KoinTheme.typography.medium16.copy(
+                    RebrandKoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
                     modifier = Modifier.weight(.2f)
@@ -128,11 +128,11 @@ internal fun BusSearchConditionSelectDialog(
                     infiniteScroll = true,
                     contentPadding = PaddingValues(top = 3.dp, bottom = 3.dp, start = 10.dp),
                     selectedTextStyle =
-                    KoinTheme.typography.medium16.copy(
+                    RebrandKoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
                     unselectedTextStyle =
-                    KoinTheme.typography.medium16.copy(
+                    RebrandKoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
                     modifier = Modifier.weight(.2f)
@@ -153,7 +153,7 @@ internal fun BusSearchConditionSelectDialog(
                     colors =
                     ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent,
-                        contentColor = KoinTheme.colors.neutral600
+                        contentColor = RebrandKoinTheme.colors.neutral600
                     ),
                     modifier = Modifier.weight(1f),
                     contentPadding = PaddingValues(vertical = 12.dp)

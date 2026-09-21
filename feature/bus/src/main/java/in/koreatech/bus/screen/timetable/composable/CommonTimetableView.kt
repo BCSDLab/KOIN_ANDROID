@@ -21,7 +21,7 @@ import `in`.koreatech.bus.mock.commonTimetableMock
 import `in`.koreatech.bus.state.CommonTimetableState
 import `in`.koreatech.bus.util.LocalSelectedTimetableTab
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
 @Composable
@@ -44,16 +44,16 @@ internal fun CommonTimetableView(
                 ) {
                     Text(
                         text = stringResource(R.string.am),
-                        style = KoinTheme.typography.regular16,
-                        color = KoinTheme.colors.neutral600
+                        style = RebrandKoinTheme.typography.regular16,
+                        color = RebrandKoinTheme.colors.neutral600
                     )
 
                     timetable.amDepartures.fastForEach {
                         CommonTimetableItem(
                             arrival = it,
                             textStyle =
-                            KoinTheme.typography.bold18.copy(
-                                color = KoinTheme.colors.warning500
+                            RebrandKoinTheme.typography.bold18.copy(
+                                color = RebrandKoinTheme.colors.warning500
                             ),
                             modifier = Modifier
                         )
@@ -65,16 +65,16 @@ internal fun CommonTimetableView(
                 ) {
                     Text(
                         text = stringResource(R.string.pm),
-                        style = KoinTheme.typography.regular16,
-                        color = KoinTheme.colors.neutral600
+                        style = RebrandKoinTheme.typography.regular16,
+                        color = RebrandKoinTheme.colors.neutral600
                     )
 
                     timetable.pmDepartures.fastForEach {
                         CommonTimetableItem(
                             arrival = it,
                             textStyle =
-                            KoinTheme.typography.bold18.copy(
-                                color = KoinTheme.colors.info700
+                            RebrandKoinTheme.typography.bold18.copy(
+                                color = RebrandKoinTheme.colors.info700
                             ),
                             modifier = Modifier
                         )
@@ -85,8 +85,8 @@ internal fun CommonTimetableView(
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = stringResource(R.string.updated_at, updatedAt),
-                style = KoinTheme.typography.regular14,
-                color = KoinTheme.colors.neutral500
+                style = RebrandKoinTheme.typography.regular14,
+                color = RebrandKoinTheme.colors.neutral500
             )
 
             WrongInformationText(

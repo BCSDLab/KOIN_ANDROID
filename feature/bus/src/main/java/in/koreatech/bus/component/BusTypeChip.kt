@@ -8,7 +8,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.bus.type.BusType
 import `in`.koreatech.koin.core.designsystem.component.chip.ReadOnlyTextChip
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 internal fun BusTypeChip(
@@ -26,8 +26,8 @@ internal fun BusTypeChip(
             else -> Color.Transparent
         },
         textStyle =
-        KoinTheme.typography.regular12.copy(
-            color = KoinTheme.colors.neutral600,
+        RebrandKoinTheme.typography.regular12.copy(
+            color = RebrandKoinTheme.colors.neutral600,
             fontSize = 11.sp
         )
     )

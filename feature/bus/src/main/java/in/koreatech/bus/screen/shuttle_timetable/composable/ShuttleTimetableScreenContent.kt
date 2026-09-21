@@ -45,7 +45,7 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.designsystem.util.getMeasuredKoreanHeightDp
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.collections.immutable.toPersistentList
@@ -59,7 +59,7 @@ fun ShuttleTimetableScreenContent(
     onNavigationIconClick: () -> Unit = {}
 ) {
     val nodeItemHeightDp =
-        KoinTheme.typography.medium15.getMeasuredKoreanHeightDp() + KoinTheme.typography.regular12.getMeasuredKoreanHeightDp()
+        RebrandKoinTheme.typography.medium15.getMeasuredKoreanHeightDp() + RebrandKoinTheme.typography.regular12.getMeasuredKoreanHeightDp()
 
     val pagerState = rememberPagerState { 2 }
     val scope = rememberCoroutineScope()
@@ -97,7 +97,7 @@ fun ShuttleTimetableScreenContent(
 
                             Text(
                                 text = stringResource(R.string.timetable, timetableUiState.timetable.routeName),
-                                style = KoinTheme.typography.bold20,
+                                style = RebrandKoinTheme.typography.bold20,
                                 modifier = Modifier.padding(top = 6.dp)
                             )
                         }
@@ -136,7 +136,7 @@ fun ShuttleTimetableScreenContent(
                                         Modifier
                                             .fillMaxWidth()
                                             .height(14.dp)
-                                            .background(color = KoinTheme.colors.neutral100)
+                                            .background(color = RebrandKoinTheme.colors.neutral100)
                                     )
                                     Row(
                                         modifier =
@@ -156,7 +156,7 @@ fun ShuttleTimetableScreenContent(
 
                                         VerticalDivider(
                                             modifier = Modifier.fillMaxHeight(),
-                                            color = KoinTheme.colors.neutral300
+                                            color = RebrandKoinTheme.colors.neutral300
                                         )
 
                                         Row(
@@ -182,8 +182,8 @@ fun ShuttleTimetableScreenContent(
                                             Spacer(
                                                 modifier =
                                                 Modifier.weight(1f).height(
-                                                    KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() * 2
-                                                ).background(KoinTheme.colors.neutral100)
+                                                    RebrandKoinTheme.typography.regular14.getMeasuredKoreanHeightDp() * 2
+                                                ).background(RebrandKoinTheme.colors.neutral100)
                                             )
                                         }
                                     }
@@ -212,7 +212,7 @@ fun ShuttleTimetableScreenContent(
                                     .verticalScroll(rememberScrollState())
                             ) {
                                 HorizontalDivider(
-                                    color = KoinTheme.colors.neutral400
+                                    color = RebrandKoinTheme.colors.neutral400
                                 )
 
                                 Box(
@@ -220,7 +220,7 @@ fun ShuttleTimetableScreenContent(
                                     Modifier
                                         .fillMaxWidth()
                                         .height(14.dp)
-                                        .background(color = KoinTheme.colors.neutral100)
+                                        .background(color = RebrandKoinTheme.colors.neutral100)
                                 )
                                 Row(
                                     modifier =
@@ -235,7 +235,7 @@ fun ShuttleTimetableScreenContent(
 
                                     VerticalDivider(
                                         modifier = Modifier.fillMaxHeight(),
-                                        color = KoinTheme.colors.neutral300
+                                        color = RebrandKoinTheme.colors.neutral300
                                     )
 
                                     Row(
@@ -256,8 +256,8 @@ fun ShuttleTimetableScreenContent(
                                         Spacer(
                                             modifier =
                                             Modifier.weight(1f).height(
-                                                KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() * 2
-                                            ).background(KoinTheme.colors.neutral100)
+                                                RebrandKoinTheme.typography.regular14.getMeasuredKoreanHeightDp() * 2
+                                            ).background(RebrandKoinTheme.colors.neutral100)
                                         )
                                     }
                                 }

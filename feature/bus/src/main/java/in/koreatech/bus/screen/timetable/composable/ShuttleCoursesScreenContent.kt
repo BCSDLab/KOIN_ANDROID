@@ -40,7 +40,7 @@ import `in`.koreatech.bus.util.formatPeriod
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -119,8 +119,8 @@ internal fun ShuttleCoursesScreenContent(
                     shuttleCourses.semester.from.formatPeriod(),
                     shuttleCourses.semester.to.formatPeriod()
                 ),
-                style = KoinTheme.typography.regular14,
-                color = KoinTheme.colors.neutral500
+                style = RebrandKoinTheme.typography.regular14,
+                color = RebrandKoinTheme.colors.neutral500
             )
             WrongInformationText(
                 modifier = Modifier.padding(top = 4.dp, start = 24.dp),
@@ -150,7 +150,7 @@ private fun ShuttleCourseView(
         ) {
             Text(
                 text = region.name,
-                style = KoinTheme.typography.bold18
+                style = RebrandKoinTheme.typography.bold18
             )
             shuttleCourseRoutes.forEach {
                 ShuttleRouteItem(
@@ -186,21 +186,21 @@ private fun ShuttleRouteItem(
 
             Text(
                 text = shuttleCourseRoute.routeName,
-                style = KoinTheme.typography.medium16,
+                style = RebrandKoinTheme.typography.medium16,
                 modifier = Modifier.padding(start = 8.dp)
             )
             Spacer(modifier = Modifier.weight(1f))
             Icon(
                 imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
                 contentDescription = shuttleCourseRoute.routeName,
-                tint = KoinTheme.colors.neutral400
+                tint = RebrandKoinTheme.colors.neutral400
             )
         }
         if (shuttleCourseRoute.subName.isNotEmpty()) {
             Text(
                 text = shuttleCourseRoute.subName,
-                style = KoinTheme.typography.regular12,
-                color = KoinTheme.colors.neutral500
+                style = RebrandKoinTheme.typography.regular12,
+                color = RebrandKoinTheme.colors.neutral500
             )
         }
     }
@@ -213,7 +213,7 @@ private fun ShuttleCoursesScreenPreview() {
         modifier =
         Modifier
             .fillMaxSize()
-            .background(KoinTheme.colors.neutral100),
+            .background(RebrandKoinTheme.colors.neutral100),
         shuttleCourses = shuttleCoursesMock
     )
 }

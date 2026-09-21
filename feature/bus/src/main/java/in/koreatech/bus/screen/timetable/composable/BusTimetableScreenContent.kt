@@ -51,7 +51,7 @@ import `in`.koreatech.bus.util.LocalSelectedTimetableTab
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.coroutines.launch
 
@@ -106,7 +106,7 @@ internal fun BusTimetableScreenContent(
                 Row {
                     Text(
                         text = busTypeHeadTitle,
-                        style = KoinTheme.typography.bold20
+                        style = RebrandKoinTheme.typography.bold20
                     )
                     if (pagerState.currentPage + 1 != BusType.SHUTTLE.ordinal) {
                         if (busTimetableUiState is BusTimetableUiState.Success) {
@@ -122,12 +122,12 @@ internal fun BusTimetableScreenContent(
                                         )
                                     else -> ""
                                 },
-                                style = KoinTheme.typography.regular13.copy(color = KoinTheme.colors.primary500)
+                                style = RebrandKoinTheme.typography.regular13.copy(color = RebrandKoinTheme.colors.primary500)
                             )
                             Icon(
                                 modifier = Modifier.padding(start = 4.dp),
                                 imageVector = ImageVector.vectorResource(R.drawable.ic_bus_station),
-                                tint = KoinTheme.colors.primary500,
+                                tint = RebrandKoinTheme.colors.primary500,
                                 contentDescription = null
                             )
                         }
@@ -192,7 +192,7 @@ internal fun BusTimetableScreenContent(
                                     ShuttleCoursesScreenContent(
                                         modifier =
                                         Modifier
-                                            .background(KoinTheme.colors.neutral100)
+                                            .background(RebrandKoinTheme.colors.neutral100)
                                             .verticalScroll(rememberScrollState()),
                                         shuttleCourses = busTimetableUiState.shuttleCourses,
                                         onItemClicked = onShuttleCourseRouteClick
@@ -205,7 +205,7 @@ internal fun BusTimetableScreenContent(
                                     ExpressTimetableScreenContent(
                                         modifier =
                                         Modifier
-                                            .background(KoinTheme.colors.neutral100)
+                                            .background(RebrandKoinTheme.colors.neutral100)
                                             .verticalScroll(rememberScrollState()),
                                         expressTimetable = busTimetableUiState.expressTimetable,
                                         onDirectionChanged = {
@@ -229,7 +229,7 @@ internal fun BusTimetableScreenContent(
                                     CityTimetableScreenContent(
                                         modifier =
                                         Modifier
-                                            .background(KoinTheme.colors.neutral100)
+                                            .background(RebrandKoinTheme.colors.neutral100)
                                             .verticalScroll(rememberScrollState()),
                                         timetable = busTimetableUiState.cityTimetable,
                                         onBusNumberChanged = { onCityBusNumberChange(it) },

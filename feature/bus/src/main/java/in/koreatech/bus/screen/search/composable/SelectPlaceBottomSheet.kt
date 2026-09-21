@@ -31,7 +31,7 @@ import `in`.koreatech.bus.type.PlaceType
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChip
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipDefaults
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -79,14 +79,14 @@ internal fun SelectPlaceBottomSheet(
     ) {
         Text(
             text = sheetTitle,
-            style = KoinTheme.typography.medium18,
+            style = RebrandKoinTheme.typography.medium18,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier
                 .padding(horizontal = 32.dp)
                 .padding(bottom = 12.dp)
         )
 
-        HorizontalDivider(color = KoinTheme.colors.neutral200)
+        HorizontalDivider(color = RebrandKoinTheme.colors.neutral200)
 
         FlowRow(
             modifier = Modifier.padding(horizontal = 32.dp, vertical = 16.dp),
@@ -100,13 +100,13 @@ internal fun SelectPlaceBottomSheet(
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
                     chipColors = if (disabledPlace == it) {
                         TextChipDefaults.chipColors(
-                            unselectedContainerColor = KoinTheme.colors.neutral50,
-                            unselectedContentColor = KoinTheme.colors.neutral300
+                            unselectedContainerColor = RebrandKoinTheme.colors.neutral50,
+                            unselectedContentColor = RebrandKoinTheme.colors.neutral300
                         )
                     } else {
                         TextChipDefaults.chipColors(
-                            unselectedContainerColor = KoinTheme.colors.neutral200,
-                            unselectedContentColor = KoinTheme.colors.neutral600
+                            unselectedContainerColor = RebrandKoinTheme.colors.neutral200,
+                            unselectedContentColor = RebrandKoinTheme.colors.neutral600
                         )
                     },
                     isSelected = selectedPlace == it,
