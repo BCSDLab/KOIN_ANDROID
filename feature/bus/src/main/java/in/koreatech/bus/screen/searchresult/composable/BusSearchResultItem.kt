@@ -55,7 +55,7 @@ fun BusSearchResultItem(
                 text = result.departureTime.formatBeforeTime(currentTime.localTime),
                 style =
                 RebrandKoinTheme.typography.bold16.copy(
-                    color = RebrandKoinTheme.colors.info700
+                    color = RebrandKoinTheme.colors.neutral500
                 )
             )
         }

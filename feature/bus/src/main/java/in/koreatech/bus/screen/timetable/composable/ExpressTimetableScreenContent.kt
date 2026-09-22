@@ -1,13 +1,17 @@
 package `in`.koreatech.bus.screen.timetable.composable
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,6 +28,7 @@ import `in`.koreatech.bus.state.ExpressTimetableState
 import `in`.koreatech.bus.type.CommonDirectionType
 import `in`.koreatech.bus.util.formatUpdatedTime
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.designsystem.component.chip.TextChipDefaults
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.bus.R
@@ -53,20 +58,33 @@ internal fun ExpressTimetableScreenContent(
                 color = RebrandKoinTheme.colors.neutral600
             )
 
-            TextChipGroup(
-                modifier = Modifier.padding(start = 16.dp),
-                titles = CommonDirectionType.entries.map { stringResource(it.titleRes) },
-                onChipSelected = { title ->
-                    selectedDirectionType =
-                        CommonDirectionType.entries.find { context.getString(it.titleRes) == title } ?: CommonDirectionType.TO_BYEONGCHEON
-                    EventLogger.logCampusClickEvent(
-                        "ds_bus_direction",
-                        context.getString(selectedDirectionType.titleRes)
-                    )
-                },
-                selectedChipIndexes = intArrayOf(selectedDirectionType.ordinal),
-                showClickRipple = false
-            )
+            CompositionLocalProvider(LocalTextStyle provides RebrandKoinTheme.typography.bold14) {
+                TextChipGroup(
+                    modifier = Modifier.padding(start = 16.dp),
+                    titles = CommonDirectionType.entries.map { stringResource(it.titleRes) },
+                    onChipSelected = { title ->
+                        selectedDirectionType =
+                            CommonDirectionType.entries.find { context.getString(it.titleRes) == title } ?: CommonDirectionType.TO_BYEONGCHEON
+                        EventLogger.logCampusClickEvent(
+                            "ds_bus_direction",
+                            context.getString(selectedDirectionType.titleRes)
+                        )
+                    },
+                    selectedChipIndexes = intArrayOf(selectedDirectionType.ordinal),
+                    showClickRipple = false,
+                    chipColors = TextChipDefaults.chipColors(
+                        selectedContainerColor = RebrandKoinTheme.colors.primary500,
+                        selectedContentColor = RebrandKoinTheme.colors.neutral0,
+                        unselectedContainerColor = RebrandKoinTheme.colors.neutral0,
+                        unselectedContentColor = RebrandKoinTheme.colors.neutral500
+                    ),
+                    border = TextChipDefaults.chipBorder(
+                        selectedBorderStroke = BorderStroke(1.dp, RebrandKoinTheme.colors.primary500),
+                        unselectedBorderStroke = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral300)
+                    ),
+                    contentPadding = PaddingValues(vertical = 6.dp, horizontal = 16.dp)
+                )
+            }
         }
 
         CommonTimetableView(

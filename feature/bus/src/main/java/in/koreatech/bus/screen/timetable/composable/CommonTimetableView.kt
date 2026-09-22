@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
@@ -74,7 +75,7 @@ internal fun CommonTimetableView(
                             arrival = it,
                             textStyle =
                             RebrandKoinTheme.typography.bold18.copy(
-                                color = RebrandKoinTheme.colors.info700
+                                color = RebrandKoinTheme.colors.info500
                             ),
                             modifier = Modifier
                         )
@@ -93,6 +94,8 @@ internal fun CommonTimetableView(
                 modifier = Modifier.padding(top = 4.dp),
                 loggingEventValue = LocalSelectedTimetableTab.current.getEventValue()
             )
+
+            Spacer(modifier = Modifier.height(100.dp))
             Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
         }
     }

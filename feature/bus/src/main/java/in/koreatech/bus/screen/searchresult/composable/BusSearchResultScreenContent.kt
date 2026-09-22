@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -244,7 +245,7 @@ internal fun BusSearchResultScreenContent(
                             }
                         },
                         style = RebrandKoinTheme.typography.bold16,
-                        color = RebrandKoinTheme.colors.info700,
+                        color = RebrandKoinTheme.colors.primary500,
                         fontSize = departureTimeTextSize,
                         maxLines = 1,
                         onTextLayout = {
@@ -260,7 +261,9 @@ internal fun BusSearchResultScreenContent(
 
         when (searchResultUiState) {
             is BusSearchResultUiState.Success ->
-                LazyColumn {
+                LazyColumn(
+                    contentPadding = PaddingValues(bottom = 100.dp)
+                ) {
                     items(searchResultUiState.results) { result ->
                         BusSearchResultItem(
                             modifier =

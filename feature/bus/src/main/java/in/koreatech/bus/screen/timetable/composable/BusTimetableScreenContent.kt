@@ -165,6 +165,8 @@ internal fun BusTimetableScreenContent(
                 } else {
                     pagerState.currentPage
                 },
+                indicatorColor = RebrandKoinTheme.colors.primary500,
+                selectedTextColor = RebrandKoinTheme.colors.primary500,
                 onTabSelected = {
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(it)

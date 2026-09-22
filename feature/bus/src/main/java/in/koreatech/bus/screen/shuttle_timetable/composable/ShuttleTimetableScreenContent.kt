@@ -110,6 +110,8 @@ fun ShuttleTimetableScreenContent(
                                     stringResource(R.string.tab_title_return)
                                 ),
                                 selectedTabIndex = pagerState.currentPage,
+                                indicatorColor = RebrandKoinTheme.colors.primary500,
+                                selectedTextColor = RebrandKoinTheme.colors.primary500,
                                 onTabSelected = {
                                     scope.launch {
                                         pagerState.animateScrollToPage(it)

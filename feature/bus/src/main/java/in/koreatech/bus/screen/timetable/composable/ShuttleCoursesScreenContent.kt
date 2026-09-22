@@ -1,8 +1,10 @@
 package `in`.koreatech.bus.screen.timetable.composable
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -15,8 +17,10 @@ import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -38,6 +42,7 @@ import `in`.koreatech.bus.type.ShuttleBusOperationType
 import `in`.koreatech.bus.util.LocalSelectedTimetableTab
 import `in`.koreatech.bus.util.formatPeriod
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.designsystem.component.chip.TextChipDefaults
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -57,22 +62,35 @@ internal fun ShuttleCoursesScreenContent(
     Column(
         modifier = modifier
     ) {
-        TextChipGroup(
-            modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp, horizontal = 24.dp),
-            titles = ShuttleBusOperationType.entries.map { stringResource(it.titleRes) },
-            onChipSelected = { title ->
-                selectedRouteType = ShuttleBusOperationType.entries.find { context.getString(it.titleRes) == title } ?: ShuttleBusOperationType.ALL
-                EventLogger.logCampusClickEvent(
-                    "shuttle_bus_route",
-                    context.getString(selectedRouteType.titleRes)
-                )
-            },
-            selectedChipIndexes = intArrayOf(selectedRouteType.ordinal),
-            showClickRipple = false
-        )
+        CompositionLocalProvider(LocalTextStyle provides RebrandKoinTheme.typography.bold14) {
+            TextChipGroup(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp, horizontal = 24.dp),
+                titles = ShuttleBusOperationType.entries.map { stringResource(it.titleRes) },
+                onChipSelected = { title ->
+                    selectedRouteType = ShuttleBusOperationType.entries.find { context.getString(it.titleRes) == title } ?: ShuttleBusOperationType.ALL
+                    EventLogger.logCampusClickEvent(
+                        "shuttle_bus_route",
+                        context.getString(selectedRouteType.titleRes)
+                    )
+                },
+                selectedChipIndexes = intArrayOf(selectedRouteType.ordinal),
+                showClickRipple = false,
+                chipColors = TextChipDefaults.chipColors(
+                    selectedContainerColor = RebrandKoinTheme.colors.primary500,
+                    selectedContentColor = RebrandKoinTheme.colors.neutral0,
+                    unselectedContainerColor = RebrandKoinTheme.colors.neutral0,
+                    unselectedContentColor = RebrandKoinTheme.colors.neutral500
+                ),
+                border = TextChipDefaults.chipBorder(
+                    selectedBorderStroke = BorderStroke(1.dp, RebrandKoinTheme.colors.primary500),
+                    unselectedBorderStroke = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral300)
+                ),
+                contentPadding = PaddingValues(vertical = 6.dp, horizontal = 16.dp)
+            )
+        }
         shuttleCourses.courses.forEach { courseEntry ->
             val filteredValue =
                 courseEntry.value.filter { courseRouteState ->
@@ -126,6 +144,7 @@ internal fun ShuttleCoursesScreenContent(
                 modifier = Modifier.padding(top = 4.dp, start = 24.dp),
                 loggingEventValue = LocalSelectedTimetableTab.current.getEventValue()
             )
+            Spacer(modifier = Modifier.height(100.dp))
             Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
         }
     }

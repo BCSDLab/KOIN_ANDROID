@@ -42,9 +42,7 @@ internal fun BusSearchView(
     departure: String,
     arrival: String,
     modifier: Modifier = Modifier,
-    searchButtonEnabled: Boolean = false,
     onSwapIconClicked: () -> Unit = {},
-    onSearchClicked: () -> Unit = {},
     onDepartureFieldClicked: () -> Unit = {},
     onArrivalFieldClicked: () -> Unit = {}
 ) {
@@ -162,19 +160,6 @@ internal fun BusSearchView(
                         }
                 )
             }
-
-            Spacer(modifier = Modifier.weight(1f))
-            FilledButton(
-                modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 30.dp),
-                enabled = searchButtonEnabled,
-                text = stringResource(R.string.action_search),
-                contentPadding = PaddingValues(vertical = 12.dp),
-                onClick = onSearchClicked
-            )
-            Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
         }
     }
 }
@@ -192,10 +177,10 @@ private fun BusSearchInput(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
-            modifier =
-            Modifier
-                .clip(RoundedCornerShape(4.dp))
-                .background(if (isPlaceDetermined.not()) RebrandKoinTheme.colors.neutral100 else Color.Transparent)
+            modifier = Modifier
+                .clip(RoundedCornerShape(16.dp))
+                .border(1.dp, RebrandKoinTheme.colors.neutral300, RoundedCornerShape(16.dp))
+                .background(Color.Transparent)
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
@@ -204,13 +189,13 @@ private fun BusSearchInput(
                     text = placeholder,
                     maxLines = 1,
                     style = RebrandKoinTheme.typography.regular14,
-                    color = RebrandKoinTheme.colors.neutral400 // TODO neutral450 ?
+                    color = RebrandKoinTheme.colors.neutral500
                 )
             } else {
                 Text(
                     text = place,
                     maxLines = 1,
-                    style = RebrandKoinTheme.typography.bold18,
+                    style = RebrandKoinTheme.typography.bold14,
                     color = RebrandKoinTheme.colors.neutral800
                 )
             }

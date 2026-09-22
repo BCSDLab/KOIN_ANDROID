@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -84,6 +85,7 @@ internal fun BusSearchConditionSelectDialog(
                     RebrandKoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
+                    selectedItemColor = RebrandKoinTheme.colors.primary500,
                     modifier = Modifier.weight(.45f)
                 )
                 KoinPicker(
@@ -101,6 +103,7 @@ internal fun BusSearchConditionSelectDialog(
                     RebrandKoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
+                    selectedItemColor = RebrandKoinTheme.colors.primary500,
                     modifier = Modifier.weight(.25f)
                 )
                 KoinPicker(
@@ -118,6 +121,7 @@ internal fun BusSearchConditionSelectDialog(
                     RebrandKoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
+                    selectedItemColor = RebrandKoinTheme.colors.primary500,
                     modifier = Modifier.weight(.2f)
                 )
                 KoinPicker(
@@ -135,6 +139,7 @@ internal fun BusSearchConditionSelectDialog(
                     RebrandKoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
+                    selectedItemColor = RebrandKoinTheme.colors.primary500,
                     modifier = Modifier.weight(.2f)
                 )
             }
@@ -147,19 +152,23 @@ internal fun BusSearchConditionSelectDialog(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                FilledButton(
-                    text = stringResource(R.string.departure_now),
+                Button(
+                    modifier = Modifier.weight(1f),
                     onClick = onDepartureNow,
-                    colors =
-                    ButtonDefaults.buttonColors(
+                    colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent,
                         contentColor = RebrandKoinTheme.colors.neutral600
                     ),
+                    contentPadding = PaddingValues(vertical = 12.dp),
+                    shape = RebrandKoinTheme.shapes.extraSmall
+                ) {
+                    Text(
+                        text = stringResource(R.string.departure_now),
+                        style = RebrandKoinTheme.typography.medium15,
+                    )
+                }
+                Button(
                     modifier = Modifier.weight(1f),
-                    contentPadding = PaddingValues(vertical = 12.dp)
-                )
-                FilledButton(
-                    text = stringResource(R.string.complete),
                     onClick = {
                         onComplete(
                             datePickerState.selectedItemIndex,
@@ -168,9 +177,18 @@ internal fun BusSearchConditionSelectDialog(
                             minutePickerState.selectedItemIndex
                         )
                     },
-                    modifier = Modifier.weight(1f),
-                    contentPadding = PaddingValues(vertical = 12.dp)
-                )
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = RebrandKoinTheme.colors.primary500,
+                        contentColor = RebrandKoinTheme.colors.neutral0
+                    ),
+                    contentPadding = PaddingValues(vertical = 12.dp),
+                    shape = RebrandKoinTheme.shapes.extraSmall
+                ) {
+                    Text(
+                        text = stringResource(R.string.complete),
+                        style = RebrandKoinTheme.typography.medium15,
+                    )
+                }
             }
         }
     }

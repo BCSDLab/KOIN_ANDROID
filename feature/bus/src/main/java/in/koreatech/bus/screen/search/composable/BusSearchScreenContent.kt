@@ -1,10 +1,19 @@
 package `in`.koreatech.bus.screen.search.composable
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -24,7 +33,9 @@ import `in`.koreatech.bus.state.BusNoticeState
 import `in`.koreatech.bus.type.PlaceSelectMode
 import `in`.koreatech.bus.type.PlaceType
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,7 +77,39 @@ internal fun BusSearchScreenContent(
             onNavigationIconClick = onNavigationIconClick
         )
 
+        BusSearchView(
+            modifier =
+            Modifier
+                .padding(top = 16.dp)
+                .padding(horizontal = 24.dp),
+            departure = departure?.titleRes?.let { stringResource(it) } ?: "",
+            arrival = arrival?.titleRes?.let { stringResource(it) } ?: "",
+            onSwapIconClicked = {
+                EventLogger.logCampusClickEvent(
+                    "swap_destination",
+                    "스왑 버튼"
+                )
+                onSwapIconClick()
+            },
+            onDepartureFieldClicked = {
+                EventLogger.logCampusClickEvent(
+                    "departure_box",
+                    "출발지 선택"
+                )
+                placeSelectMode = PlaceSelectMode.DEPARTURE
+            },
+            onArrivalFieldClicked = {
+                EventLogger.logCampusClickEvent(
+                    "arrival_box",
+                    "목적지 선택"
+                )
+                placeSelectMode = PlaceSelectMode.ARRIVAL
+            }
+        )
+
         if (busNoticeUiState is BusNoticeUiState.Show) {
+            Spacer(modifier = Modifier.height(38.dp))
+
             NoticeItem(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 notice = busNoticeUiState.notice,
@@ -88,44 +131,36 @@ internal fun BusSearchScreenContent(
             )
         }
 
-        BusSearchView(
-            modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(top = 16.dp)
-                .padding(horizontal = 24.dp),
-            departure = departure?.titleRes?.let { stringResource(it) } ?: "",
-            arrival = arrival?.titleRes?.let { stringResource(it) } ?: "",
-            searchButtonEnabled = searchButtonEnabled,
-            onSwapIconClicked = {
-                EventLogger.logCampusClickEvent(
-                    "swap_destination",
-                    "스왑 버튼"
-                )
-                onSwapIconClick()
-            },
-            onSearchClicked = {
+        Spacer(modifier = Modifier.weight(1f))
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 30.dp)
+                .windowInsetsPadding(WindowInsets.navigationBars),
+            onClick = {
                 EventLogger.logCampusClickEvent(
                     "search_bus",
                     "조회하기"
                 )
                 onSearchClick()
             },
-            onDepartureFieldClicked = {
-                EventLogger.logCampusClickEvent(
-                    "departure_box",
-                    "출발지 선택"
-                )
-                placeSelectMode = PlaceSelectMode.DEPARTURE
-            },
-            onArrivalFieldClicked = {
-                EventLogger.logCampusClickEvent(
-                    "arrival_box",
-                    "목적지 선택"
-                )
-                placeSelectMode = PlaceSelectMode.ARRIVAL
-            }
-        )
+            enabled = searchButtonEnabled,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = RebrandKoinTheme.colors.primary500,
+                contentColor = RebrandKoinTheme.colors.neutral0,
+                disabledContainerColor = RebrandKoinTheme.colors.neutral400,
+                disabledContentColor = RebrandKoinTheme.colors.neutral0
+            ),
+            contentPadding = PaddingValues(vertical = 12.dp),
+            shape = RebrandKoinTheme.shapes.extraSmall
+        ) {
+            Text(
+                text = stringResource(R.string.action_search),
+                style = RebrandKoinTheme.typography.medium15,
+            )
+        }
     }
 
     if (placeSelectMode != PlaceSelectMode.NONE) {
