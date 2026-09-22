@@ -60,6 +60,7 @@ import `in`.koreatech.bus.util.formatDateValue
 import `in`.koreatech.bus.util.formatDepartureTime
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.bus.R
@@ -115,13 +116,17 @@ internal fun BusSearchResultScreenContent(
     Column(
         modifier = modifier
     ) {
-        KoinTopAppBar(
-            title =
-            stringResource(
-                R.string.search_result_direction_title,
-                stringResource(departure.titleRes),
-                stringResource(arrival.titleRes)
-            ),
+        KoinTopAppBar2(
+            title = {
+                Text(
+                    text = stringResource(
+                        R.string.search_result_direction_title,
+                        stringResource(departure.titleRes),
+                        stringResource(arrival.titleRes)
+                    ),
+                    style = RebrandKoinTheme.typography.medium18
+                )
+            },
             onNavigationIconClick = onNavigationIconClick
         )
 

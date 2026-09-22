@@ -51,6 +51,7 @@ import `in`.koreatech.bus.util.LocalSelectedTimetableTab
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.coroutines.launch
@@ -88,8 +89,13 @@ internal fun BusTimetableScreenContent(
     Column(
         modifier = modifier
     ) {
-        KoinTopAppBar(
-            title = stringResource(R.string.title_bus_timetable),
+        KoinTopAppBar2(
+            title = {
+                Text(
+                    text = stringResource(R.string.title_bus_timetable),
+                    style = RebrandKoinTheme.typography.medium18
+                )
+            },
             onNavigationIconClick = onNavigationIconClick
         )
 

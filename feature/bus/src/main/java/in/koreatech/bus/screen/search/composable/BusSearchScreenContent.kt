@@ -35,6 +35,7 @@ import `in`.koreatech.bus.type.PlaceType
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
@@ -72,8 +73,13 @@ internal fun BusSearchScreenContent(
     Column(
         modifier = modifier
     ) {
-        KoinTopAppBar(
-            title = stringResource(R.string.title_bus_search),
+        KoinTopAppBar2(
+            title = {
+                Text(
+                    text = stringResource(R.string.title_bus_search),
+                    style = RebrandKoinTheme.typography.medium18
+                )
+            },
             onNavigationIconClick = onNavigationIconClick
         )
 
