@@ -46,8 +46,7 @@ internal fun NoticeItem(
             .shadow(10.dp, RoundedCornerShape(8.dp))
             .background(Color.White)
             .clickable { onNoticeClick(notice) }
-            .padding(16.dp)
-        ,
+            .padding(16.dp),
         verticalAlignment = if (noticeMaxLines == 1) Alignment.CenterVertically else Alignment.Top
     ) {
         Text(

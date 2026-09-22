@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.picker.KoinPicker
 import `in`.koreatech.koin.core.designsystem.component.picker.rememberPickerState
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -164,7 +163,7 @@ internal fun BusSearchConditionSelectDialog(
                 ) {
                     Text(
                         text = stringResource(R.string.departure_now),
-                        style = RebrandKoinTheme.typography.medium15,
+                        style = RebrandKoinTheme.typography.medium15
                     )
                 }
                 Button(
@@ -186,7 +185,7 @@ internal fun BusSearchConditionSelectDialog(
                 ) {
                     Text(
                         text = stringResource(R.string.complete),
-                        style = RebrandKoinTheme.typography.medium15,
+                        style = RebrandKoinTheme.typography.medium15
                     )
                 }
             }

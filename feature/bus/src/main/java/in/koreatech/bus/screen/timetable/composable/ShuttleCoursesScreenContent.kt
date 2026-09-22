@@ -65,9 +65,9 @@ internal fun ShuttleCoursesScreenContent(
         CompositionLocalProvider(LocalTextStyle provides RebrandKoinTheme.typography.bold14) {
             TextChipGroup(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp, horizontal = 24.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp, horizontal = 24.dp),
                 titles = ShuttleBusOperationType.entries.map { stringResource(it.titleRes) },
                 onChipSelected = { title ->
                     selectedRouteType = ShuttleBusOperationType.entries.find { context.getString(it.titleRes) == title } ?: ShuttleBusOperationType.ALL

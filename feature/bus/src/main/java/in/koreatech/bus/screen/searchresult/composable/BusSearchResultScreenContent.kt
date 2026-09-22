@@ -59,7 +59,6 @@ import `in`.koreatech.bus.type.PlaceType
 import `in`.koreatech.bus.util.formatDateValue
 import `in`.koreatech.bus.util.formatDepartureTime
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme

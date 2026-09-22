@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
@@ -33,8 +32,6 @@ import `in`.koreatech.bus.state.BusNoticeState
 import `in`.koreatech.bus.type.PlaceSelectMode
 import `in`.koreatech.bus.type.PlaceType
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.bus.R
@@ -164,7 +161,7 @@ internal fun BusSearchScreenContent(
         ) {
             Text(
                 text = stringResource(R.string.action_search),
-                style = RebrandKoinTheme.typography.medium15,
+                style = RebrandKoinTheme.typography.medium15
             )
         }
     }
