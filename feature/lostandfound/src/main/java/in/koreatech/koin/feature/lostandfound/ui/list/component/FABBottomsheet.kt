@@ -89,7 +89,8 @@ fun LostAndFoundFABContent(
         ) {
             Text(
                 text = stringResource(R.string.bottom_sheet_title),
-                style = RebrandKoinTheme.typography.bold18
+                style = RebrandKoinTheme.typography.bold18,
+                color = RebrandKoinTheme.colors.primary500
             )
             IconButton(onClick = onDismissRequest) {
                 Icon(
