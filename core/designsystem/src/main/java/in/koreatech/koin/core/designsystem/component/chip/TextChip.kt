@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.core.designsystem.component.chip
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 /**
  * 텍스트 칩
@@ -28,6 +31,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
  * @param contentPadding 칩 내부 padding
  * @param chipColors 칩 색상
  */
+@Deprecated(message = "Use TextChip2 instead")
 @Composable
 fun TextChip(
     title: String,
@@ -65,6 +69,55 @@ fun TextChip(
     }
 }
 
+/**
+ * TODO
+ * Rename to TextChip after refactoring completed
+ */
+@Composable
+fun TextChip2(
+    title: String,
+    modifier: Modifier = Modifier,
+    isSelected: Boolean = false,
+    shape: Shape = RoundedCornerShape(50),
+    showClickRipple: Boolean = true,
+    onSelect: () -> Unit = {},
+    contentPadding: PaddingValues = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
+    border: TextChipBorders? = TextChipDefaults.chipBorder(),
+    chipColors: TextChipColors = TextChipDefaults.chipColors()
+) {
+    Box(
+        modifier = modifier
+            .clip(shape)
+            .then(
+                border?.let {
+                    Modifier.border(
+                        if (isSelected) border.selectedBorderStroke else border.unselectedBorderStroke,
+                        if (isSelected) border.selectedBorderShape else border.unselectedBorderShape
+                    )
+                } ?: Modifier
+            )
+            .then(
+                if (showClickRipple) {
+                    Modifier.clickable {
+                        onSelect()
+                    }
+                } else {
+                    Modifier.noRippleClickable {
+                        onSelect()
+                    }
+                }
+            )
+            .background(if (isSelected) chipColors.selectedContainerColor else chipColors.unselectedContainerColor)
+            .padding(contentPadding),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = title,
+            color = if (isSelected) chipColors.selectedContentColor else chipColors.unselectedContentColor
+        )
+    }
+}
+
 object TextChipDefaults {
     @Composable
     fun chipColors(
@@ -78,6 +131,19 @@ object TextChipDefaults {
         unselectedContainerColor = unselectedContainerColor,
         unselectedContentColor = unselectedContentColor
     )
+
+    @Composable
+    fun chipBorder(
+        selectedBorderStroke: BorderStroke = BorderStroke(1.dp, RebrandKoinTheme.colors.primary500),
+        selectedBorderShape: Shape = RoundedCornerShape(24.dp),
+        unselectedBorderStroke: BorderStroke = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral300),
+        unselectedBorderShape: Shape = RoundedCornerShape(24.dp)
+    ) = TextChipBorders(
+        selectedBorderStroke = selectedBorderStroke,
+        selectedBorderShape = selectedBorderShape,
+        unselectedBorderStroke = unselectedBorderStroke,
+        unselectedBorderShape = unselectedBorderShape
+    )
 }
 
 class TextChipColors internal constructor(
@@ -85,6 +151,13 @@ class TextChipColors internal constructor(
     val selectedContentColor: Color,
     val unselectedContainerColor: Color,
     val unselectedContentColor: Color
+)
+
+class TextChipBorders(
+    val selectedBorderStroke: BorderStroke,
+    val selectedBorderShape: Shape,
+    val unselectedBorderStroke: BorderStroke,
+    val unselectedBorderShape: Shape
 )
 
 @Preview

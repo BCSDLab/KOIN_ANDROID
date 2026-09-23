@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.bus.navigation.BusTimetableNavigation
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 
 @AndroidEntryPoint
@@ -16,7 +16,7 @@ class BusTimetableActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdgeWithLightStatusBar()
         setContent {
-            KoinTheme {
+            RebrandKoinTheme {
                 BusTimetableNavigation(
                     modifier = Modifier.fillMaxSize()
                 )

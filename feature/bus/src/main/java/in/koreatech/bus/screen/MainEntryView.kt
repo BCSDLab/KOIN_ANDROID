@@ -26,7 +26,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
 @Composable
@@ -47,8 +47,8 @@ fun MainEntryView(
         ) {
             Text(
                 text = stringResource(R.string.bus),
-                style = KoinTheme.typography.bold18,
-                color = KoinTheme.colors.primary500,
+                style = RebrandKoinTheme.typography.bold18,
+                color = RebrandKoinTheme.colors.primary500,
                 fontSize = 15.sp
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -70,13 +70,13 @@ fun MainEntryView(
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_qr),
                     contentDescription = stringResource(R.string.unibus_shortcut_content_description),
-                    tint = KoinTheme.colors.primary500
+                    tint = RebrandKoinTheme.colors.primary500
                 )
                 Text(
                     modifier = Modifier.padding(start = 4.dp),
                     text = stringResource(R.string.shuttle_ticket),
-                    style = KoinTheme.typography.regular14,
-                    color = KoinTheme.colors.primary500
+                    style = RebrandKoinTheme.typography.regular14,
+                    color = RebrandKoinTheme.colors.primary500
                 )
             }
         }
@@ -89,7 +89,7 @@ fun MainEntryView(
                 Modifier
                     .padding(top = 20.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(color = KoinTheme.colors.neutral50)
+                    .background(color = RebrandKoinTheme.colors.neutral50)
                     .clickable(
                         interactionSource = timetableInteractionSource,
                         indication = ripple(bounded = false)
@@ -106,7 +106,7 @@ fun MainEntryView(
                 Modifier
                     .padding(top = 20.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(color = KoinTheme.colors.neutral50)
+                    .background(color = RebrandKoinTheme.colors.neutral50)
                     .clickable(
                         interactionSource = searchInteractionSource,
                         indication = ripple(bounded = false)
@@ -134,11 +134,11 @@ private fun MainEntryCard(
         ) {
             Text(
                 text = title,
-                style = KoinTheme.typography.medium14
+                style = RebrandKoinTheme.typography.medium14
             )
             Text(
                 text = description,
-                style = KoinTheme.typography.regular12
+                style = RebrandKoinTheme.typography.regular12
             )
         }
         Spacer(modifier = Modifier.weight(1f))

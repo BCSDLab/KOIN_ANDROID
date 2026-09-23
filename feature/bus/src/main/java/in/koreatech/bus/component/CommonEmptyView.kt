@@ -16,7 +16,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
 @Composable
@@ -35,7 +35,7 @@ fun CommonEmptyView(modifier: Modifier = Modifier) {
         Text(
             modifier = Modifier,
             text = stringResource(R.string.empty_description),
-            style = KoinTheme.typography.bold15,
+            style = RebrandKoinTheme.typography.bold15,
             fontWeight = FontWeight.SemiBold
         )
         Spacer(modifier = Modifier.height(64.dp))

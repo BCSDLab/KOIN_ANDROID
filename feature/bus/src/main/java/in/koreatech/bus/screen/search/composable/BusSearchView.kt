@@ -5,16 +5,11 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -31,10 +26,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
 @Composable
@@ -42,9 +36,7 @@ internal fun BusSearchView(
     departure: String,
     arrival: String,
     modifier: Modifier = Modifier,
-    searchButtonEnabled: Boolean = false,
     onSwapIconClicked: () -> Unit = {},
-    onSearchClicked: () -> Unit = {},
     onDepartureFieldClicked: () -> Unit = {},
     onArrivalFieldClicked: () -> Unit = {}
 ) {
@@ -53,15 +45,15 @@ internal fun BusSearchView(
             Text(
                 modifier = Modifier,
                 text = stringResource(R.string.introduce_bus_search),
-                style = KoinTheme.typography.medium16,
-                color = KoinTheme.colors.neutral800
+                style = RebrandKoinTheme.typography.medium16,
+                color = RebrandKoinTheme.colors.neutral800
             )
 
             Text(
                 modifier = Modifier.padding(top = 2.dp),
                 text = stringResource(R.string.caution_possibly_inaccurate),
-                style = KoinTheme.typography.regular12,
-                color = KoinTheme.colors.neutral600
+                style = RebrandKoinTheme.typography.regular12,
+                color = RebrandKoinTheme.colors.neutral600
             )
 
             ConstraintLayout(
@@ -81,8 +73,8 @@ internal fun BusSearchView(
                         end.linkTo(departureField.end)
                     },
                     text = stringResource(R.string.departure),
-                    style = KoinTheme.typography.medium16,
-                    color = KoinTheme.colors.primary500
+                    style = RebrandKoinTheme.typography.medium16,
+                    color = RebrandKoinTheme.colors.primary500
                 )
                 Text(
                     modifier =
@@ -92,8 +84,8 @@ internal fun BusSearchView(
                         end.linkTo(arrivalField.end)
                     },
                     text = stringResource(R.string.arrival),
-                    style = KoinTheme.typography.medium16,
-                    color = KoinTheme.colors.primary500
+                    style = RebrandKoinTheme.typography.medium16,
+                    color = RebrandKoinTheme.colors.primary500
                 )
 
                 BusSearchInput(
@@ -128,17 +120,17 @@ internal fun BusSearchView(
                             end.linkTo(arrivalField.start)
                         }.border(
                             width = 1.dp,
-                            color = KoinTheme.colors.neutral300,
+                            color = RebrandKoinTheme.colors.neutral300,
                             shape = CircleShape
                         ).background(
-                            color = KoinTheme.colors.neutral50,
+                            color = RebrandKoinTheme.colors.neutral50,
                             shape = CircleShape
                         ).size(32.dp)
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_swap),
                         contentDescription = stringResource(R.string.swap_content_description),
-                        tint = KoinTheme.colors.primary500
+                        tint = RebrandKoinTheme.colors.primary500
                     )
                 }
 
@@ -162,19 +154,6 @@ internal fun BusSearchView(
                         }
                 )
             }
-
-            Spacer(modifier = Modifier.weight(1f))
-            FilledButton(
-                modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 30.dp),
-                enabled = searchButtonEnabled,
-                text = stringResource(R.string.action_search),
-                contentPadding = PaddingValues(vertical = 12.dp),
-                onClick = onSearchClicked
-            )
-            Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
         }
     }
 }
@@ -192,10 +171,10 @@ private fun BusSearchInput(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
-            modifier =
-            Modifier
-                .clip(RoundedCornerShape(4.dp))
-                .background(if (isPlaceDetermined.not()) KoinTheme.colors.neutral100 else Color.Transparent)
+            modifier = Modifier
+                .clip(RoundedCornerShape(16.dp))
+                .border(1.dp, RebrandKoinTheme.colors.neutral300, RoundedCornerShape(16.dp))
+                .background(Color.Transparent)
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
@@ -203,15 +182,15 @@ private fun BusSearchInput(
                 Text(
                     text = placeholder,
                     maxLines = 1,
-                    style = KoinTheme.typography.regular14,
-                    color = KoinTheme.colors.neutral400 // TODO neutral450 ?
+                    style = RebrandKoinTheme.typography.regular14,
+                    color = RebrandKoinTheme.colors.neutral500
                 )
             } else {
                 Text(
                     text = place,
                     maxLines = 1,
-                    style = KoinTheme.typography.bold18,
-                    color = KoinTheme.colors.neutral800
+                    style = RebrandKoinTheme.typography.bold14,
+                    color = RebrandKoinTheme.colors.neutral800
                 )
             }
         }
