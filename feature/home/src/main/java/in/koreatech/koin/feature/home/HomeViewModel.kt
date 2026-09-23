@@ -53,13 +53,13 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getDining() = intent {
-        getDiningWithOperationTimeUseCase(TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate())).onSuccess { data ->
-            reduce {
-                state.copy(diningData = data.filter { it.type == DiningUtil.getCurrentType().typeEnglish }.map { it.toDiningPagerDataList() }.toImmutableList())
+        getDiningWithOperationTimeUseCase(TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate()))
+            .catch { Timber.e(it) }
+            .collect { data ->
+                reduce {
+                    state.copy(diningData = data.filter { it.type == DiningUtil.getCurrentType().typeEnglish }.map { it.toDiningPagerDataList() }.toImmutableList())
+                }
             }
-        }.onFailure {
-            Timber.e(it)
-        }
     }
 
     private fun getUserName() = intent {

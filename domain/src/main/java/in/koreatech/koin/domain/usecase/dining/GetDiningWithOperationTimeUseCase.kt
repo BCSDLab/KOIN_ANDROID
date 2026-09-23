@@ -13,22 +13,21 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 
 class GetDiningWithOperationTimeUseCase @Inject constructor(
     private val diningRepository: DiningRepository,
     private val coopShopRepository: CoopShopRepository
 ) {
-    suspend operator fun invoke(date: String): Result<List<DiningWithOperationTime>> = runCatching {
-        coroutineScope {
-            val diningList = async { diningRepository.getDining(date) }
-            val diningCoopShop = async { coopShopRepository.getCoopShopById(CoopShopType.Dining.id).getOrThrow() }
-            val nungsuCoopShop = async { coopShopRepository.getCoopShopById(CoopShopType.NungSu.id).getOrThrow() }
-
-            map(diningList.await(), nungsuCoopShop.await(), diningCoopShop.await())
+    operator fun invoke(date: String): Flow<List<DiningWithOperationTime>> =
+        combine(
+            diningRepository.getDining(date),
+            coopShopRepository.getCoopShopById(CoopShopType.Dining.id),
+            coopShopRepository.getCoopShopById(CoopShopType.NungSu.id)
+        ) { dining, diningCoopShop, nungSuCoopShop ->
+            map(dining, nungSuCoopShop, diningCoopShop)
         }
-    }
 
     private fun map(diningList: List<Dining>, nungsuCoopShop: CoopShop?, diningCoopShop: CoopShop?): List<DiningWithOperationTime> {
         return diningList.filter { it.place != DiningPlace.Campus2.place }.map { dining ->
@@ -59,6 +58,7 @@ class GetDiningWithOperationTimeUseCase @Inject constructor(
         return when (localDate.dayOfWeek) {
             DayOfWeek.SATURDAY -> CoopShopDayType.Saturday
             DayOfWeek.SUNDAY -> CoopShopDayType.Weekend
+            DayOfWeek.FRIDAY -> CoopShopDayType.Friday
             else -> CoopShopDayType.Weekday
         }
     }

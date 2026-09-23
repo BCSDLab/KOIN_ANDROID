@@ -173,6 +173,9 @@ dependencies {
     implementation(libs.kakao.share)
     implementation(libs.lottie)
     implementation(libs.androidx.datastore)
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.hilt.work)
+    ksp(libs.androidx.hilt.compiler)
 
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)

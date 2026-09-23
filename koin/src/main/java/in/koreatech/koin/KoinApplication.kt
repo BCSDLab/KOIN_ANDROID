@@ -2,6 +2,8 @@ package `in`.koreatech.koin
 
 import android.app.Application
 import android.util.Log
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
@@ -10,12 +12,19 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.repository.TokenRepository
 import `in`.koreatech.koin.domain.usecase.user.GetLoggerUserDataUseCase
+import `in`.koreatech.koin.sync.CoopShopSyncWorker
+import `in`.koreatech.koin.sync.HomeSyncWorker
+import `in`.koreatech.koin.sync.ImageSyncWorker
+import `in`.koreatech.koin.sync.KoinSyncScheduler
 import `in`.koreatech.koin.util.ExceptionHandlerUtil
 import javax.inject.Inject
 import timber.log.Timber
 
 @HiltAndroidApp
-class KoinApplication : Application() {
+class KoinApplication : Application(), Configuration.Provider {
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
+
     @Inject
     lateinit var tokenRepository: TokenRepository
 
@@ -25,10 +34,16 @@ class KoinApplication : Application() {
     @Inject
     lateinit var getLoggerUserDataUseCase: GetLoggerUserDataUseCase
 
+    @Inject
+    lateinit var koinSyncScheduler: KoinSyncScheduler
+
     override fun onCreate() {
         super.onCreate()
         init()
     }
+
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder().setWorkerFactory(workerFactory).build()
 
     private fun init() {
         ToastUtil.getInstance().init(applicationContext)
@@ -36,6 +51,9 @@ class KoinApplication : Application() {
         initTimber()
         KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_APP_KEY)
         EventLogger.init(getLoggerUserDataUseCase)
+        koinSyncScheduler.schedule(HomeSyncWorker::class.java, "home_sync")
+        koinSyncScheduler.schedule(ImageSyncWorker::class.java, "image_sync")
+        koinSyncScheduler.schedule(CoopShopSyncWorker::class.java, "coop_shop_sync")
     }
 
     private fun initTimber() {

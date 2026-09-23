@@ -23,6 +23,8 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -94,19 +96,17 @@ class DiningAppWidget : AppWidgetProvider() {
         )
         job =
             CoroutineScope(Dispatchers.IO).launch {
-                getDiningUseCase(TimeUtil.dateFormatToYYMMDD(targetDay))
-                    .onSuccess {
-                        withContext(Dispatchers.Main) {
-                            setDiningList(it, context)
-                        }
+                getDiningUseCase(TimeUtil.dateFormatToYYMMDD(targetDay)).catch {
+                    Toast.makeText(
+                        context,
+                        R.string.error_network,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }.collectLatest {
+                    withContext(Dispatchers.Main) {
+                        setDiningList(it, context)
                     }
-                    .onFailure {
-                        Toast.makeText(
-                            context,
-                            R.string.error_network,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                }
             }
     }
 

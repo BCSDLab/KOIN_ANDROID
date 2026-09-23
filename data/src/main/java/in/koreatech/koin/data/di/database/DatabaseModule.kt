@@ -9,8 +9,11 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.data.dao.ABTestDao
 import `in`.koreatech.koin.data.dao.CacheMetadataDao
+import `in`.koreatech.koin.data.dao.CoopShopDao
+import `in`.koreatech.koin.data.dao.DiningDao
 import `in`.koreatech.koin.data.dao.NotificationDao
 import `in`.koreatech.koin.data.dao.StoreCategoriesDao
+import `in`.koreatech.koin.data.dao.WeatherDao
 import `in`.koreatech.koin.data.db.AppDatabase
 import javax.inject.Singleton
 
@@ -51,5 +54,23 @@ object DatabaseModule {
     @Singleton
     fun provideNotificationDao(appDatabase: AppDatabase): NotificationDao {
         return appDatabase.notificationDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideWeatherDao(appDatabase: AppDatabase): WeatherDao {
+        return appDatabase.weatherDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideDiningDao(appDatabase: AppDatabase): DiningDao {
+        return appDatabase.diningDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCoopShopDao(appDatabase: AppDatabase): CoopShopDao {
+        return appDatabase.coopShopDao()
     }
 }
