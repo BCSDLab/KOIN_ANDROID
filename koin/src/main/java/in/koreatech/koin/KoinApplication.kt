@@ -12,9 +12,6 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.repository.TokenRepository
 import `in`.koreatech.koin.domain.usecase.user.GetLoggerUserDataUseCase
-import `in`.koreatech.koin.sync.CoopShopSyncWorker
-import `in`.koreatech.koin.sync.HomeSyncWorker
-import `in`.koreatech.koin.sync.ImageSyncWorker
 import `in`.koreatech.koin.sync.KoinSyncScheduler
 import `in`.koreatech.koin.util.ExceptionHandlerUtil
 import javax.inject.Inject
@@ -51,9 +48,6 @@ class KoinApplication : Application(), Configuration.Provider {
         initTimber()
         KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_APP_KEY)
         EventLogger.init(getLoggerUserDataUseCase)
-        koinSyncScheduler.schedule(HomeSyncWorker::class.java, "home_sync")
-        koinSyncScheduler.schedule(ImageSyncWorker::class.java, "image_sync")
-        koinSyncScheduler.schedule(CoopShopSyncWorker::class.java, "coop_shop_sync")
     }
 
     private fun initTimber() {

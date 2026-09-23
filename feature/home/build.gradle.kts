@@ -11,6 +11,7 @@ android {
 dependencies {
     implementation(projects.core)
     implementation(projects.domain)
+    implementation(projects.core.network)
     implementation(projects.core.onboarding)
     implementation(projects.core.designsystem)
     implementation(projects.core.analytics)
