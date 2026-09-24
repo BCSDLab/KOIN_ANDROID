@@ -36,7 +36,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
 import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
+import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.databinding.ActivityTimetableBinding
 import `in`.koreatech.koin.feature.timetable.component.CircleLoadingBar
@@ -102,7 +102,7 @@ class TimetableActivity : ComponentActivity() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdgeWithDarkStatusBar()
+        enableEdgeToEdgeWithLightStatusBar()
         super.onCreate(savedInstanceState)
         binding = ActivityTimetableBinding.inflate(layoutInflater)
         setContentView(binding.root)

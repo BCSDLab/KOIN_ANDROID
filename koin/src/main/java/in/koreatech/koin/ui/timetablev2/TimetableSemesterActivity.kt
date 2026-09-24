@@ -31,7 +31,7 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
-import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
+import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.ActivityTimetableSemesterBinding
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
@@ -71,7 +71,7 @@ class TimetableSemesterActivity : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdgeWithDarkStatusBar()
+        enableEdgeToEdgeWithLightStatusBar()
         super.onCreate(savedInstanceState)
         binding = ActivityTimetableSemesterBinding.inflate(layoutInflater)
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
