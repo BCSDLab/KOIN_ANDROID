@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.timetable.view
 
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BottomSheetScaffold
@@ -17,8 +19,11 @@ import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.BottomSheetState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -29,11 +34,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.util.pxToDp
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLecture
+import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.TimetableDownloadBox
 import `in`.koreatech.koin.feature.timetable.component.TimetableScheduleBox
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
@@ -44,6 +56,7 @@ import `in`.koreatech.koin.feature.timetable.state.CustomContentState
 import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
 import java.time.DayOfWeek
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TimetableScreen(
     range: Int,
@@ -87,12 +100,34 @@ fun TimetableScreen(
     onClickStartTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
     onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
     onClickAddCustomContent: () -> Unit = {},
-    onClickRemoveCustomContent: (id: Int) -> Unit = {}
+    onClickRemoveCustomContent: (id: Int) -> Unit = {},
+    onTopAppBarAction: () -> Unit = {}
 ) {
     var bottomSheetHeight by remember { mutableFloatStateOf(0f) }
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current
 
     BottomSheetScaffold(
         modifier = modifier,
+        topBar = {
+            KoinTopAppBar2(
+                title = {
+                    Text(
+                        text = stringResource(R.string.timetable_title)
+                    )
+                },
+                onNavigationIconClick = {
+                    onBackPressedDispatcher?.onBackPressedDispatcher?.onBackPressed()
+                },
+                actions = {
+                    Icon(
+                        modifier = Modifier.size(24.dp).noRippleClickable(onClick = onTopAppBarAction),
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_edit),
+                        contentDescription = null,
+                        tint = RebrandKoinTheme.colors.neutral800
+                    )
+                }
+            )
+        },
         scaffoldState = scaffoldState,
         sheetGesturesEnabled = !sheetLazyListState.isScrollInProgress,
         sheetContent = {

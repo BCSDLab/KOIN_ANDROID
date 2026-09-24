@@ -32,7 +32,6 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
 import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -114,7 +113,6 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
         binding = ActivityTimetableBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initView()
-        initEvent()
     }
 
     private fun initView() {
@@ -148,35 +146,6 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
             SideEffect {
                 if (sheetState.isCollapsed) {
                     keyboardController?.hide()
-                }
-            }
-
-            setAppbarEvent {
-                state.semesters.ifEmpty {
-                    viewModel.updateSideEffect(
-                        TimetableSideEffect.SnackBar(
-                            getString(R.string.timetable_error_no_semester)
-                        )
-                    )
-                    return@setAppbarEvent
-                }
-                scope.launch {
-                    when (state.bottomSheetUI) {
-                        BottomSheetUI.DEFAULT -> {
-                            viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
-                            if (sheetState.isExpanded) sheetState.collapse() else sheetState.expand()
-                        }
-                        BottomSheetUI.DETAIL -> {
-                            if (sheetState.isExpanded) {
-                                sheetState.collapse()
-                                viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
-                                sheetState.expand()
-                            } else {
-                                viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
-                                sheetState.expand()
-                            }
-                        }
-                    }
                 }
             }
 
@@ -378,7 +347,35 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     onClickStartTime = viewModel::updateIsStartTimePickerDialogVisible,
                     onClickEndTime = viewModel::updateIsEndTimePickerDialogVisible,
                     onClickAddCustomContent = viewModel::addCustomExtraContent,
-                    onClickRemoveCustomContent = viewModel::removeCustomExtraContent
+                    onClickRemoveCustomContent = viewModel::removeCustomExtraContent,
+                    onTopAppBarAction = {
+                        state.semesters.ifEmpty {
+                            viewModel.updateSideEffect(
+                                TimetableSideEffect.SnackBar(
+                                    getString(R.string.timetable_error_no_semester)
+                                )
+                            )
+                            return@ifEmpty
+                        }
+                        scope.launch {
+                            when (state.bottomSheetUI) {
+                                BottomSheetUI.DEFAULT -> {
+                                    viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
+                                    if (sheetState.isExpanded) sheetState.collapse() else sheetState.expand()
+                                }
+                                BottomSheetUI.DETAIL -> {
+                                    if (sheetState.isExpanded) {
+                                        sheetState.collapse()
+                                        viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
+                                        sheetState.expand()
+                                    } else {
+                                        viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
+                                        sheetState.expand()
+                                    }
+                                }
+                            }
+                        }
+                    }
                 )
 
                 CircleLoadingBar(loading = state.loading)
@@ -417,10 +414,6 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
         }
     }
 
-    private fun initEvent() {
-        setAppbarEvent()
-    }
-
     private fun handleAddCustomLectureMode(isAnonymous: Boolean, callback: () -> Unit) {
         if (isAnonymous) {
             viewModel.updateIsLoginDialogVisible(true)
@@ -456,15 +449,6 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
     private fun saveTimetable(bitmap: Bitmap, callback: (Boolean) -> Unit) {
         BitmapUtils(this).saveBitmapImage(bitmap).let {
             callback(it)
-        }
-    }
-
-    private fun setAppbarEvent(rightButtonClickable: () -> Unit = {}) {
-        binding.koinBaseAppbar.setOnClickListener {
-            when (it.id) {
-                AppBarBase.getLeftButtonId() -> onBackPressedDispatcher.onBackPressed()
-                AppBarBase.getRightButtonId() -> rightButtonClickable()
-            }
         }
     }
 
