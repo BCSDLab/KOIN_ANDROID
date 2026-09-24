@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.timetable.component.TimetableEventTime
 import `in`.koreatech.koin.feature.timetable.component.TimetableEventType
 import `in`.koreatech.koin.feature.timetable.model.TimetableConstants
@@ -79,10 +79,10 @@ fun TimetableContent(
                 ) {
                     Text(
                         text = day,
-                        style = KoinTheme.typography.medium13,
+                        style = RebrandKoinTheme.typography.medium13,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth(),
-                        color = KoinTheme.colors.neutral500
+                        color = RebrandKoinTheme.colors.neutral500
                     )
                 }
             }
@@ -98,10 +98,10 @@ fun TimetableContent(
                 ) {
                     Text(
                         text = time,
-                        style = KoinTheme.typography.regular12,
+                        style = RebrandKoinTheme.typography.regular12,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth(),
-                        color = KoinTheme.colors.neutral500
+                        color = RebrandKoinTheme.colors.neutral500
                     )
                 }
             }
@@ -130,7 +130,7 @@ fun TimetableContent(
             .background(Color.White, shape = RoundedCornerShape(10.dp))
             .clip(RoundedCornerShape(10.dp))
             .border(
-                border = BorderStroke(1.dp, KoinTheme.colors.neutral300),
+                border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral300),
                 shape = RoundedCornerShape(10.dp)
             )
             .drawBehind {

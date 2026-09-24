@@ -17,7 +17,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLecture
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.model.dummyLecture
@@ -52,7 +52,7 @@ fun LectureBottomSheet(
             },
             onClickComplete = onClickComplete
         )
-        HorizontalDivider(thickness = 1.dp, color = KoinTheme.colors.neutral300)
+        HorizontalDivider(thickness = 1.dp, color = RebrandKoinTheme.colors.neutral300)
         lecture?.let {
             LectureBottomSheetContent(
                 lecture = it
@@ -75,8 +75,8 @@ fun LectureBottomSheetHeader(
     ) {
         Text(
             text = stringResource(id = R.string.timetable_bottom_sheet_lecture_delete),
-            style = KoinTheme.typography.bold18,
-            color = KoinTheme.colors.danger700,
+            style = RebrandKoinTheme.typography.bold18,
+            color = RebrandKoinTheme.colors.danger700,
             modifier =
             Modifier.clickable {
                 onClickLectureDelete()
@@ -84,14 +84,14 @@ fun LectureBottomSheetHeader(
         )
         Text(
             text = stringResource(id = R.string.timetable_bottom_sheet_lecture_detail),
-            style = KoinTheme.typography.medium18,
-            color = KoinTheme.colors.primary500,
+            style = RebrandKoinTheme.typography.medium18,
+            color = RebrandKoinTheme.colors.primary500,
             modifier = Modifier
         )
         Text(
             text = stringResource(id = R.string.timetable_bottom_sheet_complete),
-            style = KoinTheme.typography.medium18,
-            color = KoinTheme.colors.neutral800,
+            style = RebrandKoinTheme.typography.medium18,
+            color = RebrandKoinTheme.colors.neutral800,
             modifier =
             Modifier.clickable {
                 onClickComplete()
@@ -110,18 +110,18 @@ fun LectureBottomSheetContent(
     ) {
         Text(
             text = lecture.classTitle,
-            style = KoinTheme.typography.medium18,
-            color = KoinTheme.colors.neutral800
+            style = RebrandKoinTheme.typography.medium18,
+            color = RebrandKoinTheme.colors.neutral800
         )
         Text(
             text = lecture.professor,
-            style = KoinTheme.typography.regular15,
-            color = KoinTheme.colors.neutral800
+            style = RebrandKoinTheme.typography.regular15,
+            color = RebrandKoinTheme.colors.neutral800
         )
         Text(
             text = lecture.getDetailTime(),
-            style = KoinTheme.typography.regular15,
-            color = KoinTheme.colors.neutral800
+            style = RebrandKoinTheme.typography.regular15,
+            color = RebrandKoinTheme.colors.neutral800
         )
     }
 }

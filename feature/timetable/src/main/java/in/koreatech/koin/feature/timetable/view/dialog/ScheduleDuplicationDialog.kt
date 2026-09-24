@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
 import `in`.koreatech.koin.feature.timetable.model.TimetableColor
@@ -44,7 +44,7 @@ fun ScheduleDuplicationDialog(
             Modifier
                 .wrapContentWidth()
                 .wrapContentHeight(),
-            shape = KoinTheme.shapes.extraSmall,
+            shape = RebrandKoinTheme.shapes.extraSmall,
             color = Color.White
         ) {
             Column(
@@ -59,8 +59,8 @@ fun ScheduleDuplicationDialog(
             ) {
                 Text(
                     text = stringResource(R.string.schedule_duplication_title),
-                    style = KoinTheme.typography.bold16,
-                    color = KoinTheme.colors.neutral800
+                    style = RebrandKoinTheme.typography.bold16,
+                    color = RebrandKoinTheme.colors.neutral800
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
@@ -70,8 +70,8 @@ fun ScheduleDuplicationDialog(
                         timetableEvent.name,
                         calculateTimeContent(timetableEvent)
                     ),
-                    style = KoinTheme.typography.regular14,
-                    color = KoinTheme.colors.neutral600,
+                    style = RebrandKoinTheme.typography.regular14,
+                    color = RebrandKoinTheme.colors.neutral600,
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(24.dp))

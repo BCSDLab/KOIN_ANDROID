@@ -15,7 +15,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.feature.timetable.component.LectureBox
 import `in`.koreatech.koin.feature.timetable.component.TimetableSearchBox
@@ -51,7 +51,7 @@ fun TimetableBottomSheetBasic(
             onClickSearchIcon = onClickSearchIcon,
             onClickSettingIcon = onClickSettingIcon
         )
-        HorizontalDivider(thickness = 2.dp, color = KoinTheme.colors.neutral300)
+        HorizontalDivider(thickness = 2.dp, color = RebrandKoinTheme.colors.neutral300)
         LazyColumn(
             modifier = Modifier.nestedScroll(nestedScroll),
             state = sheetLazyListState,
@@ -68,7 +68,7 @@ fun TimetableBottomSheetBasic(
                     onClickAddLecture = onClickAddLecture,
                     onClickRemoveLecture = onClickRemoveLecture
                 )
-                HorizontalDivider(thickness = 1.dp, color = KoinTheme.colors.neutral300)
+                HorizontalDivider(thickness = 1.dp, color = RebrandKoinTheme.colors.neutral300)
             }
         }
     }

@@ -17,7 +17,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,14 +44,14 @@ fun TextCheckbox(
                 enabled = enabled,
                 colors =
                 CheckboxDefaults.colors().copy(
-                    checkedBoxColor = KoinTheme.colors.primary500,
-                    checkedCheckmarkColor = KoinTheme.colors.neutral0,
-                    checkedBorderColor = KoinTheme.colors.primary500,
-                    uncheckedBoxColor = KoinTheme.colors.neutral0,
-                    uncheckedCheckmarkColor = KoinTheme.colors.neutral0,
-                    uncheckedBorderColor = KoinTheme.colors.neutral400,
-                    disabledCheckedBoxColor = KoinTheme.colors.primary300,
-                    disabledBorderColor = KoinTheme.colors.primary300
+                    checkedBoxColor = RebrandKoinTheme.colors.primary500,
+                    checkedCheckmarkColor = RebrandKoinTheme.colors.neutral0,
+                    checkedBorderColor = RebrandKoinTheme.colors.primary500,
+                    uncheckedBoxColor = RebrandKoinTheme.colors.neutral0,
+                    uncheckedCheckmarkColor = RebrandKoinTheme.colors.neutral0,
+                    uncheckedBorderColor = RebrandKoinTheme.colors.neutral400,
+                    disabledCheckedBoxColor = RebrandKoinTheme.colors.primary300,
+                    disabledBorderColor = RebrandKoinTheme.colors.primary300
                 )
             )
         }
@@ -65,11 +65,11 @@ fun TextCheckbox(
 @Preview()
 @Composable
 private fun TextCheckboxCheckedPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         TextCheckbox(
-            modifier = Modifier.background(KoinTheme.colors.neutral0),
+            modifier = Modifier.background(RebrandKoinTheme.colors.neutral0),
             text = "체크박스",
-            textStyle = KoinTheme.typography.regular15,
+            textStyle = RebrandKoinTheme.typography.regular15,
             isChecked = true,
             onCheckChanged = {}
         )
@@ -79,11 +79,11 @@ private fun TextCheckboxCheckedPreview() {
 @Preview()
 @Composable
 private fun TextCheckboxUncheckedPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         TextCheckbox(
-            modifier = Modifier.background(KoinTheme.colors.neutral0),
+            modifier = Modifier.background(RebrandKoinTheme.colors.neutral0),
             text = "체크박스",
-            textStyle = KoinTheme.typography.regular15,
+            textStyle = RebrandKoinTheme.typography.regular15,
             isChecked = false,
             onCheckChanged = {}
         )
@@ -93,11 +93,11 @@ private fun TextCheckboxUncheckedPreview() {
 @Preview()
 @Composable
 private fun TextCheckboxDisabledPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         TextCheckbox(
-            modifier = Modifier.background(KoinTheme.colors.neutral0),
+            modifier = Modifier.background(RebrandKoinTheme.colors.neutral0),
             text = "체크박스",
-            textStyle = KoinTheme.typography.regular15,
+            textStyle = RebrandKoinTheme.typography.regular15,
             isChecked = true,
             onCheckChanged = {},
             enabled = false

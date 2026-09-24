@@ -13,7 +13,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.view.TimetableBottomSheetContentMode
 
@@ -29,7 +29,7 @@ fun TimetableBottomSheetHeader(
     val textLayoutResult =
         textMeasurer.measure(
             text = stringResource(R.string.timetable_bottom_sheet_extra_custom_lecture),
-            style = KoinTheme.typography.medium18
+            style = RebrandKoinTheme.typography.medium18
         )
     with(LocalDensity.current) {
         Row(
@@ -43,11 +43,11 @@ fun TimetableBottomSheetHeader(
                 style =
                 when (mode) {
                     TimetableBottomSheetContentMode.BASIC ->
-                        KoinTheme.typography.medium18.copy(
-                            color = KoinTheme.colors.primary500
+                        RebrandKoinTheme.typography.medium18.copy(
+                            color = RebrandKoinTheme.colors.primary500
                         )
 
-                    TimetableBottomSheetContentMode.CUSTOM -> KoinTheme.typography.bold18.copy(color = KoinTheme.colors.primary600)
+                    TimetableBottomSheetContentMode.CUSTOM -> RebrandKoinTheme.typography.bold18.copy(color = RebrandKoinTheme.colors.primary600)
                 },
                 modifier =
                 Modifier.noRippleClickable {
@@ -58,10 +58,10 @@ fun TimetableBottomSheetHeader(
                 text = stringResource(id = R.string.timetable_bottom_sheet_extra_lecture),
                 style =
                 when (mode) {
-                    TimetableBottomSheetContentMode.BASIC -> KoinTheme.typography.bold18.copy(color = KoinTheme.colors.primary600)
+                    TimetableBottomSheetContentMode.BASIC -> RebrandKoinTheme.typography.bold18.copy(color = RebrandKoinTheme.colors.primary600)
                     TimetableBottomSheetContentMode.CUSTOM ->
-                        KoinTheme.typography.medium18.copy(
-                            color = KoinTheme.colors.primary500
+                        RebrandKoinTheme.typography.medium18.copy(
+                            color = RebrandKoinTheme.colors.primary500
                         )
                 },
                 modifier =
@@ -71,8 +71,8 @@ fun TimetableBottomSheetHeader(
             )
             Text(
                 text = stringResource(id = R.string.timetable_bottom_sheet_complete),
-                style = KoinTheme.typography.medium18,
-                color = KoinTheme.colors.neutral800,
+                style = RebrandKoinTheme.typography.medium18,
+                color = RebrandKoinTheme.colors.neutral800,
                 textAlign = TextAlign.End,
                 modifier =
                 Modifier

@@ -9,7 +9,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.ThemePreviews
 
 @Composable
@@ -55,12 +55,12 @@ fun HighlightedText(
 @ThemePreviews
 @Composable
 private fun HighlightedTextPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         HighlightedText(
             texts = arrayOf("안녕하세요 ", "강조", "입니다"),
             highlightIndices = listOf(1),
-            defaultStyle = KoinTheme.typography.regular15,
-            highlightStyle = KoinTheme.typography.bold15
+            defaultStyle = RebrandKoinTheme.typography.regular15,
+            highlightStyle = RebrandKoinTheme.typography.bold15
         )
     }
 }

@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyLecture
@@ -82,7 +82,7 @@ fun TimetableBottomSheet(
             onClickAddCustomLectureMode = onClickAddCustomLectureMode,
             onComplete = onComplete
         )
-        HorizontalDivider(thickness = 1.dp, color = KoinTheme.colors.neutral300)
+        HorizontalDivider(thickness = 1.dp, color = RebrandKoinTheme.colors.neutral300)
         Spacer(modifier = Modifier.height(8.dp))
 
         when (bottomSheetContentMode) {
@@ -124,7 +124,7 @@ fun TimetableBottomSheet(
 @Preview(showBackground = true)
 @Composable
 private fun TimetableBottomSheetPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         TimetableBottomSheet(
             searchText = "",
             lectures = listOf(dummyLecture, dummyLecture.copy(id = 2, name = "컴퓨터 개발")),
@@ -139,7 +139,7 @@ private fun TimetableBottomSheetPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun TimetableBottomSheetPreview_Custom() {
-    KoinTheme {
+    RebrandKoinTheme {
         TimetableBottomSheet(
             searchText = "",
             lectures = listOf(dummyLecture, dummyLecture.copy(id = 2, name = "컴퓨터 개발")),

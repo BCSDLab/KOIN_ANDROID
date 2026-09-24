@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 enum class FilledButtonType {
     Normal,
@@ -31,26 +31,26 @@ private fun buttonStyleByType(type: FilledButtonType): ButtonColors =
     when (type) {
         FilledButtonType.Normal ->
             ButtonColors(
-                containerColor = KoinTheme.colors.primary500,
-                contentColor = KoinTheme.colors.neutral0,
-                disabledContainerColor = KoinTheme.colors.neutral300,
-                disabledContentColor = KoinTheme.colors.neutral600
+                containerColor = RebrandKoinTheme.colors.primary500,
+                contentColor = RebrandKoinTheme.colors.neutral0,
+                disabledContainerColor = RebrandKoinTheme.colors.neutral300,
+                disabledContentColor = RebrandKoinTheme.colors.neutral600
             )
 
         FilledButtonType.Danger ->
             ButtonColors(
-                containerColor = KoinTheme.colors.danger700,
-                contentColor = KoinTheme.colors.neutral0,
-                disabledContainerColor = KoinTheme.colors.neutral300,
-                disabledContentColor = KoinTheme.colors.neutral600
+                containerColor = RebrandKoinTheme.colors.danger700,
+                contentColor = RebrandKoinTheme.colors.neutral0,
+                disabledContainerColor = RebrandKoinTheme.colors.neutral300,
+                disabledContentColor = RebrandKoinTheme.colors.neutral600
             )
 
         FilledButtonType.Neutral ->
             ButtonColors(
-                containerColor = KoinTheme.colors.neutral300,
-                contentColor = KoinTheme.colors.neutral0,
-                disabledContainerColor = KoinTheme.colors.neutral300,
-                disabledContentColor = KoinTheme.colors.neutral600
+                containerColor = RebrandKoinTheme.colors.neutral300,
+                contentColor = RebrandKoinTheme.colors.neutral0,
+                disabledContainerColor = RebrandKoinTheme.colors.neutral300,
+                disabledContentColor = RebrandKoinTheme.colors.neutral600
             )
     }
 
@@ -88,20 +88,20 @@ object FilledTextButtonDefaults {
     val colors
         @Composable get() =
             ButtonColors(
-                containerColor = KoinTheme.colors.primary500,
-                contentColor = KoinTheme.colors.neutral0,
-                disabledContainerColor = KoinTheme.colors.neutral300,
-                disabledContentColor = KoinTheme.colors.neutral600
+                containerColor = RebrandKoinTheme.colors.primary500,
+                contentColor = RebrandKoinTheme.colors.neutral0,
+                disabledContainerColor = RebrandKoinTheme.colors.neutral300,
+                disabledContentColor = RebrandKoinTheme.colors.neutral600
             )
-    val shape @Composable get() = KoinTheme.shapes.extraSmall
-    val textColor @Composable get() = KoinTheme.colors.neutral0
-    val textStyle @Composable get() = KoinTheme.typography.medium15
+    val shape @Composable get() = RebrandKoinTheme.shapes.extraSmall
+    val textColor @Composable get() = RebrandKoinTheme.colors.neutral0
+    val textStyle @Composable get() = RebrandKoinTheme.typography.medium15
 }
 
 @Preview
 @Composable
 private fun FilledTextButtonNormalPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         Surface(modifier = Modifier.padding(24.dp)) {
             FilledTextButton(
                 modifier =
@@ -119,7 +119,7 @@ private fun FilledTextButtonNormalPreview() {
 @Preview
 @Composable
 private fun FilledTextButtonDangerPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         Surface(modifier = Modifier.padding(24.dp)) {
             FilledTextButton(
                 modifier =

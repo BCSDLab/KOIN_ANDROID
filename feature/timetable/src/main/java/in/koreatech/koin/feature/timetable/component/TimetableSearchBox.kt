@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.icon.StableIcon
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 
 @Composable
@@ -62,7 +62,7 @@ fun TimetableSearchBox(
             placeholder = {
                 Text(
                     text = "입력해주세요.",
-                    style = KoinTheme.typography.regular15,
+                    style = RebrandKoinTheme.typography.regular15,
                     color = Color(0xFFE1E1E1)
                 )
             },
@@ -94,7 +94,7 @@ fun TimetableSearchBox(
 @Composable
 private fun TimetableSearchBoxPreview() {
     var text by remember { mutableStateOf("") }
-    KoinTheme {
+    RebrandKoinTheme {
         TimetableSearchBox(
             searchText = text,
             onSearchTextChange = { text = it }

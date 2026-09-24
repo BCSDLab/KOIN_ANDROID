@@ -21,7 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.icon.StableIcon
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.TimetableInputField
 import `in`.koreatech.koin.feature.timetable.component.TimetableTimeContentRow
@@ -44,7 +44,7 @@ fun BottomSheetCustomExtraContent(
             .background(Color.White)
             .border(
                 width = 1.dp,
-                color = KoinTheme.colors.neutral300,
+                color = RebrandKoinTheme.colors.neutral300,
                 shape = RoundedCornerShape(4.dp)
             )
     ) {
@@ -75,8 +75,8 @@ fun BottomSheetCustomExtraContent(
             if (customContent.isError) {
                 Text(
                     text = stringResource(R.string.timetable_error_input_field_duplication_time),
-                    style = KoinTheme.typography.regular12,
-                    color = KoinTheme.colors.sub500,
+                    style = RebrandKoinTheme.typography.regular12,
+                    color = RebrandKoinTheme.colors.sub500,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.End
                 )

@@ -29,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.icon.StableIcon
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.HighlightedText
@@ -53,7 +53,7 @@ fun SemesterScreen(
         modifier =
         modifier
             .fillMaxSize()
-            .background(KoinTheme.colors.neutral0)
+            .background(RebrandKoinTheme.colors.neutral0)
     ) {
         when (state.mode) {
             ScreenStateUIMode.BASIC -> {
@@ -72,8 +72,8 @@ fun SemesterScreen(
                                 .noRippleClickable { onClickLoginText() },
                             texts = stringArrayResource(id = R.array.semester_anonymous_login),
                             highlightIndices = listOf(0),
-                            defaultStyle = KoinTheme.typography.medium14.copy(color = KoinTheme.colors.neutral500),
-                            highlightStyle = KoinTheme.typography.bold14.copy(color = KoinTheme.colors.info600)
+                            defaultStyle = RebrandKoinTheme.typography.medium14.copy(color = RebrandKoinTheme.colors.neutral500),
+                            highlightStyle = RebrandKoinTheme.typography.bold14.copy(color = RebrandKoinTheme.colors.info600)
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                     }
@@ -107,8 +107,8 @@ fun SemesterScreen(
                     text = stringResource(id = R.string.semester_empty),
                     textAlign = TextAlign.Center,
                     style =
-                    KoinTheme.typography.medium13.copy(
-                        color = KoinTheme.colors.neutral600
+                    RebrandKoinTheme.typography.medium13.copy(
+                        color = RebrandKoinTheme.colors.neutral600
                     )
                 )
             }
@@ -131,7 +131,7 @@ private fun LazyListScope.semesterBlock(
         ) {
             HorizontalDivider(
                 thickness = 2.dp,
-                color = KoinTheme.colors.neutral300
+                color = RebrandKoinTheme.colors.neutral300
             )
             Row(
                 modifier =
@@ -149,8 +149,8 @@ private fun LazyListScope.semesterBlock(
                         stringResource(id = semesterModel.type.stringRes)
                     ),
                     style =
-                    KoinTheme.typography.bold20.copy(
-                        color = KoinTheme.colors.neutral800
+                    RebrandKoinTheme.typography.bold20.copy(
+                        color = RebrandKoinTheme.colors.neutral800
                     )
                 )
                 Box(
@@ -187,7 +187,7 @@ private fun LazyListScope.timetableFrameBlock(
     item {
         HorizontalDivider(
             thickness = 1.dp,
-            color = KoinTheme.colors.neutral300
+            color = RebrandKoinTheme.colors.neutral300
         )
         Row(
             modifier =
@@ -208,8 +208,8 @@ private fun LazyListScope.timetableFrameBlock(
                     modifier = Modifier.weight(1f),
                     text = timetableFrame.timetableName,
                     style =
-                    KoinTheme.typography.medium18.copy(
-                        KoinTheme.colors.neutral800
+                    RebrandKoinTheme.typography.medium18.copy(
+                        RebrandKoinTheme.colors.neutral800
                     ),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1
@@ -231,7 +231,7 @@ private fun LazyListScope.timetableFrameBlock(
                         onClickEditTimetable(timetableFrame)
                     },
                     text = stringResource(id = R.string.semester_edit_timetable_frame),
-                    style = KoinTheme.typography.bold16
+                    style = RebrandKoinTheme.typography.bold16
                 )
             }
         }

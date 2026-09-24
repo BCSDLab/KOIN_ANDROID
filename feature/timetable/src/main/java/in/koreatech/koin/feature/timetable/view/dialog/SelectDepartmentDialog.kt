@@ -29,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.window.DialogProperties
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.DepartmentRadioButton
 import `in`.koreatech.koin.feature.timetable.component.FilledButtonType
@@ -56,7 +56,7 @@ fun SelectDepartmentDialog(
         )
     ) {
         Surface(
-            shape = KoinTheme.shapes.extraSmall,
+            shape = RebrandKoinTheme.shapes.extraSmall,
             color = Color.White
         ) {
             Column(
@@ -65,8 +65,8 @@ fun SelectDepartmentDialog(
                 Text(
                     modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp),
                     text = stringResource(id = R.string.select_department_title),
-                    style = KoinTheme.typography.medium18.copy(
-                        color = KoinTheme.colors.primary500,
+                    style = RebrandKoinTheme.typography.medium18.copy(
+                        color = RebrandKoinTheme.colors.primary500,
                         fontWeight = FontWeight.SemiBold
                     )
                 )
@@ -96,7 +96,7 @@ fun SelectDepartmentDialog(
                             .height(30.dp)
                             .width(60.dp),
                         text = stringResource(id = R.string.cancel),
-                        textStyle = KoinTheme.typography.regular14,
+                        textStyle = RebrandKoinTheme.typography.regular14,
                         buttonStyle = FilledButtonType.Neutral,
                         onClick = { onDismiss(false) }
                     )
@@ -105,7 +105,7 @@ fun SelectDepartmentDialog(
                             .height(30.dp)
                             .width(60.dp),
                         text = stringResource(id = R.string.common_complete),
-                        textStyle = KoinTheme.typography.regular14,
+                        textStyle = RebrandKoinTheme.typography.regular14,
                         onClick = { onConfirm(selectedDepartment) }
                     )
                 }
@@ -144,7 +144,7 @@ fun DepartmentRadioButtons(
 @Preview
 @Composable
 private fun SelectDepartmentDialogPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         SelectDepartmentDialog(
             department = "",
             departments = emptyList(),

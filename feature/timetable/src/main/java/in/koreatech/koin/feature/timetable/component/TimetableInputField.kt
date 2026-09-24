@@ -28,7 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 
 @Composable
@@ -44,7 +44,7 @@ fun TimetableInputField(
     val textLayoutResult =
         textMeasurer.measure(
             text = stringResource(id = R.string.timetable_input_field_option_character),
-            style = KoinTheme.typography.regular16
+            style = RebrandKoinTheme.typography.regular16
         )
     val optionalCharacterWidth = textLayoutResult.size.width
     Column(
@@ -66,8 +66,8 @@ fun TimetableInputField(
             maxLines = 1,
             cursorBrush = SolidColor(Color.Black),
             textStyle =
-            KoinTheme.typography.regular12.copy(
-                color = KoinTheme.colors.neutral500
+            RebrandKoinTheme.typography.regular12.copy(
+                color = RebrandKoinTheme.colors.neutral500
             ),
             decorationBox = { innerTextField ->
                 Row(
@@ -80,9 +80,9 @@ fun TimetableInputField(
                             width = 1.dp,
                             color =
                             if (isError) {
-                                KoinTheme.colors.sub500
+                                RebrandKoinTheme.colors.sub500
                             } else {
-                                KoinTheme.colors.neutral300
+                                RebrandKoinTheme.colors.neutral300
                             },
                             shape = RoundedCornerShape(4.dp)
                         )
@@ -94,21 +94,21 @@ fun TimetableInputField(
                     } else {
                         Text(
                             text = stringResource(id = R.string.timetable_input_field_option_character),
-                            style = KoinTheme.typography.regular16,
-                            color = KoinTheme.colors.sub500,
+                            style = RebrandKoinTheme.typography.regular16,
+                            color = RebrandKoinTheme.colors.sub500,
                             modifier = Modifier.padding(end = 1.dp, bottom = 1.dp)
                         )
                     }
                     Text(
                         text = title,
-                        style = KoinTheme.typography.bold12,
-                        color = KoinTheme.colors.neutral800
+                        style = RebrandKoinTheme.typography.bold12,
+                        color = RebrandKoinTheme.colors.neutral800
                     )
                     Spacer(modifier = Modifier.width(7.dp))
                     VerticalDivider(
                         thickness = 2.dp,
                         modifier = Modifier.fillMaxHeight(),
-                        color = KoinTheme.colors.neutral300
+                        color = RebrandKoinTheme.colors.neutral300
                     )
                     Spacer(modifier = Modifier.width(20.dp))
                     Box {
@@ -119,8 +119,8 @@ fun TimetableInputField(
                                     id = R.string.timetable_input_field_placeholder,
                                     title
                                 ),
-                                style = KoinTheme.typography.regular12,
-                                color = KoinTheme.colors.neutral500
+                                style = RebrandKoinTheme.typography.regular12,
+                                color = RebrandKoinTheme.colors.neutral500
                             )
                         }
                         innerTextField()
@@ -131,8 +131,8 @@ fun TimetableInputField(
         if (isError) {
             Text(
                 text = stringResource(R.string.timetable_input_field_lecture_name_placeholder),
-                style = KoinTheme.typography.regular12,
-                color = KoinTheme.colors.sub500
+                style = RebrandKoinTheme.typography.regular12,
+                color = RebrandKoinTheme.colors.sub500
             )
         }
     }

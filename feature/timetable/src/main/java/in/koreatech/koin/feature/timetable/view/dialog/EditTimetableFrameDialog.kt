@@ -35,7 +35,7 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButtonColors
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.FilledButtonType
@@ -124,7 +124,7 @@ private fun EditTimetableFrameDialog(
             Modifier
                 .wrapContentWidth()
                 .wrapContentHeight()
-                .background(color = KoinTheme.colors.neutral0, shape = KoinTheme.shapes.extraSmall)
+                .background(color = RebrandKoinTheme.colors.neutral0, shape = RebrandKoinTheme.shapes.extraSmall)
                 .padding(horizontal = 24.dp)
         ) {
             FilledTextButton(
@@ -133,7 +133,7 @@ private fun EditTimetableFrameDialog(
                     .padding(top = 16.dp)
                     .height(24.dp),
                 text = stringResource(id = R.string.edit_titletable_frame_delete),
-                textStyle = KoinTheme.typography.medium14,
+                textStyle = RebrandKoinTheme.typography.medium14,
                 buttonStyle = FilledButtonType.Danger,
                 onClick = onClickDelete
             )
@@ -147,7 +147,7 @@ private fun EditTimetableFrameDialog(
             ) {
                 Text(
                     text = stringResource(id = R.string.edit_titletable_frame_title),
-                    style = KoinTheme.typography.bold16
+                    style = RebrandKoinTheme.typography.bold16
                 )
                 // TODO:: 높이 수정 필요
                 TextField(
@@ -158,19 +158,19 @@ private fun EditTimetableFrameDialog(
                             border =
                             BorderStroke(
                                 width = 1.dp,
-                                color = KoinTheme.colors.neutral300
+                                color = RebrandKoinTheme.colors.neutral300
                             ),
-                            shape = KoinTheme.shapes.extraSmall
+                            shape = RebrandKoinTheme.shapes.extraSmall
                         ),
                     value = timetableName,
                     textStyle =
-                    KoinTheme.typography.regular14.copy(
-                        color = KoinTheme.colors.neutral500
+                    RebrandKoinTheme.typography.regular14.copy(
+                        color = RebrandKoinTheme.colors.neutral500
                     ),
                     colors =
                     TextFieldDefaults.colors(
-                        unfocusedContainerColor = KoinTheme.colors.neutral100, // 배경색 (클릭 X)
-                        focusedContainerColor = KoinTheme.colors.neutral100, // 배경색 (클릭 O)
+                        unfocusedContainerColor = RebrandKoinTheme.colors.neutral100, // 배경색 (클릭 X)
+                        focusedContainerColor = RebrandKoinTheme.colors.neutral100, // 배경색 (클릭 O)
                         unfocusedIndicatorColor = Color.Transparent, // 밑줄색 (클릭 X)
                         focusedIndicatorColor = Color.Transparent, // 밑줄색 (클릭 O)
                         cursorColor = Color.Black, // 클릭 시, 커서색
@@ -181,7 +181,7 @@ private fun EditTimetableFrameDialog(
                 )
                 TextCheckbox(
                     text = stringResource(id = R.string.edit_titletable_frame_main),
-                    textStyle = KoinTheme.typography.medium14,
+                    textStyle = RebrandKoinTheme.typography.medium14,
                     isChecked = isMain,
                     enabled = isCheckboxEnabled,
                     onCheckChanged = onCheckChanged
@@ -235,7 +235,7 @@ private fun DeleteTimetableFrameDialog(
             Modifier
                 .wrapContentWidth()
                 .wrapContentHeight(),
-            shape = KoinTheme.shapes.extraSmall,
+            shape = RebrandKoinTheme.shapes.extraSmall,
             color = Color.White
         ) {
             Column(
@@ -252,12 +252,12 @@ private fun DeleteTimetableFrameDialog(
                     texts = title,
                     highlightIndices = listOf(1),
                     defaultStyle =
-                    KoinTheme.typography.medium16.copy(
-                        color = KoinTheme.colors.neutral600
+                    RebrandKoinTheme.typography.medium16.copy(
+                        color = RebrandKoinTheme.colors.neutral600
                     ),
                     highlightStyle =
-                    KoinTheme.typography.bold16.copy(
-                        color = KoinTheme.colors.danger700
+                    RebrandKoinTheme.typography.bold16.copy(
+                        color = RebrandKoinTheme.colors.danger700
                     )
                 )
                 Spacer(modifier = Modifier.height(24.dp))
@@ -292,7 +292,7 @@ private fun DeleteTimetableFrameDialog(
 @Preview
 @Composable
 private fun EditTimetableFrameDialogPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         EditTimetableFrameDialog(
             timetableFrameState =
             TimetableFrame(
@@ -310,7 +310,7 @@ private fun EditTimetableFrameDialogPreview() {
 @Preview
 @Composable
 private fun DeleteTimetableFrameDialogPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         DeleteTimetableFrameDialog(
             timetableName = "시간표1",
             onDismiss = {},

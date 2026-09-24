@@ -29,7 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.icon.StableIcon
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.model.toKorean
 import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
@@ -70,7 +70,7 @@ fun DayOfWeekEditBox(
                 )
                 .border(
                     width = 1.dp,
-                    color = KoinTheme.colors.neutral300,
+                    color = RebrandKoinTheme.colors.neutral300,
                     shape = RoundedCornerShape(4.dp)
                 )
                 .align(alignment = Alignment.Center)
@@ -80,8 +80,8 @@ fun DayOfWeekEditBox(
                     text = {
                         Text(
                             text = day.toKorean(),
-                            style = KoinTheme.typography.bold12,
-                            color = KoinTheme.colors.neutral800,
+                            style = RebrandKoinTheme.typography.bold12,
+                            color = RebrandKoinTheme.colors.neutral800,
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center
                         )
@@ -114,7 +114,7 @@ fun DayOfWeekEditBox(
                 .background(Color.White)
                 .border(
                     width = 1.dp,
-                    color = if (customContent.isError) KoinTheme.colors.sub500 else KoinTheme.colors.neutral300,
+                    color = if (customContent.isError) RebrandKoinTheme.colors.sub500 else RebrandKoinTheme.colors.neutral300,
                     shape = RoundedCornerShape(4.dp)
                 )
                 .padding((5.5).dp),
@@ -123,8 +123,8 @@ fun DayOfWeekEditBox(
         ) {
             Text(
                 text = customContent.dayOfWeek.toKorean(),
-                style = KoinTheme.typography.bold12,
-                color = KoinTheme.colors.neutral800,
+                style = RebrandKoinTheme.typography.bold12,
+                color = RebrandKoinTheme.colors.neutral800,
                 modifier = Modifier.padding(start = (3.5).dp)
             )
 

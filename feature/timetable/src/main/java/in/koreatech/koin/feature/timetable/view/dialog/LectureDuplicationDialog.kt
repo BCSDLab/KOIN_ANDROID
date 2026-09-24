@@ -31,7 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.FontScalePreviews
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
 import `in`.koreatech.koin.feature.timetable.component.HighlightedText
@@ -52,7 +52,7 @@ fun LectureDuplicationDialog(
             Modifier
                 .wrapContentWidth()
                 .wrapContentHeight(),
-            shape = KoinTheme.shapes.extraSmall,
+            shape = RebrandKoinTheme.shapes.extraSmall,
             color = Color.White
         ) {
             Column(
@@ -67,21 +67,21 @@ fun LectureDuplicationDialog(
             ) {
                 Text(
                     text = stringResource(id = R.string.lecture_duplication_title),
-                    color = KoinTheme.colors.neutral800,
+                    color = RebrandKoinTheme.colors.neutral800,
                     textAlign = TextAlign.Center,
-                    style = KoinTheme.typography.bold16
+                    style = RebrandKoinTheme.typography.bold16
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 HighlightedText(
                     texts = stringArrayResource(id = R.array.lecture_duplication_description),
                     highlightIndices = listOf(1),
                     defaultStyle =
-                    KoinTheme.typography.regular14.copy(
-                        color = KoinTheme.colors.neutral600
+                    RebrandKoinTheme.typography.regular14.copy(
+                        color = RebrandKoinTheme.colors.neutral600
                     ),
                     highlightStyle =
-                    KoinTheme.typography.regular14.copy(
-                        color = KoinTheme.colors.warning600
+                    RebrandKoinTheme.typography.regular14.copy(
+                        color = RebrandKoinTheme.colors.warning600
                     )
                 )
                 Spacer(modifier = Modifier.height(24.dp))
@@ -96,20 +96,20 @@ fun LectureDuplicationDialog(
                             .weight(1.0F),
                         colors =
                         ButtonColors(
-                            containerColor = KoinTheme.colors.neutral0,
-                            contentColor = KoinTheme.colors.neutral500,
-                            disabledContainerColor = KoinTheme.colors.neutral400,
-                            disabledContentColor = KoinTheme.colors.neutral500
+                            containerColor = RebrandKoinTheme.colors.neutral0,
+                            contentColor = RebrandKoinTheme.colors.neutral500,
+                            disabledContainerColor = RebrandKoinTheme.colors.neutral400,
+                            disabledContentColor = RebrandKoinTheme.colors.neutral500
                         ),
                         shape = MaterialTheme.shapes.extraSmall,
                         contentPadding = PaddingValues(0.dp),
-                        border = BorderStroke(1.dp, KoinTheme.colors.neutral500),
+                        border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral500),
                         onClick = { onDismiss(false) }
                     ) {
                         Text(
                             text = stringResource(id = R.string.common_cancellation),
-                            style = KoinTheme.typography.medium15,
-                            color = KoinTheme.colors.neutral600
+                            style = RebrandKoinTheme.typography.medium15,
+                            color = RebrandKoinTheme.colors.neutral600
                         )
                     }
                     FilledTextButton(
@@ -129,7 +129,7 @@ fun LectureDuplicationDialog(
 @FontScalePreviews
 @Composable
 private fun LectureDuplicationDialogPreview(modifier: Modifier = Modifier) {
-    KoinTheme {
+    RebrandKoinTheme {
         var isShowing by remember { mutableStateOf(true) }
 
         if (isShowing) {

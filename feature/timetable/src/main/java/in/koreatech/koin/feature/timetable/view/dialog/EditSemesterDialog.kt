@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButtonColors
 import `in`.koreatech.koin.core.designsystem.component.icon.StableIcon
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.FilledButtonType
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
@@ -106,7 +106,7 @@ private fun EditSemesterDialog(
     BasicAlertDialog(
         modifier =
         modifier
-            .background(color = KoinTheme.colors.neutral0, shape = KoinTheme.shapes.extraSmall),
+            .background(color = RebrandKoinTheme.colors.neutral0, shape = RebrandKoinTheme.shapes.extraSmall),
         onDismissRequest = onDismiss
     ) {
         Box {
@@ -118,8 +118,8 @@ private fun EditSemesterDialog(
                     .height(24.dp),
                 text = stringResource(id = R.string.semester_edit_year, currentYear),
                 textStyle =
-                KoinTheme.typography.medium12.copy(
-                    color = KoinTheme.colors.neutral800
+                RebrandKoinTheme.typography.medium12.copy(
+                    color = RebrandKoinTheme.colors.neutral800
                 ),
                 buttonStyle = FilledButtonType.Neutral,
                 contentPadding = PaddingValues(horizontal = 20.dp),
@@ -134,7 +134,7 @@ private fun EditSemesterDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                Text(text = "학기 편집", style = KoinTheme.typography.bold16)
+                Text(text = "학기 편집", style = RebrandKoinTheme.typography.bold16)
 
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
@@ -191,7 +191,7 @@ private fun SelectYearDialog(
     BasicAlertDialog(
         modifier =
         modifier
-            .background(color = KoinTheme.colors.neutral0, shape = KoinTheme.shapes.extraSmall)
+            .background(color = RebrandKoinTheme.colors.neutral0, shape = RebrandKoinTheme.shapes.extraSmall)
             .padding(top = 12.dp, start = 24.dp, end = 24.dp, bottom = 40.dp),
         onDismissRequest = onDismiss
     ) {
@@ -206,8 +206,8 @@ private fun SelectYearDialog(
                 Text(
                     text = "연도 선택",
                     style =
-                    KoinTheme.typography.medium18.copy(
-                        color = KoinTheme.colors.primary500
+                    RebrandKoinTheme.typography.medium18.copy(
+                        color = RebrandKoinTheme.colors.primary500
                     )
                 )
                 IconButton(
@@ -234,18 +234,18 @@ private fun SelectYearDialog(
                         Modifier
                             .height(40.dp),
                         text = year.toString(),
-                        textStyle = KoinTheme.typography.regular15,
+                        textStyle = RebrandKoinTheme.typography.regular15,
                         colors =
                         ButtonColors(
-                            containerColor = KoinTheme.colors.neutral0,
-                            contentColor = KoinTheme.colors.neutral800,
-                            disabledContainerColor = KoinTheme.colors.neutral300,
-                            disabledContentColor = KoinTheme.colors.neutral800
+                            containerColor = RebrandKoinTheme.colors.neutral0,
+                            contentColor = RebrandKoinTheme.colors.neutral800,
+                            disabledContainerColor = RebrandKoinTheme.colors.neutral300,
+                            disabledContentColor = RebrandKoinTheme.colors.neutral800
                         ),
                         border =
                         BorderStroke(
                             width = 1.dp,
-                            color = KoinTheme.colors.neutral300
+                            color = RebrandKoinTheme.colors.neutral300
                         ),
                         enabled = currentYear != year,
                         onClick = { onSelectYear(year) }

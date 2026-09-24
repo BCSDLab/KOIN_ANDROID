@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.icon.StableIcon
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 
 @Composable
@@ -35,7 +35,7 @@ fun TimetableCustomAddBox(
             .background(Color.White)
             .border(
                 width = 1.dp,
-                color = KoinTheme.colors.neutral300,
+                color = RebrandKoinTheme.colors.neutral300,
                 shape = RoundedCornerShape(4.dp)
             )
             .padding(top = 5.dp, bottom = 5.dp, start = 13.dp, end = 5.dp),
@@ -44,8 +44,8 @@ fun TimetableCustomAddBox(
     ) {
         Text(
             text = stringResource(id = R.string.timetable_add_time_and_place),
-            style = KoinTheme.typography.bold12,
-            color = KoinTheme.colors.primary500
+            style = RebrandKoinTheme.typography.bold12,
+            color = RebrandKoinTheme.colors.primary500
         )
         IconButton(
             onClick = onClick,
@@ -53,7 +53,7 @@ fun TimetableCustomAddBox(
         ) {
             StableIcon(
                 drawableResId = R.drawable.ic_add,
-                tint = KoinTheme.colors.primary500
+                tint = RebrandKoinTheme.colors.primary500
             )
         }
     }
