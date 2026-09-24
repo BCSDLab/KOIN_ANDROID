@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -52,19 +53,12 @@ import `in`.koreatech.koin.feature.timetable.view.dialog.ScheduleDuplicationDial
 import `in`.koreatech.koin.feature.timetable.view.dialog.SelectDepartmentDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.TimetableTimePickerDialog
 import `in`.koreatech.koin.feature.timetable.viewmodel.TimetableViewModel
-import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
-import `in`.koreatech.koin.ui.navigation.state.MenuState
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
-class TimetableActivity : KoinNavigationDrawerActivity() {
-    override val screenTitle: String
-        get() = SCREEN_TITLE
-    override val menuState: MenuState
-        get() = MenuState.Timetable
-
+class TimetableActivity : ComponentActivity() {
     @Inject
     lateinit var navigator: Navigator
 
