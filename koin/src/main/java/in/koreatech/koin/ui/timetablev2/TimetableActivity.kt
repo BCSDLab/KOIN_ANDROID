@@ -19,11 +19,13 @@ import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.rememberGraphicsLayer
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -36,7 +38,6 @@ import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWith
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
 import `in`.koreatech.koin.core.navigation.Navigator
-import `in`.koreatech.koin.core.util.KeyboardUtils
 import `in`.koreatech.koin.databinding.ActivityTimetableBinding
 import `in`.koreatech.koin.feature.timetable.component.CircleLoadingBar
 import `in`.koreatech.koin.feature.timetable.state.BottomSheetUI
@@ -142,7 +143,13 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
             val graphicsLayer = rememberGraphicsLayer()
             val scope = rememberCoroutineScope()
 
-            hideKeyboard(sheetState.isCollapsed)
+            val keyboardController = LocalSoftwareKeyboardController.current
+
+            SideEffect {
+                if (sheetState.isCollapsed) {
+                    keyboardController?.hide()
+                }
+            }
 
             setAppbarEvent {
                 state.semesters.ifEmpty {
@@ -458,12 +465,6 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                 AppBarBase.getLeftButtonId() -> onBackPressedDispatcher.onBackPressed()
                 AppBarBase.getRightButtonId() -> rightButtonClickable()
             }
-        }
-    }
-
-    private fun hideKeyboard(isCollapsed: Boolean) {
-        if (isCollapsed) {
-            KeyboardUtils(this).hide(binding.root)
         }
     }
 
