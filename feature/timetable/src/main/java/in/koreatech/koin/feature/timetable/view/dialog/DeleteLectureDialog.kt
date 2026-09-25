@@ -21,8 +21,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -30,7 +30,6 @@ import `in`.koreatech.koin.domain.model.timetable.response.TimetableLecture
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.FilledButtonType
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
-import `in`.koreatech.koin.feature.timetable.component.HighlightedText
 import `in`.koreatech.koin.feature.timetable.model.dummyLecture
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,8 +49,7 @@ fun DeleteLectureDialog(
             color = Color.White
         ) {
             Column(
-                modifier =
-                Modifier
+                modifier = Modifier
                     .wrapContentSize()
                     .padding(
                         horizontal = 32.dp,
@@ -59,34 +57,19 @@ fun DeleteLectureDialog(
                     ),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                val title =
-                    stringArrayResource(id = R.array.delete_lecture_title).apply {
-                        this[0] = String.format(this[0], lecture?.classTitle)
-                    }
-                HighlightedText(
-                    texts = title,
-                    highlightIndices = listOf(1),
-                    defaultStyle =
-                    RebrandKoinTheme.typography.medium16.copy(
-                        color = RebrandKoinTheme.colors.neutral600
-                    ),
-                    highlightStyle =
-                    RebrandKoinTheme.typography.bold16.copy(
-                        color = RebrandKoinTheme.colors.danger700
+                Text(
+                    text = stringResource(R.string.delete_lecture_title, lecture?.classTitle ?: ""),
+                    style = RebrandKoinTheme.typography.medium16.copy(
+                        color = RebrandKoinTheme.colors.neutral800
                     )
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                HighlightedText(
-                    texts = stringArrayResource(id = R.array.delete_lecture_description),
-                    highlightIndices = listOf(1),
-                    defaultStyle =
-                    RebrandKoinTheme.typography.medium16.copy(
-                        color = RebrandKoinTheme.colors.neutral600
+                Text(
+                    text = stringResource(R.string.delete_lecture_description),
+                    style = RebrandKoinTheme.typography.medium16.copy(
+                        color = RebrandKoinTheme.colors.neutral800
                     ),
-                    highlightStyle =
-                    RebrandKoinTheme.typography.bold16.copy(
-                        color = RebrandKoinTheme.colors.info700
-                    )
+                    textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(

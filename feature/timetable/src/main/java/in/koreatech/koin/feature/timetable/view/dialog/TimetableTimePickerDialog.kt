@@ -24,7 +24,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -139,20 +138,14 @@ fun TimetableTimePickerDialog(
                         RebrandKoinTheme.typography.bold20.copy(
                             textAlign = TextAlign.End
                         ),
-                        selectedItemColor = RebrandKoinTheme.colors.neutral700,
-                        unselectedItemColor = RebrandKoinTheme.colors.neutral500,
-                        brushVerticalGradient =
-                        Brush.verticalGradient(
-                            0f to Color.Transparent,
-                            0.5f to Color.Black,
-                            1f to Color.Transparent
-                        ),
+                        selectedItemColor = Color(0x993C3C43),
+                        unselectedItemColor = Color(0x993C3C43),
                         modifier = Modifier.weight(.45f)
                     )
                     Text(
                         text = ":",
                         style = RebrandKoinTheme.typography.bold20,
-                        color = RebrandKoinTheme.colors.neutral700,
+                        color = Color(0x993C3C43),
                         modifier = Modifier.weight(.1f),
                         textAlign = TextAlign.Center
                     )
@@ -176,15 +169,9 @@ fun TimetableTimePickerDialog(
                         },
                         selectedTextStyle = RebrandKoinTheme.typography.bold20,
                         unselectedTextStyle = RebrandKoinTheme.typography.bold20,
-                        selectedItemColor = RebrandKoinTheme.colors.neutral700,
-                        unselectedItemColor = RebrandKoinTheme.colors.neutral500,
+                        selectedItemColor = Color(0x993C3C43),
+                        unselectedItemColor = Color(0x993C3C43),
                         modifier = Modifier.weight(.45f),
-                        brushVerticalGradient =
-                        Brush.verticalGradient(
-                            0f to Color.Transparent,
-                            0.5f to Color.Black,
-                            1f to Color.Transparent
-                        ),
                         infiniteScroll = false
                     )
                 }

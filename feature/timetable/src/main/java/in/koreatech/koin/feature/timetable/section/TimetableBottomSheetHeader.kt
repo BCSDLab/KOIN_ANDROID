@@ -3,85 +3,42 @@ package `in`.koreatech.koin.feature.timetable.section
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.timetable.R
-import `in`.koreatech.koin.feature.timetable.view.TimetableBottomSheetContentMode
 
 @Composable
 fun TimetableBottomSheetHeader(
     modifier: Modifier = Modifier,
-    mode: TimetableBottomSheetContentMode = TimetableBottomSheetContentMode.BASIC,
-    onComplete: () -> Unit = {},
-    onClickAddLectureMode: (mode: TimetableBottomSheetContentMode) -> Unit = {},
-    onClickAddCustomLectureMode: () -> Unit = {}
+    onSheetDismiss: () -> Unit = {}
 ) {
-    val textMeasurer = rememberTextMeasurer()
-    val textLayoutResult =
-        textMeasurer.measure(
-            text = stringResource(R.string.timetable_bottom_sheet_extra_custom_lecture),
-            style = RebrandKoinTheme.typography.medium18
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = stringResource(id = R.string.timetable_bottom_sheet_extra_lecture),
+            style = RebrandKoinTheme.typography.bold18.copy(color = RebrandKoinTheme.colors.primary500, fontWeight = FontWeight.SemiBold)
         )
-    with(LocalDensity.current) {
-        Row(
-            modifier =
-            modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = stringResource(id = R.string.timetable_bottom_sheet_extra_custom_lecture),
-                style =
-                when (mode) {
-                    TimetableBottomSheetContentMode.BASIC ->
-                        RebrandKoinTheme.typography.medium18.copy(
-                            color = RebrandKoinTheme.colors.primary500
-                        )
-
-                    TimetableBottomSheetContentMode.CUSTOM -> RebrandKoinTheme.typography.bold18.copy(color = RebrandKoinTheme.colors.primary600)
-                },
-                modifier =
-                Modifier.noRippleClickable {
-                    onClickAddCustomLectureMode()
-                }
-            )
-            Text(
-                text = stringResource(id = R.string.timetable_bottom_sheet_extra_lecture),
-                style =
-                when (mode) {
-                    TimetableBottomSheetContentMode.BASIC -> RebrandKoinTheme.typography.bold18.copy(color = RebrandKoinTheme.colors.primary600)
-                    TimetableBottomSheetContentMode.CUSTOM ->
-                        RebrandKoinTheme.typography.medium18.copy(
-                            color = RebrandKoinTheme.colors.primary500
-                        )
-                },
-                modifier =
-                Modifier.noRippleClickable {
-                    onClickAddLectureMode(TimetableBottomSheetContentMode.BASIC)
-                }
-            )
-            Text(
-                text = stringResource(id = R.string.timetable_bottom_sheet_complete),
-                style = RebrandKoinTheme.typography.medium18,
-                color = RebrandKoinTheme.colors.neutral800,
-                textAlign = TextAlign.End,
-                modifier =
-                Modifier
-                    .width(textLayoutResult.size.width.toDp())
-                    .noRippleClickable {
-                        onComplete()
-                    }
-            )
-        }
+        Icon(
+            modifier = Modifier
+                .size(24.dp)
+                .noRippleClickable(onClick = onSheetDismiss),
+            imageVector = ImageVector.vectorResource(R.drawable.ic_close_round),
+            contentDescription = null,
+            tint = RebrandKoinTheme.colors.neutral800
+        )
     }
 }
 
@@ -89,12 +46,4 @@ fun TimetableBottomSheetHeader(
 @Composable
 private fun TimetableBottomSheetHeaderPreview() {
     TimetableBottomSheetHeader()
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun TimetableBottomSheetHeaderPreview_Custom() {
-    TimetableBottomSheetHeader(
-        mode = TimetableBottomSheetContentMode.CUSTOM
-    )
 }

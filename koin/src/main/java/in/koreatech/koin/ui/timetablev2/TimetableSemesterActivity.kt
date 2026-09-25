@@ -7,6 +7,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.Icon
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -106,13 +107,9 @@ class TimetableSemesterActivity : ComponentActivity() {
                     EditSemesterDialogImpl(
                         years = screenState.availableYears,
                         userSemesters = screenState.userSemesters,
-                        isSelectYearDialogVisible = screenState.isSelectYearDialogVisible,
-                        onConfirmSelectYear = { viewModel.updateSelectYearDialogVisible(false) },
-                        onDismissSelectYear = { viewModel.updateSelectYearDialogVisible(false) },
-                        onClickSelectYear = { viewModel.updateSelectYearDialogVisible(true) },
                         onConfirm = { selectedSemesters ->
                             viewModel.updateSelectedSemesters(selectedSemesters)
-                            if (selectedSemesters.any { it in screenState.userSemesters }) {
+                            if (screenState.userSemesters.any { it !in selectedSemesters }) {
                                 viewModel.updateDeleteSemesterDialogVisible(true)
                             } else {
                                 viewModel.updateEditSemesterDialogVisible(false)
@@ -226,6 +223,7 @@ class TimetableSemesterActivity : ComponentActivity() {
                 }
 
                 CustomSnackBarHost(
+                    modifier = Modifier.systemBarsPadding(),
                     hotState = snackBarHost,
                     onAction = {
                         viewModel.restoreTimetableFrame()

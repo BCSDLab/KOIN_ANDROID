@@ -1,11 +1,12 @@
 package `in`.koreatech.koin.feature.timetable.view.dialog
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,11 +14,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,9 +28,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
@@ -38,7 +42,6 @@ import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButtonC
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
 import `in`.koreatech.koin.feature.timetable.R
-import `in`.koreatech.koin.feature.timetable.component.FilledButtonType
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
 import `in`.koreatech.koin.feature.timetable.component.HighlightedText
 import `in`.koreatech.koin.feature.timetable.component.TextCheckbox
@@ -127,21 +130,10 @@ private fun EditTimetableFrameDialog(
                 .background(color = RebrandKoinTheme.colors.neutral0, shape = RebrandKoinTheme.shapes.extraSmall)
                 .padding(horizontal = 24.dp)
         ) {
-            FilledTextButton(
-                modifier =
-                Modifier
-                    .padding(top = 16.dp)
-                    .height(24.dp),
-                text = stringResource(id = R.string.edit_titletable_frame_delete),
-                textStyle = RebrandKoinTheme.typography.medium14,
-                buttonStyle = FilledButtonType.Danger,
-                onClick = onClickDelete
-            )
             Column(
-                modifier =
-                Modifier
+                modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 26.dp, horizontal = 0.dp),
+                    .padding(vertical = 26.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
@@ -149,36 +141,39 @@ private fun EditTimetableFrameDialog(
                     text = stringResource(id = R.string.edit_titletable_frame_title),
                     style = RebrandKoinTheme.typography.bold16
                 )
-                // TODO:: 높이 수정 필요
-                TextField(
-                    modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .border(
-                            border =
-                            BorderStroke(
-                                width = 1.dp,
-                                color = RebrandKoinTheme.colors.neutral300
-                            ),
-                            shape = RebrandKoinTheme.shapes.extraSmall
-                        ),
+                BasicTextField(
                     value = timetableName,
-                    textStyle =
-                    RebrandKoinTheme.typography.regular14.copy(
+                    onValueChange = onValueChanged,
+                    textStyle = RebrandKoinTheme.typography.regular14.copy(
                         color = RebrandKoinTheme.colors.neutral500
                     ),
-                    colors =
-                    TextFieldDefaults.colors(
-                        unfocusedContainerColor = RebrandKoinTheme.colors.neutral100, // 배경색 (클릭 X)
-                        focusedContainerColor = RebrandKoinTheme.colors.neutral100, // 배경색 (클릭 O)
-                        unfocusedIndicatorColor = Color.Transparent, // 밑줄색 (클릭 X)
-                        focusedIndicatorColor = Color.Transparent, // 밑줄색 (클릭 O)
-                        cursorColor = Color.Black, // 클릭 시, 커서색
-                        focusedTextColor = Color.Black // 클릭 시, 입력 텍스트 색
-                    ),
-                    singleLine = true,
-                    onValueChange = onValueChanged
-                )
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(20.dp))
+                        .border(
+                            width = 1.dp,
+                            color = RebrandKoinTheme.colors.neutral300,
+                            shape = RoundedCornerShape(20.dp)
+                        )
+                ) { innerTextField ->
+                    TextFieldDefaults.DecorationBox(
+                        value = timetableName,
+                        innerTextField = innerTextField,
+                        enabled = true,
+                        singleLine = true,
+                        visualTransformation = VisualTransformation.None,
+                        interactionSource = MutableInteractionSource(),
+                        contentPadding = PaddingValues(vertical = 12.dp, horizontal = 16.dp),
+                        colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = RebrandKoinTheme.colors.neutral100, // 배경색 (클릭 X)
+                            focusedContainerColor = RebrandKoinTheme.colors.neutral100, // 배경색 (클릭 O)
+                            unfocusedIndicatorColor = Color.Transparent, // 밑줄색 (클릭 X)
+                            focusedIndicatorColor = Color.Transparent, // 밑줄색 (클릭 O)
+                            cursorColor = Color.Black, // 클릭 시, 커서색
+                            focusedTextColor = Color.Black // 클릭 시, 입력 텍스트 색
+                        )
+                    )
+                }
                 TextCheckbox(
                     text = stringResource(id = R.string.edit_titletable_frame_main),
                     textStyle = RebrandKoinTheme.typography.medium14,
@@ -191,17 +186,15 @@ private fun EditTimetableFrameDialog(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     OutlinedBoxButton(
-                        modifier =
-                        Modifier
+                        modifier = Modifier
                             .height(48.dp)
                             .weight(1.0F),
-                        text = stringResource(id = R.string.common_cancellation),
-                        onClick = onDismiss,
+                        text = stringResource(id = R.string.edit_titletable_frame_delete),
+                        onClick = onClickDelete,
                         colors = OutlinedBoxButtonColors.Neutral
                     )
                     FilledTextButton(
-                        modifier =
-                        Modifier
+                        modifier = Modifier
                             .height(48.dp)
                             .weight(1.0F),
                         text = stringResource(id = R.string.common_save),
@@ -251,14 +244,8 @@ private fun DeleteTimetableFrameDialog(
                 HighlightedText(
                     texts = title,
                     highlightIndices = listOf(1),
-                    defaultStyle =
-                    RebrandKoinTheme.typography.medium16.copy(
-                        color = RebrandKoinTheme.colors.neutral600
-                    ),
-                    highlightStyle =
-                    RebrandKoinTheme.typography.bold16.copy(
-                        color = RebrandKoinTheme.colors.danger700
-                    )
+                    defaultStyle = RebrandKoinTheme.typography.medium16,
+                    highlightStyle = RebrandKoinTheme.typography.bold16
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(

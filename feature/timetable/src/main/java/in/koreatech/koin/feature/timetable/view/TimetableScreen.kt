@@ -10,10 +10,13 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.BottomSheetState
@@ -28,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,6 +59,7 @@ import `in`.koreatech.koin.feature.timetable.state.BottomSheetUI
 import `in`.koreatech.koin.feature.timetable.state.CustomContentState
 import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
 import java.time.DayOfWeek
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -105,9 +110,12 @@ fun TimetableScreen(
 ) {
     var bottomSheetHeight by remember { mutableFloatStateOf(0f) }
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current
+    val scope = rememberCoroutineScope()
 
     BottomSheetScaffold(
-        modifier = modifier,
+        modifier = modifier
+            .systemBarsPadding()
+            .imePadding(),
         topBar = {
             KoinTopAppBar2(
                 title = {
@@ -120,7 +128,9 @@ fun TimetableScreen(
                 },
                 actions = {
                     Icon(
-                        modifier = Modifier.size(24.dp).noRippleClickable(onClick = onTopAppBarAction),
+                        modifier = Modifier
+                            .size(24.dp)
+                            .noRippleClickable(onClick = onTopAppBarAction),
                         imageVector = ImageVector.vectorResource(R.drawable.ic_edit),
                         contentDescription = null,
                         tint = RebrandKoinTheme.colors.neutral800
@@ -159,7 +169,13 @@ fun TimetableScreen(
                         onClickStartTime = onClickStartTime,
                         onClickEndTime = onClickEndTime,
                         onClickAddCustomContent = onClickAddCustomContent,
-                        onClickRemoveCustomContent = onClickRemoveCustomContent
+                        onClickRemoveCustomContent = onClickRemoveCustomContent,
+                        onSheetDismiss = {
+                            scope.launch {
+                                scaffoldState.bottomSheetState.collapse()
+                            }
+                            onClickAddLectureMode(TimetableBottomSheetContentMode.BASIC)
+                        }
                     )
                 }
 
@@ -168,17 +184,23 @@ fun TimetableScreen(
                         lecture = detailLecture,
                         onBottomSheetHeightChange = { bottomSheetHeight = it },
                         onClickLectureDelete = onClickBottomSheetDetailDelete,
-                        onClickComplete = onClickBottomSheetDetailComplete
+                        onClickComplete = onClickBottomSheetDetailComplete,
+                        onSheetDismiss = {
+                            scope.launch {
+                                scaffoldState.bottomSheetState.collapse()
+                            }
+                        }
                     )
                 }
             }
         },
         sheetPeekHeight = 0.dp,
-        sheetElevation = 20.dp
-    ) {
+        sheetElevation = 20.dp,
+        sheetShape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
+    ) { contentPadding ->
         Column(
-            modifier =
-            Modifier
+            modifier = Modifier
+                .padding(contentPadding)
                 .fillMaxSize()
                 .fillMaxHeight()
                 .background(Color.White)

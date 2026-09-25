@@ -47,17 +47,14 @@ fun DeleteSemesterDialog(
                 .wrapContentWidth()
                 .wrapContentHeight()
                 .background(color = RebrandKoinTheme.colors.neutral0, shape = RebrandKoinTheme.shapes.extraSmall)
-                .padding(24.dp)
+                .padding(vertical = 24.dp, horizontal = 32.dp)
         ) {
             Column {
                 HighlightedText(
                     texts = stringArrayResource(id = R.array.delete_semester_title),
                     highlightIndices = listOf(1),
                     defaultStyle = RebrandKoinTheme.typography.medium16,
-                    highlightStyle =
-                    RebrandKoinTheme.typography.bold16.copy(
-                        color = RebrandKoinTheme.colors.danger700
-                    )
+                    highlightStyle = RebrandKoinTheme.typography.bold16
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(

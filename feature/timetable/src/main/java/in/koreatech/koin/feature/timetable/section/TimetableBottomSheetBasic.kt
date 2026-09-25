@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,7 +14,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.feature.timetable.component.LectureBox
 import `in`.koreatech.koin.feature.timetable.component.TimetableSearchBox
@@ -40,22 +38,19 @@ fun TimetableBottomSheetBasic(
 ) {
     val nestedScroll = rememberNestedScrollInteropConnection()
     Column(
-        modifier =
-        modifier
-            .background(Color.White)
+        modifier = modifier.background(Color.White)
     ) {
         TimetableSearchBox(
-            modifier = Modifier.padding(bottom = 8.dp),
+            modifier = Modifier.padding(bottom = 12.dp),
             searchText = searchText,
             onSearchTextChange = onSearchTextChange,
             onClickSearchIcon = onClickSearchIcon,
             onClickSettingIcon = onClickSettingIcon
         )
-        HorizontalDivider(thickness = 2.dp, color = RebrandKoinTheme.colors.neutral300)
         LazyColumn(
             modifier = Modifier.nestedScroll(nestedScroll),
             state = sheetLazyListState,
-            contentPadding = PaddingValues(bottom = 16.dp)
+            contentPadding = PaddingValues(top = 4.dp, bottom = 16.dp)
         ) {
             items(lectures.size) {
                 LectureBox(
@@ -68,7 +63,6 @@ fun TimetableBottomSheetBasic(
                     onClickAddLecture = onClickAddLecture,
                     onClickRemoveLecture = onClickRemoveLecture
                 )
-                HorizontalDivider(thickness = 1.dp, color = RebrandKoinTheme.colors.neutral300)
             }
         }
     }

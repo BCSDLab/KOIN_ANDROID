@@ -44,7 +44,6 @@ data class ScreenState(
     val isAnonymous: Boolean = true,
     val isEditTimetableDialogVisible: Boolean = false,
     val isEditSemesterDialogVisible: Boolean = false,
-    val isSelectYearDialogVisible: Boolean = false,
     val isDeleteSemesterDialogVisible: Boolean = false,
     val isRequestLoginDialogVisible: Boolean = false
 ) {
@@ -169,10 +168,6 @@ class SemesterViewModel @Inject constructor(
         _screenState.value = _screenState.value.copy(isEditSemesterDialogVisible = isVisible)
     }
 
-    fun updateSelectYearDialogVisible(isVisible: Boolean) {
-        _screenState.value = _screenState.value.copy(isSelectYearDialogVisible = isVisible)
-    }
-
     fun updateDeleteSemesterDialogVisible(isVisible: Boolean) {
         _screenState.value = _screenState.value.copy(isDeleteSemesterDialogVisible = isVisible)
     }
@@ -235,22 +230,25 @@ class SemesterViewModel @Inject constructor(
 
     fun updateUserSemesters() {
         viewModelScope.launch {
-            dialogUiState.value.selectedSemesters.forEach { semester ->
-                if (screenState.value.userSemesters.contains(semester)) {
-                    deleteSemesterUseCase(semester.toSemester()).onSuccess {
-                        updateUserTimetableFrames(
-                            screenState.value.userTimetableFrames - semester
-                        )
-                    }
-                } else {
-                    addSemesterUseCase(semester.toSemester()).onSuccess { addedFrame ->
-                        updateUserTimetableFrames(
-                            (screenState.value.userTimetableFrames + (semester to listOf(addedFrame))).toSortedMap()
-                        )
-                    }.onFailure {
-                        it.message?.let { errorMessage ->
-                            _sideEffect.value = SemesterSideEffect.Toast(errorMessage)
-                        }
+            val selectedSemesters = dialogUiState.value.selectedSemesters
+            val userSemesters = screenState.value.userSemesters
+
+            userSemesters.filter { !selectedSemesters.contains(it) }.forEach { semester ->
+                deleteSemesterUseCase(semester.toSemester()).onSuccess {
+                    updateUserTimetableFrames(
+                        screenState.value.userTimetableFrames - semester
+                    )
+                }
+            }
+
+            selectedSemesters.filter { !userSemesters.contains(it) }.forEach { semester ->
+                addSemesterUseCase(semester.toSemester()).onSuccess { addedFrame ->
+                    updateUserTimetableFrames(
+                        (screenState.value.userTimetableFrames + (semester to listOf(addedFrame))).toSortedMap()
+                    )
+                }.onFailure {
+                    it.message?.let { errorMessage ->
+                        _sideEffect.value = SemesterSideEffect.Toast(errorMessage)
                     }
                 }
             }
