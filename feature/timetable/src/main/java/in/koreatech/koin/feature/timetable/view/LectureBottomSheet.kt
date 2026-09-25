@@ -60,8 +60,6 @@ fun LectureBottomSheet(
             )
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
-
         LectureBottomSheetFooter(
             onClickLectureDelete = {
                 lecture?.let(onClickLectureDelete)
