@@ -8,22 +8,22 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -33,8 +33,9 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
-import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
+import `in`.koreatech.koin.core.designsystem.component.snackbar.KoinSnackbarDuration
+import `in`.koreatech.koin.core.designsystem.component.snackbar.KoinSnackbarHost
+import `in`.koreatech.koin.core.designsystem.component.snackbar.rememberKoinSnackbarHostState
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.core.navigation.Navigator
@@ -131,7 +132,7 @@ class TimetableActivity : ComponentActivity() {
             val sheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
             val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(sheetState)
             val scrollState = rememberLazyListState()
-            val snackBarHost = remember { SnackbarHostState() }
+            val snackBarHost = rememberKoinSnackbarHostState()
             val graphicsLayer = rememberGraphicsLayer()
             val scope = rememberCoroutineScope()
 
@@ -380,26 +381,28 @@ class TimetableActivity : ComponentActivity() {
                     bottomSheetScaffoldState.bottomSheetState.collapse()
                 }
             }
-            CustomSnackBarHost(snackBarHost)
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                KoinSnackbarHost(snackBarHost)
+            }
             LaunchedEffect(sideEffect) {
                 when (val effect = sideEffect) {
                     is TimetableSideEffect.SnackBar -> {
-                        snackBarHost.showSnackBarWithDismiss(
+                        snackBarHost.showSnackbar(
                             message = effect.message,
-                            actionLabel = "닫기",
-                            duration = SnackbarDuration.Short
+                            duration = KoinSnackbarDuration.Short
                         )
                         viewModel.updateSideEffect(TimetableSideEffect.Nothing)
                     }
 
                     is TimetableSideEffect.Toast -> {
-                        // TODO::현재는 에러 메세지를 띄우는 용로도 토스트가 사용되기에 임시 메세지 사용, 배포 후 수정 필요
                         Timber.d("TimetableSideEffect.Toast| ${effect.message}")
-                        Toast.makeText(
-                            this@TimetableActivity,
-                            "인터넷 연결을 확인하고 다시 시도해주세요.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        snackBarHost.showSnackbar(
+                            message = "인터넷 연결을 확인하고 다시 시도해주세요.",
+                            duration = KoinSnackbarDuration.Short
+                        )
                     }
 
                     is TimetableSideEffect.Nothing -> Unit

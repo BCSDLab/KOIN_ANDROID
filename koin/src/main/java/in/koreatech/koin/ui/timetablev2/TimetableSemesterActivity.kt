@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -17,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -27,6 +30,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
+import `in`.koreatech.koin.core.designsystem.component.snackbar.KoinSnackbarDuration
+import `in`.koreatech.koin.core.designsystem.component.snackbar.KoinSnackbarHost
+import `in`.koreatech.koin.core.designsystem.component.snackbar.KoinSnackbarResult
+import `in`.koreatech.koin.core.designsystem.component.snackbar.rememberKoinSnackbarHostState
 import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -89,7 +96,7 @@ class TimetableSemesterActivity : ComponentActivity() {
             KoinTheme {
                 val dialogUiState by viewModel.dialogUiState.collectAsStateWithLifecycle()
                 val sideEffect by viewModel.sideEffect.collectAsStateWithLifecycle()
-                val snackBarHost = remember { SnackbarHostState() }
+                val snackBarHost = rememberKoinSnackbarHostState()
 
                 val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
@@ -222,22 +229,30 @@ class TimetableSemesterActivity : ComponentActivity() {
                     )
                 }
 
-                CustomSnackBarHost(
-                    modifier = Modifier.systemBarsPadding(),
-                    hotState = snackBarHost,
-                    onAction = {
-                        viewModel.restoreTimetableFrame()
-                    }
-                )
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.BottomCenter
+                ) {
+                    KoinSnackbarHost(
+                        hostState = snackBarHost
+                    )
+                }
 
                 LaunchedEffect(sideEffect) {
                     when (val effect = sideEffect) {
                         is SemesterSideEffect.SnackBar -> {
-                            snackBarHost.showSnackBarWithDismiss(
+                            val result = snackBarHost.showSnackbar(
                                 message = effect.message,
-                                actionLabel = "되돌리기",
-                                duration = SnackbarDuration.Short
+                                duration = KoinSnackbarDuration.Short
                             )
+
+                            when(result) {
+                                KoinSnackbarResult.Dismissed -> {}
+                                KoinSnackbarResult.ActionPerformed -> {
+                                    viewModel.restoreTimetableFrame()
+                                }
+                            }
+
                             viewModel.updateSideEffect(SemesterSideEffect.Nothing)
                         }
 
