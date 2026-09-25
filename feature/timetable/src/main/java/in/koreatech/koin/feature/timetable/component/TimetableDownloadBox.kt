@@ -26,8 +26,7 @@ fun TimetableDownloadBox(
     onClick: () -> Unit = {}
 ) {
     Row(
-        modifier =
-        modifier
+        modifier = modifier
             .background(Color.White)
             .border(
                 width = 1.dp,
@@ -35,7 +34,7 @@ fun TimetableDownloadBox(
                 shape = RoundedCornerShape(10.dp)
             )
             .noRippleClickable { onClick() }
-            .padding(5.dp)
+            .padding(vertical = 8.dp, horizontal = 10.dp)
     ) {
         Text(
             text = "시간표 다운로드",
@@ -46,7 +45,9 @@ fun TimetableDownloadBox(
         Icon(
             painter = painterResource(id = R.drawable.ic_download),
             contentDescription = null,
-            modifier = Modifier.size(20.dp).padding(1.dp),
+            modifier = Modifier
+                .size(20.dp)
+                .padding(1.dp),
             tint = RebrandKoinTheme.colors.neutral800
         )
     }

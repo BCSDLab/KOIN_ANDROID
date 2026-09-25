@@ -18,7 +18,8 @@ fun HighlightedText(
     highlightIndices: List<Int>,
     defaultStyle: TextStyle,
     highlightStyle: TextStyle,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    textAlign: TextAlign? = TextAlign.Center
 ) {
     val annotatedString =
         buildAnnotatedString {
@@ -47,7 +48,7 @@ fun HighlightedText(
     Text(
         text = annotatedString,
         style = defaultStyle,
-        textAlign = TextAlign.Center,
+        textAlign = textAlign,
         modifier = modifier
     )
 }

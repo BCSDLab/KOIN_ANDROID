@@ -25,8 +25,7 @@ fun TimetableScheduleBox(
     onClick: () -> Unit = {}
 ) {
     Box(
-        modifier =
-        modifier
+        modifier = modifier
             .background(Color.White)
             .border(
                 width = 1.dp,
@@ -35,11 +34,10 @@ fun TimetableScheduleBox(
             )
             .widthIn(max = (LocalConfiguration.current.screenWidthDp / 2).dp)
             .noRippleClickable { onClick() }
-            .padding(5.dp)
+            .padding(vertical = 8.dp, horizontal = 10.dp)
     ) {
         Text(
-            text =
-            if (currentSemester.isEmpty()) {
+            text = if (currentSemester.isEmpty()) {
                 "학기 추가하기"
             } else {
                 currentSemester.toSemesterTitle(

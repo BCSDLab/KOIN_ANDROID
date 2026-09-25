@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.timetable.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,11 +10,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,16 +29,17 @@ fun TimetableCustomAddBox(
     onClick: () -> Unit = {}
 ) {
     Row(
-        modifier =
-        modifier
+        modifier = modifier
             .height(35.dp)
             .fillMaxWidth()
             .background(Color.White)
+            .clip(RoundedCornerShape(16.dp))
             .border(
-                width = 1.dp,
+                width = 0.5.dp,
                 color = RebrandKoinTheme.colors.neutral300,
-                shape = RoundedCornerShape(4.dp)
+                shape = RoundedCornerShape(16.dp)
             )
+            .clickable(onClick = onClick)
             .padding(top = 5.dp, bottom = 5.dp, start = 13.dp, end = 5.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -47,15 +49,11 @@ fun TimetableCustomAddBox(
             style = RebrandKoinTheme.typography.bold12,
             color = RebrandKoinTheme.colors.primary500
         )
-        IconButton(
-            onClick = onClick,
-            modifier = Modifier.size(24.dp)
-        ) {
-            StableIcon(
-                drawableResId = R.drawable.ic_add,
-                tint = RebrandKoinTheme.colors.primary500
-            )
-        }
+        StableIcon(
+            modifier = Modifier.size(24.dp),
+            drawableResId = R.drawable.ic_add,
+            tint = RebrandKoinTheme.colors.primary500
+        )
     }
 }
 

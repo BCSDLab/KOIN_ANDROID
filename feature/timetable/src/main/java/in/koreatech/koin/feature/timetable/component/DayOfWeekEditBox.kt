@@ -69,7 +69,7 @@ fun DayOfWeekEditBox(
                     shape = RoundedCornerShape(4.dp)
                 )
                 .border(
-                    width = 1.dp,
+                    width = 0.5.dp,
                     color = RebrandKoinTheme.colors.neutral300,
                     shape = RoundedCornerShape(4.dp)
                 )
@@ -113,9 +113,9 @@ fun DayOfWeekEditBox(
             Modifier
                 .background(Color.White)
                 .border(
-                    width = 1.dp,
-                    color = if (customContent.isError) RebrandKoinTheme.colors.sub500 else RebrandKoinTheme.colors.neutral300,
-                    shape = RoundedCornerShape(4.dp)
+                    width = 0.5.dp,
+                    color = if (customContent.isError) RebrandKoinTheme.colors.primary600 else RebrandKoinTheme.colors.neutral300,
+                    shape = RoundedCornerShape(16.dp)
                 )
                 .padding((5.5).dp),
             horizontalArrangement = Arrangement.SpaceBetween,

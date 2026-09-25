@@ -37,7 +37,7 @@ fun TimetableTimeContentRow(
         Text(
             text = stringResource(id = R.string.timetable_input_field_option_character),
             style = RebrandKoinTheme.typography.regular16,
-            color = RebrandKoinTheme.colors.sub500,
+            color = RebrandKoinTheme.colors.primary600,
             modifier = Modifier.padding(end = 1.dp, bottom = 1.dp)
         )
         Text(

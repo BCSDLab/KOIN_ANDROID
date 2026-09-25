@@ -22,7 +22,6 @@ fun DepartmentRadioButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val textColor = if (isSelected) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral500
     Row(
         modifier = modifier.noRippleClickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically,
@@ -34,15 +33,15 @@ fun DepartmentRadioButton(
             onClick = onClick,
             colors = RadioButtonDefaults.colors(
                 selectedColor = RebrandKoinTheme.colors.primary500,
-                unselectedColor = RebrandKoinTheme.colors.neutral500
+                unselectedColor = RebrandKoinTheme.colors.neutral400
             )
         )
         Text(
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.Start,
             text = text,
-            style = RebrandKoinTheme.typography.regular15.copy(
-                color = textColor
+            style = RebrandKoinTheme.typography.medium15.copy(
+                color = RebrandKoinTheme.colors.neutral600
             )
         )
     }

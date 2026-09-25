@@ -36,9 +36,9 @@ fun TimeEditBox(
         modifier
             .background(Color.White)
             .border(
-                width = 1.dp,
-                color = if (content.isError)RebrandKoinTheme.colors.sub500 else RebrandKoinTheme.colors.neutral300,
-                shape = RoundedCornerShape(4.dp)
+                width = 0.5.dp,
+                color = if (content.isError)RebrandKoinTheme.colors.primary600 else RebrandKoinTheme.colors.neutral300,
+                shape = RoundedCornerShape(16.dp)
             )
             .padding((5.5).dp),
         horizontalArrangement = Arrangement.SpaceBetween,
