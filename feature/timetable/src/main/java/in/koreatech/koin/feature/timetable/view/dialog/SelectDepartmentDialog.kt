@@ -114,6 +114,7 @@ fun SelectDepartmentDialog(
                     Button(
                         modifier = Modifier.defaultMinSize(minHeight = 1.dp),
                         onClick = {
+                            onConfirm(selectedDepartment)
                             onDismiss(false)
                         },
                         contentPadding = PaddingValues(vertical = 4.dp, horizontal = 12.dp),
