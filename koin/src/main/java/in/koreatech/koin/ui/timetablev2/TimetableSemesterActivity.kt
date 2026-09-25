@@ -9,16 +9,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.Icon
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -29,12 +25,10 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
 import `in`.koreatech.koin.core.designsystem.component.snackbar.KoinSnackbarDuration
 import `in`.koreatech.koin.core.designsystem.component.snackbar.KoinSnackbarHost
 import `in`.koreatech.koin.core.designsystem.component.snackbar.KoinSnackbarResult
 import `in`.koreatech.koin.core.designsystem.component.snackbar.rememberKoinSnackbarHostState
-import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -246,7 +240,7 @@ class TimetableSemesterActivity : ComponentActivity() {
                                 duration = KoinSnackbarDuration.Short
                             )
 
-                            when(result) {
+                            when (result) {
                                 KoinSnackbarResult.Dismissed -> {}
                                 KoinSnackbarResult.ActionPerformed -> {
                                     viewModel.restoreTimetableFrame()
