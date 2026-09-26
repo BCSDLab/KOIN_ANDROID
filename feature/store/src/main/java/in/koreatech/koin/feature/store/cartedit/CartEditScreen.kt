@@ -140,7 +140,7 @@ fun CartEditScreen(
                             navigateToCart()
                         }) {
                             Icon(
-                                modifier = Modifier.size(25.dp),
+                                modifier = Modifier.size(24.dp).padding(1.dp),
                                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_shopping_cart),
                                 contentDescription = null
                             )
