@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.core.notification
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.core.content.FileProvider
 import java.io.File
@@ -10,19 +12,33 @@ import java.net.URL
 import timber.log.Timber
 
 internal object NotificationImageProvider {
+    fun getBitmap(context: Context, imageUrl: String): Bitmap? =
+        getImageFile(context, imageUrl)?.let { BitmapFactory.decodeFile(it.file.absolutePath) }
+
     fun getUri(context: Context, imageUrl: String): Image? {
-        val format = imageUrl.imageFormatOrNull() ?: return null
+        val imageFile = getImageFile(context, imageUrl) ?: return null
 
         return runCatching {
-            val imageFile = download(context, imageUrl, format.extension)
             val contentUri = FileProvider.getUriForFile(
                 context,
                 "${context.packageName}.provider",
-                imageFile
+                imageFile.file
             )
-            Image(format.mimeType, contentUri)
+            Image(imageFile.mimeType, contentUri)
         }.onFailure {
-            Timber.e(it, "Notification message image download failed")
+            Timber.e(it, "Failed to create notification image URI")
+        }.getOrNull()
+    }
+
+    private fun getImageFile(context: Context, imageUrl: String): ImageFile? {
+        val format = imageUrl.imageFormatOrNull() ?: return null
+        return runCatching {
+            ImageFile(
+                file = download(context, imageUrl, format.extension),
+                mimeType = format.mimeType
+            )
+        }.onFailure {
+            Timber.e(it, "Notification image download failed")
         }.getOrNull()
     }
 
@@ -74,6 +90,8 @@ internal object NotificationImageProvider {
     }
 
     data class Image(val mimeType: String, val uri: Uri)
+
+    private data class ImageFile(val file: File, val mimeType: String)
 
     private data class ImageFormat(val mimeType: String, val extension: String)
 
