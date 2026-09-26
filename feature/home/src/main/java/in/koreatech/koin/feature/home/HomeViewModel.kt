@@ -1,10 +1,13 @@
 package `in`.koreatech.koin.feature.home
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.network.service.NetworkConnectivityService
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.callvan.GetRecruitingCallvanCountUseCase
 import `in`.koreatech.koin.domain.usecase.dining.GetDiningWithOperationTimeUseCase
+import `in`.koreatech.koin.domain.usecase.home.SyncHomeUseCase
 import `in`.koreatech.koin.domain.usecase.notification.GetNotificationsFlowUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCountUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreEventCountUseCase
@@ -17,6 +20,7 @@ import `in`.koreatech.koin.feature.home.model.toLocalWeather
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -32,9 +36,12 @@ class HomeViewModel @Inject constructor(
     private val getRecruitingCallvanCountUseCase: GetRecruitingCallvanCountUseCase,
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val getWeatherUseCase: GetWeatherUseCase,
-    private val getNotificationsFlowUseCase: GetNotificationsFlowUseCase
+    private val getNotificationsFlowUseCase: GetNotificationsFlowUseCase,
+    private val syncHomeUseCase: SyncHomeUseCase,
+    private val networkConnectivityService: NetworkConnectivityService
 ) : ViewModel(), ContainerHost<HomeState, HomeSideEffect> {
     override val container = container<HomeState, HomeSideEffect>(HomeState()) {
+        syncHome()
         getDining()
         getStoreCount()
         getStoreEventCount()
@@ -42,6 +49,13 @@ class HomeViewModel @Inject constructor(
         getUserName()
         getWeather()
         observeNotifications()
+    }
+
+    private fun syncHome() {
+        if (!networkConnectivityService.isConnected()) return
+        viewModelScope.launch {
+            syncHomeUseCase().onFailure { Timber.e(it) }
+        }
     }
 
     private fun getWeather() = intent {
