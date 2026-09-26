@@ -16,7 +16,7 @@ data class OrderHistoryData(
     val orderStatus: OrderStatus,
     val orderTitle: String,
     val openStatus: StoreStatus,
-    val orderableShopThumbnail: String,
+    val orderableShopThumbnail: String?,
     val totalAmount: Int
 )
 
