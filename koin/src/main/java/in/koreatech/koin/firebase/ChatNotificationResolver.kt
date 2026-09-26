@@ -12,10 +12,7 @@ class ChatNotificationResolver @Inject constructor() : NotificationResolver {
         val uri = payload.url.toChatUriOrNull() ?: return null
         val sender = payload.title?.removeSuffix(MESSAGE_TITLE_SUFFIX)?.takeIf(String::isNotBlank) ?: return null
         val message = payload.content?.takeIf(String::isNotBlank) ?: return null
-        val stableKey = uri.queryParameter(CHAT_ROOM_ID_QUERY)?.let { "chat:room:$it" }
-            ?: uri.queryParameter(ARTICLE_ID_QUERY)?.let { "chat:article:$it" }
-            ?: uri.queryParameter(ID_QUERY)?.let { "chat:article:$it" }
-            ?: return null
+        val stableKey = uri.queryParameter(CHAT_ROOM_ID_QUERY)?.let { "chat:room:$it" } ?: return null
 
         return MessagingNotification(
             stableKey = stableKey,
