@@ -7,7 +7,6 @@
     <ID>CyclomaticComplexMethod:LandDetailActivity.kt$LandDetailActivity$private fun setRoomOption(landDetail: LandDetail)</ID>
     <ID>CyclomaticComplexMethod:NotificationActivity.kt$NotificationActivity$private fun observeData()</ID>
     <ID>CyclomaticComplexMethod:TimetableActivity.kt$TimetableActivity$private fun initComposeView()</ID>
-    <ID>CyclomaticComplexMethod:TimetableSemesterActivity.kt$TimetableSemesterActivity$override fun onCreate(savedInstanceState: Bundle?)</ID>
     <ID>EmptyCatchBlock:DebugExtensions.kt${ }</ID>
     <ID>EmptyFunctionBlock:DebounceTextWatcher.kt$DebounceTextWatcher${}</ID>
     <ID>EmptyFunctionBlock:LoginContract.kt$LoginContract${ }</ID>
@@ -18,7 +17,7 @@
     <ID>LongMethod:NotificationActivity.kt$NotificationActivity$private fun observeData()</ID>
     <ID>LongMethod:SettingActivity.kt$SettingActivity$private fun initListeners()</ID>
     <ID>LongMethod:TimetableActivity.kt$TimetableActivity$private fun initComposeView()</ID>
-    <ID>LongMethod:TimetableSemesterActivity.kt$TimetableSemesterActivity$override fun onCreate(savedInstanceState: Bundle?)</ID>
+    <ID>LongMethod:TimetableSemesterActivity.kt$TimetableSemesterActivity$@OptIn(ExperimentalMaterial3Api::class) override fun onCreate(savedInstanceState: Bundle?)</ID>
     <ID>SpreadOperator:MainActivity.kt$MainActivity$( context = this, type = Pair(EXTRA_TYPE, type), *arrayOf( Pair(EXTRA_ID, targetId), Pair(EXTRA_BOARD_ID, targetBoardId), Pair(EXTRA_ARTICLE_ID, targetArticleId), Pair(EXTRA_CHAT_ROOM_ID, targetChatId), Pair(EXTRA_CLUB_ID, targetClubId), Pair(EXTRA_EVENT_ID, targetEventId) ) )</ID>
     <ID>SpreadOperator:SchemeActivity.kt$SchemeActivity$( context = this, type = Pair(EXTRA_TYPE, url?.toHost()), *(getExtraIds(url ?: "").toTypedArray()) )</ID>
     <ID>SpreadOperator:SchemeActivity.kt$SchemeActivity$( context = this, type = Pair(EXTRA_TYPE, url?.toHost()), navType = Pair(EXTRA_NAV_TYPE, NavigatorType.MAIN.type), *(getExtraIds(url ?: "").toTypedArray()) )</ID>
@@ -33,6 +32,5 @@
     <ID>TooManyFunctions:NotificationActivity.kt$NotificationActivity : ActivityBase</ID>
     <ID>TooManyFunctions:SchemeActivity.kt$SchemeActivity : ActivityBase</ID>
     <ID>TooManyFunctions:SplashActivity.kt$SplashActivity : ActivityBase</ID>
-    <ID>TooManyFunctions:TimetableActivity.kt$TimetableActivity : KoinNavigationDrawerActivity</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -25,7 +25,7 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.FilledButtonType
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
@@ -44,7 +44,7 @@ fun DeleteScheduleDialog(
         onDismissRequest = onDismiss
     ) {
         Surface(
-            shape = KoinTheme.shapes.extraSmall,
+            shape = RebrandKoinTheme.shapes.extraSmall,
             color = Color.White
         ) {
             Column(
@@ -65,20 +65,20 @@ fun DeleteScheduleDialog(
                     texts = title,
                     highlightIndices = listOf(1),
                     defaultStyle =
-                    KoinTheme.typography.medium16.copy(
-                        color = KoinTheme.colors.neutral800
+                    RebrandKoinTheme.typography.medium16.copy(
+                        color = RebrandKoinTheme.colors.neutral800
                     ),
                     highlightStyle =
-                    KoinTheme.typography.bold16.copy(
-                        color = KoinTheme.colors.danger700
+                    RebrandKoinTheme.typography.bold16.copy(
+                        color = RebrandKoinTheme.colors.danger700
                     )
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = stringResource(id = R.string.delete_schedule_description),
                     style =
-                    KoinTheme.typography.medium16.copy(
-                        color = KoinTheme.colors.neutral800
+                    RebrandKoinTheme.typography.medium16.copy(
+                        color = RebrandKoinTheme.colors.neutral800
                     )
                 )
                 Spacer(modifier = Modifier.height(24.dp))
@@ -93,20 +93,20 @@ fun DeleteScheduleDialog(
                             .weight(1.0F),
                         colors =
                         ButtonColors(
-                            containerColor = KoinTheme.colors.neutral0,
-                            contentColor = KoinTheme.colors.neutral500,
-                            disabledContainerColor = KoinTheme.colors.neutral400,
-                            disabledContentColor = KoinTheme.colors.neutral500
+                            containerColor = RebrandKoinTheme.colors.neutral0,
+                            contentColor = RebrandKoinTheme.colors.neutral500,
+                            disabledContainerColor = RebrandKoinTheme.colors.neutral400,
+                            disabledContentColor = RebrandKoinTheme.colors.neutral500
                         ),
                         shape = MaterialTheme.shapes.extraSmall,
                         contentPadding = PaddingValues(0.dp),
-                        border = BorderStroke(1.dp, KoinTheme.colors.neutral500),
+                        border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral500),
                         onClick = { onDismiss() }
                     ) {
                         Text(
                             text = stringResource(id = R.string.common_cancellation),
-                            style = KoinTheme.typography.medium15,
-                            color = KoinTheme.colors.neutral600
+                            style = RebrandKoinTheme.typography.medium15,
+                            color = RebrandKoinTheme.colors.neutral600
                         )
                     }
                     FilledTextButton(
@@ -127,7 +127,7 @@ fun DeleteScheduleDialog(
 @Preview
 @Composable
 private fun DeleteScheduleDialogPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         DeleteScheduleDialog(
             scheduleName = "일정명",
             onConfirm = {},

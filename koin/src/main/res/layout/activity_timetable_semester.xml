@@ -6,21 +6,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <in.koreatech.koin.core.appbar.AppBarBase
-            android:id="@+id/timetable_list_appbar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:leftButtonBackground="@drawable/ic_back_arrow"
-            app:leftButtonHeight="14dp"
-            app:leftButtonWidth="14dp"
-            app:rightButtonBackground="@drawable/ic_edit"
-            app:rightButtonHeight="18dp"
-            app:rightButtonWidth="12dp"
-            app:titleText="@string/timetable_semester_title" />
-
         <androidx.compose.ui.platform.ComposeView
             android:id="@+id/timetable_list_compose_view"
             android:layout_width="0dp"
@@ -28,7 +13,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/timetable_list_appbar" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

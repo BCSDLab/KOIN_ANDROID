@@ -15,7 +15,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 fun TimetableScheduleBox(
@@ -25,29 +25,27 @@ fun TimetableScheduleBox(
     onClick: () -> Unit = {}
 ) {
     Box(
-        modifier =
-        modifier
+        modifier = modifier
             .background(Color.White)
             .border(
                 width = 1.dp,
-                color = KoinTheme.colors.neutral300,
+                color = RebrandKoinTheme.colors.neutral300,
                 shape = RoundedCornerShape(10.dp)
             )
             .widthIn(max = (LocalConfiguration.current.screenWidthDp / 2).dp)
             .noRippleClickable { onClick() }
-            .padding(5.dp)
+            .padding(vertical = 8.dp, horizontal = 10.dp)
     ) {
         Text(
-            text =
-            if (currentSemester.isEmpty()) {
+            text = if (currentSemester.isEmpty()) {
                 "학기 추가하기"
             } else {
                 currentSemester.toSemesterTitle(
                     timetableName
                 )
             },
-            style = KoinTheme.typography.regular14,
-            color = KoinTheme.colors.neutral800,
+            style = RebrandKoinTheme.typography.regular14,
+            color = RebrandKoinTheme.colors.neutral800,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )

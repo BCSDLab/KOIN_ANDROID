@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 fun SemesterButton(
@@ -38,19 +38,19 @@ fun SemesterButton(
             OutlinedBoxButton(
                 modifier = modifier,
                 text = text,
-                textStyle = KoinTheme.typography.medium16,
+                textStyle = RebrandKoinTheme.typography.medium16,
                 onClick = onClick,
                 colors =
                 ButtonColors(
-                    containerColor = KoinTheme.colors.neutral0,
-                    contentColor = KoinTheme.colors.neutral800,
-                    disabledContainerColor = KoinTheme.colors.neutral300,
-                    disabledContentColor = KoinTheme.colors.neutral800
+                    containerColor = RebrandKoinTheme.colors.neutral0,
+                    contentColor = RebrandKoinTheme.colors.neutral800,
+                    disabledContainerColor = RebrandKoinTheme.colors.neutral300,
+                    disabledContentColor = RebrandKoinTheme.colors.neutral800
                 ),
                 border =
                 BorderStroke(
                     width = 1.dp,
-                    color = KoinTheme.colors.neutral300
+                    color = RebrandKoinTheme.colors.neutral300
                 )
             )
         }

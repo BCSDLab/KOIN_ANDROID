@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
 
@@ -49,7 +49,7 @@ fun RequestLoginDialog(
             Modifier
                 .wrapContentWidth()
                 .wrapContentHeight(),
-            shape = KoinTheme.shapes.extraSmall,
+            shape = RebrandKoinTheme.shapes.extraSmall,
             color = Color.White
         ) {
             Column(
@@ -64,16 +64,16 @@ fun RequestLoginDialog(
             ) {
                 Text(
                     text = stringResource(id = R.string.request_login_title),
-                    color = KoinTheme.colors.neutral800,
+                    color = RebrandKoinTheme.colors.neutral800,
                     textAlign = TextAlign.Center,
-                    style = KoinTheme.typography.bold16
+                    style = RebrandKoinTheme.typography.bold16
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = stringResource(id = R.string.request_login_description),
-                    color = KoinTheme.colors.neutral800,
+                    color = RebrandKoinTheme.colors.neutral800,
                     textAlign = TextAlign.Center,
-                    style = KoinTheme.typography.regular14
+                    style = RebrandKoinTheme.typography.regular14
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(
@@ -87,20 +87,20 @@ fun RequestLoginDialog(
                             .weight(1.0F),
                         colors =
                         ButtonColors(
-                            containerColor = KoinTheme.colors.neutral0,
-                            contentColor = KoinTheme.colors.neutral500,
-                            disabledContainerColor = KoinTheme.colors.neutral400,
-                            disabledContentColor = KoinTheme.colors.neutral500
+                            containerColor = RebrandKoinTheme.colors.neutral0,
+                            contentColor = RebrandKoinTheme.colors.neutral500,
+                            disabledContainerColor = RebrandKoinTheme.colors.neutral400,
+                            disabledContentColor = RebrandKoinTheme.colors.neutral500
                         ),
                         shape = MaterialTheme.shapes.extraSmall,
                         contentPadding = PaddingValues(0.dp),
-                        border = BorderStroke(1.dp, KoinTheme.colors.neutral500),
+                        border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral500),
                         onClick = { onDismiss(false) }
                     ) {
                         Text(
                             text = stringResource(id = R.string.lecture_duplication_cancellation),
-                            style = KoinTheme.typography.medium15,
-                            color = KoinTheme.colors.neutral600
+                            style = RebrandKoinTheme.typography.medium15,
+                            color = RebrandKoinTheme.colors.neutral600
                         )
                     }
                     FilledTextButton(
@@ -127,7 +127,7 @@ fun RequestLoginDialog(
 @Preview
 @Composable
 private fun RequestLoginDialogPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         RequestLoginDialog(
             onConfirm = {},
             onDismiss = {}

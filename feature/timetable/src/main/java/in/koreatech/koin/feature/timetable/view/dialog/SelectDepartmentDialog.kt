@@ -2,18 +2,22 @@ package `in`.koreatech.koin.feature.timetable.view.dialog
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -29,11 +33,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.window.DialogProperties
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.DepartmentRadioButton
-import `in`.koreatech.koin.feature.timetable.component.FilledButtonType
-import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,7 +58,7 @@ fun SelectDepartmentDialog(
         )
     ) {
         Surface(
-            shape = KoinTheme.shapes.extraSmall,
+            shape = RebrandKoinTheme.shapes.extraSmall,
             color = Color.White
         ) {
             Column(
@@ -65,8 +67,8 @@ fun SelectDepartmentDialog(
                 Text(
                     modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp),
                     text = stringResource(id = R.string.select_department_title),
-                    style = KoinTheme.typography.medium18.copy(
-                        color = KoinTheme.colors.primary500,
+                    style = RebrandKoinTheme.typography.medium18.copy(
+                        color = RebrandKoinTheme.colors.primary500,
                         fontWeight = FontWeight.SemiBold
                     )
                 )
@@ -91,23 +93,42 @@ fun SelectDepartmentDialog(
                         .padding(vertical = 12.dp, horizontal = 24.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)
                 ) {
-                    FilledTextButton(
-                        modifier = Modifier
-                            .height(30.dp)
-                            .width(60.dp),
-                        text = stringResource(id = R.string.cancel),
-                        textStyle = KoinTheme.typography.regular14,
-                        buttonStyle = FilledButtonType.Neutral,
-                        onClick = { onDismiss(false) }
-                    )
-                    FilledTextButton(
-                        modifier = Modifier
-                            .height(30.dp)
-                            .width(60.dp),
-                        text = stringResource(id = R.string.common_complete),
-                        textStyle = KoinTheme.typography.regular14,
-                        onClick = { onConfirm(selectedDepartment) }
-                    )
+                    TextButton(
+                        modifier = Modifier.defaultMinSize(minHeight = 1.dp),
+                        onClick = {
+                            onDismiss(false)
+                        },
+                        contentPadding = PaddingValues(vertical = 4.dp, horizontal = 12.dp),
+                        shape = RoundedCornerShape(6.dp),
+                        colors = ButtonDefaults.textButtonColors(
+                            containerColor = RebrandKoinTheme.colors.neutral0,
+                            contentColor = Color(0xFF8B939C)
+                        )
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.cancel),
+                            style = RebrandKoinTheme.typography.regular14
+                        )
+                    }
+
+                    Button(
+                        modifier = Modifier.defaultMinSize(minHeight = 1.dp),
+                        onClick = {
+                            onConfirm(selectedDepartment)
+                            onDismiss(false)
+                        },
+                        contentPadding = PaddingValues(vertical = 4.dp, horizontal = 12.dp),
+                        shape = RoundedCornerShape(6.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = RebrandKoinTheme.colors.primary500,
+                            contentColor = RebrandKoinTheme.colors.neutral0
+                        )
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.common_complete),
+                            style = RebrandKoinTheme.typography.regular14
+                        )
+                    }
                 }
             }
         }
@@ -144,7 +165,7 @@ fun DepartmentRadioButtons(
 @Preview
 @Composable
 private fun SelectDepartmentDialogPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         SelectDepartmentDialog(
             department = "",
             departments = emptyList(),

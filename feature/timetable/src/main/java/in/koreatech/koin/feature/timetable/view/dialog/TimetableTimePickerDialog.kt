@@ -24,7 +24,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -32,7 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.picker.KoinPicker
 import `in`.koreatech.koin.core.designsystem.component.picker.rememberPickerState
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
 import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
@@ -90,7 +89,7 @@ fun TimetableTimePickerDialog(
         modifier = modifier
     ) {
         Surface(
-            shape = KoinTheme.shapes.extraSmall,
+            shape = RebrandKoinTheme.shapes.extraSmall,
             color = Color.White
         ) {
             Column(
@@ -108,8 +107,8 @@ fun TimetableTimePickerDialog(
             ) {
                 Text(
                     text = title,
-                    style = KoinTheme.typography.bold16,
-                    color = KoinTheme.colors.neutral800
+                    style = RebrandKoinTheme.typography.bold16,
+                    color = RebrandKoinTheme.colors.neutral800
                 )
                 Row(
                     modifier =
@@ -132,27 +131,21 @@ fun TimetableTimePickerDialog(
                             }
                         },
                         selectedTextStyle =
-                        KoinTheme.typography.bold20.copy(
+                        RebrandKoinTheme.typography.bold20.copy(
                             textAlign = TextAlign.End
                         ),
                         unselectedTextStyle =
-                        KoinTheme.typography.bold20.copy(
+                        RebrandKoinTheme.typography.bold20.copy(
                             textAlign = TextAlign.End
                         ),
-                        selectedItemColor = KoinTheme.colors.neutral700,
-                        unselectedItemColor = KoinTheme.colors.neutral500,
-                        brushVerticalGradient =
-                        Brush.verticalGradient(
-                            0f to Color.Transparent,
-                            0.5f to Color.Black,
-                            1f to Color.Transparent
-                        ),
+                        selectedItemColor = Color(0x993C3C43),
+                        unselectedItemColor = Color(0x993C3C43),
                         modifier = Modifier.weight(.45f)
                     )
                     Text(
                         text = ":",
-                        style = KoinTheme.typography.bold20,
-                        color = KoinTheme.colors.neutral700,
+                        style = RebrandKoinTheme.typography.bold20,
+                        color = Color(0x993C3C43),
                         modifier = Modifier.weight(.1f),
                         textAlign = TextAlign.Center
                     )
@@ -174,17 +167,11 @@ fun TimetableTimePickerDialog(
                                 1
                             }
                         },
-                        selectedTextStyle = KoinTheme.typography.bold20,
-                        unselectedTextStyle = KoinTheme.typography.bold20,
-                        selectedItemColor = KoinTheme.colors.neutral700,
-                        unselectedItemColor = KoinTheme.colors.neutral500,
+                        selectedTextStyle = RebrandKoinTheme.typography.bold20,
+                        unselectedTextStyle = RebrandKoinTheme.typography.bold20,
+                        selectedItemColor = Color(0x993C3C43),
+                        unselectedItemColor = Color(0x993C3C43),
                         modifier = Modifier.weight(.45f),
-                        brushVerticalGradient =
-                        Brush.verticalGradient(
-                            0f to Color.Transparent,
-                            0.5f to Color.Black,
-                            1f to Color.Transparent
-                        ),
                         infiniteScroll = false
                     )
                 }
@@ -199,20 +186,20 @@ fun TimetableTimePickerDialog(
                             .weight(1.0F),
                         colors =
                         ButtonColors(
-                            containerColor = KoinTheme.colors.neutral0,
-                            contentColor = KoinTheme.colors.neutral500,
-                            disabledContainerColor = KoinTheme.colors.neutral400,
-                            disabledContentColor = KoinTheme.colors.neutral500
+                            containerColor = RebrandKoinTheme.colors.neutral0,
+                            contentColor = RebrandKoinTheme.colors.neutral500,
+                            disabledContainerColor = RebrandKoinTheme.colors.neutral400,
+                            disabledContentColor = RebrandKoinTheme.colors.neutral500
                         ),
                         shape = MaterialTheme.shapes.extraSmall,
                         contentPadding = PaddingValues(0.dp),
-                        border = BorderStroke(1.dp, KoinTheme.colors.neutral500),
+                        border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral500),
                         onClick = { onDismiss(customContent, false) }
                     ) {
                         Text(
                             text = stringResource(id = R.string.common_cancellation),
-                            style = KoinTheme.typography.medium15,
-                            color = KoinTheme.colors.neutral600
+                            style = RebrandKoinTheme.typography.medium15,
+                            color = RebrandKoinTheme.colors.neutral600
                         )
                     }
                     FilledTextButton(

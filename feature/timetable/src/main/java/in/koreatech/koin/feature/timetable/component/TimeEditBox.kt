@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.icon.StableIcon
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
 import java.time.LocalTime
@@ -36,9 +36,9 @@ fun TimeEditBox(
         modifier
             .background(Color.White)
             .border(
-                width = 1.dp,
-                color = if (content.isError)KoinTheme.colors.sub500 else KoinTheme.colors.neutral300,
-                shape = RoundedCornerShape(4.dp)
+                width = 0.5.dp,
+                color = if (content.isError)RebrandKoinTheme.colors.primary600 else RebrandKoinTheme.colors.neutral300,
+                shape = RoundedCornerShape(16.dp)
             )
             .padding((5.5).dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -51,8 +51,8 @@ fun TimeEditBox(
             } else {
                 localTime.format(hourFormatter)
             },
-            style = KoinTheme.typography.bold12,
-            color = KoinTheme.colors.neutral800,
+            style = RebrandKoinTheme.typography.bold12,
+            color = RebrandKoinTheme.colors.neutral800,
             modifier = Modifier.padding(start = (3.5).dp)
         )
 

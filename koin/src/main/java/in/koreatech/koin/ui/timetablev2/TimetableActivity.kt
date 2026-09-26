@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -19,24 +20,24 @@ import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.rememberGraphicsLayer
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
 import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
+import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.core.navigation.Navigator
-import `in`.koreatech.koin.core.util.KeyboardUtils
 import `in`.koreatech.koin.databinding.ActivityTimetableBinding
 import `in`.koreatech.koin.feature.timetable.component.CircleLoadingBar
 import `in`.koreatech.koin.feature.timetable.state.BottomSheetUI
@@ -52,19 +53,12 @@ import `in`.koreatech.koin.feature.timetable.view.dialog.ScheduleDuplicationDial
 import `in`.koreatech.koin.feature.timetable.view.dialog.SelectDepartmentDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.TimetableTimePickerDialog
 import `in`.koreatech.koin.feature.timetable.viewmodel.TimetableViewModel
-import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
-import `in`.koreatech.koin.ui.navigation.state.MenuState
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
-class TimetableActivity : KoinNavigationDrawerActivity() {
-    override val screenTitle: String
-        get() = SCREEN_TITLE
-    override val menuState: MenuState
-        get() = MenuState.Timetable
-
+class TimetableActivity : ComponentActivity() {
     @Inject
     lateinit var navigator: Navigator
 
@@ -108,12 +102,11 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdgeWithDarkStatusBar()
+        enableEdgeToEdgeWithLightStatusBar()
         super.onCreate(savedInstanceState)
         binding = ActivityTimetableBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initView()
-        initEvent()
     }
 
     private fun initView() {
@@ -142,34 +135,11 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
             val graphicsLayer = rememberGraphicsLayer()
             val scope = rememberCoroutineScope()
 
-            hideKeyboard(sheetState.isCollapsed)
+            val keyboardController = LocalSoftwareKeyboardController.current
 
-            setAppbarEvent {
-                state.semesters.ifEmpty {
-                    viewModel.updateSideEffect(
-                        TimetableSideEffect.SnackBar(
-                            getString(R.string.timetable_error_no_semester)
-                        )
-                    )
-                    return@setAppbarEvent
-                }
-                scope.launch {
-                    when (state.bottomSheetUI) {
-                        BottomSheetUI.DEFAULT -> {
-                            viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
-                            if (sheetState.isExpanded) sheetState.collapse() else sheetState.expand()
-                        }
-                        BottomSheetUI.DETAIL -> {
-                            if (sheetState.isExpanded) {
-                                sheetState.collapse()
-                                viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
-                                sheetState.expand()
-                            } else {
-                                viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
-                                sheetState.expand()
-                            }
-                        }
-                    }
+            SideEffect {
+                if (sheetState.isCollapsed) {
+                    keyboardController?.hide()
                 }
             }
 
@@ -371,7 +341,35 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     onClickStartTime = viewModel::updateIsStartTimePickerDialogVisible,
                     onClickEndTime = viewModel::updateIsEndTimePickerDialogVisible,
                     onClickAddCustomContent = viewModel::addCustomExtraContent,
-                    onClickRemoveCustomContent = viewModel::removeCustomExtraContent
+                    onClickRemoveCustomContent = viewModel::removeCustomExtraContent,
+                    onTopAppBarAction = {
+                        state.semesters.ifEmpty {
+                            viewModel.updateSideEffect(
+                                TimetableSideEffect.SnackBar(
+                                    getString(R.string.timetable_error_no_semester)
+                                )
+                            )
+                            return@ifEmpty
+                        }
+                        scope.launch {
+                            when (state.bottomSheetUI) {
+                                BottomSheetUI.DEFAULT -> {
+                                    viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
+                                    if (sheetState.isExpanded) sheetState.collapse() else sheetState.expand()
+                                }
+                                BottomSheetUI.DETAIL -> {
+                                    if (sheetState.isExpanded) {
+                                        sheetState.collapse()
+                                        viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
+                                        sheetState.expand()
+                                    } else {
+                                        viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
+                                        sheetState.expand()
+                                    }
+                                }
+                            }
+                        }
+                    }
                 )
 
                 CircleLoadingBar(loading = state.loading)
@@ -410,10 +408,6 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
         }
     }
 
-    private fun initEvent() {
-        setAppbarEvent()
-    }
-
     private fun handleAddCustomLectureMode(isAnonymous: Boolean, callback: () -> Unit) {
         if (isAnonymous) {
             viewModel.updateIsLoginDialogVisible(true)
@@ -449,21 +443,6 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
     private fun saveTimetable(bitmap: Bitmap, callback: (Boolean) -> Unit) {
         BitmapUtils(this).saveBitmapImage(bitmap).let {
             callback(it)
-        }
-    }
-
-    private fun setAppbarEvent(rightButtonClickable: () -> Unit = {}) {
-        binding.koinBaseAppbar.setOnClickListener {
-            when (it.id) {
-                AppBarBase.getLeftButtonId() -> onBackPressedDispatcher.onBackPressed()
-                AppBarBase.getRightButtonId() -> rightButtonClickable()
-            }
-        }
-    }
-
-    private fun hideKeyboard(isCollapsed: Boolean) {
-        if (isCollapsed) {
-            KeyboardUtils(this).hide(binding.root)
         }
     }
 
