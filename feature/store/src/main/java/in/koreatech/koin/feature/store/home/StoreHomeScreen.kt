@@ -309,7 +309,10 @@ private fun StoreHomeScreen(
 
     LaunchedEffect(categoryId) {
         if (categoryId != -1) {
-            categoryListState.animateScrollToItem(storeCategories.map { it.id }.indexOf(categoryId))
+            val categoryIndex = storeCategories.indexOfFirst { it.id == categoryId }
+            if (categoryIndex >= 0) {
+                categoryListState.animateScrollToItem(categoryIndex)
+            }
             shopListState.animateScrollToItem(0)
         }
     }
@@ -372,23 +375,23 @@ private fun StoreHomeScreen(
                     key = { index, category ->
                         category.id
                     }
-                ) { index, category ->
+                ) { _, category ->
                     KoinStoreCategoryItem(
                         categoryName = category.name,
                         categoryIcon = rememberAsyncImagePainter(
                             model = category.imageUrl,
                             imageLoader = KoinCoilImageLoader.getImageLoader(context)
                         ),
-                        isSelected = storeCategories[index].id == categoryId,
+                        isSelected = category.id == categoryId,
                         onClick = remember(key1 = category.id) {
                             {
-                                onCategoryChange(storeCategories[index].id)
+                                onCategoryChange(category.id)
                                 EventLogger.logClickEvent(
                                     EventAction.BUSINESS,
                                     AnalyticsConstant.Label.SHOP_CATEGORIES,
                                     storeCategories.firstOrNull { it.id == initCategoryId }?.name ?: "",
-                                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, storeCategories.first { it.id == categoryId }.name),
-                                    EventExtra(AnalyticsConstant.CURRENT_PAGE, storeCategories.first { it.id == index + 1 }.name),
+                                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, storeCategories.firstOrNull { it.id == categoryId }?.name ?: ""),
+                                    EventExtra(AnalyticsConstant.CURRENT_PAGE, category.name),
                                     EventExtra(
                                         AnalyticsConstant.DURATION_TIME,
                                         EventUtils.getElapsedTimeAndReset().toString()
@@ -485,7 +488,7 @@ private fun StoreHomeScreen(
                         EventLogger.logClickEvent(
                             EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_CAN,
-                            "check_min_amount_${storeCategories.first { categoryId == initCategoryId }.name}"
+                            "check_min_amount_${storeCategories.firstOrNull { it.id == categoryId }?.name.orEmpty()}"
                         )
                     }
                 )

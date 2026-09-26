@@ -26,7 +26,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -65,7 +65,7 @@ fun OrderBottomBar(
             Column {
                 Text(
                     text = stringResource(R.string.price_with_won, totalPrice),
-                    style = RebrandKoinTheme.typography.bold18,
+                    style = RebrandKoinTheme.typography.bold18.copy(fontWeight = FontWeight.SemiBold),
                     color = RebrandKoinTheme.colors.neutral800
                 )
                 Text(
@@ -109,11 +109,8 @@ fun OrderBottomBar(
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
                     text = stringResource(R.string.order),
-                    style = RebrandKoinTheme.typography.regular14.copy(
-                        lineHeightStyle = LineHeightStyle(
-                            trim = LineHeightStyle.Trim.Both,
-                            alignment = LineHeightStyle.Alignment.Center
-                        )
+                    style = RebrandKoinTheme.typography.medium15.copy(
+                        fontWeight = FontWeight.SemiBold
                     )
                 )
             }

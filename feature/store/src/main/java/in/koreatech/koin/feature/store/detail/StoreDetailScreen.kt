@@ -87,6 +87,7 @@ import `in`.koreatech.koin.feature.store.detail.component.StoreDetailImage
 import `in`.koreatech.koin.feature.store.detail.component.StoreDetailInfo
 import `in`.koreatech.koin.feature.store.detail.component.menuListSection
 import `in`.koreatech.koin.feature.store.enums.CartValidation
+import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
 import `in`.koreatech.koin.feature.store.model.StoreNavigationData
 import kotlin.math.roundToInt
 import kotlinx.collections.immutable.persistentListOf
@@ -112,7 +113,7 @@ fun StoreDetailScreen(
     navigateToCart: () -> Unit = {},
     navigateToBack: () -> Unit = {},
     navigateToDetailInfo: (selectedInfo: String) -> Unit = {},
-    navigateToNotice: (storeId: Int) -> Unit = {},
+    navigateToNotice: (selectedInfo: String) -> Unit = {},
     navigateToReview: (StoreNavigationData, String) -> Unit = { _, _ -> },
     navigateToMenuInfo: (menuId: Int) -> Unit = {}
 ) {
@@ -379,7 +380,7 @@ fun StoreDetailScreen(
                                     AnalyticsConstant.Label.SHOP_BENEFIT_ENTRY,
                                     uiState.store.name
                                 )
-                                navigateToNotice(uiState.store.shopId)
+                                navigateToNotice(StoreDetailInfoType.EVENT.name)
                             },
                             call = {
                                 viewModel.intent {

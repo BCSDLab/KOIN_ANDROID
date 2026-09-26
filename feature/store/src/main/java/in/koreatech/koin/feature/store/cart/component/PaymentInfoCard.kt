@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -15,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -39,17 +39,23 @@ fun PaymentSummaryCard(
         Spacer(modifier = Modifier.height(12.dp))
         Card(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp),
-            elevation = CardDefaults.cardElevation(4.dp),
+            shape = RebrandKoinTheme.shapes.small,
+            elevation = CardDefaults.cardElevation(1.dp),
             colors = CardDefaults.cardColors(containerColor = RebrandKoinTheme.colors.neutral0)
         ) {
-            Column(modifier = Modifier.padding(20.dp)) {
+            Column(modifier = Modifier.padding(24.dp)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = stringResource(R.string.total_amount), style = RebrandKoinTheme.typography.bold16)
-                    Text(text = stringResource(R.string.price_with_won, totalAmount), style = RebrandKoinTheme.typography.bold16)
+                    Text(
+                        text = stringResource(R.string.total_amount),
+                        style = RebrandKoinTheme.typography.medium15.copy(fontWeight = FontWeight.SemiBold)
+                    )
+                    Text(
+                        text = stringResource(R.string.price_with_won, totalAmount),
+                        style = RebrandKoinTheme.typography.medium15.copy(fontWeight = FontWeight.SemiBold)
+                    )
                 }
                 Spacer(modifier = Modifier.height(12.dp))
                 Row(
@@ -58,11 +64,15 @@ fun PaymentSummaryCard(
                 ) {
                     Text(
                         text = stringResource(R.string.menu_amount),
-                        color = RebrandKoinTheme.colors.neutral500
+                        style = RebrandKoinTheme.typography.regular13.copy(
+                            color = RebrandKoinTheme.colors.neutral500
+                        )
                     )
                     Text(
                         text = stringResource(R.string.price_with_won, itemAmount),
-                        color = RebrandKoinTheme.colors.neutral500
+                        style = RebrandKoinTheme.typography.regular13.copy(
+                            color = RebrandKoinTheme.colors.neutral500
+                        )
                     )
                 }
                 Spacer(modifier = Modifier.height(4.dp))
@@ -72,11 +82,15 @@ fun PaymentSummaryCard(
                 ) {
                     Text(
                         text = stringResource(R.string.delivery_amount),
-                        color = RebrandKoinTheme.colors.neutral500
+                        style = RebrandKoinTheme.typography.regular13.copy(
+                            color = RebrandKoinTheme.colors.neutral500
+                        )
                     )
                     Text(
                         text = stringResource(R.string.price_with_won, deliveryFee),
-                        color = RebrandKoinTheme.colors.neutral500
+                        style = RebrandKoinTheme.typography.regular13.copy(
+                            color = RebrandKoinTheme.colors.neutral500
+                        )
                     )
                 }
                 Spacer(modifier = Modifier.height(12.dp))
@@ -88,11 +102,11 @@ fun PaymentSummaryCard(
                 ) {
                     Text(
                         text = stringResource(R.string.expected_payment_amount),
-                        style = RebrandKoinTheme.typography.bold16
+                        style = RebrandKoinTheme.typography.medium16.copy(fontWeight = FontWeight.SemiBold)
                     )
                     Text(
                         text = stringResource(R.string.price_with_won, finalPaymentAmount),
-                        style = RebrandKoinTheme.typography.bold16
+                        style = RebrandKoinTheme.typography.medium16.copy(fontWeight = FontWeight.SemiBold)
                     )
                 }
             }

@@ -199,6 +199,7 @@ fun ShopOriginInfoScreen(
             )
             Spacer(Modifier.height(6.dp))
             HighlightSection(
+                isHighlighted = selectedInfo == StoreDetailInfoType.EVENT.name,
                 content = {
                     Text(
                         text = stringResource(R.string.store_notice),

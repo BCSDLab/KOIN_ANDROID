@@ -59,8 +59,7 @@ fun LazyListScope.menuListSection(
         ) {
             Text(
                 text = category,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
+                style = RebrandKoinTheme.typography.bold20,
                 modifier = Modifier.padding(vertical = 8.dp, horizontal = 10.dp)
             )
 
@@ -68,7 +67,7 @@ fun LazyListScope.menuListSection(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 10.dp),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(24.dp),
                 elevation = CardDefaults.cardElevation(0.5.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = KoinTheme.colors.neutral0
@@ -108,13 +107,14 @@ fun MenuItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = menu.name, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
+            Text(text = menu.name, style = KoinTheme.typography.medium18.copy(fontWeight = FontWeight.SemiBold))
             if (menu.description?.isNotEmpty() == true) {
                 Text(
                     modifier = Modifier.padding(top = 4.dp),
                     text = menu.description,
-                    fontSize = 12.sp,
-                    color = KoinTheme.colors.neutral500
+                    style = KoinTheme.typography.regular12.copy(
+                        color = KoinTheme.colors.neutral500
+                    )
                 )
             }
 
