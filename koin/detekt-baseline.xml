@@ -7,6 +7,7 @@
     <ID>CyclomaticComplexMethod:LandDetailActivity.kt$LandDetailActivity$private fun setRoomOption(landDetail: LandDetail)</ID>
     <ID>CyclomaticComplexMethod:NotificationActivity.kt$NotificationActivity$private fun observeData()</ID>
     <ID>CyclomaticComplexMethod:TimetableActivity.kt$TimetableActivity$private fun initComposeView()</ID>
+    <ID>CyclomaticComplexMethod:TimetableSemesterActivity.kt$TimetableSemesterActivity$@OptIn(ExperimentalMaterial3Api::class) override fun onCreate(savedInstanceState: Bundle?)</ID>
     <ID>EmptyCatchBlock:DebugExtensions.kt${ }</ID>
     <ID>EmptyFunctionBlock:DebounceTextWatcher.kt$DebounceTextWatcher${}</ID>
     <ID>EmptyFunctionBlock:LoginContract.kt$LoginContract${ }</ID>
