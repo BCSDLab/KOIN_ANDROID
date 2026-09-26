@@ -18,13 +18,16 @@ import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.subIntent
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 
 @HiltViewModel
+@OptIn(OrbitExperimental::class)
 class ShoppingCartViewModel @Inject constructor(
     private val getCartItemUseCase: GetCartItemUseCase,
     private val validateCartItemsUseCase: ValidateCartItemsUseCase,
@@ -46,7 +49,7 @@ class ShoppingCartViewModel @Inject constructor(
             when (it) {
                 is User.Student,
                 is User.General -> {
-                    getCart(CartType.DELIVERY)
+                    fetchCart(CartType.DELIVERY)
                     reduce {
                         state.copy(isLoggedIn = true)
                     }
@@ -61,19 +64,27 @@ class ShoppingCartViewModel @Inject constructor(
     }
 
     fun getCart(type: CartType): Job = intent {
+        fetchCart(type)
+    }
+
+    private suspend fun fetchCart(type: CartType): Unit = subIntent {
         reduce { state.copy(isLoading = true) }
         getCartItemUseCase(type.name).onSuccess {
             reduce { state.copy(cart = it, cartType = type, isLoading = false) }
         }.onFailure {
             reduce { state.copy(isLoading = false) }
             when (it) {
-                is KoinStoreException.ShopNotDeliverableException -> getCart(CartType.TAKE_OUT)
-                is KoinStoreException.ShopNotTakeoutAvailableException -> getCart(CartType.TAKE_OUT)
+                is KoinStoreException.ShopNotDeliverableException -> fetchCart(CartType.TAKE_OUT)
+                is KoinStoreException.ShopNotTakeoutAvailableException -> fetchCart(CartType.TAKE_OUT)
             }
         }
     }
 
     fun getCartValidate() = intent {
+        validateCart()
+    }
+
+    private suspend fun validateCart() = subIntent {
         reduce { state.copy(isLoading = true) }
         validateCartItemsUseCase(state.cartType.name).onSuccess {
             reduce {
@@ -82,7 +93,7 @@ class ShoppingCartViewModel @Inject constructor(
                     cartValidation = CartValidation.VALID
                 )
             }
-            getCartSummary()
+            fetchCartSummary()
         }.onFailure {
             reduce {
                 state.copy(
@@ -98,8 +109,8 @@ class ShoppingCartViewModel @Inject constructor(
         }
     }
 
-    private fun getCartSummary() = intent {
-        if (state.cart.orderableShopId == null) return@intent
+    private suspend fun fetchCartSummary() = subIntent {
+        if (state.cart.orderableShopId == null) return@subIntent
         getCartSummaryUseCase(state.cart.orderableShopId!!).onSuccess {
             reduce {
                 state.copy(
@@ -144,8 +155,8 @@ class ShoppingCartViewModel @Inject constructor(
                     )
                 )
             }
+            fetchCart(state.cartType)
         }
-        getCart(state.cartType)
     }
 
     fun deleteCartMenuItem(cartMenuItemId: Int) = intent {
@@ -161,8 +172,8 @@ class ShoppingCartViewModel @Inject constructor(
                     )
                 )
             }
+            fetchCart(state.cartType)
         }
-        getCart(state.cartType)
     }
 
     fun resetCart() = intent {
