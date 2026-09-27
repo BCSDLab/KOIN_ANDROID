@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.firebase
 
+import androidx.core.net.toUri
 import `in`.koreatech.koin.core.notification.MessagingNotification
 import `in`.koreatech.koin.core.notification.NotificationPayload
 import `in`.koreatech.koin.core.notification.NotificationResolver
@@ -28,18 +29,12 @@ class ChatNotificationResolver @Inject constructor() : NotificationResolver {
             ?.takeIf { it.host == CHAT_HOST }
     }
 
-    private fun URI.queryParameter(name: String): String? =
-        rawQuery
-            ?.split("&")
-            ?.firstOrNull { it.substringBefore("=") == name }
-            ?.substringAfter("=", missingDelimiterValue = "")
-            ?.takeIf(String::isNotBlank)
+    private fun URI.queryParameter(name: String): String? = toString().toUri().getQueryParameter(name)
+        ?.takeIf(String::isNotBlank)
 
     private companion object {
         const val CHAT_HOST = "chat"
         const val CHAT_ROOM_ID_QUERY = "chatRoomId"
-        const val ARTICLE_ID_QUERY = "articleId"
-        const val ID_QUERY = "id"
         const val MESSAGE_TITLE_SUFFIX = "님의 메시지"
     }
 }
