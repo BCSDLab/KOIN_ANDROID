@@ -49,6 +49,8 @@ internal object NotificationImageProvider {
 
         val temporaryFile = File(imageDirectory, "${imageFile.name}.tmp")
         val connection = URL(imageUrl).openConnection() as HttpURLConnection
+        connection.connectTimeout = 10 * 1000
+        connection.readTimeout = 10 * 1000
         try {
             connection.inputStream.use { input ->
                 temporaryFile.outputStream().use { output ->
