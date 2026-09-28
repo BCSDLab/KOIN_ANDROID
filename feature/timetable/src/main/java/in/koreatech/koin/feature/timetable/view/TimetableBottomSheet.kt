@@ -8,19 +8,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyLecture
 import `in`.koreatech.koin.feature.timetable.section.TimetableBottomSheetBasic
 import `in`.koreatech.koin.feature.timetable.section.TimetableBottomSheetCustom
+import `in`.koreatech.koin.feature.timetable.section.TimetableBottomSheetFooter
 import `in`.koreatech.koin.feature.timetable.section.TimetableBottomSheetHeader
 import `in`.koreatech.koin.feature.timetable.state.CustomContentState
 import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
@@ -58,36 +57,28 @@ fun TimetableBottomSheet(
     onClickStartTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
     onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
     onClickAddCustomContent: () -> Unit = {},
-    onClickRemoveCustomContent: (id: Int) -> Unit = {}
+    onClickRemoveCustomContent: (id: Int) -> Unit = {},
+    onSheetDismiss: () -> Unit = {}
 ) {
     Column(
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(400.dp)
-            .background(Color.White)
+            .background(RebrandKoinTheme.colors.neutral0)
             .onGloballyPositioned {
                 onBottomSheetHeightChange(it.size.height.toFloat())
             }
-            .padding(
-                start = 24.dp,
-                end = 24.dp,
-                top = 10.dp
-            )
+            .padding(vertical = 12.dp, horizontal = 32.dp)
     ) {
         TimetableBottomSheetHeader(
-            modifier = Modifier.padding(bottom = 10.dp),
-            mode = bottomSheetContentMode,
-            onClickAddLectureMode = onClickAddLectureMode,
-            onClickAddCustomLectureMode = onClickAddCustomLectureMode,
-            onComplete = onComplete
+            modifier = Modifier.padding(top = 4.dp, bottom = 16.dp),
+            onSheetDismiss = onSheetDismiss
         )
-        HorizontalDivider(thickness = 1.dp, color = KoinTheme.colors.neutral300)
-        Spacer(modifier = Modifier.height(8.dp))
 
         when (bottomSheetContentMode) {
             TimetableBottomSheetContentMode.BASIC -> {
                 TimetableBottomSheetBasic(
+                    modifier = Modifier.weight(1f),
                     searchText = searchText,
                     lectures = lectures,
                     selectedLecture = selectedLecture,
@@ -105,6 +96,7 @@ fun TimetableBottomSheet(
 
             TimetableBottomSheetContentMode.CUSTOM -> {
                 TimetableBottomSheetCustom(
+                    modifier = Modifier.weight(1f),
                     customContents = customContents,
                     sheetLazyListState = sheetLazyListState,
                     onScheduleNameChange = onScheduleNameChange,
@@ -118,13 +110,22 @@ fun TimetableBottomSheet(
                 )
             }
         }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        TimetableBottomSheetFooter(
+            mode = bottomSheetContentMode,
+            onClickAddLectureMode = onClickAddLectureMode,
+            onClickAddCustomLectureMode = onClickAddCustomLectureMode,
+            onComplete = onComplete
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun TimetableBottomSheetPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         TimetableBottomSheet(
             searchText = "",
             lectures = listOf(dummyLecture, dummyLecture.copy(id = 2, name = "컴퓨터 개발")),
@@ -139,7 +140,7 @@ private fun TimetableBottomSheetPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun TimetableBottomSheetPreview_Custom() {
-    KoinTheme {
+    RebrandKoinTheme {
         TimetableBottomSheet(
             searchText = "",
             lectures = listOf(dummyLecture, dummyLecture.copy(id = 2, name = "컴퓨터 개발")),

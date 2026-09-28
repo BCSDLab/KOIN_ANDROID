@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.dashedBorder
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyEvent
 import java.time.DayOfWeek
@@ -136,8 +136,8 @@ private fun TimetableBasicEventTime(
             modifier =
             Modifier
                 .padding(1.dp),
-            style = KoinTheme.typography.regular12,
-            color = KoinTheme.colors.neutral800,
+            style = RebrandKoinTheme.typography.regular12,
+            color = RebrandKoinTheme.colors.neutral800,
             maxLines = titleMaxLine,
             overflow = TextOverflow.Ellipsis,
             onTextLayout = {
@@ -151,8 +151,8 @@ private fun TimetableBasicEventTime(
                 modifier =
                 Modifier
                     .padding(1.dp),
-                style = KoinTheme.typography.regular10,
-                color = KoinTheme.colors.neutral800,
+                style = RebrandKoinTheme.typography.regular10,
+                color = RebrandKoinTheme.colors.neutral800,
                 maxLines = professorMaxLine,
                 overflow = TextOverflow.Ellipsis,
                 onTextLayout = {
@@ -167,8 +167,8 @@ private fun TimetableBasicEventTime(
                 modifier =
                 Modifier
                     .padding(1.dp),
-                style = KoinTheme.typography.regular10,
-                color = KoinTheme.colors.neutral800,
+                style = RebrandKoinTheme.typography.regular10,
+                color = RebrandKoinTheme.colors.neutral800,
                 maxLines = placeMaxLine,
                 overflow = TextOverflow.Ellipsis,
                 onTextLayout = {
@@ -194,7 +194,7 @@ private fun TimetableSelectedEventTime(
                 color = Color.Transparent
             )
             .border(
-                color = KoinTheme.colors.neutral500,
+                color = RebrandKoinTheme.colors.neutral500,
                 width = 1.dp,
                 shape =
                 RoundedCornerShape(
@@ -219,7 +219,7 @@ private fun TimetableEtcSelectedEventTime(
             )
             .dashedBorder(
                 gapLength = 5.dp,
-                color = KoinTheme.colors.neutral500,
+                color = RebrandKoinTheme.colors.neutral500,
                 shape =
                 RoundedCornerShape(
                     topStart = 0.dp,

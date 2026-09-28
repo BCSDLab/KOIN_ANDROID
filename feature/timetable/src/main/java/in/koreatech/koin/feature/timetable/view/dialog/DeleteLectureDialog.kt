@@ -21,16 +21,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLecture
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.FilledButtonType
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
-import `in`.koreatech.koin.feature.timetable.component.HighlightedText
 import `in`.koreatech.koin.feature.timetable.model.dummyLecture
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,12 +45,11 @@ fun DeleteLectureDialog(
         onDismissRequest = onDismiss
     ) {
         Surface(
-            shape = KoinTheme.shapes.extraSmall,
+            shape = RebrandKoinTheme.shapes.extraSmall,
             color = Color.White
         ) {
             Column(
-                modifier =
-                Modifier
+                modifier = Modifier
                     .wrapContentSize()
                     .padding(
                         horizontal = 32.dp,
@@ -59,34 +57,19 @@ fun DeleteLectureDialog(
                     ),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                val title =
-                    stringArrayResource(id = R.array.delete_lecture_title).apply {
-                        this[0] = String.format(this[0], lecture?.classTitle)
-                    }
-                HighlightedText(
-                    texts = title,
-                    highlightIndices = listOf(1),
-                    defaultStyle =
-                    KoinTheme.typography.medium16.copy(
-                        color = KoinTheme.colors.neutral600
-                    ),
-                    highlightStyle =
-                    KoinTheme.typography.bold16.copy(
-                        color = KoinTheme.colors.danger700
+                Text(
+                    text = stringResource(R.string.delete_lecture_title, lecture?.classTitle ?: ""),
+                    style = RebrandKoinTheme.typography.medium16.copy(
+                        color = RebrandKoinTheme.colors.neutral800
                     )
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                HighlightedText(
-                    texts = stringArrayResource(id = R.array.delete_lecture_description),
-                    highlightIndices = listOf(1),
-                    defaultStyle =
-                    KoinTheme.typography.medium16.copy(
-                        color = KoinTheme.colors.neutral600
+                Text(
+                    text = stringResource(R.string.delete_lecture_description),
+                    style = RebrandKoinTheme.typography.medium16.copy(
+                        color = RebrandKoinTheme.colors.neutral800
                     ),
-                    highlightStyle =
-                    KoinTheme.typography.bold16.copy(
-                        color = KoinTheme.colors.info700
-                    )
+                    textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(
@@ -100,20 +83,20 @@ fun DeleteLectureDialog(
                             .weight(1.0F),
                         colors =
                         ButtonColors(
-                            containerColor = KoinTheme.colors.neutral0,
-                            contentColor = KoinTheme.colors.neutral500,
-                            disabledContainerColor = KoinTheme.colors.neutral400,
-                            disabledContentColor = KoinTheme.colors.neutral500
+                            containerColor = RebrandKoinTheme.colors.neutral0,
+                            contentColor = RebrandKoinTheme.colors.neutral500,
+                            disabledContainerColor = RebrandKoinTheme.colors.neutral400,
+                            disabledContentColor = RebrandKoinTheme.colors.neutral500
                         ),
                         shape = MaterialTheme.shapes.extraSmall,
                         contentPadding = PaddingValues(0.dp),
-                        border = BorderStroke(1.dp, KoinTheme.colors.neutral500),
+                        border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral500),
                         onClick = { onDismiss() }
                     ) {
                         Text(
                             text = stringResource(id = R.string.common_cancellation),
-                            style = KoinTheme.typography.medium15,
-                            color = KoinTheme.colors.neutral600
+                            style = RebrandKoinTheme.typography.medium15,
+                            color = RebrandKoinTheme.colors.neutral600
                         )
                     }
                     FilledTextButton(
@@ -138,7 +121,7 @@ fun DeleteLectureDialog(
 @Preview
 @Composable
 private fun DeleteLectureDialogPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         DeleteLectureDialog(
             lecture = dummyLecture.toTimetableLecture(),
             onConfirm = {},
