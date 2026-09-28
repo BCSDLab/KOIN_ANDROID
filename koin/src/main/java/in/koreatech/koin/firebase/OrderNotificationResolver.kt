@@ -1,11 +1,11 @@
 package `in`.koreatech.koin.firebase
 
+import androidx.core.net.toUri
 import `in`.koreatech.koin.core.notification.NotificationPayload
 import `in`.koreatech.koin.core.notification.NotificationResolver
 import `in`.koreatech.koin.core.notification.NotificationType
 import `in`.koreatech.koin.core.notification.ProgressNotification
 import `in`.koreatech.koin.core.notification.StandardNotification
-import java.net.URI
 import javax.inject.Inject
 
 class OrderNotificationResolver @Inject constructor() : NotificationResolver {
@@ -25,17 +25,11 @@ class OrderNotificationResolver @Inject constructor() : NotificationResolver {
         }
     }
 
-    private fun String?.orderIdOrNull(): Int? {
-        if (this == null) return null
-        val uri = runCatching { URI(this) }.getOrNull() ?: return null
-        if (uri.host != ORDER_HOST) return null
-
-        return uri.rawQuery
-            ?.split("&")
-            ?.firstOrNull { it.substringBefore("=") == ORDER_ID_QUERY }
-            ?.substringAfter("=", missingDelimiterValue = "")
+    private fun String?.orderIdOrNull(): Int? =
+        this?.toUri()
+            ?.takeIf { it.host == ORDER_HOST }
+            ?.getQueryParameter(ORDER_ID_QUERY)
             ?.toIntOrNull()
-    }
 
     private enum class OrderState(
         val progress: Int,
