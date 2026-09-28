@@ -39,9 +39,9 @@ fun WriteArticleItemChip(
             Modifier
                 .background(
                     color = RebrandKoinTheme.colors.neutral0,
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(16.dp)
                 )
-                .border(1.dp, RebrandKoinTheme.colors.primary500, shape = RoundedCornerShape(12.dp)),
+                .border(1.dp, RebrandKoinTheme.colors.primary500, shape = RoundedCornerShape(16.dp)),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -68,7 +68,8 @@ fun WriteArticleItemChip(
                         onDeleteItemClick()
                     },
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_item_delete),
-                contentDescription = null
+                contentDescription = null,
+                tint = RebrandKoinTheme.colors.primary500
             )
         }
     }
