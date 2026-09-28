@@ -9,11 +9,8 @@ import `in`.koreatech.koin.core.navigation.utils.toHost
 import `in`.koreatech.koin.core.notification.FirebaseMessagingType
 import `in`.koreatech.koin.core.notification.Notifier
 import `in`.koreatech.koin.core.qualifier.IoDispatcher
-import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.domain.repository.firebase.messaging.FirebaseMessagingRepository
 import `in`.koreatech.koin.domain.usecase.notification.SaveNotificationUseCase
-import `in`.koreatech.koin.sync.DiningSyncWorker
-import `in`.koreatech.koin.sync.KoinSyncScheduler
 import `in`.koreatech.koin.ui.scheme.SchemeActivity
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -39,9 +36,6 @@ class KoinFirebaseMessagingService : FirebaseMessagingService() {
 
     @Inject
     lateinit var firebaseMessagingRepository: FirebaseMessagingRepository
-
-    @Inject
-    lateinit var koinSyncScheduler: KoinSyncScheduler
 
     @IoDispatcher
     @Inject
@@ -73,10 +67,6 @@ class KoinFirebaseMessagingService : FirebaseMessagingService() {
                 val title = data[TITLE]
                 val content = data[CONTENT]
                 val type = data[TYPE]
-
-                if (type.isDiningNotification()) {
-                    koinSyncScheduler.enqueue(DiningSyncWorker::class.java, "dining_sync")
-                }
 
                 if (url != null && title != null && content != null) {
                     coroutineScope.launch {
@@ -113,7 +103,4 @@ class KoinFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun String.schemeToNotificationType(): String = toHost()
-
-    private fun String?.isDiningNotification(): Boolean =
-        this == SubscribesType.DINING_SOLD_OUT.name || this == SubscribesType.DINING_IMAGE_UPLOAD.name
 }
