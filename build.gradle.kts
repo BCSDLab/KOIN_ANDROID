@@ -90,6 +90,11 @@ val sonarCoverageExclusions = listOf(
     "**/*Fragment.kt"
 ).joinToString(", ")
 
+val sonarExclusions = listOf(
+    "**/*.java",
+    "business/**/*"
+).joinToString(",")
+
 sonar {
     properties {
         property("sonar.projectKey", "BCSDLab_KOIN_ANDROID")
@@ -99,7 +104,7 @@ sonar {
         property("sonar.kotlin.detekt.reportPaths", detektReports)
         property("sonar.kotlin.ktlint.reportPaths", ktlintReports)
         property("sonar.coverage.exclusions", sonarCoverageExclusions)
-        property("sonar.exclusions", "**/*.java")
+        property("sonar.exclusions", sonarExclusions)
     }
 }
 
