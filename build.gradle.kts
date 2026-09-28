@@ -117,7 +117,7 @@ spotless {
     }
     kotlinGradle {
         target("**/*.kts")
-        targetExclude("**/build/**")
+        targetExclude("**/build/**", "business/**/*")
         trimTrailingWhitespace()
         endWithNewline()
     }
