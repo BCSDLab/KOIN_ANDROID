@@ -19,6 +19,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,6 +35,7 @@ import `in`.koreatech.koin.feature.article.R
 import `in`.koreatech.koin.feature.article.databinding.FragmentArticleListBinding
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
 import `in`.koreatech.koin.feature.article.model.ArticleHeaderState
+import `in`.koreatech.koin.feature.article.model.ArticleNetworkErrorState
 import `in`.koreatech.koin.feature.article.ui.article.adapter.ArticleAdapter
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
@@ -105,6 +107,13 @@ class ArticleListFragment : Fragment() {
             handleKeywordChips()
             initKeywordTooltip()
             collectData()
+            binding.layoutArticleNetworkError.buttonArticleNetworkErrorRetry.setOnClickListener {
+                viewModel.retry()
+            }
+            Glide.with(this)
+                .asGif()
+                .load(R.raw.img_article_network_retrying)
+                .into(binding.layoutArticleNetworkRetrying.imageViewArticleNetworkRetrying)
             binding.nestedScrollViewArticleList.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
                 val offset = binding.nestedScrollViewArticleList.computeVerticalScrollOffset()
                 val extent = binding.nestedScrollViewArticleList.computeVerticalScrollExtent()
@@ -131,9 +140,15 @@ class ArticleListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.tabLayoutArticleBoard.addOnTabSelectedListener(onTabSelectedListener)
-        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            updateProgressBarVisibility()
         }
+    }
+
+    private fun updateProgressBarVisibility() {
+        val isLoading = viewModel.isLoading.value == true
+        val isRetrying = viewModel.networkErrorState.value == ArticleNetworkErrorState.RETRYING
+        binding.progressBar.visibility = if (isLoading && !isRetrying) View.VISIBLE else View.GONE
     }
 
     private fun initKeywordTooltip() {
@@ -340,6 +355,19 @@ class ArticleListFragment : Fragment() {
                     viewModel.currentPage.collect { page ->
                         setPagingTextButtonVisibility(page)
                         changePageChipSelectedState(page)
+                    }
+                }
+            }
+            this.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.networkErrorState.collect { networkErrorState ->
+                        binding.nestedScrollViewArticleList.visibility =
+                            if (networkErrorState == ArticleNetworkErrorState.NONE) View.VISIBLE else View.GONE
+                        binding.layoutArticleNetworkError.root.visibility =
+                            if (networkErrorState == ArticleNetworkErrorState.ERROR) View.VISIBLE else View.GONE
+                        binding.layoutArticleNetworkRetrying.root.visibility =
+                            if (networkErrorState == ArticleNetworkErrorState.RETRYING) View.VISIBLE else View.GONE
+                        updateProgressBarVisibility()
                     }
                 }
             }
