@@ -83,9 +83,13 @@ fun KoinCamera(
     val lifecycleOwner = LocalLifecycleOwner.current
     val coroutineScope = rememberCoroutineScope()
 
-    if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-        onPermissionRequired()
-        return
+    val isPermissionGranted = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+
+    LaunchedEffect(isPermissionGranted) {
+        if (!isPermissionGranted) {
+            onPermissionRequired()
+            return@LaunchedEffect
+        }
     }
 
     val takePicture: suspend () -> Unit = {
