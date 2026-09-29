@@ -11,8 +11,6 @@ import androidx.compose.runtime.setValue
 
 @Stable
 class KoinCameraState {
-    val fileName = "koin_${System.currentTimeMillis()}.jpg"
-
     var cameraSelector by mutableStateOf(CameraSelector.DEFAULT_BACK_CAMERA)
         private set
 

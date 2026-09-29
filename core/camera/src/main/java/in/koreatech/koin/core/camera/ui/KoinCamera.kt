@@ -89,7 +89,7 @@ fun KoinCamera(
     }
 
     val takePicture: suspend () -> Unit = {
-        val photoFile = File(context.cacheDir, cameraState.fileName)
+        val photoFile = File(context.cacheDir, "koin_${System.currentTimeMillis()}.jpg")
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
         cameraState.imageCapture.takePicture(
             outputOptions,
