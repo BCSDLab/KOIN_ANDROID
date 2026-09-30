@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import java.io.File
@@ -100,7 +101,7 @@ fun KoinCamera(
             ContextCompat.getMainExecutor(context),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    onCapture(outputFileResults.savedUri, outputFileResults.imageFormat)
+                    onCapture(photoFile.toUri(), outputFileResults.imageFormat)
                 }
 
                 override fun onError(exception: ImageCaptureException) {
