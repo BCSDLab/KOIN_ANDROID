@@ -111,7 +111,7 @@ fun KoinCamera(
         )
     }
 
-    LaunchedEffect(cameraState.cameraSelector, cameraState.preview, cameraState.imageCapture) {
+    LaunchedEffect(cameraState.cameraSelector) {
         val cameraProvider = ProcessCameraProvider.awaitInstance(context)
         cameraProvider.bindToLifecycle(lifecycleOwner, cameraState.cameraSelector, cameraState.preview, cameraState.imageCapture)
         try {
