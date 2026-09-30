@@ -136,21 +136,15 @@ fun KoinCamera(
         Box(
             modifier = Modifier
                 .padding(8.dp)
-                .size(96.dp)
                 .align(Alignment.BottomCenter)
-        ) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .size(style.shutterSize)
-                    .background(color = style.shutterColor, shape = style.shutterShape)
-                    .clip(style.shutterShape)
-                    .clickable {
-                        coroutineScope.launch {
-                            takePicture()
-                        }
+                .size(style.shutterSize)
+                .background(color = style.shutterColor, shape = style.shutterShape)
+                .clip(style.shutterShape)
+                .clickable {
+                    coroutineScope.launch {
+                        takePicture()
                     }
-            )
-        }
+                }
+        )
     }
 }
