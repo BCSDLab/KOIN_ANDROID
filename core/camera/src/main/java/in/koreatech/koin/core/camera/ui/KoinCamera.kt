@@ -93,22 +93,24 @@ fun KoinCamera(
         }
     }
 
-    val takePicture: suspend () -> Unit = {
-        val photoFile = File(context.cacheDir, "koin_${System.currentTimeMillis()}.jpg")
-        val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
-        cameraState.imageCapture.takePicture(
-            outputOptions,
-            ContextCompat.getMainExecutor(context),
-            object : ImageCapture.OnImageSavedCallback {
-                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    onCapture(photoFile.toUri(), outputFileResults.imageFormat)
-                }
+    val takePicture: suspend () -> Unit = remember(cameraState) {
+        {
+            val photoFile = File(context.cacheDir, "koin_${System.currentTimeMillis()}.jpg")
+            val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+            cameraState.imageCapture.takePicture(
+                outputOptions,
+                ContextCompat.getMainExecutor(context),
+                object : ImageCapture.OnImageSavedCallback {
+                    override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                        onCapture(photoFile.toUri(), outputFileResults.imageFormat)
+                    }
 
-                override fun onError(exception: ImageCaptureException) {
-                    onError(exception)
+                    override fun onError(exception: ImageCaptureException) {
+                        onError(exception)
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 
     LaunchedEffect(cameraState.cameraSelector) {
