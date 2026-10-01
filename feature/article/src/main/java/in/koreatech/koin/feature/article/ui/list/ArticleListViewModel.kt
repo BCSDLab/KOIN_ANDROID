@@ -84,7 +84,6 @@ class ArticleListViewModel @Inject constructor(
             }.catch { throwable ->
                 Timber.e(throwable)
                 _isLoading.value = false
-                _networkErrorState.value = ArticleNetworkErrorState.ERROR
             }
         }.stateIn(
             scope = viewModelScope,
