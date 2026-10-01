@@ -19,7 +19,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -110,10 +109,6 @@ class ArticleListFragment : Fragment() {
             binding.layoutArticleNetworkError.buttonArticleNetworkErrorRetry.setOnClickListener {
                 viewModel.retry()
             }
-            Glide.with(this)
-                .asGif()
-                .load(R.raw.img_article_network_retrying)
-                .into(binding.layoutArticleNetworkRetrying.imageViewArticleNetworkRetrying)
             binding.nestedScrollViewArticleList.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
                 val offset = binding.nestedScrollViewArticleList.computeVerticalScrollOffset()
                 val extent = binding.nestedScrollViewArticleList.computeVerticalScrollExtent()
@@ -140,15 +135,9 @@ class ArticleListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.tabLayoutArticleBoard.addOnTabSelectedListener(onTabSelectedListener)
-        viewModel.isLoading.observe(viewLifecycleOwner) {
-            updateProgressBarVisibility()
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
-    }
-
-    private fun updateProgressBarVisibility() {
-        val isLoading = viewModel.isLoading.value == true
-        val isRetrying = viewModel.networkErrorState.value == ArticleNetworkErrorState.RETRYING
-        binding.progressBar.visibility = if (isLoading && !isRetrying) View.VISIBLE else View.GONE
     }
 
     private fun initKeywordTooltip() {
@@ -365,9 +354,6 @@ class ArticleListFragment : Fragment() {
                             if (networkErrorState == ArticleNetworkErrorState.NONE) View.VISIBLE else View.GONE
                         binding.layoutArticleNetworkError.root.visibility =
                             if (networkErrorState == ArticleNetworkErrorState.ERROR) View.VISIBLE else View.GONE
-                        binding.layoutArticleNetworkRetrying.root.visibility =
-                            if (networkErrorState == ArticleNetworkErrorState.RETRYING) View.VISIBLE else View.GONE
-                        updateProgressBarVisibility()
                     }
                 }
             }

@@ -26,7 +26,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import timber.log.Timber
 
@@ -76,22 +75,16 @@ class ArticleListViewModel @Inject constructor(
         }.debounce(10).flatMapLatest {
             it.mapLatest { articlePagination ->
                 articlePagination.toArticlePaginationState()
-            }.onStart {
-                if (_networkErrorState.value == ArticleNetworkErrorState.ERROR) {
-                    _networkErrorState.value = ArticleNetworkErrorState.RETRYING
-                }
             }.onEach { articlePaginationState ->
-                _networkErrorState.value = ArticleNetworkErrorState.NONE
+                if (networkConnectivityService.isConnected()) {
+                    _networkErrorState.value = ArticleNetworkErrorState.NONE
+                }
                 _isLoading.value = false
                 calculatePageNumber(articlePaginationState.totalPage)
             }.catch { throwable ->
                 Timber.e(throwable)
                 _isLoading.value = false
-                if (!networkConnectivityService.isConnected()) { // 네트워크 오류
-                    _networkErrorState.value = ArticleNetworkErrorState.ERROR
-                } else if (_networkErrorState.value == ArticleNetworkErrorState.RETRYING) { // 네트워크 오류가 아닌 다른 예외 상황
-                    _networkErrorState.value = ArticleNetworkErrorState.NONE
-                }
+                _networkErrorState.value = ArticleNetworkErrorState.ERROR
             }
         }.stateIn(
             scope = viewModelScope,
