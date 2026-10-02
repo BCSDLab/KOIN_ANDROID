@@ -294,7 +294,8 @@ fun EditArticleItemDetail(
                             unselectedTextStyle =
                             RebrandKoinTheme.typography.medium16.copy(
                                 textAlign = TextAlign.Center
-                            )
+                            ),
+                            selectedItemColor = RebrandKoinTheme.colors.primary500
                         )
                         KoinPicker(
                             modifier = Modifier.weight(1f),
@@ -312,7 +313,8 @@ fun EditArticleItemDetail(
                             unselectedTextStyle =
                             RebrandKoinTheme.typography.medium16.copy(
                                 textAlign = TextAlign.Center
-                            )
+                            ),
+                            selectedItemColor = RebrandKoinTheme.colors.primary500
                         )
                         KoinPicker(
                             modifier = Modifier.weight(1f),
@@ -330,7 +332,8 @@ fun EditArticleItemDetail(
                             unselectedTextStyle =
                             RebrandKoinTheme.typography.medium16.copy(
                                 textAlign = TextAlign.Center
-                            )
+                            ),
+                            selectedItemColor = RebrandKoinTheme.colors.primary500
                         )
                     }
                     HorizontalDivider(color = RebrandKoinTheme.colors.neutral300)

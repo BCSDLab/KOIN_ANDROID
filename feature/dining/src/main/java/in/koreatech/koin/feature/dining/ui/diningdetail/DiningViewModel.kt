@@ -11,7 +11,9 @@ import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.usecase.coopshop.SyncCoopShopUseCase
 import `in`.koreatech.koin.domain.usecase.dining.GetNotOperationFilteredDiningUseCase
+import `in`.koreatech.koin.domain.usecase.dining.SyncDiningUseCase
 import `in`.koreatech.koin.domain.usecase.notification.DeleteNotificationSubscriptionUseCase
 import `in`.koreatech.koin.domain.usecase.notification.GetNotificationPermissionInfoUseCase
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionDetailUseCase
@@ -30,11 +32,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
 @HiltViewModel
 class DiningViewModel @Inject constructor(
@@ -46,14 +50,19 @@ class DiningViewModel @Inject constructor(
     private val updateNotificationSubscriptionUseCase: UpdateNotificationSubscriptionUseCase,
     private val updateNotificationSubscriptionDetailUseCase: UpdateNotificationSubscriptionDetailUseCase,
     private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase,
-    private val networkConnectivityService: NetworkConnectivityService
+    private val networkConnectivityService: NetworkConnectivityService,
+    private val syncDiningUseCase: SyncDiningUseCase,
+    private val syncCoopShopUseCase: SyncCoopShopUseCase
 ) : ViewModel(), ContainerHost<DiningState, DiningSideEffect> {
 
     private val initDate = savedStateHandle.get<String>(INIT_DATE)
         .takeUnless { it.isNullOrBlank() }
         ?: TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate())
 
-    override val container = container<DiningState, DiningSideEffect>(DiningState(selectedDate = initDate))
+    override val container = container<DiningState, DiningSideEffect>(DiningState(selectedDate = initDate)) {
+        syncDining()
+        syncCoopShop()
+    }
 
     private val _userState: StateFlow<User> = getUserStatusUseCase().stateIn(
         scope = viewModelScope,
@@ -63,6 +72,20 @@ class DiningViewModel @Inject constructor(
     val userState: StateFlow<User> get() = _userState
 
     private var fetchDiningJob: Job? = null
+
+    private fun syncDining() {
+        if (!networkConnectivityService.isConnected()) return
+        viewModelScope.launch {
+            syncDiningUseCase().onFailure { Timber.e("Dining sync failed: $it") }
+        }
+    }
+
+    private fun syncCoopShop() {
+        if (!networkConnectivityService.isConnected()) return
+        viewModelScope.launch {
+            syncCoopShopUseCase().onFailure { Timber.e("CoopShop sync failed: $it") }
+        }
+    }
 
     fun setSelectedDate(date: Date) {
         val formattedDate = TimeUtil.dateFormatToYYMMDD(date)

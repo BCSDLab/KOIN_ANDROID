@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 fun CircleLoadingBar(
@@ -29,7 +29,7 @@ fun CircleLoadingBar(
     ) {
         CircularProgressIndicator(
             modifier = Modifier.width(64.dp),
-            color = KoinTheme.colors.primary500,
+            color = RebrandKoinTheme.colors.primary500,
             trackColor = Color.LightGray
         )
     }
@@ -38,7 +38,7 @@ fun CircleLoadingBar(
 @Preview
 @Composable
 private fun CircleLoadingBarPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         CircleLoadingBar(loading = true)
     }
 }

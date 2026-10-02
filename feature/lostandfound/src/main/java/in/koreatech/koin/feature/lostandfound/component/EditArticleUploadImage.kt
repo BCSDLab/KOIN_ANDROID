@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.lostandfound.component
 
 import android.net.Uri
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,7 +37,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -128,7 +126,7 @@ fun EditArticleUploadImage(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_upload_image),
                     contentDescription = null,
                     modifier = Modifier.size(20.dp),
-                    tint = RebrandKoinTheme.colors.primary500
+                    tint = RebrandKoinTheme.colors.neutral0
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
@@ -185,8 +183,8 @@ fun EditArticleUploadImageThumbnail(
                 }
             )
 
-            Image(
-                painter = painterResource(id = R.drawable.ic_delete_image),
+            Icon(
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_delete_image),
                 contentDescription = null,
                 modifier =
                 Modifier
@@ -196,7 +194,8 @@ fun EditArticleUploadImageThumbnail(
                     )
                     .noRippleClickable {
                         removeImage(index)
-                    }
+                    },
+                tint = Color.Unspecified
             )
         }
     }
