@@ -23,7 +23,7 @@ dependencies {
     debugImplementation(libs.bundles.compose.debug.test)
     androidTestImplementation(libs.androidx.compose.ui.test.manifest)
 
-    implementation("androidx.navigation:navigation-compose:2.8.3")
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.androidx.constraintlayout.compose)
