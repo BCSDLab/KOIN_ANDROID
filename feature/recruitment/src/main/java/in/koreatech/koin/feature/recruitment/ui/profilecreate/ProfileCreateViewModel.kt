@@ -9,6 +9,7 @@ import `in`.koreatech.koin.domain.usecase.dept.GetDeptNamesUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.GetTeamRecruitmentProfileUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.SaveTeamRecruitmentProfileUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
+import `in`.koreatech.koin.domain.usecase.user.UpdateStudentUserInfoUseCase
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentActivityEntry
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentErrorMessage
 import `in`.koreatech.koin.feature.recruitment.mapper.toTeamRecruitmentActivityInput
@@ -33,7 +34,8 @@ class ProfileCreateViewModel @Inject constructor(
     private val getTeamRecruitmentProfileUseCase: GetTeamRecruitmentProfileUseCase,
     private val saveTeamRecruitmentProfileUseCase: SaveTeamRecruitmentProfileUseCase,
     private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val getDeptNamesUseCase: GetDeptNamesUseCase
+    private val getDeptNamesUseCase: GetDeptNamesUseCase,
+    private val updateStudentUserInfoUseCase: UpdateStudentUserInfoUseCase
 ) : ViewModel(), ContainerHost<ProfileCreateState, ProfileCreateSideEffect> {
 
     private val arguments = savedStateHandle.toRoute<RecruitmentNavType.ProfileCreate>()
@@ -212,6 +214,16 @@ class ProfileCreateViewModel @Inject constructor(
 
     fun saveProfile() = intent {
         reduce { state.copy(isSaving = true, showSaveConfirmDialog = false, errorMessage = null) }
+
+        updateAcademicInfoIfChanged(
+            major = state.department,
+            studentNumber = state.studentId
+        ).onFailure { throwable ->
+            reduce { state.copy(isSaving = false, errorMessage = throwable.toRecruitmentErrorMessage()) }
+            postSideEffect(ProfileCreateSideEffect.SaveFailure)
+            return@intent
+        }
+
         saveTeamRecruitmentProfileUseCase(
             profileNickname = state.nickname,
             preferredRole = state.preferredRole,
@@ -225,5 +237,25 @@ class ProfileCreateViewModel @Inject constructor(
             reduce { state.copy(isSaving = false, errorMessage = throwable.toRecruitmentErrorMessage()) }
             postSideEffect(ProfileCreateSideEffect.SaveFailure)
         }
+    }
+
+    private suspend fun updateAcademicInfoIfChanged(
+        major: String,
+        studentNumber: String
+    ): Result<Unit> {
+        val user = getUserInfoUseCase().getOrElse { return Result.failure(it) }
+        if (user !is User.Student) return Result.success(Unit)
+        if (user.major == major && user.studentNumber == studentNumber) return Result.success(Unit)
+
+        return updateStudentUserInfoUseCase(
+            beforeUser = user,
+            email = user.email.orEmpty(),
+            name = user.name.orEmpty(),
+            nickname = user.nickname.orEmpty(),
+            gender = user.gender,
+            phoneNumber = user.phoneNumber.orEmpty(),
+            studentNumber = studentNumber,
+            major = major
+        )
     }
 }
