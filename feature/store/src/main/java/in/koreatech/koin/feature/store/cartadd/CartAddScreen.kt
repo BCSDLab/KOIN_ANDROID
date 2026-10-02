@@ -216,7 +216,7 @@ fun CartAddScreen(
                         }
                     }
                 },
-                overlayAlpha = overlayAlpha,
+                overlayAlpha = { overlayAlpha.value },
                 expandedColors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = Color.Transparent,
                     navigationIconContentColor = RebrandKoinTheme.colors.neutral0,

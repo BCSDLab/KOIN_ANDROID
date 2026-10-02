@@ -167,7 +167,7 @@ fun CartEditScreen(
                         }
                     }
                 },
-                overlayAlpha = overlayAlpha
+                overlayAlpha = { overlayAlpha.value }
             ) {
                 Column(
                     modifier = Modifier

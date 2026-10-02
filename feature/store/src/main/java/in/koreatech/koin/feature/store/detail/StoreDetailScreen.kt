@@ -472,7 +472,7 @@ fun StoreDetailScreen(
                         }
                     }
                 },
-                overlayAlpha = overlayAlpha,
+                overlayAlpha = { overlayAlpha.value },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = colorResource(id = R.color.store_detail_background)
                 )
