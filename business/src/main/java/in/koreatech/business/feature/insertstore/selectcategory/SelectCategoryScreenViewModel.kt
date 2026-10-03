@@ -55,16 +55,11 @@ class SelectCategoryScreenViewModel @Inject constructor(
     private fun getCategory() {
         intent {
             viewModelScope.launch {
-                getStoreCategoriesUseCase().onSuccess { categories ->
-                    reduce {
-                        state.copy(
-                            categories = categories.drop(1)
-                        )
-                    }
-                }.onFailure {
-                    reduce {
-                        state.copy(categories = emptyList())
-                    }
+                val categories = getStoreCategoriesUseCase().drop(1)
+                reduce {
+                    state.copy(
+                        categories = categories
+                    )
                 }
             }
         }

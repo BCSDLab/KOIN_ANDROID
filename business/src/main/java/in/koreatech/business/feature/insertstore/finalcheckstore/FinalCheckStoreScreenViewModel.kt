@@ -97,16 +97,11 @@ class FinalCheckStoreScreenViewModel @Inject constructor(
     private fun getCategory() {
         intent {
             viewModelScope.launch {
-                getStoreCategoriesUseCase().onSuccess { categories ->
-                    reduce {
-                        state.copy(
-                            storeCategoryString = categories[state.storeCategory - 1].name
-                        )
-                    }
-                }.onFailure {
-                    reduce {
-                        state.copy(storeCategoryString = "")
-                    }
+                val categories = getStoreCategoriesUseCase()
+                reduce {
+                    state.copy(
+                        storeCategoryString = categories[state.storeCategory - 1].name
+                    )
                 }
             }
         }
