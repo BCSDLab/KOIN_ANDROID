@@ -52,7 +52,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.util.KRPhoneNumberVisualTransformation
@@ -102,8 +102,12 @@ fun UserInfoEditScreen(
 
     Scaffold(
         topBar = {
-            KoinTopAppBar(
-                title = stringResource(R.string.user_info_title),
+            KoinTopAppBar2(
+                title = {
+                    Text(
+                        text = stringResource(R.string.user_info_title)
+                    )
+                },
                 onNavigationIconClick = {
                     (context as Activity).finish()
                 },
