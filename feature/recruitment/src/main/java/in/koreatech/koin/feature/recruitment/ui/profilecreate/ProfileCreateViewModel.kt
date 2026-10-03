@@ -114,12 +114,12 @@ class ProfileCreateViewModel @Inject constructor(
     }
 
     fun setDepartment(department: String) = intent {
-        reduce { state.copy(department = department, isDepartmentDropdownExpanded = false) }
+        reduce { state.copy(department = department, isDepartmentDropdownExpanded = false, isAcademicInfoEdited = true) }
     }
 
     fun setStudentId(studentId: String) = intent {
         if (studentId.isEmpty() || studentId.all { it.isDigit() }) {
-            reduce { state.copy(studentId = studentId) }
+            reduce { state.copy(studentId = studentId, isAcademicInfoEdited = true) }
         }
     }
 
@@ -216,6 +216,7 @@ class ProfileCreateViewModel @Inject constructor(
         reduce { state.copy(isSaving = true, showSaveConfirmDialog = false, errorMessage = null) }
 
         updateAcademicInfoIfChanged(
+            isEdited = state.isAcademicInfoEdited,
             major = state.department,
             studentNumber = state.studentId
         ).onFailure { throwable ->
@@ -240,9 +241,11 @@ class ProfileCreateViewModel @Inject constructor(
     }
 
     private suspend fun updateAcademicInfoIfChanged(
+        isEdited: Boolean,
         major: String,
         studentNumber: String
     ): Result<Unit> {
+        if (!isEdited) return Result.success(Unit)
         val user = getUserInfoUseCase().getOrElse { return Result.failure(it) }
         if (user !is User.Student) return Result.success(Unit)
         if (user.major == major && user.studentNumber == studentNumber) return Result.success(Unit)
