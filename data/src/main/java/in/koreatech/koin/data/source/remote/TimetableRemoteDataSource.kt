@@ -2,14 +2,16 @@ package `in`.koreatech.koin.data.source.remote
 
 import `in`.koreatech.koin.data.api.TimetableApi
 import `in`.koreatech.koin.data.api.auth.TimetableAuthApi
-import `in`.koreatech.koin.data.request.timetable.LecturesQueryRequest
-import `in`.koreatech.koin.data.request.timetable.TimetableFrameCreateQueryRequest
-import `in`.koreatech.koin.data.request.timetable.TimetableFrameQueryRequest
-import `in`.koreatech.koin.data.request.timetable.TimetableLecturesQueryRequest
-import `in`.koreatech.koin.data.response.timetable.LectureResponse
-import `in`.koreatech.koin.data.response.timetable.TimetableFrameResponse
-import `in`.koreatech.koin.data.response.timetable.TimetableLecturesResponse
+import `in`.koreatech.koin.data.request.timetable.v3.TimetableCustomLectureRequest
+import `in`.koreatech.koin.data.request.timetable.v3.TimetableFrameCreateRequestV3
+import `in`.koreatech.koin.data.request.timetable.v3.TimetableFrameUpdateRequestV3
+import `in`.koreatech.koin.data.request.timetable.v3.TimetableRegularLectureCreateRequest
+import `in`.koreatech.koin.data.request.timetable.v3.TimetableRegularLectureRequest
+import `in`.koreatech.koin.data.response.timetable.v3.LectureResponseV3
 import `in`.koreatech.koin.data.response.timetable.v3.SemesterResponse
+import `in`.koreatech.koin.data.response.timetable.v3.TimetableFrameResponseV3
+import `in`.koreatech.koin.data.response.timetable.v3.TimetableFramesResponseV3
+import `in`.koreatech.koin.data.response.timetable.v3.TimetableLecturesResponseV3
 import `in`.koreatech.koin.data.response.timetable.v3.UserSemestersResponse
 import javax.inject.Inject
 
@@ -21,26 +23,40 @@ class TimetableRemoteDataSource @Inject constructor(
 
     suspend fun getUserSemesters(): UserSemestersResponse = timetableAuthApi.getUserSemesters()
 
-    suspend fun getLectures(semesterDate: String): List<LectureResponse> = timetableApi.getLectures(semesterDate)
+    suspend fun getLectures(
+        year: Int,
+        term: String
+    ): List<LectureResponseV3> = timetableApi.getLecturesBySemester(year, term)
 
-    suspend fun getTimetableLectures(timetableFrameId: Int): TimetableLecturesResponse = timetableAuthApi.getTimetableLectures(timetableFrameId)
+    suspend fun getTimetableLectures(timetableFrameId: Int): TimetableLecturesResponseV3 = timetableAuthApi.getLecturesByFrameId(timetableFrameId)
 
-    suspend fun getTimetableFrames(semester: String): List<TimetableFrameResponse> = timetableAuthApi.getTimetableFrames(semester)
+    suspend fun getTimetableFrames(
+        year: Int,
+        term: String
+    ): List<TimetableFrameResponseV3> = timetableAuthApi.getFramesBySemester(year, term)
 
-    suspend fun getAllFrames(): Map<String, List<TimetableFrameResponse>> = timetableAuthApi.getAllFrames().semesterFrames
+    suspend fun getAllFrames(): List<TimetableFramesResponseV3> = timetableAuthApi.getAllFramesV3()
 
-    suspend fun putTimetableLectures(lectures: TimetableLecturesQueryRequest): TimetableLecturesResponse = timetableAuthApi.putTimetableLectures(lectures)
+    suspend fun putTimetableRegularLecture(lecture: TimetableRegularLectureRequest): TimetableLecturesResponseV3 =
+        timetableAuthApi.editTimetableRegularLecture(lecture)
+
+    suspend fun putTimetableCustomLecture(lecture: TimetableCustomLectureRequest): TimetableLecturesResponseV3 =
+        timetableAuthApi.editTimetableCustomLecture(lecture)
 
     suspend fun putTimetableFrame(
         id: Int,
-        frame: TimetableFrameQueryRequest
-    ): TimetableFrameResponse = timetableAuthApi.putTimetableFrame(id, frame)
+        frame: TimetableFrameUpdateRequestV3
+    ): List<TimetableFrameResponseV3> = timetableAuthApi.editFrame(id, frame)
 
-    suspend fun postTimetableLectures(lectures: LecturesQueryRequest): TimetableLecturesResponse = timetableAuthApi.postTimetableLectures(lectures)
+    suspend fun postTimetableRegularLecture(lecture: TimetableRegularLectureCreateRequest): TimetableLecturesResponseV3 =
+        timetableAuthApi.addRegularLectureOnTimetable(lecture)
 
-    suspend fun postTimetableFrame(frame: TimetableFrameCreateQueryRequest): TimetableFrameResponse = timetableAuthApi.postTimetableFrame(frame)
+    suspend fun postTimetableCustomLecture(lecture: TimetableCustomLectureRequest): TimetableLecturesResponseV3 =
+        timetableAuthApi.addCustomLectureOnTimetable(lecture)
 
-    suspend fun postRollbackFrame(frameId: Int): TimetableLecturesResponse = timetableAuthApi.postRollbackFrame(frameId)
+    suspend fun postTimetableFrame(frame: TimetableFrameCreateRequestV3): List<TimetableFrameResponseV3> = timetableAuthApi.createFrame(frame)
+
+    suspend fun postRollbackFrame(frameId: Int): TimetableLecturesResponseV3 = timetableAuthApi.restoreFrameByFrameId(frameId)
 
     suspend fun deleteTimetableFrame(frameId: Int) = timetableAuthApi.deleteTimetableFrame(frameId)
 
@@ -53,5 +69,8 @@ class TimetableRemoteDataSource @Inject constructor(
 
     suspend fun deleteTimetableLectures(lectureIds: List<Int>) = timetableAuthApi.deleteTimetableLectures(lectureIds)
 
-    suspend fun deleteAllTimetableFrame(semester: String) = timetableAuthApi.deleteAllTimetableFrame(semester)
+    suspend fun deleteAllTimetableFrame(
+        year: Int,
+        term: String
+    ) = timetableAuthApi.deleteFramesBySemester(year, term)
 }
