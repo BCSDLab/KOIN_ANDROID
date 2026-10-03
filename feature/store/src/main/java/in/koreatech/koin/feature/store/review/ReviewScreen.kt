@@ -27,7 +27,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,7 +39,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -265,24 +266,10 @@ private fun ReviewScreen(
                     modifier = Modifier.padding(top = 18.dp, start = 24.dp, end = 24.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    KoinStoreChip(
-                        modifier = Modifier.offset(x = (-8).dp),
-                        text = stringResource(orderOption.reviewOrderOption.stringResId),
-                        chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
-                            textColor = RebrandKoinTheme.colors.neutral500,
-                            borderWidth = 0.dp,
-                            elevation = 0.dp,
-                            containerColor = Color.Unspecified,
-                            paddingValues = PaddingValues(horizontal = 8.dp)
-                        ),
-                        trailingIcon = rememberVectorPainter(ImageVector.vectorResource(R.drawable.ic_store_arrow_down)),
-                        trailingIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(
-                            iconColor = RebrandKoinTheme.colors.neutral500,
-                            iconSize = 20.dp
-                        )
-                    ) {
-                        showReviewOrderOptionChooser()
-                    }
+                    ReviewOrderChip(
+                        reviewOrderOption = orderOption.reviewOrderOption,
+                        onClick = showReviewOrderOptionChooser
+                    )
 
                     Spacer(modifier = Modifier.weight(1f))
 
@@ -370,7 +357,7 @@ private fun ReviewScreen(
     if (orderOption.showOrderOptionChooser) {
         SortBottomSheet(
             currentIndex = orderOption.reviewOrderOption.ordinal,
-            options = ReviewOrderOption.entries.map { context.getString(it.stringResId) }.toImmutableList(),
+            options = ReviewOrderOption.entries.map { stringResource(it.stringResId) }.toImmutableList(),
             onSelect = { index ->
                 setReviewOrderOption(ReviewOrderOption.entries[index])
                 EventLogger.logClickEvent(
@@ -384,6 +371,37 @@ private fun ReviewScreen(
             }
         )
     }
+}
+
+@Composable
+private fun ReviewOrderChip(
+    reviewOrderOption: ReviewOrderOption,
+    onClick: () -> Unit
+) {
+    KoinStoreChip(
+        modifier = Modifier.offset(x = (-8).dp),
+        text = {
+            Text(text = stringResource(reviewOrderOption.stringResId))
+        },
+        chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
+            textColor = RebrandKoinTheme.colors.neutral500,
+            borderWidth = 0.dp,
+            elevation = 0.dp,
+            containerColor = Color.Unspecified,
+            paddingValues = PaddingValues(horizontal = 8.dp)
+        ),
+        trailingIcon = {
+            Icon(
+                imageVector = ImageVector.vectorResource(R.drawable.ic_store_arrow_down),
+                contentDescription = null
+            )
+        },
+        trailingIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(
+            iconColor = RebrandKoinTheme.colors.neutral500,
+            iconSize = 20.dp
+        ),
+        onClick = onClick
+    )
 }
 
 @Preview(showBackground = true)
