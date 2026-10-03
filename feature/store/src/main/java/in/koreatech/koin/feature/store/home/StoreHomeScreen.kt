@@ -23,9 +23,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -37,8 +37,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,6 +49,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
@@ -111,6 +110,19 @@ fun StoreHomeScreen(
     val uiState by viewModel.collectAsState()
     val context = LocalContext.current
     val navigator = rememberNavigator()
+    val categoryListState = rememberLazyListState()
+    val shopListState = rememberLazyListState()
+
+    LaunchedEffect(uiState.categoryId) {
+        if (uiState.categoryId == -1) return@LaunchedEffect
+        val categoryIndex = uiState.storeCategories.indexOfFirst { it.id == uiState.categoryId }
+        if (categoryIndex >= 0) categoryListState.animateScrollToItem(categoryIndex)
+        shopListState.animateScrollToItem(0)
+    }
+
+    LaunchedEffect(uiState.selectedOrderOption) {
+        shopListState.animateScrollToItem(0)
+    }
 
     viewModel.collectSideEffect {
         handleSideEffect(it, navigateToCart)
@@ -186,6 +198,8 @@ fun StoreHomeScreen(
                 selectedStoreFilter = uiState.selectedStoreFilter,
                 selectedMinimumPriceOption = uiState.selectedMinimumPriceOption,
                 showMinimumPriceOptions = uiState.showMinimumPriceOptions,
+                categoryListState = categoryListState,
+                shopListState = shopListState,
                 navigateToDetail = navigateToDetail,
                 navigateToSearch = navigateToSearch,
                 onCategoryChange = viewModel::onCategoryChange,
@@ -323,6 +337,8 @@ private fun StoreHomeScreen(
     selectedMinimumPriceOption: MinimumPriceOption,
     showOrderOptions: Boolean,
     showMinimumPriceOptions: Boolean,
+    categoryListState: LazyListState,
+    shopListState: LazyListState,
     modifier: Modifier = Modifier,
     navigateToDetail: (Int) -> Unit = { },
     navigateToSearch: () -> Unit = { },
@@ -333,314 +349,396 @@ private fun StoreHomeScreen(
     onSelectedMinimumPriceOptionChange: (MinimumPriceOption) -> Unit = { },
     onShowMinimumPriceOptionsChange: (Boolean) -> Unit = { }
 ) {
-    val context = LocalContext.current
-    val categoryListState = rememberLazyListState()
-    val shopListState = rememberLazyListState()
-
-    LaunchedEffect(categoryId) {
-        if (categoryId != -1) {
-            val categoryIndex = storeCategories.indexOfFirst { it.id == categoryId }
-            if (categoryIndex >= 0) {
-                categoryListState.animateScrollToItem(categoryIndex)
-            }
-            shopListState.animateScrollToItem(0)
-        }
-    }
-
-    LaunchedEffect(selectedOrderOption) {
-        shopListState.animateScrollToItem(0)
-    }
-
-    LaunchedEffect(storeCategories) {
-        if (storeCategories.isEmpty()) return@LaunchedEffect
-        snapshotFlow { categoryListState.isScrollInProgress }
-            .filter { it }
-            .collect {
-                storeCategories.firstOrNull { it.id == categoryId }.let {
-                    EventLogger.logScrollEvent(
-                        EventAction.BUSINESS,
-                        AnalyticsConstant.Label.SHOP_CATEGORIES,
-                        "scroll in ${it?.name}"
-                    )
-                }
-            }
-    }
-
     Box(
         modifier = modifier.fillMaxSize()
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            SearchBarFake(
-                modifier = Modifier.padding(horizontal = 24.dp)
-            ) {
-                navigateToSearch()
-            }
+            StoreHomeCategorySection(
+                categoryId = categoryId,
+                initCategoryId = initCategoryId,
+                storeCategories = storeCategories,
+                categoryListState = categoryListState,
+                navigateToSearch = navigateToSearch,
+                onCategoryChange = onCategoryChange
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
+            StoreHomeFilterSection(
+                selectedOrderOption = selectedOrderOption,
+                selectedStoreFilter = selectedStoreFilter,
+                selectedMinimumPriceOption = selectedMinimumPriceOption,
+                categoryName = storeCategories.firstOrNull { it.id == categoryId }?.name.orEmpty(),
+                onShowOrderOptions = { onShowOrderOptionsChange(true) },
+                onSelectedStoreFilterChange = onSelectedStoreFilterChange,
+                onShowMinimumPriceOptions = { onShowMinimumPriceOptionsChange(true) }
+            )
 
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                state = categoryListState,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                contentPadding = PaddingValues(horizontal = 24.dp)
-            ) {
-                itemsIndexed(
-                    storeCategories,
-                    key = { index, category ->
-                        category.id
-                    }
-                ) { _, category ->
-                    KoinStoreCategoryItem(
-                        categoryName = category.name,
-                        categoryIcon = rememberAsyncImagePainter(
-                            model = category.imageUrl,
-                            imageLoader = KoinCoilImageLoader.getImageLoader(context)
+            Spacer(modifier = Modifier.height(16.dp))
+            StoreHomeStoreList(
+                showEmptyState = showEmptyState,
+                storeList = storeList,
+                previousCategoryName = storeCategories.firstOrNull { it.id == initCategoryId }?.name.orEmpty(),
+                shopListState = shopListState,
+                navigateToDetail = navigateToDetail
+            )
+        }
+
+        StoreHomeBottomSheets(
+            categoryName = storeCategories.firstOrNull { it.id == categoryId }?.name.orEmpty(),
+            showOrderOptions = showOrderOptions,
+            showMinimumPriceOptions = showMinimumPriceOptions,
+            selectedOrderOption = selectedOrderOption,
+            selectedMinimumPriceOption = selectedMinimumPriceOption,
+            onSelectedOrderOptionChange = onSelectedOrderOptionChange,
+            onSelectedMinimumPriceOptionChange = onSelectedMinimumPriceOptionChange,
+            onShowOrderOptionsChange = onShowOrderOptionsChange,
+            onShowMinimumPriceOptionsChange = onShowMinimumPriceOptionsChange
+        )
+    }
+}
+
+@Composable
+private fun StoreHomeCategorySection(
+    categoryId: Int,
+    initCategoryId: Int,
+    storeCategories: ImmutableList<LocalStoreCategories>,
+    categoryListState: LazyListState,
+    navigateToSearch: () -> Unit,
+    onCategoryChange: (Int) -> Unit
+) {
+    val context = LocalContext.current
+
+    LaunchedEffect(storeCategories, categoryId) {
+        if (storeCategories.isEmpty()) return@LaunchedEffect
+        snapshotFlow { categoryListState.isScrollInProgress }
+            .filter { it }
+            .collect {
+                EventLogger.logScrollEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_CATEGORIES,
+                    "scroll in ${storeCategories.firstOrNull { it.id == categoryId }?.name}"
+                )
+            }
+    }
+
+    SearchBarFake(
+        modifier = Modifier.padding(horizontal = 24.dp),
+        onClick = {
+            navigateToSearch()
+            EventLogger.logClickEvent(
+                EventAction.BUSINESS,
+                AnalyticsConstant.Label.SHOP_CATEGORIES_SEARCH,
+                "search in ${storeCategories.firstOrNull { it.id == categoryId }?.name}"
+            )
+        }
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    LazyRow(
+        modifier = Modifier.fillMaxWidth(),
+        state = categoryListState,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        contentPadding = PaddingValues(horizontal = 24.dp)
+    ) {
+        items(
+            items = storeCategories,
+            key = { it.id }
+        ) { category ->
+            KoinStoreCategoryItem(
+                categoryName = category.name,
+                categoryIcon = rememberAsyncImagePainter(
+                    model = category.imageUrl,
+                    imageLoader = KoinCoilImageLoader.getImageLoader(context)
+                ),
+                isSelected = category.id == categoryId,
+                onClick = {
+                    onCategoryChange(category.id)
+                    EventLogger.logClickEvent(
+                        EventAction.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_CATEGORIES,
+                        storeCategories.firstOrNull { it.id == initCategoryId }?.name.orEmpty(),
+                        EventExtra(
+                            AnalyticsConstant.PREVIOUS_PAGE,
+                            storeCategories.firstOrNull { it.id == categoryId }?.name.orEmpty()
                         ),
-                        isSelected = category.id == categoryId,
-                        onClick = remember(key1 = category.id) {
-                            {
-                                onCategoryChange(category.id)
-                                EventLogger.logClickEvent(
-                                    EventAction.BUSINESS,
-                                    AnalyticsConstant.Label.SHOP_CATEGORIES,
-                                    storeCategories.firstOrNull { it.id == initCategoryId }?.name ?: "",
-                                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, storeCategories.firstOrNull { it.id == categoryId }?.name ?: ""),
-                                    EventExtra(AnalyticsConstant.CURRENT_PAGE, category.name),
-                                    EventExtra(
-                                        AnalyticsConstant.DURATION_TIME,
-                                        EventUtils.getElapsedTimeAndReset().toString()
-                                    )
-                                )
-                            }
-                        }
+                        EventExtra(AnalyticsConstant.CURRENT_PAGE, category.name),
+                        EventExtra(
+                            AnalyticsConstant.DURATION_TIME,
+                            EventUtils.getElapsedTimeAndReset().toString()
+                        )
                     )
                 }
-            }
+            )
+        }
+    }
+}
 
-            Spacer(modifier = Modifier.height(16.dp))
+@Composable
+private fun StoreHomeFilterSection(
+    selectedOrderOption: OrderOption,
+    selectedStoreFilter: ImmutableList<StoreFilter>,
+    selectedMinimumPriceOption: MinimumPriceOption,
+    categoryName: String,
+    onShowOrderOptions: () -> Unit,
+    onSelectedStoreFilterChange: (StoreFilter) -> Unit,
+    onShowMinimumPriceOptions: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Max)
+            .horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Spacer(modifier = Modifier.width(16.dp))
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(IntrinsicSize.Max)
-                    .horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = Modifier.width(16.dp))
+        StoreHomeOrderFilterChip(
+            selectedOrderOption = selectedOrderOption,
+            onClick = onShowOrderOptions
+        )
 
-                key(selectedOrderOption) {
-                    KoinStoreChip(
-                        modifier = Modifier.fillMaxHeight(),
-                        text = stringResource(selectedOrderOption.stringResId),
-                        chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
-                            textColor = RebrandKoinTheme.colors.primary500,
-                            borderWidth = 1.dp,
-                            borderColor = RebrandKoinTheme.colors.primary500,
-                            elevation = 0.dp
-                        ),
-                        trailingIcon = rememberVectorPainter(ImageVector.vectorResource(R.drawable.ic_store_arrow_down)),
-                        trailingIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(
-                            iconColor = RebrandKoinTheme.colors.primary500
-                        )
-                    ) {
-                        onShowOrderOptionsChange(true)
-                    }
-                }
+        Spacer(modifier = Modifier.width(8.dp))
 
-                Spacer(modifier = Modifier.width(8.dp))
+        storeFilters.fastForEach { storeFilter ->
+            StoreHomeStoreFilterChip(
+                storeFilter = storeFilter,
+                isSelected = selectedStoreFilter.contains(storeFilter),
+                categoryName = categoryName,
+                onClick = onSelectedStoreFilterChange
+            )
+        }
 
-                storeFilters.forEach {
-                    key(it) {
-                        val isSelected = selectedStoreFilter.contains(it)
-                        KoinStoreChip(
-                            modifier = Modifier.fillMaxHeight(),
-                            text = stringResource(it.stringResId),
-                            leadingIcon = rememberVectorPainter(ImageVector.vectorResource(it.iconResId)),
-                            chipStyle = if (isSelected) {
-                                KoinStoreChipDefaults.koinStoreChipStyle(
-                                    elevation = 0.dp,
-                                    containerColor = RebrandKoinTheme.colors.primary500,
-                                    textColor = RebrandKoinTheme.colors.neutral0
-                                )
-                            } else {
-                                KoinStoreChipDefaults.koinStoreChipStyle()
-                            },
-                            leadingIconStyle = if (isSelected) {
-                                KoinStoreChipDefaults.koinStoreIconStyle(
-                                    iconColor = RebrandKoinTheme.colors.neutral0
-                                )
-                            } else {
-                                KoinStoreChipDefaults.koinStoreIconStyle()
-                            },
-                            onClick = remember(key1 = it) {
-                                {
-                                    onSelectedStoreFilterChange(it)
-                                    if (isSelected) {
-                                        EventLogger.logClickEvent(
-                                            EventAction.BUSINESS,
-                                            AnalyticsConstant.Label.SHOP_CAN,
-                                            when (it) {
-                                                StoreFilter.IS_OPEN -> "check_open_${storeCategories.firstOrNull { categoryId == it.id }?.name}"
-                                                StoreFilter.DELIVERY_AVAILABLE -> "check_delivery_${storeCategories.firstOrNull { categoryId == it.id }?.name}"
-                                                StoreFilter.TAKEOUT_AVAILABLE -> "check_takeout_${storeCategories.firstOrNull { categoryId == it.id }?.name}"
-                                                StoreFilter.FREE_DELIVERY_TIP -> "check_free_delivery_${storeCategories.firstOrNull { categoryId == it.id }?.name}"
-                                            }
-                                        )
-                                    }
-                                }
-                            }
-                        )
-                    }
-                }
+        StoreHomeMinimumPriceFilterChip(
+            minimumPrice = selectedMinimumPriceOption.price,
+            categoryName = categoryName,
+            onClick = onShowMinimumPriceOptions
+        )
 
-                KoinStoreMinimumPriceChip(
-                    modifier = Modifier.fillMaxHeight(),
-                    minimumPrice = selectedMinimumPriceOption.price,
-                    onClick = {
-                        onShowMinimumPriceOptionsChange(true)
-                        EventLogger.logClickEvent(
-                            EventAction.BUSINESS,
-                            AnalyticsConstant.Label.SHOP_CAN,
-                            "check_min_amount_${storeCategories.firstOrNull { it.id == categoryId }?.name.orEmpty()}"
-                        )
-                    }
-                )
+        Spacer(modifier = Modifier.width(16.dp))
+    }
+}
 
-                Spacer(modifier = Modifier.width(16.dp))
-            }
+@Composable
+private fun StoreHomeOrderFilterChip(
+    selectedOrderOption: OrderOption,
+    onClick: () -> Unit
+) {
+    KoinStoreChip(
+        modifier = Modifier.fillMaxHeight(),
+        text = stringResource(selectedOrderOption.stringResId),
+        chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
+            textColor = RebrandKoinTheme.colors.primary500,
+            borderWidth = 1.dp,
+            borderColor = RebrandKoinTheme.colors.primary500,
+            elevation = 0.dp
+        ),
+        trailingIcon = rememberVectorPainter(ImageVector.vectorResource(R.drawable.ic_store_arrow_down)),
+        trailingIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(
+            iconColor = RebrandKoinTheme.colors.primary500
+        ),
+        onClick = onClick
+    )
+}
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 24.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                state = shopListState
-            ) {
-                if (showEmptyState) {
-                    item {
-                        Column(
-                            modifier = Modifier.aspectRatio(1f),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Image(
-                                imageVector = ImageVector.vectorResource(R.drawable.ic_store_no_store),
-                                contentDescription = null
-                            )
-
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            BasicText(
-                                text = stringResource(R.string.store_list_empty),
-                                style = RebrandKoinTheme.typography.bold18.copy(
-                                    color = RebrandKoinTheme.colors.primary500
-                                )
-                            )
-                            BasicText(
-                                text = stringResource(R.string.store_list_empty_description),
-                                style = RebrandKoinTheme.typography.regular14.copy(
-                                    color = RebrandKoinTheme.colors.neutral600
-                                )
-                            )
-                        }
-                    }
-                } else {
-                    items(
-                        storeList,
-                        key = {
-                            it.shopId
-                        }
-                    ) {
-                        KoinStoreCard(
-                            modifier = Modifier.fillMaxWidth(),
-                            storeName = it.name,
-                            storeAverageRating = it.ratingAverage.toString(),
-                            storeReviewCount = it.reviewCount,
-                            storeDeliveryFee = it.minimumDeliveryTip,
-                            storeImageUrl = it.thumbnail,
-                            isOpen = it.isOpen,
-                            filterBadgeList = it.filterBadgeList,
-                            onClick = remember(key1 = it.shopId) {
-                                {
-                                    navigateToDetail(it.orderableShopId)
-                                    EventLogger.logClickEvent(
-                                        EventAction.BUSINESS,
-                                        AnalyticsConstant.Label.SHOP_CLICK,
-                                        it.name,
-                                        EventExtra(AnalyticsConstant.PREVIOUS_PAGE, storeCategories.firstOrNull { categoryId == initCategoryId }?.name ?: ""),
-                                        EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
-                                        EventExtra(
-                                            AnalyticsConstant.DURATION_TIME,
-                                            EventUtils.getElapsedTimeAndReset().toString()
-                                        )
-                                    )
-                                }
-                            }
-                        )
-                    }
-                }
-
-                item {
-                    Spacer(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars))
-                }
-            }
-
-            if (showOrderOptions) {
-                SortBottomSheet(
-                    currentIndex = selectedOrderOption.ordinal,
-                    options = OrderOption.entries.map { stringResource(it.stringResId) },
-                    onSelect = { index ->
-                        onSelectedOrderOptionChange(OrderOption.entries[index])
-                        onShowOrderOptionsChange(false)
-                        EventLogger.logClickEvent(
-                            EventAction.BUSINESS,
-                            AnalyticsConstant.Label.SHOP_CAN,
-                            when (index) {
-                                0 -> {
-                                    "check_default_${storeCategories.firstOrNull { it.id == categoryId }?.name}"
-                                }
-
-                                1 -> {
-                                    "check_review_${storeCategories.firstOrNull { it.id == categoryId }?.name}"
-                                }
-
-                                else -> {
-                                    "check_star_${storeCategories.firstOrNull { it.id == categoryId }?.name}"
-                                }
-                            }
-                        )
-                    },
-                    onClose = {
-                        onShowOrderOptionsChange(false)
-                    }
-                )
-            }
-
-            if (showMinimumPriceOptions) {
-                MinOrderSliderBottomSheet(
-                    selectedIndex = minimumPriceOptions.indexOf(selectedMinimumPriceOption),
-                    options = minimumPriceOptions.map { stringResource(it.stringRes) },
-                    onSelected = { index ->
-                        onSelectedMinimumPriceOptionChange(minimumPriceOptions[index])
-                        onShowMinimumPriceOptionsChange(false)
-                        EventLogger.logClickEvent(
-                            EventAction.BUSINESS,
-                            AnalyticsConstant.Label.MIN_AMOUNT_SET,
-                            "${minimumPriceOptions[index]}"
-                        )
-                    },
-                    onClose = {
-                        onShowMinimumPriceOptionsChange(false)
+@Composable
+private fun StoreHomeStoreFilterChip(
+    storeFilter: StoreFilter,
+    isSelected: Boolean,
+    categoryName: String,
+    onClick: (StoreFilter) -> Unit
+) {
+    KoinStoreChip(
+        modifier = Modifier.fillMaxHeight(),
+        text = stringResource(storeFilter.stringResId),
+        leadingIcon = rememberVectorPainter(ImageVector.vectorResource(storeFilter.iconResId)),
+        chipStyle = if (isSelected) {
+            KoinStoreChipDefaults.koinStoreChipStyle(
+                elevation = 0.dp,
+                containerColor = RebrandKoinTheme.colors.primary500,
+                textColor = RebrandKoinTheme.colors.neutral0
+            )
+        } else {
+            KoinStoreChipDefaults.koinStoreChipStyle()
+        },
+        leadingIconStyle = if (isSelected) {
+            KoinStoreChipDefaults.koinStoreIconStyle(
+                iconColor = RebrandKoinTheme.colors.neutral0
+            )
+        } else {
+            KoinStoreChipDefaults.koinStoreIconStyle()
+        },
+        onClick = {
+            onClick(storeFilter)
+            if (isSelected) {
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_CAN,
+                    when (storeFilter) {
+                        StoreFilter.IS_OPEN -> "check_open_$categoryName"
+                        StoreFilter.DELIVERY_AVAILABLE -> "check_delivery_$categoryName"
+                        StoreFilter.TAKEOUT_AVAILABLE -> "check_takeout_$categoryName"
+                        StoreFilter.FREE_DELIVERY_TIP -> "check_free_delivery_$categoryName"
                     }
                 )
             }
         }
+    )
+}
+
+@Composable
+private fun StoreHomeMinimumPriceFilterChip(
+    minimumPrice: Int,
+    categoryName: String,
+    onClick: () -> Unit
+) {
+    KoinStoreMinimumPriceChip(
+        modifier = Modifier.fillMaxHeight(),
+        minimumPrice = minimumPrice,
+        onClick = {
+            onClick()
+            EventLogger.logClickEvent(
+                EventAction.BUSINESS,
+                AnalyticsConstant.Label.SHOP_CAN,
+                "check_min_amount_$categoryName"
+            )
+        }
+    )
+}
+
+@Composable
+private fun StoreHomeStoreList(
+    showEmptyState: Boolean,
+    storeList: ImmutableList<LocalShop>,
+    previousCategoryName: String,
+    shopListState: LazyListState,
+    navigateToDetail: (Int) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        state = shopListState
+    ) {
+        if (showEmptyState) {
+            item {
+                Column(
+                    modifier = Modifier.aspectRatio(1f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Image(
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_store_no_store),
+                        contentDescription = null
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    BasicText(
+                        text = stringResource(R.string.store_list_empty),
+                        style = RebrandKoinTheme.typography.bold18.copy(
+                            color = RebrandKoinTheme.colors.primary500
+                        )
+                    )
+                    BasicText(
+                        text = stringResource(R.string.store_list_empty_description),
+                        style = RebrandKoinTheme.typography.regular14.copy(
+                            color = RebrandKoinTheme.colors.neutral600
+                        )
+                    )
+                }
+            }
+        } else {
+            items(
+                items = storeList,
+                key = { it.shopId }
+            ) { store ->
+                KoinStoreCard(
+                    modifier = Modifier.fillMaxWidth(),
+                    storeName = store.name,
+                    storeAverageRating = store.ratingAverage.toString(),
+                    storeReviewCount = store.reviewCount,
+                    storeDeliveryFee = store.minimumDeliveryTip,
+                    storeImageUrl = store.thumbnail,
+                    isOpen = store.isOpen,
+                    filterBadgeList = store.filterBadgeList,
+                    onClick = {
+                        navigateToDetail(store.orderableShopId)
+                        EventLogger.logClickEvent(
+                            EventAction.BUSINESS,
+                            AnalyticsConstant.Label.SHOP_CLICK,
+                            store.name,
+                            EventExtra(AnalyticsConstant.PREVIOUS_PAGE, previousCategoryName),
+                            EventExtra(AnalyticsConstant.CURRENT_PAGE, store.name),
+                            EventExtra(
+                                AnalyticsConstant.DURATION_TIME,
+                                EventUtils.getElapsedTimeAndReset().toString()
+                            )
+                        )
+                    }
+                )
+            }
+        }
+
+        item {
+            Spacer(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars))
+        }
+    }
+}
+
+@Composable
+private fun StoreHomeBottomSheets(
+    categoryName: String,
+    showOrderOptions: Boolean,
+    showMinimumPriceOptions: Boolean,
+    selectedOrderOption: OrderOption,
+    selectedMinimumPriceOption: MinimumPriceOption,
+    onSelectedOrderOptionChange: (OrderOption) -> Unit,
+    onSelectedMinimumPriceOptionChange: (MinimumPriceOption) -> Unit,
+    onShowOrderOptionsChange: (Boolean) -> Unit,
+    onShowMinimumPriceOptionsChange: (Boolean) -> Unit
+) {
+    if (showOrderOptions) {
+        SortBottomSheet(
+            currentIndex = selectedOrderOption.ordinal,
+            options = OrderOption.entries.map { stringResource(it.stringResId) },
+            onSelect = { index ->
+                onSelectedOrderOptionChange(OrderOption.entries[index])
+                onShowOrderOptionsChange(false)
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_CAN,
+                    when (index) {
+                        0 -> "check_default_$categoryName"
+                        1 -> "check_review_$categoryName"
+                        else -> "check_star_$categoryName"
+                    }
+                )
+            },
+            onClose = { onShowOrderOptionsChange(false) }
+        )
+    }
+
+    if (showMinimumPriceOptions) {
+        MinOrderSliderBottomSheet(
+            selectedIndex = minimumPriceOptions.indexOf(selectedMinimumPriceOption),
+            options = minimumPriceOptions.map { stringResource(it.stringRes) },
+            onSelected = { index ->
+                onSelectedMinimumPriceOptionChange(minimumPriceOptions[index])
+                onShowMinimumPriceOptionsChange(false)
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.MIN_AMOUNT_SET,
+                    "${minimumPriceOptions[index]}"
+                )
+            },
+            onClose = { onShowMinimumPriceOptionsChange(false) }
+        )
     }
 }
 
@@ -690,7 +788,9 @@ private fun StoreHomeScreenPreview() {
             selectedOrderOption = OrderOption.NONE,
             selectedStoreFilter = persistentListOf(StoreFilter.IS_OPEN),
             selectedMinimumPriceOption = MinimumPriceOption.ALL,
-            showMinimumPriceOptions = false
+            showMinimumPriceOptions = false,
+            categoryListState = LazyListState(),
+            shopListState = LazyListState()
         )
     }
 }
