@@ -16,7 +16,11 @@ data class TimetableCustomLectureRequest(
         @SerializedName("lecture_infos")
         val lectureInfos: List<TimetableCustomLectureInfo>,
         @SerializedName("professor")
-        val professor: String?
+        val professor: String?,
+        @SerializedName("grades")
+        val grades: String?,
+        @SerializedName("memo")
+        val memo: String?
     )
 
     data class TimetableCustomLectureInfo(
