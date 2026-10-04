@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,7 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanConfirmBottomSheet
@@ -61,6 +62,7 @@ fun CallvanNotificationsScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Suppress("kotlin:S6615")
 @Composable
 fun CallvanNotificationsScreenImpl(
@@ -103,8 +105,12 @@ fun CallvanNotificationsScreenImpl(
 
     Scaffold(
         topBar = {
-            KoinTopAppBar(
-                title = stringResource(R.string.callvan_notification_top_bar),
+            KoinTopAppBar2(
+                title = {
+                    Text(
+                        text = stringResource(R.string.callvan_notification_top_bar)
+                    )
+                },
                 onNavigationIconClick = onTopbarBackClick,
                 actions = {
                     val density = LocalDensity.current

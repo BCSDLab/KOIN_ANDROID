@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,7 +40,7 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
 import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.component.CallvanDropdownMenuItem
@@ -95,6 +96,7 @@ fun CallvanDetailScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Suppress("LongParameterList")
 @Composable
 fun CallvanDetailScreenImpl(
@@ -114,8 +116,12 @@ fun CallvanDetailScreenImpl(
 ) {
     Scaffold(
         topBar = {
-            KoinTopAppBar(
-                title = stringResource(R.string.callvan_detail_top_bar),
+            KoinTopAppBar2(
+                title = {
+                    Text(
+                        text = stringResource(R.string.callvan_detail_top_bar)
+                    )
+                },
                 onNavigationIconClick = onTopbarBackClick,
                 actions = {
                     IconButton(onClick = onNotificationClick) {
