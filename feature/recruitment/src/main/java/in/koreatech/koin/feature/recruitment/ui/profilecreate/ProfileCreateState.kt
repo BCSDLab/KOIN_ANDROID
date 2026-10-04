@@ -26,6 +26,7 @@ data class ProfileCreateState(
     val departments: ImmutableList<String> = persistentListOf(),
     val isDepartmentDropdownExpanded: Boolean = false,
     val studentId: String = "",
+    val isAcademicInfoEdited: Boolean = false,
     val preferredRole: String = "",
     val skills: ImmutableList<SkillEntry> = persistentListOf(),
     val activities: ImmutableList<RecruitmentActivityEntry> = persistentListOf(),
