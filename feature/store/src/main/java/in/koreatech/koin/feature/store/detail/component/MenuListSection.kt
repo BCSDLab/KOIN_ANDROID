@@ -41,26 +41,26 @@ import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.model.MenuCategoryModel
 import `in`.koreatech.koin.feature.store.model.MenuModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 fun LazyListScope.menuListSection(
-    category: String,
+    category: MenuCategoryModel,
     menus: ImmutableList<MenuModel>,
     modifier: Modifier = Modifier,
     onMenuClick: (menuId: Int) -> Unit = { }
 ) {
     if (menus.isEmpty()) return
 
-    item {
+    item(key = category.menuGroupId) {
         Column(
             modifier = modifier
         ) {
             Text(
-                text = category,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
+                text = category.menuGroupName,
+                style = RebrandKoinTheme.typography.bold20,
                 modifier = Modifier.padding(vertical = 8.dp, horizontal = 10.dp)
             )
 
@@ -68,7 +68,7 @@ fun LazyListScope.menuListSection(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 10.dp),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(24.dp),
                 elevation = CardDefaults.cardElevation(0.5.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = KoinTheme.colors.neutral0
@@ -108,13 +108,14 @@ fun MenuItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = menu.name, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
+            Text(text = menu.name, style = KoinTheme.typography.medium18.copy(fontWeight = FontWeight.SemiBold))
             if (menu.description?.isNotEmpty() == true) {
                 Text(
                     modifier = Modifier.padding(top = 4.dp),
                     text = menu.description,
-                    fontSize = 12.sp,
-                    color = KoinTheme.colors.neutral500
+                    style = KoinTheme.typography.regular12.copy(
+                        color = KoinTheme.colors.neutral500
+                    )
                 )
             }
 
@@ -202,7 +203,11 @@ private fun MenuListSectionPreview() {
         ) {
             menuListSection(
                 modifier = Modifier.fillMaxWidth(),
-                category = "추천메뉴",
+                category = MenuCategoryModel(
+                    menuGroupId = 1,
+                    menuGroupName = "",
+                    menus = persistentListOf()
+                ),
                 menus = persistentListOf(
                     MenuModel(
                         id = 1,

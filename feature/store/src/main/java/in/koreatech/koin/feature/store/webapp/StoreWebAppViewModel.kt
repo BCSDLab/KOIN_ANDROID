@@ -22,8 +22,11 @@ class StoreWebAppViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getTokensUseCase().let {
+            getTokensUseCase().onSuccess {
                 _authToken.emit(it)
+            }.onFailure {
+                _authToken.emit(AuthToken("", "", ""))
+            }.also {
                 _isLoading.emit(false)
             }
         }

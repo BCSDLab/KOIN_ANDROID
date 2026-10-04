@@ -5,25 +5,28 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserType
 import `in`.koreatech.koin.domain.repository.TokenRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
+import `in`.koreatech.koin.domain.util.suspendRunCatching
 import javax.inject.Inject
 
 class GetTokensUseCase @Inject constructor(
     private val tokenRepository: TokenRepository,
     private val userRepository: UserRepository
 ) {
-    suspend operator fun invoke(): AuthToken {
-        val accessToken = tokenRepository.getAccessToken() ?: ""
-        val refreshToken = tokenRepository.getRefreshToken() ?: ""
-        val userType = when (userRepository.getUserInfo()) {
-            User.Anonymous -> UserType.ANONYMOUS.name
-            is User.Student -> UserType.STUDENT.name
-            is User.General -> UserType.GENERAL.name
-        }
+    suspend operator fun invoke(): Result<AuthToken> {
+        return suspendRunCatching {
+            val accessToken = tokenRepository.getAccessToken() ?: ""
+            val refreshToken = tokenRepository.getRefreshToken() ?: ""
+            val userType = when (userRepository.getUserInfo()) {
+                User.Anonymous -> UserType.ANONYMOUS.name
+                is User.Student -> UserType.STUDENT.name
+                is User.General -> UserType.GENERAL.name
+            }
 
-        return AuthToken(
-            token = accessToken,
-            refreshToken = refreshToken,
-            userType = userType
-        )
+            AuthToken(
+                token = accessToken,
+                refreshToken = refreshToken,
+                userType = userType
+            )
+        }
     }
 }

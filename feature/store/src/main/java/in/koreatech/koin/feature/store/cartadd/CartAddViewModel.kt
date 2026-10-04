@@ -23,14 +23,17 @@ import `in`.koreatech.koin.feature.store.navigation.ORDERABLE_SHOP_MENU_ID
 import javax.inject.Inject
 import kotlinx.serialization.json.Json
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.subIntent
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 
 @HiltViewModel
+@OptIn(OrbitExperimental::class)
 class CartAddViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getOrderableShopMenuUseCase: GetOrderableShopMenuUseCase,
@@ -61,7 +64,7 @@ class CartAddViewModel @Inject constructor(
         Timber.d("cartData: $cartData")
         if (cartData != null) {
             Json.decodeFromString<LocalCartAdd>(cartData).let {
-                blockingIntent {
+                intent {
                     reduce {
                         state.copy(
                             orderableShopMenuId = it.orderableShopMenuId,
@@ -70,7 +73,7 @@ class CartAddViewModel @Inject constructor(
                             quantity = it.quantity
                         )
                     }
-                    addCartItem()
+                    addCartItemInternal()
                 }
             }
         }
@@ -81,7 +84,7 @@ class CartAddViewModel @Inject constructor(
             when (it) {
                 is User.Student,
                 is User.General -> {
-                    getCartItemsCount()
+                    fetchCartItemsCount()
                     reduce {
                         state.copy(isLoggedIn = true)
                     }
@@ -96,7 +99,7 @@ class CartAddViewModel @Inject constructor(
         }
     }
 
-    private fun getCartItemsCount() = intent {
+    private suspend fun fetchCartItemsCount() = subIntent {
         reduce {
             state.copy(isLoading = true)
         }
@@ -150,6 +153,10 @@ class CartAddViewModel @Inject constructor(
     }
 
     fun addCartItem() = intent {
+        addCartItemInternal()
+    }
+
+    private suspend fun addCartItemInternal() = subIntent {
         reduce {
             state.copy(isLoading = true)
         }
@@ -278,8 +285,13 @@ class CartAddViewModel @Inject constructor(
             reduce {
                 state.copy(isLoading = false)
             }
-            addCartItem() // Call add cart again
-            dismissErrorDialog()
+            addCartItemInternal()
+            reduce {
+                state.copy(
+                    showErrorDialog = false,
+                    error = CartError.NONE
+                )
+            }
         }.onFailure {
             // Should not happen
             reduce {
