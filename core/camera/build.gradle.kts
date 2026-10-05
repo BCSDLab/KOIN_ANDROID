@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.koin.library)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.koin.hilt)
 }
 
 android {
