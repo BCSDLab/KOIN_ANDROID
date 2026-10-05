@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.network.service.NetworkConnectivityService
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
@@ -18,6 +19,7 @@ import `in`.koreatech.koin.domain.usecase.notification.DeleteNotificationSubscri
 import `in`.koreatech.koin.domain.usecase.notification.GetNotificationPermissionInfoUseCase
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionDetailUseCase
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionUseCase
+import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
@@ -31,6 +33,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -52,7 +56,8 @@ class DiningViewModel @Inject constructor(
     private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase,
     private val networkConnectivityService: NetworkConnectivityService,
     private val syncDiningUseCase: SyncDiningUseCase,
-    private val syncCoopShopUseCase: SyncCoopShopUseCase
+    private val syncCoopShopUseCase: SyncCoopShopUseCase,
+    private val abTestUseCase: ABTestUseCase
 ) : ViewModel(), ContainerHost<DiningState, DiningSideEffect> {
 
     private val initDate = savedStateHandle.get<String>(INIT_DATE)
@@ -72,6 +77,20 @@ class DiningViewModel @Inject constructor(
     val userState: StateFlow<User> get() = _userState
 
     private var fetchDiningJob: Job? = null
+
+    // AB Test will remove after experiment complete.
+    // So, I didn't add to DiningState and separate it
+    val diningSoldOutABTestExperimentGroup = flow {
+        abTestUseCase(Experiment.DINING_SOLDOUT.experimentTitle).onSuccess {
+            emit(it)
+        }.onFailure {
+            emit(Experiment.DINING_SOLDOUT.experimentGroups.first())
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = null
+    ).filterNotNull()
 
     private fun syncDining() {
         if (!networkConnectivityService.isConnected()) return
