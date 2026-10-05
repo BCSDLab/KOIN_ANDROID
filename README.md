@@ -28,7 +28,7 @@
 </p>
 
 ## Tech Stack
-| Category | Stack |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| Category | Stack |                                                                                                                                                                                   
 |:---:|:---|
 | **Language** | ![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)                                                                                                                                                                                                                                                                                                                                                                                                   |
 | **UI** | ![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white) ![XML](https://img.shields.io/badge/XML%20View-3DDC84?style=for-the-badge&logo=android&logoColor=white)                                                                                                                                                                                                                                                               |
