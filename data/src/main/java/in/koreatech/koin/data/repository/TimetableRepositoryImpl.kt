@@ -200,30 +200,14 @@ class TimetableRepositoryImpl @Inject constructor(
     override suspend fun postTimetableFrame(frame: TimetableFrameCreateQuery): Result<TimetableFrame> =
         suspendRunCatching {
             val (year, term) = frame.semester.toYearTerm()
-            val createdFrame =
-                timetableRemoteDataSource
-                    .postTimetableFrame(
-                        TimetableFrameCreateRequestV3(
-                            year = year,
-                            term = term
-                        )
-                    ).maxBy { it.id }
-            val timetableName = frame.timetableName
-
-            if (timetableName == null || timetableName == createdFrame.name) {
-                createdFrame.toTimetableFrame()
-            } else {
-                timetableRemoteDataSource
-                    .putTimetableFrame(
-                        createdFrame.id,
-                        TimetableFrameUpdateRequestV3(
-                            timetableName,
-                            createdFrame.isMain
-                        )
+            timetableRemoteDataSource
+                .postTimetableFrame(
+                    TimetableFrameCreateRequestV3(
+                        year = year,
+                        term = term
                     )
-                    .first { it.id == createdFrame.id }
-                    .toTimetableFrame()
-            }
+                ).maxBy { it.id }
+                .toTimetableFrame()
         }.recoverCatching {
             if (it is HttpException) {
                 throw Exception()

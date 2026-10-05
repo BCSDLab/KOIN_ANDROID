@@ -35,7 +35,7 @@ internal fun String.toYearTerm(): YearTerm =
         }
     )
 
-internal fun toLegacySemester(year: Int, term: String): String =
+internal fun toLegacySemester(year: Int, term: String): String? =
     when (term) {
         TERM_SPRING -> "${year}1"
         TERM_FALL -> "${year}2"
@@ -43,7 +43,7 @@ internal fun toLegacySemester(year: Int, term: String): String =
         TERM_WINTER -> "$year-겨울"
         else -> {
             Timber.e("알 수 없는 학기 응답 : $term")
-            "${year}1"
+            null
         }
     }
 
@@ -83,8 +83,10 @@ internal fun TimetableFrameResponseV3.toTimetableFrame(): TimetableFrame =
 
 internal fun List<TimetableFramesResponseV3>.toSemesterFrames(): Map<String, List<TimetableFrame>> =
     flatMap { yearFrames ->
-        yearFrames.semesterFrames.map { semester ->
-            toLegacySemester(yearFrames.year, semester.term) to semester.frames.map { it.toTimetableFrame() }
+        yearFrames.semesterFrames.mapNotNull { semester ->
+            toLegacySemester(yearFrames.year, semester.term)?.let { legacySemester ->
+                legacySemester to semester.frames.map { it.toTimetableFrame() }
+            }
         }
     }.toMap()
 
