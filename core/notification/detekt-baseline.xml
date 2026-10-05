@@ -2,6 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>TooGenericExceptionCaught:NotifierImpl.kt$NotifierImpl$e: Exception</ID>
+    <ID>NestedBlockDepth:NotificationImageProvider.kt$NotificationImageProvider$private fun download(context: Context, imageUrl: String, extension: String): File</ID>
+    <ID>TooGenericExceptionCaught:NotificationImageProvider.kt$NotificationImageProvider$throwable: Throwable</ID>
   </CurrentIssues>
 </SmellBaseline>

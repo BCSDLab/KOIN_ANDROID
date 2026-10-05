@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,11 +22,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import `in`.koreatech.koin.core.designsystem.component.icon.StableIcon
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
@@ -88,21 +90,21 @@ fun LectureBox(
         ) {
             Text(
                 text = lecture.name,
-                style = KoinTheme.typography.bold12,
-                color = KoinTheme.colors.neutral800
+                style = RebrandKoinTheme.typography.bold12,
+                color = RebrandKoinTheme.colors.neutral800
             )
             Text(
                 text = lecture.professor.ifEmpty { "미배정" },
-                style = KoinTheme.typography.regular12,
-                color = KoinTheme.colors.neutral800
+                style = RebrandKoinTheme.typography.regular12,
+                color = RebrandKoinTheme.colors.neutral800
             )
 
             FlowRow {
                 events.forEach {
                     Text(
                         text = it.toLectureTime(),
-                        style = KoinTheme.typography.regular12,
-                        color = KoinTheme.colors.neutral800
+                        style = RebrandKoinTheme.typography.regular12,
+                        color = RebrandKoinTheme.colors.neutral800
                     )
                 }
             }
@@ -118,10 +120,11 @@ fun LectureBox(
         IconButton(onClick = {
             if (isAdded) onClickRemoveLecture(lecture) else onClickAddLecture(lecture)
         }) {
-            StableIcon(
-                drawableResId = if (isAdded) R.drawable.ic_minus else R.drawable.ic_plus,
-                tint = if (isAdded) KoinTheme.colors.danger700 else KoinTheme.colors.primary500,
-                modifier = Modifier.size(if (isAdded) 20.dp else 24.dp)
+            Icon(
+                modifier = Modifier.size(24.dp),
+                imageVector = if (isAdded) ImageVector.vectorResource(R.drawable.ic_remove_lecture) else ImageVector.vectorResource(R.drawable.ic_add_lecture),
+                tint = if (isAdded) RebrandKoinTheme.colors.danger700 else RebrandKoinTheme.colors.primary500,
+                contentDescription = null
             )
         }
     }
@@ -130,7 +133,7 @@ fun LectureBox(
 @Preview
 @Composable
 private fun LectureBoxPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         LectureBox(
             position = 1,
             lecture =
@@ -145,7 +148,7 @@ private fun LectureBoxPreview() {
 @Preview
 @Composable
 private fun LectureBoxPreview_Added() {
-    KoinTheme {
+    RebrandKoinTheme {
         LectureBox(
             position = 2,
             lecture = dummyLecture,
@@ -158,7 +161,7 @@ private fun LectureBoxPreview_Added() {
 @Preview
 @Composable
 private fun LectureBoxPreview_Selected() {
-    KoinTheme {
+    RebrandKoinTheme {
         LectureBox(
             position = 2,
             lecture = dummyLecture,

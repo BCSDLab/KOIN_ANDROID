@@ -11,7 +11,7 @@ data class LocalOrderInProgress(
     val paymentId: Int,
     val orderType: OrderType,
     val shopName: String,
-    val orderableShopThumbnail: String,
+    val orderableShopThumbnail: String?,
     val estimatedAt: LocalTime?,
     val orderStatus: OrderStatus,
     val orderTitle: String,

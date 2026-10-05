@@ -16,7 +16,7 @@ data class OrderHistoryOrders(
     @SerializedName("orderable_shop_id") val orderableShopId: Int,
     @SerializedName("orderable_shop_name") val orderableShopName: String,
     @SerializedName("open_status") val openStatus: Boolean,
-    @SerializedName("orderable_shop_thumbnail") val orderableShopThumbnail: String,
+    @SerializedName("orderable_shop_thumbnail") val orderableShopThumbnail: String?,
     @SerializedName("order_date") val orderDate: String,
     @SerializedName("order_status") val orderStatus: String,
     @SerializedName("order_title") val orderTitle: String,

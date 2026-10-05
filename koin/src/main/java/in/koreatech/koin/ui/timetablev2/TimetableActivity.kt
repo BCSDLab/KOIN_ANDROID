@@ -8,35 +8,37 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.rememberGraphicsLayer
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.appbar.AppBarBase
-import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
-import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
+import `in`.koreatech.koin.core.designsystem.component.snackbar.KoinSnackbarDuration
+import `in`.koreatech.koin.core.designsystem.component.snackbar.KoinSnackbarHost
+import `in`.koreatech.koin.core.designsystem.component.snackbar.rememberKoinSnackbarHostState
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
+import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.core.navigation.Navigator
-import `in`.koreatech.koin.core.util.KeyboardUtils
 import `in`.koreatech.koin.databinding.ActivityTimetableBinding
 import `in`.koreatech.koin.feature.timetable.component.CircleLoadingBar
 import `in`.koreatech.koin.feature.timetable.state.BottomSheetUI
@@ -52,19 +54,12 @@ import `in`.koreatech.koin.feature.timetable.view.dialog.ScheduleDuplicationDial
 import `in`.koreatech.koin.feature.timetable.view.dialog.SelectDepartmentDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.TimetableTimePickerDialog
 import `in`.koreatech.koin.feature.timetable.viewmodel.TimetableViewModel
-import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
-import `in`.koreatech.koin.ui.navigation.state.MenuState
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
-class TimetableActivity : KoinNavigationDrawerActivity() {
-    override val screenTitle: String
-        get() = SCREEN_TITLE
-    override val menuState: MenuState
-        get() = MenuState.Timetable
-
+class TimetableActivity : ComponentActivity() {
     @Inject
     lateinit var navigator: Navigator
 
@@ -108,12 +103,11 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdgeWithDarkStatusBar()
+        enableEdgeToEdgeWithLightStatusBar()
         super.onCreate(savedInstanceState)
         binding = ActivityTimetableBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initView()
-        initEvent()
     }
 
     private fun initView() {
@@ -138,38 +132,15 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
             val sheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
             val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(sheetState)
             val scrollState = rememberLazyListState()
-            val snackBarHost = remember { SnackbarHostState() }
+            val snackBarHost = rememberKoinSnackbarHostState()
             val graphicsLayer = rememberGraphicsLayer()
             val scope = rememberCoroutineScope()
 
-            hideKeyboard(sheetState.isCollapsed)
+            val keyboardController = LocalSoftwareKeyboardController.current
 
-            setAppbarEvent {
-                state.semesters.ifEmpty {
-                    viewModel.updateSideEffect(
-                        TimetableSideEffect.SnackBar(
-                            getString(R.string.timetable_error_no_semester)
-                        )
-                    )
-                    return@setAppbarEvent
-                }
-                scope.launch {
-                    when (state.bottomSheetUI) {
-                        BottomSheetUI.DEFAULT -> {
-                            viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
-                            if (sheetState.isExpanded) sheetState.collapse() else sheetState.expand()
-                        }
-                        BottomSheetUI.DETAIL -> {
-                            if (sheetState.isExpanded) {
-                                sheetState.collapse()
-                                viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
-                                sheetState.expand()
-                            } else {
-                                viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
-                                sheetState.expand()
-                            }
-                        }
-                    }
+            SideEffect {
+                if (sheetState.isCollapsed) {
+                    keyboardController?.hide()
                 }
             }
 
@@ -371,7 +342,35 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     onClickStartTime = viewModel::updateIsStartTimePickerDialogVisible,
                     onClickEndTime = viewModel::updateIsEndTimePickerDialogVisible,
                     onClickAddCustomContent = viewModel::addCustomExtraContent,
-                    onClickRemoveCustomContent = viewModel::removeCustomExtraContent
+                    onClickRemoveCustomContent = viewModel::removeCustomExtraContent,
+                    onTopAppBarAction = {
+                        state.semesters.ifEmpty {
+                            viewModel.updateSideEffect(
+                                TimetableSideEffect.SnackBar(
+                                    getString(R.string.timetable_error_no_semester)
+                                )
+                            )
+                            return@ifEmpty
+                        }
+                        scope.launch {
+                            when (state.bottomSheetUI) {
+                                BottomSheetUI.DEFAULT -> {
+                                    viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
+                                    if (sheetState.isExpanded) sheetState.collapse() else sheetState.expand()
+                                }
+                                BottomSheetUI.DETAIL -> {
+                                    if (sheetState.isExpanded) {
+                                        sheetState.collapse()
+                                        viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
+                                        sheetState.expand()
+                                    } else {
+                                        viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
+                                        sheetState.expand()
+                                    }
+                                }
+                            }
+                        }
+                    }
                 )
 
                 CircleLoadingBar(loading = state.loading)
@@ -382,36 +381,34 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     bottomSheetScaffoldState.bottomSheetState.collapse()
                 }
             }
-            CustomSnackBarHost(snackBarHost)
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                KoinSnackbarHost(snackBarHost)
+            }
             LaunchedEffect(sideEffect) {
                 when (val effect = sideEffect) {
                     is TimetableSideEffect.SnackBar -> {
-                        snackBarHost.showSnackBarWithDismiss(
+                        snackBarHost.showSnackbar(
                             message = effect.message,
-                            actionLabel = "닫기",
-                            duration = SnackbarDuration.Short
+                            duration = KoinSnackbarDuration.Short
                         )
                         viewModel.updateSideEffect(TimetableSideEffect.Nothing)
                     }
 
                     is TimetableSideEffect.Toast -> {
-                        // TODO::현재는 에러 메세지를 띄우는 용로도 토스트가 사용되기에 임시 메세지 사용, 배포 후 수정 필요
                         Timber.d("TimetableSideEffect.Toast| ${effect.message}")
-                        Toast.makeText(
-                            this@TimetableActivity,
-                            "인터넷 연결을 확인하고 다시 시도해주세요.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        snackBarHost.showSnackbar(
+                            message = "인터넷 연결을 확인하고 다시 시도해주세요.",
+                            duration = KoinSnackbarDuration.Short
+                        )
                     }
 
                     is TimetableSideEffect.Nothing -> Unit
                 }
             }
         }
-    }
-
-    private fun initEvent() {
-        setAppbarEvent()
     }
 
     private fun handleAddCustomLectureMode(isAnonymous: Boolean, callback: () -> Unit) {
@@ -449,21 +446,6 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
     private fun saveTimetable(bitmap: Bitmap, callback: (Boolean) -> Unit) {
         BitmapUtils(this).saveBitmapImage(bitmap).let {
             callback(it)
-        }
-    }
-
-    private fun setAppbarEvent(rightButtonClickable: () -> Unit = {}) {
-        binding.koinBaseAppbar.setOnClickListener {
-            when (it.id) {
-                AppBarBase.getLeftButtonId() -> onBackPressedDispatcher.onBackPressed()
-                AppBarBase.getRightButtonId() -> rightButtonClickable()
-            }
-        }
-    }
-
-    private fun hideKeyboard(isCollapsed: Boolean) {
-        if (isCollapsed) {
-            KeyboardUtils(this).hide(binding.root)
         }
     }
 
