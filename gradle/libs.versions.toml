@@ -3,6 +3,7 @@ accompanist = "0.36.0"
 androidGradle = "8.13.0"
 androidxActivity = "1.13.0"
 androidxAppcompat = "1.8.0"
+androidxCamera = "1.6.2"
 androidxCardview = "1.0.0"
 androidxConstraintLayout = "2.2.2"
 androidxConstraintLayoutCompose = "1.1.2"
@@ -86,6 +87,10 @@ android-gradle-tool = { module = "com.android.tools.build:gradle", version.ref =
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidxActivity" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppcompat" }
+androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "androidxCamera" }
+androidx-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "androidxCamera" }
+androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "androidxCamera" }
+androidx-camera-compose = { group = "androidx.camera", name = "camera-compose", version.ref = "androidxCamera" }
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "androidxCardview" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidxConstraintLayout" }
 androidx-constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "androidxConstraintLayoutCompose" }
