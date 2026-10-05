@@ -140,8 +140,8 @@ fun KoinCamera(
                 .padding(8.dp)
                 .align(Alignment.BottomCenter)
                 .size(style.shutterSize)
-                .background(color = style.shutterColor, shape = style.shutterShape)
                 .clip(style.shutterShape)
+                .background(color = style.shutterColor, shape = style.shutterShape)
                 .clickable {
                     coroutineScope.launch {
                         takePicture()
