@@ -1,4 +1,4 @@
-<kbd><img src="koin.png" width="100" height="100"></kbd>
+<img width="40%" src="https://github.com/user-attachments/assets/75742ede-7e33-435c-9330-c9b6ab232231"/>
 
 # 코인 - 한기대 커뮤니티
 
