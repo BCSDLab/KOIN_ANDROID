@@ -22,6 +22,7 @@ import `in`.koreatech.koin.feature.recruitment.navigation.RecruitmentNavType
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -219,11 +220,7 @@ class ProfileCreateViewModel @Inject constructor(
             isEdited = state.isAcademicInfoEdited,
             major = state.department,
             studentNumber = state.studentId
-        ).onFailure { throwable ->
-            reduce { state.copy(isSaving = false, errorMessage = throwable.toRecruitmentErrorMessage()) }
-            postSideEffect(ProfileCreateSideEffect.SaveFailure)
-            return@intent
-        }
+        )
 
         saveTeamRecruitmentProfileUseCase(
             profileNickname = state.nickname,
@@ -240,17 +237,20 @@ class ProfileCreateViewModel @Inject constructor(
         }
     }
 
-    private suspend fun updateAcademicInfoIfChanged(
+    private suspend fun SimpleSyntax<ProfileCreateState, ProfileCreateSideEffect>.updateAcademicInfoIfChanged(
         isEdited: Boolean,
         major: String,
         studentNumber: String
-    ): Result<Unit> {
-        if (!isEdited) return Result.success(Unit)
-        val user = getUserInfoUseCase().getOrElse { return Result.failure(it) }
-        if (user !is User.Student) return Result.success(Unit)
-        if (user.major == major && user.studentNumber == studentNumber) return Result.success(Unit)
+    ) {
+        if (!isEdited) return
+        val user = getUserInfoUseCase().getOrElse { throwable ->
+            reduce { state.copy(errorMessage = throwable.toRecruitmentErrorMessage()) }
+            return
+        }
+        if (user !is User.Student) return
+        if (user.major == major && user.studentNumber == studentNumber) return
 
-        return updateStudentUserInfoUseCase(
+        updateStudentUserInfoUseCase(
             beforeUser = user,
             email = user.email.orEmpty(),
             name = user.name.orEmpty(),
@@ -259,6 +259,8 @@ class ProfileCreateViewModel @Inject constructor(
             phoneNumber = user.phoneNumber.orEmpty(),
             studentNumber = studentNumber,
             major = major
-        )
+        ).onFailure { throwable ->
+            reduce { state.copy(errorMessage = throwable.toRecruitmentErrorMessage()) }
+        }
     }
 }
