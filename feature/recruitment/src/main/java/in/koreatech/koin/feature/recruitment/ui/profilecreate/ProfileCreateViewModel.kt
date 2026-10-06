@@ -115,12 +115,12 @@ class ProfileCreateViewModel @Inject constructor(
     }
 
     fun setDepartment(department: String) = intent {
-        reduce { state.copy(department = department, isDepartmentDropdownExpanded = false, isAcademicInfoEdited = true) }
+        reduce { state.copy(department = department, isDepartmentDropdownExpanded = false, isDepartmentEdited = true) }
     }
 
     fun setStudentId(studentId: String) = intent {
         if (studentId.isEmpty() || studentId.all { it.isDigit() }) {
-            reduce { state.copy(studentId = studentId, isAcademicInfoEdited = true) }
+            reduce { state.copy(studentId = studentId, isStudentIdEdited = true) }
         }
     }
 
@@ -217,7 +217,8 @@ class ProfileCreateViewModel @Inject constructor(
         reduce { state.copy(isSaving = true, showSaveConfirmDialog = false, errorMessage = null) }
 
         updateAcademicInfoIfChanged(
-            isEdited = state.isAcademicInfoEdited,
+            isDepartmentEdited = state.isDepartmentEdited,
+            isStudentIdEdited = state.isStudentIdEdited,
             major = state.department,
             studentNumber = state.studentId
         )
@@ -230,7 +231,11 @@ class ProfileCreateViewModel @Inject constructor(
             selfIntroduction = state.selfIntroduction
         ).onSuccess {
             reduce { state.copy(isSaving = false) }
-            postSideEffect(ProfileCreateSideEffect.SaveSuccess)
+            if (state.errorMessage == null) {
+                postSideEffect(ProfileCreateSideEffect.SaveSuccess)
+            } else {
+                postSideEffect(ProfileCreateSideEffect.SaveFailure)
+            }
         }.onFailure { throwable ->
             reduce { state.copy(isSaving = false, errorMessage = throwable.toRecruitmentErrorMessage()) }
             postSideEffect(ProfileCreateSideEffect.SaveFailure)
@@ -238,17 +243,21 @@ class ProfileCreateViewModel @Inject constructor(
     }
 
     private suspend fun SimpleSyntax<ProfileCreateState, ProfileCreateSideEffect>.updateAcademicInfoIfChanged(
-        isEdited: Boolean,
+        isDepartmentEdited: Boolean,
+        isStudentIdEdited: Boolean,
         major: String,
         studentNumber: String
     ) {
-        if (!isEdited) return
+        if (!isDepartmentEdited && !isStudentIdEdited) return
         val user = getUserInfoUseCase().getOrElse { throwable ->
             reduce { state.copy(errorMessage = throwable.toRecruitmentErrorMessage()) }
             return
         }
         if (user !is User.Student) return
-        if (user.major == major && user.studentNumber == studentNumber) return
+
+        val newMajor = if (isDepartmentEdited) major else user.major.orEmpty()
+        val newStudentNumber = if (isStudentIdEdited) studentNumber else user.studentNumber.orEmpty()
+        if (user.major.orEmpty() == newMajor && user.studentNumber.orEmpty() == newStudentNumber) return
 
         updateStudentUserInfoUseCase(
             beforeUser = user,
@@ -257,8 +266,8 @@ class ProfileCreateViewModel @Inject constructor(
             nickname = user.nickname.orEmpty(),
             gender = user.gender,
             phoneNumber = user.phoneNumber.orEmpty(),
-            studentNumber = studentNumber,
-            major = major
+            studentNumber = newStudentNumber,
+            major = newMajor
         ).onFailure { throwable ->
             reduce { state.copy(errorMessage = throwable.toRecruitmentErrorMessage()) }
         }
