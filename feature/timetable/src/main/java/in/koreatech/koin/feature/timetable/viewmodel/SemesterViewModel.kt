@@ -198,8 +198,7 @@ class SemesterViewModel @Inject constructor(
     fun onClickAddTimetable(target: SemesterModel) {
         viewModelScope.launch {
             addTimetableFrameUseCase(
-                semester = target.toSemester(),
-                timetableName = "시간표${(screenState.value.userTimetableFrames[target]?.size ?: 1) + 1}"
+                semester = target.toSemester()
             ).onSuccess { addedFrame ->
                 updateUserTimetableFrames(
                     screenState.value.userTimetableFrames.mapValues {
