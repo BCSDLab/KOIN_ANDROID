@@ -7,5 +7,6 @@ enum class PreSignedUrlDomain(val domain: String) {
     CLUB("club"),
     CALLVAN_REPORT("callvan_report"),
     CALLVAN_CHAT("callvan_chat"),
-    TEAM_RECRUITMENT("team_recruitment")
+    TEAM_RECRUITMENT("team_recruitment"),
+    COOP("coop")
 }
