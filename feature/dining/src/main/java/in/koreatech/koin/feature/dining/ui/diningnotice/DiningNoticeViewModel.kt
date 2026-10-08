@@ -9,6 +9,8 @@ import `in`.koreatech.koin.domain.usecase.coopshop.GetCoopShopUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class DiningNoticeViewModel @Inject constructor(
@@ -33,12 +35,10 @@ class DiningNoticeViewModel @Inject constructor(
     }
 
     fun getDiningNotice(type: CoopShopType) {
-        viewModelScope.launchWithLoading {
+        viewModelScope.launch {
             getCoopShopUseCase(type)
-                .onSuccess {
-                    _diningNotice.value = it
-                }
-                .onFailure { /* keep silent fail, preserve existing behavior */ }
+                .filterNotNull()
+                .collect { _diningNotice.value = it }
         }
     }
 }

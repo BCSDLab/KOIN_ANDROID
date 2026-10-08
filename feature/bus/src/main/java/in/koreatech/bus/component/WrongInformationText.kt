@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
 @Composable
@@ -34,10 +34,10 @@ internal fun WrongInformationText(
         }.padding(top = 4.dp),
         text = stringResource(R.string.request_for_incorrect_information),
         iconRes = R.drawable.ic_caution,
-        iconTint = KoinTheme.colors.neutral500,
+        iconTint = RebrandKoinTheme.colors.neutral500,
         textStyle =
-        KoinTheme.typography.regular12.copy(
-            color = KoinTheme.colors.neutral500
+        RebrandKoinTheme.typography.regular12.copy(
+            color = RebrandKoinTheme.colors.neutral500
         )
     )
 }

@@ -11,9 +11,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,7 +32,7 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
 import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
@@ -151,6 +153,7 @@ fun CallvanListScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Suppress("LongParameterList", "CyclomaticComplexMethod")
 @Composable
 fun CallvanListScreenImpl(
@@ -278,8 +281,12 @@ fun CallvanListScreenImpl(
     Box {
         Scaffold(
             topBar = {
-                KoinTopAppBar(
-                    title = stringResource(R.string.filter_list_top_bar),
+                KoinTopAppBar2(
+                    title = {
+                        Text(
+                            text = stringResource(R.string.filter_list_top_bar)
+                        )
+                    },
                     onNavigationIconClick = {
                         EventLogger.logCampusClickEvent(
                             AnalyticsConstant.Label.Callvan.CALLVAN_BACK,

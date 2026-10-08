@@ -1,9 +1,12 @@
 package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.coopshop.CoopShop
+import kotlinx.coroutines.flow.Flow
 
 interface CoopShopRepository {
-    suspend fun getCoopShopAll(): Result<List<CoopShop>>
+    fun getCoopShopAll(): Flow<List<CoopShop>>
 
-    suspend fun getCoopShopById(id: Int): Result<CoopShop>
+    fun getCoopShopById(id: Int): Flow<CoopShop?>
+
+    suspend fun sync(): Result<Unit>
 }

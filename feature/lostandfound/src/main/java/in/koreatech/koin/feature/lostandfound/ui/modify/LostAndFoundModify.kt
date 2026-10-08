@@ -17,28 +17,23 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.EditArticleDoneButton
 import `in`.koreatech.koin.feature.lostandfound.component.EditArticleHeader
@@ -60,28 +55,17 @@ fun LostAndFoundModify(
 ) {
     Scaffold(
         modifier = Modifier.fillMaxWidth(),
-        containerColor = KoinTheme.colors.neutral0,
+        containerColor = RebrandKoinTheme.colors.neutral0,
         topBar = {
-            CenterAlignedTopAppBar(
+            KoinTopAppBar2(
                 title = {
                     Text(
                         text = stringResource(R.string.top_container_text),
-                        style = KoinTheme.typography.medium18,
-                        color = KoinTheme.colors.neutral800
+                        style = RebrandKoinTheme.typography.medium18,
+                        color = RebrandKoinTheme.colors.neutral800
                     )
                 },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_back),
-                            contentDescription = stringResource(R.string.top_container_icon),
-                            tint = KoinTheme.colors.neutral800
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = KoinTheme.colors.neutral0
-                )
+                onNavigationIconClick = onBackClick
             )
         }
     ) { innerPadding ->
@@ -123,13 +107,13 @@ fun LostAndFoundWriteArticleImpl(
         )
     }
 
-    KoinTheme {
+    RebrandKoinTheme {
         Scaffold(
             modifier = modifier
                 .fillMaxSize()
                 .consumeWindowInsets(WindowInsets.navigationBars)
                 .imePadding(),
-            containerColor = KoinTheme.colors.neutral0,
+            containerColor = RebrandKoinTheme.colors.neutral0,
             bottomBar = {
                 EditArticleDoneButton(
                     text = stringResource(R.string.modify_done)
@@ -254,7 +238,7 @@ fun ModifyFoundItemArticleImpl(
             }
         }
 
-    HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
+    HorizontalDivider(thickness = 6.dp, color = RebrandKoinTheme.colors.neutral100)
 
     Column(
         modifier = modifier.padding(vertical = 16.dp, horizontal = 24.dp)

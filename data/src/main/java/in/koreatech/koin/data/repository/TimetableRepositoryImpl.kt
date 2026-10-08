@@ -2,14 +2,22 @@ package `in`.koreatech.koin.data.repository
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import `in`.koreatech.koin.data.request.timetable.LectureQueryRequest
-import `in`.koreatech.koin.data.request.timetable.LecturesQueryRequest
-import `in`.koreatech.koin.data.request.timetable.TimetableFrameCreateQueryRequest
-import `in`.koreatech.koin.data.request.timetable.TimetableFrameQueryRequest
-import `in`.koreatech.koin.data.request.timetable.TimetableLectureClassInfoRequest
-import `in`.koreatech.koin.data.request.timetable.toCustomLectureQueryRequest
-import `in`.koreatech.koin.data.request.timetable.toLectureQueryRequest
-import `in`.koreatech.koin.data.request.timetable.toTimetableLecturesQueryRequest
+import `in`.koreatech.koin.data.mapper.toCustomLectureCreateBody
+import `in`.koreatech.koin.data.mapper.toCustomLectureUpdateBody
+import `in`.koreatech.koin.data.mapper.toLecture
+import `in`.koreatech.koin.data.mapper.toRegularLectureBody
+import `in`.koreatech.koin.data.mapper.toSemesterFrames
+import `in`.koreatech.koin.data.mapper.toTimeRanges
+import `in`.koreatech.koin.data.mapper.toTimetableFrame
+import `in`.koreatech.koin.data.mapper.toTimetableLectures
+import `in`.koreatech.koin.data.mapper.toYearTerm
+import `in`.koreatech.koin.data.request.timetable.v3.TimetableCustomLectureRequest
+import `in`.koreatech.koin.data.request.timetable.v3.TimetableCustomLectureRequest.TimetableCustomLectureBody
+import `in`.koreatech.koin.data.request.timetable.v3.TimetableCustomLectureRequest.TimetableCustomLectureInfo
+import `in`.koreatech.koin.data.request.timetable.v3.TimetableFrameCreateRequestV3
+import `in`.koreatech.koin.data.request.timetable.v3.TimetableFrameUpdateRequestV3
+import `in`.koreatech.koin.data.request.timetable.v3.TimetableRegularLectureCreateRequest
+import `in`.koreatech.koin.data.request.timetable.v3.TimetableRegularLectureRequest
 import `in`.koreatech.koin.data.response.timetable.v3.toSemester
 import `in`.koreatech.koin.data.response.timetable.v3.toSemesters
 import `in`.koreatech.koin.data.source.datastore.TimetableDataStore
@@ -48,17 +56,19 @@ class TimetableRepositoryImpl @Inject constructor(
 
     override fun getLectures(semesterDate: String): Flow<List<Lecture>> =
         flow {
-            emit(timetableRemoteDataSource.getLectures(semesterDate).map { it.toLecture() })
+            val (year, term) = semesterDate.toYearTerm()
+            emit(timetableRemoteDataSource.getLectures(year, term).map { it.toLecture() })
         }
 
     override fun getTimetableFrames(semester: String): Flow<List<TimetableFrame>> =
         flow {
-            emit(timetableRemoteDataSource.getTimetableFrames(semester).map { it.toTimetableFrame() })
+            val (year, term) = semester.toYearTerm()
+            emit(timetableRemoteDataSource.getTimetableFrames(year, term).map { it.toTimetableFrame() })
         }
 
     override fun getAllFrames(): Flow<Map<String, List<TimetableFrame>>> =
         flow {
-            emit(timetableRemoteDataSource.getAllFrames().mapValues { it.value.map { it.toTimetableFrame() } })
+            emit(timetableRemoteDataSource.getAllFrames().toSemesterFrames())
         }
 
     override suspend fun getTimetableLectures(timetableFrameId: Int): Result<TimetableLectures> =
@@ -72,14 +82,25 @@ class TimetableRepositoryImpl @Inject constructor(
             val timetableLecturesType = object : TypeToken<TimetableLectures>() {}.type
             try {
                 gson.fromJson(timetableLecturesString, timetableLecturesType)
-            } catch (e: NullPointerException) {
+            } catch (_: NullPointerException) {
                 TimetableLectures(0, emptyList(), 0, 0)
             }
         }
 
     override suspend fun putTimetableLectures(lectures: TimetableLecturesQuery): Result<TimetableLectures> =
         suspendRunCatching {
-            timetableRemoteDataSource.putTimetableLectures(lectures.toTimetableLecturesQueryRequest()).toTimetableLectures()
+            val frameId = lectures.timetableFrameId
+            lectures.timetableLecture.map {
+                if (it.lectureId == 0) {
+                    timetableRemoteDataSource.putTimetableCustomLecture(
+                        TimetableCustomLectureRequest(frameId, it.toCustomLectureUpdateBody())
+                    )
+                } else {
+                    timetableRemoteDataSource.putTimetableRegularLecture(
+                        TimetableRegularLectureRequest(frameId, it.toRegularLectureBody())
+                    )
+                }
+            }.last().toTimetableLectures()
         }
 
     override suspend fun putTimetableLectures(
@@ -99,11 +120,13 @@ class TimetableRepositoryImpl @Inject constructor(
             timetableRemoteDataSource
                 .putTimetableFrame(
                     id,
-                    TimetableFrameQueryRequest(
+                    TimetableFrameUpdateRequestV3(
                         frame.timetableName,
                         frame.isMain
                     )
-                ).toTimetableFrame()
+                )
+                .first { it.id == id }
+                .toTimetableFrame()
         }
 
     override suspend fun postTimetableLectures(
@@ -111,13 +134,14 @@ class TimetableRepositoryImpl @Inject constructor(
         lectures: List<Lecture>
     ): Result<TimetableLectures> =
         suspendRunCatching {
-            timetableRemoteDataSource
-                .postTimetableLectures(
-                    LecturesQueryRequest(
+            lectures.map {
+                timetableRemoteDataSource.postTimetableRegularLecture(
+                    TimetableRegularLectureCreateRequest(
                         timetableFrameId = frameId,
-                        timetableLecture = lectures.map { it.toLectureQueryRequest() }
+                        lectureId = it.id
                     )
-                ).toTimetableLectures()
+                )
+            }.last().toTimetableLectures()
         }
 
     override suspend fun postTimetableCustomLectures(
@@ -126,25 +150,31 @@ class TimetableRepositoryImpl @Inject constructor(
     ): Result<TimetableLectures> =
         suspendRunCatching {
             val info =
-                lectures.map { it.classTime to it.place }.map { (classTime, place) ->
-                    TimetableLectureClassInfoRequest(classTime = classTime, classPlace = place)
+                lectures.flatMap { lecture ->
+                    lecture.classTime.toTimeRanges().map { range ->
+                        TimetableCustomLectureInfo(
+                            startTime = range.startTime,
+                            endTime = range.endTime,
+                            place = lecture.place
+                        )
+                    }
                 }
 
             val query =
-                LectureQueryRequest(
+                TimetableCustomLectureBody(
+                    id = null,
                     classTitle = lectures.firstOrNull()?.name.orEmpty(),
-                    classInfos = info,
+                    lectureInfos = info,
                     professor = lectures.firstOrNull()?.professor.orEmpty(),
-                    lectureId = null,
                     grades = "0",
                     memo = ""
                 )
 
             timetableRemoteDataSource
-                .postTimetableLectures(
-                    LecturesQueryRequest(
+                .postTimetableCustomLecture(
+                    TimetableCustomLectureRequest(
                         timetableFrameId = frameId,
-                        timetableLecture = listOf(query)
+                        timetableCustomLectureBody = query
                     )
                 ).toTimetableLectures()
         }
@@ -154,33 +184,30 @@ class TimetableRepositoryImpl @Inject constructor(
         lectures: List<TimetableLecture>
     ): Result<TimetableLectures> =
         suspendRunCatching {
-            val queryLectures =
-                lectures.map {
-                    if (it.lectureId == 0) {
-                        it.toCustomLectureQueryRequest()
-                    } else {
-                        it.toLectureQueryRequest()
-                    }
-                }
-
-            timetableRemoteDataSource
-                .postTimetableLectures(
-                    LecturesQueryRequest(
-                        timetableFrameId = frameId,
-                        timetableLecture = queryLectures
+            lectures.map {
+                if (it.lectureId == 0) {
+                    timetableRemoteDataSource.postTimetableCustomLecture(
+                        TimetableCustomLectureRequest(frameId, it.toCustomLectureCreateBody())
                     )
-                ).toTimetableLectures()
+                } else {
+                    timetableRemoteDataSource.postTimetableRegularLecture(
+                        TimetableRegularLectureCreateRequest(frameId, it.lectureId)
+                    )
+                }
+            }.last().toTimetableLectures()
         }
 
     override suspend fun postTimetableFrame(frame: TimetableFrameCreateQuery): Result<TimetableFrame> =
         suspendRunCatching {
+            val (year, term) = frame.semester.toYearTerm()
             timetableRemoteDataSource
                 .postTimetableFrame(
-                    TimetableFrameCreateQueryRequest(
-                        semester = frame.semester,
-                        timetableName = frame.timetableName
+                    TimetableFrameCreateRequestV3(
+                        year = year,
+                        term = term
                     )
-                ).toTimetableFrame()
+                ).maxBy { it.id }
+                .toTimetableFrame()
         }.recoverCatching {
             if (it is HttpException) {
                 throw Exception()
@@ -222,6 +249,7 @@ class TimetableRepositoryImpl @Inject constructor(
 
     override suspend fun deleteAllTimetableFrame(semester: String): Result<Unit> =
         suspendRunCatching {
-            timetableRemoteDataSource.deleteAllTimetableFrame(semester)
+            val (year, term) = semester.toYearTerm()
+            timetableRemoteDataSource.deleteAllTimetableFrame(year, term)
         }
 }

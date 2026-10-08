@@ -24,6 +24,15 @@
         android:supportsRtl="true"
         android:theme="@style/KAPTheme.NoActionBar"
         tools:replace="icon,label">
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
         <activity
             android:name=".ui.unibus.UnibusActivity"
             android:exported="false" />

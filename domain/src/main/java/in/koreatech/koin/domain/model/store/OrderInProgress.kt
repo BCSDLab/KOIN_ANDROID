@@ -5,7 +5,7 @@ data class OrderInProgress(
     val paymentId: Int,
     val orderType: String,
     val orderableShopName: String,
-    val orderableShopThumbnail: String,
+    val orderableShopThumbnail: String?,
     val estimatedAt: String?,
     val orderStatus: String,
     val orderTitle: String,

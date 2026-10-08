@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="timetable_title">시간표</string>
+
     <string name="semester_type_spring">1학기</string>
     <string name="semester_type_summer">여름학기</string>
     <string name="semester_type_fall">2학기</string>
@@ -10,22 +12,10 @@
     <string name="lecture_duplication_title">시간표가 중복돼요.</string>
     <string name="lecture_duplication_cancellation">취소</string>
     <string name="lecture_duplication_confirmation">대체하기</string>
-    <string-array name="lecture_duplication_description">
-        <item>추가하시려는 시간에 이미 다른 강의가 있어요.</item>
-        <item>" 새로운 강의로 대체"</item>
-        <item>하시겠어요?</item>
-    </string-array>
+    <string name="lecture_duplication_description">추가하려는 시간에 이미 다른 강의가 있어요.\n새로운 강의로 대체할까요?</string>
 
-    <string-array name="delete_lecture_title">
-        <item>%s을</item>
-        <item>" 삭제"</item>
-        <item>하시겠어요?</item>
-    </string-array>
-    <string-array name="delete_lecture_description">
-        <item>삭제한 강의는</item>
-        <item>" 수업추가"</item>
-        <item>에서 다시 추가할 수 있어요.</item>
-    </string-array>
+    <string name="delete_lecture_title">%s을 삭제하시겠어요?</string>
+    <string name="delete_lecture_description">삭제한 강의는 수업추가에서 다시 추가할 수 있어요.</string>
     <string name="delete_lecture_confirmation">삭제하기</string>
 
     <string-array name="delete_schedule_title">
@@ -63,9 +53,11 @@
     <string name="timetable_add_time_and_place">시간 및 장소 추가</string>
 
     <string name="timetable_bottom_sheet_extra_lecture">수업추가</string>
-    <string name="timetable_bottom_sheet_extra_custom_lecture">직접추가</string>
-    <string name="timetable_bottom_sheet_lecture_detail">수업상세</string>
-    <string name="timetable_bottom_sheet_lecture_delete">삭제</string>
+    <string name="timetable_bottom_sheet_extra_return">돌아가기</string>
+    <string name="timetable_bottom_sheet_extra_custom_lecture">직접 추가</string>
+    <string name="timetable_bottom_sheet_lecture_detail">수업 상세</string>
+    <string name="timetable_bottom_sheet_lecture_more_info">%1$s %2$s학점 %3$s</string>
+    <string name="timetable_bottom_sheet_lecture_delete">강의 삭제</string>
     <string name="timetable_bottom_sheet_complete">완료</string>
 
     <string name="edit_titletable_frame_title">시간표 설정</string>
@@ -83,11 +75,16 @@
         <item>로그인</item>
         <item>을 통해 학기를 편집하고 계절학기와 예비 시간표를 작성할 수 있어요.</item>
     </string-array>
-    <string name="semester_empty">우측 상단의 버튼으로 학기를 추가해 \n시간표 기능을 사용해 보세요!</string>
+    <string name="semester_empty">등록된 시간표가 없어요.\n우측 상단 버튼을 눌러 시간표를 추가해보세요.</string>
     <string name="semester_semester_format">%d %s</string>
     <string name="semester_edit_timetable_frame">설정</string>
     <string name="semester_edit_year">%d년도</string>
     <string name="semester_edit_apply">적용하기</string>
+    
+    <string name="semester_dialog_cancel">취소하기</string>
+    <string name="semester_dialog_next">다음</string>
+    <string name="semester_dialog_previous">이전</string>
+    <string name="semester_dialog_apply">적용하기</string>
 
     <string name="timetable_error_no_semester">학기가 존재하지 않습니다. 학기를 추가해주세요.</string>
     <string name="timetable_error_input_field_duplication_time">중복된 시간입니다.</string>

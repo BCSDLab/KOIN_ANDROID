@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import `in`.koreatech.bus.mock.shuttleTimetableRouteInfoMock1
 import `in`.koreatech.bus.state.ShuttleTimetableRouteInfoState
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 fun ShuttleTimetableRouteItem(
@@ -36,7 +36,7 @@ fun ShuttleTimetableRouteItem(
             routeDetail = route.detail,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = KoinTheme.colors.neutral100)
+                .background(color = RebrandKoinTheme.colors.neutral100)
         )
 
         route.arrivalTimes.fastForEach { time ->
@@ -48,7 +48,7 @@ fun ShuttleTimetableRouteItem(
             ) {
                 Text(
                     text = time,
-                    style = KoinTheme.typography.bold16,
+                    style = RebrandKoinTheme.typography.bold16,
                     textAlign = TextAlign.Center
                 )
             }

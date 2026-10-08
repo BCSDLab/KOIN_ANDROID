@@ -5,4 +5,7 @@ object DBConstant {
     const val STORE_CATEGORIES = "store_categories"
     const val ABTEST = "abtest"
     const val NOTIFICATION = "notification"
+    const val WEATHER = "weather"
+    const val DINING = "dining"
+    const val COOP_SHOP = "coop_shop"
 }

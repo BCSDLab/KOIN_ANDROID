@@ -22,7 +22,7 @@ import `in`.koreatech.bus.mock.shuttleTimetableNodeInfoMock3
 import `in`.koreatech.bus.mock.shuttleTimetableNodeInfoMock4
 import `in`.koreatech.bus.mock.shuttleTimetableNodeInfoMock5
 import `in`.koreatech.bus.state.ShuttleTimetableNodeInfoState
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.designsystem.util.getMeasuredKoreanHeightDp
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.collections.immutable.ImmutableList
@@ -34,7 +34,7 @@ internal fun ShuttleTimetableNodeItem(
     nodeItemHeightDp: Dp,
     modifier: Modifier = Modifier
 ) {
-    val textHeight = KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() * 2
+    val textHeight = RebrandKoinTheme.typography.regular14.getMeasuredKoreanHeightDp() * 2
     val rememberHeight = remember { textHeight }
 
     Column(
@@ -42,11 +42,11 @@ internal fun ShuttleTimetableNodeItem(
     ) {
         Text(
             text = stringResource(R.string.node_name),
-            style = KoinTheme.typography.regular14,
-            color = KoinTheme.colors.neutral600,
+            style = RebrandKoinTheme.typography.regular14,
+            color = RebrandKoinTheme.colors.neutral600,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = KoinTheme.colors.neutral100)
+                .background(color = RebrandKoinTheme.colors.neutral100)
                 .padding(horizontal = 24.dp, vertical = rememberHeight / 4)
         )
 

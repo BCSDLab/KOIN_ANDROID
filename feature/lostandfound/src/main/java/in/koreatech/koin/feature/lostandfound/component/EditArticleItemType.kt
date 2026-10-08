@@ -19,7 +19,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import kotlinx.collections.immutable.toImmutableList
@@ -43,7 +43,7 @@ fun EditArticleItemType(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                style = KoinTheme.typography.medium14,
+                style = RebrandKoinTheme.typography.medium14,
                 text = buildAnnotatedString {
                     append(stringResource(id = R.string.item_type))
                     withStyle(style = SpanStyle(color = Color(0xFFC82A2A))) {
@@ -54,7 +54,7 @@ fun EditArticleItemType(
 
             if (itemTypeRequired) {
                 LeadingIconText(
-                    textStyle = KoinTheme.typography.medium12.copy(color = Color(0xFFF7941E)),
+                    textStyle = RebrandKoinTheme.typography.medium12.copy(color = Color(0xFFF7941E)),
                     text = stringResource(id = R.string.item_type_required),
                     iconRes = R.drawable.ic_required,
                     iconSize = 16.dp
@@ -62,9 +62,9 @@ fun EditArticleItemType(
             }
         }
         Text(
-            style = KoinTheme.typography.regular12,
+            style = RebrandKoinTheme.typography.regular12,
             text = stringResource(id = R.string.item_type_description),
-            color = KoinTheme.colors.neutral500
+            color = RebrandKoinTheme.colors.neutral500
         )
 
         Spacer(modifier = Modifier.height(12.dp))

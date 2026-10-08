@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.feature.lostandfound.navigation.LostAndFoundNavType
 import `in`.koreatech.koin.feature.lostandfound.navigation.koinLostAndFoundGraph
@@ -33,7 +33,7 @@ class LostAndFoundActivity : ComponentActivity() {
         val screen = intent.data?.getQueryParameter("screen")
 
         setContent {
-            KoinTheme {
+            RebrandKoinTheme {
                 var startDestination by remember {
                     mutableStateOf<LostAndFoundNavType>(
                         when {

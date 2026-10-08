@@ -16,7 +16,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.model.LostAndFoundItemState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -77,7 +77,7 @@ fun ListColumn(
                 registeredAt = article.registeredAt,
                 onArticleClick = onArticleClick
             )
-            HorizontalDivider(color = KoinTheme.colors.neutral100)
+            HorizontalDivider(color = RebrandKoinTheme.colors.neutral100)
         }
         if (isLoadingMore) {
             item {
@@ -89,7 +89,7 @@ fun ListColumn(
                 ) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(24.dp),
-                        color = KoinTheme.colors.primary500,
+                        color = RebrandKoinTheme.colors.primary500,
                         strokeWidth = 2.dp
                     )
                 }

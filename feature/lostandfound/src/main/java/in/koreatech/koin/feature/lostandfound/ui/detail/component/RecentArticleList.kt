@@ -26,7 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.LostItemTypeChip
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
@@ -72,7 +72,7 @@ fun RecentArticleList(
     Column(modifier = modifier) {
         Text(
             modifier = Modifier.padding(vertical = 14.dp, horizontal = 24.dp),
-            style = KoinTheme.typography.bold16,
+            style = RebrandKoinTheme.typography.bold16,
             text = stringResource(R.string.recent_article_title)
         )
 
@@ -88,7 +88,7 @@ fun RecentArticleList(
                     article = article,
                     onArticleClick = onArticleClick
                 )
-                HorizontalDivider(color = KoinTheme.colors.neutral100)
+                HorizontalDivider(color = RebrandKoinTheme.colors.neutral100)
             }
 
             if (isLoadingMore) {
@@ -101,7 +101,7 @@ fun RecentArticleList(
                     ) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(24.dp),
-                            color = KoinTheme.colors.primary500,
+                            color = RebrandKoinTheme.colors.primary500,
                             strokeWidth = 2.dp
                         )
                     }
@@ -126,16 +126,16 @@ private fun RecentArticleItem(
     ) {
         Text(
             text = if (article.lostOrFound == LostOrFoundType.LOST) stringResource(R.string.lost_item) else stringResource(R.string.found_item),
-            style = KoinTheme.typography.bold12.copy(
+            style = RebrandKoinTheme.typography.bold12.copy(
                 fontWeight = FontWeight.SemiBold,
-                color = KoinTheme.colors.primary600
+                color = RebrandKoinTheme.colors.primary600
             )
         )
         Spacer(modifier = Modifier.width(8.dp))
 
         LostItemTypeChip(
             category = article.category,
-            textStyle = KoinTheme.typography.medium12
+            textStyle = RebrandKoinTheme.typography.medium12
         )
         Spacer(modifier = Modifier.width(4.dp))
 
@@ -143,7 +143,7 @@ private fun RecentArticleItem(
             text = formatLostAndFoundTitle(foundPlace = article.foundPlace, foundDate = article.foundDate),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            style = KoinTheme.typography.medium14.copy(color = Color.Black),
+            style = RebrandKoinTheme.typography.medium14.copy(color = Color.Black),
             modifier = Modifier.weight(1f)
         )
 

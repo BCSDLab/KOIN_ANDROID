@@ -16,7 +16,7 @@ import `in`.koreatech.bus.state.ImmutableLocalTime
 import `in`.koreatech.bus.type.BusType
 import `in`.koreatech.bus.util.formatBeforeTime
 import `in`.koreatech.bus.util.formatTime
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import java.time.LocalTime
 
 @Composable
@@ -39,23 +39,23 @@ fun BusSearchResultItem(
                     Text(
                         modifier = Modifier.padding(start = 6.dp),
                         text = result.busName + "번",
-                        style = KoinTheme.typography.medium14,
-                        color = KoinTheme.colors.neutral800
+                        style = RebrandKoinTheme.typography.medium14,
+                        color = RebrandKoinTheme.colors.neutral800
                     )
                 }
             }
             Text(
                 modifier = Modifier.padding(top = 4.dp),
                 text = result.departureTime.formatTime(),
-                style = KoinTheme.typography.bold20
+                style = RebrandKoinTheme.typography.bold20
             )
         }
         if (showBeforeTime) {
             Text(
                 text = result.departureTime.formatBeforeTime(currentTime.localTime),
                 style =
-                KoinTheme.typography.bold16.copy(
-                    color = KoinTheme.colors.info700
+                RebrandKoinTheme.typography.bold16.copy(
+                    color = RebrandKoinTheme.colors.neutral500
                 )
             )
         }

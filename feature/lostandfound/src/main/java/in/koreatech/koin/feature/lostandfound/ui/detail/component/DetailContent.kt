@@ -36,7 +36,7 @@ import coil.compose.SubcomposeAsyncImage
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.Organization
 
@@ -125,8 +125,8 @@ fun DetailContent(
 
         Text(
             text = content,
-            style = KoinTheme.typography.regular14,
-            color = KoinTheme.colors.neutral800
+            style = RebrandKoinTheme.typography.regular14,
+            color = RebrandKoinTheme.colors.neutral800
         )
 
         organization?.let {
@@ -134,30 +134,30 @@ fun DetailContent(
 
             Box(
                 modifier = Modifier
-                    .clip(KoinTheme.shapes.medium)
+                    .clip(RebrandKoinTheme.shapes.medium)
                     .fillMaxWidth()
-                    .background(KoinTheme.colors.neutral100)
+                    .background(RebrandKoinTheme.colors.neutral100)
                     .padding(vertical = 16.dp, horizontal = 18.dp),
                 contentAlignment = Alignment.Center
             ) {
                 val infoMessage = buildAnnotatedString {
-                    withStyle(KoinTheme.typography.regular12.toSpanStyle()) {
+                    withStyle(RebrandKoinTheme.typography.regular12.toSpanStyle()) {
                         append(stringResource(R.string.detail_student_association_info_1))
                     }
                     withStyle(
-                        KoinTheme.typography.regular12.copy(fontWeight = FontWeight.Bold)
+                        RebrandKoinTheme.typography.regular12.copy(fontWeight = FontWeight.Bold)
                             .toSpanStyle()
                     ) {
                         append(it.location)
                     }
-                    withStyle(KoinTheme.typography.regular12.toSpanStyle()) {
+                    withStyle(RebrandKoinTheme.typography.regular12.toSpanStyle()) {
                         append(stringResource(R.string.detail_student_association_info_3))
                     }
                 }
                 Text(
                     text = infoMessage,
                     textAlign = TextAlign.Center,
-                    style = KoinTheme.typography.regular12
+                    style = RebrandKoinTheme.typography.regular12
                 )
             }
         }

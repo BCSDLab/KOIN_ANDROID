@@ -10,12 +10,13 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.feature.user.R
@@ -38,8 +39,12 @@ class FindPasswordActivity : ComponentActivity() {
 
                 Scaffold(
                     topBar = {
-                        KoinTopAppBar(
-                            title = stringResource(R.string.find_password_title),
+                        KoinTopAppBar2(
+                            title = {
+                                Text(
+                                    text = stringResource(R.string.find_password_title)
+                                )
+                            },
                             onNavigationIconClick = {
                                 onBackPressedDispatcher.onBackPressed()
                             }

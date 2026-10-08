@@ -6,7 +6,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 internal fun NodeItem(
@@ -20,13 +20,13 @@ internal fun NodeItem(
     ) {
         Text(
             text = nodeTitle,
-            style = KoinTheme.typography.medium15
+            style = RebrandKoinTheme.typography.medium15
         )
         if (nodeDescription.isNotBlank()) {
             Text(
                 text = nodeDescription,
-                style = KoinTheme.typography.regular12,
-                color = KoinTheme.colors.neutral500
+                style = RebrandKoinTheme.typography.regular12,
+                color = RebrandKoinTheme.colors.neutral500
             )
         }
     }

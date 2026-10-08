@@ -11,8 +11,7 @@ class AddSemesterUseCase @Inject constructor(
     suspend operator fun invoke(semester: String): Result<TimetableFrame> {
         return timetableRepository.postTimetableFrame(
             TimetableFrameCreateQuery(
-                semester = semester,
-                null
+                semester = semester
             )
         )
     }

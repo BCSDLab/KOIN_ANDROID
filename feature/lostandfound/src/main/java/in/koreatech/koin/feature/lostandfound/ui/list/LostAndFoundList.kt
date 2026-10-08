@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,8 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.LoginDialog
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
@@ -45,6 +46,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LostAndFoundList(
     cancelRefresh: Boolean,
@@ -145,10 +147,14 @@ fun LostAndFoundList(
     }
 
     Scaffold(
-        containerColor = KoinTheme.colors.neutral0,
+        containerColor = RebrandKoinTheme.colors.neutral0,
         topBar = {
-            KoinTopAppBar(
-                title = stringResource(R.string.lost_and_found),
+            KoinTopAppBar2(
+                title = {
+                    Text(
+                        text = stringResource(R.string.lost_and_found)
+                    )
+                },
                 onNavigationIconClick = onTopbarBackClick
             )
         },
@@ -219,7 +225,7 @@ fun LostAndFoundList(
                     ) {
                         Text(
                             text = stringResource(R.string.empty_articles),
-                            style = KoinTheme.typography.bold20
+                            style = RebrandKoinTheme.typography.bold20
                         )
                     }
                 } else {
@@ -240,7 +246,7 @@ fun LostAndFoundList(
                 ) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(24.dp),
-                        color = KoinTheme.colors.primary500,
+                        color = RebrandKoinTheme.colors.primary500,
                         strokeWidth = 2.dp
                     )
                 }

@@ -16,7 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.SlideUpText
 import kotlinx.collections.immutable.toPersistentList
@@ -44,22 +44,22 @@ fun LostAndFoundEntry(
     ) {
         Text(
             text = stringResource(R.string.lost_and_found),
-            style = KoinTheme.typography.bold15,
-            color = KoinTheme.colors.primary500
+            style = RebrandKoinTheme.typography.bold15,
+            color = RebrandKoinTheme.colors.primary500
         )
         Spacer(Modifier.height(12.dp))
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(shape = KoinTheme.shapes.small)
-                .background(color = KoinTheme.colors.neutral100)
+                .clip(shape = RebrandKoinTheme.shapes.small)
+                .background(color = RebrandKoinTheme.colors.neutral100)
                 .clickable(onClick = onClick)
                 .padding(10.dp),
             contentAlignment = Alignment.Center
         ) {
             SlideUpText(
                 textList = textList,
-                style = KoinTheme.typography.medium14
+                style = RebrandKoinTheme.typography.medium14
             )
         }
     }

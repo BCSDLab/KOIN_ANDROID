@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -29,7 +31,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
 import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
 import `in`.koreatech.koin.feature.callvan.ui.report.component.CALLVAN_REPORT_IMAGE_MAX_COUNT
@@ -129,6 +131,7 @@ fun CallvanReportScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Suppress("LongParameterList")
 @Composable
 private fun CallvanReportScreenImpl(
@@ -147,8 +150,12 @@ private fun CallvanReportScreenImpl(
 ) {
     Scaffold(
         topBar = {
-            KoinTopAppBar(
-                title = stringResource(R.string.callvan_report_top_bar),
+            KoinTopAppBar2(
+                title = {
+                    Text(
+                        text = stringResource(R.string.callvan_report_top_bar)
+                    )
+                },
                 onNavigationIconClick = if (step == 1) onTopbarBackClick else onPreviousClick
             )
         },

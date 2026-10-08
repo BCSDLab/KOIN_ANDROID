@@ -34,6 +34,7 @@ import `in`.koreatech.koin.feature.article.R
 import `in`.koreatech.koin.feature.article.databinding.FragmentArticleListBinding
 import `in`.koreatech.koin.feature.article.enums.ArticleBoardType
 import `in`.koreatech.koin.feature.article.model.ArticleHeaderState
+import `in`.koreatech.koin.feature.article.model.ArticleNetworkErrorState
 import `in`.koreatech.koin.feature.article.ui.article.adapter.ArticleAdapter
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.feature.article.ui.article.detail.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
@@ -105,6 +106,9 @@ class ArticleListFragment : Fragment() {
             handleKeywordChips()
             initKeywordTooltip()
             collectData()
+            binding.layoutArticleNetworkError.buttonArticleNetworkErrorRetry.setOnClickListener {
+                viewModel.retry()
+            }
             binding.nestedScrollViewArticleList.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
                 val offset = binding.nestedScrollViewArticleList.computeVerticalScrollOffset()
                 val extent = binding.nestedScrollViewArticleList.computeVerticalScrollExtent()
@@ -340,6 +344,16 @@ class ArticleListFragment : Fragment() {
                     viewModel.currentPage.collect { page ->
                         setPagingTextButtonVisibility(page)
                         changePageChipSelectedState(page)
+                    }
+                }
+            }
+            this.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.networkErrorState.collect { networkErrorState ->
+                        binding.nestedScrollViewArticleList.visibility =
+                            if (networkErrorState == ArticleNetworkErrorState.NONE) View.VISIBLE else View.GONE
+                        binding.layoutArticleNetworkError.root.visibility =
+                            if (networkErrorState == ArticleNetworkErrorState.ERROR) View.VISIBLE else View.GONE
                     }
                 }
             }

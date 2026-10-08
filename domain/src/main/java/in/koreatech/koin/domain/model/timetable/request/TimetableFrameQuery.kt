@@ -6,6 +6,5 @@ data class TimetableFrameQuery(
 )
 
 data class TimetableFrameCreateQuery(
-    val semester: String,
-    val timetableName: String?
+    val semester: String
 )

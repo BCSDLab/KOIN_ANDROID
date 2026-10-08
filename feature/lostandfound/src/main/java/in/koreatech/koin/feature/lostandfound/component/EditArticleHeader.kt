@@ -20,7 +20,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 
@@ -32,7 +32,7 @@ fun EditArticleHeader(
     Column(modifier = modifier.padding(vertical = 12.dp, horizontal = 24.dp)) {
         Row {
             Text(
-                style = KoinTheme.typography.regular18,
+                style = RebrandKoinTheme.typography.regular18,
                 text =
                 when (type) {
                     LostOrFoundType.LOST -> stringResource(R.string.header_lost_title)
@@ -48,7 +48,7 @@ fun EditArticleHeader(
                     LostOrFoundType.FOUND -> painterResource(R.drawable.ic_found)
                 },
                 contentDescription = null,
-                colorFilter = ColorFilter.tint(KoinTheme.colors.neutral800)
+                colorFilter = ColorFilter.tint(RebrandKoinTheme.colors.neutral800)
             )
         }
         Row(
@@ -57,8 +57,8 @@ fun EditArticleHeader(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                color = KoinTheme.colors.neutral500,
-                style = KoinTheme.typography.regular12,
+                color = RebrandKoinTheme.colors.neutral500,
+                style = RebrandKoinTheme.typography.regular12,
                 text =
                 when (type) {
                     LostOrFoundType.LOST -> stringResource(R.string.header_lost_description)
@@ -72,7 +72,7 @@ fun EditArticleHeader(
                     }
                     append(stringResource(R.string.header_alert_text))
                 },
-                style = KoinTheme.typography.regular12
+                style = RebrandKoinTheme.typography.regular12
             )
         }
     }

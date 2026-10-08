@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.designsystem.util.getMeasuredKoreanHeightDp
 
 @Composable
@@ -19,7 +19,7 @@ internal fun RouteInfo(
     routeDetail: String,
     modifier: Modifier = Modifier
 ) {
-    val columnHeight = KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() * 2
+    val columnHeight = RebrandKoinTheme.typography.regular14.getMeasuredKoreanHeightDp() * 2
     val rememberHeight = remember { columnHeight }
 
     Column(
@@ -28,10 +28,10 @@ internal fun RouteInfo(
     ) {
         Text(
             text = if (routeDetail.isBlank()) routeName else "$routeName\n$routeDetail",
-            style = KoinTheme.typography.regular14.merge(
+            style = RebrandKoinTheme.typography.regular14.merge(
                 textAlign = TextAlign.Center
             ),
-            color = KoinTheme.colors.neutral600,
+            color = RebrandKoinTheme.colors.neutral600,
             modifier = Modifier
                 .align(alignment = Alignment.CenterHorizontally)
         )

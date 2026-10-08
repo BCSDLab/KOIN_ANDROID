@@ -4,18 +4,22 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.abtest.Experiment
+import `in`.koreatech.koin.core.network.service.NetworkConnectivityService
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
-import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.usecase.coopshop.SyncCoopShopUseCase
 import `in`.koreatech.koin.domain.usecase.dining.GetNotOperationFilteredDiningUseCase
+import `in`.koreatech.koin.domain.usecase.dining.SyncDiningUseCase
 import `in`.koreatech.koin.domain.usecase.notification.DeleteNotificationSubscriptionUseCase
 import `in`.koreatech.koin.domain.usecase.notification.GetNotificationPermissionInfoUseCase
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionDetailUseCase
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionUseCase
+import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
@@ -24,15 +28,21 @@ import java.util.Date
 import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
-import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
-import org.orbitmvi.orbit.syntax.simple.subIntent
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
 @HiltViewModel
 class DiningViewModel @Inject constructor(
@@ -43,14 +53,21 @@ class DiningViewModel @Inject constructor(
     private val getNotificationPermissionInfoUseCase: GetNotificationPermissionInfoUseCase,
     private val updateNotificationSubscriptionUseCase: UpdateNotificationSubscriptionUseCase,
     private val updateNotificationSubscriptionDetailUseCase: UpdateNotificationSubscriptionDetailUseCase,
-    private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase
-) : ViewModel(), ContainerHost<DiningState, Nothing> {
+    private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase,
+    private val networkConnectivityService: NetworkConnectivityService,
+    private val syncDiningUseCase: SyncDiningUseCase,
+    private val syncCoopShopUseCase: SyncCoopShopUseCase,
+    private val abTestUseCase: ABTestUseCase
+) : ViewModel(), ContainerHost<DiningState, DiningSideEffect> {
 
     private val initDate = savedStateHandle.get<String>(INIT_DATE)
         .takeUnless { it.isNullOrBlank() }
         ?: TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate())
 
-    override val container = container<DiningState, Nothing>(DiningState(selectedDate = initDate))
+    override val container = container<DiningState, DiningSideEffect>(DiningState(selectedDate = initDate)) {
+        syncDining()
+        syncCoopShop()
+    }
 
     private val _userState: StateFlow<User> = getUserStatusUseCase().stateIn(
         scope = viewModelScope,
@@ -59,38 +76,71 @@ class DiningViewModel @Inject constructor(
     )
     val userState: StateFlow<User> get() = _userState
 
-    fun setSelectedDate(date: Date) = intent {
+    private var fetchDiningJob: Job? = null
+
+    // AB Test will remove after experiment complete.
+    // So, I didn't add to DiningState and separate it
+    val diningSoldOutABTestExperimentGroup = flow {
+        abTestUseCase(Experiment.DINING_SOLDOUT.experimentTitle).onSuccess {
+            emit(it)
+        }.onFailure {
+            emit(Experiment.DINING_SOLDOUT.experimentGroups.first())
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = null
+    ).filterNotNull()
+
+    private fun syncDining() {
+        if (!networkConnectivityService.isConnected()) return
+        viewModelScope.launch {
+            syncDiningUseCase().onFailure { Timber.e("Dining sync failed: $it") }
+        }
+    }
+
+    private fun syncCoopShop() {
+        if (!networkConnectivityService.isConnected()) return
+        viewModelScope.launch {
+            syncCoopShopUseCase().onFailure { Timber.e("CoopShop sync failed: $it") }
+        }
+    }
+
+    fun setSelectedDate(date: Date) {
         val formattedDate = TimeUtil.dateFormatToYYMMDD(date)
-        reduce { state.copy(selectedDate = formattedDate) }
-        fetchDining(formattedDate)
+        intent {
+            reduce { state.copy(selectedDate = formattedDate) }
+            postSideEffect(DiningSideEffect.FetchDining(false))
+        }
     }
 
-    fun refreshDining() = intent {
-        reduce { state.copy(isDiningRefreshing = true) }
-        fetchDining(state.selectedDate)
+    fun refreshDining() {
+        intent {
+            reduce { state.copy(isDiningRefreshing = true) }
+            postSideEffect(DiningSideEffect.FetchDining(networkConnectivityService.isConnected()))
+        }
     }
 
-    fun getDining(date: String? = null) = intent {
-        fetchDining(date ?: state.selectedDate)
+    fun getDining() = intent {
+        postSideEffect(DiningSideEffect.FetchDining(false))
     }
 
-    @OptIn(OrbitExperimental::class)
-    private suspend fun fetchDining(date: String) = subIntent {
-        if (state.isLoading) return@subIntent
-        reduce { state.copy(isLoading = true) }
-        getNotOperationFilteredDiningUseCase(date)
-            .onSuccess { result ->
+    fun fetchDining(forceRefresh: Boolean = false) {
+        fetchDiningJob?.cancel()
+        fetchDiningJob = intent {
+            reduce { state.copy(isLoading = true) }
+            getNotOperationFilteredDiningUseCase(state.selectedDate, forceRefresh).catch {
+                reduce { state.copy(dining = persistentListOf(), isLoading = false, isDiningRefreshing = false) }
+            }.collectLatest { result ->
                 reduce {
                     state.copy(
-                        dining = result.sortedBy { diningOrder[it.place] ?: Int.MAX_VALUE }.toImmutableList(),
+                        dining = result.toImmutableList(),
                         isLoading = false,
                         isDiningRefreshing = false
                     )
                 }
             }
-            .onFailure {
-                reduce { state.copy(dining = persistentListOf(), isLoading = false, isDiningRefreshing = false) }
-            }
+        }
     }
 
     fun getInitialPage(): Int = getDiningTabByType(DiningUtil.getCurrentType())
@@ -168,11 +218,3 @@ class DiningViewModel @Inject constructor(
         }
     }
 }
-
-private val diningOrder = mapOf(
-    DiningPlace.CornerA.place to 0,
-    DiningPlace.CornerB.place to 1,
-    DiningPlace.CornerC.place to 2,
-    DiningPlace.Nungsu.place to 3,
-    DiningPlace.Campus2.place to 4
-)

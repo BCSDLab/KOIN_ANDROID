@@ -14,7 +14,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,7 +24,7 @@ import androidx.compose.ui.unit.max
 import `in`.koreatech.bus.mock.busNoticeUiStateMock
 import `in`.koreatech.bus.state.BusNoticeState
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.designsystem.util.getMeasuredKoreanHeightDp
 
 @Composable
@@ -33,7 +34,7 @@ internal fun NoticeItem(
     onCloseIconClick: () -> Unit,
     modifier: Modifier = Modifier,
     noticeMaxLines: Int = 1,
-    textStyle: TextStyle = KoinTheme.typography.medium14
+    textStyle: TextStyle = RebrandKoinTheme.typography.medium14
 ) {
     val textHeightDp = textStyle.getMeasuredKoreanHeightDp()
 
@@ -41,12 +42,10 @@ internal fun NoticeItem(
         modifier =
         modifier
             .fillMaxWidth()
-            .padding(top = 8.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .background(
-                color = KoinTheme.colors.info100,
-                shape = RoundedCornerShape(8.dp)
-            ).clickable { onNoticeClick(notice) }
+            .padding(vertical = 8.dp)
+            .shadow(10.dp, RoundedCornerShape(8.dp))
+            .background(Color.White)
+            .clickable { onNoticeClick(notice) }
             .padding(16.dp),
         verticalAlignment = if (noticeMaxLines == 1) Alignment.CenterVertically else Alignment.Top
     ) {
@@ -54,7 +53,7 @@ internal fun NoticeItem(
             modifier = Modifier.weight(1f),
             text = notice.title,
             style = textStyle,
-            color = KoinTheme.colors.primary500,
+            color = RebrandKoinTheme.colors.primary500,
             maxLines = noticeMaxLines,
             overflow = TextOverflow.Ellipsis
         )
@@ -65,7 +64,7 @@ internal fun NoticeItem(
             },
             imageVector = Icons.Rounded.Close,
             contentDescription = notice.title,
-            tint = KoinTheme.colors.neutral400
+            tint = RebrandKoinTheme.colors.neutral400
         )
     }
 }
@@ -73,7 +72,7 @@ internal fun NoticeItem(
 @Composable
 @Preview
 private fun NoticeItemPreview() {
-    KoinTheme {
+    RebrandKoinTheme {
         NoticeItem(
             notice = busNoticeUiStateMock.notice,
             onCloseIconClick = {},
@@ -85,7 +84,7 @@ private fun NoticeItemPreview() {
 @Composable
 @Preview
 private fun NoticeItem2Preview() {
-    KoinTheme {
+    RebrandKoinTheme {
         NoticeItem(
             notice = busNoticeUiStateMock.notice,
             onCloseIconClick = {},

@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.mapper
 
+import `in`.koreatech.koin.data.entity.DiningEntity
 import `in`.koreatech.koin.data.response.DiningResponse
 import `in`.koreatech.koin.domain.model.dining.Dining
 
@@ -27,3 +28,36 @@ fun List<String>.toLineChangingString(): String {
     }
     return string
 }
+
+fun Dining.toDiningEntity(cacheDate: String) = DiningEntity(
+    id = id,
+    cacheDate = cacheDate,
+    date = date,
+    type = type,
+    place = place,
+    priceCard = priceCard,
+    priceCash = priceCash,
+    kcal = kcal,
+    menu = menu,
+    imageUrl = imageUrl,
+    createdAt = createdAt,
+    updatedAt = updatedAt,
+    soldOutAt = soldOutAt,
+    changedAt = changedAt
+)
+
+fun DiningEntity.toDining() = Dining(
+    id = id,
+    date = date,
+    type = type,
+    place = place,
+    priceCard = priceCard,
+    priceCash = priceCash,
+    kcal = kcal,
+    menu = menu,
+    imageUrl = imageUrl,
+    createdAt = createdAt,
+    updatedAt = updatedAt,
+    soldOutAt = soldOutAt,
+    changedAt = changedAt
+)

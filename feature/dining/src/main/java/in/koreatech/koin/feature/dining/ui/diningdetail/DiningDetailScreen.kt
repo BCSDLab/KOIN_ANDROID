@@ -111,6 +111,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -146,6 +147,13 @@ fun DiningDetailScreen(
                 WindowCompat.getInsetsController(it, view).isAppearanceLightStatusBars = true
             }
         }
+    }
+
+    viewModel.collectSideEffect { sideEffect ->
+        handleSideEffect(
+            sideEffect = sideEffect,
+            fetchDining = { viewModel.fetchDining(it) }
+        )
     }
 
     val sheetState = rememberModalBottomSheetState()
@@ -569,6 +577,17 @@ private fun createFeedMessageTemplate(dining: Dining): FeedTemplate {
             Button("코인에서 식단 전체보기", link)
         )
     )
+}
+
+private fun handleSideEffect(
+    sideEffect: DiningSideEffect,
+    fetchDining: (forceRefresh: Boolean) -> Unit
+) {
+    when (sideEffect) {
+        is DiningSideEffect.FetchDining -> {
+            fetchDining(sideEffect.forceRefresh)
+        }
+    }
 }
 
 @Preview(showBackground = true)

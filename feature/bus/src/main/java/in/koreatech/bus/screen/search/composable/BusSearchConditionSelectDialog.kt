@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -18,10 +19,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.picker.KoinPicker
 import `in`.koreatech.koin.core.designsystem.component.picker.rememberPickerState
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.collections.immutable.ImmutableList
 
@@ -54,19 +54,19 @@ internal fun BusSearchConditionSelectDialog(
             Text(
                 modifier = Modifier.padding(top = 24.dp, start = 24.dp, end = 24.dp),
                 text = stringResource(R.string.set_departure_time),
-                style = KoinTheme.typography.medium18
+                style = RebrandKoinTheme.typography.medium18
             )
             Text(
                 modifier = Modifier.padding(top = 8.dp, start = 24.dp, end = 24.dp),
                 text = stringResource(R.string.caution_timetable_period),
-                style = KoinTheme.typography.regular14
+                style = RebrandKoinTheme.typography.regular14
             )
             Row(
                 modifier =
                 Modifier
                     .fillMaxWidth()
                     .padding(top = 24.dp)
-                    .background(KoinTheme.colors.neutral50)
+                    .background(RebrandKoinTheme.colors.neutral50)
                     .padding(horizontal = 32.dp, vertical = 16.dp)
             ) {
                 KoinPicker(
@@ -77,13 +77,14 @@ internal fun BusSearchConditionSelectDialog(
                     infiniteScroll = false,
                     contentPadding = PaddingValues(vertical = 3.dp),
                     selectedTextStyle =
-                    KoinTheme.typography.medium16.copy(
+                    RebrandKoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
                     unselectedTextStyle =
-                    KoinTheme.typography.medium16.copy(
+                    RebrandKoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
+                    selectedItemColor = RebrandKoinTheme.colors.primary500,
                     modifier = Modifier.weight(.45f)
                 )
                 KoinPicker(
@@ -94,13 +95,14 @@ internal fun BusSearchConditionSelectDialog(
                     infiniteScroll = false,
                     contentPadding = PaddingValues(top = 3.dp, bottom = 3.dp, start = 18.dp),
                     selectedTextStyle =
-                    KoinTheme.typography.medium16.copy(
+                    RebrandKoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
                     unselectedTextStyle =
-                    KoinTheme.typography.medium16.copy(
+                    RebrandKoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
+                    selectedItemColor = RebrandKoinTheme.colors.primary500,
                     modifier = Modifier.weight(.25f)
                 )
                 KoinPicker(
@@ -111,13 +113,14 @@ internal fun BusSearchConditionSelectDialog(
                     infiniteScroll = true,
                     contentPadding = PaddingValues(top = 3.dp, bottom = 3.dp, start = 10.dp),
                     selectedTextStyle =
-                    KoinTheme.typography.medium16.copy(
+                    RebrandKoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
                     unselectedTextStyle =
-                    KoinTheme.typography.medium16.copy(
+                    RebrandKoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
+                    selectedItemColor = RebrandKoinTheme.colors.primary500,
                     modifier = Modifier.weight(.2f)
                 )
                 KoinPicker(
@@ -128,13 +131,14 @@ internal fun BusSearchConditionSelectDialog(
                     infiniteScroll = true,
                     contentPadding = PaddingValues(top = 3.dp, bottom = 3.dp, start = 10.dp),
                     selectedTextStyle =
-                    KoinTheme.typography.medium16.copy(
+                    RebrandKoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
                     unselectedTextStyle =
-                    KoinTheme.typography.medium16.copy(
+                    RebrandKoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
+                    selectedItemColor = RebrandKoinTheme.colors.primary500,
                     modifier = Modifier.weight(.2f)
                 )
             }
@@ -147,19 +151,23 @@ internal fun BusSearchConditionSelectDialog(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                FilledButton(
-                    text = stringResource(R.string.departure_now),
-                    onClick = onDepartureNow,
-                    colors =
-                    ButtonDefaults.buttonColors(
-                        containerColor = Color.Transparent,
-                        contentColor = KoinTheme.colors.neutral600
-                    ),
+                Button(
                     modifier = Modifier.weight(1f),
-                    contentPadding = PaddingValues(vertical = 12.dp)
-                )
-                FilledButton(
-                    text = stringResource(R.string.complete),
+                    onClick = onDepartureNow,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Transparent,
+                        contentColor = RebrandKoinTheme.colors.neutral600
+                    ),
+                    contentPadding = PaddingValues(vertical = 12.dp),
+                    shape = RebrandKoinTheme.shapes.extraSmall
+                ) {
+                    Text(
+                        text = stringResource(R.string.departure_now),
+                        style = RebrandKoinTheme.typography.medium15
+                    )
+                }
+                Button(
+                    modifier = Modifier.weight(1f),
                     onClick = {
                         onComplete(
                             datePickerState.selectedItemIndex,
@@ -168,9 +176,18 @@ internal fun BusSearchConditionSelectDialog(
                             minutePickerState.selectedItemIndex
                         )
                     },
-                    modifier = Modifier.weight(1f),
-                    contentPadding = PaddingValues(vertical = 12.dp)
-                )
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = RebrandKoinTheme.colors.primary500,
+                        contentColor = RebrandKoinTheme.colors.neutral0
+                    ),
+                    contentPadding = PaddingValues(vertical = 12.dp),
+                    shape = RebrandKoinTheme.shapes.extraSmall
+                ) {
+                    Text(
+                        text = stringResource(R.string.complete),
+                        style = RebrandKoinTheme.typography.medium15
+                    )
+                }
             }
         }
     }

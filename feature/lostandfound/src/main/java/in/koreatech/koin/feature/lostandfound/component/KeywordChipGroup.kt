@@ -28,10 +28,12 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.chip.ChipOverflowStrategy.Flow
+import `in`.koreatech.koin.core.designsystem.component.chip.TextChip2
+import `in`.koreatech.koin.core.designsystem.component.chip.TextChipBorders
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipColors
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipDefaults
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 fun KeywordChipGroup(
@@ -64,7 +66,8 @@ fun LostAndFoundTextChipFlowGroup(
     contentPadding: PaddingValues = PaddingValues(vertical = 0.dp, horizontal = 0.dp),
     horizontalArrangement: Arrangement.Horizontal,
     verticalArrangement: Arrangement.Vertical,
-    chipColors: TextChipColors
+    chipColors: TextChipColors,
+    border: TextChipBorders? = TextChipDefaults.chipBorder()
 ) {
     FlowRow(
         modifier = modifier,
@@ -72,11 +75,12 @@ fun LostAndFoundTextChipFlowGroup(
         verticalArrangement = verticalArrangement
     ) {
         titles.forEachIndexed { index, it ->
-            LostAndFoundTextChip(
+            TextChip2(
                 title = it,
                 isSelected = selectedChipIndexes.contains(index),
                 shape = shape,
                 chipColors = chipColors,
+                border = border,
                 contentPadding = contentPadding,
                 showClickRipple = showClickRipple,
                 onSelect = { onChipSelected(index) }
@@ -109,7 +113,8 @@ internal fun LostAndFoundTextChipScrollGroup(
     showClickRipple: Boolean = false,
     contentPadding: PaddingValues = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
     horizontalArrangement: Arrangement.Horizontal,
-    chipColors: TextChipColors = TextChipDefaults.chipColors()
+    chipColors: TextChipColors = TextChipDefaults.chipColors(),
+    border: TextChipBorders? = null
 ) {
     Row(
         modifier = modifier
@@ -128,11 +133,12 @@ internal fun LostAndFoundTextChipScrollGroup(
         horizontalArrangement = horizontalArrangement
     ) {
         titles.forEachIndexed { index, it ->
-            LostAndFoundTextChip(
+            TextChip2(
                 title = it,
                 isSelected = selectedChipIndexes.contains(index),
                 shape = shape,
                 chipColors = chipColors,
+                border = border,
                 contentPadding = contentPadding,
                 showClickRipple = showClickRipple,
                 onSelect = { onChipSelected(index) }
@@ -157,7 +163,7 @@ internal fun LostAndFoundTextChipScrollGroup(
 fun LostAndFoundTextChip(
     title: String,
     modifier: Modifier = Modifier,
-    textStyle: TextStyle = KoinTheme.typography.medium14,
+    textStyle: TextStyle = RebrandKoinTheme.typography.medium14,
     isSelected: Boolean = false,
     shape: Shape = RoundedCornerShape(50),
     showClickRipple: Boolean = true,
@@ -196,8 +202,8 @@ fun LostAndFoundTextChip(
 @Composable
 fun keywordChipColors() =
     TextChipDefaults.chipColors(
-        selectedContainerColor = KoinTheme.colors.primary500,
-        unselectedContainerColor = KoinTheme.colors.neutral100,
-        selectedContentColor = KoinTheme.colors.neutral100,
-        unselectedContentColor = KoinTheme.colors.neutral500
+        selectedContainerColor = RebrandKoinTheme.colors.primary500,
+        unselectedContainerColor = RebrandKoinTheme.colors.neutral100,
+        selectedContentColor = RebrandKoinTheme.colors.neutral0,
+        unselectedContentColor = RebrandKoinTheme.colors.neutral500
     )

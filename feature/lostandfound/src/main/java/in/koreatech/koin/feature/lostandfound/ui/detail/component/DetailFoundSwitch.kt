@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 
@@ -33,7 +33,7 @@ fun DetailFoundSwitch(
     ) {
         BasicText(
             text = if (lostOrFoundType == LostOrFoundType.LOST) stringResource(id = R.string.lost_and_found_lost_message) else stringResource(id = R.string.lost_and_found_found_message),
-            style = KoinTheme.typography.regular12.copy(color = KoinTheme.colors.neutral500)
+            style = RebrandKoinTheme.typography.regular12.copy(color = RebrandKoinTheme.colors.neutral500)
         )
         Spacer(modifier = Modifier.width(8.dp))
         LostAndFoundDetailCustomSwitch(

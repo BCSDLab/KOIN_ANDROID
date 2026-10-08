@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dagger.multibindings.Multibinds
+import `in`.koreatech.koin.core.notification.NotificationResolver
 import `in`.koreatech.koin.core.notification.Notifier
 import `in`.koreatech.koin.core.notification.NotifierImpl
 import javax.inject.Singleton
@@ -14,4 +16,7 @@ abstract class NotificationModule {
     @Binds
     @Singleton
     abstract fun bindsNotifier(notifierImpl: NotifierImpl): Notifier
+
+    @Multibinds
+    abstract fun bindsNotificationResolvers(): Map<String, NotificationResolver>
 }

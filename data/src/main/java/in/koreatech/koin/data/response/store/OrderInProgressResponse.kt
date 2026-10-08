@@ -7,7 +7,7 @@ data class OrderInProgressResponse(
     @SerializedName("payment_id") val paymentId: Int,
     @SerializedName("order_type") val orderType: String,
     @SerializedName("orderable_shop_name") val orderableShopName: String,
-    @SerializedName("orderable_shop_thumbnail") val orderableShopThumbnail: String,
+    @SerializedName("orderable_shop_thumbnail") val orderableShopThumbnail: String?,
     @SerializedName("estimated_at") val estimatedAt: String?,
     @SerializedName("order_status") val orderStatus: String,
     @SerializedName("order_title") val orderTitle: String,

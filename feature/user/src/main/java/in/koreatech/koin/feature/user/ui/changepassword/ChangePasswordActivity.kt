@@ -3,6 +3,8 @@ package `in`.koreatech.koin.feature.user.ui.changepassword
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
@@ -66,6 +68,12 @@ class ChangePasswordActivity : ActivityBase() {
         with(binding.vpContainer) {
             adapter = viewPager
             isUserInputEnabled = false
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.vpContainer) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
         }
     }
 

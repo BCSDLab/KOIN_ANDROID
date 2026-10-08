@@ -10,13 +10,11 @@ class AddTimetableFrameUseCase @Inject constructor(
 ) {
     // TODO::hyeok 시간표 이름 인자에서 없애고 내부에서 처리하는게 나을듯
     suspend operator fun invoke(
-        semester: String,
-        timetableName: String
+        semester: String
     ): Result<TimetableFrame> {
         return timetableRepository.postTimetableFrame(
             TimetableFrameCreateQuery(
-                semester = semester,
-                timetableName = timetableName
+                semester = semester
             )
         )
     }

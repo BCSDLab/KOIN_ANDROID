@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 fun LostAndFoundDetailCustomSwitch(
@@ -27,7 +27,7 @@ fun LostAndFoundDetailCustomSwitch(
     onCheckedChange: (Boolean) -> Unit
 ) {
     val thumbOffset by animateDpAsState(targetValue = if (checked) 18.dp else 2.dp)
-    val backgroundColor by animateColorAsState(targetValue = if (checked) KoinTheme.colors.success400 else KoinTheme.colors.neutral300)
+    val backgroundColor by animateColorAsState(targetValue = if (checked) RebrandKoinTheme.colors.success400 else RebrandKoinTheme.colors.neutral300)
 
     Box(
         modifier = modifier
@@ -46,7 +46,7 @@ fun LostAndFoundDetailCustomSwitch(
                 .offset(x = thumbOffset)
                 .size(16.dp)
                 .clip(CircleShape)
-                .background(KoinTheme.colors.neutral0)
+                .background(RebrandKoinTheme.colors.neutral0)
         )
     }
 }

@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.core.designsystem.component.topbar
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -10,10 +11,12 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -37,24 +40,34 @@ fun KoinTopAppBar2(
     expandedHeight: Dp = KoinTopAppBar2Defaults.KoinTopAppBar2ExpandedHeight,
     scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
-    CenterAlignedTopAppBar(
-        title = title,
-        modifier = modifier.padding(horizontal = 20.dp),
-        navigationIcon = {
-            Icon(
-                modifier = Modifier
-                    .size(24.dp)
-                    .noRippleClickable { onNavigationIconClick() },
-                imageVector = ImageVector.vectorResource(R.drawable.ic_toolbar_navigate_back),
-                contentDescription = stringResource(R.string.navigate_up_content_description)
-            )
-        },
-        actions = actions,
-        colors = colors,
-        windowInsets = windowInsets,
-        expandedHeight = expandedHeight,
-        scrollBehavior = scrollBehavior
-    )
+    val defaultTextStyle = RebrandKoinTheme.typography.medium18
+    CompositionLocalProvider(LocalTextStyle provides defaultTextStyle) {
+        CenterAlignedTopAppBar(
+            title = title,
+            modifier = modifier,
+            navigationIcon = {
+                Row(modifier = Modifier.padding(start = 20.dp)) {
+                    Icon(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .noRippleClickable { onNavigationIconClick() },
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_toolbar_navigate_back),
+                        contentDescription = stringResource(R.string.navigate_up_content_description)
+                    )
+                }
+            },
+            actions = {
+                Row(
+                    modifier = Modifier.padding(end = 20.dp),
+                    content = actions
+                )
+            },
+            colors = colors,
+            windowInsets = windowInsets,
+            expandedHeight = expandedHeight,
+            scrollBehavior = scrollBehavior
+        )
+    }
 }
 
 object KoinTopAppBar2Defaults {

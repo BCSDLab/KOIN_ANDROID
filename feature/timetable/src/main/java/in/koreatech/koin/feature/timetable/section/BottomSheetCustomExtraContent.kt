@@ -10,18 +10,20 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.designsystem.component.icon.StableIcon
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.TimetableInputField
 import `in`.koreatech.koin.feature.timetable.component.TimetableTimeContentRow
@@ -38,34 +40,35 @@ fun BottomSheetCustomExtraContent(
     onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> }
 ) {
     Column(
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(Color.White)
             .border(
-                width = 1.dp,
-                color = KoinTheme.colors.neutral300,
-                shape = RoundedCornerShape(4.dp)
+                width = 0.5.dp,
+                color = RebrandKoinTheme.colors.neutral300,
+                shape = RoundedCornerShape(16.dp)
             )
     ) {
-        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
-            IconButton(
-                onClick = { onClickCancel(customContent.id) },
-                modifier =
-                Modifier
-                    .padding(5.dp)
-                    .size(24.dp)
-            ) {
-                StableIcon(
-                    drawableResId = R.drawable.ic_close
-                )
-            }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 12.dp, top = 12.dp),
+            contentAlignment = Alignment.CenterStart
+        ) {
+            Icon(
+                modifier = Modifier
+                    .size(16.dp)
+                    .noRippleClickable(onClick = { onClickCancel(customContent.id) }),
+                imageVector = ImageVector.vectorResource(R.drawable.ic_close_round),
+                contentDescription = null,
+                tint = RebrandKoinTheme.colors.neutral800
+            )
         }
 
         Column(
-            modifier = Modifier.padding(horizontal = 13.dp)
+            modifier = Modifier.padding(horizontal = 12.dp)
         ) {
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             TimetableTimeContentRow(
                 customContent = customContent,
                 onDayOfWeekChange = onDayOfWeekChange,
@@ -75,8 +78,8 @@ fun BottomSheetCustomExtraContent(
             if (customContent.isError) {
                 Text(
                     text = stringResource(R.string.timetable_error_input_field_duplication_time),
-                    style = KoinTheme.typography.regular12,
-                    color = KoinTheme.colors.sub500,
+                    style = RebrandKoinTheme.typography.regular12,
+                    color = RebrandKoinTheme.colors.sub500,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.End
                 )
