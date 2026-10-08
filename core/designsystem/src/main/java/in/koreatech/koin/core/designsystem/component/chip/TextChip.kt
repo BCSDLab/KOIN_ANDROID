@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -146,6 +147,7 @@ object TextChipDefaults {
     )
 }
 
+@Stable
 class TextChipColors internal constructor(
     val selectedContainerColor: Color,
     val selectedContentColor: Color,
@@ -153,6 +155,7 @@ class TextChipColors internal constructor(
     val unselectedContentColor: Color
 )
 
+@Stable
 class TextChipBorders(
     val selectedBorderStroke: BorderStroke,
     val selectedBorderShape: Shape,
