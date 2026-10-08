@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -56,7 +57,8 @@ fun DiningItem(
     context: Context = LocalContext.current,
     isWeekend: Boolean = false,
     onImageClick: () -> Unit = {},
-    onShareClick: () -> Unit = {}
+    onShareClick: () -> Unit = {},
+    reportIcon: @Composable () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -109,6 +111,8 @@ fun DiningItem(
                         )
                     }
                 }
+
+                reportIcon()
             }
             Row(
                 horizontalArrangement = Arrangement.spacedBy(2.dp),

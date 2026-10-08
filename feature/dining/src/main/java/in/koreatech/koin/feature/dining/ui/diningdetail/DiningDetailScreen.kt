@@ -1,8 +1,12 @@
 package `in`.koreatech.koin.feature.dining.ui.diningdetail
 
+import android.content.Context
+import android.net.Uri
+import android.provider.OpenableColumns
 import android.widget.Toast
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -12,16 +16,19 @@ import androidx.compose.animation.core.animateValue
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,13 +39,19 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
@@ -48,11 +61,13 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -60,19 +75,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.zIndex
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.kakao.sdk.share.ShareClient
 import com.kakao.sdk.template.model.Button
@@ -81,11 +102,17 @@ import com.kakao.sdk.template.model.FeedTemplate
 import com.kakao.sdk.template.model.ItemContent
 import com.kakao.sdk.template.model.ItemInfo
 import com.kakao.sdk.template.model.Link
+import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.designsystem.component.chip.TextChip2
+import `in`.koreatech.koin.core.designsystem.component.chip.TextChipDefaults
+import `in`.koreatech.koin.core.designsystem.component.snackbar.KoinSnackbarHost
+import `in`.koreatech.koin.core.designsystem.component.snackbar.rememberKoinSnackbarHostState
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
@@ -93,12 +120,15 @@ import `in`.koreatech.koin.core.nestedscroll.rememberKoinNestedScrollHeaderState
 import `in`.koreatech.koin.core.onboarding.ArrowDirection
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.onboarding.rememberOnboardingManager
+import `in`.koreatech.koin.core.util.KoinCoilImageLoader
 import `in`.koreatech.koin.domain.model.dining.Dining
+import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.model.dining.DiningWithOperationTime
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.feature.dining.R
+import `in`.koreatech.koin.feature.dining.component.BulletText
 import `in`.koreatech.koin.feature.dining.component.DiningDateItem
 import `in`.koreatech.koin.feature.dining.component.DiningItem
 import `in`.koreatech.koin.feature.dining.component.bottomsheet.DiningBottomSheet
@@ -112,9 +142,11 @@ import java.util.Date
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import androidx.compose.material3.Button as UiButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -127,7 +159,12 @@ fun DiningDetailScreen(
     val userState by viewModel.userState.collectAsState()
 
     val diningState by viewModel.collectAsState()
+    val diningReportState = diningState.diningReportState
     val scope = rememberCoroutineScope()
+
+    val snackbarHostState = rememberKoinSnackbarHostState()
+
+    val reportAbTest by viewModel.diningSoldOutABTestExperimentGroup.collectAsState()
 
     val view = LocalView.current
     val activity = LocalActivity.current
@@ -155,7 +192,10 @@ fun DiningDetailScreen(
     viewModel.collectSideEffect { sideEffect ->
         handleSideEffect(
             sideEffect = sideEffect,
-            fetchDining = { viewModel.fetchDining(it) }
+            context = context,
+            scope = scope,
+            fetchDining = { viewModel.fetchDining(it) },
+            showSnackbar = { snackbarHostState.showSnackbar(it) }
         )
     }
 
@@ -203,8 +243,27 @@ fun DiningDetailScreen(
         }
     }
 
+    if (diningReportState.isDialogVisible) {
+        DiningReportDialog(
+            state = diningReportState,
+            onPlaceSelect = viewModel::updateSoldOutReportSelectedPlace,
+            onImageUpload = viewModel::uploadSoldOutImage,
+            onImageDelete = viewModel::deleteSoldOutImage,
+            onReport = viewModel::onSoldOutReport,
+            onDismissRequest = {
+                viewModel.updateShowDiningSoldOutReportDialog(false)
+                viewModel.resetDiningSoldOutState()
+            }
+        )
+    }
+
     Scaffold(
         containerColor = KoinTheme.colors.neutral0,
+        snackbarHost = {
+            KoinSnackbarHost(
+                hostState = snackbarHostState
+            )
+        },
         topBar = {
             KoinTopAppBar2(
                 title = {
@@ -214,6 +273,23 @@ fun DiningDetailScreen(
                     )
                 },
                 actions = {
+                    if (reportAbTest == ExperimentGroup.DINING_SOLDOUT_A) {
+                        Icon(
+                            modifier = Modifier
+                                .padding(end = 12.dp)
+                                .size(24.dp)
+                                .clickable(
+                                    indication = null,
+                                    interactionSource = remember { MutableInteractionSource() }
+                                ) {
+                                    viewModel.updateShowDiningSoldOutReportDialog(true)
+                                },
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_dining_soldout_report),
+                            tint = RebrandKoinTheme.colors.primary500,
+                            contentDescription = stringResource(R.string.dining_sold_out_report_title)
+                        )
+                    }
+
                     Icon(
                         modifier = Modifier
                             .padding(end = 10.dp)
@@ -242,10 +318,15 @@ fun DiningDetailScreen(
             diningList = dining,
             contentPadding = contentPadding,
             selectedDate = TimeUtil.stringToDateYYMMDD(diningState.selectedDate),
+            reportAbTest = reportAbTest,
             isDiningRefreshing = diningState.isDiningRefreshing,
             initialPage = if (initialPage != -1) initialPage else viewModel.getInitialPage(),
             refreshDining = viewModel::refreshDining,
-            onDateClick = viewModel::setSelectedDate
+            onDateClick = viewModel::setSelectedDate,
+            onReport = {
+                viewModel.updateSoldOutReportSelectedPlace(it)
+                viewModel.updateShowDiningSoldOutReportDialog(true)
+            }
         )
     }
 }
@@ -256,11 +337,13 @@ private fun DiningDetailScreenImpl(
     diningList: ImmutableList<Dining>,
     contentPadding: PaddingValues,
     selectedDate: Date,
+    reportAbTest: String?,
     modifier: Modifier = Modifier,
     isDiningRefreshing: Boolean = false,
     initialPage: Int = 0,
     refreshDining: () -> Unit = {},
-    onDateClick: (Date) -> Unit = {}
+    onDateClick: (Date) -> Unit = {},
+    onReport: (DiningPlace) -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -503,6 +586,23 @@ private fun DiningDetailScreenImpl(
                                         } else {
                                             Toast.makeText(context, context.getString(R.string.kakao_share_unable), Toast.LENGTH_SHORT).show()
                                         }
+                                    },
+                                    reportIcon = {
+                                        if (reportAbTest == ExperimentGroup.DINING_SOLDOUT_B) {
+                                            Icon(
+                                                modifier = Modifier
+                                                    .size(24.dp)
+                                                    .clickable(
+                                                        indication = null,
+                                                        interactionSource = remember { MutableInteractionSource() }
+                                                    ) {
+                                                        onReport(DiningPlace.entries.first { it.place == dining.place })
+                                                    },
+                                                imageVector = ImageVector.vectorResource(R.drawable.ic_dining_soldout_report),
+                                                tint = RebrandKoinTheme.colors.primary500,
+                                                contentDescription = stringResource(R.string.dining_sold_out_report_title)
+                                            )
+                                        }
                                     }
                                 )
                                 if (index == 0 && showToolTip) {
@@ -542,6 +642,315 @@ private fun DiningDetailScreenImpl(
                 }
             }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun DiningReportDialog(
+    state: DiningReportState,
+    modifier: Modifier = Modifier,
+    onPlaceSelect: (DiningPlace) -> Unit = {},
+    onImageUpload: (Long, String, String, Uri) -> Unit = { _, _, _, _ -> },
+    onImageDelete: () -> Unit = {},
+    onReport: () -> Unit = {},
+    onDismissRequest: () -> Unit = {}
+) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val places = remember { DiningPlace.entries.filter { it != DiningPlace.Campus2 } }.toImmutableList()
+
+    BasicAlertDialog(
+        modifier = modifier
+            .clip(RebrandKoinTheme.shapes.small)
+            .background(RebrandKoinTheme.colors.neutral0)
+            .padding(vertical = 16.dp, horizontal = 20.dp),
+        onDismissRequest = onDismissRequest
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = stringResource(R.string.dining_sold_out_report_title),
+                    style = RebrandKoinTheme.typography.medium18.copy(fontWeight = FontWeight.SemiBold)
+                )
+
+                Icon(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .padding(1.dp)
+                        .noRippleClickable(onClick = onDismissRequest),
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_close_round),
+                    contentDescription = null,
+                    tint = RebrandKoinTheme.colors.neutral800
+                )
+            }
+
+            DiningReportDialogSelection(
+                places = places,
+                reportedPlaces = state.reportedPlace,
+                selectedPlace = state.diningPlace,
+                onPlaceSelect = onPlaceSelect
+            )
+
+            DiningReportDialogUpload(
+                isImageUploading = state.isImageUploading,
+                imageUrl = state.imageUrl,
+                onImageUploadRequest = {
+                    scope.launch {
+                        handleImage(context, it, onImageUpload)
+                    }
+                },
+                onImageDelete = onImageDelete
+            )
+
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                UiButton(
+                    contentPadding = PaddingValues(vertical = 12.dp, horizontal = 48.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = RebrandKoinTheme.colors.primary500,
+                        contentColor = RebrandKoinTheme.colors.neutral0,
+                        disabledContainerColor = RebrandKoinTheme.colors.neutral300,
+                        disabledContentColor = RebrandKoinTheme.colors.neutral0
+                    ),
+                    shape = RebrandKoinTheme.shapes.small,
+                    onClick = onReport,
+                    enabled = state.isReportable
+                ) {
+                    Text(
+                        text = stringResource(R.string.dining_sold_out_report_submit),
+                        style = RebrandKoinTheme.typography.medium15.copy(
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun DiningReportDialogSelection(
+    places: ImmutableList<DiningPlace>,
+    reportedPlaces: ImmutableList<DiningPlace>,
+    selectedPlace: DiningPlace?,
+    onPlaceSelect: (DiningPlace) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val selectableTextChipColor = TextChipDefaults.chipColors(
+        selectedContainerColor = RebrandKoinTheme.colors.neutral0,
+        selectedContentColor = RebrandKoinTheme.colors.primary500,
+        unselectedContainerColor = RebrandKoinTheme.colors.neutral0,
+        unselectedContentColor = RebrandKoinTheme.colors.neutral500
+    )
+
+    val unselectableTextChipColor = TextChipDefaults.chipColors(
+        selectedContainerColor = RebrandKoinTheme.colors.neutral0,
+        selectedContentColor = RebrandKoinTheme.colors.primary500,
+        unselectedContainerColor = RebrandKoinTheme.colors.neutral0,
+        unselectedContentColor = RebrandKoinTheme.colors.neutral300
+    )
+
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Text(
+            text = stringResource(R.string.dining_sold_out_report_course_title),
+            style = RebrandKoinTheme.typography.medium15.copy(fontWeight = FontWeight.SemiBold)
+        )
+
+        FlowRow(
+            modifier = Modifier.fillMaxWidth(),
+            itemVerticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            places.fastForEach { place ->
+                val isAlreadySoldOut = reportedPlaces.contains(place)
+
+                key(place) {
+                    TextChip2(
+                        title = place.place,
+                        showClickRipple = !isAlreadySoldOut,
+                        isSelected = !isAlreadySoldOut && selectedPlace == place,
+                        chipColors = if (isAlreadySoldOut) unselectableTextChipColor else selectableTextChipColor,
+                        border = TextChipDefaults.chipBorder(
+                            selectedBorderStroke = BorderStroke(1.dp, RebrandKoinTheme.colors.primary500),
+                            unselectedBorderStroke = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral300)
+                        ),
+                        onSelect = {
+                            onPlaceSelect(place)
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun DiningReportDialogUpload(
+    isImageUploading: Boolean,
+    imageUrl: String?,
+    onImageUploadRequest: (Uri?) -> Unit,
+    onImageDelete: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    val pickMultipleMedia = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        onImageUploadRequest(uri)
+    }
+
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Text(
+            text = stringResource(R.string.dining_sold_out_report_photo_title),
+            style = RebrandKoinTheme.typography.medium15.copy(fontWeight = FontWeight.SemiBold)
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .weight(15f)
+                    .aspectRatio(3f / 4f),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RebrandKoinTheme.shapes.small)
+                        .background(RebrandKoinTheme.colors.neutral200)
+                        .clickable {
+                            pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                        },
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically)
+                ) {
+                    Icon(
+                        modifier = Modifier.size(48.dp),
+                        contentDescription = null,
+                        tint = RebrandKoinTheme.colors.neutral500,
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_dining_soldout_report_camera)
+                    )
+
+                    Text(
+                        text = stringResource(R.string.dining_sold_out_report_photo_action),
+                        style = RebrandKoinTheme.typography.regular14,
+                        color = RebrandKoinTheme.colors.neutral500
+                    )
+                }
+
+                if (isImageUploading) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .size(24.dp)
+                            .zIndex(2f),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+
+                imageUrl?.let {
+                    SubcomposeAsyncImage(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(RebrandKoinTheme.shapes.small)
+                            .zIndex(2f),
+                        imageLoader = KoinCoilImageLoader.getImageLoader(context),
+                        model = it,
+                        contentScale = ContentScale.Crop,
+                        contentDescription = null,
+                        loading = {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .size(24.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator()
+                            }
+                        }
+                    )
+
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .zIndex(3f)
+                            .offset(x = 4.dp, y = (-4).dp)
+                            .size(16.dp)
+                            .clip(CircleShape)
+                            .background(RebrandKoinTheme.colors.primary500)
+                            .padding(3.dp)
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .noRippleClickable(onClick = onImageDelete),
+                            imageVector = ImageVector.vectorResource(
+                                R.drawable.ic_close_round
+                            ),
+                            contentDescription = null,
+                            tint = RebrandKoinTheme.colors.neutral0
+                        )
+                    }
+                }
+            }
+
+            Column(
+                modifier = Modifier
+                    .weight(17f)
+                    .padding(8.dp)
+            ) {
+                CompositionLocalProvider(
+                    LocalTextStyle provides RebrandKoinTheme.typography.regular12,
+                    LocalContentColor provides RebrandKoinTheme.colors.neutral500
+                ) {
+                    stringArrayResource(R.array.dining_sold_out_report_photo_guides).forEach { guide ->
+                        BulletText(guide)
+                    }
+                }
+            }
+        }
+    }
+}
+
+private fun handleImage(
+    context: Context,
+    uri: Uri?,
+    uploadImage: (Long, String, String, Uri) -> Unit
+) {
+    if (uri == null) return
+    context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+        if (!cursor.moveToFirst()) return@use
+
+        val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+        val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
+
+        if (fileNameIndex == -1 || fileSizeIndex == -1) return@use
+
+        val fileName = cursor.getString(fileNameIndex)
+        val fileSize = cursor.getLong(fileSizeIndex)
+        val fileType = context.contentResolver.getType(uri) ?: "image/${fileName.substringAfterLast(".")}"
+
+        uploadImage(fileSize, fileType, fileName, uri)
     }
 }
 
@@ -586,11 +995,52 @@ private fun createFeedMessageTemplate(dining: Dining): FeedTemplate {
 
 private fun handleSideEffect(
     sideEffect: DiningSideEffect,
-    fetchDining: (forceRefresh: Boolean) -> Unit
+    context: Context,
+    scope: CoroutineScope,
+    fetchDining: (forceRefresh: Boolean) -> Unit,
+    showSnackbar: suspend (String) -> Unit
 ) {
     when (sideEffect) {
         is DiningSideEffect.FetchDining -> {
             fetchDining(sideEffect.forceRefresh)
+        }
+
+        DiningSideEffect.DiningSoldOutUploadFailed -> {
+            scope.launch { showSnackbar(context.getString(R.string.dining_sold_out_image_upload_failed)) }
+        }
+
+        is DiningSideEffect.DiningSoldOutReportSuccess -> {
+            scope.launch {
+                showSnackbar(context.getString(R.string.dining_sold_out_report_success_format, sideEffect.place.place))
+            }
+        }
+
+        DiningSideEffect.DiningSoldOutReportFailed -> {
+            scope.launch { showSnackbar(context.getString(R.string.dining_sold_out_report_failed)) }
+        }
+
+        DiningSideEffect.DiningSoldOutReportDateNotAllowed -> {
+            scope.launch { showSnackbar(context.getString(R.string.dining_sold_out_report_date_not_allowed)) }
+        }
+
+        DiningSideEffect.DiningSoldOutReportInvalidImage -> {
+            scope.launch { showSnackbar(context.getString(R.string.dining_sold_out_report_invalid_image)) }
+        }
+
+        DiningSideEffect.DiningSoldOutReportNotFoundDining -> {
+            scope.launch { showSnackbar(context.getString(R.string.dining_sold_out_report_not_found_dining)) }
+        }
+
+        DiningSideEffect.DiningSoldOutReportAlreadySoldOut -> {
+            scope.launch { showSnackbar(context.getString(R.string.dining_sold_out_report_already_sold_out)) }
+        }
+
+        DiningSideEffect.DiningSoldOutReportAlreadySubmitted -> {
+            scope.launch { showSnackbar(context.getString(R.string.dining_sold_out_report_already_submitted)) }
+        }
+
+        DiningSideEffect.DiningSoldOutNotOperationTime -> {
+            scope.launch { showSnackbar(context.getString(R.string.dining_sold_out_report_not_operation_time)) }
         }
     }
 }
@@ -662,6 +1112,7 @@ private fun DiningScreenPreview() {
             )
         ),
         contentPadding = PaddingValues(),
-        selectedDate = TimeUtil.getNextDayDate(TimeUtil.getCurrentTime())
+        selectedDate = TimeUtil.getNextDayDate(TimeUtil.getCurrentTime()),
+        reportAbTest = null
     )
 }
