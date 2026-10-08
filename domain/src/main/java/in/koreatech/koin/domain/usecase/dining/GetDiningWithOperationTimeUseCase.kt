@@ -46,7 +46,10 @@ class GetDiningWithOperationTimeUseCase @Inject constructor(
                 kcal = dining.kcal,
                 menu = dining.menu,
                 imageUrl = dining.imageUrl,
+                createdAt = dining.createdAt,
+                updatedAt = dining.updatedAt,
                 soldOutAt = dining.soldOutAt,
+                changedAt = dining.changedAt,
                 startTime = timeInfo?.openTime.orEmpty(),
                 endTime = timeInfo?.closeTime.orEmpty()
             )
