@@ -204,7 +204,6 @@ object AuthNetworkModule {
     fun provideDiningAuthApi(@Auth retrofit: Retrofit): DiningAuthApi {
         return retrofit.create(DiningAuthApi::class.java)
     }
-
 }
 
 @Module

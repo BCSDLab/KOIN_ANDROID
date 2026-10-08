@@ -23,7 +23,7 @@ data class DiningReportState(
     val diningPlace: DiningPlace? = null,
     val imageUrl: String? = null,
     val reportedPlace: ImmutableList<DiningPlace> = persistentListOf(),
-    val isImageUploading: Boolean = false,
+    val isImageUploading: Boolean = false
 ) {
     val isReportable: Boolean
         get() = imageUrl != null && diningPlace != null

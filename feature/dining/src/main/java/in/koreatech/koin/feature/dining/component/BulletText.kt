@@ -39,7 +39,7 @@ fun BulletText(
                 ParagraphStyle(
                     textIndent = TextIndent(
                         firstLine = 0.sp,
-                        restLine = indentSp,
+                        restLine = indentSp
                     )
                 )
             ) {

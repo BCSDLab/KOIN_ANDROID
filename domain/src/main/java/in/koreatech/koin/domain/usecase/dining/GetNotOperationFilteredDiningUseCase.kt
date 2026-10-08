@@ -67,7 +67,6 @@ class GetNotOperationFilteredDiningUseCase @Inject constructor(
     }
 }
 
-
 private val diningOrder = mapOf(
     DiningPlace.CornerA.place to 0,
     DiningPlace.CornerB.place to 1,
