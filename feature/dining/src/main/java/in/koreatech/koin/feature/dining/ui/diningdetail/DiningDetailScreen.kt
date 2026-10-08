@@ -95,6 +95,7 @@ import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.onboarding.rememberOnboardingManager
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningType
+import `in`.koreatech.koin.domain.model.dining.DiningWithOperationTime
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.feature.dining.R
@@ -105,10 +106,12 @@ import `in`.koreatech.koin.feature.dining.component.dialog.DiningImageDialog
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_DATE
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_PLACE
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_TYPE
+import `in`.koreatech.koin.feature.dining.mapper.toDining
 import `in`.koreatech.koin.feature.dining.ui.diningdetail.scroll.DiningNestedScrollConnection
 import java.util.Date
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -163,6 +166,8 @@ fun DiningDetailScreen(
     ) {
         viewModel.getNotificationPermissionInfo()
     }
+
+    val dining = remember(diningState.dining) { diningState.dining.map(DiningWithOperationTime::toDining).toImmutableList() }
 
     LaunchedEffect(diningState.showBottomSheet) {
         if (diningState.showBottomSheet) {
@@ -234,7 +239,7 @@ fun DiningDetailScreen(
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(WindowInsets.navigationBars)
     ) { contentPadding ->
         DiningDetailScreenImpl(
-            diningList = diningState.dining,
+            diningList = dining,
             contentPadding = contentPadding,
             selectedDate = TimeUtil.stringToDateYYMMDD(diningState.selectedDate),
             isDiningRefreshing = diningState.isDiningRefreshing,
