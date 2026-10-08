@@ -1,12 +1,13 @@
 package `in`.koreatech.koin.feature.dining.ui.diningdetail
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.widget.Toast
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -91,7 +92,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
@@ -107,6 +112,7 @@ import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.camera.ui.KoinCamera
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChip2
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipDefaults
 import `in`.koreatech.koin.core.designsystem.component.snackbar.KoinSnackbarHost
@@ -139,6 +145,7 @@ import `in`.koreatech.koin.feature.dining.constants.PARAMS_PLACE
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_TYPE
 import `in`.koreatech.koin.feature.dining.mapper.toDining
 import `in`.koreatech.koin.feature.dining.ui.diningdetail.scroll.DiningNestedScrollConnection
+import java.io.File
 import java.util.Date
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -805,8 +812,9 @@ fun DiningReportDialogUpload(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val pickMultipleMedia = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-        onImageUploadRequest(uri)
+    var isCameraVisible by remember { mutableStateOf(false) }
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        isCameraVisible = isGranted
     }
 
     Column(
@@ -837,7 +845,11 @@ fun DiningReportDialogUpload(
                         .clip(RebrandKoinTheme.shapes.small)
                         .background(RebrandKoinTheme.colors.neutral200)
                         .clickable {
-                            pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                            if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                                isCameraVisible = true
+                            } else {
+                                cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+                            }
                         },
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically)
@@ -928,6 +940,28 @@ fun DiningReportDialogUpload(
                     }
                 }
             }
+        }
+    }
+
+    if (isCameraVisible) {
+        Dialog(
+            onDismissRequest = { isCameraVisible = false },
+            properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)
+        ) {
+            KoinCamera(
+                modifier = Modifier.fillMaxSize(),
+                onCapture = { uri, _ ->
+                    isCameraVisible = false
+                    val contentUri = uri?.path?.let { path ->
+                        FileProvider.getUriForFile(
+                            context,
+                            "${context.packageName}.provider",
+                            File(path)
+                        )
+                    }
+                    onImageUploadRequest(contentUri)
+                }
+            )
         }
     }
 }
