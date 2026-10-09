@@ -805,7 +805,7 @@ private fun DiningReportDialogSelection(
 }
 
 @Composable
-fun DiningReportDialogUpload(
+private fun DiningReportDialogUpload(
     isImageUploading: Boolean,
     imageUrl: String?,
     onImageUploadRequest: (Uri?) -> Unit,
