@@ -22,6 +22,7 @@ import `in`.koreatech.koin.data.api.VersionApi
 import `in`.koreatech.koin.data.api.auth.ArticleAuthApi
 import `in`.koreatech.koin.data.api.auth.ChatAuthApi
 import `in`.koreatech.koin.data.api.auth.ClubAuthApi
+import `in`.koreatech.koin.data.api.auth.DiningAuthApi
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
 import `in`.koreatech.koin.data.api.auth.StoreAuthApi
 import `in`.koreatech.koin.data.api.auth.TimetableAuthApi
@@ -92,8 +93,8 @@ object RemoteDataSourceModule {
 
     @Provides
     @Singleton
-    fun provideDiningRemoteDataSource(diningApi: DiningApi): DiningRemoteDataSource {
-        return DiningRemoteDataSource(diningApi)
+    fun provideDiningRemoteDataSource(diningApi: DiningApi, diningAuthApi: DiningAuthApi): DiningRemoteDataSource {
+        return DiningRemoteDataSource(diningApi, diningAuthApi)
     }
 
     @Provides

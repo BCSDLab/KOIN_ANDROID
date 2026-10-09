@@ -32,9 +32,9 @@ class GetDiningWithOperationTimeUseCase @Inject constructor(
     private fun map(diningList: List<Dining>, nungsuCoopShop: CoopShop?, diningCoopShop: CoopShop?): List<DiningWithOperationTime> {
         return diningList.filter { it.place != DiningPlace.Campus2.place }.map { dining ->
             val coopShop = if (dining.place == DiningPlace.Nungsu.place) nungsuCoopShop else diningCoopShop
-            val dayType = getDayType(dining.date)
+            val dayTypes = getDayTypes(dining.date)
             val koreanType = DiningUtil.getKoreanName(dining.type)
-            val timeInfo = coopShop?.opens?.find { it.dayOfWeek == dayType }?.opensByDayType?.find { it.type == koreanType }
+            val timeInfo = dayTypes.firstNotNullOfOrNull { dayType -> coopShop?.opens?.find { it.dayOfWeek == dayType } }?.opensByDayType?.find { it.type == koreanType }
 
             DiningWithOperationTime(
                 id = dining.id,
@@ -46,20 +46,23 @@ class GetDiningWithOperationTimeUseCase @Inject constructor(
                 kcal = dining.kcal,
                 menu = dining.menu,
                 imageUrl = dining.imageUrl,
+                createdAt = dining.createdAt,
+                updatedAt = dining.updatedAt,
                 soldOutAt = dining.soldOutAt,
+                changedAt = dining.changedAt,
                 startTime = timeInfo?.openTime.orEmpty(),
                 endTime = timeInfo?.closeTime.orEmpty()
             )
         }
     }
 
-    private fun getDayType(dateString: String): CoopShopDayType {
+    private fun getDayTypes(dateString: String): List<CoopShopDayType> {
         val localDate = LocalDate.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE)
         return when (localDate.dayOfWeek) {
-            DayOfWeek.SATURDAY -> CoopShopDayType.Saturday
-            DayOfWeek.SUNDAY -> CoopShopDayType.Weekend
-            DayOfWeek.FRIDAY -> CoopShopDayType.Friday
-            else -> CoopShopDayType.Weekday
+            DayOfWeek.SATURDAY -> listOf(CoopShopDayType.Saturday, CoopShopDayType.Weekend)
+            DayOfWeek.SUNDAY -> listOf(CoopShopDayType.Sunday, CoopShopDayType.Weekend)
+            DayOfWeek.FRIDAY -> listOf(CoopShopDayType.Friday, CoopShopDayType.Weekday)
+            else -> listOf(CoopShopDayType.Weekday)
         }
     }
 }

@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.dining.ui.diningdetail
 
+import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,17 +9,22 @@ import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.network.service.NetworkConnectivityService
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
+import `in`.koreatech.koin.domain.error.dining.KoinDiningException
+import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
+import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.coopshop.SyncCoopShopUseCase
 import `in`.koreatech.koin.domain.usecase.dining.GetNotOperationFilteredDiningUseCase
+import `in`.koreatech.koin.domain.usecase.dining.ReportDiningSoldOutUseCase
 import `in`.koreatech.koin.domain.usecase.dining.SyncDiningUseCase
 import `in`.koreatech.koin.domain.usecase.notification.DeleteNotificationSubscriptionUseCase
 import `in`.koreatech.koin.domain.usecase.notification.GetNotificationPermissionInfoUseCase
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionDetailUseCase
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionUseCase
+import `in`.koreatech.koin.domain.usecase.presignedurl.UploadImageUseCase
 import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
@@ -33,7 +39,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -57,7 +62,9 @@ class DiningViewModel @Inject constructor(
     private val networkConnectivityService: NetworkConnectivityService,
     private val syncDiningUseCase: SyncDiningUseCase,
     private val syncCoopShopUseCase: SyncCoopShopUseCase,
-    private val abTestUseCase: ABTestUseCase
+    private val abTestUseCase: ABTestUseCase,
+    private val uploadImageUseCase: UploadImageUseCase,
+    private val reportDiningSoldOutUseCase: ReportDiningSoldOutUseCase
 ) : ViewModel(), ContainerHost<DiningState, DiningSideEffect> {
 
     private val initDate = savedStateHandle.get<String>(INIT_DATE)
@@ -90,7 +97,7 @@ class DiningViewModel @Inject constructor(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = null
-    ).filterNotNull()
+    )
 
     private fun syncDining() {
         if (!networkConnectivityService.isConnected()) return
@@ -111,6 +118,126 @@ class DiningViewModel @Inject constructor(
         intent {
             reduce { state.copy(selectedDate = formattedDate) }
             postSideEffect(DiningSideEffect.FetchDining(false))
+        }
+    }
+
+    fun requestSoldOutReport(place: DiningPlace? = null) = intent {
+        val operatingPlaces = state.dining.getOperatingPlaces()
+        if (operatingPlaces.isEmpty() || (place != null && place !in operatingPlaces)) {
+            postSideEffect(DiningSideEffect.DiningSoldOutNotOperationTime)
+            return@intent
+        }
+        reduce {
+            state.copy(
+                diningReportState = state.diningReportState.copy(
+                    isDialogVisible = true,
+                    diningPlace = place ?: state.diningReportState.diningPlace
+                )
+            )
+        }
+    }
+
+    fun updateShowDiningSoldOutReportDialog(showDiningSoldOutReportDialog: Boolean) = intent {
+        reduce { state.copy(diningReportState = state.diningReportState.copy(isDialogVisible = showDiningSoldOutReportDialog)) }
+    }
+
+    fun resetDiningSoldOutState() = intent {
+        reduce { state.copy(diningReportState = DiningReportState()) }
+    }
+
+    fun updateSoldOutReportSelectedPlace(place: DiningPlace) = intent {
+        reduce { state.copy(diningReportState = state.diningReportState.copy(diningPlace = place)) }
+    }
+
+    fun uploadSoldOutImage(
+        fileSize: Long,
+        fileType: String,
+        fileName: String,
+        imageUri: Uri
+    ) = intent {
+        reduce { state.copy(diningReportState = state.diningReportState.copy(isImageUploading = true)) }
+        uploadImageUseCase(
+            domain = PreSignedUrlDomain.COOP,
+            contentLength = fileSize,
+            contentType = fileType,
+            fileName = fileName,
+            imageUri = imageUri.toString()
+        ).onSuccess {
+            reduce {
+                state.copy(diningReportState = state.diningReportState.copy(imageUrl = it, isImageUploading = false))
+            }
+        }.onFailure {
+            reduce {
+                state.copy(diningReportState = state.diningReportState.copy(isDialogVisible = false, isImageUploading = false))
+            }
+            postSideEffect(DiningSideEffect.DiningSoldOutUploadFailed)
+        }
+    }
+
+    fun deleteSoldOutImage() = intent {
+        reduce {
+            state.copy(diningReportState = state.diningReportState.copy(imageUrl = null))
+        }
+    }
+
+    fun onSoldOutReport() = intent {
+        val currentType = DiningUtil.getCurrentType().let {
+            if (it == DiningType.NextBreakfast) DiningType.Dinner else it
+        }
+
+        val selectedDining = state.dining.firstOrNull { it.type == currentType.typeEnglish && state.diningReportState.diningPlace?.place == it.place }
+
+        if (selectedDining == null) {
+            reduce {
+                state.copy(diningReportState = state.diningReportState.copy(isDialogVisible = false))
+            }
+            postSideEffect(DiningSideEffect.DiningSoldOutReportNotFoundDining)
+            return@intent
+        }
+
+        if (!selectedDining.isOperating()) {
+            reduce {
+                state.copy(diningReportState = state.diningReportState.copy(isDialogVisible = false))
+            }
+            postSideEffect(DiningSideEffect.DiningSoldOutNotOperationTime)
+            return@intent
+        }
+
+        if (state.diningReportState.imageUrl == null) {
+            reduce {
+                state.copy(diningReportState = state.diningReportState.copy(isDialogVisible = false))
+            }
+            postSideEffect(DiningSideEffect.DiningSoldOutReportInvalidImage)
+            return@intent
+        }
+
+        reportDiningSoldOutUseCase(selectedDining.id, state.diningReportState.imageUrl!!).onSuccess {
+            reduce {
+                state.copy(diningReportState = DiningReportState())
+            }
+            postSideEffect(DiningSideEffect.DiningSoldOutReportSuccess(state.diningReportState.diningPlace!!))
+        }.onFailure { exception ->
+            reduce {
+                state.copy(diningReportState = state.diningReportState.copy(isDialogVisible = false))
+            }
+            when (exception) {
+                is KoinDiningException.DiningReportDateNotAllowedException ->
+                    postSideEffect(DiningSideEffect.DiningSoldOutReportDateNotAllowed)
+
+                is KoinDiningException.InvalidReportImageException ->
+                    postSideEffect(DiningSideEffect.DiningSoldOutReportInvalidImage)
+
+                is KoinDiningException.NotFoundDiningException ->
+                    postSideEffect(DiningSideEffect.DiningSoldOutReportNotFoundDining)
+
+                is KoinDiningException.DiningAlreadySoldOutException ->
+                    postSideEffect(DiningSideEffect.DiningSoldOutReportAlreadySoldOut)
+
+                is KoinDiningException.DiningReportAlreadySubmittedException ->
+                    postSideEffect(DiningSideEffect.DiningSoldOutReportAlreadySubmitted)
+
+                else -> postSideEffect(DiningSideEffect.DiningSoldOutReportFailed)
+            }
         }
     }
 
