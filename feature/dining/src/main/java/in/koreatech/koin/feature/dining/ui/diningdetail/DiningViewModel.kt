@@ -169,7 +169,7 @@ class DiningViewModel @Inject constructor(
             if (it == DiningType.NextBreakfast) DiningType.Dinner else it
         }
 
-        val selectedDining = state.dining.filter { it.type == currentType.typeEnglish }.firstOrNull { state.diningReportState.diningPlace?.place == it.place }
+        val selectedDining = state.dining.firstOrNull { it.type == currentType.typeEnglish && state.diningReportState.diningPlace?.place == it.place }
 
         if (selectedDining == null) {
             reduce {
