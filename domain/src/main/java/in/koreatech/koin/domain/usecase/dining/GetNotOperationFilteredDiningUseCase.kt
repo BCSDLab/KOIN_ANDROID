@@ -30,7 +30,7 @@ class GetNotOperationFilteredDiningUseCase @Inject constructor(
         }
 
     private fun map(diningList: List<Dining>, nungsuCoopShop: CoopShop?, diningCoopShop: CoopShop?): List<DiningWithOperationTime> {
-        return diningList.filter { it.place != DiningPlace.Campus2.place }.map { dining ->
+        return diningList.filter { it.place != DiningPlace.Campus2.place && it.menu.first() != "미운영" }.map { dining ->
             val coopShop = if (dining.place == DiningPlace.Nungsu.place) nungsuCoopShop else diningCoopShop
             val dayType = getDayType(dining.date)
             val koreanType = DiningUtil.getKoreanName(dining.type)
