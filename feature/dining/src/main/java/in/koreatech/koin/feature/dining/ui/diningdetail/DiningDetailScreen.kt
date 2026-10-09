@@ -151,6 +151,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -709,7 +710,7 @@ private fun DiningReportDialog(
                 isImageUploading = state.isImageUploading,
                 imageUrl = state.imageUrl,
                 onImageUploadRequest = {
-                    scope.launch {
+                    scope.launch(Dispatchers.IO) {
                         handleImage(context, it, onImageUpload)
                     }
                 },
