@@ -200,7 +200,7 @@ class DiningViewModel @Inject constructor(
 
         reportDiningSoldOutUseCase(selectedDining.id, state.diningReportState.imageUrl!!).onSuccess {
             reduce {
-                state.copy(diningReportState = state.diningReportState.copy(isDialogVisible = false))
+                state.copy(diningReportState = DiningReportState())
             }
             postSideEffect(DiningSideEffect.DiningSoldOutReportSuccess(state.diningReportState.diningPlace!!))
         }.onFailure { exception ->
