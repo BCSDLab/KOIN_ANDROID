@@ -180,6 +180,8 @@ class DiningViewModel @Inject constructor(
         }
 
         if (
+            selectedDining.startTime.isBlank() ||
+            selectedDining.endTime.isBlank() ||
             TimeUtil.compareWithCurrentTime(selectedDining.startTime) >= 0 ||
             TimeUtil.compareWithCurrentTime(selectedDining.endTime) <= 0
         ) {
