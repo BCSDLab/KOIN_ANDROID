@@ -121,6 +121,22 @@ class DiningViewModel @Inject constructor(
         }
     }
 
+    fun requestSoldOutReport(place: DiningPlace? = null) = intent {
+        val operatingPlaces = state.dining.getOperatingPlaces()
+        if (operatingPlaces.isEmpty() || (place != null && place !in operatingPlaces)) {
+            postSideEffect(DiningSideEffect.DiningSoldOutNotOperationTime)
+            return@intent
+        }
+        reduce {
+            state.copy(
+                diningReportState = state.diningReportState.copy(
+                    isDialogVisible = true,
+                    diningPlace = place ?: state.diningReportState.diningPlace
+                )
+            )
+        }
+    }
+
     fun updateShowDiningSoldOutReportDialog(showDiningSoldOutReportDialog: Boolean) = intent {
         reduce { state.copy(diningReportState = state.diningReportState.copy(isDialogVisible = showDiningSoldOutReportDialog)) }
     }
@@ -179,12 +195,7 @@ class DiningViewModel @Inject constructor(
             return@intent
         }
 
-        if (
-            selectedDining.startTime.isBlank() ||
-            selectedDining.endTime.isBlank() ||
-            TimeUtil.compareWithCurrentTime(selectedDining.startTime) >= 0 ||
-            TimeUtil.compareWithCurrentTime(selectedDining.endTime) <= 0
-        ) {
+        if (!selectedDining.isOperating()) {
             reduce {
                 state.copy(diningReportState = state.diningReportState.copy(isDialogVisible = false))
             }

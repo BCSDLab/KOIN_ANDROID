@@ -254,6 +254,7 @@ fun DiningDetailScreen(
     if (diningReportState.isDialogVisible) {
         DiningReportDialog(
             state = diningReportState,
+            operatingPlaces = diningState.dining.getOperatingPlaces().toImmutableList(),
             onPlaceSelect = viewModel::updateSoldOutReportSelectedPlace,
             onImageUpload = viewModel::uploadSoldOutImage,
             onImageDelete = viewModel::deleteSoldOutImage,
@@ -290,7 +291,7 @@ fun DiningDetailScreen(
                                     indication = null,
                                     interactionSource = remember { MutableInteractionSource() }
                                 ) {
-                                    viewModel.updateShowDiningSoldOutReportDialog(true)
+                                    viewModel.requestSoldOutReport()
                                 },
                             imageVector = ImageVector.vectorResource(R.drawable.ic_dining_soldout_report),
                             tint = RebrandKoinTheme.colors.primary500,
@@ -331,10 +332,7 @@ fun DiningDetailScreen(
             initialPage = if (initialPage != -1) initialPage else viewModel.getInitialPage(),
             refreshDining = viewModel::refreshDining,
             onDateClick = viewModel::setSelectedDate,
-            onReport = {
-                viewModel.updateSoldOutReportSelectedPlace(it)
-                viewModel.updateShowDiningSoldOutReportDialog(true)
-            }
+            onReport = viewModel::requestSoldOutReport
         )
     }
 }
@@ -657,6 +655,7 @@ private fun DiningDetailScreenImpl(
 @Composable
 private fun DiningReportDialog(
     state: DiningReportState,
+    operatingPlaces: ImmutableList<DiningPlace>,
     modifier: Modifier = Modifier,
     onPlaceSelect: (DiningPlace) -> Unit = {},
     onImageUpload: (Long, String, String, Uri) -> Unit = { _, _, _, _ -> },
@@ -667,6 +666,11 @@ private fun DiningReportDialog(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val places = remember { DiningPlace.entries.filter { it != DiningPlace.Campus2 } }.toImmutableList()
+    val currentType = remember {
+        DiningUtil.getCurrentType().let {
+            if (it == DiningType.NextBreakfast) DiningType.Dinner else it
+        }
+    }
 
     BasicAlertDialog(
         modifier = modifier
@@ -684,7 +688,7 @@ private fun DiningReportDialog(
             ) {
                 Text(
                     modifier = Modifier.weight(1f),
-                    text = stringResource(R.string.dining_sold_out_report_title),
+                    text = stringResource(R.string.dining_sold_out_report_title, currentType.typeKorean),
                     style = RebrandKoinTheme.typography.medium18.copy(fontWeight = FontWeight.SemiBold)
                 )
 
@@ -701,6 +705,7 @@ private fun DiningReportDialog(
 
             DiningReportDialogSelection(
                 places = places,
+                operatingPlaces = operatingPlaces,
                 reportedPlaces = state.reportedPlace,
                 selectedPlace = state.diningPlace,
                 onPlaceSelect = onPlaceSelect
@@ -748,6 +753,7 @@ private fun DiningReportDialog(
 @Composable
 private fun DiningReportDialogSelection(
     places: ImmutableList<DiningPlace>,
+    operatingPlaces: ImmutableList<DiningPlace>,
     reportedPlaces: ImmutableList<DiningPlace>,
     selectedPlace: DiningPlace?,
     onPlaceSelect: (DiningPlace) -> Unit,
@@ -782,7 +788,7 @@ private fun DiningReportDialogSelection(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             places.fastForEach { place ->
-                val isAlreadySoldOut = reportedPlaces.contains(place)
+                val isAlreadySoldOut = reportedPlaces.contains(place) || place !in operatingPlaces
 
                 key(place) {
                     TextChip2(
@@ -795,7 +801,7 @@ private fun DiningReportDialogSelection(
                             unselectedBorderStroke = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral300)
                         ),
                         onSelect = {
-                            onPlaceSelect(place)
+                            if (place in operatingPlaces) onPlaceSelect(place)
                         }
                     )
                 }
