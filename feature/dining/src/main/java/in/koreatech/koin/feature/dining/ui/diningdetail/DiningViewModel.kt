@@ -122,9 +122,15 @@ class DiningViewModel @Inject constructor(
     }
 
     fun requestSoldOutReport(place: DiningPlace? = null) = intent {
+        if (state.selectedDate != TimeUtil.dateFormatToYYMMDD(TimeUtil.getCurrentTime())) {
+            postSideEffect(DiningSideEffect.DiningSoldOutReportDateNotAllowed)
+            return@intent
+        }
+
+
         val operatingPlaces = state.dining.getOperatingPlaces()
         if (operatingPlaces.isEmpty() || (place != null && place !in operatingPlaces)) {
-            postSideEffect(DiningSideEffect.DiningSoldOutNotOperationTime)
+            postSideEffect(DiningSideEffect.DiningSoldOutNoDiningToReport)
             return@intent
         }
         reduce {
