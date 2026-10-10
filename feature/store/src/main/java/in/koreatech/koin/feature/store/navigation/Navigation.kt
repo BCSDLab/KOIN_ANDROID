@@ -333,8 +333,8 @@ internal fun NavGraphBuilder.koinStoreDetailGraph(
             navigateToDetailInfo = { selectedInfoType ->
                 navController.navigate(StoreDetailNavType.StoreDetailInfo(storeId = args.storeId, isOrderableShop = args.isOrderableShop, selectedInfo = selectedInfoType))
             },
-            navigateToNotice = { storeId ->
-                navController.navigate(StoreDetailNavType.StoreNotice(storeId = storeId))
+            navigateToNotice = { selectedInfoType ->
+                navController.navigate(StoreDetailNavType.StoreDetailInfo(storeId = args.storeId, isOrderableShop = args.isOrderableShop, selectedInfo = selectedInfoType))
             },
             navigateToReview = { storeNavigationData, storeName ->
                 navController.navigate(

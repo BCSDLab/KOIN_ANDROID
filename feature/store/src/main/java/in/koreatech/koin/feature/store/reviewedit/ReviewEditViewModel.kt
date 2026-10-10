@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.store.Review
-import `in`.koreatech.koin.domain.model.store.ReviewDetail
 import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
 import `in`.koreatech.koin.domain.usecase.presignedurl.UploadImageUseCase
 import `in`.koreatech.koin.domain.usecase.store.ModifyReviewUseCase
@@ -42,24 +41,27 @@ class ReviewEditViewModel @Inject constructor(
         val shopId = route.storeNavigationData.shopId
 
         intent {
-            val reviewDetail = fetchReviewDetail(reviewId, shopId)
             reduce {
                 state.copy(
                     storeId = shopId,
-                    reviewId = reviewDetail.reviewId,
                     storeNavigationData = route.storeNavigationData,
-                    storeName = route.storeName,
-                    rating = reviewDetail.rating,
-                    reviewContent = reviewDetail.content,
-                    menuTags = reviewDetail.menuNames.toImmutableList(),
-                    imageUris = reviewDetail.imageUrls.toImmutableList()
+                    storeName = route.storeName
                 )
             }
+            searchReviewUseCase(reviewId, shopId).onSuccess { reviewDetail ->
+                reduce {
+                    state.copy(
+                        reviewId = reviewDetail.reviewId,
+                        rating = reviewDetail.rating,
+                        reviewContent = reviewDetail.content,
+                        menuTags = reviewDetail.menuNames.toImmutableList(),
+                        imageUris = reviewDetail.imageUrls.toImmutableList()
+                    )
+                }
+            }.onFailure {
+                postSideEffect(ReviewEditSideEffect.ShowReviewModifyFailed)
+            }
         }
-    }
-
-    private suspend fun fetchReviewDetail(reviewId: Int, shopId: Int): ReviewDetail {
-        return searchReviewUseCase(reviewId, shopId)
     }
 
     fun updateReviewContent(content: String) = blockingIntent {

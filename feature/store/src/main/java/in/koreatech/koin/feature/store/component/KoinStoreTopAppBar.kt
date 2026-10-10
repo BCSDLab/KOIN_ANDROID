@@ -1,53 +1,42 @@
 package `in`.koreatech.koin.feature.store.component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarColors
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import `in`.koreatech.koin.core.designsystem.noRippleClickable
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
+import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2Defaults
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.feature.store.R
 
-/**
- * KoinStoreTopAppBar is a copy of [KoinTopAppBar] with few modifications.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KoinStoreTopAppBar(
     title: String,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = KoinTheme.typography.medium18,
-    overlayAlpha: State<Float> = mutableFloatStateOf(1f),
+    overlayAlpha: () -> Float = { 1f },
     onNavigationIconClick: () -> Unit = {},
     actions: @Composable (RowScope.() -> Unit) = {},
-    colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+    colors: TopAppBarColors = KoinTopAppBar2Defaults.topAppBarColors(
         containerColor = Color.White,
         navigationIconContentColor = Color.Black,
         titleContentColor = Color.Black,
         actionIconContentColor = Color.Black
     ),
-    expandedColors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+    expandedColors: TopAppBarColors = KoinTopAppBar2Defaults.topAppBarColors(
         containerColor = Color.Transparent,
         navigationIconContentColor = Color.White,
         titleContentColor = Color.White,
@@ -55,69 +44,45 @@ fun KoinStoreTopAppBar(
     ),
     content: @Composable () -> Unit = {}
 ) {
+    val useCollapsedColors by remember(overlayAlpha) {
+        derivedStateOf { overlayAlpha().coerceIn(0f, 1f) >= 0.5f }
+    }
+    val activeColors = if (useCollapsedColors) colors else expandedColors
+
     Box(
         modifier = modifier
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(colors.containerColor)
-                .graphicsLayer {
-                    alpha = overlayAlpha.value
-                }
-        ) {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = title,
-                        style = textStyle.copy(color = colors.titleContentColor)
-                    )
-                },
-                modifier = Modifier.padding(horizontal = 20.dp),
-                navigationIcon = {
-                    Icon(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .noRippleClickable { onNavigationIconClick() },
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_store_toolbar_navigate_back),
-                        contentDescription = stringResource(R.string.navigate_up_content_description),
-                        tint = colors.actionIconContentColor
-                    )
-                },
-                actions = actions,
-                colors = colors,
-                expandedHeight = 60.dp
-            )
-        }
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(expandedColors.containerColor)
-                .zIndex(2f)
-                .graphicsLayer {
-                    alpha = 1f - overlayAlpha.value
-                }
-        ) {
-            CenterAlignedTopAppBar(
-                title = {},
-                modifier = Modifier.padding(horizontal = 20.dp),
-                navigationIcon = {
-                    Icon(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .noRippleClickable { onNavigationIconClick() },
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_store_toolbar_navigate_back),
-                        contentDescription = stringResource(R.string.navigate_up_content_description),
-                        tint = expandedColors.actionIconContentColor
-                    )
-                },
-                actions = actions,
-                colors = expandedColors,
-                expandedHeight = 60.dp
-            )
-        }
         content()
+
+        KoinTopAppBar2(
+            title = {
+                Text(
+                    text = title,
+                    modifier = Modifier.graphicsLayer {
+                        alpha = overlayAlpha().coerceIn(0f, 1f)
+                    },
+                    style = textStyle.copy(color = colors.titleContentColor)
+                )
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .drawBehind {
+                    drawRect(expandedColors.containerColor)
+                    drawRect(
+                        color = colors.containerColor,
+                        alpha = overlayAlpha().coerceIn(0f, 1f)
+                    )
+                }
+                .zIndex(2f),
+            onNavigationIconClick = onNavigationIconClick,
+            actions = actions,
+            colors = KoinTopAppBar2Defaults.topAppBarColors(
+                containerColor = Color.Transparent,
+                navigationIconContentColor = activeColors.navigationIconContentColor,
+                titleContentColor = colors.titleContentColor,
+                actionIconContentColor = activeColors.actionIconContentColor
+            )
+        )
     }
 }
 

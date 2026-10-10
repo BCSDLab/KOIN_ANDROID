@@ -15,12 +15,15 @@ import `in`.koreatech.koin.feature.store.model.toLocalShopPrice
 import `in`.koreatech.koin.feature.store.navigation.CART_MENU_ITEM_ID
 import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.subIntent
 import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
+@OptIn(OrbitExperimental::class)
 class CartEditViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getCartItemEditUseCase: GetCartItemEditUseCase,
@@ -38,13 +41,12 @@ class CartEditViewModel @Inject constructor(
                     cartMenuItemId = cartMenuItemId
                 )
             }
+            fetchCart()
+            fetchCartItemsCount()
         }
-
-        getCart()
-        getCartItemsCount()
     }
 
-    private fun getCartItemsCount() = intent {
+    private suspend fun fetchCartItemsCount() = subIntent {
         reduce {
             state.copy(isLoading = true)
         }
@@ -59,7 +61,7 @@ class CartEditViewModel @Inject constructor(
         }
     }
 
-    private fun getCart() = intent {
+    private suspend fun fetchCart() = subIntent {
         reduce {
             state.copy(isLoading = true)
         }

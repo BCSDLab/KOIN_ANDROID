@@ -10,12 +10,16 @@ import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.subIntent
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
 @HiltViewModel
+@OptIn(OrbitExperimental::class)
 class StoreNoticeViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getShopEventsUseCase: GetShopEventsUseCase,
@@ -24,19 +28,23 @@ class StoreNoticeViewModel @Inject constructor(
 
     override val container = container<StoreNoticeListState, Unit>(StoreNoticeListState()) {
         val storeId = checkNotNull(savedStateHandle.get<Int>(STORE_ID))
-        fetchStoreName(storeId)
-        fetchNotices(storeId)
-    }
-
-    private fun fetchStoreName(storeId: Int) = intent {
-        getStoreWithMenuUseCase(storeId).also { result ->
-            reduce { state.copy(storeName = result.name) }
+        intent {
+            fetchStoreName(storeId)
+            fetchNotices(storeId)
         }
     }
 
-    private fun fetchNotices(storeId: Int) = intent {
+    private suspend fun fetchStoreName(storeId: Int) = subIntent {
+        getStoreWithMenuUseCase(storeId).onSuccess { result ->
+            reduce { state.copy(storeName = result.name) }
+        }.onFailure {
+            Timber.e(it)
+        }
+    }
+
+    private suspend fun fetchNotices(storeId: Int) = subIntent {
         reduce { state.copy(isFirstPageLoading = true) }
-        getShopEventsUseCase(storeId).also { result ->
+        getShopEventsUseCase(storeId).onSuccess { result ->
             reduce {
                 state.copy(
                     isFirstPageLoading = false,
@@ -51,6 +59,8 @@ class StoreNoticeViewModel @Inject constructor(
                     }.toImmutableList()
                 )
             }
+        }.onFailure {
+            reduce { state.copy(isFirstPageLoading = false) }
         }
     }
 

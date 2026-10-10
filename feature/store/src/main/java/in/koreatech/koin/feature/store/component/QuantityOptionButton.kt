@@ -50,7 +50,9 @@ fun QuantityOptionButton(
         ) {
             Text(
                 text = stringResource(R.string.change_option),
-                color = KoinTheme.colors.neutral600
+                style = RebrandKoinTheme.typography.regular12.copy(
+                    color = RebrandKoinTheme.colors.neutral600
+                )
             )
         }
         Spacer(modifier = Modifier.width(8.dp))
@@ -72,20 +74,28 @@ fun QuantityOptionButton(
                 )
             } else {
                 Icon(
-                    modifier = Modifier.size(20.dp).clickable(onClick = onMinusClick),
+                    modifier = Modifier
+                        .size(16.dp)
+                        .clickable(onClick = onMinusClick),
                     painter = painterResource(id = R.drawable.ic_quantity_minus),
                     contentDescription = "",
                     tint = KoinTheme.colors.neutral600
                 )
             }
 
-            Text(modifier = Modifier.padding(horizontal = 14.dp), text = "$quantity", color = KoinTheme.colors.neutral600)
+            Text(
+                modifier = Modifier.padding(horizontal = 14.dp),
+                text = "$quantity",
+                style = RebrandKoinTheme.typography.regular12.copy(
+                    color = RebrandKoinTheme.colors.neutral600
+                )
+            )
             Icon(
                 imageVector = Icons.Default.Add,
                 contentDescription = "",
                 tint = KoinTheme.colors.neutral600,
                 modifier = Modifier
-                    .size(20.dp)
+                    .size(16.dp)
                     .clickable(onClick = onPlusClick)
             )
         }

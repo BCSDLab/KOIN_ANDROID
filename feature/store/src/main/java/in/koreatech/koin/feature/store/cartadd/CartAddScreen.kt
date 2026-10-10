@@ -189,7 +189,7 @@ fun CartAddScreen(
                             navigateToCart()
                         }) {
                             Icon(
-                                modifier = Modifier.size(25.dp),
+                                modifier = Modifier.size(24.dp).padding(1.dp),
                                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_shopping_cart),
                                 contentDescription = null
                             )
@@ -216,7 +216,7 @@ fun CartAddScreen(
                         }
                     }
                 },
-                overlayAlpha = overlayAlpha,
+                overlayAlpha = { overlayAlpha.value },
                 expandedColors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = Color.Transparent,
                     navigationIconContentColor = RebrandKoinTheme.colors.neutral0,

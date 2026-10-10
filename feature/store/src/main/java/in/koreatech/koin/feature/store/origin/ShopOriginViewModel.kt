@@ -17,12 +17,14 @@ import `in`.koreatech.koin.feature.store.navigation.STORE_ID
 import `in`.koreatech.koin.feature.store.util.toKoreanWeek
 import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
-import org.orbitmvi.orbit.syntax.simple.blockingIntent
+import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.subIntent
 import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
+@OptIn(OrbitExperimental::class)
 class ShopOriginViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
@@ -35,18 +37,17 @@ class ShopOriginViewModel @Inject constructor(
         val isOrderableShop = savedStateHandle.get<Boolean>(IS_ORDERABLE_SHOP) ?: true
         checkNotNull(storeId)
 
-        blockingIntent {
+        intent {
             reduce {
                 state.copy(
                     isOrderableShop = isOrderableShop
                 )
             }
-        }
-
-        if (isOrderableShop) {
-            fetchOrderStoreNotice(storeId)
-        } else {
-            fetchShopInfo(storeId)
+            if (isOrderableShop) {
+                fetchOrderStoreNotice(storeId)
+            } else {
+                fetchShopInfo(storeId)
+            }
         }
     }
 
@@ -88,8 +89,8 @@ class ShopOriginViewModel @Inject constructor(
         }
     }
 
-    private fun fetchOrderStoreNotice(id: Int) = intent {
-        getOrderShopOriginInfoUseCase(id).also { result ->
+    private suspend fun fetchOrderStoreNotice(id: Int) = subIntent {
+        getOrderShopOriginInfoUseCase(id).onSuccess { result ->
             reduce {
                 state.copy(
                     isLoading = false,
@@ -127,11 +128,13 @@ class ShopOriginViewModel @Inject constructor(
                     )
                 )
             }
+        }.onFailure {
+            reduce { state.copy(isLoading = false) }
         }
     }
 
-    private fun fetchShopInfo(id: Int) = intent {
-        getStoreWithMenuV2UseCase(id).also { result ->
+    private suspend fun fetchShopInfo(id: Int) = subIntent {
+        getStoreWithMenuV2UseCase(id).onSuccess { result ->
             reduce {
                 state.copy(
                     isLoading = false,
@@ -155,6 +158,8 @@ class ShopOriginViewModel @Inject constructor(
                     )
                 )
             }
+        }.onFailure {
+            reduce { state.copy(isLoading = false) }
         }
     }
 }

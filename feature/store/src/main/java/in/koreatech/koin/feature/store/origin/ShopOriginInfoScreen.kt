@@ -34,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
@@ -108,7 +109,7 @@ fun ShopOriginInfoScreen(
                             navigateToShoppingCart()
                         }) {
                             Icon(
-                                modifier = Modifier.size(25.dp),
+                                modifier = Modifier.size(24.dp).padding(1.dp),
                                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_shopping_cart),
                                 contentDescription = null
                             )
@@ -199,6 +200,7 @@ fun ShopOriginInfoScreen(
             )
             Spacer(Modifier.height(6.dp))
             HighlightSection(
+                isHighlighted = selectedInfo == StoreDetailInfoType.EVENT.name,
                 content = {
                     Text(
                         text = stringResource(R.string.store_notice),
@@ -338,7 +340,7 @@ fun HighlightSection(
         label = ""
     )
 
-    LaunchedEffect(isHighlighted, isLoading) {
+    LaunchedEffect(isHighlighted, isLoading, highlightColor) {
         if (isHighlighted && !isLoading) {
             targetColor = highlightColor
             delay(800)
@@ -349,7 +351,9 @@ fun HighlightSection(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(animatedBackgroundColor)
+            .drawBehind {
+                drawRect(animatedBackgroundColor)
+            }
             .padding(horizontal = 24.dp, vertical = 12.dp)
 
     ) {

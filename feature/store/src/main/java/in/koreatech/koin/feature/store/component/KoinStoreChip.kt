@@ -14,15 +14,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.paint
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
@@ -92,12 +94,12 @@ object KoinStoreChipDefaults {
 
 @Composable
 fun KoinStoreChip(
-    text: String,
+    text: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     chipStyle: KoinStoreChipStyle = KoinStoreChipDefaults.koinStoreChipStyle(),
-    leadingIcon: Painter? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
     leadingIconStyle: KoinStoreChipIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(),
-    trailingIcon: Painter? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
     trailingIconStyle: KoinStoreChipIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(),
     enabled: Boolean = true,
     onClick: () -> Unit = {}
@@ -125,38 +127,82 @@ fun KoinStoreChip(
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (leadingIcon != null) {
-            Box(
-                modifier = Modifier
-                    .size(leadingIconStyle.iconSize)
-                    .paint(
-                        painter = leadingIcon,
-                        colorFilter = ColorFilter.tint(leadingIconStyle.iconColor)
-                    )
-            )
+            CompositionLocalProvider(LocalContentColor provides leadingIconStyle.iconColor) {
+                Box(
+                    modifier = Modifier.size(leadingIconStyle.iconSize),
+                    contentAlignment = Alignment.Center
+                ) {
+                    leadingIcon()
+                }
+            }
 
             Spacer(modifier = Modifier.width(chipStyle.innerPadding))
         }
 
-        BasicText(
-            text = text,
-            style = chipStyle.textStyle.merge(
-                color = chipStyle.textColor
-            )
-        )
+        CompositionLocalProvider(
+            LocalTextStyle provides chipStyle.textStyle,
+            LocalContentColor provides chipStyle.textColor
+        ) {
+            text()
+        }
 
         if (trailingIcon != null) {
             Spacer(modifier = Modifier.width(chipStyle.innerPadding))
 
-            Box(
-                modifier = Modifier
-                    .size(trailingIconStyle.iconSize)
-                    .paint(
-                        painter = trailingIcon,
-                        colorFilter = ColorFilter.tint(trailingIconStyle.iconColor)
-                    )
-            )
+            CompositionLocalProvider(LocalContentColor provides trailingIconStyle.iconColor) {
+                Box(
+                    modifier = Modifier.size(trailingIconStyle.iconSize),
+                    contentAlignment = Alignment.Center
+                ) {
+                    trailingIcon()
+                }
+            }
         }
     }
+}
+
+@Composable
+fun KoinStoreChip(
+    text: String,
+    modifier: Modifier = Modifier,
+    chipStyle: KoinStoreChipStyle = KoinStoreChipDefaults.koinStoreChipStyle(),
+    leadingIcon: Painter? = null,
+    leadingIconStyle: KoinStoreChipIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(),
+    trailingIcon: Painter? = null,
+    trailingIconStyle: KoinStoreChipIconStyle = KoinStoreChipDefaults.koinStoreIconStyle(),
+    enabled: Boolean = true,
+    onClick: () -> Unit = {}
+) {
+    KoinStoreChip(
+        text = {
+            BasicText(
+                text = text,
+                style = chipStyle.textStyle.merge(color = chipStyle.textColor)
+            )
+        },
+        modifier = modifier,
+        chipStyle = chipStyle,
+        leadingIcon = leadingIcon?.let { painter ->
+            {
+                Icon(
+                    painter = painter,
+                    contentDescription = null
+                )
+            }
+        },
+        leadingIconStyle = leadingIconStyle,
+        trailingIcon = trailingIcon?.let { painter ->
+            {
+                Icon(
+                    painter = painter,
+                    contentDescription = null
+                )
+            }
+        },
+        trailingIconStyle = trailingIconStyle,
+        enabled = enabled,
+        onClick = onClick
+    )
 }
 
 @Preview(showBackground = true)

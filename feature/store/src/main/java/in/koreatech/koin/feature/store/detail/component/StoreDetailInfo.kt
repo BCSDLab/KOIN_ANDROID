@@ -78,7 +78,7 @@ fun StoreDetailInfo(
                 )
 
                 Icon(
-                    painter = painterResource(R.drawable.ic_right_arrow),
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_store_right_arrow),
                     contentDescription = null,
                     modifier = Modifier
                         .padding(horizontal = 10.dp)

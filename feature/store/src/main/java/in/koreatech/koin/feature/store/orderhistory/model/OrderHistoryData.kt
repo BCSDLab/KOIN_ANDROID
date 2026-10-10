@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.store.orderhistory.model
 
+import androidx.compose.runtime.Immutable
 import `in`.koreatech.koin.domain.model.store.OrderHistoryOrders
 import `in`.koreatech.koin.feature.store.enums.StoreStatus
 import `in`.koreatech.koin.feature.store.model.OrderStatus
@@ -7,6 +8,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
+@Immutable
 data class OrderHistoryData(
     val id: Int,
     val paymentId: Int,
