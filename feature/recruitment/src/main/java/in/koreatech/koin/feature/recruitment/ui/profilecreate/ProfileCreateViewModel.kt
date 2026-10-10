@@ -9,6 +9,7 @@ import `in`.koreatech.koin.domain.usecase.dept.GetDeptNamesUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.GetTeamRecruitmentProfileUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.SaveTeamRecruitmentProfileUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
+import `in`.koreatech.koin.domain.usecase.user.UpdateStudentUserInfoUseCase
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentActivityEntry
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentErrorMessage
 import `in`.koreatech.koin.feature.recruitment.mapper.toTeamRecruitmentActivityInput
@@ -21,6 +22,7 @@ import `in`.koreatech.koin.feature.recruitment.navigation.RecruitmentNavType
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -33,7 +35,8 @@ class ProfileCreateViewModel @Inject constructor(
     private val getTeamRecruitmentProfileUseCase: GetTeamRecruitmentProfileUseCase,
     private val saveTeamRecruitmentProfileUseCase: SaveTeamRecruitmentProfileUseCase,
     private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val getDeptNamesUseCase: GetDeptNamesUseCase
+    private val getDeptNamesUseCase: GetDeptNamesUseCase,
+    private val updateStudentUserInfoUseCase: UpdateStudentUserInfoUseCase
 ) : ViewModel(), ContainerHost<ProfileCreateState, ProfileCreateSideEffect> {
 
     private val arguments = savedStateHandle.toRoute<RecruitmentNavType.ProfileCreate>()
@@ -112,12 +115,12 @@ class ProfileCreateViewModel @Inject constructor(
     }
 
     fun setDepartment(department: String) = intent {
-        reduce { state.copy(department = department, isDepartmentDropdownExpanded = false) }
+        reduce { state.copy(department = department, isDepartmentDropdownExpanded = false, isDepartmentEdited = true) }
     }
 
     fun setStudentId(studentId: String) = intent {
         if (studentId.isEmpty() || studentId.all { it.isDigit() }) {
-            reduce { state.copy(studentId = studentId) }
+            reduce { state.copy(studentId = studentId, isStudentIdEdited = true) }
         }
     }
 
@@ -212,6 +215,14 @@ class ProfileCreateViewModel @Inject constructor(
 
     fun saveProfile() = intent {
         reduce { state.copy(isSaving = true, showSaveConfirmDialog = false, errorMessage = null) }
+
+        updateAcademicInfoIfChanged(
+            isDepartmentEdited = state.isDepartmentEdited,
+            isStudentIdEdited = state.isStudentIdEdited,
+            major = state.department,
+            studentNumber = state.studentId
+        )
+
         saveTeamRecruitmentProfileUseCase(
             profileNickname = state.nickname,
             preferredRole = state.preferredRole,
@@ -220,10 +231,45 @@ class ProfileCreateViewModel @Inject constructor(
             selfIntroduction = state.selfIntroduction
         ).onSuccess {
             reduce { state.copy(isSaving = false) }
-            postSideEffect(ProfileCreateSideEffect.SaveSuccess)
+            if (state.errorMessage == null) {
+                postSideEffect(ProfileCreateSideEffect.SaveSuccess)
+            } else {
+                postSideEffect(ProfileCreateSideEffect.SaveFailure)
+            }
         }.onFailure { throwable ->
             reduce { state.copy(isSaving = false, errorMessage = throwable.toRecruitmentErrorMessage()) }
             postSideEffect(ProfileCreateSideEffect.SaveFailure)
+        }
+    }
+
+    private suspend fun SimpleSyntax<ProfileCreateState, ProfileCreateSideEffect>.updateAcademicInfoIfChanged(
+        isDepartmentEdited: Boolean,
+        isStudentIdEdited: Boolean,
+        major: String,
+        studentNumber: String
+    ) {
+        if (!isDepartmentEdited && !isStudentIdEdited) return
+        val user = getUserInfoUseCase().getOrElse { throwable ->
+            reduce { state.copy(errorMessage = throwable.toRecruitmentErrorMessage()) }
+            return
+        }
+        if (user !is User.Student) return
+
+        val newMajor = if (isDepartmentEdited) major else user.major.orEmpty()
+        val newStudentNumber = if (isStudentIdEdited) studentNumber else user.studentNumber.orEmpty()
+        if (user.major.orEmpty() == newMajor && user.studentNumber.orEmpty() == newStudentNumber) return
+
+        updateStudentUserInfoUseCase(
+            beforeUser = user,
+            email = user.email.orEmpty(),
+            name = user.name.orEmpty(),
+            nickname = user.nickname.orEmpty(),
+            gender = user.gender,
+            phoneNumber = user.phoneNumber.orEmpty(),
+            studentNumber = newStudentNumber,
+            major = newMajor
+        ).onFailure { throwable ->
+            reduce { state.copy(errorMessage = throwable.toRecruitmentErrorMessage()) }
         }
     }
 }
