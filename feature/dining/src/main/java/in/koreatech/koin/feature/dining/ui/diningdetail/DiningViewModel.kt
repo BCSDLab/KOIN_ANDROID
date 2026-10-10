@@ -224,7 +224,7 @@ class DiningViewModel @Inject constructor(
             postSideEffect(DiningSideEffect.DiningSoldOutReportSuccess(state.diningReportState.diningPlace!!))
         }.onFailure { exception ->
             reduce {
-                state.copy(diningReportState = state.diningReportState.copy(isDialogVisible = false))
+                state.copy(diningReportState = DiningReportState())
             }
             when (exception) {
                 is KoinDiningException.DiningReportDateNotAllowedException ->
