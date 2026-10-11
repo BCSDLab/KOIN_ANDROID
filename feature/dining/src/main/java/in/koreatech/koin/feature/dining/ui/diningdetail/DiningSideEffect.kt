@@ -5,6 +5,7 @@ import `in`.koreatech.koin.domain.model.dining.DiningPlace
 sealed interface DiningSideEffect {
     data class FetchDining(val forceRefresh: Boolean) : DiningSideEffect
     data class DiningSoldOutReportSuccess(val place: DiningPlace) : DiningSideEffect
+    data object DiningSoldOutNoDiningToReport : DiningSideEffect
     data object DiningSoldOutReportFailed : DiningSideEffect
     data object DiningSoldOutUploadFailed : DiningSideEffect
     data object DiningSoldOutNotOperationTime : DiningSideEffect

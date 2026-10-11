@@ -122,9 +122,14 @@ class DiningViewModel @Inject constructor(
     }
 
     fun requestSoldOutReport(place: DiningPlace? = null) = intent {
+        if (state.selectedDate != TimeUtil.dateFormatToYYMMDD(TimeUtil.getCurrentTime())) {
+            postSideEffect(DiningSideEffect.DiningSoldOutReportDateNotAllowed)
+            return@intent
+        }
+
         val operatingPlaces = state.dining.getOperatingPlaces()
         if (operatingPlaces.isEmpty() || (place != null && place !in operatingPlaces)) {
-            postSideEffect(DiningSideEffect.DiningSoldOutNotOperationTime)
+            postSideEffect(DiningSideEffect.DiningSoldOutNoDiningToReport)
             return@intent
         }
         reduce {
@@ -218,7 +223,7 @@ class DiningViewModel @Inject constructor(
             postSideEffect(DiningSideEffect.DiningSoldOutReportSuccess(state.diningReportState.diningPlace!!))
         }.onFailure { exception ->
             reduce {
-                state.copy(diningReportState = state.diningReportState.copy(isDialogVisible = false))
+                state.copy(diningReportState = DiningReportState())
             }
             when (exception) {
                 is KoinDiningException.DiningReportDateNotAllowedException ->

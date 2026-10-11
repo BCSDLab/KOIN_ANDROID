@@ -53,6 +53,7 @@
     <string name="dining_sold_out_report_already_submitted">이미 제보한 식단입니다.</string>
     <string name="dining_sold_out_image_upload_failed">이미지 업로드에 실패했습니다.</string>
     <string name="dining_sold_out_report_not_operation_time">제보 가능한 시간이 아닙니다.</string>
+    <string name="dining_sold_out_report_no_dining_to_report">제보 가능한 식단이 없습니다.</string>
 
     <!-- widget -->
     <string name="dining_non_upload">학교에서 식단이 업로드 되지 않았습니다.</string>

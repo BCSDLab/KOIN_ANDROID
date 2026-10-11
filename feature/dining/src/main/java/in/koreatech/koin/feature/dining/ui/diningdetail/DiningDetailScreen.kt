@@ -1083,6 +1083,10 @@ private fun handleSideEffect(
         DiningSideEffect.DiningSoldOutNotOperationTime -> {
             scope.launch { showSnackbar(context.getString(R.string.dining_sold_out_report_not_operation_time)) }
         }
+
+        DiningSideEffect.DiningSoldOutNoDiningToReport -> {
+            scope.launch { showSnackbar(context.getString(R.string.dining_sold_out_report_no_dining_to_report)) }
+        }
     }
 }
 
