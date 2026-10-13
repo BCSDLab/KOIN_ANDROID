@@ -15,6 +15,7 @@ import `in`.koreatech.koin.data.response.bus.ShuttleTimetableResponse
 import `in`.koreatech.koin.data.source.datastore.BusDataStore
 import javax.inject.Inject
 
+@Suppress("Detekt.TooManyFunctions")
 class BusLocalDataSource @Inject constructor(
     private val busDao: BusDao,
     private val busDataStore: BusDataStore
