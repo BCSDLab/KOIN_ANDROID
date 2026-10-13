@@ -175,6 +175,7 @@ fun DiningDetailScreen(
 
     val reportAbTest by viewModel.diningSoldOutABTestExperimentGroup.collectAsState()
     var isReportAbTestExposureLogged by rememberSaveable { mutableStateOf(false) }
+    val onboardingManager = rememberOnboardingManager()
 
     LaunchedEffect(reportAbTest) {
         if (reportAbTest != null && !isReportAbTestExposureLogged) {
@@ -290,20 +291,28 @@ fun DiningDetailScreen(
                 },
                 actions = {
                     if (reportAbTest == ExperimentGroup.DINING_SOLDOUT_A) {
-                        Icon(
-                            modifier = Modifier
-                                .padding(end = 12.dp)
-                                .size(24.dp)
-                                .clickable(
-                                    indication = null,
-                                    interactionSource = remember { MutableInteractionSource() }
-                                ) {
-                                    viewModel.requestSoldOutReport()
-                                },
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_dining_soldout_report),
-                            tint = RebrandKoinTheme.colors.primary500,
-                            contentDescription = stringResource(R.string.dining_sold_out_report_title)
-                        )
+                        with(onboardingManager) {
+                            ShowOnboardingTooltipIfNeeded(
+                                type = OnboardingType.DINING_SOLDOUT,
+                                arrowDirection = ArrowDirection.TOP,
+                                alignArrowToAnchor = true
+                            ) {
+                                Icon(
+                                    modifier = Modifier
+                                        .padding(end = 12.dp)
+                                        .size(24.dp)
+                                        .clickable(
+                                            indication = null,
+                                            interactionSource = remember { MutableInteractionSource() }
+                                        ) {
+                                            viewModel.requestSoldOutReport()
+                                        },
+                                    imageVector = ImageVector.vectorResource(R.drawable.ic_dining_soldout_report),
+                                    tint = RebrandKoinTheme.colors.primary500,
+                                    contentDescription = stringResource(R.string.dining_sold_out_report_title)
+                                )
+                            }
+                        }
                     }
 
                     Icon(
@@ -602,19 +611,35 @@ private fun DiningDetailScreenImpl(
                                     },
                                     reportIcon = {
                                         if (reportAbTest == ExperimentGroup.DINING_SOLDOUT_B) {
-                                            Icon(
-                                                modifier = Modifier
-                                                    .size(24.dp)
-                                                    .clickable(
-                                                        indication = null,
-                                                        interactionSource = remember { MutableInteractionSource() }
-                                                    ) {
-                                                        onReport(DiningPlace.entries.first { it.place == dining.place })
-                                                    },
-                                                imageVector = ImageVector.vectorResource(R.drawable.ic_dining_soldout_report),
-                                                tint = RebrandKoinTheme.colors.primary500,
-                                                contentDescription = stringResource(R.string.dining_sold_out_report_title)
-                                            )
+                                            val reportButton = @Composable {
+                                                Icon(
+                                                    modifier = Modifier
+                                                        .size(24.dp)
+                                                        .clickable(
+                                                            indication = null,
+                                                            interactionSource = remember { MutableInteractionSource() }
+                                                        ) {
+                                                            onReport(DiningPlace.entries.first { it.place == dining.place })
+                                                        },
+                                                    imageVector = ImageVector.vectorResource(R.drawable.ic_dining_soldout_report),
+                                                    tint = RebrandKoinTheme.colors.primary500,
+                                                    contentDescription = stringResource(R.string.dining_sold_out_report_title)
+                                                )
+                                            }
+
+                                            if (index == 0) {
+                                                with(onboardingManager) {
+                                                    ShowOnboardingTooltipIfNeeded(
+                                                        type = OnboardingType.DINING_SOLDOUT,
+                                                        arrowDirection = ArrowDirection.TOP,
+                                                        alignArrowToAnchor = true,
+                                                        xOffset = 60.dp,
+                                                        content = reportButton
+                                                    )
+                                                }
+                                            } else {
+                                                reportButton()
+                                            }
                                         }
                                     }
                                 )
