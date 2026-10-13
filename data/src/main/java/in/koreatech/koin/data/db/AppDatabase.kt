@@ -8,6 +8,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import `in`.koreatech.koin.data.constant.DBConstant
 import `in`.koreatech.koin.data.dao.ABTestDao
+import `in`.koreatech.koin.data.dao.BusDao
 import `in`.koreatech.koin.data.dao.CacheMetadataDao
 import `in`.koreatech.koin.data.dao.CoopShopDao
 import `in`.koreatech.koin.data.dao.DiningDao
@@ -15,10 +16,15 @@ import `in`.koreatech.koin.data.dao.NotificationDao
 import `in`.koreatech.koin.data.dao.StoreCategoriesDao
 import `in`.koreatech.koin.data.dao.WeatherDao
 import `in`.koreatech.koin.data.entity.ABTestEntity
+import `in`.koreatech.koin.data.entity.BusNoticeEntity
 import `in`.koreatech.koin.data.entity.CacheMetadataEntity
+import `in`.koreatech.koin.data.entity.CityTimetableEntity
 import `in`.koreatech.koin.data.entity.CoopShopEntity
 import `in`.koreatech.koin.data.entity.DiningEntity
+import `in`.koreatech.koin.data.entity.ExpressTimetableEntity
 import `in`.koreatech.koin.data.entity.NotificationEntity
+import `in`.koreatech.koin.data.entity.ShuttleCoursesEntity
+import `in`.koreatech.koin.data.entity.ShuttleTimetableEntity
 import `in`.koreatech.koin.data.entity.StoreCategoriesEntity
 import `in`.koreatech.koin.data.entity.WeatherEntity
 import `in`.koreatech.koin.data.util.DateTimeConverter
@@ -33,13 +39,19 @@ import `in`.koreatech.koin.data.util.StringListConverter
         NotificationEntity::class,
         WeatherEntity::class,
         DiningEntity::class,
-        CoopShopEntity::class
+        CoopShopEntity::class,
+        BusNoticeEntity::class,
+        ShuttleTimetableEntity::class,
+        ShuttleCoursesEntity::class,
+        ExpressTimetableEntity::class,
+        CityTimetableEntity::class
     ],
-    version = 5,
+    version = 6,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
         AutoMigration(from = 3, to = 4),
-        AutoMigration(from = 4, to = 5)
+        AutoMigration(from = 4, to = 5),
+        AutoMigration(from = 5, to = 6)
     ]
 )
 @TypeConverters(DateTimeConverter::class, StringListConverter::class, OpenCloseInfoListConverter::class)
@@ -51,6 +63,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun weatherDao(): WeatherDao
     abstract fun diningDao(): DiningDao
     abstract fun coopShopDao(): CoopShopDao
+    abstract fun busDao(): BusDao
 
     companion object {
         val MIGRATION_2_3 = object : Migration(2, 3) {

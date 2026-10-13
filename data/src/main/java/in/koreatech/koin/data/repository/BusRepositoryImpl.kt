@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.repository
 
+import `in`.koreatech.koin.core.network.service.NetworkConnectivityService
 import `in`.koreatech.koin.data.source.local.BusLocalDataSource
 import `in`.koreatech.koin.data.source.remote.BusRemoteDataSource
 import `in`.koreatech.koin.domain.model.bus.BusNotice
@@ -17,29 +18,54 @@ import javax.inject.Inject
 
 class BusRepositoryImpl @Inject constructor(
     private val busRemoteDataSource: BusRemoteDataSource,
-    private val busLocalDataSource: BusLocalDataSource
+    private val busLocalDataSource: BusLocalDataSource,
+    private val networkConnectivityService: NetworkConnectivityService
 ) : BusRepository {
     override suspend fun fetchBusNotice(): Result<BusNotice> {
         return suspendRunCatching {
-            busRemoteDataSource.fetchBusNotice().toBusNotice()
+            if (networkConnectivityService.isConnected()) {
+                busRemoteDataSource.fetchBusNotice()
+                    .also { busLocalDataSource.saveBusNotice(it) }
+                    .toBusNotice()
+            } else {
+                busLocalDataSource.getBusNotice().toBusNotice()
+            }
         }
     }
 
     override suspend fun fetchShuttleTimetable(id: String): Result<ShuttleTimetable> {
         return suspendRunCatching {
-            busRemoteDataSource.fetchShuttleTimetable(id).toShuttleTimetable()
+            if (networkConnectivityService.isConnected()) {
+                busRemoteDataSource.fetchShuttleTimetable(id)
+                    .also { busLocalDataSource.saveShuttleTimetable(id, it) }
+                    .toShuttleTimetable()
+            } else {
+                busLocalDataSource.getShuttleTimetable(id).toShuttleTimetable()
+            }
         }
     }
 
     override suspend fun fetchShuttleCourses(): Result<ShuttleCourses> {
         return suspendRunCatching {
-            busRemoteDataSource.fetchShuttleCourses().toShuttleCourses()
+            if (networkConnectivityService.isConnected()) {
+                busRemoteDataSource.fetchShuttleCourses()
+                    .also { busLocalDataSource.saveShuttleCourses(it) }
+                    .toShuttleCourses()
+            } else {
+                busLocalDataSource.getShuttleCourses().toShuttleCourses()
+            }
         }
     }
 
     override suspend fun fetchExpressTimetable(direction: String): Result<ExpressTimetable> {
         return suspendRunCatching {
-            busRemoteDataSource.fetchExpressTimetable(direction).toExpressTimetable()
+            if (networkConnectivityService.isConnected()) {
+                busRemoteDataSource.fetchExpressTimetable(direction)
+                    .also { busLocalDataSource.saveExpressTimetable(direction, it) }
+                    .toExpressTimetable()
+            } else {
+                busLocalDataSource.getExpressTimetable(direction).toExpressTimetable()
+            }
         }
     }
 
@@ -48,7 +74,13 @@ class BusRepositoryImpl @Inject constructor(
         direction: String
     ): Result<CityTimetable> {
         return suspendRunCatching {
-            busRemoteDataSource.fetchCityTimetable(number, direction).toCityTimetable()
+            if (networkConnectivityService.isConnected()) {
+                busRemoteDataSource.fetchCityTimetable(number, direction)
+                    .also { busLocalDataSource.saveCityTimetable(number, direction, it) }
+                    .toCityTimetable()
+            } else {
+                busLocalDataSource.getCityTimetable(number, direction).toCityTimetable()
+            }
         }
     }
 
