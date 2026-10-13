@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.data.entity
+package `in`.koreatech.koin.data.entity.bus
 
 import androidx.room.Entity
 import `in`.koreatech.koin.data.constant.DBConstant

@@ -5,11 +5,11 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import `in`.koreatech.koin.data.constant.DBConstant
-import `in`.koreatech.koin.data.entity.BusNoticeEntity
-import `in`.koreatech.koin.data.entity.CityTimetableEntity
-import `in`.koreatech.koin.data.entity.ExpressTimetableEntity
-import `in`.koreatech.koin.data.entity.ShuttleCoursesEntity
-import `in`.koreatech.koin.data.entity.ShuttleTimetableEntity
+import `in`.koreatech.koin.data.entity.bus.BusNoticeEntity
+import `in`.koreatech.koin.data.entity.bus.CityTimetableEntity
+import `in`.koreatech.koin.data.entity.bus.ExpressTimetableEntity
+import `in`.koreatech.koin.data.entity.bus.ShuttleCoursesEntity
+import `in`.koreatech.koin.data.entity.bus.ShuttleTimetableEntity
 
 @Dao
 interface BusDao {

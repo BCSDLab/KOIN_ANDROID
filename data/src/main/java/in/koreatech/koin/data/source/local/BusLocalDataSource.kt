@@ -2,11 +2,11 @@ package `in`.koreatech.koin.data.source.local
 
 import com.google.gson.Gson
 import `in`.koreatech.koin.data.dao.BusDao
-import `in`.koreatech.koin.data.entity.BusNoticeEntity
-import `in`.koreatech.koin.data.entity.CityTimetableEntity
-import `in`.koreatech.koin.data.entity.ExpressTimetableEntity
-import `in`.koreatech.koin.data.entity.ShuttleCoursesEntity
-import `in`.koreatech.koin.data.entity.ShuttleTimetableEntity
+import `in`.koreatech.koin.data.entity.bus.BusNoticeEntity
+import `in`.koreatech.koin.data.entity.bus.CityTimetableEntity
+import `in`.koreatech.koin.data.entity.bus.ExpressTimetableEntity
+import `in`.koreatech.koin.data.entity.bus.ShuttleCoursesEntity
+import `in`.koreatech.koin.data.entity.bus.ShuttleTimetableEntity
 import `in`.koreatech.koin.data.response.bus.BusNoticeResponse
 import `in`.koreatech.koin.data.response.bus.CityTimetableResponse
 import `in`.koreatech.koin.data.response.bus.ExpressTimetableResponse
