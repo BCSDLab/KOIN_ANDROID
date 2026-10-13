@@ -73,6 +73,7 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -173,6 +174,14 @@ fun DiningDetailScreen(
     val snackbarHostState = rememberKoinSnackbarHostState()
 
     val reportAbTest by viewModel.diningSoldOutABTestExperimentGroup.collectAsState()
+    var isReportAbTestExposureLogged by rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(reportAbTest) {
+        if (reportAbTest != null && !isReportAbTestExposureLogged) {
+            isReportAbTestExposureLogged = true
+            viewModel.logDiningSoldOutExposure()
+        }
+    }
 
     val view = LocalView.current
     val activity = LocalActivity.current
@@ -259,10 +268,8 @@ fun DiningDetailScreen(
             onImageUpload = viewModel::uploadSoldOutImage,
             onImageDelete = viewModel::deleteSoldOutImage,
             onReport = viewModel::onSoldOutReport,
-            onDismissRequest = {
-                viewModel.updateShowDiningSoldOutReportDialog(false)
-                viewModel.resetDiningSoldOutState()
-            }
+            onPhotoClick = viewModel::logDiningSoldOutPhotoClick,
+            onDismissRequest = viewModel::onSoldOutReportDismiss
         )
     }
 
@@ -661,6 +668,7 @@ private fun DiningReportDialog(
     onImageUpload: (Long, String, String, Uri) -> Unit = { _, _, _, _ -> },
     onImageDelete: () -> Unit = {},
     onReport: () -> Unit = {},
+    onPhotoClick: () -> Unit = {},
     onDismissRequest: () -> Unit = {}
 ) {
     val context = LocalContext.current
@@ -719,7 +727,8 @@ private fun DiningReportDialog(
                         handleImage(context, it, onImageUpload)
                     }
                 },
-                onImageDelete = onImageDelete
+                onImageDelete = onImageDelete,
+                onPhotoClick = onPhotoClick
             )
 
             Box(
@@ -816,6 +825,7 @@ private fun DiningReportDialogUpload(
     imageUrl: String?,
     onImageUploadRequest: (Uri?) -> Unit,
     onImageDelete: () -> Unit,
+    onPhotoClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -852,6 +862,7 @@ private fun DiningReportDialogUpload(
                         .clip(RebrandKoinTheme.shapes.small)
                         .background(RebrandKoinTheme.colors.neutral200)
                         .clickable {
+                            onPhotoClick()
                             if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                                 isCameraVisible = true
                             } else {

@@ -6,6 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.abtest.Experiment
+import `in`.koreatech.koin.core.abtest.ExperimentGroup
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.network.service.NetworkConnectivityService
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
@@ -99,6 +102,63 @@ class DiningViewModel @Inject constructor(
         initialValue = null
     )
 
+    private fun logDiningSoldOut(
+        category: String,
+        label: String,
+        place: DiningPlace? = null,
+        suffix: String = ""
+    ) {
+        val group = if (diningSoldOutABTestExperimentGroup.value == ExperimentGroup.DINING_SOLDOUT_B) {
+            AnalyticsConstant.Label.DiningSoldOut.GROUP_B
+        } else {
+            AnalyticsConstant.Label.DiningSoldOut.GROUP_A
+        }
+        val value = buildString {
+            append(group)
+            place?.let { append("_${it.place}") }
+            append(suffix)
+        }
+        EventLogger.logCustomEvent(
+            action = AnalyticsConstant.Label.DiningSoldOut.EVENT_NAME,
+            category = category,
+            label = label,
+            value = value
+        )
+    }
+
+    private fun logDiningSoldOutSubmit(category: String, place: DiningPlace?) {
+        logDiningSoldOut(
+            category = category,
+            label = AnalyticsConstant.Label.DiningSoldOut.SUBMIT,
+            place = place
+        )
+    }
+
+    fun logDiningSoldOutExposure() {
+        logDiningSoldOut(
+            category = AnalyticsConstant.Label.DiningSoldOut.CATEGORY_EXPOSURE,
+            label = AnalyticsConstant.Label.DiningSoldOut.EXPOSURE
+        )
+    }
+
+    fun logDiningSoldOutPhotoClick() = intent {
+        logDiningSoldOut(
+            category = AnalyticsConstant.Label.DiningSoldOut.CATEGORY_CLICK,
+            label = AnalyticsConstant.Label.DiningSoldOut.PHOTO,
+            place = state.diningReportState.diningPlace
+        )
+    }
+
+    fun onSoldOutReportDismiss() = intent {
+        logDiningSoldOut(
+            category = AnalyticsConstant.Label.DiningSoldOut.CATEGORY_CLICK,
+            label = AnalyticsConstant.Label.DiningSoldOut.EXIT,
+            place = state.diningReportState.diningPlace,
+            suffix = AnalyticsConstant.Label.DiningSoldOut.EXIT_SUFFIX
+        )
+        reduce { state.copy(diningReportState = DiningReportState()) }
+    }
+
     private fun syncDining() {
         if (!networkConnectivityService.isConnected()) return
         viewModelScope.launch {
@@ -122,6 +182,11 @@ class DiningViewModel @Inject constructor(
     }
 
     fun requestSoldOutReport(place: DiningPlace? = null) = intent {
+        logDiningSoldOut(
+            category = AnalyticsConstant.Label.DiningSoldOut.CATEGORY_CLICK,
+            label = AnalyticsConstant.Label.DiningSoldOut.START,
+            place = place
+        )
         if (state.selectedDate != TimeUtil.dateFormatToYYMMDD(TimeUtil.getCurrentTime())) {
             postSideEffect(DiningSideEffect.DiningSoldOutReportDateNotAllowed)
             return@intent
@@ -142,15 +207,14 @@ class DiningViewModel @Inject constructor(
         }
     }
 
-    fun updateShowDiningSoldOutReportDialog(showDiningSoldOutReportDialog: Boolean) = intent {
-        reduce { state.copy(diningReportState = state.diningReportState.copy(isDialogVisible = showDiningSoldOutReportDialog)) }
-    }
-
-    fun resetDiningSoldOutState() = intent {
-        reduce { state.copy(diningReportState = DiningReportState()) }
-    }
-
     fun updateSoldOutReportSelectedPlace(place: DiningPlace) = intent {
+        if (diningSoldOutABTestExperimentGroup.value != ExperimentGroup.DINING_SOLDOUT_B) {
+            logDiningSoldOut(
+                category = AnalyticsConstant.Label.DiningSoldOut.CATEGORY_SELECT,
+                label = AnalyticsConstant.Label.DiningSoldOut.SELECT,
+                place = place
+            )
+        }
         reduce { state.copy(diningReportState = state.diningReportState.copy(diningPlace = place)) }
     }
 
@@ -186,6 +250,7 @@ class DiningViewModel @Inject constructor(
     }
 
     fun onSoldOutReport() = intent {
+        val reportPlace = state.diningReportState.diningPlace
         val currentType = DiningUtil.getCurrentType().let {
             if (it == DiningType.NextBreakfast) DiningType.Dinner else it
         }
@@ -196,6 +261,7 @@ class DiningViewModel @Inject constructor(
             reduce {
                 state.copy(diningReportState = state.diningReportState.copy(isDialogVisible = false))
             }
+            logDiningSoldOutSubmit(AnalyticsConstant.Label.DiningSoldOut.CATEGORY_FAIL, reportPlace)
             postSideEffect(DiningSideEffect.DiningSoldOutReportNotFoundDining)
             return@intent
         }
@@ -204,6 +270,7 @@ class DiningViewModel @Inject constructor(
             reduce {
                 state.copy(diningReportState = state.diningReportState.copy(isDialogVisible = false))
             }
+            logDiningSoldOutSubmit(AnalyticsConstant.Label.DiningSoldOut.CATEGORY_FAIL, reportPlace)
             postSideEffect(DiningSideEffect.DiningSoldOutNotOperationTime)
             return@intent
         }
@@ -212,16 +279,19 @@ class DiningViewModel @Inject constructor(
             reduce {
                 state.copy(diningReportState = state.diningReportState.copy(isDialogVisible = false))
             }
+            logDiningSoldOutSubmit(AnalyticsConstant.Label.DiningSoldOut.CATEGORY_FAIL, reportPlace)
             postSideEffect(DiningSideEffect.DiningSoldOutReportInvalidImage)
             return@intent
         }
 
         reportDiningSoldOutUseCase(selectedDining.id, state.diningReportState.imageUrl!!).onSuccess {
+            logDiningSoldOutSubmit(AnalyticsConstant.Label.DiningSoldOut.CATEGORY_SUBMIT, reportPlace)
             reduce {
                 state.copy(diningReportState = DiningReportState())
             }
             postSideEffect(DiningSideEffect.DiningSoldOutReportSuccess(state.diningReportState.diningPlace!!))
         }.onFailure { exception ->
+            logDiningSoldOutSubmit(AnalyticsConstant.Label.DiningSoldOut.CATEGORY_FAIL, reportPlace)
             reduce {
                 state.copy(diningReportState = DiningReportState())
             }
