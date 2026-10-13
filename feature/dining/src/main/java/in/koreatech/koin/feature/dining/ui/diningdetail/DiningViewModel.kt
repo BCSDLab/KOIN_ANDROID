@@ -194,7 +194,7 @@ class DiningViewModel @Inject constructor(
 
         val operatingPlaces = state.dining.getOperatingPlaces()
         if (operatingPlaces.isEmpty() || (place != null && place !in operatingPlaces)) {
-            postSideEffect(DiningSideEffect.DiningSoldOutNoDiningToReport)
+            postSideEffect(DiningSideEffect.DiningSoldOutNotOperationTime)
             return@intent
         }
         reduce {
