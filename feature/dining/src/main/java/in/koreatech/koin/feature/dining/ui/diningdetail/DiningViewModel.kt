@@ -286,10 +286,10 @@ class DiningViewModel @Inject constructor(
 
         reportDiningSoldOutUseCase(selectedDining.id, state.diningReportState.imageUrl!!).onSuccess {
             logDiningSoldOutSubmit(AnalyticsConstant.Label.DiningSoldOut.CATEGORY_SUBMIT, reportPlace)
+            postSideEffect(DiningSideEffect.DiningSoldOutReportSuccess(state.diningReportState.diningPlace!!))
             reduce {
                 state.copy(diningReportState = DiningReportState())
             }
-            postSideEffect(DiningSideEffect.DiningSoldOutReportSuccess(state.diningReportState.diningPlace!!))
         }.onFailure { exception ->
             logDiningSoldOutSubmit(AnalyticsConstant.Label.DiningSoldOut.CATEGORY_FAIL, reportPlace)
             reduce {
