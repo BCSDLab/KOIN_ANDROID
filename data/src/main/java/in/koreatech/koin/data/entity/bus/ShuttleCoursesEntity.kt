@@ -10,6 +10,6 @@ data class ShuttleCoursesEntity(
     val payload: String
 ) {
     companion object {
-        const val ID = 1 // SingTon Row 이므로 1로 고정
+        const val ID = 1 // Singleton Row 이므로 1로 고정
     }
 }
