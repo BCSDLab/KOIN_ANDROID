@@ -73,6 +73,7 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -173,6 +174,15 @@ fun DiningDetailScreen(
     val snackbarHostState = rememberKoinSnackbarHostState()
 
     val reportAbTest by viewModel.diningSoldOutABTestExperimentGroup.collectAsState()
+    var isReportAbTestExposureLogged by rememberSaveable { mutableStateOf(false) }
+    val onboardingManager = rememberOnboardingManager()
+
+    LaunchedEffect(reportAbTest) {
+        if (reportAbTest != null && !isReportAbTestExposureLogged) {
+            isReportAbTestExposureLogged = true
+            viewModel.logDiningSoldOutExposure()
+        }
+    }
 
     val view = LocalView.current
     val activity = LocalActivity.current
@@ -259,10 +269,8 @@ fun DiningDetailScreen(
             onImageUpload = viewModel::uploadSoldOutImage,
             onImageDelete = viewModel::deleteSoldOutImage,
             onReport = viewModel::onSoldOutReport,
-            onDismissRequest = {
-                viewModel.updateShowDiningSoldOutReportDialog(false)
-                viewModel.resetDiningSoldOutState()
-            }
+            onPhotoClick = viewModel::logDiningSoldOutPhotoClick,
+            onDismissRequest = viewModel::onSoldOutReportDismiss
         )
     }
 
@@ -283,20 +291,28 @@ fun DiningDetailScreen(
                 },
                 actions = {
                     if (reportAbTest == ExperimentGroup.DINING_SOLDOUT_A) {
-                        Icon(
-                            modifier = Modifier
-                                .padding(end = 12.dp)
-                                .size(24.dp)
-                                .clickable(
-                                    indication = null,
-                                    interactionSource = remember { MutableInteractionSource() }
-                                ) {
-                                    viewModel.requestSoldOutReport()
-                                },
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_dining_soldout_report),
-                            tint = RebrandKoinTheme.colors.primary500,
-                            contentDescription = stringResource(R.string.dining_sold_out_report_title)
-                        )
+                        with(onboardingManager) {
+                            ShowOnboardingTooltipIfNeeded(
+                                type = OnboardingType.DINING_SOLDOUT,
+                                arrowDirection = ArrowDirection.TOP,
+                                alignArrowToAnchor = true
+                            ) {
+                                Icon(
+                                    modifier = Modifier
+                                        .padding(end = 12.dp)
+                                        .size(24.dp)
+                                        .clickable(
+                                            indication = null,
+                                            interactionSource = remember { MutableInteractionSource() }
+                                        ) {
+                                            viewModel.requestSoldOutReport()
+                                        },
+                                    imageVector = ImageVector.vectorResource(R.drawable.ic_dining_soldout_report),
+                                    tint = RebrandKoinTheme.colors.primary500,
+                                    contentDescription = stringResource(R.string.dining_sold_out_report_title)
+                                )
+                            }
+                        }
                     }
 
                     Icon(
@@ -595,19 +611,35 @@ private fun DiningDetailScreenImpl(
                                     },
                                     reportIcon = {
                                         if (reportAbTest == ExperimentGroup.DINING_SOLDOUT_B) {
-                                            Icon(
-                                                modifier = Modifier
-                                                    .size(24.dp)
-                                                    .clickable(
-                                                        indication = null,
-                                                        interactionSource = remember { MutableInteractionSource() }
-                                                    ) {
-                                                        onReport(DiningPlace.entries.first { it.place == dining.place })
-                                                    },
-                                                imageVector = ImageVector.vectorResource(R.drawable.ic_dining_soldout_report),
-                                                tint = RebrandKoinTheme.colors.primary500,
-                                                contentDescription = stringResource(R.string.dining_sold_out_report_title)
-                                            )
+                                            val reportButton = @Composable {
+                                                Icon(
+                                                    modifier = Modifier
+                                                        .size(24.dp)
+                                                        .clickable(
+                                                            indication = null,
+                                                            interactionSource = remember { MutableInteractionSource() }
+                                                        ) {
+                                                            onReport(DiningPlace.entries.first { it.place == dining.place })
+                                                        },
+                                                    imageVector = ImageVector.vectorResource(R.drawable.ic_dining_soldout_report),
+                                                    tint = RebrandKoinTheme.colors.primary500,
+                                                    contentDescription = stringResource(R.string.dining_sold_out_report_title)
+                                                )
+                                            }
+
+                                            if (index == 0) {
+                                                with(onboardingManager) {
+                                                    ShowOnboardingTooltipIfNeeded(
+                                                        type = OnboardingType.DINING_SOLDOUT,
+                                                        arrowDirection = ArrowDirection.TOP,
+                                                        alignArrowToAnchor = true,
+                                                        xOffset = 60.dp,
+                                                        content = reportButton
+                                                    )
+                                                }
+                                            } else {
+                                                reportButton()
+                                            }
                                         }
                                     }
                                 )
@@ -661,6 +693,7 @@ private fun DiningReportDialog(
     onImageUpload: (Long, String, String, Uri) -> Unit = { _, _, _, _ -> },
     onImageDelete: () -> Unit = {},
     onReport: () -> Unit = {},
+    onPhotoClick: () -> Unit = {},
     onDismissRequest: () -> Unit = {}
 ) {
     val context = LocalContext.current
@@ -719,7 +752,8 @@ private fun DiningReportDialog(
                         handleImage(context, it, onImageUpload)
                     }
                 },
-                onImageDelete = onImageDelete
+                onImageDelete = onImageDelete,
+                onPhotoClick = onPhotoClick
             )
 
             Box(
@@ -816,6 +850,7 @@ private fun DiningReportDialogUpload(
     imageUrl: String?,
     onImageUploadRequest: (Uri?) -> Unit,
     onImageDelete: () -> Unit,
+    onPhotoClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -852,6 +887,7 @@ private fun DiningReportDialogUpload(
                         .clip(RebrandKoinTheme.shapes.small)
                         .background(RebrandKoinTheme.colors.neutral200)
                         .clickable {
+                            onPhotoClick()
                             if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                                 isCameraVisible = true
                             } else {

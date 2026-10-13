@@ -353,6 +353,27 @@ object AnalyticsConstant {
             const val DEPARTMENT_CATEGORY = "department_category"
             const val DEPARTMENT_CONTACT_COPY = "department_contact_copy"
         }
+
+        object DiningSoldOut {
+            const val EVENT_NAME = "DA1"
+
+            const val CATEGORY_EXPOSURE = "exposure"
+            const val CATEGORY_CLICK = "click"
+            const val CATEGORY_SELECT = "select"
+            const val CATEGORY_SUBMIT = "submit"
+            const val CATEGORY_FAIL = "fail"
+
+            const val EXPOSURE = "cafeteria__dining__abtest__exposure"
+            const val START = "cafeteria__dining__soldout__start"
+            const val SELECT = "cafeteria__dining__soldout__select"
+            const val PHOTO = "cafeteria__dining__soldout__photo"
+            const val SUBMIT = "cafeteria__dining__soldout__submit"
+            const val EXIT = "cafeteria__dining__soldout__exit"
+
+            const val GROUP_A = "A안"
+            const val GROUP_B = "B안"
+            const val EXIT_SUFFIX = "_이탈"
+        }
     }
 
     const val PREVIOUS_PAGE = "previous_page"
