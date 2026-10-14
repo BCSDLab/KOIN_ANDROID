@@ -15,6 +15,8 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
+import kotlinx.coroutines.CancellationException
+import timber.log.Timber
 
 class BusRepositoryImpl @Inject constructor(
     private val busRemoteDataSource: BusRemoteDataSource,
@@ -24,9 +26,9 @@ class BusRepositoryImpl @Inject constructor(
     override suspend fun fetchBusNotice(): Result<BusNotice> {
         return suspendRunCatching {
             if (networkConnectivityService.isConnected()) {
-                busRemoteDataSource.fetchBusNotice()
-                    .also { busLocalDataSource.saveBusNotice(it) }
-                    .toBusNotice()
+                val notice = busRemoteDataSource.fetchBusNotice()
+                ignoringCacheFailure { busLocalDataSource.saveBusNotice(notice) }
+                notice.toBusNotice()
             } else {
                 busLocalDataSource.getBusNotice().toBusNotice()
             }
@@ -36,9 +38,9 @@ class BusRepositoryImpl @Inject constructor(
     override suspend fun fetchShuttleTimetable(id: String): Result<ShuttleTimetable> {
         return suspendRunCatching {
             if (networkConnectivityService.isConnected()) {
-                busRemoteDataSource.fetchShuttleTimetable(id)
-                    .also { busLocalDataSource.saveShuttleTimetable(id, it) }
-                    .toShuttleTimetable()
+                val timetable = busRemoteDataSource.fetchShuttleTimetable(id)
+                ignoringCacheFailure { busLocalDataSource.saveShuttleTimetable(id, timetable) }
+                timetable.toShuttleTimetable()
             } else {
                 busLocalDataSource.getShuttleTimetable(id).toShuttleTimetable()
             }
@@ -48,9 +50,9 @@ class BusRepositoryImpl @Inject constructor(
     override suspend fun fetchShuttleCourses(): Result<ShuttleCourses> {
         return suspendRunCatching {
             if (networkConnectivityService.isConnected()) {
-                busRemoteDataSource.fetchShuttleCourses()
-                    .also { busLocalDataSource.saveShuttleCourses(it) }
-                    .toShuttleCourses()
+                val courses = busRemoteDataSource.fetchShuttleCourses()
+                ignoringCacheFailure { busLocalDataSource.saveShuttleCourses(courses) }
+                courses.toShuttleCourses()
             } else {
                 busLocalDataSource.getShuttleCourses().toShuttleCourses()
             }
@@ -60,9 +62,9 @@ class BusRepositoryImpl @Inject constructor(
     override suspend fun fetchExpressTimetable(direction: String): Result<ExpressTimetable> {
         return suspendRunCatching {
             if (networkConnectivityService.isConnected()) {
-                busRemoteDataSource.fetchExpressTimetable(direction)
-                    .also { busLocalDataSource.saveExpressTimetable(direction, it) }
-                    .toExpressTimetable()
+                val timetable = busRemoteDataSource.fetchExpressTimetable(direction)
+                ignoringCacheFailure { busLocalDataSource.saveExpressTimetable(direction, timetable) }
+                timetable.toExpressTimetable()
             } else {
                 busLocalDataSource.getExpressTimetable(direction).toExpressTimetable()
             }
@@ -75,9 +77,9 @@ class BusRepositoryImpl @Inject constructor(
     ): Result<CityTimetable> {
         return suspendRunCatching {
             if (networkConnectivityService.isConnected()) {
-                busRemoteDataSource.fetchCityTimetable(number, direction)
-                    .also { busLocalDataSource.saveCityTimetable(number, direction, it) }
-                    .toCityTimetable()
+                val timetable = busRemoteDataSource.fetchCityTimetable(number, direction)
+                ignoringCacheFailure { busLocalDataSource.saveCityTimetable(number, direction, timetable) }
+                timetable.toCityTimetable()
             } else {
                 busLocalDataSource.getCityTimetable(number, direction).toCityTimetable()
             }
@@ -111,6 +113,17 @@ class BusRepositoryImpl @Inject constructor(
     override suspend fun saveLastShownNoticeId(id: Int): Result<Unit> {
         return suspendRunCatching {
             busLocalDataSource.saveLastShownNoticeId(id)
+        }
+    }
+
+    @Suppress("TooGenericExceptionCaught")
+    private suspend inline fun ignoringCacheFailure(crossinline block: suspend () -> Unit) {
+        try {
+            block()
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Timber.e("Bus cache write failed: ${e.message}")
         }
     }
 }
