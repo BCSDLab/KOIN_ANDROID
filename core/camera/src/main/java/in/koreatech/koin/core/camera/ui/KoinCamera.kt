@@ -124,9 +124,7 @@ fun KoinCamera(
     }
 
     Box(
-        modifier = modifier
-            .windowInsetsPadding(windowInsets)
-            .fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         cameraState.surfaceRequest?.let { surfaceRequest ->
             CameraXViewfinder(
@@ -137,6 +135,7 @@ fun KoinCamera(
 
         Box(
             modifier = Modifier
+                .windowInsetsPadding(windowInsets)
                 .padding(8.dp)
                 .align(Alignment.BottomCenter)
                 .size(style.shutterSize)
