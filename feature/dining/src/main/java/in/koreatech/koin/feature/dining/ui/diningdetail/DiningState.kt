@@ -17,6 +17,7 @@ data class DiningState(
     val isDiningImageSubscribed: Boolean = false,
     val isDiningRefreshing: Boolean = false,
     val isLoading: Boolean = false,
+    val isLoginDialogVisible: Boolean = false,
     val diningReportState: DiningReportState = DiningReportState()
 )
 

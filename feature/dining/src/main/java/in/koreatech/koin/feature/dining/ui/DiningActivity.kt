@@ -24,6 +24,8 @@ import `in`.koreatech.koin.feature.dining.navigation.DiningNavType
 import `in`.koreatech.koin.feature.dining.navigation.koinDiningGraph
 import javax.inject.Inject
 
+private const val KOIN_SCHEME = "koin"
+
 @AndroidEntryPoint
 class DiningActivity : ComponentActivity() {
 
@@ -61,6 +63,10 @@ class DiningActivity : ComponentActivity() {
     }
 
     private fun onActionView(): Pair<String, Int> {
+        val data = intent.data
+        if (data?.scheme == KOIN_SCHEME) {
+            return Pair(TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate()), -1)
+        }
         EventLogger.logClickEvent(
             EventAction.CAMPUS,
             AnalyticsConstant.Label.MENU_SHARE,
@@ -68,7 +74,6 @@ class DiningActivity : ComponentActivity() {
         )
         var initDate = TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate())
         var initTabType = 0
-        val data = intent.data
         data?.let {
             it.getQueryParameter(PARAMS_DATE)?.let { dateString ->
                 initDate = TimeUtil.dateFormatToYYMMDD(TimeUtil.stringToDateYYYYMMDD(dateString))

@@ -33,6 +33,10 @@
 
     <!-- sold out report -->
     <string name="dining_sold_out_report_title">%s 식단 품절 제보하기</string>
+    <string name="dining_sold_out_report_login_title">로그인이 필요한 기능입니다.</string>
+    <string name="dining_sold_out_report_login_description">로그인 하시겠어요?</string>
+    <string name="dining_sold_out_report_login_positive">로그인하기</string>
+    <string name="dining_sold_out_report_login_negative">닫기</string>
     <string name="dining_sold_out_report_submit">품절 제보하기</string>
     <string name="dining_sold_out_report_course_title">품절 코스 선택</string>
     <string name="dining_sold_out_report_photo_title">품절 사진 촬영</string>
