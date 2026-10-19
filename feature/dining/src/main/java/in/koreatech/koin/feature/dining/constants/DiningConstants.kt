@@ -4,6 +4,8 @@ const val PARAMS_DATE = "date"
 const val PARAMS_TYPE = "type"
 const val PARAMS_PLACE = "place"
 
+const val DEEPLINK_DINING = "koin://dining/navigation"
+
 // Dining Widget
 object DINING {
     const val WIDGET_ACTION_CLICKED = "dining_place"

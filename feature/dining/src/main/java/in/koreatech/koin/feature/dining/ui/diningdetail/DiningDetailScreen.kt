@@ -142,6 +142,8 @@ import `in`.koreatech.koin.feature.dining.component.DiningDateItem
 import `in`.koreatech.koin.feature.dining.component.DiningItem
 import `in`.koreatech.koin.feature.dining.component.bottomsheet.DiningBottomSheet
 import `in`.koreatech.koin.feature.dining.component.dialog.DiningImageDialog
+import `in`.koreatech.koin.feature.dining.component.dialog.DiningLoginDialog
+import `in`.koreatech.koin.feature.dining.constants.DEEPLINK_DINING
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_DATE
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_PLACE
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_TYPE
@@ -260,6 +262,18 @@ fun DiningDetailScreen(
                 onImageUploadChange = viewModel::changeIsDiningImageSubscribed
             )
         }
+    }
+
+    if (diningState.isLoginDialogVisible) {
+        DiningLoginDialog(
+            title = stringResource(R.string.dining_sold_out_report_login_title),
+            description = stringResource(R.string.dining_sold_out_report_login_description),
+            onPositive = {
+                viewModel.dismissLoginDialog()
+                context.startActivity(navigator.navigateToSignIn(context, DEEPLINK_DINING))
+            },
+            onNegative = viewModel::dismissLoginDialog
+        )
     }
 
     if (diningReportState.isDialogVisible) {

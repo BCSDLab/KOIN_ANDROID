@@ -187,6 +187,10 @@ class DiningViewModel @Inject constructor(
             label = AnalyticsConstant.Label.DiningSoldOut.START,
             place = place
         )
+        if (userState.value.isAnonymous) {
+            reduce { state.copy(isLoginDialogVisible = true) }
+            return@intent
+        }
         if (state.selectedDate != TimeUtil.dateFormatToYYMMDD(TimeUtil.getCurrentTime())) {
             postSideEffect(DiningSideEffect.DiningSoldOutReportDateNotAllowed)
             return@intent
@@ -205,6 +209,10 @@ class DiningViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    fun dismissLoginDialog() = intent {
+        reduce { state.copy(isLoginDialogVisible = false) }
     }
 
     fun updateSoldOutReportSelectedPlace(place: DiningPlace) = intent {
