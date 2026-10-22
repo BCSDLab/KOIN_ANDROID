@@ -1,7 +1,13 @@
 package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.core.network.service.NetworkConnectivityService
+import `in`.koreatech.koin.data.entity.bus.BusNoticeEntity
+import `in`.koreatech.koin.data.entity.bus.CityTimetableEntity
+import `in`.koreatech.koin.data.entity.bus.ExpressTimetableEntity
+import `in`.koreatech.koin.data.entity.bus.ShuttleCoursesEntity
+import `in`.koreatech.koin.data.entity.bus.ShuttleTimetableEntity
 import `in`.koreatech.koin.data.source.local.BusLocalDataSource
+import `in`.koreatech.koin.data.source.local.CacheLocalDataSource
 import `in`.koreatech.koin.data.source.remote.BusRemoteDataSource
 import `in`.koreatech.koin.domain.model.bus.BusNotice
 import `in`.koreatech.koin.domain.model.bus.BusSearchResult
@@ -15,16 +21,18 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.hours
 import timber.log.Timber
 
 class BusRepositoryImpl @Inject constructor(
     private val busRemoteDataSource: BusRemoteDataSource,
     private val busLocalDataSource: BusLocalDataSource,
+    private val cacheLocalDataSource: CacheLocalDataSource,
     private val networkConnectivityService: NetworkConnectivityService
 ) : BusRepository {
     override suspend fun fetchBusNotice(): Result<BusNotice> {
         return suspendRunCatching {
-            fetchAndCache {
+            fetchAndCache(BusNoticeEntity.cacheKey()) {
                 val notice = busRemoteDataSource.fetchBusNotice()
                 busLocalDataSource.saveBusNotice(notice)
             }
@@ -34,7 +42,7 @@ class BusRepositoryImpl @Inject constructor(
 
     override suspend fun fetchShuttleTimetable(id: String): Result<ShuttleTimetable> {
         return suspendRunCatching {
-            fetchAndCache {
+            fetchAndCache(ShuttleTimetableEntity.cacheKey(id)) {
                 val timetable = busRemoteDataSource.fetchShuttleTimetable(id)
                 busLocalDataSource.saveShuttleTimetable(id, timetable)
             }
@@ -44,7 +52,7 @@ class BusRepositoryImpl @Inject constructor(
 
     override suspend fun fetchShuttleCourses(): Result<ShuttleCourses> {
         return suspendRunCatching {
-            fetchAndCache {
+            fetchAndCache(ShuttleCoursesEntity.cacheKey()) {
                 val courses = busRemoteDataSource.fetchShuttleCourses()
                 busLocalDataSource.saveShuttleCourses(courses)
             }
@@ -54,7 +62,7 @@ class BusRepositoryImpl @Inject constructor(
 
     override suspend fun fetchExpressTimetable(direction: String): Result<ExpressTimetable> {
         return suspendRunCatching {
-            fetchAndCache {
+            fetchAndCache(ExpressTimetableEntity.cacheKey(direction)) {
                 val timetable = busRemoteDataSource.fetchExpressTimetable(direction)
                 busLocalDataSource.saveExpressTimetable(direction, timetable)
             }
@@ -67,7 +75,7 @@ class BusRepositoryImpl @Inject constructor(
         direction: String
     ): Result<CityTimetable> {
         return suspendRunCatching {
-            fetchAndCache {
+            fetchAndCache(CityTimetableEntity.cacheKey(number, direction)) {
                 val timetable = busRemoteDataSource.fetchCityTimetable(number, direction)
                 busLocalDataSource.saveCityTimetable(number, direction, timetable)
             }
@@ -105,9 +113,21 @@ class BusRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend inline fun fetchAndCache(crossinline block: suspend () -> Unit) =
-        suspendRunCatching { block() }.onFailure { e ->
-            if (networkConnectivityService.isConnected()) throw e
-            Timber.e(e, "Bus remote fetch failed with no network connection, falling back to cache")
-        }
+    private suspend inline fun fetchAndCache(cacheKey: String, crossinline block: suspend () -> Unit) {
+        val cachedTime = cacheLocalDataSource.getCachedTime(cacheKey)
+        val now = System.currentTimeMillis()
+        val isCacheValid = cachedTime != null && (now - cachedTime) < CACHE_TTL.inWholeMilliseconds
+        if (isCacheValid) return
+
+        suspendRunCatching { block() }
+            .onSuccess { cacheLocalDataSource.updateCachedTime(cacheKey) }
+            .onFailure { e ->
+                if (networkConnectivityService.isConnected()) throw e
+                Timber.e(e, "Bus remote fetch failed with no network connection, falling back to cache")
+            }
+    }
+
+    companion object {
+        private val CACHE_TTL = 1.hours
+    }
 }

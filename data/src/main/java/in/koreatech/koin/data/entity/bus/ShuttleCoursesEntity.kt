@@ -11,5 +11,7 @@ data class ShuttleCoursesEntity(
 ) {
     companion object {
         const val ID = 1 // Singleton Row 이므로 1로 고정
+
+        fun cacheKey(): String = DBConstant.SHUTTLE_COURSES
     }
 }

@@ -11,4 +11,8 @@ data class CityTimetableEntity(
     val busNumber: Int,
     val direction: String,
     val payload: String
-)
+) {
+    companion object {
+        fun cacheKey(busNumber: Int, direction: String): String = "${DBConstant.CITY_TIMETABLE}_${busNumber}_$direction"
+    }
+}

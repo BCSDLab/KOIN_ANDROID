@@ -11,5 +11,7 @@ data class BusNoticeEntity(
 ) {
     companion object {
         const val ID = 1
+
+        fun cacheKey(): String = DBConstant.BUS_NOTICE
     }
 }

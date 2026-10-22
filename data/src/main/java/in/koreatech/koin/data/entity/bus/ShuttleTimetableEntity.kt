@@ -8,4 +8,8 @@ import `in`.koreatech.koin.data.constant.DBConstant
 data class ShuttleTimetableEntity(
     @PrimaryKey val id: String,
     val payload: String
-)
+) {
+    companion object {
+        fun cacheKey(id: String): String = "${DBConstant.SHUTTLE_TIMETABLE}_$id"
+    }
+}

@@ -8,4 +8,8 @@ import `in`.koreatech.koin.data.constant.DBConstant
 data class ExpressTimetableEntity(
     @PrimaryKey val direction: String,
     val payload: String
-)
+) {
+    companion object {
+        fun cacheKey(direction: String): String = "${DBConstant.EXPRESS_TIMETABLE}_$direction"
+    }
+}
