@@ -201,11 +201,16 @@ class DiningViewModel @Inject constructor(
             postSideEffect(DiningSideEffect.DiningSoldOutNotOperationTime)
             return@intent
         }
+        val defaultPlace = if (diningSoldOutABTestExperimentGroup.value == ExperimentGroup.DINING_SOLDOUT_A) {
+            DiningPlace.CornerA.takeIf { it in operatingPlaces }
+        } else {
+            null
+        }
         reduce {
             state.copy(
                 diningReportState = state.diningReportState.copy(
                     isDialogVisible = true,
-                    diningPlace = place ?: state.diningReportState.diningPlace
+                    diningPlace = place ?: state.diningReportState.diningPlace ?: defaultPlace
                 )
             )
         }
