@@ -116,7 +116,8 @@ class BusRepositoryImpl @Inject constructor(
     private suspend inline fun fetchAndCache(cacheKey: String, crossinline block: suspend () -> Unit) {
         val cachedTime = cacheLocalDataSource.getCachedTime(cacheKey)
         val now = System.currentTimeMillis()
-        val isCacheValid = cachedTime != null && (now - cachedTime) < CACHE_TTL.inWholeMilliseconds
+        val elapsed = cachedTime?.let { now - it }
+        val isCacheValid = elapsed != null && elapsed in 0 until CACHE_TTL.inWholeMilliseconds
         if (isCacheValid) return
 
         suspendRunCatching { block() }
