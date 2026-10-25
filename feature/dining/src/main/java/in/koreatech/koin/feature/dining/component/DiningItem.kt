@@ -56,7 +56,8 @@ fun DiningItem(
     context: Context = LocalContext.current,
     isWeekend: Boolean = false,
     onImageClick: () -> Unit = {},
-    onShareClick: () -> Unit = {}
+    onShareClick: () -> Unit = {},
+    reportIcon: @Composable () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -109,6 +110,8 @@ fun DiningItem(
                         )
                     }
                 }
+
+                reportIcon()
             }
             Row(
                 horizontalArrangement = Arrangement.spacedBy(2.dp),

@@ -10,7 +10,7 @@ data class ReviewEditState(
     val storeId: Int = 0,
     val storeName: String = "",
     val reviewId: Int = 0,
-    val rating: Int = 1,
+    val rating: Int = 5,
     val reviewContent: String = "",
     val menuTag: String = "",
     val menuTags: ImmutableList<String> = persistentListOf(),

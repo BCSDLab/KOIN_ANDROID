@@ -10,6 +10,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -177,7 +180,8 @@ class OnboardingManager @Inject internal constructor(
     private fun createBuilder(
         type: OnboardingType,
         arrowDirection: ArrowDirection,
-        arrowPosition: Float
+        arrowPosition: Float,
+        alignArrowToAnchor: Boolean = false
     ): Balloon.Builder {
         val iconForm =
             IconForm.Builder(context)
@@ -194,7 +198,7 @@ class OnboardingManager @Inject internal constructor(
             .setTextSize(12f)
             .setArrowOrientationRules(ArrowOrientationRules.ALIGN_FIXED)
             .setArrowOrientation(arrowDirection.toArrowOrientation())
-            .setArrowPositionRules(ArrowPositionRules.ALIGN_BALLOON)
+            .setArrowPositionRules(if (alignArrowToAnchor) ArrowPositionRules.ALIGN_ANCHOR else ArrowPositionRules.ALIGN_BALLOON)
             .setArrowSize(10)
             .setArrowPosition(arrowPosition)
             .setPaddingVertical(8)
@@ -242,6 +246,8 @@ class OnboardingManager @Inject internal constructor(
      * @param type 툴팁 타입
      * @param arrowPosition 화살표 위치 (0.0 ~ 1.0)
      * @param arrowDirection 툴팁 화살표 방향 (ex. ArrowDirection.LEFT -> 화살표는 왼쪽방향, 툴팁은 오른쪽에 위치)
+     * @param alignArrowToAnchor true이면 화살표가 content 위치를 가리키도록 고정하고, arrowPosition은 무시됨
+     * @param xOffset 툴팁 본체를 가로로 이동시키는 거리 (양수: 오른쪽). alignArrowToAnchor와 함께 사용하면 화살표는 content에 고정된 채 본체만 이동함
      * @param content 툴팁이 표시될 content
      *
      * ```
@@ -262,11 +268,21 @@ class OnboardingManager @Inject internal constructor(
         type: OnboardingType,
         @FloatRange(from = 0.0, to = 1.0) arrowPosition: Float = 0.5f,
         arrowDirection: ArrowDirection,
+        alignArrowToAnchor: Boolean = false,
+        xOffset: Dp = 0.dp,
         content: @Composable () -> Unit
     ) {
         var balloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+        val xOffsetPx = with(LocalDensity.current) { xOffset.roundToPx() }
 
-        val builder = remember { createBuilder(type = type, arrowDirection = arrowDirection, arrowPosition = arrowPosition) }
+        val builder = remember {
+            createBuilder(
+                type = type,
+                arrowDirection = arrowDirection,
+                arrowPosition = arrowPosition,
+                alignArrowToAnchor = alignArrowToAnchor
+            )
+        }
 
         Balloon(
             builder = builder,
@@ -281,8 +297,8 @@ class OnboardingManager @Inject internal constructor(
             if (shouldShow) {
                 balloonWindow?.apply {
                     when (arrowDirection) {
-                        ArrowDirection.BOTTOM -> showAlignTop()
-                        ArrowDirection.TOP -> showAlignBottom()
+                        ArrowDirection.BOTTOM -> showAlignTop(xOff = xOffsetPx)
+                        ArrowDirection.TOP -> showAlignBottom(xOff = xOffsetPx)
                         ArrowDirection.LEFT -> showAlignEnd()
                         ArrowDirection.RIGHT -> showAlignStart()
                     }

@@ -18,13 +18,16 @@ import `in`.koreatech.koin.feature.store.model.toLocalStoreCategories
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.subIntent
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 
 @HiltViewModel
+@OptIn(OrbitExperimental::class)
 class StoreHomeViewModel @Inject constructor(
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
@@ -36,12 +39,14 @@ class StoreHomeViewModel @Inject constructor(
 
     init {
         intent {
-            getStoreCategoriesUseCase().let {
+            getStoreCategoriesUseCase().onSuccess {
                 reduce {
                     state.copy(
                         storeCategories = it.map { it.toLocalStoreCategories() }.toImmutableList()
                     )
                 }
+            }.onFailure {
+                Timber.e(it)
             }
         }
     }
@@ -51,7 +56,7 @@ class StoreHomeViewModel @Inject constructor(
             when (it) {
                 is User.Student,
                 is User.General -> {
-                    getCartItemsCount()
+                    fetchCartItemsCount()
                     reduce {
                         state.copy(isLoggedIn = true)
                     }
@@ -76,11 +81,11 @@ class StoreHomeViewModel @Inject constructor(
             }
         }.onFailure {
             Timber.e(it)
-            state.copy(isLoading = false)
+            reduce { state.copy(isLoading = false) }
         }
     }
 
-    private fun getCartItemsCount() = intent {
+    private suspend fun fetchCartItemsCount() = subIntent {
         reduce {
             state.copy(isLoading = true)
         }

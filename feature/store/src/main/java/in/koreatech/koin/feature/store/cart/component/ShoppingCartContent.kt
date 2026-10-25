@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,7 +20,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
@@ -46,7 +46,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -128,7 +127,7 @@ fun ShoppingCartContent(
                     )
                 ) {
                     Text(
-                        style = KoinTheme.typography.medium16,
+                        style = KoinTheme.typography.medium14,
                         text = stringResource(id = R.string.delivery)
                     )
                 }
@@ -153,7 +152,7 @@ fun ShoppingCartContent(
                     )
                 ) {
                     Text(
-                        style = RebrandKoinTheme.typography.medium16,
+                        style = RebrandKoinTheme.typography.medium14,
                         text = stringResource(id = R.string.pickup)
                     )
                 }
@@ -203,15 +202,21 @@ fun ShoppingCartContent(
                         .size(30.dp)
                         .clip(RoundedCornerShape(8.dp))
                 )
-                Spacer(modifier = Modifier.width(12.dp))
+
+                Spacer(modifier = Modifier.width(6.dp))
+
                 Text(
                     text = cart.shopName ?: "",
                     fontWeight = FontWeight.Medium
                 )
+
+                Spacer(modifier = Modifier.width(6.dp))
+
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    modifier = Modifier.size(24.dp),
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_store_arrow_right_new),
                     contentDescription = "",
-                    tint = Color.Gray
+                    tint = RebrandKoinTheme.colors.neutral800
                 )
             }
         }
@@ -219,7 +224,7 @@ fun ShoppingCartContent(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 40.dp),
+                    .padding(bottom = 12.dp),
                 shape = RebrandKoinTheme.shapes.medium,
                 elevation = cardElevation(0.5.dp),
                 colors = CardDefaults.cardColors(
@@ -257,28 +262,32 @@ fun ShoppingCartContent(
                         navigateToStoreDetail(storeId)
                     }
                 },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .drawBehind {
-                        drawRoundRect(
-                            color = Color.Black.copy(alpha = 0.05f),
-                            topLeft = Offset(0f, 4.dp.toPx()),
-                            cornerRadius = CornerRadius(10.dp.toPx(), 10.dp.toPx())
-                        )
-                    },
+                modifier = Modifier.fillMaxWidth(),
+                elevation = buttonElevation(1.dp, 1.dp, 1.dp, 1.dp),
                 shape = KoinTheme.shapes.small,
                 colors = buttonColors(
                     containerColor = KoinTheme.colors.neutral0,
                     contentColor = colorResource(R.color.shopping_cart_button_text)
-                )
+                ),
+                contentPadding = PaddingValues(vertical = 8.dp)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Text(text = stringResource(R.string.plus), fontSize = 20.sp)
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = stringResource(R.string.add_more), style = KoinTheme.typography.bold18)
+                    Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_store_quantity_plus),
+                        contentDescription = null,
+                        tint = RebrandKoinTheme.colors.primary500
+                    )
+
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = stringResource(R.string.add_more),
+                        style = KoinTheme.typography.medium15.copy(
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    )
                 }
             }
         }
@@ -286,7 +295,7 @@ fun ShoppingCartContent(
             PaymentSummaryCard(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 20.dp),
+                    .padding(vertical = 24.dp),
                 itemAmount = cart.itemsAmount,
                 deliveryFee = cart.deliveryFee,
                 totalAmount = cart.totalAmount,
@@ -317,7 +326,9 @@ fun ShoppingCartEmptyContent(
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = stringResource(R.string.shopping_cart_is_empty),
-            style = KoinTheme.typography.bold16
+            style = KoinTheme.typography.medium14.copy(
+                fontWeight = FontWeight.SemiBold
+            )
         )
         Button(
             onClick = {
@@ -329,11 +340,11 @@ fun ShoppingCartEmptyContent(
                 containerColor = KoinTheme.colors.neutral0,
                 contentColor = KoinTheme.colors.neutral500
             ),
-            shape = KoinTheme.shapes.extraSmall,
+            shape = KoinTheme.shapes.small,
             elevation = buttonElevation(
-                defaultElevation = 2.dp,
-                pressedElevation = 4.dp,
-                focusedElevation = 2.dp
+                defaultElevation = 1.dp,
+                pressedElevation = 2.dp,
+                focusedElevation = 1.dp
             )
         ) {
             Icon(
@@ -343,8 +354,11 @@ fun ShoppingCartEmptyContent(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = stringResource(R.string.add_menu),
-                style = KoinTheme.typography.medium16
+                text = stringResource(R.string.store_add_menu),
+                style = KoinTheme.typography.medium13.copy(
+                    fontWeight = FontWeight.SemiBold,
+                    color = RebrandKoinTheme.colors.neutral500
+                )
             )
         }
     }

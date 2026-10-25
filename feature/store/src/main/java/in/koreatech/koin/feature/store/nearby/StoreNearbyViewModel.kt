@@ -18,12 +18,16 @@ import `in`.koreatech.koin.feature.store.model.toLocalStoreCategories
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.subIntent
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
 @HiltViewModel
+@OptIn(OrbitExperimental::class)
 class StoreNearbyViewModel @Inject constructor(
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
@@ -34,12 +38,14 @@ class StoreNearbyViewModel @Inject constructor(
 
     init {
         intent {
-            getStoreCategoriesUseCase().let {
+            getStoreCategoriesUseCase().onSuccess {
                 reduce {
                     state.copy(
                         storeCategories = it.map { it.toLocalStoreCategories() }.toImmutableList()
                     )
                 }
+            }.onFailure {
+                Timber.e(it)
             }
         }
     }
@@ -49,7 +55,7 @@ class StoreNearbyViewModel @Inject constructor(
             when (it) {
                 is User.Student,
                 is User.General -> {
-                    getCartItemsCount()
+                    fetchCartItemsCount()
                     reduce {
                         state.copy(isLoggedIn = true)
                     }
@@ -64,8 +70,8 @@ class StoreNearbyViewModel @Inject constructor(
         }
     }
 
-    private fun getCartItemsCount() = intent {
-        if (!DeveloperOptionUtil.getDeveloperOption(DeveloperOption.DeliverySprint)) return@intent
+    private suspend fun fetchCartItemsCount() = subIntent {
+        if (!DeveloperOptionUtil.getDeveloperOption(DeveloperOption.DeliverySprint)) return@subIntent
         reduce {
             state.copy(isLoading = true)
         }

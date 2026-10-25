@@ -21,14 +21,17 @@ import javax.inject.Inject
 import kotlin.reflect.typeOf
 import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.subIntent
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 
 @HiltViewModel
+@OptIn(OrbitExperimental::class)
 class ReviewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getStoreReviewUseCase: GetStoreReviewUseCase,
@@ -135,10 +138,14 @@ class ReviewViewModel @Inject constructor(
     }
 
     fun fetchReviews() = intent {
+        fetchReviewsInternal()
+    }
+
+    private suspend fun fetchReviewsInternal() = subIntent {
         reduce {
             state.copy(isLoading = true)
         }
-        getStoreReviewUseCase(shopId = state.storeNavigationData.shopId).let { data ->
+        getStoreReviewUseCase(shopId = state.storeNavigationData.shopId).onSuccess { data ->
             reduce {
                 state.copy(
                     isLoading = false,
@@ -146,6 +153,9 @@ class ReviewViewModel @Inject constructor(
                     reviews = data.reviews.map { it.toLocalReviewContent() }.toImmutableList()
                 )
             }
+        }.onFailure {
+            Timber.e(it)
+            reduce { state.copy(isLoading = false) }
         }
     }
 
@@ -164,9 +174,9 @@ class ReviewViewModel @Inject constructor(
 
     fun deleteReview(reviewId: Int) = intent {
         reduce { state.copy(isLoading = true) }
-        hideDeleteDialog()
+        reduce { state.copy(showDeleteDialog = ReviewState.DeleteDialogState.Hide) }
         deleteReviewUseCase(reviewId, state.storeNavigationData.shopId).onSuccess {
-            fetchReviews()
+            fetchReviewsInternal()
             postSideEffect(ReviewSideEffect.ReviewDeleted)
             reduce { state.copy(isLoading = false) }
         }.onFailure {

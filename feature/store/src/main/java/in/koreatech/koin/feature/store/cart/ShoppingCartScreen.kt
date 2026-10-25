@@ -95,7 +95,7 @@ fun ShoppingCartScreen(
                 actions = {
                     Text(
                         color = if (uiState.cart.items.isEmpty()) RebrandKoinTheme.colors.primary300 else RebrandKoinTheme.colors.primary500,
-                        fontWeight = SemiBold,
+                        style = RebrandKoinTheme.typography.medium14.copy(fontWeight = SemiBold),
                         text = stringResource(R.string.delete_all),
                         modifier = Modifier
                             .padding(end = 10.dp)

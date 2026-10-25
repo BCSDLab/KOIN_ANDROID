@@ -21,6 +21,7 @@ import `in`.koreatech.koin.data.api.auth.CallvanAuthApi
 import `in`.koreatech.koin.data.api.auth.CartAuthApi
 import `in`.koreatech.koin.data.api.auth.ChatAuthApi
 import `in`.koreatech.koin.data.api.auth.ClubAuthApi
+import `in`.koreatech.koin.data.api.auth.DiningAuthApi
 import `in`.koreatech.koin.data.api.auth.RecruitmentAuthApi
 import `in`.koreatech.koin.data.api.auth.RecruitmentChatAuthApi
 import `in`.koreatech.koin.data.api.auth.StoreAuthApi
@@ -41,6 +42,7 @@ import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -195,6 +197,12 @@ object AuthNetworkModule {
     @Singleton
     fun provideRecruitmentAuthApi(@Auth retrofit: Retrofit): RecruitmentAuthApi {
         return retrofit.create(RecruitmentAuthApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDiningAuthApi(@Auth retrofit: Retrofit): DiningAuthApi {
+        return retrofit.create(DiningAuthApi::class.java)
     }
 }
 

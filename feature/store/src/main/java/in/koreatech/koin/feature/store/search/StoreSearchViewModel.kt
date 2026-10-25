@@ -39,12 +39,14 @@ class StoreSearchViewModel @Inject constructor(
 
     init {
         intent {
-            getStoreCategoriesUseCase().let {
+            getStoreCategoriesUseCase().onSuccess {
                 reduce {
                     state.copy(
                         storeCategories = it.map { it.toLocalStoreCategories() }.toImmutableList()
                     )
                 }
+            }.onFailure {
+                Timber.e(it)
             }
         }
     }

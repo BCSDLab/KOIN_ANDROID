@@ -51,7 +51,7 @@ fun DeleteCartDialog(
             ) {
                 Text(
                     text = dialogMessage.orEmpty(),
-                    style = RebrandKoinTheme.typography.medium16,
+                    style = RebrandKoinTheme.typography.regular15,
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(24.dp))

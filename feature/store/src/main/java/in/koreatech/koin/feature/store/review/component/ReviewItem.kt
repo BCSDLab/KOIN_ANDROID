@@ -83,19 +83,6 @@ fun ReviewItem(
     var dialogOpen by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableIntStateOf(0) }
 
-    val chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
-        textColor = RebrandKoinTheme.colors.neutral500,
-        textStyle = RebrandKoinTheme.typography.bold12,
-        containerColor = RebrandKoinTheme.colors.neutral200,
-        elevation = 0.dp,
-        borderWidth = 1.dp,
-        shape = CircleShape,
-        paddingValues = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-        ambientColor = Color.Transparent,
-        spotColor = Color.Transparent,
-        innerPadding = 0.dp
-    )
-
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -130,26 +117,12 @@ fun ReviewItem(
                     text = userName,
                     style = RebrandKoinTheme.typography.medium16.copy(color = RebrandKoinTheme.colors.neutral800)
                 )
-                if (isMyReview) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        KoinStoreChip(
-                            text = stringResource(R.string.edit),
-                            chipStyle = chipStyle,
-                            onClick = { onEditClick() }
-                        )
-                        KoinStoreChip(
-                            text = stringResource(R.string.delete),
-                            chipStyle = chipStyle,
-                            onClick = { onDeleteClick() }
-                        )
-                    }
-                } else {
-                    BasicText(
-                        text = stringResource(R.string.review_report),
-                        style = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral500),
-                        modifier = Modifier.clickable { onReportClick() }
-                    )
-                }
+                ReviewItemInteractionRow(
+                    isMyReview = isMyReview,
+                    onEditClick = onEditClick,
+                    onDeleteClick = onDeleteClick,
+                    onReportClick = onReportClick
+                )
             }
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -219,6 +192,56 @@ fun ReviewItem(
             imageUrls = imageUrls,
             initialPage = selectedIndex,
             onDismiss = { dialogOpen = false }
+        )
+    }
+}
+
+@Composable
+private fun ReviewItemInteractionRow(
+    isMyReview: Boolean,
+    onEditClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+    onReportClick: () -> Unit
+) {
+    val chipStyle = KoinStoreChipDefaults.koinStoreChipStyle(
+        textColor = RebrandKoinTheme.colors.neutral500,
+        textStyle = RebrandKoinTheme.typography.bold12,
+        containerColor = RebrandKoinTheme.colors.neutral200,
+        elevation = 0.dp,
+        borderWidth = 1.dp,
+        shape = CircleShape,
+        paddingValues = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+        ambientColor = Color.Transparent,
+        spotColor = Color.Transparent,
+        innerPadding = 0.dp
+    )
+
+    if (isMyReview) {
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            KoinStoreChip(
+                text = {
+                    Text(
+                        text = stringResource(R.string.edit)
+                    )
+                },
+                chipStyle = chipStyle,
+                onClick = { onEditClick() }
+            )
+            KoinStoreChip(
+                text = {
+                    Text(
+                        text = stringResource(R.string.delete)
+                    )
+                },
+                chipStyle = chipStyle,
+                onClick = { onDeleteClick() }
+            )
+        }
+    } else {
+        BasicText(
+            text = stringResource(R.string.review_report),
+            style = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral500),
+            modifier = Modifier.clickable { onReportClick() }
         )
     }
 }

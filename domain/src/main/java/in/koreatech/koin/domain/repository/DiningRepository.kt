@@ -7,4 +7,6 @@ interface DiningRepository {
     fun getDining(date: String, forceRefresh: Boolean = false): Flow<List<Dining>>
 
     suspend fun fetchDining(date: String): Result<Unit>
+
+    suspend fun postDiningSoldOutReport(diningId: Int, imageUrl: String): Result<Unit>
 }

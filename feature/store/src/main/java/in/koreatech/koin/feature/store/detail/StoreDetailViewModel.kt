@@ -10,7 +10,6 @@ import `in`.koreatech.koin.domain.model.cart.CartType
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopMenuUseCase
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopOriginInfoUseCase
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopSummaryUseCase
-import `in`.koreatech.koin.domain.usecase.setting.GetDeveloperSettingUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartItemsCountUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetCartSummaryUseCase
@@ -20,7 +19,6 @@ import `in`.koreatech.koin.domain.usecase.store.GetStoreReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuUseCase
 import `in`.koreatech.koin.domain.usecase.store.ValidateCartItemsUseCase
 import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
-import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.store.enums.CartValidation
 import `in`.koreatech.koin.feature.store.model.DeliveryTipModel
 import `in`.koreatech.koin.feature.store.model.MenuCategoryModel
@@ -38,13 +36,16 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.subIntent
 import org.orbitmvi.orbit.viewmodel.container
 
 @Suppress("LongParameterList")
+@OptIn(OrbitExperimental::class)
 @HiltViewModel
 class StoreDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
@@ -59,9 +60,7 @@ class StoreDetailViewModel @Inject constructor(
     private val getShopEventsUseCase: GetShopEventsUseCase,
     private val getStoreReviewUseCase: GetStoreReviewUseCase,
     private val getCartItemsCountUseCase: GetCartItemsCountUseCase,
-    private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase,
-    private val getUserStatusUseCase: GetUserStatusUseCase,
-    private val getDeveloperSettingUseCase: GetDeveloperSettingUseCase
+    private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase
 ) : ViewModel(), ContainerHost<StoreDetailState, StoreDetailSideEffect> {
     override val container =
         container<StoreDetailState, StoreDetailSideEffect>(StoreDetailState()) {
@@ -76,20 +75,19 @@ class StoreDetailViewModel @Inject constructor(
                         isOrderableShop = isOrderableShop
                     )
                 }
-            }
 
-            if (isOrderableShop) {
-                fetchOrderableStore(storeId)
-            } else {
-                fetchStore(storeId)
+                if (isOrderableShop) {
+                    fetchOrderableStore(storeId)
+                } else {
+                    fetchStore(storeId)
+                    fetchEventPreview(storeId)
+                }
+                checkToken()
             }
-            fetchReview(storeId)
-            fetchEventPreview(storeId)
-            checkToken()
         }
 
-    private fun fetchOrderStoreNotice(id: Int) = intent {
-        getOrderShopOriginInfoUseCase(id).also { result ->
+    private suspend fun fetchOrderStoreNotice(id: Int) = subIntent {
+        getOrderShopOriginInfoUseCase(id).onSuccess { result ->
             reduce {
                 state.copy(
                     isLoading = false,
@@ -127,22 +125,27 @@ class StoreDetailViewModel @Inject constructor(
                     )
                 )
             }
+        }.onFailure {
+            reduce { state.copy(isLoading = false) }
         }
     }
 
-    private fun fetchOrderableStore(id: Int) = intent {
-        getOrderShopSummaryUseCase(id).also { result ->
+    private suspend fun fetchOrderableStore(id: Int) = subIntent {
+        getOrderShopSummaryUseCase(id).onSuccess { result ->
             reduce {
                 state.copy(
                     store = result.toStoreIndoModel()
                 )
             }
+            fetchReview(result.shopId)
+            fetchOrderableStoreMenu(id)
+        }.onFailure {
+            reduce { state.copy(isLoading = false) }
         }
-        fetchOrderableStoreMenu(id)
     }
 
-    private fun fetchOrderableStoreMenu(id: Int) = intent {
-        getOrderShopMenuUseCase(id).also { result ->
+    private suspend fun fetchOrderableStoreMenu(id: Int) = subIntent {
+        getOrderShopMenuUseCase(id).onSuccess { result ->
             reduce {
                 state.copy(
                     categories = result.map {
@@ -152,12 +155,14 @@ class StoreDetailViewModel @Inject constructor(
                     }.toImmutableList()
                 )
             }
+            fetchOrderStoreNotice(id)
+        }.onFailure {
+            reduce { state.copy(isLoading = false) }
         }
-        fetchOrderStoreNotice(id)
     }
 
-    private fun fetchStore(id: Int) = intent {
-        getStoreWithMenuUseCase(id).also { result ->
+    private suspend fun fetchStore(id: Int) = subIntent {
+        getStoreWithMenuUseCase(id).onSuccess { result ->
             reduce {
                 state.copy(
                     store = result.toStoreInfoModel(),
@@ -182,23 +187,28 @@ class StoreDetailViewModel @Inject constructor(
                     )
                 )
             }
+            fetchReview(id)
+            fetchMenus(id)
+        }.onFailure {
+            reduce { state.copy(isLoading = false) }
         }
-        fetchMenus(id)
     }
 
-    private fun fetchEventPreview(id: Int) = intent {
-        getShopEventsUseCase(id).also { result ->
+    private suspend fun fetchEventPreview(id: Int) = subIntent {
+        getShopEventsUseCase(id).onSuccess { result ->
             val first = result.events.firstOrNull()
             reduce {
                 state.copy(
                     noticePreview = if (first != null) "${first.title}\n${first.content}" else null
                 )
             }
+        }.onFailure {
+            reduce { state.copy(noticePreview = null) }
         }
     }
 
-    private fun fetchMenus(id: Int) = intent {
-        getShopMenusUseCase(id).also { shop ->
+    private suspend fun fetchMenus(id: Int) = subIntent {
+        getShopMenusUseCase(id).onSuccess { shop ->
             reduce {
                 state.copy(
                     categories = shop.menuCategories?.map { storeMenuCategories ->
@@ -211,33 +221,29 @@ class StoreDetailViewModel @Inject constructor(
                     }?.toImmutableList() ?: persistentListOf()
                 )
             }
+        }.onFailure {
+            reduce { state.copy(categories = persistentListOf()) }
         }
     }
 
-    private fun checkToken() = intent {
+    private suspend fun checkToken() = subIntent {
         val hasToken = isTokenSavedInDeviceUseCase()
-        if (hasToken) {
-            reduce {
-                state.copy(
-                    isLogin = true
-                )
-            }
-        } else {
-            reduce {
-                state.copy(
-                    isLogin = false
-                )
-            }
+        reduce {
+            state.copy(
+                isLogin = hasToken
+            )
         }
     }
 
-    private fun fetchReview(storeId: Int) = intent {
-        getStoreReviewUseCase(storeId).also { reviews ->
+    private suspend fun fetchReview(storeId: Int) = subIntent {
+        getStoreReviewUseCase(storeId).onSuccess { reviews ->
             reduce {
                 state.copy(
                     storeReview = reviews
                 )
             }
+        }.onFailure {
+            reduce { state.copy(isLoading = false) }
         }
     }
 
@@ -311,22 +317,26 @@ class StoreDetailViewModel @Inject constructor(
     }
 
     fun getCart(type: CartType): Job = intent {
-        if (!DeveloperOptionUtil.getDeveloperOption(DeveloperOption.DeliverySprint)) return@intent
+        fetchCart(type)
+    }
+
+    private suspend fun fetchCart(type: CartType): Unit = subIntent {
+        if (!DeveloperOptionUtil.getDeveloperOption(DeveloperOption.DeliverySprint)) return@subIntent
         reduce { state.copy(isLoading = true) }
         getCartItemUseCase(type.name).onSuccess {
             reduce { state.copy(cart = it, cartType = type, isLoading = false) }
-            getCartValidate()
+            validateCart()
         }.onFailure {
             reduce { state.copy(isLoading = false) }
             when (it) {
-                is KoinStoreException.ShopNotDeliverableException -> getCart(CartType.TAKE_OUT)
-                is KoinStoreException.ShopNotTakeoutAvailableException -> getCart(CartType.TAKE_OUT)
+                is KoinStoreException.ShopNotDeliverableException -> fetchCart(CartType.TAKE_OUT)
+                is KoinStoreException.ShopNotTakeoutAvailableException -> fetchCart(CartType.TAKE_OUT)
             }
         }
     }
 
-    fun getCartValidate() = intent {
-        if (!DeveloperOptionUtil.getDeveloperOption(DeveloperOption.DeliverySprint)) return@intent
+    private suspend fun validateCart() = subIntent {
+        if (!DeveloperOptionUtil.getDeveloperOption(DeveloperOption.DeliverySprint)) return@subIntent
         reduce { state.copy(isLoading = true) }
         validateCartItemsUseCase(state.cartType.name).onSuccess {
             reduce {
@@ -335,7 +345,7 @@ class StoreDetailViewModel @Inject constructor(
                     cartValidation = CartValidation.VALID
                 )
             }
-            getCartSummary()
+            fetchCartSummary()
         }.onFailure {
             reduce {
                 state.copy(
@@ -351,9 +361,9 @@ class StoreDetailViewModel @Inject constructor(
         }
     }
 
-    private fun getCartSummary() = intent {
-        if (!DeveloperOptionUtil.getDeveloperOption(DeveloperOption.DeliverySprint)) return@intent
-        if (state.cart.orderableShopId == null) return@intent
+    private suspend fun fetchCartSummary() = subIntent {
+        if (!DeveloperOptionUtil.getDeveloperOption(DeveloperOption.DeliverySprint)) return@subIntent
+        if (state.cart.orderableShopId == null) return@subIntent
         getCartSummaryUseCase(state.cart.orderableShopId!!).onSuccess {
             reduce {
                 state.copy(

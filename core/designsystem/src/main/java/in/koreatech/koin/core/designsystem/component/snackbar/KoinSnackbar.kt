@@ -36,7 +36,7 @@ object KoinSnackbarDefaults {
     private val snackbarButtonBackgroundColor
         @Composable get() = KoinTheme.colors.neutral700
 
-    private val snackbarOutsidePadding = PaddingValues(horizontal = 24.dp)
+    private val snackbarOutsidePadding = PaddingValues(horizontal = 24.dp, vertical = 32.dp)
 
     private val snackbarInnerPadding = PaddingValues(vertical = 16.dp, horizontal = 20.dp)
 
