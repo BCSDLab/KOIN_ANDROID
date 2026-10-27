@@ -20,9 +20,9 @@ class GetNotOperationFilteredDiningUseCase @Inject constructor(
     private val diningRepository: DiningRepository,
     private val coopShopRepository: CoopShopRepository
 ) {
-    operator fun invoke(date: String, forceRefresh: Boolean = false): Flow<List<DiningWithOperationTime>> =
+    operator fun invoke(date: String): Flow<List<DiningWithOperationTime>> =
         combine(
-            diningRepository.getDining(date, forceRefresh),
+            diningRepository.getDining(date),
             coopShopRepository.getCoopShopById(CoopShopType.Dining.id),
             coopShopRepository.getCoopShopById(CoopShopType.NungSu.id)
         ) { dining, diningCoopShop, nungSuCoopShop ->
