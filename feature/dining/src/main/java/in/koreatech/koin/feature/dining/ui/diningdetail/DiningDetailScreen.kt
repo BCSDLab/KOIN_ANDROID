@@ -215,7 +215,7 @@ fun DiningDetailScreen(
             sideEffect = sideEffect,
             context = context,
             scope = scope,
-            fetchDining = { viewModel.fetchDining(it) },
+            fetchDining = viewModel::fetchDining,
             showSnackbar = { snackbarHostState.showSnackbar(it) }
         )
     }
@@ -1090,12 +1090,12 @@ private fun handleSideEffect(
     sideEffect: DiningSideEffect,
     context: Context,
     scope: CoroutineScope,
-    fetchDining: (forceRefresh: Boolean) -> Unit,
+    fetchDining: () -> Unit,
     showSnackbar: suspend (String) -> Unit
 ) {
     when (sideEffect) {
-        is DiningSideEffect.FetchDining -> {
-            fetchDining(sideEffect.forceRefresh)
+        DiningSideEffect.FetchDining -> {
+            fetchDining()
         }
 
         DiningSideEffect.DiningSoldOutUploadFailed -> {

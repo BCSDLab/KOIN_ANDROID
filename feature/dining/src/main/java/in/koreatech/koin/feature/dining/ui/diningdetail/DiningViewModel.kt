@@ -22,7 +22,6 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.coopshop.SyncCoopShopUseCase
 import `in`.koreatech.koin.domain.usecase.dining.GetNotOperationFilteredDiningUseCase
 import `in`.koreatech.koin.domain.usecase.dining.ReportDiningSoldOutUseCase
-import `in`.koreatech.koin.domain.usecase.dining.SyncDiningUseCase
 import `in`.koreatech.koin.domain.usecase.notification.DeleteNotificationSubscriptionUseCase
 import `in`.koreatech.koin.domain.usecase.notification.GetNotificationPermissionInfoUseCase
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionDetailUseCase
@@ -63,7 +62,6 @@ class DiningViewModel @Inject constructor(
     private val updateNotificationSubscriptionDetailUseCase: UpdateNotificationSubscriptionDetailUseCase,
     private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase,
     private val networkConnectivityService: NetworkConnectivityService,
-    private val syncDiningUseCase: SyncDiningUseCase,
     private val syncCoopShopUseCase: SyncCoopShopUseCase,
     private val abTestUseCase: ABTestUseCase,
     private val uploadImageUseCase: UploadImageUseCase,
@@ -75,7 +73,6 @@ class DiningViewModel @Inject constructor(
         ?: TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate())
 
     override val container = container<DiningState, DiningSideEffect>(DiningState(selectedDate = initDate)) {
-        syncDining()
         syncCoopShop()
     }
 
@@ -159,13 +156,6 @@ class DiningViewModel @Inject constructor(
         reduce { state.copy(diningReportState = DiningReportState()) }
     }
 
-    private fun syncDining() {
-        if (!networkConnectivityService.isConnected()) return
-        viewModelScope.launch {
-            syncDiningUseCase().onFailure { Timber.e("Dining sync failed: $it") }
-        }
-    }
-
     private fun syncCoopShop() {
         if (!networkConnectivityService.isConnected()) return
         viewModelScope.launch {
@@ -177,7 +167,7 @@ class DiningViewModel @Inject constructor(
         val formattedDate = TimeUtil.dateFormatToYYMMDD(date)
         intent {
             reduce { state.copy(selectedDate = formattedDate) }
-            postSideEffect(DiningSideEffect.FetchDining(false))
+            postSideEffect(DiningSideEffect.FetchDining)
         }
     }
 
@@ -330,21 +320,22 @@ class DiningViewModel @Inject constructor(
     }
 
     fun refreshDining() {
+        if (!networkConnectivityService.isConnected()) return
         intent {
             reduce { state.copy(isDiningRefreshing = true) }
-            postSideEffect(DiningSideEffect.FetchDining(networkConnectivityService.isConnected()))
+            postSideEffect(DiningSideEffect.FetchDining)
         }
     }
 
     fun getDining() = intent {
-        postSideEffect(DiningSideEffect.FetchDining(false))
+        postSideEffect(DiningSideEffect.FetchDining)
     }
 
-    fun fetchDining(forceRefresh: Boolean = false) {
+    fun fetchDining() {
         fetchDiningJob?.cancel()
         fetchDiningJob = intent {
             reduce { state.copy(isLoading = true) }
-            getNotOperationFilteredDiningUseCase(state.selectedDate, forceRefresh).catch {
+            getNotOperationFilteredDiningUseCase(state.selectedDate).catch {
                 reduce { state.copy(dining = persistentListOf(), isLoading = false, isDiningRefreshing = false) }
             }.collectLatest { result ->
                 reduce {
