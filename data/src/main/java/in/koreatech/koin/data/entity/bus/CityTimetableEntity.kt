@@ -1,0 +1,18 @@
+package `in`.koreatech.koin.data.entity.bus
+
+import androidx.room.Entity
+import `in`.koreatech.koin.data.constant.DBConstant
+
+@Entity(
+    tableName = DBConstant.CITY_TIMETABLE,
+    primaryKeys = ["busNumber", "direction"]
+)
+data class CityTimetableEntity(
+    val busNumber: Int,
+    val direction: String,
+    val payload: String
+) {
+    companion object {
+        fun cacheKey(busNumber: Int, direction: String): String = "${DBConstant.CITY_TIMETABLE}_${busNumber}_$direction"
+    }
+}
