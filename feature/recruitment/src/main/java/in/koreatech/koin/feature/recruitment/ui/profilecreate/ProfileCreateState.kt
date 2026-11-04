@@ -26,8 +26,9 @@ data class ProfileCreateState(
     val departments: ImmutableList<String> = persistentListOf(),
     val isDepartmentDropdownExpanded: Boolean = false,
     val studentId: String = "",
-    val isDepartmentEdited: Boolean = false,
-    val isStudentIdEdited: Boolean = false,
+    val originalDepartment: String = "",
+    val originalMajor: String? = null,
+    val originalStudentId: String = "",
     val preferredRole: String = "",
     val skills: ImmutableList<SkillEntry> = persistentListOf(),
     val activities: ImmutableList<RecruitmentActivityEntry> = persistentListOf(),
@@ -44,4 +45,10 @@ data class ProfileCreateState(
 
     val isSaveEnabled: Boolean
         get() = preferredRole.isNotBlank() && selfIntroduction.isNotBlank()
+
+    val isDepartmentChanged: Boolean
+        get() = department != originalDepartment
+
+    val isStudentIdChanged: Boolean
+        get() = studentId != originalStudentId
 }

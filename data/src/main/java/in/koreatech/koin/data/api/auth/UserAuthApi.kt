@@ -7,12 +7,14 @@ import `in`.koreatech.koin.data.request.user.GeneralUserRequest
 import `in`.koreatech.koin.data.request.user.NewPasswordRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.ReviewRequest
+import `in`.koreatech.koin.data.request.user.StudentAcademicInfoRequest
 import `in`.koreatech.koin.data.request.user.StudentUserRequest
 import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfoResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
 import `in`.koreatech.koin.data.response.user.GeneralUserResponse
+import `in`.koreatech.koin.data.response.user.StudentAcademicInfoResponse
 import `in`.koreatech.koin.data.response.user.StudentUserResponse
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
 import retrofit2.Response
@@ -35,6 +37,11 @@ interface UserAuthApi {
     suspend fun putStudentUser(
         @Body studentUserRequest: StudentUserRequest
     ): StudentUserResponse
+
+    @PUT("user/student/academic-info")
+    suspend fun putStudentAcademicInfo(
+        @Body request: StudentAcademicInfoRequest
+    ): StudentAcademicInfoResponse
 
     @PUT("v2/users/me")
     suspend fun putGeneralUser(

@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.mapper.toCodeCount
+import `in`.koreatech.koin.data.mapper.toStudentAcademicInfo
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
 import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
@@ -12,6 +13,7 @@ import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.SmsSendRequest
 import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
+import `in`.koreatech.koin.data.request.user.StudentAcademicInfoRequest
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
@@ -20,6 +22,7 @@ import `in`.koreatech.koin.domain.error.user.KoinUserException
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.CodeCount
+import `in`.koreatech.koin.domain.model.user.StudentAcademicInfo
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserType
 import `in`.koreatech.koin.domain.repository.UserRepository
@@ -181,6 +184,39 @@ class UserRepositoryImpl @Inject constructor(
         e404 = KoinUserException.UserNotFoundException(),
         e409 = KoinUserException.NicknameOrEmailConflictException()
     )
+
+    override suspend fun updateStudentAcademicInfo(
+        department: String,
+        major: String?,
+        studentNumber: String?
+    ): Result<StudentAcademicInfo> {
+        return suspendRunCatching {
+            val academicInfo = userRemoteDataSource.updateStudentAcademicInfo(
+                StudentAcademicInfoRequest(
+                    studentNumber = studentNumber,
+                    department = department,
+                    major = major
+                )
+            ).toStudentAcademicInfo()
+
+            val cachedUser = userLocalDataSource.user.first()
+            if (cachedUser is User.Student) {
+                userLocalDataSource.updateUserInfo(
+                    cachedUser.copy(
+                        major = academicInfo.department ?: cachedUser.major,
+                        studentNumber = academicInfo.studentNumber ?: cachedUser.studentNumber
+                    )
+                )
+            }
+
+            academicInfo
+        }.mapHttpFailure {
+            on(400) throws KoinUserException.DataInvalidException()
+            on(401) throws KoinUserException.UnauthorizedException()
+            on(404) throws KoinUserException.UserNotFoundException()
+            on(409) throws KoinUserException.AcademicInfoConflictException()
+        }
+    }
 
     override suspend fun deleteDeviceToken(): Result<Unit> {
         return suspendRunCatching {
