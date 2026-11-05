@@ -15,7 +15,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.BoardAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.DiningAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
@@ -86,6 +87,11 @@ class NotificationActivity : ActivityBase() {
         onSubscribe()
         setOnClickNotificationSetting()
         binding.clGotoArticleKeyword.setOnClickListener {
+            EventLogger.logClickEvent(
+                EventAction.DA2,
+                BoardAnalyticsConstant.Label.NOTIFICATION_CONFIG_KEYWORD_MANAGE_ENTRY,
+                BoardAnalyticsConstant.Value.KEYWORD_MANAGE_TITLE
+            )
             val intent =
                 Intent(Intent.ACTION_VIEW).apply {
                     data = Uri.parse("koin://article/navigation?fragment=article_keyword")
@@ -262,10 +268,11 @@ class NotificationActivity : ActivityBase() {
         }
 
         binding.notificationDiningSoldOut.setOnSwitchClickListener { isChecked ->
-            EventLogger.logClickEvent(
-                EventAction.CAMPUS,
-                AnalyticsConstant.Label.NOTIFICATION_SOLD_OUT,
-                if (isChecked) "on" else "off"
+            EventLogger.logCustomEvent(
+                EventAction.DA1.value,
+                DiningAnalyticsConstant.Category.TOGGLE,
+                DiningAnalyticsConstant.Label.NOTIFICATION_SOLD_OUT_TOGGLE,
+                if (isChecked) DiningAnalyticsConstant.Value.TOGGLE_ON else DiningAnalyticsConstant.Value.TOGGLE_OFF
             )
             handleSubscription(isChecked, SubscribesType.DINING_SOLD_OUT)
             enableSubscriptionDetail(isChecked, SubscribesType.DINING_SOLD_OUT)
@@ -287,10 +294,11 @@ class NotificationActivity : ActivityBase() {
         }
 
         binding.notificationDiningImageUpload.setOnSwitchClickListener { isChecked ->
-            EventLogger.logClickEvent(
-                EventAction.CAMPUS,
-                AnalyticsConstant.Label.NOTIFICATION_MENU_IMAGE_UPLOAD,
-                if (isChecked) "on" else "off"
+            EventLogger.logCustomEvent(
+                EventAction.DA1.value,
+                DiningAnalyticsConstant.Category.TOGGLE,
+                DiningAnalyticsConstant.Label.NOTIFICATION_PHOTO_UPLOAD_TOGGLE,
+                if (isChecked) DiningAnalyticsConstant.Value.TOGGLE_ON else DiningAnalyticsConstant.Value.TOGGLE_OFF
             )
             handleSubscription(isChecked, SubscribesType.DINING_IMAGE_UPLOAD)
         }
@@ -298,26 +306,29 @@ class NotificationActivity : ActivityBase() {
 
     private fun subscribeDetailNotification() {
         binding.notificationDiningBreakfastSoldOut.setOnSwitchClickListener { isChecked ->
-            EventLogger.logClickEvent(
-                EventAction.CAMPUS,
-                AnalyticsConstant.Label.NOTIFICATION_BREAKFAST_SOLD_OUT,
-                if (isChecked) "on" else "off"
+            EventLogger.logCustomEvent(
+                EventAction.DA1.value,
+                DiningAnalyticsConstant.Category.TOGGLE,
+                DiningAnalyticsConstant.Label.NOTIFICATION_SOLD_OUT_MEAL_TOGGLE,
+                if (isChecked) "아침_켜짐" else "아침_꺼짐"
             )
             handleSubscriptionDetail(isChecked, SubscribesDetailType.BREAKFAST)
         }
         binding.notificationDiningLunchSoldOut.setOnSwitchClickListener { isChecked ->
-            EventLogger.logClickEvent(
-                EventAction.CAMPUS,
-                AnalyticsConstant.Label.NOTIFICATION_LUNCH_SOLD_OUT,
-                if (isChecked) "on" else "off"
+            EventLogger.logCustomEvent(
+                EventAction.DA1.value,
+                DiningAnalyticsConstant.Category.TOGGLE,
+                DiningAnalyticsConstant.Label.NOTIFICATION_SOLD_OUT_MEAL_TOGGLE,
+                if (isChecked) "점심_켜짐" else "점심_꺼짐"
             )
             handleSubscriptionDetail(isChecked, SubscribesDetailType.LUNCH)
         }
         binding.notificationDiningDinnerSoldOut.setOnSwitchClickListener { isChecked ->
-            EventLogger.logClickEvent(
-                EventAction.CAMPUS,
-                AnalyticsConstant.Label.NOTIFICATION_DINNER_SOLD_OUT,
-                if (isChecked) "on" else "off"
+            EventLogger.logCustomEvent(
+                EventAction.DA1.value,
+                DiningAnalyticsConstant.Category.TOGGLE,
+                DiningAnalyticsConstant.Label.NOTIFICATION_SOLD_OUT_MEAL_TOGGLE,
+                if (isChecked) "저녁_켜짐" else "저녁_꺼짐"
             )
             handleSubscriptionDetail(isChecked, SubscribesDetailType.DINNER)
         }
