@@ -25,7 +25,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,6 +40,8 @@ import `in`.koreatech.bus.mock.shuttleTimetableUiStateMock1
 import `in`.koreatech.bus.mock.shuttleTimetableUiStateMock2
 import `in`.koreatech.bus.screen.shuttle_timetable.composable.loading.ShuttleTimetableLoading
 import `in`.koreatech.bus.screen.shuttle_timetable.viewmodel.ShuttleTimetableUiState
+import `in`.koreatech.koin.core.analytics.BusAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
@@ -118,6 +119,15 @@ fun ShuttleTimetableScreenContent(
                                 indicatorColor = RebrandKoinTheme.colors.primary500,
                                 selectedTextColor = RebrandKoinTheme.colors.primary500,
                                 onTabSelected = {
+                                    EventLogger.logClickEvent(
+                                        EventAction.DA1,
+                                        if (it == 0) {
+                                            BusAnalyticsConstant.Label.TO_SCHOOL
+                                        } else {
+                                            BusAnalyticsConstant.Label.TO_HOME
+                                        },
+                                        eventValue
+                                    )
                                     scope.launch {
                                         pagerState.animateScrollToPage(it)
                                     }
@@ -200,17 +210,6 @@ fun ShuttleTimetableScreenContent(
                                     )
                                     Spacer(modifier = Modifier.height(120.dp))
                                 }
-                            }
-
-                            LaunchedEffect(pagerState.currentPage) {
-                                EventLogger.logCampusClickEvent(
-                                    when (pagerState.currentPage) {
-                                        0 -> "go_to_school"
-                                        1 -> "go_home"
-                                        else -> "unknown"
-                                    },
-                                    eventValue
-                                )
                             }
                         } else {
                             Column(

@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -38,6 +39,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.TimetableAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
@@ -59,6 +63,7 @@ fun SemesterScreen(
     onClickEditTimetable: (SemesterModel, TimetableFrame) -> Unit = { _, _ -> },
     onClickLoginText: () -> Unit = {}
 ) {
+    val context = LocalContext.current
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -90,6 +95,7 @@ fun SemesterScreen(
                         userTimetables.entries.forEachIndexed { index, (semesterModel, timetableFrames) ->
                             semesterBlock(
                                 semesterModel = semesterModel,
+                                semesterLabel = context.getString(semesterModel.type.stringRes),
                                 timetableFrames = timetableFrames,
                                 isAnonymous = isAnonymous,
                                 isFirstBlock = index == 0,
@@ -139,6 +145,7 @@ fun SemesterScreen(
 
 private fun LazyListScope.semesterBlock(
     semesterModel: SemesterModel,
+    semesterLabel: String,
     timetableFrames: List<TimetableFrame>,
     isAnonymous: Boolean,
     isFirstBlock: Boolean,
@@ -193,6 +200,7 @@ private fun LazyListScope.semesterBlock(
     timetableFrames.forEachIndexed { index, frame ->
         timetableFrameBlock(
             timetableFrame = frame,
+            semesterValue = "${semesterModel.year}${TimetableAnalyticsConstant.Value.SEPARATOR}$semesterLabel",
             isAnonymous = isAnonymous,
             isLast = isLastBlock && index == timetableFrames.lastIndex,
             onClickTimetable = onClickTimetable,
@@ -203,6 +211,7 @@ private fun LazyListScope.semesterBlock(
 
 private fun LazyListScope.timetableFrameBlock(
     timetableFrame: TimetableFrame,
+    semesterValue: String,
     isAnonymous: Boolean,
     isLast: Boolean,
     onClickTimetable: (TimetableFrame) -> Unit = {},
@@ -213,7 +222,20 @@ private fun LazyListScope.timetableFrameBlock(
             modifier = Modifier
                 .fillMaxWidth()
                 .semesterListItemBorder(isFirst = false, isLast = isLast)
-                .noRippleClickable { onClickTimetable(timetableFrame) }
+                .noRippleClickable {
+                    EventLogger.logCustomEvent(
+                        action = EventAction.DA1.value,
+                        category = TimetableAnalyticsConstant.Category.SELECT,
+                        label = TimetableAnalyticsConstant.Label.TIMETABLE_LIST_SELECT,
+                        value =
+                        buildString {
+                            append(semesterValue)
+                            append(TimetableAnalyticsConstant.Value.SEPARATOR)
+                            append(timetableFrame.timetableName)
+                        }
+                    )
+                    onClickTimetable(timetableFrame)
+                }
                 .padding(horizontal = 32.dp, vertical = 12.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically

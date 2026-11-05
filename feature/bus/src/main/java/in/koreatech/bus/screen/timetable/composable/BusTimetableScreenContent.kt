@@ -48,6 +48,8 @@ import `in`.koreatech.bus.type.BusType
 import `in`.koreatech.bus.type.CityBusNumberType
 import `in`.koreatech.bus.type.CommonDirectionType
 import `in`.koreatech.bus.util.LocalSelectedTimetableTab
+import `in`.koreatech.koin.core.analytics.BusAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
@@ -140,19 +142,21 @@ internal fun BusTimetableScreenContent(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 if (busNoticeUiState is BusNoticeUiState.Show) {
-                    val eventValue = selectedTimetableTypeTab.getEventValue()
+                    val eventValue = selectedTimetableTypeTab.getTabEventValue()
                     NoticeItem(
                         notice = busNoticeUiState.notice,
                         onCloseIconClick = {
                             onCloseNotice()
-                            EventLogger.logCampusClickEvent(
-                                "bus_announcement_close",
+                            EventLogger.logClickEvent(
+                                EventAction.DA1,
+                                BusAnalyticsConstant.Label.NOTICE_CLOSE,
                                 eventValue
                             )
                         },
                         onNoticeClick = {
-                            EventLogger.logCampusClickEvent(
-                                "bus_announcement",
+                            EventLogger.logClickEvent(
+                                EventAction.DA1,
+                                BusAnalyticsConstant.Label.NOTICE_OPEN,
                                 eventValue
                             )
                             onNoticeClick(busNoticeUiState.notice)
@@ -173,6 +177,11 @@ internal fun BusTimetableScreenContent(
                 indicatorColor = RebrandKoinTheme.colors.primary500,
                 selectedTextColor = RebrandKoinTheme.colors.primary500,
                 onTabSelected = {
+                    EventLogger.logClickEvent(
+                        EventAction.DA1,
+                        BusAnalyticsConstant.Label.BUS_TYPE_TAB,
+                        context.getString(BusType.entriesExceptAll[it].titleRes)
+                    )
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(it)
                     }
@@ -268,13 +277,6 @@ internal fun BusTimetableScreenContent(
 
     LaunchedEffect(pagerState.targetPage) {
         selectedTimetableTypeTab = BusType.entriesExceptAll[pagerState.targetPage]
-    }
-
-    LaunchedEffect(selectedTimetableTypeTab) {
-        EventLogger.logCampusClickEvent(
-            "timetable_bus_type_tab",
-            context.getString(selectedTimetableTypeTab.titleRes)
-        )
     }
 }
 

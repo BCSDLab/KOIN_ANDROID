@@ -28,6 +28,8 @@ import `in`.koreatech.bus.state.CityTimetableState
 import `in`.koreatech.bus.type.CityBusNumberType
 import `in`.koreatech.bus.type.CommonDirectionType
 import `in`.koreatech.bus.util.formatUpdatedTime
+import `in`.koreatech.koin.core.analytics.BusAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipDefaults
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
@@ -68,9 +70,11 @@ internal fun CityTimetableScreenContent(
                     onChipSelected = { title ->
                         selectedBusNumberType =
                             CityBusNumberType.entries.find { context.getString(it.titleRes) == title } ?: CityBusNumberType.N400
-                        EventLogger.logCampusClickEvent(
-                            "city_bus_route",
-                            context.getString(selectedBusNumberType.titleRes)
+                        EventLogger.logCustomEvent(
+                            action = EventAction.DA1.value,
+                            category = BusAnalyticsConstant.Category.SELECT,
+                            label = BusAnalyticsConstant.Label.CITY_ROUTE,
+                            value = context.getString(selectedBusNumberType.titleRes)
                         )
                     },
                     selectedChipIndexes = intArrayOf(selectedBusNumberType.ordinal),
@@ -109,9 +113,11 @@ internal fun CityTimetableScreenContent(
                     onChipSelected = { title ->
                         selectedDirectionType =
                             CommonDirectionType.entries.find { context.getString(it.titleRes) == title } ?: CommonDirectionType.TO_BYEONGCHEON
-                        EventLogger.logCampusClickEvent(
-                            "city_bus_direction",
-                            context.getString(selectedDirectionType.titleRes)
+                        EventLogger.logCustomEvent(
+                            action = EventAction.DA1.value,
+                            category = BusAnalyticsConstant.Category.SELECT,
+                            label = BusAnalyticsConstant.Label.CITY_DIRECTION,
+                            value = context.getString(selectedDirectionType.titleRes)
                         )
                     },
                     selectedChipIndexes = intArrayOf(selectedDirectionType.ordinal),

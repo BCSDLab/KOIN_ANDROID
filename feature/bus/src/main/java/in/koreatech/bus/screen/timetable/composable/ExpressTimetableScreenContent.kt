@@ -27,6 +27,8 @@ import `in`.koreatech.bus.mock.expressTimetableMock
 import `in`.koreatech.bus.state.ExpressTimetableState
 import `in`.koreatech.bus.type.CommonDirectionType
 import `in`.koreatech.bus.util.formatUpdatedTime
+import `in`.koreatech.koin.core.analytics.BusAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipDefaults
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
@@ -65,9 +67,11 @@ internal fun ExpressTimetableScreenContent(
                     onChipSelected = { title ->
                         selectedDirectionType =
                             CommonDirectionType.entries.find { context.getString(it.titleRes) == title } ?: CommonDirectionType.TO_BYEONGCHEON
-                        EventLogger.logCampusClickEvent(
-                            "ds_bus_direction",
-                            context.getString(selectedDirectionType.titleRes)
+                        EventLogger.logCustomEvent(
+                            action = EventAction.DA1.value,
+                            category = BusAnalyticsConstant.Category.SELECT,
+                            label = BusAnalyticsConstant.Label.DAESEONG_DIRECTION,
+                            value = context.getString(selectedDirectionType.titleRes)
                         )
                     },
                     selectedChipIndexes = intArrayOf(selectedDirectionType.ordinal),
