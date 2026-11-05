@@ -95,12 +95,23 @@ fun SemesterScreen(
                         userTimetables.entries.forEachIndexed { index, (semesterModel, timetableFrames) ->
                             semesterBlock(
                                 semesterModel = semesterModel,
-                                semesterLabel = context.getString(semesterModel.type.stringRes),
                                 timetableFrames = timetableFrames,
                                 isAnonymous = isAnonymous,
                                 isFirstBlock = index == 0,
                                 isLastBlock = index == userTimetables.size - 1,
                                 onClickTimetable = { timetableFrame ->
+                                    EventLogger.logCustomEvent(
+                                        action = EventAction.DA1.value,
+                                        category = TimetableAnalyticsConstant.Category.SELECT,
+                                        label = TimetableAnalyticsConstant.Label.TIMETABLE_LIST_SELECT,
+                                        value = buildString {
+                                            append(semesterModel.year)
+                                            append(TimetableAnalyticsConstant.Value.SEPARATOR)
+                                            append(context.getString(semesterModel.type.stringRes))
+                                            append(TimetableAnalyticsConstant.Value.SEPARATOR)
+                                            append(timetableFrame.timetableName)
+                                        }
+                                    )
                                     onClickTimetable(semesterModel, timetableFrame)
                                 },
                                 onClickAddTimetable = {
@@ -145,7 +156,6 @@ fun SemesterScreen(
 
 private fun LazyListScope.semesterBlock(
     semesterModel: SemesterModel,
-    semesterLabel: String,
     timetableFrames: List<TimetableFrame>,
     isAnonymous: Boolean,
     isFirstBlock: Boolean,
@@ -200,7 +210,6 @@ private fun LazyListScope.semesterBlock(
     timetableFrames.forEachIndexed { index, frame ->
         timetableFrameBlock(
             timetableFrame = frame,
-            semesterValue = "${semesterModel.year}${TimetableAnalyticsConstant.Value.SEPARATOR}$semesterLabel",
             isAnonymous = isAnonymous,
             isLast = isLastBlock && index == timetableFrames.lastIndex,
             onClickTimetable = onClickTimetable,
@@ -211,7 +220,6 @@ private fun LazyListScope.semesterBlock(
 
 private fun LazyListScope.timetableFrameBlock(
     timetableFrame: TimetableFrame,
-    semesterValue: String,
     isAnonymous: Boolean,
     isLast: Boolean,
     onClickTimetable: (TimetableFrame) -> Unit = {},
@@ -222,20 +230,7 @@ private fun LazyListScope.timetableFrameBlock(
             modifier = Modifier
                 .fillMaxWidth()
                 .semesterListItemBorder(isFirst = false, isLast = isLast)
-                .noRippleClickable {
-                    EventLogger.logCustomEvent(
-                        action = EventAction.DA1.value,
-                        category = TimetableAnalyticsConstant.Category.SELECT,
-                        label = TimetableAnalyticsConstant.Label.TIMETABLE_LIST_SELECT,
-                        value =
-                        buildString {
-                            append(semesterValue)
-                            append(TimetableAnalyticsConstant.Value.SEPARATOR)
-                            append(timetableFrame.timetableName)
-                        }
-                    )
-                    onClickTimetable(timetableFrame)
-                }
+                .noRippleClickable { onClickTimetable(timetableFrame) }
                 .padding(horizontal = 32.dp, vertical = 12.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically

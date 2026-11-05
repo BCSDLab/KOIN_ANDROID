@@ -60,6 +60,16 @@ fun NavGraphBuilder.koinUserGraph(
             }
         )
     }
+    signUpUserInfoGraph(navController)
+
+    composable<SignUpNavType.SignUpComplete> {
+        SignUpCompleteScreen {
+            finish()
+        }
+    }
+}
+
+private fun NavGraphBuilder.signUpUserInfoGraph(navController: NavController) {
     composable<SignUpNavType.GeneralUserInfo> { entry ->
         val args = entry.toRoute<SignUpNavType.GeneralUserInfo>()
         SignUpGeneralUserInfo(sessionId = args.sessionId) {
@@ -71,12 +81,6 @@ fun NavGraphBuilder.koinUserGraph(
         val args = entry.toRoute<SignUpNavType.StudentUserInfo>()
         SignUpStudentUserInfo(sessionId = args.sessionId) {
             navController.navigate(SignUpNavType.SignUpComplete)
-        }
-    }
-
-    composable<SignUpNavType.SignUpComplete> {
-        SignUpCompleteScreen {
-            finish()
         }
     }
 }

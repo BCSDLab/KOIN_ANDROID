@@ -44,7 +44,7 @@ class ArticleSearchFragment : Fragment() {
 
     private val recentSearchedHistoryAdapter: RecentSearchedHistoryAdapter by lazy {
         RecentSearchedHistoryAdapter(
-            onSearchHistoryClicked = ::onRecentSearchHistoryClicked,
+            onSearchHistoryClicked = ::applySearchQuery,
             onDeleteClicked = ::onRecentSearchHistoryDeleteClicked
         )
     }
@@ -190,10 +190,6 @@ class ArticleSearchFragment : Fragment() {
 
     private fun onSearchInputChanged(query: String) {
         viewModel.onSearchInputChanged(query)
-    }
-
-    private fun onRecentSearchHistoryClicked(query: String) {
-        applySearchQuery(query)
     }
 
     private fun onSearchQueryClicked(query: String) {
