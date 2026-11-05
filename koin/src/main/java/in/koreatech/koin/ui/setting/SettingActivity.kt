@@ -18,7 +18,9 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.URL
 import `in`.koreatech.koin.core.BuildConfig
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.AccountAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.DiningAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
@@ -100,9 +102,9 @@ class SettingActivity : ActivityBase() {
 
             svProfile.setOnSettingClickListener {
                 EventLogger.logClickEvent(
-                    EventAction.USER,
-                    AnalyticsConstant.Label.HAMBURGER,
-                    "정보수정 시도"
+                    EventAction.DA2,
+                    AccountAnalyticsConstant.Label.ProfileEdit.ENTRY_FROM_ACCOUNT_CONFIG,
+                    AccountAnalyticsConstant.Value.PROFILE_EDIT_ATTEMPT
                 )
                 if (viewModel.isLoggedIn) {
                     startActivity(Intent(this@SettingActivity, UserInfoActivity::class.java))
@@ -123,6 +125,11 @@ class SettingActivity : ActivityBase() {
                 }
             }
             svNotification.setOnSettingClickListener {
+                EventLogger.logClickEvent(
+                    EventAction.DA1,
+                    DiningAnalyticsConstant.Label.NOTIFICATION_CONFIG_ENTRY,
+                    DiningAnalyticsConstant.Value.NOTIFICATION_CONFIG
+                )
                 if (viewModel.isLoggedIn) {
                     startActivity(Intent(this@SettingActivity, NotificationActivity::class.java))
                 } else {

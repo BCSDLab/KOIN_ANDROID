@@ -2,7 +2,7 @@ package `in`.koreatech.koin.feature.user.ui.userinfo
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.AccountAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.util.AccountTimer
@@ -316,9 +316,9 @@ class UserInfoEditViewModel @Inject constructor(
             phoneNumber = state.userState.phoneNumber
         ).onSuccess {
             EventLogger.logClickEvent(
-                EventAction.USER,
-                AnalyticsConstant.Label.USER_INFO,
-                "정보수정 완료"
+                EventAction.DA2,
+                AccountAnalyticsConstant.Label.ProfileEdit.CONFIRM,
+                AccountAnalyticsConstant.Value.PROFILE_EDIT_SUCCESS
             )
             reduce {
                 state.copy(
@@ -329,9 +329,9 @@ class UserInfoEditViewModel @Inject constructor(
             postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
         }.onFailure {
             EventLogger.logClickEvent(
-                EventAction.USER,
-                AnalyticsConstant.Label.USER_INFO,
-                "정보수정 실패"
+                EventAction.DA2,
+                AccountAnalyticsConstant.Label.ProfileEdit.CONFIRM,
+                AccountAnalyticsConstant.Value.PROFILE_EDIT_FAILURE
             )
             when (it) {
                 is KoinUserException.DataInvalidException -> postSideEffect(
@@ -367,9 +367,9 @@ class UserInfoEditViewModel @Inject constructor(
             major = state.userState.major
         ).onSuccess {
             EventLogger.logClickEvent(
-                EventAction.USER,
-                AnalyticsConstant.Label.USER_INFO,
-                "정보수정 완료"
+                EventAction.DA2,
+                AccountAnalyticsConstant.Label.ProfileEdit.CONFIRM,
+                AccountAnalyticsConstant.Value.PROFILE_EDIT_SUCCESS
             )
             reduce {
                 state.copy(
@@ -380,9 +380,9 @@ class UserInfoEditViewModel @Inject constructor(
             postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
         }.onFailure {
             EventLogger.logClickEvent(
-                EventAction.USER,
-                AnalyticsConstant.Label.USER_INFO,
-                "정보수정 실패"
+                EventAction.DA2,
+                AccountAnalyticsConstant.Label.ProfileEdit.CONFIRM,
+                AccountAnalyticsConstant.Value.PROFILE_EDIT_FAILURE
             )
             when (it) {
                 is KoinUserException.DataInvalidException -> postSideEffect(

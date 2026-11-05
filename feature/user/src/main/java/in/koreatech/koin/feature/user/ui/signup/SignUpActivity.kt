@@ -20,15 +20,29 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
+import `in`.koreatech.koin.domain.usecase.session.GetSessionIdUseCase
 import `in`.koreatech.koin.feature.user.R
 import `in`.koreatech.koin.feature.user.ui.signup.navigation.SignUpNavType
 import `in`.koreatech.koin.feature.user.ui.signup.navigation.koinUserGraph
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SignUpActivity : ComponentActivity() {
+    @Inject
+    lateinit var getSessionIdUseCase: GetSessionIdUseCase
+
+    private lateinit var sessionId: String
+
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sessionId = savedInstanceState?.getString(STATE_SESSION_ID)
+            ?: intent.getStringExtra(EXTRA_SESSION_ID)
+            ?: getSessionIdUseCase(
+                sessionName = "sign_up",
+                isLoggedIn = false,
+                shouldExpireOtherSessions = true
+            )
         try {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         } catch (ignore: IllegalStateException) {
@@ -70,12 +84,22 @@ class SignUpActivity : ComponentActivity() {
                         exitTransition = {
                             ExitTransition.None
                         },
-                        startDestination = SignUpNavType.Term
+                        startDestination = SignUpNavType.Term(sessionId = sessionId)
                     ) {
                         koinUserGraph(navController = navController, finish = { finish() })
                     }
                 }
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(STATE_SESSION_ID, sessionId)
+    }
+
+    companion object {
+        const val EXTRA_SESSION_ID = "extra_session_id"
+        private const val STATE_SESSION_ID = "state_session_id"
     }
 }
