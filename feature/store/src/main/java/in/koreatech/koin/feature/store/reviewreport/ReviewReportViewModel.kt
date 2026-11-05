@@ -4,9 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.ShopAnalyticsConstant
 import `in`.koreatech.koin.domain.usecase.store.ReportStoreReviewUseCase
 import `in`.koreatech.koin.feature.store.model.StoreNavigationData
 import `in`.koreatech.koin.feature.store.model.StoreNavigationDataType
@@ -15,7 +15,6 @@ import `in`.koreatech.koin.feature.store.reviewreport.enums.ReportReason
 import `in`.koreatech.koin.feature.store.reviewreport.enums.toStoreReport
 import javax.inject.Inject
 import kotlin.reflect.typeOf
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -39,7 +38,8 @@ class ReviewReportViewModel @Inject constructor(
             reduce {
                 state.copy(
                     storeNavigationData = route.storeNavigationData,
-                    reviewId = route.reviewId
+                    reviewId = route.reviewId,
+                    storeName = route.storeName
                 )
             }
         }
@@ -47,9 +47,9 @@ class ReviewReportViewModel @Inject constructor(
 
     fun reportReview() = intent {
         EventLogger.logClickEvent(
-            EventAction.BUSINESS,
-            AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT,
-            state.selectedReasons.appendLoggingString(state.etcReason)
+            EventAction.DA1,
+            ShopAnalyticsConstant.SHOP_DETAIL_REVIEW_REPORT_CONFIRM_CLICK,
+            state.storeName
         )
         reduce {
             state.copy(isLoading = true)
@@ -94,6 +94,4 @@ class ReviewReportViewModel @Inject constructor(
             state.copy(selectedReasons = persistentListOf<ReportReason>().addAll(state.selectedReasons.filter { it != reportReason }))
         }
     }
-
-    private fun ImmutableList<ReportReason>.appendLoggingString(otherReason: String) = joinToString(separator = " ") { reason -> if (reason == ReportReason.OTHER) otherReason else reason.title }
 }

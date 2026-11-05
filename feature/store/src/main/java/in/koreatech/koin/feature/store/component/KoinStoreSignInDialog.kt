@@ -31,6 +31,7 @@ import `in`.koreatech.koin.feature.store.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun KoinStoreSignInDialog(
+    onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
     title: String = stringResource(R.string.store_sign_in_dialog_title),
     message: String = stringResource(R.string.store_sign_in_dialog_message),
@@ -46,7 +47,7 @@ internal fun KoinStoreSignInDialog(
                 shape = KoinTheme.shapes.small
             )
             .padding(horizontal = 32.dp, vertical = 24.dp),
-        onDismissRequest = { onNegative() }
+        onDismissRequest = onDismiss
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
@@ -98,5 +99,5 @@ internal fun KoinStoreSignInDialog(
 @Preview
 @Composable
 private fun KoinStoreSignInDialogPreview() {
-    KoinStoreSignInDialog()
+    KoinStoreSignInDialog(onDismiss = {})
 }
