@@ -37,8 +37,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.LostAndFoundAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.MAX_ITEM_COUNT
@@ -109,19 +110,15 @@ fun LostAndFoundWriteArticleImpl(
                 EditArticleDoneButton(
                     text = stringResource(id = R.string.write_done)
                 ) {
-                    when (uiState.lostOrFoundType) {
-                        LostOrFoundType.FOUND ->
-                            EventLogger.logCampusClickEvent(
-                                AnalyticsConstant.Label.LostAndFound.FIND_USER_WRITE_CONFIRM,
-                                "작성 완료"
-                            )
-
-                        LostOrFoundType.LOST ->
-                            EventLogger.logCampusClickEvent(
-                                AnalyticsConstant.Label.LostAndFound.LOST_ITEM_WRITE_CONFIRM,
-                                "작성 완료"
-                            )
-                    }
+                    EventLogger.logCustomEvent(
+                        LostAndFoundAnalyticsConstant.EVENT_NAME,
+                        LostAndFoundAnalyticsConstant.Category.SUBMIT,
+                        when (uiState.lostOrFoundType) {
+                            LostOrFoundType.FOUND -> LostAndFoundAnalyticsConstant.Label.FOUND_ITEM_WRITE_SUBMIT
+                            LostOrFoundType.LOST -> LostAndFoundAnalyticsConstant.Label.LOST_ITEM_WRITE_SUBMIT
+                        },
+                        LostAndFoundAnalyticsConstant.Value.SUBMIT
+                    )
                     viewModel.checkAllFieldValid()
                 }
             },
@@ -168,10 +165,12 @@ fun LostAndFoundWriteArticleImpl(
                             viewModel.removeItem(index)
                         },
                         onChangeItemType = { itemType ->
-                            EventLogger.logCampusClickEvent(
+                            EventLogger.logCustomEvent(
+                                LostAndFoundAnalyticsConstant.EVENT_NAME,
+                                LostAndFoundAnalyticsConstant.Category.SELECT,
                                 when (uiState.lostOrFoundType) {
-                                    LostOrFoundType.FOUND -> AnalyticsConstant.Label.LostAndFound.FIND_USER_CATEGORY
-                                    LostOrFoundType.LOST -> AnalyticsConstant.Label.LostAndFound.LOST_ITEM_CATEGORY
+                                    LostOrFoundType.FOUND -> LostAndFoundAnalyticsConstant.Label.FOUND_ITEM_WRITE_ITEM_CATEGORY
+                                    LostOrFoundType.LOST -> LostAndFoundAnalyticsConstant.Label.LOST_ITEM_WRITE_ITEM_CATEGORY
                                 },
                                 itemType.getCategoryKoreanWord()
                             )
@@ -194,12 +193,14 @@ fun LostAndFoundWriteArticleImpl(
                         WriteArticleAddItemButton(
                             modifier = Modifier.padding(end = 24.dp, bottom = 16.dp)
                         ) {
-                            EventLogger.logCampusClickEvent(
+                            EventLogger.logCustomEvent(
+                                LostAndFoundAnalyticsConstant.EVENT_NAME,
+                                EventCategory.CLICK.value,
                                 when (uiState.lostOrFoundType) {
-                                    LostOrFoundType.FOUND -> AnalyticsConstant.Label.LostAndFound.FIND_USER_ADD_ITEM
-                                    LostOrFoundType.LOST -> AnalyticsConstant.Label.LostAndFound.LOST_ITEM_ADD_ITEM
+                                    LostOrFoundType.FOUND -> LostAndFoundAnalyticsConstant.Label.FOUND_ITEM_WRITE_ITEM_ADD
+                                    LostOrFoundType.LOST -> LostAndFoundAnalyticsConstant.Label.LOST_ITEM_WRITE_ITEM_ADD
                                 },
-                                "물품 추가"
+                                LostAndFoundAnalyticsConstant.Value.ITEM_ADD
                             )
                             viewModel.addItem(
                                 LostAndFoundWriteArticleItemState(

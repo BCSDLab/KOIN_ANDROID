@@ -35,7 +35,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.CallvanAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
@@ -137,8 +138,10 @@ fun CallvanDetailScreenImpl(
             FilledButton(
                 text = stringResource(R.string.callvan_detail_enter_chat),
                 onClick = {
-                    EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.Callvan.CALLVAN_CHAT_ENTRY,
+                    EventLogger.logCustomEvent(
+                        CallvanAnalyticsConstant.EVENT_NAME,
+                        EventCategory.CLICK.value,
+                        CallvanAnalyticsConstant.Label.PARTICIPANT_LIST_CHAT_ENTRY,
                         ""
                     )
                     onEnterChatClick()

@@ -26,7 +26,8 @@ fun CallvanConfirmBottomSheet(
     confirmText: String,
     cancelText: String,
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onCancelClick: (() -> Unit)? = null
 ) {
     CallvanBottomSheet(
         title = title,
@@ -55,7 +56,7 @@ fun CallvanConfirmBottomSheet(
             )
             OutlinedBoxButton(
                 text = cancelText,
-                onClick = onDismiss,
+                onClick = { (onCancelClick ?: onDismiss).invoke() },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RebrandKoinTheme.shapes.medium,
                 contentPadding = PaddingValues(vertical = 10.dp),

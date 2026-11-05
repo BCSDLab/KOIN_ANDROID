@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.LostAndFoundAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
@@ -97,10 +98,6 @@ fun LostAndFoundWriteArticleImpl(
             sideEffect = it,
             context = context,
             onComplete = {
-                EventLogger.logCampusClickEvent(
-                    AnalyticsConstant.Label.LostAndFound.LOST_ITEM_MODIFY_COMPLETE,
-                    loggingLostOrFound
-                )
                 onComplete(uiState.articleId)
             },
             onBackClick = onBackClick
@@ -118,19 +115,15 @@ fun LostAndFoundWriteArticleImpl(
                 EditArticleDoneButton(
                     text = stringResource(R.string.modify_done)
                 ) {
-                    when (uiState.lostOrFoundType) {
-                        LostOrFoundType.FOUND ->
-                            EventLogger.logCampusClickEvent(
-                                AnalyticsConstant.Label.LostAndFound.FIND_USER_WRITE_CONFIRM,
-                                "작성 완료"
-                            )
-
-                        LostOrFoundType.LOST ->
-                            EventLogger.logCampusClickEvent(
-                                AnalyticsConstant.Label.LostAndFound.LOST_ITEM_WRITE_CONFIRM,
-                                "작성 완료"
-                            )
-                    }
+                    EventLogger.logCustomEvent(
+                        LostAndFoundAnalyticsConstant.EVENT_NAME,
+                        LostAndFoundAnalyticsConstant.Category.SUBMIT,
+                        when (uiState.lostOrFoundType) {
+                            LostOrFoundType.FOUND -> LostAndFoundAnalyticsConstant.Label.FOUND_ITEM_EDIT_SUBMIT
+                            LostOrFoundType.LOST -> LostAndFoundAnalyticsConstant.Label.LOST_ITEM_EDIT_SUBMIT
+                        },
+                        loggingLostOrFound
+                    )
                     viewModel.checkAllFieldValidAndModify()
                 }
             },

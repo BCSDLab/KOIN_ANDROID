@@ -17,8 +17,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
-import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.BoardAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.dialog.AlertModalDialog
 import `in`.koreatech.koin.core.dialog.AlertModalDialogData
@@ -52,9 +52,11 @@ class ArticleKeywordFragment : Fragment() {
                 positiveButtonText = R.string.action_login
             ),
             onPositiveButtonClicked = {
-                EventLogger.logCampusClickEvent(
-                    AnalyticsConstant.Label.LOGIN_PROMPT,
-                    "키워드 알림 팝업"
+                EventLogger.logCustomEvent(
+                    BoardAnalyticsConstant.EVENT_NAME,
+                    EventCategory.CLICK.value,
+                    BoardAnalyticsConstant.Label.NOTICE_KEYWORD_MANAGE_LOGIN_POPUP_LOGIN,
+                    BoardAnalyticsConstant.Value.LOGIN
                 )
                 val intent = navigator.navigateToSignIn(this.requireContext(), redirectUrl = "koin://article/navigation?fragment=article_keyword")
                 intent.setPackage(requireContext().packageName)
@@ -62,6 +64,12 @@ class ArticleKeywordFragment : Fragment() {
                 startActivity(intent)
             },
             onNegativeButtonClicked = {
+                EventLogger.logCustomEvent(
+                    BoardAnalyticsConstant.EVENT_NAME,
+                    EventCategory.CLICK.value,
+                    BoardAnalyticsConstant.Label.NOTICE_KEYWORD_MANAGE_LOGIN_POPUP_CLOSE,
+                    BoardAnalyticsConstant.Value.CLOSE
+                )
                 it.dismiss()
             }
         )
@@ -77,10 +85,22 @@ class ArticleKeywordFragment : Fragment() {
             binding.textViewMaxKeywordCount.text =
                 ArticleKeywordViewModel.MAX_KEYWORD_COUNT.toString()
             binding.buttonAddKeyword.setOnClickListener {
+                EventLogger.logCustomEvent(
+                    BoardAnalyticsConstant.EVENT_NAME,
+                    BoardAnalyticsConstant.Category.SUBMIT,
+                    BoardAnalyticsConstant.Label.NOTICE_KEYWORD_MANAGE_ADD,
+                    binding.textInputSearch.text.toString()
+                )
                 viewModel.addKeyword(binding.textInputSearch.text.toString())
             }
             binding.textInputSearch.setOnEditorActionListener { _, id, _ ->
                 if (id == EditorInfo.IME_ACTION_DONE) {
+                    EventLogger.logCustomEvent(
+                        BoardAnalyticsConstant.EVENT_NAME,
+                        BoardAnalyticsConstant.Category.SUBMIT,
+                        BoardAnalyticsConstant.Label.NOTICE_KEYWORD_MANAGE_ADD,
+                        binding.textInputSearch.text.toString()
+                    )
                     viewModel.addKeyword(binding.textInputSearch.text.toString())
                     true
                 } else {
@@ -182,9 +202,10 @@ class ArticleKeywordFragment : Fragment() {
 
                             if (viewModel.myKeywords.value.contains(keyword).not()) {
                                 val onClick: (String) -> Unit = {
-                                    EventLogger.logClickEvent(
-                                        EventAction.CAMPUS,
-                                        AnalyticsConstant.Label.RECOMMENDED_KEYWORD,
+                                    EventLogger.logCustomEvent(
+                                        BoardAnalyticsConstant.EVENT_NAME,
+                                        BoardAnalyticsConstant.Category.SELECT,
+                                        BoardAnalyticsConstant.Label.NOTICE_KEYWORD_MANAGE_RECOMMENDED_KEYWORD,
                                         keyword
                                     )
                                     viewModel.addKeyword(it)
@@ -362,17 +383,19 @@ class ArticleKeywordFragment : Fragment() {
             }
 
             if (isChecked) {
-                EventLogger.logClickEvent(
-                    EventAction.CAMPUS,
-                    AnalyticsConstant.Label.KEYWORD_NOTIFICATION,
-                    "on"
+                EventLogger.logCustomEvent(
+                    BoardAnalyticsConstant.EVENT_NAME,
+                    BoardAnalyticsConstant.Category.TOGGLE,
+                    BoardAnalyticsConstant.Label.NOTICE_KEYWORD_MANAGE_NOTIFICATION,
+                    BoardAnalyticsConstant.Value.NOTIFICATION_ON
                 )
                 viewModel.updateSubscription(SubscribesType.ARTICLE_KEYWORD)
             } else {
-                EventLogger.logClickEvent(
-                    EventAction.CAMPUS,
-                    AnalyticsConstant.Label.KEYWORD_NOTIFICATION,
-                    "off"
+                EventLogger.logCustomEvent(
+                    BoardAnalyticsConstant.EVENT_NAME,
+                    BoardAnalyticsConstant.Category.TOGGLE,
+                    BoardAnalyticsConstant.Label.NOTICE_KEYWORD_MANAGE_NOTIFICATION,
+                    BoardAnalyticsConstant.Value.NOTIFICATION_OFF
                 )
                 viewModel.deleteSubscription(SubscribesType.ARTICLE_KEYWORD)
             }
