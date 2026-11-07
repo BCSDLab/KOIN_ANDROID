@@ -2,8 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>ComplexCondition:CustomContentStateExtensions.kt$content.startTime == otherContent.startTime || (content.startTime.isAfter(otherContent.startTime) &amp;&amp; content.startTime.isBefore(otherContent.endTime)) || content.endTime == otherContent.endTime || (content.endTime.isAfter(otherContent.startTime) &amp;&amp; content.endTime.isBefore(otherContent.endTime))</ID>
-    <ID>ComplexCondition:CustomContentStateExtensions.kt$event.start == content.startTime || (event.start.isAfter(content.startTime) &amp;&amp; event.start.isBefore(content.endTime)) || event.end == content.endTime || (event.end.isAfter(content.startTime) &amp;&amp; event.end.isBefore(content.endTime))</ID>
     <ID>CyclomaticComplexMethod:CustomContentState.kt$CustomContentState$fun formatTimeRange(): Int</ID>
     <ID>CyclomaticComplexMethod:TimetableContent.kt$@Composable fun TimetableContent( range: Int, events: List&lt;TimetableEvent&gt;, modifier: Modifier = Modifier, dayHeight: Dp = 20.dp, timeWidth: Dp = 20.dp, horizontalPadding: Dp = 0.dp, dayCount: Int = TimetableConstants.days.size, height: Dp = (TimetableConstants.eventHeight).dp, clickEvent: List&lt;TimetableEvent&gt; = emptyList(), etcClickEvent: List&lt;TimetableEvent&gt; = emptyList(), content: @Composable ( event: TimetableEvent, eventType: TimetableEventType, onEventTimeClick: (TimetableEvent) -&gt; Unit ) -&gt; Unit = { event, eventType, onClick -&gt; TimetableEventTime( range = range, event = event, modifier = Modifier, eventType = eventType, onEventTimeClick = onClick ) }, onEventClick: (event: TimetableEvent) -&gt; Unit = {}, onEventY: (y: Int) -&gt; Unit = {} )</ID>
     <ID>CyclomaticComplexMethod:TimetableTimePickerDialog.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun TimetableTimePickerDialog( title: String, isStartTime: Boolean, customContent: CustomExtraContentState, modifier: Modifier = Modifier, onDismiss: (content: CustomExtraContentState, visible: Boolean) -&gt; Unit = { _, _ -&gt; }, onConfirm: (customContent: CustomExtraContentState) -&gt; Unit = { } )</ID>
@@ -16,7 +14,6 @@
     <ID>MatchingDeclarationName:TimetableBottomSheet.kt$TimetableBottomSheetContentMode</ID>
     <ID>MatchingDeclarationName:TimetableEventTime.kt$TimetableEventType</ID>
     <ID>NestedBlockDepth:BitmapUtils.kt$BitmapUtils$fun saveBitmapImage(bitmap: Bitmap): Boolean</ID>
-    <ID>NestedBlockDepth:CustomContentStateExtensions.kt$internal fun CustomContentState.duplicationByTimeTableEvents(events: List&lt;TimetableEvent&gt;): TimetableEvent?</ID>
     <ID>NestedBlockDepth:TimetableEventTime.kt$@Composable private fun TimetableBasicEventTime( range: Int, event: TimetableEvent, modifier: Modifier = Modifier, onEventTimeClick: (event: TimetableEvent) -&gt; Unit = {} )</ID>
     <ID>NestedBlockDepth:TimetableScheduleBox.kt$private fun String.toSemesterTitle(timetableName: String): String</ID>
     <ID>NestedBlockDepth:TimetableViewModel.kt$TimetableViewModel$fun updateClickedTimetableEvents(timetableEvents: List&lt;TimetableEvent&gt;)</ID>

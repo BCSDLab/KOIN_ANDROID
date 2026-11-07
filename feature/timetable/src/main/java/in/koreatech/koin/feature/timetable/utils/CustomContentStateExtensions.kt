@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.timetable.utils
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.state.CustomContentState
 import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
+import java.time.LocalTime
 
 internal fun CustomContentState.isValidationPlace(): Boolean {
     val content = this.data
@@ -41,47 +42,39 @@ internal fun CustomContentState.permuteDuplicationLecture(): List<CustomExtraCon
 
 // 직접 강의 추가 시, 기존 강의와 중복 검증
 internal fun CustomContentState.duplicationByTimeTableEvents(events: List<TimetableEvent>): TimetableEvent? {
-    events.forEach { event ->
-        this.data.forEach { content ->
-            duplicateWithTimetableEvent(event, content).let {
-                if (it) {
-                    return event
-                }
-            }
-        }
+    return events.firstOrNull { event ->
+        data.any { content -> duplicateWithTimetableEvent(event, content) }
     }
-
-    return null
 }
 
 private fun duplicate(
     content: CustomExtraContentState,
     otherContent: CustomExtraContentState
-): Boolean {
-    if (content.dayOfWeek == otherContent.dayOfWeek) {
-        if (content.startTime == otherContent.startTime ||
-            (content.startTime.isAfter(otherContent.startTime) && content.startTime.isBefore(otherContent.endTime)) ||
-            content.endTime == otherContent.endTime ||
-            (content.endTime.isAfter(otherContent.startTime) && content.endTime.isBefore(otherContent.endTime))
-        ) {
-            return true
-        }
-    }
-    return false
-}
+): Boolean =
+    content.dayOfWeek == otherContent.dayOfWeek &&
+        timeRangesOverlap(
+            content.startTime,
+            content.endTime,
+            otherContent.startTime,
+            otherContent.endTime
+        )
 
 private fun duplicateWithTimetableEvent(
     event: TimetableEvent,
     content: CustomExtraContentState
-): Boolean {
-    if (event.dayOfWeek == content.dayOfWeek) {
-        if (event.start == content.startTime ||
-            (event.start.isAfter(content.startTime) && event.start.isBefore(content.endTime)) ||
-            event.end == content.endTime ||
-            (event.end.isAfter(content.startTime) && event.end.isBefore(content.endTime))
-        ) {
-            return true
-        }
-    }
-    return false
-}
+): Boolean =
+    event.dayOfWeek == content.dayOfWeek &&
+        timeRangesOverlap(
+            event.start,
+            event.end,
+            content.startTime,
+            content.endTime
+        )
+
+// 반개구간 [start, end) 기준으로 판정하므로 끝 시각과 시작 시각이 맞닿은 경우는 중복이 아니다.
+private fun timeRangesOverlap(
+    start: LocalTime,
+    end: LocalTime,
+    otherStart: LocalTime,
+    otherEnd: LocalTime
+): Boolean = start.isBefore(otherEnd) && otherStart.isBefore(end)
