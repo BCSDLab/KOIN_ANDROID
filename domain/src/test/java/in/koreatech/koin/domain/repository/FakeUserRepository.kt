@@ -3,6 +3,7 @@ package `in`.koreatech.koin.domain.repository
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.CodeCount
+import `in`.koreatech.koin.domain.model.user.StudentAcademicInfo
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserType
 import kotlin.Result
@@ -139,6 +140,14 @@ class FakeUserRepository : UserRepository {
     }
 
     override suspend fun findLoginIdBySms(phone: String, verificationCode: String): Result<String> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateStudentAcademicInfo(
+        department: String,
+        major: String?,
+        studentNumber: String?
+    ): Result<StudentAcademicInfo> {
         TODO("Not yet implemented")
     }
 }

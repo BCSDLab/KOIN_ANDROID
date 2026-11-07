@@ -4,6 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.error.recruitment.ProfileSaveFailedAfterAcademicUpdateException
+import `in`.koreatech.koin.domain.model.user.StudentAcademicInfoInput
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.dept.GetDeptNamesUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.GetTeamRecruitmentProfileUseCase
@@ -44,6 +46,21 @@ class ProfileCreateViewModel @Inject constructor(
         loadDepartments()
         if (arguments.isEditMode) {
             loadExistingProfile()
+        } else {
+            loadCurrentAcademicInfo()
+        }
+    }
+
+    private fun loadCurrentAcademicInfo() = intent {
+        getUserInfoUseCase().onSuccess { user ->
+            if (user is User.Student) {
+                reduce {
+                    state.copy(
+                        originalDepartment = user.major.orEmpty(),
+                        originalStudentId = user.studentNumber.orEmpty()
+                    )
+                }
+            }
         }
     }
 
@@ -62,6 +79,9 @@ class ProfileCreateViewModel @Inject constructor(
                         nickname = profile.profileNickname,
                         department = profile.department,
                         studentId = profile.studentNumber,
+                        originalDepartment = profile.department,
+                        originalMajor = profile.major,
+                        originalStudentId = profile.studentNumber,
                         preferredRole = profile.preferredRole,
                         skills = profile.skills.mapIndexed { index, text ->
                             SkillEntry(id = index.toLong() + 1L, text = text)
@@ -212,18 +232,42 @@ class ProfileCreateViewModel @Inject constructor(
 
     fun saveProfile() = intent {
         reduce { state.copy(isSaving = true, showSaveConfirmDialog = false, errorMessage = null) }
+
         saveTeamRecruitmentProfileUseCase(
             profileNickname = state.nickname,
             preferredRole = state.preferredRole,
             skills = state.skills.map { it.text }.filter { it.isNotBlank() },
             activities = state.activities.map { it.toTeamRecruitmentActivityInput() },
-            selfIntroduction = state.selfIntroduction
+            selfIntroduction = state.selfIntroduction,
+            academicInfo = state.toAcademicInfoInputOrNull()
         ).onSuccess {
             reduce { state.copy(isSaving = false) }
             postSideEffect(ProfileCreateSideEffect.SaveSuccess)
         }.onFailure { throwable ->
-            reduce { state.copy(isSaving = false, errorMessage = throwable.toRecruitmentErrorMessage()) }
+            if (throwable is ProfileSaveFailedAfterAcademicUpdateException) {
+                val academicInfo = throwable.academicInfo
+                reduce {
+                    state.copy(
+                        isSaving = false,
+                        errorMessage = throwable.cause.toRecruitmentErrorMessage(),
+                        originalDepartment = academicInfo.department ?: state.department,
+                        originalMajor = academicInfo.major,
+                        originalStudentId = academicInfo.studentNumber ?: state.studentId
+                    )
+                }
+            } else {
+                reduce { state.copy(isSaving = false, errorMessage = throwable.toRecruitmentErrorMessage()) }
+            }
             postSideEffect(ProfileCreateSideEffect.SaveFailure)
         }
+    }
+
+    private fun ProfileCreateState.toAcademicInfoInputOrNull(): StudentAcademicInfoInput? {
+        if (!isDepartmentChanged && !isStudentIdChanged) return null
+        return StudentAcademicInfoInput(
+            department = department,
+            major = if (isDepartmentChanged) null else originalMajor,
+            studentNumber = if (isStudentIdChanged) studentId else null
+        )
     }
 }

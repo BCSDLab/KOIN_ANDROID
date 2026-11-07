@@ -45,6 +45,7 @@ sealed class KoinUserException : KoinErrorException() {
     class LoginIdConflictException : KoinUserException()
     class NicknameConflictException : KoinUserException()
     class NicknameOrEmailConflictException : KoinUserException()
+    class AcademicInfoConflictException : KoinUserException()
 
     /*
      * Exceptions for 429 Too Many Requests
