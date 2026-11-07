@@ -151,8 +151,9 @@ fun ABTestEntity.toABTest() = ABTest(
     accessHistoryId = accessHistoryId
 )
 
-fun StudentAcademicInfoResponse.toStudentAcademicInfo() = StudentAcademicInfo(
-    studentNumber = studentNumber,
-    department = department,
-    major = major
-)
+fun StudentAcademicInfoResponse.toStudentAcademicInfo() =
+    StudentAcademicInfo(
+        studentNumber = this.studentNumber,
+        department = this.department,
+        major = this.major
+    )

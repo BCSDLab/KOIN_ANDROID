@@ -40,7 +40,7 @@ interface UserAuthApi {
 
     @PUT("user/student/academic-info")
     suspend fun putStudentAcademicInfo(
-        @Body request: StudentAcademicInfoRequest
+        @Body studentAcademicInfoRequest: StudentAcademicInfoRequest
     ): StudentAcademicInfoResponse
 
     @PUT("v2/users/me")

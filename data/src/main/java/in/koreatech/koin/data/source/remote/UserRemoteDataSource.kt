@@ -81,8 +81,10 @@ class UserRemoteDataSource(
         return userAuthApi.putStudentUser(studentUserRequest)
     }
 
-    suspend fun updateStudentAcademicInfo(request: StudentAcademicInfoRequest): StudentAcademicInfoResponse {
-        return userAuthApi.putStudentAcademicInfo(request)
+    suspend fun updateStudentAcademicInfo(
+        studentAcademicInfoRequest: StudentAcademicInfoRequest
+    ): StudentAcademicInfoResponse {
+        return userAuthApi.putStudentAcademicInfo(studentAcademicInfoRequest)
     }
 
     suspend fun updateGeneralUser(generalUserRequest: GeneralUserRequest): GeneralUserResponse {

@@ -191,25 +191,25 @@ class UserRepositoryImpl @Inject constructor(
         studentNumber: String?
     ): Result<StudentAcademicInfo> {
         return suspendRunCatching {
-            val academicInfo = userRemoteDataSource.updateStudentAcademicInfo(
+            userRemoteDataSource.updateStudentAcademicInfo(
                 StudentAcademicInfoRequest(
                     studentNumber = studentNumber,
                     department = department,
                     major = major
                 )
             ).toStudentAcademicInfo()
-
-            val cachedUser = userLocalDataSource.user.first()
-            if (cachedUser is User.Student) {
-                userLocalDataSource.updateUserInfo(
-                    cachedUser.copy(
-                        major = academicInfo.department ?: cachedUser.major,
-                        studentNumber = academicInfo.studentNumber ?: cachedUser.studentNumber
+        }.onSuccess { academicInfo ->
+            suspendRunCatching {
+                val cachedUser = userLocalDataSource.user.first()
+                if (cachedUser is User.Student) {
+                    userLocalDataSource.updateUserInfo(
+                        cachedUser.copy(
+                            major = academicInfo.department ?: cachedUser.major,
+                            studentNumber = academicInfo.studentNumber ?: cachedUser.studentNumber
+                        )
                     )
-                )
+                }
             }
-
-            academicInfo
         }.mapHttpFailure {
             on(400) throws KoinUserException.DataInvalidException()
             on(401) throws KoinUserException.UnauthorizedException()

@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.error.recruitment.ProfileSaveFailedAfterAcademicUpdateException
 import `in`.koreatech.koin.domain.model.user.StudentAcademicInfoInput
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.dept.GetDeptNamesUseCase
@@ -52,16 +51,17 @@ class ProfileCreateViewModel @Inject constructor(
     }
 
     private fun loadCurrentAcademicInfo() = intent {
-        getUserInfoUseCase().onSuccess { user ->
-            if (user is User.Student) {
-                reduce {
-                    state.copy(
-                        originalDepartment = user.major.orEmpty(),
-                        originalStudentId = user.studentNumber.orEmpty()
-                    )
+        getUserInfoUseCase()
+            .onSuccess { user ->
+                if (user is User.Student) {
+                    reduce {
+                        state.copy(
+                            originalDepartment = user.major.orEmpty(),
+                            originalStudentId = user.studentNumber.orEmpty()
+                        )
+                    }
                 }
             }
-        }
     }
 
     private fun loadDepartments() = intent {
@@ -239,25 +239,21 @@ class ProfileCreateViewModel @Inject constructor(
             skills = state.skills.map { it.text }.filter { it.isNotBlank() },
             activities = state.activities.map { it.toTeamRecruitmentActivityInput() },
             selfIntroduction = state.selfIntroduction,
-            academicInfo = state.toAcademicInfoInputOrNull()
+            academicInfo = state.toAcademicInfoInputOrNull(),
+            onAcademicInfoUpdated = { info ->
+                reduce {
+                    state.copy(
+                        originalDepartment = info.department ?: state.department,
+                        originalMajor = info.major,
+                        originalStudentId = info.studentNumber ?: state.studentId
+                    )
+                }
+            }
         ).onSuccess {
             reduce { state.copy(isSaving = false) }
             postSideEffect(ProfileCreateSideEffect.SaveSuccess)
         }.onFailure { throwable ->
-            if (throwable is ProfileSaveFailedAfterAcademicUpdateException) {
-                val academicInfo = throwable.academicInfo
-                reduce {
-                    state.copy(
-                        isSaving = false,
-                        errorMessage = throwable.cause.toRecruitmentErrorMessage(),
-                        originalDepartment = academicInfo.department ?: state.department,
-                        originalMajor = academicInfo.major,
-                        originalStudentId = academicInfo.studentNumber ?: state.studentId
-                    )
-                }
-            } else {
-                reduce { state.copy(isSaving = false, errorMessage = throwable.toRecruitmentErrorMessage()) }
-            }
+            reduce { state.copy(isSaving = false, errorMessage = throwable.toRecruitmentErrorMessage()) }
             postSideEffect(ProfileCreateSideEffect.SaveFailure)
         }
     }
