@@ -84,7 +84,11 @@ sealed class StoreReviewNavType {
     data class StoreReviewEdit(val storeNavigationData: StoreNavigationData, val reviewId: Int, val storeName: String) : StoreReviewNavType()
 
     @Serializable
-    data class StoreReviewReport(val storeNavigationData: StoreNavigationData, val reviewId: Int) : StoreReviewNavType()
+    data class StoreReviewReport(
+        val storeNavigationData: StoreNavigationData,
+        val reviewId: Int,
+        val storeName: String
+    ) : StoreReviewNavType()
 }
 
 data class NavigationBarItem(

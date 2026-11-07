@@ -41,6 +41,8 @@ import `in`.koreatech.bus.state.ShuttleCoursesState
 import `in`.koreatech.bus.type.ShuttleBusOperationType
 import `in`.koreatech.bus.util.LocalSelectedTimetableTab
 import `in`.koreatech.bus.util.formatPeriod
+import `in`.koreatech.koin.core.analytics.BusAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipDefaults
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
@@ -71,9 +73,11 @@ internal fun ShuttleCoursesScreenContent(
                 titles = ShuttleBusOperationType.entries.map { stringResource(it.titleRes) },
                 onChipSelected = { title ->
                     selectedRouteType = ShuttleBusOperationType.entries.find { context.getString(it.titleRes) == title } ?: ShuttleBusOperationType.ALL
-                    EventLogger.logCampusClickEvent(
-                        "shuttle_bus_route",
-                        context.getString(selectedRouteType.titleRes)
+                    EventLogger.logCustomEvent(
+                        action = EventAction.DA1.value,
+                        category = BusAnalyticsConstant.Category.SELECT,
+                        label = BusAnalyticsConstant.Label.SHUTTLE_ROUTE_FILTER,
+                        value = context.getString(selectedRouteType.titleRes)
                     )
                 },
                 selectedChipIndexes = intArrayOf(selectedRouteType.ordinal),
@@ -111,9 +115,10 @@ internal fun ShuttleCoursesScreenContent(
                     region = courseEntry.key,
                     shuttleCourseRoutes = filteredValue.toImmutableList(),
                     onItemClicked = {
-                        EventLogger.logCampusClickEvent(
-                            "area_specific_route",
-                            "${context.getString(it.type.simpleTitleRes)}_${it.routeName}"
+                        EventLogger.logClickEvent(
+                            EventAction.DA1,
+                            BusAnalyticsConstant.Label.SHUTTLE_ROUTE_ENTRY,
+                            "${context.getString(it.type.simpleTitleRes)}${BusAnalyticsConstant.Value.SEPARATOR}${it.routeName}"
                         )
                         onItemClicked(it)
                     }
@@ -142,7 +147,7 @@ internal fun ShuttleCoursesScreenContent(
             )
             WrongInformationText(
                 modifier = Modifier.padding(top = 4.dp, start = 24.dp),
-                loggingEventValue = LocalSelectedTimetableTab.current.getEventValue()
+                loggingEventValue = LocalSelectedTimetableTab.current.getTabEventValue()
             )
             Spacer(modifier = Modifier.height(100.dp))
             Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))

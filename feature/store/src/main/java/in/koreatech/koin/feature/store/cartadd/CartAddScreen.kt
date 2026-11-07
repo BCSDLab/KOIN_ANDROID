@@ -125,6 +125,7 @@ fun CartAddScreen(
             )
         )
         KoinStoreSignInDialog(
+            onDismiss = viewModel::hideSignInDialog,
             onPositive = {
                 navigator.navigateToSignIn(context, "$DEEPLINK_STORE_ADD_CART/${uiState.orderableShopId}/${uiState.orderableShopMenuId}/$cartData").apply {
                     context.startActivity(this)

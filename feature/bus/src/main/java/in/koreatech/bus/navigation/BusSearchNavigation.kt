@@ -19,6 +19,8 @@ import `in`.koreatech.bus.screen.search.composable.BusSearchScreen
 import `in`.koreatech.bus.screen.searchresult.composable.BusSearchResultScreen
 import `in`.koreatech.bus.type.PlaceType
 import `in`.koreatech.bus.util.findActivity
+import `in`.koreatech.koin.core.analytics.BusAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import kotlin.reflect.typeOf
 
@@ -70,9 +72,10 @@ fun BusSearchNavigation(
                     .fillMaxSize()
                     .background(Color.White),
                 onNavigationIconClick = {
-                    EventLogger.logCampusClickEvent(
-                        "search_result_back",
-                        "뒤로가기"
+                    EventLogger.logClickEvent(
+                        EventAction.DA1,
+                        BusAnalyticsConstant.Label.SEARCH_RESULT_BACK,
+                        BusAnalyticsConstant.Value.BACK
                     )
                     navController.popBackStack()
                 }

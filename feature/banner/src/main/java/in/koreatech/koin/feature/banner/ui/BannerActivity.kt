@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.BannerAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
@@ -52,17 +52,23 @@ class BannerActivity : ComponentActivity() {
                 }
             }
 
+            LaunchedEffect(uiState.isLoading, uiState.bannerList) {
+                if (!uiState.isLoading && uiState.bannerList.isNotEmpty()) {
+                    EventLogger.logCustomEvent(
+                        BannerAnalyticsConstant.EVENT_NAME,
+                        BannerAnalyticsConstant.Category.EXPOSURE,
+                        BannerAnalyticsConstant.Label.MODAL_EXPOSURE,
+                        uiState.bannerList[0].id.toString()
+                    )
+                }
+            }
+
             KoinTheme {
                 if (!uiState.isLoading) {
                     if (uiState.bannerList.isEmpty()) { // Finish activity if banner list is empty
                         finishActivity()
                         return@KoinTheme
                     }
-                    EventLogger.logEntryEvent(
-                        action = EventAction.CAMPUS,
-                        label = "main_modal_entry",
-                        value = uiState.bannerList[0].title
-                    )
                     Scaffold(
                         modifier = Modifier.fillMaxSize(),
                         containerColor = Color.Transparent,

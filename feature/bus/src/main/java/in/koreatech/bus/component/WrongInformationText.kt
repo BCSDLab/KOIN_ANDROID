@@ -8,6 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.analytics.BusAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -24,8 +26,9 @@ internal fun WrongInformationText(
     LeadingIconText(
         modifier =
         modifier.noRippleClickable {
-            EventLogger.logCampusClickEvent(
-                "error_feedback_button",
+            EventLogger.logClickEvent(
+                EventAction.DA1,
+                BusAnalyticsConstant.Label.FEEDBACK_ENTRY,
                 loggingEventValue
             )
             val url = GOOGLE_FORM_URL

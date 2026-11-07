@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.store.nearby
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -58,6 +59,7 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
+import `in`.koreatech.koin.core.analytics.ShopAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.core.util.KoinCoilImageLoader
@@ -85,7 +87,6 @@ import `in`.koreatech.koin.feature.store.model.LocalStoreCategories
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
@@ -133,20 +134,9 @@ fun StoreNearbyScreen(
         viewModel.getUserType()
     }
 
-    LaunchedEffect(Unit) {
-        snapshotFlow { uiState.selectedStoreFilter }.distinctUntilChanged().collect {
-            if (it.contains(StoreFilter.IS_OPEN)) {
-                EventLogger.logClickEvent(
-                    EventAction.BUSINESS,
-                    AnalyticsConstant.Label.SHOP_CAN,
-                    "check_open_${uiState.storeCategories.firstOrNull { uiState.categoryId == it.id }?.name}"
-                )
-            }
-        }
-    }
-
     if (uiState.showSignInDialog) {
         KoinStoreSignInDialog(
+            onDismiss = viewModel::hideSignInDialog,
             onPositive = {
                 navigator.navigateToSignIn(context, DEEPLINK_STORE_MAIN_NEARBY).apply {
                     context.startActivity(this)
@@ -173,7 +163,6 @@ fun StoreNearbyScreen(
                 showOrderOptions = uiState.showOrderOptions,
                 storeList = uiState.orderableShops,
                 categoryId = uiState.categoryId,
-                initCategoryId = categoryId,
                 storeCategories = uiState.storeCategories,
                 selectedOrderOption = uiState.selectedOrderOption,
                 selectedStoreFilter = uiState.selectedStoreFilter,
@@ -218,7 +207,16 @@ private fun StoreNearbyTopAppBar(
         actions = {
             if (!LocalDeliveryDeveloperOption.current) return@KoinStoreTopAppBar
             Box(contentAlignment = Alignment.TopEnd) {
-                IconButton(onClick = onCartClick) {
+                IconButton(
+                    onClick = {
+                        onCartClick()
+                        EventLogger.logClickEvent(
+                            EventAction.DA1,
+                            ShopAnalyticsConstant.SHOP_LIST_CART_ENTRY_CLICK,
+                            ShopAnalyticsConstant.VALUE_CART
+                        )
+                    }
+                ) {
                     Icon(
                         modifier = Modifier.size(24.dp).padding(1.dp),
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_shopping_cart),
@@ -257,7 +255,6 @@ private fun StoreNearbyTopAppBar(
 private fun StoreNearbyScreen(
     showEmptyState: Boolean,
     categoryId: Int,
-    initCategoryId: Int,
     storeList: ImmutableList<LocalShop>,
     storeCategories: ImmutableList<LocalStoreCategories>,
     selectedOrderOption: OrderOption,
@@ -285,7 +282,6 @@ private fun StoreNearbyScreen(
         ) {
             StoreNearbyCategorySection(
                 categoryId = categoryId,
-                initCategoryId = initCategoryId,
                 storeCategories = storeCategories,
                 categoryListState = categoryListState,
                 navigateToSearch = navigateToSearch,
@@ -304,14 +300,13 @@ private fun StoreNearbyScreen(
             StoreNearbyStoreList(
                 showEmptyState = showEmptyState,
                 storeList = storeList,
-                previousCategoryName = storeCategories.firstOrNull { it.id == initCategoryId }?.name.orEmpty(),
+                categoryName = storeCategories.firstOrNull { it.id == categoryId }?.name.orEmpty(),
                 shopListState = shopListState,
                 navigateToDetail = navigateToDetail
             )
         }
 
         StoreNearbyBottomSheets(
-            categoryName = storeCategories.firstOrNull { it.id == categoryId }?.name.orEmpty(),
             showOrderOptions = showOrderOptions,
             showMinimumPriceOptions = showMinimumPriceOptions,
             selectedOrderOption = selectedOrderOption,
@@ -327,7 +322,6 @@ private fun StoreNearbyScreen(
 @Composable
 private fun StoreNearbyCategorySection(
     categoryId: Int,
-    initCategoryId: Int,
     storeCategories: ImmutableList<LocalStoreCategories>,
     categoryListState: LazyListState,
     navigateToSearch: () -> Unit,
@@ -353,9 +347,9 @@ private fun StoreNearbyCategorySection(
         onClick = {
             navigateToSearch()
             EventLogger.logClickEvent(
-                EventAction.BUSINESS,
-                AnalyticsConstant.Label.SHOP_CATEGORIES_SEARCH,
-                "search in ${storeCategories.firstOrNull { it.id == categoryId }?.name}"
+                EventAction.DA1,
+                ShopAnalyticsConstant.SHOP_LIST_SEARCH_CLICK,
+                storeCategories.firstOrNull { it.id == categoryId }?.name.orEmpty()
             )
         }
     )
@@ -383,18 +377,9 @@ private fun StoreNearbyCategorySection(
                 onClick = {
                     onCategoryChange(category.id)
                     EventLogger.logClickEvent(
-                        EventAction.BUSINESS,
-                        AnalyticsConstant.Label.SHOP_CATEGORIES,
-                        storeCategories.firstOrNull { it.id == initCategoryId }?.name.orEmpty(),
-                        EventExtra(
-                            AnalyticsConstant.PREVIOUS_PAGE,
-                            storeCategories.firstOrNull { it.id == categoryId }?.name.orEmpty()
-                        ),
-                        EventExtra(AnalyticsConstant.CURRENT_PAGE, category.name),
-                        EventExtra(
-                            AnalyticsConstant.DURATION_TIME,
-                            EventUtils.getElapsedTimeAndReset().toString()
-                        )
+                        EventAction.DA1,
+                        ShopAnalyticsConstant.SHOP_LIST_CATEGORY_CLICK,
+                        category.name
                     )
                 }
             )
@@ -459,7 +444,17 @@ private fun StoreNearbyFilterSection(
             } else {
                 KoinStoreChipDefaults.koinStoreIconStyle()
             },
-            onClick = { onSelectedStoreFilterChange(storeFilter) }
+            onClick = {
+                onSelectedStoreFilterChange(storeFilter)
+                if (!isSelected) {
+                    EventLogger.logCustomEvent(
+                        EventAction.DA1.value,
+                        ShopAnalyticsConstant.CATEGORY_SELECT,
+                        ShopAnalyticsConstant.SHOP_LIST_QUICK_FILTER_SELECT,
+                        ShopAnalyticsConstant.VALUE_FILTER_IS_OPEN
+                    )
+                }
+            }
         )
 
         Spacer(modifier = Modifier.width(16.dp))
@@ -470,10 +465,33 @@ private fun StoreNearbyFilterSection(
 private fun StoreNearbyStoreList(
     showEmptyState: Boolean,
     storeList: ImmutableList<LocalShop>,
-    previousCategoryName: String,
+    categoryName: String,
     shopListState: LazyListState,
     navigateToDetail: (Int) -> Unit
 ) {
+    LaunchedEffect(shopListState, categoryName) {
+        var isUserScrolling = false
+        launch {
+            shopListState.interactionSource.interactions.collect { interaction ->
+                if (interaction is DragInteraction.Start) {
+                    isUserScrolling = true
+                } else if (interaction is DragInteraction.Cancel) {
+                    isUserScrolling = false
+                }
+            }
+        }
+        snapshotFlow { shopListState.isScrollInProgress }.collect { inProgress ->
+            if (!inProgress && isUserScrolling) {
+                isUserScrolling = false
+                EventLogger.logScrollEvent(
+                    EventAction.DA1,
+                    ShopAnalyticsConstant.SHOP_LIST_SCROLL,
+                    categoryName
+                )
+            }
+        }
+    }
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -525,15 +543,9 @@ private fun StoreNearbyStoreList(
                     onClick = {
                         navigateToDetail(store.shopId)
                         EventLogger.logClickEvent(
-                            EventAction.BUSINESS,
-                            AnalyticsConstant.Label.SHOP_CLICK,
-                            store.name,
-                            EventExtra(AnalyticsConstant.PREVIOUS_PAGE, previousCategoryName),
-                            EventExtra(AnalyticsConstant.CURRENT_PAGE, store.name),
-                            EventExtra(
-                                AnalyticsConstant.DURATION_TIME,
-                                EventUtils.getElapsedTimeAndReset().toString()
-                            )
+                            EventAction.DA1,
+                            ShopAnalyticsConstant.SHOP_LIST_DETAIL_ENTRY_CLICK,
+                            store.name
                         )
                     }
                 )
@@ -548,7 +560,6 @@ private fun StoreNearbyStoreList(
 
 @Composable
 private fun StoreNearbyBottomSheets(
-    categoryName: String,
     showOrderOptions: Boolean,
     showMinimumPriceOptions: Boolean,
     selectedOrderOption: OrderOption,
@@ -561,20 +572,18 @@ private fun StoreNearbyBottomSheets(
     val context = LocalContext.current
 
     if (showOrderOptions) {
+        val optionNames = OrderOption.entries.map { stringResource(it.stringResId) }
         SortBottomSheet(
             currentIndex = selectedOrderOption.ordinal,
-            options = OrderOption.entries.map { stringResource(it.stringResId) },
+            options = optionNames,
             onSelect = { index ->
                 onSelectedOrderOptionChange(OrderOption.entries[index])
                 onShowOrderOptionsChange(false)
-                EventLogger.logClickEvent(
-                    EventAction.BUSINESS,
-                    AnalyticsConstant.Label.SHOP_CAN,
-                    when (index) {
-                        0 -> "check_default_$categoryName"
-                        1 -> "check_review_$categoryName"
-                        else -> "check_star_$categoryName"
-                    }
+                EventLogger.logCustomEvent(
+                    EventAction.DA1.value,
+                    ShopAnalyticsConstant.CATEGORY_SELECT,
+                    ShopAnalyticsConstant.SHOP_LIST_SORT_SELECT,
+                    optionNames[index]
                 )
             },
             onClose = { onShowOrderOptionsChange(false) }
@@ -617,7 +626,6 @@ private fun StoreNearbyScreenPreview() {
         StoreNearbyScreen(
             showEmptyState = false,
             showOrderOptions = false,
-            initCategoryId = 0,
             categoryId = 0,
             storeList = persistentListOf(
                 LocalShop(

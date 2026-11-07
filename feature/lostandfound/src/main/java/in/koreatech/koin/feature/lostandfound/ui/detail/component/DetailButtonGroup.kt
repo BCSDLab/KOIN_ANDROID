@@ -19,8 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.LostAndFoundAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
@@ -49,9 +50,11 @@ fun DetailButtonGroup(
             title = stringResource(R.string.detail_delete_dialog_title),
             titleStyle = RebrandKoinTheme.typography.medium14.copy(color = RebrandKoinTheme.colors.neutral600),
             onPositive = {
-                EventLogger.logCampusClickEvent(
-                    AnalyticsConstant.Label.LostAndFound.FIND_USER_DELETE_CONFIRM,
-                    "확인"
+                EventLogger.logCustomEvent(
+                    LostAndFoundAnalyticsConstant.EVENT_NAME,
+                    EventCategory.CLICK.value,
+                    LostAndFoundAnalyticsConstant.Label.DETAIL_DELETE_CONFIRM,
+                    LostAndFoundAnalyticsConstant.Value.CONFIRM
                 )
                 onDeleteArticleClick()
                 onShowDeleteDialogChange(false)
@@ -110,8 +113,10 @@ fun DetailButtonGroup(
                 contentPadding = PaddingValues(10.dp, 6.dp),
                 onClick = {
                     onShowDeleteDialogChange(true)
-                    EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LostAndFound.FIND_USER_DELETE,
+                    EventLogger.logCustomEvent(
+                        LostAndFoundAnalyticsConstant.EVENT_NAME,
+                        EventCategory.CLICK.value,
+                        LostAndFoundAnalyticsConstant.Label.DETAIL_DELETE_OPEN,
                         loggingLostOrFound
                     )
                 },

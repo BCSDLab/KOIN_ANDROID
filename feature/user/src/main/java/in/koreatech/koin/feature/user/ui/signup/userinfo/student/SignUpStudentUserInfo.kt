@@ -30,8 +30,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.AccountAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -55,6 +56,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun SignUpStudentUserInfo(
+    sessionId: String,
     modifier: Modifier = Modifier,
     viewModel: SignUpStudentViewModel = hiltViewModel(),
     navigateToNextScreen: () -> Unit
@@ -64,6 +66,7 @@ fun SignUpStudentUserInfo(
     viewModel.collectSideEffect {
         handleSideEffect(
             sideEffect = it,
+            sessionId = sessionId,
             navigateToNextScreen = navigateToNextScreen
         )
     }
@@ -509,14 +512,17 @@ private fun SignUpStudentUserInfoNickNameEmailStep(
 
 private fun handleSideEffect(
     sideEffect: SignUpStudentSideEffect,
+    sessionId: String,
     navigateToNextScreen: () -> Unit
 ) {
     when (sideEffect) {
         is SignUpStudentSideEffect.SignUpSuccess -> {
-            EventLogger.logClickEvent(
-                EventAction.USER,
-                AnalyticsConstant.Label.SIGN_UP_COMPLETED,
-                "회원가입완료"
+            EventLogger.logSessionEvent(
+                action = EventAction.DA2,
+                category = EventCategory.CLICK,
+                label = AccountAnalyticsConstant.Label.SignUp.CONFIRM,
+                value = AccountAnalyticsConstant.Value.SIGN_UP_COMPLETED,
+                customSessionId = sessionId
             )
             navigateToNextScreen()
         }

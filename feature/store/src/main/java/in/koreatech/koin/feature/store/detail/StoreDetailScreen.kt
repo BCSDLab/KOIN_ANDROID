@@ -66,9 +66,9 @@ import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
-import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
+import `in`.koreatech.koin.core.analytics.ShopAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
@@ -203,8 +203,8 @@ fun StoreDetailScreen(
             .distinctUntilChanged()
             .collect {
                 EventLogger.logScrollEvent(
-                    EventAction.BUSINESS,
-                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW,
+                    EventAction.DA1,
+                    ShopAnalyticsConstant.SHOP_DETAIL_MENU_SCROLL,
                     uiState.store.name
                 )
             }
@@ -243,10 +243,9 @@ fun StoreDetailScreen(
     BackHandler {
         navigateToBack()
         EventLogger.logClickEvent(
-            EventAction.BUSINESS,
-            AnalyticsConstant.Label.SHOP_DETAIL_VIEW_BACK,
-            uiState.store.name,
-            EventExtra(AnalyticsConstant.DURATION_TIME, "${EventUtils.getElapsedTime()}")
+            EventAction.DA1,
+            ShopAnalyticsConstant.SHOP_DETAIL_NAVIGATION_BACK_CLICK,
+            ShopAnalyticsConstant.VALUE_BACK_SWIPE
         )
     }
 
@@ -267,7 +266,14 @@ fun StoreDetailScreen(
             viewModel.setCallDialogState(false)
         },
         onCallDialogDismiss = { viewModel.setCallDialogState(false) },
-        onImageClick = { viewModel.setImageDialogState(true) },
+        onImageClick = {
+            viewModel.setImageDialogState(true)
+            EventLogger.logClickEvent(
+                EventAction.DA1,
+                ShopAnalyticsConstant.SHOP_DETAIL_PHOTO_OPEN_CLICK,
+                uiState.store.name
+            )
+        },
         onImageDialogDismiss = { viewModel.setImageDialogState(false) },
         onSignIn = {
             navigator.navigateToSignIn(
@@ -427,10 +433,9 @@ private fun StoreDetailDialogs(
             call = {
                 onCall(it)
                 EventLogger.logClickEvent(
-                    EventAction.BUSINESS,
-                    AnalyticsConstant.Label.SHOP_CALL,
-                    storeName,
-                    EventExtra(AnalyticsConstant.DURATION_TIME, "${EventUtils.getElapsedTimeAndReset()}")
+                    EventAction.DA1,
+                    ShopAnalyticsConstant.SHOP_DETAIL_CONTACT_PHONE_CLICK,
+                    storeName
                 )
             },
             onDismissRequest = onCallDialogDismiss
@@ -446,6 +451,7 @@ private fun StoreDetailDialogs(
 
     if (showSignInDialog) {
         KoinStoreSignInDialog(
+            onDismiss = onSignInDialogDismiss,
             onPositive = onSignIn,
             onNegative = onSignInDialogDismiss
         )
@@ -495,10 +501,9 @@ private fun StoreDetailTopAppBar(
         onNavigationIconClick = {
             onBackClick()
             EventLogger.logClickEvent(
-                EventAction.BUSINESS,
-                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_BACK,
-                storeName,
-                EventExtra(AnalyticsConstant.DURATION_TIME, "${EventUtils.getElapsedTime()}")
+                EventAction.DA1,
+                ShopAnalyticsConstant.SHOP_DETAIL_NAVIGATION_BACK_CLICK,
+                ShopAnalyticsConstant.VALUE_BACK
             )
         },
         actions = {
@@ -595,8 +600,8 @@ private fun StoreDetailMenuList(
                             uiState.store.name
                         )
                         EventLogger.logClickEvent(
-                            EventAction.BUSINESS,
-                            AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW,
+                            EventAction.DA1,
+                            ShopAnalyticsConstant.SHOP_DETAIL_REVIEW_ENTRY_CLICK,
                             uiState.store.name
                         )
                     },
@@ -610,8 +615,8 @@ private fun StoreDetailMenuList(
                     },
                     navigateToNotice = {
                         EventLogger.logClickEvent(
-                            EventAction.BUSINESS,
-                            AnalyticsConstant.Label.SHOP_BENEFIT_ENTRY,
+                            EventAction.DA1,
+                            ShopAnalyticsConstant.SHOP_DETAIL_EVENT_ENTRY_CLICK,
                             uiState.store.name
                         )
                         navigateToNotice(StoreDetailInfoType.EVENT.name)
@@ -646,11 +651,6 @@ private fun StoreDetailMenuList(
                     .padding(horizontal = 16.dp),
                 onMenuClick = {
                     onMenuClick(it)
-                    EventLogger.logClickEvent(
-                        EventAction.BUSINESS,
-                        AnalyticsConstant.Label.SHOP_DETAIL_VIEW,
-                        uiState.store.name
-                    )
                 }
             )
         }

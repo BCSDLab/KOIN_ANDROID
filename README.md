@@ -96,6 +96,16 @@ KOIN_ANDROID/
 | <img width="225" src="https://github.com/user-attachments/assets/32a91ebd-d5cf-4fc4-8541-27c0ba99b614" /> | <img width="225" src="https://github.com/user-attachments/assets/f0c59b22-6881-43fe-a5a9-f66ccec15e9d" />| <img width="225" src="https://github.com/user-attachments/assets/ec0d1dc2-de44-4001-830f-425bbd9336fa" />|
 </details>
 
+## 이벤트 로깅
+
+[Event Log 명세](https://app.notion.com/p/Event-Log-1ba9ae650b5980fdaf22cc7777c8ffd1)를 기준으로 기록한다.
+
+- 회원가입은 진입 시점의 `custom_session_id`를 전체 가입 과정과 화면 복원 시 유지한다.
+- 시간표 탈출은 실제 화면을 나갈 때만 기록하며, 수업 편집 시트 닫기는 제외한다.
+- 상점 목록 스크롤은 사용자 드래그와 이어지는 fling을 한 번으로 기록하고 자동 이동은 제외한다.
+- 리뷰 로그인 팝업의 닫기 버튼 클릭과 시스템 뒤로가기·바깥 터치를 구분한다.
+- 키워드 알림 진입은 앱의 콜드·웜 시작 모두 한 번 기록한다.
+
 ## Git Branch Strategy
 
 

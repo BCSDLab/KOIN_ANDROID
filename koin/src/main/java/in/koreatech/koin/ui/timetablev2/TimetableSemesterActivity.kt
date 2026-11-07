@@ -25,6 +25,9 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.TimetableAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.component.snackbar.KoinSnackbarDuration
 import `in`.koreatech.koin.core.designsystem.component.snackbar.KoinSnackbarHost
 import `in`.koreatech.koin.core.designsystem.component.snackbar.KoinSnackbarResult
@@ -109,6 +112,7 @@ class TimetableSemesterActivity : ComponentActivity() {
                         years = screenState.availableYears,
                         userSemesters = screenState.userSemesters,
                         onConfirm = { selectedSemesters ->
+                            logSemesterManageApply(screenState.userSemesters, selectedSemesters)
                             viewModel.updateSelectedSemesters(selectedSemesters)
                             if (screenState.userSemesters.any { it !in selectedSemesters }) {
                                 viewModel.updateDeleteSemesterDialogVisible(true)
@@ -260,6 +264,34 @@ class TimetableSemesterActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun logSemesterManageApply(
+        previousSemesters: List<SemesterModel>,
+        selectedSemesters: List<SemesterModel>
+    ) {
+        val changes = buildString {
+            for (semester in selectedSemesters) {
+                if (semester !in previousSemesters) {
+                    if (isNotEmpty()) append(',')
+                    append(TimetableAnalyticsConstant.Value.ADD).append('_')
+                    append(semester.year).append('_').append(getString(semester.type.stringRes))
+                }
+            }
+            for (semester in previousSemesters) {
+                if (semester !in selectedSemesters) {
+                    if (isNotEmpty()) append(',')
+                    append(TimetableAnalyticsConstant.Value.DELETE).append('_')
+                    append(semester.year).append('_').append(getString(semester.type.stringRes))
+                }
+            }
+        }
+        if (changes.isEmpty()) return
+        EventLogger.logClickEvent(
+            EventAction.DA1,
+            TimetableAnalyticsConstant.Label.SEMESTER_MANAGE_APPLY,
+            changes
+        )
     }
 
     private fun getIntentBundle(callback: (bundle: Bundle) -> Unit) {
