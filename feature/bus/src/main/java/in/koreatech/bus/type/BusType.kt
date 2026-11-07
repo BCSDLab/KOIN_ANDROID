@@ -18,11 +18,11 @@ enum class BusType(
 
     @Composable
     @ReadOnlyComposable
-    fun getEventValue(): String {
+    fun getTabEventValue(): String {
         return when (this) {
-            SHUTTLE -> stringResource(R.string.shuttle_timetable)
-            EXPRESS -> stringResource(R.string.express_timetable)
-            CITY -> stringResource(R.string.city_timetable)
+            SHUTTLE -> stringResource(R.string.tab_shuttle)
+            EXPRESS -> stringResource(R.string.tab_express)
+            CITY -> stringResource(R.string.tab_city)
             else -> ""
         }
     }

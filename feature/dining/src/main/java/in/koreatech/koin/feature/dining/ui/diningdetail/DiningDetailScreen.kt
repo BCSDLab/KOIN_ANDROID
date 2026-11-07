@@ -111,7 +111,7 @@ import com.kakao.sdk.template.model.ItemContent
 import com.kakao.sdk.template.model.ItemInfo
 import com.kakao.sdk.template.model.Link
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.DiningAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.camera.ui.KoinCamera
@@ -339,9 +339,9 @@ fun DiningDetailScreen(
                                 interactionSource = remember { MutableInteractionSource() }
                             ) {
                                 EventLogger.logClickEvent(
-                                    EventAction.CAMPUS,
-                                    AnalyticsConstant.Label.CAFETERIA_INFO,
-                                    "학생식당정보"
+                                    EventAction.DA1,
+                                    DiningAnalyticsConstant.Label.CAFETERIA_INFO_ENTRY,
+                                    DiningAnalyticsConstant.Value.CAFETERIA_INFO
                                 )
                                 onTopbarActionClick()
                             },
@@ -428,10 +428,11 @@ private fun DiningDetailScreenImpl(
             .collect { isProgress ->
                 if (isProgress) {
                     if (isUserScrolling) {
-                        EventLogger.logScrollEvent(
-                            EventAction.CAMPUS,
-                            AnalyticsConstant.Label.MENU_TIME,
-                            tabList[pagerState.currentPage]
+                        EventLogger.logCustomEvent(
+                            action = EventAction.DA1.value,
+                            category = DiningAnalyticsConstant.Category.SCROLL,
+                            label = DiningAnalyticsConstant.Label.MEAL_TIME_SCROLL,
+                            value = tabList[pagerState.currentPage]
                         )
                     } else {
                         isUserScrolling = true
@@ -514,10 +515,11 @@ private fun DiningDetailScreenImpl(
             KoinTabRow(
                 selectedTabIndex = pagerState.currentPage,
                 onTabSelected = {
-                    EventLogger.logClickEvent(
-                        EventAction.CAMPUS,
-                        AnalyticsConstant.Label.MENU_TIME,
-                        tabList[it]
+                    EventLogger.logCustomEvent(
+                        action = EventAction.DA1.value,
+                        category = DiningAnalyticsConstant.Category.SELECT,
+                        label = DiningAnalyticsConstant.Label.MEAL_TIME_SELECT,
+                        value = tabList[it]
                     )
                     isUserScrolling = false
                     scope.launch {
@@ -595,8 +597,8 @@ private fun DiningDetailScreenImpl(
                                     isWeekend = isWeekend,
                                     onImageClick = {
                                         EventLogger.logClickEvent(
-                                            EventAction.CAMPUS,
-                                            AnalyticsConstant.Label.MENU_IMAGE,
+                                            EventAction.DA1,
+                                            DiningAnalyticsConstant.Label.PHOTO_VIEW_OPEN,
                                             DiningUtil.getKoreanName(dining.type) + "_" + dining.place
                                         )
                                         selectedImage = dining.imageUrl
@@ -604,9 +606,9 @@ private fun DiningDetailScreenImpl(
                                     },
                                     onShareClick = {
                                         EventLogger.logClickEvent(
-                                            EventAction.CAMPUS,
-                                            AnalyticsConstant.Label.MENU_SHARE,
-                                            "공유하기"
+                                            EventAction.DA1,
+                                            DiningAnalyticsConstant.Label.SHARE_KAKAO,
+                                            DiningAnalyticsConstant.Value.SHARE
                                         )
                                         val messageTemplate = createFeedMessageTemplate(dining)
 

@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -38,6 +39,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.TimetableAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
@@ -59,6 +63,7 @@ fun SemesterScreen(
     onClickEditTimetable: (SemesterModel, TimetableFrame) -> Unit = { _, _ -> },
     onClickLoginText: () -> Unit = {}
 ) {
+    val context = LocalContext.current
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -95,6 +100,18 @@ fun SemesterScreen(
                                 isFirstBlock = index == 0,
                                 isLastBlock = index == userTimetables.size - 1,
                                 onClickTimetable = { timetableFrame ->
+                                    EventLogger.logCustomEvent(
+                                        action = EventAction.DA1.value,
+                                        category = TimetableAnalyticsConstant.Category.SELECT,
+                                        label = TimetableAnalyticsConstant.Label.TIMETABLE_LIST_SELECT,
+                                        value = buildString {
+                                            append(semesterModel.year)
+                                            append(TimetableAnalyticsConstant.Value.SEPARATOR)
+                                            append(context.getString(semesterModel.type.stringRes))
+                                            append(TimetableAnalyticsConstant.Value.SEPARATOR)
+                                            append(timetableFrame.timetableName)
+                                        }
+                                    )
                                     onClickTimetable(semesterModel, timetableFrame)
                                 },
                                 onClickAddTimetable = {

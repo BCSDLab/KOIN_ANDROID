@@ -22,7 +22,6 @@ import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,7 +37,7 @@ import androidx.core.net.toUri
 import androidx.core.text.isDigitsOnly
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.BuildConfig
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.AccountAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
@@ -73,10 +72,6 @@ fun SignInScreen(
 ) {
     val uiState by viewModel.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.getSignUpSessionId()
-    }
-
     viewModel.collectSideEffect {
         handleSideEffect(
             sideEffect = it,
@@ -89,7 +84,6 @@ fun SignInScreen(
         password = uiState.password,
         showPassword = uiState.showPassword,
         isError = uiState.loginError.isError,
-        sessionId = uiState.sessionId,
         modifier = modifier,
         setLoginId = {
             viewModel.setLoginId(it)
@@ -103,6 +97,9 @@ fun SignInScreen(
         signIn = {
             viewModel.signIn()
         },
+        getSessionId = {
+            viewModel.getSignUpSessionId()
+        },
         nextRoute = nextRouteTure
     )
 }
@@ -113,12 +110,12 @@ fun SignInScreenImpl(
     password: String,
     showPassword: Boolean,
     isError: Boolean,
-    sessionId: String,
     modifier: Modifier = Modifier,
     setLoginId: (String) -> Unit = { },
     setPassword: (String) -> Unit = { },
     setShowPassword: (Boolean) -> Unit = { },
     signIn: () -> Unit = { },
+    getSessionId: () -> String = { "" },
     nextRoute: () -> Unit = { }
 ) {
     val scrollState = rememberScrollState()
@@ -230,15 +227,17 @@ fun SignInScreenImpl(
                     ),
                     border = BorderStroke(width = 1.dp, color = RebrandKoinTheme.colors.primary500),
                     onClick = {
+                        val sessionId = getSessionId()
                         EventLogger.logSessionEvent(
-                            action = EventAction.USER,
+                            action = EventAction.DA2,
                             category = EventCategory.CLICK,
-                            label = AnalyticsConstant.Label.START_SIGN_UP,
-                            value = "회원가입 시작",
+                            label = AccountAnalyticsConstant.Label.Login.SIGN_UP_ENTRY,
+                            value = AccountAnalyticsConstant.Value.SIGN_UP_START,
                             customSessionId = sessionId
                         )
-                        Intent(context, SignUpActivity::class.java).let {
-                            context.startActivity(it)
+                        Intent(context, SignUpActivity::class.java).apply {
+                            putExtra(SignUpActivity.EXTRA_SESSION_ID, sessionId)
+                            context.startActivity(this)
                         }
                     }
                 ) {
@@ -261,9 +260,9 @@ fun SignInScreenImpl(
                     icon = painterResource(R.drawable.ic_sign_in_find_login_id)
                 ) {
                     EventLogger.logClickEvent(
-                        EventAction.USER,
-                        AnalyticsConstant.Label.LOGIN,
-                        "아이디 찾기"
+                        EventAction.DA2,
+                        AccountAnalyticsConstant.Label.Login.ACCOUNT_RECOVERY_ID_ENTRY,
+                        AccountAnalyticsConstant.Value.FIND_ID
                     )
                     Intent(context, FindIdActivity::class.java).let {
                         context.startActivity(it)
@@ -283,9 +282,9 @@ fun SignInScreenImpl(
                     icon = painterResource(R.drawable.ic_sign_in_find_password)
                 ) {
                     EventLogger.logClickEvent(
-                        EventAction.USER,
-                        AnalyticsConstant.Label.LOGIN,
-                        "비밀번호 찾기"
+                        EventAction.DA2,
+                        AccountAnalyticsConstant.Label.Login.ACCOUNT_RECOVERY_PASSWORD_ENTRY,
+                        AccountAnalyticsConstant.Value.FIND_PASSWORD
                     )
                     Intent(context, FindPasswordActivity::class.java).let {
                         context.startActivity(it)
@@ -351,8 +350,7 @@ private fun SignInScreenPreview() {
         loginId = "",
         password = "",
         showPassword = false,
-        isError = true,
-        sessionId = ""
+        isError = true
     )
 }
 

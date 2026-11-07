@@ -58,6 +58,8 @@ import `in`.koreatech.bus.type.BusType
 import `in`.koreatech.bus.type.PlaceType
 import `in`.koreatech.bus.util.formatDateValue
 import `in`.koreatech.bus.util.formatDepartureTime
+import `in`.koreatech.koin.core.analytics.BusAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -204,9 +206,11 @@ internal fun BusSearchResultScreenContent(
                                         )
                                     },
                                     onClick = {
-                                        EventLogger.logCampusClickEvent(
-                                            "search_result_bus_type",
-                                            context.getString(busType.titleRes)
+                                        EventLogger.logCustomEvent(
+                                            action = EventAction.DA1.value,
+                                            category = BusAnalyticsConstant.Category.SELECT,
+                                            label = BusAnalyticsConstant.Label.SEARCH_RESULT_BUS_TYPE,
+                                            value = context.getString(busType.titleRes)
                                         )
                                         isDropdownExpanded = false
                                         onBusTypeChange(busType)
@@ -220,9 +224,10 @@ internal fun BusSearchResultScreenContent(
                 Row(
                     modifier =
                     Modifier.noRippleClickable {
-                        EventLogger.logCampusClickEvent(
-                            "search_result_departure_time",
-                            "출발 시각 설정"
+                        EventLogger.logClickEvent(
+                            EventAction.DA1,
+                            BusAnalyticsConstant.Label.DEPARTURE_TIME_OPEN,
+                            BusAnalyticsConstant.Value.DEPARTURE_TIME_OPEN
                         )
                         showSelectDialog = true
                     },
@@ -320,26 +325,27 @@ internal fun BusSearchResultScreenContent(
             ),
             onDismissRequest = { showSelectDialog = false },
             onDepartureNow = {
-                EventLogger.logCampusClickEvent(
-                    "departure_now",
-                    "지금 출발"
+                EventLogger.logClickEvent(
+                    EventAction.DA1,
+                    BusAnalyticsConstant.Label.DEPARTURE_TIME_NOW,
+                    BusAnalyticsConstant.Value.DEPARTURE_NOW
                 )
                 onMinDepartureTimeSetToNow()
                 showSelectDialog = false
             },
             onComplete = { date, daytime, hour, minute ->
-                EventLogger.logCampusClickEvent(
-                    "departure_time_setting_done",
-                    "시간설정: " +
-                        if (selectedDateIndex == date &&
-                            selectedDaytimeIndex == daytime &&
-                            selectedHourIndex == hour &&
-                            selectedMinuteIndex == minute
-                        ) {
-                            "N"
-                        } else {
-                            "Y"
-                        }
+                EventLogger.logClickEvent(
+                    EventAction.DA1,
+                    BusAnalyticsConstant.Label.DEPARTURE_TIME_CONFIRM,
+                    if (selectedDateIndex == date &&
+                        selectedDaytimeIndex == daytime &&
+                        selectedHourIndex == hour &&
+                        selectedMinuteIndex == minute
+                    ) {
+                        BusAnalyticsConstant.Value.TIME_UNCHANGED
+                    } else {
+                        BusAnalyticsConstant.Value.TIME_CHANGED
+                    }
                 )
                 onCompleteMinDepartureTime(date, daytime, hour, minute)
                 showSelectDialog = false

@@ -8,7 +8,7 @@ import androidx.core.content.getSystemService
 import androidx.core.net.toUri
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.activity.ActivityBase
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.BoardAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.navigation.Navigator
@@ -78,6 +78,7 @@ class SchemeActivity : ActivityBase() {
             Timber.e("navigatorType : $navigatorType")
             Timber.e("url : $url")
             Timber.e("url to host : ${url?.toHost()}")
+            logging(url)
 
             /**
              * koin://shop
@@ -96,7 +97,6 @@ class SchemeActivity : ActivityBase() {
                 }
 
                 NavigatorType.DETAIL -> {
-                    logging(url)
                     val intent = navigator.navigateTo(
                         context = this,
                         type = Pair(EXTRA_TYPE, url?.toHost()),
@@ -111,9 +111,9 @@ class SchemeActivity : ActivityBase() {
     private fun logging(url: String?) {
         when (url?.toHost()) {
             SchemeType.ARTICLE.type -> {
-                EventLogger.logNotificationEvent(
-                    EventAction.CAMPUS,
-                    AnalyticsConstant.Label.KEYWORD_NOTIFICATION,
+                EventLogger.logClickEvent(
+                    EventAction.DA2,
+                    BoardAnalyticsConstant.Label.FROM_EXTERNAL_KEYWORD_NOTIFICATION_ENTRY,
                     getKeywordFromUrl(url) ?: ""
                 )
             }

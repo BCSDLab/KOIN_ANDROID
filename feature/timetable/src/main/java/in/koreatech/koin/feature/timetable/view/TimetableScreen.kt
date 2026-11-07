@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.timetable.view
 
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,6 +29,7 @@ import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -43,6 +45,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.TimetableAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -112,6 +117,29 @@ fun TimetableScreen(
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current
     val scope = rememberCoroutineScope()
 
+    val systemBackCallback = remember(onBackPressedDispatcher) {
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                EventLogger.logCustomEvent(
+                    action = EventAction.DA1.value,
+                    category = TimetableAnalyticsConstant.Category.SWIPE,
+                    label = TimetableAnalyticsConstant.Label.BACK_SWIPE,
+                    value = TimetableAnalyticsConstant.Value.OS_SWIPE
+                )
+                isEnabled = false
+                try {
+                    onBackPressedDispatcher?.onBackPressedDispatcher?.onBackPressed()
+                } finally {
+                    isEnabled = true
+                }
+            }
+        }
+    }
+    DisposableEffect(onBackPressedDispatcher, systemBackCallback) {
+        onBackPressedDispatcher?.onBackPressedDispatcher?.addCallback(systemBackCallback)
+        onDispose { systemBackCallback.remove() }
+    }
+
     BottomSheetScaffold(
         modifier = modifier
             .systemBarsPadding()
@@ -124,13 +152,34 @@ fun TimetableScreen(
                     )
                 },
                 onNavigationIconClick = {
-                    onBackPressedDispatcher?.onBackPressedDispatcher?.onBackPressed()
+                    if (!sheetState.isExpanded) {
+                        EventLogger.logClickEvent(
+                            EventAction.DA1,
+                            TimetableAnalyticsConstant.Label.BACK_CLICK,
+                            TimetableAnalyticsConstant.Value.BACK
+                        )
+                    }
+                    systemBackCallback.isEnabled = false
+                    try {
+                        onBackPressedDispatcher?.onBackPressedDispatcher?.onBackPressed()
+                    } finally {
+                        systemBackCallback.isEnabled = true
+                    }
                 },
                 actions = {
                     Icon(
                         modifier = Modifier
                             .size(24.dp)
-                            .noRippleClickable(onClick = onTopAppBarAction),
+                            .noRippleClickable(
+                                onClick = {
+                                    EventLogger.logClickEvent(
+                                        EventAction.DA1,
+                                        TimetableAnalyticsConstant.Label.EDIT_ENTRY,
+                                        TimetableAnalyticsConstant.Value.EDIT_ENTRY
+                                    )
+                                    onTopAppBarAction()
+                                }
+                            ),
                         imageVector = ImageVector.vectorResource(R.drawable.ic_edit),
                         contentDescription = null,
                         tint = RebrandKoinTheme.colors.neutral800
@@ -218,9 +267,25 @@ fun TimetableScreen(
                 TimetableScheduleBox(
                     currentSemester = currentSemester,
                     timetableName = timetableName,
-                    onClick = onClickTimetableSchedule
+                    onClick = {
+                        EventLogger.logClickEvent(
+                            EventAction.DA1,
+                            TimetableAnalyticsConstant.Label.TIMETABLE_LIST_ENTRY,
+                            TimetableAnalyticsConstant.Value.TIMETABLE_LIST_ENTRY
+                        )
+                        onClickTimetableSchedule()
+                    }
                 )
-                TimetableDownloadBox(onClick = onClickDownloadTimetable)
+                TimetableDownloadBox(
+                    onClick = {
+                        EventLogger.logClickEvent(
+                            EventAction.DA1,
+                            TimetableAnalyticsConstant.Label.IMAGE_SAVE,
+                            TimetableAnalyticsConstant.Value.IMAGE_SAVE
+                        )
+                        onClickDownloadTimetable()
+                    }
+                )
             }
             Timetable(
                 range = range,

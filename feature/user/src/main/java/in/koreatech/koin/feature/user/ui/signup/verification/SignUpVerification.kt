@@ -39,8 +39,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.AccountAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -70,6 +71,7 @@ val genderList = persistentListOf("남성", "여성")
 
 @Composable
 fun SignUpVerification(
+    sessionId: String,
     modifier: Modifier = Modifier,
     viewModel: SignUpVerificationViewModel = hiltViewModel(),
     navigateToNextScreen: (name: String, phoneNumber: String, gender: String) -> Unit = { _, _, _ -> }
@@ -99,12 +101,13 @@ fun SignUpVerification(
         verificationCodeState = uiState.verificationCodeState,
         verificationTimeLeft = uiState.verificationTimeLeft,
         enabled = uiState.enabled,
+        sessionId = sessionId,
         onNameChange = { viewModel.setName(it) },
         onGenderChange = { viewModel.setGender(it) },
         onPhoneNumberChange = { viewModel.setPhoneNumber(it) },
         onVerificationCodeSent = { viewModel.checkPhoneNumber() },
         onVerificationCodeChange = { viewModel.setVerificationCode(it) },
-        checkVerificationCode = { viewModel.checkVerificationCode() },
+        checkVerificationCode = { viewModel.checkVerificationCode(sessionId) },
         modifier = modifier,
         navigateToNextScreen = { name, phoneNumber, gender ->
             navigateToNextScreen(name, phoneNumber, if (gender is Gender.Man) "0" else "1")
@@ -124,6 +127,7 @@ fun SignUpVerificationImpl(
     verificationCodeState: VerificationCodeState,
     verificationTimeLeft: Int,
     enabled: Boolean,
+    sessionId: String,
     modifier: Modifier = Modifier,
     onNameChange: (String) -> Unit = {},
     onGenderChange: (Int) -> Unit = {},
@@ -169,6 +173,7 @@ fun SignUpVerificationImpl(
                 phoneNumber = phoneNumber,
                 phoneNumberState = phoneNumberState,
                 verificationCodeState = verificationCodeState,
+                sessionId = sessionId,
                 onPhoneNumberChange = onPhoneNumberChange,
                 onVerificationCodeSent = onVerificationCodeSent
             )
@@ -259,6 +264,7 @@ fun SignUpVerificationPhoneNumberStep(
     phoneNumber: String,
     phoneNumberState: VerificationMethodState,
     verificationCodeState: VerificationCodeState,
+    sessionId: String,
     modifier: Modifier = Modifier,
     onPhoneNumberChange: (String) -> Unit = {},
     onVerificationCodeSent: () -> Unit = {}
@@ -310,10 +316,12 @@ fun SignUpVerificationPhoneNumberStep(
                 enabled = (phoneNumber.isNotBlank() || phoneNumberState != VerificationMethodState.CountExceeded) && verificationCodeState !is VerificationCodeState.Valid,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {
-                    EventLogger.logClickEvent(
-                        EventAction.USER,
-                        AnalyticsConstant.Label.IDENTITY_VERIFICATION,
-                        "인증번호 발송"
+                    EventLogger.logSessionEvent(
+                        action = EventAction.DA2,
+                        category = EventCategory.CLICK,
+                        label = AccountAnalyticsConstant.Label.SignUp.SEND_CODE,
+                        value = AccountAnalyticsConstant.Value.SEND_VERIFICATION_CODE,
+                        customSessionId = sessionId
                     )
                     onVerificationCodeSent()
                 }
@@ -552,6 +560,7 @@ private fun SignUpVerificationPreview() {
         verificationCodeState = VerificationCodeState.None,
         verificationTimeLeft = 180,
         step = SignUpVerificationStep.INITIAL,
-        enabled = true
+        enabled = true,
+        sessionId = ""
     )
 }

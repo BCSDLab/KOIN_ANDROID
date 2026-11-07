@@ -18,7 +18,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.CallvanAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
@@ -77,11 +78,13 @@ fun CallvanCreateScreen(
             initialSelection = if (state.isPickingDeparture) state.departureLocation else state.arrivalLocation,
             initialCustomText = if (state.isPickingDeparture) state.departureCustomText else state.arrivalCustomText,
             onLocationSelected = { location, customText ->
-                EventLogger.logCampusClickEvent(
+                EventLogger.logCustomEvent(
+                    CallvanAnalyticsConstant.EVENT_NAME,
+                    EventCategory.CLICK.value,
                     if (state.isPickingDeparture) {
-                        AnalyticsConstant.Label.Callvan.CALLVAN_WRITE_DEPARTURE
+                        CallvanAnalyticsConstant.Label.WRITE_DEPARTURE_CONFIRM
                     } else {
-                        AnalyticsConstant.Label.Callvan.CALLVAN_WRITE_ARRIVAL
+                        CallvanAnalyticsConstant.Label.WRITE_ARRIVAL_CONFIRM
                     },
                     context.getString(location.displayNameRes()) + if (location == CallvanLocationOption.CUSTOM) ", $customText" else ""
                 )
@@ -143,8 +146,10 @@ fun CallvanCreateScreenImpl(
                     )
                 },
                 onNavigationIconClick = {
-                    EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.Callvan.CALLVAN_WRITE_BACK,
+                    EventLogger.logCustomEvent(
+                        CallvanAnalyticsConstant.EVENT_NAME,
+                        EventCategory.CLICK.value,
+                        CallvanAnalyticsConstant.Label.WRITE_NAVIGATION_BACK,
                         ""
                     )
                     onTopbarBackClick()
@@ -195,8 +200,10 @@ fun CallvanCreateScreenImpl(
                     onTimeChange = onTimeChange,
                     onReset = onTimeReset,
                     onConfirm = {
-                        EventLogger.logCampusClickEvent(
-                            AnalyticsConstant.Label.Callvan.CALLVAN_WRITE_TIME,
+                        EventLogger.logCustomEvent(
+                            CallvanAnalyticsConstant.EVENT_NAME,
+                            EventCategory.CLICK.value,
+                            CallvanAnalyticsConstant.Label.WRITE_DEPARTURE_TIME_CONFIRM,
                             "${state.selectedTime.hour}:${"%02d".format(state.selectedTime.minute)}"
                         )
                         onTimeConfirm()
@@ -212,8 +219,10 @@ fun CallvanCreateScreenImpl(
                 isFormComplete = state.isFormComplete,
                 isSubmitting = state.isSubmitting,
                 onSubmit = {
-                    EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.Callvan.CALLVAN_WRITE_DONE,
+                    EventLogger.logCustomEvent(
+                        CallvanAnalyticsConstant.EVENT_NAME,
+                        EventCategory.CLICK.value,
+                        CallvanAnalyticsConstant.Label.WRITE_CONFIRM,
                         ""
                     )
                     onSubmit()

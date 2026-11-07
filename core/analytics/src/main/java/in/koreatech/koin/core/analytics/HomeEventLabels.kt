@@ -1,0 +1,26 @@
+package `in`.koreatech.koin.core.analytics
+
+object HomeEventLabels {
+    const val NOTIFICATION_ENTRY: String = "main__main__notification_list__entry__click"
+    const val NOTIFICATION_ITEM: String = "main__notification_list__notification_list__item_entry__click"
+    const val NOTIFICATION_READ_ALL: String = "main__notification_list__notification_list__read_all__click"
+    const val NOTIFICATION_DELETE_ALL: String = "main__notification_list__notification_list__delete_all__click"
+    const val NOTIFICATION_DELETE: String = "main__notification_list__notification_list__delete__click"
+    const val DINING_MORE: String = "main__main__more__click"
+    const val DINING_CARD: String = "cafeteria__main__meal__click"
+    const val DINING_CORNER: String = "main__main__corner__select"
+    const val SHUTTLE_TICKET: String = "main__main__bus_entry__ticket_entry__click"
+    const val CALLVAN_ENTRY: String = "callvan__main__callvan_entry__recruitment_list_entry__click"
+    const val BUS_TIMETABLE: String = "main__main__bus_entry__timetable_entry__click"
+    const val BUS_SEARCH: String = "main__main__bus_entry__search_entry__click"
+    const val SHOP_ENTRY: String = "main__main__shop_entry__main_entry__click"
+    const val POPULAR_SHOP_ENTRY: String = "shop__main__shop_entry__popular_entry__click"
+    const val NAV_HOME: String = "main__main__navigation__main_entry__click"
+    const val NAV_CATEGORY: String = "main__main__navigation__category_menu_entry__click"
+    const val NAV_NOTICE: String = "main__main__notice_entry__navigation_entry__click"
+    const val NAV_PROFILE: String = "main__main__navigation__profile_entry__click"
+    const val CATEGORY_FACILITY: String = "facility__main_category__category_navigation__facility_entry__click"
+    const val CATEGORY_DEPARTMENT: String = "department__main_category__category_navigation__department_entry__click"
+    const val CATEGORY_CALLVAN: String = "callvan__main_category__category_navigation__callvan_entry__click"
+    const val CATEGORY_CHAT: String = "chat__main_category__category_navigation__chat_entry__click"
+}

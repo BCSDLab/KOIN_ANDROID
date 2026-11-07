@@ -2,7 +2,7 @@ package `in`.koreatech.koin.feature.user.ui.signin
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.AccountAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.usecase.session.GetSessionIdUseCase
@@ -50,17 +50,17 @@ class SignInViewModel @Inject constructor(
         userLoginUseCase(state.loginId, state.password)
             .onSuccess {
                 EventLogger.logClickEvent(
-                    EventAction.USER,
-                    AnalyticsConstant.Label.LOGIN,
-                    "로그인 완료"
+                    EventAction.DA2,
+                    AccountAnalyticsConstant.Label.Login.CONFIRM,
+                    AccountAnalyticsConstant.Value.LOGIN_SUCCESS
                 )
                 postSideEffect(SignInSideEffect.SignInSuccess)
             }
             .onFailure {
                 EventLogger.logClickEvent(
-                    EventAction.USER,
-                    AnalyticsConstant.Label.LOGIN,
-                    "로그인 실패"
+                    EventAction.DA2,
+                    AccountAnalyticsConstant.Label.Login.CONFIRM,
+                    AccountAnalyticsConstant.Value.LOGIN_FAILURE
                 )
                 reduce {
                     state.copy(loginError = SignInState.LoginError(isError = true))
@@ -68,12 +68,11 @@ class SignInViewModel @Inject constructor(
             }
     }
 
-    fun getSignUpSessionId() = blockingIntent {
-        val sessionId = getSessionIdUseCase(
+    fun getSignUpSessionId(): String {
+        return getSessionIdUseCase(
             sessionName = "sign_up",
             isLoggedIn = false,
             shouldExpireOtherSessions = true
         )
-        reduce { state.copy(sessionId = sessionId) }
     }
 }

@@ -20,8 +20,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
-import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.BoardAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.util.SnackbarUtil
 import `in`.koreatech.koin.feature.article.R
@@ -44,7 +44,7 @@ class ArticleSearchFragment : Fragment() {
 
     private val recentSearchedHistoryAdapter: RecentSearchedHistoryAdapter by lazy {
         RecentSearchedHistoryAdapter(
-            onSearchHistoryClicked = ::onRecentSearchHistoryClicked,
+            onSearchHistoryClicked = ::applySearchQuery,
             onDeleteClicked = ::onRecentSearchHistoryDeleteClicked
         )
     }
@@ -62,10 +62,11 @@ class ArticleSearchFragment : Fragment() {
             _binding = FragmentArticleSearchBinding.inflate(inflater, container, false)
             binding.textInputSearch.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    EventLogger.logClickEvent(
-                        EventAction.CAMPUS,
-                        AnalyticsConstant.Label.NOTICE_SEARCH_EVENT,
-                        "검색하기"
+                    EventLogger.logCustomEvent(
+                        BoardAnalyticsConstant.EVENT_NAME,
+                        BoardAnalyticsConstant.Category.SUBMIT,
+                        BoardAnalyticsConstant.Label.NOTICE_SEARCH_SUBMIT,
+                        binding.textInputSearch.text?.toString().orEmpty()
                     )
                     viewModel.search()
                     true
@@ -78,10 +79,11 @@ class ArticleSearchFragment : Fragment() {
                 onSearchInputChanged(it.toString())
             }
             binding.imageSearch.setOnClickListener {
-                EventLogger.logClickEvent(
-                    EventAction.CAMPUS,
-                    AnalyticsConstant.Label.NOTICE_SEARCH_EVENT,
-                    "검색하기"
+                EventLogger.logCustomEvent(
+                    BoardAnalyticsConstant.EVENT_NAME,
+                    BoardAnalyticsConstant.Category.SUBMIT,
+                    BoardAnalyticsConstant.Label.NOTICE_SEARCH_SUBMIT,
+                    binding.textInputSearch.text?.toString().orEmpty()
                 )
                 viewModel.search()
             }
@@ -190,16 +192,17 @@ class ArticleSearchFragment : Fragment() {
         viewModel.onSearchInputChanged(query)
     }
 
-    private fun onRecentSearchHistoryClicked(query: String) {
-        onSearchQueryClicked(query)
-    }
-
     private fun onSearchQueryClicked(query: String) {
-        EventLogger.logClickEvent(
-            EventAction.CAMPUS,
-            AnalyticsConstant.Label.POPULAR_SEARCH_WORD,
+        EventLogger.logCustomEvent(
+            BoardAnalyticsConstant.EVENT_NAME,
+            BoardAnalyticsConstant.Category.SELECT,
+            BoardAnalyticsConstant.Label.NOTICE_SEARCH_POPULAR_KEYWORD,
             query
         )
+        applySearchQuery(query)
+    }
+
+    private fun applySearchQuery(query: String) {
         binding.textInputSearch.setText(query)
         binding.textInputSearch.setSelection(query.length)
         viewModel.search()
@@ -210,6 +213,12 @@ class ArticleSearchFragment : Fragment() {
     }
 
     private fun onArticleClicked(article: ArticleHeaderState) {
+        EventLogger.logCustomEvent(
+            BoardAnalyticsConstant.EVENT_NAME,
+            EventCategory.CLICK.value,
+            BoardAnalyticsConstant.Label.NOTICE_SEARCH_DETAIL_ENTRY,
+            article.id.toString()
+        )
         navController.navigate(
             R.id.action_articleSearchFragment_to_articleDetailFragment,
             bundleOf(
