@@ -100,26 +100,35 @@ import java.time.LocalTime
 fun StoreItemResponse.toStore(): Store =
     Store(
         uid = uid ?: 0,
-        name = name ?: "",
-        phone = phone ?: "",
-        isDeliveryOk = isDeliveryOk ?: false,
-        isCardOk = isCardOk ?: false,
-        isBankOk = isBankOk ?: false,
-        isEvent = isEvent ?: false,
-        isOpen = isOpen ?: false,
+        name = name.orEmpty(),
+        phone = phone.orEmpty(),
+        isDeliveryOk = isDeliveryOk == true,
+        isCardOk = isCardOk == true,
+        isBankOk = isBankOk == true,
+        isEvent = isEvent == true,
+        isOpen = isOpen == true,
         averageRate = averageRate,
         reviewCount = reviewCount,
-        open = open?.filter { it.dayOfWeek == localDayOfWeekName }?.map {
-            Store.OpenData(
-                dayOfWeek = it.dayOfWeek ?: "",
-                closed = it.closed ?: false,
-                openTime = it.openTime ?: "",
-                closeTime = it.closeTime ?: ""
-            )
-        }.orEmpty().getOrElse(0) { Store.OpenData(localDayOfWeekName, false, "00:00", "00:00") },
+        open = toStoreOpenData(),
         categoryIds = categoryIds,
-        benefitDetails = benefitDetails ?: benefitDetail?.toStringArray() ?: emptyList()
+        benefitDetails = toBenefitDetails()
     )
+
+private fun StoreItemResponse.toStoreOpenData(): Store.OpenData {
+    val dayOfWeek = localDayOfWeekName
+    val todayOpen = open?.firstOrNull { it.dayOfWeek == dayOfWeek }
+        ?: return Store.OpenData(dayOfWeek, false, "00:00", "00:00")
+
+    return Store.OpenData(
+        dayOfWeek = todayOpen.dayOfWeek.orEmpty(),
+        closed = todayOpen.closed == true,
+        openTime = todayOpen.openTime.orEmpty(),
+        closeTime = todayOpen.closeTime.orEmpty()
+    )
+}
+
+private fun StoreItemResponse.toBenefitDetails(): List<String> =
+    benefitDetails ?: benefitDetail?.toStringArray() ?: emptyList()
 
 fun StoreEventItemReponse.toStoreEvent(): StoreEvent =
     StoreEvent(

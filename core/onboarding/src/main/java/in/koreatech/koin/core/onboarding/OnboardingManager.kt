@@ -130,7 +130,7 @@ class OnboardingManager @Inject internal constructor(
                             .onSuccess { user ->
                                 when (user) {
                                     is User.Student -> {
-                                        if (user.name == null || user.phoneNumber == null || user.major == null || user.studentNumber == null) {
+                                        if (user.requiresAdditionalInfo()) {
                                             val check = onboardingRepository.getShouldOnboarding(INFO_REQUIRED_CHECK)
                                             onboardingRepository.updateShouldOnboarding(INFO_REQUIRED_CHECK, false)
 
@@ -313,3 +313,6 @@ class OnboardingManager @Inject internal constructor(
         private const val INFO_REQUIRED_CHECK = "INFO_REQUIRED_CHECK"
     }
 }
+
+private fun User.Student.requiresAdditionalInfo(): Boolean =
+    name == null || phoneNumber == null || major == null || studentNumber == null

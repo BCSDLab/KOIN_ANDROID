@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.core.content.FileProvider
 import java.io.File
+import java.io.InputStream
+import java.io.OutputStream
 import java.net.HttpURLConnection
 import java.net.URI
 import java.net.URL
@@ -42,8 +44,17 @@ internal object NotificationImageProvider {
         }.getOrNull()
     }
 
+    /**
+     * Downloads [imageUrl] into the notification image cache and returns the committed file.
+     *
+     * The connection and working file are cleaned up in `finally`, including read failures,
+     * size-limit failures, and failures when committing the cache file.
+     */
     private fun download(context: Context, imageUrl: String, extension: String): File {
-        val imageDirectory = File(context.cacheDir, CACHE_DIRECTORY).apply { mkdirs() }
+        val imageDirectory = File(context.cacheDir, CACHE_DIRECTORY)
+        check(imageDirectory.isDirectory || imageDirectory.mkdirs()) {
+            "Failed to create notification image cache"
+        }
         val imageFile = File(imageDirectory, "${imageUrl.hashCode()}.$extension")
         if (imageFile.isFile && imageFile.length() > 0L) return imageFile
 
@@ -53,25 +64,25 @@ internal object NotificationImageProvider {
         connection.readTimeout = 10 * 1000
         try {
             connection.inputStream.use { input ->
-                temporaryFile.outputStream().use { output ->
-                    val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
-                    var totalBytes = 0L
-                    while (true) {
-                        val readBytes = input.read(buffer)
-                        if (readBytes == -1) break
-                        totalBytes += readBytes
-                        check(totalBytes <= MAX_IMAGE_BYTES) { "Notification image is too large" }
-                        output.write(buffer, 0, readBytes)
-                    }
-                }
+                temporaryFile.outputStream().use { output -> copyImage(input, output) }
             }
             check(temporaryFile.renameTo(imageFile)) { "Failed to cache notification image" }
             return imageFile
-        } catch (throwable: Throwable) {
-            temporaryFile.delete()
-            throw throwable
         } finally {
+            temporaryFile.delete()
             connection.disconnect()
+        }
+    }
+
+    private fun copyImage(input: InputStream, output: OutputStream) {
+        val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+        var totalBytes = 0L
+        while (true) {
+            val readBytes = input.read(buffer)
+            if (readBytes == -1) return
+            totalBytes += readBytes
+            check(totalBytes <= MAX_IMAGE_BYTES) { "Notification image is too large" }
+            output.write(buffer, 0, readBytes)
         }
     }
 

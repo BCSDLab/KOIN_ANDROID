@@ -6,7 +6,6 @@
     <ID>ConstructorParameterNaming:StoreCategoriesResponse.kt$StoreCategoriesResponse$@SerializedName("shop_categories") val shop_categories: List&lt;StoreCategoriesItemResponse&gt;</ID>
     <ID>CyclomaticComplexMethod:ArticleResponse.kt$fun Node.toHtmlModel(parentStyles: Map&lt;CssAttribute, String&gt;): HtmlModel</ID>
     <ID>CyclomaticComplexMethod:HttpExceptionMapper.kt$fun HttpException.httpExceptionMapper(): Result&lt;Unit&gt;</ID>
-    <ID>CyclomaticComplexMethod:StoreMapper.kt$fun StoreItemResponse.toStore(): Store</ID>
     <ID>EmptyCatchBlock:ArticleResponse.kt${ }</ID>
     <ID>FunctionParameterNaming:StoreApi.kt$StoreApi$@Query("filter") DELIVERY: String = "DELIVERY"</ID>
     <ID>FunctionParameterNaming:StoreApi.kt$StoreApi$@Query("filter") OPEN: String = "OPEN"</ID>
@@ -31,7 +30,6 @@
     <ID>SwallowedException:VersionLocalDataSource.kt$VersionLocalDataSource$e: Exception</ID>
     <ID>ThrowingExceptionsWithoutMessageOrCause:DeptLocalDataSource.kt$DeptLocalDataSource$IllegalArgumentException()</ID>
     <ID>ThrowingExceptionsWithoutMessageOrCause:TimetableRepositoryImpl.kt$TimetableRepositoryImpl$Exception()</ID>
-    <ID>ThrowingExceptionsWithoutMessageOrCause:UserMapper.kt$IllegalStateException()</ID>
     <ID>TooGenericExceptionCaught:ArticleRemoteDataSource.kt$ArticleRemoteDataSource$t: Throwable</ID>
     <ID>TooGenericExceptionCaught:DeptRepositoryImpl.kt$DeptRepositoryImpl$t: Throwable</ID>
     <ID>TooGenericExceptionCaught:KoinStomp.kt$KoinStomp$e: Exception</ID>
