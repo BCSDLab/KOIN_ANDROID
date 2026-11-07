@@ -106,6 +106,13 @@ KOIN_ANDROID/
 - 리뷰 로그인 팝업의 닫기 버튼 클릭과 시스템 뒤로가기·바깥 터치를 구분한다.
 - 키워드 알림 진입은 앱의 콜드·웜 시작 모두 한 번 기록한다.
 
+## 검증
+
+- 회귀 검증은 변경한 모듈의 JVM 테스트로 수행합니다.
+- 앱 동작은 stage 패키지(`in.koreatech.koin.dev`)에서 직접 확인하며 production 앱으로 테스트하지 않습니다.
+- 포맷 및 린트 검사는 `./gradlew ktlintFormat ktlintCheck`로 수행합니다.
+- stage 디버그 APK는 `./gradlew :koin:assembleDebug`로 빌드합니다.
+
 ## Git Branch Strategy
 
 
