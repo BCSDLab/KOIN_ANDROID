@@ -76,12 +76,22 @@ class SignUpVerificationViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Checks the entered phone number and requests an SMS verification code.
+     *
+     * On a duplicate check failure the phone number state becomes the matching failure state and
+     * no code is requested. When the number is available, [sendVerificationCode] is called; an
+     * already received [VerificationMethodState.Sent] is preserved during that check so a resend
+     * never transiently falls back to [VerificationMethodState.Available].
+     */
     fun checkPhoneNumber() = intent {
         checkPhoneNumberDuplicateUseCase(state.phoneNumber).onSuccess {
-            reduce {
-                state.copy(
-                    phoneNumberState = VerificationMethodState.Available
-                )
+            if (state.phoneNumberState !is VerificationMethodState.Sent) {
+                reduce {
+                    state.copy(
+                        phoneNumberState = VerificationMethodState.Available
+                    )
+                }
             }
             sendVerificationCode()
         }.onFailure {
@@ -97,8 +107,14 @@ class SignUpVerificationViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Requests a new SMS verification code for the current phone number.
+     *
+     * The timer side effect is emitted only after the request succeeds, so a failed request never
+     * starts a countdown that has no matching code. Failures map to the same failure states as a
+     * duplicate check.
+     */
     private fun sendVerificationCode() = intent {
-        postSideEffect(SignUpVerificationSideEffect.StartTimer)
         requestSmsVerificationUseCase(state.phoneNumber).onSuccess {
             reduce {
                 state.copy(
@@ -110,6 +126,7 @@ class SignUpVerificationViewModel @Inject constructor(
                     verificationCodeState = VerificationCodeState.None
                 )
             }
+            postSideEffect(SignUpVerificationSideEffect.StartTimer)
         }.onFailure {
             reduce {
                 state.copy(
