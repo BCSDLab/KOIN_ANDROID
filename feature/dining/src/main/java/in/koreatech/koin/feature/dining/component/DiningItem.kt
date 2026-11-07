@@ -42,6 +42,8 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.feature.dining.R
+import `in`.koreatech.koin.feature.dining.preview.PREVIEW_DINING_DATE
+import `in`.koreatech.koin.feature.dining.preview.previewDining
 
 private val IMAGE_SUPPORTED_PLACES = setOf(
     DiningPlace.CornerA.place,
@@ -286,21 +288,7 @@ fun DiningItem(
 @Composable
 private fun DiningItemPreview() {
     DiningItem(
-        Dining(
-            id = 0,
-            date = "2025.05.17",
-            type = "BREAKFAST",
-            place = "A코너",
-            priceCard = "1000",
-            priceCash = "1000",
-            kcal = "786",
-            menu = listOf("밥", "국", "김치"),
-            imageUrl = "",
-            createdAt = "2025.05.17",
-            updatedAt = "2025.05.17",
-            soldOutAt = "",
-            changedAt = "2025.05.17"
-        )
+        previewDining()
     )
 }
 
@@ -308,20 +296,9 @@ private fun DiningItemPreview() {
 @Composable
 private fun DiningItemSoldoutPreview() {
     DiningItem(
-        Dining(
-            id = 0,
-            date = "2025.05.17",
+        previewDining(
             type = "아침",
-            place = "A코너",
-            priceCard = "1000",
-            priceCash = "1000",
-            kcal = "786",
-            menu = listOf("밥", "국", "김치"),
-            imageUrl = "",
-            createdAt = "2025.05.17",
-            updatedAt = "2025.05.17",
-            soldOutAt = "2025.05.17",
-            changedAt = "2025.05.17"
+            soldOutAt = PREVIEW_DINING_DATE
         )
     )
 }

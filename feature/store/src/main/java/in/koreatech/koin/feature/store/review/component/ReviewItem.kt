@@ -249,13 +249,13 @@ private fun ReviewItemInteractionRow(
 @Preview(showBackground = true)
 @Composable
 private fun ReviewItemPreview() {
-    val tags = persistentListOf("계란찜", "1인 매운 닭발")
+    val tags = persistentListOf(SAMPLE_STEAMED_EGG, SAMPLE_SPICY_CHICKEN_FEET)
     ReviewItem(
         isMyReview = true,
         userName = "익명_123456",
         rating = 4,
-        date = "2025.01.01",
-        content = "내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요.",
+        date = REVIEW_PREVIEW_DATE,
+        content = REVIEW_PREVIEW_CONTENT,
         modifier = Modifier,
         imageUrls = persistentListOf(),
         menuTags = tags,
@@ -266,15 +266,15 @@ private fun ReviewItemPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun ReviewItemGuestPreview() {
-    val tags = persistentListOf("계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발")
+    val tags = previewRepeatedMenuTags
     val imageUrls = persistentListOf("")
     ReviewItem(
         isReported = true,
         isMyReview = false,
         userName = "익명_123456",
         rating = 2,
-        date = "2025.01.01",
-        content = "내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요. 내용을 입력하세요.",
+        date = REVIEW_PREVIEW_DATE,
+        content = REVIEW_PREVIEW_CONTENT,
         modifier = Modifier,
         imageUrls = imageUrls,
         menuTags = tags,

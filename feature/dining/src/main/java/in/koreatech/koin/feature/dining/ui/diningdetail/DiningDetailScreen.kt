@@ -148,6 +148,7 @@ import `in`.koreatech.koin.feature.dining.constants.PARAMS_DATE
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_PLACE
 import `in`.koreatech.koin.feature.dining.constants.PARAMS_TYPE
 import `in`.koreatech.koin.feature.dining.mapper.toDining
+import `in`.koreatech.koin.feature.dining.preview.previewDining
 import `in`.koreatech.koin.feature.dining.ui.diningdetail.scroll.DiningNestedScrollConnection
 import java.io.File
 import java.util.Date
@@ -512,8 +513,9 @@ private fun DiningDetailScreenImpl(
                     )
                 }
             }
-            KoinTabRow(
+            DiningTabRow(
                 selectedTabIndex = pagerState.currentPage,
+                titles = tabList,
                 onTabSelected = {
                     EventLogger.logCustomEvent(
                         action = EventAction.DA1.value,
@@ -525,10 +527,7 @@ private fun DiningDetailScreenImpl(
                     scope.launch {
                         pagerState.animateScrollToPage(it)
                     }
-                },
-                indicatorColor = RebrandKoinTheme.colors.primary500,
-                selectedTextColor = RebrandKoinTheme.colors.primary500,
-                titles = tabList.map { it }
+                }
             )
             HorizontalPager(
                 modifier = Modifier
@@ -698,6 +697,21 @@ private fun DiningDetailScreenImpl(
             }
         }
     }
+}
+
+@Composable
+private fun DiningTabRow(
+    selectedTabIndex: Int,
+    titles: List<String>,
+    onTabSelected: (Int) -> Unit
+) {
+    KoinTabRow(
+        selectedTabIndex = selectedTabIndex,
+        onTabSelected = onTabSelected,
+        indicatorColor = RebrandKoinTheme.colors.primary500,
+        selectedTextColor = RebrandKoinTheme.colors.primary500,
+        titles = titles
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -1149,65 +1163,26 @@ private fun handleSideEffect(
 private fun DiningScreenPreview() {
     DiningDetailScreenImpl(
         diningList = persistentListOf(
-            Dining(
-                id = 0,
-                date = "2025.05.17",
-                type = "BREAKFAST",
+            previewDining(
                 place = "A코너",
-                priceCard = "1000",
-                priceCash = "1000",
-                kcal = "786",
-                menu = listOf("밥", "국", "김치", "아침"),
-                imageUrl = "https://image.utoimage.com/preview/cp872722/2022/12/202212008462_500.jpg",
-                createdAt = "2025.05.17",
-                updatedAt = "2025.05.17",
-                soldOutAt = "",
-                changedAt = "2025.05.17"
-            ),
-            Dining(
-                id = 0,
-                date = "2025.05.17",
                 type = "BREAKFAST",
+                menu = listOf("밥", "국", "김치", "아침"),
+                imageUrl = "https://image.utoimage.com/preview/cp872722/2022/12/202212008462_500.jpg"
+            ),
+            previewDining(
                 place = "B코너",
-                priceCard = "1000",
-                priceCash = "1000",
-                kcal = "786",
-                menu = listOf("밥", "국", "김치", "아침"),
-                imageUrl = "",
-                createdAt = "2025.05.17",
-                updatedAt = "2025.05.17",
-                soldOutAt = "",
-                changedAt = "2025.05.17"
+                type = "BREAKFAST",
+                menu = listOf("밥", "국", "김치", "아침")
             ),
-            Dining(
-                id = 0,
-                date = "2025.05.17",
-                type = "아침",
+            previewDining(
                 place = "LUNCH",
-                priceCard = "1000",
-                priceCash = "1000",
-                kcal = "786",
-                menu = listOf("밥", "국", "김치", "점심"),
-                imageUrl = "",
-                createdAt = "2025.05.17",
-                updatedAt = "2025.05.17",
-                soldOutAt = "",
-                changedAt = "2025.05.17"
+                type = "아침",
+                menu = listOf("밥", "국", "김치", "점심")
             ),
-            Dining(
-                id = 0,
-                date = "2025.05.17",
-                type = "DINNER",
+            previewDining(
                 place = "A코너",
-                priceCard = "1000",
-                priceCash = "1000",
-                kcal = "786",
-                menu = listOf("밥", "국", "김치", "저녁"),
-                imageUrl = "",
-                createdAt = "2025.05.17",
-                updatedAt = "2025.05.17",
-                soldOutAt = "",
-                changedAt = "2025.05.17"
+                type = "DINNER",
+                menu = listOf("밥", "국", "김치", "저녁")
             )
         ),
         contentPadding = PaddingValues(),
