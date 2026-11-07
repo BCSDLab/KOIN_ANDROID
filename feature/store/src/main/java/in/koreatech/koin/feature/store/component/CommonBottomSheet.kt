@@ -107,7 +107,7 @@ fun SortBottomSheet(
                     Text(
                         text = label,
                         color = if (currentIndex == idx) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral800,
-                        style = if (currentIndex == idx) RebrandKoinTheme.typography.regular16 else RebrandKoinTheme.typography.regular16,
+                        style = RebrandKoinTheme.typography.regular16,
                         modifier = Modifier.weight(1f)
                     )
                     if (currentIndex == idx) {

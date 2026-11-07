@@ -234,9 +234,4 @@ class DiningAppWidget : AppWidgetProvider() {
         remoteViews.setTextColor(id, ContextCompat.getColor(context, R.color.vivid_orange))
         remoteViews.setInt(id, "setBackgroundResource", R.drawable.bg_rect_vividorange_radius_10dp)
     }
-
-    private fun makePlaceViewNonSelected(context: Context, id: Int, remoteViews: RemoteViews) {
-        remoteViews.setTextColor(id, ContextCompat.getColor(context, R.color.very_dark_gray))
-        remoteViews.setInt(id, "setBackgroundResource", R.color.white)
-    }
 }

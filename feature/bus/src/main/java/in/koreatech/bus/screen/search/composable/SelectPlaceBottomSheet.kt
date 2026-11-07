@@ -133,17 +133,10 @@ internal fun SelectPlaceBottomSheet(
                                 unselectedContentColor = RebrandKoinTheme.colors.neutral500
                             )
                         },
-                        border = if (disabledPlace == it) {
-                            TextChipDefaults.chipBorder(
-                                selectedBorderStroke = BorderStroke(1.dp, RebrandKoinTheme.colors.primary500),
-                                unselectedBorderStroke = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral300)
-                            )
-                        } else {
-                            TextChipDefaults.chipBorder(
-                                selectedBorderStroke = BorderStroke(1.dp, RebrandKoinTheme.colors.primary500),
-                                unselectedBorderStroke = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral300)
-                            )
-                        },
+                        border = TextChipDefaults.chipBorder(
+                            selectedBorderStroke = BorderStroke(1.dp, RebrandKoinTheme.colors.primary500),
+                            unselectedBorderStroke = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral300)
+                        ),
                         isSelected = selectedPlace == it,
                         onSelect = {
                             if (it != disabledPlace) {

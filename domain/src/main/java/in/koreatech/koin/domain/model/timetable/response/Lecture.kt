@@ -95,26 +95,8 @@ data class Lecture(
     }
 
     fun formatDescription(): String {
-        val description =
-            if (grades.isEmpty()) {
-                ""
-            } else {
-                ""
-            }.let {
-                if (grades.isNotEmpty()) {
-                    it + "${grades}학점"
-                } else {
-                    it
-                }
-            }.let {
-                if (code.isNotEmpty()) {
-                    "$it  $code"
-                } else {
-                    it
-                }
-            }
-
-        return description
+        val gradeDescription = if (grades.isNotEmpty()) "${grades}학점" else ""
+        return if (code.isNotEmpty()) "$gradeDescription  $code" else gradeDescription
     }
 
     fun doesMatchSearchQuery(query: String): Boolean {
