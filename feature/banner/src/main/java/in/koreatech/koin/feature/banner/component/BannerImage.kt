@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.banner.component
 
 import android.content.Intent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +18,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,7 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
-import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.BannerAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -69,6 +73,37 @@ fun BannerImage(
         }
     }
 
+    LaunchedEffect(pagerState.currentPage, bannerList.size) {
+        onBannerIndexChange(pagerState.currentPage % bannerList.size)
+    }
+
+    LaunchedEffect(pagerState, bannerList) {
+        var dragStartPage = -1
+        launch {
+            pagerState.interactionSource.interactions.collect { interaction ->
+                when (interaction) {
+                    is DragInteraction.Start -> dragStartPage = pagerState.settledPage
+                    is DragInteraction.Cancel -> dragStartPage = -1
+                }
+            }
+        }
+        snapshotFlow { pagerState.isScrollInProgress }.collect { scrolling ->
+            if (!scrolling && dragStartPage != -1) {
+                val previousPage = dragStartPage
+                dragStartPage = -1
+                if (pagerState.settledPage != previousPage) {
+                    val banner = bannerList[pagerState.settledPage % bannerList.size]
+                    EventLogger.logCustomEvent(
+                        BannerAnalyticsConstant.EVENT_NAME,
+                        EventCategory.SWIPE.value,
+                        BannerAnalyticsConstant.Label.MODAL_NEXT_SWIPE,
+                        banner.id.toString()
+                    )
+                }
+            }
+        }
+    }
+
     Box(
         modifier = modifier
     ) {
@@ -77,7 +112,6 @@ fun BannerImage(
             state = pagerState
         ) { page ->
             val realPage = page % bannerList.size
-            onBannerIndexChange(realPage)
             BannerContent(
                 banner = bannerList[realPage],
                 dismiss = dismiss,
@@ -124,10 +158,11 @@ private fun BannerContent(
         modifier = modifier
             .fillMaxSize()
             .noRippleClickable {
-                EventLogger.logClickEvent(
-                    action = EventAction.CAMPUS,
-                    label = "main_modal",
-                    value = banner.title
+                EventLogger.logCustomEvent(
+                    BannerAnalyticsConstant.EVENT_NAME,
+                    EventCategory.CLICK.value,
+                    BannerAnalyticsConstant.Label.MODAL_CLICK,
+                    banner.id.toString()
                 )
                 if (banner.redirectLink == null) return@noRippleClickable
                 if (banner.version > currentKoinVersion) { // If the banner link requires a higher version of the app

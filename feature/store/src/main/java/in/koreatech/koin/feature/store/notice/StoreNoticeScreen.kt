@@ -7,12 +7,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -22,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.ShopAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.KoinStoreTopAppBar
@@ -29,6 +33,7 @@ import `in`.koreatech.koin.feature.store.notice.component.StoreNoticeCard
 import `in`.koreatech.koin.feature.store.notice.component.StoreNoticeCardExpand
 import `in`.koreatech.koin.feature.store.notice.component.StoreNoticeEmpty
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.flow.filter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,6 +81,20 @@ private fun StoreNoticeContent(
     onFoldClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val noticeListState = rememberLazyListState()
+
+    LaunchedEffect(noticeListState, state.storeName) {
+        snapshotFlow { noticeListState.isScrollInProgress }
+            .filter { it }
+            .collect {
+                EventLogger.logScrollEvent(
+                    EventAction.DA1,
+                    ShopAnalyticsConstant.SHOP_DETAIL_EVENT_SCROLL,
+                    state.storeName
+                )
+            }
+    }
+
     Box(
         modifier = modifier.fillMaxSize()
     ) {
@@ -85,7 +104,8 @@ private fun StoreNoticeContent(
             )
         } else {
             LazyColumn(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                state = noticeListState
             ) {
                 items(
                     items = state.notices,

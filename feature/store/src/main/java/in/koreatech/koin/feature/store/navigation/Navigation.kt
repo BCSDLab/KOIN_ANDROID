@@ -395,8 +395,8 @@ internal fun NavGraphBuilder.koinStoreReviewGraph(
             onResetReviewUpdated = {
                 navController.currentBackStackEntry?.savedStateHandle?.set(IS_REVIEW_UPDATED, false)
             },
-            onReportClicked = { storeNavigationData, reviewId ->
-                navController.navigate(StoreReviewNavType.StoreReviewReport(storeNavigationData, reviewId))
+            onReportClicked = { storeNavigationData, reviewId, storeName ->
+                navController.navigate(StoreReviewNavType.StoreReviewReport(storeNavigationData, reviewId, storeName))
             },
             onAddReviewClicked = { storeNavigationData, storeName ->
                 navController.navigate(StoreReviewNavType.StoreReviewAdd(storeNavigationData, storeName))

@@ -92,7 +92,7 @@ internal fun CommonTimetableView(
 
             WrongInformationText(
                 modifier = Modifier.padding(top = 4.dp),
-                loggingEventValue = LocalSelectedTimetableTab.current.getEventValue()
+                loggingEventValue = LocalSelectedTimetableTab.current.getTabEventValue()
             )
 
             Spacer(modifier = Modifier.height(100.dp))

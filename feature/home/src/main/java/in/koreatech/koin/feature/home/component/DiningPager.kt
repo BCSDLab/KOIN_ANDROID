@@ -32,8 +32,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.HomeEventLabels
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.feature.home.R
@@ -87,7 +88,12 @@ fun DiningPager(
                     isSelected = isSelected
                 ) {
                     if (isSelected) return@DiningPagerIndicator
-                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.MENU_CORNER, data[page].place)
+                    EventLogger.logCustomEvent(
+                        action = EventAction.DA1.value,
+                        category = "select",
+                        label = HomeEventLabels.DINING_CORNER,
+                        value = data[page].place
+                    )
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(page)
                     }
@@ -212,6 +218,7 @@ private fun DiningPagerContentPreview() {
     DiningPagerContent(
         data = DiningPagerData(
             place = DiningPlace.CornerA.place,
+            type = "BREAKFAST",
             startTime = "07:30",
             endTime = "09:30",
             price = 5000,
@@ -237,6 +244,7 @@ private fun DiningPagerPreview() {
         data = persistentListOf(
             DiningPagerData(
                 place = DiningPlace.CornerA.place,
+                type = "BREAKFAST",
                 startTime = "07:30",
                 endTime = "09:30",
                 price = 5000,
@@ -245,6 +253,7 @@ private fun DiningPagerPreview() {
             ),
             DiningPagerData(
                 place = DiningPlace.CornerB.place,
+                type = "BREAKFAST",
                 startTime = "07:30",
                 endTime = "09:30",
                 price = 5000,
@@ -257,6 +266,7 @@ private fun DiningPagerPreview() {
 
 data class DiningPagerData(
     val place: String,
+    val type: String,
     val startTime: String,
     val endTime: String,
     val price: Int,

@@ -37,8 +37,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.HomeEventLabels
 import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -154,7 +155,7 @@ private fun NotificationMenuButton(
                 )
             },
             onClick = {
-                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.NOTIFICATION_LIST_READ_ALL, "모두 읽음으로 표시")
+                EventLogger.logClickEvent(EventAction.DA2, HomeEventLabels.NOTIFICATION_READ_ALL, "모두 읽음으로 표시")
                 onMarkAllAsRead()
                 expanded = false
             }
@@ -168,7 +169,7 @@ private fun NotificationMenuButton(
                 )
             },
             onClick = {
-                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.NOTIFICATION_DELETE_ALL, "알림 전체 삭제")
+                EventLogger.logClickEvent(EventAction.DA2, HomeEventLabels.NOTIFICATION_DELETE_ALL, "알림 전체 삭제")
                 onDeleteAll()
                 expanded = false
             }
@@ -219,8 +220,9 @@ private fun NotificationScreenImpl(
                 isRead = notification.isRead,
                 onDelete = remember(notification.id) {
                     {
-                        EventLogger.logCampusClickEvent(
-                            AnalyticsConstant.Label.NOTIFICATION_LIST_DELETE,
+                        EventLogger.logClickEvent(
+                            EventAction.DA2,
+                            HomeEventLabels.NOTIFICATION_DELETE,
                             "알림 삭제"
                         )
                         onDelete(notification.id)
@@ -228,8 +230,9 @@ private fun NotificationScreenImpl(
                 },
                 onClick = remember(notification.id, notification.type) {
                     {
-                        EventLogger.logCampusClickEvent(
-                            AnalyticsConstant.Label.NOTIFICATION_LIST,
+                        EventLogger.logClickEvent(
+                            EventAction.DA2,
+                            HomeEventLabels.NOTIFICATION_ITEM,
                             NotificationCategory.from(notification.type).analyticsLabel
                         )
                         onNotificationClick(notification)

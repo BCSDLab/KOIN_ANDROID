@@ -4,10 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
-import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.ShopAnalyticsConstant
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
 import `in`.koreatech.koin.domain.usecase.presignedurl.UploadImageUseCase
@@ -45,16 +44,6 @@ class ReviewAddViewModel @Inject constructor(
                     storeNavigationData = route.storeNavigationData,
                     storeId = route.storeNavigationData.shopId,
                     storeName = route.storeName
-                )
-            }
-        }
-    }
-
-    init {
-        intent {
-            reduce {
-                state.copy(
-                    startTime = System.currentTimeMillis()
                 )
             }
         }
@@ -139,10 +128,9 @@ class ReviewAddViewModel @Inject constructor(
             return@intent
         }
         EventLogger.logClickEvent(
-            EventAction.BUSINESS,
-            AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_DONE,
-            state.storeName,
-            EventExtra(AnalyticsConstant.DURATION_TIME, ((System.currentTimeMillis() - state.startTime) / 1000.0).toString())
+            EventAction.DA1,
+            ShopAnalyticsConstant.SHOP_REVIEW_WRITE_CONFIRM_CLICK,
+            state.storeName
         )
         reduce { state.copy(isLoading = true) }
         val review = Review(

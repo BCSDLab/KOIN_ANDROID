@@ -16,12 +16,18 @@ object EventLogger {
     private const val USER_MAJOR = "major"
 
     private const val SCREEN_NAME = "screen_name"
+    private const val SCREEN_VIEW = "screen_view"
     private const val EVENT_CATEGORY = "event_category"
     private const val EVENT_LABEL = "event_label"
     private const val VALUE = "value"
     private const val CUSTOM_SESSION_ID = "custom_session_id"
 
     private var loggerUserData: LoggerUserData = LoggerUserData("", "", "")
+
+    private fun screenView(label: String): String {
+        val start = label.indexOf("__") + 2
+        return label.substring(start, label.indexOf("__", start))
+    }
 
     fun init(getLoggerUserDataUseCase: GetLoggerUserDataUseCase) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -153,7 +159,8 @@ object EventLogger {
         action: String,
         category: String,
         label: String,
-        value: String
+        value: String,
+        vararg extras: EventExtra
     ) {
         if (BuildConfig.IS_DEBUG) {
             Firebase.analytics.setUserId(loggerUserData.userId)
@@ -165,6 +172,12 @@ object EventLogger {
                 param(EVENT_CATEGORY, "${category}_debug")
                 param(EVENT_LABEL, "$label (debug)")
                 param(VALUE, value)
+                if (action == EventAction.DA1.value || action == EventAction.DA2.value) {
+                    param(SCREEN_VIEW, screenView(label))
+                }
+                extras.forEach {
+                    param("${it.key}_debug", it.value)
+                }
             }
         } else {
             Firebase.analytics.setUserId(loggerUserData.userId)
@@ -176,6 +189,12 @@ object EventLogger {
                 param(EVENT_CATEGORY, category)
                 param(EVENT_LABEL, label)
                 param(VALUE, value)
+                if (action == EventAction.DA1.value || action == EventAction.DA2.value) {
+                    param(SCREEN_VIEW, screenView(label))
+                }
+                extras.forEach {
+                    param(it.key, it.value)
+                }
             }
         }
         Log.d("EventLogger", "logCustomEvent: action=$action, category=$category, label=$label, value=$value")
@@ -209,6 +228,9 @@ object EventLogger {
                 param(EVENT_CATEGORY, "${category.value}_debug")
                 param(EVENT_LABEL, "$label (debug)")
                 param(VALUE, value)
+                if (action == EventAction.DA1 || action == EventAction.DA2) {
+                    param(SCREEN_VIEW, screenView(label))
+                }
                 extras.forEach {
                     param("${it.key}_debug", it.value)
                 }
@@ -223,6 +245,9 @@ object EventLogger {
                 param(EVENT_CATEGORY, category.value)
                 param(EVENT_LABEL, label)
                 param(VALUE, value)
+                if (action == EventAction.DA1 || action == EventAction.DA2) {
+                    param(SCREEN_VIEW, screenView(label))
+                }
                 extras.forEach {
                     param(it.key, it.value)
                 }
@@ -279,6 +304,9 @@ object EventLogger {
                 param(EVENT_LABEL, "$label (debug)")
                 param(VALUE, value)
                 param(CUSTOM_SESSION_ID, customSessionId)
+                if (action == EventAction.DA1 || action == EventAction.DA2) {
+                    param(SCREEN_VIEW, screenView(label))
+                }
                 extras.forEach {
                     param("${it.key}_debug", it.value)
                 }
@@ -294,6 +322,9 @@ object EventLogger {
                 param(EVENT_LABEL, label)
                 param(VALUE, value)
                 param(CUSTOM_SESSION_ID, customSessionId)
+                if (action == EventAction.DA1 || action == EventAction.DA2) {
+                    param(SCREEN_VIEW, screenView(label))
+                }
                 extras.forEach {
                     param(it.key, it.value)
                 }
@@ -307,6 +338,8 @@ enum class EventAction(val value: String) {
     BUSINESS("BUSINESS"),
     CAMPUS("CAMPUS"),
     USER("USER"),
+    DA1("DA1"),
+    DA2("DA2"),
     ABTEST("AB_TEST")
 }
 

@@ -3,8 +3,9 @@ package `in`.koreatech.koin.feature.user.ui.signup.userinfo.general
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.AccountAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.error.user.KoinUserException
 import `in`.koreatech.koin.domain.usecase.signup.CheckEmailDuplicateUseCase
@@ -16,6 +17,7 @@ import `in`.koreatech.koin.feature.user.KOREATECH_EMAIL_DOMAIN
 import `in`.koreatech.koin.feature.user.ui.signup.navigation.GENDER
 import `in`.koreatech.koin.feature.user.ui.signup.navigation.NAME
 import `in`.koreatech.koin.feature.user.ui.signup.navigation.PHONE_NUMBER
+import `in`.koreatech.koin.feature.user.ui.signup.navigation.SESSION_ID
 import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -33,6 +35,8 @@ class SignUpGeneralViewModel @Inject constructor(
     private val checkLoginIdDuplicateUseCase: CheckLoginIdDuplicateUseCase,
     private val checkEmailDuplicateUseCase: CheckEmailDuplicateUseCase
 ) : ViewModel(), ContainerHost<SignUpGeneralState, SignUpGeneralSideEffect> {
+    private val sessionId: String = checkNotNull(savedStateHandle.get<String>(SESSION_ID))
+
     override val container = container<SignUpGeneralState, SignUpGeneralSideEffect>(SignUpGeneralState(), savedStateHandle) {
         val phoneNumber = savedStateHandle.get<String>(PHONE_NUMBER)
         val name = savedStateHandle.get<String>(NAME)
@@ -89,10 +93,12 @@ class SignUpGeneralViewModel @Inject constructor(
             reduce {
                 state.copy(isNicknameAvailable = true)
             }
-            EventLogger.logClickEvent(
-                EventAction.USER,
-                AnalyticsConstant.Label.CREATE_ACCOUNT,
-                "닉네임생성"
+            EventLogger.logSessionEvent(
+                action = EventAction.DA2,
+                category = EventCategory.CLICK,
+                label = AccountAnalyticsConstant.Label.SignUp.NICKNAME_AVAILABLE,
+                value = AccountAnalyticsConstant.Value.NICKNAME_CREATED,
+                customSessionId = sessionId
             )
         }.onFailure {
             reduce {
@@ -114,10 +120,12 @@ class SignUpGeneralViewModel @Inject constructor(
             reduce {
                 state.copy(isLoginIdAvailable = true, isLoginIdValid = true)
             }
-            EventLogger.logClickEvent(
-                EventAction.USER,
-                AnalyticsConstant.Label.CREATE_ACCOUNT,
-                "아이디생성"
+            EventLogger.logSessionEvent(
+                action = EventAction.DA2,
+                category = EventCategory.CLICK,
+                label = AccountAnalyticsConstant.Label.SignUp.ID_AVAILABLE,
+                value = AccountAnalyticsConstant.Value.ID_CREATED,
+                customSessionId = sessionId
             )
         }.onFailure {
             when (it) {

@@ -28,7 +28,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.CallvanAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
 import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
@@ -121,8 +122,10 @@ fun CallvanListScreen(
         onFilterItemClicked = viewModel::onFilterItemClicked,
         onFilterReset = viewModel::resetPendingFilter,
         onFilterApply = {
-            EventLogger.logCampusClickEvent(
-                AnalyticsConstant.Label.Callvan.CALLVAN_FILTER_APPLY,
+            EventLogger.logCustomEvent(
+                CallvanAnalyticsConstant.EVENT_NAME,
+                EventCategory.CLICK.value,
+                CallvanAnalyticsConstant.Label.LIST_FILTER_APPLY,
                 ""
             )
             viewModel.applyPendingFilter()
@@ -235,10 +238,22 @@ fun CallvanListScreenImpl(
             confirmText = stringResource(R.string.callvan_confirm_positive),
             cancelText = stringResource(R.string.callvan_confirm_negative),
             onConfirm = {
-                handleConfirmAction(confirmType, postId, onJoin, onCancelJoin, onClose, onReRecruit)
+                handleConfirmAction(
+                    confirmType = confirmType,
+                    postId = postId,
+                    responseValue = CallvanAnalyticsConstant.Value.YES,
+                    onJoin = onJoin,
+                    onCancelJoin = onCancelJoin,
+                    onClose = onClose,
+                    onReRecruit = onReRecruit
+                )
                 onPendingConfirmChange(null)
             },
-            onDismiss = { onPendingConfirmChange(null) }
+            onDismiss = { onPendingConfirmChange(null) },
+            onCancelClick = {
+                handleConfirmCancel(confirmType, CallvanAnalyticsConstant.Value.NO)
+                onPendingConfirmChange(null)
+            }
         )
     }
 
@@ -288,8 +303,10 @@ fun CallvanListScreenImpl(
                         )
                     },
                     onNavigationIconClick = {
-                        EventLogger.logCampusClickEvent(
-                            AnalyticsConstant.Label.Callvan.CALLVAN_BACK,
+                        EventLogger.logCustomEvent(
+                            CallvanAnalyticsConstant.EVENT_NAME,
+                            EventCategory.CLICK.value,
+                            CallvanAnalyticsConstant.Label.LIST_NAVIGATION_BACK,
                             ""
                         )
                         onTopbarBackClick()
@@ -308,8 +325,10 @@ fun CallvanListScreenImpl(
                 CallvanFAB(
                     modifier = Modifier.padding(bottom = 24.dp),
                     onClick = {
-                        EventLogger.logCampusClickEvent(
-                            AnalyticsConstant.Label.Callvan.CALLVAN_CREATE,
+                        EventLogger.logCustomEvent(
+                            CallvanAnalyticsConstant.EVENT_NAME,
+                            EventCategory.CLICK.value,
+                            CallvanAnalyticsConstant.Label.LIST_CALLVAN_WRITE_ENTRY,
                             ""
                         )
                         onWriteClick()
@@ -338,13 +357,25 @@ fun CallvanListScreenImpl(
                             value = searchValue,
                             onValueChange = onSearchValueChange,
                             modifier = Modifier.weight(1f).noRippleClickable {
-                                EventLogger.logCampusClickEvent(
-                                    AnalyticsConstant.Label.Callvan.CALLVAN_SEARCH,
+                                EventLogger.logCustomEvent(
+                                    CallvanAnalyticsConstant.EVENT_NAME,
+                                    EventCategory.CLICK.value,
+                                    CallvanAnalyticsConstant.Label.LIST_SEARCH_INPUT,
                                     ""
                                 )
                             }
                         )
-                        CallvanFilterChip(onClick = { onFilterVisibleChange(true) })
+                        CallvanFilterChip(
+                            onClick = {
+                                EventLogger.logCustomEvent(
+                                    CallvanAnalyticsConstant.EVENT_NAME,
+                                    EventCategory.CLICK.value,
+                                    CallvanAnalyticsConstant.Label.LIST_FILTER_OPEN,
+                                    ""
+                                )
+                                onFilterVisibleChange(true)
+                            }
+                        )
                     }
                 }
 
@@ -357,15 +388,19 @@ fun CallvanListScreenImpl(
                             onReRecruit = { onPendingConfirmChange(Pair(CallvanConfirmType.REOPEN, uiState.id)) },
                             onComplete = { onPendingCompletePostIdChange(uiState.id) },
                             onCall = {
-                                EventLogger.logCampusClickEvent(
-                                    AnalyticsConstant.Label.Callvan.CALLVAN_CALL,
+                                EventLogger.logCustomEvent(
+                                    CallvanAnalyticsConstant.EVENT_NAME,
+                                    EventCategory.CLICK.value,
+                                    CallvanAnalyticsConstant.Label.LIST_CONTACT_PHONE,
                                     ""
                                 )
                                 onCall(uiState.id)
                             },
                             onChat = {
-                                EventLogger.logCampusClickEvent(
-                                    AnalyticsConstant.Label.Callvan.CALLVAN_CHAT,
+                                EventLogger.logCustomEvent(
+                                    CallvanAnalyticsConstant.EVENT_NAME,
+                                    EventCategory.CLICK.value,
+                                    CallvanAnalyticsConstant.Label.LIST_CALLVAN_CHAT_CARD_ENTRY,
                                     ""
                                 )
                                 onChat(uiState.id)
@@ -449,28 +484,46 @@ private fun CallvanListScreenNotificationSuggestPreview() {
 private fun handleConfirmAction(
     confirmType: CallvanConfirmType,
     postId: Int,
+    responseValue: String,
     onJoin: (Int) -> Unit,
     onCancelJoin: (Int) -> Unit,
     onClose: (Int) -> Unit,
     onReRecruit: (Int) -> Unit
 ) {
+    logConfirmResponse(confirmType, responseValue)
     when (confirmType) {
-        CallvanConfirmType.JOIN -> {
-            EventLogger.logCampusClickEvent(
-                AnalyticsConstant.Label.Callvan.CALLVAN_JOIN,
-                ""
-            )
-            onJoin(postId)
-        }
-        CallvanConfirmType.CANCEL_JOIN -> {
-            EventLogger.logCampusClickEvent(
-                AnalyticsConstant.Label.Callvan.CALLVAN_JOIN_CANCEL,
-                ""
-            )
-            onCancelJoin(postId)
-        }
+        CallvanConfirmType.JOIN -> onJoin(postId)
+        CallvanConfirmType.CANCEL_JOIN -> onCancelJoin(postId)
         CallvanConfirmType.CLOSE -> onClose(postId)
         CallvanConfirmType.REOPEN -> onReRecruit(postId)
+    }
+}
+
+private fun handleConfirmCancel(
+    confirmType: CallvanConfirmType,
+    responseValue: String
+) {
+    logConfirmResponse(confirmType, responseValue)
+}
+
+private fun logConfirmResponse(
+    confirmType: CallvanConfirmType,
+    responseValue: String
+) {
+    when (confirmType) {
+        CallvanConfirmType.JOIN -> EventLogger.logCustomEvent(
+            CallvanAnalyticsConstant.EVENT_NAME,
+            EventCategory.CLICK.value,
+            CallvanAnalyticsConstant.Label.LIST_PARTICIPATION_JOIN_RESPONSE,
+            responseValue
+        )
+        CallvanConfirmType.CANCEL_JOIN -> EventLogger.logCustomEvent(
+            CallvanAnalyticsConstant.EVENT_NAME,
+            EventCategory.CLICK.value,
+            CallvanAnalyticsConstant.Label.LIST_PARTICIPATION_CANCEL_RESPONSE,
+            responseValue
+        )
+        CallvanConfirmType.CLOSE, CallvanConfirmType.REOPEN -> Unit
     }
 }
 

@@ -28,7 +28,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import `in`.koreatech.koin.core.analytics.AccountAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinMainTopBar
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -73,15 +75,27 @@ fun ProfileScreen(
             uiState = uiState,
             onAuthClick = {
                 if (uiState.isLoggedIn) {
-                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Profile.HOME_LOGOUT, "로그아웃")
+                    EventLogger.logClickEvent(
+                        EventAction.DA2,
+                        AccountAnalyticsConstant.Label.MainProfile.LOGOUT,
+                        AccountAnalyticsConstant.Value.LOGOUT
+                    )
                     viewModel.onLogoutClick()
                 } else {
-                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Profile.HOME_LOGIN, "로그인")
+                    EventLogger.logClickEvent(
+                        EventAction.DA2,
+                        AccountAnalyticsConstant.Label.MainProfile.LOGIN_ENTRY,
+                        AccountAnalyticsConstant.Value.LOGIN
+                    )
                     navigator.navigateToSignIn(context, DEEPLINK_MAIN_PROFILE).let { context.startActivity(it) }
                 }
             },
             onSettingClick = {
-                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Profile.HOME_SETTINGS, "설정")
+                EventLogger.logClickEvent(
+                    EventAction.DA2,
+                    AccountAnalyticsConstant.Label.MainProfile.ACCOUNT_CONFIG_ENTRY,
+                    AccountAnalyticsConstant.Value.SETTINGS
+                )
                 onNavigateToSetting()
             },
             onNotificationClick = {
@@ -89,7 +103,11 @@ fun ProfileScreen(
                 onNavigateToNotification()
             },
             onTimetableClick = {
-                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Profile.HOME_TIMETABLE, "내 시간표")
+                EventLogger.logClickEvent(
+                    EventAction.DA2,
+                    AccountAnalyticsConstant.Label.MainProfile.TIMETABLE_ENTRY,
+                    AccountAnalyticsConstant.Value.TIMETABLE
+                )
                 navigator.navigateToTimetable(context, isAnonymous = !uiState.isLoggedIn)
                     .let { context.startActivity(it) }
             }

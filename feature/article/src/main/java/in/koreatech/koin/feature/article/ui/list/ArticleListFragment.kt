@@ -22,8 +22,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
-import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.BoardAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.navigation.Navigator
@@ -63,9 +63,10 @@ class ArticleListFragment : Fragment() {
         object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
-                    EventLogger.logClickEvent(
-                        EventAction.CAMPUS,
-                        AnalyticsConstant.Label.NOTICE_TAB,
+                    EventLogger.logCustomEvent(
+                        BoardAnalyticsConstant.EVENT_NAME,
+                        BoardAnalyticsConstant.Category.SELECT,
+                        BoardAnalyticsConstant.Label.MAIN_NOTICE_TAB,
                         it.text.toString()
                     )
                     viewModel.setCurrentBoard(ArticleBoardType.entries[it.position])
@@ -120,10 +121,15 @@ class ArticleListFragment : Fragment() {
                         newScrollPercentage
                     ) && scrollPercentage.toDouble() != .0
                 ) {
-                    EventLogger.logScrollEvent(
-                        EventAction.CAMPUS,
-                        AnalyticsConstant.Label.NOTICE_PAGE,
-                        getString(R.string.title_article)
+                    EventLogger.logCustomEvent(
+                        BoardAnalyticsConstant.EVENT_NAME,
+                        EventCategory.SCROLL.value,
+                        BoardAnalyticsConstant.Label.MAIN_NOTICE_SCROLL,
+                        if (newScrollPercentage > scrollPercentage) {
+                            BoardAnalyticsConstant.Value.SCROLL_DOWN
+                        } else {
+                            BoardAnalyticsConstant.Value.SCROLL_UP
+                        }
                     )
                 }
                 scrollPercentage = 100.0f * offset / (range - extent)
@@ -181,6 +187,12 @@ class ArticleListFragment : Fragment() {
     }
 
     private fun onArticleClicked(article: ArticleHeaderState) {
+        EventLogger.logCustomEvent(
+            BoardAnalyticsConstant.EVENT_NAME,
+            EventCategory.CLICK.value,
+            BoardAnalyticsConstant.Label.MAIN_NOTICE_DETAIL_ENTRY,
+            article.id.toString()
+        )
         navController.navigate(
             R.id.action_articleListFragment_to_articleDetailFragment,
             bundleOf(
@@ -192,26 +204,29 @@ class ArticleListFragment : Fragment() {
 
     private fun handleKeywordChips() {
         binding.imageViewToSearchPage.setOnClickListener {
-            EventLogger.logClickEvent(
-                EventAction.CAMPUS,
-                AnalyticsConstant.Label.NOTICE_SEARCH,
-                getString(R.string.search)
+            EventLogger.logCustomEvent(
+                BoardAnalyticsConstant.EVENT_NAME,
+                EventCategory.CLICK.value,
+                BoardAnalyticsConstant.Label.MAIN_NOTICE_SEARCH_ENTRY,
+                BoardAnalyticsConstant.Value.SEARCH
             )
             navController.navigate(R.id.action_articleListFragment_to_articleSearchFragment)
         }
         binding.imageViewToKeywordAddPage.setOnClickListener {
-            EventLogger.logClickEvent(
-                EventAction.CAMPUS,
-                AnalyticsConstant.Label.MANAGE_KEYWORD,
-                "키워드관리"
+            EventLogger.logCustomEvent(
+                BoardAnalyticsConstant.EVENT_NAME,
+                EventCategory.CLICK.value,
+                BoardAnalyticsConstant.Label.MAIN_NOTICE_KEYWORD_MANAGE_ENTRY,
+                BoardAnalyticsConstant.Value.SETTINGS_ICON
             )
             navigateToKeywordFragment()
         }
         binding.chipSeeAll.setOnClickListener {
-            EventLogger.logClickEvent(
-                EventAction.CAMPUS,
-                AnalyticsConstant.Label.NOTICE_FILTER_ALL,
-                getString(R.string.see_all_article)
+            EventLogger.logCustomEvent(
+                BoardAnalyticsConstant.EVENT_NAME,
+                BoardAnalyticsConstant.Category.SELECT,
+                BoardAnalyticsConstant.Label.MAIN_NOTICE_KEYWORD_FILTER,
+                BoardAnalyticsConstant.Value.SEE_ALL
             )
             viewModel.selectKeyword("")
         }
@@ -224,10 +239,11 @@ class ArticleListFragment : Fragment() {
                         if (keywords.isEmpty()) {
                             binding.chipGroupMyKeywords.addView(
                                 createChip(getString(R.string.add_new_keyword), false) {
-                                    EventLogger.logClickEvent(
-                                        EventAction.CAMPUS,
-                                        AnalyticsConstant.Label.ADD_KEYWORD,
-                                        "키워드추가"
+                                    EventLogger.logCustomEvent(
+                                        BoardAnalyticsConstant.EVENT_NAME,
+                                        EventCategory.CLICK.value,
+                                        BoardAnalyticsConstant.Label.MAIN_NOTICE_KEYWORD_MANAGE_ENTRY,
+                                        BoardAnalyticsConstant.Value.ADD_NEW_KEYWORD
                                     )
                                     navigateToKeywordFragment()
                                 }

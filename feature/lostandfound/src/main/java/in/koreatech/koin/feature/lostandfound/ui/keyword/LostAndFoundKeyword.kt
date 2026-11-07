@@ -53,8 +53,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.LostAndFoundAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
@@ -273,9 +274,11 @@ private fun MyKeywordSection(
                 keyboardActions = KeyboardActions(
                     onDone = {
                         if (keywordInput.isNotBlank() && !isLoading) {
-                            EventLogger.logCampusClickEvent(
-                                AnalyticsConstant.Label.LostAndFound.LOST_ITEM_KEYWORD_ADD,
-                                "키워드 추가"
+                            EventLogger.logCustomEvent(
+                                LostAndFoundAnalyticsConstant.EVENT_NAME,
+                                LostAndFoundAnalyticsConstant.Category.SUBMIT,
+                                LostAndFoundAnalyticsConstant.Label.KEYWORD_MANAGE_ADD,
+                                keywordInput
                             )
                             onAddKeyword(keywordInput)
                         }
@@ -300,9 +303,11 @@ private fun MyKeywordSection(
             Button(
                 modifier = Modifier.height(38.dp),
                 onClick = {
-                    EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_KEYWORD_ADD,
-                        "키워드 추가"
+                    EventLogger.logCustomEvent(
+                        LostAndFoundAnalyticsConstant.EVENT_NAME,
+                        LostAndFoundAnalyticsConstant.Category.SUBMIT,
+                        LostAndFoundAnalyticsConstant.Label.KEYWORD_MANAGE_ADD,
+                        keywordInput
                     )
                     onAddKeyword(keywordInput)
                     focusManager.clearFocus()
@@ -331,8 +336,10 @@ private fun MyKeywordSection(
             LostAndFoundDeletableChipFlowGroup(
                 keywords = keywords,
                 onDelete = { keyword ->
-                    EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_KEYWORD_REMOVE,
+                    EventLogger.logCustomEvent(
+                        LostAndFoundAnalyticsConstant.EVENT_NAME,
+                        EventCategory.CLICK.value,
+                        LostAndFoundAnalyticsConstant.Label.KEYWORD_MANAGE_DELETE,
                         keyword
                     )
                     onDeleteKeyword(keyword)
@@ -365,8 +372,10 @@ private fun SuggestedKeywordSection(
         LostAndFoundAddableChipFlowGroup(
             keywords = suggestedKeywords,
             onAdd = { keyword ->
-                EventLogger.logCampusClickEvent(
-                    AnalyticsConstant.Label.LostAndFound.LOST_ITEM_KEYWORD_RECOMMEND,
+                EventLogger.logCustomEvent(
+                    LostAndFoundAnalyticsConstant.EVENT_NAME,
+                    LostAndFoundAnalyticsConstant.Category.SELECT,
+                    LostAndFoundAnalyticsConstant.Label.KEYWORD_MANAGE_RECOMMENDED_KEYWORD,
                     keyword
                 )
                 onAdd(keyword)
@@ -398,9 +407,15 @@ private fun KeywordNotificationSection(
                     value = isEnabled,
                     role = Role.Switch,
                     onValueChange = { newValue ->
-                        EventLogger.logCampusClickEvent(
-                            AnalyticsConstant.Label.LostAndFound.LOST_ITEM_KEYWORD_ALARM,
-                            "키워드 알림받기"
+                        EventLogger.logCustomEvent(
+                            LostAndFoundAnalyticsConstant.EVENT_NAME,
+                            EventCategory.CLICK.value,
+                            LostAndFoundAnalyticsConstant.Label.KEYWORD_MANAGE_NOTIFICATION,
+                            if (newValue) {
+                                LostAndFoundAnalyticsConstant.Value.NOTIFICATION_ON
+                            } else {
+                                LostAndFoundAnalyticsConstant.Value.NOTIFICATION_OFF
+                            }
                         )
                         onToggle(newValue)
                     }

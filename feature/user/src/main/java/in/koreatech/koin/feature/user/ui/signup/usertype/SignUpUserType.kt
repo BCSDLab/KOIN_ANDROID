@@ -20,8 +20,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.AccountAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -32,6 +33,7 @@ import `in`.koreatech.koin.feature.user.component.KoinUserProgressIndicator
 
 @Composable
 fun SignUpUserType(
+    sessionId: String,
     navigateToStudentScreen: () -> Unit = { },
     navigateToGeneralScreen: () -> Unit = { }
 ) {
@@ -93,10 +95,12 @@ fun SignUpUserType(
             shape = KoinTheme.shapes.small,
             onClick = {
                 navigateToStudentScreen()
-                EventLogger.logClickEvent(
-                    EventAction.USER,
-                    AnalyticsConstant.Label.CREATE_ACCOUNT,
-                    "학생"
+                EventLogger.logSessionEvent(
+                    action = EventAction.DA2,
+                    category = EventCategory.CLICK,
+                    label = AccountAnalyticsConstant.Label.SignUp.USER_TYPE,
+                    value = AccountAnalyticsConstant.Value.USER_TYPE_STUDENT,
+                    customSessionId = sessionId
                 )
             }
         )
@@ -115,10 +119,12 @@ fun SignUpUserType(
                 .padding(horizontal = 24.dp),
             onClick = {
                 navigateToGeneralScreen()
-                EventLogger.logClickEvent(
-                    EventAction.USER,
-                    AnalyticsConstant.Label.CREATE_ACCOUNT,
-                    "외부인"
+                EventLogger.logSessionEvent(
+                    action = EventAction.DA2,
+                    category = EventCategory.CLICK,
+                    label = AccountAnalyticsConstant.Label.SignUp.USER_TYPE,
+                    value = AccountAnalyticsConstant.Value.USER_TYPE_GENERAL,
+                    customSessionId = sessionId
                 )
             }
         ) {
@@ -135,5 +141,5 @@ fun SignUpUserType(
 @Preview(showBackground = true)
 @Composable
 private fun SignUpUserTypePreview() {
-    SignUpUserType()
+    SignUpUserType(sessionId = "")
 }

@@ -19,8 +19,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.AccountAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -37,6 +38,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun SignUpTermScreen(
+    sessionId: String,
     viewModel: SignUpTermViewModel = hiltViewModel(),
     navigateToNextScreen: () -> Unit = {}
 ) {
@@ -55,6 +57,7 @@ fun SignUpTermScreen(
         privacyTermChecked = uiState.isPrivacyTermChecked,
         koinTermChecked = uiState.isKoinTermChecked,
         marketingTermChecked = uiState.isMarketingTermChecked,
+        sessionId = sessionId,
         onPrivacyTermCheckChange = { viewModel.setPrivacyTermState(it) },
         onKoinTermCheckChange = { viewModel.setKoinTermState(it) },
         onMarketingTermCheckChange = { viewModel.setMarketingTermState(it) },
@@ -70,6 +73,7 @@ private fun SignUpTermScreenImpl(
     privacyTermChecked: Boolean,
     koinTermChecked: Boolean,
     marketingTermChecked: Boolean,
+    sessionId: String,
     modifier: Modifier = Modifier,
     onPrivacyTermCheckChange: (Boolean) -> Unit = {},
     onKoinTermCheckChange: (Boolean) -> Unit = {},
@@ -170,10 +174,12 @@ private fun SignUpTermScreenImpl(
             shape = KoinTheme.shapes.small,
             onClick = {
                 navigateToNextScreen()
-                EventLogger.logClickEvent(
-                    EventAction.USER,
-                    AnalyticsConstant.Label.TERMS_AGREEMENT,
-                    "약관동의"
+                EventLogger.logSessionEvent(
+                    action = EventAction.DA2,
+                    category = EventCategory.CLICK,
+                    label = AccountAnalyticsConstant.Label.SignUp.TERMS_AGREE,
+                    value = AccountAnalyticsConstant.Value.TERMS_AGREE,
+                    customSessionId = sessionId
                 )
             },
             enabled = privacyTermChecked && koinTermChecked
@@ -198,6 +204,7 @@ private fun SignUpTermScreenPreview() {
         marketingTerm = "마케팅 정보 수신 동의",
         privacyTermChecked = false,
         koinTermChecked = false,
-        marketingTermChecked = false
+        marketingTermChecked = false,
+        sessionId = ""
     )
 }

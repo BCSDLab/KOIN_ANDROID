@@ -32,10 +32,12 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.URL
 import `in`.koreatech.koin.core.BuildConfig
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.AccountAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.TimetableAnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.blueStatusBar
 import `in`.koreatech.koin.core.util.whiteStatusBar
@@ -308,6 +310,14 @@ abstract class KoinNavigationDrawerActivity :
                                 )
                             }
 
+                            MenuState.Timetable -> {
+                                EventLogger.logClickEvent(
+                                    EventAction.DA1,
+                                    TimetableAnalyticsConstant.Label.CATEGORY_ENTRY,
+                                    TimetableAnalyticsConstant.Value.CATEGORY_ENTRY
+                                )
+                            }
+
                             MenuState.Club -> {
                                 EventLogger.logCampusClickEvent(
                                     AnalyticsConstant.Label.HAMBURGER,
@@ -317,10 +327,10 @@ abstract class KoinNavigationDrawerActivity :
 
                             MenuState.SignUp -> {
                                 EventLogger.logSessionEvent(
-                                    action = EventAction.USER,
+                                    action = EventAction.DA2,
                                     category = EventCategory.CLICK,
-                                    label = AnalyticsConstant.Label.HAMBURGER,
-                                    value = "회원가입 시작",
+                                    label = AccountAnalyticsConstant.Label.SignUp.MENU_ENTRY,
+                                    value = AccountAnalyticsConstant.Value.SIGN_UP_START,
                                     customSessionId = koinNavigationDrawerViewModel.getSignUpSessionId()
                                 )
                             }
@@ -621,11 +631,6 @@ abstract class KoinNavigationDrawerActivity :
                         putExtra("isAnonymous", false)
                     }
                 }
-            EventLogger.logClickEvent(
-                action = EventAction.USER,
-                label = "hamburger",
-                value = "시간표"
-            )
             startActivity(intent)
         }
     }
@@ -680,6 +685,7 @@ abstract class KoinNavigationDrawerActivity :
 
     private fun goToSignUpActivity() {
         Intent(this, SignUpActivity::class.java).apply {
+            putExtra(SignUpActivity.EXTRA_SESSION_ID, koinNavigationDrawerViewModel.getSignUpSessionId())
             startActivity(this)
         }
     }

@@ -2,7 +2,7 @@ package `in`.koreatech.koin.domain.model.callvan
 
 data class CallvanPostCreate(
     val id: Int,
-    val author: String,
+    val author: String?,
     val departureType: String,
     val departureCustomName: String?,
     val arrivalType: String,

@@ -31,6 +31,8 @@ import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
 import `in`.koreatech.bus.state.BusNoticeState
 import `in`.koreatech.bus.type.PlaceSelectMode
 import `in`.koreatech.bus.type.PlaceType
+import `in`.koreatech.koin.core.analytics.BusAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -88,23 +90,26 @@ internal fun BusSearchScreenContent(
             departure = departure?.titleRes?.let { stringResource(it) } ?: "",
             arrival = arrival?.titleRes?.let { stringResource(it) } ?: "",
             onSwapIconClicked = {
-                EventLogger.logCampusClickEvent(
-                    "swap_destination",
-                    "스왑 버튼"
+                EventLogger.logClickEvent(
+                    EventAction.DA1,
+                    BusAnalyticsConstant.Label.SEARCH_SWAP,
+                    BusAnalyticsConstant.Value.SWAP
                 )
                 onSwapIconClick()
             },
             onDepartureFieldClicked = {
-                EventLogger.logCampusClickEvent(
-                    "departure_box",
-                    "출발지 선택"
+                EventLogger.logClickEvent(
+                    EventAction.DA1,
+                    BusAnalyticsConstant.Label.SEARCH_DEPARTURE_OPEN,
+                    BusAnalyticsConstant.Value.DEPARTURE_OPEN
                 )
                 placeSelectMode = PlaceSelectMode.DEPARTURE
             },
             onArrivalFieldClicked = {
-                EventLogger.logCampusClickEvent(
-                    "arrival_box",
-                    "목적지 선택"
+                EventLogger.logClickEvent(
+                    EventAction.DA1,
+                    BusAnalyticsConstant.Label.SEARCH_ARRIVAL_OPEN,
+                    BusAnalyticsConstant.Value.ARRIVAL_OPEN
                 )
                 placeSelectMode = PlaceSelectMode.ARRIVAL
             }
@@ -118,16 +123,18 @@ internal fun BusSearchScreenContent(
                 notice = busNoticeUiState.notice,
                 onCloseIconClick = {
                     onCloseNotice()
-                    EventLogger.logCampusClickEvent(
-                        "bus_announcement_close",
-                        "교통편 조회하기"
+                    EventLogger.logClickEvent(
+                        EventAction.DA1,
+                        BusAnalyticsConstant.Label.NOTICE_CLOSE,
+                        BusAnalyticsConstant.Value.BUS_SEARCH
                     )
                 },
                 onNoticeClick = {
                     onNoticeClick(busNoticeUiState.notice)
-                    EventLogger.logCampusClickEvent(
-                        "bus_announcement",
-                        "교통편 조회하기"
+                    EventLogger.logClickEvent(
+                        EventAction.DA1,
+                        BusAnalyticsConstant.Label.NOTICE_OPEN,
+                        BusAnalyticsConstant.Value.BUS_SEARCH
                     )
                 },
                 noticeMaxLines = 2
@@ -143,9 +150,10 @@ internal fun BusSearchScreenContent(
                 .padding(bottom = 30.dp)
                 .windowInsetsPadding(WindowInsets.navigationBars),
             onClick = {
-                EventLogger.logCampusClickEvent(
-                    "search_bus",
-                    "조회하기"
+                EventLogger.logClickEvent(
+                    EventAction.DA1,
+                    BusAnalyticsConstant.Label.SEARCH_SUBMIT,
+                    BusAnalyticsConstant.Value.SEARCH
                 )
                 onSearchClick()
             },
@@ -172,17 +180,21 @@ internal fun BusSearchScreenContent(
             selectMode = placeSelectMode,
             onConfirmSelection = {
                 if (placeSelectMode == PlaceSelectMode.DEPARTURE) {
-                    EventLogger.logCampusClickEvent(
-                        "departure_location_confirm",
-                        context.getString(it.titleRes)
+                    EventLogger.logCustomEvent(
+                        action = EventAction.DA1.value,
+                        category = BusAnalyticsConstant.Category.SELECT,
+                        label = BusAnalyticsConstant.Label.SEARCH_DEPARTURE_CONFIRM,
+                        value = context.getString(it.titleRes)
                     )
                     placeSelectMode =
                         if (arrival == null) PlaceSelectMode.ARRIVAL else PlaceSelectMode.NONE
                     onDepartureSet(it)
                 } else if (placeSelectMode == PlaceSelectMode.ARRIVAL) {
-                    EventLogger.logCampusClickEvent(
-                        "arrival_location_confirm",
-                        context.getString(it.titleRes)
+                    EventLogger.logCustomEvent(
+                        action = EventAction.DA1.value,
+                        category = BusAnalyticsConstant.Category.SELECT,
+                        label = BusAnalyticsConstant.Label.SEARCH_ARRIVAL_CONFIRM,
+                        value = context.getString(it.titleRes)
                     )
                     placeSelectMode =
                         if (departure == null) PlaceSelectMode.DEPARTURE else PlaceSelectMode.NONE

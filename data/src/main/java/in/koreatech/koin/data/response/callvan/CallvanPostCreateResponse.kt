@@ -6,7 +6,7 @@ data class CallvanPostCreateResponse(
     @SerializedName("id")
     val id: Int,
     @SerializedName("author")
-    val author: String,
+    val author: String?,
     @SerializedName("departure_type")
     val departureType: String,
     @SerializedName("departure_custom_name")

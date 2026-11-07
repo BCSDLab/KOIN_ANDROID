@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.data.dao.ABTestDao
+import `in`.koreatech.koin.data.dao.BusDao
 import `in`.koreatech.koin.data.dao.CacheMetadataDao
 import `in`.koreatech.koin.data.dao.CoopShopDao
 import `in`.koreatech.koin.data.dao.DiningDao
@@ -72,5 +73,11 @@ object DatabaseModule {
     @Singleton
     fun provideCoopShopDao(appDatabase: AppDatabase): CoopShopDao {
         return appDatabase.coopShopDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideBusDao(appDatabase: AppDatabase): BusDao {
+        return appDatabase.busDao()
     }
 }

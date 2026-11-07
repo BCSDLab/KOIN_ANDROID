@@ -29,8 +29,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.LostAndFoundAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
@@ -86,8 +87,10 @@ fun LostAndFoundDetail(
             DetailDialog(
                 title = stringResource(id = R.string.lost_and_found_dialog_message),
                 onPositive = {
-                    EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_FOUND,
+                    EventLogger.logCustomEvent(
+                        LostAndFoundAnalyticsConstant.EVENT_NAME,
+                        EventCategory.CLICK.value,
+                        LostAndFoundAnalyticsConstant.Label.DETAIL_STATUS_FOUND_CONFIRM,
                         loggingLostOrFound
                     )
                     viewModel.setFound()
@@ -106,17 +109,21 @@ fun LostAndFoundDetail(
                 title = stringResource(id = R.string.detail_chat_login_dialog_title),
                 description = stringResource(id = R.string.detail_chat_login_dialog_description),
                 onPositive = {
-                    EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_MESSAGE_LOGIN_REQUEST,
-                        "로그인하기"
+                    EventLogger.logCustomEvent(
+                        LostAndFoundAnalyticsConstant.EVENT_NAME,
+                        EventCategory.CLICK.value,
+                        LostAndFoundAnalyticsConstant.Label.DETAIL_LOGIN_POPUP_LOGIN,
+                        LostAndFoundAnalyticsConstant.Value.LOGIN
                     )
                     navigateToLogin(uiState.id)
                     viewModel.setShowLoginDialog(false)
                 },
                 onNegative = {
-                    EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_MESSAGE_LOGIN_REQUEST,
-                        "닫기"
+                    EventLogger.logCustomEvent(
+                        LostAndFoundAnalyticsConstant.EVENT_NAME,
+                        EventCategory.CLICK.value,
+                        LostAndFoundAnalyticsConstant.Label.DETAIL_LOGIN_POPUP_CLOSE,
+                        LostAndFoundAnalyticsConstant.Value.CLOSE
                     )
                     viewModel.setShowLoginDialog(false)
                 }
@@ -174,8 +181,10 @@ fun LostAndFoundDetail(
                                 lostOrFoundType = uiState.lostOrFound,
                                 isFound = uiState.isFound,
                                 onCheckedChange = {
-                                    EventLogger.logCampusClickEvent(
-                                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_STATE_CHANGE,
+                                    EventLogger.logCustomEvent(
+                                        LostAndFoundAnalyticsConstant.EVENT_NAME,
+                                        EventCategory.CLICK.value,
+                                        LostAndFoundAnalyticsConstant.Label.DETAIL_STATUS_OPEN,
                                         loggingLostOrFound
                                     )
                                     viewModel.setShowFoundDialog(true)
@@ -183,13 +192,12 @@ fun LostAndFoundDetail(
                             )
                         }
 
-                        val loggingLostMessageSend = stringResource(id = R.string.logging_lost_message_send)
-                        val loggingFoundMessageSend = stringResource(id = R.string.logging_found_message_send)
-                        val loggingReport = stringResource(id = R.string.logging_report)
                         val onModifyClick = remember(uiState.id, loggingLostOrFound) {
                             {
-                                EventLogger.logCampusClickEvent(
-                                    AnalyticsConstant.Label.LostAndFound.LOST_ITEM_MODIFY,
+                                EventLogger.logCustomEvent(
+                                    LostAndFoundAnalyticsConstant.EVENT_NAME,
+                                    EventCategory.CLICK.value,
+                                    LostAndFoundAnalyticsConstant.Label.DETAIL_EDIT_ENTRY,
                                     loggingLostOrFound
                                 )
                                 navigateToModify(uiState.id)
@@ -215,12 +223,14 @@ fun LostAndFoundDetail(
                                 viewModel.setShowDeleteDialog(it)
                             },
                             onChatRoomClick = {
-                                EventLogger.logCampusClickEvent(
-                                    AnalyticsConstant.Label.LostAndFound.ITEM_MESSAGE_SEND,
+                                EventLogger.logCustomEvent(
+                                    LostAndFoundAnalyticsConstant.EVENT_NAME,
+                                    EventCategory.CLICK.value,
+                                    LostAndFoundAnalyticsConstant.Label.DETAIL_MESSAGE_ENTRY,
                                     if (uiState.lostOrFound == LostOrFoundType.LOST) {
-                                        loggingLostMessageSend
+                                        LostAndFoundAnalyticsConstant.Value.LOST_MESSAGE
                                     } else {
-                                        loggingFoundMessageSend
+                                        LostAndFoundAnalyticsConstant.Value.FOUND_MESSAGE
                                     }
                                 )
                                 if (uiState.isLoggedIn) {
@@ -230,9 +240,11 @@ fun LostAndFoundDetail(
                                 }
                             },
                             onReportArticleClick = {
-                                EventLogger.logCampusClickEvent(
-                                    AnalyticsConstant.Label.LostAndFound.ITEM_POST_REPORT,
-                                    loggingReport
+                                EventLogger.logCustomEvent(
+                                    LostAndFoundAnalyticsConstant.EVENT_NAME,
+                                    EventCategory.CLICK.value,
+                                    LostAndFoundAnalyticsConstant.Label.DETAIL_REPORT_ENTRY,
+                                    LostAndFoundAnalyticsConstant.Value.REPORT
                                 )
                                 navigateToReport(uiState.id)
                             }

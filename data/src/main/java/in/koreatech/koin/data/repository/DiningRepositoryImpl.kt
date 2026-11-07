@@ -12,7 +12,6 @@ import `in`.koreatech.koin.domain.repository.DiningRepository
 import `in`.koreatech.koin.domain.util.suspendRunCatching
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 
@@ -20,13 +19,11 @@ class DiningRepositoryImpl @Inject constructor(
     private val diningRemoteDataSource: DiningRemoteDataSource,
     private val diningLocalDataSource: DiningLocalDataSource
 ) : DiningRepository {
-    override fun getDining(date: String, forceRefresh: Boolean): Flow<List<Dining>> {
+    override fun getDining(date: String): Flow<List<Dining>> {
         return diningLocalDataSource.observeDining(date)
             .map { dining -> dining.map { it.toDining() } }
             .onStart {
-                if (forceRefresh || diningLocalDataSource.observeDining(date).first().isEmpty()) {
-                    fetchDining(date)
-                }
+                fetchDining(date)
             }
     }
 

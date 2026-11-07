@@ -21,6 +21,9 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.LAND
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.RealEstateAnalyticsConstant
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.databinding.LandActivityDetailBinding
 import `in`.koreatech.koin.domain.model.land.LandDetail
@@ -78,10 +81,20 @@ class LandDetailActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
 
             landDetailIcLeftImageview.setOnClickListener {
                 landDetailImageViewpager.currentItem = landDetailImageViewpager.currentItem - 1
+                EventLogger.logClickEvent(
+                    EventAction.DA1,
+                    RealEstateAnalyticsConstant.ROOM_DETAIL_PHOTO_SLIDE_CLICK,
+                    RealEstateAnalyticsConstant.VALUE_PREVIOUS
+                )
             }
 
             landDetailIcRightImageview.setOnClickListener {
                 landDetailImageViewpager.currentItem = landDetailImageViewpager.currentItem + 1
+                EventLogger.logClickEvent(
+                    EventAction.DA1,
+                    RealEstateAnalyticsConstant.ROOM_DETAIL_PHOTO_SLIDE_CLICK,
+                    RealEstateAnalyticsConstant.VALUE_NEXT
+                )
             }
         }
     }
