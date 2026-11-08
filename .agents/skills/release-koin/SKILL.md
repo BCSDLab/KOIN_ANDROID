@@ -34,7 +34,7 @@ Typical invocations:
 Extract:
 
 - **Target versionName**: use the supplied version. For release preparation, ask if no target version can be resolved from the request or existing release work; do not guess major/minor/patch.
-- **Target versionCode**: use the supplied value, or derive a candidate from the existing convention. The current convention is `major * 10000 + minor * 100 + patch`; verify it still applies and the candidate exceeds the current and relevant remote codes. Repository state alone cannot prove which codes already exist in Play Console.
+- **Target versionCode**: use the supplied value, or derive a candidate from the existing convention. The current convention is `major * 10000 + minor * 100 + patch`, with minor and patch each limited to 0–99. Outside that range, require an explicit versionCode instead of applying the formula. Verify the convention still applies and the candidate exceeds the current and relevant remote codes. Repository state alone cannot prove which codes already exist in Play Console.
 - **Release branch**: use the supplied name, otherwise `release/v<versionName>`.
 - **Scope**: preparation, full deployment, or a specific existing release stage.
 

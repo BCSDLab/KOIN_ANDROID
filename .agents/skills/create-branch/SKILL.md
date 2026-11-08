@@ -38,7 +38,7 @@ Read `.github/pr-labeler.yml` for recognized branch prefixes. Use the following 
 <type>/<issue-number>-<english-kebab-case>
 ```
 
-Use `feature`, `fix`, `refactor`, or `chore` according to the work. For example: `fix/1710-callvan-create-author-nullable`. Preserve an existing relevant branch rather than renaming it without a request.
+Use `feature`, `fix`, `refactor`, or `chore` according to the work. For example: `fix/1710-callvan-create-author-nullable`. Use the `fix` prefix for new hotfix work; `hotfix` is not a separate recognized prefix. Preserve an existing relevant branch rather than renaming it without a request.
 
 ```bash
 git fetch origin

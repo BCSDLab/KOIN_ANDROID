@@ -1,6 +1,6 @@
 ---
 name: create-feature-module
-description: Create and register a new KOIN Android feature module with Orbit MVI and core navigation.
+description: Create a new KOIN Android feature/<name> module with Orbit MVI and core navigation. Not for core, business, or existing modules.
 ---
 
 # Role

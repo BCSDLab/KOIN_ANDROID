@@ -1,6 +1,6 @@
 ---
 name: create-api-endpoint
-description: Add a KOIN Android REST endpoint from the stage OpenAPI spec through API, DTO, mapper, data source, and repository layers.
+description: Add a KOIN Android REST endpoint (API 추가, 신규 엔드포인트) from stage OpenAPI, or production when explicitly requested. Not for WebSocket/STOMP or legacy Java.
 ---
 
 # Role

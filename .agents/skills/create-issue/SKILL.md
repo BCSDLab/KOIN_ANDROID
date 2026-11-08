@@ -57,6 +57,8 @@ gh issue view <N> --repo BCSDLab/KOIN_ANDROID --json number,title,body,labels,as
 
 Verify the rendered body, title, labels, and any requested assignee. Report the URL and whether created or reused. Continue to `create-branch` or `create-pr` only if that work was also requested.
 
+After successful creation and verification, delete only the temporary body file created by this invocation. Do not delete a user-supplied file.
+
 # Reference files
 
 - `.github/ISSUE_TEMPLATE/BUG_REPORT.md`

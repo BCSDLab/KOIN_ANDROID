@@ -34,9 +34,10 @@ Follow the repository's required checks:
 ```bash
 ./gradlew ktlintFormat
 ./gradlew ktlintCheck
+./gradlew spotlessCheck
 ```
 
-Review formatter changes and keep unrelated changes out of the commit. Run relevant behavior checks when needed; use the stage app, not production. Record actual results and resolve failing required checks before committing. Do not bypass hooks or claim unexecuted checks passed.
+Review formatter changes and keep unrelated changes out of the commit. Fix Spotless violations only within the intended scope; use `./gradlew spotlessApply` where appropriate and rerun `spotlessCheck`. Run relevant behavior checks when needed; use the stage app, not production. Record actual results and resolve failing required checks before committing. Do not bypass hooks or claim unexecuted checks passed.
 
 ## Step 3 — Stage and commit the intended changes
 
