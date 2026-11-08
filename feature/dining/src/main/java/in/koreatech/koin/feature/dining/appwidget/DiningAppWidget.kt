@@ -117,7 +117,6 @@ class DiningAppWidget : AppWidgetProvider() {
         )
     }
 
-    /** Retains the selected place while it is visible, otherwise selects the first visible place. */
     private fun setDiningList(diningList: List<Dining>, context: Context) {
         val componentName = ComponentName(context, DiningAppWidget::class.java)
         val appWidgetManager = AppWidgetManager.getInstance(context)
