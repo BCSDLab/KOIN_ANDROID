@@ -48,6 +48,7 @@ class KoinApplication : Application(), Configuration.Provider {
         initTimber()
         KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_APP_KEY)
         EventLogger.init(getLoggerUserDataUseCase)
+        koinSyncScheduler.scheduleNotificationCleanup()
     }
 
     private fun initTimber() {

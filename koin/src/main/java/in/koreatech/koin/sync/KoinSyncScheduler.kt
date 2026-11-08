@@ -19,6 +19,15 @@ import javax.inject.Singleton
 class KoinSyncScheduler @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
+    fun scheduleNotificationCleanup() {
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+            "notification_cleanup_periodic",
+            ExistingPeriodicWorkPolicy.KEEP,
+            PeriodicWorkRequest.Builder(NotificationCleanupWorker::class.java, 1L, TimeUnit.DAYS)
+                .build()
+        )
+    }
+
     fun schedule(workerClass: Class<out ListenableWorker>, workName: String) {
         val workManager = WorkManager.getInstance(context)
 
