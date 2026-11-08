@@ -27,7 +27,6 @@ import javax.inject.Inject
 
 private const val KOIN_SCHEME = "koin"
 
-/** Distinguishes repeated intents even when their date and tab arguments are identical. */
 private data class DiningNavigationRequest(
     val requestId: Long,
     val initDate: String,
@@ -40,10 +39,6 @@ class DiningActivity : ComponentActivity() {
     @Inject
     lateinit var navigator: Navigator
 
-    /**
-     * Retains the latest unconsumed intent until Compose has created the navigation graph.
-     * Consumption clears the request so recomposition cannot replay it.
-     */
     private val pendingNavigationRequest = mutableStateOf<DiningNavigationRequest?>(null)
     private var navigationRequestSequence = 0L
 
@@ -72,9 +67,7 @@ class DiningActivity : ComponentActivity() {
                     )
                 }
 
-                // NavHost assigns its graph before this post-composition effect runs.
                 LaunchedEffect(pendingNavigationRequest.value?.requestId) {
-                    // Clear before navigation so a later request cannot be cleared by this one.
                     val pendingRequest = pendingNavigationRequest.value ?: return@LaunchedEffect
                     pendingNavigationRequest.value = null
                     navController.navigate(
