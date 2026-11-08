@@ -71,7 +71,6 @@ private fun duplicateWithTimetableEvent(
             content.endTime
         )
 
-// 반개구간 [start, end) 기준으로 판정하므로 끝 시각과 시작 시각이 맞닿은 경우는 중복이 아니다.
 private fun timeRangesOverlap(
     start: LocalTime,
     end: LocalTime,
