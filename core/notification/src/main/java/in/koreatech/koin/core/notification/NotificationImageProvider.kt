@@ -44,12 +44,6 @@ internal object NotificationImageProvider {
         }.getOrNull()
     }
 
-    /**
-     * Downloads [imageUrl] into the notification image cache and returns the committed file.
-     *
-     * The connection and working file are cleaned up in `finally`, including read failures,
-     * size-limit failures, and failures when committing the cache file.
-     */
     private fun download(context: Context, imageUrl: String, extension: String): File {
         val imageDirectory = File(context.cacheDir, CACHE_DIRECTORY)
         check(imageDirectory.isDirectory || imageDirectory.mkdirs()) {
