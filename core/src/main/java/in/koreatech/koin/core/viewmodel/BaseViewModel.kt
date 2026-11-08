@@ -19,14 +19,6 @@ open class BaseViewModel() : ViewModel() {
     protected val _errorToast = SingleLiveEvent<String>()
     val errorToast: LiveData<String> get() = _errorToast
 
-    /**
-     * Sets [isLoading] to `true` while [block] runs and always resets it to `false` afterwards,
-     * including when [block] throws or the coroutine is cancelled.
-     *
-     * When [ignoreCancellationException] is `true`, a [CancellationException] thrown by [block]
-     * is swallowed as before and the job completes successfully. When it is `false`, the
-     * exception is rethrown after the loading state is reset.
-     */
     fun CoroutineScope.launchWithLoading(
         context: CoroutineContext = EmptyCoroutineContext,
         start: CoroutineStart = CoroutineStart.DEFAULT,
@@ -48,12 +40,6 @@ open class BaseViewModel() : ViewModel() {
         }
     }
 
-    /**
-     * [asyncWithLoading] counterpart of [launchWithLoading]: the loading state is reset in a
-     * `finally` block on success, failure, and cancellation. The resulting [Deferred] behaves
-     * exactly as before: it completes with [Unit], while failures from [block] (other than a
-     * swallowed [CancellationException]) still fail the coroutine.
-     */
     fun <T> CoroutineScope.asyncWithLoading(
         context: CoroutineContext = EmptyCoroutineContext,
         start: CoroutineStart = CoroutineStart.DEFAULT,
