@@ -38,16 +38,6 @@ class FirebaseMessagingDataSourceImpl @Inject constructor(
 
 private val inlineExecutor = Executor { runnable -> runnable.run() }
 
-/**
- * Awaits a Google Play services [Task] and completes the caller exactly once.
- *
- * A successful task resumes with its result, a failed task resumes with the original
- * cause, and a canceled task resumes with [CancellationException]. If the caller is
- * canceled first, its continuation is already completed, so a task completing later
- * is ignored instead of resuming the caller a second time.
- *
- * @param onFailure invoked with the failure cause before it is propagated to the caller.
- */
 internal suspend fun <T> Task<T>.awaitResult(onFailure: (Exception) -> Unit = {}): T =
     suspendCancellableCoroutine { continuation ->
         addOnCompleteListener(inlineExecutor) { completedTask ->
