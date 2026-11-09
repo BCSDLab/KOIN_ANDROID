@@ -12,6 +12,8 @@ import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.core.qualifier.IoDispatcher
+import `in`.koreatech.koin.core.qualifier.MainDispatcher
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
@@ -20,8 +22,9 @@ import `in`.koreatech.koin.feature.dining.R
 import `in`.koreatech.koin.feature.dining.constants.DINING
 import java.util.Date
 import javax.inject.Inject
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
@@ -32,6 +35,15 @@ import kotlinx.coroutines.withContext
 class DiningAppWidget : AppWidgetProvider() {
     @Inject
     lateinit var getDiningUseCase: GetDiningUseCase
+
+    @Inject
+    @IoDispatcher
+    lateinit var ioDispatcher: CoroutineDispatcher
+
+    @Inject
+    @MainDispatcher
+    lateinit var mainDispatcher: CoroutineDispatcher
+
     private var currentDiningPlace: String? = null
     private var job: Job? = null
 
@@ -95,15 +107,18 @@ class DiningAppWidget : AppWidgetProvider() {
             R.id.dining_widget_refresh_imageview
         )
         job =
-            CoroutineScope(Dispatchers.IO).launch {
-                getDiningUseCase(TimeUtil.dateFormatToYYMMDD(targetDay)).catch {
-                    Toast.makeText(
-                        context,
-                        R.string.error_network,
-                        Toast.LENGTH_SHORT
-                    ).show()
+            CoroutineScope(ioDispatcher).launch {
+                getDiningUseCase(TimeUtil.dateFormatToYYMMDD(targetDay)).catch { throwable ->
+                    if (throwable is CancellationException) throw throwable
+                    withContext(mainDispatcher) {
+                        Toast.makeText(
+                            context,
+                            R.string.error_network,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }.collectLatest {
-                    withContext(Dispatchers.Main) {
+                    withContext(mainDispatcher) {
                         setDiningList(it, context)
                     }
                 }
