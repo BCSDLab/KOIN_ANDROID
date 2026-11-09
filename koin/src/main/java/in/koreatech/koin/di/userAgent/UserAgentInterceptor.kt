@@ -15,7 +15,5 @@ class UserAgentInterceptor @Inject constructor(
             .header("User-Agent", userAgentProvider.getUserAgent())
             .build()
         return chain.proceed(newRequest)
-
-        return chain.proceed(originalRequest)
     }
 }
