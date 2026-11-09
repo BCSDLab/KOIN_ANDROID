@@ -5,8 +5,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,13 +27,20 @@ import javax.inject.Inject
 
 private const val KOIN_SCHEME = "koin"
 
+private data class DiningNavigationRequest(
+    val requestId: Long,
+    val initDate: String,
+    val initTabType: Int
+)
+
 @AndroidEntryPoint
 class DiningActivity : ComponentActivity() {
 
     @Inject
     lateinit var navigator: Navigator
 
-    private lateinit var navController: NavHostController
+    private val pendingNavigationRequest = mutableStateOf<DiningNavigationRequest?>(null)
+    private var navigationRequestSequence = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +55,7 @@ class DiningActivity : ComponentActivity() {
 
         setContent {
             RebrandKoinTheme {
-                navController = rememberNavController()
+                val navController = rememberNavController()
 
                 NavHost(
                     modifier = Modifier,
@@ -57,6 +65,20 @@ class DiningActivity : ComponentActivity() {
                     koinDiningGraph(
                         navController = navController
                     )
+                }
+
+                LaunchedEffect(pendingNavigationRequest.value?.requestId) {
+                    val pendingRequest = pendingNavigationRequest.value ?: return@LaunchedEffect
+                    pendingNavigationRequest.value = null
+                    navController.navigate(
+                        DiningNavType.DiningDetail(
+                            initDate = pendingRequest.initDate,
+                            initTabType = pendingRequest.initTabType
+                        )
+                    ) {
+                        popUpTo<DiningNavType.DiningDetail> { inclusive = true }
+                        launchSingleTop = true
+                    }
                 }
             }
         }
@@ -98,9 +120,10 @@ class DiningActivity : ComponentActivity() {
         }
         super.onNewIntent(intent)
         val initPair = onActionView()
-        navController.navigate(DiningNavType.DiningDetail(initDate = initPair.first, initTabType = initPair.second)) {
-            popUpTo<DiningNavType.DiningDetail> { inclusive = true }
-            launchSingleTop = true
-        }
+        pendingNavigationRequest.value = DiningNavigationRequest(
+            requestId = ++navigationRequestSequence,
+            initDate = initPair.first,
+            initTabType = initPair.second
+        )
     }
 }
