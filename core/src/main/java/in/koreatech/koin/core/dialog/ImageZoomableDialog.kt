@@ -64,22 +64,24 @@ class ImageZoomableDialog(private val context: Context, private val image: Strin
 
         // 이미지 영역 밖 터치 시 dismiss
         if (event.action == MotionEvent.ACTION_UP) {
-            if (!isUserImageInteraction) {
-                val rect = Rect()
-                window!!.decorView.getWindowVisibleDisplayFrame(rect)
-                val statusBarHeight = rect.top
-
-                if (binding.photoView.displayRect != null) {
-                    if (!binding.photoView.displayRect.contains(event.rawX, event.rawY - statusBarHeight)) {
-                        if (cancelableOnTouchOutside) {
-                            dismiss()
-                        }
-                    }
-                }
-            }
+            dismissOnOutsideTouch(event)
             isUserImageInteraction = false
         }
         return super.onTouchEvent(event)
+    }
+
+    private fun dismissOnOutsideTouch(event: MotionEvent) {
+        if (isUserImageInteraction || !cancelableOnTouchOutside) return
+
+        val displayRect = binding.photoView.displayRect ?: return
+        val decorView = window?.decorView ?: return
+        val rect = Rect()
+        decorView.getWindowVisibleDisplayFrame(rect)
+        val statusBarHeight = rect.top
+
+        if (!displayRect.contains(event.rawX, event.rawY - statusBarHeight)) {
+            dismiss()
+        }
     }
 
     override fun show() {

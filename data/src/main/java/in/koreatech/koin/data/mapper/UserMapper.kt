@@ -45,7 +45,7 @@ fun GeneralUserResponse.toUser() =
         gender = when (gender) {
             0 -> Gender.Man
             1 -> Gender.Woman
-            else -> throw IllegalStateException()
+            else -> error("Unexpected gender value: $gender")
         },
         userType = userType
     )
