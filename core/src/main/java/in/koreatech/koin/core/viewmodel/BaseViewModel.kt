@@ -8,6 +8,7 @@ import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -28,12 +29,15 @@ open class BaseViewModel() : ViewModel() {
         start
     ) {
         _isLoading.value = true
-        if (ignoreCancellationException) {
-            ignoreCancellationException { block() }
-        } else {
-            block()
+        try {
+            if (ignoreCancellationException) {
+                ignoreCancellationException { block() }
+            } else {
+                block()
+            }
+        } finally {
+            _isLoading.value = false
         }
-        _isLoading.value = false
     }
 
     fun <T> CoroutineScope.asyncWithLoading(
@@ -41,17 +45,20 @@ open class BaseViewModel() : ViewModel() {
         start: CoroutineStart = CoroutineStart.DEFAULT,
         ignoreCancellationException: Boolean = true,
         block: suspend CoroutineScope.() -> T
-    ) = this.async(
+    ): Deferred<Unit> = this.async(
         context,
         start
     ) {
         _isLoading.value = true
-        if (ignoreCancellationException) {
-            ignoreCancellationException { block() }
-        } else {
-            block()
+        try {
+            if (ignoreCancellationException) {
+                ignoreCancellationException { block() }
+            } else {
+                block()
+            }
+        } finally {
+            _isLoading.value = false
         }
-        _isLoading.value = false
     }
 
     fun CoroutineScope.launchIgnoreCancellation(
