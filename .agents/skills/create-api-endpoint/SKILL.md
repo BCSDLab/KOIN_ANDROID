@@ -1,6 +1,6 @@
 ---
 name: create-api-endpoint
-description: Add a new REST endpoint to the KOIN Android codebase end-to-end (8-file pipeline) — Api interface + Request DTO + Response DTO + Mapper + RemoteDataSource + Repository interface method + RepositoryImpl method + (when needed) DI registration + (when needed) `Koin<Feature>Exception` cases. Uses **WebFetch** to read the **stage** OpenAPI spec at `https://api.stage.koreatech.in/v3/api-docs` and auto-fills request/response field names + types + the `mapHttpFailure { on(code, "ERROR_CODE") throws ... }` block from the spec's 4xx responses, creating any missing Exception classes in the process. If the target feature has no Repository yet, this skill **automatically invokes `create-repository` first** (via the Skill tool) to scaffold the empty Repository pair, then continues. Trigger this skill whenever the user asks to add an endpoint, "신규 엔드포인트", "API 추가", a method+path pattern (e.g. "POST /callvan/posts/{id}/ban"), or `/create-api-endpoint`. Do NOT use for WebSocket/STOMP endpoints (different transport). Do NOT use for legacy Java code.
+description: Add a KOIN Android REST endpoint (API 추가, 신규 엔드포인트) from stage OpenAPI, or production when explicitly requested. Not for WebSocket/STOMP or legacy Java.
 ---
 
 # Role
