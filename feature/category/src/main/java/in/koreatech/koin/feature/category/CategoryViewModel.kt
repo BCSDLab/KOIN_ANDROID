@@ -3,7 +3,13 @@ package `in`.koreatech.koin.feature.category
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.HomeEventLabels
+import `in`.koreatech.koin.core.analytics.LostAndFoundAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.RealEstateAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.ShopAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.TimetableAnalyticsConstant
 import `in`.koreatech.koin.domain.usecase.notification.GetNotificationsFlowUseCase
 import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
 import `in`.koreatech.koin.feature.category.component.CategoryMenuId
@@ -45,21 +51,20 @@ class CategoryViewModel @Inject constructor(
     }
 
     private fun logCategoryMenuClick(id: CategoryMenuId) {
-        val (label, value) = when (id) {
-            CategoryMenuId.RECRUITMENT -> AnalyticsConstant.Label.Category.CATEGORY_TEAM_RECRUITMENT to "팀원 모집"
-            CategoryMenuId.LOST_AND_FOUND -> AnalyticsConstant.Label.Category.CATEGORY_LOST_AND_FOUND to "분실물"
-            CategoryMenuId.OPERATING_INFO -> AnalyticsConstant.Label.Category.CATEGORY_FACILITY to "교내 시설물 정보"
-            CategoryMenuId.DEPARTMENT_INFO -> AnalyticsConstant.Label.Category.CATEGORY_DEPARTMENT to "학교 부서 정보"
-            CategoryMenuId.DINING -> AnalyticsConstant.Label.Category.CATEGORY_DINING to "식단"
-            CategoryMenuId.STORE -> AnalyticsConstant.Label.Category.CATEGORY_NEARBY_STORE to "주변상점"
-            CategoryMenuId.TIMETABLE -> AnalyticsConstant.Label.Category.CATEGORY_TIMETABLE to "시간표"
-            CategoryMenuId.BUS_TIMETABLE -> AnalyticsConstant.Label.Category.CATEGORY_BUS_TIMETABLE to "버스 시간표"
-            CategoryMenuId.TRANSPORT_SEARCH -> AnalyticsConstant.Label.Category.CATEGORY_TRANSPORTATION to "교통편 조회하기"
-            CategoryMenuId.CALLVAN -> AnalyticsConstant.Label.Category.CATEGORY_CALLVAN_RECRUITMENT to "콜벤팟 모집"
-            CategoryMenuId.CHAT -> AnalyticsConstant.Label.Category.CATEGORY_CHAT to "채팅"
-            CategoryMenuId.HOUSING -> AnalyticsConstant.Label.Category.CATEGORY_ROOM to "복덕방"
-            CategoryMenuId.KOIN_BUSINESS -> AnalyticsConstant.Label.Category.CATEGORY_KOIN_FOR_BUSINESS to "코인 for Business"
+        when (id) {
+            CategoryMenuId.RECRUITMENT -> EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Category.CATEGORY_TEAM_RECRUITMENT, "팀원 모집")
+            CategoryMenuId.LOST_AND_FOUND -> EventLogger.logClickEvent(EventAction.DA2, LostAndFoundAnalyticsConstant.Label.CATEGORY_ENTRY, "분실물")
+            CategoryMenuId.OPERATING_INFO -> EventLogger.logClickEvent(EventAction.DA2, HomeEventLabels.CATEGORY_FACILITY, "교내 시설물 정보")
+            CategoryMenuId.DEPARTMENT_INFO -> EventLogger.logClickEvent(EventAction.DA2, HomeEventLabels.CATEGORY_DEPARTMENT, "학교 부서 정보")
+            CategoryMenuId.DINING -> EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Category.CATEGORY_DINING, "식단")
+            CategoryMenuId.STORE -> EventLogger.logClickEvent(EventAction.DA1, ShopAnalyticsConstant.CATEGORY_ENTRY, ShopAnalyticsConstant.VALUE_NEARBY)
+            CategoryMenuId.TIMETABLE -> EventLogger.logClickEvent(EventAction.DA1, TimetableAnalyticsConstant.Label.CATEGORY_ENTRY, TimetableAnalyticsConstant.Value.CATEGORY_ENTRY)
+            CategoryMenuId.BUS_TIMETABLE -> EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Category.CATEGORY_BUS_TIMETABLE, "버스 시간표")
+            CategoryMenuId.TRANSPORT_SEARCH -> EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Category.CATEGORY_TRANSPORTATION, "교통편 조회하기")
+            CategoryMenuId.CALLVAN -> EventLogger.logClickEvent(EventAction.DA2, HomeEventLabels.CATEGORY_CALLVAN, "콜벤팟 모집")
+            CategoryMenuId.CHAT -> EventLogger.logClickEvent(EventAction.DA2, HomeEventLabels.CATEGORY_CHAT, "채팅")
+            CategoryMenuId.HOUSING -> EventLogger.logClickEvent(EventAction.DA1, RealEstateAnalyticsConstant.CATEGORY_ENTRY, "복덕방")
+            CategoryMenuId.KOIN_BUSINESS -> EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Category.CATEGORY_KOIN_FOR_BUSINESS, "코인 for Business")
         }
-        EventLogger.logCampusClickEvent(label, value)
     }
 }

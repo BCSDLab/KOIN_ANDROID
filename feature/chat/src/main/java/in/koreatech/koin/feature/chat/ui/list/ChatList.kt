@@ -25,7 +25,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.ChatAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -123,9 +124,11 @@ fun ChatList(
             isLoading = uiState.isLoading,
             chatList = uiState.chatList,
             navigateToChatRoom = { articleId, chatRoomId ->
-                EventLogger.logCampusClickEvent(
-                    AnalyticsConstant.Label.CHAT.MESSAGE_LIST_SELECT,
-                    "쪽지"
+                EventLogger.logCustomEvent(
+                    ChatAnalyticsConstant.EVENT_NAME,
+                    EventCategory.CLICK.value,
+                    ChatAnalyticsConstant.Label.CHAT_LIST_CONVERSATION_ENTRY,
+                    ChatAnalyticsConstant.Value.MESSAGE
                 )
                 Intent(context, ChatRoomActivity::class.java).apply {
                     putExtra(ARTICLE_ID, articleId)

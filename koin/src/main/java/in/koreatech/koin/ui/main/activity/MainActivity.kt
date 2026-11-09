@@ -24,8 +24,9 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.HomeEventLabels
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
@@ -55,10 +56,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var navigator: Navigator
 
     private fun navigationLogValue(itemId: Int): Pair<String, String>? = when (itemId) {
-        R.id.bottom_navigation_home -> AnalyticsConstant.Label.NAV_HOME to "홈"
-        R.id.bottom_navigation_category -> AnalyticsConstant.Label.NAV_CATEGORY to "카테고리"
-        R.id.bottom_navigation_article -> AnalyticsConstant.Label.NAV_BULLETIN to "게시판"
-        R.id.bottom_navigation_profile -> AnalyticsConstant.Label.NAV_PROFILE to "프로필"
+        R.id.bottom_navigation_home -> HomeEventLabels.NAV_HOME to "홈"
+        R.id.bottom_navigation_category -> HomeEventLabels.NAV_CATEGORY to "카테고리"
+        R.id.bottom_navigation_article -> HomeEventLabels.NAV_NOTICE to "공지사항"
+        R.id.bottom_navigation_profile -> HomeEventLabels.NAV_PROFILE to "프로필"
         else -> null
     }
 
@@ -109,7 +110,7 @@ class MainActivity : AppCompatActivity() {
         // 리스너가 없으면 재탭도 이 setOnItemSelectedListener로 그대로 들어와 로깅과 기본 동작이 모두 보존된다.
         binding.bottomNavigationMain.setOnItemSelectedListener { item ->
             navigationLogValue(item.itemId)?.let { (label, value) ->
-                EventLogger.logCampusClickEvent(label, value)
+                EventLogger.logClickEvent(EventAction.DA2, label, value)
             }
             NavigationUI.onNavDestinationSelected(item, navController)
         }

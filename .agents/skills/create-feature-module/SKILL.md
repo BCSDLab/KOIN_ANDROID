@@ -1,6 +1,6 @@
 ---
 name: create-feature-module
-description: Scaffold a brand-new KOIN Android feature module under `feature/<name>/` with Orbit MVI and `core.navigation` baked in — `build.gradle.kts` (koin.feature + koin.hilt + koin.library.orbit + projects.core.navigation), `AndroidManifest.xml`, `proguard-rules.pro`, `consumer-rules.pro`, `AGENTS.md`, the `in.koreatech.koin.feature.<name>` package directory — and wire it into `settings.gradle` and `koin/build.gradle.kts`. Orbit and core.navigation are always included; the only opt-ins are kotlinx-serialization and a Deeplink Activity manifest block. Use whenever the user asks to create a new feature module, scaffold one, bootstrap one, or "add `feature/<name>`" (e.g. "feature/library 모듈 만들어줘", "신규 feature 모듈 추가", "scaffold feature/menu", "/create-feature-module library"). Trigger this skill even when the user does not say "skill" or "scaffold" — any request that boils down to "make a new module under `feature/`" should use it. Do NOT use for `core/*` modules, `business/`, or modifications to existing feature modules.
+description: Create a new KOIN Android feature/<name> module with Orbit MVI and core navigation. Not for core, business, or existing modules.
 ---
 
 # Role

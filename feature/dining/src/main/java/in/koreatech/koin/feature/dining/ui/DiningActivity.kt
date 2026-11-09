@@ -10,7 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.DiningAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
@@ -68,9 +68,9 @@ class DiningActivity : ComponentActivity() {
             return Pair(TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate()), -1)
         }
         EventLogger.logClickEvent(
-            EventAction.CAMPUS,
-            AnalyticsConstant.Label.MENU_SHARE,
-            "코인으로 이동"
+            EventAction.DA1,
+            DiningAnalyticsConstant.Label.KAKAO_ENTRY,
+            DiningAnalyticsConstant.Value.KAKAO_ENTRY
         )
         var initDate = TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate())
         var initTabType = 0

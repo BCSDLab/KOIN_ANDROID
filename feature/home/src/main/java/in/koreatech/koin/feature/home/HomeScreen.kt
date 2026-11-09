@@ -37,8 +37,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.AsyncImage
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.HomeEventLabels
 import `in`.koreatech.koin.core.designsystem.component.card.FeatureCard
 import `in`.koreatech.koin.core.designsystem.component.card.FeatureRow
 import `in`.koreatech.koin.core.designsystem.component.icon.IconBadge
@@ -47,6 +48,7 @@ import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.core.util.KoinCoilImageLoader
+import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.feature.home.component.DiningPager
 import `in`.koreatech.koin.feature.home.component.DiningPagerData
 import `in`.koreatech.koin.feature.home.component.HomeChip
@@ -127,7 +129,7 @@ private fun HeaderSection(
         modifier = modifier,
         isNewNotificationReceived = isNewNotificationReceived,
         onNotificationClick = {
-            EventLogger.logCampusClickEvent(AnalyticsConstant.Label.NOTIFICATION, "알림 아이콘")
+            EventLogger.logClickEvent(EventAction.DA2, HomeEventLabels.NOTIFICATION_ENTRY, "알림 아이콘")
             onNotificationClick()
         }
     )
@@ -207,7 +209,11 @@ private fun DiningSection(
         more = {
             Row(
                 modifier = Modifier.noRippleClickable {
-                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TODAY_MEAL, "전체보기")
+                    EventLogger.logClickEvent(
+                        EventAction.DA1,
+                        HomeEventLabels.DINING_MORE,
+                        "${DiningUtil.getKoreanName(diningData.firstOrNull()?.type ?: DiningUtil.getCurrentType().typeEnglish)}_더보기"
+                    )
                     navigator.navigateToDining(context).let(context::startActivity)
                 },
                 verticalAlignment = Alignment.CenterVertically
@@ -225,6 +231,11 @@ private fun DiningSection(
         }
     ) {
         DiningPager(data = diningData) {
+            EventLogger.logClickEvent(
+                EventAction.DA1,
+                HomeEventLabels.DINING_CARD,
+                DiningUtil.getKoreanName(it.type)
+            )
             navigator.navigateToDining(context).let(context::startActivity)
         }
     }
@@ -248,7 +259,7 @@ private fun BusSection(
         },
         more = {
             ShuttleTicketCard {
-                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.SHUTTLE_TICKET, "셔틀 탑승권")
+                EventLogger.logClickEvent(EventAction.DA1, HomeEventLabels.SHUTTLE_TICKET, "셔틀 탑승권")
                 navigator.navigateToUnibus(context).let(context::startActivity)
             }
         }
@@ -304,7 +315,7 @@ private fun BusSection(
                     }
                 },
                 onClick = {
-                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.CALLVANPOT, "콜밴팟 모집보기")
+                    EventLogger.logClickEvent(EventAction.DA2, HomeEventLabels.CALLVAN_ENTRY, "콜밴팟 모집보기")
                     navigator.navigateToCallvan(context).let(context::startActivity)
                 }
             )
@@ -316,7 +327,7 @@ private fun BusSection(
             FeatureCard(
                 modifier = Modifier.weight(1f),
                 onClick = {
-                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.BUS_TIMETABLE, "버스 시간표 조회하기")
+                    EventLogger.logClickEvent(EventAction.DA1, HomeEventLabels.BUS_TIMETABLE, "버스 시간표")
                     navigator.navigateToBusTimeTable(context).let(context::startActivity)
                 },
                 title = stringResource(R.string.bus_timetable),
@@ -340,7 +351,7 @@ private fun BusSection(
             FeatureCard(
                 modifier = Modifier.weight(1f),
                 onClick = {
-                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.BUS_ROUTE, "버스 노선 조회하기")
+                    EventLogger.logClickEvent(EventAction.DA1, HomeEventLabels.BUS_SEARCH, "버스 노선 조회")
                     navigator.navigateToBusSearch(context).let(context::startActivity)
                 },
                 title = stringResource(R.string.bus_route),
@@ -387,7 +398,7 @@ private fun ShopSection(
         more = {
             Row(
                 modifier = Modifier.noRippleClickable {
-                    EventLogger.logCampusClickEvent(AnalyticsConstant.Label.SHOP, "전체보기")
+                    EventLogger.logClickEvent(EventAction.DA1, HomeEventLabels.SHOP_ENTRY, "주변상점")
                     navigator.navigateToStore(context).let(context::startActivity)
                 },
                 verticalAlignment = Alignment.CenterVertically
@@ -406,7 +417,7 @@ private fun ShopSection(
     ) {
         FeatureRow(
             onClick = {
-                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.POPULAR_SHOP, "많이 찾는 상점 둘러보기")
+                EventLogger.logClickEvent(EventAction.DA2, HomeEventLabels.POPULAR_SHOP_ENTRY, "많이 찾는 상점 둘러보기")
                 navigator.navigateToStore(context).let(context::startActivity)
             },
             title = stringResource(R.string.shop_title),

@@ -11,6 +11,7 @@ data class ReviewReportState(
     val isLoading: Boolean = false,
     val storeNavigationData: StoreNavigationData = StoreNavigationData(-1, -1, false),
     val reviewId: Int? = null,
+    val storeName: String = "",
     val selectedReasons: ImmutableList<ReportReason> = persistentListOf(),
     val etcReason: String = ""
 )

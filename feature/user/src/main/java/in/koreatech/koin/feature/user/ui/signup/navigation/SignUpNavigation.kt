@@ -15,38 +15,52 @@ fun NavGraphBuilder.koinUserGraph(
     navController: NavController,
     finish: () -> Unit = {}
 ) {
-    composable<SignUpNavType.Term> {
-        SignUpTermScreen {
-            navController.navigate(SignUpNavType.Verification)
+    composable<SignUpNavType.Term> { entry ->
+        val args = entry.toRoute<SignUpNavType.Term>()
+        SignUpTermScreen(sessionId = args.sessionId) {
+            navController.navigate(SignUpNavType.Verification(sessionId = args.sessionId))
         }
     }
-    composable<SignUpNavType.Verification> {
-        SignUpVerification { name, phoneNumber, gender ->
-            navController.navigate(SignUpNavType.UserType(name = name, phoneNumber = phoneNumber, gender = gender))
+    composable<SignUpNavType.Verification> { entry ->
+        val args = entry.toRoute<SignUpNavType.Verification>()
+        SignUpVerification(sessionId = args.sessionId) { name, phoneNumber, gender ->
+            navController.navigate(
+                SignUpNavType.UserType(
+                    name = name,
+                    phoneNumber = phoneNumber,
+                    gender = gender,
+                    sessionId = args.sessionId
+                )
+            )
         }
     }
     composable<SignUpNavType.UserType> { entry ->
         val args = entry.toRoute<SignUpNavType.UserType>()
         SignUpUserType(
+            sessionId = args.sessionId,
             navigateToStudentScreen = {
-                navController.navigate(SignUpNavType.StudentUserInfo(name = args.name, phoneNumber = args.phoneNumber, gender = args.gender))
+                navController.navigate(
+                    SignUpNavType.StudentUserInfo(
+                        name = args.name,
+                        phoneNumber = args.phoneNumber,
+                        gender = args.gender,
+                        sessionId = args.sessionId
+                    )
+                )
             },
             navigateToGeneralScreen = {
-                navController.navigate(SignUpNavType.GeneralUserInfo(name = args.name, phoneNumber = args.phoneNumber, gender = args.gender))
+                navController.navigate(
+                    SignUpNavType.GeneralUserInfo(
+                        name = args.name,
+                        phoneNumber = args.phoneNumber,
+                        gender = args.gender,
+                        sessionId = args.sessionId
+                    )
+                )
             }
         )
     }
-    composable<SignUpNavType.GeneralUserInfo> {
-        SignUpGeneralUserInfo {
-            navController.navigate(SignUpNavType.SignUpComplete)
-        }
-    }
-
-    composable<SignUpNavType.StudentUserInfo> {
-        SignUpStudentUserInfo {
-            navController.navigate(SignUpNavType.SignUpComplete)
-        }
-    }
+    signUpUserInfoGraph(navController)
 
     composable<SignUpNavType.SignUpComplete> {
         SignUpCompleteScreen {
@@ -55,6 +69,23 @@ fun NavGraphBuilder.koinUserGraph(
     }
 }
 
+private fun NavGraphBuilder.signUpUserInfoGraph(navController: NavController) {
+    composable<SignUpNavType.GeneralUserInfo> { entry ->
+        val args = entry.toRoute<SignUpNavType.GeneralUserInfo>()
+        SignUpGeneralUserInfo(sessionId = args.sessionId) {
+            navController.navigate(SignUpNavType.SignUpComplete)
+        }
+    }
+
+    composable<SignUpNavType.StudentUserInfo> { entry ->
+        val args = entry.toRoute<SignUpNavType.StudentUserInfo>()
+        SignUpStudentUserInfo(sessionId = args.sessionId) {
+            navController.navigate(SignUpNavType.SignUpComplete)
+        }
+    }
+}
+
 const val PHONE_NUMBER = "phoneNumber"
 const val NAME = "name"
 const val GENDER = "gender"
+const val SESSION_ID = "sessionId"

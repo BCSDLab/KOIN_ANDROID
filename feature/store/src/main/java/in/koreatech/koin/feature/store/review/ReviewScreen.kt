@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -51,6 +52,7 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
+import `in`.koreatech.koin.core.analytics.ShopAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.store.DEEPLINK_STORE_REVIEW
@@ -74,6 +76,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.orbitmvi.orbit.compose.collectAsState
@@ -84,7 +87,7 @@ fun ReviewScreen(
     viewModel: ReviewViewModel = hiltViewModel(),
     isReviewUpdated: Boolean = false,
     onResetReviewUpdated: () -> Unit = {},
-    onReportClicked: (StoreNavigationData, Int) -> Unit = { _, _ -> },
+    onReportClicked: (StoreNavigationData, Int, String) -> Unit = { _, _, _ -> },
     onAddReviewClicked: (StoreNavigationData, String) -> Unit = { _, _ -> },
     onEditReviewClicked: (StoreNavigationData, Int, String) -> Unit = { _, _, _ -> }
 ) {
@@ -120,18 +123,18 @@ fun ReviewScreen(
             onPositiveClick = {
                 deleteReviewAction()
                 EventLogger.logClickEvent(
-                    EventAction.BUSINESS,
-                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE_DONE,
-                    "O"
+                    EventAction.DA1,
+                    ShopAnalyticsConstant.SHOP_DETAIL_REVIEW_DELETE_CONFIRM_CLICK,
+                    uiState.storeName
                 )
             },
-            onDismissRequest = remember(viewModel) {
+            onDismissRequest = remember(viewModel, uiState.storeName) {
                 {
                     viewModel.hideDeleteDialog()
                     EventLogger.logClickEvent(
-                        EventAction.BUSINESS,
-                        AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE_DONE,
-                        "X"
+                        EventAction.DA1,
+                        ShopAnalyticsConstant.SHOP_DETAIL_REVIEW_DELETE_CANCEL_CLICK,
+                        uiState.storeName
                     )
                 }
             }
@@ -140,9 +143,15 @@ fun ReviewScreen(
 
     if (uiState.showSignInDialog) {
         KoinStoreSignInDialog(
+            onDismiss = { viewModel.hideSignInDialog() },
             title = stringResource(R.string.review_sign_in_dialog_title),
             message = stringResource(R.string.review_sign_in_dialog_message),
             onPositive = {
+                EventLogger.logClickEvent(
+                    EventAction.DA1,
+                    ShopAnalyticsConstant.LOGIN_POPUP_LOGIN_ENTRY_CLICK,
+                    uiState.storeName
+                )
                 navigator.navigateToSignIn(
                     context = context,
                     redirectUrl = "$DEEPLINK_STORE_REVIEW/${Json.encodeToString(uiState.storeNavigationData)}/${uiState.storeName}"
@@ -150,7 +159,16 @@ fun ReviewScreen(
                     context.startActivity(this)
                 }
             },
-            onNegative = viewModel::hideSignInDialog
+            onNegative = remember(viewModel, uiState.storeName) {
+                {
+                    viewModel.hideSignInDialog()
+                    EventLogger.logClickEvent(
+                        EventAction.DA1,
+                        ShopAnalyticsConstant.LOGIN_POPUP_CLOSE_CLICK,
+                        uiState.storeName
+                    )
+                }
+            }
         )
     }
 
@@ -179,9 +197,23 @@ fun ReviewScreen(
         hideReviewOrderOptionChooser = viewModel::hideReviewOrderOptionChooser,
         setReviewOrderOption = viewModel::setReviewOrderOption,
         setFilterMyReview = viewModel::setFilterMyReview,
-        onReportClicked = remember(uiState.storeNavigationData) { { onReportClicked(uiState.storeNavigationData, it) } },
+        onReportClicked = remember(uiState.storeNavigationData, uiState.storeName) {
+            {
+                EventLogger.logClickEvent(
+                    EventAction.DA1,
+                    ShopAnalyticsConstant.SHOP_DETAIL_REVIEW_REPORT_ENTRY_CLICK,
+                    uiState.storeName
+                )
+                onReportClicked(uiState.storeNavigationData, it, uiState.storeName)
+            }
+        },
         onAddReviewClicked = remember(uiState.storeNavigationData, uiState.storeName, uiState.isLoggedIn) {
             {
+                EventLogger.logClickEvent(
+                    EventAction.DA1,
+                    ShopAnalyticsConstant.SHOP_DETAIL_REVIEW_WRITE_ENTRY_CLICK,
+                    uiState.storeName
+                )
                 if (uiState.isLoggedIn) {
                     onAddReviewClicked(uiState.storeNavigationData, uiState.storeName)
                 } else {
@@ -190,7 +222,16 @@ fun ReviewScreen(
             }
         },
         onEditReviewClicked = remember(uiState.storeNavigationData, uiState.storeName) { { reviewId -> onEditReviewClicked(uiState.storeNavigationData, reviewId, uiState.storeName) } },
-        onDeleteReviewClicked = viewModel::showDeleteDialog
+        onDeleteReviewClicked = remember(viewModel, uiState.storeName) {
+            { reviewId ->
+                EventLogger.logClickEvent(
+                    EventAction.DA1,
+                    ShopAnalyticsConstant.SHOP_DETAIL_REVIEW_DELETE_OPEN_CLICK,
+                    uiState.storeName
+                )
+                viewModel.showDeleteDialog(reviewId)
+            }
+        }
     )
 }
 
@@ -213,6 +254,19 @@ private fun ReviewScreen(
 ) {
     val context = LocalContext.current
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    val reviewListState = rememberLazyListState()
+
+    LaunchedEffect(reviewListState, storeName) {
+        snapshotFlow { reviewListState.isScrollInProgress }
+            .filter { it }
+            .collect {
+                EventLogger.logScrollEvent(
+                    EventAction.DA1,
+                    ShopAnalyticsConstant.SHOP_DETAIL_REVIEW_SCROLL,
+                    storeName
+                )
+            }
+    }
 
     Column(
         modifier = modifier
@@ -236,7 +290,8 @@ private fun ReviewScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .windowInsetsPadding(WindowInsets.navigationBars)
-                .consumeWindowInsets(WindowInsets.systemBars)
+                .consumeWindowInsets(WindowInsets.systemBars),
+            state = reviewListState
         ) {
             item {
                 OutlinedButton(

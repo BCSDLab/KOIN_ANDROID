@@ -6,6 +6,7 @@ import kotlinx.collections.immutable.toImmutableList
 
 fun DiningWithOperationTime.toDiningPagerDataList(): DiningPagerData = DiningPagerData(
     place = place,
+    type = type,
     startTime = startTime,
     endTime = endTime,
     price = priceCard.toIntOrNull() ?: priceCash.toIntOrNull() ?: 0,

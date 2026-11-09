@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.qualifiers.ActivityContext
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.LAND
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.RealEstateAnalyticsConstant
 import `in`.koreatech.koin.databinding.LandRecyclerviewItemBinding
 import `in`.koreatech.koin.domain.model.land.Land
 import `in`.koreatech.koin.ui.land.LandDetailActivity
@@ -45,6 +48,11 @@ class LandRecyclerViewAdapter @Inject constructor(
             root.setOnClickListener {
                 val intent = Intent(context, LandDetailActivity::class.java)
                 if (position != RecyclerView.NO_POSITION) {
+                    EventLogger.logClickEvent(
+                        EventAction.DA1,
+                        RealEstateAnalyticsConstant.ROOM_LIST_DETAIL_ENTRY_CLICK,
+                        landData[position].name
+                    )
                     intent.putExtra(LAND.LAND_EXTRA_NAME, landData[position].id)
                     context.startActivity(intent)
                 } else {

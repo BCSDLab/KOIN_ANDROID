@@ -3,7 +3,8 @@ package `in`.koreatech.koin.feature.department.screen.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.DepartmentAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.usecase.department.GetDepartmentContactsUseCase
 import `in`.koreatech.koin.feature.department.state.DepartmentSearchFieldHandler
@@ -37,7 +38,14 @@ class DepartmentListViewModel @Inject constructor(
                     .map { it.toDepartmentState() }
             }
         },
-        onSearchLog = { keyword -> EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Department.DEPARTMENT_SEARCH, keyword) }
+        onSearchLog = { keyword ->
+            EventLogger.logCustomEvent(
+                DepartmentAnalyticsConstant.EVENT_NAME,
+                EventCategory.CLICK.value,
+                DepartmentAnalyticsConstant.Label.MAIN_SEARCH,
+                keyword
+            )
+        }
     )
 
     private fun fetchUpdatedAt() = intent {
@@ -52,12 +60,22 @@ class DepartmentListViewModel @Inject constructor(
     fun onSearch() = searchFieldHandler.onSearch()
 
     fun onCategoryClick(category: DepartmentCategory) = intent {
-        EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Department.DEPARTMENT_CATEGORY, category.loggingValue)
+        EventLogger.logCustomEvent(
+            DepartmentAnalyticsConstant.EVENT_NAME,
+            EventCategory.CLICK.value,
+            DepartmentAnalyticsConstant.Label.MAIN_DEPARTMENT_CATEGORY,
+            category.loggingValue
+        )
         postSideEffect(DepartmentListSideEffect.NavigateToDetail(category))
     }
 
     fun onPhoneNumberClick(phoneNumber: String) = intent {
-        EventLogger.logCampusClickEvent(AnalyticsConstant.Label.Department.DEPARTMENT_CONTACT_COPY, "전화번호 복사")
+        EventLogger.logCustomEvent(
+            DepartmentAnalyticsConstant.EVENT_NAME,
+            EventCategory.CLICK.value,
+            DepartmentAnalyticsConstant.Label.MAIN_CONTACT_PHONE_COPY,
+            DepartmentAnalyticsConstant.Value.PHONE_COPY
+        )
         postSideEffect(DepartmentListSideEffect.CopyPhoneNumber(phoneNumber))
     }
 }

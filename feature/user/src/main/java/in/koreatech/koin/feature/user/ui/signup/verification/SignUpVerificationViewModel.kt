@@ -2,8 +2,9 @@ package `in`.koreatech.koin.feature.user.ui.signup.verification
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.AccountAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.util.AccountTimer
 import `in`.koreatech.koin.domain.error.user.KoinUserException
@@ -133,7 +134,7 @@ class SignUpVerificationViewModel @Inject constructor(
         }
     }
 
-    fun checkVerificationCode() {
+    fun checkVerificationCode(sessionId: String) {
         intent {
             verifySmsCodeUseCase(state.phoneNumber, state.verificationCode).onSuccess {
                 reduce {
@@ -141,10 +142,12 @@ class SignUpVerificationViewModel @Inject constructor(
                         verificationCodeState = VerificationCodeState.Valid
                     )
                 }
-                EventLogger.logClickEvent(
-                    EventAction.USER,
-                    AnalyticsConstant.Label.IDENTITY_VERIFICATION,
-                    "인증완료"
+                EventLogger.logSessionEvent(
+                    action = EventAction.DA2,
+                    category = EventCategory.CLICK,
+                    label = AccountAnalyticsConstant.Label.SignUp.CODE_VERIFY_SUCCESS,
+                    value = AccountAnalyticsConstant.Value.CODE_VERIFIED,
+                    customSessionId = sessionId
                 )
                 postSideEffect(SignUpVerificationSideEffect.StopTimer)
             }.onFailure {

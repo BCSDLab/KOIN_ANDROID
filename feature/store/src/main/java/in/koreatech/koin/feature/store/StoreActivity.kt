@@ -31,12 +31,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.ShopAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.core.developer.DeveloperOption
 import `in`.koreatech.koin.core.developer.DeveloperOptionUtil
 import `in`.koreatech.koin.feature.store.component.KoinStoreNavigationBar
 import `in`.koreatech.koin.feature.store.component.KoinStoreNavigationBarItem
+import `in`.koreatech.koin.feature.store.navigation.StoreMainNavType
 import `in`.koreatech.koin.feature.store.navigation.StoreNavType
 import `in`.koreatech.koin.feature.store.navigation.koinStoreGraph
 import `in`.koreatech.koin.feature.store.navigation.navigationBarItems
@@ -93,6 +97,9 @@ class StoreActivity : ComponentActivity() {
                                             icon = painterResource(item.iconRes),
                                             label = stringResource(item.stringRes),
                                             onClick = {
+                                                if (currentRoute != index) {
+                                                    logStoreNavigationClick(item.type)
+                                                }
                                                 navController.navigate(item.type) {
                                                     popUpTo(navController.graph.findStartDestination().id) {
                                                         saveState = true
@@ -157,6 +164,18 @@ class StoreActivity : ComponentActivity() {
     companion object {
         const val STORE_CATEGORY = "STORE_CATEGORY"
     }
+}
+
+private fun logStoreNavigationClick(type: StoreMainNavType) {
+    val (label, value) = when (type) {
+        StoreMainNavType.StoreMainHome ->
+            ShopAnalyticsConstant.SHOP_LIST_NAVIGATION_MAIN_RETURN_CLICK to ShopAnalyticsConstant.VALUE_MAIN
+        StoreMainNavType.StoreMainNearby ->
+            ShopAnalyticsConstant.SHOP_LIST_NAVIGATION_NEARBY_ENTRY_CLICK to ShopAnalyticsConstant.VALUE_NEARBY
+        StoreMainNavType.StoreMainOrder ->
+            ShopAnalyticsConstant.SHOP_LIST_NAVIGATION_ORDER_HISTORY_ENTRY_CLICK to ShopAnalyticsConstant.VALUE_ORDER_HISTORY
+    }
+    EventLogger.logClickEvent(EventAction.DA1, label, value)
 }
 
 internal val LocalDeliveryDeveloperOption = staticCompositionLocalOf { false }

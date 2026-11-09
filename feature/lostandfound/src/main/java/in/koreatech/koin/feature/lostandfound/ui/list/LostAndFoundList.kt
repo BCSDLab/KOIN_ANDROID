@@ -24,8 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.LostAndFoundAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
@@ -102,9 +103,21 @@ fun LostAndFoundList(
                 viewModel.setOverlayVisibility(ListOverlay.WRITE_BOTTOM_SHEET, false)
             },
             onFindOwnerClick = {
+                EventLogger.logCustomEvent(
+                    LostAndFoundAnalyticsConstant.EVENT_NAME,
+                    LostAndFoundAnalyticsConstant.Category.SELECT,
+                    LostAndFoundAnalyticsConstant.Label.LIST_WRITE_POST_TYPE,
+                    LostAndFoundAnalyticsConstant.Value.POST_TYPE_FOUND
+                )
                 navigateToWrite(LostOrFoundType.FOUND.name)
             },
             onLostItemClick = {
+                EventLogger.logCustomEvent(
+                    LostAndFoundAnalyticsConstant.EVENT_NAME,
+                    LostAndFoundAnalyticsConstant.Category.SELECT,
+                    LostAndFoundAnalyticsConstant.Label.LIST_WRITE_POST_TYPE,
+                    LostAndFoundAnalyticsConstant.Value.POST_TYPE_LOST
+                )
                 navigateToWrite(LostOrFoundType.LOST.name)
             }
         )
@@ -129,17 +142,21 @@ fun LostAndFoundList(
             title = stringResource(id = R.string.request_login_dialog_title),
             description = stringResource(id = R.string.request_login_dialog_description),
             onPositive = {
-                EventLogger.logCampusClickEvent(
-                    AnalyticsConstant.Label.LostAndFound.LOST_ITEM_WRITE_LOGIN_REQUEST,
-                    "로그인하기"
+                EventLogger.logCustomEvent(
+                    LostAndFoundAnalyticsConstant.EVENT_NAME,
+                    EventCategory.CLICK.value,
+                    LostAndFoundAnalyticsConstant.Label.LIST_LOGIN_POPUP_LOGIN,
+                    LostAndFoundAnalyticsConstant.Value.LOGIN
                 )
                 navigateToLogin()
                 viewModel.setOverlayVisibility(ListOverlay.WRITE_LOGIN_DIALOG, false)
             },
             onNegative = {
-                EventLogger.logCampusClickEvent(
-                    AnalyticsConstant.Label.LostAndFound.LOST_ITEM_WRITE_LOGIN_REQUEST,
-                    "닫기"
+                EventLogger.logCustomEvent(
+                    LostAndFoundAnalyticsConstant.EVENT_NAME,
+                    EventCategory.CLICK.value,
+                    LostAndFoundAnalyticsConstant.Label.LIST_LOGIN_POPUP_CLOSE,
+                    LostAndFoundAnalyticsConstant.Value.CLOSE
                 )
                 viewModel.setOverlayVisibility(ListOverlay.WRITE_LOGIN_DIALOG, false)
             }
@@ -162,6 +179,12 @@ fun LostAndFoundList(
             LostAndFoundFAB(
                 modifier = Modifier.offset(y = 10.dp),
                 onClick = {
+                    EventLogger.logCustomEvent(
+                        LostAndFoundAnalyticsConstant.EVENT_NAME,
+                        EventCategory.CLICK.value,
+                        LostAndFoundAnalyticsConstant.Label.LIST_WRITE_ENTRY,
+                        LostAndFoundAnalyticsConstant.Value.WRITE
+                    )
                     if (uiState.isLoggedIn) {
                         viewModel.setOverlayVisibility(ListOverlay.WRITE_BOTTOM_SHEET, true)
                     } else {
@@ -208,9 +231,11 @@ fun LostAndFoundList(
                 selectedKeywordIndex = uiState.selectedKeywordIndex,
                 onKeywordSelect = viewModel::selectKeyword,
                 onSettingClick = {
-                    EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_KEYWORD_SETTING,
-                        "키워드 설정"
+                    EventLogger.logCustomEvent(
+                        LostAndFoundAnalyticsConstant.EVENT_NAME,
+                        EventCategory.CLICK.value,
+                        LostAndFoundAnalyticsConstant.Label.LIST_KEYWORD_MANAGE_ENTRY,
+                        LostAndFoundAnalyticsConstant.Value.KEYWORD_SETTING
                     )
                     navigateToKeywordSetting()
                 }

@@ -23,7 +23,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.CallvanAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.chat.R
@@ -137,8 +138,10 @@ private fun GroupChatScreenImpl(
             onChatInputValueChange = onChatInputValueChange,
             uploadImage = uploadImage,
             onSendClick = {
-                EventLogger.logCampusClickEvent(
-                    AnalyticsConstant.Label.Callvan.CALLVAN_CHAT_SEND,
+                EventLogger.logCustomEvent(
+                    CallvanAnalyticsConstant.EVENT_NAME,
+                    EventCategory.CLICK.value,
+                    CallvanAnalyticsConstant.Label.CHAT_MESSAGE_SEND,
                     ""
                 )
                 onSendClick()

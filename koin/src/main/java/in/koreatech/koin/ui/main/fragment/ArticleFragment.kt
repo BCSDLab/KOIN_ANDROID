@@ -21,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.R as CoreR
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.BoardAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.ToolbarMenu
@@ -145,9 +146,9 @@ class ArticleFragment : Fragment() {
                         when (itemId) {
                             ArticleR.id.action_search_article -> {
                                 EventLogger.logClickEvent(
-                                    EventAction.CAMPUS,
-                                    AnalyticsConstant.Label.NOTICE_SEARCH,
-                                    getString(ArticleR.string.search)
+                                    EventAction.DA2,
+                                    BoardAnalyticsConstant.Label.MAIN_NOTICE_SEARCH_ENTRY,
+                                    BoardAnalyticsConstant.Value.SEARCH
                                 )
                                 navController.navigate(ArticleR.id.action_articleListFragment_to_articleSearchFragment)
                             }

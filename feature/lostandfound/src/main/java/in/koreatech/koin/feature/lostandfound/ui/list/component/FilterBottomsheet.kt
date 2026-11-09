@@ -31,12 +31,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventCategory
+import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.LostAndFoundAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.enums.LostAndFoundFilterType
@@ -136,6 +139,7 @@ fun FilterBottomSheetContent(
     onApplyClick: () -> Unit,
     onDismissRequest: () -> Unit
 ) {
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -246,9 +250,35 @@ fun FilterBottomSheetContent(
             }
             Button(
                 onClick = {
-                    EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LostAndFound.LOST_ITEM_FILTER_APPLY,
-                        "분실물"
+                    val filterItemType = buildString {
+                        for (type in FILTER_ITEM_TYPE_ORDER) {
+                            if (type in selectedCategoryType) {
+                                if (isNotEmpty()) append(FILTER_ITEM_TYPE_DELIMITER)
+                                append(context.getString(type.stringRes))
+                            }
+                        }
+                    }
+                    EventLogger.logCustomEvent(
+                        LostAndFoundAnalyticsConstant.EVENT_NAME,
+                        EventCategory.CLICK.value,
+                        LostAndFoundAnalyticsConstant.Label.LIST_FILTER_APPLY,
+                        LostAndFoundAnalyticsConstant.Value.LOST,
+                        EventExtra(
+                            LostAndFoundAnalyticsConstant.ExtraKey.FILTER_SCOPE,
+                            context.getString(selectedAuthorType.stringRes)
+                        ),
+                        EventExtra(
+                            LostAndFoundAnalyticsConstant.ExtraKey.FILTER_POST_TYPE,
+                            context.getString(selectedLostOrFoundType.stringRes)
+                        ),
+                        EventExtra(
+                            LostAndFoundAnalyticsConstant.ExtraKey.FILTER_ITEM_TYPE,
+                            filterItemType
+                        ),
+                        EventExtra(
+                            LostAndFoundAnalyticsConstant.ExtraKey.FILTER_STATUS,
+                            context.getString(selectedFoundType.stringRes)
+                        )
                     )
                     onApplyClick()
                     onDismissRequest()
@@ -346,3 +376,14 @@ fun FilterDuplicateSection(
         }
     }
 }
+
+private const val FILTER_ITEM_TYPE_DELIMITER = "|"
+
+private val FILTER_ITEM_TYPE_ORDER = listOf(
+    CategoryFilterType.ALL,
+    CategoryFilterType.CARD,
+    CategoryFilterType.ID,
+    CategoryFilterType.WALLET,
+    CategoryFilterType.ELECTRONIC,
+    CategoryFilterType.OTHER
+)

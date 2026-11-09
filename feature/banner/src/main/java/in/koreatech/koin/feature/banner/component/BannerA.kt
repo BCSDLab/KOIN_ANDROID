@@ -27,6 +27,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.analytics.BannerAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.banner.R
@@ -72,9 +74,11 @@ fun BannerA(
             ) {
                 TextButton(
                     onClick = {
-                        EventLogger.logCampusClickEvent(
-                            label = "main_modal_hide_7d",
-                            value = bannerList[bannerIndex].title
+                        EventLogger.logCustomEvent(
+                            BannerAnalyticsConstant.EVENT_NAME,
+                            EventCategory.CLICK.value,
+                            BannerAnalyticsConstant.Label.MODAL_HIDE_7D,
+                            bannerList[bannerIndex].id.toString()
                         )
                         dismissWithRefusal()
                     }
@@ -88,9 +92,11 @@ fun BannerA(
                 Spacer(modifier = Modifier.weight(1f))
                 TextButton(
                     onClick = {
-                        EventLogger.logCampusClickEvent(
-                            label = "main_modal_close",
-                            value = bannerList[bannerIndex].title
+                        EventLogger.logCustomEvent(
+                            BannerAnalyticsConstant.EVENT_NAME,
+                            EventCategory.CLICK.value,
+                            BannerAnalyticsConstant.Label.MODAL_CLOSE,
+                            bannerList[bannerIndex].id.toString()
                         )
                         dismiss()
                     }

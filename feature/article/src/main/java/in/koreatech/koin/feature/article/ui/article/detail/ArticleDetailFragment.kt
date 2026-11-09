@@ -20,8 +20,8 @@ import androidx.navigation.navOptions
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.activity.WebViewActivity
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
-import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.BoardAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.core.download.FileDownloadManager
@@ -149,10 +149,11 @@ class ArticleDetailFragment : Fragment() {
 
     private fun initButtonClickListeners() {
         binding.buttonToList.setOnClickListener {
-            EventLogger.logClickEvent(
-                EventAction.CAMPUS,
-                AnalyticsConstant.Label.INVENTORY,
-                getString(R.string.list)
+            EventLogger.logCustomEvent(
+                BoardAnalyticsConstant.EVENT_NAME,
+                EventCategory.CLICK.value,
+                BoardAnalyticsConstant.Label.NOTICE_DETAIL_LIST_RETURN,
+                BoardAnalyticsConstant.Value.LIST_RETURN
             )
             if (!navController.popBackStack(R.id.articleListFragment, false)) {
                 navController.navigate(
@@ -258,9 +259,10 @@ class ArticleDetailFragment : Fragment() {
             }
         }
         binding.buttonToPortal.setOnClickListener {
-            EventLogger.logClickEvent(
-                EventAction.CAMPUS,
-                AnalyticsConstant.Label.NOTICE_ORIGINAL_SHORTCUT,
+            EventLogger.logCustomEvent(
+                BoardAnalyticsConstant.EVENT_NAME,
+                EventCategory.CLICK.value,
+                BoardAnalyticsConstant.Label.NOTICE_DETAIL_ORIGINAL_ENTRY,
                 binding.buttonToPortal.text.toString()
             )
             Intent(requireContext(), WebViewActivity::class.java).apply {
@@ -289,10 +291,11 @@ class ArticleDetailFragment : Fragment() {
     }
 
     private fun onHotArticleClick(article: ArticleHeaderState) {
-        EventLogger.logClickEvent(
-            EventAction.CAMPUS,
-            AnalyticsConstant.Label.POPULAR_NOTICE,
-            article.title
+        EventLogger.logCustomEvent(
+            BoardAnalyticsConstant.EVENT_NAME,
+            EventCategory.CLICK.value,
+            BoardAnalyticsConstant.Label.NOTICE_DETAIL_POPULAR_POST_ENTRY,
+            article.id.toString()
         )
         navController.navigate(
             R.id.action_articleDetailFragment_to_articleDetailFragment,

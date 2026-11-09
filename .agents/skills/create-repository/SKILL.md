@@ -1,6 +1,6 @@
 ---
 name: create-repository
-description: Scaffold a new KOIN Repository — domain `<Name>Repository` interface, data `<Name>RepositoryImpl` class with `@Inject constructor()`, and the corresponding `@Binds` entry in `data/.../di/repository/BindsRepositoryModule.kt`. Use whenever the user asks to add a Repository, create a Repository pair, "domain interface + data impl + Hilt 바인딩", or "repository 만들어줘" (e.g. "Library Repository 만들어줘", "create LibraryRepository", "/create-repository Library", "domain 에 인터페이스 + data 에 impl + Hilt 등록"). Trigger this skill even when the user does not say "skill" — any request that boils down to "new Repository in the KOIN clean-architecture stack" should use it. Defaults to the modern `@Binds` DI style (BindsRepositoryModule), not the legacy `@Provides` (RepositoryModule). Does NOT generate data sources, API services, mappers, domain models, or use cases — those are out of scope and require their own follow-up scaffolding.
+description: Create a KOIN domain repository interface, data implementation, and Hilt binding.
 ---
 
 # Role
