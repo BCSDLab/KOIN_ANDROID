@@ -78,10 +78,12 @@ class SignUpVerificationViewModel @Inject constructor(
 
     fun checkPhoneNumber() = intent {
         checkPhoneNumberDuplicateUseCase(state.phoneNumber).onSuccess {
-            reduce {
-                state.copy(
-                    phoneNumberState = VerificationMethodState.Available
-                )
+            if (state.phoneNumberState !is VerificationMethodState.Sent) {
+                reduce {
+                    state.copy(
+                        phoneNumberState = VerificationMethodState.Available
+                    )
+                }
             }
             sendVerificationCode()
         }.onFailure {
@@ -98,7 +100,6 @@ class SignUpVerificationViewModel @Inject constructor(
     }
 
     private fun sendVerificationCode() = intent {
-        postSideEffect(SignUpVerificationSideEffect.StartTimer)
         requestSmsVerificationUseCase(state.phoneNumber).onSuccess {
             reduce {
                 state.copy(
@@ -110,6 +111,7 @@ class SignUpVerificationViewModel @Inject constructor(
                     verificationCodeState = VerificationCodeState.None
                 )
             }
+            postSideEffect(SignUpVerificationSideEffect.StartTimer)
         }.onFailure {
             reduce {
                 state.copy(
