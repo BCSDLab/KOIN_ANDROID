@@ -138,53 +138,21 @@ class DiningAppWidget : AppWidgetProvider() {
         val remoteViews = RemoteViews(context.packageName, R.layout.dining_widget)
         val currentType = DiningUtil.getCurrentType()
         remoteViews.removeAllViews(R.id.dining_widget_place_layout)
-        with(DiningUtil.typeFiltering(diningList, currentType)) {
-            var isCurrentPlaceInDining = false
-            forEachIndexed { index, dining ->
-                if (index < DINING.WIDGET_PLACE_NUMBERS && dining.place == currentDiningPlace) {
-                    isCurrentPlaceInDining =
-                        true
-                }
+        val filteredDining = DiningUtil.typeFiltering(diningList, currentType)
+        val visiblePlaceCount = minOf(filteredDining.size, DINING.WIDGET_PLACE_NUMBERS)
+        var isCurrentPlaceInDining = false
+        for (index in 0 until visiblePlaceCount) {
+            if (filteredDining[index].place == currentDiningPlace) {
+                isCurrentPlaceInDining = true
+                break
             }
-            if (!isCurrentPlaceInDining) currentDiningPlace = null
-            forEachIndexed { index, dining ->
-                if (index < DINING.WIDGET_PLACE_NUMBERS) {
-                    val placeRemoteViews =
-                        RemoteViews(context.packageName, R.layout.dining_widget_place)
-                    remoteViews.addView(
-                        R.id.dining_widget_place_layout,
-                        placeRemoteViews
-                    )
-                    if (currentDiningPlace == null) {
-                        if (index == 0) {
-                            currentDiningPlace = dining.place
-                            makePlaceViewSelected(
-                                context,
-                                R.id.dining_widget_place_name_textview,
-                                placeRemoteViews
-                            )
-                        }
-                    } else {
-                        if (currentDiningPlace == dining.place) {
-                            makePlaceViewSelected(
-                                context,
-                                R.id.dining_widget_place_name_textview,
-                                placeRemoteViews
-                            )
-                        }
-                    }
-                    placeRemoteViews.setTextViewText(
-                        R.id.dining_widget_place_name_textview,
-                        dining.place
-                    )
-                    setButtonEventName(
-                        placeRemoteViews,
-                        context,
-                        "${DINING.WIDGET_ACTION_CLICKED} ${dining.place}",
-                        R.id.dining_widget_place_name_textview
-                    )
-                }
-            }
+        }
+        if (!isCurrentPlaceInDining) currentDiningPlace = null
+        for (index in 0 until visiblePlaceCount) {
+            remoteViews.addView(
+                R.id.dining_widget_place_layout,
+                createPlaceView(filteredDining[index], context)
+            )
         }
         val selectedDining =
             currentDiningPlace?.let { DiningUtil.findDining(diningList, currentType, it) }
@@ -194,6 +162,22 @@ class DiningAppWidget : AppWidgetProvider() {
             setDiningMenu(remoteViews, selectedDining.menu, context)
         }
         appWidgetManager.updateAppWidget(componentName, remoteViews)
+    }
+
+    private fun createPlaceView(dining: Dining, context: Context): RemoteViews {
+        val placeRemoteViews = RemoteViews(context.packageName, R.layout.dining_widget_place)
+        if (currentDiningPlace == null) currentDiningPlace = dining.place
+        if (currentDiningPlace == dining.place) {
+            makePlaceViewSelected(context, R.id.dining_widget_place_name_textview, placeRemoteViews)
+        }
+        placeRemoteViews.setTextViewText(R.id.dining_widget_place_name_textview, dining.place)
+        setButtonEventName(
+            placeRemoteViews,
+            context,
+            "${DINING.WIDGET_ACTION_CLICKED} ${dining.place}",
+            R.id.dining_widget_place_name_textview
+        )
+        return placeRemoteViews
     }
 
     private fun setNoMenu(remoteViews: RemoteViews) {
